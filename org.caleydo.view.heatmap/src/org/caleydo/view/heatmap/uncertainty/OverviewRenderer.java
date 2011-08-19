@@ -5,7 +5,6 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -146,7 +145,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getRecordVA()
 				.getIDsOfGroup(group.getID());
-		RecordVirtualArray clusterVA = new RecordVirtualArray(DataTable.RECORD, clusterGenes);
+		RecordVirtualArray clusterVA = new RecordVirtualArray("Custom", clusterGenes);
 
 		return clusterVA;
 	}

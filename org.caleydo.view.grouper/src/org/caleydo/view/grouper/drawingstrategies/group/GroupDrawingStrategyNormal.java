@@ -17,12 +17,14 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 	private PickingManager pickingManager;
 	private GrouperRenderStyle renderStyle;
 	private int viewID;
+	private String dimensionPrespectiveID;
 
-	public GroupDrawingStrategyNormal(PickingManager pickingManager, int viewID,
-			GrouperRenderStyle renderStyle) {
+	public GroupDrawingStrategyNormal(String dimensionPerspectiveID,
+			PickingManager pickingManager, int viewID, GrouperRenderStyle renderStyle) {
 		this.pickingManager = pickingManager;
 		this.viewID = viewID;
 		this.renderStyle = renderStyle;
+		this.dimensionPrespectiveID = dimensionPerspectiveID;
 	}
 
 	@Override
@@ -67,7 +69,8 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
 		DataTable table = groupRepresentation.getClusterNode().getSubDataTable();
-		DimensionVirtualArray dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+		DimensionVirtualArray dimensionVA = table
+				.getDimensionPerspective(dimensionPrespectiveID).getVA();
 
 		boolean isNominal = false;
 		boolean isNumerical = false;

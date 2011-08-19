@@ -19,7 +19,7 @@ import org.caleydo.core.manager.event.view.treemap.ZoomInEvent;
 import org.caleydo.core.manager.event.view.treemap.ZoomOutEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -47,7 +47,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Michael Lafer
  */
 
-public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, IDataDomainSetBasedView, IGLRemoteRenderingView {
+public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, ITableBasedDataDomainView, IGLRemoteRenderingView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
 
@@ -128,7 +128,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	public void initData() {
-		bDisplayData = dataDomain.getTable().getRecordData(recordVAType).getRecordTree() != null;
+		bDisplayData = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -312,7 +312,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = dataDomain.getTable().getRecordData(recordVAType).getRecordTree().getNodeByNumber(elements.iterator().next());
+			ClusterNode dataRoot = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree().getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
@@ -390,7 +390,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map (" + dataDomain.getTable().getBaseDimensionVA().size() + " nodes displayed)";
+		return "Hierarchical Tree Map (" + dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVA().size() + " nodes displayed)";
 	}
 
 	@Override
@@ -439,8 +439,8 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + recordVA.size() + ", dimensionSize: " + dimensionVA.size()
-				+ ", recordVAType: " + recordVAType + ", remoteRenderer:" + getRemoteRenderingGLView();
+		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + recordVA.size() + ", dimensionSize: "
+				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID + ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
 	@Override
@@ -506,7 +506,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			if (dataDomain.getTable().getRecordData(recordVAType).getRecordTree() != null) {
+			if (dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
 				}
@@ -543,6 +543,16 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	private void setMainTreeMapView(GLTreeMap treemap) {
 		mainTreeMapView = treemap;
 		mainTreeMapView.setInteractive(true);
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 
 }

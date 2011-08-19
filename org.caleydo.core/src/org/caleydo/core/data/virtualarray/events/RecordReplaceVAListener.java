@@ -1,8 +1,7 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 
 /**
  * @author Alexander Lex
@@ -15,7 +14,8 @@ public class RecordReplaceVAListener
 		if (event instanceof RecordReplaceVAEvent) {
 			RecordReplaceVAEvent vaEvent = ((RecordReplaceVAEvent) event);
 
-			handler.replaceRecordVA(vaEvent.getTableID(), vaEvent.getDataDomainID(), vaEvent.getVaType());
+			handler.replaceRecordVA(vaEvent.getTableID(), vaEvent.getDataDomainID(), vaEvent.getVaType(),
+				vaEvent.getVirtualArray());
 		}
 	}
 }

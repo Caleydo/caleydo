@@ -46,6 +46,14 @@ public class FilterRepresentationSNR extends
 
 	private float validThreshold = 3;
 	private float validThresholdMax = 5;
+	private String recordPerspectiveID;
+	private String dimensionPerspectiveID;
+
+	public FilterRepresentationSNR(String recordPerspectiveID,
+			String dimensionPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	}
 
 	public boolean create() {
 
@@ -54,7 +62,8 @@ public class FilterRepresentationSNR extends
 
 		// Calculate it with defaults in order to have some sort of result at
 		// the beginning
-		table.getUncertainty().calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
+		table.getUncertainty().calculateNormalizedAverageUncertainty(invalidThreshold,
+				validThreshold, dimensionPerspectiveID);
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -248,14 +257,15 @@ public class FilterRepresentationSNR extends
 
 	private void createVADelta(RecordFilter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
+		RecordVADelta recordVADelta = new RecordVADelta(recordPerspectiveID, subFilter
 				.getDataDomain().getRecordIDType());
 
-		RecordVADelta uncertaintyRecordVADelta = new RecordVADelta(DataTable.RECORD,
+		RecordVADelta uncertaintyRecordVADelta = new RecordVADelta(recordPerspectiveID,
 				subFilter.getDataDomain().getRecordIDType());
 
-		RecordVirtualArray recordVA = subFilter.getDataDomain()
-				.getRecordFilterManager().getBaseVA();
+		// FIXME this used the base va from the filter
+		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
+				.getRecordPerspective(recordPerspectiveID).getVA();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
 				.getTable().getUncertainty().getRawUncertainty();
@@ -264,8 +274,7 @@ public class FilterRepresentationSNR extends
 
 			float value = rawUncertainty[recordIndex];
 			if (value < invalidThreshold)
-				recordVADelta
-						.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
+				recordVADelta.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 
 			if (value < invalidThreshold || value > validThreshold)
 				uncertaintyRecordVADelta.add(VADeltaItem.removeElement(recordVA
@@ -296,7 +305,8 @@ public class FilterRepresentationSNR extends
 	protected void applyFilter() {
 		if (isDirty) {
 			createVADelta();
-			table.getUncertainty().calculateNormalizedAverageUncertainty(invalidThreshold, validThreshold);
+			table.getUncertainty().calculateNormalizedAverageUncertainty(
+					invalidThreshold, validThreshold, dimensionPerspectiveID);
 			filter.updateFilterManager();
 		}
 		isDirty = false;

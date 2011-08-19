@@ -28,7 +28,7 @@ import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -62,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Lafer
  * 
  */
-public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISelectionUpdateHandler, IViewCommandHandler, IColorMappingHandler {
+public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISelectionUpdateHandler, IViewCommandHandler, IColorMappingHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.treemap";
 
@@ -168,7 +168,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void initData() {
 		if (dataDomain == null)
 			return;
-		tree = dataDomain.getTable().getRecordData(recordVAType).getRecordTree();
+		tree = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree();
 		colorMapper = ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION);
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
@@ -377,7 +377,7 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataDomain.getTable().getRecordData(recordVAType).getRecordTree();
+			tree = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree();
 			if (tree != null) {
 				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 			}
@@ -607,6 +607,16 @@ public class GLTreeMap extends AGLView implements IDataDomainSetBasedView, ISele
 		rect[3] = node.getMaxY();
 
 		return rect;
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 
 }

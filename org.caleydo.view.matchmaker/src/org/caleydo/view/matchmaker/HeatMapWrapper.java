@@ -119,7 +119,7 @@ public class HeatMapWrapper {
 				parentView.getParentComposite(), viewFrustum);
 		heatMap.setRemoteRenderingGLView(parentView);
 		heatMap.setDataDomain(dataDomain);
-		heatMap.setRecordVAType(GLHeatMap.CONTENT_EMBEDDED_VA);
+		heatMap.setRecordPerspectiveID(GLHeatMap.CONTENT_EMBEDDED_VA);
 
 		if (layout instanceof HeatMapLayoutDetailViewRight)
 			heatMap.setRenderTemplate(new MatchmakerDetailTemplate(heatMap, false));
@@ -145,7 +145,7 @@ public class HeatMapWrapper {
 				glParentView.getParentComposite(), viewFrustum, true);
 		dendrogram.setDataDomain(dataDomain);
 		dendrogram.setRemoteRenderingGLView(parentView);
-		dendrogram.setRecordVAType(recordVAType);
+		dendrogram.setRecordPerspectiveID(recordVAType);
 		dendrogram.initData();
 		dendrogram.setRenderUntilCut(false);
 		dendrogram.initRemote(gl, glParentView, glMouseListener);
@@ -157,7 +157,7 @@ public class HeatMapWrapper {
 
 	public void setTable(DataTable table) {
 		this.table = table;
-		recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		recordVA = table.getRecordPerspective(DataTable.RECORD).getVA();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
@@ -811,7 +811,7 @@ public class HeatMapWrapper {
 
 	public void handleReplaceRecordVA(IDCategory idCategory, String vaType) {
 
-		recordVA = table.getRecordData(vaType).getRecordVA();
+		recordVA = table.getRecordPerspective(vaType).getVA();
 	}
 
 	public void handleClearSelections() {

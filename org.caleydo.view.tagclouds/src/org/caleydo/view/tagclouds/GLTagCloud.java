@@ -24,7 +24,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
+public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 		IViewCommandHandler, ISelectionUpdateHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.tagclouds";
@@ -99,7 +99,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 	/**
 	 * Hash map mapping a dimension ID to a hash map of occurring strings in the
-	 * dimension to the count on how many occurences of this string are contained
+	 * dimension to the count on how many occurences of this string are
+	 * contained
 	 */
 	private HashMap<Integer, HashMap<String, Integer>> stringOccurencesPerDimension = new HashMap<Integer, HashMap<String, Integer>>();
 
@@ -110,7 +111,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLTagCloud(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTagCloud(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -128,9 +130,9 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 		if (table == null)
 			table = dataDomain.getTable();
 		if (recordVA == null)
-			recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getRecordSelectionManager();
 
@@ -153,8 +155,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 			for (Integer recordID : recordVA) {
 				String string = null;
 				if (isNumericalDimension) {
-					string = new Float(numericalDimension.getFloat(DataRepresentation.RAW,
-							recordID)).toString();
+					string = new Float(numericalDimension.getFloat(
+							DataRepresentation.RAW, recordID)).toString();
 				} else {
 					string = dimension.getRaw(recordID);
 				}
@@ -287,7 +289,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 
 		for (Integer dimensionID : visibleDimensionVA) {
 
-			ElementLayout dimensionCaptionLayout = new ElementLayout("dimensionCaptionLayout");
+			ElementLayout dimensionCaptionLayout = new ElementLayout(
+					"dimensionCaptionLayout");
 			dimensionCaptionLayout.setGrabX(true);
 
 			DimensionCaptionRenderer dimensionCaptionRenderer = new DimensionCaptionRenderer(
@@ -443,8 +446,8 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case TAG_DIMENSION_CHANGE:
@@ -623,5 +626,15 @@ public class GLTagCloud extends AGLView implements IDataDomainSetBasedView,
 	public void setFrustum(ViewFrustum viewFrustum) {
 		super.setFrustum(viewFrustum);
 		initMapping();
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 }

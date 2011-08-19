@@ -9,7 +9,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -17,7 +16,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -29,8 +27,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -56,8 +52,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Clemens Holzhüter
  */
 
-public class GLUncertaintyHeatMap extends ATableBasedView implements IViewCommandHandler,
-		ISelectionUpdateHandler, IGLRemoteRenderingView {
+public class GLUncertaintyHeatMap extends ATableBasedView implements
+		IGLRemoteRenderingView {
 
 	public static enum UncertaintyColors {
 		VISUAL_VALID, VISUAL_UNCERTAIN, DATA_VALID, DATA_UNCERTAIN, DATA2_VALID, DATA2_UNCERTAIN, DATA3_VALID, DATA3_UNCERTAIN, BACKGROUND
@@ -373,8 +369,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 
 				ArrayList<Integer> clusterElements = recordVA.getIDsOfGroup(groupList
 						.get(externalID).getID());
-				RecordVirtualArray clusterVA = new RecordVirtualArray(DataTable.RECORD,
-						clusterElements);
+				RecordVirtualArray clusterVA = new RecordVirtualArray(
+						recordPerspectiveID, clusterElements);
 				detailHeatMap.setRecordVA(clusterVA);
 
 				setDisplayListDirty();
@@ -466,12 +462,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	}
 
 	@Override
-	public void renderContext(boolean bRenderContext) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	protected void reactOnRecordVAChanges() {
 
 		super.reactOnRecordVAChanges();
@@ -485,13 +475,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	@Override
 	protected void initLists() {
 
-		if (bRenderOnlyContext)
-			recordVAType = DataTable.RECORD_CONTEXT;
-		else
-			recordVAType = DataTable.RECORD;
-
-		recordVA = dataDomain.getRecordVA(recordVAType);
-		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
+		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
+		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 
 		// In case of importing group info
 		// if (table.isGeneClusterInfo())
@@ -499,8 +484,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 		// if (table.isExperimentClusterInfo())
 		// dimensionVA.setGroupList(table.getDimensionGroupList());
 
-		recordSelectionManager.setVA(recordVA);
-		dimensionSelectionManager.setVA(dimensionVA);
 		setDisplayListDirty();
 	}
 
@@ -514,8 +497,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements IViewComman
 	public ColorMapper getColorMapper() {
 		return colorMapper;
 	}
-
-	
 
 	public HeatMapRenderStyle getRenderStyle() {
 		return renderStyle;

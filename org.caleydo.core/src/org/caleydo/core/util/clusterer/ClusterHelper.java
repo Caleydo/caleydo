@@ -5,6 +5,8 @@ import java.util.Arrays;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -127,16 +129,18 @@ public class ClusterHelper {
 	// determineNrElementsRec(tree, tree.getRoot());
 	// }
 
-	public static void calculateClusterAverages(Tree<ClusterNode> tree, ClustererType eClustererType,
-		DataTable table) {
+	public static void calculateClusterAverages(DimensionPerspective dimensionData, RecordPerspective recordData,
+		ClustererType eClustererType, DataTable table) {
 		// FIXME - direct references here - should be parameters
-		DimensionVirtualArray dimensionVA = table.getDimensionData(DataTable.DIMENSION).getDimensionVA();
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
-		calculateClusterAveragesRecursive(tree, tree.getRoot(), eClustererType, table, dimensionVA, recordVA);
+		DimensionVirtualArray dimensionVA = dimensionData.getVA();
+		RecordVirtualArray recordVA = recordData.getVA();
+		calculateClusterAveragesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
+			eClustererType, table, dimensionVA, recordVA);
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		ClustererType clustererType, DataTable table, DimensionVirtualArray dimensionVA, RecordVirtualArray recordVA) {
+		ClustererType clustererType, DataTable table, DimensionVirtualArray dimensionVA,
+		RecordVirtualArray recordVA) {
 
 		float[] values;
 
@@ -211,9 +215,10 @@ public class ClusterHelper {
 		return values;
 	}
 
-	public static void calculateAggregatedUncertainties(Tree<ClusterNode> tree, DataTable table) {
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
-		calculateAggregatedUncertaintiesRecursive(tree, tree.getRoot(), table, recordVA);
+	public static void calculateAggregatedUncertainties(RecordPerspective recordData, DataTable table) {
+		RecordVirtualArray recordVA = recordData.getVA();
+		calculateAggregatedUncertaintiesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
+			table, recordVA);
 	}
 
 	private static Pair<Float, Integer> calculateAggregatedUncertaintiesRecursive(Tree<ClusterNode> tree,
@@ -222,7 +227,8 @@ public class ClusterHelper {
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
 		if (node.isLeaf()) {
-			float uncertainty = (float)table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
+			float uncertainty =
+				(float) table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
 			result.setFirst(uncertainty);
 			result.setSecond(1);
 			node.setUncertainty(uncertainty);
@@ -253,8 +259,8 @@ public class ClusterHelper {
 	 * @param examples
 	 * @param eClustererType
 	 */
-	public static void sortClusters(DataTable table, RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
-		ArrayList<Integer> examples, ClustererType eClustererType) {
+	public static void sortClusters(DataTable table, RecordVirtualArray recordVA,
+		DimensionVirtualArray dimensionVA, ArrayList<Integer> examples, ClustererType eClustererType) {
 
 		int iNrExamples = examples.size();
 		float[] fColorSum = null;

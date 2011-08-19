@@ -13,6 +13,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -41,6 +42,7 @@ import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -107,6 +109,7 @@ public class GLBucket extends AGLView implements
 	protected ATableBasedDataDomain dataDomain;
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
+	// private RecordPerspective recordPerspective;
 
 	private static final int SLERP_RANGE = 1000;
 	private static final int SLERP_SPEED = 1400;
@@ -271,6 +274,8 @@ public class GLBucket extends AGLView implements
 
 		iPoolLevelCommonID = generalManager.getIDCreator().createID(
 				ManagedObjectType.REMOTE_LEVEL_ELEMENT);
+		
+
 	}
 
 	@Override
@@ -2172,7 +2177,7 @@ public class GLBucket extends AGLView implements
 
 	public void resetView(boolean reinitialize) {
 
-		dataDomain.resetContextVA();
+		// dataDomain.resetContextVA();
 		if (containedGLViews == null)
 			return;
 
@@ -2531,14 +2536,23 @@ public class GLBucket extends AGLView implements
 						serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
-		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(serView.getDataDomainID()));
-		}
-
 		if (glView instanceof GLHeatMap) {
 			GLHeatMap heatMap = ((GLHeatMap) glView);
 			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
+
+		}
+
+		if (glView instanceof ITableBasedDataDomainView) {
+			ITableBasedDataDomainView tableBasedView = (ITableBasedDataDomainView) glView;
+
+			tableBasedView.setRecordPerspectiveID(recordPerspectiveID);
+			tableBasedView.setDimensionPerspectiveID(dimensionPerspectiveID);
+			// tableBasedView
+		}
+
+		if (glView instanceof IDataDomainBasedView<?>) {
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.get().getDataDomainByID(serView.getDataDomainID()));
 		}
 
 		if (glView instanceof GLPathway) {
@@ -2549,6 +2563,8 @@ public class GLBucket extends AGLView implements
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
+			glPathway.setRecordPerspectiveID(recordPerspectiveID);
+			glPathway.setDimensionPerspectiveID(dimensionPerspectiveID);
 		}
 
 		glView.initialize();
@@ -2840,6 +2856,7 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView ser) {
+		super.initFromSerializableRepresentation(ser);
 		resetView(false);
 
 		SerializedBucketView serializedView = (SerializedBucketView) ser;
@@ -2929,7 +2946,12 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+		this.dataDomain = dataDomain;	
+		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+		recordPerspective.setIsPrivate(true);
+		recordPerspective.createVA(null);
+		dataDomain.getTable().registerRecordPerspecive(recordPerspective);
+		recordPerspectiveID = recordPerspective.getPerspectiveID();
 	}
 
 	@Override

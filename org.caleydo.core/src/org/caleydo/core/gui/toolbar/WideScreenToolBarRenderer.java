@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.gui.toolbar.action.ClearSelectionsAction;
-import org.caleydo.core.gui.toolbar.action.RestoreOriginalDataAction;
 import org.caleydo.core.gui.toolbar.action.SaveProjectAction;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 import org.caleydo.core.gui.toolbar.action.SwitchDataRepresentationAction;
@@ -75,7 +74,8 @@ public class WideScreenToolBarRenderer
 
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
-		toolBarManager2.add(new RestoreOriginalDataAction());
+		// FIXME: removed because we need new concept for restoring data
+//		toolBarManager2.add(new RestoreOriginalDataAction());
 		
 		toolBarManager2.add(new SwitchDataRepresentationAction());
 

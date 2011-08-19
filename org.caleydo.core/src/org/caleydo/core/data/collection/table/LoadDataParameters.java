@@ -69,8 +69,6 @@ public class LoadDataParameters {
 	/** TODO doc */
 	private String mathFilterMode;
 
-	/** TODO doc */
-	private boolean useExperimentClusterInfo;
 
 	@XmlElement
 	private boolean isDataHomogeneous = false;
@@ -208,13 +206,13 @@ public class LoadDataParameters {
 		this.mathFilterMode = mathFilterMode;
 	}
 
-	public boolean isUseExperimentClusterInfo() {
-		return useExperimentClusterInfo;
-	}
+//	public boolean isUseExperimentClusterInfo() {
+//		return useExperimentClusterInfo;
+//	}
 
-	public void setUseExperimentClusterInfo(boolean useExperimentClusterInfo) {
-		this.useExperimentClusterInfo = useExperimentClusterInfo;
-	}
+//	public void setUseExperimentClusterInfo(boolean useExperimentClusterInfo) {
+//		this.useExperimentClusterInfo = useExperimentClusterInfo;
+//	}
 
 	public void setFileIDType(IDType fileIDType) {
 		this.fileIDTypeName = fileIDType.getTypeName();

@@ -8,7 +8,6 @@ import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;
@@ -28,10 +27,9 @@ public class ToolBarContentFactory {
 
 	/** Maps view type to its {@link ToolBarInfo} */
 	private HashMap<String, ToolBarInfo> toolBarInfos;
-	
+
 	/** Maps view type to its {@link ToolBarInfo} */
 	private HashMap<String, AToolBarContent> toolBarContents;
-	
 
 	/** Hidden default constructor. */
 	public ToolBarContentFactory() {
@@ -54,70 +52,69 @@ public class ToolBarContentFactory {
 
 	public void addToolBarContent(String viewType, boolean isIgnored, AToolBarContent toolBarContent) {
 		toolBarContents.put(viewType, toolBarContent);
-		
+
 		ToolBarInfo info = new ToolBarInfo();
 		info.viewType = viewType;
 		info.ignored = isIgnored;
 		toolBarInfos.put(info.viewType, info);
 	}
-	
+
 	public AToolBarContent getToolBarContent(String viewType) {
 		return toolBarContents.get(viewType);
 	}
-	
-//	/**
-//	 * Initializes an instance of this class. Must be called before the first usage.
-//	 */
-//	public void init() {
-	
 
-//		ToolBarInfo info;
+	// /**
+	// * Initializes an instance of this class. Must be called before the first usage.
+	// */
+	// public void init() {
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.histogram";
-//		info.ignored = true;
-//		toolBarInfos.put(info.viewType, info);
+	// ToolBarInfo info;
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.parcoords";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.histogram";
+	// info.ignored = true;
+	// toolBarInfos.put(info.viewType, info);
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.bucket";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.parcoords";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.radial";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.bucket";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.scatterplot";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.radial";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.matchmaker";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.scatterplot";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.dataflipper";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.matchmaker";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
 
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.treemap";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
-		
-//		info = new ToolBarInfo();
-//		info.viewType = "org.caleydo.view.filter";
-//		info.ignored = false;
-//		toolBarInfos.put(info.viewType, info);
-//	}
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.dataflipper";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
+
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.treemap";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
+
+	// info = new ToolBarInfo();
+	// info.viewType = "org.caleydo.view.filter";
+	// info.ignored = false;
+	// toolBarInfos.put(info.viewType, info);
+	// }
 
 	/**
 	 * Looks for toolbar content providers for a specified list of view types
@@ -170,12 +167,6 @@ public class ToolBarContentFactory {
 	 */
 	private int retrieveRenderType(IView view) {
 		int type = AToolBarContent.STANDARD_RENDERING;
-		if (view instanceof AGLView) {
-			AGLView glView = (AGLView) view;
-			if (glView.rendersContextOnly()) {
-				type = AToolBarContent.CONTEXT_ONLY_RENDERING;
-			}
-		}
 		return type;
 	}
 
@@ -226,7 +217,7 @@ public class ToolBarContentFactory {
 	}
 
 	private AToolBarContent getContent(IView view) {
-		
+
 		AToolBarContent content = null;
 		ToolBarInfo info = toolBarInfos.get(view.getViewType());
 		if (info != null) {
@@ -237,11 +228,6 @@ public class ToolBarContentFactory {
 
 			content = (AToolBarContent) toolBarContent;
 			content.setTargetViewData(view.getSerializableRepresentation());
-			if (view instanceof AGLView) {
-				if (((AGLView) view).rendersContextOnly()) {
-					content.setRenderType(AToolBarContent.CONTEXT_ONLY_RENDERING);
-				}
-			}
 		}
 
 		return content;

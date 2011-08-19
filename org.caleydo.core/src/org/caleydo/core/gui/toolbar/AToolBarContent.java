@@ -1,6 +1,5 @@
 package org.caleydo.core.gui.toolbar;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.serialize.ASerializedView;
@@ -19,11 +18,6 @@ public abstract class AToolBarContent {
 	 * specifies that the toolbar should contain actions for standard rendering of the related view
 	 */
 	public static final int STANDARD_RENDERING = 1;
-
-	/**
-	 * specifies that the toolbar should contain actions for rendering contextual information only
-	 */
-	public static final int CONTEXT_ONLY_RENDERING = 2;
 
 	/**
 	 * FIXME view-id of the target view for the actions contained within this toolbar content

@@ -4,7 +4,7 @@ import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 
-public class ReEvaluateFilterListListener<FilterManagerType extends FilterManager< ?, ?, ?>>
+public class ReEvaluateFilterListListener<FilterManagerType extends FilterManager<?, ?, ?, ?>>
 	extends AEventListener<FilterManagerType> {
 
 	@Override

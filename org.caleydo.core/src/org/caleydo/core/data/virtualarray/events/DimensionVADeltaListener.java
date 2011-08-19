@@ -1,15 +1,13 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.VirtualArrayDeltaEvent;
 
 /**
  * Listener for dimension virtual array update events. This listener gets the payload from a
- * {@link VirtualArrayDeltaEvent} and calls a related {@link IVirtaualArrayUpdateHandler}.
+ * {@link VADeltaEvent} and calls a related {@link IVirtaualArrayUpdateHandler}.
  * 
  * @author Alexander Lex
  */

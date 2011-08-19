@@ -81,8 +81,6 @@ public class ImportDataDialog
 
 	private String mathFilterMode = "Log2";
 
-	private boolean useGeneClusterInfo = false;
-	private boolean useExperimentClusterInfo = false;
 	private boolean isUncertaintyDataProvided = false;
 
 	private ATableBasedDataDomain dataDomain = null;
@@ -583,13 +581,6 @@ public class ImportDataDialog
 				while (tokenizer.hasMoreTokens()) {
 					nextToken = tokenizer.nextToken();
 
-					// Check for group information
-					if (nextToken.equals("GROUP_NUMBER") || nextToken.equals("Cluster_Number")) {
-						useGeneClusterInfo = true;
-						// If group info is detected no more columns are parsed
-						break;
-					}
-
 					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
 					dataColumn.setWidth(100);
 					dataColumn.setText(nextToken);
@@ -626,10 +617,6 @@ public class ImportDataDialog
 				while (tokenizer.hasMoreTokens()) {
 					nextToken = tokenizer.nextToken();
 
-					// check for experiment cluster info
-					if (nextToken.equals("Cluster_Number") || nextToken.equals("Cluster_Repr"))
-						useExperimentClusterInfo = true;
-
 					// Check for empty cells
 					if (nextToken.equals(sDelimiter) && !isCellFilled) {
 						item.setText(colIndex + 1, "");
@@ -659,10 +646,6 @@ public class ImportDataDialog
 					continue;
 
 				nextToken = tokenizer.nextToken();
-
-				// probably weaks performance
-				if (nextToken.equals("Cluster_Number") || nextToken.equals("Cluster_Repr"))
-					useExperimentClusterInfo = true;
 			}
 
 		}
@@ -792,15 +775,11 @@ public class ImportDataDialog
 			}
 		}
 
-		if (useGeneClusterInfo) {
-			inputPattern.append("GROUP_NUMBER;GROUP_REPRESENTATIVE;");
-		}
 		inputPattern.append("ABORT;");
 
 		loadDataParameters.setInputPattern(inputPattern.toString());
 		loadDataParameters.setFileName(txtFileName.getText());
 		loadDataParameters.setDimensionLabels(dimensionLabels);
-		loadDataParameters.setUseExperimentClusterInfo(useExperimentClusterInfo);
 
 		if (loadDataParameters.getFileName().equals("")) {
 			MessageDialog.openError(new Shell(), "Invalid filename", "Invalid filename");

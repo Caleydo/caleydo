@@ -1,8 +1,7 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
 
 /**
  * @author Alexander Lex
@@ -15,7 +14,9 @@ public class DimensionReplaceVAListener
 		if (event instanceof DimensionReplaceVAEvent) {
 			DimensionReplaceVAEvent vaEvent = ((DimensionReplaceVAEvent) event);
 
-			handler.replaceDimensionVA(vaEvent.getDataDomainID(), vaEvent.getVaType());
+			handler.replaceDimensionVA(vaEvent.getTableID(), vaEvent.getDataDomainID(), vaEvent.getVaType(),
+				vaEvent.getVirtualArray());
+
 		}
 	}
 }

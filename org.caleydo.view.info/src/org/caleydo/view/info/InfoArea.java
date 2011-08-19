@@ -2,7 +2,6 @@ package org.caleydo.view.info;
 
 import java.util.Set;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
@@ -15,9 +14,11 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.events.DimensionVADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
@@ -27,8 +28,6 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -389,19 +388,15 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	}
 
 	@Override
-	public void handleRecordVAUpdate(final String info) {
-		recordSelectionManager.virtualArrayUpdated(dataDomain
-				.getRecordVA(DataTable.RECORD));
+	public void handleRecordVAUpdate(int dataTableID, String info) {
 		updateTree(true, recordSelectionManager, contentTree, info);
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(String info) {
+	public void handleDimensionVAUpdate(int dataTableID, String info) {
 		if (parentComposite.isDisposed())
 			return;
 
-		dimensionSelectionManager.virtualArrayUpdated(dataDomain
-				.getDimensionVA(DataTable.DIMENSION));
 		updateTree(false, dimensionSelectionManager, dimensionTree, info);
 	}
 

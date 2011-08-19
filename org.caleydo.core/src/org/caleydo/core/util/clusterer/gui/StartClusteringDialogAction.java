@@ -1,6 +1,7 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import java.util.Set;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -76,6 +77,8 @@ public class StartClusteringDialogAction
 	private Text clusterFactorGenes = null;
 	private Text clusterFactorExperiments = null;
 
+	private ATableBasedDataDomain dataDomain;
+
 	/**
 	 * Constructor.
 	 */
@@ -87,7 +90,7 @@ public class StartClusteringDialogAction
 			.getWorkbench().getDisplay(), ICON)));
 
 		this.parentComposite = parentComposite;
-
+		this.dataDomain = dataDomain;
 		sArTypeOptions[0] = dataDomain.getRecordName(true, false);
 	}
 
@@ -541,9 +544,23 @@ public class StartClusteringDialogAction
 		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
 			clusterState = othersTab.getClusterState();
 
+		Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getAvailableDimensionPerspectiveIDs();
+
+		if (dimensionPerspectiveIDs.size() == 1)
+			clusterState.setDimensionPerspective(dataDomain.getTable().getDimensionPerspective(
+				dimensionPerspectiveIDs.iterator().next()));
+		else
+			throw new IllegalStateException("Implement choose for perspective");
+
+		Set<String> recordPerspectiveIDs = dataDomain.getTable().getAvailableRecordPerspectiveIDs();
+
+		if (recordPerspectiveIDs.size() == 1)
+			clusterState.setRecordPerspective(dataDomain.getTable().getRecordPerspective(
+				recordPerspectiveIDs.iterator().next()));
+		else
+			throw new IllegalStateException("Implement choose for perspective");
+
 		// by default we use the main VAs for clustering
-		clusterState.setRecordVAType(DataTable.RECORD);
-		clusterState.setDimensionVAType(DataTable.DIMENSION);
 
 		ClusteringProgressBar progressBar =
 			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());

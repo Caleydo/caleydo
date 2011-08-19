@@ -355,7 +355,7 @@ public class OverviewState extends ACompareViewStateStatic {
 		int numTotalExperiments = 0;
 		for (HeatMapWrapper heatMapWrapper : heatMapWrappers) {
 			numTotalExperiments += heatMapWrapper.getTable()
-					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
+					.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA().size();
 		}
 		float heatMapWrapperGapWidth = (1 - HEATMAP_WRAPPER_SPACE_PORTION)
 				* viewFrustum.getWidth() / (float) (heatMapWrappers.size() - 1);
@@ -364,7 +364,7 @@ public class OverviewState extends ACompareViewStateStatic {
 			HeatMapWrapper heatMapWrapper = heatMapWrappers.get(i);
 			AHeatMapLayout layout = layouts.get(i);
 			int numExperiments = heatMapWrapper.getTable()
-					.getDimensionData(DataTable.DIMENSION).getDimensionVA().size();
+					.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA().size();
 			// TODO: Maybe get info in layout from heatmapwrapper
 			layout.setTotalSpaceForAllHeatMapWrappers(spaceForHeatMapWrapperOverviews);
 			layout.setNumExperiments(numExperiments);

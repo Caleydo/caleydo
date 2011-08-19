@@ -121,8 +121,8 @@ public class CompareViewStateController {
 		currentState.handleMouseWheel(gl, amount, wheelPoint);
 	}
 
-	public void handleReplaceRecordVA(int tableID, String dataDomain, String vaType) {
-		currentState.handleReplaceRecordVA(tableID, dataDomain, vaType);
+	public void handleReplaceRecordVA(int tableID, String dataDomainType, String vaType) {
+		currentState.handleReplaceRecordVA(tableID, dataDomainType, vaType);
 	}
 
 	public void handleClearSelections() {

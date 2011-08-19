@@ -471,7 +471,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	public String toString() {
 		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordVAType
+				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
 				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
@@ -505,7 +505,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
 		serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		AGLView view = createView(gl, serView);
-		((ATableBasedView) view).renderContext(true);
+//		((ATableBasedView) view).renderContext(true);
 
 		remoteElementHeatMap = new RemoteLevelElement(null);
 		remoteElementHeatMap.setGLView(view);
@@ -514,7 +514,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		serView = new SerializedParallelCoordinatesView();
 		serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		view = createView(gl, serView);
-		((ATableBasedView) view).renderContext(true);
+//		((ATableBasedView) view).renderContext(true);
 
 		remoteElementParCoords = new RemoteLevelElement(null);
 		remoteElementParCoords.setGLView(view);

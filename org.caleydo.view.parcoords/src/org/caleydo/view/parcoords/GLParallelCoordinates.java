@@ -57,7 +57,6 @@ import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.AngularBrushingEvent;
@@ -93,7 +92,6 @@ import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayLi
 import org.caleydo.view.parcoords.listener.BookmarkButtonListener;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
-import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.common.nio.Buffers;
@@ -214,7 +212,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	/**
 	 * Constructor.
 	 */
-	public GLParallelCoordinates(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLParallelCoordinates(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_TYPE;
@@ -380,25 +379,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void renderContext(boolean bRenderOnlyContext) {
-		this.bRenderOnlyContext = bRenderOnlyContext;
-
-		if (bRenderOnlyContext) {
-			recordVAType = DataTable.RECORD_CONTEXT;
-			recordVA = dataDomain.getRecordVA(recordVAType);
-		} else {
-			recordVAType = DataTable.RECORD;
-			recordVA = dataDomain.getRecordVA(recordVAType);
-		}
-
-		recordSelectionManager.setVA(recordVA);
-		// initGates();
-		clearAllSelections();
-
-		setDisplayListDirty();
-	}
-
 	/**
 	 * Reset all selections and deselections
 	 */
@@ -437,33 +417,31 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 */
 	public void bookmarkElements() {
 
-		RecordVADelta delta = recordSelectionManager.getBroadcastVADelta();
-		if (delta.size() > 20) {
-			parentComposite.getDisplay()
-					.asyncExec(new Runnable() {
-
-						@Override
-						public void run() {
-							MessageDialog
-									.openError(parentComposite.getShell(), "Bookmark Limit",
-											"Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
-
-							return;
-						}
-					});
-			return;
-		}
-
-		if (!isRenderedRemote()) {
-			BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
-					recordIDType);
-			for (VADeltaItem item : delta.getAllItems()) {
-				bookmarkEvent.addBookmark(item.getID());
-			}
-			eventPublisher.triggerEvent(bookmarkEvent);
-			resetAxisSpacing();
-			setDisplayListDirty();
-		}
+		// RecordVADelta delta = recordSelectionManager.getBroadcastVADelta();
+		// if (delta.size() > 20) {
+		// parentComposite.getDisplay().asyncExec(new Runnable() {
+		//
+		// @Override
+		// public void run() {
+		// MessageDialog.openError(parentComposite.getShell(), "Bookmark Limit",
+		// "Can not bookmark more than 20 elements - reduce polylines to less than 20 first");
+		//
+		// return;
+		// }
+		// });
+		// return;
+		// }
+		//
+		// if (!isRenderedRemote()) {
+		// BookmarkEvent<Integer> bookmarkEvent = new BookmarkEvent<Integer>(
+		// recordIDType);
+		// for (VADeltaItem item : delta.getAllItems()) {
+		// bookmarkEvent.addBookmark(item.getID());
+		// }
+		// eventPublisher.triggerEvent(bookmarkEvent);
+		// resetAxisSpacing();
+		// setDisplayListDirty();
+		// }
 	}
 
 	public void saveSelection() {
@@ -471,7 +449,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		Set<Integer> removedElements = recordSelectionManager
 				.getElements(SelectionType.DESELECTED);
 
-		RecordVADelta delta = new RecordVADelta(recordVAType, recordIDType);
+		RecordVADelta delta = new RecordVADelta(recordPerspectiveID, recordIDType);
 		for (Integer recordID : removedElements) {
 			delta.add(VADeltaItem.removeElement(recordID));
 		}
@@ -490,20 +468,17 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	protected void initLists() {
 
-		if (bRenderOnlyContext)
-			recordVAType = DataTable.RECORD_CONTEXT;
-		else
-			recordVAType = DataTable.RECORD;
+		// if (bRenderOnlyContext)
+		// recordPerspectiveID = DataTable.RECORD_CONTEXT;
+		// else
+		// recordPerspectiveID = DataTable.RECORD;
 
 		// recordVA = dataDomain.getRecordVA(recordVAType);
 		if (recordVA == null)
-			recordVA = table.getRecordData(recordVAType).getRecordVA();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionData(dimensionVAType).getDimensionVA();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
 		// dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
-
-		recordSelectionManager.setVA(recordVA);
-		dimensionSelectionManager.setVA(dimensionVA);
 
 		initGates();
 	}
@@ -546,8 +521,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			renderCoordinateSystem(gl);
 
-			for (SelectionType selectionType : recordSelectionManager
-					.getSelectionTypes()) {
+			for (SelectionType selectionType : recordSelectionManager.getSelectionTypes()) {
 				if (selectionType.isVisible()) {
 					if (selectionType == SelectionType.NORMAL)
 						renderNormalPolylines(gl, selectionType);
@@ -712,8 +686,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		gl.glColor4fv(X_AXIS_COLOR, 0);
 		gl.glLineWidth(X_AXIS_LINE_WIDTH);
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID,
-				PickingType.X_AXIS_SELECTION, 1));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.X_AXIS_SELECTION,
+				1));
 		gl.glBegin(GL2.GL_LINES);
 
 		gl.glVertex3f(renderStyle.getXAxisStart(), 0.0f, 0.0f);
@@ -1244,8 +1218,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
 			for (int iPolylineIndex : recordVA) {
 
-				fCurrentValue = table.get(iAxisID).getFloat(DataRepresentation.NORMALIZED,
-						iPolylineIndex);
+				fCurrentValue = table.get(iAxisID).getFloat(
+						DataRepresentation.NORMALIZED, iPolylineIndex);
 
 				if (Float.isNaN(fCurrentValue)) {
 					alDeselectedLines.add(iPolylineIndex);
@@ -1269,8 +1243,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				boolean bIsBlocking = true;
 				for (int iAxisIndex : dimensionVA) {
 
-					fCurrentValue = table.get(iAxisIndex).getFloat(DataRepresentation.RAW,
-							iPolylineIndex);
+					fCurrentValue = table.get(iAxisIndex).getFloat(
+							DataRepresentation.RAW, iPolylineIndex);
 
 					if (Float.isNaN(fCurrentValue)) {
 						continue;
@@ -1298,23 +1272,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		resetAxisSpacing();
 	}
 
-
 	@Override
-	public void handleDimensionVAUpdate(String info) {
-//		for (VADeltaItem item : delta) {
-//			if (item.getType() == EVAOperation.REMOVE) {
-//				Integer id = dimensionVA.get(item.getIndex());
-//
-//				// resetAxisSpacing();
-//				if (dimensionVA.occurencesOf(id) == 1) {
-//					removeGate(id);
-//				}
-//			} else if (item.getType() == EVAOperation.REMOVE_ELEMENT) {
-//
-//				removeGate(item.getID());
-//			}
-//		}
-		super.handleDimensionVAUpdate(info);
+	public void handleDimensionVAUpdate(int dataTableID, String info) {
+		super.handleDimensionVAUpdate(dataTableID, info);
+		if (table.getID() != dataTableID)
+			return;
+
 		resetAxisSpacing();
 	}
 
@@ -1413,7 +1376,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				contexMenuItemContainer.setDataDomain(dataDomain);
 				contexMenuItemContainer.setData(recordIDType, pickingID);
 				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-				
+
 				break;
 
 			default:
@@ -1494,9 +1457,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				break;
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
-				
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getDimensionLabel(dimensionIDType, pickingID), dimensionIDType,
-						pickingID, dataDomain.getDataDomainID());
+
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dataDomain.getDimensionLabel(dimensionIDType, pickingID),
+						dimensionIDType, pickingID, dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 			default:
@@ -1601,8 +1565,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				if (dimensionVA.occurencesOf(dimensionVA.get(pickingID)) == 1) {
 					removeGate(dimensionVA.get(pickingID));
 				}
-				
-				DimensionVADelta vaDelta = new DimensionVADelta(DataTable.DIMENSION, dimensionIDType);
+
+				DimensionVADelta vaDelta = new DimensionVADelta(dimensionPerspectiveID,
+						dimensionIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
 				Integer dimensionID = dimensionVA.get(pickingID);
@@ -1638,13 +1603,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case CLICKED:
 				if (pickingID >= 0) {
 					// dimensionVA.copy(pickingID);
-					DimensionVADelta vaDelta = new DimensionVADelta(DataTable.DIMENSION,
-							dimensionIDType);
+					DimensionVADelta vaDelta = new DimensionVADelta(
+							dimensionPerspectiveID, dimensionIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerDimensionFilterEvent(
 							vaDelta,
 							"Copied "
-									+ dataDomain.getDimensionLabel(dimensionVA.get(pickingID)));
+									+ dataDomain.getDimensionLabel(dimensionVA
+											.get(pickingID)));
 
 					setDisplayListDirty();
 					// resetSelections();
@@ -1783,8 +1749,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		float y = 0;
 
 		if (idType == dimensionIDType
-				&& dataDomain.getDataDomainID()
-						.equals("org.caleydo.datadomain.genetic")) {
+				&& dataDomain.getDataDomainID().equals("org.caleydo.datadomain.genetic")) {
 
 			int axisCount = dimensionVA.indexOf(id);
 			// for (int iAxisID : dimensionVA) {
@@ -1843,14 +1808,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	public String getShortInfo() {
 		String message;
-		int iNumLines = recordVA.size();
+		int numLines = recordVA.size();
 		if (displayEveryNthPolyline == 1) {
-			message = "Parallel Coordinates - " + iNumLines + " "
+			message = "Parallel Coordinates - " + numLines + " "
 					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		} else {
-			message = "Parallel Coordinates showing a sample of " + iNumLines
-					/ displayEveryNthPolyline + " out of " + iNumLines + " "
+			message = "Parallel Coordinates showing a sample of " + numLines
+					/ displayEveryNthPolyline + " out of " + numLines + " "
 					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
 					+ " experiments";
 		}
@@ -1865,27 +1830,22 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		sInfoText.append(recordVA.size() + dataDomain.getRecordName(false, true)
 				+ " as polylines and " + dimensionVA.size() + " experiments as axis.\n");
 
-		if (bRenderOnlyContext) {
-			sInfoText
-					.append("Showing only genes which occur in one of the other views in focus\n");
+		if (bUseRandomSampling) {
+			sInfoText.append("Random sampling active, sample size: "
+					+ iNumberOfRandomElements + "\n");
 		} else {
-			if (bUseRandomSampling) {
-				sInfoText.append("Random sampling active, sample size: "
-						+ iNumberOfRandomElements + "\n");
-			} else {
-				sInfoText.append("Random sampling inactive\n");
-			}
+			sInfoText.append("Random sampling inactive\n");
+		}
 
-			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
-						+ " in the dataset\n");
-			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
-						+ " that have a known DAVID ID mapping\n");
-			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-				sInfoText
-						.append("Showing all genes that are contained in any of the KEGG or Biocarta Pathways\n");
-			}
+		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
+			sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
+					+ " in the dataset\n");
+		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
+			sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
+					+ " that have a known DAVID ID mapping\n");
+		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
+			sInfoText
+					.append("Showing all genes that are contained in any of the KEGG or Biocarta Pathways\n");
 		}
 
 		return sInfoText.toString();
@@ -2124,7 +2084,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			axisSpacings.remove(iMovedAxisPosition);
 			axisSpacings.add(iSwitchAxisWithThis, fWidth);
 
-			DimensionVADelta vaDelta = new DimensionVADelta(dimensionVAType, dimensionIDType);
+			DimensionVADelta vaDelta = new DimensionVADelta(dimensionPerspectiveID,
+					dimensionIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			triggerDimensionFilterEvent(
 					vaDelta,
@@ -2148,8 +2109,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				upperLeftScreenPos = parentComposite.toDisplay(
-						1, 1);
+				upperLeftScreenPos = parentComposite.toDisplay(1, 1);
 			}
 		});
 
@@ -2328,7 +2288,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			renderMode = "remote";
 		return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: "
 				+ dimensionSelectionManager.getIDType() + " Polyline DT:" + recordSelectionManager
-				.getIDType());
+					.getIDType());
 	}
 
 	@Override
@@ -2351,7 +2311,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	public void setRecordVA(RecordVirtualArray recordVA) {
 		this.recordVA = recordVA;
-		recordSelectionManager.setVA(recordVA);
 	}
 
 	@Override
@@ -2361,7 +2320,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	private float[] generateVertexBuffer() {
-		int numberOfVertices = table.getMetaData().depth() * table.getMetaData().size() * 2;
+		int numberOfVertices = table.getMetaData().depth() * table.getMetaData().size()
+				* 2;
 
 		float vertices[] = new float[numberOfVertices];
 		int vertexCounter = 0;
@@ -2370,7 +2330,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			int dimensionCounter = 0;
 			for (Integer dimensionID : dimensionVA) {
 				float xValue = 0.2f * dimensionCounter++;
-				NumericalDimension dimension = (NumericalDimension) table.get(dimensionID);
+				NumericalDimension dimension = (NumericalDimension) table
+						.get(dimensionID);
 
 				float yValue = dimension.getFloat(DataRepresentation.NORMALIZED, index);
 				vertices[vertexCounter++] = xValue;

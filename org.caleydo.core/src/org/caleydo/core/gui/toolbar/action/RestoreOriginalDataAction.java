@@ -12,12 +12,13 @@ public class RestoreOriginalDataAction
 
 	public static final String TEXT = "Restore original data";
 	public static final String ICON = "resources/icons/general/restore.png";
+	String recordPerspectiveID;
 
 	/**
 	 * Constructor.
 	 */
-	public RestoreOriginalDataAction() {
-
+	public RestoreOriginalDataAction(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
 		setText(TEXT);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
@@ -30,7 +31,7 @@ public class RestoreOriginalDataAction
 
 		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 			if (dataDomain instanceof ATableBasedDataDomain)
-				((ATableBasedDataDomain) dataDomain).restoreOriginalRecordVA();
+				((ATableBasedDataDomain) dataDomain).resetRecordVA(recordPerspectiveID);
 		}
 	}
 }

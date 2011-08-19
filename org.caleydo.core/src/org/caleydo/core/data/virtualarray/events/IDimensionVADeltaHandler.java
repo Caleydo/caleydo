@@ -1,8 +1,8 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.virtualarray.events;
 
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 
 /**
  * Interface for ListenerOwners handling dimension VA updates
@@ -24,12 +24,13 @@ public interface IDimensionVADeltaHandler
 	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link ReplaceVAEvent} was
+	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link VAReplaceEvent} was
 	 * received.
 	 * 
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceDimensionVA(String dataDomain, String vaType);
+	public void replaceDimensionVA(int tableID, String dataDomainID, String vaType,
+		DimensionVirtualArray virtualArray);
 
 }

@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.brick.data;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DimensionData;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -50,7 +50,7 @@ public class SetBasedBrickData implements IBrickData {
 		// if (recordVA == null)
 		// throw new IllegalStateException("recordVA was null");
 		for (Integer contenID : getRecordVA()) {
-			DimensionData dimensionData = segmentData.getTable().getDimensionData(
+			DimensionPerspective dimensionData = segmentData.getTable().getDimensionPerspective(
 					DataTable.DIMENSION);
 			if (dimensionData == null) {
 				averageValue = 0;

@@ -15,13 +15,13 @@ public class DrawingStrategyManager {
 
 	private HashMap<EGroupDrawingStrategyType, IGroupDrawingStrategy> hashGroupDrawingStrategies;
 
-	public DrawingStrategyManager(PickingManager pickingManager, int viewID,
+	public DrawingStrategyManager(String dimensionPerspectiveID, PickingManager pickingManager, int viewID,
 			GrouperRenderStyle renderStyle) {
 
 		hashGroupDrawingStrategies = new HashMap<EGroupDrawingStrategyType, IGroupDrawingStrategy>();
 
 		hashGroupDrawingStrategies.put(EGroupDrawingStrategyType.NORMAL,
-				new GroupDrawingStrategyNormal(pickingManager, viewID, renderStyle));
+				new GroupDrawingStrategyNormal(dimensionPerspectiveID, pickingManager, viewID, renderStyle));
 		hashGroupDrawingStrategies.put(EGroupDrawingStrategyType.MOUSE_OVER,
 				new GroupDrawingStrategyMouseOver(pickingManager, viewID, renderStyle));
 		hashGroupDrawingStrategies.put(EGroupDrawingStrategyType.SELECTION,

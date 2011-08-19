@@ -96,7 +96,7 @@ public class SerializationStartupProcedure
 
 				DataTable table = DataTableUtils.createData(setBasedDataDomain);
 
-				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordVAMap();
+				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordDataMap();
 				for (Entry<String, RecordVirtualArray> entry : recordVAMap.entrySet()) {
 					setBasedDataDomain.setRecordVirtualArray(entry.getKey(), entry.getValue());
 				}

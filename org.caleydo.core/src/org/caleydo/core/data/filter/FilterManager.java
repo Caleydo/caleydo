@@ -4,16 +4,17 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import org.caleydo.core.data.collection.table.DataPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.tablebased.VirtualArrayDeltaEvent;
 
 /**
  * <p>
@@ -32,17 +33,13 @@ import org.caleydo.core.manager.event.view.tablebased.VirtualArrayDeltaEvent;
  * @param <FilterType>
  * @param <VA>
  */
-public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>, VA extends VirtualArray<?, DeltaType, ?>>
+public abstract class FilterManager<PerspectiveType extends DataPerspective<?, ?, ?, ?>, DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>, VA extends VirtualArray<?, DeltaType, ?>>
 	implements IListenerOwner {
 
-	private final IFilterFactory<FilterType> factory;
+	// private final IFilterFactory<FilterType> factory;
 	private ArrayList<FilterType> filterPipe;
-	private VA baseVA;
-	protected VA currentVA;
+	protected PerspectiveType perspective;
 	protected ATableBasedDataDomain dataDomain;
-
-	// private ReplaceRecordVAInUseCaseListener replaceContentVirtualArrayInUseCaseListener;
-	// private ReplaceDimensionVAInUseCaseListener replaceDimensionVirtualArrayInUseCaseListener;
 
 	EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
@@ -50,65 +47,44 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	 * Pass the dataDomain, the initial VA, and a factory to create filters of the specified type.
 	 * 
 	 * @param dataDomain
-	 * @param baseVA
+	 * @param virtualArray
 	 * @param factory
 	 */
-	@SuppressWarnings("unchecked")
-	public FilterManager(ATableBasedDataDomain dataDomain, VA baseVA, IFilterFactory<FilterType> factory) {
+	public FilterManager(ATableBasedDataDomain dataDomain, PerspectiveType perspective) {
 		this.dataDomain = dataDomain;
-		this.baseVA = baseVA;
-		currentVA = (VA) baseVA.clone();
-		this.factory = factory;
+
+		this.perspective = perspective;
+		// this.factory = factory;
 		filterPipe = new ArrayList<FilterType>();
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
 	}
 
 	/**
-	 * Adds a filter and triggers a {@link VirtualArrayDeltaEvent} with the {@link VirtualArrayDelta} in the
-	 * filter.
+	 * Adds a filter and triggers a {@link VADeltaEvent} with the {@link VirtualArrayDelta} in the filter.
 	 * 
 	 * @param filter
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
-	public VA addFilter(FilterType filter) {
+	public void addFilter(FilterType filter) {
 		filterPipe.add(filter);
-
-		if (!(filter instanceof MetaFilter)) {
-			currentVA.setDelta(filter.getVADelta());
-			triggerVAUpdateEvent(filter.getVADelta());
-		}
-		else {
-
-			for (FilterType subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
-				currentVA.setDelta(subFilter.getVADelta());
-				triggerVAUpdateEvent(subFilter.getVADelta());
-			}
-		}
+		runFilter(filter);
 
 		triggerFilterUpdatedEvent();
 
-		return currentVA;
 	}
 
-	/**
-	 * Triggers event signalling a virtual array update. Has to be implemented in sub-classes, because only
-	 * there the type is known.
-	 * 
-	 * @param delta
-	 */
-	protected abstract void triggerVAUpdateEvent(DeltaType delta);
+	@SuppressWarnings("unchecked")
+	private void runFilter(FilterType filter) {
 
-	@Override
-	public void registerEventListeners() {
-
-	}
-
-	// TODO this is never called!
-	@Override
-	public void unregisterEventListeners() {
-
+		if (!(filter instanceof MetaFilter)) {
+			triggerVADeltaEvent(filter.getVADelta());
+		}
+		else {
+			for (FilterType subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
+				triggerVADeltaEvent(subFilter.getVADelta());
+			}
+		}
 	}
 
 	/**
@@ -118,18 +94,18 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 	 * @param vaDelta
 	 * @param info
 	 */
-	public void handleVAUpdate(DeltaType vaDelta, String info) {
-		if (!(vaDelta.getVAType().equals(baseVA.getVaType())))
-			return;
-		FilterType filter = factory.create();
-		filter.setVADelta(vaDelta);
-		filterPipe.add(filter);
-		currentVA.setDelta(vaDelta);
-
-		FilterUpdatedEvent event = new FilterUpdatedEvent();
-		event.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.triggerEvent(event);
-	}
+	// public void handleVAUpdate(DeltaType vaDelta, String info) {
+	// if (!(vaDelta.getVAType().equals(virtualArray.getVaType())))
+	// return;
+	// FilterType filter = factory.create();
+	// filter.setVADelta(vaDelta);
+	// filterPipe.add(filter);
+	// virtualArray.setDelta(vaDelta);
+	//
+	// FilterUpdatedEvent event = new FilterUpdatedEvent();
+	// event.setDataDomainID(dataDomain.getDataDomainID());
+	// eventPublisher.triggerEvent(event);
+	// }
 
 	@Override
 	public void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
@@ -158,59 +134,53 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
 	}
-	
-	public void handleMoveFilter(Filter<?> filter, int offset)
-	{
+
+	public void handleMoveFilter(Filter<?> filter, int offset) {
 		int index = filterPipe.indexOf(filter);
-		
-		if( index < 0 )
+
+		if (index < 0)
 			throw new RuntimeException("handleMoveFilter: filter not found.");
 
 		// move filters before/after
-		if( offset < 0 )
-		{
-			for(int i = index; i > index + offset; --i)
+		if (offset < 0) {
+			for (int i = index; i > index + offset; --i)
 				filterPipe.set(i, filterPipe.get(i - 1));
 		}
-		else
-		{
-			for(int i = index; i < index + offset; ++i)
+		else {
+			for (int i = index; i < index + offset; ++i)
 				filterPipe.set(i, filterPipe.get(i + 1));
 		}
-		
+
 		// place filter on new position
-		filterPipe.set(index + offset, (FilterType)filter);
+		filterPipe.set(index + offset, (FilterType) filter);
 
 		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
 	}
-	
-	public void handleCombineFilter(Filter<?> filter, Collection<? extends RecordFilter> combineFilters)
-	{
+
+	public void handleCombineFilter(Filter<?> filter, Collection<? extends RecordFilter> combineFilters) {
 		int index = filterPipe.indexOf(filter);
-		
-		if( index < 0 )
+
+		if (index < 0)
 			throw new RuntimeException("handleCombineFilter: filter not found.");
-		
+
 		RecordMetaOrFilter metaFilter = null;
-		
-		if( filter instanceof RecordMetaOrFilter )
-		{
+
+		if (filter instanceof RecordMetaOrFilter) {
 			metaFilter = (RecordMetaOrFilter) filter;
 		}
-		else
-		{
+		else {
 			metaFilter = new RecordMetaOrFilter();
 			metaFilter.setDataDomain(filter.getDataDomain());
 			metaFilter.getFilterList().add((RecordFilter) filter);
 		}
-		
+
 		metaFilter.getFilterList().addAll(combineFilters);
-		metaFilter.updateDelta();
-		
+		metaFilter.updateDelta(perspective.getPerspectiveID());
+
 		filterPipe.set(index, (FilterType) metaFilter);
 		filterPipe.removeAll(combineFilters);
-		
+
 		reEvaluateFilters();
 		triggerFilterUpdatedEvent();
 	}
@@ -221,25 +191,23 @@ public abstract class FilterManager<DeltaType extends VirtualArrayDelta<?>, Filt
 		eventPublisher.triggerEvent(event);
 	}
 
-	@SuppressWarnings("unchecked")
 	public void reEvaluateFilters() {
-		currentVA = (VA) baseVA.clone();
+
 		for (FilterType filter : filterPipe) {
-			if (filter instanceof MetaFilter) {
-				for (Filter<DeltaType> subFilter : ((MetaFilter<FilterType>) filter).getFilterList()) {
-					currentVA.setDelta(subFilter.getVADelta());
-				}
-			}
-			else
-				currentVA.setDelta(filter.getVADelta());
+			runFilter(filter);
 		}
-		triggerReplaceVAEvent();
 	}
+
+	protected abstract void resetVA();
+
+	/**
+	 * Triggers event signaling a virtual array update. Has to be implemented in sub-classes, because only
+	 * there the type is known.
+	 * 
+	 * @param delta
+	 */
+	protected abstract void triggerVADeltaEvent(DeltaType delta);
 
 	protected abstract void triggerReplaceVAEvent();
 
-	@SuppressWarnings("unchecked")
-	public VA getBaseVA() {
-		return (VA) baseVA.clone();
-	}
 }

@@ -10,8 +10,6 @@ public enum DimensionType {
 	// Needed by the parser
 	ABORT(null),
 	SKIP(null),
-	GROUP_NUMBER(null),
-	GROUP_REPRESENTATIVE(null),
 
 	INT(Integer.class),
 	FLOAT(Float.class),

@@ -1,12 +1,12 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.table.DimensionData;
-import org.caleydo.core.data.collection.table.RecordData;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
+import org.caleydo.core.data.collection.table.RecordPerspective;
 
 public class ClusterResult {
 
-	RecordData contentResult;
-	DimensionData dimensionResult;
+	RecordPerspective recordResult;
+	DimensionPerspective dimensionResult;
 
 	/**
 	 * Determines group information for virtual array. Used by affinity propagation and kMeans.
@@ -15,17 +15,17 @@ public class ClusterResult {
 	 *            Id of virtual array
 	 */
 	void finish() {
-		if (contentResult != null)
-			contentResult.finish();
+		if (recordResult != null)
+			recordResult.finish();
 		if (dimensionResult != null)
 			dimensionResult.finish();
 	}
 
-	public RecordData getRecordResult() {
-		return contentResult;
+	public RecordPerspective getRecordResult() {
+		return recordResult;
 	}
 
-	public DimensionData getDimensionResult() {
+	public DimensionPerspective getDimensionResult() {
 		return dimensionResult;
 	}
 }

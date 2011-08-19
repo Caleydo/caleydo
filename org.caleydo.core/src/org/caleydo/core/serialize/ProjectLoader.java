@@ -11,9 +11,12 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
@@ -182,8 +185,8 @@ public class ProjectLoader {
 						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
 
 					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
-					dataInitializationData.setRecordVAMap(recordVAMap);
-					dataInitializationData.setDimensionVAMap(dimensionVAMap);
+					dataInitializationData.setRecordDataMap(recordVAMap);
+					dataInitializationData.setDimensionDataMap(dimensionVAMap);
 
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
 						extendedDirName + ProjectSaver.GENE_TREE_FILE);
@@ -214,6 +217,68 @@ public class ProjectLoader {
 		
 		return serializationData;
 	}
+	
+	
+	
+	/**
+	 * Load trees as specified in loadDataParameters and write them to the table. FIXME: this is not aware of
+	 * possibly alternative {@link RecordVAType}s or {@link DimensionVAType}s
+	 * 
+	 * @param loadDataParameters
+	 * @param set
+	 */
+	public static void loadTrees(LoadDataParameters loadDataParameters, DataTable table) {
+		// import gene tree
+		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
+		if (geneTreeFileName != null) {
+			if (geneTreeFileName.equals("") == false) {
+				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading gene tree from file "
+					+ geneTreeFileName));
+
+				TreePorter treePorter = new TreePorter();
+				treePorter.setDataDomain(table.getDataDomain());
+				ClusterTree tree;
+				try {
+
+					tree = treePorter.importTree(geneTreeFileName, table.getDataDomain().getRecordIDType());
+					// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
+					table.getRecordPerspective(DataTable.RECORD).setTree(tree);
+				}
+				catch (JAXBException e) {
+					e.printStackTrace();
+				}
+				catch (FileNotFoundException e) {
+					// do nothing - no gene tree is available
+				}
+			}
+		}
+
+		// import experiment tree
+		String experimentsTreeFileName = loadDataParameters.getExperimentsFileName();
+		if (experimentsTreeFileName != null) {
+			if (experimentsTreeFileName.equals("") == false) {
+				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading experiments tree from file "
+					+ experimentsTreeFileName));
+
+				TreePorter treePorter = new TreePorter();
+				treePorter.setDataDomain(table.getDataDomain());
+				ClusterTree tree;
+				try {
+					tree = treePorter.importDimensionTree(experimentsTreeFileName);
+					table.getDimensionPerspective(DataTable.DIMENSION).setDimensionTree(tree);
+					table.getDataDomain().createDimensionGroupsFromDimensionTree(tree);
+				}
+				catch (JAXBException e) {
+					e.printStackTrace();
+				}
+				catch (FileNotFoundException e) {
+					// do nothing - no experiment tree is available
+				}
+			}
+		}
+	}
+	
+	
 
 	public void loadWorkbenchData(String dirName) {
 				

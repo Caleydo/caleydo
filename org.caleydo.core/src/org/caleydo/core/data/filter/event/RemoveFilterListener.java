@@ -11,7 +11,7 @@ import org.caleydo.core.manager.event.AEventListener;
  * @author Alexander Lex
  */
 public abstract class RemoveFilterListener<FilterType extends Filter<?>>
-	extends AEventListener<FilterManager<?, FilterType, ?>> {
+	extends AEventListener<FilterManager<?, ?, FilterType, ?>> {
 
 	@Override
 	public void handleEvent(AEvent event) {

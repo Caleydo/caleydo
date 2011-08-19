@@ -9,7 +9,6 @@ import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -70,7 +69,7 @@ public class TabularAsciiDataReader
 		boolean areAllTokensProper = true;
 
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
-		
+
 		final String sTokenPatternParserSeperator = GeneralManager.sDelimiter_Parser_DataType;
 
 		while (tokenizer.hasMoreTokens()) {
@@ -93,16 +92,10 @@ public class TabularAsciiDataReader
 			else if (buffer.equalsIgnoreCase("string")) {
 				columnDataTypes.add(DimensionType.STRING);
 			}
-			else if (buffer.equalsIgnoreCase("group_number")) {
-				columnDataTypes.add(DimensionType.GROUP_NUMBER);
-			}
-			else if (buffer.equalsIgnoreCase("group_representative")) {
-				columnDataTypes.add(DimensionType.GROUP_REPRESENTATIVE);
-			}
 			else if (buffer.equalsIgnoreCase("certainty")) {
 				columnDataTypes.add(DimensionType.CERTAINTY);
 			}
-			
+
 			else {
 				areAllTokensProper = false;
 
@@ -112,10 +105,6 @@ public class TabularAsciiDataReader
 		}
 
 		return areAllTokensProper;
-	}
-
-	public void enableExperimentClusterInfo() {
-		useExperimentClusterInfo = true;
 	}
 
 	public void setTargetDimensions(final ArrayList<Integer> targetDimensionIDs) {
@@ -131,13 +120,6 @@ public class TabularAsciiDataReader
 		for (DimensionType dimensionType : columnDataTypes) {
 
 			switch (dimensionType) {
-				case GROUP_NUMBER:
-				case GROUP_REPRESENTATIVE:
-					if (useExperimentClusterInfo)
-						groupInfo.add(new int[nrLinesToReadWithClusterInfo]);
-					else
-						groupInfo.add(new int[nrLinesToRead]);
-					break;
 				case INT:
 					intArrays.add(new int[nrLinesToRead]);
 					break;
@@ -186,7 +168,7 @@ public class TabularAsciiDataReader
 		int max = iStopParsingAtLine - parsingStartLine + 1;
 
 		while ((line = bufferReader.readLine()) != null && lineInFile <= iStopParsingAtLine) {
-			
+
 			// Check if line should be ignored
 			if (lineInFile < this.parsingStartLine || line.isEmpty()) {
 				lineInFile++;
@@ -195,8 +177,9 @@ public class TabularAsciiDataReader
 
 			// Replace empty cells with NaN
 			line = line.replace(tokenSeperator + tokenSeperator, tokenSeperator + "NaN" + tokenSeperator);
-//			line = line.replace(tokenSeperator + System.getProperty("line.separator"), tokenSeperator + "NaN" + System.getProperty("line.separator"));
-			
+			// line = line.replace(tokenSeperator + System.getProperty("line.separator"), tokenSeperator +
+			// "NaN" + System.getProperty("line.separator"));
+
 			// Take care of empty cells in first column because they are not embedded between two token
 			// separators
 			if (line.substring(0, 1).equals(tokenSeperator))
@@ -270,14 +253,6 @@ public class TabularAsciiDataReader
 						case ABORT:
 							columnIndex = columnDataTypes.size();
 							break;
-						case GROUP_NUMBER:
-							groupInfo.get(0)[lineInFile - parsingStartLine] =
-								Integer.valueOf(strTokenLine.nextToken()).intValue();
-							break;
-						case GROUP_REPRESENTATIVE:
-							groupInfo.get(1)[lineInFile - parsingStartLine] =
-								Integer.valueOf(strTokenLine.nextToken()).intValue();
-							break;
 						default:
 							throw new IllegalStateException("Unknown token pattern detected: "
 								+ columnDataType.toString());
@@ -325,12 +300,12 @@ public class TabularAsciiDataReader
 					dimensionIndex++;
 					break;
 				case CERTAINTY:
-					targetDimensions.get(dimensionIndex-1).setUncertaintyData(floatArrays.get(iFloatArrayIndex));
+					targetDimensions.get(dimensionIndex - 1).setUncertaintyData(
+						floatArrays.get(iFloatArrayIndex));
 					dataDomain.getTable().setContainsUncertaintyData(true);
 					iFloatArrayIndex++;
 					break;
 				case STRING:
-
 					ArrayList<String> rawStringData = stringLists.get(iStringArrayIndex);
 					rawStringData = fillUp(rawStringData);
 					((NominalDimension<String>) targetDimensions.get(dimensionIndex))
@@ -341,27 +316,7 @@ public class TabularAsciiDataReader
 					break;
 				case SKIP: // do nothing
 					break;
-				case GROUP_NUMBER:
-
-					int[] iArGroupInfo = groupInfo.get(0);
-					DataTableUtils.setContentGroupList((DataTable) table, DataTable.RECORD, iArGroupInfo);
-
-					iIntArrayIndex++;
-					break;
-				case GROUP_REPRESENTATIVE:
-
-					int[] iArGroupRepr = groupInfo.get(1);
-					DataTableUtils.setContentGroupRepresentatives((DataTable) table, DataTable.RECORD, iArGroupRepr);
-
-					iIntArrayIndex++;
-					break;
 				case ABORT:
-					if (useExperimentClusterInfo) {
-						iArGroupInfo = groupInfo.get(2);
-						DataTableUtils.setDimensionGroupList((DataTable) table, DataTable.DIMENSION, iArGroupInfo);
-						iArGroupRepr = groupInfo.get(3);
-						DataTableUtils.setDimensionGroupRepresentatives((DataTable) table, DataTable.DIMENSION, iArGroupRepr);
-					}
 					return;
 
 				default:

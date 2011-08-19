@@ -41,8 +41,8 @@ public abstract class AClusterer
 
 	public void setClusterState(ClusterState clusterState) {
 		this.clusterState = clusterState;
-		this.recordVA = clusterState.getRecordVA();
-		this.dimensionVA = clusterState.getDimensionVA();
+		this.recordVA = clusterState.getRecordPerspective().getVA();
+		this.dimensionVA = clusterState.getDimensionPerspective().getVA();
 	}
 
 	/**

@@ -3,9 +3,6 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.Status;
-
 class IDMap {
 
 	HashMap<Integer, ArrayList<Integer>> hashIDToIndex;

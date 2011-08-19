@@ -1,12 +1,10 @@
 package org.caleydo.datadomain.genetic;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -18,21 +16,15 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
+import org.caleydo.core.data.virtualarray.events.RecordReplaceVAEvent;
+import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * Use case specialized to genetic data.
@@ -103,74 +95,76 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 * filters, as defined in {@link EDataFilterLevel}.
 	 */
 
-	@Override
-	protected void initFullVA() {
-
-		String sLevel = GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.DATA_FILTER_LEVEL);
-		if (sLevel.equals("complete")) {
-			dataFilterLevel = EDataFilterLevel.COMPLETE;
-		} else if (sLevel.equals("only_mapping")) {
-			dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-		} else if (sLevel.equals("only_context")) {
-			// Only apply only_context when pathways are loaded
-			// TODO we need to wait for the pathways to be loaded here!
-			if (PathwayManager.get().size() > 100) {
-				dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-			} else {
-				dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
-			}
-		} else
-			dataFilterLevel = EDataFilterLevel.COMPLETE;
-
-		// initialize virtual array that contains all (filtered) information
-		ArrayList<Integer> alTempList = new ArrayList<Integer>(table.getMetaData()
-				.depth());
-
-		for (int iCount = 0; iCount < table.getMetaData().depth(); iCount++) {
-			if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
-
-				Integer iDavidID = null;
-				// Here we get mapping data for all values
-				// FIXME: Due to new mapping system, a mapping involving
-				// expression index can return a Set of
-				// values, depending on the IDType that has been specified when
-				// loading expression data.
-				// Possibly a different handling of the Set is required.
-				java.util.Set<Integer> setDavidIDs = GeneralManager.get()
-						.getIDMappingManager()
-						.getIDAsSet(recordIDType, primaryRecordMappingType, iCount);
-
-				if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
-					iDavidID = (Integer) setDavidIDs.toArray()[0];
-				}
-				// GeneticIDMappingHelper.get().getDavidIDFromDimensionIndex(iCount);
-
-				if (iDavidID == null) {
-					// generalManager.getLogger().log(new Status(Status.WARNING,
-					// GeneralManager.PLUGIN_ID,
-					// "Cannot resolve gene to DAVID ID!"));
-					continue;
-				}
-
-				if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-					// Here all values are contained within pathways as well
-					PathwayVertexGraphItem tmpPathwayVertexGraphItem = PathwayItemManager
-							.get().getPathwayVertexGraphItemByDavidId(iDavidID);
-
-					if (tmpPathwayVertexGraphItem == null) {
-						continue;
-					}
-				}
-			}
-
-			alTempList.add(iCount);
-		}
-		RecordVirtualArray recordVA = new RecordVirtualArray(DataTable.RECORD, alTempList);
-		// removeDuplicates(recordVA);
-		// FIXME make this a filter?
-		table.setRecordVA(DataTable.RECORD, recordVA);
-	}
+	// TODO: Re-write this as a filter
+	// protected void initFullVA() {
+	//
+	// String sLevel = GeneralManager.get().getPreferenceStore()
+	// .getString(PreferenceConstants.DATA_FILTER_LEVEL);
+	// if (sLevel.equals("complete")) {
+	// dataFilterLevel = EDataFilterLevel.COMPLETE;
+	// } else if (sLevel.equals("only_mapping")) {
+	// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+	// } else if (sLevel.equals("only_context")) {
+	// // Only apply only_context when pathways are loaded
+	// // TODO we need to wait for the pathways to be loaded here!
+	// if (PathwayManager.get().size() > 100) {
+	// dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
+	// } else {
+	// dataFilterLevel = EDataFilterLevel.ONLY_MAPPING;
+	// }
+	// } else
+	// dataFilterLevel = EDataFilterLevel.COMPLETE;
+	//
+	// // initialize virtual array that contains all (filtered) information
+	// ArrayList<Integer> alTempList = new
+	// ArrayList<Integer>(table.getMetaData()
+	// .depth());
+	//
+	// for (int iCount = 0; iCount < table.getMetaData().depth(); iCount++) {
+	// if (dataFilterLevel != EDataFilterLevel.COMPLETE) {
+	//
+	// Integer iDavidID = null;
+	// // Here we get mapping data for all values
+	// // FIXME: Due to new mapping system, a mapping involving
+	// // expression index can return a Set of
+	// // values, depending on the IDType that has been specified when
+	// // loading expression data.
+	// // Possibly a different handling of the Set is required.
+	// java.util.Set<Integer> setDavidIDs = GeneralManager.get()
+	// .getIDMappingManager()
+	// .getIDAsSet(recordIDType, primaryRecordMappingType, iCount);
+	//
+	// if ((setDavidIDs != null && !setDavidIDs.isEmpty())) {
+	// iDavidID = (Integer) setDavidIDs.toArray()[0];
+	// }
+	// // GeneticIDMappingHelper.get().getDavidIDFromDimensionIndex(iCount);
+	//
+	// if (iDavidID == null) {
+	// // generalManager.getLogger().log(new Status(Status.WARNING,
+	// // GeneralManager.PLUGIN_ID,
+	// // "Cannot resolve gene to DAVID ID!"));
+	// continue;
+	// }
+	//
+	// if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
+	// // Here all values are contained within pathways as well
+	// PathwayVertexGraphItem tmpPathwayVertexGraphItem = PathwayItemManager
+	// .get().getPathwayVertexGraphItemByDavidId(iDavidID);
+	//
+	// if (tmpPathwayVertexGraphItem == null) {
+	// continue;
+	// }
+	// }
+	// }
+	//
+	// alTempList.add(iCount);
+	// }
+	// RecordVirtualArray recordVA = new RecordVirtualArray(DataTable.RECORD,
+	// alTempList);
+	// // removeDuplicates(recordVA);
+	// // FIXME make this a filter?
+	// table.setRecordVA(DataTable.RECORD, recordVA);
+	// }
 
 	public boolean isPathwayViewerMode() {
 		return pathwayViewerMode;
@@ -267,55 +261,57 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	@Override
 	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
 			String vaType, RecordVirtualArray virtualArray) {
+		// FIXME its not clear which dimension va should be updated here
+		// if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
+		// DimensionVirtualArray newDimensionVirtualArray = new
+		// DimensionVirtualArray();
+		//
+		// for (Integer clinicalContentIndex : virtualArray) {
+		// Integer converteID =
+		// convertClinicalExperimentToGeneticExperiment(clinicalContentIndex);
+		// if (converteID != null)
+		// newDimensionVirtualArray.append(converteID);
+		//
+		// }
 
-		if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
-			DimensionVirtualArray newDimensionVirtualArray = new DimensionVirtualArray();
-
-			for (Integer clinicalContentIndex : virtualArray) {
-				Integer converteID = convertClinicalExperimentToGeneticExperiment(clinicalContentIndex);
-				if (converteID != null)
-					newDimensionVirtualArray.append(converteID);
-
-			}
-
-			replaceDimensionVA(dataDomainType, DataTable.DIMENSION,
-					newDimensionVirtualArray);
-			// ReplaceDimensionVAInUseCaseEvent event = new
-			// ReplaceDimensionVAInUseCaseEvent();
-			// event.setDataDomainID(this.dataDomainID);
-			// event.setVAType(DataTable.DIMENSION);
-			// event.setVirtualArray(newDimensionVirtualArray);
-			// GeneralManager.get().getEventPublisher().triggerEvent(event);
-		}
+		// replaceDimensionVA(tableID, dataDomainType, DataTable.DIMENSION,
+		// newDimensionVirtualArray);
+		// }
 
 	}
 
+	// FIXME its not clear which dimension va should be updated here
 	private Integer convertClinicalExperimentToGeneticExperiment(
 			Integer clinicalContentIndex) {
-
-		// FIXME - this is a hack for one special dataset (asslaber)
-		DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get()
-				.getDataDomainByType(CLINICAL_DATADOMAIN_TYPE)).getTable();
-		int dimensionID = clinicalSet.getDimensionData(DataTable.DIMENSION)
-				.getDimensionVA().get(1);
-
-		NominalDimension clinicalDimension = (NominalDimension<String>) clinicalSet
-				.get(dimensionID);
-		DimensionVirtualArray origianlGeneticDimensionVA = table.getDimensionData(
-				DataTable.DIMENSION).getDimensionVA();
-
-		String label = (String) clinicalDimension.getRaw(clinicalContentIndex);
-
-		label = label.replace("\"", "");
-		// System.out.println(label);
-
-		for (Integer dimensionIndex : origianlGeneticDimensionVA) {
-			if (label.equals(table.get(dimensionIndex).getLabel()))
-				return dimensionIndex;
-		}
-
 		return null;
 	}
+
+	//
+	// // FIXME - this is a hack for one special dataset (asslaber)
+	// DataTable clinicalSet = ((ATableBasedDataDomain) DataDomainManager.get()
+	// .getDataDomainByType(CLINICAL_DATADOMAIN_TYPE)).getTable();
+	// int dimensionID = clinicalSet.getDimensionData(DataTable.DIMENSION)
+	// .getDimensionVA().get(1);
+	//
+	// NominalDimension clinicalDimension = (NominalDimension<String>)
+	// clinicalSet
+	// .get(dimensionID);
+	// DimensionVirtualArray origianlGeneticDimensionVA =
+	// table.getDimensionData(
+	// DataTable.DIMENSION).getDimensionVA();
+	//
+	// String label = (String) clinicalDimension.getRaw(clinicalContentIndex);
+	//
+	// label = label.replace("\"", "");
+	// // System.out.println(label);
+	//
+	// for (Integer dimensionIndex : origianlGeneticDimensionVA) {
+	// if (label.equals(table.get(dimensionIndex).getLabel()))
+	// return dimensionIndex;
+	// }
+	//
+	// return null;
+	// }
 
 	@Override
 	public void handleForeignSelectionCommand(String dataDomainType,

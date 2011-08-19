@@ -2,7 +2,6 @@ package org.caleydo.core.data.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 
@@ -32,16 +31,16 @@ public class RecordMetaOrFilter
 		throw new RuntimeException("ContentMetaOrFilter::setDelta() not allowed."); 
 	}
 	
-	public void updateDelta()
+	public void updateDelta(String perspectiveID)
 	{
 		RecordVADelta vaDeltaAll =
-			new RecordVADelta(DataTable.RECORD, dataDomain.getRecordIDType());
+			new RecordVADelta(perspectiveID, dataDomain.getRecordIDType());
 		
 		for (RecordFilter filter : filterList)
 			vaDeltaAll.append(filter.getVADelta());
 		
 		RecordVADelta vaDelta =
-			new RecordVADelta(DataTable.RECORD, dataDomain.getRecordIDType());
+			new RecordVADelta(perspectiveID, dataDomain.getRecordIDType());
 
 		for (VADeltaItem vaDeltaItem : vaDeltaAll.getAllItems())
 		{

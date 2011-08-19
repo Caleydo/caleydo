@@ -23,8 +23,8 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
@@ -34,7 +34,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClustererType;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.contextmenu.item.StatisticsFoldChangeReductionItem;
 import org.caleydo.core.view.contextmenu.item.StatisticsPValueReductionItem;
@@ -89,7 +89,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
+public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		IViewCommandHandler, ISelectionUpdateHandler, IClusterNodeEventReceiver {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.grouper";
@@ -223,9 +223,12 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		rootGroup.calculateHierarchyLevels(0);
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
-		ClusterHelper.calculateClusterAverages(tree, ClustererType.DIMENSION_CLUSTERING,
-				table);
-		table.getDimensionData(dimensionVAType).setDimensionTree(tree);
+		ClusterHelper.calculateClusterAverages(
+				table.getDimensionPerspective(dimensionPerspectiveID),
+				table.getRecordPerspective(recordPerspectiveID),
+				ClustererType.DIMENSION_CLUSTERING, table);
+		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
+
 		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
@@ -319,20 +322,21 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		// ClusterHelper.determineHierarchyDepth(tree);
 		// FIXME: do that differently.
 		// set = table.getDimensionTree().getRoot().getSubDataTable();
-		ClusterHelper.calculateClusterAverages(tree, ClustererType.DIMENSION_CLUSTERING,
-				table);
+		ClusterHelper.calculateClusterAverages(
+				table.getDimensionPerspective(dimensionPerspectiveID),
+				table.getRecordPerspective(recordPerspectiveID),
+				ClustererType.DIMENSION_CLUSTERING, table);
 		tree.setDirty();
 		tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable) table);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
-		dimensionVA = new DimensionVirtualArray(
-				org.caleydo.core.data.collection.table.DataTable.DIMENSION, alIndices);
+		dimensionVA = new DimensionVirtualArray(dimensionPerspectiveID, alIndices);
 
 		eventPublisher.triggerEvent(new DimensionReplaceVAEvent(table, dataDomain
-				.getDataDomainID(), dimensionVAType, dimensionVA));
+				.getDataDomainID(), dimensionPerspectiveID, dimensionVA));
 
 		// FIXME no one is notified that there is a new tree
-		table.getDimensionData(dimensionVAType).setDimensionTree(tree);
+		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
 		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
@@ -1284,8 +1288,8 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = table.getDimensionData(dimensionVAType)
-					.getDimensionTree();
+			Tree<ClusterNode> experimentTree = table.getDimensionPerspective(
+					dimensionPerspectiveID).getTree();
 
 			if (experimentTree != null) {
 				// selectionManager.clearSelections();
@@ -1369,15 +1373,13 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		this.dataDomain = dataDomain;
 		table = this.dataDomain.getTable();
 
-		dimensionVA = table.getDimensionData(
-				org.caleydo.core.data.collection.table.DataTable.DIMENSION)
-				.getDimensionVA();
-		drawingStrategyManager = new DrawingStrategyManager(pickingManager, uniqueID,
-				renderStyle);
-		if (table.getDimensionData(dimensionVAType).getDimensionTree() != null) {
+		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
+		drawingStrategyManager = new DrawingStrategyManager(dimensionPerspectiveID,
+				pickingManager, uniqueID, renderStyle);
+		if (table.getDimensionPerspective(dimensionPerspectiveID).getTree() != null) {
 			// FIXME: do that differently.
 			// set = table.getDimensionTree().getRoot().getSubDataTable();
-			tree = table.getDimensionData(dimensionVAType).getDimensionTree();
+			tree = table.getDimensionPerspective(dimensionPerspectiveID).getTree();
 
 			initHierarchy(tree);
 		} else {
@@ -1391,5 +1393,15 @@ public class GLGrouper extends AGLView implements IDataDomainSetBasedView,
 		eventPublisher.triggerEvent(selectionTypeEvent);
 
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 }

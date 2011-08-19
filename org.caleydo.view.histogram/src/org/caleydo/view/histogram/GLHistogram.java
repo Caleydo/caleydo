@@ -23,7 +23,7 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -45,7 +45,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
+public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		IViewCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
@@ -87,7 +87,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLHistogram(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLHistogram(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -99,7 +100,7 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		// registerEventListeners();
-		
+
 		detailLevel = DetailLevel.HIGH;
 	}
 
@@ -240,7 +241,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 			gl.glVertex3f(fSpacing * iCount + sideSpacing, sideSpacing, 0);
 			gl.glVertex3f(fSpacing * iCount + sideSpacing, sideSpacing + iValue
 					* fOneHeightValue, 0);
-			//gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * (iCount + 1)), 0);
+			// gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion *
+			// (iCount + 1)), 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + sideSpacing, sideSpacing + iValue
 					* fOneHeightValue, 0);
 			gl.glVertex3f(fSpacing * (iCount + 1) + sideSpacing, sideSpacing, 0);
@@ -549,8 +551,8 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -734,5 +736,16 @@ public class GLHistogram extends AGLView implements IDataDomainSetBasedView,
 	 */
 	public void setUseColor(boolean useColor) {
 		this.useColor = useColor;
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 }

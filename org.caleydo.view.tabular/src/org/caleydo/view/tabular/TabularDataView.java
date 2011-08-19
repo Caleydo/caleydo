@@ -21,22 +21,19 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
+import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.VirtualArrayDeltaEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.swt.ASWTView;
@@ -94,13 +91,12 @@ public class TabularDataView extends ASWTView implements
 	/**
 	 * The type of the content VA
 	 */
-	protected String recordVAType = DataTable.RECORD;
+	protected String recordPerspectiveID;
 
 	/**
 	 * The type of the dimension VA
 	 */
-	protected String dimensionVAType = DataTable.DIMENSION;
-
+	protected String dimensionPerspectiveID;
 	/**
 	 * Define what level of filtering on the data should be applied
 	 */
@@ -151,14 +147,11 @@ public class TabularDataView extends ASWTView implements
 			return;
 		}
 
-		recordVA = dataDomain.getRecordVA(recordVAType);
-		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
+		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
+		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 
 		recordSelectionManager.resetSelectionManager();
 		dimensionSelectionManager.resetSelectionManager();
-
-		recordSelectionManager.setVA(recordVA);
-		dimensionSelectionManager.setVA(dimensionVA);
 
 		// int iNumberOfColumns = recordVA.size();
 		// int iNumberOfRows = dimensionVA.size();
@@ -569,8 +562,7 @@ public class TabularDataView extends ASWTView implements
 
 		virtualArrayUpdateListener = new RecordVAUpdateListener();
 		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayDeltaEvent.class,
-				virtualArrayUpdateListener);
+		eventPublisher.addListener(VADeltaEvent.class, virtualArrayUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -612,20 +604,19 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleRecordVAUpdate(String info) {
-		// if (vaDelta.getIDType() != dataDomain.getRecordIDType())
-		// vaDelta = DeltaConverter.convertDelta(dataDomain.getRecordIDType(),
-		// vaDelta);
-		recordVA = dataDomain.getRecordVA(DataTable.RECORD);
-		recordSelectionManager.virtualArrayUpdated(recordVA);
+	public void handleRecordVAUpdate(int dataTableID, String info) {
+		if (this.table.getID() != dataTableID)
+			return;
+		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
 		initData();
 		createTable();
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(String info) {
-		dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
-		dimensionSelectionManager.virtualArrayUpdated(dimensionVA);
+	public void handleDimensionVAUpdate(int dataTableID, String info) {
+		if (this.table.getID() != dataTableID)
+			return;
+		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 		initData();
 		createTable();
 

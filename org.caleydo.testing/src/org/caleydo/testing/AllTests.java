@@ -1,10 +1,9 @@
 package org.caleydo.testing;
 
-import org.caleydo.testing.collection.VirtualArrayTester;
-import org.caleydo.testing.unit.command.data.filter.NominalStringCCollectionTest;
-
 import junit.framework.Test;
 import junit.framework.TestSuite;
+
+import org.caleydo.testing.collection.VirtualArrayTester;
 
 public class AllTests
 {

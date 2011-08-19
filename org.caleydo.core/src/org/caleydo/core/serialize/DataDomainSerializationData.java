@@ -2,12 +2,12 @@ package org.caleydo.core.serialize;
 
 import java.util.HashMap;
 
+import org.caleydo.core.data.collection.table.DimensionPerspective;
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 /**
- * Bean that holds the initialization data for new started caleydo application. Used to store and restore
+ * Bean that holds the initialization data for new started Caleydo application. Used to store and restore
  * project or to sync remote clients.
  * 
  * @author Werner Puff
@@ -28,8 +28,8 @@ public class DataDomainSerializationData {
 	private String experimentClusterTree;
 
 	/** virtual arrays of this application stored in relation with their their-key */
-	private HashMap<String, RecordVirtualArray> recordVAMap;
-	private HashMap<String, DimensionVirtualArray> dimensionVAMap;
+	private HashMap<String, RecordPerspective> recordDataMap;
+	private HashMap<String, DimensionPerspective> dimensionDataMap;
 
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -47,20 +47,20 @@ public class DataDomainSerializationData {
 		this.setFileContent = setFileContent;
 	}
 
-	public HashMap<String, RecordVirtualArray> getRecordVAMap() {
-		return recordVAMap;
+	public HashMap<String, RecordPerspective> getRecordDataMap() {
+		return recordDataMap;
 	}
 
-	public void setRecordVAMap(HashMap<String, RecordVirtualArray> recordVAMap) {
-		this.recordVAMap = recordVAMap;
+	public void setRecordDataMap(HashMap<String, RecordPerspective> recordDataMap) {
+		this.recordDataMap = recordDataMap;
 	}
 
-	public HashMap<String, DimensionVirtualArray> getDimensionVAMap() {
-		return dimensionVAMap;
+	public HashMap<String, DimensionPerspective> getDimensionVAMap() {
+		return dimensionDataMap;
 	}
 
-	public void setDimensionVAMap(HashMap<String, DimensionVirtualArray> dimensionVAMap) {
-		this.dimensionVAMap = dimensionVAMap;
+	public void setDimensionDataMap(HashMap<String, DimensionPerspective> dimensionDataMap) {
+		this.dimensionDataMap = dimensionDataMap;
 	}
 
 	public String getGeneClusterTree() {

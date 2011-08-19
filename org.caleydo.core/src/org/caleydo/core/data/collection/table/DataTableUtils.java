@@ -5,11 +5,8 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.Iterator;
-
-import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateDimension;
@@ -22,19 +19,12 @@ import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
-import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 
 /**
  * Utility class that features creating, loading and saving sets and dimensions.
@@ -274,8 +264,10 @@ public class DataTableUtils {
 		}
 
 		// ----------------------------------------
-		DataTable table = (DataTable) dataDomain.getTable();
+		DataTable table = dataDomain.getTable();
 
+		table.createDefaultRecordPerspective();
+		
 		// loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
@@ -298,6 +290,8 @@ public class DataTableUtils {
 		}
 		else
 			throw new IllegalStateException("Unknown data representation type");
+		
+
 
 		return table;
 	}
@@ -310,175 +304,7 @@ public class DataTableUtils {
 		table.finalizeAddedDimensions();
 	}
 
-	/**
-	 * Creates the gene-cluster information of the given {@link DataTable} as xml-String
-	 * 
-	 * @param set
-	 *            {@link DataTable} to create the gene-cluster information of
-	 * @return xml-document representing the gene-cluster information
-	 */
-	public static String getRecordClusterXml(DataTable table) {
-		String xml = null;
-
-		try {
-			xml = getTreeClusterXml(table.getRecordData(DataTable.RECORD).getRecordTree());
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
-		}
-		catch (JAXBException ex) {
-			throw new RuntimeException("error while creating experiment-cluster-XML", ex);
-		}
-
-		return xml;
-	}
-
-	/**
-	 * Creates the experiment-cluster information of the given {@link DataTable} as XML-String
-	 * 
-	 * @param set
-	 *            {@link DataTable} to create the experiment-cluster information of
-	 * @return XML-document representing the experiment-cluster information
-	 */
-	public static String getDimensionClusterXml(DataTable table) {
-		String xml = null;
-
-		try {
-			xml = getTreeClusterXml(table.getDimensionData(DataTable.DIMENSION).getDimensionTree());
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
-		}
-		catch (JAXBException ex) {
-			throw new RuntimeException("error while creating experiment-cluster-XML", ex);
-		}
-
-		return xml;
-	}
-
-	/**
-	 * Creates the tree-cluster information of the given {@link Tree} as XML-String
-	 * 
-	 * @param tree
-	 *            {@link Tree} to create the XML-String of
-	 * @return XML-String of the given {@link Tree}
-	 * @throws IOException
-	 *             if a error occurs while writing the XML-String
-	 * @throws JAXBException
-	 *             if a XML-serialization error occurs
-	 */
-	public static String getTreeClusterXml(Tree<ClusterNode> tree) throws IOException, JAXBException {
-		String xml = null;
-
-		if (tree != null) {
-			StringWriter writer = new StringWriter();
-			TreePorter treePorter = new TreePorter();
-			treePorter.exportTree(writer, tree);
-			xml = writer.getBuffer().toString();
-		}
-
-		return xml;
-	}
-
-	/**
-	 * Saves the gene-tree-xml in a new created temp-file.
-	 * 
-	 * @param parameters
-	 *            set-load parameters to store the filename;
-	 * @param data
-	 *            set-data to save
-	 */
-	public static void saveGeneTreeFile(LoadDataParameters parameters, String data) {
-		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
-		File geneFile;
-		try {
-			geneFile = File.createTempFile(RECORD_TREE_FILE_PREFIX, "xml", homeDir);
-			parameters.setGeneTreeFileName(geneFile.getCanonicalPath());
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("Could not create temporary file to store the set file", ex);
-		}
-		saveFile(data.getBytes(), geneFile);
-	}
-
-	/**
-	 * Saves the experiments-tree-xml in a new created temp-file.
-	 * 
-	 * @param parameters
-	 *            set-load parameters to store the filename;
-	 * @param data
-	 *            set-data to save
-	 */
-	public static void saveExperimentsTreeFile(LoadDataParameters parameters, String data) {
-		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
-		File expFile;
-		try {
-			expFile = File.createTempFile(DIMENSION_TREE_FILE_PREFIX, "xml", homeDir);
-			parameters.setExperimentsFileName(expFile.getCanonicalPath());
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("Could not create temporary file to store the set file", ex);
-		}
-		saveFile(data.getBytes(), expFile);
-	}
-
-	/**
-	 * Load trees as specified in loadDataParameters and write them to the table. FIXME: this is not aware of
-	 * possibly alternative {@link RecordVAType}s or {@link DimensionVAType}s
-	 * 
-	 * @param loadDataParameters
-	 * @param set
-	 */
-	public static void loadTrees(LoadDataParameters loadDataParameters, DataTable table) {
-		// import gene tree
-		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
-		if (geneTreeFileName != null) {
-			if (geneTreeFileName.equals("") == false) {
-				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading gene tree from file "
-					+ geneTreeFileName));
-
-				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(table.getDataDomain());
-				ClusterTree tree;
-				try {
-
-					tree = treePorter.importTree(geneTreeFileName, table.getDataDomain().getRecordIDType());
-					// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-					table.getRecordData(DataTable.RECORD).setRecordTree(tree);
-				}
-				catch (JAXBException e) {
-					e.printStackTrace();
-				}
-				catch (FileNotFoundException e) {
-					// do nothing - no gene tree is available
-				}
-			}
-		}
-
-		// import experiment tree
-		String experimentsTreeFileName = loadDataParameters.getExperimentsFileName();
-		if (experimentsTreeFileName != null) {
-			if (experimentsTreeFileName.equals("") == false) {
-				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading experiments tree from file "
-					+ experimentsTreeFileName));
-
-				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(table.getDataDomain());
-				ClusterTree tree;
-				try {
-					tree = treePorter.importDimensionTree(experimentsTreeFileName);
-					table.getDimensionData(DataTable.DIMENSION).setDimensionTree(tree);
-					table.getDataDomain().createDimensionGroupsFromDimensionTree(tree);
-				}
-				catch (JAXBException e) {
-					e.printStackTrace();
-				}
-				catch (FileNotFoundException e) {
-					// do nothing - no experiment tree is available
-				}
-			}
-		}
-	}
+	
 
 	/**
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
@@ -510,7 +336,7 @@ public class DataTableUtils {
 
 		int cluster = 0, cnt = 0;
 
-		RecordGroupList contentGroupList = table.getRecordData(vaType).getRecordVA().getGroupList();
+		RecordGroupList contentGroupList = table.getRecordPerspective(vaType).getVA().getGroupList();
 		contentGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -542,7 +368,7 @@ public class DataTableUtils {
 		int cluster = 0, cnt = 0;
 
 		DimensionGroupList dimensionGroupList =
-			table.getDimensionData(vaType).getDimensionVA().getGroupList();
+			table.getDimensionPerspective(vaType).getVA().getGroupList();
 		dimensionGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -565,14 +391,14 @@ public class DataTableUtils {
 	 * Set representative elements for contentGroupLists read from file
 	 * 
 	 * @param set
-	 * @param vaType
+	 * @param recordPerspectiveID
 	 * @param groupReps
 	 */
-	public static void setContentGroupRepresentatives(DataTable table, String vaType, int[] groupReps) {
+	public static void setRecordGroupRepresentatives(DataTable table, String recordPerspectiveID, int[] groupReps) {
 
 		int group = 0;
 
-		RecordGroupList contentGroupList = table.getRecordData(vaType).getRecordVA().getGroupList();
+		RecordGroupList contentGroupList = table.getRecordPerspective(recordPerspectiveID).getVA().getGroupList();
 
 		contentGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
@@ -589,15 +415,15 @@ public class DataTableUtils {
 	 * Set representative elements for dimensionGroupLists read from file
 	 * 
 	 * @param set
-	 * @param vaType
+	 * @param dimensionPerspectiveID
 	 * @param groupReps
 	 */
-	public static void setDimensionGroupRepresentatives(DataTable table, String vaType, int[] groupReps) {
+	public static void setDimensionGroupRepresentatives(DataTable table, String dimensionPerspectiveID, int[] groupReps) {
 
 		int group = 0;
 
 		DimensionGroupList dimensionGroupList =
-			table.getDimensionData(vaType).getDimensionVA().getGroupList();
+			table.getDimensionPerspective(dimensionPerspectiveID).getVA().getGroupList();
 
 		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;

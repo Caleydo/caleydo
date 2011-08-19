@@ -66,9 +66,9 @@ public class AffinityClusterer
 
 		try {
 			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
-				this.iNrSamples = clusterState.getRecordVA().size();
+				this.iNrSamples = clusterState.getRecordPerspective().getVA().size();
 			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING)
-				this.iNrSamples = clusterState.getDimensionVA().size();
+				this.iNrSamples = clusterState.getDimensionPerspective().getVA().size();
 
 			this.iNrSimilarities = iNrSamples * iNrSamples;
 			this.s = new float[this.iNrSimilarities];
@@ -89,8 +89,8 @@ public class AffinityClusterer
 	 */
 	private int determineSimilarities(DataTable table, ClusterState clusterState) {
 
-		RecordVirtualArray recordVA = clusterState.getRecordVA();
-		DimensionVirtualArray dimensionVA = clusterState.getDimensionVA();
+		RecordVirtualArray recordVA = clusterState.getRecordPerspective().getVA();
+		DimensionVirtualArray dimensionVA = clusterState.getDimensionPerspective().getVA();
 
 		IDistanceMeasure distanceMeasure;
 
@@ -400,7 +400,8 @@ public class AffinityClusterer
 			}
 			processEvents();
 			if (bClusteringCanceled) {
-				Logger.log(new Status(IStatus.INFO, toString(), "Affinity propagation clustering was canceled!"));				
+				Logger.log(new Status(IStatus.INFO, toString(),
+					"Affinity propagation clustering was canceled!"));
 				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 				return null;
 			}
@@ -481,7 +482,8 @@ public class AffinityClusterer
 		}
 		else {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			Logger.log(new Status(IStatus.ERROR, toString(), "Affinity clustering could not identify any clusters.")); 
+			Logger.log(new Status(IStatus.ERROR, toString(),
+				"Affinity clustering could not identify any clusters."));
 			return null;
 
 		}

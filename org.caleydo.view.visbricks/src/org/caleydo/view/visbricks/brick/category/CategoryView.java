@@ -9,7 +9,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -27,7 +27,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Alexander Lex
  */
-public class CategoryView extends AGLView implements IDataDomainSetBasedView,
+public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 		IViewCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.histogram";

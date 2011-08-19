@@ -1,6 +1,6 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterListener;
@@ -12,9 +12,8 @@ import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVADeltaListener;
+import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;
+import org.caleydo.core.data.virtualarray.events.DimensionVADeltaEvent;
 
 /**
  * Concrete implementation of {@link FilterManager} for {@link DimensionVirtualArray}s.
@@ -22,32 +21,20 @@ import org.caleydo.core.view.opengl.canvas.listener.DimensionVADeltaListener;
  * @author Alexander Lex
  */
 public class DimensionFilterManager
-	extends FilterManager<DimensionVADelta, DimensionFilter, DimensionVirtualArray> {
+	extends FilterManager<DimensionPerspective, DimensionVADelta, DimensionFilter, DimensionVirtualArray> {
 
-	private DimensionVADeltaListener dimensionVAUpdateListener;
 	private RemoveDimensionFilterListener removeDimensionFilterListener;
 	private MoveDimensionFilterListener moveDimensionFilterListener;
 	private NewDimensionFilterListener newDimensionFilterListener;
 	private ReEvaluateDimensionFilterListListener reEvaluateDimensionFilterListListener;
 
-	public DimensionFilterManager(ATableBasedDataDomain dataDomain) {
-		super(dataDomain, dataDomain.getTable().getBaseDimensionVA(), new DimensionFilterFactory());
+	public DimensionFilterManager(ATableBasedDataDomain dataDomain, DimensionPerspective perspective) {
+		super(dataDomain, perspective);
 
 	}
 
 	@Override
 	public void registerEventListeners() {
-		super.registerEventListeners();
-		//
-		// dimensionVAUpdateListener = new DimensionVAUpdateListener();
-		// dimensionVAUpdateListener.setHandler(this);
-		// dimensionVAUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
-		// eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
-
-		// dimensionVAUpdateListener = new DimensionVAUpdateListener();
-		// dimensionVAUpdateListener.setHandler(this);
-		// dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		// eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		removeDimensionFilterListener = new RemoveDimensionFilterListener();
 		removeDimensionFilterListener.setHandler(this);
@@ -74,15 +61,15 @@ public class DimensionFilterManager
 
 	@Override
 	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-		if (dimensionVAUpdateListener != null) {
-			eventPublisher.removeListener(dimensionVAUpdateListener);
-			dimensionVAUpdateListener = null;
-		}
 
 		if (removeDimensionFilterListener != null) {
 			eventPublisher.removeListener(removeDimensionFilterListener);
 			removeDimensionFilterListener = null;
+		}
+
+		if (moveDimensionFilterListener != null) {
+			eventPublisher.removeListener(moveDimensionFilterListener);
+			moveDimensionFilterListener = null;
 		}
 
 		if (newDimensionFilterListener != null) {
@@ -97,7 +84,7 @@ public class DimensionFilterManager
 	}
 
 	@Override
-	protected void triggerVAUpdateEvent(DimensionVADelta delta) {
+	protected void triggerVADeltaEvent(DimensionVADelta delta) {
 		DimensionVADeltaEvent event = new DimensionVADeltaEvent();
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
@@ -108,11 +95,17 @@ public class DimensionFilterManager
 	@Override
 	protected void triggerReplaceVAEvent() {
 		DimensionReplaceVAEvent event = new DimensionReplaceVAEvent();
-		event.setVAType(DataTable.DIMENSION);
-		event.setVirtualArray(currentVA);
+		event.setVAType(perspective.getPerspectiveID());
+		event.setVirtualArray(perspective.getVA());
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
+	}
+
+	@Override
+	protected void resetVA() {
+		perspective.setVA(dataDomain.getTable().getBaseDimensionVA(perspective.getPerspectiveID()));
+		// virtualArray =
 	}
 
 }

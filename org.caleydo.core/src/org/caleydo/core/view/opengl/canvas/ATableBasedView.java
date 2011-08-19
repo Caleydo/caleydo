@@ -21,33 +21,28 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.DimensionReplaceVAEvent;
-import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.DataDomainsChangedEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
-import org.caleydo.core.manager.event.view.tablebased.DimensionVADeltaEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.DimensionVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SwitchDataRepresentationListener;
@@ -63,7 +58,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public abstract class ATableBasedView
 	extends AGLView
-	implements IDataDomainSetBasedView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
+	implements ITableBasedDataDomainView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
 	IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	protected DataTable table;
@@ -86,11 +81,6 @@ public abstract class ATableBasedView
 	 * ).
 	 */
 	protected DimensionSelectionManager dimensionSelectionManager;
-
-	/**
-	 * flag whether the whole data or the selection should be rendered
-	 */
-	protected boolean bRenderOnlyContext;
 
 	/**
 	 * Define what level of filtering on the data should be applied
@@ -157,32 +147,12 @@ public abstract class ATableBasedView
 		return dataDomain;
 	}
 
-	/**
-	 * Toggle whether to render the complete dataset (with regards to the filters though) or only contextual
-	 * data This effectively means switching between the {@link VAType#RECORD} and
-	 * {@link VAType#RECORD_CONTEXT}
-	 */
-	public abstract void renderContext(boolean bRenderContext);
-
-	/**
-	 * Check whether only context is beeing rendered
-	 * 
-	 * @return
-	 */
-	public boolean isRenderingOnlyContext() {
-		return bRenderOnlyContext;
-	}
-
 	@Override
 	public void initData() {
 		if (table == null)
 			table = dataDomain.getTable();
 
 		super.initData();
-
-		bRenderOnlyContext =
-			(glRemoteRenderingView != null && glRemoteRenderingView.getViewType().equals(
-				"org.caleydo.view.bucket"));
 
 		initLists();
 	}
@@ -264,13 +234,14 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleRecordVAUpdate(String info) {
+	public void handleRecordVAUpdate(int dataTableID, String info) {
+		if (this.table.getID() != dataTableID)
+			return;
 		// if (!delta.getVAType().equals(recordVAType))
 		// return;
 
 		// recordVA.setGroupList(null);
-		recordVA = dataDomain.getRecordVA(DataTable.RECORD);
-		recordSelectionManager.virtualArrayUpdated(recordVA);
+		recordVA = dataDomain.getRecordVA(dimensionPerspectiveID);
 
 		reactOnRecordVAChanges();
 
@@ -279,11 +250,13 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(String info) {
+	public void handleDimensionVAUpdate(int dataTableID, String info) {
+		if (this.table.getID() != dataTableID)
+			return;
 		// dimensionVA.setGroupList(null);
 		// // reactOnDimensionVAChanges(delta);
 		// dimensionSelectionManager.setVADelta(delta);
-		dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
+		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 		setDisplayListDirty();
 	}
 
@@ -486,12 +459,12 @@ public abstract class ATableBasedView
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
 		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RecordVADeltaEvent.class, recordVAUpdateListener);
+		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
 		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(DimensionVADeltaEvent.class, dimensionVAUpdateListener);
+		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -552,24 +525,14 @@ public abstract class ATableBasedView
 
 	}
 
-	/**
-	 * Manually set the vaType if you want to override the automatic setting triggeret in
-	 * {@link #init(javax.media.opengl.GL)}
-	 * 
-	 * @param vaType
-	 */
-	public void setRecordVAType(String vaType) {
-		this.recordVAType = vaType;
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
 	}
 
-	/**
-	 * Manually set the vaType if you want to override the automatic setting triggeret in
-	 * {@link #init(javax.media.opengl.GL)}
-	 * 
-	 * @param vaType
-	 */
-	public void setDimensionVAType(String vaType) {
-		this.dimensionVAType = vaType;
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 
 	@Override

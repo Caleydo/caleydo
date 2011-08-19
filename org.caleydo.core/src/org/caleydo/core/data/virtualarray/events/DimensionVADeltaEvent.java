@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.view.tablebased;
+package org.caleydo.core.data.virtualarray.events;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -6,14 +6,14 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 
 /**
- * Event to signal that ??? FIXME description about the meaning of virtual array deltas Migration from
- * EventType.VA_UPDATE
+ * Event to signal that a dimension VA should be updated using a delta. See {@link VADeltaEvent} for
+ * details. EventType.VA_UPDATE
  * 
  * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
 public class DimensionVADeltaEvent
-	extends VirtualArrayDeltaEvent<DimensionVADelta> {
+	extends VADeltaEvent<DimensionVADelta> {
 
 }

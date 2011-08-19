@@ -8,7 +8,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.RecordSelectionManager;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.filterpipeline.RcpGLFilterPipelineView;
@@ -49,15 +48,13 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		super();
 
 		eventPublisher = GeneralManager.get().getEventPublisher();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedDataMetaView.class);
+			viewContext = JAXBContext.newInstance(SerializedDataMetaView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
-
 
 	@Override
 	public void createPartControl(Composite parent) {
@@ -68,10 +65,11 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
-//		parentComposite.setBackground(new Color(parentComposite.getDisplay() ,127,178,127));
+		// parentComposite.setBackground(new Color(parentComposite.getDisplay()
+		// ,127,178,127));
 
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL); 
-		
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+
 		Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 		infoComposite.setLayout(new GridLayout(1, false));
 		infoComposite.setLayoutData(gridData);
@@ -93,7 +91,8 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		// dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
 
 		// label = new Label(parent, SWT.NONE);
-		// label.setText("Experiments clustered: "+dimensionTree == null ? "false"
+		// label.setText("Experiments clustered: "+dimensionTree == null ?
+		// "false"
 		// : "true");
 		//
 		// if
@@ -105,71 +104,85 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		// label = new Label(parent, SWT.NONE);
 		// label.setText(": "+dataDomain);
-		
-		
-		ExpandBar bar = new ExpandBar (parentComposite, SWT.V_SCROLL);
+
+		ExpandBar bar = new ExpandBar(parentComposite, SWT.V_SCROLL);
 		gridData = new GridData(GridData.FILL_BOTH);
 		bar.setLayoutData(gridData);
-//		Display display = parentComposite.getDisplay();
-//		Image image = display.getSystemImage(SWT.ICON_QUESTION);
-		
+		// Display display = parentComposite.getDisplay();
+		// Image image = display.getSystemImage(SWT.ICON_QUESTION);
+
 		// Third item
-		Composite composite = new Composite (bar, SWT.NONE);
+		Composite composite = new Composite(bar, SWT.NONE);
 		composite.setLayout(new FillLayout());
-//		layout = new GridLayout (1, true);
-//		layout.marginLeft = layout.marginTop = layout.marginRight = layout.marginBottom = 10;
-//		layout.verticalSpacing = 10;
-//		composite.setLayout(layout);
+		// layout = new GridLayout (1, true);
+		// layout.marginLeft = layout.marginTop = layout.marginRight =
+		// layout.marginBottom = 10;
+		// layout.verticalSpacing = 10;
+		// composite.setLayout(layout);
 
 		RcpGLColorMapperHistogramView histogramView = new RcpGLColorMapperHistogramView();
 		histogramView.setDataDomain(dataDomain);
-		SerializedHistogramView serializedHistogramView = new SerializedHistogramView(dataDomain.getDataDomainID());
+		SerializedHistogramView serializedHistogramView = new SerializedHistogramView(
+				dataDomain.getDataDomainID());
+		serializedHistogramView.setDimensionPerspectiveID(serializedView.getDimensionPerspectiveID());
+		serializedHistogramView.setRecordPerspectiveID(serializedView.getRecordPerspectiveID());
+		
 		histogramView.setExternalSerializedView(serializedHistogramView);
 		histogramView.createPartControl(composite);
 		// Usually the canvas is registered to the GL2 animator in the
 		// PartListener.
-		// Because the GL2 histogram is no usual RCP view we have to do it on our
+		// Because the GL2 histogram is no usual RCP view we have to do it on
+		// our
 		// own
 		GeneralManager.get().getViewManager()
 				.registerGLCanvasToAnimator(histogramView.getGLCanvas());
-		ExpandItem item2 = new ExpandItem (bar, SWT.NONE, 0);
+		ExpandItem item2 = new ExpandItem(bar, SWT.NONE, 0);
 		item2.setText("Histogram");
-		item2.setHeight(200);//composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item2.setHeight(200);// composite.computeSize(SWT.DEFAULT,
+								// SWT.DEFAULT).y);
 		item2.setControl(composite);
-//		item2.setImage(image);
-		
-		composite = new Composite (bar, SWT.NONE);
+		// item2.setImage(image);
+
+		composite = new Composite(bar, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		RcpGLFilterPipelineView filterPipelineView = new RcpGLFilterPipelineView();
-		SerializedFilterPipelineView serializedFilterPipelineView = new SerializedFilterPipelineView(dataDomain.getDataDomainID());
+		SerializedFilterPipelineView serializedFilterPipelineView = new SerializedFilterPipelineView(
+				dataDomain.getDataDomainID());
+		serializedFilterPipelineView.setDimensionPerspectiveID(serializedView.getDimensionPerspectiveID());
+		serializedFilterPipelineView.setRecordPerspectiveID(serializedView.getRecordPerspectiveID());
 		filterPipelineView.setExternalSerializedView(serializedFilterPipelineView);
 		filterPipelineView.createPartControl(composite);
 		GeneralManager.get().getViewManager()
 				.registerGLCanvasToAnimator(filterPipelineView.getGLCanvas());
-		ExpandItem item3 = new ExpandItem (bar, SWT.NONE, 1);
+		ExpandItem item3 = new ExpandItem(bar, SWT.NONE, 1);
 		item3.setText("Filter Pipeline");
-		item3.setHeight(200);//composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item3.setHeight(200);// composite.computeSize(SWT.DEFAULT,
+								// SWT.DEFAULT).y);
 		item3.setControl(composite);
-//		item2.setImage(image);
-		
-		composite = new Composite (bar, SWT.NONE);
+		// item2.setImage(image);
+
+		composite = new Composite(bar, SWT.NONE);
 		composite.setLayout(new FillLayout());
 		RcpGLGrouperView grouperView = new RcpGLGrouperView();
-		SerializedGrouperView serializedGrouperView = new SerializedGrouperView(dataDomain.getDataDomainID());
+		SerializedGrouperView serializedGrouperView = new SerializedGrouperView(
+				dataDomain.getDataDomainID());
+		serializedGrouperView.setDimensionPerspectiveID(serializedView.getDimensionPerspectiveID());
+		serializedGrouperView.setRecordPerspectiveID(serializedView.getRecordPerspectiveID());
 		grouperView.setExternalSerializedView(serializedGrouperView);
 		grouperView.createPartControl(composite);
 		GeneralManager.get().getViewManager()
 				.registerGLCanvasToAnimator(grouperView.getGLCanvas());
-		ExpandItem item4 = new ExpandItem (bar, SWT.NONE, 2);
+		ExpandItem item4 = new ExpandItem(bar, SWT.NONE, 2);
 		item4.setText("Grouper");
-		item4.setHeight(800);//composite.computeSize(SWT.DEFAULT, SWT.DEFAULT).y);
+		item4.setHeight(800);// composite.computeSize(SWT.DEFAULT,
+								// SWT.DEFAULT).y);
 		item4.setControl(composite);
-//		item2.setImage(image);
-		
+		// item2.setImage(image);
+
 		item2.setExpanded(true);
 		item3.setExpanded(true);
 		item4.setExpanded(true);
-		
+
 		bar.setSpacing(2);
 	}
 
@@ -188,11 +201,8 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		this.dataDomain = dataDomain;
 		this.table = dataDomain.getTable();
 
-		String recordVAType = DataTable.RECORD;
 		contentSelectionManager = dataDomain.getRecordSelectionManager();
 
-		RecordVirtualArray recordVA = dataDomain.getRecordVA(recordVAType);
-		contentSelectionManager.setVA(recordVA);
 	}
 
 	@Override

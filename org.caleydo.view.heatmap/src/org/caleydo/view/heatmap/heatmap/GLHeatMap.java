@@ -22,19 +22,12 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.tablebased.HideHeatMapElementsEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterManager;
-import org.caleydo.core.util.clusterer.ClusterResult;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.ClustererType;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
-import org.caleydo.core.util.clusterer.EDistanceMeasure;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
@@ -282,22 +275,20 @@ public class GLHeatMap extends ATableBasedView {
 		// todo this is not nice here, we may need a more intelligent way to
 		// determine which to use
 
-		if (recordVAType.equals(CONTENT_EMBEDDED_VA)) {
-			table.setRecordVA(recordVAType, new RecordVirtualArray(recordVAType));
-		} else {
-			if (bRenderOnlyContext)
-				recordVAType = DataTable.RECORD_CONTEXT;
-			else
-				recordVAType = DataTable.RECORD;
-		}
+		// if (recordPerspectiveID.equals(CONTENT_EMBEDDED_VA)) {
+		// table.setRecordVA(recordPerspectiveID, new
+		// RecordVirtualArray(recordPerspectiveID));
+		// } else {
+		// if (bRenderOnlyContext)
+		// recordPerspectiveID = DataTable.RECORD_CONTEXT;
+		// else
+		// recordPerspectiveID = DataTable.RECORD;
+		// }
 
 		if (recordVA == null)
-			recordVA = table.getRecordData(recordVAType).getRecordVA();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionData(dimensionVAType).getDimensionVA();
-
-		recordSelectionManager.setVA(recordVA);
-		dimensionSelectionManager.setVA(dimensionVA);
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -326,27 +317,20 @@ public class GLHeatMap extends ATableBasedView {
 		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
 				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
 
-		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only " + " "
-					+ dataDomain.getRecordName(false, true)
-					+ " which occur in one of the other views in focus\n");
+		if (bUseRandomSampling) {
+			sInfoText.append("Random sampling active, sample size: "
+					+ iNumberOfRandomElements + "\n");
 		} else {
-			if (bUseRandomSampling) {
-				sInfoText.append("Random sampling active, sample size: "
-						+ iNumberOfRandomElements + "\n");
-			} else {
-				sInfoText.append("Random sampling inactive\n");
-			}
+			sInfoText.append("Random sampling inactive\n");
+		}
 
-			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all genes in the dataset\n");
-			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText
-						.append("Showing all genes that have a known DAVID ID mapping\n");
-			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-				sInfoText
-						.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
-			}
+		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
+			sInfoText.append("Showing all genes in the dataset\n");
+		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
+			sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
+		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
+			sInfoText
+					.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
 		}
 
 		return sInfoText.toString();
@@ -644,27 +628,11 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	public void renderContext(boolean bRenderOnlyContext) {
+	public void handleRecordVAUpdate(int dataTableID, String info) {
+		super.handleRecordVAUpdate(dataTableID, info);
+		if (table.getID() != dataTableID)
+			return;
 
-		this.bRenderOnlyContext = bRenderOnlyContext;
-
-		if (this.bRenderOnlyContext) {
-			recordVA = dataDomain.getRecordVA(DataTable.RECORD_CONTEXT);
-		} else {
-			recordVA = dataDomain.getRecordVA(DataTable.RECORD);
-		}
-
-		recordSelectionManager.setVA(recordVA);
-		// renderStyle.setActiveVirtualArray(iRecordVAID);
-
-		setDisplayListDirty();
-
-	}
-
-	@Override
-	public void handleRecordVAUpdate(String info) {
-
-		super.handleRecordVAUpdate(info);
 		// FIXME clustering for context heat map
 		// if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
 		// && recordVAType.equals(DataTable.RECORD_CONTEXT)) {
@@ -716,7 +684,7 @@ public class GLHeatMap extends ATableBasedView {
 	public String toString() {
 		return "Standalone heat map, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordVAType
+				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
 				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
@@ -731,7 +699,6 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void setRecordVA(RecordVirtualArray recordVA) {
-		recordSelectionManager.setVA(recordVA);
 		this.recordVA = recordVA;
 		setDisplayListDirty();
 	}
@@ -899,15 +866,14 @@ public class GLHeatMap extends ATableBasedView {
 		// .log(recordVA.size()));
 		// }
 
-		RecordVirtualArray setRecordVA = table.getRecordData(DataTable.RECORD)
-				.getRecordVA();
+//		RecordVirtualArray setRecordVA = table.getRecordData(recordPerspectiveID).getVA();
 		int numBricks = 1;
-		if (setRecordVA.getGroupList() != null) {
-			numBricks += setRecordVA.getGroupList().size();
+		if (recordVA.getGroupList() != null) {
+			numBricks += recordVA.getGroupList().size();
 		}
 
 		int windowHeight = parentGLCanvas.getHeight();
-		int pixelHeight = (int) (((float) (windowHeight - numBricks * 80) / (float) setRecordVA
+		int pixelHeight = (int) (((float) (windowHeight - numBricks * 80) / (float) recordVA
 				.size()) * recordVA.size());
 		return Math.max(16, pixelHeight);
 	}

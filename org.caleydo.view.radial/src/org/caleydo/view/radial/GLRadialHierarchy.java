@@ -30,7 +30,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.view.IDataDomainSetBasedView;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -60,7 +60,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Christian Partl
  */
 public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
-		IDataDomainSetBasedView {
+		ITableBasedDataDomainView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.radial";
 
@@ -118,7 +118,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	/**
 	 * Constructor.
 	 */
-	public GLRadialHierarchy(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLRadialHierarchy(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -181,14 +182,12 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -482,8 +481,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -511,15 +510,16 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 					if (!dataDomain.getDataDomainID().equals(
 							"org.caleydo.datadomain.genetic"))
 						break;
-					
+
 					if (!pdPickedElement.hasChildren()) {
 						AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(), externalID),
-								dataDomain.getRecordIDType(), externalID, dataDomain.getDataDomainID());
-						contextMenuCreator.addContextMenuItem(menuItem);	
+								+ dataDomain.getRecordLabel(dataDomain.getRecordIDType(),
+										externalID), dataDomain.getRecordIDType(),
+								externalID, dataDomain.getDataDomainID());
+						contextMenuCreator.addContextMenuItem(menuItem);
 					} else {
 						AContextMenuItem menuItem = new DetailOutsideItem(externalID);
-						contextMenuCreator.addContextMenuItem(menuItem);	
+						contextMenuCreator.addContextMenuItem(menuItem);
 					}
 
 					break;
@@ -855,7 +855,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		//
 		// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 		// // new GeneClusterDataEventManager(this), alColorModes);
-		// initHierarchy(tree, dataDomain.getTable().getDimensionData(dimensionVAType)
+		// initHierarchy(tree,
+		// dataDomain.getTable().getDimensionData(dimensionVAType)
 		// .getDimensionTreeRoot(), new ExperimentClusterDataEventManager(this),
 		// alColorModes);
 		// }
@@ -1028,8 +1029,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleUpdateView() {
 		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = dataDomain.getTable().getDimensionData(dimensionVAType)
-				.getDimensionTree();
+		Tree<ClusterNode> tree = dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID).getTree();
 		if (tree != null) {
 
 			// if (pdRealRootElement == null) {
@@ -1041,8 +1042,9 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
 			initHierarchy(tree, ((ATableBasedDataDomain) dataDomain).getTable()
-					.getDimensionData(dimensionVAType).getDimensionTreeRoot(),
-					new ExperimentClusterDataEventManager(this), alColorModes);
+					.getDimensionPerspective(dimensionPerspectiveID)
+					.getTreeRoot(), new ExperimentClusterDataEventManager(this),
+					alColorModes);
 			// }
 
 		} else {
@@ -1152,13 +1154,14 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		//
 		// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 		// // new GeneClusterDataEventManager(this), alColorModes);
-		// initHierarchy(tree, dataDomain.getTable().getDimensionData(dimensionVAType)
+		// initHierarchy(tree,
+		// dataDomain.getTable().getDimensionData(dimensionVAType)
 		// .getDimensionTreeRoot(), new ExperimentClusterDataEventManager(this),
 		// alColorModes);
 		// }
 
-		Tree<ClusterNode> tree = dataDomain.getTable().getRecordData(recordVAType)
-				.getRecordTree();
+		Tree<ClusterNode> tree = dataDomain.getTable()
+				.getRecordPerspective(recordPerspectiveID).getTree();
 		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
@@ -1182,5 +1185,15 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// partialDiscTree.setLeafIDType(tree.getLeaveIDType());
 		// partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 }

@@ -17,8 +17,11 @@ import org.caleydo.core.data.collection.DimensionType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.Filter;
+import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.filter.RecordFilter;
+import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.filter.RecordMetaOrFilter;
 import org.caleydo.core.data.filter.event.FilterUpdatedEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
@@ -29,7 +32,9 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
 import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
@@ -632,9 +637,28 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		filterList.clear();
 		int filterID = 0;
 
-		for (Filter<?> filter : filterType == FilterType.RECORD ? dataDomain
-				.getRecordFilterManager().getFilterPipe() : dataDomain
-				.getDimensionFilterManager().getFilterPipe()) {
+		RecordFilterManager recordFilterManager = dataDomain.getTable()
+				.getRecordPerspective(recordPerspectiveID).getFilterManager();
+		RecordVirtualArray recordVA = dataDomain.getTable()
+				.getRecordPerspective(recordPerspectiveID).getVA();
+		DimensionVirtualArray dimensionVA = dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID).getVA();
+
+		DimensionFilterManager dimensionFilterManager = dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID).getFilterManager();
+
+		VirtualArray<?, ?, ?> currentVA;
+		FilterManager<?, ?, ?, ?> filterManager;
+
+		if (filterType == FilterType.RECORD) {
+			filterManager = recordFilterManager;
+			currentVA = recordVA;
+		} else {
+			filterManager = dimensionFilterManager;
+			currentVA = dimensionVA;
+		}
+
+		for (Filter<?> filter : filterManager.getFilterPipe()) {
 			FilterItem<?> filterItem = new FilterItem(filterID++, filter, pickingManager,
 					uniqueID);
 
@@ -649,14 +673,11 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		}
 
 		// TODO move to separate function...
-		VirtualArray<?, ?, ?> currentVA = filterType == FilterType.RECORD ? dataDomain
-				.getRecordFilterManager().getBaseVA().clone() : dataDomain
-				.getDimensionFilterManager().getBaseVA().clone();
 
 		for (FilterItem<?> filter : filterList) {
 			// filter items
 			filter.setInput(currentVA);
-			currentVA = filter.getOutput().clone();
+			currentVA = filter.getOutput();
 		}
 
 		updateFilterSize();
@@ -682,12 +703,13 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
-		table.getUncertainty().calculateRawAverageUncertainty();
+		table.getUncertainty().calculateRawAverageUncertainty(dimensionPerspectiveID);
 
 		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty()
 				.getRawUncertainty());
 
-		FilterRepresentationSNR filterRep = new FilterRepresentationSNR();
+		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(
+				recordPerspectiveID, dimensionPerspectiveID);
 		filterRep.setFilter(contentFilter);
 		filterRep.setTable(table);
 		filterRep.setHistogram(histogram);
@@ -752,12 +774,6 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 	public void setControlPressed(boolean state) {
 		bControlPressed = state;
-	}
-
-	@Override
-	public void renderContext(boolean bRenderContext) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

@@ -18,7 +18,9 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.MenuAdapter;
@@ -53,6 +55,10 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 	private FilterUpdateListener filterUpdateListener;
 
+	private String recordPerspectiveID;
+
+	private String dimensionPerspectiveID;
+
 	/**
 	 * Constructor.
 	 */
@@ -74,6 +80,9 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				serializedView.getDataDomainID());
+		// FIXME - that is probably null
+		recordPerspectiveID = serializedView.getRecordPerspectiveID();
+		dimensionPerspectiveID = serializedView.getDimensionPerspectiveID();
 
 		parentComposite = parent;
 
@@ -91,19 +100,20 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		contextMenu.addMenuListener(new MenuAdapter() {
 			@Override
 			public void menuShown(MenuEvent e) {
-	
+
 				MenuItem[] menuItems = contextMenu.getItems();
-				for (int menuIndex = contextMenu.getItemCount()-1; menuIndex >= 0 ; menuIndex--) {
+				for (int menuIndex = contextMenu.getItemCount() - 1; menuIndex >= 0; menuIndex--) {
 					contextMenu.getItem(menuIndex).dispose();
 				}
-				
-				if (tree.getSelection()[0] != null && tree.getSelection()[0].getData() instanceof Filter) {
+
+				if (tree.getSelection()[0] != null
+						&& tree.getSelection()[0].getData() instanceof Filter) {
 					addShowDetailsContextMenuItem();
-					addRemoveContextMenuItem();					
+					addRemoveContextMenuItem();
 				}
 			}
 		});
-		
+
 		tree.setMenu(contextMenu);
 		tree.addListener(SWT.MouseDoubleClick, new Listener() {
 			public void handleEvent(Event e) {
@@ -118,11 +128,13 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		TreeItem child;
 
-		for (DimensionFilter filter : dataDomain.getDimensionFilterManager().getFilterPipe()) {
+		for (DimensionFilter filter : dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID).getFilterManager()
+				.getFilterPipe()) {
 			if (filter instanceof DimensionMetaFilter) {
 
-				TreeItem metaDimensionFilterTreeItem = new TreeItem(dimensionFilterTreeItem,
-						SWT.NONE, 0);
+				TreeItem metaDimensionFilterTreeItem = new TreeItem(
+						dimensionFilterTreeItem, SWT.NONE, 0);
 				metaDimensionFilterTreeItem.setText(filter.getLabel());
 				metaDimensionFilterTreeItem.setData(filter);
 
@@ -142,7 +154,9 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		TreeItem contentFilterTreeItem = new TreeItem(tree, SWT.NONE, 0);
 		contentFilterTreeItem.setText("Gene Filter");
 
-		for (RecordFilter filter : dataDomain.getRecordFilterManager().getFilterPipe()) {
+		for (RecordFilter filter : dataDomain.getTable()
+				.getRecordPerspective(recordPerspectiveID).getFilterManager()
+				.getFilterPipe()) {
 
 			if (filter instanceof RecordMetaFilter) {
 
@@ -151,8 +165,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 				metaContentFilterTreeItem.setText(filter.getLabel());
 				metaContentFilterTreeItem.setData(filter);
 
-				for (RecordFilter subFilter : ((RecordMetaFilter) filter)
-						.getFilterList()) {
+				for (RecordFilter subFilter : ((RecordMetaFilter) filter).getFilterList()) {
 					child = new TreeItem(metaContentFilterTreeItem, SWT.NONE, 0);
 					child.setText(subFilter.getLabel());
 					child.setData(subFilter);
@@ -264,4 +277,59 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 		updateTree();
 		parentComposite.layout();
 	}
+
+	// @Override
+	// public void setDataDomain(ATableBasedDataDomain dataDomain) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public ATableBasedDataDomain getDataDomain() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public void initialize() {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public ASerializedView getSerializableRepresentation() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public void initFromSerializableRepresentation(ASerializedView
+	// serializedView) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public String getViewType() {
+	// // TODO Auto-generated method stub
+	// return null;
+	// }
+	//
+	// @Override
+	// public int getID() {
+	// // TODO Auto-generated method stub
+	// return 0;
+	// }
+	//
+	// @Override
+	// public void setRecordPerspectiveID(String recordPerspectiveID) {
+	// // TODO Auto-generated method stub
+	//
+	// }
+	//
+	// @Override
+	// public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+	// // TODO Auto-generated method stub
+	//
+	// }
 }

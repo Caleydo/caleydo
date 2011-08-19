@@ -2,6 +2,7 @@ package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -20,20 +21,25 @@ public class TableBasedDimensionGroupData
 
 	private ATableBasedDataDomain dataDomain;
 	private DataTable table;
+	private String recordPerspectiveID;
 
 	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable table) {
 		this.dataDomain = dataDomain;
 		this.table = table;
+		Set<String> recordPerspectiveIDs = table.getAvailableRecordPerspectiveIDs();
+		if (recordPerspectiveIDs.size() != 1)
+			throw new IllegalStateException("Multiple perspectives not implemented for subDataTables");
+		this.recordPerspectiveID = recordPerspectiveIDs.iterator().next();
 	}
 
 	@Override
 	public RecordVirtualArray getSummaryVA() {
-		return table.getRecordData(DataTable.RECORD).getRecordVA();
+		return table.getRecordPerspective(recordPerspectiveID).getVA();
 	}
 
 	@Override
 	public ArrayList<RecordVirtualArray> getSegmentVAs() {
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -73,7 +79,7 @@ public class TableBasedDimensionGroupData
 
 	@Override
 	public ArrayList<Group> getGroups() {
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -92,7 +98,7 @@ public class TableBasedDimensionGroupData
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
 
 		if (recordVA.getGroupList() == null)
 			return null;

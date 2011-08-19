@@ -239,7 +239,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
 		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
-				.getDataDomain().getDimensionVA(DataTable.DIMENSION), table.getDimensionData(
+				.getDataDomain().getDimensionVA(DataTable.DIMENSION), table.getDimensionPerspective(
 				DataTable.DIMENSION).getDimensionVA()));
 
 		footerBarElements.add(dimensionBarLaylout);

@@ -4,12 +4,14 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
@@ -126,18 +128,63 @@ public abstract class CaleydoRCPViewPart
 		// then we check whether the serialization has a datadomain already
 		String dataDomainID = serializedView.getDataDomainID();
 		if (dataDomainID == null) {
+			IDataDomain chosenDataDomain = null;
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
 			if (availableDomains == null || availableDomains.size() == 0)
 				throw new IllegalStateException("No datadomain for this view available");
-			else if (availableDomains.size() == 1)
-				serializedView.setDataDomainID(availableDomains.get(0).getDataDomainID());
+			else if (availableDomains.size() == 1) {
+				chosenDataDomain = availableDomains.get(0);
+				serializedView.setDataDomainID(chosenDataDomain.getDataDomainID());
+			}
 			else if (availableDomains.size() > 1) {
 				ChooseDataDomainDialog dialog = new ChooseDataDomainDialog(new Shell());
 				dialog.setPossibleDataDomains(availableDomains);
-				IDataDomain chosenDataDomain = dialog.open();
+				chosenDataDomain = dialog.open();
+
 				serializedView.setDataDomainID(chosenDataDomain.getDataDomainID());
+			}
+
+			// set the dimension and recordPerspective for the view
+			if (chosenDataDomain != null && chosenDataDomain instanceof ATableBasedDataDomain) {
+				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) chosenDataDomain;
+
+				Set<String> dimensionPerspectiveIDs =
+					tDataDomain.getTable().getAvailableDimensionPerspectiveIDs();
+				if (dimensionPerspectiveIDs.size() == 1)
+					serializedView.setDimensionPerspectiveID(dimensionPerspectiveIDs.iterator().next());
+				else {
+					// check if there is only one "public" perspecive
+					String chosenPerspective = null;
+					for (String tempPerspectiveID : dimensionPerspectiveIDs) {
+						if (!tDataDomain.getTable().getDimensionPerspective(tempPerspectiveID).isPrivate()) {
+							if (chosenPerspective != null)
+								throw new IllegalStateException("Implement choose for perspective");
+							else
+								chosenPerspective = tempPerspectiveID;
+						}
+					}
+					serializedView.setDimensionPerspectiveID(chosenPerspective);
+				}
+
+				Set<String> recordPerspectiveIDs = tDataDomain.getTable().getAvailableRecordPerspectiveIDs();
+
+				if (recordPerspectiveIDs.size() == 1)
+					serializedView.setRecordPerspectiveID(recordPerspectiveIDs.iterator().next());
+				else {
+					// check if there is only one "public" perspecive
+					String chosenPerspective = null;
+					for (String tempPerspectiveID : recordPerspectiveIDs) {
+						if (!tDataDomain.getTable().getRecordPerspective(tempPerspectiveID).isPrivate()) {
+							if (chosenPerspective != null)
+								throw new IllegalStateException("Implement choose for perspective");
+							else
+								chosenPerspective = tempPerspectiveID;
+						}
+					}
+					serializedView.setRecordPerspectiveID(chosenPerspective);
+				}
 			}
 		}
 	}
@@ -146,7 +193,7 @@ public abstract class CaleydoRCPViewPart
 	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
 	 */
 	public abstract void createDefaultSerializedView();
-	
+
 	/**
 	 * Setting an external serialized view. Needed for RCP views that are embedded in another RCP view.
 	 */
@@ -216,7 +263,7 @@ public abstract class CaleydoRCPViewPart
 			ex.printStackTrace();
 		}
 	}
-	
+
 	public ASerializedView getSerializedView() {
 		return serializedView;
 	}

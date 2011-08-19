@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection.table;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Set;
@@ -20,6 +21,7 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -32,15 +34,15 @@ import org.eclipse.core.runtime.Status;
 /**
  * <h2>General Information</h2>
  * <p>
- * A set is the main container for tabular data in Caleydo. A set is made up of {@link IDimension}s, where each
- * dimension corresponds to a column in a tabular data table. Columns are therefore always referred to as
- * <b>Dimensions</b> and rows as <b>Record</b> The data should be accessed through {@link VirtualArray}s, which
- * are stored in {@link DimensionData}s for Dimensions and {@link RecordData}s for Record.
+ * A set is the main container for tabular data in Caleydo. A set is made up of {@link IDimension}s, where
+ * each dimension corresponds to a column in a tabular data table. Columns are therefore always referred to as
+ * <b>Dimensions</b> and rows as <b>Record</b> The data should be accessed through {@link VirtualArray}s,
+ * which are stored in {@link DimensionPerspective}s for Dimensions and {@link RecordPerspective}s for Record.
  * </p>
  * <h2>DataTable Creation</h2>
  * <p>
- * A data table relies heavily upon {@link DataTableUtils} for being created. Many creation related functions are
- * provided there, sometimes interfacing with package private methods in this class.
+ * A data table relies heavily upon {@link DataTableUtils} for being created. Many creation related functions
+ * are provided there, sometimes interfacing with package private methods in this class.
  * </p>
  * 
  * @author Alexander Lex
@@ -49,21 +51,19 @@ public class DataTable
 	extends AUniqueObject
 	implements ICollection {
 
-	public static final String DIMENSION = "Dimension";
-	public static final String RECORD = "Record";
-	public static final String RECORD_CONTEXT = "Record_Context";
-
 	protected HashMap<Integer, ADimension> hashDimensions;
 
 	private String sLabel = "Rootset";
 
-	protected HashMap<String, RecordData> hashRecordData;
-	protected HashMap<String, DimensionData> hashDimensionData;
+	/** List of dimension IDs in the order as they have been added */
+	protected ArrayList<Integer> defaultDimensionIDs;
+	protected HashMap<String, RecordPerspective> hashRecordPerspectives;
+	protected HashMap<String, DimensionPerspective> hashDimensionPerspectives;
 
 	protected NumericalDimension meanDimension;
 
-	protected DimensionData defaultDimensionData;
-	protected RecordData defaultRecordData;
+	// protected DimensionData defaultDimensionData;
+	// protected RecordPerspective defaultRecordPerspective;
 
 	protected ExternalDataRepresentation externalDataRep;
 
@@ -79,13 +79,13 @@ public class DataTable
 
 	/** all metaData for this DataTable is held in or accessible through this object */
 	protected MetaData metaData;
-	
+
 	/** everything related to uncertainty is held in or accessible through this object */
 	private Uncertainty uncertainty;
-	
+
 	/** everything related to normalization of the data is held in or accessible through this object */
 	private Normalization normalization;
-	
+
 	public DataTable() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 	}
@@ -101,11 +101,9 @@ public class DataTable
 	}
 
 	private void initWithDataDomain() {
-		init();
 		ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
-		defaultDimensionData.setDimensionTree(tree);
 		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 		// hashDimensionData.put(DimensionVAType.STORAGE, defaultDimensionData.clone());
 	}
@@ -113,13 +111,12 @@ public class DataTable
 	/**
 	 * Initialization of member variables. Safe to be called by sub-classes.
 	 */
-	protected void init() {
+	{
 
 		hashDimensions = new HashMap<Integer, ADimension>();
-		hashRecordData = new HashMap<String, RecordData>(6);
-		hashDimensionData = new HashMap<String, DimensionData>(3);
-		defaultDimensionData = new DimensionData();
-		defaultDimensionData.setDimensionVA(new DimensionVirtualArray(DIMENSION));
+		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
+		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
+		defaultDimensionIDs = new ArrayList<Integer>();
 		statisticsResult = new StatisticsResult(this);
 		metaData = new MetaData(this);
 		normalization = new Normalization(this);
@@ -141,10 +138,10 @@ public class DataTable
 	/**
 	 * Creates a {@link SubDataTable} for every node in the dimension tree.
 	 */
-	public void createSubDataTable() {
+	public void createSubDataTable(DimensionPerspective dimensionPerspective) {
 		// ClusterNode rootNode = hashDimensionData.get(STORAGE).getDimensionTreeRoot();
 		// rootNode.createSubDataTables(this);
-		defaultDimensionData.getDimensionTree().createSubDataTables(this);
+		dimensionPerspective.getTree().createSubDataTables(this);
 	}
 
 	/**
@@ -187,6 +184,7 @@ public class DataTable
 	@Override
 	public String getLabel() {
 		return sLabel;
+
 	}
 
 	/**
@@ -196,7 +194,7 @@ public class DataTable
 	 * @return
 	 */
 	public Iterator<ADimension> iterator(String type) {
-		return new DimensionIterator(hashDimensions, hashDimensionData.get(type).getDimensionVA());
+		return new DimensionIterator(hashDimensions, hashDimensionPerspectives.get(type).getVA());
 	}
 
 	/**
@@ -264,21 +262,22 @@ public class DataTable
 		return result;
 	}
 
-	/**
-	 * Restores the original virtual array using the whole set data.
-	 */
-	public void restoreOriginalRecordVA() {
-		RecordData recordData = createRecordData(RECORD);
-		hashRecordData.put(RECORD, recordData);
-	}
+	// /**
+	// * Restores the original virtual array using the whole set data.
+	// */
+	// public void restoreOriginalRecordVA(String recordPerspectiveID) {
+	// RecordPerspective recordData = createRecordData(RECORD);
+	// hashRecordData.put(RECORD, recordData);
+	// }
 
 	/**
 	 * Get a copy of the original dimension VA (i.e., the va containing all dimensions in the order loaded
 	 * 
 	 * @return
 	 */
-	public DimensionVirtualArray getBaseDimensionVA() {
-		return defaultDimensionData.getDimensionVA().clone();
+	@SuppressWarnings("unchecked")
+	public DimensionVirtualArray getBaseDimensionVA(String vaType) {
+		return new DimensionVirtualArray(vaType, (ArrayList<Integer>) defaultDimensionIDs.clone());
 	}
 
 	/**
@@ -286,49 +285,41 @@ public class DataTable
 	 * 
 	 * @return
 	 */
-	public RecordVirtualArray getBaseRecordVA() {
-		if (defaultRecordData == null)
-			defaultRecordData = createRecordData(RECORD);
-		return defaultRecordData.getRecordVA().clone();
+	public RecordVirtualArray getBaseRecordVA(String vaType) {
+		return createBaseRecordVA(vaType);
 	}
 
-	/**
-	 * Set a recordVA. The recordVA in the recordData object is replaced and the other elements in the
-	 * recordData are retable.
-	 * 
-	 * @param vaType
-	 * @param virtualArray
-	 */
-	public void setRecordVA(String vaType, RecordVirtualArray virtualArray) {
-		RecordData recordData = hashRecordData.get(vaType);
-		if (recordData == null)
-			recordData = createRecordData(vaType);
-		else
-			recordData.reset();
-		recordData.setRecordVA(virtualArray);
-		// FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider
-		// this as a filter instead of the new default
-		// if (vaType == CONTENT)
-		// defaultContentData = recordData;
-		hashRecordData.put(vaType, recordData);
-	}
-
-	/**
-	 * Sets a dimensionVA. The dimensionVA in the dimensionData object is replaced and the other elements in the
-	 * dimensionData are retable.
-	 * 
-	 * @param vaType
-	 * @param virtualArray
-	 */
-	public void setDimensionVA(String vaType, DimensionVirtualArray virtualArray) {
-		DimensionData dimensionData = hashDimensionData.get(vaType);
-		if (dimensionData == null)
-			dimensionData = defaultDimensionData.clone();
-		// else
-		// dimensionData.reset();
-		dimensionData.setDimensionVA(virtualArray);
-		hashDimensionData.put(vaType, dimensionData);
-	}
+	// /**
+	// * Set a recordVA. The recordVA in the recordData object is replaced and the other elements in the
+	// * recordData are retable.
+	// *
+	// * @param vaType
+	// * @param virtualArray
+	// */
+	// public void setRecordVA(String vaType, RecordVirtualArray virtualArray) {
+	// RecordData recordData = hashRecordPerspectives.get(vaType);
+	//
+	// recordData.setVA(virtualArray);
+	// // FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider
+	// // this as a filter instead of the new default
+	// // if (vaType == CONTENT)
+	// // defaultContentData = recordData;
+	// hashRecordPerspectives.put(vaType, recordData);
+	// }
+	//
+	// /**
+	// * Sets a dimensionVA. The dimensionVA in the dimensionData object is replaced and the other elements in
+	// * the dimensionData are reset.
+	// *
+	// * @param perspectiveID
+	// * @param virtualArray
+	// */
+	// public void setDimensionVA(String perspectiveID, DimensionVirtualArray virtualArray) {
+	// DimensionData dimensionData = hashDimensionPerspectives.get(perspectiveID);
+	// if (dimensionData == null)
+	// throw new IllegalArgumentException("No dimensionPerspective know for ID: " + perspectiveID);
+	// dimensionData.setVA(virtualArray);
+	// }
 
 	/**
 	 * Returns the current external data rep.
@@ -359,63 +350,101 @@ public class DataTable
 
 		// if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
 
-		String recordVAType = clusterState.getRecordVAType();
-		if (recordVAType != null) {
-			clusterState.setRecordVA(getRecordData(recordVAType).getRecordVA());
-			clusterState.setRecordIDType(dataDomain.getRecordIDType());
-			// this.setContentGroupList(getRecordVA(recordVAType).getGroupList());
-		}
+		// String recordPerspectiveID = clusterState.getRecordPerspective().getPerspectiveID();
+		// if (recordPerspectiveID != null) {
+		// clusterState.setRecordPerspective(getRecordData(recordPerspectiveID));
+		// clusterState.setRecordIDType(dataDomain.getRecordIDType());
+		// // this.setContentGroupList(getRecordVA(recordVAType).getGroupList());
+		// }
+		//
+		// String dimensionVAType = clusterState.getDimensionVAType();
+		// if (dimensionVAType != null) {
+		// clusterState.setDimensionPerspective(getDimensionData(dimensionVAType).getDimensionVA());
+		// clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+		// // this.setDimensionGroupList(getDimensionVA(dimensionVAType).getGroupList());
+		// }
 
-		String dimensionVAType = clusterState.getDimensionVAType();
-		if (dimensionVAType != null) {
-			clusterState.setDimensionVA(getDimensionData(dimensionVAType).getDimensionVA());
-			clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
-			// this.setDimensionGroupList(getDimensionVA(dimensionVAType).getGroupList());
-		}
+		// TODO check here wheter the perspectives are actually set - they have been set her up to now, but
+		// that doesn't work any more
 
 		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
 
-		if (result != null) {
-			RecordData recordResult = result.getRecordResult();
-			if (recordResult != null) {
-				hashRecordData.put(clusterState.getRecordVAType(), recordResult);
-			}
-			DimensionData dimensionResult = result.getDimensionResult();
-			if (dimensionResult != null) {
-				hashDimensionData.put(clusterState.getDimensionVAType(), dimensionResult);
-			}
-			// }
-			// else
-			// throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
-		}
+		// TODO this stuff should no longer be necessary
+		// if (result != null) {
+		// RecordData recordResult = result.getRecordResult();
+		// if (recordResult != null) {
+		// hashRecordData.put(clusterState.getRecordVAType(), recordResult);
+		// }
+		// DimensionData dimensionResult = result.getDimensionResult();
+		// if (dimensionResult != null) {
+		// hashDimensionData.put(clusterState.getDimensionVAType(), dimensionResult);
+		// }
+		// // }
+		// // else
+		// // throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
+		// }
 	}
 
 	/**
-	 * Returns a {@link RecordData} object for the specified RecordVAType. The ContentData provides access
-	 * to all data on a dimension, e.g., virtualArryay, cluster tree, group list etc.
+	 * Returns a {@link RecordPerspective} object for the specified ID. The {@link RecordPerspective} provides
+	 * access to all mutable data on how to access the DataTable, e.g., {@link VirtualArray},
+	 * {@link ClusterTree}, {@link GroupList}, etc.
 	 * 
-	 * @param vaType
-	 * @return
+	 * @param recordPerspectiveID
+	 * @return the associated {@link RecordPerspective} object, or null if no such object is registered.
 	 */
-	public RecordData getRecordData(String vaType) {
-		RecordData recordData = hashRecordData.get(vaType);
-		if (recordData == null) {
-			recordData = createRecordData(vaType);
-			hashRecordData.put(vaType, recordData);
-		}
+	public RecordPerspective getRecordPerspective(String recordPerspectiveID) {
+		RecordPerspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
 		return recordData;
 	}
 
 	/**
-	 * Returns a {@link DimensionData} object for the specified DimensionVAType. The DimensionData provides access
-	 * to all data on a dimension, e.g., virtualArryay, cluster tree, group list etc.
+	 * Returns a list of all registered IDs for {@link RecordPerspective} objects.
 	 * 
-	 * @param vaType
 	 * @return
 	 */
-	public DimensionData getDimensionData(String vaType) {
-		return hashDimensionData.get(vaType);
+	public Set<String> getAvailableRecordPerspectiveIDs() {
+		return hashRecordPerspectives.keySet();
+	}
+
+	/**
+	 * Register a new {@link RecordPerspective} with this DataTable
+	 * 
+	 * @param recordPerspective
+	 */
+	public void registerRecordPerspecive(RecordPerspective recordPerspective) {
+		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
+	}
+
+	/**
+	 * Returns a {@link DimensionPerspective} object for the specified ID. The {@link DimensionPerspective}
+	 * provides access to all mutable data on how to access the DataTable, e.g., {@link VirtualArray},
+	 * {@link ClusterTree}, {@link GroupList}, etc.
+	 * 
+	 * @param dimensionPerspectiveID
+	 * @return the associated {@link DimensionPerspective} object, or null if no such object is registered.
+	 */
+	public DimensionPerspective getDimensionPerspective(String dimensionPerspectiveID) {
+		return hashDimensionPerspectives.get(dimensionPerspectiveID);
+	}
+
+	/**
+	 * Returns a list of all registered IDs for {@link DimensionPerspective} objects.
+	 * 
+	 * @return
+	 */
+	public Set<String> getAvailableDimensionPerspectiveIDs() {
+		return hashDimensionPerspectives.keySet();
+	}
+
+	/**
+	 * Register a new {@link DimensionPerspective} with this DataTable
+	 * 
+	 * @param dimensionPerspective
+	 */
+	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}
 
 	/**
@@ -453,14 +482,14 @@ public class DataTable
 	}
 
 	/**
-	 * Returns a dimension containing the mean values of all the dimensions in the table. The mean dimension contains
-	 * raw and normalized values. The mean is calculated based on the raw data, that means for calculating the
-	 * means possibly specified cut-off values are not considered, since cut-off values are meant for
-	 * visualization only.
+	 * Returns a dimension containing the mean values of all the dimensions in the table. The mean dimension
+	 * contains raw and normalized values. The mean is calculated based on the raw data, that means for
+	 * calculating the means possibly specified cut-off values are not considered, since cut-off values are
+	 * meant for visualization only.
 	 * 
 	 * @return the dimension containing means for all content elements
 	 */
-	public NumericalDimension getMeanDimension() {
+	public NumericalDimension getMeanDimension(String dimensionPerspectiveID) {
 		if (!tableType.equals(DataTableDataType.NUMERIC) || !isSetHomogeneous)
 			throw new IllegalStateException(
 				"Can not provide a mean dimension if set is not numerical (Set type: " + tableType
@@ -470,7 +499,7 @@ public class DataTable
 			meanDimension.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
 
 			float[] meanValues = new float[metaData.depth()];
-			DimensionVirtualArray dimensionVA = defaultDimensionData.getDimensionVA();
+			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVA();
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
@@ -515,13 +544,14 @@ public class DataTable
 	 * 
 	 * @param dimensionID
 	 */
-	void addDimension(int iDimensionID) {
+	void addDimension(int dimensionID) {
 		DimensionManager dimensionManager = GeneralManager.get().getDimensionManager();
 
-		if (!dimensionManager.hasItem(iDimensionID))
-			throw new IllegalArgumentException("Requested Dimension with ID " + iDimensionID + " does not exist.");
+		if (!dimensionManager.hasItem(dimensionID))
+			throw new IllegalArgumentException("Requested Dimension with ID " + dimensionID
+				+ " does not exist.");
 
-		ADimension dimension = dimensionManager.getItem(iDimensionID);
+		ADimension dimension = dimensionManager.getItem(dimensionID);
 		addDimension(dimension);
 	}
 
@@ -546,39 +576,31 @@ public class DataTable
 				tableType = DataTableDataType.HYBRID;
 		}
 
-		// rawDataType = dimension.getRawDataType();
-		// iDepth = dimension.size();
-		// }
-		// else {
-		// if (!bIsNumerical && dimension instanceof INumericalDimension)
-		// throw new IllegalArgumentException(
-		// "All dimensions in a set must be of the same basic type (nunmerical or nominal)");
-		// if (rawDataType != dimension.getRawDataType())
-		// throw new IllegalArgumentException("All dimensions in a set must have the same raw data type");
-		// // if (iDepth != dimension.size())
-		// // throw new IllegalArgumentException("All dimensions in a set must be of the same length");
-		// }
 		hashDimensions.put(dimension.getID(), dimension);
-		defaultDimensionData.getDimensionVA().append(dimension.getID());
+		defaultDimensionIDs.add(dimension.getID());
 
 	}
 
 	void finalizeAddedDimensions() {
-		
+
+		DimensionPerspective dimensionData = new DimensionPerspective(dataDomain);
+		dimensionData.createVA(defaultDimensionIDs);
+
 		// this needs only be done by the root set
 		if ((this.getClass().equals(DataTable.class))) {
-			ClusterTree tree = defaultDimensionData.getDimensionTree();
-			int count = 1;
-			for (Integer dimensionID : defaultDimensionData.getDimensionVA()) {
-				ClusterNode node =
-					new ClusterNode(tree, get(dimensionID).getLabel(), count++, false, dimensionID);
-				tree.addChild(tree.getRoot(), node);
-			}
+			// ClusterTree tree = dimensionData.getTree();
+			// int count = 1;
+			// for (Integer dimensionID : dimensionData.getVA()) {
+			// ClusterNode node =
+			// new ClusterNode(tree, get(dimensionID).getLabel(), count++, false, dimensionID);
+			// tree.addChild(tree.getRoot(), node);
+			// }
 
-			createSubDataTable();
+			createSubDataTable(dimensionData);
 
 		}
-		hashDimensionData.put(DIMENSION, defaultDimensionData.clone());
+		hashDimensionPerspectives.put(dimensionData.getPerspectiveID(), dimensionData);
+
 	}
 
 	/**
@@ -589,9 +611,9 @@ public class DataTable
 	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false, each
-	 *            dimension is treated separately, has it's own min and max etc. Sets that contain nominal data
-	 *            MUST be inhomogeneous.
+	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false,
+	 *            each dimension is treated separately, has it's own min and max etc. Sets that contain
+	 *            nominal data MUST be inhomogeneous.
 	 */
 	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
 		this.isSetHomogeneous = bIsSetHomogeneous;
@@ -651,23 +673,29 @@ public class DataTable
 
 	// ---------------------- helper functions ------------------------------
 
-	private RecordData createRecordData(String vaType) {
-		RecordData recordData = new RecordData(dataDomain.getRecordIDType());
+	private RecordPerspective createRecordPerspective(boolean initializeEmpty) {
+		RecordPerspective recordData = new RecordPerspective(dataDomain);
 
 		RecordVirtualArray recordVA;
-		if (vaType != RECORD_CONTEXT) {
-			recordVA = createBaseRecordVA(vaType);
+		if (initializeEmpty == true) {
+			recordVA = new RecordVirtualArray(recordData.getPerspectiveID());
 		}
 		else {
-			recordVA = new RecordVirtualArray(vaType);
+			recordVA = createBaseRecordVA(recordData.getPerspectiveID());
+
 		}
-		recordData.setRecordVA(recordVA);
+		recordData.setVA(recordVA);
 		return recordData;
 
 	}
 
-	private RecordVirtualArray createBaseRecordVA(String vaType) {
-		RecordVirtualArray recordVA = new RecordVirtualArray(vaType);
+	void createDefaultRecordPerspective() {
+		RecordPerspective recordData = createRecordPerspective(false);
+		hashRecordPerspectives.put(recordData.getPerspectiveID(), recordData);
+	}
+
+	private RecordVirtualArray createBaseRecordVA(String recordPerspectiveID) {
+		RecordVirtualArray recordVA = new RecordVirtualArray(recordPerspectiveID);
 		for (int count = 0; count < metaData.depth(); count++) {
 			recordVA.append(count);
 		}
@@ -675,20 +703,20 @@ public class DataTable
 	}
 
 	/**
-	 * Return a list of content VA types that have registered {@link RecordData}.
+	 * Return a list of content VA types that have registered {@link RecordPerspective}.
 	 * 
 	 * @return
 	 */
-	public java.util.Set<String> getRegisteredRecordVATypes() {
-		return hashRecordData.keySet();
+	public java.util.Set<String> getRegisteredRecordPerspectives() {
+		return hashRecordPerspectives.keySet();
 	}
 
 	/**
-	 * Return a list of dimension VA types that have registered {@link DimensionData}
+	 * Return a list of dimension VA types that have registered {@link DimensionPerspective}
 	 * 
 	 * @return
 	 */
-	public Set<String> getRegisteredDimensionVATypes() {
-		return hashDimensionData.keySet();
+	public Set<String> getRegisteredDimensionPerspectives() {
+		return hashDimensionPerspectives.keySet();
 	}
 }

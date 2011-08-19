@@ -22,8 +22,8 @@ public class Uncertainty {
 	 */
 	private float[] aggregatedNormalizedUncertainties;
 	/**
-	 * the uncertainties for the whole dimension aggregated across the dimensionVA based on the raw uncertainty
-	 * values
+	 * the uncertainties for the whole dimension aggregated across the dimensionVA based on the raw
+	 * uncertainty values
 	 */
 	private float[] aggregatedRawUncertainties;
 
@@ -62,7 +62,8 @@ public class Uncertainty {
 		return aggregatedRawUncertainties;
 	}
 
-	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold) {
+	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold,
+		String dimensionPerspectiveID) {
 
 		for (ADimension dimension : table.hashDimensions.values()) {
 
@@ -74,18 +75,20 @@ public class Uncertainty {
 		for (int recordIndex = 0; recordIndex < metaData.depth(); recordIndex++) {
 			// float aggregatedUncertainty = calculateMaxUncertainty(recordIndex);
 			float aggregatedUncertainty =
-				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_NORMALIZED);
+				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_NORMALIZED,
+					dimensionPerspectiveID);
 			aggregatedNormalizedUncertainties[recordIndex] = aggregatedUncertainty;
 		}
 	}
 
-	public void calculateRawAverageUncertainty() {
+	public void calculateRawAverageUncertainty(String dimensionPerspectiveID) {
 		aggregatedRawUncertainties = new float[metaData.depth()];
 		for (int recordIndex = 0; recordIndex < metaData.depth(); recordIndex++) {
 			float aggregatedUncertainty;
 
 			aggregatedUncertainty =
-				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_RAW);
+				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_RAW,
+					dimensionPerspectiveID);
 
 			// aggregatedUncertainty =
 			// calculateMaxUncertainty(recordIndex, EDataRepresentation.UNCERTAINTY_RAW);
@@ -94,9 +97,10 @@ public class Uncertainty {
 		}
 	}
 
-	private float calcualteAverageUncertainty(int recordIndex, DataRepresentation dataRepresentation) {
+	private float calcualteAverageUncertainty(int recordIndex, DataRepresentation dataRepresentation,
+		String dimensionPerspectiveID) {
 		float uncertaintySum = 0;
-		DimensionVirtualArray dimensionVA = table.hashDimensionData.get(DataTable.DIMENSION).getDimensionVA();
+		DimensionVirtualArray dimensionVA = table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVA();
 		for (Integer dimensionID : dimensionVA) {
 			try {
 				uncertaintySum +=
@@ -110,9 +114,10 @@ public class Uncertainty {
 	}
 
 	@SuppressWarnings("unused")
-	private float calculateMaxUncertainty(int recordIndex, DataRepresentation dataRepresentation) {
+	private float calculateMaxUncertainty(int recordIndex, DataRepresentation dataRepresentation,
+		String dimensionPerspectiveID) {
 		float maxUncertainty = Float.MAX_VALUE;
-		for (Integer dimensionID : table.hashDimensionData.get(DataTable.DIMENSION).getDimensionVA()) {
+		for (Integer dimensionID : table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVA()) {
 			float cellUncertainty = 0;
 			try {
 				cellUncertainty =

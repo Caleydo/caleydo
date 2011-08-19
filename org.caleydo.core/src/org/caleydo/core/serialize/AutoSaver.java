@@ -4,9 +4,6 @@ import java.util.Date;
 
 import org.caleydo.core.manager.execution.DisplayLoopExecution;
 import org.caleydo.core.manager.view.ViewManager;
-import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -45,15 +42,15 @@ public class AutoSaver
 			@Override
 			public void run() {
 				if ((new Date()).getTime() > lastSaveTimeStamp.getTime() + DEFAULT_INTERVAL) {
-
-					Date start = new Date();
-					ProjectSaver projectSaver = new ProjectSaver();
-					projectSaver.saveRecentProject();
-					Date stop = new Date();
-					Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
-						+ (stop.getTime() - start.getTime()) + " ms"));
-
-					lastSaveTimeStamp = new Date();
+// FIXME re-enable
+//					Date start = new Date();
+//					ProjectSaver projectSaver = new ProjectSaver();
+//					projectSaver.saveRecentProject();
+//					Date stop = new Date();
+//					Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
+//						+ (stop.getTime() - start.getTime()) + " ms"));
+//
+//					lastSaveTimeStamp = new Date();
 				}
 			}
 		});

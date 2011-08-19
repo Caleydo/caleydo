@@ -1,9 +1,15 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.virtualarray.events;
 
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.ReplaceVAEvent;
 
+/**
+ * Handler interface for listeners for {@link RecordVADeltaEvent} and {@link RecordReplaceVAEvent}.
+ * 
+ * @author Alexander Lex
+ *
+ */
 public interface IRecordVADeltaHandler
 	extends IListenerOwner {
 
@@ -19,7 +25,7 @@ public interface IRecordVADeltaHandler
 	public void handleRecordVADelta(RecordVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link ReplaceVAEvent} was
+	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link VAReplaceEvent} was
 	 * received.
 	 * 
 	 * @param tableID
@@ -27,6 +33,6 @@ public interface IRecordVADeltaHandler
 	 * @param vaType
 	 *            the type of the VA which is updated
 	 */
-	public void replaceRecordVA(int tableID, String dataDomainType, String vaType);
+	public void replaceRecordVA(int tableID, String dataDomainID, String vaType, RecordVirtualArray virtualArray);
 
 }

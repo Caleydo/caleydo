@@ -1,4 +1,4 @@
-package org.caleydo.core.manager.event.data;
+package org.caleydo.core.data.virtualarray.events;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -15,7 +15,7 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
+public abstract class VAReplaceEvent<E extends VirtualArray<?, ?, ?>>
 	extends AEvent {
 
 	String vaType = null;
@@ -27,7 +27,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	/**
 	 * default no-arg constructor.
 	 */
-	public ReplaceVAEvent() {
+	public VAReplaceEvent() {
 		// nothing to initialize here
 	}
 
@@ -36,13 +36,13 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	 * 
 	 * @param vaType
 	 */
-	public ReplaceVAEvent(DataTable table, String dataDomainType, String vaType) {
+	public VAReplaceEvent(DataTable table, String dataDomainType, String vaType) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.tableID = table.getID();
 	}
 
-	public ReplaceVAEvent(DataTable table, String dataDomainType, String vaType, E virtualArray) {
+	public VAReplaceEvent(DataTable table, String dataDomainType, String vaType, E virtualArray) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;
@@ -57,7 +57,7 @@ public abstract class ReplaceVAEvent<E extends VirtualArray<?, ?, ?>>
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	protected ReplaceVAEvent(String dataDomainType, String vaType, E virtualArray) {
+	protected VAReplaceEvent(String dataDomainType, String vaType, E virtualArray) {
 		this.dataDomainID = dataDomainType;
 		this.vaType = vaType;
 		this.virtualArray = virtualArray;

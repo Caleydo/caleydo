@@ -15,13 +15,12 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
@@ -1223,16 +1222,16 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			iAlClusterNodes.clear();
 
 			if (bRenderContentTree == true) {
-				if (table.getRecordData(recordVAType).getRecordTree() != null) {
-					tree = table.getRecordData(recordVAType).getRecordTree();
+				if (table.getRecordPerspective(recordPerspectiveID).getTree() != null) {
+					tree = table.getRecordPerspective(recordPerspectiveID).getTree();
 					groupList = (GroupType) new RecordGroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			} else {
-				if (!table.getDimensionData(dimensionVAType).isDefaultTree()
-						&& table.getDimensionData(dimensionVAType).getDimensionTree() != null) {
-					tree = table.getDimensionData(dimensionVAType).getDimensionTree();
+				if (!table.getDimensionPerspective(dimensionPerspectiveID).isTreeDefaultTree()
+						&& table.getDimensionPerspective(dimensionPerspectiveID).getTree() != null) {
+					tree = table.getDimensionPerspective(dimensionPerspectiveID).getTree();
 					groupList = (GroupType) new DimensionGroupList();
 					rootNode = tree.getRoot();
 				} else
@@ -1359,7 +1358,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		if (bRenderContentTree) {
 			NewRecordGroupInfoEvent newGroupInfoEvent = new NewRecordGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(recordVAType);
+			newGroupInfoEvent.setVAType(recordPerspectiveID);
 			newGroupInfoEvent.setGroupList((RecordGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			newGroupInfoEvent.setTableID(table.getID());
@@ -1367,7 +1366,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		} else {
 			NewDimensionGroupInfoEvent newGroupInfoEvent = new NewDimensionGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(dimensionVAType);
+			newGroupInfoEvent.setVAType(dimensionPerspectiveID);
 			newGroupInfoEvent.setGroupList((DimensionGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
@@ -1483,9 +1482,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				if (!dataDomain.getDataDomainID()
 						.equals("org.caleydo.datadomain.genetic"))
 					break;
-				
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark " + dataDomain.getRecordLabel(recordIDType, leafNode.getLeafID()), recordIDType,
-						leafNode.getLeafID(), dataDomain.getDataDomainID());
+
+				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+						+ dataDomain.getRecordLabel(recordIDType, leafNode.getLeafID()),
+						recordIDType, leafNode.getLeafID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 				break;
@@ -1499,7 +1499,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 					tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
 				SelectionDelta selectionDelta = null;
-				VABasedSelectionManager selectionManager = null;
+				SelectionManager selectionManager = null;
 
 				selectionManager = recordSelectionManager;
 
@@ -1568,8 +1568,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 					break;
 
 				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
-						+ dataDomain.getRecordLabel(tree.getLeaveIDType(), leafNode.getLeafID()),
-						tree.getLeaveIDType(), leafNode.getLeafID(), dataDomain.getDataDomainID());
+						+ dataDomain.getRecordLabel(tree.getLeaveIDType(),
+								leafNode.getLeafID()), tree.getLeaveIDType(),
+						leafNode.getLeafID(), dataDomain.getDataDomainID());
 				contextMenuCreator.addContextMenuItem(menuItem);
 
 				break;
@@ -1583,7 +1584,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 					tree.getNodeByNumber(externalID).setSelectionType(selectionType);
 
 				SelectionDelta selectionDelta = null;
-				VABasedSelectionManager selectionManager = null;
+				SelectionManager selectionManager = null;
 
 				selectionManager = dimensionSelectionManager;
 
@@ -1670,13 +1671,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		// if (bRenderOnlyContext)
 		// recordVAType = EVAType.CONTENT_CONTEXT;
 		// else
-		recordVAType = DataTable.RECORD;
+		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
+		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 
-		recordVA = dataDomain.getRecordVA(recordVAType);
-		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
-
-		recordSelectionManager.setVA(recordVA);
-		dimensionSelectionManager.setVA(dimensionVA);
 	}
 
 	/**
@@ -1764,10 +1761,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				// setDisplayListDirty();
 			}
 		}
-	}
-
-	@Override
-	public void renderContext(boolean renderContext) {
 	}
 
 	@Override

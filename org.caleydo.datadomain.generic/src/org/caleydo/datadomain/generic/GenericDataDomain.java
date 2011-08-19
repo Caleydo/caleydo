@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.DimensionType;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
@@ -26,9 +25,9 @@ import org.caleydo.core.manager.GeneralManager;
 public class GenericDataDomain extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.generic";
-	
+
 	private IDMappingManager idMappingManager = GeneralManager.get()
-	.getIDMappingManager();
+			.getIDMappingManager();
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -41,7 +40,8 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	 */
 	public GenericDataDomain() {
 
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
+				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
 		recordLabelSingular = "entity";
 		recordLabelPlural = "entities";
@@ -73,10 +73,9 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public String getRecordLabel(IDType idType, Object id) {
-		
-		String resolvedID = idMappingManager.getID(idType,
-				humanReadableRecordIDType, id);
-		
+
+		String resolvedID = idMappingManager.getID(idType, humanReadableRecordIDType, id);
+
 		return resolvedID;
 	}
 
@@ -93,11 +92,13 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 		recordIDCategory = IDCategory.registerCategory("UNSPECIFIED_RECORD");
 		dimensionIDCategory = IDCategory.registerCategory("UNSPECIFIED_DIMENSION");
-		
-		recordIDType = IDType.registerType("UNSPECIFIED_RECORD", recordIDCategory, DimensionType.STRING);
-		dimensionIDType = IDType.registerType("UNSPECIFIED_DIMENSION", dimensionIDCategory, DimensionType.STRING);
-		
-		primaryRecordMappingType = IDType.getIDType(DataTable.RECORD);
+
+		recordIDType = IDType.registerType("UNSPECIFIED_RECORD", recordIDCategory,
+				DimensionType.STRING);
+		dimensionIDType = IDType.registerType("UNSPECIFIED_DIMENSION",
+				dimensionIDCategory, DimensionType.STRING);
+
+		primaryRecordMappingType = recordIDType;// IDType.getIDType(DataTable.RECORD);
 		humanReadableRecordIDType = recordIDType;
 		humanReadableDimensionIDType = dimensionIDType;
 	}

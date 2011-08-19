@@ -27,6 +27,9 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
+import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
+import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -34,12 +37,12 @@ import org.caleydo.core.manager.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -47,9 +50,7 @@ import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -113,7 +114,7 @@ public class GLPathway extends AGLView implements
 	private Vec3f vecTranslation;
 
 	int iCurrentDimensionIndex = -1;
-	
+
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
 
@@ -126,7 +127,7 @@ public class GLPathway extends AGLView implements
 	protected ClearSelectionsListener clearSelectionsListener;
 
 	protected SelectionCommandListener selectionCommandListener;
-	
+
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
 	/**
@@ -150,7 +151,6 @@ public class GLPathway extends AGLView implements
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
 
-		recordVAType = DataTable.RECORD_CONTEXT;
 	}
 
 	public void setMappingDataDomain(ATableBasedDataDomain dataDomain) {
@@ -212,10 +212,10 @@ public class GLPathway extends AGLView implements
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
-		
+
 		// FIXME - check if already initialized with dirty flag
 		initPathwayData(gl);
-		
+
 		pickingManager.handlePicking(this, gl);
 		if (bIsDisplayListDirtyLocal) {
 			rebuildPathwayDisplayList(gl, iGLDisplayListIndexLocal);
@@ -347,10 +347,11 @@ public class GLPathway extends AGLView implements
 
 		if (pathway == null)
 			return;
-		
+
 		if (selectionDelta.getIDType() == mappingDataDomain.getDimensionIDType()) {
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
-				if (item.getSelectionType() == SelectionType.MOUSE_OVER && !item.isRemove()) {
+				if (item.getSelectionType() == SelectionType.MOUSE_OVER
+						&& !item.isRemove()) {
 					iCurrentDimensionIndex = item.getID();
 					System.out.println(item);
 					break;
@@ -461,7 +462,7 @@ public class GLPathway extends AGLView implements
 	}
 
 	private SelectionDelta resolveExternalSelectionDelta(SelectionDelta selectionDelta) {
-		
+
 		SelectionDelta newSelectionDelta = new SelectionDelta(
 				dataDomain.getPrimaryIDType());
 
@@ -476,9 +477,9 @@ public class GLPathway extends AGLView implements
 			// values, depending on the IDType that has been specified when
 			// loading expression data.
 			// Possibly a different handling of the Set is required.
-			Set<Integer> tableIDs = idMappingManager.getIDAsSet(
-					selectionDelta.getIDType(), dataDomain.getDavidIDType(),
-					item.getID());
+			Set<Integer> tableIDs = idMappingManager
+					.getIDAsSet(selectionDelta.getIDType(), dataDomain.getDavidIDType(),
+							item.getID());
 
 			if (tableIDs == null || tableIDs.isEmpty()) {
 				continue;
@@ -715,12 +716,17 @@ public class GLPathway extends AGLView implements
 				} else if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.gene) {
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
-						
+
 						GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
-						contexMenuItemContainer.setDataDomain((ATableBasedDataDomain)mappingDataDomain);
-						contexMenuItemContainer.setData(dataDomain.getDavidIDType(), pathwayItemManager
-								.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
-						contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
+						contexMenuItemContainer
+								.setDataDomain((ATableBasedDataDomain) mappingDataDomain);
+						contexMenuItemContainer
+								.setData(
+										dataDomain.getDavidIDType(),
+										pathwayItemManager
+												.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) pathwayVertexGraphItem));
+						contextMenuCreator
+								.addContextMenuItemContainer(contexMenuItemContainer);
 					}
 				} else {
 					// do nothing if the type is neither a gene nor an
@@ -817,7 +823,8 @@ public class GLPathway extends AGLView implements
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		RecordVADelta delta = new RecordVADelta(recordVAType, dataDomain.getDavidIDType());
+		RecordVADelta delta = new RecordVADelta(recordPerspectiveID,
+				dataDomain.getDavidIDType());
 
 		for (IGraphItem tmpPathwayVertexGraphItemRep : pathway
 				.getAllItemsByKind(EGraphItemKind.NODE)) {
@@ -851,12 +858,12 @@ public class GLPathway extends AGLView implements
 			}
 		}
 
-		RecordVADeltaEvent virtualArrayUpdateEvent = new RecordVADeltaEvent();
-		virtualArrayUpdateEvent.setSender(this);
-		virtualArrayUpdateEvent.setDataDomainID(mappingDataDomain.getDataDomainID());
-		virtualArrayUpdateEvent.setVirtualArrayDelta(delta);
-		virtualArrayUpdateEvent.setInfo(getShortInfoLocal());
-		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
+		RecordVADeltaEvent virtualArrayDeltaEvent = new RecordVADeltaEvent();
+		virtualArrayDeltaEvent.setSender(this);
+		virtualArrayDeltaEvent.setDataDomainID(mappingDataDomain.getDataDomainID());
+		virtualArrayDeltaEvent.setVirtualArrayDelta(delta);
+		virtualArrayDeltaEvent.setInfo(getShortInfoLocal());
+		eventPublisher.triggerEvent(virtualArrayDeltaEvent);
 	}
 
 	@Override
@@ -965,10 +972,11 @@ public class GLPathway extends AGLView implements
 		// replaceVirtualArrayListener.setHandler(this);
 		// eventPublisher.addListener(ReplaceVAEvent.class,
 		// replaceVirtualArrayListener);
-		
+
 		switchDataRepresentationListener = new SwitchDataRepresentationListener();
 		switchDataRepresentationListener.setHandler(this);
-		eventPublisher.addListener(SwitchDataRepresentationEvent.class, switchDataRepresentationListener);
+		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
+				switchDataRepresentationListener);
 	}
 
 	@Override
@@ -1002,7 +1010,7 @@ public class GLPathway extends AGLView implements
 			eventPublisher.removeListener(replaceVirtualArrayListener);
 			replaceVirtualArrayListener = null;
 		}
-		
+
 		if (switchDataRepresentationListener != null) {
 			eventPublisher.removeListener(switchDataRepresentationListener);
 			switchDataRepresentationListener = null;
@@ -1065,5 +1073,14 @@ public class GLPathway extends AGLView implements
 	public void switchDataRepresentation() {
 		gLPathwayContentCreator.switchDataRepresentation();
 		setDisplayListDirty();
+	}
+
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+
+	}
+
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 	}
 }

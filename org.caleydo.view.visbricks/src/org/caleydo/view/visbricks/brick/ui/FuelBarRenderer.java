@@ -37,7 +37,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		if (table == null || recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray setRecordVA = table.getRecordPerspective(DataTable.RECORD).getVA();
 
 		if (setRecordVA == null)
 			return;

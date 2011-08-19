@@ -34,6 +34,7 @@ public class ChooseDataDomainDialog
 	public void setPossibleDataDomains(Collection<IDataDomain> possibleDataDomains)
 	{
 		this.possibleDataDomains = (IDataDomain[])possibleDataDomains.toArray(new IDataDomain[possibleDataDomains.size()]);
+		
 	}
 	
 	public IDataDomain open() {

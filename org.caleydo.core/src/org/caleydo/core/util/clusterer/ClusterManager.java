@@ -1,8 +1,6 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DimensionData;
-import org.caleydo.core.data.collection.table.RecordData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -105,7 +103,7 @@ public class ClusterManager {
 
 				runContentClustering(clusterer, clusterState, result, 0, 1);
 
-				if (result.dimensionResult.getDimensionVA() != null) {
+				if (result.dimensionResult.getVA() != null) {
 					runContentClustering(clusterer, clusterState, result, 50, 1);
 				}
 			}
@@ -122,43 +120,42 @@ public class ClusterManager {
 		int progressBarOffset, int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
-		TempResult tempResult = clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
+		TempResult tempResult =
+			clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
 		if (tempResult == null) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Clustering result was null, clusterer was: "
 				+ clusterer.toString()));
 			return;
 		}
-		result.contentResult = new RecordData(table.getDataDomain().getRecordIDType());
-		result.contentResult.setRecordVA(new RecordVirtualArray(clusterState.getRecordVAType(),
+		result.recordResult = clusterState.getRecordPerspective();
+		result.recordResult.setVA(new RecordVirtualArray(result.recordResult.getPerspectiveID(),
 			tempResult.indices));
-		result.contentResult.setRecordClusterSizes(tempResult.clusterSizes);
-		result.contentResult.setRecordSampleElements(tempResult.sampleElements);
+		result.recordResult.setClusterSizes(tempResult.clusterSizes);
+		result.recordResult.setSampleElements(tempResult.sampleElements);
 		if (tempResult.tree != null) {
 			tempResult.tree.initializeIDTypes(clusterState.getRecordIDType());
-			result.contentResult.setRecordTree(tempResult.tree);
+			result.recordResult.setTree(tempResult.tree);
 		}
 
 	}
 
-	private void runDimensionClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
-		int progressBarOffset, int progressBarMulti) {
+	private void runDimensionClustering(AClusterer clusterer, ClusterState clusterState,
+		ClusterResult result, int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterState);
 
-		TempResult tempResult = clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
-		result.dimensionResult = new DimensionData();
-		result.dimensionResult.setDimensionVA(new DimensionVirtualArray(clusterState.getDimensionVAType(),
-			tempResult.indices));
-		result.dimensionResult.setDimensionClusterSizes(tempResult.clusterSizes);
-		result.dimensionResult.setDimensionSampleElements(tempResult.sampleElements);
+		TempResult tempResult =
+			clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
+		result.dimensionResult = clusterState.getDimensionPerspective();
+		result.dimensionResult.setVA(new DimensionVirtualArray(result.dimensionResult
+			.getPerspectiveID(), tempResult.indices));
+		result.dimensionResult.setClusterSizes(tempResult.clusterSizes);
+		result.dimensionResult.setSampleElements(tempResult.sampleElements);
 
-		if (tempResult.tree == null) {
-			result.dimensionResult.setDefaultTree(true);
-		}
-		else {
-			result.dimensionResult.setDimensionTree(tempResult.tree);
+		if (tempResult.tree != null) {
+
+			result.dimensionResult.setTree(tempResult.tree);
 			table.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
-			result.dimensionResult.setDefaultTree(false);
-			result.dimensionResult.getDimensionTree().initializeIDTypes(clusterState.getDimensionIDType());
+			result.dimensionResult.getTree().initializeIDTypes(clusterState.getDimensionIDType());
 		}
 	}
 }

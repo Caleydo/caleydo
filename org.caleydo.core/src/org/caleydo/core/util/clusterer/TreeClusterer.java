@@ -66,11 +66,11 @@ public class TreeClusterer
 			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 				tree = new ClusterTree();
 				// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-				this.iNrSamples = clusterState.getRecordVA().size();
+				this.iNrSamples = clusterState.getRecordPerspective().getVA().size();
 			}
 			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING) {
 				tree = new ClusterTree();
-				this.iNrSamples = clusterState.getDimensionVA().size();
+				this.iNrSamples = clusterState.getDimensionPerspective().getVA().size();
 			}
 			else
 				throw new IllegalArgumentException("Can not handle cluster type "
@@ -197,7 +197,8 @@ public class TreeClusterer
 								isto++;
 							}
 
-							similarities[dimensionVA.indexOf(iDimensionIndex1)][dimensionVA.indexOf(iDimensionIndex2)] =
+							similarities[dimensionVA.indexOf(iDimensionIndex1)][dimensionVA
+								.indexOf(iDimensionIndex2)] =
 								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
 						}
 						icnt2++;
@@ -358,7 +359,8 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(tree, eClustererType, table);
+		ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
+			clusterState.getRecordPerspective(), eClustererType, table);
 
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices = tree.getRoot().getLeaveIds();
@@ -502,7 +504,8 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(tree, eClustererType, table);
+		ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
+			clusterState.getRecordPerspective(), eClustererType, table);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();
@@ -720,7 +723,8 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(tree, eClustererType, table);
+		ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
+			clusterState.getRecordPerspective(), eClustererType, table);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();

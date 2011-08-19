@@ -2,7 +2,6 @@ package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
@@ -12,8 +11,9 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
@@ -23,14 +23,11 @@ import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.VirtualArrayDeltaEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVADeltaHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordVADeltaListener;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
@@ -57,26 +54,30 @@ import org.eclipse.ui.PlatformUI;
  */
 public class SelectionBrowserView extends ASWTView implements
 		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
-		IRecordVADeltaHandler, ISelectionCommandHandler, IViewCommandHandler {
+		IRecordVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
 	private final static String SELECTION_TYPE_NAME_2 = "Selected by group 2";
 	private final static String SELECTION_TYPE_NAME_3 = "Selected by group 3";
 	private final static String SELECTION_TYPE_NAME_4 = "Selected by group 4";
-	
+
 	/** Colors taken from color brewer qualitative "Set 1" with 8 colors */
-	private final static float[] SELECTION_COLOR_1 = new float[] { 152f/255, 78f/255, 163f/255, 1 };
-	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f/255, 0, 1 }; // yellow	
-	private final static float[] SELECTION_COLOR_3 = new float[] { 247f/255, 129f/255, 191f/255, 1 };
-//	private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1, 51f/255, 1 };
-	private final static float[] SELECTION_COLOR_4 = new float[] { 166f/255, 86f/255, 40f/255, 1 };
-		
+	private final static float[] SELECTION_COLOR_1 = new float[] { 152f / 255, 78f / 255,
+			163f / 255, 1 };
+	private final static float[] SELECTION_COLOR_2 = new float[] { 1, 127f / 255, 0, 1 }; // yellow
+	private final static float[] SELECTION_COLOR_3 = new float[] { 247f / 255,
+			129f / 255, 191f / 255, 1 };
+	// private final static float[] SELECTION_COLOR_3 = new float[] { 1, 1,
+	// 51f/255, 1 };
+	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255,
+			40f / 255, 1 };
+
 	ATableBasedDataDomain dataDomain;
 
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
 
-	RecordSelectionManager contentSelectionManager;
+	RecordSelectionManager recordSelectionManager;
 	DimensionSelectionManager dimensionSelectionManager;
 
 	private Tree selectionTree;
@@ -87,7 +88,7 @@ public class SelectionBrowserView extends ASWTView implements
 	private Button btnSub;
 
 	private SelectionUpdateListener selectionUpdateListener;
-	private RecordVADeltaListener virtualArrayUpdateListener;
+	private RecordVAUpdateListener recordVAUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
 
 	private RedrawViewListener redrawViewListener;
@@ -105,53 +106,48 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	private void initContent() {
-		String recordVAType = DataTable.RECORD;
-		contentSelectionManager = dataDomain.getRecordSelectionManager();
-
-		RecordVirtualArray recordVA = dataDomain.getRecordVA(recordVAType);
-		contentSelectionManager.setVA(recordVA);
+		recordSelectionManager = dataDomain.getRecordSelectionManager();
 
 		initSelectedByGroupSelectionTypes();
 	}
 
-
 	private void initSelectedByGroupSelectionTypes() {
 
 		// Check if types have already been added
-		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+		for (SelectionType selectionType : recordSelectionManager.getSelectionTypes()) {
 			if (selectionType.getType().equals(SELECTION_TYPE_NAME_1))
 				return;
 		}
-		
+
 		boolean isVisible = true;
-		
+
 		ArrayList<SelectionType> selectedByGroupSelectionTypes = new ArrayList<SelectionType>();
 
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_1,
 				SELECTION_COLOR_1, 1, isVisible, true, 1));
-		
+
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_2,
 				SELECTION_COLOR_2, 1, isVisible, true, 1));
-		
+
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_3,
 				SELECTION_COLOR_3, 1, isVisible, true, 1));
-		
+
 		selectedByGroupSelectionTypes.add(new SelectionType(SELECTION_TYPE_NAME_4,
 				SELECTION_COLOR_4, 1, isVisible, true, 1));
 
 		for (SelectionType selectionType : selectedByGroupSelectionTypes) {
-			
+
 			selectionType.setManaged(true);
 			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(selectionType);
 			eventPublisher.triggerEvent(selectionTypeEvent);
 		}
-		
-//		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-//				selectedByGroupSelectionTypes.get(0));
-//		selectionTypeEvent.setCurrent(true);
-//		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
+
+		// SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+		// selectedByGroupSelectionTypes.get(0));
+		// selectionTypeEvent.setCurrent(true);
+		// GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 	}
-	
+
 	@Override
 	public void draw() {
 
@@ -235,7 +231,7 @@ public class SelectionBrowserView extends ASWTView implements
 		}
 
 		selectionTree.setLayoutData(gridData);
-		
+
 		selectionTree.addListener(SWT.Selection, new Listener() {
 
 			public void handleEvent(Event event) {
@@ -272,7 +268,7 @@ public class SelectionBrowserView extends ASWTView implements
 			eventPublisher.triggerEvent(event);
 		}
 
-		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -299,7 +295,7 @@ public class SelectionBrowserView extends ASWTView implements
 			} else {
 				SelectionType tmpSelectionType = (SelectionType) selection.getData();
 				tmpString += tmpSelectionType.toString() + ",";
-				contentSelectionManager.moveType(tmpSelectionType, firstSelectionType);
+				recordSelectionManager.moveType(tmpSelectionType, firstSelectionType);
 
 				SelectionTypeEvent event = new SelectionTypeEvent();
 				event.addSelectionType(tmpSelectionType);
@@ -308,7 +304,7 @@ public class SelectionBrowserView extends ASWTView implements
 			}
 		}
 
-		SelectionDelta selectionDelta = contentSelectionManager.getDelta();
+		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -321,7 +317,7 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	private void updateContentTree() {
-		ArrayList<SelectionType> sTypes = contentSelectionManager.getSelectionTypes();
+		ArrayList<SelectionType> sTypes = recordSelectionManager.getSelectionTypes();
 		Color color = null;
 		contentTree.removeAll();
 		for (SelectionType tmpSelectionType : sTypes) {
@@ -338,7 +334,7 @@ public class SelectionBrowserView extends ASWTView implements
 					(int) (fArColor[1] * 255), (int) (fArColor[2] * 255));
 
 			item.setText(tmpSelectionType.toString() + " ("
-					+ contentSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
+					+ recordSelectionManager.getNumberOfElements(tmpSelectionType) + ")");
 			item.setBackground(color);
 			item.setData(tmpSelectionType);
 
@@ -349,7 +345,7 @@ public class SelectionBrowserView extends ASWTView implements
 	@Override
 	public void handleSelectionUpdate(final SelectionDelta selectionDelta,
 			final boolean scrollToSelection, final String info) {
-		contentSelectionManager.setDelta(selectionDelta);
+		recordSelectionManager.setDelta(selectionDelta);
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -406,10 +402,9 @@ public class SelectionBrowserView extends ASWTView implements
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		virtualArrayUpdateListener = new RecordVADeltaListener();
-		virtualArrayUpdateListener.setHandler(this);
-		eventPublisher.addListener(VirtualArrayDeltaEvent.class,
-				virtualArrayUpdateListener);
+		recordVAUpdateListener = new RecordVAUpdateListener();
+		recordVAUpdateListener.setHandler(this);
+		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -434,9 +429,9 @@ public class SelectionBrowserView extends ASWTView implements
 			eventPublisher.removeListener(selectionUpdateListener);
 			selectionUpdateListener = null;
 		}
-		if (virtualArrayUpdateListener != null) {
-			eventPublisher.removeListener(virtualArrayUpdateListener);
-			virtualArrayUpdateListener = null;
+		if (recordVAUpdateListener != null) {
+			eventPublisher.removeListener(recordVAUpdateListener);
+			recordVAUpdateListener = null;
 		}
 		if (selectionCommandListener != null) {
 			eventPublisher.removeListener(selectionCommandListener);
@@ -468,13 +463,8 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	@Override
-	public void handleRecordVADelta(RecordVADelta vaDelta, final String info) {
+	public void handleRecordVAUpdate(int dataTableID, String info) {
 		initContent();
-	}
-
-	@Override
-	public void replaceRecordVA(int tableID, String dataDomain, String vaType) {
-		// nothing to do here
 	}
 
 	@Override

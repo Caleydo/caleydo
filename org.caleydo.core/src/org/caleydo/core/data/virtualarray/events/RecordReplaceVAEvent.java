@@ -1,10 +1,10 @@
-package org.caleydo.core.manager.event.data;
+package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 public class RecordReplaceVAEvent
-	extends ReplaceVAEvent<RecordVirtualArray> {
+	extends VAReplaceEvent<RecordVirtualArray> {
 
 	public RecordReplaceVAEvent() {
 		// nothing to initialize here

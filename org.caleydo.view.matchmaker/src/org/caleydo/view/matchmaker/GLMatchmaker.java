@@ -16,10 +16,10 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
+import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.RecordReplaceVAEvent;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
@@ -34,11 +34,9 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.IRecordVADeltaHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RecordReplaceVAListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -76,7 +74,7 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
-		IRecordVADeltaHandler, IDataDomainBasedView<ATableBasedDataDomain> {
+		IRecordVAUpdateHandler, IDataDomainBasedView<ATableBasedDataDomain> {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.matchmaker";
 
@@ -115,7 +113,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLMatchmaker(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLMatchmaker(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -148,7 +147,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// dimensionVA = useCase.getDimensionVA(DimensionVAType.STORAGE);
 
 		textRenderer = new CaleydoTextRenderer(24);
-		
+
 		compareViewStateController = new CompareViewStateController(this, uniqueID,
 				textRenderer, textureManager, pickingManager, glMouseListener, dataDomain);
 
@@ -194,14 +193,12 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
@@ -290,8 +287,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -374,10 +371,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
-
-		replaceRecordVAListener = new RecordReplaceVAListener();
-		replaceRecordVAListener.setHandler(this);
-		eventPublisher.addListener(RecordReplaceVAEvent.class, replaceRecordVAListener);
 
 		useSortingListener = new UseSortingListener();
 		useSortingListener.setHandler(this);
@@ -527,15 +520,14 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		wasMouseWheeled = true;
 	}
 
-	@Override
-	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
-		System.out.println("COMPARER IGNORES CONTENT VA UPDATE");
-	}
+	// @Override
+	// public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
+	// System.out.println("COMPARER IGNORES CONTENT VA UPDATE");
+	// }
 
 	@Override
-	public void replaceRecordVA(int tableID, String dataDomain, String vaType) {
-
-		clusteredSets.add(tableID);
+	public void handleRecordVAUpdate(int dataTableID, String info) {
+		clusteredSets.add(dataTableID);
 
 		// Check if all sets are properly clustered
 		// boolean allSetsClustered = true;
@@ -549,7 +541,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// return;
 
 		compareViewStateController.setTablesToCompare(setsToCompare);
-		compareViewStateController.handleReplaceRecordVA(tableID, dataDomain, vaType);
+		compareViewStateController.handleReplaceRecordVA(dataTableID, dataDomain.getDataDomainType(), recordPerspectiveID);
 		clusteredSets.clear();
 
 	}
@@ -568,7 +560,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	public void handleContentGroupListUpdate(String recordVAType, int tableID,
 			RecordGroupList contentGroupList) {
-		if (this.recordVAType.equals(recordVAType))
+		if (this.recordPerspectiveID.equals(recordVAType))
 			compareViewStateController.handleContentGroupListUpdate(tableID,
 					contentGroupList);
 	}
@@ -594,7 +586,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-	
+
 	@Override
 	public boolean isDataView() {
 		return true;

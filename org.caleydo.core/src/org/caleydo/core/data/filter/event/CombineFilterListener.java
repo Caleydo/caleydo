@@ -14,17 +14,14 @@ import org.caleydo.core.manager.event.AEventListener;
  * @author Thomas Geymayer
  */
 public abstract class CombineFilterListener<FilterType extends Filter<?>>
-	extends AEventListener<FilterManager<?, FilterType, ?>> {
+	extends AEventListener<FilterManager<?, ?, FilterType, ?>> {
 
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof CombineFilterEvent<?>) {
 			CombineFilterEvent<?> filterEvent = (CombineFilterEvent<?>) event;
-			handler.handleCombineFilter
-			(
-				filterEvent.getFilter(),
-				(Collection<? extends RecordFilter>) filterEvent.getCombineFilters()
-			);
+			handler.handleCombineFilter(filterEvent.getFilter(),
+				(Collection<? extends RecordFilter>) filterEvent.getCombineFilters());
 		}
 	}
 }

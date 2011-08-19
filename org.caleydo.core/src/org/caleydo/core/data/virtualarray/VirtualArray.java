@@ -20,7 +20,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.custom.Bullet;
 
 /**
  * <p>
@@ -495,15 +494,15 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		if (groupList != null)
 			hasGrouping = true;
 
-		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArrayList.size() + ", hasGrouping: "
-			+ hasGrouping;
+		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArrayList.size()
+			+ ", hasGrouping: " + hasGrouping;
 	}
 
 	/**
 	 * Function which merges the clusters determined by the cut off value to group lists used for rendering
 	 * the clusters assignments in {@link GLHierarchicalHeatMap}.
 	 */
-	protected GroupList<GroupType, ConcreteType, VADelta> buildNewGroupList(
+	public GroupList<GroupType, ConcreteType, VADelta> buildNewGroupList(
 		GroupList<GroupType, ConcreteType, VADelta> groupList, ArrayList<ClusterNode> clusterNodes) {
 
 		int sampleElementIndex = 0;

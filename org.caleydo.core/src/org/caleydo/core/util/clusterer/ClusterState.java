@@ -2,10 +2,9 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 
 /**
@@ -13,10 +12,13 @@ import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
  * selected algorithm different variables (cluster factor, cluster number) are needed.
  * 
  * @author Bernhard Schlegl
+ * @author Alexander Lex
  */
 @XmlType
 public class ClusterState {
 
+//	private String dimensionPerspectiveID;
+//	private String recordPerspectiveID;
 	private IDType recordIDType;
 	private IDType dimensionIDType;
 	private EClustererAlgo clustererAlgo;
@@ -28,11 +30,8 @@ public class ClusterState {
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 
-	private String recordVAType = DataTable.RECORD;
-	private String dimensionVAType = DataTable.DIMENSION;
-
-	private RecordVirtualArray recordVA;
-	private DimensionVirtualArray dimensionVA;
+	private RecordPerspective recordPerspective;
+	private DimensionPerspective dimensionPerspective;
 
 	public ClusterState() {
 
@@ -43,6 +42,22 @@ public class ClusterState {
 		this.setClustererType(type);
 		this.setDistanceMeasure(dist);
 	}
+
+//	public void setRecordPerspectiveID(String recordPerspectiveID) {
+//		this.recordPerspectiveID = recordPerspectiveID;
+//	}
+//
+//	public String getRecordPerspectiveID() {
+//		return recordPerspectiveID;
+//	}
+//
+//	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+//		this.dimensionPerspectiveID = dimensionPerspectiveID;
+//	}
+//
+//	public String getDimensionPerspectiveID() {
+//		return dimensionPerspectiveID;
+//	}
 
 	public void setRecordIDType(IDType recordIDType) {
 		this.recordIDType = recordIDType;
@@ -60,36 +75,20 @@ public class ClusterState {
 		return dimensionIDType;
 	}
 
-	public void setRecordVAType(String recordVAType) {
-		this.recordVAType = recordVAType;
+	public void setRecordPerspective(RecordPerspective recordPerspective) {
+		this.recordPerspective = recordPerspective;
 	}
 
-	public String getRecordVAType() {
-		return recordVAType;
+	public RecordPerspective getRecordPerspective() {
+		return recordPerspective;
 	}
 
-	public void setDimensionVAType(String dimensionVAType) {
-		this.dimensionVAType = dimensionVAType;
+	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		this.dimensionPerspective = dimensionPerspective;
 	}
 
-	public String getDimensionVAType() {
-		return dimensionVAType;
-	}
-
-	public void setRecordVA(RecordVirtualArray recordVA) {
-		this.recordVA = recordVA;
-	}
-
-	public RecordVirtualArray getRecordVA() {
-		return recordVA;
-	}
-
-	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
-		this.dimensionVA = dimensionVA;
-	}
-
-	public DimensionVirtualArray getDimensionVA() {
-		return dimensionVA;
+	public DimensionPerspective getDimensionPerspective() {
+		return dimensionPerspective;
 	}
 
 	public void setClustererAlgo(EClustererAlgo eClustererAlgo) {

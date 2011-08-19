@@ -1,16 +1,13 @@
 package org.caleydo.testing.collection;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+
+import junit.framework.TestCase;
 
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.eclipse.jface.viewers.ContentViewer;
-
-import junit.framework.TestCase;
 
 public class VirtualArrayTester extends TestCase {
 

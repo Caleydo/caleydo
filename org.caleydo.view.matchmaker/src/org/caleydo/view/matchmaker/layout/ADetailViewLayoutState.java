@@ -233,8 +233,8 @@ public abstract class ADetailViewLayoutState {
 		Vec3f detailPosition = layout.getDetailPosition();
 		float currentPositionY = detailPosition.y() + getDetailHeight();
 
-		for (Group group : heatMapWrapper.getTable().getRecordData(DataTable.RECORD)
-				.getRecordVA().getGroupList()) {
+		for (Group group : heatMapWrapper.getTable().getRecordPerspective(DataTable.RECORD)
+				.getVA().getGroupList()) {
 
 			if (!selectedGroups.containsKey(group))
 				continue;

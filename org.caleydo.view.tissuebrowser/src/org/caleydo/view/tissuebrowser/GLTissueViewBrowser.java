@@ -10,7 +10,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -25,9 +24,9 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
+import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
-import org.caleydo.core.manager.event.view.tablebased.RecordVADeltaEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -94,7 +93,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 		this.foreignDataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 				.getDataDomainByID(FOREIGN_DATADOMAIN_TYPE);
 
-		recordVA = foreignDataDomain.getRecordVA(DataTable.RECORD);
+		recordVA = foreignDataDomain.getRecordVA(recordPerspectiveID);
 		primaryIDType = foreignDataDomain.getRecordIDType();
 
 		experiementSelectionManager = foreignDataDomain.getRecordSelectionManager();
@@ -362,7 +361,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID);
-		RecordVADelta vaDelta = new RecordVADelta(DataTable.RECORD, primaryIDType);
+		RecordVADelta vaDelta = new RecordVADelta(recordPerspectiveID, primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
 		RecordVADeltaEvent virtualArrayUpdateEvent = new RecordVADeltaEvent();
@@ -373,10 +372,11 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	}
 
 	@Override
-	public void handleRecordVAUpdate(String info) {
+	public void handleRecordVAUpdate(int dataTableID, String info) {
+
 		System.out.println("What to do?");
-//		experiementSelectionManager.virtualArrayUpdated(dataDomain
-//				.getRecordVA(DataTable.DIMENSION));
+		// experiementSelectionManager.virtualArrayUpdated(dataDomain
+		// .getRecordVA(DataTable.DIMENSION));
 
 	}
 
@@ -450,7 +450,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
 		DimensionVirtualArray va = foreignDataDomain.getTable()
-				.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+				.getDimensionPerspective(dimensionPerspectiveID).getVA();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getTable().get(va.get(1));
@@ -461,7 +461,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
 		DimensionVirtualArray va = foreignDataDomain.getTable()
-				.getDimensionData(DataTable.DIMENSION).getDimensionVA();
+				.getDimensionPerspective(dimensionPerspectiveID).getVA();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getTable().get(va.get(1));

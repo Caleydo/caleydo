@@ -246,14 +246,14 @@ public class DataTableExporter {
 	public void exportTrees(DataTable table, String directory) {
 		try {
 			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = table.getRecordData(DataTable.RECORD).getRecordTree();
+			Tree<ClusterNode> tree = table.getRecordPerspective(DataTable.RECORD).getTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(table.getDataDomain());
 				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
 			}
 			// export experiment cluster tree to own xml file
-			tree = table.getDimensionData(DataTable.DIMENSION).getDimensionTree();
+			tree = table.getDimensionPerspective(DataTable.DIMENSION).getDimensionTree();
 			if (tree != null) {
 				TreePorter treePorter = new TreePorter();
 				treePorter.setDataDomain(table.getDataDomain());

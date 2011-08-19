@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**

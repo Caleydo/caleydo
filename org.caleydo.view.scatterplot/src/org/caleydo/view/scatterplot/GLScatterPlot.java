@@ -33,7 +33,6 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -2904,17 +2903,9 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	protected void initLists() {
 
-		if (bRenderOnlyContext)
-			recordVAType = DataTable.RECORD_CONTEXT;
-		else
-			recordVAType = DataTable.RECORD;
+		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
+		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 
-		recordVA = dataDomain.getRecordVA(recordVAType);
-		dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
-
-		recordSelectionManager.setVA(recordVA);
-
-		dimensionSelectionManager.setVA(dimensionVA);
 		// AlSelectionTypes.clear();
 		// addSelectionType();
 		// AlSelectionTypes.add(SelectionType.SELECTION);
@@ -2955,27 +2946,20 @@ public class GLScatterPlot extends ATableBasedView {
 		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
 				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
 
-		if (bRenderOnlyContext) {
-			sInfoText.append("Showing only " + " "
-					+ dataDomain.getRecordName(false, true)
-					+ " which occur in one of the other views in focus\n");
+		if (bUseRandomSampling) {
+			sInfoText.append("Random sampling active, sample size: "
+					+ iNumberOfRandomElements + "\n");
 		} else {
-			if (bUseRandomSampling) {
-				sInfoText.append("Random sampling active, sample size: "
-						+ iNumberOfRandomElements + "\n");
-			} else {
-				sInfoText.append("Random sampling inactive\n");
-			}
+			sInfoText.append("Random sampling inactive\n");
+		}
 
-			if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-				sInfoText.append("Showing all genes in the dataset\n");
-			} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-				sInfoText
-						.append("Showing all genes that have a known DAVID ID mapping\n");
-			} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-				sInfoText
-						.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
-			}
+		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
+			sInfoText.append("Showing all genes in the dataset\n");
+		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
+			sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
+		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
+			sInfoText
+					.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
 		}
 
 		// return sInfoText.toString();
@@ -3271,8 +3255,10 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(String info) {
-		super.handleDimensionVAUpdate(info);
+	public void handleDimensionVAUpdate(int dataTableID, String info) {
+		super.handleDimensionVAUpdate(dataTableID, info);
+		if (this.table.getID() != dataTableID)
+			return;
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
@@ -3285,26 +3271,6 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	protected void handleConnectedElementReps(SelectionDelta selectionDelta) {
 		// Not Used in this View..
-	}
-
-	@Override
-	public void renderContext(boolean bRenderOnlyContext) {
-
-		this.bRenderOnlyContext = bRenderOnlyContext;
-
-		if (this.bRenderOnlyContext) {
-			recordVAType = DataTable.RECORD_CONTEXT;
-			recordVA = dataDomain.getRecordVA(recordVAType);
-		} else {
-			recordVAType = DataTable.RECORD;
-			recordVA = dataDomain.getRecordVA(recordVAType);
-		}
-
-		recordSelectionManager.setVA(recordVA);
-		// renderStyle.setActiveVirtualArray(iRecordVAID);
-
-		setDisplayListDirty();
-
 	}
 
 	@Override
@@ -3333,7 +3299,7 @@ public class GLScatterPlot extends ATableBasedView {
 	public String toString() {
 		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
 				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordVAType
+				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
 				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 

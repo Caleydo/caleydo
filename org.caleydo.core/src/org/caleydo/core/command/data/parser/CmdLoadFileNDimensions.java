@@ -112,8 +112,6 @@ public class CmdLoadFileNDimensions
 			new TabularAsciiDataReader(loadDataParameters.getFileName(), dataDomain);
 		loader.setTokenPattern(loadDataParameters.getInputPattern());
 		loader.setTargetDimensions(dimensionIDs);
-		if (loadDataParameters.isUseExperimentClusterInfo())
-			loader.enableExperimentClusterInfo();
 		loader.setStartParsingStopParsingAtLine(loadDataParameters.getStartParseFileAtLine(),
 			loadDataParameters.getStopParseFileAtLine());
 

@@ -255,7 +255,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 
 			for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
-				DimensionVirtualArray dimensionVA1 = table.getDimensionData(
+				DimensionVirtualArray dimensionVA1 = table.getDimensionPerspective(
 						DataTable.DIMENSION).getDimensionVA();
 
 				double[] compareVec1 = new double[dimensionVA1.size()];
@@ -323,12 +323,12 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int recordIndex = 0; recordIndex < set1.get(
-				set1.getDimensionData(DataTable.DIMENSION).getDimensionVA()
+				set1.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA()
 						.get(0)).size(); recordIndex++) {
 
-			DimensionVirtualArray dimensionVA1 = set1.getDimensionData(
+			DimensionVirtualArray dimensionVA1 = set1.getDimensionPerspective(
 					DataTable.DIMENSION).getDimensionVA();
-			DimensionVirtualArray dimensionVA2 = set2.getDimensionData(
+			DimensionVirtualArray dimensionVA2 = set2.getDimensionPerspective(
 					DataTable.DIMENSION).getDimensionVA();
 
 			double[] compareVec1 = new double[dimensionVA1.size()];

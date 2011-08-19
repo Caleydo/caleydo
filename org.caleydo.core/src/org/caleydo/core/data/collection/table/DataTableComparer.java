@@ -6,11 +6,12 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 public class DataTableComparer {
 
-	public static DataTableRelations compareSets(DataTable setLeft, DataTable setRight) {
+	public static DataTableRelations compareSets(DataTable setLeft, String leftRecordPerspectiveID,
+		DataTable setRight, String rightRecordPerspectiveID) {
 		DataTableRelations setRelations = new DataTableRelations(setLeft, setRight);
 
-		RecordVirtualArray recordVALeft = setLeft.getRecordData(DataTable.RECORD).getRecordVA();
-		RecordVirtualArray recordVARight = setRight.getRecordData(DataTable.RECORD).getRecordVA();
+		RecordVirtualArray recordVALeft = setLeft.getRecordPerspective(leftRecordPerspectiveID).getVA();
+		RecordVirtualArray recordVARight = setRight.getRecordPerspective(rightRecordPerspectiveID).getVA();
 
 		/** hash ID to index for faster accessibility */
 		HashMap<Integer, Integer> hashRightIndices = new HashMap<Integer, Integer>();

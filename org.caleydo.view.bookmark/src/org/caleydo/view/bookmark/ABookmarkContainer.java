@@ -7,8 +7,8 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.VABasedSelectionManager;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
@@ -53,7 +53,7 @@ import org.caleydo.view.bookmark.GLBookmarkView.PickingIDManager;
  * 
  * @author Alexander Lex
  */
-abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionManager<?, ?, ?>>
+abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 		implements ILayoutedElement {
 
 	/** The category of the container */
@@ -187,7 +187,8 @@ abstract class ABookmarkContainer<SelectionManagerType extends VABasedSelectionM
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				RemoveBookmarkItem menuItem = new RemoveBookmarkItem("Remove", internalIDType, externalID);
+				RemoveBookmarkItem menuItem = new RemoveBookmarkItem("Remove",
+						internalIDType, externalID);
 				manager.getContextMenuCreator().addContextMenuItem(menuItem);
 
 				break;

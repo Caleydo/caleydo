@@ -1,10 +1,10 @@
-package org.caleydo.core.manager.event.data;
+package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
 public class DimensionReplaceVAEvent
-	extends ReplaceVAEvent<DimensionVirtualArray> {
+	extends VAReplaceEvent<DimensionVirtualArray> {
 
 	public DimensionReplaceVAEvent() {
 		// nothing to initialize here

@@ -17,7 +17,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -168,7 +167,7 @@ public abstract class AGLView
 	/**
 	 * The type of the content VA
 	 */
-	protected String recordVAType = DataTable.RECORD;
+	protected String recordPerspectiveID;
 
 	/**
 	 * The id of the virtual array that manages the dimension references in the set
@@ -177,7 +176,7 @@ public abstract class AGLView
 	/**
 	 * The type of the dimension VA
 	 */
-	protected String dimensionVAType = DataTable.DIMENSION;
+	protected String dimensionPerspectiveID;
 
 	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
@@ -600,7 +599,7 @@ public abstract class AGLView
 					}
 					catch (IllegalArgumentException e) {
 					}
-					
+
 					pickingManager.flushHits(uniqueID, pickingType);
 
 				}
@@ -923,7 +922,7 @@ public abstract class AGLView
 	}
 
 	public final boolean rendersContextOnly() {
-		if (recordVAType.equals(DataTable.RECORD))
+		if (recordPerspectiveID.equals(recordPerspectiveID))
 			return false;
 		return true;
 	}
@@ -1093,7 +1092,10 @@ public abstract class AGLView
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-		// the default implementation does not initialize anything
+		if (dimensionPerspectiveID == null)
+			dimensionPerspectiveID = serialzedView.getDimensionPerspectiveID();
+		if (recordPerspectiveID == null)
+			recordPerspectiveID = serialzedView.getRecordPerspectiveID();
 	}
 
 	@Override

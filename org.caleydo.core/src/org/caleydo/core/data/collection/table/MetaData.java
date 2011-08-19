@@ -51,7 +51,8 @@ public class MetaData {
 					depth = dimension.size();
 				else {
 					if (depth != dimension.size())
-						throw new IllegalArgumentException("All dimensions in a set must be of the same length");
+						throw new IllegalArgumentException(
+							"All dimensions in a set must be of the same length");
 				}
 
 			}
@@ -97,15 +98,15 @@ public class MetaData {
 	}
 
 	/**
-	 * Returns a histogram of the values of all dimensions in the set considering the VA of the default content
-	 * data. The number of the bins is sqrt(VA size). This only works for homogeneous sets, if used on other
-	 * sets an exception is thrown.
+	 * Returns a histogram of the values of all dimensions in the set considering the record VA specified
+	 * through the id. The number of the bins is sqrt(VA size). This only works for homogeneous sets, if used
+	 * on other sets an exception is thrown.
 	 * 
 	 * @return the Histogram of the values in the set
 	 * @throws UnsupportedOperationException
 	 *             when used on non-homogeneous sets
 	 */
-	public Histogram getBaseHistogram() {
+	public Histogram getBaseHistogram(String recordPerspectiveID) {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
@@ -115,7 +116,8 @@ public class MetaData {
 		boolean bIsFirstLoop = true;
 		for (ADimension dimension : table.hashDimensions.values()) {
 			NumericalDimension nDimension = (NumericalDimension) dimension;
-			Histogram dimensionHistogram = nDimension.getHistogram(table.defaultRecordData.getRecordVA());
+			Histogram dimensionHistogram =
+				nDimension.getHistogram(table.getRecordPerspective(recordPerspectiveID).getVA());
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;
@@ -200,8 +202,8 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial minimum for the datatable. All elements smaller than that are clipped to this value in
-	 * the representation. This only affects the normalization, does not alter the raw data
+	 * Set an artificial minimum for the datatable. All elements smaller than that are clipped to this value
+	 * in the representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMin(double dMin) {
 		bArtificialMin = true;
@@ -209,8 +211,8 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial maximum for the datatable. All elements smaller than that are clipped to this value in
-	 * the representation. This only affects the normalization, does not alter the raw data
+	 * Set an artificial maximum for the datatable. All elements smaller than that are clipped to this value
+	 * in the representation. This only affects the normalization, does not alter the raw data
 	 */
 	void setMax(double dMax) {
 		bArtificialMax = true;

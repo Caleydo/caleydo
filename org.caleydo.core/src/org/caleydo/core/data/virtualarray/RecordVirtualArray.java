@@ -6,7 +6,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -17,7 +16,7 @@ public class RecordVirtualArray
 	extends VirtualArray<RecordVirtualArray,  RecordVADelta, RecordGroupList> {
 
 	public RecordVirtualArray() {
-		super(DataTable.RECORD);
+		super();
 	}
 
 	/**
@@ -56,10 +55,6 @@ public class RecordVirtualArray
 		return groupList;
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.data.selection.VirtualArray#getGroupList()
-	 */
 	@Override
 	public RecordGroupList getGroupList() {
 		// TODO Auto-generated method stub
