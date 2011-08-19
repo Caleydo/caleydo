@@ -9,7 +9,14 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
-public class TableBasedDimensionGroupData extends ADimensionGroupData {
+/**
+ * Implementation of {@link ADimensionGroupData} for table based data sets ({@link ATableBasedDataDomain}. In
+ * this case a dimension group refers to a group of columns in the data table.
+ * 
+ * @author Partl
+ */
+public class TableBasedDimensionGroupData
+	extends ADimensionGroupData {
 
 	private ATableBasedDataDomain dataDomain;
 	private DataTable table;
@@ -26,8 +33,7 @@ public class TableBasedDimensionGroupData extends ADimensionGroupData {
 
 	@Override
 	public ArrayList<RecordVirtualArray> getSegmentVAs() {
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD)
-				.getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -39,9 +45,9 @@ public class TableBasedDimensionGroupData extends ADimensionGroupData {
 
 		for (Group group : groupList) {
 
-			RecordVirtualArray subVA = new RecordVirtualArray("CONTENT",
-					recordVA.getVirtualArray().subList(group.getStartIndex(),
-							group.getEndIndex() + 1));
+			RecordVirtualArray subVA =
+				new RecordVirtualArray("CONTENT", recordVA.getVirtualArray().subList(group.getStartIndex(),
+					group.getEndIndex() + 1));
 			segmentBrickVAs.add(subVA);
 		}
 
@@ -67,8 +73,7 @@ public class TableBasedDimensionGroupData extends ADimensionGroupData {
 
 	@Override
 	public ArrayList<Group> getGroups() {
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD)
-				.getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -87,8 +92,7 @@ public class TableBasedDimensionGroupData extends ADimensionGroupData {
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD)
-				.getRecordVA();
+		RecordVirtualArray recordVA = table.getRecordData(DataTable.RECORD).getRecordVA();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -100,11 +104,10 @@ public class TableBasedDimensionGroupData extends ADimensionGroupData {
 
 		for (Group group : groupList) {
 
-			RecordVirtualArray subVA = new RecordVirtualArray("CONTENT",
-					recordVA.getVirtualArray().subList(group.getStartIndex(),
-							group.getEndIndex() + 1));
-			segmentBrickData.add(new SetBasedSegmentData(dataDomain, table, subVA,
-					group, this));
+			RecordVirtualArray subVA =
+				new RecordVirtualArray("CONTENT", recordVA.getVirtualArray().subList(group.getStartIndex(),
+					group.getEndIndex() + 1));
+			segmentBrickData.add(new TableBasedSegmentData(dataDomain, table, subVA, group, this));
 		}
 
 		return segmentBrickData;

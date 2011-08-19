@@ -7,16 +7,16 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
+import org.caleydo.core.data.virtualarray.TableBasedSegmentData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class SetBasedBrickData implements IBrickData {
 
-	private SetBasedSegmentData segmentData;
+	private TableBasedSegmentData segmentData;
 	private double averageValue;
 
-	public SetBasedBrickData(SetBasedSegmentData segmentData) {
+	public SetBasedBrickData(TableBasedSegmentData segmentData) {
 		this.segmentData = segmentData;
 		calculateAverageValue();
 	}

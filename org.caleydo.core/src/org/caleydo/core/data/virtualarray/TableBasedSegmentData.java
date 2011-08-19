@@ -5,7 +5,13 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.group.Group;
 
-public class SetBasedSegmentData implements ISegmentData {
+/**
+ * Implementation of {@link ISegmentData} for table based data sets ({@link ATableBasedDataDomain}).
+ * 
+ * @author Partl
+ *
+ */
+public class TableBasedSegmentData implements ISegmentData {
 
 	private ATableBasedDataDomain dataDomain;
 	private RecordVirtualArray recordVA;
@@ -13,7 +19,7 @@ public class SetBasedSegmentData implements ISegmentData {
 	private DataTable table;
 	private TableBasedDimensionGroupData dimensionGroupData;
 
-	public SetBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable table,
+	public TableBasedSegmentData(ATableBasedDataDomain dataDomain, DataTable table,
 			RecordVirtualArray recordVA, Group group,
 			TableBasedDimensionGroupData dimensionGroupData) {
 		this.table = table;
@@ -46,6 +52,9 @@ public class SetBasedSegmentData implements ISegmentData {
 		return "Group " + group.getGroupID() + " in " + table.getLabel();
 	}
 
+	/**
+	 * @return The data table this segment group is based on.
+	 */
 	public DataTable getTable() {
 		return table;
 	}

@@ -7,6 +7,13 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
+/**
+ * Implementation of {@link ISegmentData} for pathways. In this case each
+ * segment group refers to one pathway ({@link PathwayGraph}).
+ * 
+ * @author Partl
+ * 
+ */
 public class PathwaySegmentData implements ISegmentData {
 
 	private IDataDomain dataDomain;
@@ -48,18 +55,23 @@ public class PathwaySegmentData implements ISegmentData {
 
 	@Override
 	public String getLabel() {
-		if(pathway != null)
+		if (pathway != null)
 			return pathway.getTitle();
 		return "";
 	}
 
+	/**
+	 * @return The pathway of this segment group.
+	 */
 	public PathwayGraph getPathway() {
 		return pathway;
 	}
 
+	/**
+	 * @return The data domain that is used for ID-mapping.
+	 */
 	public ATableBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
-
 
 }

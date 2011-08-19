@@ -21,8 +21,14 @@ import org.caleydo.util.graph.EGraphItemKind;
 import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 
-public class PathwayDimensionGroupData extends
-		ADimensionGroupData {
+/**
+ * Implementation of {@link ADimensionGroupData} for pathways. In this case a
+ * dimension group consists of several pathways.
+ * 
+ * @author Partl
+ * 
+ */
+public class PathwayDimensionGroupData extends ADimensionGroupData {
 
 	private IDataDomain dataDomain;
 	private ATableBasedDataDomain mappingDataDomain;
@@ -110,14 +116,27 @@ public class PathwayDimensionGroupData extends
 		return dataDomain;
 	}
 
+	/**
+	 * Sets the data domain of this dimension group.
+	 * 
+	 * @param dataDomain
+	 */
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
+	/**
+	 * @return All pathways of this dimension group.
+	 */
 	public ArrayList<PathwayGraph> getPathways() {
 		return pathways;
 	}
 
+	/**
+	 * Sets the pathways of this dimension group.
+	 * 
+	 * @param pathways
+	 */
 	public void setPathways(ArrayList<PathwayGraph> pathways) {
 		this.pathways = pathways;
 	}
@@ -173,10 +192,18 @@ public class PathwayDimensionGroupData extends
 		return groups;
 	}
 
+	/**
+	 * @return The data domain that is used for ID-mapping.
+	 */
 	public ATableBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
 	}
 
+	/**
+	 * Sets the data domain that is used for ID-mapping.
+	 * 
+	 * @param mappingDataDomain
+	 */
 	public void setMappingDataDomain(ATableBasedDataDomain mappingDataDomain) {
 		this.mappingDataDomain = mappingDataDomain;
 	}
@@ -226,8 +253,7 @@ public class PathwayDimensionGroupData extends
 			}
 
 			group.setSize(groupSize);
-			RecordVirtualArray recordVA = new RecordVirtualArray("CONTENT",
-					ids);
+			RecordVirtualArray recordVA = new RecordVirtualArray("CONTENT", ids);
 			segmentData.add(new PathwaySegmentData(dataDomain,
 					mappingDataDomain, recordVA, group, pathway, this));
 			startIndex += groupSize;

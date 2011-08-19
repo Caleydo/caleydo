@@ -8,7 +8,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.SetBasedSegmentData;
+import org.caleydo.core.data.virtualarray.TableBasedSegmentData;
 import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.visbricks.brick.layout.ASetBasedDataConfigurer;
@@ -76,7 +76,7 @@ public class SetBasedBrickDimensionGroupData implements
 		if (segmentData != null) {
 			for (ISegmentData data : segmentData) {
 				segmentBrickData.add(new SetBasedBrickData(
-						(SetBasedSegmentData) data));
+						(TableBasedSegmentData) data));
 			}
 		}
 
@@ -85,7 +85,7 @@ public class SetBasedBrickDimensionGroupData implements
 
 	@Override
 	public IBrickData getSummaryBrickData() {
-		SetBasedSegmentData tempSegmentData = new SetBasedSegmentData(
+		TableBasedSegmentData tempSegmentData = new TableBasedSegmentData(
 				(ATableBasedDataDomain) getDataDomain(),
 				dimensionGroupData.getTable(), getSummaryBrickVA(), new Group(),
 				dimensionGroupData);
