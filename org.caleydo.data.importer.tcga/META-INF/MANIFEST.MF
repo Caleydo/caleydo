@@ -7,3 +7,6 @@ Export-Package:
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy
 Bundle-Vendor: Graz University of Technology
+Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
+ org.caleydo.datadomain.generic;bundle-version="2.0.0",
+ org.caleydo.datadomain.genetic;bundle-version="2.0.0"
