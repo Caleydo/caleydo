@@ -12,6 +12,7 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 public class ConnectionBandRenderer {
@@ -72,6 +73,193 @@ public class ConnectionBandRenderer {
 		GLU.gluTessEndContour(tobj);
 		GLU.gluTessEndPolygon(tobj);
 		GLU.gluDeleteTess(tobj);
+	}
+
+	/**
+	 * Renders a curve by interpolating the specified line points.
+	 * 
+	 * @param gl
+	 * @param linePoints
+	 *            Points that shall be interpolated with a curve. Note that the list must at least contain 4
+	 *            points and the first and the last point of the list are not interpolated but used to direct
+	 *            the curve at their ends.
+	 */
+	public void renderInterpolatedCurve(GL2 gl, List<Point2D> linePoints) {
+		for (int i = 0; i < linePoints.size() - 3; i++) {
+			List<Vec3f> curvePoints =
+				computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1), linePoints.get(i + 2),
+					linePoints.get(i + 3));
+			gl.glBegin(GL2.GL_POINTS);
+			for (int j = 0; j < curvePoints.size(); j++) {
+				gl.glVertex3f(curvePoints.get(j).x(), curvePoints.get(j).y(), curvePoints.get(j).z());
+			}
+			gl.glEnd();
+		}
+	}
+
+	/**
+	 * Renders a curved band by interpolating the specified points.
+	 * 
+	 * @param gl
+	 * @param linePoints
+	 *            Points that shall be interpolated with a curved band. Note that the list must at least
+	 *            contain 4 points and the first and the last point of the list are not interpolated but used
+	 *            to direct the curved band at their ends.
+	 * @param pixelWidth
+	 *            Width of the band in pixels.
+	 * @param PixelGLConverter
+	 */
+	public void renderInterpolatedBand(GL2 gl, List<Point2D> linePoints, int pixelWidth,
+		PixelGLConverter pixelGLConverter) {
+		for (int i = 0; i < linePoints.size() - 3; i++) {
+			List<Vec3f> curvePoints =
+				computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1), linePoints.get(i + 2),
+					linePoints.get(i + 3));
+			renderBandWithWidth(gl, curvePoints, pixelWidth, pixelGLConverter);
+		}
+	}
+
+	/**
+	 * Renders a band around the specified line points.
+	 * 
+	 * @param gl
+	 * @param linePoints
+	 *            Points directing the band at its center.
+	 * @param pixelWidth
+	 *            Width of the band in pixels.
+	 * @param pixelGLConverter
+	 */
+	public void renderBandWithWidth(GL2 gl, List<Vec3f> linePoints, int pixelWidth,
+		PixelGLConverter pixelGLConverter) {
+
+		if (linePoints.size() < 2)
+			return;
+
+		float xRelativeGLBandWidth = pixelGLConverter.getGLWidthForPixelWidth(pixelWidth / 2);
+
+		ArrayList<Vec3f> bandPoints1 = new ArrayList<Vec3f>();
+		ArrayList<Vec3f> bandPoints2 = new ArrayList<Vec3f>();
+
+		Vec3f prevLinePoint = linePoints.get(0);
+
+		for (int i = 1; i < linePoints.size(); i++) {
+			Vec3f currentLinePoint = linePoints.get(i);
+			if (prevLinePoint.x() == currentLinePoint.x() && prevLinePoint.y() == currentLinePoint.y()) {
+				linePoints.remove(i);
+				i--;
+			}
+			else {
+				prevLinePoint = currentLinePoint;
+			}
+		}
+
+		for (int i = 0; i < linePoints.size(); i++) {
+
+			Vec3f tangentVec = null;
+			Vec3f currentLinePoint = linePoints.get(i);
+
+			if (i == 0) {
+				tangentVec =
+					new Vec3f(linePoints.get(i + 1).x() - currentLinePoint.x(), linePoints.get(i + 1).y()
+						- currentLinePoint.y(), linePoints.get(i + 1).z());
+			}
+			else if (i == linePoints.size() - 1) {
+				tangentVec =
+					new Vec3f(currentLinePoint.x() - linePoints.get(i - 1).x(), currentLinePoint.y()
+						- linePoints.get(i - 1).y(), currentLinePoint.z());
+			}
+			else {
+
+				tangentVec =
+					new Vec3f(linePoints.get(i + 1).x() - linePoints.get(i - 1).x(), linePoints.get(i + 1)
+						.y() - linePoints.get(i - 1).y(), linePoints.get(i + 1).z());
+			}
+
+			// float convTangentVecX = pixelGLConverter
+			// .getGLWidthForGLHeight(tangentVec.y());
+			float xRelativeTangentVecY = pixelGLConverter.getGLWidthForGLHeight(Math.abs(tangentVec.y()));
+			if (tangentVec.y() < 0)
+				xRelativeTangentVecY = -xRelativeTangentVecY;
+
+			Vec3f xRelativeOrdinalVec = new Vec3f(xRelativeTangentVecY, -tangentVec.x(), tangentVec.z());
+
+			xRelativeOrdinalVec.normalize();
+
+			xRelativeOrdinalVec.setX(xRelativeOrdinalVec.x() * xRelativeGLBandWidth);
+			xRelativeOrdinalVec.setY(xRelativeOrdinalVec.y() * xRelativeGLBandWidth);
+
+			float yRelativeOrdinalVecY =
+				pixelGLConverter.getGLHeightForGLWidth(Math.abs(xRelativeOrdinalVec.y()));
+
+			if (xRelativeOrdinalVec.y() < 0)
+				yRelativeOrdinalVecY = -yRelativeOrdinalVecY;
+
+			Vec3f bandPoint1 =
+				new Vec3f(currentLinePoint.x() + xRelativeOrdinalVec.x(), currentLinePoint.y()
+					+ yRelativeOrdinalVecY, currentLinePoint.z());
+
+			Vec3f bandPoint2 =
+				new Vec3f(currentLinePoint.x() - xRelativeOrdinalVec.x(), currentLinePoint.y()
+					- yRelativeOrdinalVecY, currentLinePoint.z());
+
+			bandPoints1.add(bandPoint1);
+			bandPoints2.add(bandPoint2);
+
+		}
+
+//		gl.glBegin(GL2.GL_LINE_STRIP);
+//		for (int i = 0; i < bandPoints1.size(); i++) {
+//			gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(), bandPoints1.get(i).z());
+//
+//		}
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2.GL_LINES);
+//		for (int i = 0; i < bandPoints1.size(); i++) {
+//			gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(), bandPoints1.get(i).z());
+//			gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(), bandPoints2.get(i).z());
+//		}
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2.GL_LINE_STRIP);
+//		for (int i = 0; i < bandPoints2.size(); i++) {
+//			gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(), bandPoints2.get(i).z());
+//		}
+//		gl.glEnd();
+
+		for (int i = bandPoints2.size() - 1; i >= 0; i--) {
+			bandPoints1.add(bandPoints2.get(i));
+		}
+
+		render(gl, bandPoints1);
+	}
+
+	private List<Vec3f> computeInterpolatedSpline(Point2D v0, Point2D v1, Point2D v2, Point2D v3) {
+
+		double k = 12;
+		double ctrlx1 = (-v0.getX() / k) + v1.getX() + v2.getX() / k;
+		double ctrly1 = (-v0.getY() / k) + v1.getY() + v2.getY() / k;
+
+		double ctrlx2 = (v1.getX() / k) + v2.getX() - v3.getX() / k;
+		double ctrly2 = (v1.getY() / k) + v2.getY() - v3.getY() / k;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		inputPoints.add(new Vec3f((float) v1.getX(), (float) v1.getY(), 0));
+		inputPoints.add(new Vec3f((float) ctrlx1, (float) ctrly1, 0));
+		inputPoints.add(new Vec3f((float) ctrlx2, (float) ctrly2, 0));
+		inputPoints.add(new Vec3f((float) v2.getX(), (float) v2.getY(), 0));
+
+		NURBSCurve nurb = new NURBSCurve(inputPoints, 10);
+		return nurb.getCurvePoints();
+
+		// Band border
+		// gl.glLineWidth(1);
+		// gl.glBegin(GL2.GL_POINTS);
+		// for (int i = 0; i < outputPoints.size(); i++) {
+		// gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+		// }
+		// gl.glEnd();
+
 	}
 
 	public void render(GL2 gl, ArrayList<Vec3f> points) {
@@ -305,7 +493,7 @@ public class ConnectionBandRenderer {
 			gl.glBegin(GL.GL_POINTS);
 			gl.glVertex3f(vec.x(), vec.y(), vec.z());
 			gl.glEnd();
-//			GLHelperFunctions.drawPointAt(gl, vec);
+			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
@@ -340,7 +528,7 @@ public class ConnectionBandRenderer {
 			gl.glBegin(GL.GL_POINTS);
 			gl.glVertex3f(vec.x(), vec.y(), vec.z());
 			gl.glEnd();
-//			GLHelperFunctions.drawPointAt(gl, vec);
+			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
