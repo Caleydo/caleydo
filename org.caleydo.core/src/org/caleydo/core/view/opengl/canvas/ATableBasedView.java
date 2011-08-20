@@ -89,7 +89,7 @@ public abstract class ATableBasedView
 
 	protected boolean bUseRandomSampling = true;
 
-	protected int iNumberOfRandomElements = 100;
+	protected int numberOfRandomElements = 100;
 
 	protected int iNumberOfSamplesPerTexture = 100;
 
@@ -241,7 +241,7 @@ public abstract class ATableBasedView
 		// return;
 
 		// recordVA.setGroupList(null);
-		recordVA = dataDomain.getRecordVA(dimensionPerspectiveID);
+		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
 
 		reactOnRecordVAChanges();
 
@@ -430,14 +430,14 @@ public abstract class ATableBasedView
 	 *            the number
 	 */
 	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
-		if (iNumberOfRandomElements != this.iNumberOfRandomElements && bUseRandomSampling) {
-			this.iNumberOfRandomElements = iNumberOfRandomElements;
+		if (iNumberOfRandomElements != this.numberOfRandomElements && bUseRandomSampling) {
+			this.numberOfRandomElements = iNumberOfRandomElements;
 			initData();
 			return;
 		}
 		// TODO, probably do this with initCompleteList, take care of selection
 		// manager though
-		this.iNumberOfRandomElements = iNumberOfRandomElements;
+		this.numberOfRandomElements = iNumberOfRandomElements;
 	}
 
 	// public abstract void resetSelections();

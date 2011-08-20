@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.table;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -15,8 +16,11 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.util.clusterer.ClusterNode;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 @XmlType
+@XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class })
 public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
 
 	/** The unique ID of the perspective */
@@ -106,8 +110,8 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		return perspectiveID;
 	}
 
-	public void setIDType(IDType recordIDIdType) {
-		this.idType = recordIDIdType;
+	public void setIDType(IDType idType) {
+		this.idType = idType;
 	}
 
 	/**
@@ -140,6 +144,10 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	 * @param virtualArray
 	 */
 	public void setVA(VA virtualArray) {
+		if (virtualArray == null) {
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Virtual array to be set was null"));
+			return;
+		}
 		reset();
 		if (virtualArray.getVaType() != perspectiveID)
 			throw new IllegalArgumentException("VA's ID (" + virtualArray.getVaType()
@@ -172,6 +180,7 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	 * @param tree
 	 */
 	public void setTree(ClusterTree tree) {
+		isTreeDefaultTree = false;
 		this.tree = tree;
 	}
 

@@ -224,7 +224,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		alIsAngleBlocking.add(new ArrayList<Integer>());
 
 		axisSpacings = new ArrayList<Float>();
-		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
+		numberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 
 		// glSelectionHeatMap =
@@ -553,7 +553,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				- recordSelectionManager.getNumberOfElements(SelectionType.DESELECTED);
 
 		displayEveryNthPolyline = (recordVA.size() - recordSelectionManager
-				.getNumberOfElements(SelectionType.DESELECTED)) / iNumberOfRandomElements;
+				.getNumberOfElements(SelectionType.DESELECTED)) / numberOfRandomElements;
 
 		if (displayEveryNthPolyline == 0) {
 			displayEveryNthPolyline = 1;
@@ -1832,7 +1832,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		if (bUseRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
-					+ iNumberOfRandomElements + "\n");
+					+ numberOfRandomElements + "\n");
 		} else {
 			sInfoText.append("Random sampling inactive\n");
 		}

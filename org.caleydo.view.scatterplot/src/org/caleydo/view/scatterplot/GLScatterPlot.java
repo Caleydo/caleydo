@@ -229,7 +229,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		glKeyListener = new GLScatterPlotKeyListener(this);
 
-		iNumberOfRandomElements = generalManager.getPreferenceStore().getInt(
+		numberOfRandomElements = generalManager.getPreferenceStore().getInt(
 				PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
 
 	}
@@ -1251,10 +1251,10 @@ public class GLScatterPlot extends ATableBasedView {
 
 		Collection<Integer> tmpSet = this.recordVA.getIndexList();
 
-		int iNumberOfActuelelements = iNumberOfRandomElements;
+		int iNumberOfActuelelements = numberOfRandomElements;
 		int iActualPointsSkipped = 1;
 
-		iDisplayEveryNthPoint = recordVA.size() / iNumberOfRandomElements;
+		iDisplayEveryNthPoint = recordVA.size() / numberOfRandomElements;
 
 		if (iDisplayEveryNthPoint == 0) {
 			iDisplayEveryNthPoint = 1;
@@ -2138,7 +2138,7 @@ public class GLScatterPlot extends ATableBasedView {
 		EScatterPointType tmpPointStyle = POINTSTYLE;
 		float[] fArMappingColor = { 0.0f, 0.0f, 0.0f }; // (black);
 
-		iDisplayEveryNthPoint = recordVA.size() / iNumberOfRandomElements;
+		iDisplayEveryNthPoint = recordVA.size() / numberOfRandomElements;
 
 		if (iDisplayEveryNthPoint == 0)
 			iDisplayEveryNthPoint = 1;
@@ -2425,7 +2425,7 @@ public class GLScatterPlot extends ATableBasedView {
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
 		float y = 0.0f;
-		iDisplayEveryNthPoint = recordVA.size() / iNumberOfRandomElements;
+		iDisplayEveryNthPoint = recordVA.size() / numberOfRandomElements;
 
 		if (iDisplayEveryNthPoint == 0)
 			iDisplayEveryNthPoint = 1;
@@ -2948,7 +2948,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		if (bUseRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
-					+ iNumberOfRandomElements + "\n");
+					+ numberOfRandomElements + "\n");
 		} else {
 			sInfoText.append("Random sampling inactive\n");
 		}

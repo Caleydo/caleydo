@@ -158,16 +158,7 @@ public class ProjectLoader {
 					String tmpType = DataTable.RECORD;
 					recordVAMap.put(DataTable.RECORD,
 						loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
-					// tmpType = RecordVAType.CONTENT_CONTEXT;
-					// recordVAMap.put(RecordVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
-					// tmpType));
-					// tmpType = RecordVAType.CONTENT_EMBEDDED_HM;
-					// recordVAMap.put(RecordVAType.CONTENT, loadContentVirtualArray(unmarshaller, dirName,
-					// tmpType));
-					// FIXME: this should be done like this:
-					// for (RecordVAType type : RecordVAType.getRegisteredVATypes()) {
-					// recordVAMap.put(type, loadContentVirtualArray(unmarshaller, dirName, type));
-					// }
+					
 
 					HashMap<String, DimensionVirtualArray> dimensionVAMap =
 						new HashMap<String, DimensionVirtualArray>(2);
@@ -176,16 +167,13 @@ public class ProjectLoader {
 					dimensionVAMap.put(tempDimensionType,
 						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
 
-					// FIXME: this should be done like this:
-					// for (DimensionVAType type : DimensionVAType.getRegisteredVATypes()) {
-					// dimensionVAMap.put(type, loadDimensionVirtualArray(unmarshaller, dirName, type));
-					// }
+				
 
 					dimensionVAMap.put(tempDimensionType,
 						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
 
 					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
-					dataInitializationData.setRecordDataMap(recordVAMap);
+					dataInitializationData.setRecordPerspectiveMap(recordVAMap);
 					dataInitializationData.setDimensionDataMap(dimensionVAMap);
 
 					dataDomain.getLoadDataParameters().setGeneTreeFileName(
@@ -197,18 +185,6 @@ public class ProjectLoader {
 				}
 			}
 
-			// ViewList viewList = null;
-			// try {
-			// viewList =
-			// (ViewList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-			// .getResource(dirName + ProjectSaver.VIEWS_FILE_NAME));
-			// }
-			// catch (FileNotFoundException e1) {
-			// // do nothing
-			// //throw new IllegalStateException("Cannot load view list from project file");
-			// }
-			//
-			// serializationData.setViews(viewList.getViews());
 
 		}
 		catch (JAXBException ex) {

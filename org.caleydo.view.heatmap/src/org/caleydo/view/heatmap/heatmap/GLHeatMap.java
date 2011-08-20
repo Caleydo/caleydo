@@ -319,7 +319,7 @@ public class GLHeatMap extends ATableBasedView {
 
 		if (bUseRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
-					+ iNumberOfRandomElements + "\n");
+					+ numberOfRandomElements + "\n");
 		} else {
 			sInfoText.append("Random sampling inactive\n");
 		}

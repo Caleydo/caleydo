@@ -96,13 +96,13 @@ public class SerializationStartupProcedure
 
 				DataTable table = DataTableUtils.createData(setBasedDataDomain);
 
-				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordDataMap();
+				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordPerspectiveMap();
 				for (Entry<String, RecordVirtualArray> entry : recordVAMap.entrySet()) {
 					setBasedDataDomain.setRecordVirtualArray(entry.getKey(), entry.getValue());
 				}
 
 				HashMap<String, DimensionVirtualArray> dimensionVAMap =
-					dataSerializationData.getDimensionVAMap();
+					dataSerializationData.getDimensionPerspectiveMap();
 				for (Entry<String, DimensionVirtualArray> entry : dimensionVAMap.entrySet()) {
 					setBasedDataDomain.setDimensionVirtualArray(entry.getKey(), entry.getValue());
 				}

@@ -21,15 +21,10 @@ public class DataDomainSerializationData {
 	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
 
-	/** gene cluster information, only used to sync remote clients */
-	private String geneClusterTree;
-
-	/** experiment cluster information, only used to sync remote clients */
-	private String experimentClusterTree;
 
 	/** virtual arrays of this application stored in relation with their their-key */
-	private HashMap<String, RecordPerspective> recordDataMap;
-	private HashMap<String, DimensionPerspective> dimensionDataMap;
+	private HashMap<String, RecordPerspective> recordPerspectiveMap;
+	private HashMap<String, DimensionPerspective> dimensionPerspectiveMap;
 
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
@@ -47,35 +42,19 @@ public class DataDomainSerializationData {
 		this.setFileContent = setFileContent;
 	}
 
-	public HashMap<String, RecordPerspective> getRecordDataMap() {
-		return recordDataMap;
+	public HashMap<String, RecordPerspective> getRecordPerspectiveMap() {
+		return recordPerspectiveMap;
 	}
 
-	public void setRecordDataMap(HashMap<String, RecordPerspective> recordDataMap) {
-		this.recordDataMap = recordDataMap;
+	public void setRecordPerspectiveMap(HashMap<String, RecordPerspective> recordPerspectiveMap) {
+		this.recordPerspectiveMap = recordPerspectiveMap;
 	}
 
-	public HashMap<String, DimensionPerspective> getDimensionVAMap() {
-		return dimensionDataMap;
+	public HashMap<String, DimensionPerspective> getDimensionPerspectiveMap() {
+		return dimensionPerspectiveMap;
 	}
 
 	public void setDimensionDataMap(HashMap<String, DimensionPerspective> dimensionDataMap) {
-		this.dimensionDataMap = dimensionDataMap;
-	}
-
-	public String getGeneClusterTree() {
-		return geneClusterTree;
-	}
-
-	public void setGeneClusterTree(String geneClusterTree) {
-		this.geneClusterTree = geneClusterTree;
-	}
-
-	public String getExperimentClusterTree() {
-		return experimentClusterTree;
-	}
-
-	public void setExperimentClusterTree(String experimentClusterTree) {
-		this.experimentClusterTree = experimentClusterTree;
+		this.dimensionPerspectiveMap = dimensionDataMap;
 	}
 }

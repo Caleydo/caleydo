@@ -2,6 +2,7 @@ package org.caleydo.core.util.clusterer.gui;
 
 import java.util.Set;
 
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -555,8 +556,13 @@ public class StartClusteringDialogAction
 		Set<String> recordPerspectiveIDs = dataDomain.getTable().getAvailableRecordPerspectiveIDs();
 
 		if (recordPerspectiveIDs.size() == 1)
-			clusterState.setRecordPerspective(dataDomain.getTable().getRecordPerspective(
-				recordPerspectiveIDs.iterator().next()));
+		{
+			RecordPerspective chosenPerspective = dataDomain.getTable().getRecordPerspective(
+				recordPerspectiveIDs.iterator().next());
+			clusterState.setRecordPerspective(chosenPerspective);
+			clusterState.setRecordIDType(dataDomain.getRecordIDType());
+			
+		}
 		else
 			throw new IllegalStateException("Implement choose for perspective");
 

@@ -83,6 +83,7 @@ public class ClusterManager {
 					});
 				}
 			});
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Clustering failed" + e.getMessage()));
 		}
 
 		return null;
