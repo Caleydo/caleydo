@@ -390,7 +390,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	@Override
 	public String getShortInfo() {
 
-		return "Hierarchical Tree Map (" + dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVA().size() + " nodes displayed)";
+		return "Hierarchical Tree Map (" + dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVirtualArray().size() + " nodes displayed)";
 	}
 
 	@Override

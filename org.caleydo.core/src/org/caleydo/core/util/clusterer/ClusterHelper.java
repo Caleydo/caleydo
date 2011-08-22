@@ -132,8 +132,8 @@ public class ClusterHelper {
 	public static void calculateClusterAverages(DimensionPerspective dimensionData, RecordPerspective recordData,
 		ClustererType eClustererType, DataTable table) {
 		// FIXME - direct references here - should be parameters
-		DimensionVirtualArray dimensionVA = dimensionData.getVA();
-		RecordVirtualArray recordVA = recordData.getVA();
+		DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
+		RecordVirtualArray recordVA = recordData.getVirtualArray();
 		calculateClusterAveragesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
 			eClustererType, table, dimensionVA, recordVA);
 	}
@@ -216,7 +216,7 @@ public class ClusterHelper {
 	}
 
 	public static void calculateAggregatedUncertainties(RecordPerspective recordData, DataTable table) {
-		RecordVirtualArray recordVA = recordData.getVA();
+		RecordVirtualArray recordVA = recordData.getVirtualArray();
 		calculateAggregatedUncertaintiesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
 			table, recordVA);
 	}

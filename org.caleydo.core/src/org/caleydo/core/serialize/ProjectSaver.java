@@ -5,7 +5,6 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,7 +20,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterNode;
@@ -82,12 +80,6 @@ public class ProjectSaver {
 	/** File name of file where list of plugins are to be stored */
 	public static final String PLUG_IN_LIST_FILE = "plugins.xml";
 
-	/** file name of the gene-cluster-file in project-folders */
-	public static final String GENE_TREE_FILE = "gene_cluster.xml";
-
-	/** file name of the experiment-cluster-file in project-folders */
-	public static final String EXP_TREE_FILE = "experiment_cluster.xml";
-
 	/** file name of the datadomain-file in project-folders */
 	public static final String BASIC_INFORMATION_FILE = "basic_information.xml";
 
@@ -101,16 +93,28 @@ public class ProjectSaver {
 
 		FileOperations.createDirectory(TEMP_PROJECT_FOLDER);
 
-		savePluginData(TEMP_PROJECT_FOLDER);
-		saveProjectData(TEMP_PROJECT_FOLDER);
+		try {
+			savePluginData(TEMP_PROJECT_FOLDER);
+			saveProjectData(TEMP_PROJECT_FOLDER);
+
+		}
+		catch (Exception savingException) {
+			String failureMessage = "Faild to save project to " + fileName + ".";
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core", failureMessage, savingException));
+			MessageBox messageBox =
+				new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+			messageBox.setText("Project Save");
+			messageBox.setMessage(failureMessage);
+			messageBox.open();
+			return;
+		}
 
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.zipDirectory(TEMP_PROJECT_FOLDER, fileName);
 
 		FileOperations.deleteDirectory(TEMP_PROJECT_FOLDER);
 
-		String message = "Caleydo project successfully written to\n" + TEMP_PROJECT_FOLDER;
-
+		String message = "Caleydo project successfully written to\n" + fileName;
 		Logger.log(new Status(IStatus.INFO, this.toString(), message));
 
 		MessageBox messageBox =
@@ -130,8 +134,14 @@ public class ProjectSaver {
 
 		FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
 
-		savePluginData(RECENT_PROJECT_FOLDER);
-		saveProjectData(RECENT_PROJECT_FOLDER);
+		try {
+			savePluginData(RECENT_PROJECT_FOLDER);
+			saveProjectData(RECENT_PROJECT_FOLDER);
+		}
+		catch (Exception savingException) {
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Faild to auto-save project.",
+				savingException));
+		}
 
 		FileOperations.deleteDirectory(RECENT_PROJECT_FOLDER_TMP);
 	}
@@ -141,7 +151,7 @@ public class ProjectSaver {
 	 * 
 	 * @param dirName
 	 */
-	private void savePluginData(String dirName) {
+	private void savePluginData(String dirName) throws JAXBException {
 		PlugInList plugInList = new PlugInList();
 
 		for (Bundle bundle : Platform.getBundle("org.caleydo.core").getBundleContext().getBundles()) {
@@ -158,7 +168,7 @@ public class ProjectSaver {
 		catch (JAXBException ex) {
 			Logger.log(new Status(Status.ERROR, this.toString(), "Could not serialize plug-in names: "
 				+ plugInList.toString(), ex));
-			ex.printStackTrace();
+			throw ex;
 		}
 
 	}
@@ -169,77 +179,67 @@ public class ProjectSaver {
 	 * @param dirName
 	 *            directory to save the project-files into
 	 */
-	private void saveProjectData(String dirName) {
-
+	private void saveProjectData(String dirName) throws JAXBException, IOException {
 		saveData(dirName);
 		saveWorkbenchData(dirName);
 	}
 
-	private void saveData(String dirName) {
+	private void saveData(String dirName) throws JAXBException, IOException {
 
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
-		try {
-			Marshaller marshaller = projectContext.createMarshaller();
+		Marshaller marshaller = projectContext.createMarshaller();
 
-			File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE);
-			List<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
+		File dataDomainFile = new File(dirName + DATA_DOMAIN_FILE);
+		List<ADataDomain> dataDomains = new ArrayList<ADataDomain>();
 
-			for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
+		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
 
-				dataDomains.add((ADataDomain) dataDomain);
+			dataDomains.add((ADataDomain) dataDomain);
 
-				if (dataDomain instanceof ATableBasedDataDomain) {
+			if (dataDomain instanceof ATableBasedDataDomain) {
 
-					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
-					String dataDomainFileName = extendedDirName + DATA_TABLE_FILE;
+				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
+				String dataDomainFileName = extendedDirName + DATA_TABLE_FILE;
 
-					LoadDataParameters parameters = dataDomain.getLoadDataParameters();
-					String sourceFileName = parameters.getFileName();
+				LoadDataParameters parameters = dataDomain.getLoadDataParameters();
+				String sourceFileName = parameters.getFileName();
 
-					if (sourceFileName.contains(RECENT_PROJECT_FOLDER))
-						sourceFileName =
-							sourceFileName.replace(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
+				if (sourceFileName.contains(RECENT_PROJECT_FOLDER))
+					sourceFileName = sourceFileName.replace(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
 
-					try {
-						FileOperations.writeInputStreamToFile(dataDomainFileName, GeneralManager.get()
-							.getResourceLoader().getResource(sourceFileName));
-					}
-					catch (FileNotFoundException e) {
-						throw new IllegalStateException("Error saving project file", e);
-					}
-
-					ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-
-					for (String recordPerspectiveID : tableBasedDataDomain.getTable()
-						.getRegisteredRecordPerspectives()) {
-						saveDataPerspective(marshaller, extendedDirName, tableBasedDataDomain,
-							recordPerspectiveID,
-							tableBasedDataDomain.getTable().getRecordPerspective(recordPerspectiveID));
-					}
-
-					for (String dimensionPerspectiveID : tableBasedDataDomain.getTable()
-						.getRegisteredDimensionPerspectives()) {
-						saveDataPerspective(marshaller, extendedDirName, tableBasedDataDomain,
-							dimensionPerspectiveID,
-							tableBasedDataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID));
-					}
-
+				try {
+					FileOperations.writeInputStreamToFile(dataDomainFileName, GeneralManager.get()
+						.getResourceLoader().getResource(sourceFileName));
+				}
+				catch (FileNotFoundException e) {
+					throw new IllegalStateException("Error saving project file", e);
 				}
 
-				String fileName = dirName + BASIC_INFORMATION_FILE;
-				marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
+				ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+
+				for (String recordPerspectiveID : tableBasedDataDomain.getTable().getRecordPerspectiveIDs()) {
+					saveDataPerspective(marshaller, extendedDirName, recordPerspectiveID,
+						tableBasedDataDomain.getTable().getRecordPerspective(recordPerspectiveID));
+				}
+
+				for (String dimensionPerspectiveID : tableBasedDataDomain.getTable()
+					.getDimensionPerspectiveIDs()) {
+					saveDataPerspective(marshaller, extendedDirName, dimensionPerspectiveID,
+						tableBasedDataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID));
+				}
+
 			}
 
-			DataDomainList dataDomainList = new DataDomainList();
-			dataDomainList.setDataDomains(dataDomains);
+			String fileName = dirName + BASIC_INFORMATION_FILE;
+			marshaller.marshal(GeneralManager.get().getBasicInfo(), new File(fileName));
+		}
 
-			marshaller.marshal(dataDomainList, dataDomainFile);
-		}
-		catch (JAXBException ex) {
-			throw new RuntimeException("Error saving project files (xml serialization)", ex);
-		}
+		DataDomainList dataDomainList = new DataDomainList();
+		dataDomainList.setDataDomains(dataDomains);
+
+		marshaller.marshal(dataDomainList, dataDomainFile);
 
 	}
 
@@ -253,8 +253,8 @@ public class ProjectSaver {
 	 * @param perspectiveID
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
-	private void saveDataPerspective(Marshaller marshaller, String dir, ATableBasedDataDomain dataDomain,
-		String perspectiveID, DataPerspective<?, ?, ?, ?> perspective) throws JAXBException {
+	private void saveDataPerspective(Marshaller marshaller, String dir, String perspectiveID,
+		DataPerspective<?, ?, ?, ?> perspective) throws JAXBException, IOException {
 
 		String fileName = dir + perspectiveID + ".xml";
 		marshaller.marshal(perspective, new File(fileName));
@@ -262,142 +262,32 @@ public class ProjectSaver {
 			TreePorter treePorter = new TreePorter();
 			Tree<ClusterNode> tree = perspective.getTree();
 			if (tree != null) {
-				try {
-					treePorter.exportTree(dir + perspectiveID + "_tree.xml", tree);
-				}
-				catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+				treePorter.exportTree(dir + perspectiveID + "_tree.xml", tree);
 			}
 		}
 	}
 
-	/**
-	 * Saves the gene-tree-xml in a new created temp-file.
-	 * 
-	 * @param parameters
-	 *            set-load parameters to store the filename;
-	 * @param data
-	 *            set-data to save
-	 */
-	// public static void saveGeneTreeFile(LoadDataParameters parameters, String data) {
-	// File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
-	// File geneFile;
-	// try {
-	// geneFile = File.createTempFile(RECORD_TREE_FILE_PREFIX, "xml", homeDir);
-	// parameters.setGeneTreeFileName(geneFile.getCanonicalPath());
-	// }
-	// catch (IOException ex) {
-	// throw new RuntimeException("Could not create temporary file to store the set file", ex);
-	// }
-	// saveFile(data.getBytes(), geneFile);
-	// }
-
-	private void saveDimensionPerspective(Marshaller marshaller, String dir,
-		ATableBasedDataDomain dataDomain, String type) throws JAXBException {
-
-		String fileName = dir + "va_" + type.toString() + ".xml";
-		DimensionVirtualArray va = (DimensionVirtualArray) dataDomain.getDimensionVA(type);
-		marshaller.marshal(va, new File(fileName));
-
-		// treePorter = new TreePorter();
-		// Tree<ClusterNode> expTree =
-		// tableBasedDataDomain.getTable().getDimensionData(DataTable.DIMENSION)
-		// .getDimensionTree();
-		// if (expTree != null) {
-		// treePorter.exportTree(extendedDirName + EXP_TREE_FILE, expTree);
-	}
-
-	/**
-	 * Creates the record-cluster information of the given {@link DataTable} as xml-String
-	 * 
-	 * @param set
-	 *            {@link DataTable} to create the gene-cluster information of
-	 * @return xml-document representing the gene-cluster information
-	 */
-	// public static String getRecordClusterXml(DataTable table) {
+	// /**
+	// * Creates the tree-cluster information of the given {@link Tree} as XML-String
+	// *
+	// * @param tree
+	// * {@link Tree} to create the XML-String of
+	// * @return XML-String of the given {@link Tree}
+	// * @throws IOException
+	// * if a error occurs while writing the XML-String
+	// * @throws JAXBException
+	// * if a XML-serialization error occurs
+	// */
+	// public static String getTreeClusterXml(Tree<ClusterNode> tree) throws IOException, JAXBException {
 	// String xml = null;
 	//
-	// try {
-	// xml = getTreeClusterXml(table.getRecordData(DataTable.RECORD).getTree());
+	// if (tree != null) {
+	// StringWriter writer = new StringWriter();
+	// TreePorter treePorter = new TreePorter();
+	// treePorter.exportTree(writer, tree);
+	// xml = writer.getBuffer().toString();
 	// }
-	// catch (IOException ex) {
-	// throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
-	// }
-	// catch (JAXBException ex) {
-	// throw new RuntimeException("error while creating experiment-cluster-XML", ex);
-	// }
-	//
 	// return xml;
-	// }
-
-	/**
-	 * Creates the dimension-cluster information of the given {@link DataTable} as XML-String
-	 * 
-	 * @param set
-	 *            {@link DataTable} to create the experiment-cluster information of
-	 * @return XML-document representing the experiment-cluster information
-	 */
-	// public static String getDimensionClusterXml(DataTable table) {
-	// String xml = null;
-	//
-	// try {
-	// xml = getTreeClusterXml(table.getDimensionData(DataTable.DIMENSION).getDimensionTree());
-	// }
-	// catch (IOException ex) {
-	// throw new RuntimeException("error while writing experiment-cluster-XML to String", ex);
-	// }
-	// catch (JAXBException ex) {
-	// throw new RuntimeException("error while creating experiment-cluster-XML", ex);
-	// }
-	//
-	// return xml;
-	// }
-
-	/**
-	 * Creates the tree-cluster information of the given {@link Tree} as XML-String
-	 * 
-	 * @param tree
-	 *            {@link Tree} to create the XML-String of
-	 * @return XML-String of the given {@link Tree}
-	 * @throws IOException
-	 *             if a error occurs while writing the XML-String
-	 * @throws JAXBException
-	 *             if a XML-serialization error occurs
-	 */
-	public static String getTreeClusterXml(Tree<ClusterNode> tree) throws IOException, JAXBException {
-		String xml = null;
-
-		if (tree != null) {
-			StringWriter writer = new StringWriter();
-			TreePorter treePorter = new TreePorter();
-			treePorter.exportTree(writer, tree);
-			xml = writer.getBuffer().toString();
-		}
-
-		return xml;
-	}
-
-	/**
-	 * Saves the experiments-tree-xml in a new created temp-file.
-	 * 
-	 * @param parameters
-	 *            set-load parameters to store the filename;
-	 * @param data
-	 *            set-data to save
-	 */
-	// public static void saveExperimentsTreeFile(LoadDataParameters parameters, String data) {
-	// File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
-	// File expFile;
-	// try {
-	// expFile = File.createTempFile(DIMENSION_TREE_FILE_PREFIX, "xml", homeDir);
-	// parameters.setExperimentsFileName(expFile.getCanonicalPath());
-	// }
-	// catch (IOException ex) {
-	// throw new RuntimeException("Could not create temporary file to store the set file", ex);
-	// }
-	// saveFile(data.getBytes(), expFile);
 	// }
 
 	/**

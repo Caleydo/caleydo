@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.table;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -11,6 +12,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -20,10 +23,12 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 @XmlType
-@XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class })
+@XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class, RecordVirtualArray.class,
+		DimensionVirtualArray.class })
 public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
 
 	/** The unique ID of the perspective */
+	@XmlElement
 	protected String perspectiveID;
 
 	/**
@@ -35,7 +40,6 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 
 	ATableBasedDataDomain dataDomain;
 
-	@XmlElement
 	VA virtualArray;
 	/** indices of examples (cluster centers) */
 	@XmlTransient
@@ -82,6 +86,14 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		this.dataDomain = dataDomain;
 		init();
 	}
+
+	/** Only for de-serialization */
+	// public void setPerspectiveID(String perspectiveID) {
+	// if (this.perspectiveID != null)
+	// throw new IllegalStateException(
+	// "This method is only for de-serialization. In other cases the perspectiveID is set automatically");
+	// this.perspectiveID = perspectiveID;
+	// }
 
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
@@ -134,7 +146,8 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	 * 
 	 * @return
 	 */
-	public VA getVA() {
+	@XmlElementRef
+	public VA getVirtualArray() {
 		return virtualArray;
 	}
 
@@ -143,15 +156,15 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	 * 
 	 * @param virtualArray
 	 */
-	public void setVA(VA virtualArray) {
+	public void setVirtualArray(VA virtualArray) {
 		if (virtualArray == null) {
 			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Virtual array to be set was null"));
 			return;
 		}
 		reset();
-		if (virtualArray.getVaType() != perspectiveID)
-			throw new IllegalArgumentException("VA's ID (" + virtualArray.getVaType()
-				+ ") does not match data perspectives ID (" + perspectiveID + ")");
+		// if (virtualArray.getVaType() != perspectiveID)
+		// throw new IllegalArgumentException("VA's ID (" + virtualArray.getVaType()
+		// + ") does not match data perspectives ID (" + perspectiveID + ")");
 		this.virtualArray = virtualArray;
 	}
 

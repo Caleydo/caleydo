@@ -157,7 +157,7 @@ public class HeatMapWrapper {
 
 	public void setTable(DataTable table) {
 		this.table = table;
-		recordVA = table.getRecordPerspective(DataTable.RECORD).getVA();
+		recordVA = table.getRecordPerspective(DataTable.RECORD).getVirtualArray();
 
 		// FIXME: Can we do this? Shall we do this in some other way? Do it also
 		// with dendrogram.
@@ -168,7 +168,7 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentSelectionManager = dataDomain.getRecordSelectionManager();
 		// contentSelectionManager.clearSelections();
-		contentSelectionManager.setVA(recordVA);
+		contentSelectionManager.setVirtualArray(recordVA);
 		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		// FIXME
@@ -811,7 +811,7 @@ public class HeatMapWrapper {
 
 	public void handleReplaceRecordVA(IDCategory idCategory, String vaType) {
 
-		recordVA = table.getRecordPerspective(vaType).getVA();
+		recordVA = table.getRecordPerspective(vaType).getVirtualArray();
 	}
 
 	public void handleClearSelections() {

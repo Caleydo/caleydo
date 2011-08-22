@@ -1373,7 +1373,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		this.dataDomain = dataDomain;
 		table = this.dataDomain.getTable();
 
-		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
+		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		drawingStrategyManager = new DrawingStrategyManager(dimensionPerspectiveID,
 				pickingManager, uniqueID, renderStyle);
 		if (table.getDimensionPerspective(dimensionPerspectiveID).getTree() != null) {

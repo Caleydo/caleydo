@@ -194,7 +194,7 @@ public class DataTable
 	 * @return
 	 */
 	public Iterator<ADimension> iterator(String type) {
-		return new DimensionIterator(hashDimensions, hashDimensionPerspectives.get(type).getVA());
+		return new DimensionIterator(hashDimensions, hashDimensionPerspectives.get(type).getVirtualArray());
 	}
 
 	/**
@@ -399,14 +399,6 @@ public class DataTable
 		return recordData;
 	}
 
-	/**
-	 * Returns a list of all registered IDs for {@link RecordPerspective} objects.
-	 * 
-	 * @return
-	 */
-	public Set<String> getAvailableRecordPerspectiveIDs() {
-		return hashRecordPerspectives.keySet();
-	}
 
 	/**
 	 * Register a new {@link RecordPerspective} with this DataTable
@@ -429,14 +421,6 @@ public class DataTable
 		return hashDimensionPerspectives.get(dimensionPerspectiveID);
 	}
 
-	/**
-	 * Returns a list of all registered IDs for {@link DimensionPerspective} objects.
-	 * 
-	 * @return
-	 */
-	public Set<String> getAvailableDimensionPerspectiveIDs() {
-		return hashDimensionPerspectives.keySet();
-	}
 
 	/**
 	 * Register a new {@link DimensionPerspective} with this DataTable
@@ -447,6 +431,25 @@ public class DataTable
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}
 
+	
+	/**
+	 * Return a list of content VA types that have registered {@link RecordPerspective}.
+	 * 
+	 * @return
+	 */
+	public Set<String> getRecordPerspectiveIDs() {
+		return hashRecordPerspectives.keySet();
+	}
+
+	/**
+	 * Return a list of dimension VA types that have registered {@link DimensionPerspective}
+	 * 
+	 * @return
+	 */
+	public Set<String> getDimensionPerspectiveIDs() {
+		return hashDimensionPerspectives.keySet();
+	}
+	
 	/**
 	 * Removes all data related to the set (Dimensions, Virtual Arrays and Sets) from the managers so that the
 	 * garbage collector can handle it.
@@ -499,7 +502,7 @@ public class DataTable
 			meanDimension.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
 
 			float[] meanValues = new float[metaData.depth()];
-			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVA();
+			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
@@ -684,7 +687,7 @@ public class DataTable
 			recordVA = createBaseRecordVA(recordData.getPerspectiveID());
 
 		}
-		recordData.setVA(recordVA);
+		recordData.setVirtualArray(recordVA);
 		return recordData;
 
 	}
@@ -702,21 +705,5 @@ public class DataTable
 		return recordVA;
 	}
 
-	/**
-	 * Return a list of content VA types that have registered {@link RecordPerspective}.
-	 * 
-	 * @return
-	 */
-	public java.util.Set<String> getRegisteredRecordPerspectives() {
-		return hashRecordPerspectives.keySet();
-	}
 
-	/**
-	 * Return a list of dimension VA types that have registered {@link DimensionPerspective}
-	 * 
-	 * @return
-	 */
-	public Set<String> getRegisteredDimensionPerspectives() {
-		return hashDimensionPerspectives.keySet();
-	}
 }

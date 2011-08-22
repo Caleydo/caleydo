@@ -100,7 +100,7 @@ public class Uncertainty {
 	private float calcualteAverageUncertainty(int recordIndex, DataRepresentation dataRepresentation,
 		String dimensionPerspectiveID) {
 		float uncertaintySum = 0;
-		DimensionVirtualArray dimensionVA = table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVA();
+		DimensionVirtualArray dimensionVA = table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
 		for (Integer dimensionID : dimensionVA) {
 			try {
 				uncertaintySum +=
@@ -117,7 +117,7 @@ public class Uncertainty {
 	private float calculateMaxUncertainty(int recordIndex, DataRepresentation dataRepresentation,
 		String dimensionPerspectiveID) {
 		float maxUncertainty = Float.MAX_VALUE;
-		for (Integer dimensionID : table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVA()) {
+		for (Integer dimensionID : table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray()) {
 			float cellUncertainty = 0;
 			try {
 				cellUncertainty =

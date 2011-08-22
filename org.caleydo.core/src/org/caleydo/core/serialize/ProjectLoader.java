@@ -1,7 +1,6 @@
 package org.caleydo.core.serialize;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -10,16 +9,14 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.BasicInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -27,6 +24,9 @@ import org.caleydo.core.util.system.FileOperations;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+import org.eclipse.ui.PlatformUI;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.BundleException;
 
@@ -51,7 +51,6 @@ public class ProjectLoader {
 	 * @return initialization data for the application from which it can restore itself
 	 */
 	public void loadProjectFromZIP(String fileName) {
-
 		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
 
 		ZipUtils zipUtils = new ZipUtils();
@@ -66,27 +65,33 @@ public class ProjectLoader {
 	 * @return initialization data for the application from which it can restore itself
 	 */
 	public SerializationData loadProjectData(String dirName) {
+		try {
+			loadPluginData(dirName);
+			SerializationData serializationData = loadData(dirName);
+			return serializationData;
+		}
+		catch (Exception e) {
+			String message = "Failed to load project from\n" + dirName;
+			Logger.log(new Status(IStatus.ERROR, this.toString(), message, e));
+			MessageBox messageBox =
+				new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+			messageBox.setText("Project Loading");
+			messageBox.setMessage(message);
+			messageBox.open();
+			return null;
+		}
 
-		loadPluginData(dirName);
-		SerializationData serializationData = loadData(dirName);
-
-		return serializationData;
 	}
 
-	private void loadPluginData(String dirName) {
+	private void loadPluginData(String dirName) throws JAXBException, BundleException {
 		JAXBContext context;
 		PlugInList plugInList = null;
-		try {
-			context = JAXBContext.newInstance(PlugInList.class);
 
-			Unmarshaller unmarshaller = context.createUnmarshaller();
+		context = JAXBContext.newInstance(PlugInList.class);
 
-			plugInList =
-				(PlugInList) unmarshaller.unmarshal(new File(dirName + ProjectSaver.PLUG_IN_LIST_FILE));
-		}
-		catch (JAXBException e) {
-			throw new RuntimeException("Error while loading project", e);
-		}
+		Unmarshaller unmarshaller = context.createUnmarshaller();
+
+		plugInList = (PlugInList) unmarshaller.unmarshal(new File(dirName + ProjectSaver.PLUG_IN_LIST_FILE));
 
 		ArrayList<String> plugIns = plugInList.plugIns;
 		for (String plugIn : plugIns) {
@@ -95,107 +100,103 @@ public class ProjectLoader {
 				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: " + bundle));
 				continue;
 			}
-			try {
-				bundle.start();
-			}
-			catch (BundleException e) {
-				Logger.log(new Status(IStatus.ERROR, this.toString(), "Problem starting bundle " + plugIn
-					+ " at deserialization.", e));
-			}
+			bundle.start();
 		}
 	}
 
-	private SerializationData loadData(String dirName) {
+	private SerializationData loadData(String dirName) throws IOException, JAXBException {
 		SerializationData serializationData = null;
 		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
 
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
-		try {
-			Unmarshaller unmarshaller = projectContext.createUnmarshaller();
+		Unmarshaller unmarshaller = projectContext.createUnmarshaller();
 
-			try {
-				GeneralManager.get().setBasicInfo(
-					(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectSaver.BASIC_INFORMATION_FILE)));
-			}
-			catch (FileNotFoundException e) {
-				throw new IllegalStateException("Cannot load data domain list from project file");
-			}
+		GeneralManager.get().setBasicInfo(
+			(BasicInformation) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+				.getResource(dirName + ProjectSaver.BASIC_INFORMATION_FILE)));
 
-			DataDomainList dataDomainList;
-			try {
-				dataDomainList =
-					(DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-						.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE));
-			}
-			catch (FileNotFoundException e1) {
-				throw new IllegalStateException("Cannot load data domain list from project file");
-			}
+		DataDomainList dataDomainList;
 
-			serializationData = new SerializationData();
+		dataDomainList =
+			(DataDomainList) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+				.getResource(dirName + ProjectSaver.DATA_DOMAIN_FILE));
 
-			for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
+		serializationData = new SerializationData();
 
-				// Register data domain by hand because it restored from the serialization and not created via the
-				// DataDomainManager
-				DataDomainManager.get().register(dataDomain);
-				
-				Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
-				thread.start();
-				if (dataDomain instanceof ATableBasedDataDomain) {
+		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
-					String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
+			// Register data domain by hand because it restored from the serialization and not created via
+			// the
+			// DataDomainManager
+			DataDomainManager.get().register(dataDomain);
 
-					// Overwrite filename with nwe one in caleydo project (data.csv)
-					dataDomain.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
-					dataDomain.getLoadDataParameters().setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
-					
-					DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
+			Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
+			thread.start();
+			if (dataDomain instanceof ATableBasedDataDomain) {
 
-					HashMap<String, RecordVirtualArray> recordVAMap =
-						new HashMap<String, RecordVirtualArray>(6);
-					String tmpType = DataTable.RECORD;
-					recordVAMap.put(DataTable.RECORD,
-						loadContentVirtualArray(unmarshaller, extendedDirName, tmpType));
-					
+				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 
-					HashMap<String, DimensionVirtualArray> dimensionVAMap =
-						new HashMap<String, DimensionVirtualArray>(2);
+				// Overwrite filename with nwe one in caleydo project (data.csv)
+				dataDomain.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
+				dataDomain.getLoadDataParameters()
+					.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
 
-					String tempDimensionType = DataTable.DIMENSION;
-					dimensionVAMap.put(tempDimensionType,
-						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
+				DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
+				dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
 
-				
+				HashMap<String, RecordPerspective> recordPerspectives =
+					new HashMap<String, RecordPerspective>();
 
-					dimensionVAMap.put(tempDimensionType,
-						loadDimensionVirtualArray(unmarshaller, extendedDirName, tempDimensionType));
+				for (String recordPerspectiveID : ((ATableBasedDataDomain) dataDomain)
+					.getRecordPerspectiveIDs()) {
 
-					dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
-					dataInitializationData.setRecordPerspectiveMap(recordVAMap);
-					dataInitializationData.setDimensionDataMap(dimensionVAMap);
+					RecordPerspective recordPerspective =
+						(RecordPerspective) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
+							.getResource(extendedDirName + recordPerspectiveID + ".xml"));
+					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
+					recordPerspectives.put(recordPerspectiveID, recordPerspective);
 
-					dataDomain.getLoadDataParameters().setGeneTreeFileName(
-						extendedDirName + ProjectSaver.GENE_TREE_FILE);
-					dataDomain.getLoadDataParameters().setExperimentsFileName(
-						extendedDirName + ProjectSaver.EXP_TREE_FILE);
-
-					serializationData.addDataDomainSerializationData(dataInitializationData);
+					if (!recordPerspective.isTreeDefaultTree()) {
+						ClusterTree tree =
+							loadTree(extendedDirName + recordPerspectiveID + "_tree.xml",
+								((ATableBasedDataDomain) dataDomain).getRecordIDType());
+						recordPerspective.setTree(tree);
+					}
 				}
+
+				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
+
+				HashMap<String, DimensionPerspective> dimensionPerspectives =
+					new HashMap<String, DimensionPerspective>();
+
+				for (String dimensionPerspectiveID : ((ATableBasedDataDomain) dataDomain)
+					.getDimensionPerspectiveIDs()) {
+
+					DimensionPerspective dimensionPerspective =
+						(DimensionPerspective) unmarshaller.unmarshal(GeneralManager.get()
+							.getResourceLoader()
+							.getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
+					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
+					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
+
+					if (!dimensionPerspective.isTreeDefaultTree()) {
+						ClusterTree tree =
+							loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
+								((ATableBasedDataDomain) dataDomain).getDimensionIDType());
+						dimensionPerspective.setTree(tree);
+					}
+				}
+
+				dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
+
+				serializationData.addDataDomainSerializationData(dataInitializationData);
 			}
-
-
 		}
-		catch (JAXBException ex) {
-			throw new RuntimeException("Error while loading project", ex);
-		}
-		
+
 		return serializationData;
 	}
-	
-	
-	
+
 	/**
 	 * Load trees as specified in loadDataParameters and write them to the table. FIXME: this is not aware of
 	 * possibly alternative {@link RecordVAType}s or {@link DimensionVAType}s
@@ -203,96 +204,23 @@ public class ProjectLoader {
 	 * @param loadDataParameters
 	 * @param set
 	 */
-	public static void loadTrees(LoadDataParameters loadDataParameters, DataTable table) {
-		// import gene tree
-		String geneTreeFileName = loadDataParameters.getGeneTreeFileName();
-		if (geneTreeFileName != null) {
-			if (geneTreeFileName.equals("") == false) {
-				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading gene tree from file "
-					+ geneTreeFileName));
+	private ClusterTree loadTree(String path, IDType idType) throws JAXBException, IOException {
 
-				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(table.getDataDomain());
-				ClusterTree tree;
-				try {
+		TreePorter treePorter = new TreePorter();
+		ClusterTree tree;
+		tree = treePorter.importTree(path, idType);
+		return tree;
 
-					tree = treePorter.importTree(geneTreeFileName, table.getDataDomain().getRecordIDType());
-					// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-					table.getRecordPerspective(DataTable.RECORD).setTree(tree);
-				}
-				catch (JAXBException e) {
-					e.printStackTrace();
-				}
-				catch (FileNotFoundException e) {
-					// do nothing - no gene tree is available
-				}
-			}
-		}
-
-		// import experiment tree
-		String experimentsTreeFileName = loadDataParameters.getExperimentsFileName();
-		if (experimentsTreeFileName != null) {
-			if (experimentsTreeFileName.equals("") == false) {
-				Logger.log(new Status(IStatus.INFO, "SetUtils", "Loading experiments tree from file "
-					+ experimentsTreeFileName));
-
-				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(table.getDataDomain());
-				ClusterTree tree;
-				try {
-					tree = treePorter.importDimensionTree(experimentsTreeFileName);
-					table.getDimensionPerspective(DataTable.DIMENSION).setDimensionTree(tree);
-					table.getDataDomain().createDimensionGroupsFromDimensionTree(tree);
-				}
-				catch (JAXBException e) {
-					e.printStackTrace();
-				}
-				catch (FileNotFoundException e) {
-					// do nothing - no experiment tree is available
-				}
-			}
-		}
 	}
-	
-	
 
 	public void loadWorkbenchData(String dirName) {
-				
 		try {
-			FileOperations.copyFolder(
-				new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
-					GeneralManager.CALEYDO_HOME_PATH + ProjectSaver.WORKBENCH_MEMENTO_FOLDER  + ProjectSaver.WORKBENCH_MEMENTO_FILE));
+			FileOperations.copyFolder(new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
+				GeneralManager.CALEYDO_HOME_PATH + ProjectSaver.WORKBENCH_MEMENTO_FOLDER
+					+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		}
 		catch (IOException e) {
-			throw new RuntimeException("Error loading workbench data (file access)", e);
+			throw new IllegalStateException("Could not load workbench data from " + dirName, e);
 		}
-	}
-
-	/**
-	 * Loads a {@link VirtualArray} from the file system. the filename is created by the type of
-	 * {@link VirtualArray}.
-	 * 
-	 * @param unmarshaller
-	 *            JAXB-unmarshaller to convert the xml-file to a {@link VirtualArray}-instance
-	 * @param dir
-	 *            directory-name in the file system to load the {@link VirtualArray} from
-	 * @param type
-	 *            type of VirtualArray in the {@link UseCase}
-	 * @return loaded {@link VirtualArray}
-	 * @throws JAXBException
-	 *             in case of a {@link JAXBException} while unmarshalling the xml file
-	 */
-	private RecordVirtualArray loadContentVirtualArray(Unmarshaller unmarshaller, String dir, String type)
-		throws JAXBException {
-		String fileName = dir + "va_" + type.toString() + ".xml";
-		RecordVirtualArray va = (RecordVirtualArray) unmarshaller.unmarshal(new File(fileName));
-		return va;
-	}
-
-	private DimensionVirtualArray loadDimensionVirtualArray(Unmarshaller unmarshaller, String dir, String type)
-		throws JAXBException {
-		String fileName = dir + "va_" + type.toString() + ".xml";
-		DimensionVirtualArray va = (DimensionVirtualArray) unmarshaller.unmarshal(new File(fileName));
-		return va;
 	}
 }

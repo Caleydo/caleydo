@@ -16,9 +16,9 @@ public class AlphabeticalPartitioner
 	@Override
 	public TempResult getSortedVA(DataTable table, ClusterState clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
-		RecordVirtualArray recordVA = clusterState.getRecordPerspective().getVA();
+		RecordVirtualArray recordVA = clusterState.getRecordPerspective().getVirtualArray();
 		NominalDimension<String> dimension =
-			(NominalDimension<String>) table.get(clusterState.getDimensionPerspective().getVA().get(0));
+			(NominalDimension<String>) table.get(clusterState.getDimensionPerspective().getVirtualArray().get(0));
 
 		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
 

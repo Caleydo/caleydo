@@ -130,9 +130,9 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 		if (table == null)
 			table = dataDomain.getTable();
 		if (recordVA == null)
-			recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getRecordSelectionManager();
 

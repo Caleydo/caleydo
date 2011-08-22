@@ -18,7 +18,6 @@ import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
  * @author Alexander Lex
  */
 @XmlRootElement
-@XmlType
 public class DimensionPerspective
 	extends
 	DataPerspective<DimensionVirtualArray, DimensionGroupList, DimensionVADelta, DimensionFilterManager> {

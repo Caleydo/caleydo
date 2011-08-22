@@ -117,7 +117,7 @@ public class MetaData {
 		for (ADimension dimension : table.hashDimensions.values()) {
 			NumericalDimension nDimension = (NumericalDimension) dimension;
 			Histogram dimensionHistogram =
-				nDimension.getHistogram(table.getRecordPerspective(recordPerspectiveID).getVA());
+				nDimension.getHistogram(table.getRecordPerspective(recordPerspectiveID).getVirtualArray());
 
 			if (bIsFirstLoop) {
 				bIsFirstLoop = false;

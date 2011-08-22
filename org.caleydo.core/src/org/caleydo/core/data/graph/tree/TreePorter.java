@@ -18,6 +18,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
@@ -134,10 +135,9 @@ public class TreePorter {
 	}
 
 	public ClusterTree importDimensionTree(String fileName) throws JAXBException, FileNotFoundException {
-		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
 
-		org.caleydo.core.data.collection.table.DataTable table =
-			(org.caleydo.core.data.collection.table.DataTable) dataDomain.getTable();
+		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
+		DataTable table = dataDomain.getTable();
 		tree.createSubDataTables(table);
 		return tree;
 	}

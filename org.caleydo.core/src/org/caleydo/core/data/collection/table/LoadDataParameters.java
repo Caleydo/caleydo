@@ -7,14 +7,18 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
 
 /**
  * Parameters to load the initial data-{@link DataTable}.
  * 
  * @author Werner Puff
  * @author Marc Streit
+ * @author Alexander Lex
  */
 @XmlType
 public class LoadDataParameters {
@@ -23,7 +27,7 @@ public class LoadDataParameters {
 	@XmlTransient
 	private ATableBasedDataDomain dataDomain;
 
-	/** TODO doc */
+	/** A list of ids for the dimensions (columns) in the file */
 	private ArrayList<Integer> dimensionIds;
 
 	/** Specifies the IDType that is used in the main data file */
@@ -33,13 +37,10 @@ public class LoadDataParameters {
 	/** path to main data file */
 	private String fileName;
 
-	/** path to record-cluster-tree file */
-	private String recordTreeFileName;
-
-	/** path to dimension-cluster-tree file */
-	private String dimensioTreenFileName;
-
-	/** TODO doc */
+	/**
+	 * The input pattern for the {@link TabularAsciiDataReader}, specifying the order of how to treat values
+	 * between delimiters. The string values must map to a {@link EDimensionType}.
+	 */
 	private String inputPattern;
 
 	/** labels of the dimensions */
@@ -57,26 +58,30 @@ public class LoadDataParameters {
 	/** <code>true</code> if a min-value was set, false otherwise */
 	private boolean minDefined = false;
 
-	/** TODO doc */
+	/** an artificial min value used for normalization in the {@link DataTable} */
 	private float min = Float.MIN_VALUE;
 
 	/** <code>true</code> if a max-value was set, false otherwise */
 	private boolean maxDefined = false;
 
-	/** TODO doc */
+	/** an artificial max value used for normalization in the {@link DataTable} */
 	private float max = Float.MAX_VALUE;
 
-	/** TODO doc */
+	/**
+	 * Determines whether and if so whichtransformation should be applied to the data (e.g. log2
+	 * transformation). This is mapped to values of {@link ExternalDataRepresentation}.
+	 */
 	private String mathFilterMode;
 
-
+	/**
+	 * Determines whether a table in the DataTable is considered homogeneous or not. Homogeneous means, that
+	 * the same maximum and minimum are used for normalization.
+	 */
 	@XmlElement
 	private boolean isDataHomogeneous = false;
 
 	public LoadDataParameters() {
 		this.fileName = null;
-		this.recordTreeFileName = null;
-		this.dimensioTreenFileName = null;
 		this.inputPattern = "";
 		this.dimensionLabels = new ArrayList<String>();
 		this.delimiter = "";
@@ -85,139 +90,214 @@ public class LoadDataParameters {
 		this.dataDomain = null;
 	}
 
+	/**
+	 * @param dataDomain
+	 *            setter, see {@link #dataDomain}
+	 */
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
+	/**
+	 * @return the dataDomain, see {@link #dataDomain}
+	 */
 	@XmlTransient
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
+	/**
+	 * @return the dimensionIds, see {@link #dimensionIds}
+	 */
 	public ArrayList<Integer> getDimensionIds() {
 		return dimensionIds;
 	}
 
+	/**
+	 * @param dimensionIds
+	 *            setter, see {@link #dimensionIds}
+	 */
 	public void setDimensionIds(ArrayList<Integer> dimensionIds) {
 		this.dimensionIds = dimensionIds;
 	}
 
+	/**
+	 * @return the fileName {@link #fileName}
+	 */
 	public String getFileName() {
 		return fileName;
 	}
 
+	/**
+	 * @param fileName
+	 *            setter, see {@link #fileName}
+	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
 
-	public String getGeneTreeFileName() {
-		return recordTreeFileName;
-	}
-
-	public void setGeneTreeFileName(String geneTreeFileName) {
-		this.recordTreeFileName = geneTreeFileName;
-	}
-
-	public String getExperimentsFileName() {
-		return dimensioTreenFileName;
-	}
-
-	public void setExperimentsFileName(String experimentsFileName) {
-		this.dimensioTreenFileName = experimentsFileName;
-	}
-
+	/**
+	 * @return the inputPattern, see {@link #inputPattern}
+	 */
 	public String getInputPattern() {
 		return inputPattern;
 	}
 
+	/**
+	 * @param inputPattern
+	 *            setter, see {@link #inputPattern}
+	 */
 	public void setInputPattern(String inputPattern) {
 		this.inputPattern = inputPattern;
 	}
 
+	/**
+	 * @return the dimensionLabels, see {@link #dimensionLabels}
+	 */
 	public List<String> getDimensionLabels() {
 		return dimensionLabels;
 	}
 
+	/**
+	 * @param dimensionLabels
+	 *            setter, see {@link #dimensionLabels}
+	 */
 	public void setDimensionLabels(List<String> dimensionLabels) {
 		this.dimensionLabels = dimensionLabels;
 	}
 
+	/**
+	 * @return the delimiter, see {@link #delimiter}
+	 */
 	public String getDelimiter() {
 		return delimiter;
 	}
 
+	/**
+	 * @param delimiter
+	 *            setter, see {@link #delimiter}
+	 */
 	public void setDelimiter(String delimiter) {
 		this.delimiter = delimiter;
 	}
 
+	/**
+	 * @return the startParseFileAtLine, see {@link #startParseFileAtLine}
+	 */
 	public int getStartParseFileAtLine() {
 		return startParseFileAtLine;
 	}
 
+	/**
+	 * @param startParseFileAtLine
+	 *            setter, see {@link #startParseFileAtLine}
+	 */
 	public void setStartParseFileAtLine(int startParseFileAtLine) {
 		this.startParseFileAtLine = startParseFileAtLine;
 	}
 
+	/**
+	 * @return the stopParseFileAtLine, see {@link #stopParseFileAtLine}
+	 */
 	public int getStopParseFileAtLine() {
 		return stopParseFileAtLine;
 	}
 
+	/**
+	 * @param stopParseFileAtLine
+	 *            setter, see {@link #stopParseFileAtLine}
+	 */
 	public void setStopParseFileAtLine(int stopParseFileAtLine) {
 		this.stopParseFileAtLine = stopParseFileAtLine;
 	}
 
+	/**
+	 * @return the minDefined, see {@link #minDefined}
+	 */
 	public boolean isMinDefined() {
 		return minDefined;
 	}
 
+	/**
+	 * @param minDefined
+	 *            setter, see {@link #minDefined}
+	 */
 	public void setMinDefined(boolean minDefined) {
 		this.minDefined = minDefined;
 	}
 
+	/**
+	 * @return the min, see {@link #min}
+	 */
 	public float getMin() {
 		return min;
 	}
 
+	/**
+	 * @param min
+	 *            setter, see {@link #min}
+	 */
 	public void setMin(float min) {
 		this.min = min;
 	}
 
+	/**
+	 * @return the maxDefined, see {@link #maxDefined}
+	 */
 	public boolean isMaxDefined() {
 		return maxDefined;
 	}
 
+	/**
+	 * @param maxDefined
+	 *            setter, see {@link #maxDefined}
+	 */
 	public void setMaxDefined(boolean maxDefined) {
 		this.maxDefined = maxDefined;
 	}
 
+	/**
+	 * @return the max, see {@link #max}
+	 */
 	public float getMax() {
 		return max;
 	}
 
+	/**
+	 * @param max
+	 *            setter, see {@link #max}
+	 */
 	public void setMax(float max) {
 		this.max = max;
 	}
 
+	/**
+	 * @return the mathFilterMode, see {@link #mathFilterMode}
+	 */
 	public String getMathFilterMode() {
 		return mathFilterMode;
 	}
 
+	/**
+	 * @param mathFilterMode
+	 *            setter, see {@link #mathFilterMode}
+	 */
 	public void setMathFilterMode(String mathFilterMode) {
 		this.mathFilterMode = mathFilterMode;
 	}
 
-//	public boolean isUseExperimentClusterInfo() {
-//		return useExperimentClusterInfo;
-//	}
-
-//	public void setUseExperimentClusterInfo(boolean useExperimentClusterInfo) {
-//		this.useExperimentClusterInfo = useExperimentClusterInfo;
-//	}
-
+	/**
+	 * Sets the fileIDType string equivalent to {@link #fileIDTypeName}
+	 * 
+	 * @param fileIDType
+	 */
 	public void setFileIDType(IDType fileIDType) {
 		this.fileIDTypeName = fileIDType.getTypeName();
 	}
 
+	/**
+	 * @return the fileIDTypeName, see {@link #fileIDTypeName}
+	 */
 	public String getFileIDTypeName() {
 		return fileIDTypeName;
 	}
@@ -226,7 +306,7 @@ public class LoadDataParameters {
 	 * Set whether the data you want to load is homogeneous (i.e.: there is a global minimum and maximum)
 	 * 
 	 * @param isDataHomogeneous
-	 *            true if your data has a global min and max, else false
+	 *            true if your data has a global min and max, else false, see {@link #isDataHomogeneous}
 	 */
 	public void setIsDataHomogeneous(boolean isDataHomogeneous) {
 		this.isDataHomogeneous = isDataHomogeneous;
@@ -235,7 +315,7 @@ public class LoadDataParameters {
 	/**
 	 * Tells you whether the data to be processed is homogeneous (i.e.: there is a global minimum and maximum)
 	 * 
-	 * @return true if data is homogeneous, else false
+	 * @return true if data is homogeneous, else false, see {@link #isDataHomogeneous}
 	 */
 	public boolean isDataHomogeneous() {
 		return isDataHomogeneous;

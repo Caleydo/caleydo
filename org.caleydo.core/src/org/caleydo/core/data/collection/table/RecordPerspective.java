@@ -17,7 +17,6 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
  * @author Alexander Lex
  */
 @XmlRootElement
-@XmlType
 public class RecordPerspective
 	extends DataPerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
 

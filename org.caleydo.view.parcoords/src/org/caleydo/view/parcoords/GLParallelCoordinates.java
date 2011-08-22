@@ -475,9 +475,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		// recordVA = dataDomain.getRecordVA(recordVAType);
 		if (recordVA == null)
-			recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		// dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		initGates();

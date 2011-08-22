@@ -265,7 +265,7 @@ public class FilterRepresentationSNR extends
 
 		// FIXME this used the base va from the filter
 		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
-				.getRecordPerspective(recordPerspectiveID).getVA();
+				.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 
 		float[] rawUncertainty = ((FilterRepresentationSNR) subFilter.getFilterRep())
 				.getTable().getUncertainty().getRawUncertainty();

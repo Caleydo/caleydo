@@ -1,15 +1,12 @@
 package org.caleydo.core.startup;
 
-import java.util.HashMap;
-import java.util.Map.Entry;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.collection.table.DimensionPerspective;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
+import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.serialize.ProjectSaver;
@@ -29,7 +26,7 @@ public class SerializationStartupProcedure
 	private boolean loadRecentProject = false;
 
 	private SerializationData serializationDataList;
-	
+
 	private ProjectLoader loader = new ProjectLoader();
 
 	@Override
@@ -53,12 +50,12 @@ public class SerializationStartupProcedure
 			}
 		}
 	}
-	
+
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
 		// not calling super.init() on purpose
-		
+
 		this.appInitData = appInitData;
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
 
@@ -76,13 +73,12 @@ public class SerializationStartupProcedure
 				throw new IllegalArgumentException("encoutnered unknown project-load-type");
 			}
 		}
-		
+
 		deserializeData(serializationDataList);
 	}
 
-
 	private void deserializeData(SerializationData serializationDataList) {
-		
+
 		for (DataDomainSerializationData dataSerializationData : serializationDataList
 			.getDataDomainSerializationDataList()) {
 			ADataDomain dataDomain = dataSerializationData.getDataDomain();
@@ -96,19 +92,13 @@ public class SerializationStartupProcedure
 
 				DataTable table = DataTableUtils.createData(setBasedDataDomain);
 
-				HashMap<String, RecordVirtualArray> recordVAMap = dataSerializationData.getRecordPerspectiveMap();
-				for (Entry<String, RecordVirtualArray> entry : recordVAMap.entrySet()) {
-					setBasedDataDomain.setRecordVirtualArray(entry.getKey(), entry.getValue());
+				for (RecordPerspective perspective : dataSerializationData.getRecordPerspectiveMap().values()) {
+					table.registerRecordPerspecive(perspective);
 				}
-
-				HashMap<String, DimensionVirtualArray> dimensionVAMap =
-					dataSerializationData.getDimensionPerspectiveMap();
-				for (Entry<String, DimensionVirtualArray> entry : dimensionVAMap.entrySet()) {
-					setBasedDataDomain.setDimensionVirtualArray(entry.getKey(), entry.getValue());
+				for (DimensionPerspective perspective : dataSerializationData.getDimensionPerspectiveMap()
+					.values()) {
+					table.registerDimensionPerspective(perspective);
 				}
-
-				// we need the VAs to be available before the tree is initialized
-				DataTableUtils.loadTrees(loadDataParameters, table);
 			}
 		}
 	}

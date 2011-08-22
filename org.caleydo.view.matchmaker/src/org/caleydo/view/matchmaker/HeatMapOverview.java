@@ -236,7 +236,7 @@ public class HeatMapOverview {
 
 	public void setTable(DataTable table) {
 		this.table = table;
-		recordVA = table.getRecordPerspective(DataTable.RECORD).getVA();
+		recordVA = table.getRecordPerspective(DataTable.RECORD).getVirtualArray();
 		dimensionVA = table.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA();
 
 		updateHeatMapTextures(null);

@@ -450,7 +450,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
 		DimensionVirtualArray va = foreignDataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getVA();
+				.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getTable().get(va.get(1));
@@ -461,7 +461,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
 		DimensionVirtualArray va = foreignDataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getVA();
+				.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 
 		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
 				.getTable().get(va.get(1));

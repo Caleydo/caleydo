@@ -234,7 +234,7 @@ public abstract class ADetailViewLayoutState {
 		float currentPositionY = detailPosition.y() + getDetailHeight();
 
 		for (Group group : heatMapWrapper.getTable().getRecordPerspective(DataTable.RECORD)
-				.getVA().getGroupList()) {
+				.getVirtualArray().getGroupList()) {
 
 			if (!selectedGroups.containsKey(group))
 				continue;

@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -81,7 +81,7 @@ public class LookupTableLoader
 								sLine = sLine.substring(0, sLine.indexOf("."));
 							}
 
-							if (mappingType.getFromIDType().getDimensionType() == DimensionType.INT) {
+							if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
 								try {
 									Integer id = Integer.parseInt(sLine);
 									genomeIdManager.getMap(mappingType).put(id,
@@ -90,7 +90,7 @@ public class LookupTableLoader
 								catch (NumberFormatException e) {
 								}
 							}
-							else if (mappingType.getFromIDType().getDimensionType() == DimensionType.STRING) {
+							else if (mappingType.getFromIDType().getDimensionType() == EDimensionType.STRING) {
 								genomeIdManager.getMap(mappingType).put(sLine,
 									iLineInFile - parsingStartLine);
 							}
@@ -127,7 +127,7 @@ public class LookupTableLoader
 								// cell is empty
 								try {
 									Float.valueOf(buffer);
-									if (mappingType.getFromIDType().getDimensionType() == DimensionType.INT) {
+									if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											iLineInFile - parsingStartLine);
 									}
@@ -146,24 +146,24 @@ public class LookupTableLoader
 								break;
 							}
 							else {
-								if (mappingType.getFromIDType().getDimensionType() == DimensionType.INT) {
-									if (mappingType.getToIDType().getDimensionType() == DimensionType.INT) {
+								if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
+									if (mappingType.getToIDType().getDimensionType() == EDimensionType.INT) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											Integer.valueOf(strTokenText.nextToken()));
 									}
-									else if (mappingType.getToIDType().getDimensionType() == DimensionType.STRING) {
+									else if (mappingType.getToIDType().getDimensionType() == EDimensionType.STRING) {
 										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											strTokenText.nextToken());
 									}
 									else
 										throw new IllegalStateException("Unsupported data type!");
 								}
-								else if (mappingType.getFromIDType().getDimensionType() == DimensionType.STRING) {
-									if (mappingType.getToIDType().getDimensionType() == DimensionType.INT) {
+								else if (mappingType.getFromIDType().getDimensionType() == EDimensionType.STRING) {
+									if (mappingType.getToIDType().getDimensionType() == EDimensionType.INT) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											Integer.valueOf(strTokenText.nextToken()));
 									}
-									else if (mappingType.getToIDType().getDimensionType() == DimensionType.STRING) {
+									else if (mappingType.getToIDType().getDimensionType() == EDimensionType.STRING) {
 										genomeIdManager.getMap(mappingType).put(buffer,
 											strTokenText.nextToken());
 									}

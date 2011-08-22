@@ -96,7 +96,7 @@ public class DimensionFilterManager
 	protected void triggerReplaceVAEvent() {
 		DimensionReplaceVAEvent event = new DimensionReplaceVAEvent();
 		event.setVAType(perspective.getPerspectiveID());
-		event.setVirtualArray(perspective.getVA());
+		event.setVirtualArray(perspective.getVirtualArray());
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.triggerEvent(event);
@@ -104,7 +104,7 @@ public class DimensionFilterManager
 
 	@Override
 	protected void resetVA() {
-		perspective.setVA(dataDomain.getTable().getBaseDimensionVA(perspective.getPerspectiveID()));
+		perspective.setVirtualArray(dataDomain.getTable().getBaseDimensionVA(perspective.getPerspectiveID()));
 		// virtualArray =
 	}
 

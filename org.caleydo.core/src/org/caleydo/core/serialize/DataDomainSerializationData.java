@@ -54,7 +54,7 @@ public class DataDomainSerializationData {
 		return dimensionPerspectiveMap;
 	}
 
-	public void setDimensionDataMap(HashMap<String, DimensionPerspective> dimensionDataMap) {
+	public void setDimensionPerspectiveMap(HashMap<String, DimensionPerspective> dimensionDataMap) {
 		this.dimensionPerspectiveMap = dimensionDataMap;
 	}
 }

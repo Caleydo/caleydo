@@ -5,10 +5,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -30,7 +29,7 @@ public class TabularAsciiDataReader
 	 */
 	protected ArrayList<ADimension> targetDimensions;
 
-	protected ArrayList<DimensionType> columnDataTypes;
+	protected ArrayList<EDimensionType> columnDataTypes;
 
 	private ArrayList<int[]> intArrays;
 
@@ -52,7 +51,7 @@ public class TabularAsciiDataReader
 
 		this.dataDomain = dataDomain;
 		targetDimensions = new ArrayList<ADimension>();
-		columnDataTypes = new ArrayList<DimensionType>();
+		columnDataTypes = new ArrayList<EDimensionType>();
 
 		intArrays = new ArrayList<int[]>();
 		floatArrays = new ArrayList<float[]>();
@@ -76,24 +75,24 @@ public class TabularAsciiDataReader
 			String buffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
 			if (buffer.equalsIgnoreCase("abort")) {
-				columnDataTypes.add(DimensionType.ABORT);
+				columnDataTypes.add(EDimensionType.ABORT);
 
 				return areAllTokensProper;
 			}
 			else if (buffer.equalsIgnoreCase("skip")) {
-				columnDataTypes.add(DimensionType.SKIP);
+				columnDataTypes.add(EDimensionType.SKIP);
 			}
 			else if (buffer.equalsIgnoreCase("int")) {
-				columnDataTypes.add(DimensionType.INT);
+				columnDataTypes.add(EDimensionType.INT);
 			}
 			else if (buffer.equalsIgnoreCase("float")) {
-				columnDataTypes.add(DimensionType.FLOAT);
+				columnDataTypes.add(EDimensionType.FLOAT);
 			}
 			else if (buffer.equalsIgnoreCase("string")) {
-				columnDataTypes.add(DimensionType.STRING);
+				columnDataTypes.add(EDimensionType.STRING);
 			}
 			else if (buffer.equalsIgnoreCase("certainty")) {
-				columnDataTypes.add(DimensionType.CERTAINTY);
+				columnDataTypes.add(EDimensionType.CERTAINTY);
 			}
 
 			else {
@@ -117,7 +116,7 @@ public class TabularAsciiDataReader
 
 		int lineCount = 0;
 
-		for (DimensionType dimensionType : columnDataTypes) {
+		for (EDimensionType dimensionType : columnDataTypes) {
 
 			switch (dimensionType) {
 				case INT:
@@ -192,7 +191,7 @@ public class TabularAsciiDataReader
 			int floatIndex = 0;
 			int stringIndex = 0;
 
-			for (DimensionType columnDataType : columnDataTypes) {
+			for (EDimensionType columnDataType : columnDataTypes) {
 				if (strTokenLine.hasMoreTokens()) {
 					switch (columnDataType) {
 						case INT:
@@ -278,40 +277,38 @@ public class TabularAsciiDataReader
 	@SuppressWarnings("unchecked")
 	protected void setArraysToDimensions() {
 
-		int iIntArrayIndex = 0;
-		int iFloatArrayIndex = 0;
-		int iStringArrayIndex = 0;
+		int intArrayIndex = 0;
+		int floatArrayIndex = 0;
+		int stringArrayIndex = 0;
 		int dimensionIndex = 0;
 
-		DataTable table = dataDomain.getTable();
-
-		for (DimensionType dimensionType : columnDataTypes) {
+		for (EDimensionType dimensionType : columnDataTypes) {
 			// if(iDimensionIndex + 1 == targetDimensions.size())
 			// break;
 			switch (dimensionType) {
 				case INT:
-					targetDimensions.get(dimensionIndex).setRawData(intArrays.get(iIntArrayIndex));
-					iIntArrayIndex++;
+					targetDimensions.get(dimensionIndex).setRawData(intArrays.get(intArrayIndex));
+					intArrayIndex++;
 					dimensionIndex++;
 					break;
 				case FLOAT:
-					targetDimensions.get(dimensionIndex).setRawData(floatArrays.get(iFloatArrayIndex));
-					iFloatArrayIndex++;
+					targetDimensions.get(dimensionIndex).setRawData(floatArrays.get(floatArrayIndex));
+					floatArrayIndex++;
 					dimensionIndex++;
 					break;
 				case CERTAINTY:
 					targetDimensions.get(dimensionIndex - 1).setUncertaintyData(
-						floatArrays.get(iFloatArrayIndex));
+						floatArrays.get(floatArrayIndex));
 					dataDomain.getTable().setContainsUncertaintyData(true);
-					iFloatArrayIndex++;
+					floatArrayIndex++;
 					break;
 				case STRING:
-					ArrayList<String> rawStringData = stringLists.get(iStringArrayIndex);
-					rawStringData = fillUp(rawStringData);
+					ArrayList<String> rawStringData = stringLists.get(stringArrayIndex);
+					// rawStringData = fillUp(rawStringData);
 					((NominalDimension<String>) targetDimensions.get(dimensionIndex))
 						.setRawNominalData(rawStringData);
 					// stringLists.add(new ArrayList<String>(iStopParsingAtLine - parsingStartLine));
-					iStringArrayIndex++;
+					stringArrayIndex++;
 					dimensionIndex++;
 					break;
 				case SKIP: // do nothing
@@ -332,22 +329,21 @@ public class TabularAsciiDataReader
 	 * @param rawStringData
 	 * @return
 	 */
-	@Deprecated
-	private ArrayList<String> fillUp(ArrayList<String> rawStringData) {
-		int missingValues = nrLinesToRead - rawStringData.size();
-		if (missingValues > 0) {
-			for (int count = rawStringData.size(); count < nrLinesToRead; count++)
-				rawStringData.add("ARTIFICIAL");
+	// private ArrayList<String> fillUp(ArrayList<String> rawStringData) {
+	// int missingValues = nrLinesToRead - rawStringData.size();
+	// if (missingValues > 0) {
+	// for (int count = rawStringData.size(); count < nrLinesToRead; count++)
+	// rawStringData.add("ARTIFICIAL");
+	//
+	// Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Had to fill up stroarge with "
+	// + missingValues + " artificial strings"));
+	//
+	// }
+	// return rawStringData;
+	//
+	// }
 
-			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID, "Had to fill up stroarge with "
-				+ missingValues + " artificial strings"));
-
-		}
-		return rawStringData;
-
-	}
-
-	public ArrayList<DimensionType> getColumnDataTypes() {
+	public ArrayList<EDimensionType> getColumnDataTypes() {
 		return columnDataTypes;
 	}
 }

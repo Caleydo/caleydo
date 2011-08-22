@@ -128,7 +128,7 @@ public class ChooseProjectTypePage
 		createGeneticUseCaseTab(tabFolder);
 		createGeneralDataUseCaseTab(tabFolder);
 		createLoadProjectTab(tabFolder);
-		
+
 		if (!GeneralManager.RELEASE_MODE)
 			createCollaborationClientTab(tabFolder);
 
@@ -177,7 +177,7 @@ public class ChooseProjectTypePage
 				}
 				else if (((TabItem) e.item) == loadProjectTab) {
 					projectMode = ProjectMode.LOAD_PROJECT;
-				
+
 				}
 				else if (((TabItem) e.item) == collaborationClientTab) {
 					projectMode = ProjectMode.COLLABORATION_CLIENT;
@@ -256,13 +256,12 @@ public class ChooseProjectTypePage
 			+ "</a>");
 		link.setLayoutData(new GridData(GridData.FILL_BOTH));
 		link.addSelectionListener(new SelectionAdapter() {
-			@SuppressWarnings("unchecked")
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				String osName = System.getProperty("os.name");
 				try {
 					if (osName.startsWith("Mac OS")) {
-						Class fileMgr = Class.forName("com.apple.eio.FileManager");
+						Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
 						Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
 						openURL.invoke(null, new Object[] { HCC_SAMPLE_DATASET_PAPER_LINK });
 					}
@@ -533,8 +532,7 @@ public class ChooseProjectTypePage
 
 		String lastModifiedDate = "";
 		String text = "Open project from last session";
-		File recentProjectFile =
-			new File(ProjectSaver.RECENT_PROJECT_FOLDER + ProjectSaver.DATA_DOMAIN_FILE);
+		File recentProjectFile = new File(ProjectSaver.RECENT_PROJECT_FOLDER + ProjectSaver.DATA_DOMAIN_FILE);
 		if (recentProjectFile.exists()) {
 			Date date = new Date(recentProjectFile.lastModified());
 			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);

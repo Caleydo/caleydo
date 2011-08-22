@@ -6,7 +6,7 @@ package org.caleydo.core.data.collection;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public enum DimensionType {
+public enum EDimensionType {
 	// Needed by the parser
 	ABORT(null),
 	SKIP(null),
@@ -17,7 +17,7 @@ public enum DimensionType {
 
 	CERTAINTY(Float.class);
 
-	private <T> DimensionType(Class<T> dimensionClass) {
+	private <T> EDimensionType(Class<T> dimensionClass) {
 
 	}
 

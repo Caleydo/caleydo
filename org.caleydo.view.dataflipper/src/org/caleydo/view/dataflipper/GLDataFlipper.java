@@ -1657,13 +1657,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainType)).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getVA().size();
+					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getVA().size();
+					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray().size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {

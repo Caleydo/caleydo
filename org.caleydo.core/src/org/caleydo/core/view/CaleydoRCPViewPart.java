@@ -150,8 +150,7 @@ public abstract class CaleydoRCPViewPart
 			if (chosenDataDomain != null && chosenDataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) chosenDataDomain;
 
-				Set<String> dimensionPerspectiveIDs =
-					tDataDomain.getTable().getAvailableDimensionPerspectiveIDs();
+				Set<String> dimensionPerspectiveIDs = tDataDomain.getTable().getDimensionPerspectiveIDs();
 				if (dimensionPerspectiveIDs.size() == 1)
 					serializedView.setDimensionPerspectiveID(dimensionPerspectiveIDs.iterator().next());
 				else {
@@ -168,7 +167,7 @@ public abstract class CaleydoRCPViewPart
 					serializedView.setDimensionPerspectiveID(chosenPerspective);
 				}
 
-				Set<String> recordPerspectiveIDs = tDataDomain.getTable().getAvailableRecordPerspectiveIDs();
+				Set<String> recordPerspectiveIDs = tDataDomain.getTable().getRecordPerspectiveIDs();
 
 				if (recordPerspectiveIDs.size() == 1)
 					serializedView.setRecordPerspectiveID(recordPerspectiveIDs.iterator().next());

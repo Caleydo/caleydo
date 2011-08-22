@@ -2,7 +2,7 @@ package org.caleydo.core.data.id;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 
 public class IDType {
 
@@ -11,7 +11,7 @@ public class IDType {
 	private String typeName;
 	private IDCategory idCategory;
 
-	private DimensionType dimensionType;
+	private EDimensionType dimensionType;
 
 	/** flag determining whether a type is internal only (true), or publicly known (eg refseq) */
 	private boolean isInternalType = false;
@@ -37,18 +37,18 @@ public class IDType {
 	 * 
 	 * @param idCategory
 	 */
-	public void setDimensionType(DimensionType dimensionType) {
+	public void setDimensionType(EDimensionType dimensionType) {
 		this.dimensionType = dimensionType;
 	}
 
-	private IDType(String typeName, IDCategory idCategory, DimensionType dimensionType) {
+	private IDType(String typeName, IDCategory idCategory, EDimensionType dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
 		this.dimensionType = dimensionType;
 
 	}
 
-	public static IDType registerType(String typeName, IDCategory idCategory, DimensionType dimensionType) {
+	public static IDType registerType(String typeName, IDCategory idCategory, EDimensionType dimensionType) {
 
 		if (registeredTypes.containsKey(typeName))
 			return registeredTypes.get(typeName);
@@ -71,7 +71,7 @@ public class IDType {
 		this.typeName = typeName;
 	}
 
-	public DimensionType getDimensionType() {
+	public EDimensionType getDimensionType() {
 		return dimensionType;
 	}
 

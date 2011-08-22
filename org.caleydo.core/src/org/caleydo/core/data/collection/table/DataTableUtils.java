@@ -13,7 +13,7 @@ import org.caleydo.core.command.data.CmdDataCreateDimension;
 import org.caleydo.core.command.data.CmdDataCreateTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
@@ -146,7 +146,7 @@ public class DataTableUtils {
 
 		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
-		ArrayList<DimensionType> dataTypes = reader.getColumnDataTypes();
+		ArrayList<EDimensionType> dataTypes = reader.getColumnDataTypes();
 
 		boolean abort = false;
 		Iterator<String> dimensionLabelIterator = loadDataParameters.getDimensionLabels().iterator();
@@ -154,7 +154,7 @@ public class DataTableUtils {
 		String dimensionLabel;
 
 		int dimensionCount = 0;
-		for (DimensionType dataType : dataTypes) {
+		for (EDimensionType dataType : dataTypes) {
 			switch (dataType) {
 				case FLOAT:
 					cmdCreateDimension =
@@ -267,7 +267,7 @@ public class DataTableUtils {
 		DataTable table = dataDomain.getTable();
 
 		table.createDefaultRecordPerspective();
-		
+
 		// loadTrees(loadDataParameters, set);
 
 		if (loadDataParameters.isMinDefined()) {
@@ -290,8 +290,6 @@ public class DataTableUtils {
 		}
 		else
 			throw new IllegalStateException("Unknown data representation type");
-		
-
 
 		return table;
 	}
@@ -303,8 +301,6 @@ public class DataTableUtils {
 
 		table.finalizeAddedDimensions();
 	}
-
-	
 
 	/**
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
@@ -336,7 +332,8 @@ public class DataTableUtils {
 
 		int cluster = 0, cnt = 0;
 
-		RecordGroupList contentGroupList = table.getRecordPerspective(vaType).getVA().getGroupList();
+		RecordGroupList contentGroupList =
+			table.getRecordPerspective(vaType).getVirtualArray().getGroupList();
 		contentGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -368,7 +365,7 @@ public class DataTableUtils {
 		int cluster = 0, cnt = 0;
 
 		DimensionGroupList dimensionGroupList =
-			table.getDimensionPerspective(vaType).getVA().getGroupList();
+			table.getDimensionPerspective(vaType).getVirtualArray().getGroupList();
 		dimensionGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -394,11 +391,13 @@ public class DataTableUtils {
 	 * @param recordPerspectiveID
 	 * @param groupReps
 	 */
-	public static void setRecordGroupRepresentatives(DataTable table, String recordPerspectiveID, int[] groupReps) {
+	public static void setRecordGroupRepresentatives(DataTable table, String recordPerspectiveID,
+		int[] groupReps) {
 
 		int group = 0;
 
-		RecordGroupList contentGroupList = table.getRecordPerspective(recordPerspectiveID).getVA().getGroupList();
+		RecordGroupList contentGroupList =
+			table.getRecordPerspective(recordPerspectiveID).getVirtualArray().getGroupList();
 
 		contentGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
@@ -418,12 +417,13 @@ public class DataTableUtils {
 	 * @param dimensionPerspectiveID
 	 * @param groupReps
 	 */
-	public static void setDimensionGroupRepresentatives(DataTable table, String dimensionPerspectiveID, int[] groupReps) {
+	public static void setDimensionGroupRepresentatives(DataTable table, String dimensionPerspectiveID,
+		int[] groupReps) {
 
 		int group = 0;
 
 		DimensionGroupList dimensionGroupList =
-			table.getDimensionPerspective(dimensionPerspectiveID).getVA().getGroupList();
+			table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray().getGroupList();
 
 		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;

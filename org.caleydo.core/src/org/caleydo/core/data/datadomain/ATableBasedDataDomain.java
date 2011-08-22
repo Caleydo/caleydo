@@ -1,12 +1,14 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.HashMap;
+import java.util.Set;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DimensionPerspective;
 import org.caleydo.core.data.collection.table.RecordPerspective;
@@ -104,6 +106,11 @@ public abstract class ATableBasedDataDomain
 	protected RecordFilterManager recordFilterManager;
 	protected DimensionFilterManager dimensionFilterManager;
 
+	@XmlElement
+	private Set<String> recordPerspectiveIDs;
+	@XmlElement
+	private Set<String> dimensionPerspectiveIDs;
+
 	// private RelationAnalyzer contentRelationAnalyzer;
 
 	@XmlTransient
@@ -132,14 +139,14 @@ public abstract class ATableBasedDataDomain
 		}
 		recordIDType =
 			IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
-				DimensionType.INT);
+				EDimensionType.INT);
 		dimensionIDType =
 			IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(), dimensionIDCategory,
-				DimensionType.INT);
+				EDimensionType.INT);
 
 		recordGroupIDType =
 			IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
-				DimensionType.INT);
+				EDimensionType.INT);
 	}
 
 	/**
@@ -162,10 +169,14 @@ public abstract class ATableBasedDataDomain
 
 		DataTable oldSet = this.table;
 		this.table = table;
+		
 		if (oldSet != null) {
 			oldSet.destroy();
 			oldSet = null;
 		}
+		
+		recordPerspectiveIDs = table.getRecordPerspectiveIDs();
+		dimensionPerspectiveIDs = table.getDimensionPerspectiveIDs();
 	}
 
 	public void addSubDataTable(DataTable table) {
@@ -286,7 +297,7 @@ public abstract class ATableBasedDataDomain
 	 * @return
 	 */
 	public RecordVirtualArray getRecordVA(String recordPerspectiveID) {
-		RecordVirtualArray va = table.getRecordPerspective(recordPerspectiveID).getVA();
+		RecordVirtualArray va = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		return va;
 	}
 
@@ -298,8 +309,16 @@ public abstract class ATableBasedDataDomain
 	 * @return
 	 */
 	public DimensionVirtualArray getDimensionVA(String dimensionPerspectiveID) {
-		DimensionVirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
+		DimensionVirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		return va;
+	}
+	
+	public Set<String> getDimensionPerspectiveIDs() {
+		return dimensionPerspectiveIDs;
+	}
+	
+	public Set<String> getRecordPerspectiveIDs() {
+		return recordPerspectiveIDs;
 	}
 
 	/**
@@ -357,7 +376,7 @@ public abstract class ATableBasedDataDomain
 	 * Resets the context VA to it's initial state
 	 */
 	public void resetRecordVA(String recordPerspectiveID) {
-		table.getRecordPerspective(recordPerspectiveID).setVA(table.getBaseRecordVA(recordPerspectiveID));
+		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(table.getBaseRecordVA(recordPerspectiveID));
 	}
 
 	// /**
@@ -409,7 +428,7 @@ public abstract class ATableBasedDataDomain
 		if (table == null)
 			table = otherSubDataTables.get(tableID);
 
-		table.getRecordPerspective(recordPerspectiveID).setVA(virtualArray);
+		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
 
 		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
 		event.setSender(this);
@@ -443,7 +462,7 @@ public abstract class ATableBasedDataDomain
 		if (dataTableID != table.getID())
 			return;
 
-		table.getDimensionPerspective(dimensionPerspectiveID).setVA(virtualArray);
+		table.getDimensionPerspective(dimensionPerspectiveID).setVirtualArray(virtualArray);
 
 		DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
 		event.setDataDomainID(dataDomainID);
@@ -455,11 +474,11 @@ public abstract class ATableBasedDataDomain
 
 	// FIXME: do we need those methods or can we just use the replaceDimensionVA?
 	public void setRecordVirtualArray(String recordPerspectiveID, RecordVirtualArray virtualArray) {
-		table.getRecordPerspective(recordPerspectiveID).setVA(virtualArray);
+		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
 	}
 
 	public void setDimensionVirtualArray(String dimensionPerspectiveID, DimensionVirtualArray virtualArray) {
-		table.getDimensionPerspective(dimensionPerspectiveID).setVA(virtualArray);
+		table.getDimensionPerspective(dimensionPerspectiveID).setVirtualArray(virtualArray);
 	}
 
 	// protected void initFullVA(String recordPerspectiveID) {

@@ -66,9 +66,9 @@ public class AffinityClusterer
 
 		try {
 			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
-				this.iNrSamples = clusterState.getRecordPerspective().getVA().size();
+				this.iNrSamples = clusterState.getRecordPerspective().getVirtualArray().size();
 			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING)
-				this.iNrSamples = clusterState.getDimensionPerspective().getVA().size();
+				this.iNrSamples = clusterState.getDimensionPerspective().getVirtualArray().size();
 
 			this.iNrSimilarities = iNrSamples * iNrSamples;
 			this.s = new float[this.iNrSimilarities];
@@ -89,8 +89,8 @@ public class AffinityClusterer
 	 */
 	private int determineSimilarities(DataTable table, ClusterState clusterState) {
 
-		RecordVirtualArray recordVA = clusterState.getRecordPerspective().getVA();
-		DimensionVirtualArray dimensionVA = clusterState.getDimensionPerspective().getVA();
+		RecordVirtualArray recordVA = clusterState.getRecordPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = clusterState.getDimensionPerspective().getVirtualArray();
 
 		IDistanceMeasure distanceMeasure;
 

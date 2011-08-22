@@ -32,7 +32,6 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 @XmlType
-@XmlRootElement
 public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
 	extends AUniqueObject
 	implements Iterable<Integer>, IUniqueObject, Cloneable {

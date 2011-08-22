@@ -10,8 +10,8 @@ public class DataTableComparer {
 		DataTable setRight, String rightRecordPerspectiveID) {
 		DataTableRelations setRelations = new DataTableRelations(setLeft, setRight);
 
-		RecordVirtualArray recordVALeft = setLeft.getRecordPerspective(leftRecordPerspectiveID).getVA();
-		RecordVirtualArray recordVARight = setRight.getRecordPerspective(rightRecordPerspectiveID).getVA();
+		RecordVirtualArray recordVALeft = setLeft.getRecordPerspective(leftRecordPerspectiveID).getVirtualArray();
+		RecordVirtualArray recordVARight = setRight.getRecordPerspective(rightRecordPerspectiveID).getVirtualArray();
 
 		/** hash ID to index for faster accessibility */
 		HashMap<Integer, Integer> hashRightIndices = new HashMap<Integer, Integer>();

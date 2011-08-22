@@ -66,11 +66,11 @@ public class TreeClusterer
 			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 				tree = new ClusterTree();
 				// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-				this.iNrSamples = clusterState.getRecordPerspective().getVA().size();
+				this.iNrSamples = clusterState.getRecordPerspective().getVirtualArray().size();
 			}
 			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING) {
 				tree = new ClusterTree();
-				this.iNrSamples = clusterState.getDimensionPerspective().getVA().size();
+				this.iNrSamples = clusterState.getDimensionPerspective().getVirtualArray().size();
 			}
 			else
 				throw new IllegalArgumentException("Can not handle cluster type "

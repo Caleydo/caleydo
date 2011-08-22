@@ -20,7 +20,7 @@ public class AbstractSourceProvider
 	}
 
 	@Override
-	public Map getCurrentState() {
+	public Map<String, String> getCurrentState() {
         Map<String, String> currentState = new HashMap<String, String>(1);
         String currentStateTmp =  isReleaseVersion?FULL_VERSION:RELEASE_VERSION;
         currentState.put(RELEASE_STATE, currentStateTmp);

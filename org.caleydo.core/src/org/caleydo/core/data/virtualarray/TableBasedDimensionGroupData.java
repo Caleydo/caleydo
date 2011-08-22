@@ -26,7 +26,7 @@ public class TableBasedDimensionGroupData
 	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable table) {
 		this.dataDomain = dataDomain;
 		this.table = table;
-		Set<String> recordPerspectiveIDs = table.getAvailableRecordPerspectiveIDs();
+		Set<String> recordPerspectiveIDs = table.getRecordPerspectiveIDs();
 		if (recordPerspectiveIDs.size() != 1)
 			throw new IllegalStateException("Multiple perspectives not implemented for subDataTables");
 		this.recordPerspectiveID = recordPerspectiveIDs.iterator().next();
@@ -34,12 +34,12 @@ public class TableBasedDimensionGroupData
 
 	@Override
 	public RecordVirtualArray getSummaryVA() {
-		return table.getRecordPerspective(recordPerspectiveID).getVA();
+		return table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 	}
 
 	@Override
 	public ArrayList<RecordVirtualArray> getSegmentVAs() {
-		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
+		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -79,7 +79,7 @@ public class TableBasedDimensionGroupData
 
 	@Override
 	public ArrayList<Group> getGroups() {
-		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
+		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -98,7 +98,7 @@ public class TableBasedDimensionGroupData
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
+		RecordVirtualArray recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;

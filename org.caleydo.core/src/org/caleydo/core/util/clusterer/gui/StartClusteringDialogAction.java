@@ -545,7 +545,7 @@ public class StartClusteringDialogAction
 		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
 			clusterState = othersTab.getClusterState();
 
-		Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getAvailableDimensionPerspectiveIDs();
+		Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getDimensionPerspectiveIDs();
 
 		if (dimensionPerspectiveIDs.size() == 1)
 			clusterState.setDimensionPerspective(dataDomain.getTable().getDimensionPerspective(
@@ -553,7 +553,7 @@ public class StartClusteringDialogAction
 		else
 			throw new IllegalStateException("Implement choose for perspective");
 
-		Set<String> recordPerspectiveIDs = dataDomain.getTable().getAvailableRecordPerspectiveIDs();
+		Set<String> recordPerspectiveIDs = dataDomain.getTable().getRecordPerspectiveIDs();
 
 		if (recordPerspectiveIDs.size() == 1)
 		{

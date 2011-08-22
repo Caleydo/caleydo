@@ -286,9 +286,9 @@ public class GLHeatMap extends ATableBasedView {
 		// }
 
 		if (recordVA == null)
-			recordVA = table.getRecordPerspective(recordPerspectiveID).getVA();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVA();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);

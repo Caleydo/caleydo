@@ -6,7 +6,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
@@ -75,7 +75,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public void initializeIDTypes(IDType leafIDType) {
 		this.leafIDType = leafIDType;
 		nodeIDType =
-			IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), DimensionType.INT);
+			IDType.registerType("tree_" + this.hashCode(), leafIDType.getIDCategory(), EDimensionType.INT);
 	}
 
 	/**

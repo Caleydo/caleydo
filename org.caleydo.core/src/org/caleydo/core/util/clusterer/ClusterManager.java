@@ -104,7 +104,7 @@ public class ClusterManager {
 
 				runContentClustering(clusterer, clusterState, result, 0, 1);
 
-				if (result.dimensionResult.getVA() != null) {
+				if (result.dimensionResult.getVirtualArray() != null) {
 					runContentClustering(clusterer, clusterState, result, 50, 1);
 				}
 			}
@@ -129,7 +129,7 @@ public class ClusterManager {
 			return;
 		}
 		result.recordResult = clusterState.getRecordPerspective();
-		result.recordResult.setVA(new RecordVirtualArray(result.recordResult.getPerspectiveID(),
+		result.recordResult.setVirtualArray(new RecordVirtualArray(result.recordResult.getPerspectiveID(),
 			tempResult.indices));
 		result.recordResult.setClusterSizes(tempResult.clusterSizes);
 		result.recordResult.setSampleElements(tempResult.sampleElements);
@@ -147,7 +147,7 @@ public class ClusterManager {
 		TempResult tempResult =
 			clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
 		result.dimensionResult = clusterState.getDimensionPerspective();
-		result.dimensionResult.setVA(new DimensionVirtualArray(result.dimensionResult
+		result.dimensionResult.setVirtualArray(new DimensionVirtualArray(result.dimensionResult
 			.getPerspectiveID(), tempResult.indices));
 		result.dimensionResult.setClusterSizes(tempResult.clusterSizes);
 		result.dimensionResult.setSampleElements(tempResult.sampleElements);

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
@@ -826,7 +826,7 @@ public class ImportDataDialog
 
 			for (String currentID : idList) {
 
-				if (idType.getDimensionType().equals(DimensionType.INT)) {
+				if (idType.getDimensionType().equals(EDimensionType.INT)) {
 					try {
 						Integer idInt = Integer.valueOf(currentID);
 						if (idMappingManager.doesElementExist(idType, idInt)) {
@@ -836,7 +836,7 @@ public class ImportDataDialog
 					catch (NumberFormatException e) {
 					}
 				}
-				else if (idType.getDimensionType().equals(DimensionType.STRING)) {
+				else if (idType.getDimensionType().equals(EDimensionType.STRING)) {
 					if (idMappingManager.doesElementExist(idType, currentID)) {
 						currentCorrectElements++;
 					}

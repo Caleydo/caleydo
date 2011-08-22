@@ -3,7 +3,7 @@ package org.caleydo.datadomain.generic;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.DimensionType;
+import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
@@ -94,9 +94,9 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		dimensionIDCategory = IDCategory.registerCategory("UNSPECIFIED_DIMENSION");
 
 		recordIDType = IDType.registerType("UNSPECIFIED_RECORD", recordIDCategory,
-				DimensionType.STRING);
+				EDimensionType.STRING);
 		dimensionIDType = IDType.registerType("UNSPECIFIED_DIMENSION",
-				dimensionIDCategory, DimensionType.STRING);
+				dimensionIDCategory, EDimensionType.STRING);
 
 		primaryRecordMappingType = recordIDType;// IDType.getIDType(DataTable.RECORD);
 		humanReadableRecordIDType = recordIDType;
