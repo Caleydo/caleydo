@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DimensionPerspective;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 

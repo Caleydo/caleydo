@@ -28,8 +28,8 @@ Export-Package: org.caleydo.core.command;
  org.caleydo.core.data.collection.table;
   uses:="org.caleydo.core.data.collection,
    org.caleydo.core.data.datadomain,
+   org.caleydo.core.data.perspective,
    org.caleydo.core.data,
-   org.caleydo.core.data.virtualarray.delta,
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.data.graph.tree,
    org.caleydo.core.util.clusterer,
@@ -45,6 +45,7 @@ Export-Package: org.caleydo.core.command;
  org.caleydo.core.data.datadomain;
   uses:="org.caleydo.core.view.opengl.canvas.listener,
    org.jgrapht,
+   org.caleydo.core.data.virtualarray.events,
    org.caleydo.core.data.filter,
    org.caleydo.core.data.virtualarray.delta,
    org.caleydo.core.manager.event,
@@ -59,7 +60,7 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.selection",
  org.caleydo.core.data.filter;
   uses:="org.caleydo.core.data.filter.representation,
-   org.caleydo.core.view.opengl.canvas.listener,
+   org.caleydo.core.data.perspective,
    org.caleydo.core.data.datadomain,
    org.caleydo.core.data.virtualarray.delta,
    org.caleydo.core.manager.event",
@@ -73,6 +74,7 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.id",
  org.caleydo.core.data.id;uses:="org.caleydo.core.data.collection",
  org.caleydo.core.data.mapping;uses:="org.jgrapht.graph,org.caleydo.core.data.id",
+ org.caleydo.core.data.perspective,
  org.caleydo.core.data.selection;uses:="org.caleydo.core.data.selection.delta,org.caleydo.core.manager.event,org.caleydo.core.data.id",
  org.caleydo.core.data.selection.delta;uses:="org.caleydo.core.data.selection,org.caleydo.core.data.id",
  org.caleydo.core.data.virtualarray;
@@ -81,7 +83,11 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.virtualarray.group,
    org.caleydo.core.data.collection.table",
  org.caleydo.core.data.virtualarray.delta;uses:="org.caleydo.core.data.selection.delta,org.caleydo.core.data.virtualarray,org.caleydo.core.data.id",
- org.caleydo.core.data.virtualarray.events,
+ org.caleydo.core.data.virtualarray.events;
+  uses:="org.caleydo.core.data.virtualarray.delta,
+   org.caleydo.core.data.collection.table,
+   org.caleydo.core.manager.event,
+   org.caleydo.core.data.virtualarray",
  org.caleydo.core.data.virtualarray.group;
   uses:="org.caleydo.core.data,
    org.caleydo.core.util.clusterer,
@@ -139,7 +145,6 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.util.clusterer,
    org.caleydo.core.data.collection.table,
    org.caleydo.core.manager.event,
-   org.caleydo.core.data.virtualarray,
    org.caleydo.core.data.id",
  org.caleydo.core.manager.event.view;
   uses:="org.caleydo.core.view.opengl.canvas,
@@ -196,7 +201,8 @@ Export-Package: org.caleydo.core.command;
  org.caleydo.core.serialize;uses:="org.caleydo.core.data.datadomain,org.caleydo.core.view.opengl.camera,javax.xml.bind",
  org.caleydo.core.util,
  org.caleydo.core.util.clusterer;
-  uses:="org.caleydo.core.data.collection.table,
+  uses:="org.caleydo.core.data.perspective,
+   org.caleydo.core.data.collection.table,
    org.caleydo.core.manager.event,
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.data.graph.tree,
@@ -284,7 +290,6 @@ Export-Package: org.caleydo.core.command;
  org.caleydo.core.view.opengl.canvas.listener;
   uses:="org.caleydo.core.manager.event.view,
    org.caleydo.core.util.mapping.color,
-   org.caleydo.core.data.virtualarray.delta,
    org.caleydo.core.data.selection.delta,
    org.caleydo.core.manager.event,
    org.caleydo.core.data.selection,
@@ -358,7 +363,11 @@ Export-Package: org.caleydo.core.command;
    javax.media.opengl,
    org.caleydo.core.data.id",
  org.caleydo.core.view.opengl.util.slerp;uses:="gleem.linalg.open,org.caleydo.core.view.opengl.util.hierarchy",
- org.caleydo.core.view.opengl.util.spline;uses:="javax.media.opengl.glu,gleem.linalg,javax.media.opengl",
+ org.caleydo.core.view.opengl.util.spline;
+  uses:="javax.media.opengl.glu,
+   org.caleydo.core.view.opengl.canvas,
+   gleem.linalg,
+   javax.media.opengl",
  org.caleydo.core.view.opengl.util.text;uses:="javax.media.opengl,com.jogamp.opengl.util.awt",
  org.caleydo.core.view.opengl.util.texture;uses:="com.jogamp.opengl.util.texture,gleem.linalg,javax.media.opengl",
  org.caleydo.core.view.opengl.util.vislink;uses:="javax.media.opengl,gleem.linalg",

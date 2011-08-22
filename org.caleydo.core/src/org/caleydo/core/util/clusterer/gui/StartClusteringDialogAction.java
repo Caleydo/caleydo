@@ -2,8 +2,8 @@ package org.caleydo.core.util.clusterer.gui;
 
 import java.util.Set;
 
-import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.util.clusterer.ClusterState;

@@ -1,6 +1,5 @@
 package org.caleydo.core.data.filter;
 
-import org.caleydo.core.data.collection.table.DimensionPerspective;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.MoveDimensionFilterListener;
@@ -10,6 +9,7 @@ import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListListener;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterEvent;
 import org.caleydo.core.data.filter.event.RemoveDimensionFilterListener;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;

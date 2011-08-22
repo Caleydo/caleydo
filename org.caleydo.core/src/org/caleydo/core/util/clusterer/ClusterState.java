@@ -2,9 +2,9 @@ package org.caleydo.core.util.clusterer;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.table.DimensionPerspective;
-import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 
 /**

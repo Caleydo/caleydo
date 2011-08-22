@@ -14,6 +14,8 @@ import javax.xml.bind.Unmarshaller;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.ChooseDataPerspectiveDialog;
+import org.caleydo.core.data.perspective.PerspectiveChooser;
 import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
@@ -150,40 +152,10 @@ public abstract class CaleydoRCPViewPart
 			if (chosenDataDomain != null && chosenDataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) chosenDataDomain;
 
-				Set<String> dimensionPerspectiveIDs = tDataDomain.getTable().getDimensionPerspectiveIDs();
-				if (dimensionPerspectiveIDs.size() == 1)
-					serializedView.setDimensionPerspectiveID(dimensionPerspectiveIDs.iterator().next());
-				else {
-					// check if there is only one "public" perspecive
-					String chosenPerspective = null;
-					for (String tempPerspectiveID : dimensionPerspectiveIDs) {
-						if (!tDataDomain.getTable().getDimensionPerspective(tempPerspectiveID).isPrivate()) {
-							if (chosenPerspective != null)
-								throw new IllegalStateException("Implement choose for perspective");
-							else
-								chosenPerspective = tempPerspectiveID;
-						}
-					}
-					serializedView.setDimensionPerspectiveID(chosenPerspective);
-				}
-
-				Set<String> recordPerspectiveIDs = tDataDomain.getTable().getRecordPerspectiveIDs();
-
-				if (recordPerspectiveIDs.size() == 1)
-					serializedView.setRecordPerspectiveID(recordPerspectiveIDs.iterator().next());
-				else {
-					// check if there is only one "public" perspecive
-					String chosenPerspective = null;
-					for (String tempPerspectiveID : recordPerspectiveIDs) {
-						if (!tDataDomain.getTable().getRecordPerspective(tempPerspectiveID).isPrivate()) {
-							if (chosenPerspective != null)
-								throw new IllegalStateException("Implement choose for perspective");
-							else
-								chosenPerspective = tempPerspectiveID;
-						}
-					}
-					serializedView.setRecordPerspectiveID(chosenPerspective);
-				}
+				serializedView.setRecordPerspectiveID(PerspectiveChooser.chooseRecordPerspective(
+					tDataDomain.getTable(), true));
+				serializedView.setDimensionPerspectiveID(PerspectiveChooser.chooseDimensionPerspective(
+					tDataDomain.getTable(), true));
 			}
 		}
 	}

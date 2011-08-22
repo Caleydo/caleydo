@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.table;
+package org.caleydo.core.data.perspective;
 
 import java.util.ArrayList;
 

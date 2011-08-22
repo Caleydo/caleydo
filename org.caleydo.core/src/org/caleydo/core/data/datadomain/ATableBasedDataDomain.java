@@ -10,8 +10,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DimensionPerspective;
-import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -19,6 +17,8 @@ import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;

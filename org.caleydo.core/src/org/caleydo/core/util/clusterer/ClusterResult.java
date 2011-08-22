@@ -1,7 +1,7 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.table.DimensionPerspective;
-import org.caleydo.core.data.collection.table.RecordPerspective;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 
 public class ClusterResult {
 

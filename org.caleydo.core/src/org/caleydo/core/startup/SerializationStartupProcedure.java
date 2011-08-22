@@ -2,11 +2,11 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.data.collection.table.DimensionPerspective;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.collection.table.RecordPerspective;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.serialize.DataDomainSerializationData;
 import org.caleydo.core.serialize.ProjectLoader;
 import org.caleydo.core.serialize.ProjectSaver;
