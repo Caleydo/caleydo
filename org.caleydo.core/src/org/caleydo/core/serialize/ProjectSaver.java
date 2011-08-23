@@ -90,12 +90,26 @@ public class ProjectSaver {
 	 *            name of the file to save the project in.
 	 */
 	public void save(String fileName) {
+		save(fileName, false);
+	}
+
+	/**
+	 * Saves the data and optionally also the workbench (i.e., view states, etc.)
+	 * 
+	 * @param fileName
+	 * @param onlyData
+	 *            if true, only the data is saved, else also the workbench is saved
+	 */
+	public void save(String fileName, boolean onlyData) {
 
 		FileOperations.createDirectory(TEMP_PROJECT_FOLDER);
 
 		try {
-			savePluginData(TEMP_PROJECT_FOLDER);
-			saveProjectData(TEMP_PROJECT_FOLDER);
+			if (!onlyData) {
+				savePluginData(TEMP_PROJECT_FOLDER);
+				saveWorkbenchData(TEMP_PROJECT_FOLDER);
+			}
+			saveData(TEMP_PROJECT_FOLDER);
 
 		}
 		catch (Exception savingException) {
@@ -141,7 +155,8 @@ public class ProjectSaver {
 
 		try {
 			savePluginData(RECENT_PROJECT_FOLDER);
-			saveProjectData(RECENT_PROJECT_FOLDER);
+			saveData(RECENT_PROJECT_FOLDER);
+			saveWorkbenchData(RECENT_PROJECT_FOLDER);
 		}
 		catch (Exception savingException) {
 			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Faild to auto-save project.",
@@ -184,10 +199,9 @@ public class ProjectSaver {
 	 * @param dirName
 	 *            directory to save the project-files into
 	 */
-	private void saveProjectData(String dirName) throws JAXBException, IOException {
-		saveData(dirName);
-		saveWorkbenchData(dirName);
-	}
+	// private void saveProjectData(String dirName) throws JAXBException, IOException {
+	//
+	// }
 
 	private void saveData(String dirName) throws JAXBException, IOException {
 

@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Alexander Lex
  */
-public class PerspectiveChooser {
+public class DataConfigurationChooser {
 
 	/**
 	 * <p>
@@ -51,13 +51,13 @@ public class PerspectiveChooser {
 			if (chosenDataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) chosenDataDomain;
 				Collection<String> recordPerspectiveCandidates =
-					PerspectiveChooser.getRecordPerspectiveCandidates(tDataDomain.getTable(), false);
+					DataConfigurationChooser.getRecordPerspectiveCandidates(tDataDomain.getTable(), false);
 				if (recordPerspectiveCandidates.size() == 1) {
 					recordPerspectiveID = recordPerspectiveCandidates.iterator().next();
 					recordPerspective = tDataDomain.getTable().getRecordPerspective(recordPerspectiveID);
 				}
 				Collection<String> dimensionPerspectiveCandidates =
-					PerspectiveChooser.getDimensionPerspectiveCandidates(tDataDomain.getTable(), false);
+					DataConfigurationChooser.getDimensionPerspectiveCandidates(tDataDomain.getTable(), false);
 				if (dimensionPerspectiveCandidates.size() == 1) {
 					dimensionPerspectiveID = dimensionPerspectiveCandidates.iterator().next();
 					dimensionPerspective =

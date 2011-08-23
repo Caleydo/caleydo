@@ -215,8 +215,10 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	public ClusterNode getTreeRoot() {
 		if (rootNode != null)
 			return rootNode;
-		else
+		else if (tree != null)
 			return tree.getRoot();
+		else
+			return null;
 	}
 
 	private void reset() {

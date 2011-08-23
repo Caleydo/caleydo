@@ -13,7 +13,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.data.configuration.DataConfiguration;
-import org.caleydo.core.data.configuration.PerspectiveChooser;
+import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -134,7 +134,7 @@ public abstract class CaleydoRCPViewPart
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
 
-			DataConfiguration config = PerspectiveChooser.determineDataConfiguration(availableDomains);
+			DataConfiguration config = DataConfigurationChooser.determineDataConfiguration(availableDomains);
 			serializedView.setDataDomainID(config.getDataDomain().getDataDomainID());
 			serializedView.setRecordPerspectiveID(config.getRecordPerspective().getPerspectiveID());
 			serializedView.setDimensionPerspectiveID(config.getDimensionPerspective().getPerspectiveID());

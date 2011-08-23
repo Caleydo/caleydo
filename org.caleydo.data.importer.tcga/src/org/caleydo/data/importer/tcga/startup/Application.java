@@ -47,7 +47,7 @@ public class Application
 		loadDataParameters.setMathFilterMode("Normal");
 		loadDataParameters.setIsDataHomogeneous(true);
 		loadDataParameters.setInputPattern("SKIP;FLOAT;FLOAT;");
-		
+
 		List<String> dimensionLabels = new ArrayList<String>();
 		dimensionLabels.add("column 1");
 		dimensionLabels.add("column 2");
@@ -61,8 +61,8 @@ public class Application
 			throw new IllegalStateException("Problem while creating table!");
 
 		// the default save path is usually your home directory
-		new ProjectSaver().save("test.cal");
-		
+		new ProjectSaver().save("test.cal", true);
+
 		return IApplication.EXIT_OK;
 	}
 
