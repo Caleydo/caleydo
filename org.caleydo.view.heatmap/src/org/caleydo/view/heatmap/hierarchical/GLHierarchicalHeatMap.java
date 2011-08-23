@@ -665,8 +665,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glHeatMapView.setDimensionPerspectiveID(dimensionPerspectiveID);
 		glHeatMapView.setDataDomain(dataDomain);
 
-	
-
 		glHeatMapView.setRemoteRenderingGLView(this);
 		glHeatMapView.setRemoteLevelElement(heatMapRemoteElement);
 
@@ -696,12 +694,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				parentComposite, viewFrustum, true);
 		glRecordDendrogramView.setRemoteRenderingGLView(this);
 		glRecordDendrogramView.setRecordPerspectiveID(recordPerspectiveID);
-		glRecordDendrogramView.setDimensionPerspectiveID(dimensionPerspectiveID);	
+		glRecordDendrogramView.setDimensionPerspectiveID(dimensionPerspectiveID);
 		glRecordDendrogramView.setDataDomain(dataDomain);
 		glRecordDendrogramView.setRemoteRenderingGLView(this);
 		glRecordDendrogramView.initData();
 		glRecordDendrogramView.setRenderUntilCut(recordDendrogramRenderCut);
-
 
 		glDimensionDendrogramView = new GLDendrogram<DimensionGroupList>(parentGLCanvas,
 				parentComposite, viewFrustum, false);

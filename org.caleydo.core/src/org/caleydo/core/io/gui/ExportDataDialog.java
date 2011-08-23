@@ -5,22 +5,24 @@ import java.util.ArrayList;
 import java.util.Date;
 
 import org.caleydo.core.data.collection.export.DataTableExporter;
-import org.caleydo.core.data.collection.export.DataTableExporter.WhichViewToExport;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.SubDataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.FileDialog;
@@ -39,14 +41,25 @@ public class ExportDataDialog
 	private ArrayList<Integer> genesToExport = null;
 	private ArrayList<Integer> experimentsToExport = null;
 
-	private Button[] radios = new Button[3];
+	// private Button[] radios = new Button[3];
 
 	private Composite composite;
+	private Combo dataDomainChooser;
+	private Combo recordPerspectiveChooser;
+	private Combo dimensionPerspectiveChooser;
 
 	private Text txtFileName;
 
 	private String sFileName = "";
 	private String sFilePath = "";
+
+	private ATableBasedDataDomain dataDomain;
+	private RecordPerspective recordPerspective;
+	private DimensionPerspective dimensionPerspective;
+
+	private String[] possibleDataDomains;
+	private String[] possibleRecordPerspectives;
+	private String[] possibleDimensionPerspectives;
 
 	/**
 	 * Constructor.
@@ -79,12 +92,24 @@ public class ExportDataDialog
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-
 		createGUI(parent);
 		return parent;
 	}
 
+	/*
+	 * (non-Javadoc)
+	 * @see org.eclipse.jface.dialogs.Dialog#createButtonBar(org.eclipse.swt.widgets.Composite)
+	 */
+	@Override
+	protected Control createButtonBar(Composite parent) {
+		Control control = super.createButtonBar(parent);
+		getButton(IDialogConstants.OK_ID).setEnabled(false);
+
+		return control;
+	}
+
 	private void createGUI(final Composite parent) {
+
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(2, false);
 		composite.setLayout(layout);
@@ -115,43 +140,99 @@ public class ExportDataDialog
 			}
 		});
 
-		boolean bDoesBucketExist = false;
-		// boolean doesHeatMapExist = false;
-		// boolean doParallelCoordinatesExist = false;
-		for (AGLView view : GeneralManager.get().getViewManager().getAllGLViews()) {
-			if (view.getViewType().equals("org.caleydo.view.bucket")) {
-				bDoesBucketExist = true;
+		dataDomainChooser = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
+		dataDomainChooser.setText("Choose dataDomain");
+		GridData data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		data.minimumWidth = 400;
+		dataDomainChooser.setLayoutData(data);
+
+		ArrayList<ATableBasedDataDomain> tDataDomains =
+			DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
+
+		possibleDataDomains = new String[tDataDomains.size() + 1];
+		for (int count = 0; count < tDataDomains.size(); count++) {
+			possibleDataDomains[count] = tDataDomains.get(count).getDataDomainID();
+			String possibleDataDomain = possibleDataDomains[count];
+			dataDomainChooser.add(possibleDataDomain, count);
+		}
+		if (possibleDataDomains.length == 1) {
+			dataDomainChooser.select(0);
+			dataDomain =
+				(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(possibleDataDomains[0]);
+		}
+		possibleDataDomains[tDataDomains.size()] = "wu";
+
+		dataDomainChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				String dataDomainID = possibleDataDomains[dataDomainChooser.getSelectionIndex()];
+				System.out.println(dataDomainID);
+				dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(dataDomainID);
+				initDataPerspectiveChoosers(parent);
+				checkOK();
 			}
-			// if (view instanceof GLHierarchicalHeatMap && !view.isRenderedRemote()) {
-			// doesHeatMapExist = true;
-			// }
-			// if (view instanceof GLParallelCoordinates && !view.isRenderedRemote()) {
-			// doParallelCoordinatesExist = true;
-			// }
-		}
+		});
 
-		radios[0] = new Button(composite, SWT.RADIO);
-		radios[0].setText("Export bucket contents");
-		radios[0].setBounds(10, 5, 75, 30);
-		if (!bDoesBucketExist) {
-			radios[0].setEnabled(false);
-		}
+		recordPerspectiveChooser = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
+		recordPerspectiveChooser.setText("Choose record perspective");
 
-		radios[1] = new Button(composite, SWT.RADIO);
-		radios[1].setText("Export data as shown in the standalone views");
-		radios[1].setBounds(10, 30, 75, 30);
-		if (experimentsToExport == null)
-			radios[1].setSelection(true);
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		data.minimumWidth = 400;
+		recordPerspectiveChooser.setLayoutData(data);
 
-		radios[2] = new Button(composite, SWT.RADIO);
-		radios[2].setText("Export group data");
-		radios[2].setBounds(10, 30, 75, 30);
-		if (experimentsToExport == null) {
-			radios[2].setEnabled(false);
-		}
-		else {
-			radios[2].setSelection(true);
-		}
+		recordPerspectiveChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				String recordPerspectiveID =
+					possibleRecordPerspectives[recordPerspectiveChooser.getSelectionIndex()];
+				recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+				checkOK();
+			}
+		});
+
+		dimensionPerspectiveChooser = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
+		dimensionPerspectiveChooser.setText("Choose dimension perspective");
+
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 2;
+		data.minimumWidth = 400;
+		dimensionPerspectiveChooser.setLayoutData(data);
+
+		dimensionPerspectiveChooser.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+				String dimensionPerspectiveID =
+					possibleDimensionPerspectives[dimensionPerspectiveChooser.getSelectionIndex()];
+				dimensionPerspective = dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
+				checkOK();
+			}
+		});
+
+		initDataPerspectiveChoosers(parent);
+		// --- old stuff
+
+		// radios[0] = new Button(composite, SWT.RADIO);
+		// radios[0].setText("Export bucket contents");
+		// radios[0].setBounds(10, 5, 75, 30);
+		//
+		// radios[1] = new Button(composite, SWT.RADIO);
+		// radios[1].setText("Export data as shown in the standalone views");
+		// radios[1].setBounds(10, 30, 75, 30);
+		// if (experimentsToExport == null)
+		// radios[1].setSelection(true);
+		//
+		// radios[2] = new Button(composite, SWT.RADIO);
+		// radios[2].setText("Export group data");
+		// radios[2].setBounds(10, 30, 75, 30);
+		// if (experimentsToExport == null) {
+		// radios[2].setEnabled(false);
+		// }
+		// else {
+		// radios[2].setSelection(true);
+		// }
 
 		// if (!doesHeatMapExist) {
 		// radios[1].setEnabled(false);
@@ -172,34 +253,61 @@ public class ExportDataDialog
 
 	}
 
+	private final boolean checkOK() {
+		if (dataDomain == null || recordPerspective == null || dimensionPerspective == null
+			|| sFileName == null) {
+			return false;
+		}
+		getButton(IDialogConstants.OK_ID).setEnabled(true);
+		return true;
+
+	}
+
+	private final void initDataPerspectiveChoosers(Composite parent) {
+		if (dataDomain != null) {
+			possibleRecordPerspectives = dataDomain.getRecordPerspectiveIDs().toArray(new String[0]);
+			possibleDimensionPerspectives = dataDomain.getDimensionPerspectiveIDs().toArray(new String[0]);
+		}
+		else {
+			possibleRecordPerspectives = new String[] { "Choose Datadomain first!" };
+			possibleDimensionPerspectives = new String[] { "Choose Datadomain first!" };
+		}
+
+		recordPerspectiveChooser.removeAll();
+		for (int index = 0; index < possibleRecordPerspectives.length; index++) {
+			String possibleDataPerspective = possibleRecordPerspectives[index];
+			recordPerspectiveChooser.add(possibleDataPerspective, index);
+		}
+
+		dimensionPerspectiveChooser.removeAll();
+		for (int index = 0; index < possibleDimensionPerspectives.length; index++) {
+			String possibleDataPerspective = possibleDimensionPerspectives[index];
+			dimensionPerspectiveChooser.add(possibleDataPerspective, index);
+		}
+
+		if (dataDomain == null) {
+			recordPerspectiveChooser.setEnabled(false);
+			dimensionPerspectiveChooser.setEnabled(false);
+		}
+		else {
+			recordPerspectiveChooser.setEnabled(true);
+			dimensionPerspectiveChooser.setEnabled(true);
+		}
+	}
+
 	@Override
 	protected void okPressed() {
 
-		for (IDataDomain dataDomain : DataDomainManager.get().getDataDomains()) {
-			ATableBasedDataDomain setBasedDataDomain = null;
-			if (dataDomain instanceof ATableBasedDataDomain)
-				setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-			else
-				continue;
+		DataTableExporter exporter = new DataTableExporter();
 
-			DataTableExporter exporter = new DataTableExporter();
-			// exporter.export(this, sFileName, eWichViewToExport);
-
-			DataTable table = setBasedDataDomain.getTable();
-			IDType targetIDType = setBasedDataDomain.getPrimaryRecordMappingType();
-			if (table instanceof SubDataTable)
-				continue;
-			if (radios[0].getSelection()) {
-				exporter.export(table, sFileName, WhichViewToExport.BUCKET, targetIDType);
-			}
-			else if (radios[1].getSelection()) {
-				exporter.export(table, sFileName, WhichViewToExport.WHOLE_DATA, targetIDType);
-			}
-			else if (radios[2].getSelection()) {
-				exporter.exportGroups(table, sFileName, genesToExport, experimentsToExport, targetIDType);
-			}
-		}
+		DataTable table = dataDomain.getTable();
+		IDType targetIDType = dataDomain.getPrimaryRecordMappingType();
+		exporter.export(table, sFileName, recordPerspective, dimensionPerspective, targetIDType);
 
 		super.okPressed();
+	}
+
+	public static void main(String[] args) {
+		new ExportDataDialog(new Shell()).open();
 	}
 }

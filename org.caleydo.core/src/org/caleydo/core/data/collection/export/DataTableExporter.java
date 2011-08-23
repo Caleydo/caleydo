@@ -14,6 +14,8 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -25,11 +27,6 @@ import org.caleydo.core.util.clusterer.ClusterNode;
  * @author Alexander Lex
  */
 public class DataTableExporter {
-
-	public enum WhichViewToExport {
-		BUCKET,
-		WHOLE_DATA
-	}
 
 	public void exportGroups(DataTable table, String sFileName, ArrayList<Integer> alGenes,
 		ArrayList<Integer> alExperiments, IDType targetIDType) {
@@ -84,23 +81,15 @@ public class DataTableExporter {
 		}
 	}
 
-	@SuppressWarnings("unused")
-	public void export(DataTable table, String sFileName, WhichViewToExport eWhichViewToExport,
-		IDType targetIDType) {
+	public void export(DataTable table, String sFileName, RecordPerspective recordPerspective,
+		DimensionPerspective dimensionPerspective, IDType targetIDType) {
 		RecordVirtualArray recordVA = null;
 		DimensionVirtualArray dimensionVA = null;
 
 		ATableBasedDataDomain dataDomain = table.getDataDomain();
 
-		if (eWhichViewToExport == WhichViewToExport.BUCKET) {
-
-			recordVA = dataDomain.getRecordVA(DataTable.RECORD_CONTEXT);
-			dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
-		}
-		else if (eWhichViewToExport == WhichViewToExport.WHOLE_DATA) {
-			recordVA = dataDomain.getRecordVA(DataTable.RECORD);
-			dimensionVA = dataDomain.getDimensionVA(DataTable.DIMENSION);
-		}
+		recordVA = recordPerspective.getVirtualArray();
+		dimensionVA = dimensionPerspective.getVirtualArray();
 
 		if (recordVA == null || dimensionVA == null)
 			throw new IllegalStateException("Not sure which VA to take.");
@@ -243,25 +232,25 @@ public class DataTableExporter {
 	}
 
 	// FIXME: implement different content data / dimension data instances
-	public void exportTrees(DataTable table, String directory) {
-		try {
-			// export gene cluster tree to own xml file
-			Tree<ClusterNode> tree = table.getRecordPerspective(DataTable.RECORD).getTree();
-			if (tree != null) {
-				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(table.getDataDomain());
-				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
-			}
-			// export experiment cluster tree to own xml file
-			tree = table.getDimensionPerspective(DataTable.DIMENSION).getDimensionTree();
-			if (tree != null) {
-				TreePorter treePorter = new TreePorter();
-				treePorter.setDataDomain(table.getDataDomain());
-				treePorter.exportTree(directory + "/vertical_experiments.xml", tree);
-			}
-		}
-		catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
+//	public void exportTrees(DataTable table, String directory) {
+//		try {
+//			// export gene cluster tree to own xml file
+//			Tree<ClusterNode> tree = table.getRecordPerspective(DataTable.RECORD).getTree();
+//			if (tree != null) {
+//				TreePorter treePorter = new TreePorter();
+//				treePorter.setDataDomain(table.getDataDomain());
+//				treePorter.exportTree(directory + "/horizontal_gene.xml", tree);
+//			}
+//			// export experiment cluster tree to own xml file
+//			tree = table.getDimensionPerspective(DataTable.DIMENSION).getDimensionTree();
+//			if (tree != null) {
+//				TreePorter treePorter = new TreePorter();
+//				treePorter.setDataDomain(table.getDataDomain());
+//				treePorter.exportTree(directory + "/vertical_experiments.xml", tree);
+//			}
+//		}
+//		catch (Exception e) {
+//			e.printStackTrace();
+//		}
+//	}
 }

@@ -3,6 +3,7 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
 import org.caleydo.core.manager.GeneralManager;
@@ -30,7 +31,7 @@ import org.eclipse.swt.widgets.Shell;
 public class DataDomainManager {
 
 	public final static String DATA_DOMAIN_INSTANCE_DELIMITER = "_";
-	
+
 	private static DataDomainManager dataDomainManager;
 	private HashMap<String, IDataDomain> registeredDataDomainsByID = new HashMap<String, IDataDomain>(8);
 	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomainsByType =
@@ -74,7 +75,8 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns all data domains
+	 * Returns all data domains. The collection is backed by the manager, so do NOT! modify it, otherwise you
+	 * will modify the manager contents.
 	 * 
 	 * @return
 	 */
@@ -140,7 +142,7 @@ public class DataDomainManager {
 		}
 
 		dataDomainGraph.addDataDomain(dataDomain);
-		
+
 		NewDataDomainEvent event = new NewDataDomainEvent(dataDomain);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
@@ -155,14 +157,14 @@ public class DataDomainManager {
 
 		if (registeredDataDomainsByID.containsKey(dataDomain.getDataDomainID()))
 			registeredDataDomainsByID.remove(dataDomain.getDataDomainID());
-		
+
 		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);
 		}
 
 		dataDomainGraph.removeDataDomain(dataDomain);
 	}
-	
+
 	/**
 	 * Returns the default association manager which is valid system-wide.
 	 * 
@@ -174,5 +176,32 @@ public class DataDomainManager {
 
 	public DataDomainGraph getDataDomainGraph() {
 		return dataDomainGraph;
+	}
+
+	/**
+	 * Returns a list containing all DataDomains that are of the type classType.
+	 * 
+	 * @param classType
+	 * @return
+	 */
+	public <T extends ADataDomain> ArrayList<T> getDataDomainsByType(Class<T> classType) {
+		ArrayList<T> result = new ArrayList<T>();
+		// ArrayList<ATableBasedDataDomain> tDataDomains = new ArrayList<ATableBasedDataDomain>();
+		Collection<IDataDomain> allDataDomains = getDataDomains();
+
+		Iterator<IDataDomain> iterator = allDataDomains.iterator();
+		while (iterator.hasNext()) {
+			IDataDomain dataDomain = iterator.next();
+			try {
+				T typedDataDomain = classType.cast(dataDomain);
+				// if we get here cast was successful
+				result.add(typedDataDomain);
+			}
+			catch (ClassCastException e) {
+				// this is expected for every failed cast, i.e. the checked dataDomain is not an instance of
+				// the specified class.
+			}
+		}
+		return result;
 	}
 }

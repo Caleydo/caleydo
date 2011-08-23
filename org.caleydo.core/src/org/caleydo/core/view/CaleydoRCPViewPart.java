@@ -152,9 +152,9 @@ public abstract class CaleydoRCPViewPart
 			if (chosenDataDomain != null && chosenDataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) chosenDataDomain;
 
-				serializedView.setRecordPerspectiveID(PerspectiveChooser.chooseRecordPerspective(
+				serializedView.setRecordPerspectiveID(PerspectiveChooser.chooseRecordPerspectiveAndAskIfNecessary(
 					tDataDomain.getTable(), false));
-				serializedView.setDimensionPerspectiveID(PerspectiveChooser.chooseDimensionPerspective(
+				serializedView.setDimensionPerspectiveID(PerspectiveChooser.chooseDimensionPerspectiveAndAskIfNeccesary(
 					tDataDomain.getTable(), false));
 			}
 		}
