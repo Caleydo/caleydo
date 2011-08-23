@@ -168,7 +168,7 @@ public class HeatMapWrapper {
 		selectedGroups.clear();
 		contentSelectionManager = dataDomain.getRecordSelectionManager();
 		// contentSelectionManager.clearSelections();
-		contentSelectionManager.setVirtualArray(recordVA);
+	
 		RecordGroupList contentGroupList = recordVA.getGroupList();
 
 		// FIXME

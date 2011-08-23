@@ -48,7 +48,8 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public CategoryView(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
+	public CategoryView(GLCanvas glCanvas, Composite parentComposite,
+			final ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
@@ -150,8 +151,8 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -294,4 +295,15 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 			return 100;
 		}
 	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	}
+
 }
