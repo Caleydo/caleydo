@@ -39,7 +39,10 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.bandlayout.AEdgeBandRenderer;
 import org.caleydo.view.datagraph.bandlayout.BandInfo;
+import org.caleydo.view.datagraph.bandlayout.ConnectionBandCreatorFactory;
+import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
@@ -494,176 +497,64 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
 			IDataGraphNode node2) {
 
-		// AConnectionBandCreator bandCreator = ConnectionBandCreatorFactory
-		// .getConnectionBandCreator(node1, node2, pixelGLConverter);
-		//
-		// for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
-		// .calcConnectionBands()) {
-		// connectionBandRenderer.init(gl);
-		// connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-		// new float[] { 0, 0, 0 }, 0.2f);
-		// }
+		AEdgeBandRenderer bandCreator = ConnectionBandCreatorFactory
+				.getConnectionBandCreator(node1, node2, pixelGLConverter, viewFrustum);
 
-		List<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
-		List<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
+		bandCreator.renderEdgeBand(gl, new SimpleEdgeRoutingStrategy(dataGraph));
+//		for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
+//				.calcConnectionBands()) {
+//			connectionBandRenderer.init(gl);
+//			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
+//					new float[] { 0, 0, 0 }, 0.2f);
+//		}
 
-		Point2D node1BundlingPoint = new Point2D.Double(node1.getPosition()
-				.getX(), node1.getPosition().getY() - node1.getHeight() / 2.0f
-				- 0.2f);
-		Point2D node2BundlingPoint = new Point2D.Double(node2.getPosition()
-				.getX(), node2.getPosition().getY() - node2.getHeight() / 2.0f
-				- 0.2f);
+//		List<ADimensionGroupData> dimensionGroups1 = node1.getDimensionGroups();
+//		List<ADimensionGroupData> dimensionGroups2 = node2.getDimensionGroups();
+//
+//		Point2D node1BundlingPoint = new Point2D.Double(node1.getPosition()
+//				.getX(), node1.getPosition().getY() - node1.getHeight() / 2.0f
+//				- 0.2f);
+//		Point2D node2BundlingPoint = new Point2D.Double(node2.getPosition()
+//				.getX(), node2.getPosition().getY() - node2.getHeight() / 2.0f
+//				- 0.2f);
+//
+//		if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
+//				&& dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
+//
+//			for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
+//				for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
+//					if (dimGroupData1.getID() == dimGroupData2.getID()) {
+//
+//					}
+//				}
+//			}
+//		}
+//
+//		gl.glPointSize(5);
+//		gl.glColor3f(1, 0, 0);
+//		gl.glBegin(GL2.GL_POINTS);
+//		gl.glVertex2d(node1BundlingPoint.getX(), node1BundlingPoint.getY());
+//		gl.glVertex2d(node2BundlingPoint.getX(), node2BundlingPoint.getY());
+//		gl.glEnd();
+//
+//		ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
+//		edgePoints.add(node1BundlingPoint);
+//		edgePoints.add(node2BundlingPoint);
+//
+//		createEdge(gl, edgePoints);
+//
+//		edgePoints.add(edgePoints.get(edgePoints.size() - 1));
+//		edgePoints.add(0, edgePoints.get(0));
+//		
+//		connectionBandRenderer.init(gl);
+//
+//		for (int i = 0; i < edgePoints.size() - 3; i++) {
+//			connectionBandRenderer.renderInterpolatedBand(gl, edgePoints, 30, pixelGLConverter);
+////			computeOneSpline(edgePoints.get(i), edgePoints.get(i + 1),
+////					edgePoints.get(i + 2), edgePoints.get(i + 3), gl);
+//		}
 
-		if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
-				&& dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
-
-			for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
-				for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
-					if (dimGroupData1.getID() == dimGroupData2.getID()) {
-
-					}
-				}
-			}
-		}
-
-		gl.glPointSize(5);
-		gl.glColor3f(1, 0, 0);
-		gl.glBegin(GL2.GL_POINTS);
-		gl.glVertex2d(node1BundlingPoint.getX(), node1BundlingPoint.getY());
-		gl.glVertex2d(node2BundlingPoint.getX(), node2BundlingPoint.getY());
-		gl.glEnd();
-
-		ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
-		edgePoints.add(node1BundlingPoint);
-		edgePoints.add(node2BundlingPoint);
-
-		createEdge(gl, edgePoints);
-
-		edgePoints.add(edgePoints.get(edgePoints.size() - 1));
-		edgePoints.add(0, edgePoints.get(0));
 		
-		connectionBandRenderer.init(gl);
-
-		for (int i = 0; i < edgePoints.size() - 3; i++) {
-			connectionBandRenderer.renderInterpolatedBand(gl, edgePoints, 30, pixelGLConverter);
-//			computeOneSpline(edgePoints.get(i), edgePoints.get(i + 1),
-//					edgePoints.get(i + 2), edgePoints.get(i + 3), gl);
-		}
-
-		// Set<ADimensionGroupData> dimensionGroups1 =
-		// node1.getDimensionGroups();
-		// Set<ADimensionGroupData> dimensionGroups2 =
-		// node2.getDimensionGroups();
-		// List<Pair<Point2D, Point2D>> anchorPoints1Group = new
-		// ArrayList<Pair<Point2D, Point2D>>();
-		// List<Pair<Point2D, Point2D>> anchorPoints2Group = new
-		// ArrayList<Pair<Point2D, Point2D>>();
-		//
-		// if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
-		// && dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
-		// for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
-		// for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
-		// if (dimGroupData1.getID() == dimGroupData2.getID()) {
-		// renderBand(
-		// gl,
-		// node1.getBottomDimensionGroupAnchorPoints(dimGroupData1),
-		// node2.getBottomDimensionGroupAnchorPoints(dimGroupData2),
-		// -0.2f, -0.2f, false, false);
-		// }
-		// }
-		// }
-		//
-		// } else {
-		//
-		// Point2D position1 = node1.getPosition();
-		// Point2D position2 = node2.getPosition();
-		//
-		// float deltaX = (float) (position1.getX() - position2.getX());
-		// float deltaY = (float) (position1.getY() - position2.getY());
-		//
-		// Pair<Point2D, Point2D> anchorPoints1;
-		// Pair<Point2D, Point2D> anchorPoints2;
-		//
-		// float offset1 = 0;
-		// boolean isOffsetHorizontal = false;
-		//
-		// if (deltaX < 0) {
-		// if (deltaY < 0) {
-		// float spacingX = (float) ((position2.getX() - node2
-		// .getWidth() / 2.0f) - (position1.getX() + node1
-		// .getWidth() / 2.0f));
-		// float spacingY = (float) ((position2.getY() - node2
-		// .getHeight() / 2.0f) - (position1.getY() + node1
-		// .getHeight() / 2.0f));
-		// if (spacingX > spacingY) {
-		// anchorPoints1 = node1.getRightAnchorPoints();
-		// anchorPoints2 = node2.getLeftAnchorPoints();
-		// offset1 = 0.3f * spacingX;
-		// isOffsetHorizontal = true;
-		// } else {
-		// anchorPoints1 = node1.getTopAnchorPoints();
-		// anchorPoints2 = node2.getBottomAnchorPoints();
-		// offset1 = 0.3f * spacingY;
-		// isOffsetHorizontal = false;
-		// }
-		// } else {
-		// float spacingX = (float) ((position2.getX() - node2
-		// .getWidth() / 2.0f) - (position1.getX() + node1
-		// .getWidth() / 2.0f));
-		// float spacingY = (float) ((position1.getY() - node1
-		// .getHeight() / 2.0f) - (position2.getY() + node2
-		// .getHeight() / 2.0f));
-		// if (spacingX > spacingY) {
-		// anchorPoints1 = node1.getRightAnchorPoints();
-		// anchorPoints2 = node2.getLeftAnchorPoints();
-		// offset1 = 0.3f * (spacingX);
-		// isOffsetHorizontal = true;
-		// } else {
-		// anchorPoints1 = node1.getBottomAnchorPoints();
-		// anchorPoints2 = node2.getTopAnchorPoints();
-		// offset1 = -0.3f * spacingY;
-		// isOffsetHorizontal = false;
-		// }
-		// }
-		// } else {
-		// if (deltaY < 0) {
-		// float spacingX = (float) ((position1.getX() - node1
-		// .getWidth() / 2.0f) - (position2.getX() + node2
-		// .getWidth() / 2.0f));
-		// float spacingY = (float) ((position2.getY() - node2
-		// .getHeight() / 2.0f) - (position1.getY() + node1
-		// .getHeight() / 2.0f));
-		// if (spacingX > spacingY) {
-		// anchorPoints1 = node1.getLeftAnchorPoints();
-		// anchorPoints2 = node2.getRightAnchorPoints();
-		// offset1 = -0.3f * (spacingX);
-		// isOffsetHorizontal = true;
-		// } else {
-		// anchorPoints1 = node1.getTopAnchorPoints();
-		// anchorPoints2 = node2.getBottomAnchorPoints();
-		// offset1 = 0.3f * spacingY;
-		// isOffsetHorizontal = false;
-		// }
-		// } else {
-		// float spacingX = (float) ((position1.getX() - node1
-		// .getWidth() / 2.0f) - (position2.getX() + node2
-		// .getWidth() / 2.0f));
-		// float spacingY = (float) ((position1.getY() - node1
-		// .getHeight() / 2.0f) - (position2.getY() + node2
-		// .getHeight() / 2.0f));
-		// if (spacingX > spacingY) {
-		// anchorPoints1 = node1.getLeftAnchorPoints();
-		// anchorPoints2 = node2.getRightAnchorPoints();
-		// offset1 = -0.3f * (spacingX);
-		// isOffsetHorizontal = true;
-		// } else {
-		// anchorPoints1 = node1.getBottomAnchorPoints();
-		// anchorPoints2 = node2.getTopAnchorPoints();
-		// offset1 = -0.3f * spacingY;
-		// isOffsetHorizontal = false;
-		// }
-		// }
-		// }
 
 	}
 

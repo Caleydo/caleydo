@@ -4,23 +4,26 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.datagraph.IDataGraphNode;
 
 public class LeftUpRightDownNodeRelationBandCreator extends
-		AConnectionBandCreator {
+		AEdgeBandRenderer {
 
 	private final static int SPACING_PIXELS = 2;
 
 	public LeftUpRightDownNodeRelationBandCreator(IDataGraphNode node1,
-			IDataGraphNode node2, PixelGLConverter pixelGLConverter) {
-		super(node1, node2, pixelGLConverter);
+			IDataGraphNode node2, PixelGLConverter pixelGLConverter, ViewFrustum viewFrustum) {
+		super(node1, node2, pixelGLConverter, viewFrustum);
 	}
 
 	@Override
-	public List<List<Pair<Point2D, Point2D>>> calcConnectionBands() {
+	public void renderEdgeBand(GL2 gl, IEdgeRoutingStrategy edgeRoutingStrategy) {
 		List<List<Pair<Point2D, Point2D>>> bands = new ArrayList<List<Pair<Point2D, Point2D>>>();
 
 		Point2D position1 = node1.getPosition();
@@ -199,7 +202,6 @@ public class LeftUpRightDownNodeRelationBandCreator extends
 			bands.add(anchorPoints);
 		}
 
-		return bands;
 	}
 
 	private List<Pair<Point2D, Point2D>> getBend(
