@@ -48,7 +48,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedDataGraphView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

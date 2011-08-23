@@ -48,7 +48,7 @@ public class RcpGLTreeMapView extends ARcpGLViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedHierarchicalTreeMapView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

@@ -78,6 +78,6 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedSelectionBrowserView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 }

@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.caleydo.core.data.collection.export.DataTableExporter;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.configuration.DataChooserComposite;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.jface.dialogs.Dialog;
@@ -122,9 +123,11 @@ public class ExportDataDialog
 			}
 		});
 
-		dataChooserComposite = new DataChooserComposite(this, parent, SWT.BORDER);
+		dataChooserComposite = new DataChooserComposite(this, composite, SWT.NONE);
 		dataChooserComposite.initGui();
-		dataChooserComposite.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, false));
+		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
+		gridData.horizontalSpan = 2;
+		dataChooserComposite.setLayoutData(gridData);
 
 		// --- old stuff
 

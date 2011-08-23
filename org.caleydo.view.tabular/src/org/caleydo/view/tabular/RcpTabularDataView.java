@@ -46,6 +46,6 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedTabularDataView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 }

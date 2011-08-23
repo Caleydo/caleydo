@@ -3,20 +3,20 @@ package org.caleydo.core.view;
 import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
+import org.caleydo.core.data.configuration.DataConfiguration;
+import org.caleydo.core.data.configuration.PerspectiveChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.ChooseDataPerspectiveDialog;
-import org.caleydo.core.data.perspective.PerspectiveChooser;
-import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.serialize.ASerializedView;
@@ -115,7 +115,7 @@ public abstract class CaleydoRCPViewPart
 	 * 
 	 * @param serializedView
 	 */
-	protected void determineDataDomain(ASerializedView serializedView) {
+	protected void determineDataConfiguration(ASerializedView serializedView) {
 
 		// first we check if the data domain was manually specified
 		for (Pair<String, String> startView : StartupProcessor.get().getAppInitData()
@@ -130,33 +130,15 @@ public abstract class CaleydoRCPViewPart
 		// then we check whether the serialization has a datadomain already
 		String dataDomainID = serializedView.getDataDomainID();
 		if (dataDomainID == null) {
-			IDataDomain chosenDataDomain = null;
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
-			if (availableDomains == null || availableDomains.size() == 0)
-				throw new IllegalStateException("No datadomain for this view available");
-			else if (availableDomains.size() == 1) {
-				chosenDataDomain = availableDomains.get(0);
-				serializedView.setDataDomainID(chosenDataDomain.getDataDomainID());
-			}
-			else if (availableDomains.size() > 1) {
-				ChooseDataDomainDialog dialog = new ChooseDataDomainDialog(new Shell());
-				dialog.setPossibleDataDomains(availableDomains);
-				chosenDataDomain = dialog.open();
 
-				serializedView.setDataDomainID(chosenDataDomain.getDataDomainID());
-			}
+			DataConfiguration config = PerspectiveChooser.determineDataConfiguration(availableDomains);
+			serializedView.setDataDomainID(config.getDataDomain().getDataDomainID());
+			serializedView.setRecordPerspectiveID(config.getRecordPerspective().getPerspectiveID());
+			serializedView.setDimensionPerspectiveID(config.getDimensionPerspective().getPerspectiveID());
 
-			// set the dimension and recordPerspective for the view
-			if (chosenDataDomain != null && chosenDataDomain instanceof ATableBasedDataDomain) {
-				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) chosenDataDomain;
-
-				serializedView.setRecordPerspectiveID(PerspectiveChooser.chooseRecordPerspectiveAndAskIfNecessary(
-					tDataDomain.getTable(), false));
-				serializedView.setDimensionPerspectiveID(PerspectiveChooser.chooseDimensionPerspectiveAndAskIfNeccesary(
-					tDataDomain.getTable(), false));
-			}
 		}
 	}
 

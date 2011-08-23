@@ -195,7 +195,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedFilterView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

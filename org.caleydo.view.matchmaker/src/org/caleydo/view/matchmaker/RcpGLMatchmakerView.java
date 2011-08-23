@@ -45,7 +45,7 @@ public class RcpGLMatchmakerView extends ARcpGLViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedMatchmakerView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

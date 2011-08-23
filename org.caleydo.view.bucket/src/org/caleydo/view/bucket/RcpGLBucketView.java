@@ -69,7 +69,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 	public void createDefaultSerializedView() {
 
 		serializedView = new SerializedBucketView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

@@ -71,7 +71,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner,
 	public void createDefaultSerializedView() {
 
 		serializedView = new SerializedPathwayView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

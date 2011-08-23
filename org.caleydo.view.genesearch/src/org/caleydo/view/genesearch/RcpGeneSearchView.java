@@ -831,6 +831,6 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedGeneSearchView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 }

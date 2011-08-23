@@ -213,6 +213,6 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedDataMetaView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 }

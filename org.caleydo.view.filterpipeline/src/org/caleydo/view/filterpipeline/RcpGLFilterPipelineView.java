@@ -70,7 +70,7 @@ public class RcpGLFilterPipelineView
 	public void createDefaultSerializedView()
 	{
 		serializedView = new SerializedFilterPipelineView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

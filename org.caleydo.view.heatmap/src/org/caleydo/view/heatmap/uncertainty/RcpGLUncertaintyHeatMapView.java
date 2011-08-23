@@ -50,7 +50,7 @@ public class RcpGLUncertaintyHeatMapView extends ARcpGLViewPart {
 	public void createDefaultSerializedView() {
 
 		serializedView = new SerializedUncertaintyHeatMapView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 
 	@Override

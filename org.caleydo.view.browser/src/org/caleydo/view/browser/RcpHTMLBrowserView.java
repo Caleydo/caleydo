@@ -39,6 +39,6 @@ public class RcpHTMLBrowserView extends CaleydoRCPViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedHTMLBrowserView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 }

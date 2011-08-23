@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.core.io.gui;
+package org.caleydo.core.data.configuration;
 
 import java.util.ArrayList;
 
@@ -10,12 +10,15 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.io.gui.IDataOKListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 
 /**
  * Composite that lets a user determine which instance of {@link ATableBasedDataDomain} and the respective
@@ -66,10 +69,23 @@ public class DataChooserComposite
 
 	/** Creates the GUI for this composite */
 	public void initGui() {
-		dataDomainChooser = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
-		dataDomainChooser.setText("Choose dataDomain");
+		// Composite composite = new Composite(parent, SWT.BORDER_DASH);
+		 GridLayout layout = new GridLayout(2, false);
+		 this.setLayout(layout);
+		// composite.setLayout(layout);
+
+		int labelWidth = 150;
+		Label dataDomainLabel = new Label(this, SWT.BORDER);
+		dataDomainLabel.setText("Data Domain:");
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
+		data.horizontalSpan = 1;
+		data.minimumWidth = labelWidth;
+		dataDomainLabel.setLayoutData(data);
+
+		dataDomainChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
+		dataDomainChooser.setText("Choose dataDomain");
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 1;
 		data.minimumWidth = 400;
 		dataDomainChooser.setLayoutData(data);
 
@@ -100,11 +116,18 @@ public class DataChooserComposite
 			}
 		});
 
-		recordPerspectiveChooser = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
+		Label recordPerspectiveLabel = new Label(this, SWT.BORDER);
+		recordPerspectiveLabel.setText("Record Perspective:");
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 1;
+		data.minimumWidth = labelWidth;
+		recordPerspectiveLabel.setLayoutData(data);
+
+		recordPerspectiveChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
 		recordPerspectiveChooser.setText("Choose record perspective");
 
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
+		data.horizontalSpan = 1;
 		data.minimumWidth = 400;
 		recordPerspectiveChooser.setLayoutData(data);
 
@@ -116,11 +139,18 @@ public class DataChooserComposite
 			}
 		});
 
-		dimensionPerspectiveChooser = new Combo(parent, SWT.DROP_DOWN | SWT.BORDER);
+		Label dimensionPerspectiveLabel = new Label(this, SWT.BORDER);
+		dimensionPerspectiveLabel.setText("Dimension Perspective:");
+		data = new GridData(GridData.FILL_HORIZONTAL);
+		data.horizontalSpan = 1;
+		data.minimumWidth = labelWidth;
+		dimensionPerspectiveLabel.setLayoutData(data);
+
+		dimensionPerspectiveChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
 		dimensionPerspectiveChooser.setText("Choose dimension perspective");
 
 		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 2;
+		data.horizontalSpan = 1;
 		data.minimumWidth = 400;
 		dimensionPerspectiveChooser.setLayoutData(data);
 
@@ -221,6 +251,14 @@ public class DataChooserComposite
 	 */
 	public DimensionPerspective getDimensionPerspective() {
 		return dimensionPerspective;
+	}
+
+	public DataConfiguration getDataConfiguration() {
+		DataConfiguration config = new DataConfiguration();
+		config.setDataDomain(dataDomain);
+		config.setDimensionPerspective(dimensionPerspective);
+		config.setRecordPerspective(recordPerspective);
+		return config;
 	}
 
 }

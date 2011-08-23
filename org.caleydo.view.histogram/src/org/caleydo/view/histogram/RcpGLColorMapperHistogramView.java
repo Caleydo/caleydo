@@ -274,7 +274,7 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 		serializedView = new SerializedHistogramView();
 		
 		if (dataDomain == null)
-			determineDataDomain(serializedView);
+			determineDataConfiguration(serializedView);
 		else
 			serializedView.setDataDomainID(dataDomain.getDataDomainID());
 	}

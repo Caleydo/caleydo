@@ -5,7 +5,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.caleydo.core.gui.dialog.ChooseDataDomainDialog;
+import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.NewDataDomainEvent;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -114,9 +114,12 @@ public class DataDomainManager {
 		if (possibleDataDomains.size() == 1)
 			dataDomain = possibleDataDomains.get(0);
 		else {
-			ChooseDataDomainDialog chooseDataDomainDialog = new ChooseDataDomainDialog(new Shell());
-			chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
-			dataDomain = chooseDataDomainDialog.open();
+			ChooseDataConfigurationDialog chooseDataDomainDialog = new ChooseDataConfigurationDialog(new Shell());
+			chooseDataDomainDialog.setBlockOnOpen(true);
+			chooseDataDomainDialog.open();
+			dataDomain = chooseDataDomainDialog.getDataConfiguration().getDataDomain();
+//			chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
+//			dataDomain = chooseDataDomainDialog.open();
 		}
 
 		return dataDomain;

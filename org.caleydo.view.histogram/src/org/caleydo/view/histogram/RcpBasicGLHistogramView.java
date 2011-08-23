@@ -269,7 +269,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 		serializedView = new SerializedHistogramView();
 
 		if (dataDomain == null)
-			determineDataDomain(serializedView);
+			determineDataConfiguration(serializedView);
 		else
 			serializedView.setDataDomainID(dataDomain.getDataDomainID());
 	}

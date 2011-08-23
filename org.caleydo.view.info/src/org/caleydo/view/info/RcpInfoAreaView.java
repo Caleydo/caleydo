@@ -104,6 +104,6 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedInfoAreaView();
-		determineDataDomain(serializedView);
+		determineDataConfiguration(serializedView);
 	}
 }
