@@ -77,7 +77,7 @@ public class ImportDataDialog
 	private String inputFile = "";
 	private String filePath = "";
 
-	private LoadDataParameters loadDataParameters = new LoadDataParameters();;
+	private LoadDataParameters loadDataParameters = new LoadDataParameters();
 
 	private String mathFilterMode = "Log2";
 
@@ -132,11 +132,9 @@ public class ImportDataDialog
 		}
 		readParameters();
 
-		dataDomain.setLoadDataParameters(loadDataParameters);
-
 		DataTable table = DataTableUtils.createData(dataDomain);
 		if (table == null)
-			throw new IllegalStateException("Problem while creating set!");
+			throw new IllegalStateException("Problem while creating table!");
 
 		super.okPressed();
 	}

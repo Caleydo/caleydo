@@ -129,7 +129,7 @@ public abstract class ADataDomain
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
-
+		
 		fileName = loadDataParameters.getFileName();
 	}
 

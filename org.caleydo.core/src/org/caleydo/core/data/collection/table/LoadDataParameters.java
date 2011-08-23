@@ -68,7 +68,7 @@ public class LoadDataParameters {
 	private float max = Float.MAX_VALUE;
 
 	/**
-	 * Determines whether and if so whichtransformation should be applied to the data (e.g. log2
+	 * Determines whether and if so which transformation should be applied to the data (e.g. log2
 	 * transformation). This is mapped to values of {@link ExternalDataRepresentation}.
 	 */
 	private String mathFilterMode;
@@ -96,6 +96,7 @@ public class LoadDataParameters {
 	 */
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		dataDomain.setLoadDataParameters(this);
 	}
 
 	/**

@@ -1,6 +1,5 @@
 package org.caleydo.data.importer.tcga.startup;
 
-import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -32,8 +31,6 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
-//		SerializationManager.get().registerSerializableType(GenericDataDomain.class);
 	}
 
 	/*

@@ -88,9 +88,6 @@ public class CmdLoadFileNDimensions
 			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
 				parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey()));
 		loadDataParameters.setDataDomain(dataDomain);
-		
-		dataDomain.setLoadDataParameters(loadDataParameters);
-
 	}
 
 	public void setAttributes(final ArrayList<Integer> iAlDimensionId,

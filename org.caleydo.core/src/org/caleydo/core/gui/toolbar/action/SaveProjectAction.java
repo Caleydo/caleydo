@@ -35,10 +35,10 @@ public class SaveProjectAction
 		String[] filterExt = { "*.cal" };
 		fileDialog.setFilterExtensions(filterExt);
 
-		String sFilePath =
+		String filePath =
 			"caleydo_project" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".cal";
 
-		fileDialog.setFileName(sFilePath);
+		fileDialog.setFileName(filePath);
 		String fileName = fileDialog.open();
 
 		if (fileName == null)

@@ -43,7 +43,7 @@ public class SWTGUIManager {
 	}
 
 	public void setProgressBarPercentage(int iPercentage) {
-		if (loadingProgressBar.isDisposed())
+		if (loadingProgressBar == null || loadingProgressBar.isDisposed())
 			return;
 
 		loadingProgressBar.setSelection(iPercentage);
@@ -51,7 +51,7 @@ public class SWTGUIManager {
 
 	public void setProgressBarText(String sText) {
 
-		if (loadingProgressBarLabel.isDisposed())
+		if (loadingProgressBarLabel == null || loadingProgressBarLabel.isDisposed())
 			return;
 
 		loadingProgressBarLabel.setText(sText);

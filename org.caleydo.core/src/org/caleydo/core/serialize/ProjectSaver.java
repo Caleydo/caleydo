@@ -101,12 +101,15 @@ public class ProjectSaver {
 		catch (Exception savingException) {
 			String failureMessage = "Faild to save project to " + fileName + ".";
 			Logger.log(new Status(Status.ERROR, "org.caleydo.core", failureMessage, savingException));
-			MessageBox messageBox =
-				new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
-			messageBox.setText("Project Save");
-			messageBox.setMessage(failureMessage);
-			messageBox.open();
-			return;
+
+			if (PlatformUI.isWorkbenchRunning()) {
+				MessageBox messageBox =
+					new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+				messageBox.setText("Project Save");
+				messageBox.setMessage(failureMessage);
+				messageBox.open();
+				return;
+			}
 		}
 
 		ZipUtils zipUtils = new ZipUtils();
@@ -117,11 +120,13 @@ public class ProjectSaver {
 		String message = "Caleydo project successfully written to\n" + fileName;
 		Logger.log(new Status(IStatus.INFO, this.toString(), message));
 
-		MessageBox messageBox =
-			new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
-		messageBox.setText("Project Save");
-		messageBox.setMessage(message);
-		messageBox.open();
+		if (PlatformUI.isWorkbenchRunning()) {
+			MessageBox messageBox =
+				new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+			messageBox.setText("Project Save");
+			messageBox.setMessage(message);
+			messageBox.open();
+		}
 	}
 
 	/**
