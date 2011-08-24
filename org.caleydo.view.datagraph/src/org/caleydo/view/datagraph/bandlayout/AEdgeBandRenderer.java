@@ -12,7 +12,7 @@ import org.caleydo.view.datagraph.IDataGraphNode;
 
 public abstract class AEdgeBandRenderer {
 	
-	protected final static int EDGE_ANCHOR_MAX_NODE_DISTANCE_PIXELS = 50; 
+	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20; 
 
 	protected IDataGraphNode node1;
 	protected IDataGraphNode node2;

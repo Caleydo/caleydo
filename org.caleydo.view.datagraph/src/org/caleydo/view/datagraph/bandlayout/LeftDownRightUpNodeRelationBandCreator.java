@@ -1,5 +1,7 @@
 package org.caleydo.view.datagraph.bandlayout;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -265,13 +267,14 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 		// } else {
 		ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
 		List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
+		Pair<Point2D, Point2D> anchorPointsSide1;
+		Pair<Point2D, Point2D> anchorPointsSide2;
+		Pair<Point2D, Point2D> offsetAnchorPointsSide1;
 
 		if (spacingX > spacingY) {
 
-			Pair<Point2D, Point2D> anchorPointsSide1 = node1
-					.getRightAnchorPoints();
-			Pair<Point2D, Point2D> anchorPointsSide2 = node2
-					.getLeftAnchorPoints();
+			anchorPointsSide1 = node1.getRightAnchorPoints();
+			anchorPointsSide2 = node2.getLeftAnchorPoints();
 
 			float ratioY = deltaY / viewFrustum.getHeight();
 
@@ -281,7 +284,7 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 					.getX() + Math
 					.min(0.2f * spacingX,
 							pixelGLConverter
-									.getGLWidthForPixelWidth(EDGE_ANCHOR_MAX_NODE_DISTANCE_PIXELS)));
+									.getGLWidthForPixelWidth(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
 			Point2D bandAnchorPoint1 = new Point2D.Float(node1BandAnchorX,
 					node1BandAnchorY);
 
@@ -291,7 +294,7 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 					.getX() - Math
 					.min(0.2f * spacingX,
 							pixelGLConverter
-									.getGLWidthForPixelWidth(EDGE_ANCHOR_MAX_NODE_DISTANCE_PIXELS)));
+									.getGLWidthForPixelWidth(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
 			Point2D bandAnchorPoint2 = new Point2D.Float(node2BandAnchorX,
 					node2BandAnchorY);
 
@@ -310,16 +313,18 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 			edgePoints.add(bandRoutingHelperPoint2);
 			edgePoints.add(0, bandRoutingHelperPoint1);
 
-			// Pair<Point2D, Point2D> offsetAnchorPointsSide1 = new
-			// Pair<Point2D, Point2D>();
-			// offsetAnchorPointsSide1.setFirst(new Point2D.Float(
-			// (float) anchorPointsSide1.getFirst().getX() + 0.3f
-			// * spacingX, (float) anchorPointsSide1.getFirst()
-			// .getY()));
-			// offsetAnchorPointsSide1.setSecond(new Point2D.Float(
-			// (float) anchorPointsSide1.getSecond().getX() + 0.3f
-			// * spacingX, (float) anchorPointsSide1.getSecond()
-			// .getY()));
+			float nodeEdgeAnchorSpacing1 = (float) bandAnchorPoint1.getX()
+					- (float) anchorPointsSide1.getFirst().getX();
+
+			offsetAnchorPointsSide1 = new Pair<Point2D, Point2D>();
+			offsetAnchorPointsSide1.setFirst(new Point2D.Float(
+					(float) anchorPointsSide1.getFirst().getX() + 0.3f
+							* nodeEdgeAnchorSpacing1, (float) anchorPointsSide1
+							.getFirst().getY()));
+			offsetAnchorPointsSide1.setSecond(new Point2D.Float(
+					(float) anchorPointsSide1.getSecond().getX() + 0.3f
+							* nodeEdgeAnchorSpacing1, (float) anchorPointsSide1
+							.getSecond().getY()));
 			//
 			// Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new
 			// Pair<Point2D, Point2D>();
@@ -338,90 +343,125 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 			// anchorPoints.add(anchorPointsSide2);
 
 		} else {
-			Pair<Point2D, Point2D> anchorPointsSide1 = node1
-					.getTopAnchorPoints();
+			anchorPointsSide1 = node1.getTopAnchorPoints();
 
-			Pair<Point2D, Point2D> anchorPointsSide2 = node2
-					.getBottomAnchorPoints();
+			anchorPointsSide2 = node2.getBottomAnchorPoints();
 
 			float ratioX = deltaX / viewFrustum.getWidth();
 
-			float node1BandAnchorX = (float) position1.getX() - ratioX
+			float node1EdgeAnchorX = (float) position1.getX() - ratioX
 					* node1.getWidth() / 2.0f;
-			float node1BandAnchorY = (float) (anchorPointsSide1.getFirst()
+			float node1EdgeAnchorY = (float) (anchorPointsSide1.getFirst()
 					.getY() + Math
 					.min(0.2f * spacingY,
 							pixelGLConverter
-									.getGLHeightForPixelHeight(EDGE_ANCHOR_MAX_NODE_DISTANCE_PIXELS)));
-			Point2D bandAnchorPoint1 = new Point2D.Float(node1BandAnchorX,
-					node1BandAnchorY);
+									.getGLHeightForPixelHeight(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
+			Point2D edgeAnchorPoint1 = new Point2D.Float(node1EdgeAnchorX,
+					node1EdgeAnchorY);
 
-			float node2BandAnchorX = (float) position2.getX() + ratioX
+			float node2EdgeAnchorX = (float) position2.getX() + ratioX
 					* node2.getWidth() / 2.0f;
-			float node2BandAnchorY = (float) (anchorPointsSide2.getFirst()
+			float node2EdgeAnchorY = (float) (anchorPointsSide2.getFirst()
 					.getY() - Math
 					.min(0.2f * spacingY,
 							pixelGLConverter
-									.getGLHeightForPixelHeight(EDGE_ANCHOR_MAX_NODE_DISTANCE_PIXELS)));
-			Point2D bandAnchorPoint2 = new Point2D.Float(node2BandAnchorX,
-					node2BandAnchorY);
+									.getGLHeightForPixelHeight(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
+			Point2D edgeAnchorPoint2 = new Point2D.Float(node2EdgeAnchorX,
+					node2EdgeAnchorY);
 
-			edgePoints.add(bandAnchorPoint1);
-			edgePoints.add(bandAnchorPoint2);
+			edgePoints.add(edgeAnchorPoint1);
+			edgePoints.add(edgeAnchorPoint2);
 
 			edgeRoutingStrategy.createEdge(edgePoints);
 
-			Point2D bandRoutingHelperPoint1 = new Point2D.Float(
-					(float) bandAnchorPoint1.getX(),
-					(float) anchorPointsSide1.getFirst().getY());
-			Point2D bandRoutingHelperPoint2 = new Point2D.Float(
-					(float) bandAnchorPoint2.getX(),
-					(float) anchorPointsSide2.getFirst().getY());
+			Point2D edgeRoutingHelperPoint1 = new Point2D.Float(
+					(float) edgeAnchorPoint1.getX(), (float) anchorPointsSide1
+							.getFirst().getY());
+			Point2D edgeRoutingHelperPoint2 = new Point2D.Float(
+					(float) edgeAnchorPoint2.getX(), (float) anchorPointsSide2
+							.getFirst().getY());
 
-//			edgePoints.add(bandAnchorPoint2);
-//			edgePoints.add(0, bandAnchorPoint1);
-//			edgePoints.add(bandAnchorPoint2);
-//			edgePoints.add(0, bandAnchorPoint1);
-			edgePoints.add(bandRoutingHelperPoint2);
-			edgePoints.add(0, bandRoutingHelperPoint1);
-//			edgePoints.add(bandRoutingHelperPoint2);
-//			edgePoints.add(0, bandRoutingHelperPoint1);
+			// edgePoints.add(bandAnchorPoint2);
+			// edgePoints.add(0, bandAnchorPoint1);
+			// edgePoints.add(bandAnchorPoint2);
+			// edgePoints.add(0, bandAnchorPoint1);
+			edgePoints.add(edgeRoutingHelperPoint2);
+			edgePoints.add(0, edgeRoutingHelperPoint1);
+			// edgePoints.add(bandRoutingHelperPoint2);
+			// edgePoints.add(0, bandRoutingHelperPoint1);
 
-//			Pair<Point2D, Point2D> offsetAnchorPointsSide1 = new Pair<Point2D, Point2D>();
-//			offsetAnchorPointsSide1.setFirst(new Point2D.Float(
-//					(float) anchorPointsSide1.getFirst().getX(),
-//					(float) anchorPointsSide1.getFirst().getY() + 0.3f
-//							* spacingY));
-//			offsetAnchorPointsSide1.setSecond(new Point2D.Float(
-//					(float) anchorPointsSide1.getSecond().getX(),
-//					(float) anchorPointsSide1.getSecond().getY() + 0.3f
-//							* spacingY));
-//
-//			Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new Pair<Point2D, Point2D>();
-//			offsetAnchorPointsSide2.setFirst(new Point2D.Float(
-//					(float) anchorPointsSide2.getFirst().getX(),
-//					(float) anchorPointsSide2.getFirst().getY() - 0.3f
-//							* spacingY));
-//			offsetAnchorPointsSide2.setSecond(new Point2D.Float(
-//					(float) anchorPointsSide2.getSecond().getX(),
-//					(float) anchorPointsSide2.getSecond().getY() - 0.3f
-//							* spacingY));
-//
-//			anchorPoints.add(anchorPointsSide1);
-//			anchorPoints.add(offsetAnchorPointsSide1);
-//			anchorPoints.add(offsetAnchorPointsSide2);
-//			anchorPoints.add(anchorPointsSide2);
+			float nodeEdgeAnchorSpacing1 = (float) edgeAnchorPoint1.getY()
+					- (float) anchorPointsSide1.getFirst().getY();
+
+			offsetAnchorPointsSide1 = new Pair<Point2D, Point2D>();
+			offsetAnchorPointsSide1.setFirst(new Point2D.Float(
+					(float) anchorPointsSide1.getFirst().getX(),
+					(float) anchorPointsSide1.getFirst().getY() + 0.3f
+							* nodeEdgeAnchorSpacing1));
+			offsetAnchorPointsSide1.setSecond(new Point2D.Float(
+					(float) anchorPointsSide1.getSecond().getX(),
+					(float) anchorPointsSide1.getSecond().getY() + 0.3f
+							* nodeEdgeAnchorSpacing1));
+
+			// Pair<Point2D, Point2D> offsetAnchorPointsSide1 = new
+			// Pair<Point2D, Point2D>();
+			// offsetAnchorPointsSide1.setFirst(new Point2D.Float(
+			// (float) anchorPointsSide1.getFirst().getX(),
+			// (float) anchorPointsSide1.getFirst().getY() + 0.3f
+			// * spacingY));
+			// offsetAnchorPointsSide1.setSecond(new Point2D.Float(
+			// (float) anchorPointsSide1.getSecond().getX(),
+			// (float) anchorPointsSide1.getSecond().getY() + 0.3f
+			// * spacingY));
+			//
+			// Pair<Point2D, Point2D> offsetAnchorPointsSide2 = new
+			// Pair<Point2D, Point2D>();
+			// offsetAnchorPointsSide2.setFirst(new Point2D.Float(
+			// (float) anchorPointsSide2.getFirst().getX(),
+			// (float) anchorPointsSide2.getFirst().getY() - 0.3f
+			// * spacingY));
+			// offsetAnchorPointsSide2.setSecond(new Point2D.Float(
+			// (float) anchorPointsSide2.getSecond().getX(),
+			// (float) anchorPointsSide2.getSecond().getY() - 0.3f
+			// * spacingY));
+			//
+			// anchorPoints.add(anchorPointsSide1);
+			// anchorPoints.add(offsetAnchorPointsSide1);
+			// anchorPoints.add(offsetAnchorPointsSide2);
+			// anchorPoints.add(anchorPointsSide2);
 		}
 
 		ConnectionBandRenderer connectionBandRenderer = new ConnectionBandRenderer();
 
 		connectionBandRenderer.init(gl);
 
+		List<Vec3f> bandPoints = new ArrayList<Vec3f>();
+
 		for (int i = 0; i < edgePoints.size() - 3; i++) {
-			connectionBandRenderer.renderInterpolatedBand(gl, edgePoints, 20,
-					pixelGLConverter);
+			List<Vec3f> bandPartPoints = connectionBandRenderer
+					.calcInterpolatedBand(gl, edgePoints, 20, pixelGLConverter);
+			connectionBandRenderer.render(gl, bandPartPoints);
+			bandPoints.addAll(bandPoints.size() / 2, bandPartPoints);
 		}
 		// }
+
+		Point2D bandAnchorPoint1Side1 = new Point2D.Float(
+				bandPoints.get(0).x(), bandPoints.get(0).y());
+		Point2D bandAnchorPoint2Side1 = new Point2D.Float(bandPoints.get(
+				bandPoints.size() - 1).x(), bandPoints.get(
+				bandPoints.size() - 1).y());
+
+		Pair<Point2D, Point2D> bandAnchorPoints1 = new Pair<Point2D, Point2D>(
+				bandAnchorPoint2Side1, bandAnchorPoint1Side1);
+
+		List<Pair<Point2D, Point2D>> node1BandConnectionPoints = new ArrayList<Pair<Point2D, Point2D>>();
+		node1BandConnectionPoints.add(anchorPointsSide1);
+
+		node1BandConnectionPoints.add(offsetAnchorPointsSide1);
+		node1BandConnectionPoints.add(bandAnchorPoints1);
+
+		connectionBandRenderer.renderComplexBand(gl, node1BandConnectionPoints,
+				false, new float[] { 0, 0, 0 }, 1);
 
 	}
 }
