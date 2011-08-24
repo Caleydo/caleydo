@@ -7,6 +7,17 @@ public class RecordMetaFilter
 
 	ArrayList<RecordFilter> filterList = new ArrayList<RecordFilter>();
 	
+	/**
+	 * Should only be used for de-serialization 
+	 */
+//	public RecordMetaFilter() {
+//	}
+	
+	public RecordMetaFilter (String perspectiveID)
+	{
+		super(perspectiveID);
+	}
+	
 	@Override
 	public ArrayList<RecordFilter> getFilterList() {
 		return filterList;

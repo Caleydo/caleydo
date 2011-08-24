@@ -26,10 +26,10 @@ public class TableBasedDimensionGroupData
 	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataTable table) {
 		this.dataDomain = dataDomain;
 		this.table = table;
-		Set<String> recordPerspectiveIDs = table.getRecordPerspectiveIDs();
-		if (recordPerspectiveIDs.size() != 1)
-			throw new IllegalStateException("Multiple perspectives not implemented for subDataTables");
-		this.recordPerspectiveID = recordPerspectiveIDs.iterator().next();
+//		Set<String> recordPerspectiveIDs = table.getRecordPerspectiveIDs();
+//		if (recordPerspectiveIDs.size() != 1)
+//			throw new IllegalStateException("Multiple perspectives not implemented for subDataTables");
+//		this.recordPerspectiveID = recordPerspectiveIDs.iterator().next();
 	}
 
 	@Override

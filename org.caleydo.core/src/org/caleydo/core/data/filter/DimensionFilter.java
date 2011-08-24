@@ -14,6 +14,16 @@ import org.caleydo.core.manager.GeneralManager;
 public class DimensionFilter
 	extends Filter<DimensionVADelta> {
 
+	/**
+	 * Should only be used for de-serialization
+	 */
+	// public DimensionFilter() {
+	// }
+
+	public DimensionFilter(String perspectiveID) {
+		super(perspectiveID);
+	}
+
 	public void updateFilterManager() {
 
 		if (!isRegistered) {

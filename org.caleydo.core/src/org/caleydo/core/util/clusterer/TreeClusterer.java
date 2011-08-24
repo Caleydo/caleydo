@@ -722,9 +722,10 @@ public class TreeClusterer
 
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
-
-		ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
-			clusterState.getRecordPerspective(), eClustererType, table);
+		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+			ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
+				clusterState.getRecordPerspective(), eClustererType, table);
+		}
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();

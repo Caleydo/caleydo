@@ -68,7 +68,9 @@ public class ClusterManager {
 
 			return clusterResult;
 		}
-		catch (final RuntimeException e) {
+		catch (final Exception e) {
+			Logger.log(new Status(Status.ERROR, this.toString(), "Clustering failed", e));
+
 			PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 				@Override
 				public void run() {
@@ -83,7 +85,7 @@ public class ClusterManager {
 					});
 				}
 			});
-			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Clustering failed" + e.getMessage()));
+
 		}
 
 		return null;

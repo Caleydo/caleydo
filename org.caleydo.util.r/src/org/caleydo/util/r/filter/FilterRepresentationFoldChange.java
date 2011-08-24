@@ -68,7 +68,8 @@ public class FilterRepresentationFoldChange extends
 				validFoldChangeLabel.setText("Valid threshold:");
 
 				final Text validFoldChangeInputField = new Text(infoComposite, SWT.SINGLE);
-				final Slider validFoldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+				final Slider validFoldChangeSlider = new Slider(infoComposite,
+						SWT.HORIZONTAL);
 
 				validFoldChangeInputField.setEditable(true);
 				validFoldChangeInputField.setText(Float.toString(foldChange));
@@ -85,12 +86,14 @@ public class FilterRepresentationFoldChange extends
 						}
 					}
 				});
-				
+
 				final Label invalidFoldChangeLabel = new Label(infoComposite, SWT.NULL);
 				invalidFoldChangeLabel.setText("Invalid threshold:");
 
-				final Text invalidFoldChangeInputField = new Text(infoComposite, SWT.SINGLE);
-				final Slider invalidFoldChangeSlider = new Slider(infoComposite, SWT.HORIZONTAL);
+				final Text invalidFoldChangeInputField = new Text(infoComposite,
+						SWT.SINGLE);
+				final Slider invalidFoldChangeSlider = new Slider(infoComposite,
+						SWT.HORIZONTAL);
 
 				invalidFoldChangeInputField.setEditable(true);
 				invalidFoldChangeInputField.setText(Float.toString(foldChangeUncertainty));
@@ -102,7 +105,8 @@ public class FilterRepresentationFoldChange extends
 
 						if (enteredValue != null && !enteredValue.isEmpty()) {
 							foldChangeUncertainty = new Float(enteredValue);
-							invalidFoldChangeSlider.setSelection((int) (foldChangeUncertainty * 10));
+							invalidFoldChangeSlider
+									.setSelection((int) (foldChangeUncertainty * 10));
 							isDirty = true;
 						}
 					}
@@ -179,7 +183,7 @@ public class FilterRepresentationFoldChange extends
 						// parentComposite.layout();
 					}
 				});
-				
+
 				invalidFoldChangeSlider.setMinimum(0);
 				invalidFoldChangeSlider.setMaximum(100);
 				invalidFoldChangeSlider.setIncrement(1);
@@ -254,7 +258,6 @@ public class FilterRepresentationFoldChange extends
 
 		if (filter instanceof RecordMetaFilter) {
 			for (RecordFilter subFilter : ((RecordMetaFilter) filter).getFilterList()) {
-
 				createVADelta(subFilter);
 			}
 		} else
@@ -263,13 +266,13 @@ public class FilterRepresentationFoldChange extends
 
 	private void createVADelta(RecordFilter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
-				.getDataDomain().getRecordIDType());
-		RecordVADelta recordVADeltaUncertainty = new RecordVADelta(DataTable.RECORD,
+		RecordVADelta recordVADelta = new RecordVADelta(subFilter.getPerspectiveID(),
 				subFilter.getDataDomain().getRecordIDType());
+		RecordVADelta recordVADeltaUncertainty = new RecordVADelta(
+				subFilter.getPerspectiveID(), subFilter.getDataDomain().getRecordIDType());
 
-		RecordVirtualArray recordVA = subFilter.getDataDomain()
-				.getRecordFilterManager().getBaseVA();
+		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
+				.getRecordPerspective(filter.getPerspectiveID()).getVirtualArray();
 
 		double[] resultVector = set1.getStatisticsResult().getFoldChangeResult(set2)
 				.getFirst();
@@ -305,7 +308,7 @@ public class FilterRepresentationFoldChange extends
 
 		// Evaluate uncertainty
 		for (Integer recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
-			
+
 			double foldChangeResult = resultVector[recordIndex];
 			switch (foldChangeEvaluator) {
 			case LESS:
@@ -314,7 +317,8 @@ public class FilterRepresentationFoldChange extends
 					continue;
 				break;
 			case GREATER:
-				if (foldChangeResult > foldChangeRatioUncertainty && foldChangeResult < foldChangeRatio)
+				if (foldChangeResult > foldChangeRatioUncertainty
+						&& foldChangeResult < foldChangeRatio)
 					continue;
 				break;
 			case BOTH:
@@ -324,8 +328,8 @@ public class FilterRepresentationFoldChange extends
 				break;
 			}
 
-			recordVADeltaUncertainty
-					.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
+			recordVADeltaUncertainty.add(VADeltaItem.removeElement(recordVA
+					.get(recordIndex)));
 
 		}
 
@@ -360,8 +364,9 @@ public class FilterRepresentationFoldChange extends
 
 			set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
 			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
-			
-			// FIXME: just for uncertainty paper so that the uncertainty view can access it via the main set
+
+			// FIXME: just for uncertainty paper so that the uncertainty view
+			// can access it via the main set
 			DataTable table = filter.getDataDomain().getTable();
 			table.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
 

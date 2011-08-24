@@ -672,7 +672,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		glHeatMapView.setRenderTemplate(renderTemplate);
 		renderTemplate.setBottomSpacing(0.6f);
 		heatMapRemoteElement.setGLView(glHeatMapView);
-		glHeatMapView.setRecordPerspectiveID(GLHeatMap.CONTENT_EMBEDDED_VA);
+		glHeatMapView.setRecordPerspectiveID(recordPerspectiveID);
 		glHeatMapView.initialize();
 		glHeatMapView.initData();
 

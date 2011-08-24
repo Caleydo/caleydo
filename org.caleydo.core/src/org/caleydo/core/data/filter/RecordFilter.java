@@ -14,6 +14,13 @@ import org.caleydo.core.manager.GeneralManager;
 public class RecordFilter
 	extends Filter<RecordVADelta> {
 
+	/**
+	 * 
+	 */
+	public RecordFilter(String perspectiveID) {
+		super(perspectiveID);
+	}
+
 	public void updateFilterManager() {
 
 		if (!isRegistered()) {
@@ -23,7 +30,7 @@ public class RecordFilter
 			filterEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 			GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
-			
+
 			isRegistered = true;
 		}
 		else {

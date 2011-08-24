@@ -96,9 +96,6 @@ public class GLHeatMap extends ATableBasedView {
 	/** Signals that the heat map is currently active */
 	private boolean isActive = false;
 
-	/** ID for va used when heat map is embedded */
-	public static final String CONTENT_EMBEDDED_VA = "CONTENT_EMBEDDED";
-
 	/**
 	 * Constructor.
 	 * 

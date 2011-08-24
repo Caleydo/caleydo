@@ -1,5 +1,7 @@
 package org.caleydo.core.data.filter;
 
+import java.util.Set;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
@@ -15,7 +17,7 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 
 	private DeltaType vaDelta;
-	
+
 	private DeltaType vaDeltaUncertainty;
 
 	private String label = "<unspecified>";
@@ -25,6 +27,39 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 	protected boolean isRegistered = false;
 
 	protected ATableBasedDataDomain dataDomain;
+
+	/** The id identifying to which perspective this filter should be applied */
+	private String perspectiveID;
+
+	/**
+	 * Constructor which should be used only for de-serialization
+	 */
+//	public Filter() {
+//	}
+
+	/**
+	 * 
+	 */
+	public Filter(String perspectiveID) {
+		this.perspectiveID = perspectiveID;
+	}
+
+	/**
+	 * Should only be used for de-serialization
+	 * 
+	 * @param perspectiveID
+	 *            setter, see {@link #perspectiveID}
+	 */
+	public void setPerspectiveID(String perspectiveID) {
+		this.perspectiveID = perspectiveID;
+	}
+
+	/**
+	 * @return the perspectiveID, see {@link #perspectiveID}
+	 */
+	public String getPerspectiveID() {
+		return perspectiveID;
+	}
 
 	public void setVADelta(DeltaType vaDelta) {
 		this.vaDelta = vaDelta;
@@ -37,11 +72,11 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 	public void setVADeltaUncertainty(DeltaType vaDeltaUncertain) {
 		this.vaDeltaUncertainty = vaDeltaUncertain;
 	}
-	
+
 	public DeltaType getVADeltaUncertainty() {
 		return vaDeltaUncertainty;
 	}
-	
+
 	public void setFilterRep(AFilterRepresentation<DeltaType, ?> filterRep) {
 		this.filterRep = filterRep;
 	}

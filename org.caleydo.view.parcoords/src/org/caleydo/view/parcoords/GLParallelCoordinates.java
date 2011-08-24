@@ -477,7 +477,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (recordVA == null)
 			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
+					.getVirtualArray();
 		// dimensionVA = dataDomain.getDimensionVA(dimensionVAType);
 
 		initGates();
@@ -1711,7 +1712,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	private void triggerDimensionFilterEvent(DimensionVADelta delta, String label) {
 
-		DimensionFilter filter = new DimensionFilter();
+		DimensionFilter filter = new DimensionFilter(dimensionPerspectiveID);
+
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
@@ -1726,7 +1728,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	private void triggerRecordFilterEvent(RecordVADelta delta, String label) {
 
-		RecordFilter filter = new RecordFilter();
+		RecordFilter filter = new RecordFilter(recordPerspectiveID);
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);

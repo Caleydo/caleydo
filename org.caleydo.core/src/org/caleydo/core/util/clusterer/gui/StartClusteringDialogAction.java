@@ -548,8 +548,11 @@ public class StartClusteringDialogAction
 		Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getDimensionPerspectiveIDs();
 
 		if (dimensionPerspectiveIDs.size() == 1)
+		{
 			clusterState.setDimensionPerspective(dataDomain.getTable().getDimensionPerspective(
 				dimensionPerspectiveIDs.iterator().next()));
+			clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+		}
 		else
 			throw new IllegalStateException("Implement choose for perspective");
 

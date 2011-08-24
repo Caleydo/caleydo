@@ -470,11 +470,16 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		this.uniqueID = iUniqueID;
 	}
 
+
+	/** TODO: remove this, this violates encapsulation */
 	@XmlElementWrapper
+	@Deprecated
 	public ArrayList<Integer> getVirtualArray() {
 		return virtualArrayList;
 	}
 
+	/** TODO: remove this, this violates encapsulation */
+	@Deprecated
 	public void setVirtualArray(ArrayList<Integer> virtualArray) {
 		this.virtualArrayList = virtualArray;
 		idMap.virtualArrayList = virtualArray;

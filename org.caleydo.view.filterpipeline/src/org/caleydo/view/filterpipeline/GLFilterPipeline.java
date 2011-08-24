@@ -699,7 +699,7 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		if (table.getUncertainty().getNormalizedUncertainty() != null)
 			return;
 
-		RecordFilter contentFilter = new RecordFilter();
+		RecordFilter contentFilter = new RecordFilter(recordPerspectiveID);
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
