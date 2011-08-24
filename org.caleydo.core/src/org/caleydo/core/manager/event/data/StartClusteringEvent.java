@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
 
 /**
  * Event that signals the start of a clustering algorithm. The parameters are specified in the ClusterState
@@ -19,9 +19,7 @@ public class StartClusteringEvent
 
 	private ClusterState clusterState;
 
-	private Integer tableID;
-
-	/**
+		/**
 	 * default no-arg constructor
 	 */
 	public StartClusteringEvent() {
@@ -32,19 +30,11 @@ public class StartClusteringEvent
 	// this.ClusterState = state;
 	// }
 
-	public StartClusteringEvent(ClusterState state, Integer tableID) {
-		this.clusterState = state;
-		this.tableID = tableID;
+	public StartClusteringEvent(ClusterState state) {
+		this.clusterState = state;		
 	}
 
-	public void setTable(Integer tableID) {
-		this.tableID = tableID;
-	}
-
-	public Integer getTableID() {
-		return tableID;
-	}
-
+	
 	public ClusterState getClusterState() {
 		return clusterState;
 	}

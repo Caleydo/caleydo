@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.distancemeasures;
 
 /**
  * Manhattan distance measure, implements {@link IDistanceMeasure}.

@@ -24,6 +24,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -49,7 +50,6 @@ import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.EColorMappingType;
@@ -871,18 +871,20 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(int dataTableID, String info) {
-		super.handleDimensionVAUpdate(dataTableID, info);
-		if (table.getID() != dataTableID)
+	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
+		if(this.dimensionPerspectiveID != dimensionPerspectiveID)
 			return;
+		super.handleDimensionVAUpdate(dimensionPerspectiveID);
+		
 		bRedrawTextures = true;
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
-		super.handleRecordVAUpdate(dataTableID, info);
-		if (table.getID() != dataTableID)
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
+		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
 			return;
+		super.handleRecordVAUpdate(recordPerspectiveID);
+		
 		bRedrawTextures = true;
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
@@ -5204,7 +5206,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			dimensionDendrogramActive = false;
 			dimensionDendrogramRenderCut = false;
 			table.getDimensionPerspective(dimensionPerspectiveID).setTree(null);
-			dataDomain.createDimensionGroupsFromDimensionTree(null);
+//			dataDomain.createDimensionGroupsFromDimensionTree(null);
 		}
 
 		// merge

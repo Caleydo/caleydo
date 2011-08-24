@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.initialization;
 
 import javax.xml.bind.annotation.XmlType;
 

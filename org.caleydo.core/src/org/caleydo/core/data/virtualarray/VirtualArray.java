@@ -10,13 +10,13 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 

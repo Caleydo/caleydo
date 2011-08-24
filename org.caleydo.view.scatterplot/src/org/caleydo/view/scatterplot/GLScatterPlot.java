@@ -3255,10 +3255,11 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(int dataTableID, String info) {
-		super.handleDimensionVAUpdate(dataTableID, info);
-		if (this.table.getID() != dataTableID)
+	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
+		if (!this.dimensionPerspectiveID.equals(dimensionPerspectiveID))
 			return;
+		super.handleDimensionVAUpdate(dimensionPerspectiveID);
+
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();

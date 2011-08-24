@@ -388,16 +388,16 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
-		updateTree(true, recordSelectionManager, contentTree, info);
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
+		updateTree(true, recordSelectionManager, contentTree, null);
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(int dataTableID, String info) {
+	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
 		if (parentComposite.isDisposed())
 			return;
 
-		updateTree(false, dimensionSelectionManager, dimensionTree, info);
+		updateTree(false, dimensionSelectionManager, dimensionTree, null);
 	}
 
 	@Override

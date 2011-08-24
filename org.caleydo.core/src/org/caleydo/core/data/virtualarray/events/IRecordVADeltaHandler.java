@@ -28,11 +28,7 @@ public interface IRecordVADeltaHandler
 	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link VAReplaceEvent} was
 	 * received.
 	 * 
-	 * @param tableID
-	 *            TODO
-	 * @param vaType
-	 *            the type of the VA which is updated
 	 */
-	public void replaceRecordVA(int tableID, String dataDomainID, String vaType, RecordVirtualArray virtualArray);
+	public void replaceRecordVA(String dataDomainID, String recordPerspectiveID,  RecordVirtualArray virtualArray);
 
 }

@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer.nominal;
+package org.caleydo.core.util.clusterer.algorithm.nominal;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.util.clusterer.AClusterer;
-import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.algorithm.AClusterer;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
 
 public class AlphabeticalPartitioner
 	extends AClusterer {

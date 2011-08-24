@@ -3,7 +3,6 @@ package org.caleydo.core.data.perspective;
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.DimensionFilterManager;
@@ -39,6 +38,7 @@ public class DimensionPerspective
 		filterManager = new DimensionFilterManager(dataDomain, this);
 		idType = dataDomain.getDimensionIDType();
 	}
+
 
 	@Override
 	protected DimensionGroupList createGroupList() {

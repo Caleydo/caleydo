@@ -65,9 +65,10 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
-			String vaType, RecordVirtualArray virtualArray) {
-		// TODO Auto-generated method stub
+	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
+			RecordVirtualArray virtualArray) {
+
+	// TODO Auto-generated method stub
 
 	}
 

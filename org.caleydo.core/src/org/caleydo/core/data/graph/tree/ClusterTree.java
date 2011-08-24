@@ -1,10 +1,6 @@
 package org.caleydo.core.data.graph.tree;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.NewSubDataTablesEvent;
-import org.caleydo.core.util.clusterer.ClusterNode;
 
 public class ClusterTree
 	extends Tree<ClusterNode> {
@@ -17,11 +13,11 @@ public class ClusterTree
 		super(leaveIDType);
 	}
 
-	public void createSubDataTables(DataTable table) {
-		getRoot().createSubDataTables(table);
-		NewSubDataTablesEvent event = new NewSubDataTablesEvent();
-		event.setDataDomainID(table.getDataDomain().getDataDomainID());
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
+//	public void createSubDataTables(DataTable table) {
+//		getRoot().createSubDataTables(table);
+//		NewSubDataTablesEvent event = new NewSubDataTablesEvent();
+//		event.setDataDomainID(table.getDataDomain().getDataDomainID());
+//		GeneralManager.get().getEventPublisher().triggerEvent(event);
+//	}
 
 }

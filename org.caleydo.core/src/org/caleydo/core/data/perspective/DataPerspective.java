@@ -10,6 +10,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -18,7 +19,6 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -86,7 +86,7 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		this.dataDomain = dataDomain;
 		init();
 	}
-
+	
 	/** Only for de-serialization */
 	// public void setPerspectiveID(String perspectiveID) {
 	// if (this.perspectiveID != null)

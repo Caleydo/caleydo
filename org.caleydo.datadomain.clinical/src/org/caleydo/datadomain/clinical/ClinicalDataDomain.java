@@ -36,7 +36,8 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	 */
 	public ClinicalDataDomain() {
 
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
+				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 	}
 
@@ -64,10 +65,9 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
-			String vaType, RecordVirtualArray virtualArray) {
+	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
+			RecordVirtualArray virtualArray) {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override

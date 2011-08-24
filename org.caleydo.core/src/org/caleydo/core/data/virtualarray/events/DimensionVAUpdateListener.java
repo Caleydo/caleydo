@@ -23,8 +23,7 @@ public class DimensionVAUpdateListener
 	public void handleEvent(AEvent event) {
 		if (event instanceof DimensionVAUpdateEvent) {
 			DimensionVAUpdateEvent virtualArrayUpdateEvent = (DimensionVAUpdateEvent) event;
-			String info = virtualArrayUpdateEvent.getInfo();
-			handler.handleDimensionVAUpdate(virtualArrayUpdateEvent.getDataTableID(), info);
+			handler.handleDimensionVAUpdate(virtualArrayUpdateEvent.getPerspectiveID());
 		}
 	}
 

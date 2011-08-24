@@ -2,7 +2,7 @@
  * Cobweb.java Copyright (C) 2001 University of Waikato, Hamilton, New Zealand
  */
 
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.algorithm.cobweb;
 
 import java.io.Serializable;
 

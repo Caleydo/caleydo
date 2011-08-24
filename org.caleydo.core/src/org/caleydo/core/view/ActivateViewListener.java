@@ -62,16 +62,16 @@ public class ActivateViewListener
 				compareGroupsEvent.setSender(this);
 				GeneralManager.get().getEventPublisher().triggerEvent(compareGroupsEvent);
 
-				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
-
-					@Override
-					public void run() {
-						StartClusteringAction startClusteringAction = new StartClusteringAction();
-						startClusteringAction.setTables(((OpenMatchmakerViewEvent) event)
-							.getTablesToCompare());
-						startClusteringAction.run();
-					}
-				});
+//				PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+//
+//					@Override
+//					public void run() {
+//						StartClusteringAction startClusteringAction = new StartClusteringAction();
+//						startClusteringAction.setTables(((OpenMatchmakerViewEvent) event)
+//							.getTablesToCompare());
+//						startClusteringAction.run();
+//					}
+//				});
 
 			}
 			else if (event instanceof BookmarkEvent<?>) {

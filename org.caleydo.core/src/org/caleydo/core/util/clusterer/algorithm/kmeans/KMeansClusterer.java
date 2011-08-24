@@ -1,36 +1,76 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.HashMap;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.util.clusterer.ClusterHelper;
+import org.caleydo.core.util.clusterer.IClusterer;
+import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.algorithm.AClusterer;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 
 import weka.clusterers.ClusterEvaluation;
+import weka.clusterers.SimpleKMeans;
+import weka.core.DistanceFunction;
+import weka.core.EuclideanDistance;
 import weka.core.Instances;
+import weka.core.ManhattanDistance;
 
-public class HierarchicalClusterer
+/**
+ * KMeans clusterer using Weka
+ * 
+ * @author Bernhard Schlegl
+ */
+public class KMeansClusterer
 	extends AClusterer
 	implements IClusterer {
 
-	private Cobweb clusterer;
+	private SimpleKMeans clusterer = null;
 
-	private ClusterTree tree;
+	private int iNrCluster = 5;
 
-	public HierarchicalClusterer() {
-		clusterer = new Cobweb();
+	public KMeansClusterer() {
+		clusterer = new SimpleKMeans();
 	}
 
 	private TempResult cluster(DataTable table, ClusterState clusterState) {
 
-		// Arraylist holding clustered indexes
+		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
+		// Arraylist holding # of elements per cluster
+		ArrayList<Integer> count = new ArrayList<Integer>();
+		// Arraylist holding indices of examples (cluster centers)
+		ArrayList<Integer> alExamples = new ArrayList<Integer>();
+
+		DistanceFunction distanceMeasure;
+
+		// SimpleKMeans only supports Eudlidean and Manhattan at that time
+		// if (clusterState.getDistanceMeasure() == EDistanceMeasure.CHEBYSHEV_DISTANCE)
+		// distanceMeasure = new ChebyshevDistance();
+		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
+			distanceMeasure = new ManhattanDistance();
+		else
+			distanceMeasure = new EuclideanDistance();
+
+		try {
+			clusterer.setNumClusters(iNrCluster);
+			clusterer.setMaxIterations(1000);
+			if (distanceMeasure != null)
+				clusterer.setDistanceFunction(distanceMeasure);
+		}
+		catch (Exception e2) {
+			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			return null;
+		}
 
 		StringBuffer buffer = new StringBuffer();
 
@@ -40,9 +80,13 @@ public class HierarchicalClusterer
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
-			tree = new ClusterTree(table.getDataDomain().getRecordIDType());
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+
+			int iNrElements = recordVA.size();
+
+			if (iNrCluster >= iNrElements)
+				return null;
 
 			for (int nr = 0; nr < dimensionVA.size(); nr++) {
 				buffer.append("@attribute Patient" + nr + " real\n");
@@ -54,7 +98,6 @@ public class HierarchicalClusterer
 			for (Integer recordIndex : recordVA) {
 
 				if (bClusteringCanceled == false) {
-
 					int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
@@ -63,12 +106,14 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
+						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+							recordIndex)
 							+ ", ");
 
 					}
 					buffer.append("\n");
 					icnt++;
+
 					processEvents();
 				}
 				else {
@@ -79,10 +124,14 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			tree = new ClusterTree(table.getDataDomain().getDimensionIDType());
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+
+			int iNrElements = dimensionVA.size();
+
+			if (iNrCluster >= iNrElements)
+				return null;
 
 			for (int nr = 0; nr < recordVA.size(); nr++) {
 				buffer.append("@attribute Gene" + nr + " real\n");
@@ -92,9 +141,9 @@ public class HierarchicalClusterer
 
 			int isto = 0;
 			for (Integer iDimensionIndex : dimensionVA) {
-				if (bClusteringCanceled == false) {
 
-					int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
+				if (bClusteringCanceled == false) {
+					int tempPercentage = (int) ((float) isto / recordVA.size() * 100);
 					if (iPercentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
 							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
@@ -102,7 +151,8 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
+						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+							recordIndex)
 							+ ", ");
 
 					}
@@ -125,12 +175,14 @@ public class HierarchicalClusterer
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
 			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Cobweb clustering of genes in progress"));
+				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of genes in progress"));
 		else
 			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Cobweb clustering of experiments in progress"));
+				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of experiments in progress"));
 
 		Instances data = null;
+
+		// System.out.println(buffer.toString());
 
 		try {
 			data = new Instances(new StringReader(buffer.toString()));
@@ -138,13 +190,9 @@ public class HierarchicalClusterer
 		catch (IOException e1) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e1.printStackTrace();
 		}
 
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(10, false));
-
-		// unsupervised learning --> no class given
-		data.setClassIndex(-1);
 
 		try {
 			// train the clusterer
@@ -153,7 +201,6 @@ public class HierarchicalClusterer
 		catch (Exception e) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e.printStackTrace();
 		}
 
 		processEvents();
@@ -171,7 +218,6 @@ public class HierarchicalClusterer
 		catch (Exception e) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
-			// e.printStackTrace();
 		}
 		processEvents();
 		if (bClusteringCanceled) {
@@ -180,42 +226,30 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
 
-		double[] clusterAssignments = eval.getClusterAssignments();
+		double[] ClusterAssignments = eval.getClusterAssignments();
 
-		// int nrclusters = eval.getNumClusters();
-		// System.out.println(nrclusters);
+		for (int i = 0; i < iNrCluster; i++) {
+			count.add(0);
+		}
+
+		// System.out.println(eval.getNumClusters());
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		ArrayList<Double> clusters = new ArrayList<Double>();
+		// IVirtualArray currentVA = null;
+		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
+		// currentVA = table.getVA(iVAIdContent);
+		// else
+		// currentVA = table.getVA(iVAIdDimension);
 
-		for (int i = 0; i < clusterAssignments.length; i++) {
-			if (clusters.contains(clusterAssignments[i]) == false)
-				clusters.add(clusterAssignments[i]);
-		}
-
-		// variant 1
-		// for (double cluster : clusters) {
-		// for (int i = 0; i < data.numInstances(); i++) {
-		// if (clusterAssignments[i] == cluster) {
-		// indices.add(i);
-		// }
-		// }
-		// }
-
-		// variant 2
-		Arrays.sort(clusterAssignments);
-		for (int i = 0; i < data.numInstances(); i++) {
-			int temp = 0;
-			for (double cluster : clusters) {
-				if (clusterAssignments[i] == cluster) {
-					indices.add(temp);
+		for (int cluster = 0; cluster < iNrCluster; cluster++) {
+			for (int i = 0; i < data.numInstances(); i++) {
+				if (ClusterAssignments[i] == cluster) {
+					alExamples.add(i);
 					break;
 				}
-				temp++;
 			}
 		}
-
 		processEvents();
 		if (bClusteringCanceled) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
@@ -223,30 +257,53 @@ public class HierarchicalClusterer
 		}
 		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
 
+		HashMap<Integer, Integer> hashExamples = new HashMap<Integer, Integer>();
+
+		int cnt = 0;
+		for (int example : alExamples) {
+			hashExamples.put(example, cnt);
+			cnt++;
+		}
+
+		// Sort cluster depending on their color values
+		// TODO find a better solution for sorting
+		ClusterHelper.sortClusters(table, recordVA, dimensionVA, alExamples, clusterState.getClustererType());
+
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
+			for (int cluster : alExamples) {
+				for (int i = 0; i < data.numInstances(); i++) {
+					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
+						indices.add(recordVA.get(i));
+						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+					}
+				}
+			}
+		}
+		else {
+
+			for (int cluster : alExamples) {
+				for (int i = 0; i < data.numInstances(); i++) {
+					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
+						indices.add(dimensionVA.get(i));
+						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+					}
+				}
+			}
+		}
+
 		// IVirtualArray virtualArray = null;
 		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
 		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indices);
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
 
-		CNode node = clusterer.m_cobwebTree;
+		TempResult tempResult = new TempResult();
+		tempResult.setIndices(indices);
+		tempResult.setClusterSizes(count);
+		tempResult.setSampleElements(alExamples);
 
-		ClusterNode clusterNode = new ClusterNode(tree, "Root", 0, true, -1);
-		tree.setRootNode(clusterNode);
-
-		CNodeToTree(clusterNode, node, clusterState.getClustererType());
-
-		// ClusterHelper.determineNrElements(tree);
-		// ClusterHelper.determineHierarchyDepth(tree);
-
-		processEvents();
-		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
-			return null;
-		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(90, false));
-
-		// table.setAlClusterSizes(temp);
+		// set cluster result in Set
+		// table.setAlClusterSizes(count);
 		// table.setAlExamples(alExamples);
 
 		GeneralManager
@@ -255,39 +312,7 @@ public class HierarchicalClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		TempResult tempResult = new TempResult();
-		tempResult.indices = indices;
-		tempResult.tree = tree;
 		return tempResult;
-	}
-
-	/**
-	 * Function converts tree used by {@link Cobweb} into tree used in {@link GLRadialHierarchy} and
-	 * {@link GLDendrogram}
-	 * 
-	 * @param clusterNode
-	 * @param node
-	 * @param eClustererType
-	 */
-	private void CNodeToTree(ClusterNode clusterNode, CNode node, ClustererType eClustererType) {
-
-		if (node.getChilds() != null) {
-			int iNrChildsNode = node.getChilds().size();
-
-			for (int i = 0; i < iNrChildsNode; i++) {
-
-				CNode currentNode = (CNode) node.getChilds().elementAt(i);
-
-				int clusterNr = 0;
-				clusterNr = currentNode.getClusterNum();
-
-				ClusterNode currentGraph = new ClusterNode(tree, "Node_" + clusterNr, clusterNr, false, -1);
-				// currentGraph.setNrElements(1);
-
-				tree.addChild(clusterNode, currentGraph);
-				CNodeToTree(currentGraph, currentNode, eClustererType);
-			}
-		}
 	}
 
 	@Override
@@ -297,7 +322,11 @@ public class HierarchicalClusterer
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
+		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
+			iNrCluster = clusterState.getKMeansClusterCntGenes();
+		else
+			iNrCluster = clusterState.getKMeansClusterCntExperiments();
+
 		return cluster(set, clusterState);
 	}
-
 }

@@ -8,8 +8,8 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
-import org.caleydo.core.util.clusterer.ClusterState;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
@@ -21,8 +21,6 @@ public class StartClusteringAction
 
 	public static final String TEXT = "Clustering";
 	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
-
-	private ArrayList<DataTable> sets;
 
 	/**
 	 * Constructor.
@@ -40,7 +38,8 @@ public class StartClusteringAction
 		super.run();
 
 		ATableBasedDataDomain dataDomain =
-			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType("org.caleydo.datadomain.genetic");
+			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType(
+				"org.caleydo.datadomain.genetic");
 
 		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), dataDomain);
 		dialog.open();
@@ -50,19 +49,10 @@ public class StartClusteringAction
 
 		StartClusteringEvent event = null;
 		// if (clusterState != null && set != null)
-		if (sets == null || sets.size() == 0) {
-			sets = new ArrayList<DataTable>();
 
-			sets.add(dataDomain.getTable());
-		}
-		for (DataTable tmpSet : sets) {
-			event = new StartClusteringEvent(clusterState, tmpSet.getID());
-			event.setDataDomainID(dataDomain.getDataDomainID());
-			GeneralManager.get().getEventPublisher().triggerEvent(event);
-		}
-	}
+		event = new StartClusteringEvent(clusterState);
+		event.setDataDomainID(dataDomain.getDataDomainID());
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-	public void setTables(ArrayList<DataTable> sets) {
-		this.sets = sets;
 	}
 }

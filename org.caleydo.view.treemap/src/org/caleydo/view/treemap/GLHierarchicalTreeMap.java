@@ -13,12 +13,12 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.event.view.treemap.ZoomInEvent;
 import org.caleydo.core.manager.event.view.treemap.ZoomOutEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

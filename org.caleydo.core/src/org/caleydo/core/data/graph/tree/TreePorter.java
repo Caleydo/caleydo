@@ -22,7 +22,6 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -137,8 +136,8 @@ public class TreePorter {
 	public ClusterTree importDimensionTree(String fileName) throws JAXBException, FileNotFoundException {
 
 		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
-		DataTable table = dataDomain.getTable();
-		tree.createSubDataTables(table);
+//		DataTable table = dataDomain.getTable();
+		// tree.createSubDataTables(table);
 		return tree;
 	}
 

@@ -26,11 +26,8 @@ public interface IDimensionVADeltaHandler
 	/**
 	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link VAReplaceEvent} was
 	 * received.
-	 * 
-	 * @param vaType
-	 *            the type of the VA which is updated
 	 */
-	public void replaceDimensionVA(int tableID, String dataDomainID, String vaType,
+	public void replaceDimensionVA(String dataDomainID, String perspectiveID,
 		DimensionVirtualArray virtualArray);
 
 }

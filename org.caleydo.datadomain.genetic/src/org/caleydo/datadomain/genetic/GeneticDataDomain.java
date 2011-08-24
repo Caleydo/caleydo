@@ -259,8 +259,9 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignRecordVAUpdate(int tableID, String dataDomainType,
-			String vaType, RecordVirtualArray virtualArray) {
+	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
+			RecordVirtualArray virtualArray) {
+
 		// FIXME its not clear which dimension va should be updated here
 		// if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {
 		// DimensionVirtualArray newDimensionVirtualArray = new

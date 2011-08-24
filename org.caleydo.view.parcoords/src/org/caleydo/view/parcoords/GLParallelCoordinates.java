@@ -1274,11 +1274,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(int dataTableID, String info) {
-		super.handleDimensionVAUpdate(dataTableID, info);
-		if (table.getID() != dataTableID)
+	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
+		if (this.dimensionPerspectiveID != dimensionPerspectiveID)
 			return;
-
+		super.handleDimensionVAUpdate(dimensionPerspectiveID);
 		resetAxisSpacing();
 	}
 

@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.data.graph.tree;
 
 /**
  * Basic interface for hierarchical data that shall be visualized in the radial hierarchy view.

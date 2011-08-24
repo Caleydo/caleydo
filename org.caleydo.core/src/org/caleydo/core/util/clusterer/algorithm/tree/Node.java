@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.algorithm.tree;
 
 /**
  * Helper class used in @link {@link TreeClusterer}. Stores indices of the corresponding nodes and the

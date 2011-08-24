@@ -372,7 +372,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
 		System.out.println("What to do?");
 		// experiementSelectionManager.virtualArrayUpdated(dataDomain

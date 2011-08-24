@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.algorithm.tree;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,10 +6,23 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.util.clusterer.ClusterHelper;
+import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.algorithm.AClusterer;
+import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
+import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
+import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
+import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
+import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
 
 /**
  * Tree clusterer
@@ -383,7 +396,7 @@ public class TreeClusterer
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
-		tempResult.indices = indices;
+		tempResult.setIndices(indices);
 		return tempResult;
 	}
 
@@ -517,8 +530,8 @@ public class TreeClusterer
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
-		tempResult.indices = indices;
-		tempResult.tree = tree;
+		tempResult.setIndices(indices);
+		tempResult.setTree(tree);
 		return tempResult;
 	}
 
@@ -743,8 +756,8 @@ public class TreeClusterer
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
-		tempResult.tree = tree;
-		tempResult.indices = indices;
+		tempResult.setTree(tree);
+		tempResult.setIndices(indices);
 		return tempResult;
 	}
 

@@ -37,6 +37,7 @@ public class RecordPerspective
 		idType = dataDomain.getRecordIDType();
 	}
 
+
 	@Override
 	protected RecordGroupList createGroupList() {
 		return new RecordGroupList();

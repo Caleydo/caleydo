@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
 
@@ -9,6 +9,18 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.util.clusterer.ClusterHelper;
+import org.caleydo.core.util.clusterer.IClusterer;
+import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.algorithm.AClusterer;
+import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
+import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
+import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
+import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
+import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -512,9 +524,9 @@ public class AffinityClusterer
 				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		TempResult tempResult = new TempResult();
-		tempResult.clusterSizes = alClusterSizes;
-		tempResult.sampleElements = idxExamples;
-		tempResult.indices = indices;
+		tempResult.setClusterSizes(alClusterSizes);
+		tempResult.setSampleElements(idxExamples);
+		tempResult.setIndices(indices);
 		return tempResult;
 
 		// IVirtualArray virtualArray = null;

@@ -5,7 +5,14 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
-import org.caleydo.core.util.clusterer.nominal.AlphabeticalPartitioner;
+import org.caleydo.core.util.clusterer.algorithm.AClusterer;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterer;
+import org.caleydo.core.util.clusterer.algorithm.cobweb.HierarchicalClusterer;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterer;
+import org.caleydo.core.util.clusterer.algorithm.nominal.AlphabeticalPartitioner;
+import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterer;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -18,6 +25,7 @@ import org.eclipse.ui.PlatformUI;
  * Cluster manager handels {@link ClusterState} and calls corresponding clusterer.
  * 
  * @author Bernhard Schlegl
+ * @author Alexander Lex
  */
 public class ClusterManager {
 
@@ -106,12 +114,12 @@ public class ClusterManager {
 
 				runContentClustering(clusterer, clusterState, result, 0, 1);
 
-				if (result.dimensionResult.getVirtualArray() != null) {
-					runContentClustering(clusterer, clusterState, result, 50, 1);
-				}
+				// if (result.dimensionResult.getVirtualArray() != null) {
+				runContentClustering(clusterer, clusterState, result, 50, 1);
+				// }
 			}
 			clusterer.destroy();
-			result.finish();
+//			result.finish();
 			return result;
 		}
 		catch (OutOfMemoryError e) {
@@ -130,15 +138,16 @@ public class ClusterManager {
 				+ clusterer.toString()));
 			return;
 		}
-		result.recordResult = clusterState.getRecordPerspective();
-		result.recordResult.setVirtualArray(new RecordVirtualArray(result.recordResult.getPerspectiveID(),
-			tempResult.indices));
-		result.recordResult.setClusterSizes(tempResult.clusterSizes);
-		result.recordResult.setSampleElements(tempResult.sampleElements);
-		if (tempResult.tree != null) {
-			tempResult.tree.initializeIDTypes(clusterState.getRecordIDType());
-			result.recordResult.setTree(tempResult.tree);
-		}
+		result.setRecordResult(tempResult);
+		// result.recordResult = clusterState.getRecordPerspective();
+		// result.recordResult.setVirtualArray(new RecordVirtualArray(result.recordResult.getPerspectiveID(),
+		// tempResult.getIndices()));
+		// result.recordResult.setClusterSizes(tempResult.getClusterSizes());
+		// result.recordResult.setSampleElements(tempResult.getSampleElements());
+		// if (tempResult.getTree() != null) {
+		// tempResult.getTree().initializeIDTypes(clusterState.getRecordIDType());
+		// result.recordResult.setTree(tempResult.getTree());
+		// }
 
 	}
 
@@ -148,17 +157,18 @@ public class ClusterManager {
 
 		TempResult tempResult =
 			clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
-		result.dimensionResult = clusterState.getDimensionPerspective();
-		result.dimensionResult.setVirtualArray(new DimensionVirtualArray(result.dimensionResult
-			.getPerspectiveID(), tempResult.indices));
-		result.dimensionResult.setClusterSizes(tempResult.clusterSizes);
-		result.dimensionResult.setSampleElements(tempResult.sampleElements);
-
-		if (tempResult.tree != null) {
-
-			result.dimensionResult.setTree(tempResult.tree);
-			table.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
-			result.dimensionResult.getTree().initializeIDTypes(clusterState.getDimensionIDType());
-		}
+		result.setDimensionResult(tempResult);
+		// result.dimensionResult = clusterState.getDimensionPerspective();
+		// result.dimensionResult.setVirtualArray(new DimensionVirtualArray(result.dimensionResult
+		// .getPerspectiveID(), tempResult.getIndices()));
+		// result.dimensionResult.setClusterSizes(tempResult.getClusterSizes());
+		// result.dimensionResult.setSampleElements(tempResult.getSampleElements());
+		//
+		// if (tempResult.getTree() != null) {
+		//
+		// result.dimensionResult.setTree(tempResult.getTree());
+		// // table.getDataDomain().createDimensionGroupsFromDimensionTree(tempResult.tree);
+		// result.dimensionResult.getTree().initializeIDTypes(clusterState.getDimensionIDType());
+		// }
 	}
 }

@@ -625,10 +625,10 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
-		super.handleRecordVAUpdate(dataTableID, info);
-		if (table.getID() != dataTableID)
-			return;
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
+		super.handleRecordVAUpdate(recordPerspectiveID);
+//		if (table.getID() != dataTableID)
+//			return;
 
 		// FIXME clustering for context heat map
 		// if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)

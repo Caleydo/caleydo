@@ -14,7 +14,7 @@ public class RecordReplaceVAListener
 		if (event instanceof RecordReplaceVAEvent) {
 			RecordReplaceVAEvent vaEvent = ((RecordReplaceVAEvent) event);
 
-			handler.replaceRecordVA(vaEvent.getTableID(), vaEvent.getDataDomainID(), vaEvent.getVaType(),
+			handler.replaceRecordVA(vaEvent.getDataDomainID(), vaEvent.getPerspectiveID(),
 				vaEvent.getVirtualArray());
 		}
 	}

@@ -14,7 +14,7 @@ public class DimensionReplaceVAListener
 		if (event instanceof DimensionReplaceVAEvent) {
 			DimensionReplaceVAEvent vaEvent = ((DimensionReplaceVAEvent) event);
 
-			handler.replaceDimensionVA(vaEvent.getTableID(), vaEvent.getDataDomainID(), vaEvent.getVaType(),
+			handler.replaceDimensionVA(vaEvent.getDataDomainID(), vaEvent.getPerspectiveID(),
 				vaEvent.getVirtualArray());
 
 		}

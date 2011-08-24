@@ -1,8 +1,6 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.data.graph.tree;
 
 import gleem.linalg.Vec3f;
-
-import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
@@ -10,12 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.data.collection.table.SubDataTable;
-import org.caleydo.core.data.graph.tree.AHierarchyElement;
-import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.graph.tree.ESortingStrategy;
+import org.caleydo.core.data.perspective.DataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -30,7 +23,7 @@ import org.caleydo.core.data.selection.SelectionType;
 @XmlAccessorType(XmlAccessType.FIELD)
 public class ClusterNode
 	extends AHierarchyElement<ClusterNode>
-	implements IHierarchyData<ClusterNode>, Comparable<ClusterNode> {
+	implements Comparable<ClusterNode> {
 
 	@XmlElement
 	private Vec3f vPos;
@@ -47,8 +40,9 @@ public class ClusterNode
 	@XmlTransient
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
+	/** A data perspective containing all sub-elements of this node */
 	@XmlTransient
-	private SubDataTable subDataTable;
+	private DataPerspective<?, ?, ?, ?> dataPerspective = null;
 
 	public ClusterNode() {
 	}
@@ -84,34 +78,15 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public <SetType extends DataTable> void createSubDataTable(SetType set) {
-		if (subDataTable != null)
-			return;
-		subDataTable = new SubDataTable(set, (ClusterTree) tree, this);
-		subDataTable.setLabel(label);
-		// subDataTable.setContentTree(table.getContentTree());
-		// Tree<ClusterNode> subTree = tree.getSubTree();
-
-		ArrayList<Integer> dimensionIDs = this.getLeaveIds();
-		DataTableUtils.setTables(subDataTable, dimensionIDs);
+	public void fillDataPerspective(DataPerspective<?, ?, ?, ?> dataPerspective) {
+		dataPerspective.createVA(getLeaveIds());
+		dataPerspective.setTreeRoot(this);
+		dataPerspective.setTree((ClusterTree) tree);
+		this.dataPerspective = dataPerspective;
 	}
 
-	/**
-	 * Creates meta-sets recursively for the whole sub-tree of this node
-	 * 
-	 * @param set
-	 */
-	public <SetType extends DataTable> void createSubDataTables(SetType set) {
-		createSubDataTable(set);
-		ArrayList<ClusterNode> children = tree.getChildren(this);
-		if (children != null)
-			for (ClusterNode child : children) {
-				child.createSubDataTables(set);
-			}
-	}
-
-	public DataTable getSubDataTable() {
-		return subDataTable;
+	public DataPerspective<?, ?, ?, ?> getPerspective() {
+		return dataPerspective;
 	}
 
 	/**
@@ -120,36 +95,36 @@ public class ClusterNode
 	 * @param tableID
 	 * @return
 	 */
-	public DataTable getSubDataTableFromSubTree(int tableID) {
+	// public DataTable getSubDataTableFromSubTree(int tableID) {
+	//
+	// if (subDataTable.getID() == tableID)
+	// return subDataTable;
+	// else if (!this.hasChildren())
+	// return null;
+	// else {
+	// for (ClusterNode child : getChildren()) {
+	// DataTable tempSet = child.getSubDataTableFromSubTree(tableID);
+	// if (tempSet != null)
+	// return tempSet;
+	// }
+	// return null;
+	// }
+	// }
 
-		if (subDataTable.getID() == tableID)
-			return subDataTable;
-		else if (!this.hasChildren())
-			return null;
-		else {
-			for (ClusterNode child : getChildren()) {
-				DataTable tempSet = child.getSubDataTableFromSubTree(tableID);
-				if (tempSet != null)
-					return tempSet;
-			}
-			return null;
-		}
-	}
-
-	public ArrayList<DataTable> getAllSubDataTablesFromSubTree() {
-
-		ArrayList<DataTable> allSubDataTables = new ArrayList<DataTable>();
-
-		allSubDataTables.add(subDataTable);
-
-		if (this.hasChildren()) {
-			for (ClusterNode child : getChildren()) {
-				allSubDataTables.addAll(child.getAllSubDataTablesFromSubTree());
-			}
-		}
-
-		return allSubDataTables;
-	}
+	// public ArrayList<DataTable> getAllSubDataTablesFromSubTree() {
+	//
+	// ArrayList<DataTable> allSubDataTables = new ArrayList<DataTable>();
+	//
+	// allSubDataTables.add(subDataTable);
+	//
+	// if (this.hasChildren()) {
+	// for (ClusterNode child : getChildren()) {
+	// allSubDataTables.addAll(child.getAllSubDataTablesFromSubTree());
+	// }
+	// }
+	//
+	// return allSubDataTables;
+	// }
 
 	@Override
 	public String toString() {
@@ -231,7 +206,7 @@ public class ClusterNode
 		// FIXME: is it ok that the ID is null?
 		if (id == null)
 			return 0;
-		
+
 		return id;
 	}
 
@@ -258,7 +233,7 @@ public class ClusterNode
 	@Override
 	public int compareTo(ClusterNode node) {
 		ESortingStrategy strategy = tree.getSortingStrategy();
-		
+
 		switch (strategy) {
 			case AVERAGE_VALUE:
 				if (averageExpressionValue < node.averageExpressionValue)

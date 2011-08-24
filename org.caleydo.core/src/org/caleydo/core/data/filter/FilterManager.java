@@ -208,6 +208,6 @@ public abstract class FilterManager<PerspectiveType extends DataPerspective<?, ?
 	 */
 	protected abstract void triggerVADeltaEvent(DeltaType delta);
 
-	protected abstract void triggerReplaceVAEvent();
+//	protected abstract void triggerReplaceVAEvent();
 
 }

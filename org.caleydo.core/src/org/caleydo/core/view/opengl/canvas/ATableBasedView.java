@@ -234,13 +234,9 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
-		if (this.table.getID() != dataTableID)
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
+		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
 			return;
-		// if (!delta.getVAType().equals(recordVAType))
-		// return;
-
-		// recordVA.setGroupList(null);
 		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
 
 		reactOnRecordVAChanges();
@@ -250,8 +246,8 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(int dataTableID, String info) {
-		if (this.table.getID() != dataTableID)
+	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
+		if (!this.dimensionPerspectiveID.equals(dimensionPerspectiveID))
 			return;
 		// dimensionVA.setGroupList(null);
 		// // reactOnDimensionVAChanges(delta);

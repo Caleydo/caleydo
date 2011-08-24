@@ -604,8 +604,8 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
-		if (this.table.getID() != dataTableID)
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
+		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
 			return;
 		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
 		initData();
@@ -613,8 +613,8 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleDimensionVAUpdate(int dataTableID, String info) {
-		if (this.table.getID() != dataTableID)
+	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
+		if (!this.dimensionPerspectiveID.equals(dimensionPerspectiveID))
 			return;
 		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 		initData();

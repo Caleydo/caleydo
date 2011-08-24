@@ -463,7 +463,7 @@ public class SelectionBrowserView extends ASWTView implements
 	}
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
 		initContent();
 	}
 

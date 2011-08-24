@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -27,7 +28,6 @@ import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthE
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.view.ITableBasedDataDomainView;

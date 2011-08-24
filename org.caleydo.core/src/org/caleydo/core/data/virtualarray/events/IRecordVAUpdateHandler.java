@@ -1,6 +1,6 @@
 package org.caleydo.core.data.virtualarray.events;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
@@ -15,11 +15,9 @@ public interface IRecordVAUpdateHandler
 	 * Handler method to be called when a virtual array update event is caught by a related
 	 * {@link RecordVAUpdateListener}.
 	 * 
-	 * @param dataTableID
-	 *            the id for the {@link DataTable} with which the VA to be updated is associated
-	 * @param info
-	 *            info about the selection (e.g. the name of triggering view to display in the info-box)
+	 * @param perspectiveID
+	 *            the id for the {@link RecordPerspective} with which the VA to be updated is associated
 	 */
-	public void handleRecordVAUpdate(int dataTableID, String info);
+	public void handleRecordVAUpdate(String perspectiveID);
 
 }

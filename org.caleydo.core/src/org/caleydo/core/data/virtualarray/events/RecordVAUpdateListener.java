@@ -25,8 +25,7 @@ public class RecordVAUpdateListener
 		if (event instanceof RecordVAUpdateEvent) {
 			RecordVAUpdateEvent virtualArrayUpdateEvent = (RecordVAUpdateEvent) event;
 
-			handler.handleRecordVAUpdate(virtualArrayUpdateEvent.getDataTableID(),
-				virtualArrayUpdateEvent.getInfo());
+			handler.handleRecordVAUpdate(virtualArrayUpdateEvent.getPerspectiveID());
 		}
 	}
 

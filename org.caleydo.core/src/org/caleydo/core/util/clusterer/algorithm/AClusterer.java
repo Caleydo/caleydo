@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.algorithm;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -10,6 +10,9 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
+import org.caleydo.core.util.clusterer.ClustererCanceledListener;
+import org.caleydo.core.util.clusterer.IClusterer;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
 import org.caleydo.core.util.collection.Pair;
 
 /**

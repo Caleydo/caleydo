@@ -8,7 +8,6 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;

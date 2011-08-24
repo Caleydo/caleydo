@@ -1,4 +1,6 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.distancemeasures;
+
+import org.caleydo.core.util.clusterer.ClusterHelper;
 
 /**
  * Pearson correlation measure, implements {@link IDistanceMeasure}.

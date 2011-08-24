@@ -16,6 +16,7 @@ import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.dimension.DimensionManager;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -26,9 +27,8 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterManager;
-import org.caleydo.core.util.clusterer.ClusterNode;
 import org.caleydo.core.util.clusterer.ClusterResult;
-import org.caleydo.core.util.clusterer.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -106,7 +106,7 @@ public class DataTable
 		ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
 		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
 		tree.setRootNode(root);
-		dataDomain.createDimensionGroupsFromDimensionTree(tree);
+		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
 		// hashDimensionData.put(DimensionVAType.STORAGE, defaultDimensionData.clone());
 	}
 
@@ -140,11 +140,11 @@ public class DataTable
 	/**
 	 * Creates a {@link SubDataTable} for every node in the dimension tree.
 	 */
-	public void createSubDataTable(DimensionPerspective dimensionPerspective) {
-		// ClusterNode rootNode = hashDimensionData.get(STORAGE).getDimensionTreeRoot();
-		// rootNode.createSubDataTables(this);
-		dimensionPerspective.getTree().createSubDataTables(this);
-	}
+	// public void createSubDataTable(DimensionPerspective dimensionPerspective) {
+	// // ClusterNode rootNode = hashDimensionData.get(STORAGE).getDimensionTreeRoot();
+	// // rootNode.createSubDataTables(this);
+	// dimensionPerspective.getTree().createSubDataTables(this);
+	// }
 
 	/**
 	 * Set the data domain that is responsible for the set
@@ -342,51 +342,50 @@ public class DataTable
 		return isSetHomogeneous;
 	}
 
-	/**
-	 * Clusters a Dimension
-	 * 
-	 * @param clusterState
-	 * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
-	 */
-	public void cluster(ClusterState clusterState) {
-
-		// if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
-
-		// String recordPerspectiveID = clusterState.getRecordPerspective().getPerspectiveID();
-		// if (recordPerspectiveID != null) {
-		// clusterState.setRecordPerspective(getRecordData(recordPerspectiveID));
-		// clusterState.setRecordIDType(dataDomain.getRecordIDType());
-		// // this.setContentGroupList(getRecordVA(recordVAType).getGroupList());
-		// }
-		//
-		// String dimensionVAType = clusterState.getDimensionVAType();
-		// if (dimensionVAType != null) {
-		// clusterState.setDimensionPerspective(getDimensionData(dimensionVAType).getDimensionVA());
-		// clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
-		// // this.setDimensionGroupList(getDimensionVA(dimensionVAType).getGroupList());
-		// }
-
-		// TODO check here wheter the perspectives are actually set - they have been set her up to now, but
-		// that doesn't work any more
-
-		ClusterManager clusterManager = new ClusterManager(this);
-		ClusterResult result = clusterManager.cluster(clusterState);
-
-		// TODO this stuff should no longer be necessary
-		// if (result != null) {
-		// RecordData recordResult = result.getRecordResult();
-		// if (recordResult != null) {
-		// hashRecordData.put(clusterState.getRecordVAType(), recordResult);
-		// }
-		// DimensionData dimensionResult = result.getDimensionResult();
-		// if (dimensionResult != null) {
-		// hashDimensionData.put(clusterState.getDimensionVAType(), dimensionResult);
-		// }
-		// // }
-		// // else
-		// // throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
-		// }
-	}
+	// /**
+	// * Clusters a Dimension
+	// *
+	// * @param clusterState
+	// * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
+	// */
+	// public void cluster(ClusterState clusterState) {
+	//
+	// // if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
+	//
+	// // String recordPerspectiveID = clusterState.getRecordPerspective().getPerspectiveID();
+	// // if (recordPerspectiveID != null) {
+	// // clusterState.setRecordPerspective(getRecordData(recordPerspectiveID));
+	// // clusterState.setRecordIDType(dataDomain.getRecordIDType());
+	// // // this.setContentGroupList(getRecordVA(recordVAType).getGroupList());
+	// // }
+	// //
+	// // String dimensionVAType = clusterState.getDimensionVAType();
+	// // if (dimensionVAType != null) {
+	// // clusterState.setDimensionPerspective(getDimensionData(dimensionVAType).getDimensionVA());
+	// // clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+	// // // this.setDimensionGroupList(getDimensionVA(dimensionVAType).getGroupList());
+	// // }
+	//
+	// // TODO check here wheter the perspectives are actually set - they have been set her up to now, but
+	// // that doesn't work any more
+	//
+	//
+	//
+	// // TODO this stuff should no longer be necessary
+	// // if (result != null) {
+	// // RecordData recordResult = result.getRecordResult();
+	// // if (recordResult != null) {
+	// // hashRecordData.put(clusterState.getRecordVAType(), recordResult);
+	// // }
+	// // DimensionData dimensionResult = result.getDimensionResult();
+	// // if (dimensionResult != null) {
+	// // hashDimensionData.put(clusterState.getDimensionVAType(), dimensionResult);
+	// // }
+	// // // }
+	// // // else
+	// // // throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
+	// // }
+	// }
 
 	/**
 	 * Returns a {@link RecordPerspective} object for the specified ID. The {@link RecordPerspective} provides
@@ -400,7 +399,6 @@ public class DataTable
 		RecordPerspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
 		return recordData;
 	}
-
 
 	/**
 	 * Register a new {@link RecordPerspective} with this DataTable
@@ -423,7 +421,6 @@ public class DataTable
 		return hashDimensionPerspectives.get(dimensionPerspectiveID);
 	}
 
-
 	/**
 	 * Register a new {@link DimensionPerspective} with this DataTable
 	 * 
@@ -433,7 +430,6 @@ public class DataTable
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}
 
-	
 	/**
 	 * Return a list of content VA types that have registered {@link RecordPerspective}.
 	 * 
@@ -451,7 +447,7 @@ public class DataTable
 	public Set<String> getDimensionPerspectiveIDs() {
 		return hashDimensionPerspectives.keySet();
 	}
-	
+
 	/**
 	 * Removes all data related to the set (Dimensions, Virtual Arrays and Sets) from the managers so that the
 	 * garbage collector can handle it.
@@ -504,7 +500,8 @@ public class DataTable
 			meanDimension.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
 
 			float[] meanValues = new float[metaData.depth()];
-			DimensionVirtualArray dimensionVA = hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
+			DimensionVirtualArray dimensionVA =
+				hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
@@ -591,19 +588,8 @@ public class DataTable
 		DimensionPerspective dimensionData = new DimensionPerspective(dataDomain);
 		dimensionData.createVA(defaultDimensionIDs);
 
-		// this needs only be done by the root set
-		if ((this.getClass().equals(DataTable.class))) {
-			// ClusterTree tree = dimensionData.getTree();
-			// int count = 1;
-			// for (Integer dimensionID : dimensionData.getVA()) {
-			// ClusterNode node =
-			// new ClusterNode(tree, get(dimensionID).getLabel(), count++, false, dimensionID);
-			// tree.addChild(tree.getRoot(), node);
-			// }
+		// createSubDataTable(dimensionData);
 
-			createSubDataTable(dimensionData);
-
-		}
 		hashDimensionPerspectives.put(dimensionData.getPerspectiveID(), dimensionData);
 
 	}
@@ -706,6 +692,5 @@ public class DataTable
 		}
 		return recordVA;
 	}
-
 
 }

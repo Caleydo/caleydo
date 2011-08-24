@@ -2,6 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
 
 /**
  * Interface class for all clustering algorithms.

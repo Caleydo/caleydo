@@ -1,4 +1,4 @@
-package org.caleydo.core.util.clusterer;
+package org.caleydo.core.util.clusterer.distancemeasures;
 
 /**
  * Euclidean distance measure, implements {@link IDistanceMeasure}.

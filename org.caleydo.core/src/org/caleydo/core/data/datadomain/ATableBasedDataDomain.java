@@ -1,6 +1,5 @@
 package org.caleydo.core.data.datadomain;
 
-import java.util.HashMap;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -12,8 +11,6 @@ import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.RecordFilterManager;
-import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.graph.tree.ESortingStrategy;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
@@ -27,7 +24,6 @@ import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;
@@ -46,14 +42,14 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.ClustererType;
+import org.caleydo.core.util.clusterer.ClusterManager;
+import org.caleydo.core.util.clusterer.ClusterResult;
+import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -113,9 +109,6 @@ public abstract class ATableBasedDataDomain
 
 	// private RelationAnalyzer contentRelationAnalyzer;
 
-	@XmlTransient
-	private HashMap<Integer, DataTable> otherSubDataTables = new HashMap<Integer, DataTable>();
-
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
@@ -169,18 +162,14 @@ public abstract class ATableBasedDataDomain
 
 		DataTable oldSet = this.table;
 		this.table = table;
-		
+
 		if (oldSet != null) {
 			oldSet.destroy();
 			oldSet = null;
 		}
-		
+
 		recordPerspectiveIDs = table.getRecordPerspectiveIDs();
 		dimensionPerspectiveIDs = table.getDimensionPerspectiveIDs();
-	}
-
-	public void addSubDataTable(DataTable table) {
-		otherSubDataTables.put(table.getID(), table);
 	}
 
 	/**
@@ -312,11 +301,11 @@ public abstract class ATableBasedDataDomain
 		DimensionVirtualArray va = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
 		return va;
 	}
-	
+
 	public Set<String> getDimensionPerspectiveIDs() {
 		return dimensionPerspectiveIDs;
 	}
-	
+
 	public Set<String> getRecordPerspectiveIDs() {
 		return recordPerspectiveIDs;
 	}
@@ -329,54 +318,73 @@ public abstract class ATableBasedDataDomain
 	 *            ID of the set to cluster
 	 * @param clusterState
 	 */
-	public void startClustering(int tableID, ClusterState clusterState) {
+	public void startClustering(ClusterState clusterState) {
 
-		DataTable table = null;
-		if (this.table.getID() == tableID)
-			table = this.table;
-		else
-			table =
-				clusterState.getDimensionPerspective().getTree().getRoot()
-					.getSubDataTableFromSubTree(tableID);
-
-		// TODO: warning
-		if (table == null)
-			return;
-
-		table.cluster(clusterState);
-
-		RecordPerspective recordData = clusterState.getRecordPerspective();
-		DimensionPerspective dimensionData = clusterState.getDimensionPerspective();
-		if (table.containsUncertaintyData()) {
-			ClusterHelper.calculateAggregatedUncertainties(recordData, table);
-			ClusterHelper.calculateClusterAverages(dimensionData, recordData,
-				ClustererType.RECORD_CLUSTERING, table);
-			recordData.getTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
-			recordData.createVABasedOnTree();
-		}
-
-		// This should be done to avoid problems with group info in HHM
+		ClusterManager clusterManager = new ClusterManager(table);
+		ClusterResult result = clusterManager.cluster(clusterState);
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
-			eventPublisher.triggerEvent(new DimensionReplaceVAEvent(table, dataDomainID, clusterState
-				.getDimensionPerspective().getPerspectiveID()));
-			((DataTable) table).createSubDataTable(clusterState.getDimensionPerspective());
+			TempResult dimensionResult = result.getDimensionResult();
+			DimensionPerspective dimensionPerspective = clusterState.getDimensionPerspective();
+			dimensionPerspective.createVA(dimensionResult.getIndices());
+			dimensionPerspective.setClusterSizes(dimensionResult.getClusterSizes());
+			dimensionPerspective.setTree(dimensionResult.getTree());
+			dimensionPerspective.setSampleElements(dimensionResult.getSampleElements());
+			dimensionPerspective.finish();
+
+			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID, dimensionPerspective
+				.getPerspectiveID(), this));
+
 		}
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
-			eventPublisher.triggerEvent(new RecordReplaceVAEvent(table, dataDomainID, clusterState
-				.getRecordPerspective().getPerspectiveID()));
+			TempResult recordResult = result.getRecordResult();
+			RecordPerspective recordPerspective = clusterState.getRecordPerspective();
+			recordPerspective.createVA(recordResult.getIndices());
+			recordPerspective.setClusterSizes(recordResult.getClusterSizes());
+			recordPerspective.setTree(recordResult.getTree());
+			recordPerspective.setSampleElements(recordResult.getSampleElements());
+			recordPerspective.finish();
 
+			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID, recordPerspective
+				.getPerspectiveID(), this));
 		}
+
+		// RecordPerspective recordPerspective = clusterState.getRecordPerspective();
+		//
+		//
+
+		// if (table.containsUncertaintyData()) {
+		// ClusterHelper.calculateAggregatedUncertainties(recordPerspective, table);
+		// ClusterHelper.calculateClusterAverages(dimensionPerspective, recordPerspective,
+		// ClustererType.RECORD_CLUSTERING, table);
+		// recordPerspective.getTree().setSortingStrategy(ESortingStrategy.CERTAINTY);
+		// recordPerspective.createVABasedOnTree();
+		// }
+
+		// if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
+		// || clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
+		// eventPublisher.triggerEvent(new DimensionReplaceVAEvent(dataDomainID, clusterState
+		// .getDimensionPerspective().getPerspectiveID()));
+		// ((DataTable) table).createSubDataTable(clusterState.getDimensionPerspective());
+		// }
+		//
+		// if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING
+		// || clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
+		// eventPublisher.triggerEvent(new RecordReplaceVAEvent(dataDomainID, clusterState
+		// .getRecordPerspective().getPerspectiveID()));
+		//
+		// }
 	}
 
 	/**
 	 * Resets the context VA to it's initial state
 	 */
 	public void resetRecordVA(String recordPerspectiveID) {
-		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(table.getBaseRecordVA(recordPerspectiveID));
+		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(
+			table.getBaseRecordVA(recordPerspectiveID));
 	}
 
 	// /**
@@ -403,37 +411,28 @@ public abstract class ATableBasedDataDomain
 	/**
 	 * Replace record VA for a specific table.
 	 * 
-	 * @param tableID
-	 * @param dataDomainType
+	 * @param perspectiveID
+	 * @param dataDomainID
 	 * @param recordPerspectiveID
 	 * @param virtualArray
 	 */
 	@Override
-	public void replaceRecordVA(int tableID, String dataDomainType, String recordPerspectiveID,
+	public void replaceRecordVA(String dataDomainID, String recordPerspectiveID,
 		RecordVirtualArray virtualArray) {
 
-		if (dataDomainType != this.dataDomainID) {
-			handleForeignRecordVAUpdate(tableID, dataDomainType, recordPerspectiveID, virtualArray);
+		if (dataDomainID != this.dataDomainID) {
+			handleForeignRecordVAUpdate(dataDomainID, recordPerspectiveID, virtualArray);
 			return;
 		}
-		DataTable table;
-		if (tableID == this.table.getID()) {
-			table = this.table;
-		}
-		else {
-			table =
-				this.table.getDimensionPerspective(recordPerspectiveID).getTreeRoot()
-					.getSubDataTableFromSubTree(tableID);
-		}
-		if (table == null)
-			table = otherSubDataTables.get(tableID);
+
+		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
 
 		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
 
 		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
 		event.setSender(this);
 		event.setDataDomainID(dataDomainID);
-		event.setDataTableID(tableID);
+		event.setPerspectiveID(recordPerspectiveID);
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -448,26 +447,23 @@ public abstract class ATableBasedDataDomain
 		RecordPerspective recordData = table.getRecordPerspective(vaDelta.getVAType());
 		recordData.setVADelta(vaDelta);
 
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
-		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
-		event.setDataTableID(table.getID());
+		RecordVAUpdateEvent event =
+			new RecordVAUpdateEvent(dataDomainID, recordData.getPerspectiveID(), this);
+
 		eventPublisher.triggerEvent(event);
 
 	}
 
 	@Override
-	public void replaceDimensionVA(int dataTableID, String dataDomainType, String dimensionPerspectiveID,
+	public void replaceDimensionVA(String dataDomainID, String dimensionPerspectiveID,
 		DimensionVirtualArray virtualArray) {
-		if (dataTableID != table.getID())
-			return;
 
 		table.getDimensionPerspective(dimensionPerspectiveID).setVirtualArray(virtualArray);
 
 		DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
 		event.setDataDomainID(dataDomainID);
 		event.setSender(this);
-		event.setDataTableID(dataTableID);
+		event.setPerspectiveID(dimensionPerspectiveID);
 		eventPublisher.triggerEvent(event);
 
 	}
@@ -697,7 +693,7 @@ public abstract class ATableBasedDataDomain
 	 * @param vaType
 	 * @param virtualArray
 	 */
-	public abstract void handleForeignRecordVAUpdate(int tableID, String dataDomainType, String vaType,
+	public abstract void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
 		RecordVirtualArray virtualArray);
 
 	/**
@@ -813,28 +809,28 @@ public abstract class ATableBasedDataDomain
 	// return contentRelationAnalyzer;
 	// }
 
-	public void createDimensionGroupsFromDimensionTree(ClusterTree tree) {
-		dimensionGroups.clear();
-		if (tree == null)
-			return;
-		ClusterNode rootNode = tree.getRoot();
-		if (rootNode != null && rootNode.hasChildren())
-			createDimensionGroupsFromDimensionTree(rootNode);
-	}
-
-	private void createDimensionGroupsFromDimensionTree(ClusterNode parent) {
-
-		for (ClusterNode child : parent.getChildren()) {
-			if (child.hasChildren()) {
-				dimensionGroups.add(new TableBasedDimensionGroupData(this, child.getSubDataTable()));
-				createDimensionGroupsFromDimensionTree(child);
-			}
-		}
-
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
+	// public void createDimensionGroupsFromDimensionTree(ClusterTree tree) {
+	// dimensionGroups.clear();
+	// if (tree == null)
+	// return;
+	// ClusterNode rootNode = tree.getRoot();
+	// if (rootNode != null && rootNode.hasChildren())
+	// createDimensionGroupsFromDimensionTree(rootNode);
+	// }
+	//
+	// private void createDimensionGroupsFromDimensionTree(ClusterNode parent) {
+	//
+	// for (ClusterNode child : parent.getChildren()) {
+	// if (child.hasChildren()) {
+	// dimensionGroups.add(new TableBasedDimensionGroupData(this, child.getSubDataTable()));
+	// createDimensionGroupsFromDimensionTree(child);
+	// }
+	// }
+	//
+	// DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+	// event.setSender(this);
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
 
 	public void aggregateGroups(java.util.Set<Integer> groups) {
 		System.out.println("Received command to aggregate experiments, not implemented yet");

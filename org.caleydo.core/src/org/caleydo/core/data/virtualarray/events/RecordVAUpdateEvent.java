@@ -16,4 +16,14 @@ import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 public class RecordVAUpdateEvent
 	extends VAUpdateEvent {
 
+	public RecordVAUpdateEvent() {
+
+	}
+
+	public RecordVAUpdateEvent(String dataDomainID, String perspectiveID, Object sender) {
+		setDataDomainID(dataDomainID);
+		setPerspectiveID(perspectiveID);
+		setSender(sender);
+	}
+
 }

@@ -14,6 +14,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -32,8 +33,7 @@ import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.ClusterNode;
-import org.caleydo.core.util.clusterer.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.contextmenu.item.StatisticsFoldChangeReductionItem;

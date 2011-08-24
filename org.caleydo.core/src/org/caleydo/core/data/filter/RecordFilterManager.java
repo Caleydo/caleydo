@@ -94,15 +94,15 @@ public class RecordFilterManager
 		}
 	}
 
-	@Override
-	protected void triggerReplaceVAEvent() {
-		RecordReplaceVAEvent event = new RecordReplaceVAEvent();
-		event.setVAType(perspective.getPerspectiveID());
-		event.setVirtualArray(perspective.getVirtualArray());
-		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.triggerEvent(event);
-	}
+//	@Override
+//	protected void triggerReplaceVAEvent() {
+//		RecordReplaceVAEvent event = new RecordReplaceVAEvent();
+//		event.setVAType(perspective.getPerspectiveID());
+//		event.setVirtualArray(perspective.getVirtualArray());
+//		event.setSender(this);
+//		event.setDataDomainID(dataDomain.getDataDomainID());
+//		eventPublisher.triggerEvent(event);
+//	}
 
 	@Override
 	protected void triggerVADeltaEvent(RecordVADelta delta) {

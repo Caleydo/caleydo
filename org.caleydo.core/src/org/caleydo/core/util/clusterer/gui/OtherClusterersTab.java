@@ -1,8 +1,8 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.util.clusterer.ClusterState;
-import org.caleydo.core.util.clusterer.ClustererType;
-import org.caleydo.core.util.clusterer.EClustererAlgo;
+import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;

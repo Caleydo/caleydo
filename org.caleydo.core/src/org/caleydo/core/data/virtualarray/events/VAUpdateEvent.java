@@ -2,6 +2,7 @@ package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.DataPerspective;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -19,18 +20,16 @@ import org.caleydo.core.manager.event.AEvent;
 public abstract class VAUpdateEvent
 	extends AEvent {
 
-	/** additional information about the selection, e.g. to display in the info-box */
-	private String info;
 	/** the id of the associated {@link DataTable} */
-	private int dataTableID = -1;
+	private String perspectiveID = null;
 
 	/**
-	 * Set the ID of the {@link DataTable} the virtual array to be updated is associated with
+	 * Set the ID of the {@link DataPerspective} the virtual array to be updated is associated with
 	 * 
-	 * @param dataTableID
+	 * @param perspectiveID
 	 */
-	public void setDataTableID(int dataTableID) {
-		this.dataTableID = dataTableID;
+	public void setPerspectiveID(String perspectiveID) {
+		this.perspectiveID = perspectiveID;
 	}
 
 	/**
@@ -38,21 +37,13 @@ public abstract class VAUpdateEvent
 	 * 
 	 * @return the id of the associated {@link DataTable}
 	 */
-	public int getDataTableID() {
-		return dataTableID;
-	}
-
-	public String getInfo() {
-		return info;
-	}
-
-	public void setInfo(String info) {
-		this.info = info;
+	public String getPerspectiveID() {
+		return perspectiveID;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (dataTableID < 0)
+		if (perspectiveID == null)
 			return false;
 		return true;
 	}

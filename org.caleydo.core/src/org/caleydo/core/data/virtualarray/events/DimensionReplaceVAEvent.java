@@ -1,8 +1,10 @@
 package org.caleydo.core.data.virtualarray.events;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
+/**
+ * @author Alexander Lex
+ */
 public class DimensionReplaceVAEvent
 	extends VAReplaceEvent<DimensionVirtualArray> {
 
@@ -10,13 +12,9 @@ public class DimensionReplaceVAEvent
 		// nothing to initialize here
 	}
 
-	public DimensionReplaceVAEvent(DataTable set, String dataDomainType, String vaType) {
-		super(set, dataDomainType, vaType);
-	}
-
-	public DimensionReplaceVAEvent(DataTable set, String dataDomainType, String vaType,
+	public DimensionReplaceVAEvent(String dataDomainType, String perspectiveID,
 		DimensionVirtualArray virtualArray) {
-		super(set, dataDomainType, vaType, virtualArray);
+		super(dataDomainType, perspectiveID, virtualArray);
 	}
 
 }
