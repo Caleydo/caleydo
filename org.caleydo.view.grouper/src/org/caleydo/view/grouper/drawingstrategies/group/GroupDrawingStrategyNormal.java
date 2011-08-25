@@ -68,25 +68,25 @@ public class GroupDrawingStrategyNormal extends AGroupDrawingStrategyRectangular
 
 		// gl.glColor4fv(GrouperRenderStyle.TEXT_BG_COLOR, 0);
 
-		DataTable table = groupRepresentation.getClusterNode().getSubDataTable();
-		DimensionVirtualArray dimensionVA = table
-				.getDimensionPerspective(dimensionPrespectiveID).getVirtualArray();
+//		DataTable table = groupRepresentation.getClusterNode().getSubDataTable();
+//		DimensionVirtualArray dimensionVA = table
+//				.getDimensionPerspective(dimensionPrespectiveID).getVirtualArray();
 
-		boolean isNominal = false;
-		boolean isNumerical = false;
-		for (Integer dimensionID : dimensionVA) {
+//		boolean isNominal = false;
+//		boolean isNumerical = false;
+//		for (Integer dimensionID : dimensionVA) {
 
-			if (table.get(dimensionID) instanceof NominalDimension<?>) {
-				gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
-				isNominal = true;
-			} else {
-				gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
-				isNumerical = true;
-			}
-		}
-		if (isNominal && isNumerical) {
+//			if (table.get(dimensionID) instanceof NominalDimension<?>) {
+//				gl.glColor4f(116f / 255f, 196f / 255f, 118f / 255f, 1f);
+//				isNominal = true;
+//			} else {
+//				gl.glColor4f(0.6f, 0.6f, 0.6f, 1f);
+//				isNumerical = true;
+//			}
+//		}
+//		if (isNominal && isNumerical) {
 			gl.glColor4f(1f, 0.6f, 0.6f, 1f);
-		}
+//		}
 
 		drawLeafRectangular(gl, groupRepresentation, textRenderer);
 

@@ -220,6 +220,7 @@ Export-Package: org.caleydo.core.command;
    org.eclipse.core.commands,
    org.eclipse.swt.widgets,
    org.eclipse.jface.dialogs",
+ org.caleydo.core.util.clusterer.initialization,
  org.caleydo.core.util.collection,
  org.caleydo.core.util.conversion,
  org.caleydo.core.util.exception;uses:="org.caleydo.core.view.opengl.canvas",

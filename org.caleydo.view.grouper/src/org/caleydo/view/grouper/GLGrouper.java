@@ -229,7 +229,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 				ClustererType.DIMENSION_CLUSTERING, table);
 		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
 
-		dataDomain.createDimensionGroupsFromDimensionTree(tree);
+		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
 		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
 	}
 
@@ -327,17 +327,19 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 				table.getRecordPerspective(recordPerspectiveID),
 				ClustererType.DIMENSION_CLUSTERING, table);
 		tree.setDirty();
-		tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable) table);
+		// we don't want to do that per default any more
+		// tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable)
+		// table);
 
 		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
 		dimensionVA = new DimensionVirtualArray(dimensionPerspectiveID, alIndices);
 
-		eventPublisher.triggerEvent(new DimensionReplaceVAEvent(table, dataDomain
+		eventPublisher.triggerEvent(new DimensionReplaceVAEvent(dataDomain
 				.getDataDomainID(), dimensionPerspectiveID, dimensionVA));
 
 		// FIXME no one is notified that there is a new tree
 		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
-		dataDomain.createDimensionGroupsFromDimensionTree(tree);
+//		dataDomain.createDimensionGroupsFromDimensionTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
@@ -639,8 +641,9 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 						ArrayList<DataTable> selectedTables = new ArrayList<DataTable>();
 						boolean isLeafContained = false;
 						for (ICompositeGraphic composite : orderedComposites) {
-							selectedTables.add(((GroupRepresentation) composite)
-									.getClusterNode().getSubDataTable());
+							// FIXME here
+//							selectedTables.add(((GroupRepresentation) composite)
+//									.getClusterNode().getPerspective());
 
 							if (isLeafContained == false)
 								isLeafContained = composite.isLeaf();
@@ -1353,8 +1356,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 			public void run() {
 				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(),
 						groupRep);
-				groupRep.getClusterNode().getSubDataTable()
-						.setLabel(groupRep.getClusterNode().getLabel());
+//				groupRep.getClusterNode().getSubDataTable()
+//						.setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();
 			}
 		});
@@ -1373,7 +1376,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		this.dataDomain = dataDomain;
 		table = this.dataDomain.getTable();
 
-		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
+				.getVirtualArray();
 		drawingStrategyManager = new DrawingStrategyManager(dimensionPerspectiveID,
 				pickingManager, uniqueID, renderStyle);
 		if (table.getDimensionPerspective(dimensionPerspectiveID).getTree() != null) {
