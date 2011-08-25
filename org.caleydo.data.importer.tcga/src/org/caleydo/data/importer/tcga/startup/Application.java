@@ -61,7 +61,7 @@ public class Application
 			throw new IllegalStateException("Problem while creating table!");
 
 		// the default save path is usually your home directory
-		new ProjectSaver().save("test.cal", true);
+		new ProjectSaver().save( System.getProperty( "user.home" ) + System.getProperty( "file.separator" ) + "test.cal", true);
 
 		return IApplication.EXIT_OK;
 	}
