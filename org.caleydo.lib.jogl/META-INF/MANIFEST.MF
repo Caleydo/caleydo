@@ -8,9 +8,8 @@ Bundle-ClassPath: lib/jogl/gluegen-rt.jar,
  lib/jogl/nativewindow.jar
 Bundle-NativeCode: 
  lib/jogl/macosx/libgluegen-rt.jnilib;
- lib/jogl/macosx/libjogl_cg.jnilib;
- lib/jogl/macosx/libjogl_awt.jnilib;
- lib/jogl/macosx/libjogl.jnilib;
+ lib/jogl/macosx/libjogl_desktop.jnilib;
+ lib/jogl/macosx/libnativewindow_awt.jnilib;
  osname=macosx;
  osname=mac;
  osname=macos;
