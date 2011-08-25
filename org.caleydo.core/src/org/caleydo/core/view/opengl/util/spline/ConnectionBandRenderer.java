@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 public class ConnectionBandRenderer {
@@ -538,9 +539,9 @@ public class ConnectionBandRenderer {
 			inputPoints.add(vec);
 //			gl.glColor4f(1, 0, 0, 1);
 //			gl.glBegin(GL.GL_POINTS);
-//			gl.glVertex3f(vec.x(), vec.y(), vec.z());
+//			gl.glVertex3f(vec.x(), vec.y(), -1);
 //			gl.glEnd();
-			// GLHelperFunctions.drawPointAt(gl, vec);
+//			 GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
