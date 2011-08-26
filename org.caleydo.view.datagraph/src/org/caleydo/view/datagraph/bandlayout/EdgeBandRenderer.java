@@ -14,79 +14,94 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.IDataGraphNode;
 
-public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
+public class EdgeBandRenderer {
 
 	private final static int SPACING_PIXELS = 2;
+	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20; 
 
-	public LeftDownRightUpNodeRelationBandCreator(IDataGraphNode node1,
+	protected IDataGraphNode node1;
+	protected IDataGraphNode node2;
+	protected PixelGLConverter pixelGLConverter;
+	protected ViewFrustum viewFrustum;
+
+	public EdgeBandRenderer(IDataGraphNode node1,
 			IDataGraphNode node2, PixelGLConverter pixelGLConverter,
 			ViewFrustum viewFrustum) {
-		super(node1, node2, pixelGLConverter, viewFrustum);
+		this.node1 = node1;
+		this.node2 = node2;
+		this.pixelGLConverter = pixelGLConverter;
+		this.viewFrustum = viewFrustum;
 	}
 
-	@Override
 	public void renderEdgeBand(GL2 gl, IEdgeRoutingStrategy edgeRoutingStrategy) {
 
 		Point2D position1 = node1.getPosition();
 		Point2D position2 = node2.getPosition();
-		float spacingX = (float) ((position2.getX() - node2.getWidth() / 2.0f) - (position1
-				.getX() + node1.getWidth() / 2.0f));
-		float spacingY = (float) ((position2.getY() - node2.getHeight() / 2.0f) - (position1
-				.getY() + node1.getHeight() / 2.0f));
+
 		float deltaX = (float) (position1.getX() - position2.getX());
 		float deltaY = (float) (position1.getY() - position2.getY());
 
-		ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
-		Pair<Point2D, Point2D> anchorPointsSide1;
-		Pair<Point2D, Point2D> anchorPointsSide2;
-		Pair<Point2D, Point2D> offsetAnchorPointsSide1;
-		Pair<Point2D, Point2D> bandOffsetAnchorPoints1;
-		Pair<Point2D, Point2D> bandAnchorPoints1;
-		Pair<Point2D, Point2D> offsetAnchorPointsSide2;
-		Pair<Point2D, Point2D> bandOffsetAnchorPoints2;
-		Pair<Point2D, Point2D> bandAnchorPoints2;
+		IDataGraphNode leftNode = null;
+		IDataGraphNode rightNode = null;
+		IDataGraphNode bottomNode = null;
+		IDataGraphNode topNode = null;
+
+		if (deltaX < 0) {
+			if (deltaY < 0) {
+				// -2
+				// 1-
+
+				leftNode = node1;
+				rightNode = node2;
+				bottomNode = node1;
+				topNode = node2;
+			} else {
+				// 1-
+				// -2
+
+				leftNode = node1;
+				rightNode = node2;
+				bottomNode = node2;
+				topNode = node1;
+			}
+		} else {
+			if (deltaY < 0) {
+				// 2-
+				// -1
+
+				leftNode = node2;
+				rightNode = node1;
+				bottomNode = node1;
+				topNode = node2;
+			} else {
+				// -1
+				// 2-
+
+				leftNode = node2;
+				rightNode = node1;
+				bottomNode = node2;
+				topNode = node1;
+			}
+		}
+
+		float spacingX = (float) ((rightNode.getPosition().getX() - rightNode
+				.getWidth() / 2.0f) - (leftNode.getPosition().getX() + leftNode
+				.getWidth() / 2.0f));
+		float spacingY = (float) ((topNode.getPosition().getY() - topNode
+				.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
+				.getHeight() / 2.0f));
 
 		ConnectionBandRenderer connectionBandRenderer = new ConnectionBandRenderer();
 
 		connectionBandRenderer.init(gl);
 
 		if (spacingX > spacingY) {
-			renderHorizontalBand(gl, node1, node2, edgeRoutingStrategy,
+			renderHorizontalBand(gl, leftNode, rightNode, edgeRoutingStrategy,
 					connectionBandRenderer);
 		} else {
-			renderVerticalBand(gl, node1, node2, edgeRoutingStrategy,
+			renderVerticalBand(gl, bottomNode, topNode, edgeRoutingStrategy,
 					connectionBandRenderer);
 		}
-
-		// GLHelperFunctions.drawPointAt(gl, bandOffsetAnchorPoint1Side1X,
-		// (float)offsetAnchorPointsSide1
-		// .getFirst().getY(), 0);
-		//
-		// GLHelperFunctions.drawPointAt(gl, bandOffsetAnchorPoint2Side1X,
-		// (float)offsetAnchorPointsSide1
-		// .getFirst().getY(), 0);
-
-		// List<Pair<Point2D, Point2D>> node1BandConnectionPoints = new
-		// ArrayList<Pair<Point2D, Point2D>>();
-		// node1BandConnectionPoints.add(anchorPointsSide1);
-		// node1BandConnectionPoints.add(offsetAnchorPointsSide1);
-		// node1BandConnectionPoints.add(bandOffsetAnchorPoints1);
-		// node1BandConnectionPoints.add(bandAnchorPoints1);
-		//
-		// List<Pair<Point2D, Point2D>> node2BandConnectionPoints = new
-		// ArrayList<Pair<Point2D, Point2D>>();
-		// node2BandConnectionPoints.add(anchorPointsSide2);
-		// node2BandConnectionPoints.add(offsetAnchorPointsSide2);
-		// node2BandConnectionPoints.add(bandOffsetAnchorPoints2);
-		// node2BandConnectionPoints.add(bandAnchorPoints2);
-		//
-		// connectionBandRenderer.renderComplexBand(gl,
-		// node1BandConnectionPoints,
-		// false, new float[] { 0, 0, 0 }, 1);
-		//
-		// connectionBandRenderer.renderComplexBand(gl,
-		// node2BandConnectionPoints,
-		// false, new float[] { 0, 0, 0 }, 1);
 
 	}
 
@@ -96,12 +111,11 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 
 		Point2D positionBottom = bottomNode.getPosition();
 		Point2D positionTop = topNode.getPosition();
-		float spacingX = (float) ((positionTop.getX() - topNode.getWidth() / 2.0f) - (positionBottom
-				.getX() + bottomNode.getWidth() / 2.0f));
+
 		float spacingY = (float) ((positionTop.getY() - topNode.getHeight() / 2.0f) - (positionBottom
 				.getY() + bottomNode.getHeight() / 2.0f));
 		float deltaX = (float) (positionBottom.getX() - positionTop.getX());
-		float deltaY = (float) (positionBottom.getY() - positionTop.getY());
+
 
 		ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
 
@@ -300,9 +314,6 @@ public class LeftDownRightUpNodeRelationBandCreator extends AEdgeBandRenderer {
 		Point2D positionRight = rightNode.getPosition();
 		float spacingX = (float) ((positionRight.getX() - rightNode.getWidth() / 2.0f) - (positionLeft
 				.getX() + leftNode.getWidth() / 2.0f));
-		float spacingY = (float) ((positionRight.getY() - rightNode.getHeight() / 2.0f) - (positionLeft
-				.getY() + leftNode.getHeight() / 2.0f));
-		float deltaX = (float) (positionLeft.getX() - positionRight.getX());
 		float deltaY = (float) (positionLeft.getY() - positionRight.getY());
 
 		Pair<Point2D, Point2D> anchorPointsLeft = leftNode
