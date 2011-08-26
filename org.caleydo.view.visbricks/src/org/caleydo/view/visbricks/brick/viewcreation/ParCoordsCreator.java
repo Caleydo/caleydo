@@ -20,7 +20,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * 
  */
 public class ParCoordsCreator implements IRemoteViewCreator {
-	
+
 	private DataTable set;
 
 	public ParCoordsCreator(DataTable set) {
@@ -30,7 +30,7 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 	@Override
 	public AGLView createRemoteView(GLBrick remoteRenderingView, GL2 gl,
 			GLMouseListener glMouseListener) {
-		
+
 		GLParallelCoordinates parCoords = (GLParallelCoordinates) GeneralManager
 				.get()
 				.getViewManager()
@@ -38,19 +38,19 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 						GLParallelCoordinates.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-								1, 0, 1, -1, 1));
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		parCoords.setRemoteRenderingGLView(remoteRenderingView);
-		parCoords.setTable(set);
+		parCoords.setRecordVA(remoteRenderingView.getRecordVA());
+		parCoords.setDimensionVA(remoteRenderingView.getBrickData().getDimensionVA());
 		parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		parCoords.initialize();
 		parCoords.initRemote(gl, remoteRenderingView, glMouseListener);
 		parCoords.setDetailLevel(DetailLevel.LOW);
-		RecordVirtualArray recordVA = remoteRenderingView.getRecordVA();
-		if (recordVA != null)
-			parCoords.setRecordVA(recordVA);
 
+		
+		
 		return parCoords;
 	}
 

@@ -22,9 +22,9 @@ public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 	private void insertBrick(GLBrick brickToInsert, ArrayList<GLBrick> bricks) {
 
 		int count;
-		SetBasedBrickData brickToInsertData = (SetBasedBrickData) brickToInsert.getBrickData();
+		TableBasedBrickData brickToInsertData = (TableBasedBrickData) brickToInsert.getBrickData();
 		for (count = 0; count < bricks.size(); count++) {
-			SetBasedBrickData brickData = (SetBasedBrickData) bricks.get(count).getBrickData();
+			TableBasedBrickData brickData = (TableBasedBrickData) bricks.get(count).getBrickData();
 			if (brickData.getAverageValue() < brickToInsertData
 					.getAverageValue())
 				break;

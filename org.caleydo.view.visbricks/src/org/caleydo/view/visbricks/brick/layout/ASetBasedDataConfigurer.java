@@ -45,8 +45,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 	protected ArrayList<ElementLayout> createHeaderBarElements(
 			CentralBrickLayoutTemplate layoutTemplate) {
 
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 		final GLBrick brick = layoutTemplate.getBrick();
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
@@ -64,22 +63,20 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getVisBricksView(), table.getLabel(),
-				PickingType.DIMENSION_GROUP, layoutTemplate
-						.getDimensionGroup().getID());
+				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
 		headerBarElements.add(spacingLayoutX);
 
-		Button clusterButton = new Button(
-				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID,
-				EIconTextures.CLUSTER_ICON);
+		Button clusterButton = new Button(PickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
+				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
 		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton,
-				brick, brick.getTextureManager()));
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick, brick
+				.getTextureManager()));
 
 		headerBarElements.add(clusterButtonLayout);
 		// headerBarElements.add(spacingLayoutX);
@@ -90,29 +87,24 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 			public void clicked(Pick pick) {
 				System.out.println("cluster");
 
-				brick.getParentComposite().getDisplay()
-						.asyncExec(new Runnable() {
-							@Override
-							public void run() {
-								StartClusteringDialog dialog = new StartClusteringDialog(
-										new Shell(), brick.getDataDomain());
-								dialog.open();
-								ClusterState clusterState = dialog
-										.getClusterState();
-								if (clusterState == null)
-									return;
+				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						StartClusteringDialog dialog = new StartClusteringDialog(
+								new Shell(), brick.getDataDomain());
+						dialog.open();
+						ClusterState clusterState = dialog.getClusterState();
+						if (clusterState == null)
+							return;
 
-								StartClusteringEvent event = null;
-								// if (clusterState != null && set != null)
+						StartClusteringEvent event = null;
+						// if (clusterState != null && set != null)
 
-								event = new StartClusteringEvent(clusterState,
-										table.getID());
-								event.setDataDomainID(brick.getDataDomain()
-										.getDataDomainID());
-								GeneralManager.get().getEventPublisher()
-										.triggerEvent(event);
-							}
-						});
+						event = new StartClusteringEvent(clusterState);
+						event.setDataDomainID(brick.getDataDomain().getDataDomainID());
+						GeneralManager.get().getEventPublisher().triggerEvent(event);
+					}
+				});
 			}
 		}, PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
 
@@ -122,8 +114,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 	protected ArrayList<ElementLayout> createHeaderBarElements(
 			CompactCentralBrickLayoutTemplate layoutTemplate) {
 
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -135,8 +126,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getVisBricksView(), table.getLabel(),
-				PickingType.DIMENSION_GROUP, layoutTemplate
-						.getDimensionGroup().getID());
+				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -178,11 +168,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 			CentralBrickLayoutTemplate layoutTemplate,
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 		final GLBrick brick = layoutTemplate.getBrick();
-		final DimensionGroup dimensionGroup = layoutTemplate
-				.getDimensionGroup();
+		final DimensionGroup dimensionGroup = layoutTemplate.getDimensionGroup();
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
@@ -207,8 +195,8 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons,
-				brick, dimensionGroup);
+		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
+				dimensionGroup);
 
 		return toolBarElements;
 	}
@@ -230,17 +218,15 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
 
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 		GLBrick brick = layoutTemplate.getBrick();
 
 		ElementLayout dimensionBarLaylout = new ElementLayout("dimensionBar");
 		dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
-				.getDataDomain().getDimensionVA(DataTable.DIMENSION), table.getDimensionPerspective(
-				DataTable.DIMENSION).getDimensionVA()));
+		// FIXME this is wrong! The first one is the wrong va!
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDimensionGroup().getDimensionVA(), brick.getDimensionVA()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -270,8 +256,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 			ABrickLayoutTemplate layoutTemplate) {
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
 
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 		GLBrick brick = layoutTemplate.getBrick();
 
 		ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
@@ -289,11 +274,9 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 			ABrickLayoutTemplate layoutTemplate,
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
-		PixelGLConverter pixelGLConverter = layoutTemplate
-				.getPixelGLConverter();
+		PixelGLConverter pixelGLConverter = layoutTemplate.getPixelGLConverter();
 		final GLBrick brick = layoutTemplate.getBrick();
-		final DimensionGroup dimensionGroup = layoutTemplate
-				.getDimensionGroup();
+		final DimensionGroup dimensionGroup = layoutTemplate.getDimensionGroup();
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
@@ -316,8 +299,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 			}
 		}
 
-		ElementLayout ratioSpacingLayoutX = new ElementLayout(
-				"ratioSpacingLayoutX");
+		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
 		// ratioSpacingLayoutX.setDebug(true);
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
@@ -326,8 +308,8 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
 
-		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons,
-				brick, dimensionGroup);
+		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
+				dimensionGroup);
 
 		return toolBarElements;
 	}

@@ -38,7 +38,6 @@ import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.DimensionFilter;
@@ -52,6 +51,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
@@ -2302,16 +2302,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	}
 
-	public DataTable getTable() {
-		return table;
-	}
-
-	public void setTable(DataTable set) {
-		this.table = set;
-	}
-
 	public void setRecordVA(RecordVirtualArray recordVA) {
 		this.recordVA = recordVA;
+	}
+
+	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
+		this.dimensionVA = dimensionVA;
 	}
 
 	@Override

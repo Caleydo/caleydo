@@ -3,9 +3,9 @@ package org.caleydo.view.visbricks.brick.data;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;

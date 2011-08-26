@@ -339,7 +339,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 		// FIXME no one is notified that there is a new tree
 		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
-//		dataDomain.createDimensionGroupsFromDimensionTree(tree);
+		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
@@ -638,12 +638,12 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
 								setClickedGroups, false);
 
-						ArrayList<DataTable> selectedTables = new ArrayList<DataTable>();
 						boolean isLeafContained = false;
 						for (ICompositeGraphic composite : orderedComposites) {
 							// FIXME here
-//							selectedTables.add(((GroupRepresentation) composite)
-//									.getClusterNode().getPerspective());
+							// selectedTables.add(((GroupRepresentation)
+							// composite)
+							// .getClusterNode().getPerspective());
 
 							if (isLeafContained == false)
 								isLeafContained = composite.isLeaf();
@@ -680,16 +680,24 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 								selectedGroups, dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(aggregateGroupItem);
 
+						ArrayList<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(
+								selectedGroups.size());
+						for (Integer groupID : selectedGroups) {
+							selectedNodes.add(hashGroups.get(groupID).getClusterNode());
+						}
+
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
-								selectedTables);
+								dataDomain, dimensionPerspectiveID, recordPerspectiveID,
+								selectedNodes);
+
 						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
 
-						if (orderedComposites.size() >= 2) {
-
-							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
-									selectedTables);
-							contextMenuCreator.addContextMenuItem(compareGroupsItem);
-						}
+//						if (orderedComposites.size() >= 2) {
+//
+//							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
+//									selectedTables);
+//							contextMenuCreator.addContextMenuItem(compareGroupsItem);
+//						}
 
 						contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 
@@ -702,24 +710,31 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 							// Do not allow p-value stats for multiple groups or
 							// leaf meta sets
-							if (!isLeafContained && orderedComposites.size() < 2) {
-								StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-										selectedTables);
-								contextMenuCreator
-										.addContextMenuItem(pValueReductionItem);
-							}
-
-							if (orderedComposites.size() == 2) {
-								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-										selectedTables.get(0), selectedTables.get(1));
-								contextMenuCreator
-										.addContextMenuItem(foldChangeReductionItem);
-
-								StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
-										selectedTables);
-								contextMenuCreator
-										.addContextMenuItem(twoSidedTTestReductionItem);
-							}
+							// FIXME re-enable
+							// if (!isLeafContained && orderedComposites.size()
+							// < 2) {
+							// StatisticsPValueReductionItem pValueReductionItem
+							// = new StatisticsPValueReductionItem(
+							// selectedTables);
+							// contextMenuCreator
+							// .addContextMenuItem(pValueReductionItem);
+							// }
+							//
+							// if (orderedComposites.size() == 2) {
+							// StatisticsFoldChangeReductionItem
+							// foldChangeReductionItem = new
+							// StatisticsFoldChangeReductionItem(
+							// selectedTables.get(0), selectedTables.get(1));
+							// contextMenuCreator
+							// .addContextMenuItem(foldChangeReductionItem);
+							//
+							// StatisticsTwoSidedTTestReductionItem
+							// twoSidedTTestReductionItem = new
+							// StatisticsTwoSidedTTestReductionItem(
+							// selectedTables);
+							// contextMenuCreator
+							// .addContextMenuItem(twoSidedTTestReductionItem);
+							// }
 						}
 
 					}
@@ -1121,7 +1136,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		newGroup.setParent(commonParent);
 
 		hashGroups.put(newGroup.getID(), newGroup);
-		// selectionManager.add(newGroup.getID());
 
 		hierarchyChanged = true;
 
@@ -1305,6 +1319,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 					for (Integer nodeID : alNodeIDs) {
 						GroupRepresentation groupRep = hashGroups.get(nodeID);
 
+						if (groupRep == null)
+							continue;
 						if (item.isRemove()) {
 							groupRep.setSelectionTypeRec(SelectionType.NORMAL,
 									selectionManager);
@@ -1356,8 +1372,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 			public void run() {
 				ChangeGroupNameDialog.run(PlatformUI.getWorkbench().getDisplay(),
 						groupRep);
-//				groupRep.getClusterNode().getSubDataTable()
-//						.setLabel(groupRep.getClusterNode().getLabel());
+				// groupRep.getClusterNode().getSubDataTable()
+				// .setLabel(groupRep.getClusterNode().getLabel());
 				setDisplayListDirty();
 			}
 		});

@@ -39,7 +39,6 @@ public class DimensionPerspective
 		idType = dataDomain.getDimensionIDType();
 	}
 
-
 	@Override
 	protected DimensionGroupList createGroupList() {
 		return new DimensionGroupList();
@@ -48,6 +47,11 @@ public class DimensionPerspective
 	@Override
 	protected DimensionVirtualArray newConcreteVirtualArray(ArrayList<Integer> indexList) {
 		return new DimensionVirtualArray(perspectiveID, indexList);
+	}
+
+	@Override
+	protected String getLabel(Integer id) {
+		return dataDomain.getDimensionLabel(id);
 	}
 
 	// DimensionVirtualArray dimensionVA;

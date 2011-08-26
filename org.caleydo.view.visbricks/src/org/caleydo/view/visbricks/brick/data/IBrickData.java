@@ -1,15 +1,18 @@
 package org.caleydo.view.visbricks.brick.data;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
-public interface IBrickData {
+public interface IBrickData<DataDomainType extends IDataDomain> {
 
-	public IDataDomain getDataDomain();
+	public DataDomainType getDataDomain();
 	
 	public RecordVirtualArray getRecordVA();
+	
+	public DimensionVirtualArray getDimensionVA();
 	
 	public Group getGroup();
 	

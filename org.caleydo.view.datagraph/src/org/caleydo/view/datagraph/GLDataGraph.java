@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.DataDomainGraph;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;

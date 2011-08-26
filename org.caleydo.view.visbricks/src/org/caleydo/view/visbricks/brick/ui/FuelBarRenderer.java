@@ -37,7 +37,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		if (table == null || recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = table.getRecordPerspective(DataTable.RECORD).getVirtualArray();
+		RecordVirtualArray setRecordVA = brick.getDimensionGroup().getRecordVA();
 
 		if (setRecordVA == null)
 			return;

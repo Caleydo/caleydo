@@ -8,13 +8,13 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 
-public interface IBrickDimensionGroupData {
+public interface IBrickDimensionGroupData<DataDomainType extends IDataDomain> {
 
 	public RecordVirtualArray getSummaryBrickVA();
 	
 	public ArrayList<RecordVirtualArray> getSegmentBrickVAs();
 	
-	public IDataDomain getDataDomain();
+	public DataDomainType getDataDomain();
 	
 	public IBrickConfigurer getBrickConfigurer();
 	

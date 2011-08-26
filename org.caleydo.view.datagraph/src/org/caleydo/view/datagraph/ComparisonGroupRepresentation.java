@@ -4,8 +4,8 @@ import java.awt.geom.Point2D;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;

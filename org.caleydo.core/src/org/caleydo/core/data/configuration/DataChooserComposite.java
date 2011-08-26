@@ -70,8 +70,8 @@ public class DataChooserComposite
 	/** Creates the GUI for this composite */
 	public void initGui() {
 		// Composite composite = new Composite(parent, SWT.BORDER_DASH);
-		 GridLayout layout = new GridLayout(2, false);
-		 this.setLayout(layout);
+		GridLayout layout = new GridLayout(2, false);
+		this.setLayout(layout);
 		// composite.setLayout(layout);
 
 		int labelWidth = 150;
@@ -91,7 +91,6 @@ public class DataChooserComposite
 
 		ArrayList<ATableBasedDataDomain> tDataDomains =
 			DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
-
 		possibleDataDomains = new String[tDataDomains.size()];
 		for (int count = 0; count < tDataDomains.size(); count++) {
 			possibleDataDomains[count] = tDataDomains.get(count).getDataDomainID();

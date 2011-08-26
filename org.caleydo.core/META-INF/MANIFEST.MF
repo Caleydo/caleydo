@@ -42,6 +42,7 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.collection.table,
    org.caleydo.core.data.virtualarray,
    org.caleydo.core.data.id",
+ org.caleydo.core.data.container,
  org.caleydo.core.data.datadomain;
   uses:="org.caleydo.core.view.opengl.canvas.listener,
    org.jgrapht,

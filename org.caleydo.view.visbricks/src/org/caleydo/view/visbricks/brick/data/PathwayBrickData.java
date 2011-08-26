@@ -1,6 +1,7 @@
 package org.caleydo.view.visbricks.brick.data;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
@@ -24,7 +25,7 @@ public class PathwayBrickData implements IBrickData {
 	@Override
 	public RecordVirtualArray getRecordVA() {
 		// TODO Auto-generated method stub
-		return segmentData.getRecordVA();
+		return segmentData.getRecordPerspective().getVirtualArray();
 	}
 
 	@Override
@@ -36,7 +37,9 @@ public class PathwayBrickData implements IBrickData {
 	@Override
 	public void setBrickData(GLBrick brick) {
 		brick.setDataDomain(segmentData.getMappingDataDomain());
-		brick.setRecordVA(segmentData.getGroup(), segmentData.getRecordVA());
+		brick.setRecordVA(segmentData.getGroup(), segmentData.getRecordPerspective()
+				.getVirtualArray());
+
 	}
 
 	@Override
@@ -46,6 +49,11 @@ public class PathwayBrickData implements IBrickData {
 
 	public PathwayGraph getPathway() {
 		return segmentData.getPathway();
+	}
+
+	@Override
+	public DimensionVirtualArray getDimensionVA() {
+		return segmentData.getDimensionPerspective().getVirtualArray();
 	}
 
 }

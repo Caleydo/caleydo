@@ -406,6 +406,8 @@ public class DataTable
 	 * @param recordPerspective
 	 */
 	public void registerRecordPerspecive(RecordPerspective recordPerspective) {
+		if(recordPerspective.getPerspectiveID() == null)
+			throw new IllegalStateException("Record perspective not correctly initiaklized: " + recordPerspective);
 		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
 	}
 
@@ -427,6 +429,8 @@ public class DataTable
 	 * @param dimensionPerspective
 	 */
 	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		if(dimensionPerspective.getPerspectiveID() == null)
+			throw new IllegalStateException("Dimension perspective not correctly initiaklized: " + dimensionPerspective);
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}
 

@@ -2,8 +2,8 @@ package org.caleydo.view.visbricks.brick.data;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
+import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 
 public class BrickDimensionGroupDataCreator {
@@ -15,7 +15,7 @@ public class BrickDimensionGroupDataCreator {
 		map.put(PathwayDimensionGroupData.class,
 				PathwayBrickDimensionGroupData.class);
 		map.put(TableBasedDimensionGroupData.class,
-				SetBasedBrickDimensionGroupData.class);
+				TableBasedBrickDimensionGroupData.class);
 	}
 
 	public IBrickDimensionGroupData createBrickDimensionGroupData(

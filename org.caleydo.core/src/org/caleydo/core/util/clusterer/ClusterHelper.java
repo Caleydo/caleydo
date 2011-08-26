@@ -131,13 +131,19 @@ public class ClusterHelper {
 	// determineNrElementsRec(tree, tree.getRoot());
 	// }
 
-	public static void calculateClusterAverages(DimensionPerspective dimensionData, RecordPerspective recordData,
-		ClustererType eClustererType, DataTable table) {
-		// FIXME - direct references here - should be parameters
+	public static void calculateClusterAverages(DimensionPerspective dimensionData,
+		RecordPerspective recordData, ClustererType eClustererType, DataTable table) {
+
 		DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
 		RecordVirtualArray recordVA = recordData.getVirtualArray();
-		calculateClusterAveragesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
-			eClustererType, table, dimensionVA, recordVA);
+		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+			calculateClusterAveragesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
+				eClustererType, table, dimensionVA, recordVA);
+		}
+		else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
+			calculateClusterAveragesRecursive(dimensionData.getTree(), dimensionData.getTree().getRoot(),
+				eClustererType, table, dimensionVA, recordVA);
+		}
 	}
 
 	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,

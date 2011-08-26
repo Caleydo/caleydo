@@ -487,9 +487,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * This is called when a clustering was run, so we replace the sub-bricks
 	 */
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (dimensionGroupData.getID() != dataTableID)
+		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
 			return;
 
 		topCol.clear();

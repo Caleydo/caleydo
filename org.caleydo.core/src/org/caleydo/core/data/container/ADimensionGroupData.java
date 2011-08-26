@@ -1,9 +1,11 @@
-package org.caleydo.core.data.virtualarray;
+package org.caleydo.core.data.container;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 
 /**
@@ -12,8 +14,18 @@ import org.caleydo.core.data.virtualarray.group.Group;
  * {@link ISegmentData} providing additional information about them.
  * 
  * @author Partl
+ * @author Alexander Lex
  */
-public abstract class ADimensionGroupData {
+public abstract class ADimensionGroupData
+	extends ADataContainer {
+
+	public ADimensionGroupData() {
+	}
+
+	public ADimensionGroupData(ATableBasedDataDomain dataDomain, String recordPerspectiveID,
+		String dimensionPerspectiveID) {
+		super(dataDomain, recordPerspectiveID, dimensionPerspectiveID);
+	}
 
 	/**
 	 * @return The recordVA of the whole dimension group.
@@ -24,11 +36,6 @@ public abstract class ADimensionGroupData {
 	 * @return A list of recordVAs that correspond to the segments of the dimension group.
 	 */
 	public abstract ArrayList<RecordVirtualArray> getSegmentVAs();
-
-	/**
-	 * @return The data domain this dimesion group belongs to.
-	 */
-	public abstract IDataDomain getDataDomain();
 
 	/**
 	 * @return The groups the dimension group is partitioned in.

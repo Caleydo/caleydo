@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -42,8 +42,8 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 	}
 
 	public PathwayDimensionGroupData(IDataDomain dataDomain,
-			ATableBasedDataDomain mappingDataDomain,
-			ArrayList<PathwayGraph> pathways, String label) {
+			ATableBasedDataDomain mappingDataDomain, ArrayList<PathwayGraph> pathways,
+			String label) {
 		this.dataDomain = dataDomain;
 		this.mappingDataDomain = mappingDataDomain;
 		this.pathways = pathways;
@@ -95,8 +95,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getRecordIDType(),
-										davidId);
+										mappingDataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
 							ids.addAll(recordIDs);
@@ -109,11 +108,6 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 		}
 
 		return recordVAs;
-	}
-
-	@Override
-	public IDataDomain getDataDomain() {
-		return dataDomain;
 	}
 
 	/**
@@ -172,8 +166,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getRecordIDType(),
-										davidId);
+										mappingDataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
 							groupSize++;
@@ -242,8 +235,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getRecordIDType(),
-										davidId);
+										mappingDataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
 							ids.addAll(recordIDs);
@@ -254,8 +246,8 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 
 			group.setSize(groupSize);
 			RecordVirtualArray recordVA = new RecordVirtualArray("CONTENT", ids);
-			segmentData.add(new PathwaySegmentData(dataDomain,
-					mappingDataDomain, recordVA, group, pathway, this));
+			segmentData.add(new PathwaySegmentData(dataDomain, mappingDataDomain,
+					recordVA, group, pathway, this));
 			startIndex += groupSize;
 			groupID++;
 		}

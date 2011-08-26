@@ -2,29 +2,22 @@ package org.caleydo.view.grouper.contextmenu;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
-import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
 public class AddGroupsToVisBricksItem extends AContextMenuItem {
 
-	public AddGroupsToVisBricksItem(ArrayList<DataTable> setsToShow) {
+	public AddGroupsToVisBricksItem(ATableBasedDataDomain dataDomain,
+			String dimensionPerspectiveID, String recordPerspectiveID,
+			ArrayList<ClusterNode> selectedNodes) {
 
 		setLabel("Show Groups In VisBricks");
 
-		ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>(
-				setsToShow.size());
-
-		for (DataTable table : setsToShow) {
-			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-					table.getDataDomain(), table);
-			dimensionGroupData.add(data);
-		}
-
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-		event.setDimensionGroupData(dimensionGroupData);
+		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+				dataDomain.getDataDomainID(), dimensionPerspectiveID,
+				recordPerspectiveID, selectedNodes);
 		event.setSender(this);
 
 		registerEvent(event);

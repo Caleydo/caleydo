@@ -86,7 +86,7 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		this.dataDomain = dataDomain;
 		init();
 	}
-	
+
 	/** Only for de-serialization */
 	// public void setPerspectiveID(String perspectiveID) {
 	// if (this.perspectiveID != null)
@@ -224,8 +224,6 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	private void reset() {
 		clusterSizes = null;
 		sampleElements = null;
-		if (tree != null)
-			tree.destroy();
 		tree = null;
 	}
 
@@ -293,10 +291,12 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 			ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
 			tree.setRootNode(root);
 			for (Integer id : virtualArray) {
-				tree.addChild(root, new ClusterNode(tree, "leaf", 0, false, id));
+				tree.addChild(root, new ClusterNode(tree, getLabel(id), id, false, id));
 			}
 		}
 	}
+
+	protected abstract String getLabel(Integer id);
 
 	/**
 	 * Creates a virtual array for this perspective by extracting the leaves from the tree. Respects the

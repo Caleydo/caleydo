@@ -4,34 +4,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.table.DataTableDataType;
+import org.caleydo.core.data.container.ISegmentData;
+import org.caleydo.core.data.container.TableBasedDimensionGroupData;
+import org.caleydo.core.data.container.TableBasedSegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.virtualarray.ISegmentData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.TableBasedSegmentData;
-import org.caleydo.core.data.virtualarray.TableBasedDimensionGroupData;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.view.visbricks.brick.layout.ASetBasedDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NominalDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 
-public class SetBasedBrickDimensionGroupData implements
-		IBrickDimensionGroupData {
+public class TableBasedBrickDimensionGroupData implements
+		IBrickDimensionGroupData<ATableBasedDataDomain> {
 
 	private TableBasedDimensionGroupData dimensionGroupData;
 	private ASetBasedDataConfigurer setBasedDataConfigurer;
 
-	public SetBasedBrickDimensionGroupData(
+	public TableBasedBrickDimensionGroupData(
 			TableBasedDimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
-		if (dimensionGroupData.getTable().getTableType()
+		if (dimensionGroupData.getDataDomain().getTable().getTableType()
 				.equals(DataTableDataType.NUMERIC)) {
-			setBasedDataConfigurer = new NumericalDataConfigurer(
-					dimensionGroupData.getTable());
+			setBasedDataConfigurer = new NumericalDataConfigurer(dimensionGroupData
+					.getDataDomain().getTable());
 		} else {
-			setBasedDataConfigurer = new NominalDataConfigurer(
-					dimensionGroupData.getTable());
+			setBasedDataConfigurer = new NominalDataConfigurer(dimensionGroupData
+					.getDataDomain().getTable());
 		}
 	}
 
@@ -46,7 +45,7 @@ public class SetBasedBrickDimensionGroupData implements
 	}
 
 	@Override
-	public IDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dimensionGroupData.getDataDomain();
 	}
 
@@ -75,8 +74,8 @@ public class SetBasedBrickDimensionGroupData implements
 
 		if (segmentData != null) {
 			for (ISegmentData data : segmentData) {
-				segmentBrickData.add(new SetBasedBrickData(
-						(TableBasedSegmentData) data));
+				segmentBrickData
+						.add(new TableBasedBrickData((TableBasedSegmentData) data));
 			}
 		}
 
@@ -86,10 +85,11 @@ public class SetBasedBrickDimensionGroupData implements
 	@Override
 	public IBrickData getSummaryBrickData() {
 		TableBasedSegmentData tempSegmentData = new TableBasedSegmentData(
-				(ATableBasedDataDomain) getDataDomain(),
-				dimensionGroupData.getTable(), getSummaryBrickVA(), new Group(),
+				getDataDomain(), dimensionGroupData.getRecordPerspective(),
+				dimensionGroupData.getDimensionPerspective(), new Group(),
 				dimensionGroupData);
-		return new SetBasedBrickData(tempSegmentData);
+
+		return new TableBasedBrickData(tempSegmentData);
 	}
 
 	@Override

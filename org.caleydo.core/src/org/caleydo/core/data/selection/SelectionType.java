@@ -73,7 +73,7 @@ public class SelectionType {
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
 	/**
-	 * Default constructur, use getters and setters to initialize
+	 * Default constructor, use getters and setters to initialize
 	 */
 	public SelectionType() {
 	}

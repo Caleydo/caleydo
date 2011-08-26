@@ -6,8 +6,8 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

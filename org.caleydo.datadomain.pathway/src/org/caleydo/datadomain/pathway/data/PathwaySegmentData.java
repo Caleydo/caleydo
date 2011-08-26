@@ -1,8 +1,10 @@
 package org.caleydo.datadomain.pathway.data;
 
+import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.virtualarray.ISegmentData;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -37,19 +39,13 @@ public class PathwaySegmentData implements ISegmentData {
 
 	@Override
 	public IDataDomain getDataDomain() {
-		// TODO Auto-generated method stub
 		return dataDomain;
 	}
 
-	@Override
-	public RecordVirtualArray getRecordVA() {
-		// TODO Auto-generated method stub
-		return recordVA;
-	}
+	
 
 	@Override
 	public Group getGroup() {
-		// TODO Auto-generated method stub
 		return group;
 	}
 
@@ -72,6 +68,18 @@ public class PathwaySegmentData implements ISegmentData {
 	 */
 	public ATableBasedDataDomain getMappingDataDomain() {
 		return mappingDataDomain;
+	}
+
+	@Override
+	public RecordPerspective getRecordPerspective() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public DimensionPerspective getDimensionPerspective() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

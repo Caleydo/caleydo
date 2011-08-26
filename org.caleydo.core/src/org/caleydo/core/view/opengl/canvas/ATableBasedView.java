@@ -360,11 +360,15 @@ public abstract class ATableBasedView
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
+						if(!recordVA.contains(id))
+							return;
 
 					}
 					else if (selectionDelta.getIDType() == dimensionIDType) {
 						id = item.getID();
 						idType = dimensionIDType;
+						if(!dimensionVA.contains(id))
+							return;
 					}
 					else
 						throw new InvalidAttributeValueException("Can not handle data type: "

@@ -40,8 +40,8 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	private float fDraggingStartMouseCoordinateX;
 	private float fDraggingStartMouseCoordinateY;
 	private int iHierarchyLevel;
-	private boolean bCollapsed;
-	private boolean bLeaf;
+	private boolean isCollapsed;
+	private boolean isLeaf;
 	private Set<SelectionType> selectionTypes;
 
 	private ClusterNode clusterNode;
@@ -57,19 +57,19 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		alChildren = new ArrayList<ICompositeGraphic>();
 		alDropPositions = new ArrayList<Float>();
 		vecPosition = new Vec3f();
-		bCollapsed = false;
+		isCollapsed = false;
 		selectionTypes = new HashSet<SelectionType>();
 		this.clusterNode = clusterNode;
 		this.renderStyle = renderStyle;
 		this.drawingStrategy = drawingStrategy;
 		this.drawingStrategyManager = drawingStrategyManager;
 		this.glGrouper = glGrouper;
-		this.bLeaf = bLeaf;
+		this.isLeaf = bLeaf;
 	}
 
 	@Override
 	public void add(ICompositeGraphic graphic) {
-		if (bLeaf)
+		if (isLeaf)
 			return;
 		alChildren.add(graphic);
 		graphic.setParent(this);
@@ -82,7 +82,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public void draw(GL2 gl, TextRenderer textRenderer) {
-		if (bLeaf) {
+		if (isLeaf) {
 			drawingStrategy.drawAsLeaf(gl, this, textRenderer);
 		} else {
 			drawingStrategy.draw(gl, this, textRenderer);
@@ -94,7 +94,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 		GroupDrawingStrategyDragged drawingStrategyDragged = (GroupDrawingStrategyDragged) drawingStrategyManager
 				.getGroupDrawingStrategy(EGroupDrawingStrategyType.DRAGGED);
-		if (bLeaf) {
+		if (isLeaf) {
 			drawingStrategyDragged.drawDraggedLeaf(gl, this, fMouseCoordinateX,
 					fMouseCoordinateY, fDraggingStartMouseCoordinateX,
 					fDraggingStartMouseCoordinateY);
@@ -289,7 +289,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public void calculateDimensions(GL2 gl, TextRenderer textRenderer) {
-		if (bLeaf) {
+		if (isLeaf) {
 			drawingStrategy.calculateDimensionsOfLeaf(gl, textRenderer, this);
 		} else {
 			drawingStrategy.calculateDimensions(gl, textRenderer, this);
@@ -310,7 +310,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 * @return True, if the group is collapsed, false otherwise.
 	 */
 	public boolean isCollapsed() {
-		return bCollapsed;
+		return isCollapsed;
 	}
 
 	/**
@@ -318,7 +318,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 *            Determines whether the group shall be collapsed or not.
 	 */
 	public void setCollapsed(boolean bCollapsed) {
-		this.bCollapsed = bCollapsed;
+		this.isCollapsed = bCollapsed;
 		glGrouper.setHierarchyChanged(true);
 		glGrouper.setDisplayListDirty();
 	}
@@ -544,7 +544,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	@Override
 	public ICompositeGraphic getShallowCopy() {
 		GroupRepresentation copy = new GroupRepresentation(clusterNode, renderStyle,
-				drawingStrategy, drawingStrategyManager, glGrouper, bLeaf);
+				drawingStrategy, drawingStrategyManager, glGrouper, isLeaf);
 		copy.alChildren = alChildren;
 		copy.vecHierarchyPosition = vecHierarchyPosition;
 		copy.vecPosition = vecPosition;
@@ -553,7 +553,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		copy.fHeight = fHeight;
 		copy.fWidth = fWidth;
 		copy.alDropPositions = alDropPositions;
-		copy.bCollapsed = bCollapsed;
+		copy.isCollapsed = isCollapsed;
 		copy.iHierarchyLevel = iHierarchyLevel;
 		copy.parent = parent;
 		copy.addSelectionTypes(selectionTypes);
@@ -606,7 +606,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 					iConsecutiveID[0], false, clusterNode.getLeafID());
 		}
 		GroupRepresentation copy = new GroupRepresentation(copiedNode, renderStyle,
-				drawingStrategy, drawingStrategyManager, glGrouper, bLeaf);
+				drawingStrategy, drawingStrategyManager, glGrouper, isLeaf);
 		copy.addSelectionTypes(selectionTypes);
 		for (ICompositeGraphic child : alChildren) {
 			iConsecutiveID[0]++;
@@ -622,7 +622,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 		copy.fHeight = fHeight;
 		copy.fWidth = fWidth;
 		copy.alDropPositions.addAll(alDropPositions);
-		copy.bCollapsed = bCollapsed;
+		copy.isCollapsed = isCollapsed;
 		copy.iHierarchyLevel = iHierarchyLevel;
 		copy.parent = parent;
 
@@ -635,7 +635,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 
 	@Override
 	public boolean isLeaf() {
-		return bLeaf;
+		return isLeaf;
 	}
 
 	/**
@@ -644,7 +644,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	 *            composite or not.
 	 */
 	public void setLeaf(boolean bLeaf) {
-		this.bLeaf = bLeaf;
+		this.isLeaf = bLeaf;
 	}
 
 	/**
@@ -668,7 +668,7 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 				+ alChildren.size() + ", NumDropPositions: " + alDropPositions.size());
 		System.out.println("Children: " + children.toString() + "\n");
 
-		if (!bLeaf && alDropPositions.size() != alChildren.size() + 1)
+		if (!isLeaf && alDropPositions.size() != alChildren.size() + 1)
 			System.out.println("ALERT!!!!!!!!!!!!!!!!!!!!!!");
 
 		for (ICompositeGraphic child : alChildren) {

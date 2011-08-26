@@ -48,6 +48,11 @@ public class RecordPerspective
 		return new RecordVirtualArray(perspectiveID, indexList);
 	}
 
+	@Override
+	protected String getLabel(Integer id) {
+		return dataDomain.getRecordLabel(id);
+	}
+	
 	// ATableBasedDataDomain dataDomain;
 	//
 	// RecordVirtualArray recordVA;

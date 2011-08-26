@@ -8,8 +8,8 @@ import java.util.Map;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

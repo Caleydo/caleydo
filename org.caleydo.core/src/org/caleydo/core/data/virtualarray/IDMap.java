@@ -3,6 +3,12 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+/**
+ * Package private class used as hash-backing of virtual arrays to increase indexof performance to linear
+ * time.
+ * 
+ * @author Alexander Lex
+ */
 class IDMap {
 
 	HashMap<Integer, ArrayList<Integer>> hashIDToIndex;

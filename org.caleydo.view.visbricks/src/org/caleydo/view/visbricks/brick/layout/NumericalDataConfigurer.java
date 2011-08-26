@@ -205,15 +205,13 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getRecordVA(), table.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA(),
-				table, true);
+				brick.getRecordVA(), brick.getBrickData().getDimensionVA(), table, true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getRecordVA(), table.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA(),
-				table, false);
+				brick.getRecordVA(),  brick.getBrickData().getDimensionVA(), table, false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);

@@ -17,6 +17,11 @@ public class DimensionBarRenderer extends LayoutRenderer {
 	private DimensionVirtualArray overallDimensionVA;
 	private DimensionVirtualArray dimensionVA;
 
+	/**
+	 * 
+	 * @param overallDimensionVA The va for the whole data-set
+	 * @param dimensionVA The va for this dimension group
+	 */
 	public DimensionBarRenderer(DimensionVirtualArray overallDimensionVA, DimensionVirtualArray dimensionVA) {
 		this.overallDimensionVA = overallDimensionVA;
 		this.dimensionVA = dimensionVA;

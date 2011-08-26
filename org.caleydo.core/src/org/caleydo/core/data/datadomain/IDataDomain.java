@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

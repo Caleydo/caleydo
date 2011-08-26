@@ -11,13 +11,14 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.ADimensionGroupData;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -671,24 +672,10 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public ATableBasedDataDomain getDataDomain() {
-		// TODO Auto-generated method stub
 		return dataDomain;
 	}
 
-	/**
-	 * Set the Set this brick's data corresponds to.
-	 * 
-	 * @param set
-	 */
-	// public void setTable(DataTable set) {
-	// this.set = set;
-	// if (table.getTableType().equals(ESetDataType.NUMERIC)) {
-	// brickConfigurer = new NumericalDataConfigurer();
-	// } else {
-	// brickConfigurer = new NominalDataConfigurer();
-	// }
-	// }
-
+	
 	/**
 	 * Set the recordVA this brick should render plus the groupID that is
 	 * associated with this recordVA.
@@ -702,7 +689,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 			this.groupID = group.getGroupID();
 		this.recordVA = recordVA;
 	}
-
+	
 	/**
 	 * Set the group of this brick.
 	 * 
