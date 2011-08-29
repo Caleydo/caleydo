@@ -4,49 +4,47 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.table.DataTableDataType;
-import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.container.TableBasedDimensionGroupData;
-import org.caleydo.core.data.container.TableBasedSegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.perspective.DataPerspective;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.view.visbricks.brick.layout.ASetBasedDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NominalDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 
-public class TableBasedBrickDimensionGroupData implements
-		IBrickDimensionGroupData<ATableBasedDataDomain> {
+public class TableBasedBrickDimensionGroupData extends TableBasedDimensionGroupData
+		implements IBrickDimensionGroupData {
 
-	private TableBasedDimensionGroupData dimensionGroupData;
 	private ASetBasedDataConfigurer setBasedDataConfigurer;
 
-	public TableBasedBrickDimensionGroupData(
-			TableBasedDimensionGroupData dimensionGroupData) {
-		this.dimensionGroupData = dimensionGroupData;
-		if (dimensionGroupData.getDataDomain().getTable().getTableType()
-				.equals(DataTableDataType.NUMERIC)) {
-			setBasedDataConfigurer = new NumericalDataConfigurer(dimensionGroupData
-					.getDataDomain().getTable());
+	public TableBasedBrickDimensionGroupData(ATableBasedDataDomain dataDomain,
+			RecordPerspective recordPerspective,
+			DimensionPerspective dimensionPerspective, ClusterNode rootNode,
+			Class<? extends DataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
+		super(dataDomain, recordPerspective, dimensionPerspective, rootNode,
+				dataPerspectiveClass);
+
+		if (dataDomain.getTable().getTableType().equals(DataTableDataType.NUMERIC)) {
+			setBasedDataConfigurer = new NumericalDataConfigurer(dataDomain.getTable());
 		} else {
-			setBasedDataConfigurer = new NominalDataConfigurer(dimensionGroupData
-					.getDataDomain().getTable());
+			setBasedDataConfigurer = new NominalDataConfigurer(dataDomain.getTable());
 		}
 	}
 
-	@Override
-	public RecordVirtualArray getSummaryBrickVA() {
-		return dimensionGroupData.getSummaryVA();
-	}
+	// @Override
+	// public RecordVirtualArray getSummaryBrickVA() {
+	// return dimensionG.getSummaryVA();
+	// }
 
 	@Override
 	public ArrayList<RecordVirtualArray> getSegmentBrickVAs() {
-		return dimensionGroupData.getSegmentVAs();
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dimensionGroupData.getDataDomain();
+		return getSegmentVAs();
 	}
 
 	@Override
@@ -54,47 +52,74 @@ public class TableBasedBrickDimensionGroupData implements
 		return setBasedDataConfigurer;
 	}
 
-	@Override
-	public ArrayList<Group> getGroups() {
+	// @Override
+	// public ArrayList<Group> getGroups() {
+	//
+	// return dimensionGroupData.getGroups();
+	// }
 
-		return dimensionGroupData.getGroups();
-	}
-
-	@Override
-	public int getID() {
-		return dimensionGroupData.getID();
-	}
+	// @Override
+	// public int getID() {
+	// return dimensionGroupData.getID();
+	// }
 
 	@Override
 	public List<IBrickData> getSegmentBrickData() {
 
-		List<ISegmentData> segmentData = dimensionGroupData.getSegmentData();
+		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+
+		if (recordVA.getGroupList() == null)
+			return null;
+
+		RecordGroupList groupList = recordVA.getGroupList();
+		groupList.updateGroupInfo();
 
 		List<IBrickData> segmentBrickData = new ArrayList<IBrickData>();
 
-		if (segmentData != null) {
-			for (ISegmentData data : segmentData) {
-				segmentBrickData
-						.add(new TableBasedBrickData((TableBasedSegmentData) data));
-			}
-		}
+		for (Group group : groupList) {
 
+			ArrayList<Integer> indices = (ArrayList<Integer>) recordVA.getVirtualArray()
+					.subList(group.getStartIndex(), group.getEndIndex() + 1);
+
+			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			recordPerspective.createVA(indices);
+
+			segmentBrickData.add(new BrickData(dataDomain, recordPerspective,
+					dimensionPerspective, group, this));
+
+		}
 		return segmentBrickData;
+
+		// List<ISegmentData> segmentData = getSegmentData();
+		//
+		// List<IBrickData> segmentBrickData = new ArrayList<IBrickData>();
+		//
+		// if (segmentData != null) {
+		// for (ISegmentData data : segmentData) {
+		// segmentBrickData
+		// .add(new BrickData(data));
+		// }
+		// }
+		//
+		// return segmentBrickData;
 	}
 
 	@Override
 	public IBrickData getSummaryBrickData() {
-		TableBasedSegmentData tempSegmentData = new TableBasedSegmentData(
-				getDataDomain(), dimensionGroupData.getRecordPerspective(),
-				dimensionGroupData.getDimensionPerspective(), new Group(),
-				dimensionGroupData);
+		BrickData tempSegmentData = new BrickData(dataDomain, recordPerspective,
+				dimensionPerspective, new Group(), this);
 
-		return new TableBasedBrickData(tempSegmentData);
+		return tempSegmentData;
 	}
 
 	@Override
 	public IBrickSortingStrategy getDefaultSortingStrategy() {
 		return new AverageValueSortingStrategy();
+	}
+
+	@Override
+	public RecordVirtualArray getSummaryBrickVA() {
+		return recordPerspective.getVirtualArray();
 	}
 
 }

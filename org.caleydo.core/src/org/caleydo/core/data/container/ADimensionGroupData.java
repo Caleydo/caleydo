@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 
@@ -22,9 +24,9 @@ public abstract class ADimensionGroupData
 	public ADimensionGroupData() {
 	}
 
-	public ADimensionGroupData(ATableBasedDataDomain dataDomain, String recordPerspectiveID,
-		String dimensionPerspectiveID) {
-		super(dataDomain, recordPerspectiveID, dimensionPerspectiveID);
+	public ADimensionGroupData(ATableBasedDataDomain dataDomain, RecordPerspective recordPerspective,
+		DimensionPerspective dimensionPerspective) {
+		super(dataDomain, recordPerspective, dimensionPerspective);
 	}
 
 	/**

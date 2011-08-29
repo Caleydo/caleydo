@@ -24,49 +24,39 @@ public class TableBasedDimensionGroupData
 	extends ADimensionGroupData {
 
 	/**
-	 * Constructor that creates a new object with the specified dimensionPerspective and recordPerspective
+	 * Creates a new {@link TableBasedDimensionGroupData} object with a new dataPerspective class. The new
+	 * dataPerspective is created using the clusterNode (all leaves of the clusterNode eg are in the VA of the
+	 * new perspective). Since nodes and trees are independent of the perspective's data type, we need the
+	 * dataPersperctivClass parameter to tell us which perspective should be created.
 	 * 
 	 * @param dataDomain
-	 * @param dimensionPerspectiveID
-	 * @param recordPerspectiveID
-	 */
-	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, String dimensionPerspectiveID,
-		String recordPerspectiveID) {
-		super(dataDomain, recordPerspectiveID, dimensionPerspectiveID);
-	}
-
-	/**
-	 * Creates a new {@link TableBasedDimensionGroupData} object with a new dataPerspective
-	 * 
-	 * @param dataDomain
-	 * @param dimensionPerspectiveID
-	 * @param recordPerspectiveID
+	 * @param recordPerspective
+	 * @param dimensionPerspective
 	 * @param rootNode
+	 * @param dataPerspectiveClass
+	 *            the class type of the newly generated perspective
 	 */
-	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, String dimensionPerspectiveID,
-		String recordPerspectiveID, ClusterNode rootNode,
+	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain,
+		RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective, ClusterNode rootNode,
 		Class<? extends DataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
-		this.dataDomain = dataDomain;
+		super(dataDomain, recordPerspective, dimensionPerspective);
 
 		if (dataPerspectiveClass.equals(RecordPerspective.class)) {
-			RecordPerspective perspective = new RecordPerspective();
-			perspective.createVA(rootNode.getLeaveIds());
-			perspective.setTree((ClusterTree) rootNode.getTree());
-			perspective.setTreeRoot(rootNode);
-			perspective.finish();
-			dataDomain.getTable().registerRecordPerspecive(perspective);
-			this.recordPerspectiveID = perspective.getPerspectiveID();
-			this.dimensionPerspectiveID = dimensionPerspectiveID;
+			this.recordPerspective = new RecordPerspective();
+			this.recordPerspective.createVA(rootNode.getLeaveIds());
+			this.recordPerspective.setTree((ClusterTree) rootNode.getTree());
+			this.recordPerspective.setTreeRoot(rootNode);
+			this.recordPerspective.finish();
+			dataDomain.getTable().registerRecordPerspecive(recordPerspective);
+
 		}
 		else if (dataPerspectiveClass.equals(DimensionPerspective.class)) {
-			DimensionPerspective perspective = new DimensionPerspective(dataDomain);
-			perspective.createVA(rootNode.getLeaveIds());
-			perspective.setTree((ClusterTree) rootNode.getTree());
-			perspective.setTreeRoot(rootNode);
-			perspective.finish();
-			dataDomain.getTable().registerDimensionPerspective(perspective);
-			this.dimensionPerspectiveID = perspective.getPerspectiveID();
-			this.recordPerspectiveID = recordPerspectiveID;
+			this.dimensionPerspective = new DimensionPerspective(dataDomain);
+			this.dimensionPerspective.createVA(rootNode.getLeaveIds());
+			this.dimensionPerspective.setTree((ClusterTree) rootNode.getTree());
+			this.dimensionPerspective.setTreeRoot(rootNode);
+			this.dimensionPerspective.finish();
+			dataDomain.getTable().registerDimensionPerspective(this.dimensionPerspective);
 		}
 		else {
 			throw new IllegalStateException("Unknown type of " + dataPerspectiveClass);
@@ -76,13 +66,12 @@ public class TableBasedDimensionGroupData
 
 	@Override
 	public RecordVirtualArray getSummaryVA() {
-		return dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVirtualArray();
+		return recordPerspective.getVirtualArray();
 	}
 
 	@Override
 	public ArrayList<RecordVirtualArray> getSegmentVAs() {
-		RecordVirtualArray recordVA =
-			dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVirtualArray();
+		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -103,11 +92,9 @@ public class TableBasedDimensionGroupData
 		return segmentBrickVAs;
 	}
 
-
 	@Override
 	public ArrayList<Group> getGroups() {
-		RecordVirtualArray recordVA =
-			dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVirtualArray();
+		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -127,8 +114,7 @@ public class TableBasedDimensionGroupData
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
-		RecordVirtualArray recordVA =
-			dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVirtualArray();
+		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)
 			return null;
@@ -147,8 +133,8 @@ public class TableBasedDimensionGroupData
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 			recordPerspective.createVA(indices);
 
-			segmentBrickData.add(new TableBasedSegmentData(dataDomain, recordPerspective, dataDomain
-				.getTable().getDimensionPerspective(dimensionPerspectiveID), group, this));
+			segmentBrickData.add(new TableBasedSegmentData(dataDomain, recordPerspective,
+				dimensionPerspective, group, this));
 
 		}
 		return segmentBrickData;
@@ -158,14 +144,14 @@ public class TableBasedDimensionGroupData
 	 * @return the {@link RecordPerspective} for this dimension group
 	 */
 	public RecordPerspective getRecordPerspective() {
-		return dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+		return recordPerspective;
 	}
 
 	/**
 	 * @return the {@link RecordPerspective} for this dimension group
 	 */
 	public DimensionPerspective getDimensionPerspective() {
-		return dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
+		return dimensionPerspective;
 	}
 
 	@Override

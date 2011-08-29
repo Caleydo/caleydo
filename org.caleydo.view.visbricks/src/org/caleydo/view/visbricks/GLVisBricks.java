@@ -1176,8 +1176,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			if (!dimensionGroupExists) {
 
-				IBrickDimensionGroupData brickDimensionGroupData = creator
-						.createBrickDimensionGroupData(data);
+//				IBrickDimensionGroupData brickDimensionGroupData = creator
+//						.createBrickDimensionGroupData(data);
 
 				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 						.get()
@@ -1191,7 +1191,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				// dimensionGroup.setDataDomain(dataDomain);
 				// dimensionGroup.setTable(set);
-				dimensionGroup.setBrickDimensionGroupData(brickDimensionGroupData);
+				dimensionGroup.setBrickDimensionGroupData((IBrickDimensionGroupData)data);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
 				dimensionGroup.setVisBricksView(this);

@@ -2479,7 +2479,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		case MEDIUM:
 			return 80;
 		case LOW:
-			return Math.max(150, 30 * table.getMetaData().size());
+			return Math.max(150, 30 * dimensionVA.size());
 		default:
 			return 80;
 		}

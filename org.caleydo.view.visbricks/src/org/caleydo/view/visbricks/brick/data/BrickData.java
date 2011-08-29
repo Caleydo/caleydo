@@ -1,9 +1,11 @@
 package org.caleydo.view.visbricks.brick.data;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.container.TableBasedSegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -16,29 +18,23 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * @author Alexander Lex
  * 
  */
-public class TableBasedBrickData implements IBrickData<ATableBasedDataDomain> {
+public class BrickData extends TableBasedSegmentData implements IBrickData {
 
-	private TableBasedSegmentData segmentData;
+	// private TableBasedSegmentData segmentData;
 	private double averageValue;
 
-	public TableBasedBrickData(TableBasedSegmentData segmentData) {
-		this.segmentData = segmentData;
+	public BrickData(ATableBasedDataDomain dataDomain,
+			RecordPerspective recordPerspective,
+			DimensionPerspective dimensionPerspective, Group group,
+			TableBasedDimensionGroupData dimensionGroupData) {
+		super(dataDomain, recordPerspective, dimensionPerspective, group,
+				dimensionGroupData);
 		calculateAverageValue();
 	}
 
 	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return segmentData.getDataDomain();
-	}
-
-	@Override
 	public RecordVirtualArray getRecordVA() {
-		return segmentData.getRecordPerspective().getVirtualArray();
-	}
-
-	@Override
-	public Group getGroup() {
-		return segmentData.getGroup();
+		return getRecordPerspective().getVirtualArray();
 	}
 
 	@Override
@@ -52,20 +48,20 @@ public class TableBasedBrickData implements IBrickData<ATableBasedDataDomain> {
 		// if (recordVA == null)
 		// throw new IllegalStateException("recordVA was null");
 		for (Integer contenID : getRecordVA()) {
-			DimensionPerspective dimensionData = segmentData.getDimensionPerspective();
-			if (dimensionData == null) {
+
+			if (dimensionPerspective == null) {
 				averageValue = 0;
 				return;
 			}
 
-			DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
+			DimensionVirtualArray dimensionVA = dimensionPerspective.getVirtualArray();
 
 			if (dimensionVA == null) {
 				averageValue = 0;
 				return;
 			}
 			for (Integer dimensionID : dimensionVA) {
-				float value = segmentData.getDataDomain().getTable().get(dimensionID)
+				float value = dataDomain.getTable().get(dimensionID)
 						.getFloat(DataRepresentation.NORMALIZED, contenID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
@@ -81,13 +77,8 @@ public class TableBasedBrickData implements IBrickData<ATableBasedDataDomain> {
 	}
 
 	@Override
-	public String getLabel() {
-		return segmentData.getLabel();
-	}
-
-	@Override
 	public DimensionVirtualArray getDimensionVA() {
-		return segmentData.getDimensionPerspective().getVirtualArray();
+		return dimensionPerspective.getVirtualArray();
 	}
 
 }

@@ -10,10 +10,13 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -30,10 +33,10 @@ import org.caleydo.util.graph.IGraphItem;
  */
 public class PathwayDimensionGroupData extends ADimensionGroupData {
 
-	private IDataDomain dataDomain;
-	private ATableBasedDataDomain mappingDataDomain;
-	private ArrayList<PathwayGraph> pathways;
+	protected PathwayDataDomain pathwayDataDomain;
+	protected ArrayList<PathwayGraph> pathways;
 	private int uniqueID;
+	
 	private String label;
 
 	{
@@ -41,11 +44,13 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 				.createID(ManagedObjectType.DATA_TABLE);
 	}
 
-	public PathwayDimensionGroupData(IDataDomain dataDomain,
-			ATableBasedDataDomain mappingDataDomain, ArrayList<PathwayGraph> pathways,
+	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain,
+			PathwayDataDomain pathwayDataDomain,
+			DimensionPerspective dimensionPerspective, ArrayList<PathwayGraph> pathways,
 			String label) {
 		this.dataDomain = dataDomain;
-		this.mappingDataDomain = mappingDataDomain;
+		this.pathwayDataDomain = pathwayDataDomain;
+		this.dimensionPerspective = dimensionPerspective;
 		this.pathways = pathways;
 		this.label = label;
 	}
@@ -95,7 +100,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getRecordIDType(), davidId);
+										dataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
 							ids.addAll(recordIDs);
@@ -108,15 +113,6 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 		}
 
 		return recordVAs;
-	}
-
-	/**
-	 * Sets the data domain of this dimension group.
-	 * 
-	 * @param dataDomain
-	 */
-	public void setDataDomain(IDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
 	}
 
 	/**
@@ -166,7 +162,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getRecordIDType(), davidId);
+										dataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
 							groupSize++;
@@ -183,22 +179,6 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 		}
 
 		return groups;
-	}
-
-	/**
-	 * @return The data domain that is used for ID-mapping.
-	 */
-	public ATableBasedDataDomain getMappingDataDomain() {
-		return mappingDataDomain;
-	}
-
-	/**
-	 * Sets the data domain that is used for ID-mapping.
-	 * 
-	 * @param mappingDataDomain
-	 */
-	public void setMappingDataDomain(ATableBasedDataDomain mappingDataDomain) {
-		this.mappingDataDomain = mappingDataDomain;
 	}
 
 	@Override
@@ -235,7 +215,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 								.get()
 								.getIDMappingManager()
 								.getIDAsSet(IDType.getIDType("DAVID"),
-										mappingDataDomain.getRecordIDType(), davidId);
+										dataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
 							ids.addAll(recordIDs);
@@ -245,9 +225,11 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 			}
 
 			group.setSize(groupSize);
-			RecordVirtualArray recordVA = new RecordVirtualArray("CONTENT", ids);
-			segmentData.add(new PathwaySegmentData(dataDomain, mappingDataDomain,
-					recordVA, group, pathway, this));
+			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			recordPerspective.createVA((ArrayList<Integer>) ids);
+			segmentData.add(new PathwaySegmentData(dataDomain, pathwayDataDomain,
+					recordPerspective, dimensionPerspective, group, pathway, this));
+
 			startIndex += groupSize;
 			groupID++;
 		}
@@ -264,6 +246,13 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 	@Override
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * @return the pathwayDataDomain, see {@link #pathwayDataDomain}
+	 */
+	public PathwayDataDomain getPathwayDataDomain() {
+		return pathwayDataDomain;
 	}
 
 }

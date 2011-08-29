@@ -167,27 +167,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		textRenderer = new CaleydoTextRenderer(24);
 		baseDisplayListIndex = gl.glGenLists(1);
 
-		// if (set == null)
-		// set = dataDomain.getTable();
-		//
-		// if (recordVA == null)
-		// recordVA = table.getContentData(Set.CONTENT).getRecordVA();
-		//
-		// if (dimensionVA == null) {
-		// if (table.getDimensionData(Set.STORAGE) != null)
-		// dimensionVA = table.getDimensionData(Set.STORAGE).getDimensionVA();
-		// }
-
 		templateRenderer = new LayoutManager(viewFrustum);
-
-		// if (table.getTableType().equals(ESetDataType.NUMERIC)) {
-		// brickConfigurer = new NumericalDataConfigurer();
-		// } else {
-		// brickConfigurer = new NominalDataConfigurer();
-		// }
-
-		// TODO: Just for testing
-		// brickConfigurer = new PathwayDataConfigurer();
 
 		if (brickLayout == null) {
 
@@ -247,7 +227,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 			public void rightClicked(Pick pick) {
 
 				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-						dataDomain, recordVA));
+						dataDomain, recordVA, dimensionGroup.getBrickDimensionGroupData()
+								.getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 
@@ -675,7 +656,6 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		return dataDomain;
 	}
 
-	
 	/**
 	 * Set the recordVA this brick should render plus the groupID that is
 	 * associated with this recordVA.
@@ -689,7 +669,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 			this.groupID = group.getGroupID();
 		this.recordVA = recordVA;
 	}
-	
+
 	/**
 	 * Set the group of this brick.
 	 * 
@@ -1172,7 +1152,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		this.brickConfigurer = brickConfigurer;
 	}
 
-	public void openCreatePathwayGroupDialog(final IDataDomain sourceDataDomain,
+	public void openCreatePathwayGroupDialog(
+			final ATableBasedDataDomain sourceDataDomain,
 			final RecordVirtualArray sourceRecordVA) {
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1184,6 +1165,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 				dialog.create();
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);
+				dialog.setDimensionPerspective(brickData.getDimensionPerspective());
+
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == Status.OK) {

@@ -1,12 +1,13 @@
 package org.caleydo.datadomain.pathway.data;
 
+import org.caleydo.core.data.container.ADataContainer;
 import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
@@ -16,33 +17,23 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * @author Partl
  * 
  */
-public class PathwaySegmentData implements ISegmentData {
+public class PathwaySegmentData extends ADataContainer implements ISegmentData {
 
-	private IDataDomain dataDomain;
-	private ATableBasedDataDomain mappingDataDomain;
-	private RecordVirtualArray recordVA;
+	private PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
 	private Group group;
 	private PathwayDimensionGroupData dimensionGroupData;
 
-	public PathwaySegmentData(IDataDomain dataDomain,
-			ATableBasedDataDomain mappingDataDomain,
-			RecordVirtualArray recordVA, Group group, PathwayGraph pathway,
+	public PathwaySegmentData(ATableBasedDataDomain dataDomain,
+			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
+			DimensionPerspective dimensionPerspective, Group group, PathwayGraph pathway,
 			PathwayDimensionGroupData dimensionGroupData) {
-		this.dataDomain = dataDomain;
-		this.mappingDataDomain = mappingDataDomain;
-		this.recordVA = recordVA;
+		super(dataDomain, recordPerspective, dimensionPerspective);
+		this.pathwayDataDomain = pathwayDataDomain;
 		this.group = group;
 		this.pathway = pathway;
 		this.dimensionGroupData = dimensionGroupData;
 	}
-
-	@Override
-	public IDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	
 
 	@Override
 	public Group getGroup() {
@@ -66,20 +57,7 @@ public class PathwaySegmentData implements ISegmentData {
 	/**
 	 * @return The data domain that is used for ID-mapping.
 	 */
-	public ATableBasedDataDomain getMappingDataDomain() {
-		return mappingDataDomain;
+	public PathwayDataDomain getPathwayDataDomain() {
+		return pathwayDataDomain;
 	}
-
-	@Override
-	public RecordPerspective getRecordPerspective() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public DimensionPerspective getDimensionPerspective() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 }

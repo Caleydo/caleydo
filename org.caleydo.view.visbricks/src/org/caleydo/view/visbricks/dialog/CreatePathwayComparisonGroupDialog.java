@@ -12,10 +12,13 @@ import java.util.Map;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.visbricks.brick.data.PathwayBrickDimensionGroupData;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -35,9 +38,10 @@ import org.eclipse.swt.widgets.TableItem;
 
 public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
-	private IDataDomain sourceDataDomain;
-	private IDataDomain pathwayDataDomain;
+	private ATableBasedDataDomain sourceDataDomain;
+	private PathwayDataDomain pathwayDataDomain;
 	private RecordVirtualArray sourceVA;
+	private DimensionPerspective dimensionPerspective;
 
 	private Map<String, List<PathwayGraph>> pathwayMap;
 
@@ -65,14 +69,11 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 					String value2 = items[j].getText(columnIndex);
 					if ((collator.compare(value1, value2) < 0 && sortAscending)
 							|| (collator.compare(value1, value2) > 0 && !sortAscending)) {
-						String[] values = { items[i].getText(0),
-								items[i].getText(1) };
-						PathwayGraph pathway = (PathwayGraph) items[i]
-								.getData();
+						String[] values = { items[i].getText(0), items[i].getText(1) };
+						PathwayGraph pathway = (PathwayGraph) items[i].getData();
 						boolean checked = items[i].getChecked();
 						items[i].dispose();
-						TableItem item = new TableItem(pathwayTable, SWT.NONE,
-								j);
+						TableItem item = new TableItem(pathwayTable, SWT.NONE, j);
 						item.setText(values);
 						item.setData(pathway);
 						item.setChecked(checked);
@@ -124,8 +125,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 		for (PathwayGraph pathway : pathways) {
 
-			List<PathwayGraph> dbPathways = pathwayMap.get(pathway.getType()
-					.getName());
+			List<PathwayGraph> dbPathways = pathwayMap.get(pathway.getType().getName());
 			if (dbPathways == null) {
 				dbPathways = new ArrayList<PathwayGraph>();
 			}
@@ -221,13 +221,12 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		}
 
 		// FIXME: DataDomainByType is not appropriate
-		pathwayDataDomain = DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.pathway");
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		if (!pathways.isEmpty()) {
-			pathwayDimensionGroupData = new PathwayDimensionGroupData(
-					pathwayDataDomain,
-					(ATableBasedDataDomain) sourceDataDomain, pathways,
-					"PathwayGroup");
+			pathwayDimensionGroupData = new PathwayBrickDimensionGroupData(sourceDataDomain,
+					pathwayDataDomain, dimensionPerspective, pathways, "PathwayGroup");
+
 			super.okPressed();
 		}
 	}
@@ -240,15 +239,15 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		return sourceDataDomain;
 	}
 
-	public void setSourceDataDomain(IDataDomain sourceDataDomain) {
+	public void setSourceDataDomain(ATableBasedDataDomain sourceDataDomain) {
 		this.sourceDataDomain = sourceDataDomain;
 	}
 
-	public void setPathwayDataDomain(IDataDomain pathwayDataDomain) {
+	public void setPathwayDataDomain(PathwayDataDomain pathwayDataDomain) {
 		this.pathwayDataDomain = pathwayDataDomain;
 	}
 
-	public IDataDomain getPathwayDataDomain() {
+	public PathwayDataDomain getPathwayDataDomain() {
 		return pathwayDataDomain;
 	}
 
@@ -259,5 +258,13 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	public RecordVirtualArray getSourceVA() {
 		return sourceVA;
 	}
+	
+	/**
+	 * @param dimensionPerspective setter, see {@link #dimensionPerspective}
+	 */
+	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		this.dimensionPerspective = dimensionPerspective;
+	}
+	
 
 }

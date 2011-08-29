@@ -72,6 +72,7 @@ import org.caleydo.core.view.opengl.util.slerp.SlerpMod;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.IPathwayLoader;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -1765,9 +1766,7 @@ public class GLBucket extends AGLView implements
 		if (!PathwayManager.get().isPathwayVisible(
 				PathwayManager.get().getItem(pathwayID))) {
 			SerializedPathwayView serPathway = new SerializedPathwayView();
-			serPathway.setDataDomainID(DataDomainManager.get()
-					.getDataDomainByType("org.caleydo.datadomain.pathway")
-					.getDataDomainID());
+			serPathway.setDataDomainID(dataDomain.getDataDomainID());
 			serPathway.setPathwayID(pathwayID);
 			newViews.add(serPathway);
 		}
@@ -2559,7 +2558,9 @@ public class GLBucket extends AGLView implements
 			GLPathway glPathway = (GLPathway) glView;
 
 			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
-			glPathway.setMappingDataDomain(dataDomain);
+//			glPathway.setDataDomain(dataDomain);
+			glPathway.setPathwayDataDomain((PathwayDataDomain)DataDomainManager
+					.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE));
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);

@@ -26,8 +26,8 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		Collection<PathwayGraph> pathways = PathwayManager.get().getAllItems();
 
-		PathwayGraph pathway = ((PathwayBrickData) (remoteRenderingView
-				.getBrickData())).getPathway();
+		PathwayGraph pathway = ((PathwayBrickData) (remoteRenderingView.getBrickData()))
+				.getPathway();
 
 		if (pathway == null) {
 			for (PathwayGraph p : pathways) {
@@ -47,12 +47,12 @@ public class PathwayCreator implements IRemoteViewCreator {
 						GLPathway.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-								1, 0, 1, -1, 1));
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		pathwayView.setPathway(pathway);
-		//FIXME: DataDomainByType may be not appropriate
-		pathwayView.setDataDomain((PathwayDataDomain) (DataDomainManager.get()
+		// FIXME: DataDomainByType may be not appropriate
+		pathwayView.setPathwayDataDomain((PathwayDataDomain) (DataDomainManager.get()
 				.getDataDomainByType(serPathway.getDataDomainID())));
 		pathwayView.enablePathwayTextures(true);
 		pathwayView.enableNeighborhood(true);

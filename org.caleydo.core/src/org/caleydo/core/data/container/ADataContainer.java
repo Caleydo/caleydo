@@ -24,10 +24,7 @@ public abstract class ADataContainer
 
 	protected ATableBasedDataDomain dataDomain;
 
-	protected String dimensionPerspectiveID;
-	protected String recordPerspectiveID;
-
-	protected RecordPerspective recordPerspective;
+		protected RecordPerspective recordPerspective;
 	protected DimensionPerspective dimensionPerspective;
 
 	/**
@@ -48,26 +45,9 @@ public abstract class ADataContainer
 		DimensionPerspective dimensionPerspective) {
 		this.dataDomain = dataDomain;
 		this.recordPerspective = recordPerspective;
-		recordPerspectiveID = recordPerspective.getPerspectiveID();
 		this.dimensionPerspective = dimensionPerspective;
-		dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
 	}
 
-	/**
-	 * Constructor using the IDs for the perspectives. Also sets the the perspective objects.
-	 * 
-	 * @param dataDomain
-	 * @param recordPerspectiveID
-	 * @param dimensionPerspectiveID
-	 */
-	public ADataContainer(ATableBasedDataDomain dataDomain, String recordPerspectiveID,
-		String dimensionPerspectiveID) {
-		this.dataDomain = dataDomain;
-		this.recordPerspectiveID = recordPerspectiveID;
-		this.recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-		this.dimensionPerspective = dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
-	}
 
 	@Override
 	public ATableBasedDataDomain getDataDomain() {

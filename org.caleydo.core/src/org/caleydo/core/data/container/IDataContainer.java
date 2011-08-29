@@ -8,7 +8,7 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  */
 public interface IDataContainer {
 	public ATableBasedDataDomain getDataDomain();

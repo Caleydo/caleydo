@@ -77,7 +77,7 @@ public class GLPathwayContentCreator {
 	private PathwayItemManager pathwayItemManager;
 
 	private ATableBasedDataDomain geneticDataDomain;
-	
+
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
@@ -101,7 +101,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = generalManager.getIDMappingManager();
 		pathwayItemManager = PathwayItemManager.get();
 
-		geneticDataDomain = glPathwayView.getMappingDataDomain();
+		geneticDataDomain = glPathwayView.getDataDomain();
 	}
 
 	public void init(final GL2 gl, final SelectionManager internalSelectionManager) {
@@ -880,8 +880,8 @@ public class GLPathwayContentCreator {
 		else {
 
 			Set<Integer> ids = idMappingManager.<Integer, Integer> getIDAsSet(
-					glPathwayView.getDataDomain().getDavidIDType(), glPathwayView
-							.getMappingDataDomain().getRecordIDType(), iDavidID);
+					glPathwayView.getPathwayDataDomain().getDavidIDType(), glPathwayView
+							.getDataDomain().getRecordIDType(), iDavidID);
 			if (ids == null)
 				return null;
 			for (Integer iExpressionIndex : ids) {
@@ -924,14 +924,13 @@ public class GLPathwayContentCreator {
 
 	public void setMappingRowCount(final int iMappingRowCount) {
 	}
-	
+
 	public void switchDataRepresentation() {
 		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
 			if (!geneticDataDomain.getTable().containsFoldChangeRepresentation())
 				geneticDataDomain.getTable().createFoldChangeRepresentation();
 			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
-		}
-		else
+		} else
 			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 	}
 }

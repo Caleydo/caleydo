@@ -3,12 +3,12 @@ package org.caleydo.view.visbricks.event;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
-import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.view.visbricks.brick.data.TableBasedBrickDimensionGroupData;
 
 public class AddGroupsToVisBricksEvent extends AEvent {
 
@@ -24,7 +24,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	public AddGroupsToVisBricksEvent(String dataDomainID, String dimensionPerspectiveID,
 			String recordPerspectiveID, ArrayList<ClusterNode> selectedNodes) {
 		this.dataDomainID = dataDomainID;
-		this.dimensionPerspectiveID = dataDomainID;
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
 		this.recordPerspectiveID = recordPerspectiveID;
 		this.selectedNodes = selectedNodes;
 	}
@@ -47,11 +47,14 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 			return dimensionGroupData;
 
 		dimensionGroupData = new ArrayList<ADimensionGroupData>(selectedNodes.size());
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+				.get().getDataDomainByID(dataDomainID);
 		for (ClusterNode node : selectedNodes) {
-			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-					(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-							dataDomainID), dimensionPerspectiveID, recordPerspectiveID,
-					node, DimensionPerspective.class);
+			TableBasedBrickDimensionGroupData data = new TableBasedBrickDimensionGroupData(
+					dataDomain, dataDomain.getTable().getRecordPerspective(
+							recordPerspectiveID), dataDomain.getTable()
+							.getDimensionPerspective(dimensionPerspectiveID), node,
+					DimensionPerspective.class);
 			dimensionGroupData.add(data);
 		}
 		return dimensionGroupData;

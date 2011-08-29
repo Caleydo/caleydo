@@ -1,19 +1,23 @@
 package org.caleydo.view.visbricks.event;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 
 public class OpenCreatePathwayGroupDialogEvent extends AEvent {
-	
-	private IDataDomain sourceDataDomain;
-	private RecordVirtualArray sourceRecordVA;
 
-	public OpenCreatePathwayGroupDialogEvent(IDataDomain sourceDataDomain,
-			RecordVirtualArray sourceRecordVA) {
+	private ATableBasedDataDomain sourceDataDomain;
+	private RecordVirtualArray sourceRecordVA;
+	private DimensionPerspective dimensionPerspective;
+
+	public OpenCreatePathwayGroupDialogEvent(ATableBasedDataDomain sourceDataDomain,
+			RecordVirtualArray sourceRecordVA, DimensionPerspective dimensionPerspective) {
 
 		this.setSourceDataDomain(sourceDataDomain);
 		this.setSourceRecordVA(sourceRecordVA);
+		this.dimensionPerspective = dimensionPerspective;
+
 	}
 
 	@Override
@@ -21,11 +25,11 @@ public class OpenCreatePathwayGroupDialogEvent extends AEvent {
 		return true;
 	}
 
-	public void setSourceDataDomain(IDataDomain sourceDataDomain) {
+	public void setSourceDataDomain(ATableBasedDataDomain sourceDataDomain) {
 		this.sourceDataDomain = sourceDataDomain;
 	}
 
-	public IDataDomain getSourceDataDomain() {
+	public ATableBasedDataDomain getSourceDataDomain() {
 		return sourceDataDomain;
 	}
 
