@@ -27,8 +27,12 @@ import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
 public class ClusterRenderer extends LayoutRenderer {
 
+	// FIXME: must not be public. access with getter.
 	public HeatMapTextureRenderer textureRenderer;
+	
 	private BarplotTextureRenderer dataUncBarTextureRenderer;
+	
+	// FIXME: must not be public. access with getter.
 	public BarplotTextureRenderer visUncBarTextureRenderer;
 
 	private GLUncertaintyHeatMap uncertaintyHeatMap;

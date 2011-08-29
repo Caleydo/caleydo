@@ -24,29 +24,33 @@ import com.jogamp.opengl.util.texture.TextureIO;
 
 public class VisualUncertaintyUtil {
 
-	public static void calcVisualUncertainty(GL2 gl, PixelGLConverter pixelGLConverter,
-			ElementLayout layout, HeatMapTextureRenderer renderer, ArrayList<Float> ret) {
+	public static ArrayList<Float> calcVisualUncertainty(GL2 gl, PixelGLConverter pixelGLConverter,
+			ElementLayout layout, HeatMapTextureRenderer renderer) {
 
+		ArrayList<Float> visualUncertainty = new ArrayList<Float>();
+		
 		// float sizeX = clusterHeatMapLayout.getUnscalableElementWidth();
 		float scaledX = layout.getSizeScaledX();
 		float scaledY = layout.getSizeScaledY();
 
 		// float transX = layout.getTranslateX();
-		float transY = layout.getTranslateY();
+		// float transY = layout.getTranslateY();
 
 		int width = pixelGLConverter.getPixelWidthForGLWidth(scaledX);
 		// int xScreen = pixelGLConverter.getPixelWidthForGLWidth(transX);
 
-		int height = pixelGLConverter.getPixelWidthForGLWidth(scaledY);
+		int pixelHeight = pixelGLConverter.getPixelWidthForGLWidth(scaledY);
 		// int yScreen = pixelGLConverter.getPixelWidthForGLWidth(transY);
 
-		for (int i = 0; i < height; i++) {
-			ret.add(renderer.getUncertaintyForLine(i, width, height));
+		for (int pixel = 0; pixel < pixelHeight; pixel++) {
+			visualUncertainty.add(renderer.getVisualUncertaintyForLine(pixel, width, pixelHeight));
 		}
 		// getScreenAreaShot(gl, xScreen, yScreen, width, height);
 		// HeatMapRenderStyle renderStyle = uncertaintyHeatMap.getRenderStyle();
 		// float x = renderStyle.getXScaling();
 		// float y = renderStyle.getYScaling();
+		
+		return visualUncertainty;
 	}
 
 	private static void getScreenAreaShot(GL2 gl, int x, int y, int width, int height) {
@@ -153,7 +157,7 @@ public class VisualUncertaintyUtil {
 		 * 
 		 * 
 		 * // getNewScreenShots { gl.glReadBuffer(GL2.GL_BACK); ByteBuffer
-		 * screenShotByteBuffer = null; BufferedImage screenShotImage = null;
+		 * screenShotByteBuffer = null; BufferedImage visUncBarTextureRendererscreenShotImage = null;
 		 * screenShotImage = new BufferedImage(width, height,
 		 * BufferedImage.TYPE_4BYTE_ABGR);
 		 * 

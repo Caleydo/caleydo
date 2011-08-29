@@ -214,13 +214,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		texture.disable();
 	}
 
-	/**
-	 * Render marker next to OverviewBar for visualization of selected elements
-	 * in the data set
-	 * 
-	 * @param gl
-	 */
-	public float getUncertaintyForLine(int imageLine, int width, int height) {
+	public float getVisualUncertaintyForLine(int imageLine, int width, int height) {
 
 		float maxUncertainty = 0;
 		float val = 0;

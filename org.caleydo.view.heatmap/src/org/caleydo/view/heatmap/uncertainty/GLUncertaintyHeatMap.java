@@ -320,15 +320,16 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			// very dirty
 			for (ClusterRenderer clusterRenderer : overviewHeatMap
 					.getClusterRendererList()) {
-				ArrayList<Float> uncertaintyVA = new ArrayList<Float>();
+
 				if (clusterRenderer.textureRenderer != null
 						&& clusterRenderer.textureRenderer.heatmapLayout != null
 						&& clusterRenderer.visUncBarTextureRenderer != null) {
-					VisualUncertaintyUtil.calcVisualUncertainty(gl, pixelGLConverter,
-							clusterRenderer.textureRenderer.heatmapLayout,
-							clusterRenderer.textureRenderer, uncertaintyVA);
 
-					clusterRenderer.visUncBarTextureRenderer.initTextures(uncertaintyVA);
+					clusterRenderer.visUncBarTextureRenderer
+							.initTextures(VisualUncertaintyUtil.calcVisualUncertainty(gl,
+									pixelGLConverter,
+									clusterRenderer.textureRenderer.heatmapLayout,
+									clusterRenderer.textureRenderer));
 				}
 			}
 
