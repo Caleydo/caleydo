@@ -181,7 +181,6 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		
 		Application app = applicationManager.getApplications().get(appName);
 		
-		
 		if (boundingBoxListXML != null && boundingBoxListXML.isEmpty()) {
 			boundingBoxListXML = null;
 		}
@@ -412,7 +411,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			app.getWindows().clear();
 			app.getWindows().add(windowBoundingBox);
 			SelectionContainer selectionContainer = createSelectionContainer(app.getId(), windowBoundingBox);
-			rendererPrx.updateSelectionContainer(selectionContainer);
+			//rendererPrx.updateSelectionContainer(selectionContainer);
 		} else {
 			app = new Application();
 			app.setDate(new Date());
@@ -423,7 +422,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			SelectionContainer selectionContainer = createSelectionContainer(app.getId(), windowBoundingBox);
 
 			System.out.println("registering " + app); 
-			rendererPrx.registerSelectionContainer(selectionContainer);
+			//rendererPrx.registerSelectionContainer(selectionContainer);
 		}
 	}
 
@@ -432,7 +431,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 		SelectionContainer selectionContainer = createSelectionContainer(app.getId(), app.getWindows().get(0));
 
 		System.out.println("registering " + app); 
-		rendererPrx.registerSelectionContainer(selectionContainer);
+		//rendererPrx.registerSelectionContainer(selectionContainer);
 	}
 
 		
@@ -558,6 +557,8 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			} catch (UnknownHostException e) {
 				e.printStackTrace();
 			} 
+			
+			hostname = "localhost";
 
 			// get server port, name, and end point 
 			int serverPort = adapterPort.value; 
@@ -566,7 +567,7 @@ public class VisLinkManager implements InitializingBean, DisposableBean {
 			
 			System.out.println("Server name: " + serverName); 
 			System.out.println("Server end point: " + serverEndPoint); 
-
+			
 			try {
 				// if no renderer system is running, this operation
 				// will throw an exception 

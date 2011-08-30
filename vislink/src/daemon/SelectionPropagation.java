@@ -63,8 +63,6 @@ public class SelectionPropagation extends HttpServlet {
 			//		String selectionID = selectionManager.getSelectionIDFilter(appName); 
 			//		String pointerID = selectionManager.getPointerIDFilter(appName); 
 
-
-
 			if (selectionID != null && pointerID != null) {
 
 				System.out.println("Not empty: selectionID=" + selectionID + " - pointerID=" + pointerID); 
