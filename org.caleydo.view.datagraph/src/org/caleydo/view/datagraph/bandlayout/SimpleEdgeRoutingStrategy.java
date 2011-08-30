@@ -52,8 +52,10 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 
 				if (intersection1 != null && intersection2 != null) {
 
-					if (intersection1.getX() == intersection2.getX()
-							&& intersection1.getY() == intersection2.getY()) {
+					if (intersection1.getX() <= intersection2.getX() + 0.0000001
+							&& intersection1.getX() >= intersection2.getX() - 0.0000001
+							&& intersection1.getY() <= intersection2.getY() + 0.0000001
+							&& intersection1.getY() >= intersection2.getY() - 0.0000001) {
 						continue;
 					}
 
@@ -162,8 +164,12 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 						continue;
 					}
 
-					if ((code1 == 0 && !isPoint1OnBoundingBox)
-							|| (code2 == 0 && !isPoint2OnBoundingBox)
+					if ((code1 == 0 && !isPoint1OnBoundingBox
+							&& edgePoints.indexOf(point1) != 0 && edgePoints
+							.indexOf(point1) != edgePoints.size() - 1)
+							|| (code2 == 0 && !isPoint2OnBoundingBox
+									&& edgePoints.indexOf(point2) != 0 && edgePoints
+									.indexOf(point2) != edgePoints.size() - 1)
 							|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
 						hasIntersection = true;
 						break;
