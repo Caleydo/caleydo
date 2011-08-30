@@ -187,6 +187,9 @@ public class ViewManager
 
 	public void startAnimator() {
 
+		if (fpsAnimator == null)
+			initAnimator();
+		
 		fpsAnimator.start();
 		fpsAnimator.setIgnoreExceptions(true);
 		fpsAnimator.setPrintExceptions(true);
@@ -201,14 +204,18 @@ public class ViewManager
 
 		// Lazy creation of animator
 		if (fpsAnimator == null) {
-			fpsAnimator = new FPSAnimator(60);
-
-			displayLoopExecution = DisplayLoopExecution.get();
-			fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
-			displayLoopExecution.executeMultiple(connectedElementRepManager);
+			initAnimator();
 		}
 
 		fpsAnimator.add(glCaleydoCanvas);
+	}
+	
+	private void initAnimator() {
+		fpsAnimator = new FPSAnimator(60);
+
+		displayLoopExecution = DisplayLoopExecution.get();
+		fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
+		displayLoopExecution.executeMultiple(connectedElementRepManager);
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -354,6 +361,11 @@ public class ViewManager
 	 * @return {@link DisplayLoopExecution} for executing code in the display loop
 	 */
 	public DisplayLoopExecution getDisplayLoopExecution() {
+		
+		// lazy creation of animator and display loop
+		if (displayLoopExecution == null)
+			initAnimator();
+		
 		return displayLoopExecution;
 	}
 }

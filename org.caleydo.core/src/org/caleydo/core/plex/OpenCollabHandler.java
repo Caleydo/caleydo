@@ -13,9 +13,9 @@ public class OpenCollabHandler
 
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
-		// HandlerUtil.getActiveWorkbenchWindow(event).close();
+
 		try {
-			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpCollabView.ID);
+			HandlerUtil.getActiveWorkbenchWindow(event).getActivePage().showView(RcpCollabView.VIEW_TYPE);
 		}
 		catch (PartInitException e) {
 			e.printStackTrace();

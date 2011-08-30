@@ -57,6 +57,7 @@ import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.ResetAllViewsEvent;
 import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.AngularBrushingEvent;
@@ -67,6 +68,7 @@ import org.caleydo.core.manager.event.view.tablebased.ResetParallelCoordinatesEv
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.UseRandomSamplingEvent;
+import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.StandardTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -305,9 +307,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (!lazyMode)
 			checkForHits(gl);
 
-		// ConnectedElementRepresentationManager cerm =
-		// GeneralManager.get().getViewGLCanvasManager().getConnectedElementRepresentationManager();
-		// cerm.doViewRelatedTransformation(gl, selectionTransformer);
+		ConnectedElementRepresentationManager cerm = GeneralManager.get()
+				.getViewManager().getConnectedElementRepresentationManager();
+		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
 		if (eBusyModeState != EBusyModeState.OFF) {
 			renderBusyMode(gl);

@@ -37,7 +37,7 @@ import org.eclipse.swt.widgets.TreeItem;
 /**
  * @author Werner Puff
  */
-public class CollabViewRep
+public class CollabView
 	extends ASWTView
 	implements IView, IListenerOwner {
 
@@ -68,7 +68,7 @@ public class CollabViewRep
 	 * Constructor.
 	 * 
 	 */
-	public CollabViewRep(Composite parentComposite) {
+	public CollabView(Composite parentComposite) {
 		super(GeneralManager.get().getIDCreator()
 			.createID(ManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
 	}

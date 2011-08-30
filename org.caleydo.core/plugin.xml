@@ -35,8 +35,8 @@
       </view>
       <view
             category="org.caleydo.core.views"
-            class="org.caleydo.core.view.RcpCollabView"
-            id="org.caleydo.core.views.swt.CollabView"
+            class="org.caleydo.core.plex.RcpCollabView"
+            id="org.caleydo.core.plex.view.collaboration"
             name="Collaboration">
       </view>
    </extension>   
@@ -238,28 +238,28 @@
                   style="push">
             </command>
          </menu>
-         <!--
+         
          <menu
                id="org.caleydo.menu.admin"
                label="Admin">
             <command
-                  commandId="org.caleydo.core.command.open_collab"
+                  commandId="org.caleydo.core.plex.open_collab"
                   label="Collaboration"
                   mnemonic="T"
                   style="push">
             </command>
             <command
-                  commandId="org.caleydo.core.command.start_tracking"
+                  commandId="org.caleydo.core.util.tracking.start_tracking"
                   label="Start Tracking"
                   style="push">
             </command>
             <command
-                  commandId="org.caleydo.core.command.stop_tracking"
+                  commandId="org.caleydo.core.util.tracking.stop_tracking"
                   label="Stop Tracking"
                   style="push">
             </command>
          </menu>
-         -->
+        
          <menu
                id="org.caleydo.menu.help"
                label="Help"

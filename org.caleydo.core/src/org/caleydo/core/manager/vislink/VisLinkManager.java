@@ -10,6 +10,7 @@ import java.net.URLConnection;
 import java.net.URLEncoder;
 import java.util.Date;
 import java.util.HashSet;
+import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -49,9 +50,10 @@ public class VisLinkManager
 
 	private static VisLinkManager visLinkManager = null;
 
-	ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
+	// FIXME
+	ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByType(
 		"org.caleydo.datadomain.genetic");
-	
+
 	private Display display;
 
 	private String appName = null;
@@ -182,9 +184,14 @@ public class VisLinkManager
 				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"),
 					deltaItem.getID());
 			if (caleydoSelectionId == null) {
-				caleydoSelectionId =
-					idmm.getID(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
+				java.util.Set<String> geneSymbols = idmm.getIDAsSet(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
 						deltaItem.getID());
+				
+				if (geneSymbols == null)
+					continue;
+				
+				// FIXME: not safe to just take the first one
+				caleydoSelectionId = (String)geneSymbols.toArray()[0];
 			}
 		}
 	}
@@ -233,35 +240,35 @@ public class VisLinkManager
 		ConnectedElementRepresentationManager cerm =
 			GeneralManager.get().getViewManager().getConnectedElementRepresentationManager();
 		if (cerm.isNewCanvasVertices()) {
-			final CanvasConnectionMap ccm =
+			final CanvasConnectionMap canvasConnectionMap =
 				cerm.getCanvasConnectionsByType().get(dataDomain.getRecordIDType());
-			if (ccm != null) {
+			if (canvasConnectionMap != null) {
 				cerm.setNewCanvasVertices(false);
 				display.asyncExec(new Runnable() {
 					@Override
 					public void run() {
 						SelectionPoint2DList screenPoints = new SelectionPoint2DList();
-						for (SelectionPoint2DList canvasPoints : ccm.values()) {
+						for (SelectionPoint2DList canvasPoints : canvasConnectionMap.values()) {
 							screenPoints.addAll(canvasPointsToDisplay(canvasPoints));
 						}
-						String bbl = "<boundingBoxList>";
+						String boundingBoxList = "<boundingBoxList>";
 						for (SelectionPoint2D point : screenPoints) {
-							bbl +=
+							boundingBoxList +=
 								createBoundingBoxXML(point.getX(), point.getY(), 0, 0,
 									caleydoSelectionId != null);
 						}
-						bbl += "</boundingBoxList>";
-						System.out.println("new bll = " + bbl);
+						boundingBoxList += "</boundingBoxList>";
+						System.out.println("new bounding box list = " + boundingBoxList);
 
 						String requrl = null;
 						if (caleydoSelectionId != null) {
 							requrl = "selection?name=" + appName;
 							requrl += "&id=" + urlEncode(caleydoSelectionId);
-							requrl += "&xml=" + urlEncode(bbl);
+							requrl += "&xml=" + urlEncode(boundingBoxList);
 						}
 						else {
 							requrl = "reportVisualLinks?name=" + appName;
-							requrl += "&xml=" + urlEncode(bbl);
+							requrl += "&xml=" + urlEncode(boundingBoxList);
 						}
 						doVisdaemonRequest(requrl);
 					}

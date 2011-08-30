@@ -44,7 +44,7 @@ public class SaveEventBridgeConfigurationListener
 		for (Button button : eventButtonList) {
 			if (button.getSelection()) {
 				Class<? extends AEvent> eventType;
-				eventType = (Class<? extends AEvent>) button.getData(CollabViewRep.ITEM_DATA_EVENT_TYPE);
+				eventType = (Class<? extends AEvent>) button.getData(CollabView.ITEM_DATA_EVENT_TYPE);
 				publisher.addListener(eventType, bridge);
 			}
 		}

@@ -4,7 +4,7 @@ import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 
 public class TestSerializationListener
-	extends AEventListener<CollabViewRep> {
+	extends AEventListener<CollabView> {
 
 	@Override
 	public void handleEvent(AEvent event) {
