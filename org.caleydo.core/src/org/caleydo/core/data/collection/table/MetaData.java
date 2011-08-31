@@ -7,6 +7,7 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 /**
@@ -105,7 +106,10 @@ public class MetaData {
 	 * @return the Histogram of the values in the set
 	 * @throws UnsupportedOperationException
 	 *             when used on non-homogeneous sets
+	 * @deprecated use {@link ContainerStatistics#getHistogram() instead}
 	 */
+
+	@Deprecated
 	public Histogram getBaseHistogram(String recordPerspectiveID) {
 		if (!table.isSetHomogeneous) {
 			throw new UnsupportedOperationException(
@@ -143,7 +147,9 @@ public class MetaData {
 	 * @return the Histogram of the values in the set
 	 * @throws UnsupportedOperationException
 	 *             when used on non-homogeneous sets
+	 * @deprecated use {@link ContainerStatistics#getHistogram() instead}
 	 */
+	@Deprecated
 	public Histogram getHistogram(RecordVirtualArray recordVA) {
 		// FIXME put that back
 		// if (!isSetHomogeneous) {

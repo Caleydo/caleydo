@@ -52,4 +52,10 @@ public class FakeDimensionGroupData extends ADimensionGroupData {
 		return "fake";
 	}
 
+	@Override
+	public ISegmentData getSummarySegementData() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

@@ -56,8 +56,11 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.view.visbricks.brick.data.BrickDimensionGroupDataCreator;
-import org.caleydo.view.visbricks.brick.data.IBrickDimensionGroupData;
+import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
+import org.caleydo.view.visbricks.brick.data.AlphabeticalDataLabelSortingStrategy;
+import org.caleydo.view.visbricks.brick.data.AverageValueSortingStrategy;
+import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
+import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
@@ -1162,7 +1165,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
 
-		BrickDimensionGroupDataCreator creator = new BrickDimensionGroupDataCreator();
+		// BrickDimensionGroupDataCreator creator = new
+		// BrickDimensionGroupDataCreator();
 
 		for (ADimensionGroupData data : dimensionGroupData) {
 
@@ -1176,8 +1180,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			if (!dimensionGroupExists) {
 
-//				IBrickDimensionGroupData brickDimensionGroupData = creator
-//						.createBrickDimensionGroupData(data);
+				// IBrickDimensionGroupData brickDimensionGroupData = creator
+				// .createBrickDimensionGroupData(data);
 
 				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 						.get()
@@ -1191,7 +1195,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				// dimensionGroup.setDataDomain(dataDomain);
 				// dimensionGroup.setTable(set);
-				dimensionGroup.setBrickDimensionGroupData((IBrickDimensionGroupData)data);
+				if (data instanceof PathwayDimensionGroupData) {
+					dimensionGroup.setBrickConfigurer(new PathwayDataConfigurer());
+					dimensionGroup
+							.setBrickSortingStrategy(new AlphabeticalDataLabelSortingStrategy());
+				} else {
+					dimensionGroup.setBrickConfigurer(new NumericalDataConfigurer(data));
+					dimensionGroup
+							.setBrickSortingStrategy(new AverageValueSortingStrategy());
+				}
+				dimensionGroup.setBrickDimensionGroupData(data);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
 				dimensionGroup.setVisBricksView(this);

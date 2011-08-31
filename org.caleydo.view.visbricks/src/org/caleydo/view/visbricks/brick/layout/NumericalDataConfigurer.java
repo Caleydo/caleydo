@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -22,16 +22,15 @@ import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.HistogramCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 
-public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
+public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 
 	protected static final int HEATMAP_BUTTON_ID = 1;
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
 	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
 
-	public NumericalDataConfigurer(DataTable set) {
-		super(set);
-		// TODO Auto-generated constructor stub
+	public NumericalDataConfigurer(ADimensionGroupData dimensionGroupData) {
+		super(dimensionGroupData);
 	}
 
 	@Override
@@ -182,7 +181,7 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
-			HeatMapCreator heatMapCreator = new HeatMapCreator(table);
+			HeatMapCreator heatMapCreator = new HeatMapCreator();
 			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl, glMouseListener);
 			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
 			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
@@ -190,14 +189,14 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 					heatMapLayoutRenderer);
 		}
 
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(table);
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
-		HistogramCreator histogramCreator = new HistogramCreator(table);
+		HistogramCreator histogramCreator = new HistogramCreator();
 		AGLView histogram = histogramCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
 		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
@@ -205,13 +204,17 @@ public class NumericalDataConfigurer extends ASetBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getRecordVA(), brick.getBrickData().getDimensionVA(), table, true);
+				brick.getRecordVA(), brick.getSegmentData().getDimensionPerspective()
+						.getVirtualArray(), brick.getSegmentData().getDataDomain()
+						.getTable(), true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getRecordVA(),  brick.getBrickData().getDimensionVA(), table, false);
+				brick.getRecordVA(), brick.getSegmentData().getDimensionPerspective()
+						.getVirtualArray(), brick.getSegmentData().getDataDomain()
+						.getTable(), false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);

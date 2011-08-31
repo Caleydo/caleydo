@@ -12,13 +12,13 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -50,7 +50,6 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
-import org.caleydo.view.visbricks.brick.data.IBrickData;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
@@ -117,7 +116,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
-	private IBrickData brickData;
+	private ISegmentData segmentData;
 
 	private SelectionManager contentGroupSelectionManager;
 
@@ -1135,13 +1134,18 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		return wrappingLayout;
 	}
 
-	public void setBrickData(IBrickData brickData) {
-		this.brickData = brickData;
-		brickData.setBrickData(this);
+	public void setBrickData(ISegmentData brickData) {
+		this.segmentData = brickData;
+		recordVA = brickData.getRecordPerspective().getVirtualArray();
+		dimensionVA = brickData.getDimensionPerspective().getVirtualArray();
+//		brickData.setBrickData(this);
 	}
 
-	public IBrickData getBrickData() {
-		return brickData;
+	/**
+	 * @return the segmentData, see {@link #segmentData}
+	 */
+	public ISegmentData getSegmentData() {
+		return segmentData;
 	}
 
 	public IBrickConfigurer getBrickConfigurer() {
@@ -1165,7 +1169,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 				dialog.create();
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);
-				dialog.setDimensionPerspective(brickData.getDimensionPerspective());
+				dialog.setDimensionPerspective(segmentData.getDimensionPerspective());
 
 				dialog.setBlockOnOpen(true);
 

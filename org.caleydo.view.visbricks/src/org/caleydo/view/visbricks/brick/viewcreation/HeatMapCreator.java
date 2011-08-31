@@ -20,11 +20,8 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * 
  */
 public class HeatMapCreator implements IRemoteViewCreator {
-	
-	private DataTable set;
-	
-	public HeatMapCreator(DataTable set) {
-		this.set = set;
+
+	public HeatMapCreator() {
 	}
 
 	@Override
@@ -38,11 +35,10 @@ public class HeatMapCreator implements IRemoteViewCreator {
 						GLHeatMap.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-								1, 0, 1, -1, 1));
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
-		heatMap.setTable(set);
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		heatMap.initialize();

@@ -23,6 +23,8 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 public class TableBasedDimensionGroupData
 	extends ADimensionGroupData {
 
+	String label;
+
 	/**
 	 * Creates a new {@link TableBasedDimensionGroupData} object with a new dataPerspective class. The new
 	 * dataPerspective is created using the clusterNode (all leaves of the clusterNode eg are in the VA of the
@@ -41,6 +43,7 @@ public class TableBasedDimensionGroupData
 		Class<? extends DataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
 		super(dataDomain, recordPerspective, dimensionPerspective);
 
+		label = rootNode.getLabel();
 		if (dataPerspectiveClass.equals(RecordPerspective.class)) {
 			this.recordPerspective = new RecordPerspective();
 			this.recordPerspective.createVA(rootNode.getLeaveIds());
@@ -105,11 +108,6 @@ public class TableBasedDimensionGroupData
 		return groupList.getGroups();
 	}
 
-	@Override
-	public int getID() {
-		// TODO this is probably no longer the ID we want
-		return dataDomain.getTable().getID();
-	}
 
 	@Override
 	public List<ISegmentData> getSegmentData() {
@@ -156,8 +154,14 @@ public class TableBasedDimensionGroupData
 
 	@Override
 	public String getLabel() {
-		// TODO: Probably not the label we want
-		return dataDomain.getTable().getLabel();
+		return label;
+	}
+
+	public ISegmentData getSummarySegementData() {
+		ISegmentData tempSegmentData =
+			new TableBasedSegmentData(dataDomain, recordPerspective, dimensionPerspective, new Group(), this);
+
+		return tempSegmentData;
 	}
 
 }

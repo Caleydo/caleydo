@@ -34,7 +34,7 @@ public class AlphabeticalDataLabelSortingStrategy implements
 		ArrayList<DataLabelComparable> comparables = new ArrayList<DataLabelComparable>();
 
 		for (GLBrick brick : segmentBricks) {
-			comparables.add(new DataLabelComparable(brick.getBrickData()
+			comparables.add(new DataLabelComparable(brick.getSegmentData()
 					.getLabel(), brick));
 		}
 //		comparables.add(new DataLabelComparable(summaryBrick.getBrickData()

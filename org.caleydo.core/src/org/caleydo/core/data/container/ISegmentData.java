@@ -8,7 +8,8 @@ import org.caleydo.core.data.virtualarray.group.Group;
  * 
  * @author Partl
  */
-public interface ISegmentData extends IDataContainer {
+public interface ISegmentData
+	extends IDataContainer {
 
 	/**
 	 * @return The group itself.

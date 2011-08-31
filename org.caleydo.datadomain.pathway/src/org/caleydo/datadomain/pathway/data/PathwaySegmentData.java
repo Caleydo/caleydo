@@ -1,11 +1,10 @@
 package org.caleydo.datadomain.pathway.data;
 
-import org.caleydo.core.data.container.ADataContainer;
 import org.caleydo.core.data.container.ISegmentData;
+import org.caleydo.core.data.container.TableBasedSegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -17,7 +16,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * @author Partl
  * 
  */
-public class PathwaySegmentData extends ADataContainer implements ISegmentData {
+public class PathwaySegmentData extends TableBasedSegmentData implements ISegmentData {
 
 	private PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
@@ -28,7 +27,7 @@ public class PathwaySegmentData extends ADataContainer implements ISegmentData {
 			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
 			DimensionPerspective dimensionPerspective, Group group, PathwayGraph pathway,
 			PathwayDimensionGroupData dimensionGroupData) {
-		super(dataDomain, recordPerspective, dimensionPerspective);
+		super(dataDomain, recordPerspective, dimensionPerspective, group, dimensionGroupData);
 		this.pathwayDataDomain = pathwayDataDomain;
 		this.group = group;
 		this.pathway = pathway;

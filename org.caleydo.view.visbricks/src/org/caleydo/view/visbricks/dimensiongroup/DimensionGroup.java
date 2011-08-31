@@ -12,6 +12,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -45,14 +46,13 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.data.IBrickData;
-import org.caleydo.view.visbricks.brick.data.IBrickDimensionGroupData;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -121,10 +121,12 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	private Column detailBrickLayout;
 	private ElementLayout overviewDetailGapLayout;
 
-	private IBrickDimensionGroupData dimensionGroupData;
+	private ADimensionGroupData dimensionGroupData;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
+
+	IBrickConfigurer brickConfigurer;
 
 	public DimensionGroup(GLCanvas canvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
@@ -168,6 +170,22 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 	public void setVisBricks(GLVisBricks visBricks) {
 		this.visBricks = visBricks;
+	}
+
+	/**
+	 * @param brickConfigurer
+	 *            setter, see {@link #brickConfigurer}
+	 */
+	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
+		this.brickConfigurer = brickConfigurer;
+	}
+
+	/**
+	 * @param brickSortingStrategy
+	 *            setter, see {@link #brickSortingStrategy}
+	 */
+	public void setBrickSortingStrategy(IBrickSortingStrategy brickSortingStrategy) {
+		this.brickSortingStrategy = brickSortingStrategy;
 	}
 
 	private void initGroupColumn() {
@@ -215,7 +233,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
 		minWidth = pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
 
-		centerBrick = createBrick(centerLayout, dimensionGroupData.getSummaryBrickData());
+		centerBrick = createBrick(centerLayout,
+				dimensionGroupData.getSummarySegementData());
 		// centerBrick.setBrickData(dimensionGroupData.getSummaryBrickData());
 		// centerBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 		// centerBrick.setRecordVA(new Group(), recordVA);
@@ -243,17 +262,17 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		destroyOldBricks();
 
-		List<IBrickData> segmentBrickData = dimensionGroupData.getSegmentBrickData();
+		List<ISegmentData> segmentBrickData = dimensionGroupData.getSegmentData();
 
 		if (segmentBrickData == null || segmentBrickData.size() <= 0)
 			return;
 
 		Set<GLBrick> segmentBricks = new HashSet<GLBrick>();
 
-		for (IBrickData brickData : segmentBrickData) {
+		for (ISegmentData brickData : segmentBrickData) {
 			GLBrick segmentBrick = createBrick(new ElementLayout("segmentBrick"),
 					brickData);
-			// segmentBrick.setBrickData(brickData);
+
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
 			ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
@@ -344,7 +363,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		}
 
 		visBricks.getRelationAnalyzer().updateRelations(dimensionGroupData.getID(),
-				dimensionGroupData.getSummaryBrickVA());
+				dimensionGroupData.getSummaryVA());
 
 	}
 
@@ -354,7 +373,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLBrick createBrick(ElementLayout wrappingLayout, IBrickData brickData) {
+	private GLBrick createBrick(ElementLayout wrappingLayout, ISegmentData brickData) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager
@@ -364,8 +383,10 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 						brickFrustum);
 
 		brick.setBrickData(brickData);
-		brick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
+		brick.setDataDomain(brickData.getDataDomain());
+		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
+
 		// brick.setDataDomain(dataDomain);
 		// brick.setTable(set);
 		brick.setVisBricks(visBricks);
@@ -497,7 +518,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		topBricks.clear();
 		bottomCol.clear();
 		bottomBricks.clear();
-		createSubBricks(dimensionGroupData.getSummaryBrickVA());
+		createSubBricks(dimensionGroupData.getSummaryVA());
 		detailRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -529,7 +550,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		// createBricks(table.getContentData(Set.CONTENT).getRecordVA());
-		createBricks(dimensionGroupData.getSummaryBrickVA());
+		createBricks(dimensionGroupData.getSummaryVA());
 		init(gl);
 	}
 
@@ -939,7 +960,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		detailBrickLayout.setPixelGLConverter(pixelGLConverter);
 
-		detailBrick = createBrick(detailBrickLayout, brick.getBrickData());
+		detailBrick = createBrick(detailBrickLayout, brick.getSegmentData());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
 		// detailBrick.setRecordVA(brick.getGroup(), brick.getRecordVA());
@@ -1076,11 +1097,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return groupColumn;
 	}
 
-	public void setBrickDimensionGroupData(IBrickDimensionGroupData dimensionGroupData) {
+	public void setBrickDimensionGroupData(ADimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 		dataDomain = dimensionGroupData.getDataDomain();
-		brickSortingStrategy = dimensionGroupData.getDefaultSortingStrategy();
-
 		// if (dimensionGroupData instanceof SetBasedDimensionGroupData) {
 		// SetBasedDimensionGroupData setBasedData =
 		// (SetBasedDimensionGroupData) dimensionGroupData;
@@ -1089,7 +1108,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 	}
 
-	public IBrickDimensionGroupData getBrickDimensionGroupData() {
+	public ADimensionGroupData getBrickDimensionGroupData() {
 		return dimensionGroupData;
 	}
 }

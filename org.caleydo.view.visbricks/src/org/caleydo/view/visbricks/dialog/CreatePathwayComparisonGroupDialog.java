@@ -18,7 +18,6 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.view.visbricks.brick.data.PathwayBrickDimensionGroupData;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionEvent;
@@ -224,7 +223,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		if (!pathways.isEmpty()) {
-			pathwayDimensionGroupData = new PathwayBrickDimensionGroupData(sourceDataDomain,
+			pathwayDimensionGroupData = new PathwayDimensionGroupData(sourceDataDomain,
 					pathwayDataDomain, dimensionPerspective, pathways, "PathwayGroup");
 
 			super.okPressed();
@@ -258,13 +257,13 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	public RecordVirtualArray getSourceVA() {
 		return sourceVA;
 	}
-	
+
 	/**
-	 * @param dimensionPerspective setter, see {@link #dimensionPerspective}
+	 * @param dimensionPerspective
+	 *            setter, see {@link #dimensionPerspective}
 	 */
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
 	}
-	
 
 }

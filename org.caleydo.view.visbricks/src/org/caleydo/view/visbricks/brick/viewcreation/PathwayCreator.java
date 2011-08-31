@@ -11,12 +11,12 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.data.PathwayBrickData;
 
 public class PathwayCreator implements IRemoteViewCreator {
 
@@ -26,7 +26,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		Collection<PathwayGraph> pathways = PathwayManager.get().getAllItems();
 
-		PathwayGraph pathway = ((PathwayBrickData) (remoteRenderingView.getBrickData()))
+		PathwayGraph pathway = ((PathwaySegmentData) (remoteRenderingView.getSegmentData()))
 				.getPathway();
 
 		if (pathway == null) {

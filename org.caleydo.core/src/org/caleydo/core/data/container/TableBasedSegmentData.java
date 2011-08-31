@@ -16,12 +16,10 @@ public class TableBasedSegmentData
 	implements ISegmentData {
 
 	private Group group;
-	private DataTable table;
-	private TableBasedDimensionGroupData dimensionGroupData;
+	private ADimensionGroupData dimensionGroupData;
 
 	public TableBasedSegmentData(ATableBasedDataDomain dataDomain, RecordPerspective recordPerspective,
-		DimensionPerspective dimensionPerspective, Group group,
-		TableBasedDimensionGroupData dimensionGroupData) {
+		DimensionPerspective dimensionPerspective, Group group, ADimensionGroupData dimensionGroupData) {
 		super(dataDomain, recordPerspective, dimensionPerspective);
 		this.group = group;
 		this.dimensionGroupData = dimensionGroupData;
@@ -34,6 +32,6 @@ public class TableBasedSegmentData
 
 	@Override
 	public String getLabel() {
-		return "Group " + group.getGroupID() + " in " + table.getLabel();
+		return "Group " + group.getGroupID() + " in " + dimensionGroupData.getLabel();
 	}
 }

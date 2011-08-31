@@ -22,10 +22,18 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 public abstract class ADataContainer
 	implements IDataContainer {
 
+	private static int idCounter;
+	private int id;
+
 	protected ATableBasedDataDomain dataDomain;
 
-		protected RecordPerspective recordPerspective;
+	protected RecordPerspective recordPerspective;
 	protected DimensionPerspective dimensionPerspective;
+
+	/**
+	 * Object holding respectively calculating all forms of (statistical) meta-data for this container
+	 */
+	protected ContainerStatistics containerStatistics;
 
 	/**
 	 * Empty constructor, nothing initialized
@@ -48,6 +56,10 @@ public abstract class ADataContainer
 		this.dimensionPerspective = dimensionPerspective;
 	}
 
+	{
+		id = ++idCounter;
+		containerStatistics = new ContainerStatistics(this);
+	}
 
 	@Override
 	public ATableBasedDataDomain getDataDomain() {
@@ -77,6 +89,20 @@ public abstract class ADataContainer
 	@Override
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
+	}
+
+	/**
+	 * @return the statistics, see {@link #containerStatistics}
+	 */
+	public ContainerStatistics getContainerStatistics() {
+		return containerStatistics;
+	}
+	
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getID() {
+		return id;
 	}
 
 }

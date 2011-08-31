@@ -3,12 +3,12 @@ package org.caleydo.view.visbricks.event;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.view.visbricks.brick.data.TableBasedBrickDimensionGroupData;
 
 public class AddGroupsToVisBricksEvent extends AEvent {
 
@@ -50,7 +50,9 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 				.get().getDataDomainByID(dataDomainID);
 		for (ClusterNode node : selectedNodes) {
-			TableBasedBrickDimensionGroupData data = new TableBasedBrickDimensionGroupData(
+			if (node.isLeaf())
+				continue;
+			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
 					dataDomain, dataDomain.getTable().getRecordPerspective(
 							recordPerspectiveID), dataDomain.getTable()
 							.getDimensionPerspective(dimensionPerspectiveID), node,

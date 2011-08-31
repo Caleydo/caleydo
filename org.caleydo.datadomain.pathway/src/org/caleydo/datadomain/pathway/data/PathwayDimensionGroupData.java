@@ -7,9 +7,7 @@ import java.util.Set;
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -35,14 +33,8 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 
 	protected PathwayDataDomain pathwayDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
-	private int uniqueID;
-	
-	private String label;
 
-	{
-		uniqueID = GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.DATA_TABLE);
-	}
+	private String label;
 
 	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain,
 			PathwayDataDomain pathwayDataDomain,
@@ -238,12 +230,6 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 	}
 
 	@Override
-	public int getID() {
-		// TODO Auto-generated method stub
-		return uniqueID;
-	}
-
-	@Override
 	public String getLabel() {
 		return label;
 	}
@@ -253,6 +239,12 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 	 */
 	public PathwayDataDomain getPathwayDataDomain() {
 		return pathwayDataDomain;
+	}
+
+	@Override
+	public ISegmentData getSummarySegementData() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

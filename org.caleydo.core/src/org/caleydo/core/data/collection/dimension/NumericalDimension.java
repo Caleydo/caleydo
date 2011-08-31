@@ -211,6 +211,7 @@ public class NumericalDimension
 	 *            VA to consider for the histogram
 	 * @return
 	 */
+	@Deprecated
 	public Histogram getHistogram(RecordVirtualArray recordVA) {
 
 		int iNumberOfBuckets = (int) Math.sqrt(recordVA.size());

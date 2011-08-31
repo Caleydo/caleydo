@@ -22,4 +22,7 @@ public interface IDataContainer {
 	public DimensionPerspective getDimensionPerspective();
 
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective);
+
+	public ContainerStatistics getContainerStatistics();
+
 }

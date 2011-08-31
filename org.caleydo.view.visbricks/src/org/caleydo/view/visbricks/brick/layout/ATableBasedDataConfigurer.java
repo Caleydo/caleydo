@@ -3,6 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
@@ -23,7 +24,7 @@ import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.eclipse.swt.widgets.Shell;
 
-public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
+public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int FUELBAR_HEIGHT_PIXELS = 4;
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
@@ -36,10 +37,10 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
 
-	protected DataTable table;
+	protected ADimensionGroupData dimensionGroupData;
 
-	public ASetBasedDataConfigurer(DataTable table) {
-		this.table = table;
+	public ATableBasedDataConfigurer(ADimensionGroupData dimensionGroupData) {
+		this.dimensionGroupData = dimensionGroupData;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(
@@ -62,7 +63,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), table.getLabel(),
+				.getDimensionGroup().getVisBricksView(), dimensionGroupData.getLabel(),
 				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -125,7 +126,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), table.getLabel(),
+				.getDimensionGroup().getVisBricksView(), dimensionGroupData.getLabel(),
 				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -226,7 +227,8 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
 		// FIXME this is wrong! The first one is the wrong va!
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDimensionGroup().getDimensionVA(), brick.getDimensionVA()));
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
+				.getDimensionGroup().getDimensionVA(), brick.getDimensionVA()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -263,7 +265,7 @@ public abstract class ASetBasedDataConfigurer implements IBrickConfigurer {
 		fuelBarLayout.setFrameColor(0, 1, 0, 0);
 		fuelBarLayout.setPixelGLConverter(pixelGLConverter);
 		fuelBarLayout.setPixelSizeY(FUELBAR_HEIGHT_PIXELS);
-		fuelBarLayout.setRenderer(new FuelBarRenderer(brick, table));
+		fuelBarLayout.setRenderer(new FuelBarRenderer(brick));
 
 		footerBarElements.add(fuelBarLayout);
 

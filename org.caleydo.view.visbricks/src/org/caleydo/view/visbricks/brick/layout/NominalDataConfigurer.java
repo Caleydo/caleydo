@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -20,13 +20,13 @@ import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
 
-public class NominalDataConfigurer extends ASetBasedDataConfigurer {
+public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
 
-	public NominalDataConfigurer(DataTable set) {
-		super(set);
+	public NominalDataConfigurer(ADimensionGroupData dimensionGroupData) {
+		super(dimensionGroupData);
 	}
 
 	@Override
@@ -151,14 +151,14 @@ public class NominalDataConfigurer extends ASetBasedDataConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator(table);
+		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
-		TagCloudCreator tagCloudCreator = new TagCloudCreator(table);
+		TagCloudCreator tagCloudCreator = new TagCloudCreator();
 		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer tagCloudLayoutRenderer = new ViewLayoutRenderer(tagCloud);
 		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);

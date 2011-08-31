@@ -45,14 +45,11 @@ public abstract class ADimensionGroupData
 	public abstract ArrayList<Group> getGroups();
 
 	/**
-	 * @return ID of the dimension group.
-	 */
-	public abstract int getID();
-
-	/**
 	 * @return List of segment data.
 	 */
 	public abstract List<ISegmentData> getSegmentData();
+
+	public abstract ISegmentData getSummarySegementData();
 
 	/**
 	 * @return Label of the dimension group.

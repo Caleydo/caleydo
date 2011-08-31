@@ -14,11 +14,9 @@ import org.caleydo.view.tagclouds.GLTagCloud;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 public class TagCloudCreator implements IRemoteViewCreator {
-	
-	private DataTable set;
 
-	public TagCloudCreator(DataTable set) {
-		this.set = set;
+	public TagCloudCreator() {
+
 	}
 
 	@Override
@@ -31,11 +29,10 @@ public class TagCloudCreator implements IRemoteViewCreator {
 						GLTagCloud.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-								1, 0, 1, -1, 1));
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		tagCloud.setRemoteRenderingGLView(remoteRenderingView);
-		tagCloud.setTable(set);
 		tagCloud.setDataDomain(remoteRenderingView.getDataDomain());
 		tagCloud.initialize();
 		tagCloud.initRemote(gl, remoteRenderingView, glMouseListener);
