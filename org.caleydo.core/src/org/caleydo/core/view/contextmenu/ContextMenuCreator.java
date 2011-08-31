@@ -71,8 +71,4 @@ public class ContextMenuCreator {
 	public AGLView getView() {
 		return view;
 	}
-	
-	public ArrayList<AContextMenuItem> getMenuItems() {
-		return menuItems;
-	}
 }
