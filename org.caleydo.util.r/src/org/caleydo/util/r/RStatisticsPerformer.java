@@ -50,36 +50,32 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 	public void init() {
 		// just making sure we have the right version of everything
 
-//			Map<String, String> env = System.getenv();
-//			if(!env.containsKey("R_HOME")) {
-//				throw new RuntimeException(
-//				"Could not instantiate R Statistics Peformer");
-//			}
-//			
-//			Properties properties = System.getProperties();
-//			
-//			String path = properties.getProperty("java.library.path");
-			try {
-				if (!Rengine.  versionCheck()) {
-					System.err
-							.println("** Version mismatch - Java files don't match library version.");
-					System.exit(1);
-				}	
-			} catch (UnsatisfiedLinkError e) {
-				System.out.println("R SUCKS");			}
-			
-			System.out.println("Creating Rengine (with arguments)");
-			String[] args = new String[1];
-			args[0] = "--no-save";
-			engine = new Rengine(args, false, new RConsole());
-			System.out.println("Rengine created, waiting for R");
-			// the engine creates R is a new thread, so we should wait until
-			// it's
-			// ready
-			if (!engine.waitForR()) {
-				System.out.println("Cannot load R");
-				return;
-			}
+		// Map<String, String> env = System.getenv();
+		// if(!env.containsKey("R_HOME")) {
+		// throw new RuntimeException(
+		// "Could not instantiate R Statistics Peformer");
+		// }
+		//
+		// Properties properties = System.getProperties();
+		//
+		// String path = properties.getProperty("java.library.path");
+		if (!Rengine.versionCheck()) {
+			System.err.println("** Version mismatch - Java files don't match library version.");
+			return;
+		}
+		
+		System.out.println("Creating Rengine (with arguments)");
+		String[] args = new String[1];
+		args[0] = "--no-save";
+		engine = new Rengine(args, false, new RConsole());
+		System.out.println("Rengine created, waiting for R");
+		// the engine creates R is a new thread, so we should wait until
+		// it's
+		// ready
+		if (!engine.waitForR()) {
+			System.out.println("Cannot load R");
+			return;
+		}
 	}
 
 	@Override
@@ -255,8 +251,9 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 
 			for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
-				DimensionVirtualArray dimensionVA1 = table.getDimensionPerspective(
-						DataTable.DIMENSION).getDimensionVA();
+				DimensionVirtualArray dimensionVA1 = table
+						.getDimensionPerspective(DataTable.DIMENSION)
+						.getDimensionVA();
 
 				double[] compareVec1 = new double[dimensionVA1.size()];
 
@@ -323,8 +320,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 		ArrayList<Double> pValueVector = new ArrayList<Double>();
 
 		for (int recordIndex = 0; recordIndex < set1.get(
-				set1.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA()
-						.get(0)).size(); recordIndex++) {
+				set1.getDimensionPerspective(DataTable.DIMENSION)
+						.getDimensionVA().get(0)).size(); recordIndex++) {
 
 			DimensionVirtualArray dimensionVA1 = set1.getDimensionPerspective(
 					DataTable.DIMENSION).getDimensionVA();

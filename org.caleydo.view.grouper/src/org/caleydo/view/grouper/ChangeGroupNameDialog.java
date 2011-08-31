@@ -28,7 +28,7 @@ public class ChangeGroupNameDialog {
 		final Text text = new Text(dialog, SWT.SHADOW_IN);
 		text.setBounds(140, 40, 100, 25);
 		text.setText(groupRep.getName());
-		final Button okButton = new Button(dialog, SWT.PUSH);
+		final Button okButton = new Button(dialog, SWT.PUSH); 
 		okButton.setText("&OK");
 		Button cancelButton = new Button(dialog, SWT.PUSH);
 		cancelButton.setText("&Cancel");

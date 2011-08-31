@@ -66,7 +66,7 @@ public class Graph<NodeType extends IDataGraphNode> {
 			nodes.add(node1);
 		if (!nodes.contains(node2))
 			nodes.add(node2);
-		
+
 		Set<NodeType> node1Edges = nodeConnections.get(node1);
 
 		if (node1Edges == null) {
@@ -83,38 +83,49 @@ public class Graph<NodeType extends IDataGraphNode> {
 		node2Edges.add(node1);
 		nodeConnections.put(node2, node2Edges);
 
-		edges.add(new Pair<NodeType, NodeType>(node1, node2));
+		boolean edgeExists = false;
+		for (Pair<NodeType, NodeType> edge : edges) {
+			if ((edge.getFirst() == node1 && edge.getSecond() == node2)
+					|| (edge.getFirst() == node2 && edge.getSecond() == node1)) {
+				edgeExists = true;
+			}
+		}
+
+		if (!edgeExists) {
+			edges.add(new Pair<NodeType, NodeType>(node1, node2));
+		}
 	}
 
 	public Set<Pair<NodeType, NodeType>> getAllEdges() {
 		return edges;
 	}
-	
+
 	public void removeNode(NodeType node) {
-		
+
 		Set<NodeType> neighbors = nodeConnections.get(node);
-		
-		if(neighbors != null) {
-			for(NodeType neighbor : neighbors) {
-				Set<NodeType> neighborConnections = nodeConnections.get(neighbor);
-				if(neighborConnections != null) {
+
+		if (neighbors != null) {
+			for (NodeType neighbor : neighbors) {
+				Set<NodeType> neighborConnections = nodeConnections
+						.get(neighbor);
+				if (neighborConnections != null) {
 					neighborConnections.remove(node);
 				}
 			}
 		}
-		
-		Set<Pair<NodeType, NodeType>> edgesToRemove = new HashSet<Pair<NodeType,NodeType>>();
-		
-		for(Pair<NodeType, NodeType> edge : edges) {
-			if(edge.getFirst() == node || edge.getSecond() == node) {
+
+		Set<Pair<NodeType, NodeType>> edgesToRemove = new HashSet<Pair<NodeType, NodeType>>();
+
+		for (Pair<NodeType, NodeType> edge : edges) {
+			if (edge.getFirst() == node || edge.getSecond() == node) {
 				edgesToRemove.add(edge);
 			}
 		}
-		
-		for(Pair<NodeType, NodeType> edge : edgesToRemove) {
+
+		for (Pair<NodeType, NodeType> edge : edgesToRemove) {
 			edges.remove(edge);
 		}
-		
+
 		nodeConnections.remove(node);
 		nodes.remove(node);
 	}

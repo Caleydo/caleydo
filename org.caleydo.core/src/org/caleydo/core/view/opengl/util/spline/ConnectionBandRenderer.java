@@ -90,7 +90,7 @@ public class ConnectionBandRenderer {
 			List<Vec3f> curvePoints =
 				computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1), linePoints.get(i + 2),
 					linePoints.get(i + 3));
-			gl.glBegin(GL2.GL_POINTS);
+			gl.glBegin(GL2.GL_LINE_STRIP);
 			for (int j = 0; j < curvePoints.size(); j++) {
 				gl.glVertex3f(curvePoints.get(j).x(), curvePoints.get(j).y(), curvePoints.get(j).z());
 			}

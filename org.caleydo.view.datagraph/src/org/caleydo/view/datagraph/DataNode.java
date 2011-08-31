@@ -122,7 +122,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		float height = pixelGLConverter
 				.getGLHeightForPixelHeight(getHeightPixels());
 		gl.glPushMatrix();
-		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0);
+		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0.1f);
 
 		// layoutManager.setViewFrustum(new ViewFrustum(
 		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x

@@ -148,7 +148,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		float spacingHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(getHeightPixels());
 		gl.glPushMatrix();
-		gl.glTranslatef(x - spacingWidth / 2.0f, y - spacingHeight / 2.0f, 0);
+		gl.glTranslatef(x - spacingWidth / 2.0f, y - spacingHeight / 2.0f, 0.1f);
 
 		// layoutManager.setViewFrustum(new ViewFrustum(
 		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x

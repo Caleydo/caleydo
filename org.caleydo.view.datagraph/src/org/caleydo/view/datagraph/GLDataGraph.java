@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.bandlayout.BandInfo;
 import org.caleydo.view.datagraph.bandlayout.EdgeBandRenderer;
+import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
@@ -464,24 +465,39 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
 				gl.glColor3f(0, 0, 0);
 				gl.glLineWidth(2);
-				gl.glBegin(GL2.GL_LINES);
-				Point2D position1 = graphLayout
-						.getNodePosition(edge.getFirst());
-				Point2D position2 = graphLayout.getNodePosition(edge
-						.getSecond());
+				gl.glEnable(GL2.GL_LINE_STIPPLE);
+				gl.glLineStipple(3, (short) 127);
+				
+				// gl.glBegin(GL2.GL_LINES);
+				Point2D position1 = edge.getFirst().getPosition();
+				Point2D position2 = edge.getSecond().getPosition();
+				
+				List<Point2D> edgePoints = new ArrayList<Point2D>();
+				edgePoints.add(position1);
+				edgePoints.add(position2);
 
-				float x1 = pixelGLConverter
-						.getGLWidthForPixelWidth((int) position1.getX());
-				float x2 = pixelGLConverter
-						.getGLWidthForPixelWidth((int) position2.getX());
-				float y1 = pixelGLConverter
-						.getGLHeightForPixelHeight((int) position1.getY());
-				float y2 = pixelGLConverter
-						.getGLHeightForPixelHeight((int) position2.getY());
+				IEdgeRoutingStrategy routingStrategy = new SimpleEdgeRoutingStrategy(
+						dataGraph);
+				routingStrategy.createEdge(edgePoints);
 
-				gl.glVertex3f(x1, y1, -0.5f);
-				gl.glVertex3f(x2, y2, -0.5f);
-				gl.glEnd();
+				edgePoints.add(0, position1);
+				edgePoints.add(position2);
+
+				connectionBandRenderer.init(gl);
+				connectionBandRenderer.renderInterpolatedCurve(gl, edgePoints);
+				//
+				// float x1 = pixelGLConverter
+				// .getGLWidthForPixelWidth((int) position1.getX());
+				// float x2 = pixelGLConverter
+				// .getGLWidthForPixelWidth((int) position2.getX());
+				// float y1 = pixelGLConverter
+				// .getGLHeightForPixelHeight((int) position1.getY());
+				// float y2 = pixelGLConverter
+				// .getGLHeightForPixelHeight((int) position2.getY());
+				//
+				// gl.glVertex3f(x1, y1, -0.5f);
+				// gl.glVertex3f(x2, y2, -0.5f);
+				// gl.glEnd();
 				gl.glPopAttrib();
 			}
 		}
@@ -495,15 +511,15 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
 			IDataGraphNode node2) {
 
-		EdgeBandRenderer bandRenderer = new EdgeBandRenderer(
-				node1, node2, pixelGLConverter, viewFrustum);
+		EdgeBandRenderer bandRenderer = new EdgeBandRenderer(node1, node2,
+				pixelGLConverter, viewFrustum);
 
 		// ConnectionBandCreatorFactory
 		// .getConnectionBandCreator(node1, node2, pixelGLConverter,
 		// viewFrustum);
 
-		bandRenderer
-				.renderEdgeBand(gl, new SimpleEdgeRoutingStrategy(dataGraph));
+		bandRenderer.renderEdgeBand(gl,
+				new SimpleEdgeRoutingStrategy(dataGraph));
 		// for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
 		// .calcConnectionBands()) {
 		// connectionBandRenderer.init(gl);
