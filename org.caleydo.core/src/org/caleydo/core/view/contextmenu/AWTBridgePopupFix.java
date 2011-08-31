@@ -24,8 +24,8 @@ public class AWTBridgePopupFix {
 		if (retriesLeft == 0)
 			return;
 
-		if (System.getProperty("os.name").contains("Win")) {
-			final Shell activeShell = menuCreator.getParent().getShell();
+		if (System.getProperty("os.name").contains("Win") || System.getProperty("os.name").contains("Mac")) {
+			final Shell activeShell = popupShell = menuCreator.getParent().getShell();
 			popupMenu(menuCreator, retriesLeft, activeShell);
 		}
 		else {
@@ -36,15 +36,16 @@ public class AWTBridgePopupFix {
 			l.y -= 2;
 			popupShell.setLocation(l);
 			popupShell.setSize(4, 4);
-			popupShell.open();	
+			popupShell.open();
 			popupMenu(menuCreator, retriesLeft, activeShell);
 		}
 	}
-	
-	private static void popupMenu(final ContextMenuCreator menuCreator, final int retriesLeft, final Shell activeShell) {
-		
+
+	private static void popupMenu(final ContextMenuCreator menuCreator, final int retriesLeft,
+		final Shell activeShell) {
+
 		final Display display = menuCreator.getParent().getDisplay();
-		
+
 		final int[] count = new int[1];
 		Runnable r = new Runnable() {
 			public void run() {
@@ -67,7 +68,7 @@ public class AWTBridgePopupFix {
 									System.err.println("menu not shown after " + MAX_ATTEMPTS + "attempts");
 									menu.setVisible(false);
 									menu.dispose();
-//									popupShell.dispose();
+									// popupShell.dispose();
 									System.err.println("disposing");
 									showMenu(menuCreator, retriesLeft - 1);
 								}
@@ -90,26 +91,30 @@ public class AWTBridgePopupFix {
 					}
 				});
 
-				popupShell.addListener(SWT.Deactivate, new Listener() {
+				if (!System.getProperty("os.name").contains("Win")
+					&& !System.getProperty("os.name").contains("Mac")) {
+					popupShell.addListener(SWT.Deactivate, new Listener() {
 
-					@Override
-					public void handleEvent(Event event) {
+						@Override
+						public void handleEvent(Event event) {
 
-						if (!popupShell.isDisposed()) {
-							popupShell.close();
-							popupShell.dispose();
+							if (!popupShell.isDisposed()) {
+								popupShell.close();
+								popupShell.dispose();
+							}
+
+							// Set lazy mode to false because in the case of an ignored context menu, the
+							// state is
+							// erroneously set to true.
+							menuCreator.getView().setLazyMode(false);
 						}
-						
-						// Set lazy mode to false because in the case of an ignored context menu, the state is
-						// erroneously set to true.
-						menuCreator.getView().setLazyMode(false);
-					}
-				});
+					});
+				}
 
 				menu.setVisible(true);
 			}
 		};
-		
+
 		display.asyncExec(r);
 	}
 }
