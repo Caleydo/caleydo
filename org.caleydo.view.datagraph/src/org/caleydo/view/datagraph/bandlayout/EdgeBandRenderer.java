@@ -4,7 +4,9 @@ import gleem.linalg.Vec3f;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 
@@ -12,7 +14,6 @@ import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.IDataGraphNode;
 
@@ -20,11 +21,13 @@ public class EdgeBandRenderer {
 
 	private final static int SPACING_PIXELS = 2;
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
+	protected final static int DEFAULT_MAX_BAND_WIDTH = 30;
 
 	protected IDataGraphNode node1;
 	protected IDataGraphNode node2;
 	protected PixelGLConverter pixelGLConverter;
 	protected ViewFrustum viewFrustum;
+	protected int maxBandWidth = DEFAULT_MAX_BAND_WIDTH;
 
 	public EdgeBandRenderer(IDataGraphNode node1, IDataGraphNode node2,
 			PixelGLConverter pixelGLConverter, ViewFrustum viewFrustum) {
@@ -139,10 +142,29 @@ public class EdgeBandRenderer {
 		Point2D bundlingPoint2 = calcBundlingPoint(node2,
 				commonDimensionGroupsNode2);
 
-//		GLHelperFunctions.drawPointAt(gl, (float) bundlingPoint1.getX(),
-//				(float) bundlingPoint1.getY(), 0);
-//		GLHelperFunctions.drawPointAt(gl, (float) bundlingPoint2.getX(),
-//				(float) bundlingPoint2.getY(), 0);
+		Map<ADimensionGroupData, Integer> bandWidthMap = new HashMap<ADimensionGroupData, Integer>();
+
+		float bandWidth = 0;
+
+		for (ADimensionGroupData dimensionGroupData : commonDimensionGroupsNode1) {
+			int width = calcDimensionGroupBandWidthPixels(dimensionGroupData);
+			bandWidth += width;
+			bandWidthMap.put(dimensionGroupData, width);
+		}
+		for (ADimensionGroupData dimensionGroupData : commonDimensionGroupsNode2) {
+			int width = calcDimensionGroupBandWidthPixels(dimensionGroupData);
+			bandWidthMap.put(dimensionGroupData, width);
+		}
+
+		if (bandWidth > maxBandWidth)
+			bandWidth = maxBandWidth;
+
+		// GLHelperFunctions.drawPointAt(gl, (float) bundlingPoint1.getX(),
+		// (float) bundlingPoint1.getY(), 0);
+		// GLHelperFunctions.drawPointAt(gl, (float) bundlingPoint2.getX(),
+		// (float) bundlingPoint2.getY(), 0);
+
+		// TODO: calc dimension group data size in comparison to
 
 		List<Point2D> edgePoints = new ArrayList<Point2D>();
 
@@ -160,6 +182,42 @@ public class EdgeBandRenderer {
 				gl, edgePoints, 20, pixelGLConverter);
 		connectionBandRenderer.render(gl, bandPoints);
 
+		Point2D bandStartPointAnchorNode1 = new Point2D.Float(bandPoints.get(0)
+				.x(), bandPoints.get(0).y());
+		Point2D bandEndPointAnchorNode1 = new Point2D.Float(bandPoints.get(
+				bandPoints.size() - 1).x(), bandPoints.get(
+				bandPoints.size() - 1).y());
+		float vecBandEndX = (float) (bandEndPointAnchorNode1.getX() - bandStartPointAnchorNode1
+				.getX()) / bandWidth;
+		float vecBandEndY = (float) (bandEndPointAnchorNode1.getY() - bandStartPointAnchorNode1
+				.getY()) / bandWidth;
+
+		Point2D prevBandAnchorPoint = bandStartPointAnchorNode1;
+
+		for (ADimensionGroupData dimensionGroupData : commonDimensionGroupsNode1) {
+			List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
+			anchorPoints.add(node1
+					.getBottomDimensionGroupAnchorPoints(dimensionGroupData));
+			int width = bandWidthMap.get(dimensionGroupData);
+
+			Point2D nextAnchorPoint = new Point2D.Float(
+					(float) prevBandAnchorPoint.getX() + vecBandEndX * width,
+					(float) prevBandAnchorPoint.getY() + vecBandEndY * width);
+			
+			anchorPoints.add(new Pair<Point2D, Point2D>(prevBandAnchorPoint, nextAnchorPoint));
+			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
+					new float[] { 0, 0, 0 }, 1);
+			
+			prevBandAnchorPoint = nextAnchorPoint;
+		}
+
+	}
+
+	protected int calcDimensionGroupBandWidthPixels(
+			ADimensionGroupData dimensionGroupData) {
+		// TODO: implement properly
+
+		return 5;
 	}
 
 	protected Point2D calcBundlingPoint(IDataGraphNode node,
@@ -675,5 +733,13 @@ public class EdgeBandRenderer {
 
 		connectionBandRenderer.renderComplexBand(gl, rightBandConnectionPoints,
 				false, new float[] { 0, 0, 0 }, 0.5f);
+	}
+
+	public int getMaxBandWidth() {
+		return maxBandWidth;
+	}
+
+	public void setMaxBandWidth(int maxBandWidth) {
+		this.maxBandWidth = maxBandWidth;
 	}
 }
