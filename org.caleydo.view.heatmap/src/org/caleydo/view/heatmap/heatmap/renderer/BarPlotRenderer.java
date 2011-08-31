@@ -91,7 +91,7 @@ public class BarPlotRenderer extends AContentRenderer {
 			xPosition = 0;
 
 			int screenHeight = conv.getPixelHeightForGLHeight(fieldHeight);
-
+			
 			float uncertaintyMax = uncertaintyHeatmap
 					.getMaxUncertainty(recordID);
 			if (screenHeight < 15) {

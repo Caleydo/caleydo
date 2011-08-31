@@ -175,50 +175,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		overviewDetailConnectorLayout.setRenderer(overviewDetailConnectorRenderer);
 
 		templateRenderer.updateLayout();
-
-		// templateRenderer = new LayoutManager(this.viewFrustum);
-		// if (template == null)
-		// template = new LayoutTemplate();
-		//
-		// templateRenderer.setTemplate(template);
-		//
-		// baseRow = new Row("baseRow");
-		// template.setBaseElementLayout(baseRow);
-		//
-		// overviewLayout = new Column("overviewLayout");
-		// overviewLayout.setDebug(false);
-		// overviewLayout
-		// .setPixelGLConverter(pixelGLConverter);
-		// overviewLayout.setPixelSizeX(90);
-		//
-		// overviewDetailConnectorLayout = new Column(
-		// "overviewDetailConnectorLayout");
-		// overviewDetailConnectorLayout.setDebug(false);
-		// overviewDetailConnectorLayout.setPixelGLConverter(parentGLCanvas
-		// .getPixelGLConverter());
-		// overviewDetailConnectorLayout.setPixelSizeX(60);
-		//
-		// detailLayout = new ElementLayout("detailLayout");
-		// detailLayout.setDebug(false);
-		//
-		// baseRow.append(overviewLayout);
-		// baseRow.append(overviewDetailConnectorLayout);
-		// baseRow.append(detailLayout);
-		//
-		// super.renderStyle = renderStyle;
-		// detailLevel = DetailLevel.HIGH;
-		//
-		// createOverviewHeatMap(gl);
-		// createDetailHeatMap(gl);
-		//
-		// OverviewDetailConnectorRenderer overviewDetailConnectorRenderer = new
-		// OverviewDetailConnectorRenderer(
-		// overviewHeatMap, detailHeatMap);
-		// overviewDetailConnectorLayout
-		// .setRenderer(overviewDetailConnectorRenderer);
-		//
-		// templateRenderer.updateLayout();
-
 	}
 
 	@Override
@@ -277,6 +233,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 
+		if (recordVA != null)
+			detailHeatMap.setRecordVA(recordVA);
+		
+		detailHeatMap.setDimensionPerspectiveID(dimensionPerspectiveID);
+		
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
 		detailHeatMap.setTable(table);
@@ -284,9 +245,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				detailHeatMap, this));
 		detailHeatMap.initialize();
 		detailHeatMap.initRemote(gl, this, glMouseListener);
-
-		if (recordVA != null)
-			detailHeatMap.setRecordVA(recordVA);
 
 		ViewLayoutRenderer detailHeatMapLayoutRenderer = new ViewLayoutRenderer(
 				detailHeatMap);
@@ -369,7 +327,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 					break;
 
 				ArrayList<Integer> clusterElements = recordVA.getIDsOfGroup(groupList
-						.get(externalID).getID());
+						.get(externalID).getGroupID());
 				RecordVirtualArray clusterVA = new RecordVirtualArray(
 						recordPerspectiveID, clusterElements);
 				detailHeatMap.setRecordVA(clusterVA);
@@ -548,6 +506,13 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	public float getMaxUncertainty(int recordID) {
 		return (float) aggregatedUncertainty[recordID];
 
+	}
+	
+	public boolean isMaxUncertaintyCalculated() {
+		if (aggregatedUncertainty != null)
+			return true;
+		
+		return false;
 	}
 
 	public ArrayList<double[]> getMultiLevelUncertainty() {

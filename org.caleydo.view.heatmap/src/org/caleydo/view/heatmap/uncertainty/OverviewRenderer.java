@@ -144,7 +144,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		Group group = clusterList.getGroups().get(clusterIndex);
 
 		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getRecordVA()
-				.getIDsOfGroup(group.getID());
+				.getIDsOfGroup(group.getGroupID());
 		RecordVirtualArray clusterVA = new RecordVirtualArray("Custom", clusterGenes);
 
 		return clusterVA;

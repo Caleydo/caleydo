@@ -29,9 +29,9 @@ public class ClusterRenderer extends LayoutRenderer {
 
 	// FIXME: must not be public. access with getter.
 	public HeatMapTextureRenderer textureRenderer;
-	
+
 	private BarplotTextureRenderer dataUncBarTextureRenderer;
-	
+
 	// FIXME: must not be public. access with getter.
 	public BarplotTextureRenderer visUncBarTextureRenderer;
 
@@ -77,22 +77,14 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterHeatMapLayout = new Column("heatmap");
 		clusterHeatMapLayout.setRatioSizeX(1f);
 
-		clusterDataUncBarLayout = new Column("bar");
-		clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
-				.getPixelGLConverter());
-		clusterDataUncBarLayout.setPixelSizeX(50);
-
 		clusterVisUncBarLayout = new Column("bar2");
-		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap.getPixelGLConverter());
+		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
+				.getPixelGLConverter());
 		clusterVisUncBarLayout.setPixelSizeX(50);
 
 		textureRenderer = new HeatMapTextureRenderer(uncertaintyHeatMap,
 				clusterHeatMapLayout);
 		clusterHeatMapLayout.setRenderer(textureRenderer);
-
-		dataUncBarTextureRenderer = new BarplotTextureRenderer();
-		clusterDataUncBarLayout.setRenderer(dataUncBarTextureRenderer);
-		dataUncBarTextureRenderer.setOrientationLeft(true);
 
 		visUncBarTextureRenderer = new BarplotTextureRenderer();
 		clusterVisUncBarLayout.setRenderer(visUncBarTextureRenderer);
@@ -108,36 +100,53 @@ public class ClusterRenderer extends LayoutRenderer {
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.2f);
 			clusterLayout.append(lineSeparatorLayout);
-
 		}
-		clusterLayout.append(clusterDataUncBarLayout);
-		{
-			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
+		
+		// only add data uncertainty plot if an uncertainty in data space is available
+		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
+			
+			clusterDataUncBarLayout = new Column("bar");
+			clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
+					.getPixelGLConverter());
+			clusterDataUncBarLayout.setPixelSizeX(50);
 
-			PixelGLConverter pixelGLConverter = uncertaintyHeatMap.getPixelGLConverter();
-			lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-			lineSeparatorLayout.setPixelSizeX(2);
-			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
-			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.8f);
-			clusterLayout.append(lineSeparatorLayout);
+			dataUncBarTextureRenderer = new BarplotTextureRenderer();
+			clusterDataUncBarLayout.setRenderer(dataUncBarTextureRenderer);
+			dataUncBarTextureRenderer.setOrientationLeft(true);
 
+			clusterLayout.append(clusterDataUncBarLayout);
+
+			{
+				ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
+
+				PixelGLConverter pixelGLConverter = uncertaintyHeatMap
+						.getPixelGLConverter();
+				lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+				lineSeparatorLayout.setPixelSizeX(2);
+				lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
+				lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.8f);
+				clusterLayout.append(lineSeparatorLayout);
+			}
+
+			dataUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA,
+					dimensionVA, uncertaintyHeatMap.getColorMapper());
 		}
+
 		clusterLayout.append(clusterHeatMapLayout);
+
 		{
 			ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 
-			lineSeparatorLayout.setPixelGLConverter(uncertaintyHeatMap.getPixelGLConverter());
+			lineSeparatorLayout.setPixelGLConverter(uncertaintyHeatMap
+					.getPixelGLConverter());
 			lineSeparatorLayout.setPixelSizeX(2);
 			lineSeparatorLayout.setRenderer(new SpacerRenderer(false));
 			lineSeparatorLayout.setFrameColor(0.0f, 0.0f, 0.0f, 0.3f);
 			clusterLayout.append(lineSeparatorLayout);
-
 		}
 
-		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA, clusterIndex);
-
-		dataUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA,
-				uncertaintyHeatMap.getColorMapper());
+		textureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA,
+				clusterIndex);
 
 		visUncBarTextureRenderer.init(uncertaintyHeatMap, set, clusterVA, dimensionVA,
 				uncertaintyHeatMap.getColorMapper());

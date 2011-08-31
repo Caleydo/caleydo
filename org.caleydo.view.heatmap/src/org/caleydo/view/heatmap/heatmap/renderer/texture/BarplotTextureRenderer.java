@@ -74,8 +74,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 		Texture tempTexture;
 
-		samplesPerTexture = (int) Math.ceil((double) textureHeight
-				/ numberOfTextures);
+		samplesPerTexture = (int) Math.ceil((double) textureHeight / numberOfTextures);
 
 		FloatBuffer[] floatBuffer = new FloatBuffer[numberOfTextures];
 
@@ -103,9 +102,14 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			if (uncertaintyVA != null) {
 				uncertainty = uncertaintyVA.get(index);
-			} else {
+			} else if (glUncHeatmap.isMaxUncertaintyCalculated()) {
 				uncertainty = glUncHeatmap.getMaxUncertainty(recordVA.get(index));
-			}
+			} else
+				uncertainty = 1; // TODO: check why this is necessary. actually
+									// this should never happen, because the
+									// plot should not be created in the first
+									// place
+
 			for (int i = 0; i < textureWidth; i++) {
 				float[] rgba = new float[4];
 				if (((float) i / textureWidth) > uncertainty) {
@@ -123,14 +127,11 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 				floatBuffer[textureCounter].rewind();
 
 				TextureData texData = new TextureData(GLProfile.getDefault(),
-						GL2.GL_RGBA /* internalFormat */,
-						textureWidth /* height */,
-						numberSamples.get(textureCounter) /* width */,
-						0 /* border */, GL2.GL_RGBA /* pixelFormat */,
-						GL2.GL_FLOAT /* pixelType */, false /* mipmap */,
-						false /* dataIsCompressed */,
-						false /* mustFlipVertically */,
-						floatBuffer[textureCounter], null);
+						GL2.GL_RGBA /* internalFormat */, textureWidth /* height */,
+						numberSamples.get(textureCounter) /* width */, 0 /* border */,
+						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
+						true /* mipmap */, false /* dataIsCompressed */,
+						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
 				tempTexture.updateImage(texData);
@@ -173,10 +174,9 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			textures.get(numberOfTextures - i - 1).enable();
 			textures.get(numberOfTextures - i - 1).bind();
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S,
-					GL2.GL_CLAMP);
-			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T,
-					GL2.GL_CLAMP);
+			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
+			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER,
 					GL2.GL_NEAREST);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER,

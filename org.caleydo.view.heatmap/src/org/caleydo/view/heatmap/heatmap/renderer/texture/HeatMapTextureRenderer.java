@@ -97,7 +97,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 		samplesPerTexture = (int) Math.ceil((double) textureHeight / numberOfTextures);
 
-		float fLookupValue = 0;
+		float lookupValue = 0;
 
 		floatBuffer = new FloatBuffer[numberOfTextures];
 
@@ -130,10 +130,10 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				fLookupValue = table.get(dimensionIndex).getFloat(
+				lookupValue = table.get(dimensionIndex).getFloat(
 						uncertaintyHeatMap.getRenderingRepresentation(), recordIndex);
 
-				float[] mappingColor = colorMapper.getColor(fLookupValue);
+				float[] mappingColor = colorMapper.getColor(lookupValue);
 
 				float[] rgba = { mappingColor[0], mappingColor[1], mappingColor[2],
 						opacity };
@@ -147,7 +147,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 						GL2.GL_RGBA /* internalFormat */, textureWidth /* height */,
 						numberSamples.get(textureCounter) /* width */, 0 /* border */,
 						GL2.GL_RGBA /* pixelFormat */, GL2.GL_FLOAT /* pixelType */,
-						false /* mipmap */, false /* dataIsCompressed */,
+						true /* mipmap */, false /* dataIsCompressed */,
 						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
@@ -191,6 +191,8 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 		texture.enable();
 		texture.bind();
+		
+		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);

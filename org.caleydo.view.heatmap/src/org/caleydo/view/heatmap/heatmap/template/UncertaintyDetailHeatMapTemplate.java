@@ -15,17 +15,25 @@ import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
  * 
  */
 public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
+
+	protected GLUncertaintyHeatMap uncertaintyHeatMap;
+
 	protected BarPlotRenderer barPlotRenderer;
-	
-	public UncertaintyDetailHeatMapTemplate(GLHeatMap heatMap, GLUncertaintyHeatMap glUncertaintyHeatMap) {
+
+	public UncertaintyDetailHeatMapTemplate(GLHeatMap heatMap,
+			GLUncertaintyHeatMap uncertaintyHeatMap) {
 		super(heatMap);
 
-		barPlotRenderer = new BarPlotRenderer(heatMap, glUncertaintyHeatMap);
-		barPlotRenderer.setContentSpacing(contentSpacing);
-		
-		minSelectedFieldHeight *= 2; 
+		this.uncertaintyHeatMap = uncertaintyHeatMap;
+
+		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
+			barPlotRenderer = new BarPlotRenderer(heatMap, uncertaintyHeatMap);
+			barPlotRenderer.setContentSpacing(contentSpacing);
+		}
+
+		minSelectedFieldHeight *= 2;
 	}
-	
+
 	public float bottomSpacing = 0;
 
 	@Override
@@ -39,22 +47,22 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		// rendererParameters.clear();
 
 		Row mainRow = new Row("heatMapRow");
-//		mainRow.setDebug(true);
+		// mainRow.setDebug(true);
 		mainRow.setGrabY(true);
 		mainRow.setRatioSizeX(1);
 
 		int barPlotPixelWidth = 60;
-		
-		barPlotLayout = new ElementLayout("BarPlotLayout");
+		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
 
-		barPlotLayout.setRenderer(barPlotRenderer);
+			barPlotLayout = new ElementLayout("BarPlotLayout");
+			barPlotLayout.setRenderer(barPlotRenderer);
+			barPlotLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
+			barPlotLayout.setPixelSizeX(barPlotPixelWidth);
+			// barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
+			// barPlotLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 
-		barPlotLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
-		barPlotLayout.setPixelSizeX(barPlotPixelWidth);
-		// barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
-		// barPlotLayout.addForeGroundRenderer(dimensionSelectionRenderer);
-
-		mainRow.append(barPlotLayout);
+			mainRow.append(barPlotLayout);
+		}
 
 		heatMapLayout = new ElementLayout("hmlayout");
 		heatMapLayout.setRenderer(heatMapRenderer);
@@ -92,12 +100,12 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		dimensionCaptionLayout.setGrabX(true);
 		dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
 
-		ElementLayout leadSpacingLayout = new ElementLayout();
-
-		leadSpacingLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
-		leadSpacingLayout.setPixelSizeX(barPlotPixelWidth);
-
-		dimensionCaptionRow.append(leadSpacingLayout);
+		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
+			ElementLayout leadSpacingLayout = new ElementLayout();
+			leadSpacingLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
+			leadSpacingLayout.setPixelSizeX(barPlotPixelWidth);
+			dimensionCaptionRow.append(leadSpacingLayout);
+		}
 
 		dimensionCaptionRow.append(dimensionCaptionLayout);
 
