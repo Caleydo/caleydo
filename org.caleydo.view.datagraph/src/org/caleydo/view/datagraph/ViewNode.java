@@ -42,11 +42,19 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	private ComparisonGroupOverviewRenderer compGroupOverviewRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
+	private List<ADimensionGroupData> dimensionGroups;
 
 	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, int id,
 			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
+		
+		dimensionGroups = new ArrayList<ADimensionGroupData>();
+		dimensionGroups.add(new FakeDimensionGroupData(0));
+		dimensionGroups.add(new FakeDimensionGroupData(1));
+		dimensionGroups.add(new FakeDimensionGroupData(2));
+		dimensionGroups.add(new FakeDimensionGroupData(5));
+		dimensionGroups.add(new FakeDimensionGroupData(4));
 
 		this.representedView = representedView;
 
@@ -129,11 +137,13 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
-		if (groups == null) {
-			groups = new ArrayList<ADimensionGroupData>();
-		}
-		return groups;
+//		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
+//		if (groups == null) {
+//			groups = new ArrayList<ADimensionGroupData>();
+//		}
+		
+		
+		return dimensionGroups;
 	}
 
 	@Override

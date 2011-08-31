@@ -32,11 +32,19 @@ public class DataNode extends ADraggableDataGraphNode {
 	private IDataDomain dataDomain;
 	private LayoutManager layoutManager;
 	private ComparisonGroupOverviewRenderer compGroupOverviewRenderer;
+	private List<ADimensionGroupData> dimensionGroups;
 
 	public DataNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
 			final DragAndDropController dragAndDropController, int id,
 			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id);
+		dimensionGroups = new ArrayList<ADimensionGroupData>();
+		dimensionGroups.add(new FakeDimensionGroupData(0));
+		dimensionGroups.add(new FakeDimensionGroupData(1));
+		dimensionGroups.add(new FakeDimensionGroupData(2));
+		dimensionGroups.add(new FakeDimensionGroupData(3));
+		dimensionGroups.add(new FakeDimensionGroupData(4));
+		
 		this.dataDomain = dataDomain;
 
 		setupLayout();
@@ -103,11 +111,13 @@ public class DataNode extends ADraggableDataGraphNode {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
-		if (groups == null) {
-			groups = new ArrayList<ADimensionGroupData>();
-		}
-		return groups;
+//		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
+//		if (groups == null) {
+//			groups = new ArrayList<ADimensionGroupData>();
+//		}
+		
+		
+		return dimensionGroups;
 	}
 
 	@Override

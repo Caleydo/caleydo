@@ -8,6 +8,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -35,74 +36,146 @@ public class EdgeBandRenderer {
 
 	public void renderEdgeBand(GL2 gl, IEdgeRoutingStrategy edgeRoutingStrategy) {
 
-		Point2D position1 = node1.getPosition();
-		Point2D position2 = node2.getPosition();
+		List<ADimensionGroupData> commonDimensionGroupsNode1 = new ArrayList<ADimensionGroupData>();
+		List<ADimensionGroupData> commonDimensionGroupsNode2 = new ArrayList<ADimensionGroupData>();
 
-		float deltaX = (float) (position1.getX() - position2.getX());
-		float deltaY = (float) (position1.getY() - position2.getY());
-
-		IDataGraphNode leftNode = null;
-		IDataGraphNode rightNode = null;
-		IDataGraphNode bottomNode = null;
-		IDataGraphNode topNode = null;
-
-		if (deltaX < 0) {
-			if (deltaY < 0) {
-				// -2
-				// 1-
-
-				leftNode = node1;
-				rightNode = node2;
-				bottomNode = node1;
-				topNode = node2;
-			} else {
-				// 1-
-				// -2
-
-				leftNode = node1;
-				rightNode = node2;
-				bottomNode = node2;
-				topNode = node1;
-			}
-		} else {
-			if (deltaY < 0) {
-				// 2-
-				// -1
-
-				leftNode = node2;
-				rightNode = node1;
-				bottomNode = node1;
-				topNode = node2;
-			} else {
-				// -1
-				// 2-
-
-				leftNode = node2;
-				rightNode = node1;
-				bottomNode = node2;
-				topNode = node1;
+		for (ADimensionGroupData dimensionGroupData1 : node1
+				.getDimensionGroups()) {
+			for (ADimensionGroupData dimensionGroupData2 : node2
+					.getDimensionGroups()) {
+				if (dimensionGroupData1.getID() == dimensionGroupData2.getID()) {
+					commonDimensionGroupsNode1.add(dimensionGroupData1);
+					commonDimensionGroupsNode2.add(dimensionGroupData2);
+				}
 			}
 		}
-
-		float spacingX = (float) ((rightNode.getPosition().getX() - rightNode
-				.getWidth() / 2.0f) - (leftNode.getPosition().getX() + leftNode
-				.getWidth() / 2.0f));
-		float spacingY = (float) ((topNode.getPosition().getY() - topNode
-				.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
-				.getHeight() / 2.0f));
 
 		ConnectionBandRenderer connectionBandRenderer = new ConnectionBandRenderer();
 
 		connectionBandRenderer.init(gl);
 
-		if (spacingX > spacingY) {
-			renderHorizontalBand(gl, leftNode, rightNode, edgeRoutingStrategy,
+		if (!commonDimensionGroupsNode1.isEmpty()) {
+			renderBundledBand(gl, node1, node2, commonDimensionGroupsNode1,
+					commonDimensionGroupsNode2, edgeRoutingStrategy,
 					connectionBandRenderer);
 		} else {
-			renderVerticalBand(gl, bottomNode, topNode, edgeRoutingStrategy,
-					connectionBandRenderer);
+
+			Point2D position1 = node1.getPosition();
+			Point2D position2 = node2.getPosition();
+
+			float deltaX = (float) (position1.getX() - position2.getX());
+			float deltaY = (float) (position1.getY() - position2.getY());
+
+			IDataGraphNode leftNode = null;
+			IDataGraphNode rightNode = null;
+			IDataGraphNode bottomNode = null;
+			IDataGraphNode topNode = null;
+
+			if (deltaX < 0) {
+				if (deltaY < 0) {
+					// -2
+					// 1-
+
+					leftNode = node1;
+					rightNode = node2;
+					bottomNode = node1;
+					topNode = node2;
+				} else {
+					// 1-
+					// -2
+
+					leftNode = node1;
+					rightNode = node2;
+					bottomNode = node2;
+					topNode = node1;
+				}
+			} else {
+				if (deltaY < 0) {
+					// 2-
+					// -1
+
+					leftNode = node2;
+					rightNode = node1;
+					bottomNode = node1;
+					topNode = node2;
+				} else {
+					// -1
+					// 2-
+
+					leftNode = node2;
+					rightNode = node1;
+					bottomNode = node2;
+					topNode = node1;
+				}
+			}
+
+			float spacingX = (float) ((rightNode.getPosition().getX() - rightNode
+					.getWidth() / 2.0f) - (leftNode.getPosition().getX() + leftNode
+					.getWidth() / 2.0f));
+			float spacingY = (float) ((topNode.getPosition().getY() - topNode
+					.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
+					.getHeight() / 2.0f));
+
+			if (spacingX > spacingY) {
+				renderHorizontalBand(gl, leftNode, rightNode,
+						edgeRoutingStrategy, connectionBandRenderer);
+			} else {
+				renderVerticalBand(gl, bottomNode, topNode,
+						edgeRoutingStrategy, connectionBandRenderer);
+			}
 		}
 
+	}
+
+	protected void renderBundledBand(GL2 gl, IDataGraphNode node1,
+			IDataGraphNode node2,
+			List<ADimensionGroupData> commonDimensionGroupsNode1,
+			List<ADimensionGroupData> commonDimensionGroupsNode2,
+			IEdgeRoutingStrategy edgeRoutingStrategy,
+			ConnectionBandRenderer connectionBandRenderer) {
+
+		Point2D bundlingPoint1 = calcBundlingPoint(node1,
+				commonDimensionGroupsNode1);
+		Point2D bundlingPoint2 = calcBundlingPoint(node2,
+				commonDimensionGroupsNode2);
+
+//		GLHelperFunctions.drawPointAt(gl, (float) bundlingPoint1.getX(),
+//				(float) bundlingPoint1.getY(), 0);
+//		GLHelperFunctions.drawPointAt(gl, (float) bundlingPoint2.getX(),
+//				(float) bundlingPoint2.getY(), 0);
+
+		List<Point2D> edgePoints = new ArrayList<Point2D>();
+
+		edgePoints.add(bundlingPoint1);
+		edgePoints.add(bundlingPoint2);
+
+		edgeRoutingStrategy.createEdge(edgePoints);
+
+		edgePoints.add(0, new Point2D.Float((float) bundlingPoint1.getX(),
+				(float) node1.getPosition().getY()));
+		edgePoints.add(new Point2D.Float((float) bundlingPoint2.getX(),
+				(float) node2.getPosition().getY()));
+
+		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
+				gl, edgePoints, 20, pixelGLConverter);
+		connectionBandRenderer.render(gl, bandPoints);
+
+	}
+
+	protected Point2D calcBundlingPoint(IDataGraphNode node,
+			List<ADimensionGroupData> dimensionGroups) {
+		float summedX = 0;
+
+		for (ADimensionGroupData dimensionGroupData : dimensionGroups) {
+			Pair<Point2D, Point2D> anchorPoints = node
+					.getBottomDimensionGroupAnchorPoints(dimensionGroupData);
+			summedX += anchorPoints.getFirst().getX()
+					+ anchorPoints.getSecond().getX();
+		}
+
+		return new Point2D.Float(summedX
+				/ ((float) dimensionGroups.size() * 2.0f), (float) node
+				.getBoundingBox().getMinY() - 0.1f);
 	}
 
 	protected void renderVerticalBand(GL2 gl, IDataGraphNode bottomNode,
