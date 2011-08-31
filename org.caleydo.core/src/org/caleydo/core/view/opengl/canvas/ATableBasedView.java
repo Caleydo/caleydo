@@ -20,7 +20,9 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
@@ -235,7 +237,7 @@ public abstract class ATableBasedView
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
+		if (this.recordPerspectiveID == null || !this.recordPerspectiveID.equals(recordPerspectiveID))
 			return;
 		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
 
@@ -360,14 +362,14 @@ public abstract class ATableBasedView
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
-						if(!recordVA.contains(id))
+						if (!recordVA.contains(id))
 							return;
 
 					}
 					else if (selectionDelta.getIDType() == dimensionIDType) {
 						id = item.getID();
 						idType = dimensionIDType;
-						if(!dimensionVA.contains(id))
+						if (!dimensionVA.contains(id))
 							return;
 					}
 					else
@@ -554,6 +556,14 @@ public abstract class ATableBasedView
 
 	public DataRepresentation getRenderingRepresentation() {
 		return dimensionDataRepresentation;
+	}
+
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		this.recordVA = recordVA;
+	}
+
+	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
+		this.dimensionVA = dimensionVA;
 	}
 
 }

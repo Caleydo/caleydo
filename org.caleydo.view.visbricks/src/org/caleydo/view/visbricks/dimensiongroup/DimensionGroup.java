@@ -511,7 +511,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
+		if (dimensionGroupData.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID))
 			return;
 
 		topCol.clear();

@@ -1,6 +1,6 @@
 package org.caleydo.core.data.perspective;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -45,7 +45,7 @@ public class DimensionPerspective
 	}
 
 	@Override
-	protected DimensionVirtualArray newConcreteVirtualArray(ArrayList<Integer> indexList) {
+	protected DimensionVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
 		return new DimensionVirtualArray(perspectiveID, indexList);
 	}
 

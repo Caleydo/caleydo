@@ -39,13 +39,15 @@ public class HeatMapCreator implements IRemoteViewCreator {
 								-1, 1));
 
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
+		RecordVirtualArray recordVA = remoteRenderingView.getRecordVA();
+		if (recordVA != null)
+			heatMap.setRecordVA(recordVA);
+		heatMap.setDimensionVA(remoteRenderingView.getSegmentData()
+				.getDimensionPerspective().getVirtualArray());
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		heatMap.initialize();
 		heatMap.initRemote(gl, remoteRenderingView, glMouseListener);
-		RecordVirtualArray recordVA = remoteRenderingView.getRecordVA();
-		if (recordVA != null)
-			heatMap.setRecordVA(recordVA);
 
 		return heatMap;
 	}

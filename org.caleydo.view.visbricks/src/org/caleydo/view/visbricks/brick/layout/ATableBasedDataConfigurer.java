@@ -93,6 +93,10 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 					public void run() {
 						StartClusteringDialog dialog = new StartClusteringDialog(
 								new Shell(), brick.getDataDomain());
+						dialog.setDimensionPerspective(brick.getSegmentData()
+								.getDimensionPerspective());
+						dialog.setRecordPerspective(brick.getSegmentData()
+								.getRecordPerspective());
 						dialog.open();
 						ClusterState clusterState = dialog.getClusterState();
 						if (clusterState == null)

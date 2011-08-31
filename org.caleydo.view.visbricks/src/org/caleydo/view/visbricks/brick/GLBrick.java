@@ -201,8 +201,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 				SelectionType currentSelectionType = contentGroupSelectionManager.getSelectionType();
 				contentGroupSelectionManager.clearSelection(currentSelectionType);
-				contentGroupSelectionManager.addToType(currentSelectionType,
-						group.getID());
+				contentGroupSelectionManager.addToType(currentSelectionType, segmentData.getGroup().getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
@@ -722,7 +721,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	 * @return
 	 */
 	public Group getGroup() {
-		return group;
+		return segmentData.getGroup();
+		
 	}
 
 	@Override

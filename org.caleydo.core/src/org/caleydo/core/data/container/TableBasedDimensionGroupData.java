@@ -124,8 +124,8 @@ public class TableBasedDimensionGroupData
 
 		for (Group group : groupList) {
 
-			ArrayList<Integer> indices =
-				(ArrayList<Integer>) recordVA.getVirtualArray().subList(group.getStartIndex(),
+			List<Integer> indices =
+				 recordVA.getVirtualArray().subList(group.getStartIndex(),
 					group.getEndIndex() + 1);
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);

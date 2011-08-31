@@ -1,6 +1,7 @@
 package org.caleydo.core.data.perspective;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
@@ -134,7 +135,7 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	 *            can be a filled ArrayList, an empty ArrayList for empty initialization or null for empty
 	 *            initialization
 	 */
-	public void createVA(ArrayList<Integer> indices) {
+	public void createVA(List<Integer> indices) {
 		reset();
 		if (indices == null)
 			indices = new ArrayList<Integer>();
@@ -321,7 +322,7 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 
 	protected abstract GroupType createGroupList();
 
-	protected abstract VA newConcreteVirtualArray(ArrayList<Integer> indexList);
+	protected abstract VA newConcreteVirtualArray(List<Integer> indexList);
 
 	public boolean isTreeDefaultTree() {
 		return isTreeDefaultTree;

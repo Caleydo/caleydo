@@ -2304,13 +2304,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	}
 
-	public void setRecordVA(RecordVirtualArray recordVA) {
-		this.recordVA = recordVA;
-	}
 
-	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
-		this.dimensionVA = dimensionVA;
-	}
 
 	@Override
 	public int getMinPixelHeight() {

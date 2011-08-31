@@ -1,9 +1,8 @@
 package org.caleydo.core.data.perspective;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilterManager;
@@ -37,14 +36,13 @@ public class RecordPerspective
 		idType = dataDomain.getRecordIDType();
 	}
 
-
 	@Override
 	protected RecordGroupList createGroupList() {
 		return new RecordGroupList();
 	}
 
 	@Override
-	protected RecordVirtualArray newConcreteVirtualArray(ArrayList<Integer> indexList) {
+	protected RecordVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
 		return new RecordVirtualArray(perspectiveID, indexList);
 	}
 
@@ -52,7 +50,7 @@ public class RecordPerspective
 	protected String getLabel(Integer id) {
 		return dataDomain.getRecordLabel(id);
 	}
-	
+
 	// ATableBasedDataDomain dataDomain;
 	//
 	// RecordVirtualArray recordVA;

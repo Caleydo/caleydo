@@ -3,6 +3,7 @@ package org.caleydo.core.util.clusterer.gui;
 import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
@@ -80,6 +81,9 @@ public class StartClusteringDialogAction
 
 	private ATableBasedDataDomain dataDomain;
 
+	private RecordPerspective recordPerspective = null;
+	private DimensionPerspective dimensionPerspective = null;
+
 	/**
 	 * Constructor.
 	 */
@@ -93,6 +97,23 @@ public class StartClusteringDialogAction
 		this.parentComposite = parentComposite;
 		this.dataDomain = dataDomain;
 		sArTypeOptions[0] = dataDomain.getRecordName(true, false);
+	}
+
+	/**
+	 * @param recordPerspective
+	 *            setter, see {@link #recordPerspective}
+	 */
+	public void setRecordPerspective(RecordPerspective recordPerspective) {
+		this.recordPerspective = recordPerspective;
+	}
+
+	/**
+	 * @param dimensionPerspective
+	 *            setter, see {@link #dimensionPerspective}
+	 */
+	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		this.dimensionPerspective = dimensionPerspective;
+		
 	}
 
 	@Override
@@ -545,29 +566,30 @@ public class StartClusteringDialogAction
 		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
 			clusterState = othersTab.getClusterState();
 
-		Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getDimensionPerspectiveIDs();
+		if (dimensionPerspective == null || recordPerspective == null) {
 
-		if (dimensionPerspectiveIDs.size() == 1)
-		{
-			clusterState.setDimensionPerspective(dataDomain.getTable().getDimensionPerspective(
-				dimensionPerspectiveIDs.iterator().next()));
-			clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+			Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getDimensionPerspectiveIDs();
+
+			if (dimensionPerspectiveIDs.size() == 1) {
+				dimensionPerspective =
+					dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveIDs.iterator().next());
+			}
+			else
+				throw new IllegalStateException("Implement choose for perspective");
+
+			Set<String> recordPerspectiveIDs = dataDomain.getTable().getRecordPerspectiveIDs();
+
+			if (recordPerspectiveIDs.size() == 1) {
+				recordPerspective =
+					dataDomain.getTable().getRecordPerspective(recordPerspectiveIDs.iterator().next());
+			}
+			else
+				throw new IllegalStateException("Implement choose for perspective");
 		}
-		else
-			throw new IllegalStateException("Implement choose for perspective");
-
-		Set<String> recordPerspectiveIDs = dataDomain.getTable().getRecordPerspectiveIDs();
-
-		if (recordPerspectiveIDs.size() == 1)
-		{
-			RecordPerspective chosenPerspective = dataDomain.getTable().getRecordPerspective(
-				recordPerspectiveIDs.iterator().next());
-			clusterState.setRecordPerspective(chosenPerspective);
-			clusterState.setRecordIDType(dataDomain.getRecordIDType());
-			
-		}
-		else
-			throw new IllegalStateException("Implement choose for perspective");
+		clusterState.setDimensionPerspective(dimensionPerspective);
+		clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+		clusterState.setRecordPerspective(recordPerspective);
+		clusterState.setRecordIDType(dataDomain.getRecordIDType());
 
 		// by default we use the main VAs for clustering
 

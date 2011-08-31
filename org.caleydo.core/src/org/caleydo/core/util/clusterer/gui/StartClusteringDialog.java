@@ -1,6 +1,8 @@
 package org.caleydo.core.util.clusterer.gui;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.initialization.ClusterState;
 import org.eclipse.jface.dialogs.TrayDialog;
@@ -20,12 +22,33 @@ public class StartClusteringDialog
 
 	private ATableBasedDataDomain dataDomain;
 
+	private RecordPerspective recordPerspective;
+	private DimensionPerspective dimensionPerspective;
+
 	/**
 	 * Constructor.
 	 */
 	public StartClusteringDialog(Shell parentShell, ATableBasedDataDomain dataDomain) {
 		super(parentShell);
 		this.dataDomain = dataDomain;
+	}
+
+	/**
+	 * @param recordPerspective
+	 *            setter, see {@link #recordPerspective}
+	 */
+	public void setRecordPerspective(RecordPerspective recordPerspective) {
+		this.recordPerspective = recordPerspective;
+	
+	}
+
+	/**
+	 * @param dimensionPerspective
+	 *            setter, see {@link #dimensionPerspective}
+	 */
+	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		this.dimensionPerspective = dimensionPerspective;
+	
 	}
 
 	@Override
@@ -43,6 +66,8 @@ public class StartClusteringDialog
 	@Override
 	protected Control createDialogArea(Composite parent) {
 		startClusteringAction = new StartClusteringDialogAction(parent, dataDomain);
+		startClusteringAction.setDimensionPerspective(dimensionPerspective);
+		startClusteringAction.setRecordPerspective(recordPerspective);
 		startClusteringAction.run();
 		return parent;
 	}
