@@ -60,7 +60,9 @@ public abstract class AContextMenuItem {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				triggerEvent();
-				menuItem.getParent().getShell().dispose();
+				
+//				if (!menuItem.getParent().getShell().isDisposed())
+//					menuItem.getParent().getShell().dispose();
 			}
 		});
 
@@ -90,5 +92,9 @@ public abstract class AContextMenuItem {
 
 	protected void addSubItem(AContextMenuItem contextMenuItem) {
 		subMenuItems.add(contextMenuItem);
+	}
+	
+	public MenuItem getMenuItem() {
+		return menuItem;
 	}
 }

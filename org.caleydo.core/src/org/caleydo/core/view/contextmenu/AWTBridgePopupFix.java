@@ -26,15 +26,18 @@ public class AWTBridgePopupFix {
 
 		final Display display = menuCreator.getParent().getDisplay();
 
-		final Shell activeShell = menuCreator.getParent().getShell();
-		popupShell = new Shell(activeShell, SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
-
-		Point l = display.getCursorLocation();
-		l.x -= 2;
-		l.y -= 2;
-		popupShell.setLocation(l);
-		popupShell.setSize(4, 4);
-		popupShell.open();
+//		final Shell activeShell = menuCreator.getParent().getShell();
+//		popupShell = new Shell(activeShell, SWT.NO_TRIM | SWT.NO_FOCUS | SWT.ON_TOP);
+//
+//		Point l = display.getCursorLocation();
+//		l.x -= 2;
+//		l.y -= 2;
+//		popupShell.setLocation(l);
+//		popupShell.setSize(4, 4);
+//		popupShell.open();
+		
+		final Shell activeShell = popupShell = menuCreator.getParent().getShell();
+		
 		final int[] count = new int[1];
 		Runnable r = new Runnable() {
 			public void run() {
@@ -58,7 +61,7 @@ public class AWTBridgePopupFix {
 									System.err.println("menu not shown after " + MAX_ATTEMPTS + "attempts");
 									menu.setVisible(false);
 									menu.dispose();
-									popupShell.dispose();
+//									popupShell.dispose();
 									System.err.println("disposing");
 									showMenu(menuCreator, retriesLeft - 1);
 								}
@@ -81,21 +84,25 @@ public class AWTBridgePopupFix {
 					}
 				});
 
-				popupShell.addListener(SWT.Deactivate, new Listener() {
-
-					@Override
-					public void handleEvent(Event event) {
-
-						if (!popupShell.isDisposed()) {
-							popupShell.close();
-							popupShell.dispose();
-						}
-						
-						// Set lazy mode to false because in the case of an ignored context menu, the state is
-						// erroneously set to true.
-						menuCreator.getView().setLazyMode(false);
-					}
-				});
+//				popupShell.addListener(SWT.Deactivate, new Listener() {
+//
+//					@Override
+//					public void handleEvent(Event event) {
+//
+//						for (AContextMenuItem item : menuCreator.getMenuItems()) {
+//							System.out.println("Selection: " +item.getMenuItem().getSelection());
+//						}
+//						
+//						if (!popupShell.isDisposed()) {
+//							popupShell.close();
+//							popupShell.dispose();
+//						}
+//						
+//						// Set lazy mode to false because in the case of an ignored context menu, the state is
+//						// erroneously set to true.
+//						menuCreator.getView().setLazyMode(false);
+//					}
+//				});
 
 				menu.setVisible(true);
 			}

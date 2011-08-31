@@ -530,7 +530,7 @@ public class ConnectionBandRenderer {
 		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
 
 		// float yCorrection = 0;
-		float z = 0.1f;
+		float z = 0f;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {

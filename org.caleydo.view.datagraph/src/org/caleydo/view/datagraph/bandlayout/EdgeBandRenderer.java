@@ -185,14 +185,26 @@ public class EdgeBandRenderer {
 				(float) anchorPointsTop.getSecond().getY() - 0.3f
 						* nodeEdgeAnchorSpacingTop));
 
-		List<Vec3f> bandPoints = new ArrayList<Vec3f>();
-
-		for (int i = 0; i < edgePoints.size() - 3; i++) {
-			List<Vec3f> bandPartPoints = connectionBandRenderer
-					.calcInterpolatedBand(gl, edgePoints, 20, pixelGLConverter);
-			connectionBandRenderer.render(gl, bandPartPoints);
-			bandPoints.addAll(bandPoints.size() / 2, bandPartPoints);
+		gl.glColor4f(0, 0, 0, 0.5f);
+		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
+				gl, edgePoints, 20, pixelGLConverter);
+		connectionBandRenderer.render(gl, bandPoints);
+		gl.glColor4f(0, 0, 0, 1f);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < bandPoints.size() / 2; i++) {
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
+					bandPoints.get(i).z());
 		}
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = bandPoints.size() / 2; i < bandPoints.size(); i++) {
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
+					bandPoints.get(i).z());
+		}
+		gl.glEnd();
+
+		// }
 		// }
 
 		Point2D bandAnchorPoint1Bottom = new Point2D.Float(bandPoints.get(0)
@@ -290,8 +302,9 @@ public class EdgeBandRenderer {
 						: ((float) bandAnchorPoint1Top.getY() - (float) offsetAnchorPointsTop
 								.getFirst().getY()) / lambda1);
 		if (bandOffsetAnchorPoint1TopX > offsetAnchorPointsTop.getSecond()
-				.getX() || bandOffsetAnchorPoint1TopX < offsetAnchorPointsTop.getFirst()
-				.getX()) {
+				.getX()
+				|| bandOffsetAnchorPoint1TopX < offsetAnchorPointsTop
+						.getFirst().getX()) {
 			bandOffsetAnchorPoint1TopX = (float) offsetAnchorPointsTop
 					.getSecond().getX();
 		}
@@ -302,8 +315,9 @@ public class EdgeBandRenderer {
 								.getSecond().getY()) / lambda2);
 
 		if (bandOffsetAnchorPoint2TopX < offsetAnchorPointsTop.getFirst()
-				.getX() || bandOffsetAnchorPoint2TopX > offsetAnchorPointsTop.getSecond()
-				.getX()) {
+				.getX()
+				|| bandOffsetAnchorPoint2TopX > offsetAnchorPointsTop
+						.getSecond().getX()) {
 			bandOffsetAnchorPoint2TopX = (float) offsetAnchorPointsTop
 					.getFirst().getX();
 		}
@@ -329,23 +343,25 @@ public class EdgeBandRenderer {
 		topBandConnectionPoints.add(bandOffsetAnchorPointsTop);
 		topBandConnectionPoints.add(bandAnchorPointsTop);
 
-//		GLHelperFunctions.drawPointAt(gl, (float) bandOffsetAnchorPointsBottom
-//				.getFirst().getX(), (float) bandOffsetAnchorPointsBottom
-//				.getFirst().getY(), 0);
-//
-//		GLHelperFunctions.drawPointAt(gl, (float) offsetAnchorPointsBottom
-//				.getFirst().getX(), (float) offsetAnchorPointsBottom.getFirst()
-//				.getY(), 0);
-//
-//		GLHelperFunctions.drawPointAt(gl, (float) bandAnchorPointsBottom
-//				.getFirst().getX(), (float) bandAnchorPointsBottom.getFirst()
-//				.getY(), 0);
+		// GLHelperFunctions.drawPointAt(gl, (float)
+		// bandOffsetAnchorPointsBottom
+		// .getFirst().getX(), (float) bandOffsetAnchorPointsBottom
+		// .getFirst().getY(), 0);
+		//
+		// GLHelperFunctions.drawPointAt(gl, (float) offsetAnchorPointsBottom
+		// .getFirst().getX(), (float) offsetAnchorPointsBottom.getFirst()
+		// .getY(), 0);
+		//
+		// GLHelperFunctions.drawPointAt(gl, (float) bandAnchorPointsBottom
+		// .getFirst().getX(), (float) bandAnchorPointsBottom.getFirst()
+		// .getY(), 0);
 
 		connectionBandRenderer.renderComplexBand(gl,
-				bottomBandConnectionPoints, false, new float[] { 0, 0, 0 }, 1);
+				bottomBandConnectionPoints, false, new float[] { 0, 0, 0 },
+				0.5f);
 
 		connectionBandRenderer.renderComplexBand(gl, topBandConnectionPoints,
-				false, new float[] { 0, 0, 0 }, 1);
+				false, new float[] { 0, 0, 0 }, 0.5f);
 	}
 
 	protected void renderHorizontalBand(GL2 gl, IDataGraphNode leftNode,
@@ -427,14 +443,25 @@ public class EdgeBandRenderer {
 						* nodeEdgeAnchorSpacingRight, (float) anchorPointsRight
 						.getSecond().getY()));
 
-		List<Vec3f> bandPoints = new ArrayList<Vec3f>();
-
-		for (int i = 0; i < edgePoints.size() - 3; i++) {
-			List<Vec3f> bandPartPoints = connectionBandRenderer
-					.calcInterpolatedBand(gl, edgePoints, 20, pixelGLConverter);
-			connectionBandRenderer.render(gl, bandPartPoints);
-			bandPoints.addAll(bandPoints.size() / 2, bandPartPoints);
+		gl.glColor4f(0, 0, 0, 0.5f);
+		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
+				gl, edgePoints, 20, pixelGLConverter);
+		connectionBandRenderer.render(gl, bandPoints);
+		gl.glColor4f(0, 0, 0, 1f);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < bandPoints.size() / 2; i++) {
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
+					bandPoints.get(i).z());
 		}
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = bandPoints.size() / 2; i < bandPoints.size(); i++) {
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
+					bandPoints.get(i).z());
+		}
+		gl.glEnd();
+
 		// }
 
 		Point2D bandAnchorPoint1Left = new Point2D.Float(bandPoints.get(0).x(),
@@ -466,21 +493,21 @@ public class EdgeBandRenderer {
 		float bandOffsetAnchorPoint1LeftY = (float) bandAnchorPoint1Left.getY()
 				- ((float) bandAnchorPoint1Left.getX() - (float) offsetAnchorPointsLeft
 						.getSecond().getX()) * lambda1;
-		
-		if (bandOffsetAnchorPoint1LeftY < offsetAnchorPointsLeft
-				.getSecond().getY()
+
+		if (bandOffsetAnchorPoint1LeftY < offsetAnchorPointsLeft.getSecond()
+				.getY()
 				|| bandOffsetAnchorPoint1LeftY > offsetAnchorPointsLeft
 						.getFirst().getY()) {
 			bandOffsetAnchorPoint1LeftY = (float) offsetAnchorPointsLeft
 					.getSecond().getY();
 		}
-		
+
 		float bandOffsetAnchorPoint2LeftY = (float) bandAnchorPoint2Left.getY()
 				- ((float) bandAnchorPoint2Left.getX() - (float) offsetAnchorPointsLeft
 						.getFirst().getX()) * lambda2;
-		
-		if (bandOffsetAnchorPoint2LeftY < offsetAnchorPointsLeft
-				.getSecond().getY()
+
+		if (bandOffsetAnchorPoint2LeftY < offsetAnchorPointsLeft.getSecond()
+				.getY()
 				|| bandOffsetAnchorPoint2LeftY > offsetAnchorPointsLeft
 						.getFirst().getY()) {
 			bandOffsetAnchorPoint2LeftY = (float) offsetAnchorPointsLeft
@@ -527,22 +554,22 @@ public class EdgeBandRenderer {
 				.getY()
 				- ((float) bandAnchorPoint1Right.getX() - (float) offsetAnchorPointsRight
 						.getSecond().getX()) * lambda1;
-		
-		if (bandOffsetAnchorPoint1RightY < offsetAnchorPointsRight
-				.getSecond().getY()
+
+		if (bandOffsetAnchorPoint1RightY < offsetAnchorPointsRight.getSecond()
+				.getY()
 				|| bandOffsetAnchorPoint1RightY > offsetAnchorPointsRight
 						.getFirst().getY()) {
 			bandOffsetAnchorPoint1RightY = (float) offsetAnchorPointsRight
 					.getSecond().getY();
 		}
-		
+
 		float bandOffsetAnchorPoint2RightY = (float) bandAnchorPoint2Right
 				.getY()
 				- ((float) bandAnchorPoint2Right.getX() - (float) offsetAnchorPointsRight
 						.getFirst().getX()) * lambda2;
-		
-		if (bandOffsetAnchorPoint2RightY < offsetAnchorPointsRight
-				.getSecond().getY()
+
+		if (bandOffsetAnchorPoint2RightY < offsetAnchorPointsRight.getSecond()
+				.getY()
 				|| bandOffsetAnchorPoint2RightY > offsetAnchorPointsRight
 						.getFirst().getY()) {
 			bandOffsetAnchorPoint2RightY = (float) offsetAnchorPointsRight
@@ -571,9 +598,9 @@ public class EdgeBandRenderer {
 		rightBandConnectionPoints.add(bandAnchorPointsRight);
 
 		connectionBandRenderer.renderComplexBand(gl, leftBandConnectionPoints,
-				false, new float[] { 0, 0, 0 }, 1);
+				false, new float[] { 0, 0, 0 }, 0.5f);
 
 		connectionBandRenderer.renderComplexBand(gl, rightBandConnectionPoints,
-				false, new float[] { 0, 0, 0 }, 1);
+				false, new float[] { 0, 0, 0 }, 0.5f);
 	}
 }
