@@ -14,7 +14,7 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.TempResult;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 
@@ -42,7 +42,7 @@ public class KMeansClusterer
 		clusterer = new SimpleKMeans();
 	}
 
-	private TempResult cluster(DataTable table, ClusterState clusterState) {
+	private TempResult cluster(DataTable table, ClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -316,7 +316,7 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;

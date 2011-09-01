@@ -121,6 +121,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	private Column detailBrickLayout;
 	private ElementLayout overviewDetailGapLayout;
 
+	/** This variable hold the data the dimension group is supposed to show */
 	private ADimensionGroupData dimensionGroupData;
 
 	public static int BOTTOM_COLUMN_ID = 0;
@@ -511,7 +512,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (dimensionGroupData.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID))
+		if (!dimensionGroupData.getRecordPerspective().getPerspectiveID()
+				.equals(recordPerspectiveID))
 			return;
 
 		topCol.clear();
@@ -1097,18 +1099,12 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return groupColumn;
 	}
 
-	public void setBrickDimensionGroupData(ADimensionGroupData dimensionGroupData) {
+	public void setDimensionGroupData(ADimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 		dataDomain = dimensionGroupData.getDataDomain();
-		// if (dimensionGroupData instanceof SetBasedDimensionGroupData) {
-		// SetBasedDimensionGroupData setBasedData =
-		// (SetBasedDimensionGroupData) dimensionGroupData;
-		// dataDomain = (ASetBasedDataDomain) setBasedData.getDataDomain();
-		// }
-
 	}
 
-	public ADimensionGroupData getBrickDimensionGroupData() {
+	public ADimensionGroupData getDimensionGroupData() {
 		return dimensionGroupData;
 	}
 }

@@ -173,7 +173,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		views.put(EContainedViewType.PATHWAY_VIEW, pathway);
 		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW, pathwayRenderer);
 
-		int numPathways = brick.getDimensionGroup().getBrickDimensionGroupData()
+		int numPathways = brick.getDimensionGroup().getDimensionGroupData()
 				.getGroups().size();
 		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
 				"Pathways: " + numPathways, PickingType.BRICK, brick.getID());

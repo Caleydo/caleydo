@@ -11,7 +11,7 @@ import org.caleydo.core.util.clusterer.algorithm.cobweb.HierarchicalClusterer;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterer;
 import org.caleydo.core.util.clusterer.algorithm.nominal.AlphabeticalPartitioner;
 import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterer;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Cluster manager handels {@link ClusterState} and calls corresponding clusterer.
+ * Cluster manager handels {@link ClusterConfiguration} and calls corresponding clusterer.
  * 
  * @author Bernhard Schlegl
  * @author Alexander Lex
@@ -48,7 +48,7 @@ public class ClusterManager {
 	 *            All information needed ba cluster algorithm
 	 * @return array list of {@link IVirtualArray}s including VAs for content and dimension.
 	 */
-	public ClusterResult cluster(ClusterState clusterState) {
+	public ClusterResult cluster(ClusterConfiguration clusterState) {
 
 		try {
 			ClusterResult clusterResult = null;
@@ -99,7 +99,7 @@ public class ClusterManager {
 		return null;
 	}
 
-	private ClusterResult runClustering(AClusterer clusterer, ClusterState clusterState) {
+	private ClusterResult runClustering(AClusterer clusterer, ClusterConfiguration clusterState) {
 		ClusterResult result = new ClusterResult();
 
 		try {
@@ -127,7 +127,7 @@ public class ClusterManager {
 		}
 	}
 
-	private void runContentClustering(AClusterer clusterer, ClusterState clusterState, ClusterResult result,
+	private void runContentClustering(AClusterer clusterer, ClusterConfiguration clusterState, ClusterResult result,
 		int progressBarOffset, int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
@@ -151,7 +151,7 @@ public class ClusterManager {
 
 	}
 
-	private void runDimensionClustering(AClusterer clusterer, ClusterState clusterState,
+	private void runDimensionClustering(AClusterer clusterer, ClusterConfiguration clusterState,
 		ClusterResult result, int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterState);
 

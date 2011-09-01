@@ -19,7 +19,7 @@ import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
 import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
@@ -72,18 +72,18 @@ public class TreeClusterer
 	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
 
 	@Override
-	public void setClusterState(ClusterState clusterState) {
+	public void setClusterState(ClusterConfiguration clusterState) {
 		super.setClusterState(clusterState);
 		try {
 
 			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 				tree = new ClusterTree();
 				// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-				this.iNrSamples = clusterState.getRecordPerspective().getVirtualArray().size();
+				this.iNrSamples = clusterState.getSourceRecordPerspective().getVirtualArray().size();
 			}
 			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING) {
 				tree = new ClusterTree();
-				this.iNrSamples = clusterState.getDimensionPerspective().getVirtualArray().size();
+				this.iNrSamples = clusterState.getSourceDimensionPerspective().getVirtualArray().size();
 			}
 			else
 				throw new IllegalArgumentException("Can not handle cluster type "
@@ -372,8 +372,8 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
-			clusterState.getRecordPerspective(), eClustererType, table);
+		ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
+			clusterState.getSourceRecordPerspective(), eClustererType, table);
 
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices = tree.getRoot().getLeaveIds();
@@ -517,8 +517,8 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 
-		ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
-			clusterState.getRecordPerspective(), eClustererType, table);
+		ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
+			clusterState.getSourceRecordPerspective(), eClustererType, table);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();
@@ -736,8 +736,8 @@ public class TreeClusterer
 		// ClusterHelper.determineNrElements(tree);
 		// ClusterHelper.determineHierarchyDepth(tree);
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-			ClusterHelper.calculateClusterAverages(clusterState.getDimensionPerspective(),
-				clusterState.getRecordPerspective(), eClustererType, table);
+			ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
+				clusterState.getSourceRecordPerspective(), eClustererType, table);
 		}
 		// determineExpressionValue(tree, eClustererType);
 
@@ -924,7 +924,7 @@ public class TreeClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable table, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable table, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();

@@ -38,6 +38,7 @@ public class ContainerStatistics {
 	}
 
 	private void calculateAverageValue() {
+		averageValue = 0;
 		int count = 0;
 		for (Integer contenID : container.getRecordPerspective().getVirtualArray()) {
 

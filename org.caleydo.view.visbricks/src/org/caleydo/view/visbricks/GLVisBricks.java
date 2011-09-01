@@ -1172,7 +1172,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 			boolean dimensionGroupExists = false;
 			for (DimensionGroup dimensionGroup : dimensionGroups) {
-				if (dimensionGroup.getBrickDimensionGroupData().getID() == data.getID()) {
+				if (dimensionGroup.getDimensionGroupData().getID() == data.getID()) {
 					dimensionGroupExists = true;
 					break;
 				}
@@ -1204,7 +1204,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					dimensionGroup
 							.setBrickSortingStrategy(new AverageValueSortingStrategy());
 				}
-				dimensionGroup.setBrickDimensionGroupData(data);
+				dimensionGroup.setDimensionGroupData(data);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
 				dimensionGroup.setVisBricksView(this);

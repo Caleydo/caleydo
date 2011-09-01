@@ -2,12 +2,12 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
@@ -93,19 +93,28 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 					public void run() {
 						StartClusteringDialog dialog = new StartClusteringDialog(
 								new Shell(), brick.getDataDomain());
-						dialog.setDimensionPerspective(brick.getSegmentData()
-								.getDimensionPerspective());
-						dialog.setRecordPerspective(brick.getSegmentData()
-								.getRecordPerspective());
+						ADimensionGroupData data = brick.getDimensionGroup()
+								.getDimensionGroupData();
+						dialog.setDimensionPerspective(data.getDimensionPerspective());
+						dialog.setRecordPerspective(data.getRecordPerspective());
 						dialog.open();
-						ClusterState clusterState = dialog.getClusterState();
+						ClusterConfiguration clusterState = dialog.getClusterState();
 						if (clusterState == null)
 							return;
 
-						StartClusteringEvent event = null;
-						// if (clusterState != null && set != null)
+						// here we create the new record perspective which is
+						// intended to be used once the clustering is complete
+						RecordPerspective newRecordPerspective = new RecordPerspective(
+								data.getDataDomain());
+						// we temporarily set the old va to the new perspective,
+						// to avoid empty bricks
+						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
+								.getVirtualArray());
+						data.setRecordPerspective(newRecordPerspective);
+						clusterState.setTargetRecordPerspective(newRecordPerspective);
 
-						event = new StartClusteringEvent(clusterState);
+						StartClusteringEvent event = new StartClusteringEvent(
+								clusterState);
 						event.setDataDomainID(brick.getDataDomain().getDataDomainID());
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}

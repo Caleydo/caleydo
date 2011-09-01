@@ -4,7 +4,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.eclipse.jface.dialogs.TrayDialog;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -91,7 +91,7 @@ public class StartClusteringDialog
 	 * 
 	 * @return
 	 */
-	public ClusterState getClusterState() {
+	public ClusterConfiguration getClusterState() {
 		return startClusteringAction.getClusterState();
 	}
 

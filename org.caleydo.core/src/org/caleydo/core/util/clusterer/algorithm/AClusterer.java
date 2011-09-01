@@ -12,7 +12,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.data.ClustererCanceledEvent;
 import org.caleydo.core.util.clusterer.ClustererCanceledListener;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -35,17 +35,17 @@ public abstract class AClusterer
 	protected RecordVirtualArray recordVA;
 	protected DimensionVirtualArray dimensionVA;
 
-	protected ClusterState clusterState;
+	protected ClusterConfiguration clusterState;
 
 	public AClusterer() {
 		queue = new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
 
 	}
 
-	public void setClusterState(ClusterState clusterState) {
+	public void setClusterState(ClusterConfiguration clusterState) {
 		this.clusterState = clusterState;
-		this.recordVA = clusterState.getRecordPerspective().getVirtualArray();
-		this.dimensionVA = clusterState.getDimensionPerspective().getVirtualArray();
+		this.recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
+		this.dimensionVA = clusterState.getSourceDimensionPerspective().getVirtualArray();
 	}
 
 	/**

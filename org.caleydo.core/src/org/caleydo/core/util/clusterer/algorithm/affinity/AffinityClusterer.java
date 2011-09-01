@@ -18,7 +18,7 @@ import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
 import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.logging.Logger;
@@ -73,14 +73,14 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public void setClusterState(ClusterState clusterState) {
+	public void setClusterState(ClusterConfiguration clusterState) {
 		super.setClusterState(clusterState);
 
 		try {
 			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
-				this.iNrSamples = clusterState.getRecordPerspective().getVirtualArray().size();
+				this.iNrSamples = clusterState.getSourceRecordPerspective().getVirtualArray().size();
 			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING)
-				this.iNrSamples = clusterState.getDimensionPerspective().getVirtualArray().size();
+				this.iNrSamples = clusterState.getSourceDimensionPerspective().getVirtualArray().size();
 
 			this.iNrSimilarities = iNrSamples * iNrSamples;
 			this.s = new float[this.iNrSimilarities];
@@ -99,10 +99,10 @@ public class AffinityClusterer
 	 * @param clusterState
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable table, ClusterState clusterState) {
+	private int determineSimilarities(DataTable table, ClusterConfiguration clusterState) {
 
-		RecordVirtualArray recordVA = clusterState.getRecordPerspective().getVirtualArray();
-		DimensionVirtualArray dimensionVA = clusterState.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = clusterState.getSourceDimensionPerspective().getVirtualArray();
 
 		IDistanceMeasure distanceMeasure;
 
@@ -602,7 +602,7 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)

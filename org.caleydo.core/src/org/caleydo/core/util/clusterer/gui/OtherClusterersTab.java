@@ -1,6 +1,6 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.eclipse.swt.SWT;
@@ -41,8 +41,8 @@ public class OtherClusterersTab {
 		return customTab;
 	}
 
-	public ClusterState getClusterState() {
-		ClusterState clusterState = new ClusterState();
+	public ClusterConfiguration getClusterState() {
+		ClusterConfiguration clusterState = new ClusterConfiguration();
 		if (alphabetical.getSelection())
 			clusterState.setClustererAlgo(EClustererAlgo.ALPHABETICAL);
 

@@ -7,7 +7,7 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
@@ -68,7 +68,7 @@ public class StartClusteringDialogAction
 	private String[] sArDistOptionsWeka = { "Euclidean distance", "Manhattan distance" };// ,"Chebyshev distance"};
 	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage", "Single Linkage" };
 
-	private ClusterState clusterState = new ClusterState();
+	private ClusterConfiguration clusterState = new ClusterConfiguration();
 
 	private TabItem treeClusteringTab;
 	private TabItem affinityPropagationTab;
@@ -113,7 +113,7 @@ public class StartClusteringDialogAction
 	 */
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
-		
+
 	}
 
 	@Override
@@ -586,10 +586,10 @@ public class StartClusteringDialogAction
 			else
 				throw new IllegalStateException("Implement choose for perspective");
 		}
-		clusterState.setDimensionPerspective(dimensionPerspective);
-		clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
-		clusterState.setRecordPerspective(recordPerspective);
-		clusterState.setRecordIDType(dataDomain.getRecordIDType());
+		clusterState.setSourceDimensionPerspective(dimensionPerspective);
+		// clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
+		clusterState.setSourceRecordPerspective(recordPerspective);
+		// clusterState.setRecordIDType(dataDomain.getRecordIDType());
 
 		// by default we use the main VAs for clustering
 
@@ -603,7 +603,7 @@ public class StartClusteringDialogAction
 	public void dispose() {
 	}
 
-	public ClusterState getClusterState() {
+	public ClusterConfiguration getClusterState() {
 		return clusterState;
 	}
 

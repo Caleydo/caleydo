@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**
  * Interface class for all clustering algorithms.
@@ -29,7 +29,7 @@ public interface IClusterer
 	 *            of normal clustering the value is 2.
 	 * @return Sorted VirtualArray.
 	 */
-	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier);
 
 	public void cancel();

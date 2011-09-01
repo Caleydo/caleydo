@@ -15,7 +15,7 @@ import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.TempResult;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.initialization.ClusterState;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 
 import weka.clusterers.ClusterEvaluation;
@@ -33,7 +33,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	private TempResult cluster(DataTable table, ClusterState clusterState) {
+	private TempResult cluster(DataTable table, ClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -297,7 +297,7 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable set, ClusterState clusterState, int iProgressBarOffsetValue,
+	public TempResult getSortedVA(DataTable set, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;

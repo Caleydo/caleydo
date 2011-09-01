@@ -225,7 +225,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 			public void rightClicked(Pick pick) {
 
 				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-						dataDomain, recordVA, dimensionGroup.getBrickDimensionGroupData()
+						dataDomain, recordVA, dimensionGroup.getDimensionGroupData()
 								.getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
