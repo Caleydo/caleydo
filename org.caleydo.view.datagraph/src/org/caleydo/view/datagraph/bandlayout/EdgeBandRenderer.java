@@ -196,18 +196,35 @@ public class EdgeBandRenderer {
 
 		for (ADimensionGroupData dimensionGroupData : commonDimensionGroupsNode1) {
 			List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
-			anchorPoints.add(node1
-					.getBottomDimensionGroupAnchorPoints(dimensionGroupData));
+			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node1
+					.getBottomDimensionGroupAnchorPoints(dimensionGroupData);
+			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
+			dimensionGroupAnchorOffsetPoints
+					.setFirst(new Point2D.Float(
+							(float) dimensionGroupAnchorPoints.getFirst()
+									.getX(), (float) dimensionGroupAnchorPoints
+									.getFirst().getY() - 0.1f));
+
+			dimensionGroupAnchorOffsetPoints
+					.setSecond(new Point2D.Float(
+							(float) dimensionGroupAnchorPoints.getSecond()
+									.getX(), (float) dimensionGroupAnchorPoints
+									.getSecond().getY() - 0.1f));
+
 			int width = bandWidthMap.get(dimensionGroupData);
 
 			Point2D nextAnchorPoint = new Point2D.Float(
 					(float) prevBandAnchorPoint.getX() + vecBandEndX * width,
 					(float) prevBandAnchorPoint.getY() + vecBandEndY * width);
-			
-			anchorPoints.add(new Pair<Point2D, Point2D>(prevBandAnchorPoint, nextAnchorPoint));
+
+			anchorPoints.add(dimensionGroupAnchorPoints);
+			anchorPoints.add(dimensionGroupAnchorOffsetPoints);
+			anchorPoints.add(new Pair<Point2D, Point2D>(prevBandAnchorPoint,
+					nextAnchorPoint));
+
 			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
 					new float[] { 0, 0, 0 }, 1);
-			
+
 			prevBandAnchorPoint = nextAnchorPoint;
 		}
 
@@ -357,49 +374,22 @@ public class EdgeBandRenderer {
 		float vecYPoint2Bottom = (float) bandAnchorPoint2Bottom.getY()
 				- bandPoints.get(bandPoints.size() - 2).y();
 
-		float lambda1 = 0;
-		if (vecXPoint1Bottom != 0)
-			lambda1 = vecYPoint1Bottom / vecXPoint1Bottom;
-		float lambda2 = 0;
-		if (vecXPoint2Bottom != 0)
-			lambda2 = vecYPoint2Bottom / vecXPoint2Bottom;
+		Point2D bandOffsetAnchorPoint1Bottom = calcPointOnLineWithFixedY(
+				bandAnchorPoint1Bottom, vecXPoint1Bottom, vecYPoint1Bottom,
+				(float) offsetAnchorPointsBottom.getFirst().getY(),
+				(float) offsetAnchorPointsBottom.getFirst().getX(),
+				(float) offsetAnchorPointsBottom.getSecond().getX(),
+				(float) offsetAnchorPointsBottom.getSecond().getX());
 
-		float bandOffsetAnchorPoint1BottomX = (float) bandAnchorPoint1Bottom
-				.getX()
-				- (lambda1 == 0 ? 0
-						: ((float) bandAnchorPoint1Bottom.getY() - (float) offsetAnchorPointsBottom
-								.getFirst().getY()) / lambda1);
+		Point2D bandOffsetAnchorPoint2Bottom = calcPointOnLineWithFixedY(
+				bandAnchorPoint2Bottom, vecXPoint2Bottom, vecYPoint2Bottom,
+				(float) offsetAnchorPointsBottom.getSecond().getY(),
+				(float) offsetAnchorPointsBottom.getFirst().getX(),
+				(float) offsetAnchorPointsBottom.getSecond().getX(),
+				(float) offsetAnchorPointsBottom.getFirst().getX());
 
-		if (bandOffsetAnchorPoint1BottomX > offsetAnchorPointsBottom
-				.getSecond().getX()
-				|| bandOffsetAnchorPoint1BottomX < offsetAnchorPointsBottom
-						.getFirst().getX()) {
-			bandOffsetAnchorPoint1BottomX = (float) offsetAnchorPointsBottom
-					.getSecond().getX();
-		}
-
-		float bandOffsetAnchorPoint2BottomX = (float) bandAnchorPoint2Bottom
-				.getX()
-				- (lambda2 == 0 ? 0
-						: ((float) bandAnchorPoint2Bottom.getY() - (float) offsetAnchorPointsBottom
-								.getSecond().getY()) / lambda2);
-
-		if (bandOffsetAnchorPoint2BottomX < offsetAnchorPointsBottom.getFirst()
-				.getX()
-				|| bandOffsetAnchorPoint2BottomX > offsetAnchorPointsBottom
-						.getSecond().getX()) {
-			bandOffsetAnchorPoint2BottomX = (float) offsetAnchorPointsBottom
-					.getFirst().getX();
-		}
-
-		Pair<Point2D, Point2D> bandOffsetAnchorPointsBottom = new Pair<Point2D, Point2D>();
-		bandOffsetAnchorPointsBottom.setSecond(new Point2D.Float(
-				bandOffsetAnchorPoint1BottomX, (float) offsetAnchorPointsBottom
-						.getFirst().getY()));
-
-		bandOffsetAnchorPointsBottom.setFirst(new Point2D.Float(
-				bandOffsetAnchorPoint2BottomX, (float) offsetAnchorPointsBottom
-						.getSecond().getY()));
+		Pair<Point2D, Point2D> bandOffsetAnchorPointsBottom = new Pair<Point2D, Point2D>(
+				bandOffsetAnchorPoint2Bottom, bandOffsetAnchorPoint1Bottom);
 
 		Point2D bandAnchorPoint1Top = new Point2D.Float(bandPoints.get(
 				bandPoints.size() / 2 - 1).x(), bandPoints.get(
@@ -421,46 +411,22 @@ public class EdgeBandRenderer {
 		float vecYPoint2Top = (float) bandAnchorPoint2Top.getY()
 				- bandPoints.get(bandPoints.size() / 2 + 1).y();
 
-		lambda1 = 0;
-		if (vecXPoint1Top != 0)
-			lambda1 = vecYPoint1Top / vecXPoint1Top;
-		lambda2 = 0;
-		if (vecXPoint2Top != 0)
-			lambda2 = vecYPoint2Top / vecXPoint2Top;
+		Point2D bandOffsetAnchorPoint1Top = calcPointOnLineWithFixedY(
+				bandAnchorPoint1Top, vecXPoint1Top, vecYPoint1Top,
+				(float) offsetAnchorPointsTop.getFirst().getY(),
+				(float) offsetAnchorPointsTop.getFirst().getX(),
+				(float) offsetAnchorPointsTop.getSecond().getX(),
+				(float) offsetAnchorPointsTop.getSecond().getX());
 
-		float bandOffsetAnchorPoint1TopX = (float) bandAnchorPoint1Top.getX()
-				- (lambda1 == 0 ? 0
-						: ((float) bandAnchorPoint1Top.getY() - (float) offsetAnchorPointsTop
-								.getFirst().getY()) / lambda1);
-		if (bandOffsetAnchorPoint1TopX > offsetAnchorPointsTop.getSecond()
-				.getX()
-				|| bandOffsetAnchorPoint1TopX < offsetAnchorPointsTop
-						.getFirst().getX()) {
-			bandOffsetAnchorPoint1TopX = (float) offsetAnchorPointsTop
-					.getSecond().getX();
-		}
+		Point2D bandOffsetAnchorPoint2Top = calcPointOnLineWithFixedY(
+				bandAnchorPoint2Top, vecXPoint2Top, vecYPoint2Top,
+				(float) offsetAnchorPointsTop.getSecond().getY(),
+				(float) offsetAnchorPointsTop.getFirst().getX(),
+				(float) offsetAnchorPointsTop.getSecond().getX(),
+				(float) offsetAnchorPointsTop.getFirst().getX());
 
-		float bandOffsetAnchorPoint2TopX = (float) bandAnchorPoint2Top.getX()
-				- (lambda2 == 0 ? 0
-						: ((float) bandAnchorPoint2Top.getY() - (float) offsetAnchorPointsTop
-								.getSecond().getY()) / lambda2);
-
-		if (bandOffsetAnchorPoint2TopX < offsetAnchorPointsTop.getFirst()
-				.getX()
-				|| bandOffsetAnchorPoint2TopX > offsetAnchorPointsTop
-						.getSecond().getX()) {
-			bandOffsetAnchorPoint2TopX = (float) offsetAnchorPointsTop
-					.getFirst().getX();
-		}
-
-		Pair<Point2D, Point2D> bandOffsetAnchorPointsTop = new Pair<Point2D, Point2D>();
-		bandOffsetAnchorPointsTop.setSecond(new Point2D.Float(
-				bandOffsetAnchorPoint1TopX, (float) offsetAnchorPointsTop
-						.getFirst().getY()));
-
-		bandOffsetAnchorPointsTop.setFirst(new Point2D.Float(
-				bandOffsetAnchorPoint2TopX, (float) offsetAnchorPointsTop
-						.getSecond().getY()));
+		Pair<Point2D, Point2D> bandOffsetAnchorPointsTop = new Pair<Point2D, Point2D>(
+				bandOffsetAnchorPoint2Top, bandOffsetAnchorPoint1Top);
 
 		List<Pair<Point2D, Point2D>> bottomBandConnectionPoints = new ArrayList<Pair<Point2D, Point2D>>();
 		bottomBandConnectionPoints.add(anchorPointsBottom);
@@ -493,6 +459,69 @@ public class EdgeBandRenderer {
 
 		connectionBandRenderer.renderComplexBand(gl, topBandConnectionPoints,
 				false, new float[] { 0, 0, 0 }, 0.5f);
+	}
+
+	protected Point2D calcPointOnLineWithFixedX(Point2D pointOnLine,
+			float vecX, float vecY, float fixedX, float minY, float maxY,
+			float exceedingLimitsValY) {
+
+		float lambda = 0;
+		if (vecX != 0)
+			lambda = vecY / vecX;
+
+		float pointY = (float) pointOnLine.getY()
+				- ((float) pointOnLine.getX() - fixedX) * lambda;
+
+		if (pointY < minY || pointY > maxY) {
+			pointY = exceedingLimitsValY;
+		}
+
+		return new Point2D.Float(fixedX, pointY);
+	}
+
+	protected Point2D calcPointOnLineWithFixedY(Point2D pointOnLine,
+			float vecX, float vecY, float fixedY, float minX, float maxX,
+			float exceedingLimitsValX) {
+
+		float lambda = 0;
+		if (vecX != 0)
+			lambda = vecY / vecX;
+
+		float pointX = (float) pointOnLine.getX()
+				- (lambda == 0 ? 0 : ((float) pointOnLine.getY() - fixedY)
+						/ lambda);
+
+		if (pointX < minX || pointX > maxX) {
+			pointX = exceedingLimitsValX;
+		}
+
+		return new Point2D.Float(pointX, fixedY);
+		//
+		// float bandOffsetAnchorPoint1TopX = (float) bandAnchorPoint1Top.getX()
+		// - (lambda1 == 0 ? 0
+		// : ((float) bandAnchorPoint1Top.getY() - (float) offsetAnchorPointsTop
+		// .getFirst().getY()) / lambda1);
+		// if (bandOffsetAnchorPoint1TopX > offsetAnchorPointsTop.getSecond()
+		// .getX()
+		// || bandOffsetAnchorPoint1TopX < offsetAnchorPointsTop
+		// .getFirst().getX()) {
+		// bandOffsetAnchorPoint1TopX = (float) offsetAnchorPointsTop
+		// .getSecond().getX();
+		// }
+		//
+		// float bandOffsetAnchorPoint2TopX = (float) bandAnchorPoint2Top.getX()
+		// - (lambda2 == 0 ? 0
+		// : ((float) bandAnchorPoint2Top.getY() - (float) offsetAnchorPointsTop
+		// .getSecond().getY()) / lambda2);
+		//
+		// if (bandOffsetAnchorPoint2TopX < offsetAnchorPointsTop.getFirst()
+		// .getX()
+		// || bandOffsetAnchorPoint2TopX > offsetAnchorPointsTop
+		// .getSecond().getX()) {
+		// bandOffsetAnchorPoint2TopX = (float) offsetAnchorPointsTop
+		// .getFirst().getX();
+		// }
+
 	}
 
 	protected void renderHorizontalBand(GL2 gl, IDataGraphNode leftNode,
@@ -593,8 +622,6 @@ public class EdgeBandRenderer {
 		}
 		gl.glEnd();
 
-		// }
-
 		Point2D bandAnchorPoint1Left = new Point2D.Float(bandPoints.get(0).x(),
 				bandPoints.get(0).y());
 		Point2D bandAnchorPoint2Left = new Point2D.Float(bandPoints.get(
@@ -614,45 +641,22 @@ public class EdgeBandRenderer {
 		float vecYPoint2Left = (float) bandAnchorPoint2Left.getY()
 				- bandPoints.get(bandPoints.size() - 2).y();
 
-		float lambda1 = 0;
-		if (vecXPoint1Left != 0)
-			lambda1 = vecYPoint1Left / vecXPoint1Left;
-		float lambda2 = 0;
-		if (vecXPoint2Left != 0)
-			lambda2 = vecYPoint2Left / vecXPoint2Left;
-
-		float bandOffsetAnchorPoint1LeftY = (float) bandAnchorPoint1Left.getY()
-				- ((float) bandAnchorPoint1Left.getX() - (float) offsetAnchorPointsLeft
-						.getSecond().getX()) * lambda1;
-
-		if (bandOffsetAnchorPoint1LeftY < offsetAnchorPointsLeft.getSecond()
-				.getY()
-				|| bandOffsetAnchorPoint1LeftY > offsetAnchorPointsLeft
-						.getFirst().getY()) {
-			bandOffsetAnchorPoint1LeftY = (float) offsetAnchorPointsLeft
-					.getSecond().getY();
-		}
-
-		float bandOffsetAnchorPoint2LeftY = (float) bandAnchorPoint2Left.getY()
-				- ((float) bandAnchorPoint2Left.getX() - (float) offsetAnchorPointsLeft
-						.getFirst().getX()) * lambda2;
-
-		if (bandOffsetAnchorPoint2LeftY < offsetAnchorPointsLeft.getSecond()
-				.getY()
-				|| bandOffsetAnchorPoint2LeftY > offsetAnchorPointsLeft
-						.getFirst().getY()) {
-			bandOffsetAnchorPoint2LeftY = (float) offsetAnchorPointsLeft
-					.getFirst().getY();
-		}
-
-		Pair<Point2D, Point2D> bandOffsetAnchorPointsLeft = new Pair<Point2D, Point2D>();
-		bandOffsetAnchorPointsLeft.setSecond(new Point2D.Float(
-				(float) offsetAnchorPointsLeft.getFirst().getX(),
-				bandOffsetAnchorPoint1LeftY));
-
-		bandOffsetAnchorPointsLeft.setFirst(new Point2D.Float(
+		Point2D bandOffsetAnchorPoint1Left = calcPointOnLineWithFixedX(
+				bandAnchorPoint1Left, vecXPoint1Left, vecYPoint1Left,
 				(float) offsetAnchorPointsLeft.getSecond().getX(),
-				bandOffsetAnchorPoint2LeftY));
+				(float) offsetAnchorPointsLeft.getSecond().getY(),
+				(float) offsetAnchorPointsLeft.getFirst().getY(),
+				(float) offsetAnchorPointsLeft.getSecond().getY());
+
+		Point2D bandOffsetAnchorPoint2Left = calcPointOnLineWithFixedX(
+				bandAnchorPoint2Left, vecXPoint2Left, vecYPoint2Left,
+				(float) offsetAnchorPointsLeft.getFirst().getX(),
+				(float) offsetAnchorPointsLeft.getSecond().getY(),
+				(float) offsetAnchorPointsLeft.getFirst().getY(),
+				(float) offsetAnchorPointsLeft.getFirst().getY());
+
+		Pair<Point2D, Point2D> bandOffsetAnchorPointsLeft = new Pair<Point2D, Point2D>(
+				bandOffsetAnchorPoint2Left, bandOffsetAnchorPoint1Left);
 
 		Point2D bandAnchorPoint1Right = new Point2D.Float(bandPoints.get(
 				bandPoints.size() / 2 - 1).x(), bandPoints.get(
@@ -674,47 +678,22 @@ public class EdgeBandRenderer {
 		float vecYPoint2Right = (float) bandAnchorPoint2Right.getY()
 				- bandPoints.get(bandPoints.size() / 2 + 1).y();
 
-		lambda1 = 0;
-		if (vecXPoint1Right != 0)
-			lambda1 = vecYPoint1Right / vecXPoint1Right;
-		lambda2 = 0;
-		if (vecXPoint2Right != 0)
-			lambda2 = vecYPoint2Right / vecXPoint2Right;
-
-		float bandOffsetAnchorPoint1RightY = (float) bandAnchorPoint1Right
-				.getY()
-				- ((float) bandAnchorPoint1Right.getX() - (float) offsetAnchorPointsRight
-						.getSecond().getX()) * lambda1;
-
-		if (bandOffsetAnchorPoint1RightY < offsetAnchorPointsRight.getSecond()
-				.getY()
-				|| bandOffsetAnchorPoint1RightY > offsetAnchorPointsRight
-						.getFirst().getY()) {
-			bandOffsetAnchorPoint1RightY = (float) offsetAnchorPointsRight
-					.getSecond().getY();
-		}
-
-		float bandOffsetAnchorPoint2RightY = (float) bandAnchorPoint2Right
-				.getY()
-				- ((float) bandAnchorPoint2Right.getX() - (float) offsetAnchorPointsRight
-						.getFirst().getX()) * lambda2;
-
-		if (bandOffsetAnchorPoint2RightY < offsetAnchorPointsRight.getSecond()
-				.getY()
-				|| bandOffsetAnchorPoint2RightY > offsetAnchorPointsRight
-						.getFirst().getY()) {
-			bandOffsetAnchorPoint2RightY = (float) offsetAnchorPointsRight
-					.getFirst().getY();
-		}
-
-		Pair<Point2D, Point2D> bandOffsetAnchorPointsRight = new Pair<Point2D, Point2D>();
-		bandOffsetAnchorPointsRight.setSecond(new Point2D.Float(
-				(float) offsetAnchorPointsRight.getFirst().getX(),
-				bandOffsetAnchorPoint1RightY));
-
-		bandOffsetAnchorPointsRight.setFirst(new Point2D.Float(
+		Point2D bandOffsetAnchorPoint1Right = calcPointOnLineWithFixedX(
+				bandAnchorPoint1Right, vecXPoint1Right, vecYPoint1Right,
 				(float) offsetAnchorPointsRight.getSecond().getX(),
-				bandOffsetAnchorPoint2RightY));
+				(float) offsetAnchorPointsRight.getSecond().getY(),
+				(float) offsetAnchorPointsRight.getFirst().getY(),
+				(float) offsetAnchorPointsRight.getSecond().getY());
+
+		Point2D bandOffsetAnchorPoint2Right = calcPointOnLineWithFixedX(
+				bandAnchorPoint2Right, vecXPoint2Right, vecYPoint2Right,
+				(float) offsetAnchorPointsRight.getFirst().getX(),
+				(float) offsetAnchorPointsRight.getSecond().getY(),
+				(float) offsetAnchorPointsRight.getFirst().getY(),
+				(float) offsetAnchorPointsRight.getFirst().getY());
+
+		Pair<Point2D, Point2D> bandOffsetAnchorPointsRight = new Pair<Point2D, Point2D>(
+				bandOffsetAnchorPoint2Right, bandOffsetAnchorPoint1Right);
 
 		List<Pair<Point2D, Point2D>> leftBandConnectionPoints = new ArrayList<Pair<Point2D, Point2D>>();
 		leftBandConnectionPoints.add(anchorPointsLeft);
