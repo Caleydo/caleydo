@@ -363,8 +363,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			count++;
 		}
 
-		visBricks.getRelationAnalyzer().updateRelations(dimensionGroupData.getID(),
-				dimensionGroupData.getSummaryVA());
+		visBricks.getRelationAnalyzer().updateRelations(dimensionGroupData.getRecordPerspective().getPerspectiveID(),
+				dimensionGroupData.getRecordPerspective().getVirtualArray());
 
 	}
 

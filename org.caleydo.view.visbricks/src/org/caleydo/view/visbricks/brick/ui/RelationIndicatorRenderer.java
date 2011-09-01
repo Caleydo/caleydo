@@ -36,10 +36,10 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	// private ASetBasedDataDomain dataDomain;
 	private RelationAnalyzer relationAnalyzer;
-	Integer tableID;
+	String perspectiveID;
 	int groupID;
 	GLVisBricks visBricks;
-	int neighborSetID = -1;
+	String neighborPerspectiveID = null;
 	List<GLBrick> neighborBrickOrder;
 	boolean isLeft;
 	float[] similarities;
@@ -51,7 +51,8 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
-		tableID = brick.getDimensionGroup().getTableID();
+		perspectiveID = brick.getDimensionGroup().getDimensionGroupData()
+				.getRecordPerspective().getPerspectiveID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
@@ -68,21 +69,22 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		ArrayList<DimensionGroup> dimensionGroups = visBricks.getDimensionGroupManager()
 				.getDimensionGroups();
 
-		int currentID;
-		int previousID = -1;
+		String currentID;
+		String previousID = null;
 
 		int count = 0;
 		for (DimensionGroup dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getTableID();
-			if (currentID == tableID && isLeft) {
-				neighborSetID = previousID;
-				if (neighborSetID != -1)
+			currentID = dimensionGroup.getDimensionGroupData().getRecordPerspective()
+					.getPerspectiveID();
+			if (currentID.equals(perspectiveID) && isLeft) {
+				neighborPerspectiveID = previousID;
+				if (neighborPerspectiveID != null)
 					neighborBrickOrder = dimensionGroups.get(count - 1)
 							.getBricksForRelations();
 				break;
 			}
-			if (previousID == tableID && !isLeft) {
-				neighborSetID = currentID;
+			if (previousID == perspectiveID && !isLeft) {
+				neighborPerspectiveID = currentID;
 				neighborBrickOrder = dimensionGroup.getBricksForRelations();
 				break;
 			}
@@ -91,11 +93,11 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			count++;
 		}
 
-		SimilarityMap map = relationAnalyzer.getSimilarityMap(tableID);
+		SimilarityMap map = relationAnalyzer.getSimilarityMap(perspectiveID);
 		if (map == null)
 			return;
 		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity = map
-				.getVASimilarity(neighborSetID);
+				.getVASimilarity(neighborPerspectiveID);
 
 		// SimilarityMap map = relationAnalyzer.getSimilarityMap(neighborSetID);
 		// if (map == null)
@@ -107,7 +109,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		if (vaSimilarity == null)
 			return;
 		GroupSimilarity<RecordVirtualArray, RecordGroupList> groupSimilarity = vaSimilarity
-				.getGroupSimilarity(tableID, groupID);
+				.getGroupSimilarity(perspectiveID, groupID);
 
 		similarities = groupSimilarity.getSimilarities();
 		scores = groupSimilarity.getScores();
@@ -116,7 +118,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	@Override
 	public synchronized void render(GL2 gl) {
-		if (neighborSetID == -1 || similarities == null)
+		if (neighborPerspectiveID == null || similarities == null)
 			return;
 
 		// float xDebugOffset = -0.05f;

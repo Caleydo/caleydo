@@ -1138,6 +1138,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		this.segmentData = brickData;
 		recordVA = brickData.getRecordPerspective().getVirtualArray();
 		dimensionVA = brickData.getDimensionPerspective().getVirtualArray();
+		group = brickData.getGroup();
+		groupID = brickData.getGroup().getGroupID();
 //		brickData.setBrickData(this);
 	}
 

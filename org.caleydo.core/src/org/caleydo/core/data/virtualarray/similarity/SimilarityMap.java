@@ -14,28 +14,29 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 public class SimilarityMap {
 
 	/**
-	 * Get the VASimilarity between this SimilarityMap's VA and the VA associated with the tableID.
+	 * Get the VASimilarity between this SimilarityMap's VA and the VA associated with the perspectiveID.
 	 * 
-	 * @param foreignSetID
-	 *            the tableID associated with the VA that should be compared to the VA in this SimilarityMap
+	 * @param foreignPerspectiveID
+	 *            the perspectiveID associated with the VA that should be compared to the VA in this
+	 *            SimilarityMap
 	 * @return
 	 */
-	public VASimilarity<RecordVirtualArray, RecordGroupList> getVASimilarity(Integer foreignSetID) {
-		return similarityMap.get(foreignSetID);
+	public VASimilarity<RecordVirtualArray, RecordGroupList> getVASimilarity(String foreignPerspectiveID) {
+		return similarityMap.get(foreignPerspectiveID);
 	}
 
 	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
 
-	HashMap<Integer, VASimilarity<RecordVirtualArray, RecordGroupList>> similarityMap =
-		new HashMap<Integer, VASimilarity<RecordVirtualArray, RecordGroupList>>(20);
+	HashMap<String, VASimilarity<RecordVirtualArray, RecordGroupList>> similarityMap =
+		new HashMap<String, VASimilarity<RecordVirtualArray, RecordGroupList>>(20);
 
-	private Integer tableID;
+	private String tableID;
 	private RecordVirtualArray recordVA;
 
 	/**
 	 * Constructor with the key pair tableID and recordVA
 	 */
-	SimilarityMap(Integer tableID, RecordVirtualArray recordVA) {
+	SimilarityMap(String tableID, RecordVirtualArray recordVA) {
 		this.tableID = tableID;
 		this.recordVA = recordVA;
 	}
@@ -46,12 +47,12 @@ public class SimilarityMap {
 	 * @param comparedSetID
 	 * @param comparedRecordVA
 	 */
-	VASimilarity<RecordVirtualArray, RecordGroupList> calculateVASimilarity(Integer comparedSetID,
+	VASimilarity<RecordVirtualArray, RecordGroupList> calculateVASimilarity(String comparedSetID,
 		RecordVirtualArray comparedRecordVA) {
 		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity;
 
-			vaSimilarity = new VASimilarity<RecordVirtualArray, RecordGroupList>();
-			vaSimilarity.addVA(tableID, recordVA);
+		vaSimilarity = new VASimilarity<RecordVirtualArray, RecordGroupList>();
+		vaSimilarity.addVA(tableID, recordVA);
 
 		vaSimilarity.addVA(comparedSetID, comparedRecordVA);
 		vaSimilarity.calculateSimilarities();
@@ -65,22 +66,22 @@ public class SimilarityMap {
 	 * @param vaSimilarity
 	 */
 	void setVaSimilarity(VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarity) {
-		Set<Integer> keys = vaSimilarity.getTableIDs();
+		Set<String> keys = vaSimilarity.getPerspectiveIDs();
 		boolean ownKeyContained = false;
-		Integer comparedSetID = null;
-		for (Integer key : keys) {
+		String comparedPerspectiveID = null;
+		for (String key : keys) {
 			if (key.equals(tableID))
 				ownKeyContained = true;
 			else
-				comparedSetID = key;
+				comparedPerspectiveID = key;
 		}
 		if (!ownKeyContained)
 			throw new IllegalStateException("Can not set this similarity (" + vaSimilarity
 				+ ") since it does not contain this SimilarityMap's VA (tableID: " + tableID + ")");
-		if (comparedSetID == null)
+		if (comparedPerspectiveID == null)
 			throw new IllegalStateException("No other va set in " + vaSimilarity);
 
-		similarityMap.put(comparedSetID, vaSimilarity);
+		similarityMap.put(comparedPerspectiveID, vaSimilarity);
 
 	}
 
