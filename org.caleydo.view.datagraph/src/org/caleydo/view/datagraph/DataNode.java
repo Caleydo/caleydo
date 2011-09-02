@@ -44,7 +44,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		dimensionGroups.add(new FakeDimensionGroupData(2));
 		dimensionGroups.add(new FakeDimensionGroupData(3));
 		dimensionGroups.add(new FakeDimensionGroupData(4));
-		
+
 		this.dataDomain = dataDomain;
 
 		setupLayout();
@@ -111,13 +111,12 @@ public class DataNode extends ADraggableDataGraphNode {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-//		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
-//		if (groups == null) {
-//			groups = new ArrayList<ADimensionGroupData>();
-//		}
-		
-		
-		return dimensionGroups;
+		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
+		if (groups == null) {
+			groups = new ArrayList<ADimensionGroupData>();
+		}
+
+		return groups;
 	}
 
 	@Override
@@ -140,8 +139,8 @@ public class DataNode extends ADraggableDataGraphNode {
 		// -1, 20));
 		layoutManager
 				.setViewFrustum(new ViewFrustum(
-						CameraProjectionMode.ORTHOGRAPHIC, 0, width, 0,
-						height, -1, 20));
+						CameraProjectionMode.ORTHOGRAPHIC, 0, width, 0, height,
+						-1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
@@ -198,16 +197,15 @@ public class DataNode extends ADraggableDataGraphNode {
 		Pair<Point2D, Point2D> anchorPoints = compGroupOverviewRenderer
 				.getAnchorPointsOfDimensionGroup(dimensionGroup);
 
-		Point2D first = (Point2D)anchorPoints.getFirst().clone();
-		Point2D second = (Point2D)anchorPoints.getSecond().clone();
-		
-		first.setLocation(
-				anchorPoints.getFirst().getX() + x - width / 2.0f + spacingX,
-				anchorPoints.getFirst().getY() + y - height / 2.0f + spacingY);
-		second.setLocation(
-				anchorPoints.getSecond().getX() + x - width / 2.0f + spacingX,
-				anchorPoints.getSecond().getY() + y - height / 2.0f + spacingY);
-		
+		Point2D first = (Point2D) anchorPoints.getFirst().clone();
+		Point2D second = (Point2D) anchorPoints.getSecond().clone();
+
+		first.setLocation(anchorPoints.getFirst().getX() + x - width / 2.0f
+				+ spacingX, anchorPoints.getFirst().getY() + y - height / 2.0f
+				+ spacingY);
+		second.setLocation(anchorPoints.getSecond().getX() + x - width / 2.0f
+				+ spacingX, anchorPoints.getSecond().getY() + y - height / 2.0f
+				+ spacingY);
 
 		return new Pair<Point2D, Point2D>(first, second);
 	}
@@ -319,7 +317,7 @@ public class DataNode extends ADraggableDataGraphNode {
 	public float getWidth() {
 		return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
 	}
-	
+
 	@Override
 	public void update() {
 		compGroupOverviewRenderer.setDimensionGroups(getDimensionGroups());

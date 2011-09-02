@@ -48,7 +48,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 			DragAndDropController dragAndDropController, int id,
 			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
-		
+
 		dimensionGroups = new ArrayList<ADimensionGroupData>();
 		dimensionGroups.add(new FakeDimensionGroupData(0));
 		dimensionGroups.add(new FakeDimensionGroupData(1));
@@ -137,13 +137,12 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-//		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
-//		if (groups == null) {
-//			groups = new ArrayList<ADimensionGroupData>();
-//		}
-		
-		
-		return dimensionGroups;
+		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
+		if (groups == null) {
+			groups = new ArrayList<ADimensionGroupData>();
+		}
+
+		return groups;
 	}
 
 	@Override
@@ -212,16 +211,15 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		Pair<Point2D, Point2D> anchorPoints = compGroupOverviewRenderer
 				.getAnchorPointsOfDimensionGroup(dimensionGroup);
 
-		Point2D first = (Point2D)anchorPoints.getFirst().clone();
-		Point2D second = (Point2D)anchorPoints.getSecond().clone();
-		
-		first.setLocation(
-				anchorPoints.getFirst().getX() + x - width / 2.0f + spacingX,
-				anchorPoints.getFirst().getY() + y - height / 2.0f + spacingY);
-		second.setLocation(
-				anchorPoints.getSecond().getX() + x - width / 2.0f + spacingX,
-				anchorPoints.getSecond().getY() + y - height / 2.0f + spacingY);
-		
+		Point2D first = (Point2D) anchorPoints.getFirst().clone();
+		Point2D second = (Point2D) anchorPoints.getSecond().clone();
+
+		first.setLocation(anchorPoints.getFirst().getX() + x - width / 2.0f
+				+ spacingX, anchorPoints.getFirst().getY() + y - height / 2.0f
+				+ spacingY);
+		second.setLocation(anchorPoints.getSecond().getX() + x - width / 2.0f
+				+ spacingX, anchorPoints.getSecond().getY() + y - height / 2.0f
+				+ spacingY);
 
 		return new Pair<Point2D, Point2D>(first, second);
 	}
