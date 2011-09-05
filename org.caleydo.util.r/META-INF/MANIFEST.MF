@@ -15,7 +15,17 @@ Bundle-NativeCode:
  processor=x86,
  lib/windows/x86_64/jri.dll;
  osname=win32;
- processor=x86_64
+ processor=x86_64,
+ lib/macosx/libjri.jnilib;
+ osname=macosx;
+ osname=mac;
+ osname=macos;
+ osname=Mac;
+ osname=MacOSX;
+ osname=Mac OS X;
+ processor=x86;
+ processor=x86_64;
+ processor=ppc,
 Bundle-Vendor: Graz University of Technology
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
