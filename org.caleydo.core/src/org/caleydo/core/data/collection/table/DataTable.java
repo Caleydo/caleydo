@@ -9,14 +9,12 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
-import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.dimension.ADimension;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.dimension.DimensionManager;
-import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -26,9 +24,6 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.ClusterManager;
-import org.caleydo.core.util.clusterer.ClusterResult;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -50,12 +45,9 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  */
 public class DataTable
-	extends AUniqueObject
-	implements ICollection {
+	extends AUniqueObject {
 
 	protected HashMap<Integer, ADimension> hashDimensions;
-
-	private String sLabel = "Rootset";
 
 	/** List of dimension IDs in the order as they have been added */
 	protected ArrayList<Integer> defaultDimensionIDs;
@@ -88,33 +80,26 @@ public class DataTable
 	/** everything related to normalization of the data is held in or accessible through this object */
 	private Normalization normalization;
 
-	public DataTable() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
-	}
-
 	/**
 	 * Constructor for the table. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
 	 */
 	public DataTable(ATableBasedDataDomain dataDomain) {
-		this();
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 		this.dataDomain = dataDomain;
-		initWithDataDomain();
+		// initWithDataDomain();
 	}
 
-	private void initWithDataDomain() {
-		ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
-		ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
-		tree.setRootNode(root);
-		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
-		// hashDimensionData.put(DimensionVAType.STORAGE, defaultDimensionData.clone());
-	}
+	// private void initWithDataDomain() {
+	// ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
+	// ClusterNode root = new ClusterNode(tree, "Root", 1, true, -1);
+	// tree.setRootNode(root);
+	// }
 
 	/**
 	 * Initialization of member variables. Safe to be called by sub-classes.
 	 */
 	{
-
 		hashDimensions = new HashMap<Integer, ADimension>();
 		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
 		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
@@ -147,17 +132,6 @@ public class DataTable
 	// }
 
 	/**
-	 * Set the data domain that is responsible for the set
-	 * 
-	 * @param dataDomain
-	 */
-	@XmlTransient
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-		initWithDataDomain();
-	}
-
-	/**
 	 * Get the data domain that is responsible for the set
 	 * 
 	 * @param dataDomain
@@ -176,17 +150,6 @@ public class DataTable
 	 */
 	public ADimension get(Integer dimensionID) {
 		return hashDimensions.get(dimensionID);
-	}
-
-	@Override
-	public void setLabel(String sLabel) {
-		this.sLabel = sLabel;
-	}
-
-	@Override
-	public String getLabel() {
-		return sLabel;
-
 	}
 
 	/**
@@ -264,14 +227,6 @@ public class DataTable
 		return result;
 	}
 
-	// /**
-	// * Restores the original virtual array using the whole set data.
-	// */
-	// public void restoreOriginalRecordVA(String recordPerspectiveID) {
-	// RecordPerspective recordData = createRecordData(RECORD);
-	// hashRecordData.put(RECORD, recordData);
-	// }
-
 	/**
 	 * Get a copy of the original dimension VA (i.e., the va containing all dimensions in the order loaded
 	 * 
@@ -290,38 +245,6 @@ public class DataTable
 	public RecordVirtualArray getBaseRecordVA(String vaType) {
 		return createBaseRecordVA(vaType);
 	}
-
-	// /**
-	// * Set a recordVA. The recordVA in the recordData object is replaced and the other elements in the
-	// * recordData are retable.
-	// *
-	// * @param vaType
-	// * @param virtualArray
-	// */
-	// public void setRecordVA(String vaType, RecordVirtualArray virtualArray) {
-	// RecordData recordData = hashRecordPerspectives.get(vaType);
-	//
-	// recordData.setVA(virtualArray);
-	// // FIXME - this happens when we filter genes based on pathway occurrences. However, we should consider
-	// // this as a filter instead of the new default
-	// // if (vaType == CONTENT)
-	// // defaultContentData = recordData;
-	// hashRecordPerspectives.put(vaType, recordData);
-	// }
-	//
-	// /**
-	// * Sets a dimensionVA. The dimensionVA in the dimensionData object is replaced and the other elements in
-	// * the dimensionData are reset.
-	// *
-	// * @param perspectiveID
-	// * @param virtualArray
-	// */
-	// public void setDimensionVA(String perspectiveID, DimensionVirtualArray virtualArray) {
-	// DimensionData dimensionData = hashDimensionPerspectives.get(perspectiveID);
-	// if (dimensionData == null)
-	// throw new IllegalArgumentException("No dimensionPerspective know for ID: " + perspectiveID);
-	// dimensionData.setVA(virtualArray);
-	// }
 
 	/**
 	 * Returns the current external data rep.
@@ -342,51 +265,6 @@ public class DataTable
 		return isSetHomogeneous;
 	}
 
-	// /**
-	// * Clusters a Dimension
-	// *
-	// * @param clusterState
-	// * @return ArrayList<IVirtualArray> Virtual arrays holding cluster result
-	// */
-	// public void cluster(ClusterState clusterState) {
-	//
-	// // if (setType.equals(ESetDataType.NUMERIC) && isSetHomogeneous == true) {
-	//
-	// // String recordPerspectiveID = clusterState.getRecordPerspective().getPerspectiveID();
-	// // if (recordPerspectiveID != null) {
-	// // clusterState.setRecordPerspective(getRecordData(recordPerspectiveID));
-	// // clusterState.setRecordIDType(dataDomain.getRecordIDType());
-	// // // this.setContentGroupList(getRecordVA(recordVAType).getGroupList());
-	// // }
-	// //
-	// // String dimensionVAType = clusterState.getDimensionVAType();
-	// // if (dimensionVAType != null) {
-	// // clusterState.setDimensionPerspective(getDimensionData(dimensionVAType).getDimensionVA());
-	// // clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
-	// // // this.setDimensionGroupList(getDimensionVA(dimensionVAType).getGroupList());
-	// // }
-	//
-	// // TODO check here wheter the perspectives are actually set - they have been set her up to now, but
-	// // that doesn't work any more
-	//
-	//
-	//
-	// // TODO this stuff should no longer be necessary
-	// // if (result != null) {
-	// // RecordData recordResult = result.getRecordResult();
-	// // if (recordResult != null) {
-	// // hashRecordData.put(clusterState.getRecordVAType(), recordResult);
-	// // }
-	// // DimensionData dimensionResult = result.getDimensionResult();
-	// // if (dimensionResult != null) {
-	// // hashDimensionData.put(clusterState.getDimensionVAType(), dimensionResult);
-	// // }
-	// // // }
-	// // // else
-	// // // throw new IllegalStateException("Cannot cluster a non-numerical or non-homogeneous Set");
-	// // }
-	// }
-
 	/**
 	 * Returns a {@link RecordPerspective} object for the specified ID. The {@link RecordPerspective} provides
 	 * access to all mutable data on how to access the DataTable, e.g., {@link VirtualArray},
@@ -406,8 +284,9 @@ public class DataTable
 	 * @param recordPerspective
 	 */
 	public void registerRecordPerspecive(RecordPerspective recordPerspective) {
-		if(recordPerspective.getPerspectiveID() == null)
-			throw new IllegalStateException("Record perspective not correctly initiaklized: " + recordPerspective);
+		if (recordPerspective.getPerspectiveID() == null)
+			throw new IllegalStateException("Record perspective not correctly initiaklized: "
+				+ recordPerspective);
 		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
 	}
 
@@ -429,8 +308,9 @@ public class DataTable
 	 * @param dimensionPerspective
 	 */
 	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
-		if(dimensionPerspective.getPerspectiveID() == null)
-			throw new IllegalStateException("Dimension perspective not correctly initiaklized: " + dimensionPerspective);
+		if (dimensionPerspective.getPerspectiveID() == null)
+			throw new IllegalStateException("Dimension perspective not correctly initiaklized: "
+				+ dimensionPerspective);
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}
 
@@ -473,7 +353,7 @@ public class DataTable
 
 	@Override
 	public String toString() {
-		return "Set " + getLabel() + " with " + hashDimensions.size() + " dimensions.";
+		return "Set for " + dataDomain + " with " + hashDimensions.size() + " dimensions.";
 	}
 
 	/**
@@ -696,5 +576,4 @@ public class DataTable
 		}
 		return recordVA;
 	}
-
 }
