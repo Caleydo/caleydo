@@ -22,6 +22,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
+import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -44,10 +45,11 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	private Set<IDataDomain> dataDomains;
 	private List<ADimensionGroupData> dimensionGroups;
 	private String title;
+	private String iconPath;
 
 	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, int id,
-			AGLView representedView, String title) {
+			AGLView representedView, String title, String iconPath) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		dimensionGroups = new ArrayList<ADimensionGroupData>();
@@ -59,6 +61,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 		this.representedView = representedView;
 		this.title = title;
+		this.iconPath = iconPath;
 
 		// TODO: this is not nice
 		if (representedView instanceof GLVisBricks) {
@@ -102,12 +105,27 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
 
+		Row titleRow = new Row("titleRow");
+
+		if (iconPath != null) {
+			ElementLayout iconLayout = new ElementLayout("icon");
+			iconLayout.setPixelGLConverter(pixelGLConverter);
+			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
+			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+			iconLayout.setRenderer(new TextureRenderer(iconPath,
+					view.getTextureManager(), true));
+			titleRow.append(iconLayout);
+			titleRow.append(spacingLayoutX);
+		}
+
 		ElementLayout captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelGLConverter(pixelGLConverter);
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
 		captionLayout.setRenderer(new LabelRenderer(view, title,
 				PickingType.DATA_GRAPH_NODE, id));
+
+		titleRow.append(captionLayout);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
@@ -131,7 +149,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(compGroupLayout);
 		baseColumn.append(lineSeparatorLayout);
-		baseColumn.append(captionLayout);
+		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
 		layoutTemplate.setBaseElementLayout(baseRow);
 		layoutManager.setTemplate(layoutTemplate);

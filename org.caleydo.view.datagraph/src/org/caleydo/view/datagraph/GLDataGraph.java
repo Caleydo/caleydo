@@ -3,6 +3,9 @@ package org.caleydo.view.datagraph;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -38,6 +41,7 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.datagraph.bandlayout.BandInfo;
 import org.caleydo.view.datagraph.bandlayout.EdgeBandRenderer;
 import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
@@ -48,6 +52,7 @@ import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 import org.caleydo.view.datagraph.listener.NewDataDomainEventListener;
 import org.caleydo.view.datagraph.listener.NewViewEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -1027,26 +1032,44 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			IExtension[] extensions = point.getExtensions();
 			String viewID = view.getViewType();
 			String viewName = viewID;
+			String iconPath = null;
 			boolean viewNameObtained = false;
 
 			for (IExtension extension : extensions) {
 				IConfigurationElement[] elements = extension
 						.getConfigurationElements();
-
 				for (IConfigurationElement element : elements) {
 					if (element.getAttribute("id").equals(viewID)) {
 						viewName = element.getAttribute("name");
+						iconPath = element.getAttribute("icon");
 						viewNameObtained = true;
 						break;
+
 					}
 				}
 				if (viewNameObtained) {
 					break;
 				}
 			}
+			
+			if(iconPath.equals("")) {
+				iconPath = null;
+			}
+			if (iconPath != null) {
+				ClassLoader classLoader = view.getClass().getClassLoader();
+				URL url = classLoader.getResource(iconPath);
+				try {
+					url = FileLocator.resolve(url);
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+				iconPath = new File(url.getFile()).getAbsolutePath();
+			}
 
 			ViewNode node = new ViewNode(graphLayout, this,
-					dragAndDropController, lastNodeID++, view, viewName);
+					dragAndDropController, lastNodeID++, view, viewName,
+					iconPath);
 			dataGraph.addNode(node);
 			viewNodes.add(node);
 			Set<IDataDomain> dataDomains = view.getDataDomains();
@@ -1161,6 +1184,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		applyAutomaticLayout = true;
 		setDisplayListDirty();
+	}
+
+	public TextureManager getTextureManager() {
+		return textureManager;
 	}
 
 }

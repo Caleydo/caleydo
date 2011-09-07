@@ -2,15 +2,22 @@ package org.caleydo.core.view.opengl.util.texture;
 
 import gleem.linalg.Vec3f;
 
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.InputStream;
 import java.nio.IntBuffer;
 import java.util.HashMap;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLException;
+import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.manager.GeneralManager;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
+import com.jogamp.opengl.util.texture.TextureIO;
 
 /**
  * Manager handles OpenGL2 icons as textures. The manager must be created for each GL2 view because it needs a
@@ -218,8 +225,9 @@ public class TextureManager {
 	 * @param alpha
 	 *            Alpha value the Polygon should have where the texture is drawn on.
 	 */
-	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner, Vec3f lowerRightCorner,
-		Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG, float colorB, float alpha) {
+	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner,
+		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG,
+		float colorB, float alpha) {
 
 		Texture tempTexture = getIconTexture(gl, texturePath);
 		tempTexture.enable();
@@ -241,5 +249,72 @@ public class TextureManager {
 		gl.glEnd();
 
 		tempTexture.disable();
+	}
+
+	/**
+	 * Convenience method for rendering textures on a rectangle using an absolute path to an image file.
+	 * 
+	 * @param gl
+	 *            GL2 Context.
+	 * @param texturePath
+	 *            Path to the image.
+	 * @param lowerLeftCorner
+	 *            Lower left corner of the texture.
+	 * @param lowerRightCorner
+	 *            Lower right corner of the texture.
+	 * @param upperRightCorner
+	 *            Upper right corner of the texture.
+	 * @param upperLeftCorner
+	 *            Upper left corner of the texture.
+	 * @param colorR
+	 *            Red portion of the color the Polygon should have where the texture is drawn on.
+	 * @param colorG
+	 *            Green portion of the color the Polygon should have where the texture is drawn on.
+	 * @param colorB
+	 *            Blue portion of the color the Polygon should have where the texture is drawn on.
+	 * @param alpha
+	 *            Alpha value the Polygon should have where the texture is drawn on.
+	 */
+	public void renderTextureFromExtPath(GL2 gl, String texturePath, Vec3f lowerLeftCorner,
+		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG,
+		float colorB, float alpha) {
+
+		Texture tmpTexture = mapPathToTexture.get(texturePath);
+
+		if (tmpTexture == null) {
+			InputStream fileStream;
+			try {
+				fileStream = new FileInputStream(texturePath);
+				tmpTexture =
+					TextureIO.newTexture(TextureIO.newTextureData(GLProfile.getDefault(), fileStream, true,
+						"GIF"));
+			}
+			catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+
+			}
+			mapPathToTexture.put(texturePath, tmpTexture);
+		}
+
+		tmpTexture.enable();
+		tmpTexture.bind();
+
+		TextureCoords texCoords = tmpTexture.getImageTexCoords();
+
+		gl.glColor4f(colorR, colorG, colorB, alpha);
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
+		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
+		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
+		gl.glTexCoord2f(texCoords.right(), texCoords.top());
+		gl.glVertex3f(upperRightCorner.x(), upperRightCorner.y(), upperRightCorner.z());
+		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+		gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
+
+		gl.glEnd();
+
+		tmpTexture.disable();
 	}
 }
