@@ -14,7 +14,6 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.DataDomainGraph;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -49,6 +48,11 @@ import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 import org.caleydo.view.datagraph.listener.NewDataDomainEventListener;
 import org.caleydo.view.datagraph.listener.NewViewEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtension;
+import org.eclipse.core.runtime.IExtensionPoint;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -467,11 +471,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glLineWidth(2);
 				gl.glEnable(GL2.GL_LINE_STIPPLE);
 				gl.glLineStipple(3, (short) 127);
-				
+
 				// gl.glBegin(GL2.GL_LINES);
 				Point2D position1 = edge.getFirst().getPosition();
 				Point2D position2 = edge.getSecond().getPosition();
-				
+
 				List<Point2D> edgePoints = new ArrayList<Point2D>();
 				edgePoints.add(position1);
 				edgePoints.add(position2);
@@ -1016,8 +1020,33 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public void addView(AGLView view) {
 		if (!view.isRenderedRemote() && view.isDataView()) {
+
+			IExtensionRegistry registry = Platform.getExtensionRegistry();
+			IExtensionPoint point = registry
+					.getExtensionPoint("org.eclipse.ui.views");
+			IExtension[] extensions = point.getExtensions();
+			String viewID = view.getViewType();
+			String viewName = viewID;
+			boolean viewNameObtained = false;
+
+			for (IExtension extension : extensions) {
+				IConfigurationElement[] elements = extension
+						.getConfigurationElements();
+
+				for (IConfigurationElement element : elements) {
+					if (element.getAttribute("id").equals(viewID)) {
+						viewName = element.getAttribute("name");
+						viewNameObtained = true;
+						break;
+					}
+				}
+				if (viewNameObtained) {
+					break;
+				}
+			}
+
 			ViewNode node = new ViewNode(graphLayout, this,
-					dragAndDropController, lastNodeID++, view);
+					dragAndDropController, lastNodeID++, view, viewName);
 			dataGraph.addNode(node);
 			viewNodes.add(node);
 			Set<IDataDomain> dataDomains = view.getDataDomains();

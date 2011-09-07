@@ -43,10 +43,11 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
 	private List<ADimensionGroupData> dimensionGroups;
+	private String title;
 
 	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, int id,
-			AGLView representedView) {
+			AGLView representedView, String title) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		dimensionGroups = new ArrayList<ADimensionGroupData>();
@@ -57,6 +58,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		dimensionGroups.add(new FakeDimensionGroupData(4));
 
 		this.representedView = representedView;
+		this.title = title;
 
 		// TODO: this is not nice
 		if (representedView instanceof GLVisBricks) {
@@ -104,8 +106,8 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		captionLayout.setPixelGLConverter(pixelGLConverter);
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout.setRenderer(new LabelRenderer(view, representedView
-				.getViewType(), PickingType.DATA_GRAPH_NODE, id));
+		captionLayout.setRenderer(new LabelRenderer(view, title,
+				PickingType.DATA_GRAPH_NODE, id));
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
 		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
