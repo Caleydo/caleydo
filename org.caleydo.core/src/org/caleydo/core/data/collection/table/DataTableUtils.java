@@ -7,6 +7,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateDimension;
@@ -20,6 +21,8 @@ import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -153,7 +156,15 @@ public class DataTableUtils {
 		CmdDataCreateDimension cmdCreateDimension;
 		String dimensionLabel;
 
+		ATableBasedDataDomain dataDomain = loadDataParameters.getDataDomain();
+		IDMappingManager dimensionIDMappingManager = dataDomain.getDimensionIDMappingManager();
+		MappingType mappingType =
+			dimensionIDMappingManager.createMap(dataDomain.getDimensionIDType(),
+				dataDomain.getHumanReadableDimensionIDType(), false);
+		Map<Integer, String> dimensionIDMap = dimensionIDMappingManager.getMap(mappingType);
+
 		int dimensionCount = 0;
+
 		for (EDimensionType dataType : dataTypes) {
 			switch (dataType) {
 				case FLOAT:
@@ -171,6 +182,7 @@ public class DataTableUtils {
 					dimensionLabel = dimensionLabelIterator.next();
 					NumericalDimension dimension = (NumericalDimension) cmdCreateDimension.getCreatedObject();
 					dimension.setLabel(dimensionLabel);
+					dimensionIDMap.put(dimension.getID(), dimensionLabel);
 
 					if (!createDimensionsFromExistingIDs)
 						dimensionIds.add(dimension.getID());
@@ -211,7 +223,7 @@ public class DataTableUtils {
 				break;
 			}
 		}
-
+		dimensionIDMappingManager.createReverseMap(mappingType);
 		loadDataParameters.setDimensionIds(dimensionIds);
 
 		return true;

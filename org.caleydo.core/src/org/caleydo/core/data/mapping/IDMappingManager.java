@@ -51,7 +51,7 @@ public class IDMappingManager {
 
 	/**
 	 * Adds a new map for the specified mapping type. To fill that map with elements, use the method
-	 * getMapping after calling this one.
+	 * {@link #getMap(MappingType)} after calling this one.
 	 * 
 	 * @param <K>
 	 *            Type of Keys of the map

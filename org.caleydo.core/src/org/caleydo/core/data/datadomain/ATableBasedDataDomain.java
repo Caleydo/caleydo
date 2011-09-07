@@ -690,6 +690,13 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
+	 * @return the humanReadableDimensionIDType, see {@link #humanReadableDimensionIDType}
+	 */
+	public IDType getHumanReadableDimensionIDType() {
+		return humanReadableDimensionIDType;
+	}
+	
+	/**
 	 * Get the human readable content label for a specific id. The id has to be of the recordIDType of the
 	 * dataDomain.
 	 * 
@@ -721,7 +728,7 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public String getDimensionLabel(IDType idType, Object id) {
-		String label = dimensionIDMappingManager.getID(idType, humanReadableDimensionIDType, idType);
+		String label = dimensionIDMappingManager.getID(idType, humanReadableDimensionIDType, id);
 		if (label == null)
 			label = "";
 		return label;
