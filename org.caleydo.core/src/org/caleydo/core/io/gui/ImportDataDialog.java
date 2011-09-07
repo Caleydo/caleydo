@@ -221,7 +221,7 @@ public class ImportDataDialog
 		idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
 		idTypes = new ArrayList<IDType>();
 
-		HashSet<IDType> tempIDTypes = GeneralManager.get().getIDMappingManager().getIDTypes();
+		HashSet<IDType> tempIDTypes = dataDomain.getRecordIDMappingManager().getIDTypes();
 
 		for (IDType idType : tempIDTypes) {
 			if (!idType.isInternalType())
@@ -797,7 +797,7 @@ public class ImportDataDialog
 
 	private void determineFileIDType() {
 
-		IDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
+		IDMappingManager idMappingManager = dataDomain.getRecordIDMappingManager();
 
 		TableItem[] items = previewTable.getItems();
 		ArrayList<String> idList = new ArrayList<String>();
@@ -808,7 +808,7 @@ public class ImportDataDialog
 		}
 		if (idTypes == null) {
 			idTypes = new ArrayList<IDType>();
-			HashSet<IDType> alIDTypesTemp = GeneralManager.get().getIDMappingManager().getIDTypes();
+			HashSet<IDType> alIDTypesTemp = idMappingManager.getIDTypes();
 			for (IDType idType : alIDTypesTemp) {
 				if (!idType.isInternalType())
 					idTypes.add(idType);

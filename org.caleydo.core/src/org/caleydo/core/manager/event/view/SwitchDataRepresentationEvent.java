@@ -3,11 +3,11 @@ package org.caleydo.core.manager.event.view;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
- * Event signaling that the data representation should be changed (see {@link DataRepresentation})
+ * Event signaling that the data representation should be changed (see {@link EDataRepresentation})
  * 
  * @author Alexander Lex
  */

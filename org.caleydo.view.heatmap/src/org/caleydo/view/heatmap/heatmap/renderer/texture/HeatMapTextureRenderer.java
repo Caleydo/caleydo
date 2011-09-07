@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -29,7 +29,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private int numberOfTextures = 0;
 
-	private int numberOfElements = 0;
+	private int numberOfRecords = 0;
 
 	private int samplesPerTexture = 0;
 
@@ -46,7 +46,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 	private int groupIndex;
 	private FloatBuffer[] floatBuffer;
 
-	private int numberOfExpirments;
+	private int numberOfDimensions;
 
 	public Column heatmapLayout;
 
@@ -79,14 +79,14 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		ColorMapper colorMapper = uncertaintyHeatMap.getColorMapper();
 		this.groupIndex = groupIndex;
 
-		int textureHeight = numberOfElements = recordVA.size();
-		int textureWidth = numberOfExpirments = dimensionVA.size();
+		int textureHeight = numberOfRecords = recordVA.size();
+		int textureWidth = numberOfDimensions = dimensionVA.size();
 
-		numberOfTextures = (int) Math.ceil((double) numberOfElements
+		numberOfTextures = (int) Math.ceil((double) numberOfRecords
 				/ MAX_SAMPLES_PER_TEXTURE);
 
 		if (numberOfTextures <= 1)
-			samplesPerTexture = numberOfElements;
+			samplesPerTexture = numberOfRecords;
 		else
 			samplesPerTexture = MAX_SAMPLES_PER_TEXTURE;
 
@@ -130,8 +130,8 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				lookupValue = table.get(dimensionIndex).getFloat(
-						uncertaintyHeatMap.getRenderingRepresentation(), recordIndex);
+				lookupValue = table.getFloat(
+						uncertaintyHeatMap.getRenderingRepresentation(),dimensionIndex, recordIndex);
 
 				float[] mappingColor = colorMapper.getColor(lookupValue);
 
@@ -170,7 +170,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		// fHeight = viewFrustum.getHeight();
 		// fWidth = renderStyle.getWidthLevel1();
 
-		float elementHeight = y / numberOfElements;
+		float elementHeight = y / numberOfRecords;
 		float step = 0;
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
@@ -191,7 +191,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 		texture.enable();
 		texture.bind();
-		
+
 		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_DECAL);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
@@ -222,31 +222,31 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		float val = 0;
 		float uncertainty = 0;
 
-		float ratio = (float) numberOfElements / (float) height;
-		int startGene = (int) ((ratio * imageLine) - (Math.round(ratio / 2f)));
-		int endGene = (int) ((ratio * imageLine) + (Math.round(ratio / 2f)));
-		startGene = startGene < 0 ? 0 : startGene;
-		endGene = endGene > numberOfElements - 1 ? numberOfElements - 1 : endGene;
+		float ratio = (float) numberOfRecords / (float) height;
+		int startRecord = (int) ((ratio * imageLine) - (Math.round(ratio / 2f)));
+		int endRecord = (int) ((ratio * imageLine) + (Math.round(ratio / 2f)));
+		startRecord = startRecord < 0 ? 0 : startRecord;
+		endRecord = endRecord > numberOfRecords - 1 ? numberOfRecords - 1 : endRecord;
 
-		for (int exps = 0; exps < numberOfExpirments; exps++) {
+		for (int dimensionCount = 0; dimensionCount < numberOfDimensions; dimensionCount++) {
 			val = 0;
 
-			for (int i = startGene; i < endGene; i++) {
+			for (int i = startRecord; i < endRecord; i++) {
 				// byte[] abgr = new byte[4];
 
 				val = val
-						+ ((table.get(dimensionVA.get(exps)).getFloat(
-								DataRepresentation.NORMALIZED, recordVA.get(i))));
+						+ ((table.getFloat(EDataRepresentation.NORMALIZED,
+								dimensionVA.get(dimensionCount), recordVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
 
 			// getting avr over genes
-			val = val / (float) (endGene - startGene);
+			val = val / (float) (endRecord - startRecord);
 			// unc = difference
 			uncertainty = 0;
-			for (int i = startGene; i < endGene; i++) {
-				float tempVal = table.get(dimensionVA.get(exps)).getFloat(
-						DataRepresentation.NORMALIZED, recordVA.get(i));
+			for (int i = startRecord; i < endRecord; i++) {
+				float tempVal = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionVA.get(dimensionCount), recordVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {
 					maxUncertainty = uncertainty;

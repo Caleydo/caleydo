@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -78,7 +78,7 @@ public class GLPathwayContentCreator {
 
 	private ATableBasedDataDomain geneticDataDomain;
 
-	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+	private EDataRepresentation dimensionDataRepresentation = EDataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor.
@@ -87,6 +87,7 @@ public class GLPathwayContentCreator {
 
 		this.generalManager = GeneralManager.get();
 		this.glPathwayView = glPathwayView;
+		idMappingManager = glPathwayView.getPathwayDataDomain().getGeneIDMappingManager();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
@@ -98,7 +99,6 @@ public class GLPathwayContentCreator {
 
 		iArSelectedEdgeRepId = new ArrayList<Integer>();
 
-		idMappingManager = generalManager.getIDMappingManager();
 		pathwayItemManager = PathwayItemManager.get();
 
 		geneticDataDomain = glPathwayView.getDataDomain();
@@ -886,13 +886,9 @@ public class GLPathwayContentCreator {
 				return null;
 			for (Integer iExpressionIndex : ids) {
 
-				ADimension dimension = geneticDataDomain.getTable().get(
-						glPathwayView.iCurrentDimensionIndex);
-				if (dimension == null)
-					throw new IllegalStateException("No dimension in this set with id: "
-							+ glPathwayView.iCurrentDimensionIndex);
-				float expressionValue = dimension.getFloat(dimensionDataRepresentation,
-						iExpressionIndex);
+				float expressionValue = geneticDataDomain.getTable().getFloat(
+						dimensionDataRepresentation,
+						glPathwayView.iCurrentDimensionIndex, iExpressionIndex);
 
 				return colorMapper.getColor(expressionValue);
 
@@ -926,11 +922,11 @@ public class GLPathwayContentCreator {
 	}
 
 	public void switchDataRepresentation() {
-		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
+		if (dimensionDataRepresentation.equals(EDataRepresentation.NORMALIZED)) {
 			if (!geneticDataDomain.getTable().containsFoldChangeRepresentation())
 				geneticDataDomain.getTable().createFoldChangeRepresentation();
-			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
+			dimensionDataRepresentation = EDataRepresentation.FOLD_CHANGE_NORMALIZED;
 		} else
-			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+			dimensionDataRepresentation = EDataRepresentation.NORMALIZED;
 	}
 }

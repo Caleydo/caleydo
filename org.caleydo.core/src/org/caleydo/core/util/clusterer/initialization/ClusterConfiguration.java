@@ -31,11 +31,7 @@ import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 @XmlType
 public class ClusterConfiguration {
 
-	// private String dimensionPerspectiveID;
-	// private String recordPerspectiveID;
-	// private IDType recordIDType;
-	// private IDType dimensionIDType;
-
+	
 	private EClustererAlgo clustererAlgo;
 	private ClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
@@ -72,22 +68,7 @@ public class ClusterConfiguration {
 		this.setDistanceMeasure(dist);
 	}
 
-	// public void setRecordIDType(IDType recordIDType) {
-	// this.recordIDType = recordIDType;
-	// }
-	//
-	// public IDType getRecordIDType() {
-	// return recordIDType;
-	// }
-	//
-	// public void setDimensionIDType(IDType dimensionIDType) {
-	// this.dimensionIDType = dimensionIDType;
-	// }
-	//
-	// public IDType getDimensionIDType() {
-	// return dimensionIDType;
-	// }
-
+	
 	/**
 	 * @param recordPerspective
 	 *            setter, see {@link #sourceRecordPerspective}

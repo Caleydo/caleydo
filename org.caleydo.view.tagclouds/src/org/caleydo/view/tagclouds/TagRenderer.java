@@ -5,7 +5,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -64,16 +64,7 @@ public class TagRenderer extends LayoutRenderer {
 
 		if (!tagCloud.getRecordVA().contains(recordID))
 			return;
-		ADimension genericDimension = tagCloud.getTable().get(dimensionID);
-		if (genericDimension instanceof NumericalDimension) {
-			NumericalDimension numericalDimension = (NumericalDimension) genericDimension;
-			text = new Float(
-					numericalDimension.getFloat(DataRepresentation.RAW, recordID))
-					.toString();
-		} else {
-			NominalDimension<String> dimension = (NominalDimension<String>) genericDimension;
-			text = dimension.getRaw(recordID);
-		}
+		text = tagCloud.getTable().getRawAsString(dimensionID, recordID);
 
 	}
 
@@ -93,8 +84,7 @@ public class TagRenderer extends LayoutRenderer {
 		}
 		textRenderer.setColor(color);
 
-		float maxHeight = tagCloud.getPixelGLConverter()
-				.getGLHeightForPixelHeight(50);
+		float maxHeight = tagCloud.getPixelGLConverter().getGLHeightForPixelHeight(50);
 		if (allowTextScaling && y > maxHeight) {
 			float renderHeight = maxHeight;
 

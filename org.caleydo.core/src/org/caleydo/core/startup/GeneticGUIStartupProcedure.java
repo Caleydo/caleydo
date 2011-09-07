@@ -33,7 +33,7 @@ public class GeneticGUIStartupProcedure
 		// Delete old workbench state
 		FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH + ".metadata");
 	}
-	
+
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
@@ -64,7 +64,8 @@ public class GeneticGUIStartupProcedure
 				new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
 					REAL_DATA_SAMPLE_FILE, dataDomain);
 		else
-			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+			// TODO temp "fix" for my gtk problem
+			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.csv", dataDomain);
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
@@ -85,7 +86,6 @@ public class GeneticGUIStartupProcedure
 		if (!startViewWithDataDomain.isEmpty())
 			return;
 
-		
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.heatmap.hierarchical",
 			"org.caleydo.datadomain.genetic"));
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",

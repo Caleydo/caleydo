@@ -196,10 +196,10 @@ public class ExportDataDialog
 
 		DataTableExporter exporter = new DataTableExporter();
 
-		DataTable table = dataChooserComposite.getDataDomain().getTable();
 		IDType targetIDType = dataChooserComposite.getDataDomain().getPrimaryRecordMappingType();
-		exporter.export(table, sFileName, dataChooserComposite.getRecordPerspective(),
-			dataChooserComposite.getDimensionPerspective(), targetIDType);
+		exporter.export(dataChooserComposite.getDataDomain(), sFileName,
+			dataChooserComposite.getRecordPerspective(), dataChooserComposite.getDimensionPerspective(),
+			targetIDType);
 
 		super.okPressed();
 	}

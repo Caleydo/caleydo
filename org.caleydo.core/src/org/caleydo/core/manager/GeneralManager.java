@@ -6,7 +6,6 @@ import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.dimension.DimensionManager;
 import org.caleydo.core.data.id.IDCreator;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.view.ViewManager;
@@ -75,7 +74,6 @@ public class GeneralManager {
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
 	private XmlParserManager xmlParserManager;
-	private IDMappingManager idMappingManager;
 	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
 	private WiiRemote wiiRemote;
@@ -98,7 +96,6 @@ public class GeneralManager {
 		eventPublisher = new EventPublisher();
 		viewManager = new ViewManager();
 		swtGUIManager = new SWTGUIManager();
-		idMappingManager = new IDMappingManager();
 		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();
 		xmlParserManager.initHandlers();
@@ -172,9 +169,6 @@ public class GeneralManager {
 		return xmlParserManager;
 	}
 
-	public IDMappingManager getIDMappingManager() {
-		return idMappingManager;
-	}
 
 	public CommandManager getCommandManager() {
 		return commandManager;

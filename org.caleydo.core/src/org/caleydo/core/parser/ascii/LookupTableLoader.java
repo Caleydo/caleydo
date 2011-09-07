@@ -6,6 +6,8 @@ import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -21,7 +23,7 @@ public class LookupTableLoader
 	extends AbstractLoader {
 	protected MappingType mappingType;
 
-	protected final IDMappingManager genomeIdManager;
+	protected final IDMappingManager idMappingManager;
 
 	/**
 	 * Factor with that the line index must be multiplied to get a normalized (0-100) progress percentage
@@ -34,13 +36,13 @@ public class LookupTableLoader
 	/**
 	 * Constructor.
 	 */
-	public LookupTableLoader(String sFileName, MappingType mappingType) {
+	public LookupTableLoader(IDCategory idCategory, String sFileName, MappingType mappingType) {
 		super(sFileName);
 
 		this.mappingType = mappingType;
 
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
-		genomeIdManager = GeneralManager.get().getIDMappingManager();
+		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 
 		setTokenSeperator(GeneralManager.sDelimiter_Parser_DataType);
 	}
@@ -84,21 +86,21 @@ public class LookupTableLoader
 							if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
 								try {
 									Integer id = Integer.parseInt(sLine);
-									genomeIdManager.getMap(mappingType).put(id,
+									idMappingManager.getMap(mappingType).put(id,
 										iLineInFile - parsingStartLine);
 								}
 								catch (NumberFormatException e) {
 								}
 							}
 							else if (mappingType.getFromIDType().getDimensionType() == EDimensionType.STRING) {
-								genomeIdManager.getMap(mappingType).put(sLine,
+								idMappingManager.getMap(mappingType).put(sLine,
 									iLineInFile - parsingStartLine);
 							}
 							else
 								throw new IllegalStateException("Unsupported data type!");
 						}
 						else {
-							genomeIdManager.getMap(mappingType).put(sLine, strTokenText.nextToken());
+							idMappingManager.getMap(mappingType).put(sLine, strTokenText.nextToken());
 						}
 					}
 					else {
@@ -128,18 +130,19 @@ public class LookupTableLoader
 								try {
 									Float.valueOf(buffer);
 									if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
-										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
+										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											iLineInFile - parsingStartLine);
 									}
-									else if (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED")) {
-										genomeIdManager.getMap(mappingType).put(buffer,
+									else if (mappingType.getFromIDType().getTypeName()
+										.contains("UNSPECIFIED")) {
+										idMappingManager.getMap(mappingType).put(buffer,
 											iLineInFile - parsingStartLine);
 									}
 								}
 								catch (NumberFormatException e) {
 									// System.out.println(buffer + " " +
 									// (lineInFile - parsingStartLine));
-									genomeIdManager.getMap(mappingType).put(buffer,
+									idMappingManager.getMap(mappingType).put(buffer,
 										iLineInFile - parsingStartLine);
 								}
 
@@ -148,11 +151,11 @@ public class LookupTableLoader
 							else {
 								if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
 									if (mappingType.getToIDType().getDimensionType() == EDimensionType.INT) {
-										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
+										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getToIDType().getDimensionType() == EDimensionType.STRING) {
-										genomeIdManager.getMap(mappingType).put(Integer.valueOf(buffer),
+										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											strTokenText.nextToken());
 									}
 									else
@@ -160,11 +163,11 @@ public class LookupTableLoader
 								}
 								else if (mappingType.getFromIDType().getDimensionType() == EDimensionType.STRING) {
 									if (mappingType.getToIDType().getDimensionType() == EDimensionType.INT) {
-										genomeIdManager.getMap(mappingType).put(buffer,
+										idMappingManager.getMap(mappingType).put(buffer,
 											Integer.valueOf(strTokenText.nextToken()));
 									}
 									else if (mappingType.getToIDType().getDimensionType() == EDimensionType.STRING) {
-										genomeIdManager.getMap(mappingType).put(buffer,
+										idMappingManager.getMap(mappingType).put(buffer,
 											strTokenText.nextToken());
 									}
 									else

@@ -422,7 +422,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 			// for (Integer iDavid : DataTableRefSeq) {
 
-			Set<Integer> DataTableExpressionIndex = idMappingManager.getIDAsSet(
+			Set<Integer> DataTableExpressionIndex = contentIDMappingManager.getIDAsSet(
 					IDType.getIDType("DAVID"), dataDomain.getRecordIDType(), davidID);
 			if (DataTableExpressionIndex == null)
 				continue;
@@ -461,7 +461,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 
-		IDMappingManager idMappingManager = generalManager.getIDMappingManager();
+		IDMappingManager idMappingManager = pathwayDataDomain.getGeneIDMappingManager();
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
@@ -1077,4 +1077,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
+	
+	
+	
 }

@@ -32,18 +32,14 @@
 
 	<Cmd type="CREATE_ID_TYPE" detail="PATHWAY" attrib1="GENE" attrib2="INT" />
 
-<!--
-	<Cmd type="CREATE_ID_TYPE" detail="GO_CC" attrib1="GENE" attrib2="STRING" />
-	<Cmd type="CREATE_ID_TYPE" detail="GO_MF" attrib1="GENE" attrib2="STRING" />
-	<Cmd type="CREATE_ID_TYPE" detail="GO_BP" attrib1="GENE" attrib2="STRING" />
-	<Cmd type="CREATE_ID_TYPE" detail="PANTHER_BP" attrib1="GENE"
-		attrib2="STRING" />
-	<Cmd type="CREATE_ID_TYPE" detail="PANTHER_MF" attrib1="GENE"
-		attrib2="STRING" />
-	<Cmd type="CREATE_ID_TYPE" detail="CHROMOSOME" attrib1="GENE"
-		attrib2="STRING" />
-		-->
-		
+	<!-- <Cmd type="CREATE_ID_TYPE" detail="GO_CC" attrib1="GENE" attrib2="STRING" 
+		/> <Cmd type="CREATE_ID_TYPE" detail="GO_MF" attrib1="GENE" attrib2="STRING" 
+		/> <Cmd type="CREATE_ID_TYPE" detail="GO_BP" attrib1="GENE" attrib2="STRING" 
+		/> <Cmd type="CREATE_ID_TYPE" detail="PANTHER_BP" attrib1="GENE" attrib2="STRING" 
+		/> <Cmd type="CREATE_ID_TYPE" detail="PANTHER_MF" attrib1="GENE" attrib2="STRING" 
+		/> <Cmd type="CREATE_ID_TYPE" detail="CHROMOSOME" attrib1="GENE" attrib2="STRING" 
+		/> -->
+
 	<!-- ************************** Experiments ************************** -->
 
 	<Cmd type="CREATE_ID_CATEGORY" detail="EXPERIMENT" />
@@ -61,86 +57,67 @@
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2REFSEQ_MRNA.txt"
 		attrib1="DAVID_2_REFSEQ_MRNA REVERSE" attrib2="\t" attrib3="0 -1"
-		attrib5="true" />
+		attrib5="true" attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="generate"
-		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" attrib5="false" />
+		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" attrib5="false"
+		attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="already_loaded"
 		attrib1="DAVID_2_REFSEQ_MRNA REVERSE LUT" attrib2="\t" attrib3="0 -1"
-		attrib4="DAVID_2_REFSEQ_MRNA_INT" />
+		attrib4="DAVID_2_REFSEQ_MRNA_INT" attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2ENTREZ_GENE_ID.txt"
 		attrib1="DAVID_2_ENTREZ_GENE_ID REVERSE" attrib2="\t" attrib3="0 -1"
-		attrib5="false" />
+		attrib5="false" attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_SYMBOL.txt"
 		attrib1="DAVID_2_GENE_SYMBOL REVERSE" attrib2="\t" attrib3="0 -1"
-		attrib5="false" />
+		attrib5="false" attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/david/ORGANISM_DAVID2GENE_NAME.txt"
 		attrib1="DAVID_2_GENE_NAME REVERSE" attrib2="\t" attrib3="0 -1"
-		attrib5="false" />
+		attrib5="false" attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2ENSEMBL_GENE_ID.txt"
 		attrib1="DAVID_2_ENSEMBL_GENE_ID REVERSE" attrib2="\t" attrib3="0 -1"
-		attrib5="false" />
+		attrib5="false" attrib6="GENE" />
 
 	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
 		detail="data/genome/mapping/ORGANISM_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt"
 		attrib1="BIOCARTA_GENE_ID_2_REFSEQ_MRNA REVERSE LUT" attrib2=";"
-		attrib3="0 -1" attrib4="BIOCARTA_GENE_ID_2_DAVID" attrib5="true" />
+		attrib3="0 -1" attrib4="BIOCARTA_GENE_ID_2_DAVID" attrib5="true"
+		attrib6="GENE" />
 
-	<!-- 
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE"
-		detail="data/genome/mapping/david/ORGANISM_DAVID2GOTERM_CC_ALL.txt"
-		attrib1="DAVID_2_GO_CC" attrib2=";"
-		attrib3="0 -1" attrib5="true" />
-	-->
+	<!-- <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/david/ORGANISM_DAVID2GOTERM_CC_ALL.txt" 
+		attrib1="DAVID_2_GO_CC" attrib2=";" attrib3="0 -1" attrib5="true" /> -->
 
-<!-- 
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_CC.csv"
-		attrib1="REFSEQ_MRNA_2_GO_CC LUT REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="DAVID_2_GO_CC" attrib5="true" />
+	<!-- <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_CC.csv" 
+		attrib1="REFSEQ_MRNA_2_GO_CC LUT REVERSE" attrib2=";" attrib3="0 -1" attrib4="DAVID_2_GO_CC" 
+		attrib5="true" /> <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_MF.csv" 
+		attrib1="REFSEQ_MRNA_2_GO_MF LUT REVERSE" attrib2=";" attrib3="0 -1" attrib4="DAVID_2_GO_CC" 
+		attrib5="true" /> <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_BP.csv" 
+		attrib1="REFSEQ_MRNA_2_GO_BP LUT REVERSE" attrib2=";" attrib3="0 -1" attrib4="DAVID_2_GO_CC" 
+		attrib5="true" /> <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2PANTHER_BP.csv" 
+		attrib1="REFSEQ_MRNA_2_PANTHER_BP LUT REVERSE" attrib2=";" attrib3="0 -1" 
+		attrib4="DAVID_2_PANTHER_BP" attrib5="true" /> <Cmd type="LOAD_LOOKUP_TABLE_FILE" 
+		detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2PANTHER_MF.csv" attrib1="REFSEQ_MRNA_2_PANTHER_MF 
+		LUT REVERSE" attrib2=";" attrib3="0 -1" attrib4="DAVID_2_PANTHER_MF" attrib5="true" 
+		/> <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2CHROMOSOME.csv" 
+		attrib1="REFSEQ_MRNA_2_CHROMOSOME LUT REVERSE" attrib2=";" attrib3="0 -1" 
+		attrib4="DAVID_2_CHROMOSOME" attrib5="true" /> -->
 
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_MF.csv"
-		attrib1="REFSEQ_MRNA_2_GO_MF LUT REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="DAVID_2_GO_CC" attrib5="true" />
-		
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2GO_BP.csv"
-		attrib1="REFSEQ_MRNA_2_GO_BP LUT REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="DAVID_2_GO_CC" attrib5="true" />		
-
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2PANTHER_BP.csv"
-		attrib1="REFSEQ_MRNA_2_PANTHER_BP LUT REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="DAVID_2_PANTHER_BP" attrib5="true" />		
-		
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2PANTHER_MF.csv"
-		attrib1="REFSEQ_MRNA_2_PANTHER_MF LUT REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="DAVID_2_PANTHER_MF" attrib5="true" />			
-		
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_REFSEQ_MRNA2CHROMOSOME.csv"
-		attrib1="REFSEQ_MRNA_2_CHROMOSOME LUT REVERSE" attrib2=";" attrib3="0 -1"
-		attrib4="DAVID_2_CHROMOSOME" attrib5="true" />
-		-->
-
-<!-- 
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_PANTHER_BP2REFSEQ_MRNA.csv"
-		attrib1="PANTHER_BP_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1"
-		attrib4="PANTHER_BP_2_DAVID" attrib5="true" />
-
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_PANTHER_MF2REFSEQ_MRNA.csv"
-		attrib1="PANTHER_MF_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1"
-		attrib4="PANTHER_MF_2_DAVID" attrib5="true" />
-
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_GO_MF2REFSEQ_MRNA.csv"
-		attrib1="GO_MF_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1"
-		attrib4="GO_MF_2_DAVID" attrib5="true" />
-
-	<Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_GO_BP2REFSEQ_MRNA.csv"
-		attrib1="GO_BP_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1"
-		attrib4="GO_BP_2_DAVID" attrib5="true" /> -->
+	<!-- <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_PANTHER_BP2REFSEQ_MRNA.csv" 
+		attrib1="PANTHER_BP_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1" 
+		attrib4="PANTHER_BP_2_DAVID" attrib5="true" /> <Cmd type="LOAD_LOOKUP_TABLE_FILE" 
+		detail="data/genome/mapping/ORGANISM_PANTHER_MF2REFSEQ_MRNA.csv" attrib1="PANTHER_MF_2_REFSEQ_MRNA 
+		REVERSE LUT" attrib2=";" attrib3="0 -1" attrib4="PANTHER_MF_2_DAVID" attrib5="true" 
+		/> <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_GO_MF2REFSEQ_MRNA.csv" 
+		attrib1="GO_MF_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1" attrib4="GO_MF_2_DAVID" 
+		attrib5="true" /> <Cmd type="LOAD_LOOKUP_TABLE_FILE" detail="data/genome/mapping/ORGANISM_GO_BP2REFSEQ_MRNA.csv" 
+		attrib1="GO_BP_2_REFSEQ_MRNA REVERSE LUT" attrib2=";" attrib3="0 -1" attrib4="GO_BP_2_DAVID" 
+		attrib5="true" /> -->
 </details>

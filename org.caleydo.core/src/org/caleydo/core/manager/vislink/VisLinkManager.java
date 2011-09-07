@@ -135,7 +135,7 @@ public class VisLinkManager
 
 		caleydoSelectionId = null;
 
-		IDMappingManager idmm = GeneralManager.get().getIDMappingManager();
+		IDMappingManager idmm = dataDomain.getRecordIDMappingManager();
 		int destId = 0;
 
 		try {
@@ -178,20 +178,20 @@ public class VisLinkManager
 
 			// caleydoSelectionId = deltaItem.getPrimaryID();
 
-			IDMappingManager idmm = GeneralManager.get().getIDMappingManager();
+			IDMappingManager idmm = dataDomain.getRecordIDMappingManager();
 			//
 			caleydoSelectionId =
-				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"),
-					deltaItem.getID());
+				idmm.getID(selectionDelta.getIDType(), IDType.getIDType("UNSPECIFIED"), deltaItem.getID());
 			if (caleydoSelectionId == null) {
-				java.util.Set<String> geneSymbols = idmm.getIDAsSet(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
+				java.util.Set<String> geneSymbols =
+					idmm.getIDAsSet(selectionDelta.getIDType(), IDType.getIDType("GENE_SYMBOL"),
 						deltaItem.getID());
-				
+
 				if (geneSymbols == null)
 					continue;
-				
+
 				// FIXME: not safe to just take the first one
-				caleydoSelectionId = (String)geneSymbols.toArray()[0];
+				caleydoSelectionId = (String) geneSymbols.toArray()[0];
 			}
 		}
 	}

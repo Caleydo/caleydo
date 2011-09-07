@@ -16,6 +16,7 @@ import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -1042,9 +1043,8 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
 			initHierarchy(tree, ((ATableBasedDataDomain) dataDomain).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID)
-					.getTreeRoot(), new ExperimentClusterDataEventManager(this),
-					alColorModes);
+					.getDimensionPerspective(dimensionPerspectiveID).getTreeRoot(),
+					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }
 
 		} else {

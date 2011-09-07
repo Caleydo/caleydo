@@ -31,7 +31,7 @@ public abstract class ADimension
 	extends AUniqueObject
 	implements ICollection {
 	
-	protected EnumMap<DataRepresentation, ICContainer> hashCContainers;
+	protected EnumMap<EDataRepresentation, ICContainer> hashCContainers;
 
 	protected String label;
 
@@ -39,7 +39,7 @@ public abstract class ADimension
 
 	RawDataType rawDataType = RawDataType.UNDEFINED;
 
-	DataRepresentation dataRep;
+	EDataRepresentation dataRep;
 
 	/**
 	 * Constructor Initializes objects
@@ -49,7 +49,7 @@ public abstract class ADimension
 
 		GeneralManager.get().getDimensionManager().registerItem(this);
 
-		hashCContainers = new EnumMap<DataRepresentation, ICContainer>(DataRepresentation.class);
+		hashCContainers = new EnumMap<EDataRepresentation, ICContainer>(EDataRepresentation.class);
 		label = new String("Not specified");
 	}
 
@@ -88,7 +88,7 @@ public abstract class ADimension
 		isRawDataSet = true;
 
 		FloatCContainer container = new FloatCContainer(fArRawData);
-		hashCContainers.put(DataRepresentation.RAW, container);
+		hashCContainers.put(EDataRepresentation.RAW, container);
 	}
 
 	/**
@@ -106,20 +106,20 @@ public abstract class ADimension
 		isRawDataSet = true;
 
 		IntCContainer container = new IntCContainer(iArRawData);
-		hashCContainers.put(DataRepresentation.RAW, container);
+		hashCContainers.put(EDataRepresentation.RAW, container);
 	}
 
 	public void setUncertaintyData(float[] uncertaintyData) {
-		if (hashCContainers.containsKey(DataRepresentation.UNCERTAINTY_RAW))
+		if (hashCContainers.containsKey(EDataRepresentation.UNCERTAINTY_RAW))
 			throw new IllegalStateException("Certainty data was already set in Dimension " + uniqueID
 				+ " , tried to set again.");
 
 		FloatCContainer container = new FloatCContainer(uncertaintyData);
-		hashCContainers.put(DataRepresentation.UNCERTAINTY_RAW, container);
+		hashCContainers.put(EDataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
 
-	public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
+	public boolean containsDataRepresentation(EDataRepresentation dataRepresentation) {
 		return hashCContainers.containsKey(dataRepresentation);
 	}
 
@@ -133,7 +133,7 @@ public abstract class ADimension
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public float getFloat(DataRepresentation dimensionKind, int iIndex) {
+	public float getFloat(EDataRepresentation dimensionKind, int iIndex) {
 		if (!hashCContainers.containsKey(dimensionKind))
 			throw new IllegalArgumentException("Requested dimension kind " + dimensionKind +" not produced");
 		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
@@ -149,7 +149,7 @@ public abstract class ADimension
 	 * @param dimensionKind
 	 * @return
 	 */
-	public FloatCContainerIterator floatIterator(DataRepresentation dimensionKind) {
+	public FloatCContainerIterator floatIterator(EDataRepresentation dimensionKind) {
 
 		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type float");
@@ -168,7 +168,7 @@ public abstract class ADimension
 	 *            The index of the requested Element
 	 * @return The associated value
 	 */
-	public int getInt(DataRepresentation dimensionKind, int iIndex) {
+	public int getInt(EDataRepresentation dimensionKind, int iIndex) {
 		if (!(hashCContainers.get(dimensionKind) instanceof IntCContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
@@ -182,7 +182,7 @@ public abstract class ADimension
 	 * @param dimensionKind
 	 * @return
 	 */
-	public IntCContainerIterator intIterator(DataRepresentation dimensionKind) {
+	public IntCContainerIterator intIterator(EDataRepresentation dimensionKind) {
 		if (!(hashCContainers.get(dimensionKind) instanceof IntCContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type int");
 
@@ -198,7 +198,7 @@ public abstract class ADimension
 	 * @iIndex the index of the element
 	 * @return the Number
 	 */
-	public Number get(DataRepresentation dimensionKind, int iIndex) {
+	public Number get(EDataRepresentation dimensionKind, int iIndex) {
 		if (!(hashCContainers.get(dimensionKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
@@ -213,7 +213,7 @@ public abstract class ADimension
 	 *            specifies which kind of dimension (eg: raw, normalized)
 	 * @return the iterator
 	 */
-	public Iterator<? extends Number> iterator(DataRepresentation dimensionKind) {
+	public Iterator<? extends Number> iterator(EDataRepresentation dimensionKind) {
 		if (!(hashCContainers.get(dimensionKind) instanceof NumericalCContainer<?>))
 			throw new IllegalArgumentException("Requested dimension kind is not a subtype of Number");
 
@@ -227,7 +227,7 @@ public abstract class ADimension
 	 * @return the number of raw data elements
 	 */
 	public int size() {
-		return hashCContainers.get(DataRepresentation.RAW).size();
+		return hashCContainers.get(EDataRepresentation.RAW).size();
 	}
 
 	@Override

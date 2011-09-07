@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.util.clusterer.TempResult;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
@@ -14,11 +14,12 @@ public class AlphabeticalPartitioner
 	extends AClusterer {
 
 	@Override
-	public TempResult getSortedVA(DataTable table, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
-		int iProgressBarMultiplier) {
+	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 		RecordVirtualArray recordVA = clusterState.getSourceRecordPerspective().getVirtualArray();
-		NominalDimension<String> dimension =
-			(NominalDimension<String>) table.get(clusterState.getSourceDimensionPerspective().getVirtualArray().get(0));
+		// NominalDimension<String> dimension =
+		// (NominalDimension<String>)
+		// table.get(clusterState.getSourceDimensionPerspective().getVirtualArray().get(0));
 
 		HashMap<String, ArrayList<Integer>> letterBins = new HashMap<String, ArrayList<Integer>>(40);
 
@@ -34,7 +35,9 @@ public class AlphabeticalPartitioner
 		letterBins.put(unknown, new ArrayList<Integer>());
 
 		for (Integer recordID : recordVA) {
-			String value = dimension.getRaw(recordID);
+			String value =
+				dataDomain.getTable().getRaw(
+					clusterState.getSourceDimensionPerspective().getVirtualArray().get(0), recordID);
 			String firstLetter = value.substring(0, 1);
 			firstLetter = firstLetter.toLowerCase();
 			if (letterBins.containsKey(firstLetter))

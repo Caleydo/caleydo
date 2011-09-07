@@ -5,8 +5,12 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
@@ -27,6 +31,8 @@ public class CmdLoadFileLookupTable
 
 	private String sLookupTableInfo;
 
+	private IDCategory idCategory;
+
 	private IDType fromIDType;
 
 	private IDType toIDType;
@@ -43,17 +49,12 @@ public class CmdLoadFileLookupTable
 	 */
 	private String sLookupTableDelimiter;
 
-	private int iStartPareseFileAtLine = 0;
+	private int startParsingInLine = 0;
 
 	/**
 	 * Default is -1 indicating read till end of file.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Dimension#iStopParsingAtLine
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Dimension#getStopParsingAtLine()
-	 * @see org.caleydo.core.parser.ascii.microarray.MicroArrayLoader1Dimension#setStartParsingStopParsingAtLine(int,
-	 *      int)
 	 */
-	private int iStopParseFileAtLine = -1;
+	private int stopParsingInLine = -1;
 
 	private boolean bCreateReverseMap = false;
 
@@ -72,6 +73,8 @@ public class CmdLoadFileLookupTable
 	private String sCodeResolvingLUTMappingType;
 
 	private boolean isMultiMap;
+
+	// private ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -95,8 +98,8 @@ public class CmdLoadFileLookupTable
 			int[] iArrayStartStop = ConversionTools.convertStringToIntArray(attrib3, " ");
 
 			if (iArrayStartStop.length == 2) {
-				iStartPareseFileAtLine = iArrayStartStop[0];
-				iStopParseFileAtLine = iArrayStartStop[1];
+				startParsingInLine = iArrayStartStop[0];
+				stopParsingInLine = iArrayStartStop[1];
 			}
 		}
 
@@ -104,20 +107,22 @@ public class CmdLoadFileLookupTable
 
 		isMultiMap = Boolean.parseBoolean(attrib5);
 
+		idCategory = IDCategory.getIDCategory(attrib6);
+
 		extractParameters();
 	}
 
-	public void setAttributes(final String sFileName, final int iStartParseFileAtLine,
-		final int iStopParseFileAtLine, final String sLookupTableInfo, final String sLookupTableDelimiter,
-		final String sCodeResolvingLUTTypes) {
+	public void setAttributes(final String sFileName, final int startParsingInLine,
+		final int stopParsingInLine, final String sLookupTableInfo, final String sLookupTableDelimiter,
+		final String sCodeResolvingLUTTypes, final IDCategory idCategory) {
 
-		this.iStartPareseFileAtLine = iStartParseFileAtLine;
-		this.iStopParseFileAtLine = iStopParseFileAtLine;
+		this.startParsingInLine = startParsingInLine;
+		this.stopParsingInLine = stopParsingInLine;
 		this.sLookupTableInfo = sLookupTableInfo;
 		this.sLookupTableDelimiter = sLookupTableDelimiter;
 		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
 		this.fileName = sFileName;
-
+		this.idCategory = idCategory;
 		extractParameters();
 	}
 
@@ -166,12 +171,12 @@ public class CmdLoadFileLookupTable
 		// FIXME: Currently we do not have the ensembl mapping table for home sapiens
 		if (fileName.contains("HOMO_SAPIENS") && fileName.contains("ENSEMBL"))
 			return;
-		
-		IDMappingManager genomeIdManager = generalManager.getIDMappingManager();
 
 		// Remove old lookuptable if it already exists
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
-	
+		if(idCategory == null)
+			throw new IllegalStateException("ID Category was null");
+		IDMappingManager genomeIdManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 		MappingType mappingType = genomeIdManager.createMap(fromIDType, toIDType, isMultiMap);
 
 		if (bResolveCodeMappingUsingCodeToId_LUT) {
@@ -186,20 +191,20 @@ public class CmdLoadFileLookupTable
 			genomeIdManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
 		}
 
-		int iIndex = 0;
+		int index = 0;
 		if (fileName.equals("generate")) {
 
 			Map<String, Integer> hashTmp = genomeIdManager.getMap(mappingType);
 			for (Object refSeqIDObject : genomeIdManager.getMap(
 				genomeIdManager.getMappingType("DAVID_2_REFSEQ_MRNA")).values()) {
 
-				hashTmp.put((String) refSeqIDObject, iIndex++);
+				hashTmp.put((String) refSeqIDObject, index++);
 			}
 		}
 		else if (!fileName.equals("already_loaded")) {
-			loader = new LookupTableLoader(fileName, mappingType);
+			loader = new LookupTableLoader(idCategory, fileName, mappingType);
 			loader.setTokenSeperator(sLookupTableDelimiter);
-			loader.setStartParsingStopParsingAtLine(iStartPareseFileAtLine, iStopParseFileAtLine);
+			loader.setStartParsingStopParsingAtLine(startParsingInLine, stopParsingInLine);
 			loader.loadData();
 		}
 

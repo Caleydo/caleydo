@@ -35,9 +35,10 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.filter.DimensionFilter;
@@ -600,8 +601,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (!(detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM))
 			renderCaption = false;
 
-		ADimension currentDimension = null;
-
 		float previousX = 0;
 		float previousY = 0;
 		float currentX = 0;
@@ -619,10 +618,11 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		// this loop executes once per axis
 		for (int dimensionCount = 0; dimensionCount < dimensionVA.size(); dimensionCount++) {
 
-			currentDimension = table.get(dimensionVA.get(dimensionCount));
+			Integer dimensionID = dimensionVA.get(dimensionCount);
 
 			currentX = axisSpacings.get(dimensionCount);
-			currentY = currentDimension.getFloat(DataRepresentation.NORMALIZED, recordID);
+			currentY = table.getFloat(EDataRepresentation.NORMALIZED, dimensionID,
+					recordID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
@@ -644,15 +644,16 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			if (renderCaption) {
 				String sRawValue;
-				if (currentDimension instanceof NumericalDimension) {
-					sRawValue = Formatter.formatNumber(currentDimension.getFloat(
-							DataRepresentation.RAW, recordID));
+				RawDataType rawDataType = table.getRawDataType(dimensionID, recordID);
+				if (rawDataType == RawDataType.FLOAT) {
 
-				} else if (currentDimension instanceof NominalDimension) {
-					sRawValue = ((NominalDimension<String>) currentDimension)
-							.getRaw(recordID);
+					sRawValue = Formatter.formatNumber(table.getFloat(
+							EDataRepresentation.RAW, dimensionID, recordID));
+
+				} else if (rawDataType == RawDataType.STRING) {
+					sRawValue = table.getRaw(dimensionID, recordID);
 				} else
-					throw new IllegalStateException("Unknown Dimension Type");
+					throw new IllegalStateException("Unknown Raw Data Type Type");
 
 				renderBoxedYValues(gl, currentX, currentY * renderStyle.getAxisHeight(),
 						sRawValue, selectionType);
@@ -778,7 +779,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			String sAxisLabel = null;
 
-			sAxisLabel = table.get(dimensionVA.get(iCount)).getLabel();
+			sAxisLabel = dataDomain.getDimensionLabel(dimensionVA.get(iCount));
 
 			gl.glTranslatef(fXPosition,
 					renderStyle.getAxisHeight() + renderStyle.getAxisCaptionSpacing(), 0);
@@ -1190,16 +1191,15 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				return;
 			alCurrentGateBlocks.clear();
 			AGate gate = hashGates.get(iGateID);
-			int iAxisID = gate.getAxisID();
-			if (iAxisID == -1)
+			int axisID = gate.getAxisID();
+			if (axisID == -1)
 				continue;
 			for (int recordID : recordVA) {
-				DataRepresentation usedDataRepresentation = DataRepresentation.RAW;
+				EDataRepresentation usedDataRepresentation = EDataRepresentation.RAW;
 				if (!table.isSetHomogeneous())
-					usedDataRepresentation = DataRepresentation.NORMALIZED;
+					usedDataRepresentation = EDataRepresentation.NORMALIZED;
 
-				fCurrentValue = table.get(iAxisID).getFloat(usedDataRepresentation,
-						recordID);
+				fCurrentValue = table.getFloat(usedDataRepresentation, axisID, recordID);
 
 				if (Float.isNaN(fCurrentValue)) {
 					continue;
@@ -1215,20 +1215,20 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	private void handleNANUnselection() {
 
-		float fCurrentValue = 0;
+		float currentValue = 0;
 		hashIsNANBlocking.clear();
-		for (Integer iAxisID : hashExcludeNAN.keySet()) {
-			ArrayList<Integer> alDeselectedLines = new ArrayList<Integer>();
-			for (int iPolylineIndex : recordVA) {
+		for (Integer axisID : hashExcludeNAN.keySet()) {
+			ArrayList<Integer> deselectedLines = new ArrayList<Integer>();
+			for (int polylineIndex : recordVA) {
 
-				fCurrentValue = table.get(iAxisID).getFloat(
-						DataRepresentation.NORMALIZED, iPolylineIndex);
+				currentValue = table.getFloat(EDataRepresentation.NORMALIZED, axisID,
+						polylineIndex);
 
-				if (Float.isNaN(fCurrentValue)) {
-					alDeselectedLines.add(iPolylineIndex);
+				if (Float.isNaN(currentValue)) {
+					deselectedLines.add(polylineIndex);
 				}
 			}
-			hashIsNANBlocking.put(iAxisID, alDeselectedLines);
+			hashIsNANBlocking.put(axisID, deselectedLines);
 		}
 	}
 
@@ -1242,12 +1242,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				return;
 			alCurrentGateBlocks.clear();
 			Gate gate = hashMasterGates.get(iGateID);
-			for (int iPolylineIndex : recordVA) {
+			for (int recordID : recordVA) {
 				boolean bIsBlocking = true;
-				for (int iAxisIndex : dimensionVA) {
+				for (int dimensionID : dimensionVA) {
 
-					fCurrentValue = table.get(iAxisIndex).getFloat(
-							DataRepresentation.RAW, iPolylineIndex);
+					fCurrentValue = table.getFloat(EDataRepresentation.RAW, dimensionID,
+							recordID);
 
 					if (Float.isNaN(fCurrentValue)) {
 						continue;
@@ -1262,7 +1262,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 					}
 				}
 				if (bIsBlocking) {
-					alCurrentGateBlocks.add(iPolylineIndex);
+					alCurrentGateBlocks.add(recordID);
 				}
 			}
 		}
@@ -1788,7 +1788,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// fXValue = viewFrustum.getRight() - 0.2f;
 			// else
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = table.get(dimensionVA.get(0)).getFloat(DataRepresentation.NORMALIZED, id);
+			y = table.getFloat(EDataRepresentation.NORMALIZED, dimensionVA.get(0), id);
 			// }
 
 			// // get the value on the leftmost axis
@@ -1887,12 +1887,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
-		vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
-				DataRepresentation.NORMALIZED, iSelectedLineID)
-				* renderStyle.getAxisHeight());
-		vecRightPoint.setY(table.get(iAxisRightIndex).getFloat(
-				DataRepresentation.NORMALIZED, iSelectedLineID)
-				* renderStyle.getAxisHeight());
+		vecLeftPoint.setY(table.getFloat(EDataRepresentation.NORMALIZED, iAxisLeftIndex,
+				iSelectedLineID) * renderStyle.getAxisHeight());
+		vecRightPoint.setY(table.getFloat(EDataRepresentation.NORMALIZED, iAxisRightIndex,
+				iSelectedLineID) * renderStyle.getAxisHeight());
 
 		vecLeftPoint.setX(axisSpacings.get(iPosition));
 		vecRightPoint.setX(axisSpacings.get(iPosition + 1));
@@ -1999,12 +1997,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		for (Integer iCurrent : recordVA) {
 
-			vecLeftPoint.setY(table.get(iAxisLeftIndex).getFloat(
-					DataRepresentation.NORMALIZED, iCurrent)
-					* renderStyle.getAxisHeight());
-			vecRightPoint.setY(table.get(iAxisRightIndex).getFloat(
-					DataRepresentation.NORMALIZED, iCurrent)
-					* renderStyle.getAxisHeight());
+			vecLeftPoint.setY(table.getFloat(EDataRepresentation.NORMALIZED,
+					iAxisLeftIndex, iCurrent) * renderStyle.getAxisHeight());
+			vecRightPoint.setY(table.getFloat(EDataRepresentation.NORMALIZED,
+					iAxisRightIndex, iCurrent) * renderStyle.getAxisHeight());
 
 			vecLeftPoint.setX(axisSpacings.get(iPosition));
 			vecRightPoint.setX(axisSpacings.get(iPosition + 1));
@@ -2304,8 +2300,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	}
 
-
-
 	@Override
 	public int getMinPixelHeight() {
 		// TODO: Calculate depending on content
@@ -2323,10 +2317,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			int dimensionCounter = 0;
 			for (Integer dimensionID : dimensionVA) {
 				float xValue = 0.2f * dimensionCounter++;
-				NumericalDimension dimension = (NumericalDimension) table
-						.get(dimensionID);
-
-				float yValue = dimension.getFloat(DataRepresentation.NORMALIZED, index);
+			
+				float yValue = table.getFloat(EDataRepresentation.NORMALIZED, dimensionID, index);
 				vertices[vertexCounter++] = xValue;
 				vertices[vertexCounter++] = yValue;
 			}

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Iterator;
 
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -14,16 +15,17 @@ import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
 
 public class IDExtractionLocationListener extends LocationAdapter {
-	private GeneralManager generalManager;
+	// private GeneralManager generalManager;
+	private IDMappingManager idManager;
 
 	private boolean bSkipNextChangeEvent = false;
 
 	/**
 	 * Constructor.
 	 */
-	public IDExtractionLocationListener(final Browser browser, final int iBrowserId,
-			final int iSelectionSetId) {
-		generalManager = GeneralManager.get();
+	public IDExtractionLocationListener(IDMappingManager idManager,
+			final Browser browser, final int iBrowserId, final int iSelectionSetId) {
+		this.idManager = idManager;
 	}
 
 	@Override
@@ -54,7 +56,7 @@ public class IDExtractionLocationListener extends LocationAdapter {
 			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId
 					.length());
 
-			Integer iDavidId = generalManager.getIDMappingManager().getID(
+			Integer iDavidId = idManager.getID(
 					IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
 					Integer.valueOf(sExtractedID));
 

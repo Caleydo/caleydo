@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
@@ -111,7 +111,7 @@ public abstract class ATableBasedView
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
-	protected DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+	protected EDataRepresentation dimensionDataRepresentation = EDataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor for dimension based views
@@ -183,7 +183,9 @@ public abstract class ATableBasedView
 		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
 			if (selectionDelta.getIDType() != recordIDType) {
-				selectionDelta = DeltaConverter.convertDelta(recordIDType, selectionDelta);
+				selectionDelta =
+					DeltaConverter.convertDelta(dataDomain.getRecordIDMappingManager(), recordIDType,
+						selectionDelta);
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
@@ -543,18 +545,18 @@ public abstract class ATableBasedView
 	}
 
 	public void switchDataRepresentation() {
-		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
+		if (dimensionDataRepresentation.equals(EDataRepresentation.NORMALIZED)) {
 			if (!table.containsFoldChangeRepresentation())
 				table.createFoldChangeRepresentation();
-			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
+			dimensionDataRepresentation = EDataRepresentation.FOLD_CHANGE_NORMALIZED;
 		}
 		else
-			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
+			dimensionDataRepresentation = EDataRepresentation.NORMALIZED;
 
 		setDisplayListDirty();
 	}
 
-	public DataRepresentation getRenderingRepresentation() {
+	public EDataRepresentation getRenderingRepresentation() {
 		return dimensionDataRepresentation;
 	}
 

@@ -4,7 +4,7 @@
 package org.caleydo.core.data.container;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
 /**
@@ -50,8 +50,8 @@ public class ContainerStatistics {
 			}
 			for (Integer dimensionID : dimensionVA) {
 				float value =
-					container.getDataDomain().getTable().get(dimensionID)
-						.getFloat(DataRepresentation.NORMALIZED, contenID);
+					container.getDataDomain().getTable()
+						.getFloat(EDataRepresentation.NORMALIZED, dimensionID, contenID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
 					count++;
@@ -85,8 +85,8 @@ public class ContainerStatistics {
 			{
 				for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
 					float value =
-						container.getDataDomain().getTable().get(dimensionID)
-							.getFloat(DataRepresentation.NORMALIZED, recordID);
+						container.getDataDomain().getTable().
+							getFloat(EDataRepresentation.NORMALIZED, dimensionID, recordID);
 
 					// this works because the values in the container are already noramlized
 					int iIndex = (int) (value * numberOfBuckets);

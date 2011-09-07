@@ -9,8 +9,8 @@ import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.MultiHashMap;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
@@ -24,10 +24,12 @@ import org.jgrapht.graph.DefaultDirectedWeightedGraph;
  */
 public class IDMappingManager {
 
+	private IDCategory idCategory;
+
 	/**
 	 * HashMap that contains all mappings identified by their MappingType.
 	 */
-	protected HashMap<MappingType, Map<?, ?>> hashMappingType2Map;
+	private HashMap<MappingType, Map<?, ?>> hashMappingType2Map;
 
 	private HashMap<String, MappingType> hashMappingTypeString2MappingType;
 
@@ -37,12 +39,11 @@ public class IDMappingManager {
 	 */
 	private DefaultDirectedWeightedGraph<IDType, MappingType> mappingGraph;
 
-	private GeneralManager generalManager = GeneralManager.get();
-
 	/**
 	 * Constructor.
 	 */
-	public IDMappingManager() {
+	IDMappingManager(IDCategory idCategory) {
+		this.idCategory = idCategory;
 		hashMappingType2Map = new HashMap<MappingType, Map<?, ?>>();
 		hashMappingTypeString2MappingType = new HashMap<String, MappingType>();
 		mappingGraph = new DefaultDirectedWeightedGraph<IDType, MappingType>(MappingType.class);
@@ -196,10 +197,7 @@ public class IDMappingManager {
 						codeResolvedMap = new HashMap<Integer, Integer>();
 
 						for (KeyType key : srcMap.keySet()) {
-							codeResolvedMap.put(
-								key,
-								generalManager.getIDMappingManager().getID(originValueType, destValueType,
-									srcMap.get(key)));
+							codeResolvedMap.put(key, getID(originValueType, destValueType, srcMap.get(key)));
 						}
 					}
 					else {
@@ -209,9 +207,7 @@ public class IDMappingManager {
 
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
-								iID =
-									generalManager.getIDMappingManager().getID(originValueType,
-										destValueType, sID);
+								iID = getID(originValueType, destValueType, sID);
 
 								if (iID == null || iID == -1) {
 									continue;
@@ -244,10 +240,7 @@ public class IDMappingManager {
 						codeResolvedMap = new HashMap<String, Integer>();
 
 						for (KeyType key : srcMap.keySet()) {
-							codeResolvedMap.put(
-								key,
-								generalManager.getIDMappingManager().getID(originValueType, destValueType,
-									srcMap.get(key)));
+							codeResolvedMap.put(key, getID(originValueType, destValueType, srcMap.get(key)));
 						}
 					}
 					else {
@@ -257,9 +250,7 @@ public class IDMappingManager {
 
 						for (KeyType key : srcMap.keySet()) {
 							for (String sID : srcMultiMap.getAll(key)) {
-								iID =
-									generalManager.getIDMappingManager().getID(originValueType,
-										destValueType, sID);
+								iID = getID(originValueType, destValueType, sID);
 
 								if (iID == null || iID == -1) {
 									continue;
@@ -289,8 +280,8 @@ public class IDMappingManager {
 
 						for (KeyType key : srcMap.keySet()) {
 							codeResolvedMap.put(
-								generalManager.getIDMappingManager().getID(conversionType.getFromIDType(),
-									conversionType.getToIDType(), key), srcMap.get(key));
+								getID(conversionType.getFromIDType(), conversionType.getToIDType(), key),
+								srcMap.get(key));
 						}
 					}
 					else {
@@ -300,8 +291,7 @@ public class IDMappingManager {
 
 						for (KeyType key : srcMap.keySet()) {
 							iResolvedID =
-								generalManager.getIDMappingManager().getID(conversionType.getFromIDType(),
-									conversionType.getToIDType(), key);
+								getID(conversionType.getFromIDType(), conversionType.getToIDType(), key);
 
 							if (iResolvedID == null) {
 								// generalManager.getLogger().log(new Status(Status.WARNING,
@@ -329,8 +319,8 @@ public class IDMappingManager {
 
 					for (KeyType key : srcMap.keySet()) {
 						codeResolvedMap.put(
-							generalManager.getIDMappingManager().getID(conversionType.getFromIDType(),
-								conversionType.getToIDType(), key), srcMap.get(key));
+							getID(conversionType.getFromIDType(), conversionType.getToIDType(), key),
+							srcMap.get(key));
 					}
 				}
 				else if (destKeyType.getDimensionType() == EDimensionType.STRING
@@ -511,8 +501,8 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
-//			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
-//				+ destination + " for: " + sourceID));
+			// Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
+			// + destination + " for: " + sourceID));
 			return null;
 		}
 		Object currentID = sourceID;
@@ -631,5 +621,11 @@ public class IDMappingManager {
 	 */
 	public MappingType getMappingType(String mappingTypeString) {
 		return hashMappingTypeString2MappingType.get(mappingTypeString);
+	}
+
+	@Override
+	public String toString() {
+		return "IDMappingManager for " + idCategory + "with registered id types: "
+			+ hashMappingType2Map.keySet();
 	}
 }

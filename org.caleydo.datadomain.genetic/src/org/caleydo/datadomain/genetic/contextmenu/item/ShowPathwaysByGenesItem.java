@@ -7,10 +7,11 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 
@@ -30,11 +31,14 @@ import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
  */
 public class ShowPathwaysByGenesItem extends AContextMenuItem {
 
+	private PathwayDataDomain pathwayDataDomain;
+
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
-	public ShowPathwaysByGenesItem() {
+	public ShowPathwaysByGenesItem(PathwayDataDomain pathwayDataDomain) {
 		super();
+		this.pathwayDataDomain = pathwayDataDomain;
 		// setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
 		setLabel("Pathways");
 	}
@@ -51,12 +55,13 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 		for (Integer gene : genes) {
-			Set<Integer> davids = GeneralManager.get().getIDMappingManager()
-					.getIDAsSet(idType, dataDomain.getPrimaryRecordMappingType(), gene);
+			Set<Integer> davids = ((GeneticDataDomain) dataDomain)
+					.getGeneIDMappingManager().getIDAsSet(idType,
+							dataDomain.getPrimaryRecordMappingType(), gene);
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {
-				Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
+				Set<PathwayGraph> pathwayGraphs = pathwayDataDomain.getMappingHelper()
 						.getPathwayGraphsByGeneID(
 								dataDomain.getPrimaryRecordMappingType(), david);
 
@@ -84,21 +89,21 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 			pathways.add(new Pair<Integer, PathwayGraph>(hashPathwaysToOccurences
 					.get(pathway), pathway));
 		}
-		
+
 		Collections.sort(pathways);
 		int pathwayCount = 0;
-		
+
 		for (int count = pathways.size() - 1; count >= 0; count--) {
 			Pair<Integer, PathwayGraph> pair = pathways.get(count);
 			if (pair.getFirst() > 1) {
 				LoadPathwaysByPathwayItem item = new LoadPathwaysByPathwayItem(
 						pair.getSecond(), dataDomain.getDataDomainID(), pair.getFirst());
 				addSubItem(item);
-				
+
 				pathwayCount++;
 			}
 		}
 
-		 setLabel("Load Pathways (" + pathwayCount + ")");
+		setLabel("Load Pathways (" + pathwayCount + ")");
 	}
 }

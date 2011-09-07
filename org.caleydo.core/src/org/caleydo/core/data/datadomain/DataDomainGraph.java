@@ -46,8 +46,6 @@ public class DataDomainGraph {
 
 		dataDomainGraph.addVertex(dataDomain);
 
-		IDMappingManager idMappingManager = GeneralManager.get().getIDMappingManager();
-
 		// FIXME: This is not generic at all, move the IDTypes of the DataDomains into IDataDomain
 		for (IDataDomain vertex : dataDomainGraph.vertexSet()) {
 			if (vertex != dataDomain) {
@@ -59,10 +57,12 @@ public class DataDomainGraph {
 
 					// TODO: Also mapping between content and dimension?
 					boolean hasContentMapping =
-						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryRecordMappingType(),
+						setBasedVertex.getRecordIDMappingManager().hasMapping(
+							setBasedDataDomain.getPrimaryRecordMappingType(),
 							setBasedVertex.getPrimaryRecordMappingType());
 					boolean hasDimensionMapping =
-						idMappingManager.hasMapping(setBasedDataDomain.getPrimaryDimensionMappingType(),
+						setBasedVertex.getDimensionIDMappingManager().hasMapping(
+							setBasedDataDomain.getPrimaryDimensionMappingType(),
 							setBasedVertex.getPrimaryDimensionMappingType());
 					if (hasContentMapping || hasDimensionMapping) {
 						mappingExists = true;

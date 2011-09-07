@@ -182,7 +182,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 	private void updateURL(IDType targetIDType) {
 
-		Set<Object> queryIDs = generalManager.getIDMappingManager().getIDAsSet(
+		Set<Object> queryIDs = dataDomain.getGeneIDMappingManager().getIDAsSet(
 				sourceIDType, targetIDType, sourceID);
 
 		String sURL = "";
@@ -238,7 +238,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	@Override
 	public void setDataDomain(GeneticDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		
+
 		registerEventListeners();
 	}
 

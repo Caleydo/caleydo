@@ -13,6 +13,7 @@ import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -107,6 +108,9 @@ public abstract class ATableBasedDataDomain
 	@XmlElement
 	private Set<String> dimensionPerspectiveIDs;
 
+	protected IDMappingManager recordIDMappingManager;
+	protected IDMappingManager dimensionIDMappingManager;
+
 	// private RelationAnalyzer contentRelationAnalyzer;
 
 	/**
@@ -130,6 +134,9 @@ public abstract class ATableBasedDataDomain
 				+ " was null, recordIDCategory: " + recordIDCategory + ", dimensionIDCategory: "
 				+ dimensionIDCategory);
 		}
+		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
+		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
+
 		recordIDType =
 			IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
 				EDimensionType.INT);
@@ -140,6 +147,7 @@ public abstract class ATableBasedDataDomain
 		recordGroupIDType =
 			IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
 				EDimensionType.INT);
+
 	}
 
 	/**
@@ -182,18 +190,19 @@ public abstract class ATableBasedDataDomain
 		return table;
 	}
 
-	// public DataTable getTable(int tableID) {
-	// if (table.getID() == tableID)
-	// return table;
-	//
-	// ClusterNode root = table.getDimensionData(DataTable.DIMENSION).getDimensionTreeRoot();
-	// DataTable set = root.getSubDataTableFromSubTree(tableID);
-	//
-	// if (set == null)
-	// set = otherSubDataTables.get(tableID);
-	// return set;
-	//
-	// }
+	/**
+	 * @return the recordIDMappingManager, see {@link #recordIDMappingManager}
+	 */
+	public IDMappingManager getRecordIDMappingManager() {
+		return recordIDMappingManager;
+	}
+
+	/**
+	 * @return the dimensionIDMappingManager, see {@link #dimensionIDMappingManager}
+	 */
+	public IDMappingManager getDimensionIDMappingManager() {
+		return dimensionIDMappingManager;
+	}
 
 	public void registerSubDataTable() {
 
@@ -249,8 +258,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	protected void initSelectionManagers() {
-		recordSelectionManager = new RecordSelectionManager(recordIDType);
-		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDType);
+		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
+		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
 	}
 
@@ -321,7 +330,7 @@ public abstract class ATableBasedDataDomain
 	public void startClustering(ClusterConfiguration clusterState) {
 		// FIXME this should be re-designed so that the clustering is a separate thread and communicates via
 		// events
-		ClusterManager clusterManager = new ClusterManager(table);
+		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
@@ -417,7 +426,7 @@ public abstract class ATableBasedDataDomain
 			return;
 
 		if (targetCategory == recordIDCategory && vaDelta.getIDType() != recordIDType)
-			vaDelta = DeltaConverter.convertDelta(recordIDType, vaDelta);
+			vaDelta = DeltaConverter.convertDelta(recordIDMappingManager, recordIDType, vaDelta);
 		RecordPerspective recordData = table.getRecordPerspective(vaDelta.getVAType());
 		recordData.setVADelta(vaDelta);
 
@@ -595,7 +604,7 @@ public abstract class ATableBasedDataDomain
 		if (bPlural)
 			recordLabel = recordLabelPlural;
 		else
-			recordLabel = recordLabelSingular;
+			recordLabel = contentLabelSingular;
 
 		if (bCapitalized) {
 
@@ -613,11 +622,11 @@ public abstract class ATableBasedDataDomain
 		if (recordSelectionManager == null)
 			return;
 
-		IDMappingManager mappingManager = GeneralManager.get().getIDMappingManager();
-		if (mappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
+		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
 			recordSelectionManager.setDelta(selectionDelta);
 		}
-		else if (mappingManager.hasMapping(selectionDelta.getIDType(), dimensionSelectionManager.getIDType())) {
+		else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
+			dimensionSelectionManager.getIDType())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 		}
 
@@ -692,8 +701,6 @@ public abstract class ATableBasedDataDomain
 		return getRecordLabel(recordIDType, id);
 	}
 
-	public abstract String getRecordLabel(IDType idType, Object id);
-
 	/**
 	 * Get the human readable dimension label for a specific id. The id has to be of the dimensionIDType of
 	 * the dataDomain.
@@ -706,17 +713,15 @@ public abstract class ATableBasedDataDomain
 		return getDimensionLabel(dimensionIDType, id);
 	}
 
-	/**
-	 * Get the human readable dimension label for a specific id.
-	 * 
-	 * @param idType
-	 *            specify of which id type the id is
-	 * @param id
-	 *            the id to convert to a human readable label
-	 * @return the readable label
-	 */
+	public String getRecordLabel(IDType idType, Object id) {
+
+		String resolvedID = recordIDMappingManager.getID(idType, humanReadableRecordIDType, id);
+
+		return resolvedID;
+	}
+
 	public String getDimensionLabel(IDType idType, Object id) {
-		String label = table.get((Integer) id).getLabel();
+		String label = dimensionIDMappingManager.getID(idType, humanReadableDimensionIDType, idType);
 		if (label == null)
 			label = "";
 		return label;

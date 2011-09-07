@@ -32,7 +32,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -197,7 +197,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 	// private ArrayList<SelectionType> AlSelectionTypes = new
 	// ArrayList<SelectionType>();
-	private SelectionType currentSelection = SelectionType.SELECTION;
+	private SelectionType currentSelectionType = SelectionType.SELECTION;
 	private final static String CUSTOM_SELECTION_NAME = "SP Sel";
 	private int iMaxSelections = 10;
 	private int iCurrentSelectionNr = 0;
@@ -1285,13 +1285,13 @@ public class GLScatterPlot extends ATableBasedView {
 				if (true) {
 					for (Integer recordIndex : selectionSet) {
 
-						int current_SELECTED_X_AXIS = iAxisX;
-						int current_SELECTED_Y_AXIS = iAxisY;
+						int selectedXAxis = iAxisX;
+						int selectedYAxis = iAxisY;
 
-						xnormalized = table.get(dimensionVA.get(current_SELECTED_X_AXIS))
-								.getFloat(DataRepresentation.NORMALIZED, recordIndex);
-						ynormalized = table.get(dimensionVA.get(current_SELECTED_Y_AXIS))
-								.getFloat(DataRepresentation.NORMALIZED, recordIndex);
+						xnormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+								dimensionVA.get(selectedXAxis), recordIndex);
+						ynormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+								dimensionVA.get(selectedYAxis), recordIndex);
 
 						ix = (int) Math.floor(xnormalized * (double) (iTextureWidth - 1));
 						iy = ix
@@ -1432,12 +1432,14 @@ public class GLScatterPlot extends ATableBasedView {
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
 
-							xnormalized = table.get(
-									dimensionVA.get(current_SELECTED_X_AXIS)).getFloat(
-									DataRepresentation.NORMALIZED, recordIndex);
-							ynormalized = table.get(
-									dimensionVA.get(current_SELECTED_Y_AXIS)).getFloat(
-									DataRepresentation.NORMALIZED, recordIndex);
+							xnormalized = table
+									.getFloat(EDataRepresentation.NORMALIZED,
+											dimensionVA.get(current_SELECTED_X_AXIS),
+											recordIndex);
+							ynormalized = table
+									.getFloat(EDataRepresentation.NORMALIZED,
+											dimensionVA.get(current_SELECTED_Y_AXIS),
+											recordIndex);
 
 							ix = (int) Math.floor(xnormalized
 									* (double) (iTextureWidth - 1));
@@ -2054,10 +2056,10 @@ public class GLScatterPlot extends ATableBasedView {
 			fScaling *= 1.5f;
 
 		String sAxisLabel = "X-Axis: "
-				+ table.get(dimensionVA.get(iSelectedAxisIndexX)).getLabel();
+				+ dataDomain.getDimensionLabel(dimensionVA.get(iSelectedAxisIndexX));
 		if (bRender2Axis)
 			sAxisLabel += " / "
-					+ table.get(dimensionVA.get(iSelectedAxisIndexX2)).getLabel();
+					+ dataDomain.getDimensionLabel(dimensionVA.get(iSelectedAxisIndexX2));
 
 		textRenderer.renderText(gl, sAxisLabel, 0, 0, 0, fScaling,
 				ScatterPlotRenderStyle.MIN_AXIS_LABEL_TEXT_SIZE);
@@ -2086,10 +2088,10 @@ public class GLScatterPlot extends ATableBasedView {
 			fScaling *= 1.5f;
 
 		sAxisLabel = "Y-Axis: "
-				+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getLabel();
+				+ dataDomain.getDimensionLabel(dimensionVA.get(iSelectedAxisIndexY));
 		if (bRender2Axis)
 			sAxisLabel += " / "
-					+ table.get(dimensionVA.get(iSelectedAxisIndexY2)).getLabel();
+					+ dataDomain.getDimensionLabel(dimensionVA.get(iSelectedAxisIndexY2));
 
 		// sAxisLabel
 		// ="Y-Achse: "+table.get(2).getLabel()+" (O) / "+table.get(3).getLabel()+" (X)";
@@ -2160,8 +2162,8 @@ public class GLScatterPlot extends ATableBasedView {
 		}
 
 		if (bRender2Axis)
-			if (recordSelectionManager.getNumberOfElements(currentSelection) > 0)
-				selectionSet = recordSelectionManager.getElements(currentSelection);
+			if (recordSelectionManager.getNumberOfElements(currentSelectionType) > 0)
+				selectionSet = recordSelectionManager.getElements(currentSelectionType);
 
 		for (Integer recordIndex : selectionSet) {
 
@@ -2169,10 +2171,10 @@ public class GLScatterPlot extends ATableBasedView {
 				throw new IllegalStateException("No such element in virtual array");
 			}
 
-			xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-					DataRepresentation.NORMALIZED, recordIndex);
-			ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-					DataRepresentation.NORMALIZED, recordIndex);
+			xnormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+					dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+			ynormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+					dimensionVA.get(iSelectedAxisIndexY), recordIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2190,10 +2192,10 @@ public class GLScatterPlot extends ATableBasedView {
 					recordIndex, 1.0f); // scale
 
 			if (bRender2Axis) {
-				xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX2)).getFloat(
-						DataRepresentation.NORMALIZED, recordIndex);
-				ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY2)).getFloat(
-						DataRepresentation.NORMALIZED, recordIndex);
+				xnormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionVA.get(iSelectedAxisIndexX2), recordIndex);
+				ynormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionVA.get(iSelectedAxisIndexY2), recordIndex);
 
 				x_2 = transformOnXZoom(xnormalized) * XScale;
 				y_2 = transformOnYZoom(ynormalized) * YScale;
@@ -2243,10 +2245,10 @@ public class GLScatterPlot extends ATableBasedView {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
-		float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-				DataRepresentation.NORMALIZED, recordIndex);
-		float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-				DataRepresentation.NORMALIZED, recordIndex);
+		float xnormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+				dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+		float ynormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+				dimensionVA.get(iSelectedAxisIndexY), recordIndex);
 
 		float x = transformOnXZoom(xnormalized) * XScale;
 		float y = transformOnYZoom(ynormalized) * YScale;
@@ -2315,37 +2317,15 @@ public class GLScatterPlot extends ATableBasedView {
 		gl.glTranslatef(x, y, 0);
 
 		String sLabel = null;
-		String genLabel = dataDomain.getRecordLabel(recordIndex);
+		String recordLabel = dataDomain.getRecordLabel(recordIndex);
 
-		String tmpString = currentSelection.toString();
-		if (recordSelectionManager.checkStatus(currentSelection, recordIndex))
-			sLabel = tmpString
-					+ " ("
-					+ genLabel
-					+ "):"
-					+ +table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-							DataRepresentation.RAW, recordIndex)
-					+ " / "
-					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-							DataRepresentation.RAW, recordIndex);
-		else if (recordSelectionManager.checkStatus(SelectionType.SELECTION, recordIndex))
-			sLabel = "Selected Point ("
-					+ genLabel
-					+ "):"
-					+ +table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-							DataRepresentation.RAW, recordIndex)
-					+ " / "
-					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-							DataRepresentation.RAW, recordIndex);
-		else
-			sLabel = "Point ("
-					+ genLabel
-					+ "):"
-					+ +table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-							DataRepresentation.RAW, recordIndex)
-					+ " / "
-					+ table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-							DataRepresentation.RAW, recordIndex);
+		sLabel = recordLabel
+				+ "("
+				+ +table.getFloat(EDataRepresentation.RAW,
+						dimensionVA.get(iSelectedAxisIndexX), recordIndex)
+				+ " / "
+				+ table.getFloat(EDataRepresentation.RAW,
+						dimensionVA.get(iSelectedAxisIndexY), recordIndex) + ")";
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -2441,10 +2421,10 @@ public class GLScatterPlot extends ATableBasedView {
 				if (recordIndex % iDisplayEveryNthPoint != 0)
 					continue;
 
-			float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX)).getFloat(
-					DataRepresentation.NORMALIZED, recordIndex);
-			float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY)).getFloat(
-					DataRepresentation.NORMALIZED, recordIndex);
+			float xnormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+					dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+			float ynormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+					dimensionVA.get(iSelectedAxisIndexY), recordIndex);
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2455,7 +2435,7 @@ public class GLScatterPlot extends ATableBasedView {
 					doNewSelection = false;
 				}
 
-				recordSelectionManager.addToType(currentSelection, recordIndex);
+				recordSelectionManager.addToType(currentSelectionType, recordIndex);
 			}
 		}
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
@@ -2506,10 +2486,10 @@ public class GLScatterPlot extends ATableBasedView {
 
 			for (int recordIndex : selectionSet) {
 
-				float xnormalized = table.get(dimensionVA.get(iSelectedAxisIndexX))
-						.getFloat(DataRepresentation.NORMALIZED, recordIndex);
-				float ynormalized = table.get(dimensionVA.get(iSelectedAxisIndexY))
-						.getFloat(DataRepresentation.NORMALIZED, recordIndex);
+				float xnormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+				float ynormalized = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionVA.get(iSelectedAxisIndexY), recordIndex);
 
 				x = transformOnXZoom(xnormalized) * XScale;
 				y = transformOnYZoom(ynormalized) * YScale;
@@ -2972,13 +2952,13 @@ public class GLScatterPlot extends ATableBasedView {
 		if (iCurrentSelectionNr > iMaxSelections)
 			return;
 		SelectionTypeEvent event = new SelectionTypeEvent();
-		currentSelection = new SelectionType();
-		currentSelection.setType(CUSTOM_SELECTION_NAME + " " + iCurrentSelectionNr);
-		currentSelection.setColor(ScatterPlotHelper
+		currentSelectionType = new SelectionType();
+		currentSelectionType.setType(CUSTOM_SELECTION_NAME + " " + iCurrentSelectionNr);
+		currentSelectionType.setColor(ScatterPlotHelper
 				.getSelectionColor(iCurrentSelectionNr));
-		currentSelection.setPriority((float) iCurrentSelectionNr / 10000.0f);
-		currentSelection.setManaged(true);
-		event.addSelectionType(currentSelection);
+		currentSelectionType.setPriority((float) iCurrentSelectionNr / 10000.0f);
+		currentSelectionType.setManaged(true);
+		event.addSelectionType(currentSelectionType);
 		eventPublisher.triggerEvent(event);
 
 		// AlSelectionTypes.add(currentSelection);

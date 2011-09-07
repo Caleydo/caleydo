@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -69,9 +69,9 @@ public class HeatMapUtil {
 								recordIndex)) {
 					fOpacity = 0.3f;
 				}
-				ADimension dimension = table.get(dimensionIndex);
-				float fLookupValue = dimension.getFloat(DataRepresentation.NORMALIZED,
-						recordIndex);
+				;
+				float fLookupValue = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionIndex, recordIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
 

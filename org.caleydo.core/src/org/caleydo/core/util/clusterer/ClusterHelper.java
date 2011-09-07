@@ -3,8 +3,9 @@ package org.caleydo.core.util.clusterer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -132,17 +133,17 @@ public class ClusterHelper {
 	// }
 
 	public static void calculateClusterAverages(DimensionPerspective dimensionData,
-		RecordPerspective recordData, ClustererType eClustererType, DataTable table) {
+		RecordPerspective recordData, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
 
 		DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
 		RecordVirtualArray recordVA = recordData.getVirtualArray();
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
 			calculateClusterAveragesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
-				eClustererType, table, dimensionVA, recordVA);
+				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
 		}
 		else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
 			calculateClusterAveragesRecursive(dimensionData.getTree(), dimensionData.getTree().getRoot(),
-				eClustererType, table, dimensionVA, recordVA);
+				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
 		}
 	}
 
@@ -196,7 +197,7 @@ public class ClusterHelper {
 				int isto = 0;
 				for (Integer iDimensionIndex : dimensionVA) {
 					values[isto] =
-						table.get(iDimensionIndex).getFloat(DataRepresentation.NORMALIZED, node.getLeafID());
+						table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex, node.getLeafID());
 					isto++;
 				}
 
@@ -207,7 +208,7 @@ public class ClusterHelper {
 				int icon = 0;
 				for (Integer recordIndex : recordVA) {
 					values[icon] =
-						table.get(node.getLeafID()).getFloat(DataRepresentation.NORMALIZED, recordIndex);
+						table.getFloat(EDataRepresentation.NORMALIZED, node.getLeafID(), recordIndex);
 					icon++;
 				}
 			}
@@ -282,7 +283,7 @@ public class ClusterHelper {
 
 				for (Integer dimensionIndex : dimensionVA) {
 					float temp =
-						table.get(dimensionIndex).getFloat(DataRepresentation.NORMALIZED,
+						table.getFloat(EDataRepresentation.NORMALIZED, dimensionIndex,
 							recordVA.get(recordIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
@@ -301,7 +302,7 @@ public class ClusterHelper {
 
 				for (Integer recordIndex : recordVA) {
 					float temp =
-						table.get(dimensionVA.get(iDimensionIndex)).getFloat(DataRepresentation.NORMALIZED,
+						table.getFloat(EDataRepresentation.NORMALIZED, dimensionVA.get(iDimensionIndex),
 							recordIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;

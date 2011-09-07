@@ -6,7 +6,6 @@ import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.util.graph.EGraphItemHierarchy;
@@ -20,23 +19,14 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Alexander Lex
  */
 public class GeneticIDMappingHelper {
-	private static GeneticIDMappingHelper idMappingHelper;
 
 	private IDMappingManager idMappingManager;
 
 	/**
 	 * Constructor
 	 */
-	private GeneticIDMappingHelper() {
-		idMappingManager = GeneralManager.get().getIDMappingManager();
-	}
-
-	public static GeneticIDMappingHelper get() {
-		if (idMappingHelper == null) {
-			idMappingHelper = new GeneticIDMappingHelper();
-		}
-
-		return idMappingHelper;
+	public GeneticIDMappingHelper(IDMappingManager idMappingManager) {
+		this.idMappingManager = idMappingManager;
 	}
 
 	/**

@@ -6,6 +6,7 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 
@@ -26,11 +27,14 @@ import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
  */
 public class ShowPathwaysByGeneItem extends AContextMenuItem {
 
+	private PathwayDataDomain dataDomain;
+	
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
-	public ShowPathwaysByGeneItem() {
+	public ShowPathwaysByGeneItem(PathwayDataDomain dataDomain) {
 		super();
+		this.dataDomain = dataDomain;
 		//setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
 		setLabel("Load Pathways");
 	}
@@ -42,7 +46,8 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 	 */
 	public void setDavidID(IDType idType, int david, String dataDomainID) {
 
-		Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
+		
+		Set<PathwayGraph> pathwayGraphs = dataDomain.getMappingHelper()
 				.getPathwayGraphsByGeneID(idType, david);
 
 		int pathwayCount = 0;

@@ -118,7 +118,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 				serializedView.getDataDomainID());
 		
 		generalManager = GeneralManager.get();
-		idMappingManager = generalManager.getIDMappingManager();
+		idMappingManager = dataDomain.getGeneIDMappingManager();
 
 		composite = new Composite(parent, SWT.NULL);
 		composite.setLayout(new GridLayout(1, false));
@@ -156,7 +156,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 		useGeneSymbol = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneSymbol.setText("Gene symbol");
-		if (generalManager.getIDMappingManager().hasMapping(geneSymbolIDType, davidIDType))
+		if (idMappingManager.hasMapping(geneSymbolIDType, davidIDType))
 			useGeneSymbol.setSelection(true);
 		else
 			useGeneSymbol.setEnabled(false);
@@ -170,21 +170,21 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 		useGeneRefSeqID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneRefSeqID.setText("RefSeq ID");
-		if (generalManager.getIDMappingManager().hasMapping(refseqMrnaIDTYpe, davidIDType))
+		if (idMappingManager.hasMapping(refseqMrnaIDTYpe, davidIDType))
 			useGeneRefSeqID.setSelection(true);
 		else
 			useGeneRefSeqID.setEnabled(false);
 
 		useGeneEntrezGeneID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneEntrezGeneID.setText("Entrez Gene ID");
-		if (generalManager.getIDMappingManager().hasMapping(entrez, davidIDType))
+		if (idMappingManager.hasMapping(entrez, davidIDType))
 			useGeneEntrezGeneID.setSelection(true);
 		else
 			useGeneEntrezGeneID.setEnabled(false);
 
 		useGeneDavidID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneDavidID.setText("David ID");
-		if (generalManager.getIDMappingManager().hasMapping(davidIDType, refseqMrnaIntIDType))
+		if (idMappingManager.hasMapping(davidIDType, refseqMrnaIntIDType))
 			useGeneDavidID.setSelection(true);
 		else
 			useGeneDavidID.setEnabled(false);
@@ -473,8 +473,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 					MappingType.getType(geneNameIDType, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher((String) geneName);
 				if (regexMatcher.find())
-					davidGeneResults.add((Integer) generalManager
-							.getIDMappingManager().getID(geneNameIDType, davidIDType, geneName));
+					davidGeneResults.add((Integer) idMappingManager.getID(geneNameIDType, davidIDType, geneName));
 			}
 		}
 

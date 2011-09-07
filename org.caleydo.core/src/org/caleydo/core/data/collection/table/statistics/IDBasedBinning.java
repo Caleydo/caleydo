@@ -19,8 +19,8 @@ public class IDBasedBinning {
 	HashMap<String, ArrayList<Integer>> truncatedBin = new HashMap<String, ArrayList<Integer>>();
 	int numberOfBins = 10;
 
-	public IDBasedBinning() {
-		mappingManager = GeneralManager.get().getIDMappingManager();
+	public IDBasedBinning(IDMappingManager mappingManager) {
+		mappingManager = this.mappingManager;
 	}
 
 	public void setNumberOfBins(int numberOfBins) {
@@ -65,14 +65,11 @@ public class IDBasedBinning {
 			sizeToKey.add(new Pair<Integer, String>(entry.getValue().size(), entry.getKey()));
 		}
 		Collections.sort(sizeToKey, Collections.reverseOrder());
-	
 
 		for (int count = 0; count < (numberOfBins > sizeToKey.size() ? sizeToKey.size() : numberOfBins); count++) {
 			String key = sizeToKey.get(count).getSecond();
 			truncatedBin.put(key, bin.get(key));
 		}
-		
-		
 
 		return truncatedBin;
 	}

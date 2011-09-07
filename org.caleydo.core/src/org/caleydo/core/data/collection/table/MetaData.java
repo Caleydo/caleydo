@@ -71,7 +71,7 @@ public class MetaData {
 	 *             when used on non-homogeneous sets
 	 */
 	public Histogram getHistogram() {
-		if (!table.isSetHomogeneous) {
+		if (!table.isDataTableHomogeneous) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
@@ -111,7 +111,7 @@ public class MetaData {
 
 	@Deprecated
 	public Histogram getBaseHistogram(String recordPerspectiveID) {
-		if (!table.isSetHomogeneous) {
+		if (!table.isDataTableHomogeneous) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}

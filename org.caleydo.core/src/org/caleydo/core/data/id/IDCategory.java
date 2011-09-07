@@ -32,5 +32,10 @@ public class IDCategory {
 	public String getCategoryName() {
 		return categoryName;
 	}
+	
+	@Override
+	public String toString() {
+		return categoryName;
+	}
 
 }

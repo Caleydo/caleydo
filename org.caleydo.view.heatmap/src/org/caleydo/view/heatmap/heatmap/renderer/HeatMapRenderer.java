@@ -5,7 +5,7 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -91,20 +91,19 @@ public class HeatMapRenderer extends AContentRenderer {
 		}
 	}
 
-	private void renderElement(final GL2 gl, final int iDimensionIndex,
-			final int recordIndex, final float fYPosition, final float fXPosition,
-			final float fFieldHeight, final float fFieldWidth) {
+	private void renderElement(final GL2 gl, final int dimensionID, final int recordID,
+			final float fYPosition, final float fXPosition, final float fFieldHeight,
+			final float fFieldWidth) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		ADimension dimension = heatMap.getTable().get(iDimensionIndex);
-		if (dimension == null)
-			return;
-		float value = dimension.getFloat(heatMap.getRenderingRepresentation(), recordIndex);
+
+		float value = heatMap.getTable().getFloat(heatMap.getRenderingRepresentation(),
+				dimensionID, recordID);
 
 		float fOpacity = 1.0f;
 
-		if (dimension
-				.containsDataRepresentation(DataRepresentation.UNCERTAINTY_NORMALIZED)) {
+		if (heatMap.getTable().containsDataRepresentation(EDataRepresentation.UNCERTAINTY_NORMALIZED,
+				dimensionID)) {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
 			// for (Integer selectedElement : setSelectedElements) {
@@ -115,7 +114,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			// }
 			// }
 		} else if (heatMap.getContentSelectionManager().checkStatus(
-				SelectionType.DESELECTED, recordIndex)) {
+				SelectionType.DESELECTED, recordID)) {
 			fOpacity = 0.3f;
 		}
 
@@ -124,9 +123,9 @@ public class HeatMapRenderer extends AContentRenderer {
 		gl.glColor4f(fArMappingColor[0], fArMappingColor[1], fArMappingColor[2], fOpacity);
 
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_DIMENSION_SELECTION, iDimensionIndex));
+				PickingType.HEAT_MAP_DIMENSION_SELECTION, dimensionID));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_LINE_SELECTION, recordIndex));
+				PickingType.HEAT_MAP_LINE_SELECTION, recordID));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);
@@ -142,8 +141,8 @@ public class HeatMapRenderer extends AContentRenderer {
 		if (contentSpacing != null)
 			return y
 					- contentSpacing.getYDistances().get(recordIndex)
-					- contentSpacing.getFieldHeight(heatMap.getRecordVA().get(
-							recordIndex)) / 2;
+					- contentSpacing.getFieldHeight(heatMap.getRecordVA()
+							.get(recordIndex)) / 2;
 		return 0;
 	}
 

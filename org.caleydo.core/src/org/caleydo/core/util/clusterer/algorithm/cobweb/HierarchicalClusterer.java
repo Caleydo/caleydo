@@ -5,8 +5,9 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
@@ -69,7 +70,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
+						buffer.append(table.getFloat(EDataRepresentation.RAW, iDimensionIndex, recordIndex)
 							+ ", ");
 
 					}
@@ -108,7 +109,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(table.get(iDimensionIndex).getFloat(DataRepresentation.RAW, recordIndex)
+						buffer.append(table.getFloat(EDataRepresentation.RAW, iDimensionIndex, recordIndex)
 							+ ", ");
 
 					}
@@ -297,13 +298,13 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable set, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
-		int iProgressBarMultiplier) {
+	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		return cluster(set, clusterState);
+		return cluster(dataDomain.getTable(), clusterState);
 	}
 
 }

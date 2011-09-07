@@ -14,6 +14,7 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -45,6 +46,7 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
@@ -201,7 +203,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 				SelectionType currentSelectionType = contentGroupSelectionManager.getSelectionType();
 				contentGroupSelectionManager.clearSelection(currentSelectionType);
-				contentGroupSelectionManager.addToType(currentSelectionType, segmentData.getGroup().getID());
+				contentGroupSelectionManager.addToType(currentSelectionType, segmentData
+						.getGroup().getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
@@ -231,16 +234,17 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 
 				for (Integer gene : recordVA) {
-					Set<Integer> davids = GeneralManager
-							.get()
-							.getIDMappingManager()
+					Set<Integer> davids = dataDomain.getRecordIDMappingManager()
 							.getIDAsSet(dataDomain.getRecordIDType(),
 									dataDomain.getPrimaryRecordMappingType(), gene);
 					if (davids == null || davids.size() == 0)
 						continue;
 					for (Integer david : davids) {
-						Set<PathwayGraph> pathwayGraphs = GeneticIDMappingHelper.get()
-								.getPathwayGraphsByGeneID(
+						PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
+								.get().getDataDomainByType(
+										PathwayDataDomain.DATA_DOMAIN_TYPE);
+						Set<PathwayGraph> pathwayGraphs = pathwayDataDomain
+								.getMappingHelper().getPathwayGraphsByGeneID(
 										dataDomain.getPrimaryRecordMappingType(), david);
 
 						// int iPathwayCount = 0;
@@ -722,7 +726,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	 */
 	public Group getGroup() {
 		return segmentData.getGroup();
-		
+
 	}
 
 	@Override
@@ -1140,7 +1144,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		dimensionVA = brickData.getDimensionPerspective().getVirtualArray();
 		group = brickData.getGroup();
 		groupID = brickData.getGroup().getGroupID();
-//		brickData.setBrickData(this);
+		// brickData.setBrickData(this);
 	}
 
 	/**

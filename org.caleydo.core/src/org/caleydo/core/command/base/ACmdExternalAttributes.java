@@ -22,6 +22,7 @@ public abstract class ACmdExternalAttributes
 	protected String attrib3;
 	protected String attrib4;
 	protected String attrib5;
+	protected String attrib6;
 
 	protected String detail = "";
 
@@ -42,6 +43,8 @@ public abstract class ACmdExternalAttributes
 		attrib3 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE3.getXmlKey());
 		attrib4 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE4.getXmlKey());
 		attrib5 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE5.getXmlKey());
+		attrib6 = parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE6.getXmlKey());
+
 		detail = parameterHandler.getValueString(CommandType.TAG_DETAIL.getXmlKey());
 	}
 }

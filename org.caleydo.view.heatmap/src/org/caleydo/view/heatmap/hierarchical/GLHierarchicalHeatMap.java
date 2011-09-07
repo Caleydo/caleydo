@@ -545,8 +545,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = table.get(iDimensionIndex).getFloat(
-							dimensionDataRepresentation, recordIndex);
+					fLookupValue = table.getFloat(dimensionDataRepresentation,
+							iDimensionIndex, recordIndex);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -605,18 +605,18 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			int iCount = 0;
 			int iTextureCounter = 0;
 
-			for (Integer recordIndex : recordVA) {
+			for (Integer recordID : recordVA) {
 				iCount++;
-				for (Integer iDimensionIndex : dimensionVA) {
+				for (Integer dimensionID : dimensionVA) {
 					if (recordSelectionManager.checkStatus(SelectionType.DESELECTED,
-							recordIndex)) {
+							recordID)) {
 						fOpacity = 0.3f;
 					} else {
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = table.get(iDimensionIndex).getFloat(
-							dimensionDataRepresentation, recordIndex);
+					fLookupValue = table.getFloat(
+							dimensionDataRepresentation, dimensionID, recordID);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -872,10 +872,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if(this.dimensionPerspectiveID != dimensionPerspectiveID)
+		if (this.dimensionPerspectiveID != dimensionPerspectiveID)
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
-		
+
 		bRedrawTextures = true;
 	}
 
@@ -884,7 +884,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (!this.recordPerspectiveID.equals(recordPerspectiveID))
 			return;
 		super.handleRecordVAUpdate(recordPerspectiveID);
-		
+
 		bRedrawTextures = true;
 		hasDataWindowChanged = true;
 		iPickedSampleLevel1 = 0;
@@ -5207,7 +5207,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			dimensionDendrogramActive = false;
 			dimensionDendrogramRenderCut = false;
 			table.getDimensionPerspective(dimensionPerspectiveID).setTree(null);
-//			dataDomain.createDimensionGroupsFromDimensionTree(null);
+			// dataDomain.createDimensionGroupsFromDimensionTree(null);
 		}
 
 		// merge

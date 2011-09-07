@@ -10,9 +10,10 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -132,34 +133,17 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 		if (recordVA == null)
 			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
+					.getVirtualArray();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getRecordSelectionManager();
 
 		for (Integer dimensionID : dimensionVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
 			stringOccurencesPerDimension.put(dimensionID, stringOccurences);
-			ADimension genericDimension = table.get(dimensionID);
-			NumericalDimension numericalDimension = null;
-			NominalDimension<String> dimension = null;
-			boolean isNumericalDimension = false;
-			if (genericDimension instanceof NumericalDimension) {
-				isNumericalDimension = true;
-				numericalDimension = (NumericalDimension) genericDimension;
-			}
-			if (genericDimension instanceof NominalDimension<?>) {
-				dimension = (NominalDimension<String>) genericDimension;
-				isNumericalDimension = false;
-			}
 
 			for (Integer recordID : recordVA) {
-				String string = null;
-				if (isNumericalDimension) {
-					string = new Float(numericalDimension.getFloat(
-							DataRepresentation.RAW, recordID)).toString();
-				} else {
-					string = dimension.getRaw(recordID);
-				}
+				String string = table.getRawAsString(dimensionID, recordID);
 				if (string.isEmpty() || string.equals("NaN"))
 					string = "???";
 				if (stringOccurences.containsKey(string)) {
@@ -294,7 +278,7 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 			dimensionCaptionLayout.setGrabX(true);
 
 			DimensionCaptionRenderer dimensionCaptionRenderer = new DimensionCaptionRenderer(
-					textRenderer, table.get(dimensionID).getLabel());
+					textRenderer, dataDomain.getDimensionLabel(dimensionID));
 			dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
 			// dimensionCaptionLayout.setDebug(true);
 

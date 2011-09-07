@@ -244,7 +244,7 @@ public class DataTableUtils {
 
 		cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
 			loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-			loadDataParameters.getDelimiter(), "");
+			loadDataParameters.getDelimiter(), "", dataDomain.getRecordIDCategory());
 
 		cmdLoadLookupTableFile.doCommand();
 

@@ -5,9 +5,13 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingLoader;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
 
@@ -23,6 +27,9 @@ public class PathwayDataDomain extends ADataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.pathway";
 
+	IDMappingManager geneIDMappingManager;
+	GeneticIDMappingHelper mappingHelper;
+
 	IDType primaryIDType;
 
 	/**
@@ -35,9 +42,10 @@ public class PathwayDataDomain extends ADataDomain {
 	 * Constructor.
 	 */
 	public PathwayDataDomain() {
-		
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
-		
+
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
+				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		PathwayManager.get().triggerParsingPathwayDatabases();
@@ -46,6 +54,9 @@ public class PathwayDataDomain extends ADataDomain {
 		new PathwayLoadingProgressIndicatorAction().run(null);
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
+
+		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry.get()
+				.getIDMappingManager(IDCategory.getIDCategory("GENE")));
 	}
 
 	@Override
@@ -53,7 +64,7 @@ public class PathwayDataDomain extends ADataDomain {
 		// Load IDs needed in this datadomain
 		IDMappingLoader.get().loadMappingFile(fileName);
 	}
-	
+
 	public IDType getPrimaryIDType() {
 		return primaryIDType;
 	}
@@ -64,32 +75,47 @@ public class PathwayDataDomain extends ADataDomain {
 
 	@Override
 	public void registerEventListeners() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-		// TODO Auto-generated method stub		
+		// TODO Auto-generated method stub
 	}
-//	
-//	@Override
-//	public List<ADimensionGroupData> getDimensionGroups() {
-//		return dimensionGroups;
-//	}
-//	
-//	@Override
-//	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
-//		this.dimensionGroups = dimensionGroups;
-//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-//		event.setSender(this);
-//		GeneralManager.get().getEventPublisher().triggerEvent(event);
-//	}
-//	
-//	@Override
-//	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-//		dimensionGroups.add(dimensionGroup);
-//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-//		event.setSender(this);
-//		GeneralManager.get().getEventPublisher().triggerEvent(event);
-//	}
+
+	public IDMappingManager getGeneIDMappingManager() {
+		return geneIDMappingManager;
+	}
+
+	/**
+	 * @return the mappingHelper, see {@link #mappingHelper}
+	 */
+	public GeneticIDMappingHelper getMappingHelper() {
+		return mappingHelper;
+	}
+
+	//
+	// @Override
+	// public List<ADimensionGroupData> getDimensionGroups() {
+	// return dimensionGroups;
+	// }
+	//
+	// @Override
+	// public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups)
+	// {
+	// this.dimensionGroups = dimensionGroups;
+	// DimensionGroupsChangedEvent event = new
+	// DimensionGroupsChangedEvent(this);
+	// event.setSender(this);
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
+	//
+	// @Override
+	// public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
+	// dimensionGroups.add(dimensionGroup);
+	// DimensionGroupsChangedEvent event = new
+	// DimensionGroupsChangedEvent(this);
+	// event.setSender(this);
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
 }

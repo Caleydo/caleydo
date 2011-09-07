@@ -88,10 +88,9 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 
 					if (davidId != -1) {
 						// TODO: Map to content id type (given as parameter)
-						Set<Integer> recordIDs = GeneralManager
-								.get()
-								.getIDMappingManager()
-								.getIDAsSet(IDType.getIDType("DAVID"),
+						Set<Integer> recordIDs = pathwayDataDomain
+								.getGeneIDMappingManager().getIDAsSet(
+										IDType.getIDType("DAVID"),
 										dataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
@@ -150,10 +149,9 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 									(PathwayVertexGraphItem) item);
 
 					if (davidId != -1) {
-						Set<Integer> recordIDs = GeneralManager
-								.get()
-								.getIDMappingManager()
-								.getIDAsSet(IDType.getIDType("DAVID"),
+						Set<Integer> recordIDs = pathwayDataDomain
+								.getGeneIDMappingManager().getIDAsSet(
+										IDType.getIDType("DAVID"),
 										dataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {
@@ -203,10 +201,9 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 
 					if (davidId != -1) {
 						groupSize++;
-						Set<Integer> recordIDs = GeneralManager
-								.get()
-								.getIDMappingManager()
-								.getIDAsSet(IDType.getIDType("DAVID"),
+						Set<Integer> recordIDs = pathwayDataDomain
+								.getGeneIDMappingManager().getIDAsSet(
+										IDType.getIDType("DAVID"),
 										dataDomain.getRecordIDType(), davidId);
 
 						if (recordIDs != null && recordIDs.size() > 0) {

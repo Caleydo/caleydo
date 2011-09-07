@@ -7,6 +7,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -67,6 +68,8 @@ public class SelectionManager
 	private SelectionTypeListener addSelectionTypeListener;
 	private RemoveManagedSelectionTypesListener removeManagedSelectionTypesListener;
 
+	private IDMappingManager idMappingManager;
+
 	/**
 	 * Constructor
 	 */
@@ -86,6 +89,11 @@ public class SelectionManager
 		}
 		registerEventListeners();
 
+	}
+
+	public SelectionManager(IDMappingManager idMappingManager, IDType idType) {
+		this(idType);
+		this.idMappingManager = idMappingManager;
 	}
 
 	/**
@@ -125,7 +133,6 @@ public class SelectionManager
 	 * 
 	 * @param type
 	 *            the type of the selection which should be purged
-	 *
 	 */
 	public void removeElements(SelectionType type) {
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
@@ -478,7 +485,7 @@ public class SelectionManager
 	public void setDelta(SelectionDelta selectionDelta) {
 		bIsDeltaWritingEnabled = false;
 		if (selectionDelta.getIDType() != iDType)
-			selectionDelta = DeltaConverter.convertDelta(iDType, selectionDelta);
+			selectionDelta = DeltaConverter.convertDelta(idMappingManager, iDType, selectionDelta);
 		for (SelectionDeltaItem item : selectionDelta) {
 
 			// if (selectionDelta.getIDType() == internalIDType) {

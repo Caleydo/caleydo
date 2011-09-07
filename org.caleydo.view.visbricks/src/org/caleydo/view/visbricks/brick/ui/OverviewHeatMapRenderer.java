@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -16,8 +16,8 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
  * Renderer for an overview heatmap of values specified by recordVA and
- * dimensionVA. It shows the average values per dimension and optionally the average
- * values + and - the standard deviation per dimension.
+ * dimensionVA. It shows the average values per dimension and optionally the
+ * average values + and - the standard deviation per dimension.
  * 
  * @author Christian Partl
  * 
@@ -50,27 +50,24 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		for (int dimensionIndex : dimensionVA) {
+		for (int dimensionID : dimensionVA) {
 
 			int index = 0;
 			for (int recordIndex : recordVA) {
-				expressionValues[index] = table.get(dimensionIndex).getFloat(
-						DataRepresentation.NORMALIZED, recordIndex);
+				expressionValues[index] = table.getFloat(EDataRepresentation.NORMALIZED,
+						dimensionID, recordIndex);
 				index++;
 			}
 
-			float arithmeticMean = ClusterHelper
-					.arithmeticMean(expressionValues);
+			float arithmeticMean = ClusterHelper.arithmeticMean(expressionValues);
 
 			if (showStandardDeviation) {
 				float standardDeviation = ClusterHelper.standardDeviation(
 						expressionValues, arithmeticMean);
 
 				heatMapValuesMean.add(arithmeticMean);
-				heatMapValuesMeanMinusStdDev.add(arithmeticMean
-						- standardDeviation);
-				heatMapValuesMeanPlusStdDev.add(arithmeticMean
-						+ standardDeviation);
+				heatMapValuesMeanMinusStdDev.add(arithmeticMean - standardDeviation);
+				heatMapValuesMeanPlusStdDev.add(arithmeticMean + standardDeviation);
 			} else {
 				heatMapValuesMean.add(arithmeticMean);
 			}
@@ -105,8 +102,8 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
 				gl.glVertex3f(currentPositionX, currentPositionY
 						+ stdDevHeatMapElementHeight, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth,
-						currentPositionY + stdDevHeatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth, currentPositionY
+						+ stdDevHeatMapElementHeight, 0);
 				gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
 						currentPositionY, 0);
 				currentPositionX += heatMapElementWidth;
@@ -127,10 +124,9 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 				float[] mappingColor = colorMapper.getColor(currentValue);
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth,
-						currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth,
-						currentPositionY + meanHeatMapElementHeight, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth, currentPositionY
+						+ meanHeatMapElementHeight, 0);
 				gl.glVertex3f(currentPositionX, currentPositionY
 						+ meanHeatMapElementHeight, 0);
 				currentPositionX += heatMapElementWidth;
@@ -152,8 +148,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
 				gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
 						currentPositionY + stdDevHeatMapElementHeight, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth,
-						currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + heatMapElementWidth, currentPositionY, 0);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0);
 				currentPositionX += heatMapElementWidth;
 			}
@@ -172,10 +167,8 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 			gl.glVertex3f(0, stdDevHeatMapElementHeight, 0);
 			gl.glVertex3f(x, stdDevHeatMapElementHeight, 0);
-			gl.glVertex3f(0, stdDevHeatMapElementHeight
-					+ meanHeatMapElementHeight, 0);
-			gl.glVertex3f(x, stdDevHeatMapElementHeight
-					+ meanHeatMapElementHeight, 0);
+			gl.glVertex3f(0, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
+			gl.glVertex3f(x, stdDevHeatMapElementHeight + meanHeatMapElementHeight, 0);
 
 			gl.glEnd();
 

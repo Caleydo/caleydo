@@ -1,7 +1,7 @@
 package org.caleydo.core.data.collection.table;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
@@ -75,7 +75,7 @@ public class Uncertainty {
 		for (int recordIndex = 0; recordIndex < metaData.depth(); recordIndex++) {
 			// float aggregatedUncertainty = calculateMaxUncertainty(recordIndex);
 			float aggregatedUncertainty =
-				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_NORMALIZED,
+				calcualteAverageUncertainty(recordIndex, EDataRepresentation.UNCERTAINTY_NORMALIZED,
 					dimensionPerspectiveID);
 			aggregatedNormalizedUncertainties[recordIndex] = aggregatedUncertainty;
 		}
@@ -87,7 +87,7 @@ public class Uncertainty {
 			float aggregatedUncertainty;
 
 			aggregatedUncertainty =
-				calcualteAverageUncertainty(recordIndex, DataRepresentation.UNCERTAINTY_RAW,
+				calcualteAverageUncertainty(recordIndex, EDataRepresentation.UNCERTAINTY_RAW,
 					dimensionPerspectiveID);
 
 			// aggregatedUncertainty =
@@ -97,7 +97,7 @@ public class Uncertainty {
 		}
 	}
 
-	private float calcualteAverageUncertainty(int recordIndex, DataRepresentation dataRepresentation,
+	private float calcualteAverageUncertainty(int recordIndex, EDataRepresentation dataRepresentation,
 		String dimensionPerspectiveID) {
 		float uncertaintySum = 0;
 		DimensionVirtualArray dimensionVA = table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray();
@@ -114,7 +114,7 @@ public class Uncertainty {
 	}
 
 	@SuppressWarnings("unused")
-	private float calculateMaxUncertainty(int recordIndex, DataRepresentation dataRepresentation,
+	private float calculateMaxUncertainty(int recordIndex, EDataRepresentation dataRepresentation,
 		String dimensionPerspectiveID) {
 		float maxUncertainty = Float.MAX_VALUE;
 		for (Integer dimensionID : table.hashDimensionPerspectives.get(dimensionPerspectiveID).getVirtualArray()) {

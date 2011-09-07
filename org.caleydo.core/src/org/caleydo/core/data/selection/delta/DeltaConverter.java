@@ -3,6 +3,7 @@ package org.caleydo.core.data.selection.delta;
 import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.manager.GeneralManager;
 
@@ -22,11 +23,14 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 public class DeltaConverter {
+
 	/**
 	 * Convert method. TODO: only DAVID_2_EXPRESSION_INDEX is supported ATM
 	 * 
 	 * @param <T>
 	 *            the type of the delta, an implementation of {@link IDelta}
+	 * @param idMappingManager
+	 *            the id mapping manager that should be used for the conversion
 	 * @param targetType
 	 *            the target type of the id conversion
 	 * @param delta
@@ -34,7 +38,8 @@ public class DeltaConverter {
 	 * @return the new delta, which can be longer than the original
 	 */
 	@SuppressWarnings("unchecked")
-	public static <T extends IDelta> T convertDelta(IDType targetType, T delta) {
+	public static <T extends IDelta> T convertDelta(IDMappingManager idMappingManager, IDType targetType,
+		T delta) {
 		T newDelta = null;
 		if (delta instanceof SelectionDelta) {
 			newDelta = (T) new SelectionDelta(targetType);
@@ -54,9 +59,7 @@ public class DeltaConverter {
 
 		for (Object tempItem : delta) {
 			IDeltaItem item = (IDeltaItem) tempItem;
-			Set<Integer> tableIDs =
-				GeneralManager.get().getIDMappingManager()
-					.getIDAsSet(delta.getIDType(), targetType, item.getID());
+			Set<Integer> tableIDs = idMappingManager.getIDAsSet(delta.getIDType(), targetType, item.getID());
 			if (tableIDs == null) {
 				continue;
 			}

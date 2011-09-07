@@ -61,7 +61,7 @@ public class NominalDimension<T>
 			}
 
 			NominalCContainer<T> sDimension = new NominalCContainer<T>(alData);
-			hashCContainers.put(DataRepresentation.RAW, sDimension);
+			hashCContainers.put(EDataRepresentation.RAW, sDimension);
 		}
 	}
 
@@ -75,11 +75,11 @@ public class NominalDimension<T>
 		if (alPossibleValues.isEmpty())
 			throw new IllegalStateException("Raw Data is empty");
 		else {
-			if (hashCContainers.get(DataRepresentation.RAW) instanceof NominalCContainer)
+			if (hashCContainers.get(EDataRepresentation.RAW) instanceof NominalCContainer)
 				throw new IllegalStateException("Raw data format does not correspond to"
 					+ "specified value list.");
 			else {
-				((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW))
+				((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW))
 					.setPossibleValues(alPossibleValues);
 			}
 		}
@@ -87,7 +87,7 @@ public class NominalDimension<T>
 
 	@SuppressWarnings("unchecked")
 	public T getRaw(int index) {
-		return ((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW)).get(index);
+		return ((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW)).get(index);
 	}
 
 	@SuppressWarnings("unchecked")
@@ -99,7 +99,7 @@ public class NominalDimension<T>
 	 * @return a hash map mapping the nominal value to it's histogram value
 	 */
 	public HashMap<T, Float> getHistogram() {
-		return ((NominalCContainer<T>) hashCContainers.get(DataRepresentation.RAW)).getHistogram();
+		return ((NominalCContainer<T>) hashCContainers.get(EDataRepresentation.RAW)).getHistogram();
 	}
 
 	@Override
@@ -108,14 +108,14 @@ public class NominalDimension<T>
 		if (externalDataRep != ExternalDataRepresentation.NORMAL)
 			throw new IllegalArgumentException("Nominal dimensions support only raw representations");
 
-		dataRep = DataRepresentation.RAW;
+		dataRep = EDataRepresentation.RAW;
 
 	}
 
 	@Override
 	public void normalize() {
 
-		hashCContainers.put(DataRepresentation.NORMALIZED, hashCContainers.get(DataRepresentation.RAW)
+		hashCContainers.put(EDataRepresentation.NORMALIZED, hashCContainers.get(EDataRepresentation.RAW)
 			.normalize());
 	}
 

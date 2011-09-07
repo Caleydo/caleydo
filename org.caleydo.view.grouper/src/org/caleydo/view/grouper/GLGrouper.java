@@ -206,7 +206,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 		for (Integer currentIndex : indexList) {
 
-			String nodeName = table.get(currentIndex).getLabel();
+			String nodeName = dataDomain.getDimensionLabel(currentIndex);
 			int leafID = currentIndex;
 			ClusterNode currentNode = new ClusterNode(tree, nodeName, lastUsedGroupID++,
 					false, leafID);
@@ -226,7 +226,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		ClusterHelper.calculateClusterAverages(
 				table.getDimensionPerspective(dimensionPerspectiveID),
 				table.getRecordPerspective(recordPerspectiveID),
-				ClustererType.DIMENSION_CLUSTERING, table);
+				ClustererType.DIMENSION_CLUSTERING, dataDomain);
 		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
 
 		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
@@ -325,7 +325,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		ClusterHelper.calculateClusterAverages(
 				table.getDimensionPerspective(dimensionPerspectiveID),
 				table.getRecordPerspective(recordPerspectiveID),
-				ClustererType.DIMENSION_CLUSTERING, table);
+				ClustererType.DIMENSION_CLUSTERING, dataDomain);
 		tree.setDirty();
 		// we don't want to do that per default any more
 		// tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable)
@@ -692,12 +692,13 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
 
-//						if (orderedComposites.size() >= 2) {
-//
-//							CompareGroupsItem compareGroupsItem = new CompareGroupsItem(
-//									selectedTables);
-//							contextMenuCreator.addContextMenuItem(compareGroupsItem);
-//						}
+						// if (orderedComposites.size() >= 2) {
+						//
+						// CompareGroupsItem compareGroupsItem = new
+						// CompareGroupsItem(
+						// selectedTables);
+						// contextMenuCreator.addContextMenuItem(compareGroupsItem);
+						// }
 
 						contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 

@@ -3,7 +3,7 @@ package org.caleydo.core.data.collection.table;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 
 /**
@@ -62,7 +62,7 @@ public class Normalization {
 	 * used.
 	 */
 	void normalizeLocally() {
-		table.isSetHomogeneous = false;
+		table.isDataTableHomogeneous = false;
 		for (ADimension dimension : table.hashDimensions.values()) {
 			dimension.normalize();
 		}
@@ -76,7 +76,7 @@ public class Normalization {
 	 */
 	void normalizeGlobally() {
 
-		table.isSetHomogeneous = true;
+		table.isDataTableHomogeneous = true;
 		for (ADimension dimension : table.hashDimensions.values()) {
 			if (dimension instanceof NumericalDimension) {
 				NumericalDimension nDimension = (NumericalDimension) dimension;
@@ -90,7 +90,7 @@ public class Normalization {
 
 	void normalizeUsingFoldChange() {
 		for (ADimension dimension : table.hashDimensions.values()) {
-			if (!dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
+			if (!dimension.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW))
 				calculateFoldChange();
 			break;
 		}
@@ -98,8 +98,8 @@ public class Normalization {
 		for (ADimension dimension : table.hashDimensions.values()) {
 			if (dimension instanceof NumericalDimension) {
 				NumericalDimension nDimension = (NumericalDimension) dimension;
-				nDimension.normalizeWithExternalExtrema(DataRepresentation.FOLD_CHANGE_RAW,
-					DataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
+				nDimension.normalizeWithExternalExtrema(EDataRepresentation.FOLD_CHANGE_RAW,
+					EDataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
 			}
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"
@@ -121,14 +121,14 @@ public class Normalization {
 			// find out which is the smalles raw value
 			for (Integer dimensionKey : table.hashDimensions.keySet()) {
 				NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
-				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
+				float rawValue = nDimension.getFloat(EDataRepresentation.RAW, contentCount);
 				if (rawValue < minValue)
 					minValue = rawValue;
 			}
 			// set the fold changes
 			for (Integer dimensionKey : table.hashDimensions.keySet()) {
 				NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
-				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
+				float rawValue = nDimension.getFloat(EDataRepresentation.RAW, contentCount);
 				float[] foldChanges = foldChangePerDimension.get(dimensionKey);
 				if (minValue == 0)
 					foldChanges[contentCount] = Float.POSITIVE_INFINITY;
@@ -143,8 +143,8 @@ public class Normalization {
 		// set the float[] to the dimensions
 		for (Integer dimensionKey : table.hashDimensions.keySet()) {
 			NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
-			if (!nDimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
-				nDimension.setNewRepresentation(DataRepresentation.FOLD_CHANGE_RAW,
+			if (!nDimension.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW))
+				nDimension.setNewRepresentation(EDataRepresentation.FOLD_CHANGE_RAW,
 					foldChangePerDimension.get(dimensionKey));
 			else
 				throw new UnsupportedOperationException("Tried to normalize globally on a set wich"

@@ -19,7 +19,6 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordReplaceVAEvent;
 import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
@@ -56,9 +55,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
-	private IDMappingManager idMappingManager = GeneralManager.get()
-			.getIDMappingManager();
-
 	/**
 	 * Constructor.
 	 */
@@ -72,8 +68,9 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
 		humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
 
+	
 		pathwayViewerMode = false;
-		recordLabelSingular = "gene";
+		contentLabelSingular = "gene";
 		recordLabelPlural = "genes";
 	}
 
@@ -81,7 +78,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	protected void initIDMappings() {
 
 		// Load IDs needed in this datadomain
-		IDMappingLoader.get().loadMappingFile(fileName);
+		IDMappingLoader.get()
+				.loadMappingFile("data/bootstrap/bootstrap.xml");
 	}
 
 	@Override
@@ -332,7 +330,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public String getRecordLabel(IDType idType, Object id) {
 		String geneSymbol = null;
 
-		Set<String> setGeneSymbols = idMappingManager.getIDAsSet(idType,
+		Set<String> setGeneSymbols = getGeneIDMappingManager().getIDAsSet(idType,
 				humanReadableRecordIDType, id);
 
 		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
@@ -346,6 +344,16 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		else
 			return "No mapping";
 
+	}
+
+	public IDMappingManager getGeneIDMappingManager() {
+		// FIXME this is not general
+		return recordIDMappingManager;
+	}
+
+	public IDMappingManager getSampleIDMappingManager() {
+		// FIXME this is not general
+		return dimensionIDMappingManager;
 	}
 
 	// FIXME CONTEXT MENU

@@ -33,7 +33,7 @@ class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager>
 		colorMapping = ColorMappingManager.get().getColorMapping(
 				EColorMappingType.GENE_EXPRESSION);
 
-		selectionManager = 	new RecordSelectionManager(idType);
+		selectionManager = new RecordSelectionManager(manager.getDataDomain().getRecordIDMappingManager(), idType);
 
 	}
 
@@ -45,7 +45,7 @@ class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager>
 		for (IDDataType id : event.getBookmarks()) {
 
 			if (event.getIDType().getIDCategory() == category) {
-				convertedIDs = GeneralManager.get().getIDMappingManager()
+				convertedIDs = manager.getDataDomain().getRecordIDMappingManager()
 						.getIDAsSet(event.getIDType(), idType, id);
 				if (convertedIDs == null || convertedIDs.size() == 0)
 					continue;
@@ -61,6 +61,5 @@ class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager>
 		updateContainerSize();
 
 	}
-
 
 }

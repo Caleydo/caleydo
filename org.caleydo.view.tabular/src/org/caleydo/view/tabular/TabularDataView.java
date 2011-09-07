@@ -3,7 +3,8 @@ package org.caleydo.view.tabular;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
@@ -22,7 +23,6 @@ import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
-import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
@@ -47,7 +47,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -304,7 +303,7 @@ public class TabularDataView extends ASWTView implements
 
 		for (final Integer iDimensionIndex : dimensionVA) {
 			final TableColumn col = new TableColumn(contentTable, SWT.NONE);
-			col.setText(table.get(iDimensionIndex).getLabel());
+			col.setText(dataDomain.getDimensionLabel(iDimensionIndex));
 			col.setWidth(120);
 			col.setMoveable(true);
 
@@ -312,16 +311,20 @@ public class TabularDataView extends ASWTView implements
 				// Label changer
 				@Override
 				public void widgetSelected(SelectionEvent e) {
-					LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
-					String sLabel = dialog.open(table.get(iDimensionIndex).getLabel());
-
-					if (sLabel != null && !sLabel.isEmpty()) {
-						table.get(iDimensionIndex).setLabel(sLabel);
-						contentTable.getColumn(iDimensionIndex + 3).setText(sLabel);
-						RedrawViewEvent event = new RedrawViewEvent();
-						event.setSender(this);
-						eventPublisher.triggerEvent(event);
-					}
+					// re-activate
+					// LabelEditorDialog dialog = new LabelEditorDialog(new
+					// Shell());
+					// String sLabel =
+					// dialog.open(dataDomain.getDimensionLabel(iDimensionIndex));
+					//
+					// if (sLabel != null && !sLabel.isEmpty()) {
+					// table.get(iDimensionIndex).setLabel(sLabel);
+					// contentTable.getColumn(iDimensionIndex +
+					// 3).setText(sLabel);
+					// RedrawViewEvent event = new RedrawViewEvent();
+					// event.setSender(this);
+					// eventPublisher.triggerEvent(event);
+					// }
 				}
 			});
 		}
@@ -336,11 +339,21 @@ public class TabularDataView extends ASWTView implements
 			item.setText(1, dataDomain.getRecordLabel(recordIndex));
 
 			int i = 3;
-			for (Integer iDimensionIndex : dimensionVA) {
-				fValue = table.get(iDimensionIndex).getFloat(DataRepresentation.RAW,
-						recordIndex);
+			for (Integer dimensionID : dimensionVA) {
+				RawDataType rawDataType = table.getRawDataType(dimensionID, recordIndex);
+				if (rawDataType == RawDataType.STRING) {
+					String text = table.getRaw(dimensionID, recordIndex);
+					item.setText(i++, text);
+				} else if (rawDataType == RawDataType.FLOAT) {
 
-				item.setText(i++, Float.toString(fValue));
+					fValue = table.getFloat(EDataRepresentation.RAW, dimensionID,
+							recordIndex);
+
+					item.setText(i++, Float.toString(fValue));
+				} else {
+					throw new IllegalStateException("Data Type " + rawDataType
+							+ " not implemented.");
+				}
 			}
 
 			index++;
@@ -415,14 +428,23 @@ public class TabularDataView extends ASWTView implements
 			@Override
 			public void run() {
 				TableColumn column = new TableColumn(contentTable, SWT.NONE, index);
-				ADimension dimension = table.get(dimensionNumber);
-				column.setText(dimension.getLabel());
+				column.setText(dataDomain.getDimensionLabel(dimensionNumber));
 				TableItem[] items = contentTable.getItems();
 				for (int i = 0; i < items.length; i++) {
 					TableItem item = items[i];
-					float value = table.get(dimensionNumber).getFloat(
-							DataRepresentation.RAW, recordVA.get(i));
-					item.setText(index, Float.toString(value));
+					RawDataType rawDataType = table.getRawDataType(dimensionNumber,
+							recordVA.get(i));
+					String value;
+					if (rawDataType == RawDataType.FLOAT) {
+						value = Float.toString(table.getFloat(EDataRepresentation.RAW,
+								dimensionNumber, recordVA.get(i)));
+
+					} else if (rawDataType == RawDataType.STRING)
+						value = table.getRaw(dimensionNumber, recordVA.get(i));
+					else
+						throw new IllegalStateException(rawDataType + " not implemented");
+
+					item.setText(index, value);
 
 				}
 				column.pack();

@@ -26,9 +26,6 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.generic";
 
-	private IDMappingManager idMappingManager = GeneralManager.get()
-			.getIDMappingManager();
-
 	/**
 	 * Counter used for determining the extension that together with the type
 	 * builds the data domain ID.
@@ -43,7 +40,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
-		recordLabelSingular = "entity";
+		contentLabelSingular = "entity";
 		recordLabelPlural = "entities";
 	}
 
@@ -68,25 +65,10 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
 			RecordVirtualArray virtualArray) {
 
-	// TODO Auto-generated method stub
+		// TODO Auto-generated method stub
 
 	}
 
-	@Override
-	public String getRecordLabel(IDType idType, Object id) {
-
-		String resolvedID = idMappingManager.getID(idType, humanReadableRecordIDType, id);
-
-		return resolvedID;
-	}
-
-	@Override
-	public String getDimensionLabel(IDType idType, Object id) {
-		String label = table.get((Integer) id).getLabel();
-		if (label == null)
-			label = "";
-		return label;
-	}
 
 	@Override
 	protected void assignIDCategories() {

@@ -158,7 +158,7 @@ public abstract class AGLView
 
 	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
 
-	protected IDMappingManager idMappingManager;
+	protected IDMappingManager contentIDMappingManager;
 
 	/**
 	 * The virtual array that manages the contents (the indices) in the dimensions
@@ -233,7 +233,6 @@ public abstract class AGLView
 		viewCamera = new ViewCameraBase(uniqueID);
 
 		pickingManager = generalManager.getViewManager().getPickingManager();
-		idMappingManager = generalManager.getIDMappingManager();
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);

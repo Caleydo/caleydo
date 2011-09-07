@@ -4,8 +4,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.manager.GeneralManager;
@@ -52,7 +53,7 @@ public class TreeClusterer
 		}
 	}
 
-	private DataTable table = null;
+	private ATableBasedDataDomain dataDomain = null;
 
 	private float[][] similarities = null;
 
@@ -141,7 +142,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
 						isto++;
 					}
 
@@ -153,7 +154,7 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iDimensionIndex2 : dimensionVA) {
 								dArInstance2[isto] =
-									table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+									table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex2,
 										recordIndex2);
 								isto++;
 							}
@@ -194,7 +195,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[isto] =
-							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
 						isto++;
 					}
 
@@ -205,7 +206,7 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer recordIndex2 : recordVA) {
 								dArInstance2[isto] =
-									table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
+									table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex2,
 										recordIndex2);
 								isto++;
 							}
@@ -373,7 +374,7 @@ public class TreeClusterer
 		// ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
-			clusterState.getSourceRecordPerspective(), eClustererType, table);
+			clusterState.getSourceRecordPerspective(), eClustererType, dataDomain);
 
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		indices = tree.getRoot().getLeaveIds();
@@ -518,7 +519,7 @@ public class TreeClusterer
 		// ClusterHelper.determineHierarchyDepth(tree);
 
 		ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
-			clusterState.getSourceRecordPerspective(), eClustererType, table);
+			clusterState.getSourceRecordPerspective(), eClustererType, dataDomain);
 		// determineExpressionValue(tree, eClustererType);
 
 		indices = tree.getRoot().getLeaveIds();
@@ -737,7 +738,7 @@ public class TreeClusterer
 		// ClusterHelper.determineHierarchyDepth(tree);
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
 			ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
-				clusterState.getSourceRecordPerspective(), eClustererType, table);
+				clusterState.getSourceRecordPerspective(), eClustererType, dataDomain);
 		}
 		// determineExpressionValue(tree, eClustererType);
 
@@ -776,48 +777,10 @@ public class TreeClusterer
 		String nodeName = null;
 
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-			// if (table.getTableType() == ESetDataType.GENE_EXPRESSION_DATA) {
-
-			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-			// values, depending on the IDType that has been specified when loading expression data.
-			// Possibly a different handling of the Set is required.
-			Set<String> humanReadableContentSymbols =
-				GeneralManager
-					.get()
-					.getIDMappingManager()
-					.getIDAsSet(table.getDataDomain().getRecordIDType(),
-						table.getDataDomain().getHumanReadableRecordIDType(), recordVA.get(index));
-
-			if ((humanReadableContentSymbols != null && !humanReadableContentSymbols.isEmpty())) {
-				nodeName = (String) humanReadableContentSymbols.toArray()[0];
-			}
-			if (nodeName == null || nodeName.equals(""))
-				nodeName = "Unkonwn";
-			// String refSeq = null;
-			// FIXME: Due to new mapping system, a mapping involving expression index can return a Set of
-			// values, depending on the IDType that has been specified when loading expression data.
-			// Possibly a different handling of the Set is required.
-			// Set<String> setRefSeqIDs =
-			// GeneralManager.get().getIDMappingManager().getIDAsSet(EIDType.EXPRESSION_INDEX,
-			// EIDType.REFSEQ_MRNA, recordVA.get(index));
-			//
-			// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-			// refSeq = (String) setRefSeqIDs.toArray()[0];
-			// }
-			//
-			// nodeName += " | ";
-			// nodeName += (refSeq == null) ? ("Unknown") : (refSeq);
-			// }
-			// else if (table.getTableType() == ESetDataType.UNSPECIFIED) {
-			// nodeName = generalManager.getIDMappingManager().getID( recordVA.get(index));
-			// }
-			// else {
-			// throw new IllegalStateException("Label extraction for " + table.getTableType()
-			// + " not implemented yet!");
-			// }
+			dataDomain.getRecordLabel(recordVA.get(index));
 		}
 		else {
-			nodeName = table.get(dimensionVA.get(index)).getLabel();
+			dataDomain.getDimensionLabel(dimensionVA.get(index));
 		}
 
 		// check if current node name was already used. If yes we add signs to make it unique.
@@ -924,8 +887,10 @@ public class TreeClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable table, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
-		int iProgressBarMultiplier) {
+	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+
+		this.dataDomain = dataDomain;
 
 		eDistanceMeasure = clusterState.getDistanceMeasure();
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
@@ -933,14 +898,12 @@ public class TreeClusterer
 
 		int iReturnValue = 0;
 
-		iReturnValue = determineSimilarities(table, clusterState.getClustererType());
+		iReturnValue = determineSimilarities(dataDomain.getTable(), clusterState.getClustererType());
 
 		if (iReturnValue < 0) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
-
-		this.table = table;
 
 		TempResult tempResult;
 

@@ -91,6 +91,7 @@ public class StartupProcessor {
 			changeWorkspaceLocation();
 			GeneralManager.get().getSWTGUIManager();
 
+			
 			if (startupProcedure == null) {
 				Shell shell = new Shell();
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));

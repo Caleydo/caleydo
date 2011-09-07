@@ -2,8 +2,9 @@ package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -66,7 +67,7 @@ public class AffinityClusterer
 
 	private int iNrSimilarities = 0;
 
-	private DataTable set;
+	private ATableBasedDataDomain dataDomain;
 
 	public AffinityClusterer() {
 
@@ -142,7 +143,7 @@ public class AffinityClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
 						isto++;
 					}
 
@@ -152,8 +153,7 @@ public class AffinityClusterer
 						isto = 0;
 						for (Integer iDimensionIndex2 : dimensionVA) {
 							dArInstance2[isto] =
-								table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
-									recordIndex2);
+								table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex2, recordIndex2);
 							isto++;
 						}
 
@@ -212,7 +212,7 @@ public class AffinityClusterer
 					icnt = 0;
 					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[icnt] =
-							table.get(iDimensionIndex1).getFloat(DataRepresentation.NORMALIZED, recordIndex1);
+							table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
 						icnt++;
 					}
 
@@ -222,8 +222,7 @@ public class AffinityClusterer
 						icnt = 0;
 						for (Integer recordIndex2 : recordVA) {
 							dArInstance2[icnt] =
-								table.get(iDimensionIndex2).getFloat(DataRepresentation.NORMALIZED,
-									recordIndex2);
+								table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex2, recordIndex2);
 							icnt++;
 						}
 
@@ -513,7 +512,7 @@ public class AffinityClusterer
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(set, recordVA, dimensionVA, alExamples, eClustererType);
+		ClusterHelper.sortClusters(dataDomain.getTable(), recordVA, dimensionVA, alExamples, eClustererType);
 
 		indices = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
 
@@ -602,8 +601,10 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(DataTable set, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
-		int iProgressBarMultiplier) {
+	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+
+		this.dataDomain = dataDomain;
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
 			fClusterFactor = clusterState.getAffinityPropClusterFactorGenes();
@@ -615,15 +616,13 @@ public class AffinityClusterer
 
 		int iReturnValue = 0;
 
-		iReturnValue = determineSimilarities(set, clusterState);
+		iReturnValue = determineSimilarities(dataDomain.getTable(), clusterState);
 
 		if (iReturnValue < 0) {
 			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
 			Logger.log(new Status(IStatus.ERROR, toString(), "Could not determine similarities."));
 			return null;
 		}
-
-		this.set = set;
 
 		return affinityPropagation(clusterState.getClustererType());
 

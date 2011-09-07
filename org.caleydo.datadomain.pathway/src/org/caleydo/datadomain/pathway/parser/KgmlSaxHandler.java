@@ -5,9 +5,12 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.core.parser.xml.IXmlParserHandler;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -223,7 +226,10 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 				}
 
 				try {
-					iDavidId = generalManager.getIDMappingManager().getID(
+					IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get()
+							.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
+							.getGeneIDMappingManager();
+					iDavidId = 	genomeIdManager.getID(
 							IDType.getIDType("ENTREZ_GENE_ID"),
 							IDType.getIDType("DAVID"),
 							Integer.valueOf(sTmpVertexName.substring(4)));

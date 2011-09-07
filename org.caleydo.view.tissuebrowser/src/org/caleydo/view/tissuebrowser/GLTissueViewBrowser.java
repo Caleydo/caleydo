@@ -449,25 +449,28 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	}
 
 	private void setInfo(GLTexture tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+		// DimensionVirtualArray va = foreignDataDomain.getTable()
+		// .getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+		//
+		//
+		// NominalDimension<String> dimension = (NominalDimension<String>)
+		// foreignDataDomain
+		// .getTable().get(va.get(1));
+		// String label = dimension.getRaw(experimentIndex);
 
-		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
-				.getTable().get(va.get(1));
-		String label = dimension.getRaw(experimentIndex);
-
-		tissueView.setInfo(label);
+		tissueView.setInfo(foreignDataDomain.getDimensionLabel(experimentIndex));
 	}
 
 	private void setInfo(SerializedTextureView tissueView, Integer experimentIndex) {
-		DimensionVirtualArray va = foreignDataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+		// DimensionVirtualArray va = foreignDataDomain.getTable()
+		// .getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+		//
+		// NominalDimension<String> dimension = (NominalDimension<String>)
+		// foreignDataDomain
+		// .getTable().get(va.get(1));
+		// String label = dimension.getRaw(experimentIndex);
 
-		NominalDimension<String> dimension = (NominalDimension<String>) foreignDataDomain
-				.getTable().get(va.get(1));
-		String label = dimension.getRaw(experimentIndex);
+		tissueView.setInfo(foreignDataDomain.getDimensionLabel(experimentIndex));
 
-		tissueView.setInfo(label);
 	}
-
 }

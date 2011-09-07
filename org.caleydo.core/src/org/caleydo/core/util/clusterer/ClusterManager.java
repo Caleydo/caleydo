@@ -1,8 +1,6 @@
 package org.caleydo.core.util.clusterer;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
@@ -29,15 +27,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ClusterManager {
 
-	private DataTable table;
+	ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor
 	 * 
 	 * @param set
 	 */
-	public ClusterManager(DataTable table) {
-		this.table = table;
+	public ClusterManager(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
 	}
 
 	/**
@@ -119,7 +117,7 @@ public class ClusterManager {
 				// }
 			}
 			clusterer.destroy();
-//			result.finish();
+			// result.finish();
 			return result;
 		}
 		catch (OutOfMemoryError e) {
@@ -127,12 +125,12 @@ public class ClusterManager {
 		}
 	}
 
-	private void runContentClustering(AClusterer clusterer, ClusterConfiguration clusterState, ClusterResult result,
-		int progressBarOffset, int progressBarMulti) {
+	private void runContentClustering(AClusterer clusterer, ClusterConfiguration clusterState,
+		ClusterResult result, int progressBarOffset, int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
 		TempResult tempResult =
-			clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
+			clusterer.getSortedVA(dataDomain, clusterState, progressBarOffset, progressBarMulti);
 		if (tempResult == null) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Clustering result was null, clusterer was: "
 				+ clusterer.toString()));
@@ -156,7 +154,7 @@ public class ClusterManager {
 		clusterer.setClusterState(clusterState);
 
 		TempResult tempResult =
-			clusterer.getSortedVA(table, clusterState, progressBarOffset, progressBarMulti);
+			clusterer.getSortedVA(dataDomain, clusterState, progressBarOffset, progressBarMulti);
 		result.setDimensionResult(tempResult);
 		// result.dimensionResult = clusterState.getDimensionPerspective();
 		// result.dimensionResult.setVirtualArray(new DimensionVirtualArray(result.dimensionResult

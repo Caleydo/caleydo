@@ -145,8 +145,9 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 				.equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
 			if (selectionDelta.getIDType() != recordIDType) {
-				selectionDelta = DeltaConverter
-						.convertDelta(recordIDType, selectionDelta);
+				selectionDelta = DeltaConverter.convertDelta(
+						dataDomain.getRecordIDMappingManager(), recordIDType,
+						selectionDelta);
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);

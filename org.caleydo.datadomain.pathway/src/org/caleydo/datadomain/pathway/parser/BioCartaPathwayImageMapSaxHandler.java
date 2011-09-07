@@ -3,9 +3,13 @@ package org.caleydo.datadomain.pathway.parser;
 import java.util.ArrayList;
 import java.util.Set;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
@@ -172,7 +176,8 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 		}
 
 		// Convert BioCarta ID to DAVID ID
-		IDMappingManager genomeIdManager = generalManager.getIDMappingManager();
+		IDMappingManager genomeIdManager = IDMappingManagerRegistry.get()
+				.getIDMappingManager(IDCategory.getIDCategory("GENE"));
 
 		Set<Integer> DataTableDavidID = genomeIdManager.getID(
 				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"), sName);
@@ -181,7 +186,8 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 			return;
 
 		ArrayList<IGraphItem> alVertex = pathwayItemManager.createVertexGene(sName,
-				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "", DataTableDavidID);
+				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "",
+				DataTableDavidID);
 
 		pathwayItemManager.createVertexRep(currentPathway, alVertex, sName, sShape,
 				sCoords);

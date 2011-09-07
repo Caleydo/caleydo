@@ -32,6 +32,7 @@ public enum CommandType {
 	TAG_ATTRIBUTE3("cmd", "attrib3", ""),
 	TAG_ATTRIBUTE4("cmd", "attrib4", ""),
 	TAG_ATTRIBUTE5("cmd", "attrib5", ""),
+	TAG_ATTRIBUTE6("cmd", "attrib6", ""),
 	TAG_DETAIL("cmd", "detail", ""),
 	TAG_LABEL("cmd", "label", "");
 

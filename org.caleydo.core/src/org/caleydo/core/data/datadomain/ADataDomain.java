@@ -26,7 +26,7 @@ public abstract class ADataDomain
 	extends AEventHandler
 	implements IDataDomain {
 
-	protected String recordLabelSingular = "<not specified>";
+	protected String contentLabelSingular = "<not specified>";
 	protected String recordLabelPlural = "<not specified>";
 
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
@@ -98,11 +98,11 @@ public abstract class ADataDomain
 	}
 
 	public String getContentLabelSingular() {
-		return recordLabelSingular;
+		return contentLabelSingular;
 	}
 
 	public void setContentLabelSingular(String contentLabelSingular) {
-		this.recordLabelSingular = contentLabelSingular;
+		this.contentLabelSingular = contentLabelSingular;
 	}
 
 	public String getContentLabelPlural() {
@@ -139,8 +139,8 @@ public abstract class ADataDomain
 	}
 
 	@Override
-	public void setFileName(String bootsTrapFileName) {
-		this.fileName = bootsTrapFileName;
+	public void setFileName(String bootSrapFileName) {
+		this.fileName = bootSrapFileName;
 	}
 
 	@Override

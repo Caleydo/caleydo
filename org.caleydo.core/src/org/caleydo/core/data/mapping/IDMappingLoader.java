@@ -33,11 +33,12 @@ public class IDMappingLoader {
 	}
 
 	public void loadMappingFile(String fileName) {
-		
-		if (loadedMappingFiles.contains(fileName))
-			return; 
-		
-		GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
+
+		if (fileName == null || loadedMappingFiles.contains(fileName))
+			return;
+
+		// GeneralManager.get().getXmlParserManager().parseXmlFileByName("data/bootstrap/bootstrap.xml");
+		GeneralManager.get().getXmlParserManager().parseXmlFileByName(fileName);
 		loadedMappingFiles.add(fileName);
 	}
 }

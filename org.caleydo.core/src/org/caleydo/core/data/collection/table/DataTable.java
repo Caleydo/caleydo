@@ -10,8 +10,10 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.dimension.DimensionManager;
@@ -61,7 +63,7 @@ public class DataTable
 
 	protected ExternalDataRepresentation externalDataRep;
 
-	protected boolean isSetHomogeneous = false;
+	protected boolean isDataTableHomogeneous = false;
 
 	protected StatisticsResult statisticsResult;
 
@@ -123,15 +125,6 @@ public class DataTable
 	}
 
 	/**
-	 * Creates a {@link SubDataTable} for every node in the dimension tree.
-	 */
-	// public void createSubDataTable(DimensionPerspective dimensionPerspective) {
-	// // ClusterNode rootNode = hashDimensionData.get(STORAGE).getDimensionTreeRoot();
-	// // rootNode.createSubDataTables(this);
-	// dimensionPerspective.getTree().createSubDataTables(this);
-	// }
-
-	/**
 	 * Get the data domain that is responsible for the set
 	 * 
 	 * @param dataDomain
@@ -148,8 +141,41 @@ public class DataTable
 	 *            a unique dimension ID
 	 * @return
 	 */
-	public ADimension get(Integer dimensionID) {
-		return hashDimensions.get(dimensionID);
+	// public ADimension get(Integer dimensionID) {
+	// return hashDimensions.get(dimensionID);
+	// }
+
+	public float getFloat(EDataRepresentation dataRepresentation, Integer dimensionID, Integer recordID) {
+		return hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordID);
+	}
+
+	public <RawType> RawType getRaw(Integer dimensionID, Integer recordID) {
+		ADimension dimension = hashDimensions.get(dimensionID);
+		return ((NominalDimension<RawType>) dimension).getRaw(recordID);
+	}
+
+	public String getRawAsString(Integer dimensionID, Integer recordID) {
+		RawDataType rawDataType = getRawDataType(dimensionID, recordID);
+		String result;
+		if (rawDataType == RawDataType.FLOAT) {
+			result = Float.toString(getFloat(EDataRepresentation.RAW, dimensionID, recordID));
+		}
+		else if (rawDataType == RawDataType.STRING) {
+			result = getRaw(dimensionID, recordID);
+		}
+		else {
+			throw new IllegalStateException("DataType " + rawDataType + " not implemented");
+
+		}
+		return result;
+	}
+
+	public boolean containsDataRepresentation(EDataRepresentation dataRepresentation, Integer dimensionID) {
+		return hashDimensions.get(dimensionID).containsDataRepresentation(dataRepresentation);
+	}
+
+	public RawDataType getRawDataType(Integer dimensionID, Integer recordID) {
+		return hashDimensions.get(dimensionID).getRawDataType();
 	}
 
 	/**
@@ -170,7 +196,7 @@ public class DataTable
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized) {
-		if (!isSetHomogeneous)
+		if (!isDataTableHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce raw data on set level for inhomogenous sets. Access via dimensions");
 
@@ -202,7 +228,7 @@ public class DataTable
 	 * @return a value between 0 and 1
 	 */
 	public double getNormalizedForRaw(double dRaw) {
-		if (!isSetHomogeneous)
+		if (!isDataTableHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via dimensions");
 
@@ -262,7 +288,7 @@ public class DataTable
 	 * @return
 	 */
 	public boolean isSetHomogeneous() {
-		return isSetHomogeneous;
+		return isDataTableHomogeneous;
 	}
 
 	/**
@@ -375,10 +401,10 @@ public class DataTable
 	 * @return the dimension containing means for all content elements
 	 */
 	public NumericalDimension getMeanDimension(String dimensionPerspectiveID) {
-		if (!tableType.equals(DataTableDataType.NUMERIC) || !isSetHomogeneous)
+		if (!tableType.equals(DataTableDataType.NUMERIC) || !isDataTableHomogeneous)
 			throw new IllegalStateException(
 				"Can not provide a mean dimension if set is not numerical (Set type: " + tableType
-					+ ") or not homgeneous (isHomogeneous: " + isSetHomogeneous + ")");
+					+ ") or not homgeneous (isHomogeneous: " + isDataTableHomogeneous + ")");
 		if (meanDimension == null) {
 			meanDimension = new NumericalDimension();
 			meanDimension.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
@@ -389,7 +415,7 @@ public class DataTable
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
-					sum += get(dimensionID).getFloat(DataRepresentation.RAW, contentCount);
+					sum += getFloat(EDataRepresentation.RAW, dimensionID, contentCount);
 				}
 				meanValues[contentCount] = sum / metaData.size();
 			}
@@ -491,7 +517,7 @@ public class DataTable
 	 *            nominal data MUST be inhomogeneous.
 	 */
 	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
-		this.isSetHomogeneous = bIsSetHomogeneous;
+		this.isDataTableHomogeneous = bIsSetHomogeneous;
 		if (externalDataRep == this.externalDataRep)
 			return;
 
@@ -541,7 +567,7 @@ public class DataTable
 
 	public boolean containsFoldChangeRepresentation() {
 		for (ADimension dimension : hashDimensions.values()) {
-			return dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
+			return dimension.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW);
 		}
 		return false;
 	}
