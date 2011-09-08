@@ -8,7 +8,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
-import org.caleydo.core.data.perspective.DataPerspective;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -42,7 +42,7 @@ public class ClusterNode
 	private Vec3f vPosSubTree;
 	/** A data perspective containing all sub-elements of this node */
 	@XmlTransient
-	private DataPerspective<?, ?, ?, ?> dataPerspective = null;
+	private ADataPerspective<?, ?, ?, ?> dataPerspective = null;
 
 	public ClusterNode() {
 	}
@@ -78,14 +78,14 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public void fillDataPerspective(DataPerspective<?, ?, ?, ?> dataPerspective) {
+	public void fillDataPerspective(ADataPerspective<?, ?, ?, ?> dataPerspective) {
 		dataPerspective.createVA(getLeaveIds());
 		dataPerspective.setTreeRoot(this);
 		dataPerspective.setTree((ClusterTree) tree);
 		this.dataPerspective = dataPerspective;
 	}
 
-	public DataPerspective<?, ?, ?, ?> getPerspective() {
+	public ADataPerspective<?, ?, ?, ?> getPerspective() {
 		return dataPerspective;
 	}
 

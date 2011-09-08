@@ -26,7 +26,7 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * A {@link DataPerspective} holds all relevant meta data for either records through the
+ * A {@link ADataPerspective} holds all relevant meta data for either records through the
  * {@link RecordPerspective} or dimensions through the {@link DimensionPerspective}. For many uses both, a
  * RecordPerspective and a DimsenionPerspective are necessary. {@link ADataContainer} is designed to hold
  * combinations of Record- and DimensionPerspectives.
@@ -52,7 +52,7 @@ import org.eclipse.core.runtime.Status;
 @XmlType
 @XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class, RecordVirtualArray.class,
 		DimensionVirtualArray.class })
-public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
+public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
 
 	/** The unique ID of the perspective */
 	@XmlElement
@@ -74,6 +74,7 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	boolean isTreeDefaultTree = true;
 
 	/** The dataDomain this perspective belongs to */
+	@XmlElement
 	protected ATableBasedDataDomain dataDomain;
 
 	/** The {@link VirtualArray} of this DataPerspective. */
@@ -114,18 +115,19 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	private ClusterTree tree;
 
 	/** Only for serialization */
-	public DataPerspective() {
+	public ADataPerspective() {
+
 	}
 
-	public DataPerspective(ATableBasedDataDomain dataDomain) {
+	public ADataPerspective(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		init();
 	}
 
-	// public void setDataDomain(ATableBasedDataDomain dataDomain) {
-	// this.dataDomain = dataDomain;
-	// init();
-	// }
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+		init();
+	}
 
 	/**
 	 * @param isPrivate
@@ -284,13 +286,14 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		this.clusterSizes = contentClusterSizes;
 	}
 
+	
 	public void finish() {
-		// calculate the group list based on contentClusterSizes (for example for affinity propagation
+		// Create groupList and tree based on cluster sizes. The t
 		if (virtualArray != null && clusterSizes != null && sampleElements != null) {
-			GroupType contentGroupList = createGroupList();
+			GroupType groupList = createGroupList();
 
-			int cnt = 0;
-			// int iOffset = 0;
+			int groupCounter = 0;
+			isTreeDefaultTree = true;
 			tree = new ClusterTree(idType);
 			int clusterNr = 0;
 			ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true, -1);
@@ -300,11 +303,10 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 			int to = 0;
 			for (Integer clusterSize : clusterSizes) {
 				node = new ClusterNode(tree, "Group: " + clusterNr, clusterNr++, true, -1);
-				Group temp = new Group(clusterSize, sampleElements.get(cnt), node);
+				Group temp = new Group(clusterSize, sampleElements.get(groupCounter), node);
 				tree.addChild(root, node);
-				contentGroupList.append(temp);
-				cnt++;
-				// iOffset += iter;
+				groupList.append(temp);
+				groupCounter++;
 				to += clusterSize;
 				ClusterNode leaf;
 				for (int vaIndex = from; vaIndex < to; vaIndex++) {
@@ -313,10 +315,9 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 					tree.addChild(node, leaf);
 				}
 				from = to;
-
 			}
 
-			virtualArray.setGroupList(contentGroupList);
+			virtualArray.setGroupList(groupList);
 		}
 		// calculate the group list based on the tree's first level
 		else if (virtualArray != null && tree != null) {
@@ -348,14 +349,30 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		// recordVA.setGroupList(groupList);
 	}
 
+	/**
+	 * Returns the {@link FilterManager} associated with this perspective. Every perspective has it's own
+	 * unique filter manager.
+	 * 
+	 * @return
+	 */
 	public FilterManagerType getFilterManager() {
+		if (filterManager == null)
+			createFilterManager();
 		return filterManager;
 	}
 
+	/** Create a concrete {@link GroupList} in the derived classes. */
 	protected abstract GroupType createGroupList();
 
+	/** Create a concrete {@link FilterManager} in derived classes */
+	protected abstract void createFilterManager();
+
+	/** Create a concrete {@link VirtualArray} in the derived classes */
 	protected abstract VA newConcreteVirtualArray(List<Integer> indexList);
 
+	/**
+	 * @return the isTreeDefaultTree, see {@link #isTreeDefaultTree}
+	 */
 	public boolean isTreeDefaultTree() {
 		return isTreeDefaultTree;
 	}

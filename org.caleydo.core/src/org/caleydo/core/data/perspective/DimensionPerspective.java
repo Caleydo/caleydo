@@ -11,14 +11,14 @@ import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 
 /**
- * Implementation of {@link DataPerspective} for dimensions.
+ * Implementation of {@link ADataPerspective} for dimensions.
  * 
  * @author Alexander Lex
  */
 @XmlRootElement
 public class DimensionPerspective
 	extends
-	DataPerspective<DimensionVirtualArray, DimensionGroupList, DimensionVADelta, DimensionFilterManager> {
+	ADataPerspective<DimensionVirtualArray, DimensionGroupList, DimensionVADelta, DimensionFilterManager> {
 
 	private static int dimensionDataRunningNumber;
 
@@ -40,6 +40,11 @@ public class DimensionPerspective
 	@Override
 	protected DimensionGroupList createGroupList() {
 		return new DimensionGroupList();
+	}
+
+	@Override
+	protected void createFilterManager() {
+		filterManager = new DimensionFilterManager(dataDomain, this);
 	}
 
 	@Override

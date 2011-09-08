@@ -11,13 +11,13 @@ import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
 /**
- * Implementation of {@link DataPerspective} for records.
+ * Implementation of {@link ADataPerspective} for records.
  * 
  * @author Alexander Lex
  */
 @XmlRootElement
 public class RecordPerspective
-	extends DataPerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
+	extends ADataPerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
 
 	private static int recordDataRunningNumber = 0;
 
@@ -39,6 +39,11 @@ public class RecordPerspective
 	@Override
 	protected RecordGroupList createGroupList() {
 		return new RecordGroupList();
+	}
+
+	@Override
+	protected void createFilterManager() {
+		filterManager = new RecordFilterManager(dataDomain, this);
 	}
 
 	@Override

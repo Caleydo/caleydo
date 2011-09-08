@@ -7,7 +7,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.perspective.DataPerspective;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.io.gui.IDataOKListener;
@@ -22,7 +22,7 @@ import org.eclipse.swt.widgets.Label;
 
 /**
  * Composite that lets a user determine which instance of {@link ATableBasedDataDomain} and the respective
- * {@link DataPerspective}s to use.
+ * {@link ADataPerspective}s to use.
  * 
  * @author Alexander Lex
  */

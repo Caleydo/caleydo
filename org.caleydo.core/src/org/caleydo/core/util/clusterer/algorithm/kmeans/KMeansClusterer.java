@@ -13,7 +13,7 @@ import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
@@ -43,7 +43,7 @@ public class KMeansClusterer
 		clusterer = new SimpleKMeans();
 	}
 
-	private TempResult cluster(DataTable table, ClusterConfiguration clusterState) {
+	private PerspectiveInitializationData cluster(DataTable table, ClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -296,7 +296,7 @@ public class KMeansClusterer
 		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
 		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
 
-		TempResult tempResult = new TempResult();
+		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setIndices(indices);
 		tempResult.setClusterSizes(count);
 		tempResult.setSampleElements(alExamples);
@@ -315,7 +315,7 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
 		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;

@@ -13,7 +13,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
@@ -304,7 +304,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private TempResult pslcluster(ClustererType eClustererType) {
+	private PerspectiveInitializationData pslcluster(ClustererType eClustererType) {
 
 		int nnodes = iNrSamples - 1;
 		int[] vector = new int[nnodes];
@@ -396,7 +396,7 @@ public class TreeClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		TempResult tempResult = new TempResult();
+		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setIndices(indices);
 		return tempResult;
 	}
@@ -407,7 +407,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private TempResult palcluster(ClustererType eClustererType) {
+	private PerspectiveInitializationData palcluster(ClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -530,7 +530,7 @@ public class TreeClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		TempResult tempResult = new TempResult();
+		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setIndices(indices);
 		tempResult.setTree(tree);
 		return tempResult;
@@ -640,7 +640,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private TempResult pmlcluster(ClustererType eClustererType) {
+	private PerspectiveInitializationData pmlcluster(ClustererType eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -756,7 +756,7 @@ public class TreeClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
-		TempResult tempResult = new TempResult();
+		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setTree(tree);
 		tempResult.setIndices(indices);
 		return tempResult;
@@ -887,7 +887,7 @@ public class TreeClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
 		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.dataDomain = dataDomain;
@@ -905,7 +905,7 @@ public class TreeClusterer
 			return null;
 		}
 
-		TempResult tempResult;
+		PerspectiveInitializationData tempResult;
 
 		if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.COMPLETE_LINKAGE)
 			tempResult = pmlcluster(clusterState.getClustererType());

@@ -129,7 +129,7 @@ public class ClusterManager {
 		ClusterResult result, int progressBarOffset, int progressBarMulti) {
 
 		clusterer.setClusterState(clusterState);
-		TempResult tempResult =
+		PerspectiveInitializationData tempResult =
 			clusterer.getSortedVA(dataDomain, clusterState, progressBarOffset, progressBarMulti);
 		if (tempResult == null) {
 			Logger.log(new Status(IStatus.ERROR, toString(), "Clustering result was null, clusterer was: "
@@ -153,7 +153,7 @@ public class ClusterManager {
 		ClusterResult result, int progressBarOffset, int progressBarMulti) {
 		clusterer.setClusterState(clusterState);
 
-		TempResult tempResult =
+		PerspectiveInitializationData tempResult =
 			clusterer.getSortedVA(dataDomain, clusterState, progressBarOffset, progressBarMulti);
 		result.setDimensionResult(tempResult);
 		// result.dimensionResult = clusterState.getDimensionPerspective();

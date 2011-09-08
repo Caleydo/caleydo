@@ -20,7 +20,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
-import org.caleydo.core.data.perspective.DataPerspective;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -273,7 +273,7 @@ public class ProjectSaver {
 	 *            type of the virtual array within the given {@link IDataDomain}.
 	 */
 	private void saveDataPerspective(Marshaller marshaller, String dir, String perspectiveID,
-		DataPerspective<?, ?, ?, ?> perspective) throws JAXBException, IOException {
+		ADataPerspective<?, ?, ?, ?> perspective) throws JAXBException, IOException {
 
 		String fileName = dir + perspectiveID + ".xml";
 		marshaller.marshal(perspective, new File(fileName));

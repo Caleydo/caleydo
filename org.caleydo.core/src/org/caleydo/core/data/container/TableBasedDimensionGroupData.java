@@ -6,7 +6,7 @@ import java.util.List;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
-import org.caleydo.core.data.perspective.DataPerspective;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -40,7 +40,7 @@ public class TableBasedDimensionGroupData
 	 */
 	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain,
 		RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective, ClusterNode rootNode,
-		Class<? extends DataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
+		Class<? extends ADataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
 		super(dataDomain, recordPerspective, dimensionPerspective);
 
 		label = rootNode.getLabel();

@@ -14,7 +14,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
@@ -34,7 +34,7 @@ public class HierarchicalClusterer
 		clusterer = new Cobweb();
 	}
 
-	private TempResult cluster(DataTable table, ClusterConfiguration clusterState) {
+	private PerspectiveInitializationData cluster(DataTable table, ClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -262,7 +262,7 @@ public class HierarchicalClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		TempResult tempResult = new TempResult();
+		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setIndices(indices);
 		tempResult.setTree(tree);
 		return tempResult;
@@ -298,7 +298,7 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
 		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;

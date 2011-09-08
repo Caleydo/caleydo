@@ -48,7 +48,7 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
-import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
@@ -335,7 +335,7 @@ public abstract class ATableBasedDataDomain
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
-			TempResult dimensionResult = result.getDimensionResult();
+			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
 			DimensionPerspective dimensionPerspective = clusterState.getTargetDimensionPerspective();
 			dimensionPerspective.createVA(dimensionResult.getIndices());
 			dimensionPerspective.setClusterSizes(dimensionResult.getClusterSizes());
@@ -349,7 +349,7 @@ public abstract class ATableBasedDataDomain
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
-			TempResult recordResult = result.getRecordResult();
+			PerspectiveInitializationData recordResult = result.getRecordResult();
 			RecordPerspective recordPerspective = clusterState.getTargetRecordPerspective();
 			recordPerspective.createVA(recordResult.getIndices());
 			recordPerspective.setClusterSizes(recordResult.getClusterSizes());
@@ -721,7 +721,6 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public String getRecordLabel(IDType idType, Object id) {
-
 		String resolvedID = recordIDMappingManager.getID(idType, humanReadableRecordIDType, id);
 
 		return resolvedID;

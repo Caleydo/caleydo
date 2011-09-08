@@ -2,7 +2,7 @@ package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.perspective.DataPerspective;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.manager.event.AEvent;
 
 /**
@@ -24,7 +24,7 @@ public abstract class VAUpdateEvent
 	private String perspectiveID = null;
 
 	/**
-	 * Set the ID of the {@link DataPerspective} the virtual array to be updated is associated with
+	 * Set the ID of the {@link ADataPerspective} the virtual array to be updated is associated with
 	 * 
 	 * @param perspectiveID
 	 */

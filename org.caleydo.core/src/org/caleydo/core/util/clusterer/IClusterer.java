@@ -29,7 +29,7 @@ public interface IClusterer
 	 *            of normal clustering the value is 2.
 	 * @return Sorted VirtualArray.
 	 */
-	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState, int iProgressBarOffsetValue,
 		int iProgressBarMultiplier);
 
 	public void cancel();

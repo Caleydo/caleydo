@@ -5,8 +5,8 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 
 public class ClusterResult {
 
-	TempResult recordResult;
-	TempResult dimensionResult;
+	PerspectiveInitializationData recordResult;
+	PerspectiveInitializationData dimensionResult;
 
 	/**
 	 * Determines group information for virtual array. Used by affinity propagation and kMeans.
@@ -21,11 +21,11 @@ public class ClusterResult {
 	// dimensionResult.finish();
 	// }
 
-	public TempResult getRecordResult() {
+	public PerspectiveInitializationData getRecordResult() {
 		return recordResult;
 	}
 
-	public TempResult getDimensionResult() {
+	public PerspectiveInitializationData getDimensionResult() {
 		return dimensionResult;
 	}
 
@@ -33,7 +33,7 @@ public class ClusterResult {
 	 * @param recordResult
 	 *            setter, see {@link #recordResult}
 	 */
-	public void setRecordResult(TempResult recordResult) {
+	public void setRecordResult(PerspectiveInitializationData recordResult) {
 		this.recordResult = recordResult;
 	}
 
@@ -41,7 +41,7 @@ public class ClusterResult {
 	 * @param dimensionResult
 	 *            setter, see {@link #dimensionResult}
 	 */
-	public void setDimensionResult(TempResult dimensionResult) {
+	public void setDimensionResult(PerspectiveInitializationData dimensionResult) {
 		this.dimensionResult = dimensionResult;
 	}
 }

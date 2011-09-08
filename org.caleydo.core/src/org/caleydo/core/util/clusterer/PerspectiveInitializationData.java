@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.graph.tree.ClusterTree;
 
-public class TempResult {
+public class PerspectiveInitializationData {
 	private ArrayList<Integer> indices;
 	/** indices of examples (cluster centers) */
 	private ArrayList<Integer> sampleElements;

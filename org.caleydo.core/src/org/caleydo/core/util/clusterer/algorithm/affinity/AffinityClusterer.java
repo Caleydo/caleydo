@@ -12,7 +12,7 @@ import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.TempResult;
+import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
@@ -272,7 +272,7 @@ public class AffinityClusterer
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private TempResult affinityPropagation(ClustererType eClustererType) {
+	private PerspectiveInitializationData affinityPropagation(ClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
@@ -522,7 +522,7 @@ public class AffinityClusterer
 			.triggerEvent(
 				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
-		TempResult tempResult = new TempResult();
+		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setClusterSizes(alClusterSizes);
 		tempResult.setSampleElements(idxExamples);
 		tempResult.setIndices(indices);
@@ -601,7 +601,7 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public TempResult getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
 		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.dataDomain = dataDomain;
