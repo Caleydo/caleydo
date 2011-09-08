@@ -25,7 +25,7 @@ Bundle-NativeCode:
  osname=Mac OS X;
  processor=x86;
  processor=x86_64;
- processor=ppc,
+ processor=ppc
 Bundle-Vendor: Graz University of Technology
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
