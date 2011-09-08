@@ -32,16 +32,17 @@ public class Application
 		"/Users/nils/Data/Caleydo/testdata/20110728/ov/mrna_cnmf/outputprefix.expclu.gct";
 
 	public static String ALEX_TEST_1 =
-		"/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.normalized.gct";
+		"data/genome/microarray/tcga/cnmf.normalized.gct";
 	public static String ALEX_TEST_1_GROUPING =
-		"/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.membership.txt";
+		"data/genome/microarray/tcga/cnmf.membership.txt";
 
 	public static String ALEX_TEST_2 =
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
 	public static String ALEX_TEST_2_GROUPING =
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
-	public String dataSource = ALEX_TEST_2;
-	public String groupingSource = ALEX_TEST_2_GROUPING;
+	
+	public String dataSource = ALEX_TEST_1;
+	public String groupingSource = ALEX_TEST_1_GROUPING;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
