@@ -2,6 +2,8 @@ package org.caleydo.view.heatmap.uncertainty;
 
 import static org.caleydo.view.heatmap.HeatMapRenderStyle.SELECTION_Z;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
@@ -27,13 +29,11 @@ import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
 public class ClusterRenderer extends LayoutRenderer {
 
-	// FIXME: must not be public. access with getter.
-	public HeatMapTextureRenderer textureRenderer;
+	private HeatMapTextureRenderer textureRenderer;
 
 	private BarplotTextureRenderer dataUncBarTextureRenderer;
 
-	// FIXME: must not be public. access with getter.
-	public BarplotTextureRenderer visUncBarTextureRenderer;
+	private BarplotTextureRenderer visUncBarTextureRenderer;
 
 	private GLUncertaintyHeatMap uncertaintyHeatMap;
 
@@ -46,9 +46,6 @@ public class ClusterRenderer extends LayoutRenderer {
 	private RecordVirtualArray clusterVA;
 
 	private int clusterIndex;
-	// private int height;
-	// private int width;
-	//
 
 	private java.util.Set<Integer> setMouseOverElements;
 	private java.util.Set<Integer> setSelectedElements;
@@ -154,7 +151,6 @@ public class ClusterRenderer extends LayoutRenderer {
 		visUncBarTextureRenderer.setLightCertainColor(GLUncertaintyHeatMap.VIS_UNC);
 		visUncBarTextureRenderer.setLightUnCertainColor(GLUncertaintyHeatMap.VIS_UNC);
 		// visUncBarTextureRenderer.setDarkColor(uncertaintyHeatMap.darkDark);
-
 	}
 
 	@Override
@@ -208,4 +204,36 @@ public class ClusterRenderer extends LayoutRenderer {
 		}
 	}
 
+	public void updateVisualUncertainty(final GL2 gl, final PixelGLConverter pixelGLConverter) {
+		if (textureRenderer != null
+				&& textureRenderer.heatmapLayout != null
+				&& visUncBarTextureRenderer != null) {
+
+			visUncBarTextureRenderer
+					.initTextures(calcVisualUncertainty(gl, pixelGLConverter,
+							textureRenderer.heatmapLayout,
+							textureRenderer));
+		}
+	}
+	
+	private ArrayList<Float> calcVisualUncertainty(final GL2 gl,
+			final PixelGLConverter pixelGLConverter, ElementLayout layout,
+			HeatMapTextureRenderer renderer) {
+
+		ArrayList<Float> visualUncertainty = new ArrayList<Float>();
+
+		float scaledX = layout.getSizeScaledX();
+		float scaledY = layout.getSizeScaledY();
+
+		int width = pixelGLConverter.getPixelWidthForGLWidth(scaledX);
+
+		int pixelHeight = pixelGLConverter.getPixelWidthForGLWidth(scaledY);
+
+		for (int pixel = 0; pixel < pixelHeight; pixel++) {
+			visualUncertainty.add(renderer.getVisualUncertaintyForLine(pixel, width,
+					pixelHeight));
+		}
+
+		return visualUncertainty;
+	}
 }

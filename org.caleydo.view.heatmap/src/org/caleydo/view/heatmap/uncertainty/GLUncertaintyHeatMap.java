@@ -27,6 +27,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -41,6 +42,7 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.OverviewDetailConnectorRenderer;
+import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplate;
 import org.eclipse.swt.widgets.Composite;
 
@@ -54,10 +56,6 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLUncertaintyHeatMap extends ATableBasedView implements
 		IGLRemoteRenderingView {
-
-	public static enum UncertaintyColors {
-		VISUAL_VALID, VISUAL_UNCERTAIN, DATA_VALID, DATA_UNCERTAIN, DATA2_VALID, DATA2_UNCERTAIN, DATA3_VALID, DATA3_UNCERTAIN, BACKGROUND
-	}
 
 	public final static String VIEW_TYPE = "org.caleydo.view.heatmap.uncertainty";
 
@@ -235,9 +233,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		if (recordVA != null)
 			detailHeatMap.setRecordVA(recordVA);
-		
+
 		detailHeatMap.setDimensionPerspectiveID(dimensionPerspectiveID);
-		
+
 		detailHeatMap.setDataDomain(dataDomain);
 		detailHeatMap.setRemoteRenderingGLView(this);
 		detailHeatMap.setTable(table);
@@ -279,16 +277,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			for (ClusterRenderer clusterRenderer : overviewHeatMap
 					.getClusterRendererList()) {
 
-				if (clusterRenderer.textureRenderer != null
-						&& clusterRenderer.textureRenderer.heatmapLayout != null
-						&& clusterRenderer.visUncBarTextureRenderer != null) {
-
-					clusterRenderer.visUncBarTextureRenderer
-							.initTextures(VisualUncertaintyUtil.calcVisualUncertainty(gl,
-									pixelGLConverter,
-									clusterRenderer.textureRenderer.heatmapLayout,
-									clusterRenderer.textureRenderer));
-				}
+				clusterRenderer.updateVisualUncertainty(gl, pixelGLConverter);
 			}
 
 			updateVisualUncertainty = false;
@@ -379,13 +368,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	@Override
 	public void handleRedrawView() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void handleUpdateView() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -427,6 +414,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		setDisplayListDirty();
 		initMultiLevelUncertainty();
+		updateVisualUncertainty = true;
 		overviewHeatMap.init();
 
 	}
@@ -507,11 +495,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		return (float) aggregatedUncertainty[recordID];
 
 	}
-	
+
 	public boolean isMaxUncertaintyCalculated() {
 		if (aggregatedUncertainty != null)
 			return true;
-		
+
 		return false;
 	}
 

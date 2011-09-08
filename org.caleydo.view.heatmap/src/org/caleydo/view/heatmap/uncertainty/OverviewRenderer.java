@@ -194,6 +194,4 @@ public class OverviewRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 	
 	}
-
-	
 }

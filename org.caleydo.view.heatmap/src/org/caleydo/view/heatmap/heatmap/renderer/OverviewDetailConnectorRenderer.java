@@ -41,14 +41,6 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 
 		float yOverview = overviewHeatMap.getSelectedClusterY();
 
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glVertex3f(0, yOverview, 0);
-		// gl.glVertex3f(0,
-		// yOverview+overviewHeatMap.getSelectedClusterHeight(), 0);
-		// gl.glVertex3f(x, y, 0);
-		// gl.glVertex3f(x, 0, 0);
-		// gl.glEnd();
-
 		try {
 			int lastElementIndex = detailHeatMap.getRecordVA().size() - 1;
 			int lastElementID = detailHeatMap.getRecordVA().get(lastElementIndex);
