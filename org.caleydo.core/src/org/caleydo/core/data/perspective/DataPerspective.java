@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.container.ADataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -23,6 +24,31 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
+/**
+ * <p>
+ * A {@link DataPerspective} holds all relevant meta data for either records through the
+ * {@link RecordPerspective} or dimensions through the {@link DimensionPerspective}. For many uses both, a
+ * RecordPerspective and a DimsenionPerspective are necessary. {@link ADataContainer} is designed to hold
+ * combinations of Record- and DimensionPerspectives.
+ * </p>
+ * <p>
+ * Among the information the DataPerspectives holds are:
+ * <ol>
+ * <li>The {@link VirtualArray}, which determines which elements of a Dimension or Record should be accessed
+ * in which order.</li>
+ * <li>The {@link GroupList} (currently as part of the VirtualArray), which holds information on which
+ * elements in the VirtualArray are grouped (e.g., because of a clustering).</li>
+ * <li>The {@link ClusterTree}, which defines a hierarchy on how similar elements are to each other.
+ * <li>The {@link FilterManager}, which holds and manages all filters defined on this perspective.
+ * </ol>
+ * </p>
+ * 
+ * @author Alexander Lex
+ * @param <VA>
+ * @param <GroupType>
+ * @param <DeltaType>
+ * @param <FilterManagerType>
+ */
 @XmlType
 @XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class, RecordVirtualArray.class,
 		DimensionVirtualArray.class })
@@ -39,45 +65,53 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	@XmlElement
 	protected boolean isPrivate;
 
-	ATableBasedDataDomain dataDomain;
-
-	VA virtualArray;
-	/** indices of examples (cluster centers) */
-	@XmlTransient
-	ArrayList<Integer> sampleElements;
-	/** number of elements per cluster */
-	@XmlTransient
-	ArrayList<Integer> clusterSizes;
 	/**
-	 * The tree that shows relation between the elements in the {@link VirtualArray}. Always needs to be in
-	 * sync with the VAs.
-	 */
-	@XmlTransient
-	ClusterTree tree;
-	/**
-	 * Flag telling us whether the tree has been automatically generated (i.e. is the default tree), or
+	 * Flag telling us whether the tree has been automatically generated (i.e., is the default tree), or
 	 * whether it has been externally set, e.g., using clustering or importing. It does not make sense to
 	 * visualize a default tree for example.
 	 */
 	@XmlElement
 	boolean isTreeDefaultTree = true;
+
+	/** The dataDomain this perspective belongs to */
+	protected ATableBasedDataDomain dataDomain;
+
+	/** The {@link VirtualArray} of this DataPerspective. */
+	protected VA virtualArray;
+
 	/**
 	 * The root not of the tree from this perspectives view. This enables the perspective to use only part of
 	 * the tree
 	 */
 	@XmlElement
-	ClusterNode rootNode;
+	protected ClusterNode rootNode;
 	/**
 	 * The filter manager that manages and holds all filters applied to this prespective.
 	 */
 	@XmlTransient
 	protected FilterManagerType filterManager;
 
-	@XmlElement
-	boolean isPartitionallyClustered = false;
-
 	@XmlTransient
-	IDType idType;
+	protected IDType idType;
+
+	/**
+	 * Indices of elements that represent a cluster (cluster centers). Used for initialization to create a
+	 * sample element for every group.
+	 */
+	@XmlTransient
+	private ArrayList<Integer> sampleElements;
+	/**
+	 * The sizes of the clusters in a list sorted so that combined with the {@link VirtualArray} the clusters
+	 * are uniquely identified. Used for initialization.
+	 */
+	@XmlTransient
+	private ArrayList<Integer> clusterSizes;
+	/**
+	 * The tree that shows relation between the elements in the {@link VirtualArray}. Always needs to be in
+	 * sync with the VAs.
+	 */
+	@XmlTransient
+	private ClusterTree tree;
 
 	/** Only for serialization */
 	public DataPerspective() {
@@ -88,23 +122,22 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		init();
 	}
 
-	/** Only for de-serialization */
-	// public void setPerspectiveID(String perspectiveID) {
-	// if (this.perspectiveID != null)
-	// throw new IllegalStateException(
-	// "This method is only for de-serialization. In other cases the perspectiveID is set automatically");
-	// this.perspectiveID = perspectiveID;
+	// public void setDataDomain(ATableBasedDataDomain dataDomain) {
+	// this.dataDomain = dataDomain;
+	// init();
 	// }
 
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-		init();
-	}
-
-	public void setIsPrivate(boolean isPrivate) {
+	/**
+	 * @param isPrivate
+	 *            setter, see {@link #isPrivate}
+	 */
+	public void setPrivate(boolean isPrivate) {
 		this.isPrivate = isPrivate;
 	}
 
+	/**
+	 * @return the isPrivate, see {@link #isPrivate}
+	 */
 	public boolean isPrivate() {
 		return isPrivate;
 	}
@@ -123,6 +156,10 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		return perspectiveID;
 	}
 
+	/**
+	 * @param idType
+	 *            setter, see {@link #idType}
+	 */
 	public void setIDType(IDType idType) {
 		this.idType = idType;
 	}
@@ -250,7 +287,6 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 	public void finish() {
 		// calculate the group list based on contentClusterSizes (for example for affinity propagation
 		if (virtualArray != null && clusterSizes != null && sampleElements != null) {
-			isPartitionallyClustered = true;
 			GroupType contentGroupList = createGroupList();
 
 			int cnt = 0;
@@ -272,8 +308,8 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 				to += clusterSize;
 				ClusterNode leaf;
 				for (int vaIndex = from; vaIndex < to; vaIndex++) {
-					Integer recordID = virtualArray.get(vaIndex);
-					leaf = new ClusterNode(tree, "Leaf: " + recordID, clusterNr++, true, recordID);
+					Integer id = virtualArray.get(vaIndex);
+					leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, true, id);
 					tree.addChild(node, leaf);
 				}
 				from = to;
@@ -310,10 +346,6 @@ public abstract class DataPerspective<VA extends VirtualArray<VA, DeltaType, Gro
 		virtualArray = newConcreteVirtualArray(rootNode.getLeaveIds());
 		virtualArray.buildNewGroupList(createGroupList(), tree.getRoot().getChildren());
 		// recordVA.setGroupList(groupList);
-	}
-
-	public boolean isPartitionallyClustered() {
-		return isPartitionallyClustered;
 	}
 
 	public FilterManagerType getFilterManager() {

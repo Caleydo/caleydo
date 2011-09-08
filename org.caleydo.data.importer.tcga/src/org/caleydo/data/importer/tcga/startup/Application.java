@@ -11,9 +11,7 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
@@ -27,13 +25,23 @@ import org.eclipse.equinox.app.IApplicationContext;
 public class Application
 	implements IApplication {
 
-	private ATableBasedDataDomain dataDomain;
-
 	/** class which takes the parameters for parsing */
 	private LoadDataParameters loadDataParameters = new LoadDataParameters();
 
 	public static String NILS_FILE =
 		"/Users/nils/Data/Caleydo/testdata/20110728/ov/mrna_cnmf/outputprefix.expclu.gct";
+
+	public static String ALEX_TEST_1 =
+		"/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.normalized.gct";
+	public static String ALEX_TEST_1_GROUPING =
+		"/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.membership.txt";
+
+	public static String ALEX_TEST_2 =
+		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
+	public static String ALEX_TEST_2_GROUPING =
+		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
+	public String dataSource = ALEX_TEST_2;
+	public String groupingSource = ALEX_TEST_2_GROUPING;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -59,7 +67,7 @@ public class Application
 		 * System.getProperty("file.separator") + "test.cal", true);
 		 */
 
-		convertGctFile("/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.normalized.gct");
+		convertGctFile(dataSource);
 
 		return IApplication.EXIT_OK;
 	}
@@ -135,9 +143,7 @@ public class Application
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
 
-		loadClusterInfo(
-			"/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.membership.txt",
-			dataDomain);
+		loadClusterInfo(groupingSource, dataDomain);
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -173,6 +179,7 @@ public class Application
 
 			// this is specific to the two files used
 			String originalID = columns[0].replace("-", ".");
+			// String originalID = columns[0];
 
 			Integer mappedID =
 				dataDomain.getDimensionIDMappingManager().getID(dataDomain.getHumanReadableDimensionIDType(),
