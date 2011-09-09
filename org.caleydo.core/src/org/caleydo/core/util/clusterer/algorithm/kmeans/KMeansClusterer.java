@@ -5,7 +5,7 @@ import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
@@ -107,7 +107,7 @@ public class KMeansClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex,
+						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex,
 							recordIndex) + ", ");
 
 					}
@@ -151,7 +151,7 @@ public class KMeansClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex,
+						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex,
 							recordIndex) + ", ");
 
 					}

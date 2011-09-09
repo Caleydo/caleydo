@@ -6,7 +6,7 @@ package org.caleydo.core.data.collection.dimension;
  * 
  * @author Alexander Lex
  */
-public enum EDataRepresentation {
+public enum DataRepresentation {
 	RAW,
 	LOG10,
 	LOG2,

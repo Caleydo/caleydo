@@ -28,7 +28,7 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
 			barPlotRenderer = new BarPlotRenderer(heatMap, uncertaintyHeatMap);
-			barPlotRenderer.setContentSpacing(contentSpacing);
+			barPlotRenderer.setRecordSpacing(recordSpacing);
 		}
 
 		minSelectedFieldHeight *= 2;

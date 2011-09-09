@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.canvas.listener.UpdateColorMappingListener;
 
 /**
  * Manage color mappings for different situations system-wide. There can only be one color mapping for each of
- * the values specified in {@link EColorMappingType}. The color mapping can be initialized, otherwise a
+ * the values specified in {@link ColorMappingType}. The color mapping can be initialized, otherwise a
  * default is provided. The class follows the Singleton pattern.
  * 
  * @author Alexander Lex
@@ -26,7 +26,7 @@ public class ColorMappingManager
 	implements IColorMappingHandler {
 
 	private static ColorMappingManager colorMappingManager = null;
-	private EnumMap<EColorMappingType, ColorMapper> hashColorMapping = null;
+	private EnumMap<ColorMappingType, ColorMapper> hashColorMapping = null;
 
 	private EventPublisher eventPublisher;
 	private UpdateColorMappingListener updateColorMappingListener;
@@ -37,7 +37,7 @@ public class ColorMappingManager
 	private ColorMappingManager() {
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		registerEventListeners();
-		hashColorMapping = new EnumMap<EColorMappingType, ColorMapper>(EColorMappingType.class);
+		hashColorMapping = new EnumMap<ColorMappingType, ColorMapper>(ColorMappingType.class);
 	}
 
 	/**
@@ -81,7 +81,7 @@ public class ColorMappingManager
 	 * @param alMarkerPoints
 	 *            a list of marker points based on which the color mapping is created
 	 */
-	public void initColorMapping(EColorMappingType colorMappingType,
+	public void initColorMapping(ColorMappingType colorMappingType,
 		ArrayList<ColorMarkerPoint> alMarkerPoints) {
 		if (hashColorMapping.containsKey(colorMappingType)) {
 			hashColorMapping.get(colorMappingType).resetColorMapping(alMarkerPoints);
@@ -94,7 +94,7 @@ public class ColorMappingManager
 	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
 	 * display list to dirty to have immediate effect.
 	 */
-	public void initiFromPreferenceStore(EColorMappingType colorMappingType) {
+	public void initiFromPreferenceStore(ColorMappingType colorMappingType) {
 
 		if (hashColorMapping.containsKey(colorMappingType)) {
 			hashColorMapping.get(colorMappingType).initiFromPreferenceStore();
@@ -116,7 +116,7 @@ public class ColorMappingManager
 	 *            the type
 	 * @return the color mapping
 	 */
-	public ColorMapper getColorMapping(EColorMappingType colorMappingType) {
+	public ColorMapper getColorMapping(ColorMappingType colorMappingType) {
 		ColorMapper colorMapping = hashColorMapping.get(colorMappingType);
 		if (colorMapping == null) {
 			colorMapping = getDefaultColorMapping(colorMappingType);
@@ -132,7 +132,7 @@ public class ColorMappingManager
 	 *            the type
 	 * @return the color mapping
 	 */
-	private ColorMapper getDefaultColorMapping(EColorMappingType colorMappingType) {
+	private ColorMapper getDefaultColorMapping(ColorMappingType colorMappingType) {
 
 		ColorMapper colorMapping;
 		ArrayList<ColorMarkerPoint> alColorMarkerPoints = new ArrayList<ColorMarkerPoint>();
@@ -155,7 +155,7 @@ public class ColorMappingManager
 
 	/**
 	 * Handles changes of {@link ColorMapper}s by storing the new received ColorMapping with the contained
-	 * {@link EColorMappingType}.
+	 * {@link ColorMappingType}.
 	 * 
 	 * @param colorMapping
 	 *            changed {@link ColorMapper} to store

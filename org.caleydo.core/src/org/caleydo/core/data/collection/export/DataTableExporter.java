@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
@@ -57,7 +57,7 @@ public class DataTableExporter {
 				}
 				out.print(identifier + "\t");
 				for (Integer dimensionIndex : dimensionsToExport) {
-					out.print(dataDomain.getTable().getFloat(EDataRepresentation.RAW, dimensionIndex,
+					out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW, dimensionIndex,
 						recordIndex));
 					out.print("\t");
 				}
@@ -126,7 +126,7 @@ public class DataTableExporter {
 				out.print(identifier + "\t");
 				for (Integer dimensionID : dimensionVA) {
 
-					out.print(dataDomain.getTable().getFloat(EDataRepresentation.RAW, dimensionID, recordID));
+					out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW, dimensionID, recordID));
 
 					out.print("\t");
 

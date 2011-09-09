@@ -8,7 +8,7 @@ import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;
 import org.eclipse.swt.SWT;
@@ -135,7 +135,7 @@ public class ColorMappingPreferencePage
 				+ PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount, color);
 			iCount++;
 		}
-		ColorMappingManager.get().getColorMapping(EColorMappingType.GENE_EXPRESSION)
+		ColorMappingManager.get().getColorMapping(ColorMappingType.GENE_EXPRESSION)
 			.initiFromPreferenceStore();
 
 		EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();

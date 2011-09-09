@@ -8,7 +8,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 
 /**
  * PDDrawingStrategyLabelDecorator sets up a {@link LabelInfo} for the partial
@@ -118,7 +118,7 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 		float fAverageExpressionValue = clusterNode.getAverageExpressionValue();
 		float fStandardDeviation = clusterNode.getStandardDeviation();
 		ColorMapper cmExpression = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue
 				- fStandardDeviation);

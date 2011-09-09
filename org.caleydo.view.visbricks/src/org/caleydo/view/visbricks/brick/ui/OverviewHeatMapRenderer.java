@@ -4,14 +4,14 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
@@ -42,7 +42,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			DimensionVirtualArray dimensionVA, DataTable table,
 			boolean showStandardDeviation) {
 		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 		this.showStandardDeviation = showStandardDeviation;
 
 		float[] expressionValues = new float[recordVA.size()];
@@ -54,7 +54,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 			int index = 0;
 			for (int recordIndex : recordVA) {
-				expressionValues[index] = table.getFloat(EDataRepresentation.NORMALIZED,
+				expressionValues[index] = table.getFloat(DataRepresentation.NORMALIZED,
 						dimensionID, recordIndex);
 				index++;
 			}

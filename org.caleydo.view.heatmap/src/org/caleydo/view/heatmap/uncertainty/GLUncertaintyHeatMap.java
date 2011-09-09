@@ -21,13 +21,12 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -42,7 +41,6 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.OverviewDetailConnectorRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 import org.caleydo.view.heatmap.heatmap.template.UncertaintyDetailHeatMapTemplate;
 import org.eclipse.swt.widgets.Composite;
 
@@ -91,7 +89,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	private ElementLayout overviewDetailConnectorLayout;
 
 	private ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
-			EColorMappingType.GENE_EXPRESSION);
+			ColorMappingType.GENE_EXPRESSION);
 
 	private boolean updateVisualUncertainty = true;
 
@@ -449,7 +447,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		return renderStyle;
 	}
 
-	public RecordSelectionManager getContentSelectionManager() {
+	public RecordSelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
 
 	}

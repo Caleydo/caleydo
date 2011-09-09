@@ -38,7 +38,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 			for (int limitCount = 1; limitCount <= spread; limitCount++) {
 				if (indexOfZoomedElement - limitCount < 0)
 					elementsForThisSelection--;
-				if (indexOfZoomedElement + limitCount >= contentElements)
+				if (indexOfZoomedElement + limitCount >= recordElements)
 					elementsForThisSelection--;
 			}
 
@@ -57,7 +57,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 
 		}
 
-		float nrRemainingElements = contentElements - zoomedElements.size()
+		float nrRemainingElements = recordElements - zoomedElements.size()
 				- level1Elements;
 
 		finalSize = (2 * baseSize - level1Elements * minSelectedFieldHeight)
@@ -79,7 +79,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 					if ((selectedContentIndex - count >= 0 && recordID == recordVA
 							.get(selectedContentIndex - count)))
 						return level1Size;
-					else if (selectedContentIndex < contentElements - count
+					else if (selectedContentIndex < recordElements - count
 							&& recordID == recordVA.get(selectedContentIndex + count))
 						return level1Size;
 				}

@@ -259,14 +259,6 @@ public class GLHeatMap extends ATableBasedView {
 		gl.glEndList();
 	}
 
-	public RecordSelectionManager getContentSelectionManager() {
-		return recordSelectionManager;
-	}
-
-	public DimensionSelectionManager getDimensionSelectionManager() {
-		return dimensionSelectionManager;
-	}
-
 	@Override
 	protected void initLists() {
 		// todo this is not nice here, we may need a more intelligent way to
@@ -846,10 +838,6 @@ public class GLHeatMap extends ATableBasedView {
 		return zoomedElements;
 	}
 
-	public DataTable getTable() {
-		return table;
-	}
-
 	public AHeatMapTemplate getTemplate() {
 		return template;
 	}
@@ -911,4 +899,7 @@ public class GLHeatMap extends ATableBasedView {
 		templateRenderer.setViewFrustum(viewFrustum);
 	}
 
+	public void updateLayout() {
+		templateRenderer.updateLayout();
+	}
 }

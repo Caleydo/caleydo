@@ -10,7 +10,7 @@ import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalDimension;
 import org.caleydo.core.data.collection.dimension.NumericalDimension;
 import org.caleydo.core.data.collection.dimension.RawDataType;
@@ -145,7 +145,7 @@ public class DataTable
 	// return hashDimensions.get(dimensionID);
 	// }
 
-	public float getFloat(EDataRepresentation dataRepresentation, Integer dimensionID, Integer recordID) {
+	public float getFloat(DataRepresentation dataRepresentation, Integer dimensionID, Integer recordID) {
 		return hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordID);
 	}
 
@@ -158,7 +158,7 @@ public class DataTable
 		RawDataType rawDataType = getRawDataType(dimensionID, recordID);
 		String result;
 		if (rawDataType == RawDataType.FLOAT) {
-			result = Float.toString(getFloat(EDataRepresentation.RAW, dimensionID, recordID));
+			result = Float.toString(getFloat(DataRepresentation.RAW, dimensionID, recordID));
 		}
 		else if (rawDataType == RawDataType.STRING) {
 			result = getRaw(dimensionID, recordID);
@@ -170,7 +170,7 @@ public class DataTable
 		return result;
 	}
 
-	public boolean containsDataRepresentation(EDataRepresentation dataRepresentation, Integer dimensionID) {
+	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID) {
 		return hashDimensions.get(dimensionID).containsDataRepresentation(dataRepresentation);
 	}
 
@@ -415,7 +415,7 @@ public class DataTable
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
-					sum += getFloat(EDataRepresentation.RAW, dimensionID, contentCount);
+					sum += getFloat(DataRepresentation.RAW, dimensionID, contentCount);
 				}
 				meanValues[contentCount] = sum / metaData.size();
 			}
@@ -567,7 +567,7 @@ public class DataTable
 
 	public boolean containsFoldChangeRepresentation() {
 		for (ADimension dimension : hashDimensions.values()) {
-			return dimension.containsDataRepresentation(EDataRepresentation.FOLD_CHANGE_RAW);
+			return dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
 		}
 		return false;
 	}

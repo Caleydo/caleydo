@@ -10,7 +10,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author Alexander Lex
  * 
  */
-public class ContentSpacing {
+public class RecordSpacing {
 
 	private float fieldWidth;
 
@@ -22,19 +22,20 @@ public class ContentSpacing {
 	private ArrayList<Float> yDistances;
 	private GLHeatMap heatMap;
 
-	public ContentSpacing(GLHeatMap heatMap) {
+	public RecordSpacing(GLHeatMap heatMap) {
 		this.heatMap = heatMap;
 		yDistances = new ArrayList<Float>();
 	}
 
-	public void calculateContentSpacing(int contentElements, int dimensionElements,
+	public void calculateRecordSpacing(int recordElements, int dimensionElements,
 			float x, float y, float minSelectedFieldHeight) {
+		
 		fieldWidth = x / dimensionElements;
 
-		if (y / contentElements > minSelectedFieldHeight
+		if (y / recordElements > minSelectedFieldHeight
 				|| heatMap.getZoomedElements().size() == 0) {
 
-			spacingCalculator = new NormalSpacingCalculator(heatMap, y, contentElements);
+			spacingCalculator = new NormalSpacingCalculator(heatMap, y, recordElements);
 			useFishEye = false;
 
 		} else {
@@ -42,7 +43,7 @@ public class ContentSpacing {
 			// spacingCalculator = new SelectedLargerSpacingCalculator(heatMap,
 			// y,
 			// contentElements);
-			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, contentElements, minSelectedFieldHeight);
+			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, recordElements, minSelectedFieldHeight);
 
 		}
 		spacingCalculator.calculateFieldHeights();

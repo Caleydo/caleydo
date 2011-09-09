@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -143,7 +143,7 @@ public class AffinityClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
+							table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
 						isto++;
 					}
 
@@ -153,7 +153,7 @@ public class AffinityClusterer
 						isto = 0;
 						for (Integer iDimensionIndex2 : dimensionVA) {
 							dArInstance2[isto] =
-								table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex2, recordIndex2);
+								table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex2, recordIndex2);
 							isto++;
 						}
 
@@ -212,7 +212,7 @@ public class AffinityClusterer
 					icnt = 0;
 					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[icnt] =
-							table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
+							table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
 						icnt++;
 					}
 
@@ -222,7 +222,7 @@ public class AffinityClusterer
 						icnt = 0;
 						for (Integer recordIndex2 : recordVA) {
 							dArInstance2[icnt] =
-								table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex2, recordIndex2);
+								table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex2, recordIndex2);
 							icnt++;
 						}
 

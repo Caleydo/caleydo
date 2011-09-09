@@ -6,16 +6,21 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.util.mapping.color.ColorMappingManager;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
+import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -23,7 +28,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
 import com.jogamp.opengl.util.texture.TextureIO;
 
-public class HeatMapTextureRenderer extends LayoutRenderer {
+public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 	private final static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
@@ -38,17 +43,12 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private ArrayList<Integer> numberSamples = new ArrayList<Integer>();
 
-	private GLUncertaintyHeatMap uncertaintyHeatMap;
-
 	private PickingManager pickingManager = GeneralManager.get().getViewManager()
 			.getPickingManager();
 
-	private int groupIndex;
 	private FloatBuffer[] floatBuffer;
 
 	private int numberOfDimensions;
-
-	public Column heatmapLayout;
 
 	private RecordVirtualArray recordVA;
 
@@ -56,28 +56,65 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 	private DataTable table;
 
-	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap,
-			Column heatmapLayout) {
+	private int groupIndex = -1;
 
-		this.uncertaintyHeatMap = uncertaintyHeatMap;
-		this.heatmapLayout = heatmapLayout;
-		// selectionUpdateListener.setExclusiveDataDomainType(dataDomain.getDataDomainType());
+	private int viewID;
 
+	public HeatMapTextureRenderer(GLHeatMap heatMap) {
+		super(heatMap);
 	}
 
-	/*
+	/**
+	 * Constructor for uncertainty heat map where no GLHeatMap parent exists.
+	 */
+	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap) {
+		super(null);
+		viewID = uncertaintyHeatMap.getID();
+	}
+
+	@Override
+	public void updateSpacing(ElementLayout parameters) {
+
+		if (heatMap == null)
+			return;
+
+		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
+
+		int recordElements = heatMap.getRecordVA().size();
+
+		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
+		if (heatMap.isHideElements()) {
+			recordElements -= selectionManager
+					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
+		}
+
+		recordSpacing.calculateRecordSpacing(recordElements, heatMap.getDimensionVA()
+				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				heatMapTemplate.getMinSelectedFieldHeight());
+		heatMapTemplate.setContentSpacing(recordSpacing);
+
+		float yPosition = parameters.getSizeScaledY();
+		recordSpacing.getYDistances().clear();
+		for (Integer recordID : heatMap.getRecordVA()) {
+
+			float fieldHeight = recordSpacing.getFieldHeight(recordID);
+			yPosition -= fieldHeight;
+			recordSpacing.getYDistances().add(yPosition);
+		}
+	}
+
+	/**
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
-	public void init(GLUncertaintyHeatMap uncertaintyHeatMap, DataTable table,
-			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA, int groupIndex) {
+	public void init(DataTable table, DimensionVirtualArray dimensionVA,
+			RecordVirtualArray recordVA, DataRepresentation dataRepresentation) {
 
-		this.recordVA = recordVA;
-		this.dimensionVA = dimensionVA;
 		this.table = table;
+		this.dimensionVA = dimensionVA;
+		this.recordVA = recordVA;
 
-		this.uncertaintyHeatMap = uncertaintyHeatMap;
-		ColorMapper colorMapper = uncertaintyHeatMap.getColorMapper();
-		this.groupIndex = groupIndex;
+		ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
+				ColorMappingType.GENE_EXPRESSION);
 
 		int textureHeight = numberOfRecords = recordVA.size();
 		int textureWidth = numberOfDimensions = dimensionVA.size();
@@ -101,27 +138,29 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 		floatBuffer = new FloatBuffer[numberOfTextures];
 
-		for (int itextures = 0; itextures < numberOfTextures; itextures++) {
+		for (int texture = 0; texture < numberOfTextures; texture++) {
 
-			if (itextures == numberOfTextures - 1) {
-				numberSamples.add(textureHeight - samplesPerTexture * itextures);
-				floatBuffer[itextures] = FloatBuffer
-						.allocate((textureHeight - samplesPerTexture * itextures)
+			if (texture == numberOfTextures - 1) {
+				numberSamples.add(textureHeight - samplesPerTexture * texture);
+				floatBuffer[texture] = FloatBuffer
+						.allocate((textureHeight - samplesPerTexture * texture)
 								* textureWidth * 4);
 			} else {
 				numberSamples.add(samplesPerTexture);
-				floatBuffer[itextures] = FloatBuffer.allocate(samplesPerTexture
+				floatBuffer[texture] = FloatBuffer.allocate(samplesPerTexture
 						* textureWidth * 4);
 			}
 		}
 
-		int contentCount = 0;
+		int recordCount = 0;
 		int textureCounter = 0;
 		float opacity = 1;
 
-		for (Integer recordIndex : recordVA) {
-			contentCount++;
-			for (Integer dimensionIndex : dimensionVA) {
+		for (Integer recordID : recordVA) {
+
+			recordCount++;
+
+			for (Integer dimensionID : dimensionVA) {
 				// if
 				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
 				// recordIndex)) {
@@ -130,8 +169,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				lookupValue = table.getFloat(
-						uncertaintyHeatMap.getRenderingRepresentation(),dimensionIndex, recordIndex);
+				lookupValue = table.getFloat(dataRepresentation, dimensionID, recordID);
 
 				float[] mappingColor = colorMapper.getColor(lookupValue);
 
@@ -140,7 +178,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 
 				floatBuffer[textureCounter].put(rgba);
 			}
-			if (contentCount >= numberSamples.get(textureCounter)) {
+			if (recordCount >= numberSamples.get(textureCounter)) {
 				floatBuffer[textureCounter].rewind();
 
 				TextureData texData = new TextureData(GLProfile.getDefault(),
@@ -156,9 +194,8 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				textures.add(tempTexture);
 
 				textureCounter++;
-				contentCount = 0;
+				recordCount = 0;
 			}
-
 		}
 	}
 
@@ -171,19 +208,19 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		// fWidth = renderStyle.getWidthLevel1();
 
 		float elementHeight = y / numberOfRecords;
-		float step = 0;
+		float yPosition = 0;
 
 		gl.glColor4f(1f, 1f, 0f, 1f);
 
-		for (int i = 0; i < numberOfTextures; i++) {
+		for (int textureIndex = 0; textureIndex < numberOfTextures; textureIndex++) {
 
-			step = elementHeight * numberSamples.get(numberOfTextures - i - 1);
-			renderTexture(gl, textures.get(numberOfTextures - i - 1), 0, yOffset, x,
-					yOffset + step);
+			yPosition = elementHeight
+					* numberSamples.get(numberOfTextures - textureIndex - 1);
+			renderTexture(gl, textures.get(numberOfTextures - textureIndex - 1), 0,
+					yOffset, x, yOffset + yPosition);
 
-			yOffset += step;
+			yOffset += yPosition;
 		}
-
 	}
 
 	private void renderTexture(GL2 gl, Texture texture, float x, float y, float width,
@@ -199,8 +236,10 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_NEAREST);
 		TextureCoords texCoords = texture.getImageTexCoords();
 
-		gl.glPushName(pickingManager.getPickingID(uncertaintyHeatMap.getID(),
-				PickingType.HEAT_MAP_RECORD_GROUP, groupIndex));
+		if (groupIndex != -1)
+			gl.glPushName(pickingManager.getPickingID(viewID,
+					PickingType.HEAT_MAP_RECORD_GROUP, groupIndex));
+
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glTexCoord2d(texCoords.left(), texCoords.top());
 		gl.glVertex3f(x, y, 0);
@@ -211,7 +250,9 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		gl.glTexCoord2d(texCoords.right(), texCoords.top());
 		gl.glVertex3f(x + width, y, 0);
 		gl.glEnd();
-		gl.glPopName();
+
+		if (groupIndex != -1)
+			gl.glPopName();
 
 		texture.disable();
 	}
@@ -235,7 +276,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 				// byte[] abgr = new byte[4];
 
 				val = val
-						+ ((table.getFloat(EDataRepresentation.NORMALIZED,
+						+ ((table.getFloat(DataRepresentation.NORMALIZED,
 								dimensionVA.get(dimensionCount), recordVA.get(i))));
 			}
 			// buffer.get(abgr, i * numberOfExpirments * 4 + exps * 4, 4);
@@ -245,7 +286,7 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 			// unc = difference
 			uncertainty = 0;
 			for (int i = startRecord; i < endRecord; i++) {
-				float tempVal = table.getFloat(EDataRepresentation.NORMALIZED,
+				float tempVal = table.getFloat(DataRepresentation.NORMALIZED,
 						dimensionVA.get(dimensionCount), recordVA.get(i));
 				uncertainty = Math.abs(val - tempVal);
 				if (uncertainty > maxUncertainty) {
@@ -259,4 +300,11 @@ public class HeatMapTextureRenderer extends LayoutRenderer {
 		return 1 - (maxUncertainty * 2);
 	}
 
+	public ElementLayout getLayout() {
+		return elementLayout;
+	}
+
+	public void setGroupIndex(int groupIndex) {
+		this.groupIndex = groupIndex;
+	}
 }

@@ -22,7 +22,7 @@ import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -95,7 +95,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		viewType = VIEW_TYPE;
 		colorMappingManager = ColorMappingManager.get();
 		colorMapping = colorMappingManager
-				.getColorMapping(EColorMappingType.GENE_EXPRESSION);
+				.getColorMapping(ColorMappingType.GENE_EXPRESSION);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
@@ -166,7 +166,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 
 		if (bIsDisplayListDirtyLocal) {
 			colorMapping = ColorMappingManager.get().getColorMapping(
-					EColorMappingType.GENE_EXPRESSION);
+					ColorMappingType.GENE_EXPRESSION);
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -186,7 +186,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	public void displayRemote(GL2 gl) {
 		if (bIsDisplayListDirtyRemote) {
 			colorMapping = ColorMappingManager.get().getColorMapping(
-					EColorMappingType.GENE_EXPRESSION);
+					ColorMappingType.GENE_EXPRESSION);
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}

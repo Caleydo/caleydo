@@ -3,7 +3,7 @@ package org.caleydo.core.util.mapping.color;
 /**
  * @author Alexander Lex
  */
-public enum EColorMappingType {
+public enum ColorMappingType {
 	GENE_EXPRESSION,
 	CLINICAL_DATA,
 

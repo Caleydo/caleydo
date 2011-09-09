@@ -3,17 +3,19 @@ package org.caleydo.view.heatmap.heatmap.template;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
+import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.DimensionSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.HeatMapRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.RecordCaptionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.RecordSelectionRenderer;
-import org.caleydo.view.heatmap.heatmap.renderer.spacing.ContentSpacing;
+import org.caleydo.view.heatmap.heatmap.renderer.spacing.RecordSpacing;
+import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
 public abstract class AHeatMapTemplate extends LayoutTemplate {
-	
-	protected HeatMapRenderer heatMapRenderer;
+
+	protected AHeatMapRenderer heatMapRenderer;
 	protected RecordCaptionRenderer recordCaptionRenderer;
 	protected DimensionCaptionRenderer dimensionCaptionRenderer;
 	protected RecordSelectionRenderer recordSelectionRenderer;
@@ -25,31 +27,48 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	protected ElementLayout heatMapLayout;
 	protected ElementLayout barPlotLayout;
 
-
 	public float minSelectedFieldHeight = 0.1f;
 	// private float xOverheadToHeatMap;
 	// private float yOverheadToHeatMap;
 
-	ContentSpacing contentSpacing;
+	protected RecordSpacing recordSpacing;
 	
+	private boolean renderAsTexture;
 
 	public AHeatMapTemplate(GLHeatMap heatMap) {
-		this.heatMap = heatMap;
-		contentSpacing = new ContentSpacing(heatMap);
-
-		heatMapRenderer = new HeatMapRenderer(heatMap);
-		heatMapRenderer.setContentSpacing(contentSpacing);
+		this(heatMap, false);
+	}
+	
+	public AHeatMapTemplate(GLHeatMap heatMap, boolean renderAsTexture) {
 		
+		this.heatMap = heatMap;
+		recordSpacing = new RecordSpacing(heatMap);
+		this.renderAsTexture = renderAsTexture;
+		
+		if (renderAsTexture)
+			heatMapRenderer = new HeatMapTextureRenderer(heatMap);
+		else
+			heatMapRenderer = new HeatMapRenderer(heatMap);
+	
+		heatMapRenderer.setRecordSpacing(recordSpacing);
 		recordCaptionRenderer = new RecordCaptionRenderer(heatMap);
-		recordCaptionRenderer.setContentSpacing(contentSpacing);
+		recordCaptionRenderer.setRecordSpacing(recordSpacing);
 		dimensionCaptionRenderer = new DimensionCaptionRenderer(heatMap);
-		dimensionCaptionRenderer.setContentSpacing(contentSpacing);
+		dimensionCaptionRenderer.setRecordSpacing(recordSpacing);
 		recordSelectionRenderer = new RecordSelectionRenderer(heatMap);
-		recordSelectionRenderer.setContentSpacing(contentSpacing);
+		recordSelectionRenderer.setRecordSpacing(recordSpacing);
 		dimensionSelectionRenderer = new DimensionSelectionRenderer(heatMap);
-		dimensionSelectionRenderer.setContentSpacing(contentSpacing);
+		dimensionSelectionRenderer.setRecordSpacing(recordSpacing);
 		captionCageRenderer = new CaptionCageRenderer(heatMap);
-		captionCageRenderer.setContentSpacing(contentSpacing);
+		captionCageRenderer.setRecordSpacing(recordSpacing);
+	}
+
+	public void initRendererData() {
+		
+		if (renderAsTexture) {
+			 ((HeatMapTextureRenderer)heatMapRenderer).init(heatMap.getTable(), heatMap.getDimensionVA(),
+						heatMap.getRecordVA(), heatMap.getRenderingRepresentation());			
+		}
 	}
 
 	public Float getYCoordinateByContentIndex(int recordIndex) {
@@ -69,7 +88,7 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 		// int recordIndex = heatMap.getRecordVA().indexOf(recordID);
 		// if (recordIndex < 0)
 		// return 0;
-		return contentSpacing.getFieldHeight(recordID);
+		return recordSpacing.getFieldHeight(recordID);
 		// if (heatMap.getContentSelectionManager().checkStatus(
 		// SelectionType.MOUSE_OVER, recordID)
 		// || heatMap.getContentSelectionManager().checkStatus(
@@ -81,16 +100,14 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	}
 
 	public float getElementWidth(int dimensionID) {
-		return contentSpacing.getFieldWidth();
+		return recordSpacing.getFieldWidth();
 	}
 
 	public float getMinSelectedFieldHeight() {
 		return minSelectedFieldHeight;
 	}
 
-	public void setContentSpacing(ContentSpacing contentSpacing) {
-		this.contentSpacing = contentSpacing;
+	public void setContentSpacing(RecordSpacing contentSpacing) {
+		this.recordSpacing = contentSpacing;
 	}
-
-	
 }

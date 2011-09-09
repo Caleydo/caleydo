@@ -12,7 +12,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-public class DimensionSelectionRenderer extends AContentRenderer {
+public class DimensionSelectionRenderer extends AHeatMapRenderer {
 
 	public DimensionSelectionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
@@ -21,7 +21,7 @@ public class DimensionSelectionRenderer extends AContentRenderer {
 	public void renderSelection(final GL2 gl, SelectionType selectionType) {
 
 		// content selection
-		Set<Integer> selectedSet = heatMap.getContentSelectionManager().getElements(
+		Set<Integer> selectedSet = heatMap.getRecordSelectionManager().getElements(
 				selectionType);
 		// float width = x;
 		// float yPosition = y;
@@ -46,7 +46,7 @@ public class DimensionSelectionRenderer extends AContentRenderer {
 				if (tempColumn == selectedColumn) {
 					// TODO we need indices of all elements
 
-					xPosition = columnIndex * contentSpacing.getFieldWidth();
+					xPosition = columnIndex * recordSpacing.getFieldWidth();
 
 					float z = SELECTION_Z * selectionType.getPriority();
 
@@ -56,8 +56,8 @@ public class DimensionSelectionRenderer extends AContentRenderer {
 					gl.glBegin(GL2.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, y, z);
 					gl.glVertex3f(xPosition, 0, z);
-					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), 0, z);
-					gl.glVertex3f(xPosition + contentSpacing.getFieldWidth(), y, z);
+					gl.glVertex3f(xPosition + recordSpacing.getFieldWidth(), 0, z);
+					gl.glVertex3f(xPosition + recordSpacing.getFieldWidth(), y, z);
 					gl.glEnd();
 					gl.glPopName();
 				}

@@ -6,7 +6,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-public class RecordCaptionRenderer extends AContentRenderer {
+public class RecordCaptionRenderer extends AHeatMapRenderer {
 
 	float fontScaling = HeatMapRenderStyle.SMALL_FONT_SCALING_FACTOR;
 	int fontSize = 24;
@@ -27,18 +27,18 @@ public class RecordCaptionRenderer extends AContentRenderer {
 		for (Integer recordID : recordVA) {
 
 			if (heatMap.isHideElements()
-					&& heatMap.getContentSelectionManager().checkStatus(
+					&& heatMap.getRecordSelectionManager().checkStatus(
 							GLHeatMap.SELECTION_HIDDEN, recordID)) {
 				continue;
 			}
 
-			fieldHeight = contentSpacing.getFieldHeight(recordID);
+			fieldHeight = recordSpacing.getFieldHeight(recordID);
 			
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
 			
 			try {
-				yPosition = contentSpacing.getYDistances().get(
+				yPosition = recordSpacing.getYDistances().get(
 						recordVA.indexOf(recordID));
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -60,7 +60,7 @@ public class RecordCaptionRenderer extends AContentRenderer {
 		if (label == null)
 			label = "No mapping";
 
-		spacing = (contentSpacing.getFieldHeight(recordIndex));
+		spacing = (recordSpacing.getFieldHeight(recordIndex));
 
 		if (spacing < 0)
 			spacing = 0;

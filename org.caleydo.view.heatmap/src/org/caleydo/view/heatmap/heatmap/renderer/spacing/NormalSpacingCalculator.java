@@ -13,7 +13,7 @@ public class NormalSpacingCalculator extends ASpacingCalculator {
 	@Override
 	public void calculateFieldHeights() {
 
-		normalFieldHeight = y / contentElements;
+		normalFieldHeight = y / recordElements;
 	}
 
 	@Override

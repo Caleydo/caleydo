@@ -18,15 +18,15 @@ public class SelectedLargerSpacingCalculator extends ASpacingCalculator {
 		selectedFieldHeight = minSelectedFieldHeight;
 		int nrZoomedElements = heatMap.getZoomedElements().size();
 		normalFieldHeight = (y - (nrZoomedElements * selectedFieldHeight))
-				/ (contentElements - nrZoomedElements);
+				/ (recordElements - nrZoomedElements);
 	}
 
 	@Override
 	public float getFieldHeight(int recordID) {
 
-		if (heatMap.getContentSelectionManager().checkStatus(SelectionType.SELECTION,
+		if (heatMap.getRecordSelectionManager().checkStatus(SelectionType.SELECTION,
 				recordID)
-				|| heatMap.getContentSelectionManager().checkStatus(
+				|| heatMap.getRecordSelectionManager().checkStatus(
 						SelectionType.MOUSE_OVER, recordID)) {
 			return selectedFieldHeight;
 		}

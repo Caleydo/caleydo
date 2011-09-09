@@ -11,7 +11,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
-public class RecordSelectionRenderer extends AContentRenderer {
+public class RecordSelectionRenderer extends AHeatMapRenderer {
 
 	public RecordSelectionRenderer(GLHeatMap heatMap) {
 		super(heatMap);
@@ -20,7 +20,7 @@ public class RecordSelectionRenderer extends AContentRenderer {
 	public void renderSelection(final GL2 gl, SelectionType selectionType) {
 
 		// content selection
-		Set<Integer> selectedSet = heatMap.getContentSelectionManager().getElements(
+		Set<Integer> selectedSet = heatMap.getRecordSelectionManager().getElements(
 				selectionType);
 		float width = x;
 		float yPosition = y;
@@ -33,14 +33,14 @@ public class RecordSelectionRenderer extends AContentRenderer {
 		// FIXME this iterates over all elements but could do by only iterating
 		// of the selected elements
 		for (int recordIndex : heatMap.getRecordVA()) {
-			if (heatMap.getContentSelectionManager().checkStatus(
+			if (heatMap.getRecordSelectionManager().checkStatus(
 					GLHeatMap.SELECTION_HIDDEN, recordIndex))
 				continue;
 			for (Integer currentLine : selectedSet) {
 				if (currentLine == recordIndex) {
-					float fieldHeight = contentSpacing.getFieldHeight(recordIndex);
+					float fieldHeight = recordSpacing.getFieldHeight(recordIndex);
 					// width = heatMap.getDimensionVA().size() * fieldWidth;
-					yPosition = contentSpacing.getYDistances().get(lineIndex);
+					yPosition = recordSpacing.getYDistances().get(lineIndex);
 					xPosition = 0;
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
 							heatMap.getID(), PickingType.HEAT_MAP_LINE_SELECTION,

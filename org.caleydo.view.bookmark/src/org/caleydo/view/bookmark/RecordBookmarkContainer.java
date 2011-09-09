@@ -10,7 +10,7 @@ import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category
@@ -31,7 +31,7 @@ class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager>
 		this.category = category;
 
 		colorMapping = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 
 		selectionManager = new RecordSelectionManager(manager.getDataDomain().getRecordIDMappingManager(), idType);
 

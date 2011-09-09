@@ -63,7 +63,7 @@ public class DetailToolBar extends LayoutRenderer {
 
 		Texture tempTexture;
 
-		if (heatMap.getContentSelectionManager().getNumberOfElements(
+		if (heatMap.getRecordSelectionManager().getNumberOfElements(
 				GLHeatMap.SELECTION_HIDDEN) > 0) {
 
 			tempTexture = iconManager.getIconTexture(gl,
@@ -96,7 +96,7 @@ public class DetailToolBar extends LayoutRenderer {
 
 		int nrTotal = heatMap.getRecordVA().size();
 		int nrVisible = nrTotal
-				- heatMap.getContentSelectionManager().getNumberOfElements(
+				- heatMap.getRecordSelectionManager().getNumberOfElements(
 						GLHeatMap.SELECTION_HIDDEN);
 
 		String content;

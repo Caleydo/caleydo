@@ -3,7 +3,7 @@ package org.caleydo.core.util.clusterer;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -197,7 +197,7 @@ public class ClusterHelper {
 				int isto = 0;
 				for (Integer iDimensionIndex : dimensionVA) {
 					values[isto] =
-						table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex, node.getLeafID());
+						table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex, node.getLeafID());
 					isto++;
 				}
 
@@ -208,7 +208,7 @@ public class ClusterHelper {
 				int icon = 0;
 				for (Integer recordIndex : recordVA) {
 					values[icon] =
-						table.getFloat(EDataRepresentation.NORMALIZED, node.getLeafID(), recordIndex);
+						table.getFloat(DataRepresentation.NORMALIZED, node.getLeafID(), recordIndex);
 					icon++;
 				}
 			}
@@ -283,7 +283,7 @@ public class ClusterHelper {
 
 				for (Integer dimensionIndex : dimensionVA) {
 					float temp =
-						table.getFloat(EDataRepresentation.NORMALIZED, dimensionIndex,
+						table.getFloat(DataRepresentation.NORMALIZED, dimensionIndex,
 							recordVA.get(recordIndex));
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;
@@ -302,7 +302,7 @@ public class ClusterHelper {
 
 				for (Integer recordIndex : recordVA) {
 					float temp =
-						table.getFloat(EDataRepresentation.NORMALIZED, dimensionVA.get(iDimensionIndex),
+						table.getFloat(DataRepresentation.NORMALIZED, dimensionVA.get(iDimensionIndex),
 							recordIndex);
 					if (Float.isNaN(temp))
 						fColorSum[icontent] += 0;

@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -19,7 +19,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -78,7 +78,7 @@ public class GLPathwayContentCreator {
 
 	private ATableBasedDataDomain geneticDataDomain;
 
-	private EDataRepresentation dimensionDataRepresentation = EDataRepresentation.NORMALIZED;
+	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
 	 * Constructor.
@@ -90,7 +90,7 @@ public class GLPathwayContentCreator {
 		idMappingManager = glPathwayView.getPathwayDataDomain().getGeneIDMappingManager();
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 
 		hashPathway2VerticesDisplayListId = new HashMap<PathwayGraph, Integer>();
 		hashPathway2EdgesDisplayListId = new HashMap<PathwayGraph, Integer>();
@@ -922,11 +922,11 @@ public class GLPathwayContentCreator {
 	}
 
 	public void switchDataRepresentation() {
-		if (dimensionDataRepresentation.equals(EDataRepresentation.NORMALIZED)) {
+		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
 			if (!geneticDataDomain.getTable().containsFoldChangeRepresentation())
 				geneticDataDomain.getTable().createFoldChangeRepresentation();
-			dimensionDataRepresentation = EDataRepresentation.FOLD_CHANGE_NORMALIZED;
+			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
 		} else
-			dimensionDataRepresentation = EDataRepresentation.NORMALIZED;
+			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 	}
 }

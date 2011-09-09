@@ -13,7 +13,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author Alexander Lex
  * 
  */
-public class DimensionCaptionRenderer extends AContentRenderer {
+public class DimensionCaptionRenderer extends AHeatMapRenderer {
 
 	private float fFontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR / 1.2f;
 
@@ -28,7 +28,7 @@ public class DimensionCaptionRenderer extends AContentRenderer {
 		heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 		float xPosition = 0;
-		float fieldWidth = contentSpacing.getFieldWidth();
+		float fieldWidth = recordSpacing.getFieldWidth();
 		// offset to center the caption
 		float xOffset = 0;
 

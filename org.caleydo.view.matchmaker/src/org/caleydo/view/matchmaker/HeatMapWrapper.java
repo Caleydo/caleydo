@@ -511,7 +511,7 @@ public class HeatMapWrapper {
 		ArrayList<RecordSelectionManager> contentSelectionManagers = new ArrayList<RecordSelectionManager>();
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = hashHeatMaps.get(group.getGroupID());
-			contentSelectionManagers.add(heatMap.getContentSelectionManager());
+			contentSelectionManagers.add(heatMap.getRecordSelectionManager());
 		}
 
 		return contentSelectionManagers;

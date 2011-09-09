@@ -39,8 +39,6 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	private RecordVirtualArray recordVA;
 
-	private DataTable set;
-
 	private float[] lightCertain = GLUncertaintyHeatMap.DATA_VALID[0];
 	private float[] lightUncertain = GLUncertaintyHeatMap.getUncertaintyColor(0);
 
@@ -152,7 +150,6 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		this.glUncHeatmap = glUncHeatmap;
 		this.dimensionVA = dimensionVA;
 		this.recordVA = recordVA;
-		this.set = set;
 
 		initTextures(null);
 	}

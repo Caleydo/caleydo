@@ -22,7 +22,7 @@ public class ColorMapper {
 
 	ArrayList<float[]> colorList;
 	ArrayList<ColorMarkerPoint> markerPoints;
-	EColorMappingType colorMappingType;
+	ColorMappingType colorMappingType;
 
 	float[] notANumberColor = { 0, 0, 1 };
 
@@ -53,12 +53,12 @@ public class ColorMapper {
 	 * @throws IllegalArgumentException
 	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	protected ColorMapper(EColorMappingType colorMappingType, ArrayList<ColorMarkerPoint> alMarkerPoints) {
+	protected ColorMapper(ColorMappingType colorMappingType, ArrayList<ColorMarkerPoint> alMarkerPoints) {
 		this.colorMappingType = colorMappingType;
 		init(alMarkerPoints);
 	}
 
-	protected ColorMapper(EColorMappingType colorMappingType) {
+	protected ColorMapper(ColorMappingType colorMappingType) {
 		this.colorMappingType = colorMappingType;
 		initiFromPreferenceStore();
 	}
@@ -255,11 +255,11 @@ public class ColorMapper {
 		this.colorList = colorList;
 	}
 
-	public EColorMappingType getColorMappingType() {
+	public ColorMappingType getColorMappingType() {
 		return colorMappingType;
 	}
 
-	public void setColorMappingType(EColorMappingType colorMappingType) {
+	public void setColorMappingType(ColorMappingType colorMappingType) {
 		this.colorMappingType = colorMappingType;
 	}
 

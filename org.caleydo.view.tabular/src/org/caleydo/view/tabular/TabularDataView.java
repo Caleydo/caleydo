@@ -3,7 +3,7 @@ package org.caleydo.view.tabular;
 import java.util.Iterator;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -346,7 +346,7 @@ public class TabularDataView extends ASWTView implements
 					item.setText(i++, text);
 				} else if (rawDataType == RawDataType.FLOAT) {
 
-					fValue = table.getFloat(EDataRepresentation.RAW, dimensionID,
+					fValue = table.getFloat(DataRepresentation.RAW, dimensionID,
 							recordIndex);
 
 					item.setText(i++, Float.toString(fValue));
@@ -436,7 +436,7 @@ public class TabularDataView extends ASWTView implements
 							recordVA.get(i));
 					String value;
 					if (rawDataType == RawDataType.FLOAT) {
-						value = Float.toString(table.getFloat(EDataRepresentation.RAW,
+						value = Float.toString(table.getFloat(DataRepresentation.RAW,
 								dimensionNumber, recordVA.get(i)));
 
 					} else if (rawDataType == RawDataType.STRING)

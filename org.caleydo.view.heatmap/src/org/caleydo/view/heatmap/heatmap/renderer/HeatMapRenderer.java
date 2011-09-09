@@ -4,28 +4,26 @@ import static org.caleydo.view.heatmap.HeatMapRenderStyle.FIELD_Z;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 
-public class HeatMapRenderer extends AContentRenderer {
+public class HeatMapRenderer extends AHeatMapRenderer {
 
 	private ColorMapper colorMapper;
-
-	// private Set<Integer> setSelectedElements;
 
 	public HeatMapRenderer(GLHeatMap heatMap) {
 		super(heatMap);
 		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 	}
 
 	@Override
@@ -35,59 +33,55 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		int contentElements = heatMap.getRecordVA().size();
 
-		RecordSelectionManager selectionManager = heatMap.getContentSelectionManager();
+		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
 		if (heatMap.isHideElements()) {
 
 			contentElements -= selectionManager
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		contentSpacing.calculateContentSpacing(contentElements, heatMap.getDimensionVA()
+		recordSpacing.calculateRecordSpacing(contentElements, heatMap.getDimensionVA()
 				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
-		heatMapTemplate.setContentSpacing(contentSpacing);
-
-		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
+		heatMapTemplate.setContentSpacing(recordSpacing);
 	}
 
 	@Override
 	public void render(final GL2 gl) {
 
-		contentSpacing.getYDistances().clear();
+		recordSpacing.getYDistances().clear();
 		float yPosition = y;
 		float xPosition = 0;
 		float fieldHeight = 0;
-		float fieldWidth = contentSpacing.getFieldWidth();
+		float fieldWidth = recordSpacing.getFieldWidth();
 
-		int iCount = 0;
-
+		DimensionVirtualArray recordVA = heatMap.getDimensionVA();
+		
 		for (Integer recordID : heatMap.getRecordVA()) {
-			iCount++;
-			fieldHeight = contentSpacing.getFieldHeight(recordID);
+			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
 			// we treat normal and deselected the same atm
 
 			if (heatMap.isHideElements()
-					&& heatMap.getContentSelectionManager().checkStatus(
+					&& heatMap.getRecordSelectionManager().checkStatus(
 							GLHeatMap.SELECTION_HIDDEN, recordID)) {
-				contentSpacing.getYDistances().add(yPosition);
+				recordSpacing.getYDistances().add(yPosition);
 				continue;
 			}
 
 			yPosition -= fieldHeight;
 			xPosition = 0;
 
-			for (Integer iDimensionIndex : heatMap.getDimensionVA()) {
+			for (Integer dimensionID : recordVA) {
 
-				renderElement(gl, iDimensionIndex, recordID, yPosition, xPosition,
+				renderElement(gl, dimensionID, recordID, yPosition, xPosition,
 						fieldHeight, fieldWidth);
 
 				xPosition += fieldWidth;
 
 			}
 
-			contentSpacing.getYDistances().add(yPosition);
-
+			recordSpacing.getYDistances().add(yPosition);
 		}
 	}
 
@@ -102,7 +96,7 @@ public class HeatMapRenderer extends AContentRenderer {
 
 		float fOpacity = 1.0f;
 
-		if (heatMap.getTable().containsDataRepresentation(EDataRepresentation.UNCERTAINTY_NORMALIZED,
+		if (heatMap.getTable().containsDataRepresentation(DataRepresentation.UNCERTAINTY_NORMALIZED,
 				dimensionID)) {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
@@ -113,7 +107,7 @@ public class HeatMapRenderer extends AContentRenderer {
 			// recordIndex);
 			// }
 			// }
-		} else if (heatMap.getContentSelectionManager().checkStatus(
+		} else if (heatMap.getRecordSelectionManager().checkStatus(
 				SelectionType.DESELECTED, recordID)) {
 			fOpacity = 0.3f;
 		}
@@ -138,16 +132,16 @@ public class HeatMapRenderer extends AContentRenderer {
 	}
 
 	public float getYCoordinateByContentIndex(int recordIndex) {
-		if (contentSpacing != null)
+		if (recordSpacing != null)
 			return y
-					- contentSpacing.getYDistances().get(recordIndex)
-					- contentSpacing.getFieldHeight(heatMap.getRecordVA()
+					- recordSpacing.getYDistances().get(recordIndex)
+					- recordSpacing.getFieldHeight(heatMap.getRecordVA()
 							.get(recordIndex)) / 2;
 		return 0;
 	}
 
 	public float getXCoordinateByDimensionIndex(int dimensionIndex) {
-		return contentSpacing.getFieldWidth() * dimensionIndex;
+		return recordSpacing.getFieldWidth() * dimensionIndex;
 	}
 
 	@Override

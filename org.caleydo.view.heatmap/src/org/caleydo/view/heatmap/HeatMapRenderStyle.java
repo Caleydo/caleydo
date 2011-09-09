@@ -107,9 +107,9 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	 * etc. Call this every time something has changed.
 	 */
 	public void updateFieldSizesWithFish() {
-		int numberSelected = heatMap.getContentSelectionManager().getNumberOfElements(
+		int numberSelected = heatMap.getRecordSelectionManager().getNumberOfElements(
 				SelectionType.MOUSE_OVER);
-		numberSelected += heatMap.getContentSelectionManager().getNumberOfElements(
+		numberSelected += heatMap.getRecordSelectionManager().getNumberOfElements(
 				SelectionType.SELECTION);
 
 		int numberTotal = heatMap.getRecordVA().size();

@@ -6,13 +6,13 @@ public abstract class ASpacingCalculator {
 
 	protected GLHeatMap heatMap;
 	protected float y;
-	protected float contentElements;
+	protected float recordElements;
 	protected float minSelectedFieldHeight;
 
-	public ASpacingCalculator(GLHeatMap heatMap, float y, float contentElements) {
+	public ASpacingCalculator(GLHeatMap heatMap, float y, float recordElements) {
 		this.heatMap = heatMap;
 		this.y = y;
-		this.contentElements = contentElements;
+		this.recordElements = recordElements;
 	}
 
 	public abstract void calculateFieldHeights();

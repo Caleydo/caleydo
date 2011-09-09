@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -43,7 +43,7 @@ public class HeatMapUtil {
 
 		ArrayList<Texture> textures = new ArrayList<Texture>();
 		ColorMapper colorMapping = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 
 		int numSamplesProcessed = 0;
 		boolean isNewTexture = true;
@@ -70,7 +70,7 @@ public class HeatMapUtil {
 					fOpacity = 0.3f;
 				}
 				;
-				float fLookupValue = table.getFloat(EDataRepresentation.NORMALIZED,
+				float fLookupValue = table.getFloat(DataRepresentation.NORMALIZED,
 						dimensionIndex, recordIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);

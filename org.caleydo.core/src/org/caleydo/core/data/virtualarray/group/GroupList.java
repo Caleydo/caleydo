@@ -6,7 +6,7 @@ import java.util.Iterator;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.dimension.EDataRepresentation;
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -574,7 +574,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						table.getFloat(EDataRepresentation.NORMALIZED, iDimensionIndex,
+						table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex,
 							recordVA.get(iOffset + index));
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
@@ -585,7 +585,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						table.getFloat(EDataRepresentation.NORMALIZED, dimensionVA.get(iOffset + index),
+						table.getFloat(DataRepresentation.NORMALIZED, dimensionVA.get(iOffset + index),
 							recordIndex);
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));

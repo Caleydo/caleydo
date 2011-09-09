@@ -52,7 +52,7 @@ import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -269,7 +269,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		alSelectionTypes.add(SelectionType.SELECTION);
 
 		colorMapper = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
 
@@ -615,8 +615,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						fOpacity = 1.0f;
 					}
 
-					fLookupValue = table.getFloat(
-							dimensionDataRepresentation, dimensionID, recordID);
+					fLookupValue = table.getFloat(dimensionDataRepresentation,
+							dimensionID, recordID);
 
 					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
 
@@ -1805,7 +1805,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.HIER_HEAT_MAP_FIELD_SELECTION, 1));
-		//gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
+		// gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE,
+		// GL2.GL_REPLACE);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_NEAREST);
@@ -2562,7 +2563,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	private void renderRemoteViewsLevel_1_2_3_Active(GL2 gl) {
 		float fright = 0.0f;
-		float ftop = viewFrustum.getTop();
+		float top = viewFrustum.getTop();
 
 		float fleftOffset = 0.1f + renderStyle.getWidthLevel1() + GAP_BETWEEN_LEVELS
 				+ renderStyle.getWidthLevel2() * fScalingLevel2 + GAP_BETWEEN_LEVELS;
@@ -2582,7 +2583,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		// render embedded heat map
 		if (dimensionDendrogramActive || dimensionDendrogramRenderCut)
-			ftop -= renderStyle.getHeightExperimentDendrogram();
+			top -= renderStyle.getHeightExperimentDendrogram();
 
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.HIER_HEAT_MAP_EMBEDDED_HEATMAP_SELECTION,
@@ -2606,13 +2607,16 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glScalef(1, 1, 1);
 
+		// FIXME: the frustum should not be updated in every render step. a lot
+		// of things are called then in the layout. all the spacings are
+		// recalculated etc.
 		ViewFrustum embeddedHeatMapFrustum = glHeatMapView.getViewFrustum();
 		embeddedHeatMapFrustum.setLeft(0);
 		embeddedHeatMapFrustum.setRight(viewFrustum.getRight() - translation.x());
-		embeddedHeatMapFrustum.setTop(ftop - 0.2f);
+		embeddedHeatMapFrustum.setTop(top - 0.2f);
 		embeddedHeatMapFrustum.setBottom(0);
-
 		glHeatMapView.setFrustum(embeddedHeatMapFrustum);
+
 		glHeatMapView.displayRemote(gl);
 
 		gl.glPopName();
@@ -3322,6 +3326,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		}
 		glHeatMapView.setRecordVA(hmContentVa);
+		glHeatMapView.updateLayout();
+		glHeatMapView.getTemplate().initRendererData();
 
 	}
 

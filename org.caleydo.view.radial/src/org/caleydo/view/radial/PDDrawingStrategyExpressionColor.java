@@ -8,7 +8,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.EColorMappingType;
+import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 
@@ -117,7 +117,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 		}
 
 		ColorMapper cmExpression = ColorMappingManager.get().getColorMapping(
-				EColorMappingType.GENE_EXPRESSION);
+				ColorMappingType.GENE_EXPRESSION);
 		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
 
 		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };

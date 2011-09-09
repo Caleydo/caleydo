@@ -14,7 +14,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
-public class BarPlotRenderer extends AContentRenderer {
+public class BarPlotRenderer extends AHeatMapRenderer {
 
 	ArrayList<Float> uncertainties = new ArrayList<Float>();
 	private boolean isDirty = false;
@@ -34,17 +34,17 @@ public class BarPlotRenderer extends AContentRenderer {
 		int contentElements = heatMap.getRecordVA().size();
 
 		RecordSelectionManager selectionManager = heatMap
-				.getContentSelectionManager();
+				.getRecordSelectionManager();
 		if (heatMap.isHideElements()) {
 
 			contentElements -= selectionManager
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		contentSpacing.calculateContentSpacing(contentElements, heatMap
+		recordSpacing.calculateRecordSpacing(contentElements, heatMap
 				.getDimensionVA().size(), parameters.getSizeScaledX(), parameters
 				.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
-		heatMapTemplate.setContentSpacing(contentSpacing);
+		heatMapTemplate.setContentSpacing(recordSpacing);
 
 		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
 	}
@@ -52,13 +52,11 @@ public class BarPlotRenderer extends AContentRenderer {
 	@Override
 	public void render(final GL2 gl) {
 
-		contentSpacing.getYDistances().clear();
+		recordSpacing.getYDistances().clear();
 		float yPosition = y;
 		float xPosition = 0;
 		float fieldHeight = 0;
 		float fieldWidth = x;
-
-		int iCount = 0;
 
 		if (this.isDirty) {
 			isDirty = false;
@@ -75,15 +73,14 @@ public class BarPlotRenderer extends AContentRenderer {
 		PixelGLConverter conv = heatMap.getPixelGLConverter();
 
 		for (Integer recordID : heatMap.getRecordVA()) {
-			iCount++;
-			fieldHeight = contentSpacing.getFieldHeight(recordID);
+			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
 			// we treat normal and deselected the same atm
 
 			if (heatMap.isHideElements()
-					&& heatMap.getContentSelectionManager().checkStatus(
+					&& heatMap.getRecordSelectionManager().checkStatus(
 							GLHeatMap.SELECTION_HIDDEN, recordID)) {
-				contentSpacing.getYDistances().add(yPosition);
+				recordSpacing.getYDistances().add(yPosition);
 				continue;
 			}
 
@@ -128,7 +125,7 @@ public class BarPlotRenderer extends AContentRenderer {
 						GLUncertaintyHeatMap.getUncertaintyColor(0));
 			}
 
-			contentSpacing.getYDistances().add(yPosition);
+			recordSpacing.getYDistances().add(yPosition);
 
 		}
 	}
@@ -189,16 +186,16 @@ public class BarPlotRenderer extends AContentRenderer {
 	}
 
 	public float getYCoordinateByContentIndex(int recordIndex) {
-		if (contentSpacing != null)
+		if (recordSpacing != null)
 			return y
-					- contentSpacing.getYDistances().get(recordIndex)
-					- contentSpacing.getFieldHeight(heatMap.getRecordVA().get(
+					- recordSpacing.getYDistances().get(recordIndex)
+					- recordSpacing.getFieldHeight(heatMap.getRecordVA().get(
 							recordIndex)) / 2;
 		return 0;
 	}
 
 	public float getXCoordinateByDimensionIndex(int dimensionIndex) {
-		return contentSpacing.getFieldWidth() * dimensionIndex;
+		return recordSpacing.getFieldWidth() * dimensionIndex;
 	}
 
 	@Override

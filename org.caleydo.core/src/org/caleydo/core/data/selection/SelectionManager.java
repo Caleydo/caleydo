@@ -382,11 +382,11 @@ public class SelectionManager
 	 * 
 	 * @param SelectionType
 	 *            the suspected selection type
-	 * @param iElementID
+	 * @param elementID
 	 *            the id of the element
 	 * @return true if the type contains the element, else false, also false when called with REMOVE
 	 */
-	public boolean checkStatus(SelectionType selectionType, int iElementID) {
+	public boolean checkStatus(SelectionType selectionType, int elementID) {
 
 		if (selectionType == SelectionType.NORMAL)
 			return false;
@@ -394,7 +394,7 @@ public class SelectionManager
 		if (!hashSelectionTypes.containsKey(selectionType))
 			return false;
 
-		if (hashSelectionTypes.get(selectionType).containsKey(iElementID))
+		if (hashSelectionTypes.get(selectionType).containsKey(elementID))
 			return true;
 
 		return false;
@@ -403,13 +403,13 @@ public class SelectionManager
 	/**
 	 * Check whether an element is in any selection
 	 * 
-	 * @param iElementID
+	 * @param elementID
 	 *            the element id
 	 * @return true if the element exists in the selection manager, else false
 	 */
-	public boolean checkStatus(int iElementID) {
+	public boolean checkStatus(int elementID) {
 		for (SelectionType type : selectionTypes) {
-			if (checkStatus(type, iElementID))
+			if (checkStatus(type, elementID))
 				return true;
 		}
 
