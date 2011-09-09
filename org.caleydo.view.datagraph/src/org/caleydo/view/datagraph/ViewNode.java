@@ -106,14 +106,15 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		baseRow.append(spacingLayoutX);
 
 		Row titleRow = new Row("titleRow");
+		titleRow.setYDynamic(true);
 
 		if (iconPath != null) {
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelGLConverter(pixelGLConverter);
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath,
-					view.getTextureManager(), true));
+			iconLayout.setRenderer(new TextureRenderer(iconPath, view
+					.getTextureManager(), true));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -133,6 +134,13 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
+		Row bodyRow = new Row("bodyRow");
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
+				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(),
+				true));
+
+		Column bodyColumn = new Column("bodyColumn");
+
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this,
 				view, dragAndDropController, getDimensionGroups());
@@ -146,8 +154,14 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setRatioSizeX(0);
 
+		bodyColumn.append(compGroupLayout);
+		bodyColumn.append(spacingLayoutY);
+
+		bodyRow.append(bodyColumn);
+
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(compGroupLayout);
+		baseColumn.append(bodyRow);
+		baseColumn.append(spacingLayoutY);
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
@@ -193,7 +207,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 	@Override
 	public int getHeightPixels() {
-		return 2 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+		return 4 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
 				+ OVERVIEW_COMP_GROUP_HEIGHT_PIXELS;
 	}

@@ -34,7 +34,7 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 	// private ADimensionGroupData draggedDimensionGroupData;
 	// private Point2D draggingPosition;
 	private DragAndDropController dragAndDropController;
-//	private List<ADimensionGroupData> dimensionGroupDatas;
+	// private List<ADimensionGroupData> dimensionGroupDatas;
 	private List<ComparisonGroupRepresentation> comparisonGroupRepresentations;
 
 	public ComparisonGroupOverviewRenderer(IDataGraphNode node, AGLView view,
@@ -67,8 +67,9 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 				}
 				if (draggedComparisonGroupRepresentation == null)
 					return;
-				
-				draggedComparisonGroupRepresentation.setSelectionType(SelectionType.SELECTION);
+
+				draggedComparisonGroupRepresentation
+						.setSelectionType(SelectionType.SELECTION);
 
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick
@@ -94,7 +95,7 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 	}
 
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
-//		this.dimensionGroupDatas = dimensionGroupDatas;
+		// this.dimensionGroupDatas = dimensionGroupDatas;
 		comparisonGroupRepresentations.clear();
 		for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
 			ComparisonGroupRepresentation comparisonGroupRepresentation = new ComparisonGroupRepresentation(
@@ -107,9 +108,12 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-//		CaleydoTextRenderer textRenderer = view.getTextRenderer();
+		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		float currentPosX = 0;
+		float currentPosX = pixelGLConverter
+				.getGLWidthForPixelWidth(getMinWidthPixels() / 2)
+				- pixelGLConverter
+						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS
 				+ MIN_COMP_GROUP_WIDTH_PIXELS);
 
@@ -165,10 +169,12 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 
 	@Override
 	public int getMinWidthPixels() {
-		return Math
-				.max(200,
-						(node.getDimensionGroups().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
-								+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS));
+		return Math.max(200, getDimensionGroupsWidthPixels());
+	}
+
+	private int getDimensionGroupsWidthPixels() {
+		return (node.getDimensionGroups().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
+				+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS);
 	}
 
 	public Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(

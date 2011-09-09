@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -14,7 +15,6 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.ui.BackGroundRenderer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -147,7 +147,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("viewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			viewLayout.addBackgroundRenderer(new BackGroundRenderer(brick));
+			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1,
+					1, 1, 1 }));
 			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
 			viewLayout.setZoomer(zoomer);
 		}
