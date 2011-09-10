@@ -65,6 +65,8 @@ public abstract class ATableBasedDataDomain
 	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
+	protected boolean isColumnDimension = true;
+
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
@@ -83,6 +85,7 @@ public abstract class ATableBasedDataDomain
 	protected IDType humanReadableDimensionIDType;
 
 	protected IDType primaryRecordMappingType;
+	protected IDType primaryDimensionMappingType;
 
 	protected IDCategory recordIDCategory;
 	protected IDCategory dimensionIDCategory;
@@ -126,6 +129,13 @@ public abstract class ATableBasedDataDomain
 		init();
 	}
 
+	/**
+	 * @return the isColumnDimension, see {@link #isColumnDimension}
+	 */
+	public boolean isColumnDimension() {
+		return isColumnDimension;
+	}
+
 	private void init() {
 
 		assignIDCategories();
@@ -147,11 +157,10 @@ public abstract class ATableBasedDataDomain
 		recordGroupIDType =
 			IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
 				EDimensionType.INT);
-		
+
 		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
 		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
-
 
 	}
 
@@ -237,7 +246,6 @@ public abstract class ATableBasedDataDomain
 	public IDCategory getDimensionIDCategory() {
 		return dimensionIDCategory;
 	}
-
 
 	/**
 	 * Returns a clone of the record selection manager. You have to set your virtual array manually. This is

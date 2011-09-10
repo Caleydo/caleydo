@@ -4,7 +4,7 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -166,8 +166,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer,
 		// && set2.getStatisticsResult().getFoldChangeResult(set1) != null)
 		// return;
 
-		NumericalDimension meanDimensionVec1 = table1.getMeanDimension();
-		NumericalDimension meanDimensionVec2 = table2.getMeanDimension();
+		NumericalColumn meanDimensionVec1 = table1.getMeanDimension();
+		NumericalColumn meanDimensionVec2 = table2.getMeanDimension();
 
 		double[] meanDimension1 = new double[meanDimensionVec1.size()];
 		for (int recordIndex = 0; recordIndex < meanDimensionVec1.size(); recordIndex++) {

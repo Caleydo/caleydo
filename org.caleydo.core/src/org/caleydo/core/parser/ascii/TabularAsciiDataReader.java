@@ -6,8 +6,8 @@ import java.util.ArrayList;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EDimensionType;
-import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.NominalDimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
+import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -27,7 +27,7 @@ public class TabularAsciiDataReader
 	/**
 	 * Imports data from file to this table. uses first dimension and overwrites first selection.
 	 */
-	protected ArrayList<ADimension> targetDimensions;
+	protected ArrayList<AColumn> targetDimensions;
 
 	protected ArrayList<EDimensionType> columnDataTypes;
 
@@ -50,7 +50,7 @@ public class TabularAsciiDataReader
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
-		targetDimensions = new ArrayList<ADimension>();
+		targetDimensions = new ArrayList<AColumn>();
 		columnDataTypes = new ArrayList<EDimensionType>();
 
 		intArrays = new ArrayList<int[]>();
@@ -108,7 +108,7 @@ public class TabularAsciiDataReader
 
 	public void setTargetDimensions(final ArrayList<Integer> targetDimensionIDs) {
 		for (int dimensionID : targetDimensionIDs) {
-			targetDimensions.add(GeneralManager.get().getDimensionManager().getItem(dimensionID));
+			targetDimensions.add(GeneralManager.get().getColumnManager().getItem(dimensionID));
 		}
 	}
 
@@ -305,7 +305,7 @@ public class TabularAsciiDataReader
 				case STRING:
 					ArrayList<String> rawStringData = stringLists.get(stringArrayIndex);
 					// rawStringData = fillUp(rawStringData);
-					((NominalDimension<String>) targetDimensions.get(dimensionIndex))
+					((NominalColumn<String>) targetDimensions.get(dimensionIndex))
 						.setRawNominalData(rawStringData);
 					// stringLists.add(new ArrayList<String>(iStopParsingAtLine - parsingStartLine));
 					stringArrayIndex++;

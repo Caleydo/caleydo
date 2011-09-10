@@ -4,9 +4,9 @@ import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
+import org.caleydo.core.data.collection.dimension.NominalColumn;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
@@ -37,7 +37,7 @@ public class MetaData {
 	 * @return
 	 */
 	public int size() {
-		return table.hashDimensions.size();
+		return table.hashColumns.size();
 	}
 
 	/**
@@ -47,7 +47,7 @@ public class MetaData {
 	 */
 	public int depth() {
 		if (depth == 0) {
-			for (ADimension dimension : table.hashDimensions.values()) {
+			for (AColumn dimension : table.hashColumns.values()) {
 				if (depth == 0)
 					depth = dimension.size();
 				else {
@@ -71,15 +71,15 @@ public class MetaData {
 	 *             when used on non-homogeneous sets
 	 */
 	public Histogram getHistogram() {
-		if (!table.isDataTableHomogeneous) {
+		if (!table.isTableHomogeneous) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (ADimension dimension : table.hashDimensions.values()) {
-			NumericalDimension nDimension = (NumericalDimension) dimension;
+		for (AColumn dimension : table.hashColumns.values()) {
+			NumericalColumn nDimension = (NumericalColumn) dimension;
 			Histogram dimensionHistogram = nDimension.getHistogram();
 
 			if (bIsFirstLoop) {
@@ -111,15 +111,15 @@ public class MetaData {
 
 	@Deprecated
 	public Histogram getBaseHistogram(String recordPerspectiveID) {
-		if (!table.isDataTableHomogeneous) {
+		if (!table.isTableHomogeneous) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (ADimension dimension : table.hashDimensions.values()) {
-			NumericalDimension nDimension = (NumericalDimension) dimension;
+		for (AColumn dimension : table.hashColumns.values()) {
+			NumericalColumn nDimension = (NumericalColumn) dimension;
 			Histogram dimensionHistogram =
 				nDimension.getHistogram(table.getRecordPerspective(recordPerspectiveID).getVirtualArray());
 
@@ -159,8 +159,8 @@ public class MetaData {
 		Histogram histogram = new Histogram();
 
 		boolean bIsFirstLoop = true;
-		for (ADimension dimension : table.hashDimensions.values()) {
-			NumericalDimension nDimension = (NumericalDimension) dimension;
+		for (AColumn dimension : table.hashColumns.values()) {
+			NumericalColumn nDimension = (NumericalColumn) dimension;
 			Histogram dimensionHistogram = nDimension.getHistogram(recordVA);
 
 			if (bIsFirstLoop) {
@@ -313,8 +313,8 @@ public class MetaData {
 		double dTemp = 1.0;
 
 		if (table.tableType.equals(DataTableDataType.NUMERIC)) {
-			for (ADimension dimension : table.hashDimensions.values()) {
-				NumericalDimension nDimension = (NumericalDimension) dimension;
+			for (AColumn dimension : table.hashColumns.values()) {
+				NumericalColumn nDimension = (NumericalColumn) dimension;
 				dTemp = nDimension.getMin();
 				if (!bArtificialMin && dTemp < min) {
 					min = dTemp;
@@ -325,7 +325,7 @@ public class MetaData {
 				}
 			}
 		}
-		else if (table.hashDimensions.get(0) instanceof NominalDimension<?>)
+		else if (table.hashColumns.get(0) instanceof NominalColumn<?>)
 			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
 				+ "on nominal data");
 	}

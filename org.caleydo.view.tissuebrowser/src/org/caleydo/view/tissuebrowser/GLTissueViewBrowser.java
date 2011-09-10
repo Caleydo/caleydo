@@ -9,7 +9,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.dimension.NominalDimension;
+import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;

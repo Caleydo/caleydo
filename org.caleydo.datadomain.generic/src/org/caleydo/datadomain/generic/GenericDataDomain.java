@@ -84,6 +84,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 		primaryRecordMappingType = recordIDType;// IDType.getIDType(DataTable.RECORD);
 		humanReadableRecordIDType = recordIDType;
+		primaryDimensionMappingType = dimensionIDType;
 		humanReadableDimensionIDType = dimensionIDType;
 	}
 }

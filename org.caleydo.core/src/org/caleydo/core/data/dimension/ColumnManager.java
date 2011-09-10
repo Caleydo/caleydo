@@ -1,8 +1,8 @@
 package org.caleydo.core.data.dimension;
 
-import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
+import org.caleydo.core.data.collection.dimension.NominalColumn;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.AManager;
 
@@ -12,27 +12,27 @@ import org.caleydo.core.manager.AManager;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class DimensionManager
-	extends AManager<ADimension> {
+public class ColumnManager
+	extends AManager<AColumn> {
 
-	public ADimension createDimension(final ManagedObjectType type) {
+	public AColumn createDimension(final ManagedObjectType type) {
 		switch (type) {
 			case DIMENSION_NUMERICAL:
-				return new NumericalDimension();
+				return new NumericalColumn();
 			case DIMENSION_NOMINAL:
-				return new NominalDimension<String>();
+				return new NominalColumn<String>();
 
 			default:
 				throw new IllegalStateException("Failed due to unhandled type [" + type.toString() + "]");
 		}
 	}
 	
-	public ADimension createDimension(final ManagedObjectType type, int dimensionID) {
+	public AColumn createDimension(final ManagedObjectType type, int dimensionID) {
 		switch (type) {
 			case DIMENSION_NUMERICAL:
-				return new NumericalDimension(dimensionID);
+				return new NumericalColumn(dimensionID);
 			case DIMENSION_NOMINAL:
-				return new NominalDimension<String>(dimensionID);
+				return new NominalColumn<String>(dimensionID);
 
 			default:
 				throw new IllegalStateException("Failed due to unhandled type [" + type.toString() + "]");

@@ -16,8 +16,8 @@ import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
 import org.caleydo.core.data.collection.EDimensionType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
-import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.NominalColumn;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.ManagedObjectType;
@@ -180,7 +180,7 @@ public class DataTableUtils {
 
 					cmdCreateDimension.doCommand();
 					dimensionLabel = dimensionLabelIterator.next();
-					NumericalDimension dimension = (NumericalDimension) cmdCreateDimension.getCreatedObject();
+					NumericalColumn dimension = (NumericalColumn) cmdCreateDimension.getCreatedObject();
 					dimension.setLabel(dimensionLabel);
 					dimensionIDMap.put(dimension.getID(), dimensionLabel);
 
@@ -202,8 +202,8 @@ public class DataTableUtils {
 					cmdCreateDimension.doCommand();
 
 					dimensionLabel = dimensionLabelIterator.next();
-					NominalDimension<?> nominalDimension =
-						(NominalDimension<?>) cmdCreateDimension.getCreatedObject();
+					NominalColumn<?> nominalDimension =
+						(NominalColumn<?>) cmdCreateDimension.getCreatedObject();
 					nominalDimension.setLabel(dimensionLabel);
 
 					if (!createDimensionsFromExistingIDs)
@@ -311,7 +311,7 @@ public class DataTableUtils {
 
 	public static void setTables(DataTable table, ArrayList<Integer> dimensionIDs) {
 		for (int dimensionID : dimensionIDs) {
-			table.addDimension(dimensionID);
+			table.addColumn(dimensionID);
 		}
 	}
 

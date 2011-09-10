@@ -19,13 +19,13 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public class NumericalDimension
-	extends ADimension {
+public class NumericalColumn
+	extends AColumn {
 
 	/**
 	 * Constructor
 	 */
-	public NumericalDimension() {
+	public NumericalColumn() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_NUMERICAL));
 	}
 
@@ -34,7 +34,7 @@ public class NumericalDimension
 	 * 
 	 * @param dimensionID
 	 */
-	public NumericalDimension(int dimensionID) {
+	public NumericalColumn(int dimensionID) {
 		super(dimensionID);
 	}	
 

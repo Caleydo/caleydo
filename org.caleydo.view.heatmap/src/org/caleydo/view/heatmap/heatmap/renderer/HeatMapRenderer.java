@@ -56,7 +56,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 		float fieldWidth = recordSpacing.getFieldWidth();
 
 		DimensionVirtualArray recordVA = heatMap.getDimensionVA();
-		
+
 		for (Integer recordID : heatMap.getRecordVA()) {
 			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
@@ -96,8 +96,8 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		float fOpacity = 1.0f;
 
-		if (heatMap.getTable().containsDataRepresentation(DataRepresentation.UNCERTAINTY_NORMALIZED,
-				dimensionID)) {
+		if (heatMap.getTable().containsDataRepresentation(
+				DataRepresentation.UNCERTAINTY_NORMALIZED, dimensionID, recordID)) {
 			// setSelectedElements = heatMap.getContentSelectionManager()
 			// .getElements(SelectionType.MOUSE_OVER);
 			// for (Integer selectedElement : setSelectedElements) {
@@ -135,8 +135,8 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 		if (recordSpacing != null)
 			return y
 					- recordSpacing.getYDistances().get(recordIndex)
-					- recordSpacing.getFieldHeight(heatMap.getRecordVA()
-							.get(recordIndex)) / 2;
+					- recordSpacing
+							.getFieldHeight(heatMap.getRecordVA().get(recordIndex)) / 2;
 		return 0;
 	}
 

@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -23,7 +23,7 @@ import org.eclipse.core.runtime.Status;
 /**
  * <p>
  * A VirtualArray is a list of indices referring to a collection. It is most commonly used in combination with
- * {@link ADimension}s or Records (which are the records in the ADimensions). A VirtualArray is of use when
+ * {@link AColumn}s or Records (which are the records in the ADimensions). A VirtualArray is of use when
  * the collections themselves are immutable, or are shared between multiple clients (i.e. views) using
  * different VirtualArrays on them.
  * </p>

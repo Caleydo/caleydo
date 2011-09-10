@@ -2,8 +2,8 @@ package org.caleydo.core.command.data;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.dimension.ADimension;
-import org.caleydo.core.data.dimension.DimensionManager;
+import org.caleydo.core.data.collection.dimension.AColumn;
+import org.caleydo.core.data.dimension.ColumnManager;
 import org.caleydo.core.data.id.ManagedObjectType;
 
 /**
@@ -14,7 +14,7 @@ import org.caleydo.core.data.id.ManagedObjectType;
  * @author Alexander Lex
  */
 public class CmdDataCreateDimension
-	extends ACmdCreational<ADimension> {
+	extends ACmdCreational<AColumn> {
 	
 	private ManagedObjectType dimensionType;
 
@@ -29,7 +29,7 @@ public class CmdDataCreateDimension
 
 	@Override
 	public void doCommand() {
-		DimensionManager dimensionManager = generalManager.getDimensionManager();
+		ColumnManager dimensionManager = generalManager.getColumnManager();
 		
 		if (dimensionID == -1)
 			createdObject = dimensionManager.createDimension(dimensionType);

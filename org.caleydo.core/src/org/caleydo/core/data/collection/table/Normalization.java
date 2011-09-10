@@ -2,9 +2,9 @@ package org.caleydo.core.data.collection.table;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 
 /**
  * This class handles everything related to the normalization of DataTables
@@ -27,9 +27,9 @@ public class Normalization {
 	 * all the dimensions that support it manually.
 	 */
 	void log10() {
-		for (ADimension dimension : table.hashDimensions.values()) {
-			if (dimension instanceof NumericalDimension) {
-				NumericalDimension nDimension = (NumericalDimension) dimension;
+		for (AColumn dimension : table.hashColumns.values()) {
+			if (dimension instanceof NumericalColumn) {
+				NumericalColumn nDimension = (NumericalColumn) dimension;
 				nDimension.log10();
 			}
 			else
@@ -45,9 +45,9 @@ public class Normalization {
 	 */
 	void log2() {
 
-		for (ADimension dimension : table.hashDimensions.values()) {
-			if (dimension instanceof NumericalDimension) {
-				NumericalDimension nDimension = (NumericalDimension) dimension;
+		for (AColumn dimension : table.hashColumns.values()) {
+			if (dimension instanceof NumericalColumn) {
+				NumericalColumn nDimension = (NumericalColumn) dimension;
 				nDimension.log2();
 			}
 			else
@@ -62,8 +62,8 @@ public class Normalization {
 	 * used.
 	 */
 	void normalizeLocally() {
-		table.isDataTableHomogeneous = false;
-		for (ADimension dimension : table.hashDimensions.values()) {
+		table.isTableHomogeneous = false;
+		for (AColumn dimension : table.hashColumns.values()) {
 			dimension.normalize();
 		}
 	}
@@ -76,10 +76,10 @@ public class Normalization {
 	 */
 	void normalizeGlobally() {
 
-		table.isDataTableHomogeneous = true;
-		for (ADimension dimension : table.hashDimensions.values()) {
-			if (dimension instanceof NumericalDimension) {
-				NumericalDimension nDimension = (NumericalDimension) dimension;
+		table.isTableHomogeneous = true;
+		for (AColumn dimension : table.hashColumns.values()) {
+			if (dimension instanceof NumericalColumn) {
+				NumericalColumn nDimension = (NumericalColumn) dimension;
 				nDimension.normalizeWithExternalExtrema(metaData.getMin(), metaData.getMax());
 			}
 			else
@@ -89,15 +89,15 @@ public class Normalization {
 	}
 
 	void normalizeUsingFoldChange() {
-		for (ADimension dimension : table.hashDimensions.values()) {
+		for (AColumn dimension : table.hashColumns.values()) {
 			if (!dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
 				calculateFoldChange();
 			break;
 		}
 
-		for (ADimension dimension : table.hashDimensions.values()) {
-			if (dimension instanceof NumericalDimension) {
-				NumericalDimension nDimension = (NumericalDimension) dimension;
+		for (AColumn dimension : table.hashColumns.values()) {
+			if (dimension instanceof NumericalColumn) {
+				NumericalColumn nDimension = (NumericalColumn) dimension;
 				nDimension.normalizeWithExternalExtrema(DataRepresentation.FOLD_CHANGE_RAW,
 					DataRepresentation.FOLD_CHANGE_NORMALIZED, 1, 10);
 			}
@@ -110,24 +110,24 @@ public class Normalization {
 
 	private void calculateFoldChange() {
 		HashMap<Integer, float[]> foldChangePerDimension =
-			new HashMap<Integer, float[]>(table.hashDimensions.size());
+			new HashMap<Integer, float[]>(table.hashColumns.size());
 
-		for (Integer dimensionKey : table.hashDimensions.keySet()) {
+		for (Integer dimensionKey : table.hashColumns.keySet()) {
 			foldChangePerDimension.put(dimensionKey, new float[metaData.depth()]);
 		}
 
 		for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 			float minValue = Float.MAX_VALUE;
 			// find out which is the smalles raw value
-			for (Integer dimensionKey : table.hashDimensions.keySet()) {
-				NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
+			for (Integer dimensionKey : table.hashColumns.keySet()) {
+				NumericalColumn nDimension = (NumericalColumn) table.hashColumns.get(dimensionKey);
 				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
 				if (rawValue < minValue)
 					minValue = rawValue;
 			}
 			// set the fold changes
-			for (Integer dimensionKey : table.hashDimensions.keySet()) {
-				NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
+			for (Integer dimensionKey : table.hashColumns.keySet()) {
+				NumericalColumn nDimension = (NumericalColumn) table.hashColumns.get(dimensionKey);
 				float rawValue = nDimension.getFloat(DataRepresentation.RAW, contentCount);
 				float[] foldChanges = foldChangePerDimension.get(dimensionKey);
 				if (minValue == 0)
@@ -141,8 +141,8 @@ public class Normalization {
 		}
 
 		// set the float[] to the dimensions
-		for (Integer dimensionKey : table.hashDimensions.keySet()) {
-			NumericalDimension nDimension = (NumericalDimension) table.hashDimensions.get(dimensionKey);
+		for (Integer dimensionKey : table.hashColumns.keySet()) {
+			NumericalColumn nDimension = (NumericalColumn) table.hashColumns.get(dimensionKey);
 			if (!nDimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW))
 				nDimension.setNewRepresentation(DataRepresentation.FOLD_CHANGE_RAW,
 					foldChangePerDimension.get(dimensionKey));

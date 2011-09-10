@@ -60,6 +60,6 @@ public class RecordPerspective
 	@Override
 	protected List<Integer> getIDList()
 	{
-		return dataDomain.getTable().getRecordIDList();
+		return dataDomain.getTable().getRowIDList();
 	}
 }

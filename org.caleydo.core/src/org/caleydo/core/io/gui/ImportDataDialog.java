@@ -86,6 +86,9 @@ public class ImportDataDialog
 	private ATableBasedDataDomain dataDomain = null;
 
 	private boolean isGenetic = false;
+	
+	IDMappingManager idMappingManager;
+	
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
@@ -148,6 +151,11 @@ public class ImportDataDialog
 	}
 
 	private void createGUI(Composite parent) {
+		if (dataDomain.isColumnDimension())
+			idMappingManager = dataDomain.getRecordIDMappingManager();
+		else
+			idMappingManager = dataDomain.getDimensionIDMappingManager();
+		
 		int numGridCols = 5;
 
 		loadDataParameters.setDataDomain(dataDomain);
@@ -221,7 +229,8 @@ public class ImportDataDialog
 		idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
 		idTypes = new ArrayList<IDType>();
 
-		HashSet<IDType> tempIDTypes = dataDomain.getRecordIDMappingManager().getIDTypes();
+		
+		HashSet<IDType> tempIDTypes = idMappingManager.getIDTypes();
 
 		for (IDType idType : tempIDTypes) {
 			if (!idType.isInternalType())
@@ -796,8 +805,9 @@ public class ImportDataDialog
 	}
 
 	private void determineFileIDType() {
+		// FIXME this should be moved to genetic data domain
 
-		IDMappingManager idMappingManager = dataDomain.getRecordIDMappingManager();
+		
 
 		TableItem[] items = previewTable.getItems();
 		ArrayList<String> idList = new ArrayList<String>();

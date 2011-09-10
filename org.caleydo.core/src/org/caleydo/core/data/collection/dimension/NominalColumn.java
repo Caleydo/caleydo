@@ -19,13 +19,13 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public class NominalDimension<T>
-	extends ADimension {
+public class NominalColumn<T>
+	extends AColumn {
 
 	/**
 	 * Constructor
 	 */
-	public NominalDimension() {
+	public NominalColumn() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_NOMINAL));
 	}
 	
@@ -34,7 +34,7 @@ public class NominalDimension<T>
 	 * 
 	 * @param dimensionID
 	 */
-	public NominalDimension(int dimensionID) {
+	public NominalColumn(int dimensionID) {
 		super(dimensionID);
 	}	
 

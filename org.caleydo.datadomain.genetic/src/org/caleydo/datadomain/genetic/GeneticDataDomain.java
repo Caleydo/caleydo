@@ -64,10 +64,19 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-		primaryRecordMappingType = IDType.getIDType("DAVID");
-		humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
-		humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
+		if (isColumnDimension) {
+			primaryRecordMappingType = IDType.getIDType("DAVID");
+			humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
 
+			primaryDimensionMappingType = IDType.getIDType("DIMENSION");
+			humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
+		} else {
+			primaryRecordMappingType = IDType.getIDType("DIMENSION");
+			humanReadableRecordIDType = IDType.getIDType("DIMENSION");
+
+			primaryDimensionMappingType = IDType.getIDType("DAVID");
+			humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
+		}
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		recordLabelPlural = "genes";
@@ -345,13 +354,17 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	public IDMappingManager getGeneIDMappingManager() {
-		// FIXME this is not general
-		return recordIDMappingManager;
+		if (isColumnDimension)
+			return recordIDMappingManager;
+		else
+			return dimensionIDMappingManager;
 	}
 
 	public IDMappingManager getSampleIDMappingManager() {
-		// FIXME this is not general
-		return dimensionIDMappingManager;
+		if (isColumnDimension)
+			return dimensionIDMappingManager;
+		else
+			return recordIDMappingManager;
 	}
 
 	// FIXME CONTEXT MENU
@@ -378,8 +391,13 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	protected void assignIDCategories() {
-		recordIDCategory = IDCategory.getIDCategory("GENE");
-		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		if (isColumnDimension) {
+			recordIDCategory = IDCategory.getIDCategory("GENE");
+			dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		} else {
+			recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+			dimensionIDCategory = IDCategory.getIDCategory("GENE");
+		}
 	}
 
 }

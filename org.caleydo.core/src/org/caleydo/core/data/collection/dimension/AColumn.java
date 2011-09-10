@@ -27,7 +27,7 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Alexander Lex
  */
 
-public abstract class ADimension
+public abstract class AColumn
 	extends AUniqueObject
 	implements ICollection {
 	
@@ -44,10 +44,10 @@ public abstract class ADimension
 	/**
 	 * Constructor Initializes objects
 	 */
-	public ADimension(int iUniqueID) {
+	public AColumn(int iUniqueID) {
 		super(iUniqueID);
 
-		GeneralManager.get().getDimensionManager().registerItem(this);
+		GeneralManager.get().getColumnManager().registerItem(this);
 
 		hashCContainers = new EnumMap<DataRepresentation, ICContainer>(DataRepresentation.class);
 		label = new String("Not specified");

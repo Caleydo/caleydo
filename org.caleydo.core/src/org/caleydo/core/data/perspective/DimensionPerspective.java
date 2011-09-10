@@ -59,6 +59,6 @@ public class DimensionPerspective
 
 	@Override
 	protected List<Integer> getIDList() {
-		return dataDomain.getTable().getDimensionIDList();
+		return dataDomain.getTable().getColumnIDList();
 	}
 }

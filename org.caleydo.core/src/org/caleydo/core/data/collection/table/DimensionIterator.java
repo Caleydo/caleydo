@@ -3,7 +3,7 @@ package org.caleydo.core.data.collection.table;
 import java.util.HashMap;
 import java.util.ListIterator;
 
-import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VAIterator;
 
@@ -13,9 +13,9 @@ import org.caleydo.core.data.virtualarray.VAIterator;
  * @author Alexander Lex
  */
 public class DimensionIterator
-	implements ListIterator<ADimension> {
+	implements ListIterator<AColumn> {
 	private VAIterator vaIterator;
-	private HashMap<Integer, ADimension> dimensions;
+	private HashMap<Integer, AColumn> dimensions;
 
 	/**
 	 * Constructor
@@ -23,13 +23,13 @@ public class DimensionIterator
 	 * @param set
 	 * @param virtualArray
 	 */
-	public DimensionIterator(HashMap<Integer, ADimension> dimension, DimensionVirtualArray virtualArray) {
+	public DimensionIterator(HashMap<Integer, AColumn> dimension, DimensionVirtualArray virtualArray) {
 		this.vaIterator = virtualArray.iterator();
 		this.dimensions = dimension;
 	}
 
 	@Override
-	public void add(ADimension dimension) {
+	public void add(AColumn dimension) {
 		vaIterator.add(dimension.getID());
 	}
 
@@ -44,7 +44,7 @@ public class DimensionIterator
 	}
 
 	@Override
-	public ADimension next() {
+	public AColumn next() {
 		return dimensions.get(vaIterator.next());
 	}
 
@@ -54,7 +54,7 @@ public class DimensionIterator
 	}
 
 	@Override
-	public ADimension previous() {
+	public AColumn previous() {
 		return dimensions.get(vaIterator.previous());
 	}
 
@@ -69,7 +69,7 @@ public class DimensionIterator
 	}
 
 	@Override
-	public void set(ADimension dimension) {
+	public void set(AColumn dimension) {
 		vaIterator.set(dimension.getID());
 	}
 

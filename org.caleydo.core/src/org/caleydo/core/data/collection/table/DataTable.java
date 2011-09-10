@@ -10,14 +10,14 @@ import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
-import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.NominalDimension;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.NominalColumn;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.dimension.DimensionManager;
+import org.caleydo.core.data.dimension.ColumnManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -50,21 +50,21 @@ import org.eclipse.core.runtime.Status;
 public class DataTable
 	extends AUniqueObject {
 
-	protected HashMap<Integer, ADimension> hashDimensions;
+	protected HashMap<Integer, AColumn> hashColumns;
 
 	/** List of dimension IDs in the order as they have been added */
-	protected ArrayList<Integer> defaultDimensionIDs;
+	protected ArrayList<Integer> defaultColumnIDs;
 	protected HashMap<String, RecordPerspective> hashRecordPerspectives;
 	protected HashMap<String, DimensionPerspective> hashDimensionPerspectives;
 
-	protected NumericalDimension meanDimension;
+	protected NumericalColumn meanDimension;
 
 	// protected DimensionData defaultDimensionData;
 	// protected RecordPerspective defaultRecordPerspective;
 
 	protected ExternalDataRepresentation externalDataRep;
 
-	protected boolean isDataTableHomogeneous = false;
+	protected boolean isTableHomogeneous = false;
 
 	protected StatisticsResult statisticsResult;
 
@@ -83,6 +83,8 @@ public class DataTable
 	/** everything related to normalization of the data is held in or accessible through this object */
 	private Normalization normalization;
 
+	private boolean isColumnDimension = false;
+
 	/**
 	 * Constructor for the table. Creates and initializes members and registers the set whit the set manager.
 	 * Also creates a new default tree. This should not be called by implementing sub-classes.
@@ -90,6 +92,7 @@ public class DataTable
 	public DataTable(ATableBasedDataDomain dataDomain) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 		this.dataDomain = dataDomain;
+		isColumnDimension = dataDomain.isColumnDimension();
 		// initWithDataDomain();
 	}
 
@@ -103,10 +106,10 @@ public class DataTable
 	 * Initialization of member variables. Safe to be called by sub-classes.
 	 */
 	{
-		hashDimensions = new HashMap<Integer, ADimension>();
+		hashColumns = new HashMap<Integer, AColumn>();
 		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
 		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
-		defaultDimensionIDs = new ArrayList<Integer>();
+		defaultColumnIDs = new ArrayList<Integer>();
 		statisticsResult = new StatisticsResult(this);
 		metaData = new MetaData(this);
 		normalization = new Normalization(this);
@@ -147,22 +150,39 @@ public class DataTable
 	// }
 
 	public float getFloat(DataRepresentation dataRepresentation, Integer dimensionID, Integer recordID) {
-		return hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordID);
+		if (isColumnDimension)
+			return hashColumns.get(dimensionID).getFloat(dataRepresentation, recordID);
+		else
+			return hashColumns.get(recordID).getFloat(dataRepresentation, dimensionID);
+
 	}
 
 	public <RawType> RawType getRaw(Integer dimensionID, Integer recordID) {
-		ADimension dimension = hashDimensions.get(dimensionID);
-		return ((NominalDimension<RawType>) dimension).getRaw(recordID);
+		Integer columnID = dimensionID;
+		Integer rowID = recordID;
+		if (!isColumnDimension) {
+			columnID = recordID;
+			rowID = dimensionID;
+		}
+
+		AColumn dimension = hashColumns.get(columnID);
+		return ((NominalColumn<RawType>) dimension).getRaw(rowID);
 	}
 
 	public String getRawAsString(Integer dimensionID, Integer recordID) {
-		RawDataType rawDataType = getRawDataType(dimensionID, recordID);
+		Integer columnID = dimensionID;
+		Integer rowID = recordID;
+		if (!isColumnDimension) {
+			columnID = recordID;
+			rowID = dimensionID;
+		}
+		RawDataType rawDataType = hashColumns.get(columnID).getRawDataType();
 		String result;
 		if (rawDataType == RawDataType.FLOAT) {
-			result = Float.toString(getFloat(DataRepresentation.RAW, dimensionID, recordID));
+			result = Float.toString(getFloat(DataRepresentation.RAW, columnID, rowID));
 		}
 		else if (rawDataType == RawDataType.STRING) {
-			result = getRaw(dimensionID, recordID);
+			result = getRaw(columnID, rowID);
 		}
 		else {
 			throw new IllegalStateException("DataType " + rawDataType + " not implemented");
@@ -171,12 +191,21 @@ public class DataTable
 		return result;
 	}
 
-	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID) {
-		return hashDimensions.get(dimensionID).containsDataRepresentation(dataRepresentation);
+	public boolean containsDataRepresentation(DataRepresentation dataRepresentation, Integer dimensionID,
+		Integer recordID) {
+		Integer columnID = dimensionID;
+
+		if (!isColumnDimension)
+			columnID = recordID;
+
+		return hashColumns.get(columnID).containsDataRepresentation(dataRepresentation);
 	}
 
 	public RawDataType getRawDataType(Integer dimensionID, Integer recordID) {
-		return hashDimensions.get(dimensionID).getRawDataType();
+		Integer columnID = dimensionID;
+		if (!isColumnDimension)
+			columnID = recordID;
+		return hashColumns.get(columnID).getRawDataType();
 	}
 
 	/**
@@ -185,8 +214,8 @@ public class DataTable
 	 * @param type
 	 * @return
 	 */
-	public Iterator<ADimension> iterator(String type) {
-		return new DimensionIterator(hashDimensions, hashDimensionPerspectives.get(type).getVirtualArray());
+	public Iterator<AColumn> iterator(String type) {
+		return new DimensionIterator(hashColumns, hashDimensionPerspectives.get(type).getVirtualArray());
 	}
 
 	/**
@@ -197,7 +226,7 @@ public class DataTable
 	 * @return a value between min and max
 	 */
 	public double getRawForNormalized(double dNormalized) {
-		if (!isDataTableHomogeneous)
+		if (!isTableHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce raw data on set level for inhomogenous sets. Access via dimensions");
 
@@ -229,7 +258,7 @@ public class DataTable
 	 * @return a value between 0 and 1
 	 */
 	public double getNormalizedForRaw(double dRaw) {
-		if (!isDataTableHomogeneous)
+		if (!isTableHomogeneous)
 			throw new IllegalStateException(
 				"Can not produce normalized data on set level for inhomogenous sets. Access via dimensions");
 
@@ -258,14 +287,14 @@ public class DataTable
 	 * @return Returns a list of all dimension ids in the order they were initialized
 	 */
 	@SuppressWarnings("unchecked")
-	public List<Integer> getDimensionIDList() {
-		return (List<Integer>) defaultDimensionIDs.clone();
+	public List<Integer> getColumnIDList() {
+		return (List<Integer>) defaultColumnIDs.clone();
 	}
 
 	/**
 	 * @return Returns a list of all record ids in the order they were initialized
 	 */
-	public List<Integer> getRecordIDList() {
+	public List<Integer> getRowIDList() {
 		ArrayList<Integer> list = new ArrayList<Integer>(metaData.depth);
 		for (int count = 0; count < metaData.depth(); count++) {
 			list.add(count);
@@ -291,7 +320,7 @@ public class DataTable
 	 * @return
 	 */
 	public boolean isSetHomogeneous() {
-		return isDataTableHomogeneous;
+		return isTableHomogeneous;
 	}
 
 	/**
@@ -367,8 +396,8 @@ public class DataTable
 	 */
 	public void destroy() {
 		GeneralManager gm = GeneralManager.get();
-		DimensionManager sm = gm.getDimensionManager();
-		for (Integer dimensionID : hashDimensions.keySet()) {
+		ColumnManager sm = gm.getColumnManager();
+		for (Integer dimensionID : hashColumns.keySet()) {
 			sm.unregisterItem(dimensionID);
 		}
 		// clearing the VAs. This should not be necessary since they should be destroyed automatically.
@@ -382,7 +411,7 @@ public class DataTable
 
 	@Override
 	public String toString() {
-		return "Set for " + dataDomain + " with " + hashDimensions.size() + " dimensions.";
+		return "Set for " + dataDomain + " with " + hashColumns.size() + " dimensions.";
 	}
 
 	/**
@@ -403,13 +432,13 @@ public class DataTable
 	 * 
 	 * @return the dimension containing means for all content elements
 	 */
-	public NumericalDimension getMeanDimension(String dimensionPerspectiveID) {
-		if (!tableType.equals(DataTableDataType.NUMERIC) || !isDataTableHomogeneous)
+	public NumericalColumn getMeanDimension(String dimensionPerspectiveID) {
+		if (!tableType.equals(DataTableDataType.NUMERIC) || !isTableHomogeneous)
 			throw new IllegalStateException(
 				"Can not provide a mean dimension if set is not numerical (Set type: " + tableType
-					+ ") or not homgeneous (isHomogeneous: " + isDataTableHomogeneous + ")");
+					+ ") or not homgeneous (isHomogeneous: " + isTableHomogeneous + ")");
 		if (meanDimension == null) {
-			meanDimension = new NumericalDimension();
+			meanDimension = new NumericalColumn();
 			meanDimension.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL);
 
 			float[] meanValues = new float[metaData.depth()];
@@ -455,30 +484,29 @@ public class DataTable
 	// table.
 
 	/**
-	 * Add a dimension based on its id. The dimension has to be fully initialized with data
+	 * Add a column based on its id. The column has to be fully initialized with data
 	 * 
-	 * @param dimensionID
+	 * @param columnID
 	 */
-	void addDimension(int dimensionID) {
-		DimensionManager dimensionManager = GeneralManager.get().getDimensionManager();
+	void addColumn(int columnID) {
+		ColumnManager columnManager = GeneralManager.get().getColumnManager();
 
-		if (!dimensionManager.hasItem(dimensionID))
-			throw new IllegalArgumentException("Requested Dimension with ID " + dimensionID
-				+ " does not exist.");
+		if (!columnManager.hasItem(columnID))
+			throw new IllegalArgumentException("Requested Dimension with ID " + columnID + " does not exist.");
 
-		ADimension dimension = dimensionManager.getItem(dimensionID);
-		addDimension(dimension);
+		AColumn dimension = columnManager.getItem(columnID);
+		addColumn(dimension);
 	}
 
 	/**
-	 * Add a dimension by reference. The dimension has to be fully initialized with data
+	 * Add a column by reference. The column has to be fully initialized with data
 	 * 
-	 * @param dimension
-	 *            the dimension
+	 * @param column
+	 *            the column
 	 */
-	void addDimension(ADimension dimension) {
+	void addColumn(AColumn column) {
 		// if (hashDimensions.isEmpty()) {
-		if (dimension instanceof NumericalDimension) {
+		if (column instanceof NumericalColumn) {
 			if (tableType == null)
 				tableType = DataTableDataType.NUMERIC;
 			else if (tableType.equals(DataTableDataType.NOMINAL))
@@ -491,8 +519,8 @@ public class DataTable
 				tableType = DataTableDataType.HYBRID;
 		}
 
-		hashDimensions.put(dimension.getID(), dimension);
-		defaultDimensionIDs.add(dimension.getID());
+		hashColumns.put(column.getID(), column);
+		defaultColumnIDs.add(column.getID());
 
 	}
 
@@ -502,26 +530,26 @@ public class DataTable
 	 * 
 	 * @param externalDataRep
 	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
-	 * @param bIsSetHomogeneous
+	 * @param isTableHomogeneous
 	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
 	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false,
 	 *            each dimension is treated separately, has it's own min and max etc. Sets that contain
 	 *            nominal data MUST be inhomogeneous.
 	 */
-	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep, boolean bIsSetHomogeneous) {
-		this.isDataTableHomogeneous = bIsSetHomogeneous;
+	void setExternalDataRepresentation(ExternalDataRepresentation externalDataRep, boolean isTableHomogeneous) {
+		this.isTableHomogeneous = isTableHomogeneous;
 		if (externalDataRep == this.externalDataRep)
 			return;
 
 		this.externalDataRep = externalDataRep;
 
-		for (ADimension dimension : hashDimensions.values()) {
-			if (dimension instanceof NumericalDimension) {
-				((NumericalDimension) dimension).setExternalDataRepresentation(externalDataRep);
+		for (AColumn dimension : hashColumns.values()) {
+			if (dimension instanceof NumericalColumn) {
+				((NumericalColumn) dimension).setExternalDataRepresentation(externalDataRep);
 			}
 		}
 
-		if (bIsSetHomogeneous) {
+		if (isTableHomogeneous) {
 			switch (externalDataRep) {
 				case NORMAL:
 					normalization.normalizeGlobally();
@@ -558,7 +586,7 @@ public class DataTable
 	}
 
 	public boolean containsFoldChangeRepresentation() {
-		for (ADimension dimension : hashDimensions.values()) {
+		for (AColumn dimension : hashColumns.values()) {
 			return dimension.containsDataRepresentation(DataRepresentation.FOLD_CHANGE_RAW);
 		}
 		return false;
@@ -570,7 +598,10 @@ public class DataTable
 		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(getRecordIDList());
+		if (isColumnDimension)
+			data.setData(getRowIDList());
+		else
+			data.setData(getColumnIDList());
 		recordPerspective.init(data);
 
 		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
@@ -580,9 +611,11 @@ public class DataTable
 
 		DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(getDimensionIDList());
+		if (isColumnDimension)
+			data.setData(getColumnIDList());
+		else
+			data.setData(getRowIDList());
 		dimensionPerspective.init(data);
-		// createSubDataTable(dimensionData);
 
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}

@@ -1,8 +1,8 @@
 package org.caleydo.core.data.collection.table;
 
-import org.caleydo.core.data.collection.dimension.ADimension;
+import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.NumericalDimension;
+import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 
 /**
@@ -65,10 +65,10 @@ public class Uncertainty {
 	public void calculateNormalizedAverageUncertainty(float invalidThreshold, float validThreshold,
 		String dimensionPerspectiveID) {
 
-		for (ADimension dimension : table.hashDimensions.values()) {
+		for (AColumn dimension : table.hashColumns.values()) {
 
-			if (dimension instanceof NumericalDimension)
-				((NumericalDimension) dimension).normalizeUncertainty(invalidThreshold, validThreshold);
+			if (dimension instanceof NumericalColumn)
+				((NumericalColumn) dimension).normalizeUncertainty(invalidThreshold, validThreshold);
 		}
 
 		aggregatedNormalizedUncertainties = new float[metaData.depth()];
@@ -104,7 +104,7 @@ public class Uncertainty {
 		for (Integer dimensionID : dimensionVA) {
 			try {
 				uncertaintySum +=
-					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordIndex);
+					table.hashColumns.get(dimensionID).getFloat(dataRepresentation, recordIndex);
 			}
 			catch (Exception e) {
 				System.out.println("dimensionID: " + dimensionID);
@@ -121,7 +121,7 @@ public class Uncertainty {
 			float cellUncertainty = 0;
 			try {
 				cellUncertainty =
-					table.hashDimensions.get(dimensionID).getFloat(dataRepresentation, recordIndex);
+					table.hashColumns.get(dimensionID).getFloat(dataRepresentation, recordIndex);
 			}
 			catch (Exception e) {
 				System.out.println("dimensionID: " + dimensionID);
