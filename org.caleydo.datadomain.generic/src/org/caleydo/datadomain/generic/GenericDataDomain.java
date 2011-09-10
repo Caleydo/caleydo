@@ -9,6 +9,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
@@ -63,7 +64,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			RecordVirtualArray virtualArray) {
+			PerspectiveInitializationData	data) {
 
 		// TODO Auto-generated method stub
 

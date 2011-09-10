@@ -13,6 +13,7 @@ import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -31,16 +32,14 @@ public class Application
 	public static String NILS_FILE =
 		"/Users/nils/Data/Caleydo/testdata/20110728/ov/mrna_cnmf/outputprefix.expclu.gct";
 
-	public static String ALEX_TEST_1 =
-		"data/genome/microarray/tcga/cnmf.normalized.gct";
-	public static String ALEX_TEST_1_GROUPING =
-		"data/genome/microarray/tcga/cnmf.membership.txt";
+	public static String ALEX_TEST_1 = "data/genome/microarray/tcga/cnmf.normalized.gct";
+	public static String ALEX_TEST_1_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
 
 	public static String ALEX_TEST_2 =
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
 	public static String ALEX_TEST_2_GROUPING =
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
-	
+
 	public String dataSource = ALEX_TEST_1;
 	public String groupingSource = ALEX_TEST_1_GROUPING;
 
@@ -140,7 +139,7 @@ public class Application
 		DataTableUtils.createDimensions(loadDataParameters);
 
 		// the place the matrix is stored:
-		DataTable table = DataTableUtils.createData(dataDomain);
+		DataTable table = DataTableUtils.createData(dataDomain, true);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
 
@@ -220,10 +219,10 @@ public class Application
 				sampleIndex += group.size();
 			}
 
-			dimensionPerspective.createVA(sortedIDs);
-			dimensionPerspective.setClusterSizes(clusterSizes);
-			dimensionPerspective.setSampleElements(sampleElements);
-			dimensionPerspective.finish();
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(sortedIDs, clusterSizes, sampleElements);
+
+			dimensionPerspective.init(data);
 			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
 
 		}

@@ -4652,7 +4652,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			warn();
 			recordDendrogramActive = false;
 			recordDendrogramRenderCut = false;
-			table.getRecordPerspective(recordPerspectiveID).setTree(null);
+//			table.getRecordPerspective(recordPerspectiveID).setTree(null);
 
 		}
 
@@ -5026,7 +5026,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			recordDendrogramActive = false;
 			recordDendrogramRenderCut = false;
-			table.getRecordPerspective(recordPerspectiveID).setTree(null);
+//			table.getRecordPerspective(recordPerspectiveID).setTree(null);
 
 		}
 
@@ -5161,7 +5161,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			recordDendrogramActive = false;
 			recordDendrogramRenderCut = false;
-			table.getRecordPerspective(recordPerspectiveID).setTree(null);
+//			table.getRecordPerspective(recordPerspectiveID).setTree(null);
 
 		}
 
@@ -5212,7 +5212,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			dimensionDendrogramActive = false;
 			dimensionDendrogramRenderCut = false;
-			table.getDimensionPerspective(dimensionPerspectiveID).setTree(null);
+//			table.getDimensionPerspective(dimensionPerspectiveID).setTree(null);
 			// dataDomain.createDimensionGroupsFromDimensionTree(null);
 		}
 

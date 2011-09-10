@@ -17,7 +17,7 @@ import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
@@ -86,7 +86,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
 	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
-	private RecordReplaceVAListener replaceRecordVAListener;
+	private ReplaceRecordPerspectiveListener replaceRecordVAListener;
 	private UseSortingListener useSortingListener;
 	private UseZoomListener useZoomListener;
 	private UseBandBundlingListener useBandBundlingListener;

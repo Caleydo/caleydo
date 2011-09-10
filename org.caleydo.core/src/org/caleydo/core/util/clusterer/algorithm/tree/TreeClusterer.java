@@ -9,11 +9,11 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
@@ -69,8 +69,8 @@ public class TreeClusterer
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
 
 	// Hash maps needed for determine cluster names. The name of a cluster has to be unique.
-	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
-	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
+//	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
+//	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
 
 	@Override
 	public void setClusterState(ClusterConfiguration clusterState) {
@@ -370,25 +370,9 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
 
-		// ClusterHelper.determineNrElements(tree);
-		// ClusterHelper.determineHierarchyDepth(tree);
-
-		ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
-			clusterState.getSourceRecordPerspective(), eClustererType, dataDomain);
-
-		ArrayList<Integer> indices = new ArrayList<Integer>();
-		indices = tree.getRoot().getLeaveIds();
-
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// table.setContentTree(tree);
-		// else
-		// table.setDimensionTree(tree);
-
-		// IVirtualArray virtualArray = null;
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), alIndices);
-		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), alIndices);
+		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState.getClustererType(),
+			dataDomain.getTable(), clusterState.getSourceDimensionPerspective().getVirtualArray(),
+			clusterState.getSourceRecordPerspective().getVirtualArray());
 
 		GeneralManager
 			.get()
@@ -397,7 +381,7 @@ public class TreeClusterer
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setIndices(indices);
+		tempResult.setData(tree);
 		return tempResult;
 	}
 
@@ -422,7 +406,6 @@ public class TreeClusterer
 
 		ClosestPair pair = null;
 
-		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		float[][] distmatrix;
 
@@ -515,14 +498,9 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-		// ClusterHelper.determineNrElements(tree);
-		// ClusterHelper.determineHierarchyDepth(tree);
-
-		ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
-			clusterState.getSourceRecordPerspective(), eClustererType, dataDomain);
-		// determineExpressionValue(tree, eClustererType);
-
-		indices = tree.getRoot().getLeaveIds();
+		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState.getClustererType(),
+			dataDomain.getTable(), clusterState.getSourceDimensionPerspective().getVirtualArray(),
+			clusterState.getSourceRecordPerspective().getVirtualArray());
 
 		GeneralManager
 			.get()
@@ -531,8 +509,7 @@ public class TreeClusterer
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setIndices(indices);
-		tempResult.setTree(tree);
+		tempResult.setData(tree);
 		return tempResult;
 	}
 
@@ -649,8 +626,7 @@ public class TreeClusterer
 		for (int j = 0; j < iNrSamples; j++)
 			clusterid[j] = j;
 
-		// Arraylist holding clustered indexes
-		ArrayList<Integer> indices = new ArrayList<Integer>();
+		
 
 		int j;
 
@@ -734,21 +710,9 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-		// ClusterHelper.determineNrElements(tree);
-		// ClusterHelper.determineHierarchyDepth(tree);
-		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-			ClusterHelper.calculateClusterAverages(clusterState.getSourceDimensionPerspective(),
-				clusterState.getSourceRecordPerspective(), eClustererType, dataDomain);
-		}
-		// determineExpressionValue(tree, eClustererType);
-
-		indices = tree.getRoot().getLeaveIds();
-
-		// IVirtualArray virtualArray = null;
-		// if (eClustererType == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indices);
-		// else if (eClustererType == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
+		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState.getClustererType(),
+			dataDomain.getTable(), clusterState.getSourceDimensionPerspective().getVirtualArray(),
+			clusterState.getSourceRecordPerspective().getVirtualArray());
 
 		GeneralManager
 			.get()
@@ -757,8 +721,7 @@ public class TreeClusterer
 				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setTree(tree);
-		tempResult.setIndices(indices);
+		tempResult.setData(tree);
 		return tempResult;
 	}
 
@@ -777,26 +740,26 @@ public class TreeClusterer
 		String nodeName = null;
 
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-			dataDomain.getRecordLabel(recordVA.get(index));
+			nodeName = dataDomain.getRecordLabel(recordVA.get(index));
 		}
 		else {
-			dataDomain.getDimensionLabel(dimensionVA.get(index));
+			nodeName = dataDomain.getDimensionLabel(dimensionVA.get(index));
 		}
 
-		// check if current node name was already used. If yes we add signs to make it unique.
-		if (hashedNodeNames.containsKey(nodeName)) {
-			int iNr = 1;
-			if (duplicatedNodes.containsKey(nodeName)) {
-				iNr = duplicatedNodes.get(nodeName);
-				duplicatedNodes.put(nodeName, ++iNr);
-			}
-			else
-				duplicatedNodes.put(nodeName, iNr);
-
-			nodeName = nodeName + "__" + iNr;
-		}
-		else
-			hashedNodeNames.put(nodeName, 1);
+//		// check if current node name was already used. If yes we add signs to make it unique.
+//		if (hashedNodeNames.containsKey(nodeName)) {
+//			int iNr = 1;
+//			if (duplicatedNodes.containsKey(nodeName)) {
+//				iNr = duplicatedNodes.get(nodeName);
+//				duplicatedNodes.put(nodeName, ++iNr);
+//			}
+//			else
+//				duplicatedNodes.put(nodeName, iNr);
+//
+//			nodeName = nodeName + "__" + iNr;
+//		}
+//		else
+//			hashedNodeNames.put(nodeName, 1);
 
 		return nodeName;
 	}
@@ -843,11 +806,11 @@ public class TreeClusterer
 
 		if (treeStructure[index].getLeft() >= 0) {
 
-			String NodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
+			String nodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
 			int LeaveID = getNodeNr(eClustererType, treeStructure[index].getLeft());
 
 			// this was in the constructor: treeStructure[index].getCorrelation(), 0
-			left = new ClusterNode(tree, NodeName, getNodeCounter(), false, LeaveID);
+			left = new ClusterNode(tree, nodeName, getNodeCounter(), false, LeaveID);
 
 			// left.setNrElements(1);
 
@@ -887,8 +850,8 @@ public class TreeClusterer
 	}
 
 	@Override
-	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
+		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.dataDomain = dataDomain;
 

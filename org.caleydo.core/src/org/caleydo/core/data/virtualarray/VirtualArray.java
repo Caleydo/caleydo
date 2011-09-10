@@ -511,7 +511,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		int sampleElementIndex = 0;
 
 		for (ClusterNode node : clusterNodes) {
-
 			Group temp = new Group(node.getNrLeaves(), sampleElementIndex, node);
 			groupList.append(temp);
 			sampleElementIndex += node.getNrLeaves();

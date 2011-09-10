@@ -12,7 +12,7 @@ import org.caleydo.core.data.filter.event.RemoveDimensionFilterListener;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVADeltaEvent;
 
 /**
@@ -92,20 +92,20 @@ public class DimensionFilterManager
 		eventPublisher.triggerEvent(event);
 	}
 
-//	@Override
-//	protected void triggerReplaceVAEvent() {
-//		DimensionReplaceVAEvent event = new DimensionReplaceVAEvent(dataDomain.getDataDomainID(), perspective.getPerspectiveID(), perspective.getVirtualArray());
-//		event.s(perspective.getPerspectiveID());
-//		event.setVirtualArray(perspective.getVirtualArray());
-//		event.setSender(this);
-//		event.setDataDomainID(dataDomain.getDataDomainID());
-//		eventPublisher.triggerEvent(event);
-//	}
+	// @Override
+	// protected void triggerReplaceVAEvent() {
+	// DimensionReplaceVAEvent event = new DimensionReplaceVAEvent(dataDomain.getDataDomainID(),
+	// perspective.getPerspectiveID(), perspective.getVirtualArray());
+	// event.s(perspective.getPerspectiveID());
+	// event.setVirtualArray(perspective.getVirtualArray());
+	// event.setSender(this);
+	// event.setDataDomainID(dataDomain.getDataDomainID());
+	// eventPublisher.triggerEvent(event);
+	// }
 
 	@Override
 	protected void resetVA() {
-		perspective.setVirtualArray(dataDomain.getTable().getBaseDimensionVA(perspective.getPerspectiveID()));
-		// virtualArray =
+		perspective.reset();
 	}
 
 }

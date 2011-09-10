@@ -118,7 +118,6 @@ public class CmdLoadFileNDimensions
 
 		parsingOK = loader.loadData();
 
-		dataDomain.updateSetInViews();
 	}
 
 	@Override

@@ -1,5 +1,6 @@
 package org.caleydo.core.data.virtualarray.events;
 
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
@@ -9,7 +10,7 @@ import org.caleydo.core.manager.event.IListenerOwner;
  * 
  * @author Alexander Lex
  */
-public interface IDimensionVADeltaHandler
+public interface IDimensionChangeHandler
 	extends IListenerOwner {
 
 	/**
@@ -24,10 +25,10 @@ public interface IDimensionVADeltaHandler
 	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link VAReplaceEvent} was
+	 * Handler method to be called by the {@link ReplaceRecordPerspectiveListener} when a {@link ReplacePerspectiveEvent} was
 	 * received.
 	 */
-	public void replaceDimensionVA(String dataDomainID, String perspectiveID,
-		DimensionVirtualArray virtualArray);
+	public void replaceDimensionPerspective(String dataDomainID, String perspectiveID,
+		PerspectiveInitializationData data);
 
 }

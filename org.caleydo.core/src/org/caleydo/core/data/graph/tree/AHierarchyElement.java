@@ -2,6 +2,7 @@ package org.caleydo.core.data.graph.tree;
 
 import java.util.ArrayList;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 /**
@@ -16,6 +17,7 @@ import javax.xml.bind.annotation.XmlTransient;
 public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	implements Comparable<Node> {
 
+	@XmlElement
 	protected Integer id;
 
 	/**
@@ -31,6 +33,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * the methods provided by AHierarchyElement will not work.
 	 */
 	protected Node node;
+	
 	/**
 	 * Specifies the level of the hierarchy of the current element. To be clear: If the root node is on level
 	 * 0, its children are on level 1 and so on.
@@ -94,11 +97,9 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	}
 
 	public Integer getID() {
-		
-		// FIXME: is it ok that the ID is null?
 		if (id == null)
-			return 0;
-		
+			throw new IllegalStateException("NodeID was null");
+
 		return id;
 	}
 
@@ -337,7 +338,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * @return a comparable ID
 	 */
 	public int getComparableValue() {
-		
+
 		return getID();
 	}
 

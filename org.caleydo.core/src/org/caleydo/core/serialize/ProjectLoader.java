@@ -73,11 +73,11 @@ public class ProjectLoader {
 		catch (Exception e) {
 			String message = "Failed to load project from\n" + dirName;
 			Logger.log(new Status(IStatus.ERROR, this.toString(), message, e));
-			//MessageBox messageBox =
-			//	new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
-			//messageBox.setText("Project Loading");
-			//messageBox.setMessage(message);
-			//messageBox.open();
+			// MessageBox messageBox =
+			// new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+			// messageBox.setText("Project Loading");
+			// messageBox.setMessage(message);
+			// messageBox.open();
 			return null;
 		}
 
@@ -90,16 +90,16 @@ public class ProjectLoader {
 		context = JAXBContext.newInstance(PlugInList.class);
 
 		Unmarshaller unmarshaller = context.createUnmarshaller();
-		
+
 		File pluginFile = new File(dirName + ProjectSaver.PLUG_IN_LIST_FILE);
-		
-		if ( !pluginFile.exists() )
-		{
-			Logger.log( new Status( Status.INFO, this.toString(), "Could not load plugin data from " + pluginFile ) );
+
+		if (!pluginFile.exists()) {
+			Logger.log(new Status(Status.INFO, this.toString(), "Could not load plugin data from "
+				+ pluginFile));
 
 			return;
 		}
-		
+
 		plugInList = (PlugInList) unmarshaller.unmarshal(pluginFile);
 
 		ArrayList<String> plugIns = plugInList.plugIns;
@@ -172,6 +172,7 @@ public class ProjectLoader {
 								((ATableBasedDataDomain) dataDomain).getRecordIDType());
 						recordPerspective.setTree(tree);
 					}
+
 				}
 
 				dataInitializationData.setRecordPerspectiveMap(recordPerspectives);
@@ -195,6 +196,7 @@ public class ProjectLoader {
 								((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 						dimensionPerspective.setTree(tree);
 					}
+
 				}
 
 				dataInitializationData.setDimensionPerspectiveMap(dimensionPerspectives);
@@ -214,7 +216,6 @@ public class ProjectLoader {
 	 * @param set
 	 */
 	private ClusterTree loadTree(String path, IDType idType) throws JAXBException, IOException {
-
 		TreePorter treePorter = new TreePorter();
 		ClusterTree tree;
 		tree = treePorter.importTree(path, idType);
@@ -225,21 +226,22 @@ public class ProjectLoader {
 	public void loadWorkbenchData(String dirName) {
 		try {
 			File workbenchFile = new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE);
-			
-			if ( !workbenchFile.exists() )
-			{
-				Logger.log( new Status( Status.INFO, this.toString(), "Could not load workbench data from " + workbenchFile ) );
-				
+
+			if (!workbenchFile.exists()) {
+				Logger.log(new Status(Status.INFO, this.toString(), "Could not load workbench data from "
+					+ workbenchFile));
+
 				return;
 			}
-			
+
 			FileOperations.copyFolder(new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
 				GeneralManager.CALEYDO_HOME_PATH + ProjectSaver.WORKBENCH_MEMENTO_FOLDER
 					+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		}
 		catch (IOException e) {
-			//throw new IllegalStateException("Could not load workbench data from " + dirName, e);
-			Logger.log( new Status( Status.INFO, this.toString(), "Could not load workbench data from " + dirName, e ) );
+			// throw new IllegalStateException("Could not load workbench data from " + dirName, e);
+			Logger.log(new Status(Status.INFO, this.toString(), "Could not load workbench data from "
+				+ dirName, e));
 		}
 	}
 }

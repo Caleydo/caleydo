@@ -40,7 +40,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	private HashMap<Integer, Integer> mLayerMap;
 
 	private ESortingStrategy sortingStrategy = ESortingStrategy.DEFAULT;
-	
+
 	/**
 	 * Constructor that should only be used for de-serialization or for trees synchronized with a previously
 	 * existing tree. For other cases use {@link #Tree(IDType)} instead.
@@ -66,8 +66,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
-	 * Sets the id type of the leaves and creates a new node id type. This should only be used for
-	 * de-serialization or internally.
+	 * Sets the id type of the leaves and creates a new node id type. This should only be used when the
+	 * constructor without arguments was used.
 	 * 
 	 * @param leafIDType
 	 */
@@ -89,6 +89,15 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	}
 
 	/**
+	 * Returns the id type of the nodes. The node ID Type is dynamically generated on construction.
+	 * 
+	 * @return
+	 */
+	public IDType getNodeIDType() {
+		return nodeIDType;
+	}
+
+	/**
 	 * Sets a leaf id type. This should only be done when this tree is a copy of another tree (for example
 	 * with different nodes types), and not for a new tree. For a new tree use
 	 * {@link #initializeIDTypes(IDType)}
@@ -97,14 +106,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 */
 	public void setLeafIDType(IDType leafIDType) {
 		this.leafIDType = leafIDType;
-	}
-
-	private void init() {
-		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
-		hashNodes = new HashMap<Integer, NodeType>();
-		mNodeMap = new HashMap<NodeType, NodeInfo>();
-		mLayerMap = new HashMap<Integer, Integer>();
-		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
 	/**
@@ -116,13 +117,12 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		return leafIDType;
 	}
 
-	/**
-	 * Returns the id type of the nodes. The node ID Type is dynamically generated on construction.
-	 * 
-	 * @return
-	 */
-	public IDType getNodeIDType() {
-		return nodeIDType;
+	private void init() {
+		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
+		hashNodes = new HashMap<Integer, NodeType>();
+		mNodeMap = new HashMap<NodeType, NodeInfo>();
+		mLayerMap = new HashMap<Integer, Integer>();
+		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>();
 	}
 
 	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
@@ -270,7 +270,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 			alNodes.add(graph.getEdgeTarget(tempEdge));
 		}
 
-
 		Collections.sort(alNodes);
 
 		if (alNodes.isEmpty())
@@ -278,8 +277,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		else
 			return alNodes;
 	}
-	
-	
 
 	/**
 	 * Returns true, when parentNode has children, else false
@@ -366,7 +363,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		rootNode.calculateHierarchyLevels(0);
 	}
 
-
 	/**
 	 * Returns the number of all nodes in the tree
 	 * 
@@ -395,12 +391,12 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	/**
 	 * Set the sorting strategy to be used for this tree. The default sorting (based on the cluster ID, which
-	 * is generated on the fly) needs not be table. If a non-default strategy is used the nodes in the tree must
-	 * implement the {@link Comparable#compareTo(Object)} method with options for the sorting strategies
+	 * is generated on the fly) needs not be table. If a non-default strategy is used the nodes in the tree
+	 * must implement the {@link Comparable#compareTo(Object)} method with options for the sorting strategies
 	 */
 	public void setSortingStrategy(ESortingStrategy sortingStrategy) {
 		this.sortingStrategy = sortingStrategy;
-		
+
 	}
 
 	/**
@@ -411,5 +407,5 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public ESortingStrategy getSortingStrategy() {
 		return sortingStrategy;
 	}
-	
+
 }

@@ -17,14 +17,15 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
@@ -36,9 +37,6 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.contextmenu.item.StatisticsFoldChangeReductionItem;
-import org.caleydo.core.view.contextmenu.item.StatisticsPValueReductionItem;
-import org.caleydo.core.view.contextmenu.item.StatisticsTwoSidedTTestReductionItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -59,7 +57,6 @@ import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
 import org.caleydo.view.grouper.contextmenu.AddGroupsToVisBricksItem;
 import org.caleydo.view.grouper.contextmenu.AggregateGroupItem;
-import org.caleydo.view.grouper.contextmenu.CompareGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CopyGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CreateGroupItem;
 import org.caleydo.view.grouper.contextmenu.DeleteGroupsItem;
@@ -189,49 +186,53 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	/**
 	 * Creates a new shallow tree for cluster nodes and GroupRepresentations.
 	 */
-	private void createNewHierarchy() {
-		ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
-		IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
-				.getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
-		lastUsedGroupID = 0;
-
-		ClusterNode rootNode = new ClusterNode(tree, "Root", lastUsedGroupID++, true, -1);
-		tree.setRootNode(rootNode);
-
-		rootGroup = new GroupRepresentation(rootNode, renderStyle, groupDrawingStrategy,
-				drawingStrategyManager, this, false);
-		hashGroups.put(rootGroup.getID(), rootGroup);
-		// selectionManager.initialAdd(rootGroup.getID());
-		ArrayList<Integer> indexList = dimensionVA.getIndexList();
-
-		for (Integer currentIndex : indexList) {
-
-			String nodeName = dataDomain.getDimensionLabel(currentIndex);
-			int leafID = currentIndex;
-			ClusterNode currentNode = new ClusterNode(tree, nodeName, lastUsedGroupID++,
-					false, leafID);
-			tree.addChild(rootNode, currentNode);
-
-			GroupRepresentation groupRep = new GroupRepresentation(currentNode,
-					renderStyle, groupDrawingStrategy, drawingStrategyManager, this, true);
-			rootGroup.add(groupRep);
-
-			hashGroups.put(groupRep.getID(), groupRep);
-			// selectionManager.initialAdd(groupRep.getID());
-		}
-
-		rootGroup.calculateHierarchyLevels(0);
-		// ClusterHelper.determineNrElements(tree);
-		// ClusterHelper.determineHierarchyDepth(tree);
-		ClusterHelper.calculateClusterAverages(
-				table.getDimensionPerspective(dimensionPerspectiveID),
-				table.getRecordPerspective(recordPerspectiveID),
-				ClustererType.DIMENSION_CLUSTERING, dataDomain);
-		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
-
-		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
-		// useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
-	}
+	// private void createNewHierarchy() {
+	// ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
+	// IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
+	// .getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
+	// lastUsedGroupID = 0;
+	//
+	// ClusterNode rootNode = new ClusterNode(tree, "Root", lastUsedGroupID++,
+	// true, -1);
+	// tree.setRootNode(rootNode);
+	//
+	// rootGroup = new GroupRepresentation(rootNode, renderStyle,
+	// groupDrawingStrategy,
+	// drawingStrategyManager, this, false);
+	// hashGroups.put(rootGroup.getID(), rootGroup);
+	// // selectionManager.initialAdd(rootGroup.getID());
+	// ArrayList<Integer> indexList = dimensionVA.getIndexList();
+	//
+	// for (Integer currentIndex : indexList) {
+	//
+	// String nodeName = dataDomain.getDimensionLabel(currentIndex);
+	// int leafID = currentIndex;
+	// ClusterNode currentNode = new ClusterNode(tree, nodeName,
+	// lastUsedGroupID++,
+	// false, leafID);
+	// tree.addChild(rootNode, currentNode);
+	//
+	// GroupRepresentation groupRep = new GroupRepresentation(currentNode,
+	// renderStyle, groupDrawingStrategy, drawingStrategyManager, this, true);
+	// rootGroup.add(groupRep);
+	//
+	// hashGroups.put(groupRep.getID(), groupRep);
+	// // selectionManager.initialAdd(groupRep.getID());
+	// }
+	//
+	// rootGroup.calculateHierarchyLevels(0);
+	// // ClusterHelper.determineNrElements(tree);
+	// // ClusterHelper.determineHierarchyDepth(tree);
+	// ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
+	// ClustererType.DIMENSION_CLUSTERING, dataDomain.getTable(), table
+	// .getDimensionPerspective(dimensionPerspectiveID)
+	// .getVirtualArray(),
+	// table.getRecordPerspective(recordPerspectiveID).getVirtualArray());
+	// table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
+	//
+	// // dataDomain.createDimensionGroupsFromDimensionTree(tree);
+	// // useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
+	// }
 
 	/**
 	 * Creates a new composite GroupRepresentation tree according to the
@@ -318,28 +319,18 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
-		// ClusterHelper.determineNrElements(tree);
-		// ClusterHelper.determineHierarchyDepth(tree);
-		// FIXME: do that differently.
-		// set = table.getDimensionTree().getRoot().getSubDataTable();
-		ClusterHelper.calculateClusterAverages(
-				table.getDimensionPerspective(dimensionPerspectiveID),
-				table.getRecordPerspective(recordPerspectiveID),
-				ClustererType.DIMENSION_CLUSTERING, dataDomain);
+		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
+				ClustererType.DIMENSION_CLUSTERING, dataDomain.getTable(), table
+						.getDimensionPerspective(dimensionPerspectiveID)
+						.getVirtualArray(),
+				table.getRecordPerspective(recordPerspectiveID).getVirtualArray());
+
 		tree.setDirty();
-		// we don't want to do that per default any more
-		// tree.createSubDataTables((org.caleydo.core.data.collection.table.DataTable)
-		// table);
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(tree, tree.getRoot());
 
-		ArrayList<Integer> alIndices = tree.getRoot().getLeaveIds();
-		dimensionVA = new DimensionVirtualArray(dimensionPerspectiveID, alIndices);
-
-		eventPublisher.triggerEvent(new DimensionReplaceVAEvent(dataDomain
-				.getDataDomainID(), dimensionPerspectiveID, dimensionVA));
-
-		// FIXME no one is notified that there is a new tree
-		table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
-		// dataDomain.createDimensionGroupsFromDimensionTree(tree);
+		eventPublisher.triggerEvent(new ReplaceDimensionPerspectiveEvent(dataDomain
+				.getDataDomainID(), dimensionPerspectiveID, data));
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
@@ -1397,14 +1388,14 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 				.getVirtualArray();
 		drawingStrategyManager = new DrawingStrategyManager(dimensionPerspectiveID,
 				pickingManager, uniqueID, renderStyle);
-		if (table.getDimensionPerspective(dimensionPerspectiveID).getTree() != null) {
-			// FIXME: do that differently.
-			// set = table.getDimensionTree().getRoot().getSubDataTable();
+		DimensionPerspective dimensionPerspective = table
+				.getDimensionPerspective(dimensionPerspectiveID);
+		if (dimensionPerspective.getTree() != null) {
 			tree = table.getDimensionPerspective(dimensionPerspectiveID).getTree();
-
 			initHierarchy(tree);
 		} else {
-			createNewHierarchy();
+			throw new IllegalStateException("No tree available for "
+					+ dimensionPerspectiveID);
 		}
 
 		selectionManager = new SelectionManager(tree.getNodeIDType());

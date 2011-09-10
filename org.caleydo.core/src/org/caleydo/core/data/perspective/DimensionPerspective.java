@@ -56,4 +56,9 @@ public class DimensionPerspective
 	protected String getLabel(Integer id) {
 		return dataDomain.getDimensionLabel(id);
 	}
+
+	@Override
+	protected List<Integer> getIDList() {
+		return dataDomain.getTable().getDimensionIDList();
+	}
 }

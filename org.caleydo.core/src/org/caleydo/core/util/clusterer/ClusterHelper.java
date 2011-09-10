@@ -75,79 +75,22 @@ public class ClusterHelper {
 		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
-	/**
-	 * The function is responsible for calculating the hierarchy depth in each node of the tree. To handle
-	 * this an other recursive function which does the whole work is called.
-	 * 
-	 * @param tree
-	 *            the tree
-	 */
-	// public static void determineHierarchyDepth(Tree<ClusterNode> tree) {
-	// // int maxDepth = 0;
-	// // maxDepth = determineHierarchyDepthRec(tree, tree.getRoot());
-	// // System.out.println("maxDepth: " + maxDepth);
-	// determineHierarchyDepthRec(tree, tree.getRoot());
-	// }
+//	public static void calculateClusterAverages(DimensionPerspective dimensionData,
+//		RecordPerspective recordPerspective, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
+//
+//		DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
+//		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+//		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+//			calculateClusterAveragesRecursive(recordPerspective.getTree(), recordPerspective.getTree().getRoot(),
+//				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
+//		}
+//		else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
+//			calculateClusterAveragesRecursive(dimensionData.getTree(), dimensionData.getTree().getRoot(),
+//				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
+//		}
+//	}
 
-	/**
-	 * Recursive function which determines the hierarchy depth in each node of the tree.
-	 * 
-	 * @param tree
-	 * @param node
-	 *            current node
-	 * @return depth of the current node
-	 */
-	// private static int determineHierarchyDepthRec(Tree<ClusterNode> tree, ClusterNode node) {
-	//
-	// if (tree.hasChildren(node)) {
-	// int temp = node.getDepth();
-	//
-	// for (ClusterNode current : tree.getChildren(node)) {
-	// int iChildDepth = determineHierarchyDepthRec(tree, current);
-	// if (temp <= iChildDepth)
-	// temp = iChildDepth + 1;
-	// }
-	//
-	// node.setDepth(temp);
-	// }
-	// else
-	// node.setDepth(1);
-	//
-	// return node.getDepth();
-	// }
-
-	// /**
-	// * The function is responsible for calculating the number of elements in each node of the tree. To
-	// handle
-	// * this an other recursive function which does the whole work is called.
-	// *
-	// * @param tree
-	// * the tree
-	// */
-	// public static void determineNrElements(Tree<ClusterNode> tree) {
-	//
-	// // int iNrElements = 0;
-	// // iNrElements = determineNrElementsRec(tree, tree.getRoot());
-	// // System.out.println("iNrElements: " + iNrElements);
-	// determineNrElementsRec(tree, tree.getRoot());
-	// }
-
-	public static void calculateClusterAverages(DimensionPerspective dimensionData,
-		RecordPerspective recordData, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
-
-		DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
-		RecordVirtualArray recordVA = recordData.getVirtualArray();
-		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-			calculateClusterAveragesRecursive(recordData.getTree(), recordData.getTree().getRoot(),
-				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
-		}
-		else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
-			calculateClusterAveragesRecursive(dimensionData.getTree(), dimensionData.getTree().getRoot(),
-				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
-		}
-	}
-
-	private static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
+	public static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
 		ClustererType clustererType, DataTable table, DimensionVirtualArray dimensionVA,
 		RecordVirtualArray recordVA) {
 

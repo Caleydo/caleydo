@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -41,8 +42,8 @@ public class ClusterNode
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
 	/** A data perspective containing all sub-elements of this node */
-	@XmlTransient
-	private ADataPerspective<?, ?, ?, ?> dataPerspective = null;
+//	@XmlTransient
+//	private ADataPerspective<?, ?, ?, ?> dataPerspective = null;
 
 	public ClusterNode() {
 	}
@@ -78,16 +79,16 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-	public void fillDataPerspective(ADataPerspective<?, ?, ?, ?> dataPerspective) {
-		dataPerspective.createVA(getLeaveIds());
-		dataPerspective.setTreeRoot(this);
-		dataPerspective.setTree((ClusterTree) tree);
-		this.dataPerspective = dataPerspective;
-	}
+//	public void fillDataPerspective(ADataPerspective<?, ?, ?, ?> dataPerspective) {
+//		PerspectiveInitializationData perspectiveInitializationData = new PerspectiveInitializationData();
+//		perspectiveInitializationData.setData((ClusterTree) tree, this);
+//		dataPerspective.init(perspectiveInitializationData);
+//		this.dataPerspective = dataPerspective;
+//	}
 
-	public ADataPerspective<?, ?, ?, ?> getPerspective() {
-		return dataPerspective;
-	}
+//	public ADataPerspective<?, ?, ?, ?> getPerspective() {
+//		return dataPerspective;
+//	}
 
 	/**
 	 * Returns a metaset if this node or any of its sub-nodes contain the SubDataTable specified by the ID

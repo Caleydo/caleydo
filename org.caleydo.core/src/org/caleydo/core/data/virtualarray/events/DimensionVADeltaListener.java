@@ -12,7 +12,7 @@ import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
  * @author Alexander Lex
  */
 public class DimensionVADeltaListener
-	extends AEventListener<IDimensionVADeltaHandler> {
+	extends AEventListener<IDimensionChangeHandler> {
 
 	/**
 	 * Handles {@link VirtualArrayUdpateEvent}s by extracting the events payload and calling the related

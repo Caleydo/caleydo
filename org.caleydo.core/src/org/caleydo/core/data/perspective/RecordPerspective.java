@@ -1,5 +1,6 @@
 package org.caleydo.core.data.perspective;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -54,5 +55,11 @@ public class RecordPerspective
 	@Override
 	protected String getLabel(Integer id) {
 		return dataDomain.getRecordLabel(id);
+	}
+	
+	@Override
+	protected List<Integer> getIDList()
+	{
+		return dataDomain.getTable().getRecordIDList();
 	}
 }

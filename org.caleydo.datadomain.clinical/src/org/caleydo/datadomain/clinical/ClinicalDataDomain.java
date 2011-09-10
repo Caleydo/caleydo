@@ -8,6 +8,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
@@ -66,7 +67,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			RecordVirtualArray virtualArray) {
+			PerspectiveInitializationData data) {
 		// TODO Auto-generated method stub
 	}
 

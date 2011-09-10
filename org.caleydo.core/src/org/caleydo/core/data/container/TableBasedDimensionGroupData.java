@@ -8,6 +8,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -46,19 +47,17 @@ public class TableBasedDimensionGroupData
 		label = rootNode.getLabel();
 		if (dataPerspectiveClass.equals(RecordPerspective.class)) {
 			this.recordPerspective = new RecordPerspective();
-			this.recordPerspective.createVA(rootNode.getLeaveIds());
-			this.recordPerspective.setTree((ClusterTree) rootNode.getTree());
-			this.recordPerspective.setTreeRoot(rootNode);
-			this.recordPerspective.finish();
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData((ClusterTree) rootNode.getTree(), rootNode);
+			this.recordPerspective.init(data);
 			dataDomain.getTable().registerRecordPerspecive(recordPerspective);
 
 		}
 		else if (dataPerspectiveClass.equals(DimensionPerspective.class)) {
 			this.dimensionPerspective = new DimensionPerspective(dataDomain);
-			this.dimensionPerspective.createVA(rootNode.getLeaveIds());
-			this.dimensionPerspective.setTree((ClusterTree) rootNode.getTree());
-			this.dimensionPerspective.setTreeRoot(rootNode);
-			this.dimensionPerspective.finish();
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData((ClusterTree) rootNode.getTree(), rootNode);
+			this.dimensionPerspective.init(data);
 			dataDomain.getTable().registerDimensionPerspective(this.dimensionPerspective);
 		}
 		else {
@@ -108,7 +107,6 @@ public class TableBasedDimensionGroupData
 		return groupList.getGroups();
 	}
 
-
 	@Override
 	public List<ISegmentData> getSegmentData() {
 
@@ -125,11 +123,12 @@ public class TableBasedDimensionGroupData
 		for (Group group : groupList) {
 
 			List<Integer> indices =
-				 recordVA.getVirtualArray().subList(group.getStartIndex(),
-					group.getEndIndex() + 1);
+				recordVA.getVirtualArray().subList(group.getStartIndex(), group.getEndIndex() + 1);
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.createVA(indices);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(indices);
+			recordPerspective.init(data);
 
 			segmentBrickData.add(new TableBasedSegmentData(dataDomain, recordPerspective,
 				dimensionPerspective, group, this));

@@ -84,13 +84,14 @@ public class SerializationStartupProcedure
 			ADataDomain dataDomain = dataSerializationData.getDataDomain();
 
 			if (dataDomain instanceof ATableBasedDataDomain) {
-				ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+				ATableBasedDataDomain tDataDomain = (ATableBasedDataDomain) dataDomain;
 
 				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-				loadDataParameters.setDataDomain(setBasedDataDomain);
+				loadDataParameters.setDataDomain(tDataDomain);
+				
 				DataTableUtils.createDimensions(loadDataParameters);
 
-				DataTable table = DataTableUtils.createData(setBasedDataDomain);
+				DataTable table = DataTableUtils.createData(tDataDomain, false);
 
 				for (RecordPerspective perspective : dataSerializationData.getRecordPerspectiveMap().values()) {
 					table.registerRecordPerspecive(perspective);

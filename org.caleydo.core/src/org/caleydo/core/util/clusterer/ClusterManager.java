@@ -1,6 +1,7 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;

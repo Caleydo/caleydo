@@ -2950,7 +2950,7 @@ public class GLBucket extends AGLView implements
 		this.dataDomain = dataDomain;	
 		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 		recordPerspective.setPrivate(true);
-		recordPerspective.createVA(null);
+		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspecive(recordPerspective);
 		recordPerspectiveID = recordPerspective.getPerspectiveID();
 	}

@@ -3,6 +3,7 @@ package org.caleydo.core.data.collection.table;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlTransient;
@@ -20,9 +21,9 @@ import org.caleydo.core.data.dimension.DimensionManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.manager.GeneralManager;
@@ -254,26 +255,28 @@ public class DataTable
 	}
 
 	/**
-	 * Get a copy of the original dimension VA (i.e., the va containing all dimensions in the order loaded
-	 * 
-	 * @return
+	 * @return Returns a list of all dimension ids in the order they were initialized
 	 */
 	@SuppressWarnings("unchecked")
-	public DimensionVirtualArray getBaseDimensionVA(String vaType) {
-		return new DimensionVirtualArray(vaType, (ArrayList<Integer>) defaultDimensionIDs.clone());
+	public List<Integer> getDimensionIDList() {
+		return (List<Integer>) defaultDimensionIDs.clone();
 	}
 
 	/**
-	 * Get a copy of the original content VA (i.e., the one equal to the actual content of the dimensions)
-	 * 
-	 * @return
+	 * @return Returns a list of all record ids in the order they were initialized
 	 */
-	public RecordVirtualArray getBaseRecordVA(String vaType) {
-		return createBaseRecordVA(vaType);
+	public List<Integer> getRecordIDList() {
+		ArrayList<Integer> list = new ArrayList<Integer>(metaData.depth);
+		for (int count = 0; count < metaData.depth(); count++) {
+			list.add(count);
+		}
+		return list;
 	}
 
 	/**
-	 * Returns the current external data rep.
+	 * Returns the current {@link ExternalDataRepresentation}, which tells which was the input source before
+	 * normalization. E.g., if this tells you {@link ExternalDataRepresentation#LOG2} that means that the
+	 * normalized data used for rendering is based on data that has been logarithmized by the base 2 before.
 	 * 
 	 * @return
 	 */
@@ -493,17 +496,6 @@ public class DataTable
 
 	}
 
-	void finalizeAddedDimensions() {
-
-		DimensionPerspective dimensionData = new DimensionPerspective(dataDomain);
-		dimensionData.createVA(defaultDimensionIDs);
-
-		// createSubDataTable(dimensionData);
-
-		hashDimensionPerspectives.put(dimensionData.getPerspectiveID(), dimensionData);
-
-	}
-
 	/**
 	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
 	 * calculated from the mode specified.
@@ -574,32 +566,24 @@ public class DataTable
 
 	// ---------------------- helper functions ------------------------------
 
-	private RecordPerspective createRecordPerspective(boolean initializeEmpty) {
-		RecordPerspective recordData = new RecordPerspective(dataDomain);
-
-		RecordVirtualArray recordVA;
-		if (initializeEmpty == true) {
-			recordVA = new RecordVirtualArray(recordData.getPerspectiveID());
-		}
-		else {
-			recordVA = createBaseRecordVA(recordData.getPerspectiveID());
-
-		}
-		recordData.setVirtualArray(recordVA);
-		return recordData;
-
-	}
-
 	void createDefaultRecordPerspective() {
-		RecordPerspective recordData = createRecordPerspective(false);
-		hashRecordPerspectives.put(recordData.getPerspectiveID(), recordData);
+		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(getRecordIDList());
+		recordPerspective.init(data);
+
+		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
 	}
 
-	private RecordVirtualArray createBaseRecordVA(String recordPerspectiveID) {
-		RecordVirtualArray recordVA = new RecordVirtualArray(recordPerspectiveID);
-		for (int count = 0; count < metaData.depth(); count++) {
-			recordVA.append(count);
-		}
-		return recordVA;
+	void createDefaultDimensionPerspective() {
+
+		DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(getDimensionIDList());
+		dimensionPerspective.init(data);
+		// createSubDataTable(dimensionData);
+
+		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}
 }

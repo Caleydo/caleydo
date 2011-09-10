@@ -13,9 +13,10 @@ import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -27,18 +28,18 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAEvent;
-import org.caleydo.core.data.virtualarray.events.DimensionReplaceVAListener;
 import org.caleydo.core.data.virtualarray.events.DimensionVADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVADeltaListener;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
-import org.caleydo.core.data.virtualarray.events.IDimensionVADeltaHandler;
+import org.caleydo.core.data.virtualarray.events.IDimensionChangeHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVADeltaHandler;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAEvent;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveListener;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
@@ -48,7 +49,6 @@ import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
-import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
@@ -62,16 +62,16 @@ import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 @XmlRootElement
 public abstract class ATableBasedDataDomain
 	extends ADataDomain
-	implements IRecordVADeltaHandler, IDimensionVADeltaHandler, ISelectionUpdateHandler,
+	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
 	private StartClusteringListener startClusteringListener;
 
-	private DimensionReplaceVAListener dimensionReplaceVAListener;
+	private ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener;
 	private DimensionVADeltaListener dimensionVADeltaListener;
-	private RecordReplaceVAListener recordReplaceVAListener;
+	private ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener;
 	private RecordVADeltaListener recordVADeltaListener;
 
 	private AggregateGroupListener aggregateGroupListener;
@@ -147,6 +147,11 @@ public abstract class ATableBasedDataDomain
 		recordGroupIDType =
 			IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
 				EDimensionType.INT);
+		
+		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
+		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
+		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
+
 
 	}
 
@@ -233,35 +238,6 @@ public abstract class ATableBasedDataDomain
 		return dimensionIDCategory;
 	}
 
-	/**
-	 * Update the data set in the view of this use case.
-	 */
-	public void updateSetInViews() {
-
-		// initFullVA();
-		initSelectionManagers();
-
-		// GLRemoteRendering glRemoteRenderingView = null;
-		//
-		// // Update set in the views
-		// for (IView view : alView) {
-		// view.setTable(set);
-		//
-
-		// TODO check
-		// oldSet.destroy();
-		// oldSet = null;
-		// When new data is set, the bucket will be cleared because the internal heatmap and parcoords cannot
-		// be updated in the context mode.
-		// if (glRemoteRenderingView != null)
-		// glRemoteRenderingView.clearAll();
-	}
-
-	protected void initSelectionManagers() {
-		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
-		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
-		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
-	}
 
 	/**
 	 * Returns a clone of the record selection manager. You have to set your virtual array manually. This is
@@ -337,11 +313,7 @@ public abstract class ATableBasedDataDomain
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
 			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
 			DimensionPerspective dimensionPerspective = clusterState.getTargetDimensionPerspective();
-			dimensionPerspective.createVA(dimensionResult.getIndices());
-			dimensionPerspective.setClusterSizes(dimensionResult.getClusterSizes());
-			dimensionPerspective.setTree(dimensionResult.getTree());
-			dimensionPerspective.setSampleElements(dimensionResult.getSampleElements());
-			dimensionPerspective.finish();
+			dimensionPerspective.init(dimensionResult);
 
 			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID, dimensionPerspective
 				.getPerspectiveID(), this));
@@ -351,11 +323,7 @@ public abstract class ATableBasedDataDomain
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
 			PerspectiveInitializationData recordResult = result.getRecordResult();
 			RecordPerspective recordPerspective = clusterState.getTargetRecordPerspective();
-			recordPerspective.createVA(recordResult.getIndices());
-			recordPerspective.setClusterSizes(recordResult.getClusterSizes());
-			recordPerspective.setTree(recordResult.getTree());
-			recordPerspective.setSampleElements(recordResult.getSampleElements());
-			recordPerspective.finish();
+			recordPerspective.init(recordResult);
 
 			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID, recordPerspective
 				.getPerspectiveID(), this));
@@ -366,30 +334,8 @@ public abstract class ATableBasedDataDomain
 	 * Resets the context VA to it's initial state
 	 */
 	public void resetRecordVA(String recordPerspectiveID) {
-		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(
-			table.getBaseRecordVA(recordPerspectiveID));
+		table.getRecordPerspective(recordPerspectiveID).reset();
 	}
-
-	// /**
-	// * Replace content VA for the default table.
-	// */
-	//
-	// public void replaceRecordVA(String dataDomainType, String vaType, RecordVirtualArray virtualArray) {
-	//
-	// replaceRecordVA(table.getID(), dataDomainType, vaType, virtualArray);
-	//
-	// // Tree<ClusterNode> dimensionTree = table.getDimensionData(Set.STORAGE).getDimensionTree();
-	// // if (dimensionTree == null)
-	// // return;
-	// // else {
-	// // // TODO check whether we need this for the meat sets, it fires a lot of unnecessar events in other
-	// // // cases
-	// // // for (DataTable tmpSet : dimensionTree.getRoot().getAllSubDataTablesFromSubTree()) {
-	// // // tmpSet.setRecordVA(vaType, virtualArray.clone());
-	// // // eventPublisher.triggerEvent(new ReplaceRecordVAEvent(tmpSet, dataDomainType, vaType));
-	// // // }
-	// // }
-	// }
 
 	/**
 	 * Replace record VA for a specific table.
@@ -397,20 +343,20 @@ public abstract class ATableBasedDataDomain
 	 * @param perspectiveID
 	 * @param dataDomainID
 	 * @param recordPerspectiveID
-	 * @param virtualArray
+	 * @param data
 	 */
 	@Override
-	public void replaceRecordVA(String dataDomainID, String recordPerspectiveID,
-		RecordVirtualArray virtualArray) {
+	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,
+		PerspectiveInitializationData data) {
 
 		if (dataDomainID != this.dataDomainID) {
-			handleForeignRecordVAUpdate(dataDomainID, recordPerspectiveID, virtualArray);
+			handleForeignRecordVAUpdate(dataDomainID, recordPerspectiveID, data);
 			return;
 		}
 
-		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
+		table.getRecordPerspective(recordPerspectiveID).init(data);
 
-		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
+		table.getRecordPerspective(recordPerspectiveID).init(data);
 
 		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
 		event.setSender(this);
@@ -438,59 +384,24 @@ public abstract class ATableBasedDataDomain
 	}
 
 	@Override
-	public void replaceDimensionVA(String dataDomainID, String dimensionPerspectiveID,
-		DimensionVirtualArray virtualArray) {
+	public void replaceDimensionPerspective(String dataDomainID, String dimensionPerspectiveID,
+		PerspectiveInitializationData data) {
 
-		table.getDimensionPerspective(dimensionPerspectiveID).setVirtualArray(virtualArray);
+		table.getDimensionPerspective(dimensionPerspectiveID).init(data);
 
 		DimensionVAUpdateEvent event = new DimensionVAUpdateEvent();
 		event.setDataDomainID(dataDomainID);
 		event.setSender(this);
 		event.setPerspectiveID(dimensionPerspectiveID);
 		eventPublisher.triggerEvent(event);
-
 	}
-
-	// FIXME: do we need those methods or can we just use the replaceDimensionVA?
-	public void setRecordVirtualArray(String recordPerspectiveID, RecordVirtualArray virtualArray) {
-		table.getRecordPerspective(recordPerspectiveID).setVirtualArray(virtualArray);
-	}
-
-	public void setDimensionVirtualArray(String dimensionPerspectiveID, DimensionVirtualArray virtualArray) {
-		table.getDimensionPerspective(dimensionPerspectiveID).setVirtualArray(virtualArray);
-	}
-
-	// protected void initFullVA(String recordPerspectiveID) {
-	// if (table.getRecordData(recordPerspectiveID) == null)
-	// resetRecordVA(recordPerspectiveID);
-	// }
-
-	/**
-	 * Restore the original data. All applied filters are undone.
-	 */
-	// public void restoreOriginalRecordVA(String recordPerspectiveID) {
-	// initFullVA(recordPerspectiveID);
-	//
-	// RecordReplaceVAEvent event = new RecordReplaceVAEvent(table, dataDomainID, recordPerspectiveID);
-	// event.setSender(this);
-	// eventPublisher.triggerEvent(event);
-	// }
 
 	@Override
 	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
-		// TODO Auto-generated method stub
+		// FIXME why is here nothing?
+		System.out.println("What?");
 
 	}
-
-	// @Override
-	// public void handleVAUpdate(DimensionVADelta vaDelta, String info) {
-	// IDCategory targetCategory = vaDelta.getIDType().getIDCategory();
-	// if (targetCategory != dimensionIDCategory)
-	// return;
-	//
-	// DimensionVirtualArray va = table.getDimensionData(vaDelta.getVAType()).getDimensionVA();
-	// va.setDelta(vaDelta);
-	// }
 
 	@Override
 	public void registerEventListeners() {
@@ -523,20 +434,21 @@ public abstract class ATableBasedDataDomain
 		recordVADeltaListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(RecordVADeltaEvent.class, recordVADeltaListener);
 
-		recordReplaceVAListener = new RecordReplaceVAListener();
-		recordReplaceVAListener.setHandler(this);
-		recordReplaceVAListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(RecordReplaceVAEvent.class, recordReplaceVAListener);
+		replaceRecordPerspectiveListener = new ReplaceRecordPerspectiveListener();
+		replaceRecordPerspectiveListener.setHandler(this);
+		replaceRecordPerspectiveListener.setDataDomainID(dataDomainID);
+		eventPublisher.addListener(ReplaceRecordPerspectiveEvent.class, replaceRecordPerspectiveListener);
 
 		dimensionVADeltaListener = new DimensionVADeltaListener();
 		dimensionVADeltaListener.setHandler(this);
 		dimensionVADeltaListener.setDataDomainID(dataDomainID);
 		eventPublisher.addListener(DimensionVADeltaEvent.class, dimensionVADeltaListener);
 
-		dimensionReplaceVAListener = new DimensionReplaceVAListener();
-		dimensionReplaceVAListener.setHandler(this);
-		dimensionReplaceVAListener.setDataDomainID(dataDomainID);
-		eventPublisher.addListener(DimensionReplaceVAEvent.class, dimensionReplaceVAListener);
+		replaceDimensionPerspectiveListener = new ReplaceDimensionPerspectiveListener();
+		replaceDimensionPerspectiveListener.setHandler(this);
+		replaceDimensionPerspectiveListener.setDataDomainID(dataDomainID);
+		eventPublisher.addListener(ReplaceDimensionPerspectiveEvent.class,
+			replaceDimensionPerspectiveListener);
 
 		aggregateGroupListener = new AggregateGroupListener();
 		aggregateGroupListener.setHandler(this);
@@ -562,14 +474,14 @@ public abstract class ATableBasedDataDomain
 			startClusteringListener = null;
 		}
 
-		if (recordReplaceVAListener != null) {
-			eventPublisher.removeListener(recordReplaceVAListener);
-			recordReplaceVAListener = null;
+		if (replaceRecordPerspectiveListener != null) {
+			eventPublisher.removeListener(replaceRecordPerspectiveListener);
+			replaceRecordPerspectiveListener = null;
 		}
 
-		if (dimensionReplaceVAListener != null) {
-			eventPublisher.removeListener(dimensionReplaceVAListener);
-			dimensionReplaceVAListener = null;
+		if (replaceDimensionPerspectiveListener != null) {
+			eventPublisher.removeListener(replaceDimensionPerspectiveListener);
+			replaceDimensionPerspectiveListener = null;
 		}
 
 		if (recordVADeltaListener != null) {
@@ -674,10 +586,10 @@ public abstract class ATableBasedDataDomain
 	 * @param tableID
 	 * @param dataDomainType
 	 * @param vaType
-	 * @param virtualArray
+	 * @param data
 	 */
 	public abstract void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-		RecordVirtualArray virtualArray);
+		PerspectiveInitializationData data);
 
 	/**
 	 * Returns the id type that should be used if an entity of this data domain should be printed human
@@ -695,7 +607,7 @@ public abstract class ATableBasedDataDomain
 	public IDType getHumanReadableDimensionIDType() {
 		return humanReadableDimensionIDType;
 	}
-	
+
 	/**
 	 * Get the human readable content label for a specific id. The id has to be of the recordIDType of the
 	 * dataDomain.

@@ -5,10 +5,17 @@ import org.caleydo.core.data.id.IDType;
 public class ClusterTree
 	extends Tree<ClusterNode> {
 
+	/**
+	 * This should only be used for de-serialization
+	 */
 	public ClusterTree() {
 		super();
 	}
 
+	/** 
+	 * Constructor 
+	 * @param leaveIDType
+	 */
 	public ClusterTree(IDType leaveIDType) {
 		super(leaveIDType);
 	}

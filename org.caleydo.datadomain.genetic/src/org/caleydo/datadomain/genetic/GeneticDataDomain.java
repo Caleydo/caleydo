@@ -13,12 +13,12 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingLoader;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAEvent;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
@@ -51,7 +51,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 */
 	private boolean pathwayViewerMode;
 
-	private RecordReplaceVAListener clinicalReplaceContentVirtualArrayListener;
+	private ReplaceRecordPerspectiveListener clinicalReplaceContentVirtualArrayListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
@@ -68,7 +68,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
 		humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
 
-	
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		recordLabelPlural = "genes";
@@ -78,8 +77,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	protected void initIDMappings() {
 
 		// Load IDs needed in this datadomain
-		IDMappingLoader.get()
-				.loadMappingFile("data/bootstrap/bootstrap.xml");
+		IDMappingLoader.get().loadMappingFile("data/bootstrap/bootstrap.xml");
 	}
 
 	@Override
@@ -182,11 +180,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		String clinicalDataDomainID = DataDomainManager.get()
 				.getDataDomainByType(CLINICAL_DATADOMAIN_TYPE).getDataDomainID();
 
-		clinicalReplaceContentVirtualArrayListener = new RecordReplaceVAListener();
+		clinicalReplaceContentVirtualArrayListener = new ReplaceRecordPerspectiveListener();
 		clinicalReplaceContentVirtualArrayListener.setHandler(this);
 		clinicalReplaceContentVirtualArrayListener
 				.setExclusiveDataDomainID(clinicalDataDomainID);
-		eventPublisher.addListener(RecordReplaceVAEvent.class,
+		eventPublisher.addListener(ReplaceRecordPerspectiveEvent.class,
 				clinicalReplaceContentVirtualArrayListener);
 
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
@@ -258,7 +256,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			RecordVirtualArray virtualArray) {
+			PerspectiveInitializationData data) {
 
 		// FIXME its not clear which dimension va should be updated here
 		// if (dataDomainType.equals(CLINICAL_DATADOMAIN_TYPE)) {

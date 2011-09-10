@@ -232,7 +232,7 @@ public class DataTableUtils {
 	/**
 	 * Creates the set from a previously prepared dimension definition.
 	 */
-	public static DataTable createData(ATableBasedDataDomain dataDomain) {
+	public static DataTable createData(ATableBasedDataDomain dataDomain, boolean createDefaultPerspectives) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> dimensionIDs = loadDataParameters.getDimensionIds();
@@ -278,7 +278,10 @@ public class DataTableUtils {
 		// ----------------------------------------
 		DataTable table = dataDomain.getTable();
 
-		table.createDefaultRecordPerspective();
+		if (createDefaultPerspectives) {
+			table.createDefaultRecordPerspective();
+			table.createDefaultDimensionPerspective();
+		}
 
 		// loadTrees(loadDataParameters, set);
 
@@ -307,11 +310,9 @@ public class DataTableUtils {
 	}
 
 	public static void setTables(DataTable table, ArrayList<Integer> dimensionIDs) {
-		for (int iDimensionID : dimensionIDs) {
-			table.addDimension(iDimensionID);
+		for (int dimensionID : dimensionIDs) {
+			table.addDimension(dimensionID);
 		}
-
-		table.finalizeAddedDimensions();
 	}
 
 	/**

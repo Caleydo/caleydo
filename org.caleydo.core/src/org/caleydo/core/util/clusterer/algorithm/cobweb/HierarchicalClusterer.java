@@ -10,11 +10,11 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
@@ -35,9 +35,6 @@ public class HierarchicalClusterer
 	}
 
 	private PerspectiveInitializationData cluster(DataTable table, ClusterConfiguration clusterState) {
-
-		// Arraylist holding clustered indexes
-		ArrayList<Integer> indices = new ArrayList<Integer>();
 
 		StringBuffer buffer = new StringBuffer();
 
@@ -211,17 +208,17 @@ public class HierarchicalClusterer
 		// }
 
 		// variant 2
-		Arrays.sort(clusterAssignments);
-		for (int i = 0; i < data.numInstances(); i++) {
-			int temp = 0;
-			for (double cluster : clusters) {
-				if (clusterAssignments[i] == cluster) {
-					indices.add(temp);
-					break;
-				}
-				temp++;
-			}
-		}
+		// Arrays.sort(clusterAssignments);
+		// for (int i = 0; i < data.numInstances(); i++) {
+		// int temp = 0;
+		// for (double cluster : clusters) {
+		// if (clusterAssignments[i] == cluster) {
+		// indices.add(temp);
+		// break;
+		// }
+		// temp++;
+		// }
+		// }
 
 		processEvents();
 		if (bClusteringCanceled) {
@@ -263,8 +260,8 @@ public class HierarchicalClusterer
 				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setIndices(indices);
-		tempResult.setTree(tree);
+
+		tempResult.setData(tree);
 		return tempResult;
 	}
 
@@ -298,8 +295,8 @@ public class HierarchicalClusterer
 	}
 
 	@Override
-	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
+		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;

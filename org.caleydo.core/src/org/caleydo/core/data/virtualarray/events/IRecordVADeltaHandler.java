@@ -1,11 +1,12 @@
 package org.caleydo.core.data.virtualarray.events;
 
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
- * Handler interface for listeners for {@link RecordVADeltaEvent} and {@link RecordReplaceVAEvent}.
+ * Handler interface for listeners for {@link RecordVADeltaEvent} and {@link ReplaceRecordPerspectiveEvent}.
  * 
  * @author Alexander Lex
  *
@@ -25,10 +26,10 @@ public interface IRecordVADeltaHandler
 	public void handleRecordVADelta(RecordVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link RecordReplaceVAListener} when a {@link VAReplaceEvent} was
+	 * Handler method to be called by the {@link ReplaceRecordPerspectiveListener} when a {@link ReplacePerspectiveEvent} was
 	 * received.
 	 * 
 	 */
-	public void replaceRecordVA(String dataDomainID, String recordPerspectiveID,  RecordVirtualArray virtualArray);
+	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,  PerspectiveInitializationData data);
 
 }

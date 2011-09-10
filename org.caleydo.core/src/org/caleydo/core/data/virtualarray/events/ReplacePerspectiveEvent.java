@@ -4,6 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.event.AEvent;
 
@@ -15,16 +16,16 @@ import org.caleydo.core.manager.event.AEvent;
  */
 @XmlRootElement
 @XmlType
-public abstract class VAReplaceEvent<E extends VirtualArray<?, ?, ?>>
+public abstract class ReplacePerspectiveEvent
 	extends AEvent {
 
-	private E virtualArray;
+	private PerspectiveInitializationData data;
 	private String perspectiveID = null;
 
 	/**
 	 * default no-arg constructor.
 	 */
-	public VAReplaceEvent() {
+	public ReplacePerspectiveEvent() {
 		// nothing to initialize here
 	}
 
@@ -35,14 +36,14 @@ public abstract class VAReplaceEvent<E extends VirtualArray<?, ?, ?>>
 	 * @param perspectiveID
 	 * @param virtualArray
 	 */
-	protected VAReplaceEvent(String dataDomainID, String perspectiveID, E virtualArray) {
+	protected ReplacePerspectiveEvent(String dataDomainID, String perspectiveID, PerspectiveInitializationData data) {
 		this.dataDomainID = dataDomainID;
 		this.perspectiveID = perspectiveID;
-		this.virtualArray = virtualArray;
+		this.data = data;
 	}
 
-	public E getVirtualArray() {
-		return virtualArray;
+	public PerspectiveInitializationData getPerspectiveInitializationData() {
+		return data;
 	}
 
 	@Override
@@ -53,8 +54,8 @@ public abstract class VAReplaceEvent<E extends VirtualArray<?, ?, ?>>
 		return true;
 	}
 
-	public void setVirtualArray(E virtualArray) {
-		this.virtualArray = virtualArray;
+	public void setPerspectiveInitializationData(PerspectiveInitializationData data) {
+		this.data = data;
 	}
 
 	public String getPerspectiveID() {

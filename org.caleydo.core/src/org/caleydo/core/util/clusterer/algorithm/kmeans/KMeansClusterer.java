@@ -8,12 +8,12 @@ import java.util.HashMap;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
@@ -48,9 +48,9 @@ public class KMeansClusterer
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
 		// Arraylist holding # of elements per cluster
-		ArrayList<Integer> count = new ArrayList<Integer>();
+		ArrayList<Integer> clusterSizes = new ArrayList<Integer>();
 		// Arraylist holding indices of examples (cluster centers)
-		ArrayList<Integer> alExamples = new ArrayList<Integer>();
+		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
 
 		DistanceFunction distanceMeasure;
 
@@ -228,23 +228,17 @@ public class KMeansClusterer
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
 		for (int i = 0; i < iNrCluster; i++) {
-			count.add(0);
+			clusterSizes.add(0);
 		}
 
 		// System.out.println(eval.getNumClusters());
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		// IVirtualArray currentVA = null;
-		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// currentVA = table.getVA(iVAIdContent);
-		// else
-		// currentVA = table.getVA(iVAIdDimension);
-
 		for (int cluster = 0; cluster < iNrCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == cluster) {
-					alExamples.add(i);
+					sampleElements.add(i);
 					break;
 				}
 			}
@@ -259,51 +253,42 @@ public class KMeansClusterer
 		HashMap<Integer, Integer> hashExamples = new HashMap<Integer, Integer>();
 
 		int cnt = 0;
-		for (int example : alExamples) {
+		for (int example : sampleElements) {
 			hashExamples.put(example, cnt);
 			cnt++;
 		}
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
-		ClusterHelper.sortClusters(table, recordVA, dimensionVA, alExamples, clusterState.getClustererType());
+		ClusterHelper.sortClusters(table, recordVA, dimensionVA, sampleElements,
+			clusterState.getClustererType());
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
-			for (int cluster : alExamples) {
+			for (int cluster : sampleElements) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
 						indices.add(recordVA.get(i));
-						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+						clusterSizes.set(hashExamples.get(cluster),
+							clusterSizes.get(hashExamples.get(cluster)) + 1);
 					}
 				}
 			}
 		}
 		else {
 
-			for (int cluster : alExamples) {
+			for (int cluster : sampleElements) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
 						indices.add(dimensionVA.get(i));
-						count.set(hashExamples.get(cluster), count.get(hashExamples.get(cluster)) + 1);
+						clusterSizes.set(hashExamples.get(cluster),
+							clusterSizes.get(hashExamples.get(cluster)) + 1);
 					}
 				}
 			}
 		}
 
-		// IVirtualArray virtualArray = null;
-		// if (clusterState.getClustererType() == EClustererType.GENE_CLUSTERING)
-		// virtualArray = new VirtualArray(table.getVA(iVAIdContent).getVAType(), table.depth(), indices);
-		// else if (clusterState.getClustererType() == EClustererType.EXPERIMENTS_CLUSTERING)
-		// virtualArray = new VirtualArray(table.getVA(iVAIdDimension).getVAType(), table.size(), indices);
-
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setIndices(indices);
-		tempResult.setClusterSizes(count);
-		tempResult.setSampleElements(alExamples);
-
-		// set cluster result in Set
-		// table.setAlClusterSizes(count);
-		// table.setAlExamples(alExamples);
+		tempResult.setData(indices, clusterSizes, sampleElements);
 
 		GeneralManager
 			.get()
@@ -315,8 +300,8 @@ public class KMeansClusterer
 	}
 
 	@Override
-	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
+		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;

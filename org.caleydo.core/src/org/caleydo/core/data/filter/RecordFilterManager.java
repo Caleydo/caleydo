@@ -14,7 +14,7 @@ import org.caleydo.core.data.filter.event.RemoveRecordFilterListener;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAEvent;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 
 /**
@@ -94,15 +94,15 @@ public class RecordFilterManager
 		}
 	}
 
-//	@Override
-//	protected void triggerReplaceVAEvent() {
-//		RecordReplaceVAEvent event = new RecordReplaceVAEvent();
-//		event.setVAType(perspective.getPerspectiveID());
-//		event.setVirtualArray(perspective.getVirtualArray());
-//		event.setSender(this);
-//		event.setDataDomainID(dataDomain.getDataDomainID());
-//		eventPublisher.triggerEvent(event);
-//	}
+	// @Override
+	// protected void triggerReplaceVAEvent() {
+	// RecordReplaceVAEvent event = new RecordReplaceVAEvent();
+	// event.setVAType(perspective.getPerspectiveID());
+	// event.setVirtualArray(perspective.getVirtualArray());
+	// event.setSender(this);
+	// event.setDataDomainID(dataDomain.getDataDomainID());
+	// eventPublisher.triggerEvent(event);
+	// }
 
 	@Override
 	protected void triggerVADeltaEvent(RecordVADelta delta) {
@@ -115,7 +115,7 @@ public class RecordFilterManager
 
 	@Override
 	protected void resetVA() {
-		perspective.setVirtualArray(dataDomain.getTable().getBaseRecordVA(perspective.getPerspectiveID()));
+		perspective.reset();
 	}
 
 }

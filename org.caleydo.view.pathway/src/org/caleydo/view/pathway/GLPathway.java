@@ -27,7 +27,7 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.data.virtualarray.events.RecordReplaceVAListener;
+import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
@@ -120,7 +120,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected RecordVADeltaListener virtualArrayUpdateListener;
 
-	protected RecordReplaceVAListener replaceVirtualArrayListener;
+	protected ReplaceRecordPerspectiveListener replaceVirtualArrayListener;
 
 	protected RedrawViewListener redrawViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;

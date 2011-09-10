@@ -40,7 +40,7 @@ public class TreePorter {
 
 	@XmlElementWrapper(name = "edges")
 	@XmlElement(name = "edge")
-	ArrayList<String[]> edges = new ArrayList<String[]>();
+	ArrayList<Integer[]> edges = new ArrayList<Integer[]>();
 
 	@XmlElementWrapper(name = "nodes")
 	@XmlElement(name = "node")
@@ -93,13 +93,13 @@ public class TreePorter {
 
 		int size = (int) (treePorter.nodeSet.size() * 1.5);
 		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(size);
-		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
+//		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
 		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs =
 			new HashMap<Integer, ArrayList<Integer>>(size);
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
-			hashClusterNodes.put(node.toString(), node);
+//			hashClusterNodes.put(node.toString(), node);
 			hashClusterNr.put(node.getID(), node);
 			if (node.isRootNode())
 				rootNode = node;
@@ -121,8 +121,8 @@ public class TreePorter {
 			}
 		}
 
-		for (String[] edge : treePorter.edges) {
-			graph.addEdge(hashClusterNodes.get(edge[0]), hashClusterNodes.get(edge[1]));
+		for (Integer[] edge : treePorter.edges) {
+			graph.addEdge(hashClusterNr.get(edge[0]), hashClusterNr.get(edge[1]));
 		}
 
 		tree.setHashMap(hashClusterNr);
@@ -134,10 +134,7 @@ public class TreePorter {
 	}
 
 	public ClusterTree importDimensionTree(String fileName) throws JAXBException, FileNotFoundException {
-
 		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
-//		DataTable table = dataDomain.getTable();
-		// tree.createSubDataTables(table);
 		return tree;
 	}
 
@@ -189,9 +186,9 @@ public class TreePorter {
 		Set<DefaultEdge> edgeSet = tree.graph.edgeSet();
 
 		for (DefaultEdge edge : edgeSet) {
-			String temp[] = new String[2];
-			temp[0] = tree.graph.getEdgeSource(edge).getLabel();
-			temp[1] = tree.graph.getEdgeTarget(edge).getLabel();
+			Integer temp[] = new Integer[2];
+			temp[0] = tree.graph.getEdgeSource(edge).getID();
+			temp[1] = tree.graph.getEdgeTarget(edge).getID();
 			edges.add(temp);
 		}
 

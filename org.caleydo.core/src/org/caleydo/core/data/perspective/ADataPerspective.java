@@ -77,6 +77,9 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlElement
 	protected ATableBasedDataDomain dataDomain;
 
+	@XmlTransient
+	protected IDType idType;
+
 	/** The {@link VirtualArray} of this DataPerspective. */
 	protected VA virtualArray;
 
@@ -92,25 +95,12 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlTransient
 	protected FilterManagerType filterManager;
 
-	@XmlTransient
-	protected IDType idType;
+	// @XmlTransient
+	// private ArrayList<Integer> sampleElements;
 
-	/**
-	 * Indices of elements that represent a cluster (cluster centers). Used for initialization to create a
-	 * sample element for every group.
-	 */
-	@XmlTransient
-	private ArrayList<Integer> sampleElements;
-	/**
-	 * The sizes of the clusters in a list sorted so that combined with the {@link VirtualArray} the clusters
-	 * are uniquely identified. Used for initialization.
-	 */
-	@XmlTransient
-	private ArrayList<Integer> clusterSizes;
-	/**
-	 * The tree that shows relation between the elements in the {@link VirtualArray}. Always needs to be in
-	 * sync with the VAs.
-	 */
+	// @XmlTransient
+	// private ArrayList<Integer> clusterSizes;
+
 	@XmlTransient
 	private ClusterTree tree;
 
@@ -174,10 +164,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 *            can be a filled ArrayList, an empty ArrayList for empty initialization or null for empty
 	 *            initialization
 	 */
-	public void createVA(List<Integer> indices) {
-		reset();
-		if (indices == null)
-			indices = new ArrayList<Integer>();
+	private void createVA(List<Integer> indices) {
 		virtualArray = newConcreteVirtualArray(indices);
 	}
 
@@ -189,23 +176,6 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlElementRef
 	public VA getVirtualArray() {
 		return virtualArray;
-	}
-
-	/**
-	 * Sets a new virtual array to this perspective.
-	 * 
-	 * @param virtualArray
-	 */
-	public void setVirtualArray(VA virtualArray) {
-		if (virtualArray == null) {
-			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Virtual array to be set was null"));
-			return;
-		}
-		reset();
-		// if (virtualArray.getVaType() != perspectiveID)
-		// throw new IllegalArgumentException("VA's ID (" + virtualArray.getVaType()
-		// + ") does not match data perspectives ID (" + perspectiveID + ")");
-		this.virtualArray = virtualArray;
 	}
 
 	/**
@@ -222,8 +192,6 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	@XmlTransient
 	public ClusterTree getTree() {
-		if (tree == null)
-			finish();
 		return tree;
 	}
 
@@ -232,18 +200,31 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 * 
 	 * @param tree
 	 */
+	@Deprecated
 	public void setTree(ClusterTree tree) {
 		isTreeDefaultTree = false;
 		this.tree = tree;
 	}
 
 	/**
-	 * Set an artificial {@link #rootNode} for the tree.
+	 * Sets a new virtual array to this perspective.
 	 * 
-	 * @param rootNode
+	 * @param virtualArray
 	 */
-	public void setTreeRoot(ClusterNode rootNode) {
-		this.rootNode = rootNode;
+	@Deprecated
+	public void setVirtualArray(VA virtualArray) {
+		if (virtualArray == null) {
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Virtual array to be set was null"));
+			return;
+		}
+		this.virtualArray = virtualArray;
+	}
+
+	/**
+	 * @return the isTreeDefaultTree, see {@link #isTreeDefaultTree}
+	 */
+	public boolean isTreeDefaultTree() {
+		return isTreeDefaultTree;
 	}
 
 	/**
@@ -261,94 +242,6 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			return null;
 	}
 
-	private void reset() {
-		clusterSizes = null;
-		sampleElements = null;
-		tree = null;
-	}
-
-	/**
-	 * Sets the delta to the virtual array and resets other related data (groups, trees) accordingly.
-	 * 
-	 * @param delta
-	 */
-	public void setVADelta(DeltaType delta) {
-		virtualArray.setDelta(delta);
-		reset();
-		virtualArray.setGroupList(null);
-	}
-
-	public void setSampleElements(ArrayList<Integer> contentSampleElements) {
-		this.sampleElements = contentSampleElements;
-	}
-
-	public void setClusterSizes(ArrayList<Integer> contentClusterSizes) {
-		this.clusterSizes = contentClusterSizes;
-	}
-
-	
-	public void finish() {
-		// Create groupList and tree based on cluster sizes. The t
-		if (virtualArray != null && clusterSizes != null && sampleElements != null) {
-			GroupType groupList = createGroupList();
-
-			int groupCounter = 0;
-			isTreeDefaultTree = true;
-			tree = new ClusterTree(idType);
-			int clusterNr = 0;
-			ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true, -1);
-			tree.setRootNode(root);
-			ClusterNode node;
-			int from = 0;
-			int to = 0;
-			for (Integer clusterSize : clusterSizes) {
-				node = new ClusterNode(tree, "Group: " + clusterNr, clusterNr++, true, -1);
-				Group temp = new Group(clusterSize, sampleElements.get(groupCounter), node);
-				tree.addChild(root, node);
-				groupList.append(temp);
-				groupCounter++;
-				to += clusterSize;
-				ClusterNode leaf;
-				for (int vaIndex = from; vaIndex < to; vaIndex++) {
-					Integer id = virtualArray.get(vaIndex);
-					leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, true, id);
-					tree.addChild(node, leaf);
-				}
-				from = to;
-			}
-
-			virtualArray.setGroupList(groupList);
-		}
-		// calculate the group list based on the tree's first level
-		else if (virtualArray != null && tree != null) {
-			virtualArray.buildNewGroupList(createGroupList(), tree.getRoot().getChildren());
-		}
-		else if (virtualArray != null && tree == null) {
-			isTreeDefaultTree = true;
-			tree = new ClusterTree(idType);
-			ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
-			tree.setRootNode(root);
-			for (Integer id : virtualArray) {
-				tree.addChild(root, new ClusterNode(tree, getLabel(id), id, false, id));
-			}
-		}
-	}
-
-	protected abstract String getLabel(Integer id);
-
-	/**
-	 * Creates a virtual array for this perspective by extracting the leaves from the tree. Respects the
-	 * artificial {@link #rootNode}, or uses the trees default root if no artificial root is set.
-	 */
-	public void createVABasedOnTree() {
-		// ContentGroupList groupList = recordVA.getGroupList();
-		if (rootNode == null)
-			rootNode = tree.getRoot();
-		virtualArray = newConcreteVirtualArray(rootNode.getLeaveIds());
-		virtualArray.buildNewGroupList(createGroupList(), tree.getRoot().getChildren());
-		// recordVA.setGroupList(groupList);
-	}
-
 	/**
 	 * Returns the {@link FilterManager} associated with this perspective. Every perspective has it's own
 	 * unique filter manager.
@@ -361,6 +254,68 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		return filterManager;
 	}
 
+	/**
+	 * Sets the delta to the virtual array and resets other related data (groups, trees) accordingly.
+	 * 
+	 * @param delta
+	 */
+	public void setVADelta(DeltaType delta) {
+		virtualArray.setDelta(delta);
+		createDefaultTree();
+		virtualArray.setGroupList(null);
+	}
+
+	/**
+	 * <p>
+	 * {@link ADataPerspective}s are initialized by providing a {@link PerspectiveInitializationData} object,
+	 * which can contain a number of different combinations of information to initialize the perspective.
+	 * </p>
+	 * <p>
+	 * If null is passed, an empty perspective is created.
+	 * </p>
+	 * 
+	 * @param data
+	 */
+	public void init(PerspectiveInitializationData data) {
+
+		// Case 1: we want an empty perspective
+		if (data == null) {
+			createVA(null);
+		}
+		// Case 2: we only have a virtual array
+		else if (data.getIndices() != null && data.getClusterSizes() == null && data.getTree() == null) {
+			createVA(data.getIndices());
+			createDefaultTree();
+		}
+		// Case 3: we have a virtual array and grouping
+		else if (data.getIndices() != null && data.getClusterSizes() != null) {
+			createVA(data.getIndices());
+			createGroupListAndDefaultTreeFromClusterSizes(data);
+
+		}
+		// Case 4: we have a tree and nothing else, with either the default root or a specific node as root
+		else if (data.getTree() != null && data.getIndices() == null) {
+			createEverythingFromTree(data);
+		}
+
+		else {
+			throw new IllegalStateException("Cannot initialize from " + data
+				+ " either redundant or to little information.");
+		}
+	}
+
+	public void reset() {
+		tree = null;
+		rootNode = null;
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(getIDList());
+		init(data);
+	}
+
+	// ------------------ Abstract Methods that need the concrete data types ---------------
+
+	protected abstract String getLabel(Integer id);
+
 	/** Create a concrete {@link GroupList} in the derived classes. */
 	protected abstract GroupType createGroupList();
 
@@ -370,10 +325,76 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	/** Create a concrete {@link VirtualArray} in the derived classes */
 	protected abstract VA newConcreteVirtualArray(List<Integer> indexList);
 
-	/**
-	 * @return the isTreeDefaultTree, see {@link #isTreeDefaultTree}
-	 */
-	public boolean isTreeDefaultTree() {
-		return isTreeDefaultTree;
+	/** Get a complete list of indices of all elements in the data table for the perspective type */
+	protected abstract List<Integer> getIDList();
+
+	// -------------------------- Initialization Methods -------------------------------------
+
+	/** Creates a default tree of depth 1, assuming only one group */
+	private void createDefaultTree() {
+		isTreeDefaultTree = true;
+		tree = new ClusterTree(idType);
+		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
+		tree.setRootNode(root);
+		for (Integer id : virtualArray) {
+			tree.addChild(root, new ClusterNode(tree, getLabel(id), id, false, id));
+		}
 	}
+
+	private void createGroupListAndDefaultTreeFromClusterSizes(PerspectiveInitializationData data) {
+		GroupType groupList = createGroupList();
+		int groupCounter = 0;
+		isTreeDefaultTree = true;
+		tree = new ClusterTree(idType);
+		int clusterNr = 0;
+		ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true, -1);
+		tree.setRootNode(root);
+		ClusterNode node;
+		int from = 0;
+		int to = 0;
+		for (Integer clusterSize : data.getClusterSizes()) {
+			node = new ClusterNode(tree, "Group: " + clusterNr, clusterNr++, true, -1);
+			Group temp = new Group(clusterSize, data.getSampleElements().get(groupCounter), node);
+			tree.addChild(root, node);
+			groupList.append(temp);
+			groupCounter++;
+			to += clusterSize;
+			ClusterNode leaf;
+			for (int vaIndex = from; vaIndex < to; vaIndex++) {
+				Integer id = virtualArray.get(vaIndex);
+				leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, true, id);
+				tree.addChild(node, leaf);
+			}
+			from = to;
+		}
+
+		virtualArray.setGroupList(groupList);
+	}
+
+	/**
+	 * Creates a virtual array for this perspective by extracting the leaves from the tree. Respects the
+	 * artificial {@link #rootNode}, or uses the trees default root if no artificial root is set.
+	 */
+	private void createEverythingFromTree(PerspectiveInitializationData data) {
+		tree = data.getTree();
+
+		if (tree.getLeaveIDType() == null)
+			tree.initializeIDTypes(idType);
+		if (tree.getLeaveIDType() != idType)
+			throw new IllegalStateException("IDType of tree and perspective do not match. Tree:  "
+				+ tree.getLeaveIDType() + " perspective: " + idType);
+
+		isTreeDefaultTree = false;
+		if (data.getRootNode() == null)
+			rootNode = tree.getRoot();
+		else
+			rootNode = data.getRootNode();
+
+		virtualArray = newConcreteVirtualArray(rootNode.getLeaveIds());
+		ArrayList<ClusterNode> listOfNodesForGroups = new ArrayList<ClusterNode>(1);
+		listOfNodesForGroups.add(rootNode);
+		virtualArray.buildNewGroupList(createGroupList(), listOfNodesForGroups);
+
+	}
+
 }

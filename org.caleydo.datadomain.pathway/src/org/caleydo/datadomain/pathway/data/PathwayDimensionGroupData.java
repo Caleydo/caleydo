@@ -9,6 +9,7 @@ import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -215,7 +216,9 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 
 			group.setSize(groupSize);
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.createVA((ArrayList<Integer>) ids);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(ids);
+			recordPerspective.init(data);
 			segmentData.add(new PathwaySegmentData(dataDomain, pathwayDataDomain,
 					recordPerspective, dimensionPerspective, group, pathway, this));
 

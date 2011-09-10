@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -12,7 +13,6 @@ import org.caleydo.core.manager.event.data.ClusterProgressEvent;
 import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
-import org.caleydo.core.util.clusterer.PerspectiveInitializationData;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.distancemeasures.ChebyshevDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
@@ -278,7 +278,7 @@ public class AffinityClusterer
 		// Arraylist holding indices of examples (cluster centers)
 		ArrayList<Integer> alExamples = new ArrayList<Integer>();
 		// Arraylist holding number of elements per cluster
-		ArrayList<Integer> alClusterSizes = new ArrayList<Integer>();
+		ArrayList<Integer> clusterSizes = new ArrayList<Integer>();
 
 		// long original = System.currentTimeMillis();
 
@@ -504,17 +504,17 @@ public class AffinityClusterer
 			return null;
 		}
 
-		ArrayList<Integer> idxExamples = new ArrayList<Integer>();
+		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
 
 		for (int i = 0; i < alExamples.size(); i++) {
-			alClusterSizes.add(0);
+			clusterSizes.add(0);
 		}
 
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(dataDomain.getTable(), recordVA, dimensionVA, alExamples, eClustererType);
 
-		indices = getAl(alExamples, alClusterSizes, idxExamples, idx, eClustererType);
+		indices = getAl(alExamples, clusterSizes, sampleElements, idx, eClustererType);
 
 		GeneralManager
 			.get()
@@ -523,9 +523,8 @@ public class AffinityClusterer
 				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
-		tempResult.setClusterSizes(alClusterSizes);
-		tempResult.setSampleElements(idxExamples);
-		tempResult.setIndices(indices);
+
+		tempResult.setData(indices, clusterSizes, sampleElements);
 		return tempResult;
 
 		// IVirtualArray virtualArray = null;
