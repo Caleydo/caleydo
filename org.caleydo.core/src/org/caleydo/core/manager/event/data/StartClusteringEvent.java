@@ -17,31 +17,30 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 public class StartClusteringEvent
 	extends AEvent {
 
-	private ClusterConfiguration clusterState;
+	private ClusterConfiguration clusterConfiguration;
 
-		/**
-	 * default no-arg constructor
-	 */
 	public StartClusteringEvent() {
-		// nothing to initialize here
 	}
-
-	// public StartClusteringEvent(ClusterState state) {
-	// this.ClusterState = state;
-	// }
 
 	public StartClusteringEvent(ClusterConfiguration state) {
-		this.clusterState = state;		
+		this.clusterConfiguration = state;
 	}
 
-	
-	public ClusterConfiguration getClusterState() {
-		return clusterState;
+	/**
+	 * @param clusterConfiguration
+	 *            setter, see {@link #clusterConfiguration}
+	 */
+	public void setClusterConfiguration(ClusterConfiguration clusterConfiguration) {
+		this.clusterConfiguration = clusterConfiguration;
+	}
+
+	public ClusterConfiguration getClusteConfiguration() {
+		return clusterConfiguration;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-		if (clusterState == null)
+		if (clusterConfiguration == null)
 			return false;
 		return true;
 	}

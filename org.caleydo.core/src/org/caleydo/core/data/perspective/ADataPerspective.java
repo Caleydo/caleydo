@@ -58,6 +58,9 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlElement
 	protected String perspectiveID;
 
+	/** A human-readable description of the perspective */
+	private String label;
+
 	/**
 	 * Flag determining whether this perspective is private to a certain view. That means that other views
 	 * typically should not use this perspective
@@ -117,6 +120,23 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		init();
+	}
+
+	/**
+	 * @param label
+	 *            setter, see {@link #label}
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @return the label, see {@link #label}, or if the label is null, the perspectiveID is returned.
+	 */
+	public String getLabel() {
+		if (label == null || label.isEmpty())
+			return perspectiveID;
+		return label;
 	}
 
 	/**
@@ -314,7 +334,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	// ------------------ Abstract Methods that need the concrete data types ---------------
 
-	protected abstract String getLabel(Integer id);
+	/** Get the human readable label of the element specified by the ID */
+	protected abstract String getElementLabel(Integer id);
 
 	/** Create a concrete {@link GroupList} in the derived classes. */
 	protected abstract GroupType createGroupList();
@@ -337,7 +358,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
 		tree.setRootNode(root);
 		for (Integer id : virtualArray) {
-			tree.addChild(root, new ClusterNode(tree, getLabel(id), id, false, id));
+			tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id, false, id));
 		}
 	}
 

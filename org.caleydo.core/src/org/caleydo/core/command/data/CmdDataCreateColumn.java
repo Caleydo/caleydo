@@ -13,7 +13,7 @@ import org.caleydo.core.data.id.ManagedObjectType;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class CmdDataCreateDimension
+public class CmdDataCreateColumn
 	extends ACmdCreational<AColumn> {
 	
 	private ManagedObjectType dimensionType;
@@ -23,8 +23,8 @@ public class CmdDataCreateDimension
 	/**
 	 * Constructor.
 	 */
-	public CmdDataCreateDimension() {
-		super(CommandType.CREATE_DIMENSION);
+	public CmdDataCreateColumn() {
+		super(CommandType.CREATE_COLUMN);
 	}
 
 	@Override

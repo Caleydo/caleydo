@@ -10,7 +10,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.data.CmdDataCreateDimension;
+import org.caleydo.core.command.data.CmdDataCreateColumn;
 import org.caleydo.core.command.data.CmdDataCreateTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
@@ -20,6 +20,7 @@ import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
@@ -135,16 +136,16 @@ public class DataTableUtils {
 	 *            definition how to create the dimensions
 	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
 	 */
-	public static boolean createDimensions(LoadDataParameters loadDataParameters) {
+	public static boolean createColumns(LoadDataParameters loadDataParameters) {
 
-		ArrayList<Integer> dimensionIds = null;
-		boolean createDimensionsFromExistingIDs = false;
+		ArrayList<Integer> columnIds = null;
+		boolean createColumnsFromExistingIDs = false;
 
-		if (loadDataParameters.getDimensionIds() == null)
-			dimensionIds = new ArrayList<Integer>();
+		if (loadDataParameters.getColumnIds() == null)
+			columnIds = new ArrayList<Integer>();
 		else {
-			dimensionIds = loadDataParameters.getDimensionIds();
-			createDimensionsFromExistingIDs = true;
+			columnIds = loadDataParameters.getColumnIds();
+			createColumnsFromExistingIDs = true;
 		}
 
 		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
@@ -152,62 +153,74 @@ public class DataTableUtils {
 		ArrayList<EDimensionType> dataTypes = reader.getColumnDataTypes();
 
 		boolean abort = false;
-		Iterator<String> dimensionLabelIterator = loadDataParameters.getDimensionLabels().iterator();
-		CmdDataCreateDimension cmdCreateDimension;
-		String dimensionLabel;
+		Iterator<String> columnLabelIterator = loadDataParameters.getColumnLabels().iterator();
+		CmdDataCreateColumn cmdCreateColumn;
+		String columnLabel;
 
 		ATableBasedDataDomain dataDomain = loadDataParameters.getDataDomain();
-		IDMappingManager dimensionIDMappingManager = dataDomain.getDimensionIDMappingManager();
-		MappingType mappingType =
-			dimensionIDMappingManager.createMap(dataDomain.getDimensionIDType(),
-				dataDomain.getHumanReadableDimensionIDType(), false);
-		Map<Integer, String> dimensionIDMap = dimensionIDMappingManager.getMap(mappingType);
 
-		int dimensionCount = 0;
+		IDMappingManager columnIDMappingManager;
+		IDType columnIDType;
+		IDType hrColumnIDType;
+		if (dataDomain.isColumnDimension()) {
+			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
+			columnIDType = dataDomain.getDimensionIDType();
+			hrColumnIDType = dataDomain.getHumanReadableDimensionIDType();
+		}
+		else {
+			columnIDMappingManager = dataDomain.getRecordIDMappingManager();
+			columnIDType = dataDomain.getRecordIDType();
+			hrColumnIDType = dataDomain.getHumanReadableRecordIDType();
+
+		}
+
+		MappingType mappingType = columnIDMappingManager.createMap(columnIDType, hrColumnIDType, false);
+		Map<Integer, String> dimensionIDMap = columnIDMappingManager.getMap(mappingType);
+
+		int columnCount = 0;
 
 		for (EDimensionType dataType : dataTypes) {
 			switch (dataType) {
 				case FLOAT:
-					cmdCreateDimension =
-						(CmdDataCreateDimension) GeneralManager.get().getCommandManager()
-							.createCommandByType(CommandType.CREATE_DIMENSION);
+					cmdCreateColumn =
+						(CmdDataCreateColumn) GeneralManager.get().getCommandManager()
+							.createCommandByType(CommandType.CREATE_COLUMN);
 
-					if (createDimensionsFromExistingIDs)
-						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL,
-							dimensionIds.get(dimensionCount++));
+					if (createColumnsFromExistingIDs)
+						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL,
+							columnIds.get(columnCount++));
 					else
-						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NUMERICAL);
+						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL);
 
-					cmdCreateDimension.doCommand();
-					dimensionLabel = dimensionLabelIterator.next();
-					NumericalColumn dimension = (NumericalColumn) cmdCreateDimension.getCreatedObject();
-					dimension.setLabel(dimensionLabel);
-					dimensionIDMap.put(dimension.getID(), dimensionLabel);
+					cmdCreateColumn.doCommand();
+					columnLabel = columnLabelIterator.next();
+					NumericalColumn column = (NumericalColumn) cmdCreateColumn.getCreatedObject();
+					column.setLabel(columnLabel);
+					dimensionIDMap.put(column.getID(), columnLabel);
 
-					if (!createDimensionsFromExistingIDs)
-						dimensionIds.add(dimension.getID());
+					if (!createColumnsFromExistingIDs)
+						columnIds.add(column.getID());
 
 					break;
 				case STRING:
-					cmdCreateDimension =
-						(CmdDataCreateDimension) GeneralManager.get().getCommandManager()
-							.createCommandByType(CommandType.CREATE_DIMENSION);
+					cmdCreateColumn =
+						(CmdDataCreateColumn) GeneralManager.get().getCommandManager()
+							.createCommandByType(CommandType.CREATE_COLUMN);
 
-					if (createDimensionsFromExistingIDs)
-						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL,
-							dimensionIds.get(dimensionCount++));
+					if (createColumnsFromExistingIDs)
+						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL,
+							columnIds.get(columnCount++));
 					else
-						cmdCreateDimension.setAttributes(ManagedObjectType.DIMENSION_NOMINAL);
+						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL);
 
-					cmdCreateDimension.doCommand();
+					cmdCreateColumn.doCommand();
 
-					dimensionLabel = dimensionLabelIterator.next();
-					NominalColumn<?> nominalDimension =
-						(NominalColumn<?>) cmdCreateDimension.getCreatedObject();
-					nominalDimension.setLabel(dimensionLabel);
+					columnLabel = columnLabelIterator.next();
+					NominalColumn<?> nominalColumn = (NominalColumn<?>) cmdCreateColumn.getCreatedObject();
+					nominalColumn.setLabel(columnLabel);
 
-					if (!createDimensionsFromExistingIDs)
-						dimensionIds.add(nominalDimension.getID());
+					if (!createColumnsFromExistingIDs)
+						columnIds.add(nominalColumn.getID());
 
 				case SKIP:
 					// nothing to do, just skip
@@ -223,8 +236,8 @@ public class DataTableUtils {
 				break;
 			}
 		}
-		dimensionIDMappingManager.createReverseMap(mappingType);
-		loadDataParameters.setDimensionIds(dimensionIds);
+		columnIDMappingManager.createReverseMap(mappingType);
+		loadDataParameters.setDimensionIds(columnIds);
 
 		return true;
 	}
@@ -235,7 +248,7 @@ public class DataTableUtils {
 	public static DataTable createData(ATableBasedDataDomain dataDomain, boolean createDefaultPerspectives) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		ArrayList<Integer> dimensionIDs = loadDataParameters.getDimensionIds();
+		ArrayList<Integer> dimensionIDs = loadDataParameters.getColumnIds();
 
 		// Create table
 		CmdDataCreateTable cmdCreateSet =

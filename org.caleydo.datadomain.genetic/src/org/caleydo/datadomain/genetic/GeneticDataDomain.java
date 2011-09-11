@@ -335,21 +335,22 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public String getRecordLabel(IDType idType, Object id) {
-		String geneSymbol = null;
-
-		Set<String> setGeneSymbols = getGeneIDMappingManager().getIDAsSet(idType,
-				humanReadableRecordIDType, id);
-
-		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-			geneSymbol = (String) setGeneSymbols.toArray()[0];
-		}
-
-		if (geneSymbol != null)
-			return geneSymbol;// + " | " + refSeq;
-		// else if (refSeq != null)
-		// return refSeq;
-		else
-			return "No mapping";
+		return super.getRecordLabel(idType, id);
+//		String geneSymbol = null;
+//
+//		Set<String> setGeneSymbols = getGeneIDMappingManager().getIDAsSet(idType,
+//				humanReadableRecordIDType, id);
+//
+//		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+//			geneSymbol = (String) setGeneSymbols.toArray()[0];
+//		}
+//
+//		if (geneSymbol != null)
+//			return geneSymbol;// + " | " + refSeq;
+//		// else if (refSeq != null)
+//		// return refSeq;
+//		else
+//			return "No mapping";
 
 	}
 

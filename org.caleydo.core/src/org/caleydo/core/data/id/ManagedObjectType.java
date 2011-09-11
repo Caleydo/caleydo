@@ -8,8 +8,8 @@ package org.caleydo.core.data.id;
  */
 public enum ManagedObjectType {
 	DIMENSION(10),
-	DIMENSION_NUMERICAL(11),
-	DIMENSION_NOMINAL(12),
+	COLUMN_NUMERICAL(11),
+	COLUMN_NOMINAL(12),
 
 	VIRTUAL_ARRAY(13),
 	SELECTION(14),

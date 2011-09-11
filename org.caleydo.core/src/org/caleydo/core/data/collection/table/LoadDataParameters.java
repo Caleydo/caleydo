@@ -44,7 +44,7 @@ public class LoadDataParameters {
 	private String inputPattern;
 
 	/** labels of the dimensions */
-	private List<String> dimensionLabels;
+	private List<String> columnLabels;
 
 	/** csv-delimiter between to values */
 	private String delimiter;
@@ -83,7 +83,7 @@ public class LoadDataParameters {
 	public LoadDataParameters() {
 		this.fileName = null;
 		this.inputPattern = "";
-		this.dimensionLabels = new ArrayList<String>();
+		this.columnLabels = new ArrayList<String>();
 		this.delimiter = "";
 		this.startParseFileAtLine = 1;
 		this.stopParseFileAtLine = -1;
@@ -110,7 +110,7 @@ public class LoadDataParameters {
 	/**
 	 * @return the dimensionIds, see {@link #dimensionIds}
 	 */
-	public ArrayList<Integer> getDimensionIds() {
+	public ArrayList<Integer> getColumnIds() {
 		return dimensionIds;
 	}
 
@@ -153,18 +153,18 @@ public class LoadDataParameters {
 	}
 
 	/**
-	 * @return the dimensionLabels, see {@link #dimensionLabels}
+	 * @return the dimensionLabels, see {@link #columnLabels}
 	 */
-	public List<String> getDimensionLabels() {
-		return dimensionLabels;
+	public List<String> getColumnLabels() {
+		return columnLabels;
 	}
 
 	/**
-	 * @param dimensionLabels
-	 *            setter, see {@link #dimensionLabels}
+	 * @param columnLabels
+	 *            setter, see {@link #columnLabels}
 	 */
-	public void setDimensionLabels(List<String> dimensionLabels) {
-		this.dimensionLabels = dimensionLabels;
+	public void setColumnLabels(List<String> columnLabels) {
+		this.columnLabels = columnLabels;
 	}
 
 	/**

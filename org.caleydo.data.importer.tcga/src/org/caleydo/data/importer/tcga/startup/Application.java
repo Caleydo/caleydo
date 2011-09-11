@@ -11,11 +11,25 @@ import java.util.List;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
+import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
+import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.util.clusterer.ClusterManager;
+import org.caleydo.core.util.clusterer.ClusterResult;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
@@ -25,9 +39,6 @@ import org.eclipse.equinox.app.IApplicationContext;
  */
 public class Application
 	implements IApplication {
-
-	/** class which takes the parameters for parsing */
-	private LoadDataParameters loadDataParameters = new LoadDataParameters();
 
 	public static String NILS_FILE =
 		"/Users/nils/Data/Caleydo/testdata/20110728/ov/mrna_cnmf/outputprefix.expclu.gct";
@@ -39,6 +50,11 @@ public class Application
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
 	public static String ALEX_TEST_2_GROUPING =
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
+
+	/** class which takes the parameters for parsing */
+	private LoadDataParameters loadDataParameters = new LoadDataParameters();
+
+	private ATableBasedDataDomain dataDomain;
 
 	public String dataSource = ALEX_TEST_1;
 	public String groupingSource = ALEX_TEST_1_GROUPING;
@@ -69,6 +85,14 @@ public class Application
 
 		convertGctFile(dataSource);
 
+		loadClusterInfo(groupingSource);
+
+		runClusteringOnRows();
+
+		// the default save path is usually your home directory
+		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
+			+ "gct.cal", true);
+
 		return IApplication.EXIT_OK;
 	}
 
@@ -76,7 +100,7 @@ public class Application
 	public void stop() {
 	}
 
-	protected int convertGctFile(String fileName) throws FileNotFoundException, IOException {
+	protected void convertGctFile(String fileName) throws FileNotFoundException, IOException {
 
 		String delimiter = "\t";
 
@@ -103,7 +127,6 @@ public class Application
 		String[] headers = headerString.split(delimiter);
 
 		LoadDataParameters loadDataParameters = new LoadDataParameters();
-		GeneticDataDomain dataDomain;
 
 		loadDataParameters.setFileName(fileName);
 		loadDataParameters.setDelimiter(delimiter);
@@ -116,6 +139,7 @@ public class Application
 
 		dataDomain =
 			(GeneticDataDomain) DataDomainManager.get().createDataDomain("org.caleydo.datadomain.genetic");
+		dataDomain.setColumnDimension(false);
 		loadDataParameters.setDataDomain(dataDomain);
 
 		loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
@@ -126,34 +150,26 @@ public class Application
 		StringBuffer buffer = new StringBuffer("SKIP;SKIP;");
 
 		// list to store column labels
-		List<String> dimensionLabels = new ArrayList<String>();
+		List<String> columnLabels = new ArrayList<String>();
 
 		for (int i = 0; i < columns; ++i) {
 			buffer.append("FLOAT;");
-			dimensionLabels.add(headers[i + 2]);
+			columnLabels.add(headers[i + 2]);
 		}
 
 		loadDataParameters.setInputPattern(buffer.toString());
-		loadDataParameters.setDimensionLabels(dimensionLabels);
+		loadDataParameters.setColumnLabels(columnLabels);
 
-		DataTableUtils.createDimensions(loadDataParameters);
+		DataTableUtils.createColumns(loadDataParameters);
 
 		// the place the matrix is stored:
 		DataTable table = DataTableUtils.createData(dataDomain, true);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
 
-		loadClusterInfo(groupingSource, dataDomain);
-
-		// the default save path is usually your home directory
-		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
-			+ "gct.cal", true);
-
-		return 0;
 	}
 
-	private void loadClusterInfo(String clusterFile, GeneticDataDomain dataDomain)
-		throws FileNotFoundException, IOException {
+	private void loadClusterInfo(String clusterFile) throws FileNotFoundException, IOException {
 
 		String delimiter = "\t";
 
@@ -182,8 +198,8 @@ public class Application
 			// String originalID = columns[0];
 
 			Integer mappedID =
-				dataDomain.getDimensionIDMappingManager().getID(dataDomain.getHumanReadableDimensionIDType(),
-					dataDomain.getDimensionIDType(), originalID);
+				dataDomain.getRecordIDMappingManager().getID(dataDomain.getHumanReadableRecordIDType(),
+					dataDomain.getRecordIDType(), originalID);
 
 			for (int columnCount = 1; columnCount < columns.length; columnCount++) {
 				HashMap<String, ArrayList<Integer>> groupList;
@@ -207,12 +223,15 @@ public class Application
 		}
 
 		for (HashMap<String, ArrayList<Integer>> groupList : listOfGroupLists) {
-			DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
+
+			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			recordPerspective.setLabel(groupList.size() + " clusters");
 			ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
 			ArrayList<Integer> clusterSizes = new ArrayList<Integer>(groupList.size());
 			ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
 			int sampleIndex = 0;
 			for (ArrayList<Integer> group : groupList.values()) {
+
 				sortedIDs.addAll(group);
 				clusterSizes.add(group.size());
 				sampleElements.add(sampleIndex);
@@ -222,10 +241,54 @@ public class Application
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(sortedIDs, clusterSizes, sampleElements);
 
-			dimensionPerspective.init(data);
-			dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
+			recordPerspective.init(data);
+			dataDomain.getTable().registerRecordPerspecive(recordPerspective);
 
 		}
 
+	}
+
+	private void runClusteringOnRows() {
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+		clusterConfiguration.setAffinityPropClusterFactorGenes(9);
+		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
+
+		String recordPerspectiveID = dataDomain.getTable().getRecordPerspectiveIDs().iterator().next();
+		String dimensionPerspectiveID = dataDomain.getTable().getDimensionPerspectiveIDs().iterator().next();
+
+		DimensionPerspective dimensionPerspective =
+			dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
+
+		clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable().getRecordPerspective(
+			recordPerspectiveID));
+		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
+
+		ClusterManager clusterManager = new ClusterManager(dataDomain);
+		ClusterResult result = clusterManager.cluster(clusterConfiguration);
+
+		dimensionPerspective.init(result.getDimensionResult());
+		dimensionPerspective.setLabel("Clustered Perspective");
+
+		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(dataDomain);
+		sampledDimensionPerspective.setLabel("Clustered and sampled Perspective");
+
+		sampledDimensionPerspective.init(result.getDimensionResult());
+
+		DimensionVADelta delta = new DimensionVADelta();
+		DimensionVirtualArray va = sampledDimensionPerspective.getVirtualArray();
+		int moduloFactor = va.size() / 50;
+		for (int vaIndex = 0; vaIndex < va.size(); vaIndex++) {
+			if (vaIndex % moduloFactor != 0)
+				delta.add(VADeltaItem.removeElement(va.get(vaIndex)));
+		
+		}
+		
+		
+
+		sampledDimensionPerspective.setVADelta(delta);
+
+		dataDomain.getTable().registerDimensionPerspective(sampledDimensionPerspective);
 	}
 }

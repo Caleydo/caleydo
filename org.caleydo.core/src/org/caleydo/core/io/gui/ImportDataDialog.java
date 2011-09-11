@@ -131,7 +131,7 @@ public class ImportDataDialog
 
 		boolean success = readDimensionDefinition();
 		if (success) {
-			success = DataTableUtils.createDimensions(loadDataParameters);
+			success = DataTableUtils.createColumns(loadDataParameters);
 		}
 		readParameters();
 
@@ -786,7 +786,7 @@ public class ImportDataDialog
 
 		loadDataParameters.setInputPattern(inputPattern.toString());
 		loadDataParameters.setFileName(txtFileName.getText());
-		loadDataParameters.setDimensionLabels(dimensionLabels);
+		loadDataParameters.setColumnLabels(dimensionLabels);
 
 		if (loadDataParameters.getFileName().equals("")) {
 			MessageDialog.openError(new Shell(), "Invalid filename", "Invalid filename");

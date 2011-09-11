@@ -65,7 +65,7 @@ public abstract class ATableBasedDataDomain
 	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
-	protected boolean isColumnDimension = true;
+	protected boolean isColumnDimension = false;
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
@@ -135,6 +135,13 @@ public abstract class ATableBasedDataDomain
 	public boolean isColumnDimension() {
 		return isColumnDimension;
 	}
+	
+	/**
+	 * @param isColumnDimension setter, see {@link #isColumnDimension}
+	 */
+	public void setColumnDimension(boolean isColumnDimension) {
+		this.isColumnDimension = isColumnDimension;
+	}
 
 	private void init() {
 
@@ -193,6 +200,7 @@ public abstract class ATableBasedDataDomain
 		recordPerspectiveIDs = table.getRecordPerspectiveIDs();
 		dimensionPerspectiveIDs = table.getDimensionPerspectiveIDs();
 	}
+	
 
 	/**
 	 * Returns the root set which is currently loaded and used inside the views for this use case.

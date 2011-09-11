@@ -89,7 +89,7 @@ public class SerializationStartupProcedure
 				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 				loadDataParameters.setDataDomain(tDataDomain);
 				
-				DataTableUtils.createDimensions(loadDataParameters);
+				DataTableUtils.createColumns(loadDataParameters);
 
 				DataTable table = DataTableUtils.createData(tDataDomain, false);
 

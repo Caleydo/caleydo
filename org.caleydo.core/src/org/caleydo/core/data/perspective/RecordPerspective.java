@@ -53,7 +53,7 @@ public class RecordPerspective
 	}
 
 	@Override
-	protected String getLabel(Integer id) {
+	protected String getElementLabel(Integer id) {
 		return dataDomain.getRecordLabel(id);
 	}
 	

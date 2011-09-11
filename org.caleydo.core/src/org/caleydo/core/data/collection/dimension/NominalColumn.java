@@ -26,7 +26,7 @@ public class NominalColumn<T>
 	 * Constructor
 	 */
 	public NominalColumn() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_NOMINAL));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NOMINAL));
 	}
 	
 	/**

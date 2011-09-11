@@ -17,9 +17,9 @@ public class ColumnManager
 
 	public AColumn createDimension(final ManagedObjectType type) {
 		switch (type) {
-			case DIMENSION_NUMERICAL:
+			case COLUMN_NUMERICAL:
 				return new NumericalColumn();
-			case DIMENSION_NOMINAL:
+			case COLUMN_NOMINAL:
 				return new NominalColumn<String>();
 
 			default:
@@ -29,9 +29,9 @@ public class ColumnManager
 	
 	public AColumn createDimension(final ManagedObjectType type, int dimensionID) {
 		switch (type) {
-			case DIMENSION_NUMERICAL:
+			case COLUMN_NUMERICAL:
 				return new NumericalColumn(dimensionID);
-			case DIMENSION_NOMINAL:
+			case COLUMN_NOMINAL:
 				return new NominalColumn<String>(dimensionID);
 
 			default:

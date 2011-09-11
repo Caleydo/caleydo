@@ -26,7 +26,7 @@ public class NumericalColumn
 	 * Constructor
 	 */
 	public NumericalColumn() {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DIMENSION_NUMERICAL));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NUMERICAL));
 	}
 
 	/**
