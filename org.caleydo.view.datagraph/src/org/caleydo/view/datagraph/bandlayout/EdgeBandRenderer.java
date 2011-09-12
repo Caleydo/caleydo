@@ -527,8 +527,7 @@ public class EdgeBandRenderer {
 				bottomBandConnectionPoints, false, color.getRGB(), 0.5f);
 
 		connectionBandRenderer.renderComplexBand(gl, topBandConnectionPoints,
-				false, new float[] { (251f / 255f), (128f / 255f),
-						(114f / 255f) }, 0.5f);
+				false, color.getRGB(), 0.5f);
 	}
 
 	protected void renderBand(GL2 gl,
