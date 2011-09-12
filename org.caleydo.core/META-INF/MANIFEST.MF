@@ -223,6 +223,7 @@ Export-Package: org.caleydo.core.command;
    org.eclipse.jface.dialogs",
  org.caleydo.core.util.clusterer.initialization,
  org.caleydo.core.util.collection,
+ org.caleydo.core.util.color,
  org.caleydo.core.util.conversion,
  org.caleydo.core.util.exception;uses:="org.caleydo.core.view.opengl.canvas",
  org.caleydo.core.util.format,

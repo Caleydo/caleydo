@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -77,4 +78,8 @@ public interface IDataDomain {
 	public String getDataDomainType();
 
 	public void setDataDomainType(String dataDomainType);
+	
+	public Color getColor();
+	
+	public void setColor(Color color);
 }

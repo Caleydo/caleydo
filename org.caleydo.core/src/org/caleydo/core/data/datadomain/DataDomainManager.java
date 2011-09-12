@@ -8,6 +8,8 @@ import java.util.Iterator;
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.NewDataDomainEvent;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -114,12 +116,13 @@ public class DataDomainManager {
 		if (possibleDataDomains.size() == 1)
 			dataDomain = possibleDataDomains.get(0);
 		else {
-			ChooseDataConfigurationDialog chooseDataDomainDialog = new ChooseDataConfigurationDialog(new Shell());
+			ChooseDataConfigurationDialog chooseDataDomainDialog =
+				new ChooseDataConfigurationDialog(new Shell());
 			chooseDataDomainDialog.setBlockOnOpen(true);
 			chooseDataDomainDialog.open();
 			dataDomain = chooseDataDomainDialog.getDataConfiguration().getDataDomain();
-//			chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
-//			dataDomain = chooseDataDomainDialog.open();
+			// chooseDataDomainDialog.setPossibleDataDomains(possibleDataDomains);
+			// dataDomain = chooseDataDomainDialog.open();
 		}
 
 		return dataDomain;
@@ -143,6 +146,10 @@ public class DataDomainManager {
 		else {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
+		
+		Color color = ColorManager.get().getFirstMarkedColorOfList(ColorManager.DATA_DOMAIN_COLORS, false);
+		ColorManager.get().markColor(ColorManager.DATA_DOMAIN_COLORS, color, true);
+		dataDomain.setColor(color);
 
 		dataDomainGraph.addDataDomain(dataDomain);
 
@@ -164,6 +171,9 @@ public class DataDomainManager {
 		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);
 		}
+		
+		Color color = dataDomain.getColor();
+		ColorManager.get().markColor(ColorManager.DATA_DOMAIN_COLORS, color, false);
 
 		dataDomainGraph.removeDataDomain(dataDomain);
 	}

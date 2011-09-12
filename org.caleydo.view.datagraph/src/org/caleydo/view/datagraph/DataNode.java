@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -59,8 +60,17 @@ public class DataNode extends ADraggableDataGraphNode {
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 
-		baseRow.setRenderer(new BorderedAreaRenderer(view,
-				PickingType.DATA_GRAPH_NODE, id));
+		BorderedAreaRenderer borderedAreaRenderer = new BorderedAreaRenderer(
+				view, PickingType.DATA_GRAPH_NODE, id);
+		// borderedAreaRenderer.setColor(new float[] { 0.25f + (251f / 255f) /
+		// 2f,
+		// 0.25f + (128f / 255f) / 2f, 0.25f + (114f / 255f) / 2f, 1f });
+		Color color = dataDomain.getColor();
+		if (color == null)
+			color = new Color(0.5f, 0.5f, 0.5f, 1f);
+		borderedAreaRenderer.setColor(color.getRGBA());
+
+		baseRow.setRenderer(borderedAreaRenderer);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelGLConverter(pixelGLConverter);

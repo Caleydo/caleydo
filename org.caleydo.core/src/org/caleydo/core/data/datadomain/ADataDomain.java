@@ -12,6 +12,7 @@ import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEventHandler;
 import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -50,6 +51,8 @@ public abstract class ADataDomain
 
 	/** bootstrap filename this application was started with */
 	protected String fileName;
+	
+	protected Color color;
 
 	/**
 	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
@@ -169,5 +172,15 @@ public abstract class ADataDomain
 		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	@Override
+	public Color getColor() {
+		return color;
+	}
+
+	@Override
+	public void setColor(Color color) {
+		this.color = color;
 	}
 }

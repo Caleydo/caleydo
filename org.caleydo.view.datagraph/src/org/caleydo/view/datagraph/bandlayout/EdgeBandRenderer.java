@@ -12,14 +12,15 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.datagraph.DataNode;
 import org.caleydo.view.datagraph.IDataGraphNode;
 
 public class EdgeBandRenderer {
 
-	private final static int SPACING_PIXELS = 2;
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
 	protected final static int DEFAULT_MAX_BAND_WIDTH = 30;
 
@@ -57,10 +58,20 @@ public class EdgeBandRenderer {
 
 		connectionBandRenderer.init(gl);
 
+		Color bandColor = null;
+
+		if (node1 instanceof DataNode) {
+			bandColor = ((DataNode) node1).getDataDomain().getColor();
+		} else if (node2 instanceof DataNode) {
+			bandColor = ((DataNode) node2).getDataDomain().getColor();
+		}
+		if (bandColor == null)
+			bandColor = new Color(0.5f, 0.5f, 0.5f, 1f);
+
 		if (!commonDimensionGroupsNode1.isEmpty()) {
 			renderBundledBand(gl, node1, node2, commonDimensionGroupsNode1,
 					commonDimensionGroupsNode2, edgeRoutingStrategy,
-					connectionBandRenderer);
+					connectionBandRenderer, bandColor);
 		} else {
 
 			Point2D position1 = node1.getPosition();
@@ -121,10 +132,10 @@ public class EdgeBandRenderer {
 
 			if (spacingX > spacingY) {
 				renderHorizontalBand(gl, leftNode, rightNode,
-						edgeRoutingStrategy, connectionBandRenderer);
+						edgeRoutingStrategy, connectionBandRenderer, bandColor);
 			} else {
 				renderVerticalBand(gl, bottomNode, topNode,
-						edgeRoutingStrategy, connectionBandRenderer);
+						edgeRoutingStrategy, connectionBandRenderer, bandColor);
 			}
 		}
 
@@ -135,7 +146,7 @@ public class EdgeBandRenderer {
 			List<ADimensionGroupData> commonDimensionGroupsNode1,
 			List<ADimensionGroupData> commonDimensionGroupsNode2,
 			IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer) {
+			ConnectionBandRenderer connectionBandRenderer, Color color) {
 
 		Point2D bundlingPoint1 = calcBundlingPoint(node1,
 				commonDimensionGroupsNode1);
@@ -180,7 +191,7 @@ public class EdgeBandRenderer {
 
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
 				gl, edgePoints, bandWidth, pixelGLConverter);
-		renderBand(gl, connectionBandRenderer, bandPoints);
+		renderBand(gl, connectionBandRenderer, bandPoints, color);
 
 		Point2D bandStartPointAnchorNode1 = new Point2D.Float(bandPoints.get(0)
 				.x(), bandPoints.get(0).y());
@@ -197,10 +208,10 @@ public class EdgeBandRenderer {
 
 		renderBundle(gl, node1, bandStartPointAnchorNode1,
 				bandEndPointAnchorNode1, bandWidth, commonDimensionGroupsNode1,
-				bandWidthMap, connectionBandRenderer);
+				bandWidthMap, connectionBandRenderer, color);
 		renderBundle(gl, node2, bandStartPointAnchorNode2,
 				bandEndPointAnchorNode2, bandWidth, commonDimensionGroupsNode2,
-				bandWidthMap, connectionBandRenderer);
+				bandWidthMap, connectionBandRenderer, color);
 
 	}
 
@@ -208,7 +219,7 @@ public class EdgeBandRenderer {
 			Point2D bandStartPointAnchor, Point2D bandEndPointAnchor,
 			int bandWidth, List<ADimensionGroupData> commonDimensionGroups,
 			Map<ADimensionGroupData, Integer> bandWidthMap,
-			ConnectionBandRenderer connectionBandRenderer) {
+			ConnectionBandRenderer connectionBandRenderer, Color color) {
 		float vecBandEndX = (float) (bandEndPointAnchor.getX() - bandStartPointAnchor
 				.getX()) / bandWidth;
 		float vecBandEndY = (float) (bandEndPointAnchor.getY() - bandStartPointAnchor
@@ -265,7 +276,7 @@ public class EdgeBandRenderer {
 				leftBandBundleConnecionPoint, rightBandBundleConnecionPoint));
 
 		connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-				new float[] { 0, 0, 0 }, 0.5f);
+				color.getRGB(), 0.5f);
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
@@ -309,7 +320,7 @@ public class EdgeBandRenderer {
 					nextBandAnchorPoint));
 
 			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-					new float[] { 0, 0, 0 }, 0.5f);
+					color.getRGB(), 0.5f);
 
 			prevBandAnchorPoint = nextBandAnchorPoint;
 		}
@@ -340,7 +351,7 @@ public class EdgeBandRenderer {
 
 	protected void renderVerticalBand(GL2 gl, IDataGraphNode bottomNode,
 			IDataGraphNode topNode, IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer) {
+			ConnectionBandRenderer connectionBandRenderer, Color color) {
 
 		Point2D positionBottom = bottomNode.getPosition();
 		Point2D positionTop = topNode.getPosition();
@@ -418,11 +429,10 @@ public class EdgeBandRenderer {
 				(float) anchorPointsTop.getSecond().getY() - 0.3f
 						* nodeEdgeAnchorSpacingTop));
 
-		
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
 				gl, edgePoints, 20, pixelGLConverter);
-		
-		renderBand(gl, connectionBandRenderer, bandPoints);
+
+		renderBand(gl, connectionBandRenderer, bandPoints, color);
 
 		Point2D bandAnchorPoint1Bottom = new Point2D.Float(bandPoints.get(0)
 				.x(), bandPoints.get(0).y());
@@ -514,20 +524,21 @@ public class EdgeBandRenderer {
 		topBandConnectionPoints.add(bandAnchorPointsTop);
 
 		connectionBandRenderer.renderComplexBand(gl,
-				bottomBandConnectionPoints, false, new float[] { 0, 0, 0 },
-				0.5f);
+				bottomBandConnectionPoints, false, color.getRGB(), 0.5f);
 
 		connectionBandRenderer.renderComplexBand(gl, topBandConnectionPoints,
-				false, new float[] { 0, 0, 0 }, 0.5f);
+				false, new float[] { (251f / 255f), (128f / 255f),
+						(114f / 255f) }, 0.5f);
 	}
 
 	protected void renderBand(GL2 gl,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<Vec3f> bandPoints) {
+			List<Vec3f> bandPoints, Color color) {
 
-		gl.glColor4f(0, 0, 0, 0.5f);
+		gl.glColor4f(color.getRGB()[0], color.getRGB()[1], color.getRGB()[2],
+				0.5f);
 		connectionBandRenderer.render(gl, bandPoints);
-		gl.glColor4f(0, 0, 0, 1f);
+		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < bandPoints.size() / 2; i++) {
 			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
@@ -541,7 +552,7 @@ public class EdgeBandRenderer {
 					bandPoints.get(i).z());
 		}
 		gl.glEnd();
-		
+
 	}
 
 	protected Point2D calcPointOnLineWithFixedX(Point2D pointOnLine,
@@ -589,7 +600,7 @@ public class EdgeBandRenderer {
 
 	protected void renderHorizontalBand(GL2 gl, IDataGraphNode leftNode,
 			IDataGraphNode rightNode, IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer) {
+			ConnectionBandRenderer connectionBandRenderer, Color color) {
 
 		Point2D positionLeft = leftNode.getPosition();
 		Point2D positionRight = rightNode.getPosition();
@@ -668,7 +679,7 @@ public class EdgeBandRenderer {
 
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
 				gl, edgePoints, 20, pixelGLConverter);
-		renderBand(gl, connectionBandRenderer, bandPoints);
+		renderBand(gl, connectionBandRenderer, bandPoints, color);
 
 		Point2D bandAnchorPoint1Left = new Point2D.Float(bandPoints.get(0).x(),
 				bandPoints.get(0).y());
@@ -760,10 +771,10 @@ public class EdgeBandRenderer {
 		rightBandConnectionPoints.add(bandAnchorPointsRight);
 
 		connectionBandRenderer.renderComplexBand(gl, leftBandConnectionPoints,
-				false, new float[] { 0, 0, 0 }, 0.5f);
+				false, color.getRGB(), 0.5f);
 
 		connectionBandRenderer.renderComplexBand(gl, rightBandConnectionPoints,
-				false, new float[] { 0, 0, 0 }, 0.5f);
+				false, color.getRGB(), 0.5f);
 	}
 
 	public int getMaxBandWidth() {
