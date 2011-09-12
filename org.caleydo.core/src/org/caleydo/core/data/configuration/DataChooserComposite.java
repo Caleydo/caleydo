@@ -83,7 +83,7 @@ public class DataChooserComposite
 		dataDomainLabel.setLayoutData(data);
 
 		dataDomainChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
-		dataDomainChooser.setText("Choose dataDomain");
+		dataDomainChooser.setText("Choose data set:");
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 1;
 		data.minimumWidth = 400;
@@ -116,7 +116,7 @@ public class DataChooserComposite
 		});
 
 		Label recordPerspectiveLabel = new Label(this, SWT.BORDER);
-		recordPerspectiveLabel.setText("Record Perspective:");
+		recordPerspectiveLabel.setText("Rows: ");
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 1;
 		data.minimumWidth = labelWidth;
@@ -139,7 +139,7 @@ public class DataChooserComposite
 		});
 
 		Label dimensionPerspectiveLabel = new Label(this, SWT.BORDER);
-		dimensionPerspectiveLabel.setText("Dimension Perspective:");
+		dimensionPerspectiveLabel.setText("Columns: ");
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 1;
 		data.minimumWidth = labelWidth;
@@ -170,20 +170,24 @@ public class DataChooserComposite
 			possibleDimensionPerspectives = dataDomain.getDimensionPerspectiveIDs().toArray(new String[0]);
 		}
 		else {
-			possibleRecordPerspectives = new String[] { "Choose Datadomain first!" };
-			possibleDimensionPerspectives = new String[] { "Choose Datadomain first!" };
+			possibleRecordPerspectives = new String[] { "Choose data set first!" };
+			possibleDimensionPerspectives = new String[] { "Choose data set first!" };
 		}
 
 		recordPerspectiveChooser.removeAll();
 		for (int index = 0; index < possibleRecordPerspectives.length; index++) {
 			String possibleDataPerspective = possibleRecordPerspectives[index];
-			recordPerspectiveChooser.add(possibleDataPerspective, index);
+			String recordPerspectiveLabel =
+				dataDomain.getTable().getRecordPerspective(possibleDataPerspective).getLabel();
+			recordPerspectiveChooser.add(recordPerspectiveLabel, index);
 		}
 
 		dimensionPerspectiveChooser.removeAll();
 		for (int index = 0; index < possibleDimensionPerspectives.length; index++) {
 			String possibleDataPerspective = possibleDimensionPerspectives[index];
-			dimensionPerspectiveChooser.add(possibleDataPerspective, index);
+			String dimensionPerspectiveLabel =
+				dataDomain.getTable().getDimensionPerspective(possibleDataPerspective).getLabel();
+			dimensionPerspectiveChooser.add(dimensionPerspectiveLabel, index);
 		}
 
 		if (dataDomain == null) {

@@ -2,7 +2,13 @@ package org.caleydo.core.data.id;
 
 import java.util.HashMap;
 
+import org.caleydo.core.data.mapping.IDMappingManager;
+
 /**
+ * An {@link IDCategory} specifies which kinds of {@link IDType}s belong semantically together. The contract
+ * is, that all {@link IDType}s that are of the same {@link IDCategory} have to be mappable using an
+ * {@link IDMappingManager}.
+ * 
  * @author Alexander Lex
  */
 public class IDCategory {
@@ -32,7 +38,7 @@ public class IDCategory {
 	public String getCategoryName() {
 		return categoryName;
 	}
-	
+
 	@Override
 	public String toString() {
 		return categoryName;

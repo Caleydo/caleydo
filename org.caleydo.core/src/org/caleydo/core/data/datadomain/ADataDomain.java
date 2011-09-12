@@ -32,11 +32,11 @@ public abstract class ADataDomain
 
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
-	protected String dataDomainType; 
-	
+	protected String dataDomainType;
+
 	@XmlTransient
 	protected List<ADimensionGroupData> dimensionGroups = new ArrayList<ADimensionGroupData>();
-	
+
 	/**
 	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
@@ -55,24 +55,33 @@ public abstract class ADataDomain
 	protected Color color;
 
 	/**
-	 * Every use case needs to state all ID Categories it can handle. The string must specify which primary
-	 * VAType ({@link VAType#getPrimaryVAType()} is associated for the ID Category
-	 */
-	// protected HashMap<IDCategory, String> possibleIDCategories;
-
-	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
 	public ADataDomain() {
-		initIDMappings();
 	}
 
 	public ADataDomain(String dataDomainType, String dataDomainID) {
 		this.dataDomainType = dataDomainType;
 		this.dataDomainID = dataDomainID;
+
+	}
+
+	/**
+	 * <p>
+	 * All initialization of the ADataDomain must be done in here instead of in the constructor. This is
+	 * called when the ADataDomain is created in the {@link DataDomainManager}.
+	 * </p>
+	 * <p>
+	 * Call super.init() if you override this method!
+	 * </p>
+	 */
+	public void init() {
 		initIDMappings();
 	}
 
+	/**
+	 * Load ID mappings in concrete implementing classes. This is called by {@link #init()}.
+	 */
 	protected abstract void initIDMappings();
 
 	@Override
@@ -84,12 +93,12 @@ public abstract class ADataDomain
 	public void setDataDomainID(String dataDomainType) {
 		this.dataDomainID = dataDomainType;
 	}
-	
+
 	@Override
 	public String getDataDomainType() {
 		return dataDomainType;
 	}
-	
+
 	@Override
 	public void setDataDomainType(String dataDomainType) {
 		this.dataDomainType = dataDomainType;
@@ -132,7 +141,7 @@ public abstract class ADataDomain
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
-		
+
 		fileName = loadDataParameters.getFileName();
 	}
 
@@ -150,7 +159,6 @@ public abstract class ADataDomain
 	public String toString() {
 		return dataDomainID;
 	}
-	
 
 	@Override
 	@XmlTransient

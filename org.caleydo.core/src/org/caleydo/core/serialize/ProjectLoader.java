@@ -135,10 +135,11 @@ public class ProjectLoader {
 
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
-			// Register data domain by hand because it restored from the serialization and not created via
-			// the
+			// Register data domain by hand because it restored from the serialization and not created via the
 			// DataDomainManager
 			DataDomainManager.get().register(dataDomain);
+			// DataDomainManager usually takes care of that, we need to do it manually for serialization
+			dataDomain.init();
 
 			Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 			thread.start();
@@ -146,7 +147,7 @@ public class ProjectLoader {
 
 				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 
-				// Overwrite filename with nwe one in caleydo project (data.csv)
+				// Overwrite filename with new one in caleydo project (data.csv)
 				dataDomain.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
 				dataDomain.getLoadDataParameters()
 					.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);

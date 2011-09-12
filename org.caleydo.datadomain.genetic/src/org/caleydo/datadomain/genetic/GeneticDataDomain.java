@@ -1,7 +1,5 @@
 package org.caleydo.datadomain.genetic;
 
-import java.util.Set;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -56,13 +54,19 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
 
 	/**
-	 * Constructor.
+	 * Constructor. Do not create a {@link GeneticDataDomain} yourself, use
+	 * {@link DataDomainManager#createDataDomain(String)} instead.
 	 */
 	public GeneticDataDomain() {
-
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
+	}
+
+	@Override
+	public void init() {
+
+		super.init();
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		if (isColumnDimension) {
 			primaryRecordMappingType = IDType.getIDType("DAVID");
@@ -80,13 +84,25 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		pathwayViewerMode = false;
 		contentLabelSingular = "gene";
 		recordLabelPlural = "genes";
+
+		// Load IDs needed in this datadomain
+
 	}
 
 	@Override
 	protected void initIDMappings() {
-
-		// Load IDs needed in this datadomain
 		IDMappingLoader.get().loadMappingFile("data/bootstrap/bootstrap.xml");
+	}
+
+	@Override
+	protected void assignIDCategories() {
+		if (isColumnDimension) {
+			recordIDCategory = IDCategory.getIDCategory("GENE");
+			dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		} else {
+			recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+			dimensionIDCategory = IDCategory.getIDCategory("GENE");
+		}
 	}
 
 	@Override
@@ -336,21 +352,22 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	@Override
 	public String getRecordLabel(IDType idType, Object id) {
 		return super.getRecordLabel(idType, id);
-//		String geneSymbol = null;
-//
-//		Set<String> setGeneSymbols = getGeneIDMappingManager().getIDAsSet(idType,
-//				humanReadableRecordIDType, id);
-//
-//		if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-//			geneSymbol = (String) setGeneSymbols.toArray()[0];
-//		}
-//
-//		if (geneSymbol != null)
-//			return geneSymbol;// + " | " + refSeq;
-//		// else if (refSeq != null)
-//		// return refSeq;
-//		else
-//			return "No mapping";
+		// String geneSymbol = null;
+		//
+		// Set<String> setGeneSymbols =
+		// getGeneIDMappingManager().getIDAsSet(idType,
+		// humanReadableRecordIDType, id);
+		//
+		// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+		// geneSymbol = (String) setGeneSymbols.toArray()[0];
+		// }
+		//
+		// if (geneSymbol != null)
+		// return geneSymbol;// + " | " + refSeq;
+		// // else if (refSeq != null)
+		// // return refSeq;
+		// else
+		// return "No mapping";
 
 	}
 
@@ -389,16 +406,5 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// geneContentGroupContainer.setGeneIDs(recordIDType, ids);
 	// return geneContentGroupContainer;
 	// }
-
-	@Override
-	protected void assignIDCategories() {
-		if (isColumnDimension) {
-			recordIDCategory = IDCategory.getIDCategory("GENE");
-			dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-		} else {
-			recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-			dimensionIDCategory = IDCategory.getIDCategory("GENE");
-		}
-	}
 
 }

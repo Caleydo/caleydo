@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.data.configuration;
 
 import java.util.ArrayList;

@@ -51,9 +51,6 @@ public class Application
 	public static String ALEX_TEST_2_GROUPING =
 		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
 
-	/** class which takes the parameters for parsing */
-	private LoadDataParameters loadDataParameters = new LoadDataParameters();
-
 	private ATableBasedDataDomain dataDomain;
 
 	public String dataSource = ALEX_TEST_1;
@@ -64,30 +61,12 @@ public class Application
 
 		GeneralManager.get().init();
 
-		/*
-		 * loadDataParameters
-		 * .setFileName("data/genome/microarray/kashofer/all_hcc_clip_greater_10_plus_refseq.csv");
-		 * loadDataParameters.setDelimiter(";"); // loadDataParameters.setMinDefined(true); //
-		 * loadDataParameters.setMin(min); // loadDataParameters.setMaxDefined(true); //
-		 * loadDataParameters.setMax(max); dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-		 * .createDataDomain("org.caleydo.datadomain.genetic"); loadDataParameters.setDataDomain(dataDomain);
-		 * loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
-		 * loadDataParameters.setMathFilterMode("Normal"); loadDataParameters.setIsDataHomogeneous(true);
-		 * loadDataParameters.setInputPattern("SKIP;FLOAT;FLOAT;"); List<String> dimensionLabels = new
-		 * ArrayList<String>(); dimensionLabels.add("column 1"); dimensionLabels.add("column 2");
-		 * loadDataParameters.setDimensionLabels(dimensionLabels);
-		 * DataTableUtils.createDimensions(loadDataParameters); // the place the matrix is stored: DataTable
-		 * table = DataTableUtils.createData(dataDomain); if (table == null) throw new
-		 * IllegalStateException("Problem while creating table!"); // the default save path is usually your
-		 * home directory new ProjectSaver().save(System.getProperty("user.home") +
-		 * System.getProperty("file.separator") + "test.cal", true);
-		 */
-
 		convertGctFile(dataSource);
 
 		loadClusterInfo(groupingSource);
 
-		runClusteringOnRows();
+		PerspectiveInitializationData clusterResult = runClusteringOnRows();
+		createSampleOfGenes(clusterResult);
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -101,7 +80,6 @@ public class Application
 	}
 
 	protected void convertGctFile(String fileName) throws FileNotFoundException, IOException {
-
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -117,7 +95,6 @@ public class Application
 		// TODO: check if there are two numeric columns
 		String[] dimensions = dimensionString.split(delimiter);
 
-		int rows = new Integer(dimensions[0]);
 		int columns = new Integer(dimensions[1]);
 
 		// read column headers
@@ -138,11 +115,11 @@ public class Application
 		// loadDataParameters.setMax(max);
 
 		dataDomain =
-			(GeneticDataDomain) DataDomainManager.get().createDataDomain("org.caleydo.datadomain.genetic");
+			(GeneticDataDomain) DataDomainManager.get().createDataDomain("org.caleydo.datadomain.genetic", false);
 		dataDomain.setColumnDimension(false);
 		loadDataParameters.setDataDomain(dataDomain);
 
-		loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
+		loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
 		loadDataParameters.setMathFilterMode("Normal");
 		loadDataParameters.setIsDataHomogeneous(true);
 
@@ -248,7 +225,7 @@ public class Application
 
 	}
 
-	private void runClusteringOnRows() {
+	private PerspectiveInitializationData runClusteringOnRows() {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
@@ -269,12 +246,17 @@ public class Application
 		ClusterResult result = clusterManager.cluster(clusterConfiguration);
 
 		dimensionPerspective.init(result.getDimensionResult());
-		dimensionPerspective.setLabel("Clustered Perspective");
+		dimensionPerspective.setLabel("All genes clustered, size: "
+			+ dimensionPerspective.getVirtualArray().size());
 
+		return result.getDimensionResult();
+
+	}
+
+	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {
 		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(dataDomain);
-		sampledDimensionPerspective.setLabel("Clustered and sampled Perspective");
 
-		sampledDimensionPerspective.init(result.getDimensionResult());
+		sampledDimensionPerspective.init(clusterResult);
 
 		DimensionVADelta delta = new DimensionVADelta();
 		DimensionVirtualArray va = sampledDimensionPerspective.getVirtualArray();
@@ -282,13 +264,12 @@ public class Application
 		for (int vaIndex = 0; vaIndex < va.size(); vaIndex++) {
 			if (vaIndex % moduloFactor != 0)
 				delta.add(VADeltaItem.removeElement(va.get(vaIndex)));
-		
 		}
-		
-		
 
 		sampledDimensionPerspective.setVADelta(delta);
 
+		sampledDimensionPerspective.setLabel("Clustered, sampled genes, size: "
+			+ sampledDimensionPerspective.getVirtualArray().size());
 		dataDomain.getTable().registerDimensionPerspective(sampledDimensionPerspective);
 	}
 }

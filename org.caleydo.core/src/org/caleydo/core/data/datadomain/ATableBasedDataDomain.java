@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.RecordFilterManager;
@@ -121,12 +121,11 @@ public abstract class ATableBasedDataDomain
 	 */
 	public ATableBasedDataDomain() {
 		super();
-		init();
 	}
 
 	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
 		super(dataDomainType, dataDomainID);
-		init();
+
 	}
 
 	/**
@@ -144,8 +143,9 @@ public abstract class ATableBasedDataDomain
 		this.isColumnDimension = isColumnDimension;
 	}
 
-	private void init() {
-
+	@Override
+	public void init() {
+		super.init();
 		assignIDCategories();
 		if (recordIDCategory == null || dimensionIDCategory == null) {
 			throw new IllegalStateException("A ID category in " + toString()
@@ -157,14 +157,17 @@ public abstract class ATableBasedDataDomain
 
 		recordIDType =
 			IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
-				EDimensionType.INT);
+				EColumnType.INT);
+		recordIDType.setInternalType(true);
 		dimensionIDType =
 			IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(), dimensionIDCategory,
-				EDimensionType.INT);
+				EColumnType.INT);
+		dimensionIDType.setInternalType(true);
 
 		recordGroupIDType =
 			IDType.registerType("group_record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
-				EDimensionType.INT);
+				EColumnType.INT);
+		recordGroupIDType.setInternalType(true);
 
 		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
 		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
@@ -324,6 +327,10 @@ public abstract class ATableBasedDataDomain
 		// events
 		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
+		
+		// check if clustering failed. If so, we just ignore it.
+		if(result == null)
+			return;
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
 			|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
@@ -422,13 +429,6 @@ public abstract class ATableBasedDataDomain
 	@Override
 	public void registerEventListeners() {
 
-		// groupMergingActionListener = new GroupMergingActionListener();
-		// groupMergingActionListener.setHandler(this);
-		// eventPublisher.addListener(MergeGroupsEvent.class, groupMergingActionListener);
-		//
-		// groupInterChangingActionListener = new GroupInterChangingActionListener();
-		// groupInterChangingActionListener.setHandler(this);
-		// eventPublisher.addListener(InterchangeGroupsEvent.class, groupInterChangingActionListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -650,17 +650,19 @@ public abstract class ATableBasedDataDomain
 
 	public String getRecordLabel(IDType idType, Object id) {
 		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, humanReadableRecordIDType, id);
-		String resolvedID = "No Mapping";
+		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
-			resolvedID = ids.iterator().next();
+			label = ids.iterator().next();
 		}
-		return resolvedID;
+		return label;
 	}
 
 	public String getDimensionLabel(IDType idType, Object id) {
-		String label = dimensionIDMappingManager.getID(idType, humanReadableDimensionIDType, id);
-		if (label == null)
-			label = "";
+		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, humanReadableDimensionIDType, id);
+		String label = "No Mapping";
+		if (ids != null && ids.size() > 0) {
+			label = ids.iterator().next();
+		}
 		return label;
 	}
 

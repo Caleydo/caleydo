@@ -14,7 +14,7 @@ import org.caleydo.core.command.data.CmdDataCreateColumn;
 import org.caleydo.core.command.data.CmdDataCreateTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
@@ -150,7 +150,7 @@ public class DataTableUtils {
 
 		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
-		ArrayList<EDimensionType> dataTypes = reader.getColumnDataTypes();
+		ArrayList<EColumnType> dataTypes = reader.getColumnDataTypes();
 
 		boolean abort = false;
 		Iterator<String> columnLabelIterator = loadDataParameters.getColumnLabels().iterator();
@@ -179,7 +179,7 @@ public class DataTableUtils {
 
 		int columnCount = 0;
 
-		for (EDimensionType dataType : dataTypes) {
+		for (EColumnType dataType : dataTypes) {
 			switch (dataType) {
 				case FLOAT:
 					cmdCreateColumn =
@@ -263,13 +263,17 @@ public class DataTableUtils {
 			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.LOAD_LOOKUP_TABLE_FILE);
 
-		String lookupTableInfo =
-			loadDataParameters.getFileIDTypeName() + "_2_" + dataDomain.getRecordIDType().getTypeName()
-				+ " REVERSE";
+		IDType rowIDType;
+		if (dataDomain.isColumnDimension())
+			rowIDType = dataDomain.getRecordIDType();
+		else
+			rowIDType = dataDomain.getDimensionIDType();
+
+		String lookupTableInfo = loadDataParameters.getFileIDTypeName() + "_2_" + rowIDType + " REVERSE";
 
 		cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
 			loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-			loadDataParameters.getDelimiter(), "", dataDomain.getRecordIDCategory());
+			loadDataParameters.getDelimiter(), "", rowIDType.getIDCategory());
 
 		cmdLoadLookupTableFile.doCommand();
 

@@ -1,7 +1,7 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.command.base.ACmdCreational;
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.parser.parameter.ParameterHandler;
@@ -19,7 +19,7 @@ public class CmdCreateIDType
 	extends ACmdCreational<IDType> {
 
 	private String typeName;
-	private EDimensionType dimensionType;
+	private EColumnType dimensionType;
 	private IDCategory idCategory;
 
 	/**
@@ -50,11 +50,11 @@ public class CmdCreateIDType
 
 		typeName = detail;
 		idCategory = IDCategory.getIDCategory(attrib1);
-		dimensionType = EDimensionType.valueOf(attrib2);
+		dimensionType = EColumnType.valueOf(attrib2);
 
 	}
 
-	public void setAttributes(String typeName, IDCategory idCategory, EDimensionType dimensionType) {
+	public void setAttributes(String typeName, IDCategory idCategory, EColumnType dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
 		this.dimensionType = dimensionType;

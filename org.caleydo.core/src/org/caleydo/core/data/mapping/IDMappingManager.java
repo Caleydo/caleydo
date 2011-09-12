@@ -8,10 +8,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.util.collection.MultiHashMap;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultDirectedWeightedGraph;
 
@@ -189,8 +192,8 @@ public class IDMappingManager {
 
 		if (originKeyType == destKeyType) {
 			if (originValueType != destValueType) {
-				if (originKeyType.getDimensionType() == EDimensionType.INT
-					&& destValueType.getDimensionType() == EDimensionType.INT) {
+				if (originKeyType.getColumnType() == EColumnType.INT
+					&& destValueType.getColumnType() == EColumnType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					if (!mappingType.isMultiMap()) {
@@ -221,20 +224,20 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (originKeyType.getDimensionType() == EDimensionType.INT
-					&& destValueType.getDimensionType() == EDimensionType.STRING) {
+				else if (originKeyType.getColumnType() == EColumnType.INT
+					&& destValueType.getColumnType() == EColumnType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getDimensionType() == EDimensionType.STRING
-					&& destValueType.getDimensionType() == EDimensionType.STRING) {
+				else if (originKeyType.getColumnType() == EColumnType.STRING
+					&& destValueType.getColumnType() == EColumnType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getDimensionType() == EDimensionType.STRING
-					&& destValueType.getDimensionType() == EDimensionType.INT) {
+				else if (originKeyType.getColumnType() == EColumnType.STRING
+					&& destValueType.getColumnType() == EColumnType.INT) {
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
@@ -268,8 +271,8 @@ public class IDMappingManager {
 		}
 		else {
 			if (originValueType == destValueType) {
-				if (destKeyType.getDimensionType() == EDimensionType.INT
-					&& destValueType.getDimensionType() == EDimensionType.INT) {
+				if (destKeyType.getColumnType() == EColumnType.INT
+					&& destValueType.getColumnType() == EColumnType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -310,8 +313,8 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (destKeyType.getDimensionType() == EDimensionType.INT
-					&& destValueType.getDimensionType() == EDimensionType.STRING) {
+				else if (destKeyType.getColumnType() == EColumnType.INT
+					&& destValueType.getColumnType() == EColumnType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -323,14 +326,14 @@ public class IDMappingManager {
 							srcMap.get(key));
 					}
 				}
-				else if (destKeyType.getDimensionType() == EDimensionType.STRING
-					&& destValueType.getDimensionType() == EDimensionType.STRING) {
+				else if (destKeyType.getColumnType() == EColumnType.STRING
+					&& destValueType.getColumnType() == EColumnType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (destKeyType.getDimensionType() == EDimensionType.STRING
-					&& destValueType.getDimensionType() == EDimensionType.INT) {
+				else if (destKeyType.getColumnType() == EColumnType.STRING
+					&& destValueType.getColumnType() == EColumnType.INT) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
 					throw new RuntimeException("Not implemented!");
@@ -501,8 +504,8 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
-			// Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
-			// + destination + " for: " + sourceID));
+			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
+			 + destination + " for: " + sourceID));
 			return null;
 		}
 		Object currentID = sourceID;
@@ -625,7 +628,7 @@ public class IDMappingManager {
 
 	@Override
 	public String toString() {
-		return "IDMappingManager for " + idCategory + "with registered id types: "
+		return "IDMappingManager for " + idCategory + " with registered id types: "
 			+ hashMappingType2Map.keySet();
 	}
 }

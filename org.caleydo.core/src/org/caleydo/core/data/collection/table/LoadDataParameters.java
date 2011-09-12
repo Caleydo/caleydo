@@ -7,7 +7,7 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
@@ -30,7 +30,7 @@ public class LoadDataParameters {
 	/** A list of ids for the dimensions (columns) in the file */
 	private ArrayList<Integer> dimensionIds;
 
-	/** Specifies the IDType that is used in the main data file */
+	/** Specifies the IDType that is used in the data file to identify the rows */
 	@XmlElement
 	private String fileIDTypeName;
 
@@ -39,7 +39,7 @@ public class LoadDataParameters {
 
 	/**
 	 * The input pattern for the {@link TabularAsciiDataReader}, specifying the order of how to treat values
-	 * between delimiters. The string values must map to a {@link EDimensionType}.
+	 * between delimiters. The string values must map to a {@link EColumnType}.
 	 */
 	private String inputPattern;
 

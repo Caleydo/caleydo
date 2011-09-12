@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -29,7 +29,7 @@ public class TabularAsciiDataReader
 	 */
 	protected ArrayList<AColumn> targetDimensions;
 
-	protected ArrayList<EDimensionType> columnDataTypes;
+	protected ArrayList<EColumnType> columnDataTypes;
 
 	private ArrayList<int[]> intArrays;
 
@@ -51,7 +51,7 @@ public class TabularAsciiDataReader
 
 		this.dataDomain = dataDomain;
 		targetDimensions = new ArrayList<AColumn>();
-		columnDataTypes = new ArrayList<EDimensionType>();
+		columnDataTypes = new ArrayList<EColumnType>();
 
 		intArrays = new ArrayList<int[]>();
 		floatArrays = new ArrayList<float[]>();
@@ -75,24 +75,24 @@ public class TabularAsciiDataReader
 			String buffer = tokenizer.nextToken(sTokenPatternParserSeperator);
 
 			if (buffer.equalsIgnoreCase("abort")) {
-				columnDataTypes.add(EDimensionType.ABORT);
+				columnDataTypes.add(EColumnType.ABORT);
 
 				return areAllTokensProper;
 			}
 			else if (buffer.equalsIgnoreCase("skip")) {
-				columnDataTypes.add(EDimensionType.SKIP);
+				columnDataTypes.add(EColumnType.SKIP);
 			}
 			else if (buffer.equalsIgnoreCase("int")) {
-				columnDataTypes.add(EDimensionType.INT);
+				columnDataTypes.add(EColumnType.INT);
 			}
 			else if (buffer.equalsIgnoreCase("float")) {
-				columnDataTypes.add(EDimensionType.FLOAT);
+				columnDataTypes.add(EColumnType.FLOAT);
 			}
 			else if (buffer.equalsIgnoreCase("string")) {
-				columnDataTypes.add(EDimensionType.STRING);
+				columnDataTypes.add(EColumnType.STRING);
 			}
 			else if (buffer.equalsIgnoreCase("certainty")) {
-				columnDataTypes.add(EDimensionType.CERTAINTY);
+				columnDataTypes.add(EColumnType.CERTAINTY);
 			}
 
 			else {
@@ -116,7 +116,7 @@ public class TabularAsciiDataReader
 
 		int lineCount = 0;
 
-		for (EDimensionType dimensionType : columnDataTypes) {
+		for (EColumnType dimensionType : columnDataTypes) {
 
 			switch (dimensionType) {
 				case INT:
@@ -191,7 +191,7 @@ public class TabularAsciiDataReader
 			int floatIndex = 0;
 			int stringIndex = 0;
 
-			for (EDimensionType columnDataType : columnDataTypes) {
+			for (EColumnType columnDataType : columnDataTypes) {
 				if (strTokenLine.hasMoreTokens()) {
 					switch (columnDataType) {
 						case INT:
@@ -282,7 +282,7 @@ public class TabularAsciiDataReader
 		int stringArrayIndex = 0;
 		int dimensionIndex = 0;
 
-		for (EDimensionType dimensionType : columnDataTypes) {
+		for (EColumnType dimensionType : columnDataTypes) {
 			// if(iDimensionIndex + 1 == targetDimensions.size())
 			// break;
 			switch (dimensionType) {
@@ -343,7 +343,7 @@ public class TabularAsciiDataReader
 	//
 	// }
 
-	public ArrayList<EDimensionType> getColumnDataTypes() {
+	public ArrayList<EColumnType> getColumnDataTypes() {
 		return columnDataTypes;
 	}
 }

@@ -5,13 +5,15 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.EDimensionType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 /**
  * Abstract lookup table loader.
@@ -83,7 +85,7 @@ public class LookupTableLoader
 								sLine = sLine.substring(0, sLine.indexOf("."));
 							}
 
-							if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
+							if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
 								try {
 									Integer id = Integer.parseInt(sLine);
 									idMappingManager.getMap(mappingType).put(id,
@@ -92,7 +94,7 @@ public class LookupTableLoader
 								catch (NumberFormatException e) {
 								}
 							}
-							else if (mappingType.getFromIDType().getDimensionType() == EDimensionType.STRING) {
+							else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
 								idMappingManager.getMap(mappingType).put(sLine,
 									iLineInFile - parsingStartLine);
 							}
@@ -109,7 +111,7 @@ public class LookupTableLoader
 							String buffer = strTokenText.nextToken();
 
 							// Special case for creating indexing of dimensions
-							if (mappingType.getToIDType().getTypeName().contains("record_")) {
+							if (mappingType.getToIDType().isInternalType()) {
 
 								if (mappingType.getFromIDType().getTypeName().contains("REFSEQ")) {
 									// Remove multiple RefSeqs because all point to
@@ -129,7 +131,7 @@ public class LookupTableLoader
 								// cell is empty
 								try {
 									Float.valueOf(buffer);
-									if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
+									if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
 										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
 											iLineInFile - parsingStartLine);
 									}
@@ -149,32 +151,39 @@ public class LookupTableLoader
 								break;
 							}
 							else {
-								if (mappingType.getFromIDType().getDimensionType() == EDimensionType.INT) {
-									if (mappingType.getToIDType().getDimensionType() == EDimensionType.INT) {
-										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
-											Integer.valueOf(strTokenText.nextToken()));
+								try {
+									if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
+										if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
+											idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
+												Integer.valueOf(strTokenText.nextToken()));
+										}
+										else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+											idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
+												strTokenText.nextToken());
+										}
+										else
+											throw new IllegalStateException("Unsupported data type!");
 									}
-									else if (mappingType.getToIDType().getDimensionType() == EDimensionType.STRING) {
-										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
-											strTokenText.nextToken());
+									else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
+										if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
+											idMappingManager.getMap(mappingType).put(buffer,
+												Integer.valueOf(strTokenText.nextToken()));
+										}
+										else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+											idMappingManager.getMap(mappingType).put(buffer,
+												strTokenText.nextToken());
+										}
+										else
+											throw new IllegalStateException("Unsupported data type!");
 									}
 									else
 										throw new IllegalStateException("Unsupported data type!");
 								}
-								else if (mappingType.getFromIDType().getDimensionType() == EDimensionType.STRING) {
-									if (mappingType.getToIDType().getDimensionType() == EDimensionType.INT) {
-										idMappingManager.getMap(mappingType).put(buffer,
-											Integer.valueOf(strTokenText.nextToken()));
-									}
-									else if (mappingType.getToIDType().getDimensionType() == EDimensionType.STRING) {
-										idMappingManager.getMap(mappingType).put(buffer,
-											strTokenText.nextToken());
-									}
-									else
-										throw new IllegalStateException("Unsupported data type!");
+								catch (NumberFormatException nfe) {
+									Logger.log(new Status(Status.ERROR, this.toString(),
+										"Caught NFE: could not parse: " + mappingType, nfe));
+//									throw new IllegalStateException();
 								}
-								else
-									throw new IllegalStateException("Unsupported data type!");
 							}
 
 							break;

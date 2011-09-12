@@ -50,13 +50,24 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Create a new dataDomain. The created dataDomain is also registered with the manager.
+	 * <p>
+	 * Create a new {@link ADataDomain} of the type specified through <code>dataDomainType</code>. The created
+	 * dataDomain is also registered with the manager.
+	 * </p>
+	 * <p>
+	 * This method also specifies a boolean to determine whether the columns in a file corresponds to the
+	 * dimensions in the application. This is only relevant for {@link ATableBasedDataDomain}s. For other
+	 * DataDomains or the default (true) use {@link #createDataDomain(String)}.
+	 * </p>
 	 * 
 	 * @param dataDomainType
 	 *            the plug-in id of the data domain
-	 * @return
+	 * @param isColumnDimension
+	 *            set to false if this dataDomain is of type {@link ATableBasedDataDomain} and you want to
+	 *            access the columns of the loaded files as records
+	 * @return the created {@link IDataDomain}
 	 */
-	public IDataDomain createDataDomain(String dataDomainType) {
+	public IDataDomain createDataDomain(String dataDomainType, boolean isColumnDimension) {
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
@@ -66,6 +77,9 @@ public class DataDomainManager {
 
 		try {
 			ADataDomain dataDomain = (ADataDomain) ce[0].createExecutableExtension("class");
+			if (dataDomain instanceof ATableBasedDataDomain)
+				((ATableBasedDataDomain) dataDomain).setColumnDimension(isColumnDimension);		
+			dataDomain.init();
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
 			register(dataDomain);
@@ -74,6 +88,18 @@ public class DataDomainManager {
 		catch (Exception ex) {
 			throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
 		}
+	}
+
+	/**
+	 * Create a new {@link ADataDomain} of the type specified through <code>dataDomainType</code>. The created
+	 * dataDomain is also registered with the manager.
+	 * 
+	 * @param dataDomainType
+	 *            the plug-in id of the data domain
+	 * @return the created {@link IDataDomain}
+	 */
+	public IDataDomain createDataDomain(String dataDomainType) {
+		return createDataDomain(dataDomainType, true);
 	}
 
 	/**

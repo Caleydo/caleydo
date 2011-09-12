@@ -1,6 +1,7 @@
 package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
@@ -40,33 +41,33 @@ public class ClusterManager {
 	}
 
 	/**
-	 * Depending on the cluster state the corresponding clusterer will be called. Virtual arrays for content
-	 * and dimension will be returned.
+	 * Runs clustering as specified in the provided clusterConfiguration.
 	 * 
-	 * @param clusterState
-	 *            All information needed ba cluster algorithm
-	 * @return array list of {@link IVirtualArray}s including VAs for content and dimension.
+	 * @param clusterConfiguration
+	 *            the configuration of the clustering to be executed.
+	 * @return the results of the clustering which can be used to initialize {@link ADataPerspective}s.
 	 */
-	public ClusterResult cluster(ClusterConfiguration clusterState) {
-
+	public ClusterResult cluster(ClusterConfiguration clusterConfiguration) {
+		Logger.log(new Status(Status.INFO, this.toString(), "Started clustering with clusterConfiguration: "
+			+ clusterConfiguration));
 		try {
 			ClusterResult clusterResult = null;
 
-			switch (clusterState.getClustererAlgo()) {
+			switch (clusterConfiguration.getClustererAlgo()) {
 				case TREE_CLUSTERER:
-					clusterResult = runClustering(new TreeClusterer(), clusterState);
+					clusterResult = runClustering(new TreeClusterer(), clusterConfiguration);
 					break;
 				case COBWEB_CLUSTERER:
-					clusterResult = runClustering(new HierarchicalClusterer(), clusterState);
+					clusterResult = runClustering(new HierarchicalClusterer(), clusterConfiguration);
 					break;
 				case AFFINITY_PROPAGATION:
-					clusterResult = runClustering(new AffinityClusterer(), clusterState);
+					clusterResult = runClustering(new AffinityClusterer(), clusterConfiguration);
 					break;
 				case KMEANS_CLUSTERER:
-					clusterResult = runClustering(new KMeansClusterer(), clusterState);
+					clusterResult = runClustering(new KMeansClusterer(), clusterConfiguration);
 					break;
 				case ALPHABETICAL:
-					clusterResult = runClustering(new AlphabeticalPartitioner(), clusterState);
+					clusterResult = runClustering(new AlphabeticalPartitioner(), clusterConfiguration);
 					break;
 			}
 
