@@ -65,7 +65,7 @@ public abstract class ATableBasedDataDomain
 	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
-	protected boolean isColumnDimension = false;
+	protected boolean isColumnDimension = true;
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private SelectionCommandListener selectionCommandListener;
@@ -135,9 +135,10 @@ public abstract class ATableBasedDataDomain
 	public boolean isColumnDimension() {
 		return isColumnDimension;
 	}
-	
+
 	/**
-	 * @param isColumnDimension setter, see {@link #isColumnDimension}
+	 * @param isColumnDimension
+	 *            setter, see {@link #isColumnDimension}
 	 */
 	public void setColumnDimension(boolean isColumnDimension) {
 		this.isColumnDimension = isColumnDimension;
@@ -200,7 +201,6 @@ public abstract class ATableBasedDataDomain
 		recordPerspectiveIDs = table.getRecordPerspectiveIDs();
 		dimensionPerspectiveIDs = table.getDimensionPerspectiveIDs();
 	}
-	
 
 	/**
 	 * Returns the root set which is currently loaded and used inside the views for this use case.
@@ -649,8 +649,11 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public String getRecordLabel(IDType idType, Object id) {
-		String resolvedID = recordIDMappingManager.getID(idType, humanReadableRecordIDType, id);
-
+		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, humanReadableRecordIDType, id);
+		String resolvedID = "No Mapping";
+		if (ids != null && ids.size() > 0) {
+			resolvedID = ids.iterator().next();
+		}
 		return resolvedID;
 	}
 
