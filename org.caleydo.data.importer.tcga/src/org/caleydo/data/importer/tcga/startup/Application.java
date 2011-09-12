@@ -4,7 +4,9 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -19,10 +21,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
@@ -47,14 +46,14 @@ public class Application
 	public static String ALEX_TEST_1_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
 
 	public static String ALEX_TEST_2 =
-		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
+		System.getProperty("user.home") + System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
 	public static String ALEX_TEST_2_GROUPING =
-		"/home/alexsb/Dropbox/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
+		System.getProperty("user.home") + System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
 
 	private ATableBasedDataDomain dataDomain;
 
-	public String dataSource = ALEX_TEST_1;
-	public String groupingSource = ALEX_TEST_1_GROUPING;
+	public String dataSource = ALEX_TEST_2;
+	public String groupingSource = ALEX_TEST_2_GROUPING;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
@@ -70,7 +69,7 @@ public class Application
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
-			+ "gct.cal", true);
+			+ "export_" + (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal", true);
 
 		return IApplication.EXIT_OK;
 	}
@@ -171,8 +170,8 @@ public class Application
 			String[] columns = line.split(delimiter);
 
 			// this is specific to the two files used
-			String originalID = columns[0].replace("-", ".");
-			// String originalID = columns[0];
+			//String originalID = columns[0].replace("-", ".");
+			String originalID = columns[0];
 
 			Integer mappedID =
 				dataDomain.getRecordIDMappingManager().getID(dataDomain.getHumanReadableRecordIDType(),
