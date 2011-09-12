@@ -77,7 +77,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	boolean isTreeDefaultTree = true;
 
 	/** The dataDomain this perspective belongs to */
-	@XmlElement
+	@XmlTransient
 	protected ATableBasedDataDomain dataDomain;
 
 	@XmlTransient
@@ -212,6 +212,9 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	@XmlTransient
 	public ClusterTree getTree() {
+		// this should only happen when we de-serialize with a default tree.
+		if (tree == null)
+			createDefaultTree();
 		return tree;
 	}
 

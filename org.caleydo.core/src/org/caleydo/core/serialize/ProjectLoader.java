@@ -164,6 +164,7 @@ public class ProjectLoader {
 					RecordPerspective recordPerspective =
 						(RecordPerspective) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 							.getResource(extendedDirName + recordPerspectiveID + ".xml"));
+					recordPerspective.setDataDomain((ATableBasedDataDomain)dataDomain);
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					recordPerspectives.put(recordPerspectiveID, recordPerspective);
 
@@ -188,6 +189,7 @@ public class ProjectLoader {
 						(DimensionPerspective) unmarshaller.unmarshal(GeneralManager.get()
 							.getResourceLoader()
 							.getResource(extendedDirName + dimensionPerspectiveID + ".xml"));
+					dimensionPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
 

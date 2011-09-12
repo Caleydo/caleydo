@@ -45,6 +45,8 @@ public class IDMappingManagerRegistry {
 	 * @return
 	 */
 	public IDMappingManager getIDMappingManager(IDCategory idCategory) {
+		if(idCategory == null)
+			throw new IllegalArgumentException("idCategory was null");
 		if (!hashIDMappingManagers.containsKey(idCategory)) {
 			hashIDMappingManagers.put(idCategory, new IDMappingManager(idCategory));
 		}

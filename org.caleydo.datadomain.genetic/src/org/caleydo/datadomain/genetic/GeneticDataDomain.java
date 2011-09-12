@@ -65,7 +65,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void init() {
-
 		super.init();
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 		if (isColumnDimension) {

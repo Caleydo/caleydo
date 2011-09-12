@@ -58,11 +58,13 @@ public abstract class ADataDomain
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
 	public ADataDomain() {
+		System.out.println("Creating dataDomain " + this);
 	}
 
 	public ADataDomain(String dataDomainType, String dataDomainID) {
 		this.dataDomainType = dataDomainType;
 		this.dataDomainID = dataDomainID;
+		System.out.println("Creating dataDomain " + this);
 
 	}
 

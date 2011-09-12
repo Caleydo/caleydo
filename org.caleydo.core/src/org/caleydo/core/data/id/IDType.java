@@ -84,7 +84,10 @@ public class IDType {
 
 	/** Returns the IDType for the typeName specified, or null if no such type is registered */
 	public static IDType getIDType(String typeName) {
-		return registeredTypes.get(typeName);
+		IDType requestedType = registeredTypes.get(typeName);
+		if(requestedType == null)
+			throw new IllegalStateException("Requested IDType for typeName \"" + typeName + "\" not registered.");
+		return requestedType;
 	}
 
 	/**
