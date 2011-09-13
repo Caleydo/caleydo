@@ -8,19 +8,87 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
+/**
+ * <p>
+ * The {@link AddGroupsToVisBricksEvent} is an event that signals to add one or
+ * several {@link DimensionGroup}s to {@link GLVisBricks}.
+ * </p>
+ * <p>
+ * The event takes certain configurations of information and creates the data
+ * structures behind the {@link DimensionGroup}s, the
+ * {@link ADimensionGroupData}s.
+ * </p>
+ * <p>
+ * There are three ways to specify a group to be added:
+ * <ol>
+ * <li>by adding a list of pre-existing {@link ADimensionGroupData}s, using the
+ * {@link #AddGroupsToVisBricksEvent(ArrayList)} constructor or the
+ * {@link #setDimensionGroupData(ArrayList)} method,</li>
+ * <li>by specifying exactly one {@link DimensionPerspective} and one
+ * {@link RecordPerspective} using the
+ * {@link #AddGroupsToVisBricksEvent(String, String, String)} constructor,</li>
+ * <li>or by specifying a {@link DimensionPerspective}, a
+ * {@link RecordPerspective} and a list of {@link ClusterNode}s. This creates a
+ * new {@link ADimensionGroupData} for every node.</li>
+ * </ol>
+ * </p>
+ * 
+ * @author Alexander Lex
+ * 
+ */
 public class AddGroupsToVisBricksEvent extends AEvent {
 
 	private String dimensionPerspectiveID;
 	private String recordPerspectiveID;
 	private ArrayList<ClusterNode> selectedNodes;
+	private boolean createFromNodes = true;
 
 	ArrayList<ADimensionGroupData> dimensionGroupData = null;
 
 	public AddGroupsToVisBricksEvent() {
 	}
 
+	/**
+	 * Specify a list of pre-existing {@link ADimensionGroupData}s to be added
+	 * to VisBricks
+	 * 
+	 * @param dimensionGroupData
+	 */
+	public AddGroupsToVisBricksEvent(ArrayList<ADimensionGroupData> dimensionGroupData) {
+		this.dimensionGroupData = dimensionGroupData;
+	}
+
+	/**
+	 * Specify a record and dimension perspective, from which a new
+	 * {@link ADimensionGroupData} is created in this event.
+	 * 
+	 * @param dataDomainID
+	 * @param dimensionPerspectiveID
+	 * @param recordPerspectiveID
+	 */
+	public AddGroupsToVisBricksEvent(String dataDomainID, String dimensionPerspectiveID,
+			String recordPerspectiveID) {
+		this.dataDomainID = dataDomainID;
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
+		this.recordPerspectiveID = recordPerspectiveID;
+		createFromNodes = false;
+	}
+
+	/**
+	 * Specify a record and dimension perspective, plus a liust of
+	 * {@link ClusterNode}s. For each ClusterNode, a new
+	 * {@link ADimensionGroupData} is created.
+	 * 
+	 * @param dataDomainID
+	 * @param dimensionPerspectiveID
+	 * @param recordPerspectiveID
+	 * @param selectedNodes
+	 */
 	public AddGroupsToVisBricksEvent(String dataDomainID, String dimensionPerspectiveID,
 			String recordPerspectiveID, ArrayList<ClusterNode> selectedNodes) {
 		this.dataDomainID = dataDomainID;
@@ -31,8 +99,9 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 
 	public boolean checkIntegrity() {
 		if (dimensionGroupData == null
-				&& (dataDomainID == null || dimensionPerspectiveID == null
-						|| recordPerspectiveID == null || selectedNodes == null))
+				&& (dataDomainID == null || dimensionPerspectiveID == null || recordPerspectiveID == null))
+			return false;
+		if (createFromNodes && selectedNodes == null)
 			return false;
 
 		return true;
@@ -43,23 +112,39 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	}
 
 	public ArrayList<ADimensionGroupData> getDimensionGroupData() {
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+				.get().getDataDomainByID(dataDomainID);
+		// case 1: pre-existing dimension group data
 		if (dimensionGroupData != null)
 			return dimensionGroupData;
 
-		dimensionGroupData = new ArrayList<ADimensionGroupData>(selectedNodes.size());
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-				.get().getDataDomainByID(dataDomainID);
-		for (ClusterNode node : selectedNodes) {
-			if (node.isLeaf())
-				continue;
+		// case 2: exactly one dimension group data, no clusterNode
+		else if (!createFromNodes && selectedNodes == null) {
+			dimensionGroupData = new ArrayList<ADimensionGroupData>(1);
 			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
 					dataDomain, dataDomain.getTable().getRecordPerspective(
 							recordPerspectiveID), dataDomain.getTable()
-							.getDimensionPerspective(dimensionPerspectiveID), node,
-					DimensionPerspective.class);
+							.getDimensionPerspective(dimensionPerspectiveID));
 			dimensionGroupData.add(data);
+			return dimensionGroupData;
+
 		}
-		return dimensionGroupData;
+		// case 3: build from clusterNodes
+		else {
+			dimensionGroupData = new ArrayList<ADimensionGroupData>(selectedNodes.size());
+
+			for (ClusterNode node : selectedNodes) {
+				if (node.isLeaf())
+					continue;
+				TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
+						dataDomain, dataDomain.getTable().getRecordPerspective(
+								recordPerspectiveID), dataDomain.getTable()
+								.getDimensionPerspective(dimensionPerspectiveID), node,
+						DimensionPerspective.class);
+				dimensionGroupData.add(data);
+			}
+			return dimensionGroupData;
+		}
 	}
 
 }

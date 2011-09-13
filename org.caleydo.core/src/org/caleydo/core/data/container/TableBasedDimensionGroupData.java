@@ -27,9 +27,25 @@ public class TableBasedDimensionGroupData
 	String label;
 
 	/**
+	 * Creates a new {@link TableBasedDimensionGroupData} with the record and dimension perspectives
+	 * specified.
+	 * 
+	 * @param dataDomain
+	 * @param recordPerspective
+	 * @param dimensionPerspective
+	 */
+	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain,
+		RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective) {
+		this.dataDomain = dataDomain;
+		this.recordPerspective = recordPerspective;
+		this.dimensionPerspective = dimensionPerspective;
+		this.label = recordPerspective.getLabel();
+	}
+
+	/**
 	 * Creates a new {@link TableBasedDimensionGroupData} object with a new dataPerspective class. The new
-	 * dataPerspective is created using the clusterNode (all leaves of the clusterNode eg are in the VA of the
-	 * new perspective). Since nodes and trees are independent of the perspective's data type, we need the
+	 * dataPerspective is created using the clusterNode (all leaves of the clusterNode, e.g., are in the VA of
+	 * the new perspective). Since nodes and trees are independent of the perspective's data type, we need the
 	 * dataPersperctivClass parameter to tell us which perspective should be created.
 	 * 
 	 * @param dataDomain

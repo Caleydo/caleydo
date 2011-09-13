@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -18,6 +19,8 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -216,6 +219,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		connectionRenderer.init(gl);
 		// viewFrustum.setProjectionMode(ECameraProjectionMode.PERSPECTIVE);
 		// viewCamera.setCameraRotation(new Rotf());
+
+		checkForPerparedPerspectives();
 
 	}
 
@@ -1683,5 +1688,44 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
 		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	}
+
+	private void checkForPerparedPerspectives() {
+		Set<String> recordPerspectiveIDs = dataDomain.getTable()
+				.getRecordPerspectiveIDs();
+		Set<String> dimensionPerspectiveIDs = dataDomain.getTable()
+				.getDimensionPerspectiveIDs();
+
+		String chosenDimensionPerspectiveID = null;
+		Iterator<String> dimensionPerspectiveIterator = dimensionPerspectiveIDs
+				.iterator();
+
+		while (dimensionPerspectiveIterator.hasNext()) {
+			chosenDimensionPerspectiveID = dimensionPerspectiveIterator.next();
+			DimensionPerspective currentPerspecitve = dataDomain.getTable()
+					.getDimensionPerspective(chosenDimensionPerspectiveID);
+			if (currentPerspecitve.getLabel().contains("sample"))
+				break;
+			else
+				chosenDimensionPerspectiveID = null;
+
+		}
+		if (chosenDimensionPerspectiveID == null)
+			return;
+
+		String chosenRecordPerspectiveID;
+		Iterator<String> recordPerspectiveIterator = recordPerspectiveIDs.iterator();
+
+		while (recordPerspectiveIterator.hasNext()) {
+			chosenRecordPerspectiveID = recordPerspectiveIterator.next();
+			RecordPerspective currentPerspective = dataDomain.getTable()
+					.getRecordPerspective(chosenRecordPerspectiveID);
+			if (currentPerspective.getLabel().contains("clusters")) {
+				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataDomain.getDataDomainID(),
+						chosenDimensionPerspectiveID, chosenRecordPerspectiveID);
+				event.setDataDomainID(dataDomain.getDataDomainID());
+				eventPublisher.triggerEvent(event);
+			}
+		}
 	}
 }

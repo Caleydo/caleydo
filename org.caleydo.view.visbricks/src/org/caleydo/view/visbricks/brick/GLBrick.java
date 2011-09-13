@@ -488,65 +488,6 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int pickingID, Pick pick) {
 
-		// HashMap<Integer, IPickingListener> map = pickingListeners
-		// .get(pickingType);
-		// if (map == null)
-		// return;
-		//
-		// IPickingListener pickingListener = map.get(pickingID);
-		//
-		// if (pickingListener == null)
-		// return;
-		//
-		// switch (pickingMode) {
-		// case CLICKED:
-		// pickingListener.clicked(pick);
-		// break;
-		// case DOUBLE_CLICKED:
-		// pickingListener.doubleClicked(pick);
-		// break;
-		// case RIGHT_CLICKED:
-		// pickingListener.rightClicked(pick);
-		// break;
-		// case MOUSE_OVER:
-		// pickingListener.mouseOver(pick);
-		// break;
-		// case DRAGGED:
-		// pickingListener.dragged(pick);
-		// break;
-		// }
-
-		// switch (pickingType) {
-		// case BRICK_CLUSTER:
-		// switch (pickingMode) {
-		// case CLICKED:
-		// // table.cluster(clusterState);
-		// System.out.println("cluster");
-		//
-		// getParentGLCanvas().getParentComposite().getDisplay()
-		// .asyncExec(new Runnable() {
-		// @Override
-		// public void run() {
-		// StartClusteringDialog dialog = new StartClusteringDialog(
-		// new Shell(), dataDomain);
-		// dialog.open();
-		// ClusterState clusterState = dialog
-		// .getClusterState();
-		//
-		// StartClusteringEvent event = null;
-		// // if (clusterState != null && set != null)
-		//
-		// event = new StartClusteringEvent(clusterState,
-		// table.getID());
-		// event.setDataDomainType(dataDomain
-		// .getDataDomainType());
-		// GeneralManager.get().getEventPublisher()
-		// .triggerEvent(event);
-		// }
-		// });
-		//
-		// }
-		// }
 
 	}
 

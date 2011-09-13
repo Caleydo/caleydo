@@ -216,7 +216,8 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 	@Override
 	public int getMinWidthPixels() {
-		return Math.max(150, 16 * heatMapValuesMean.size());
+		return 150;
+//		return Math.max(150, 16 * heatMapValuesMean.size());
 	}
 
 }

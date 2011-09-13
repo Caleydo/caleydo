@@ -1763,34 +1763,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// y =table.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
 			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
-			// }
-			// }
-			// else if (idType == EIDType.EXPERIMENT_INDEX
-			// && dataDomain.getDataDomainType().equals(
-			// "org.caleydo.datadomain.clinical")) {
-			// System.out.println("wu");
-			// alElementReps.add(new SelectedElementRep(idType, uniqueID, 0, 0,
-			// 0.0f));
+			
 
 		} else {
-			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-			// fXValue = viewFrustum.getRight() - 0.2f;
-			// else
-			// fXValue = viewFrustum.getRight() - 0.4f;
-
-			// if (renderConnectionsLeft) {
-			// x = x + renderStyle.getXSpacing();
-			// y =
-			// table.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
-			// iDimensionIndex);
-			// } else {
-			// if (eAxisDataType == EIDType.EXPERIMENT_RECORD)
-			// fXValue = viewFrustum.getRight() - 0.2f;
-			// else
+			
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
 			y = table.getFloat(DataRepresentation.NORMALIZED, dimensionVA.get(0), id);
-			// }
-
+		
 			// // get the value on the leftmost axis
 			// fYValue =
 			// table.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
@@ -2467,7 +2446,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		case MEDIUM:
 			return 80;
 		case LOW:
-			return Math.max(150, 30 * dimensionVA.size());
+			return 80;
+//			return Math.max(150, 30 * dimensionVA.size());
 		default:
 			return 80;
 		}
