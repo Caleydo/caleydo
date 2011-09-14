@@ -22,20 +22,25 @@ import org.caleydo.view.datagraph.IDataGraphNode;
 public class EdgeBandRenderer {
 
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
-	protected final static int DEFAULT_MAX_BAND_WIDTH = 30;
+	protected final static int DEFAULT_MAX_BAND_WIDTH = 35;
+	protected final static int DEFAULT_MIN_BAND_WIDTH = 5;
 
 	protected IDataGraphNode node1;
 	protected IDataGraphNode node2;
 	protected PixelGLConverter pixelGLConverter;
 	protected ViewFrustum viewFrustum;
 	protected int maxBandWidth = DEFAULT_MAX_BAND_WIDTH;
+	protected int minBandWidth = DEFAULT_MIN_BAND_WIDTH;
+	protected int maxDataAmount;
 
 	public EdgeBandRenderer(IDataGraphNode node1, IDataGraphNode node2,
-			PixelGLConverter pixelGLConverter, ViewFrustum viewFrustum) {
+			PixelGLConverter pixelGLConverter, ViewFrustum viewFrustum,
+			int maxDataAmount) {
 		this.node1 = node1;
 		this.node2 = node2;
 		this.pixelGLConverter = pixelGLConverter;
 		this.viewFrustum = viewFrustum;
+		this.maxDataAmount = maxDataAmount;
 	}
 
 	public void renderEdgeBand(GL2 gl, IEdgeRoutingStrategy edgeRoutingStrategy) {
@@ -59,11 +64,14 @@ public class EdgeBandRenderer {
 		connectionBandRenderer.init(gl);
 
 		Color bandColor = null;
+		int dataAmount = 0;
 
 		if (node1 instanceof DataNode) {
 			bandColor = ((DataNode) node1).getDataDomain().getColor();
+			dataAmount = ((DataNode) node1).getDataDomain().getDataAmount();
 		} else if (node2 instanceof DataNode) {
 			bandColor = ((DataNode) node2).getDataDomain().getColor();
+			dataAmount = ((DataNode) node2).getDataDomain().getDataAmount();
 		}
 		if (bandColor == null)
 			bandColor = new Color(0.5f, 0.5f, 0.5f, 1f);
@@ -129,16 +137,27 @@ public class EdgeBandRenderer {
 			float spacingY = (float) ((topNode.getPosition().getY() - topNode
 					.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
 					.getHeight() / 2.0f));
+			
+			int bandWidth = calcBandWidthPixels(dataAmount);
 
 			if (spacingX > spacingY) {
 				renderHorizontalBand(gl, leftNode, rightNode,
-						edgeRoutingStrategy, connectionBandRenderer, bandColor);
+						edgeRoutingStrategy, connectionBandRenderer, bandColor, bandWidth);
 			} else {
 				renderVerticalBand(gl, bottomNode, topNode,
-						edgeRoutingStrategy, connectionBandRenderer, bandColor);
+						edgeRoutingStrategy, connectionBandRenderer, bandColor, bandWidth);
 			}
 		}
 
+	}
+
+	protected int calcBandWidthPixels(int dataAmount) {
+		int bandWidth = (int)(dataAmount * (float)maxBandWidth/(float)maxDataAmount);
+		if(bandWidth > maxBandWidth)
+			return maxBandWidth;
+		if(bandWidth < minBandWidth)
+			return minBandWidth;
+		return bandWidth;
 	}
 
 	protected void renderBundledBand(GL2 gl, IDataGraphNode node1,
@@ -351,7 +370,7 @@ public class EdgeBandRenderer {
 
 	protected void renderVerticalBand(GL2 gl, IDataGraphNode bottomNode,
 			IDataGraphNode topNode, IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer, Color color) {
+			ConnectionBandRenderer connectionBandRenderer, Color color, int bandWidth) {
 
 		Point2D positionBottom = bottomNode.getPosition();
 		Point2D positionTop = topNode.getPosition();
@@ -430,7 +449,7 @@ public class EdgeBandRenderer {
 						* nodeEdgeAnchorSpacingTop));
 
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
-				gl, edgePoints, 20, pixelGLConverter);
+				gl, edgePoints, bandWidth, pixelGLConverter);
 
 		renderBand(gl, connectionBandRenderer, bandPoints, color);
 
@@ -599,7 +618,7 @@ public class EdgeBandRenderer {
 
 	protected void renderHorizontalBand(GL2 gl, IDataGraphNode leftNode,
 			IDataGraphNode rightNode, IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer, Color color) {
+			ConnectionBandRenderer connectionBandRenderer, Color color, int bandWidth) {
 
 		Point2D positionLeft = leftNode.getPosition();
 		Point2D positionRight = rightNode.getPosition();
@@ -677,7 +696,7 @@ public class EdgeBandRenderer {
 						.getSecond().getY()));
 
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
-				gl, edgePoints, 20, pixelGLConverter);
+				gl, edgePoints, bandWidth, pixelGLConverter);
 		renderBand(gl, connectionBandRenderer, bandPoints, color);
 
 		Point2D bandAnchorPoint1Left = new Point2D.Float(bandPoints.get(0).x(),
@@ -782,5 +801,13 @@ public class EdgeBandRenderer {
 
 	public void setMaxBandWidth(int maxBandWidth) {
 		this.maxBandWidth = maxBandWidth;
+	}
+
+	public int getMinBandWidth() {
+		return minBandWidth;
+	}
+
+	public void setMinBandWidth(int minBandWidth) {
+		this.minBandWidth = minBandWidth;
 	}
 }

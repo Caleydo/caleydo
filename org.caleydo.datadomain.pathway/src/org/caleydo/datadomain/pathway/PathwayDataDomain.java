@@ -94,6 +94,12 @@ public class PathwayDataDomain extends ADataDomain {
 		return mappingHelper;
 	}
 
+	@Override
+	public int getDataAmount() {
+		// TODO Calculate properly
+		return 0;
+	}
+
 	//
 	// @Override
 	// public List<ADimensionGroupData> getDimensionGroups() {

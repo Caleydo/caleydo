@@ -88,6 +88,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private Map<IDataDomain, Set<ViewNode>> viewNodesOfDataDomains;
 	private Map<IDataDomain, DataNode> dataNodesOfDataDomains;
 	private ConnectionBandRenderer connectionBandRenderer;
+	
+	private int maxDataAmount = Integer.MIN_VALUE;
 
 	private NewViewEventListener newViewEventListener;
 	private NewDataDomainEventListener newDataDomainEventListener;
@@ -368,94 +370,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		}
 		renderEdges(gl);
 
-		// renderTestCurve(gl);
-
 		gl.glEndList();
 
 	}
-
-	// private void renderTestCurve(GL2 gl) {
-	//
-	// Point2D v0 = new Point2D.Double(0.5, 0.5);
-	// Point2D v1 = new Point2D.Double(1, 0.5);
-	// Point2D v2 = new Point2D.Double(2, 3);
-	// Point2D v3 = new Point2D.Double(2.5, 1);
-	//
-	// computeOneSpline(v0, v0, v1, v2, gl);
-	// computeOneSpline(v0, v1, v2, v3, gl);
-	// computeOneSpline(v1, v2, v3, v3, gl);
-	//
-	// gl.glPointSize(5);
-	// gl.glColor3f(1, 0, 0);
-	// gl.glBegin(GL2.GL_POINTS);
-	// gl.glVertex2d(v0.getX(), v0.getY());
-	// gl.glVertex2d(v1.getX(), v1.getY());
-	// gl.glVertex2d(v2.getX(), v2.getY());
-	// gl.glVertex2d(v3.getX(), v3.getY());
-	// gl.glEnd();
-	//
-	// }
-
-	// private void computeOneSpline(Point2D v0, Point2D v1, Point2D v2,
-	// Point2D v3, GL2 gl) {
-	//
-	// // double ctrlx1 = (-Math.abs(v0.getX() - v1.getX()) / 4) + v1.getX()
-	// // + (Math.abs(v2.getX() - v1.getX()) / 4);
-	// // double ctrly1 = (-Math.abs(v0.getY() - v1.getY()) / 4) + v1.getY()
-	// // + (Math.abs(v2.getY() - v1.getY()) / 4);
-	// // double ctrlx2 = (-Math.abs(v1.getX() - v2.getX()) / 4) + v2.getX()
-	// // + (Math.abs(v3.getX() - v2.getX()) / 4);
-	// // double ctrly2 = (-Math.abs(v1.getY() - v2.getY()) / 4) + v2.getY()
-	// // + (Math.abs(v3.getY() - v2.getY()) / 4);
-	//
-	// // double dx = Math.abs(v1.getX() - v2.getX())
-	// // * Math.abs(v1.getX() - v2.getX())
-	// // + Math.abs(v1.getY() - v2.getY())
-	// // * Math.abs(v1.getY() - v2.getY());
-	// // double dy = dx;
-	// //
-	// // double ctrlx1 = (-v0.getX() / dx) + v1.getX() + v2.getX() / dx;
-	// // double ctrly1 = (-v0.getY() / dy) + v1.getY() + v2.getY() / dy;
-	// //
-	// // double ctrlx2 = (v1.getX() / dx) + v2.getX() - v3.getX() / dx;
-	// // double ctrly2 = (v1.getY() / dy) + v2.getY() - v3.getY() / dy;
-	//
-	// double k = 12;
-	// double ctrlx1 = (-v0.getX() / k) + v1.getX() + v2.getX() / k;
-	// double ctrly1 = (-v0.getY() / k) + v1.getY() + v2.getY() / k;
-	//
-	// double ctrlx2 = (v1.getX() / k) + v2.getX() - v3.getX() / k;
-	// double ctrly2 = (v1.getY() / k) + v2.getY() - v3.getY() / k;
-	//
-	// ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
-	// inputPoints.add(new Vec3f((float) v1.getX(), (float) v1.getY(), 0));
-	// inputPoints.add(new Vec3f((float) ctrlx1, (float) ctrly1, 0));
-	// inputPoints.add(new Vec3f((float) ctrlx2, (float) ctrly2, 0));
-	// inputPoints.add(new Vec3f((float) v2.getX(), (float) v2.getY(), 0));
-	//
-	// NURBSCurve nurb = new NURBSCurve(inputPoints, 10);
-	// ArrayList<Vec3f> outputPoints = nurb.getCurvePoints();
-	//
-	// // Band border
-	// gl.glLineWidth(1);
-	// gl.glBegin(GL2.GL_POINTS);
-	// for (int i = 0; i < outputPoints.size(); i++) {
-	// gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),
-	// outputPoints.get(i).z());
-	// }
-	// gl.glEnd();
-	//
-	// renderBand(gl, outputPoints, 30);
-	//
-	// // gl.glPointSize(5);
-	// // gl.glColor3f(0, 0, 1);
-	// // gl.glBegin(GL2.GL_POINTS);
-	// // gl.glVertex2d(ctrlx1, ctrly1);
-	// // gl.glVertex2d(ctrlx2, ctrly2);
-	// // gl.glEnd();
-	// // curve.setCurve(v1.getX(), v1.getY(), ctrlx1, ctrly1, ctrlx2, ctrly2,
-	// // v2.getX(), v2.getY());
-	// }
 
 	private void renderEdges(GL2 gl) {
 
@@ -510,6 +427,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glPopAttrib();
 			}
 		}
+		
+		calcMaxDataAmount();
 
 		for (Pair<IDataGraphNode, IDataGraphNode> edge : bandConnectedNodes) {
 			renderConnectionBands(gl, edge.getFirst(), edge.getSecond());
@@ -521,379 +440,17 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			IDataGraphNode node2) {
 
 		EdgeBandRenderer bandRenderer = new EdgeBandRenderer(node1, node2,
-				pixelGLConverter, viewFrustum);
-
-		// ConnectionBandCreatorFactory
-		// .getConnectionBandCreator(node1, node2, pixelGLConverter,
-		// viewFrustum);
+				pixelGLConverter, viewFrustum, maxDataAmount);
 
 		bandRenderer.renderEdgeBand(gl,
 				new SimpleEdgeRoutingStrategy(dataGraph));
-		// for (List<Pair<Point2D, Point2D>> anchorPoints : bandCreator
-		// .calcConnectionBands()) {
-		// connectionBandRenderer.init(gl);
-		// connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-		// new float[] { 0, 0, 0 }, 0.2f);
-		// }
-
-		// List<ADimensionGroupData> dimensionGroups1 =
-		// node1.getDimensionGroups();
-		// List<ADimensionGroupData> dimensionGroups2 =
-		// node2.getDimensionGroups();
-		//
-		// Point2D node1BundlingPoint = new Point2D.Double(node1.getPosition()
-		// .getX(), node1.getPosition().getY() - node1.getHeight() / 2.0f
-		// - 0.2f);
-		// Point2D node2BundlingPoint = new Point2D.Double(node2.getPosition()
-		// .getX(), node2.getPosition().getY() - node2.getHeight() / 2.0f
-		// - 0.2f);
-		//
-		// if (dimensionGroups1 != null && !dimensionGroups1.isEmpty()
-		// && dimensionGroups2 != null && !dimensionGroups2.isEmpty()) {
-		//
-		// for (ADimensionGroupData dimGroupData1 : dimensionGroups1) {
-		// for (ADimensionGroupData dimGroupData2 : dimensionGroups2) {
-		// if (dimGroupData1.getID() == dimGroupData2.getID()) {
-		//
-		// }
-		// }
-		// }
-		// }
-		//
-		// gl.glPointSize(5);
-		// gl.glColor3f(1, 0, 0);
-		// gl.glBegin(GL2.GL_POINTS);
-		// gl.glVertex2d(node1BundlingPoint.getX(), node1BundlingPoint.getY());
-		// gl.glVertex2d(node2BundlingPoint.getX(), node2BundlingPoint.getY());
-		// gl.glEnd();
-		//
-		// ArrayList<Point2D> edgePoints = new ArrayList<Point2D>();
-		// edgePoints.add(node1BundlingPoint);
-		// edgePoints.add(node2BundlingPoint);
-		//
-		// createEdge(gl, edgePoints);
-		//
-		// edgePoints.add(edgePoints.get(edgePoints.size() - 1));
-		// edgePoints.add(0, edgePoints.get(0));
-		//
-		// connectionBandRenderer.init(gl);
-		//
-		// for (int i = 0; i < edgePoints.size() - 3; i++) {
-		// connectionBandRenderer.renderInterpolatedBand(gl, edgePoints, 30,
-		// pixelGLConverter);
-		// // computeOneSpline(edgePoints.get(i), edgePoints.get(i + 1),
-		// // edgePoints.get(i + 2), edgePoints.get(i + 3), gl);
-		// }
-
 	}
-
-	private void createEdge(GL2 gl, List<Point2D> edgePoints) {
-
-		if (edgePoints == null || edgePoints.size() < 2)
-			return;
-
-		Map<Point2D, IDataGraphNode> pointsOnBoundingBoxes = new HashMap<Point2D, IDataGraphNode>();
-
-		for (int i = 1; i < edgePoints.size(); i++) {
-			Point2D point1 = edgePoints.get(i - 1);
-			Point2D point2 = edgePoints.get(i);
-
-			for (IDataGraphNode node : dataGraph.getNodes()) {
-				Rectangle2D box = node.getBoundingBox();
-				int code1 = box.outcode(point1);
-				int code2 = box.outcode(point2);
-
-				boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
-						.get(point1) == node);
-				boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
-						.get(point2) == node);
-
-				if (((code1 & code2) != 0)
-						|| (code1 == 0 && !isPoint1OnBoundingBox)
-						|| (code2 == 0 && !isPoint2OnBoundingBox)
-						|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
-					continue;
-				}
-
-				Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
-						: (calcIntersectionPoint(point1, point2, box, code1));
-				Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
-						: (calcIntersectionPoint(point2, point1, box, code2));
-
-				if (intersection1 != null && intersection2 != null) {
-
-					if (intersection1.getX() == intersection2.getX()
-							&& intersection1.getY() == intersection2.getY()) {
-						continue;
-					}
-
-					Point2D[] corners = new Point2D[4];
-					// corners[0] = new Point2D.Double(box.getMinX() - 0.001,
-					// box.getMinY() - 0.001);
-					// corners[1] = new Point2D.Double(box.getMaxX() + 0.001,
-					// box.getMinY() - 0.001);
-					// corners[2] = new Point2D.Double(box.getMaxX() + 0.001,
-					// box.getMaxY() + 0.001);
-					// corners[3] = new Point2D.Double(box.getMinX() - 0.001,
-					// box.getMaxY() + 0.001);
-					corners[0] = new Point2D.Double(box.getMinX(),
-							box.getMinY());
-					corners[1] = new Point2D.Double(box.getMaxX(),
-							box.getMinY());
-					corners[2] = new Point2D.Double(box.getMaxX(),
-							box.getMaxY());
-					corners[3] = new Point2D.Double(box.getMinX(),
-							box.getMaxY());
-
-					double minDistance = Double.MAX_VALUE;
-					Point2D bendPoint = null;
-
-					for (int j = 0; j < 4; j++) {
-						if ((corners[j].getX() == point1.getX()
-								&& corners[j].getY() == point1.getY() && isPoint1OnBoundingBox)
-								|| (corners[j].getX() == point2.getX() && corners[j]
-										.getY() == point2.getY())
-								&& isPoint2OnBoundingBox) {
-							continue;
-						}
-						double currentSummedDistance = intersection1
-								.distanceSq(corners[j])
-								+ intersection2.distanceSq(corners[j]);
-						if (currentSummedDistance < minDistance) {
-							minDistance = currentSummedDistance;
-							bendPoint = corners[j];
-
-						}
-					}
-					if (bendPoint == null) {
-						System.out.println("null");
-					}
-
-					boolean isPointAlreadyAdded = false;
-
-					for (Point2D point : edgePoints) {
-						if (point.getX() == bendPoint.getX()
-								&& point.getY() == bendPoint.getY()) {
-							isPointAlreadyAdded = true;
-							break;
-						}
-					}
-
-					if (isPointAlreadyAdded) {
-						continue;
-					}
-
-					edgePoints.add(i, bendPoint);
-					pointsOnBoundingBoxes.put(bendPoint, node);
-					i--;
-
-					// gl.glPointSize(5);
-					// gl.glColor3f(0, 0, 1);
-					// gl.glBegin(GL2.GL_POINTS);
-					// gl.glVertex2d(intersection1.getX(),
-					// intersection1.getY());
-					// gl.glVertex2d(intersection2.getX(),
-					// intersection2.getY());
-					// gl.glEnd();
-					//
-					gl.glLineWidth(1);
-					gl.glColor3f(0, 0, 1);
-					gl.glBegin(GL2.GL_LINE_LOOP);
-					gl.glVertex2d(box.getMinX(), box.getMinY());
-					gl.glVertex2d(box.getMaxX(), box.getMinY());
-					gl.glVertex2d(box.getMaxX(), box.getMaxY());
-					gl.glVertex2d(box.getMinX(), box.getMaxY());
-					gl.glEnd();
-
-					break;
-				}
-			}
+	
+	private void calcMaxDataAmount() {
+		for(DataNode dataNode: dataNodes) {
+			if(maxDataAmount < dataNode.getDataDomain().getDataAmount())
+				maxDataAmount = dataNode.getDataDomain().getDataAmount();
 		}
-
-		for (int step = edgePoints.size() - 2; step >= 2; step--) {
-
-			for (int i = 0; i + step < edgePoints.size(); i++) {
-				Point2D point1 = edgePoints.get(i);
-				Point2D point2 = edgePoints.get(i + step);
-
-				boolean hasIntersection = false;
-
-				for (IDataGraphNode node : dataGraph.getNodes()) {
-					Rectangle2D box = node.getBoundingBox();
-					int code1 = box.outcode(point1);
-					int code2 = box.outcode(point2);
-
-					boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
-							.get(point1) == node);
-					boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
-							.get(point2) == node);
-
-					if ((code1 & code2) != 0) {
-						continue;
-					}
-
-					if ((code1 == 0 && !isPoint1OnBoundingBox)
-							|| (code2 == 0 && !isPoint2OnBoundingBox)
-							|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
-						hasIntersection = true;
-						break;
-					}
-
-					Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
-							: (calcIntersectionPoint(point1, point2, box, code1));
-					Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
-							: (calcIntersectionPoint(point2, point1, box, code2));
-
-					if (intersection1 == null || intersection2 == null) {
-						continue;
-					}
-
-					if (intersection1.distance(intersection2) < 0.000001
-							&& (isPoint1OnBoundingBox || isPoint2OnBoundingBox)) {
-						continue;
-					}
-
-					hasIntersection = true;
-					break;
-				}
-
-				if (!hasIntersection) {
-					for (int j = i + 1; j < i + step; j++) {
-						edgePoints.remove(i + 1);
-					}
-					step = edgePoints.size() - 2;
-					break;
-				}
-			}
-		}
-
-		// gl.glColor3f(1, 0, 1);
-		// gl.glBegin(GL2.GL_LINE_STRIP);
-		// for (Point2D point : edgePoints) {
-		// gl.glVertex2d(point.getX(), point.getY());
-		// }
-		// gl.glEnd();
-	}
-
-	private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
-			Rectangle2D rect, int code1) {
-
-		double k = 0;
-
-		if (point1.getX() != point2.getX()) {
-			k = (point2.getY() - point1.getY())
-					/ (point2.getX() - point1.getX());
-		}
-
-		if ((code1 & Rectangle2D.OUT_LEFT) != 0) {
-			double y = point1.getY() + ((rect.getMinX() - point1.getX()) * k);
-
-			if (y <= rect.getMaxY() && y >= rect.getMinY())
-				return new Point2D.Double(rect.getMinX(), y);
-		}
-
-		if ((code1 & Rectangle2D.OUT_RIGHT) != 0) {
-			double y = point1.getY() + ((rect.getMaxX() - point1.getX()) * k);
-			if (y <= rect.getMaxY() && y >= rect.getMinY())
-				return new Point2D.Double(rect.getMaxX(), y);
-		}
-
-		if ((code1 & Rectangle2D.OUT_TOP) != 0) {
-			double x = point1.getX();
-			if (k != 0) {
-				x += (rect.getMinY() - point1.getY()) / k;
-			}
-
-			if (x <= rect.getMaxX() && x >= rect.getMinX())
-				return new Point2D.Double(x, rect.getMinY());
-		}
-
-		if ((code1 & Rectangle2D.OUT_BOTTOM) != 0) {
-			double x = point1.getX();
-			if (k != 0) {
-				x += (rect.getMaxY() - point1.getY()) / k;
-			}
-
-			if (x <= rect.getMaxX() && x >= rect.getMinX())
-				return new Point2D.Double(x, rect.getMaxY());
-		}
-
-		return null;
-	}
-
-	private void renderBand(GL2 gl, BandInfo bandInfo) {
-		Pair<Point2D, Point2D> anchorPoints1 = bandInfo.getAnchorPoints1();
-		Pair<Point2D, Point2D> anchorPoints2 = bandInfo.getAnchorPoints2();
-
-		connectionBandRenderer.init(gl);
-		float[] side1AnchorPos1 = new float[] {
-				(float) anchorPoints1.getFirst().getX(),
-				(float) anchorPoints1.getFirst().getY() };
-		float[] side1AnchorPos2 = new float[] {
-				(float) anchorPoints1.getSecond().getX(),
-				(float) anchorPoints1.getSecond().getY() };
-
-		float[] side2AnchorPos1 = new float[] {
-				(float) anchorPoints2.getFirst().getX(),
-				(float) anchorPoints2.getFirst().getY() };
-		float[] side2AnchorPos2 = new float[] {
-				(float) anchorPoints2.getSecond().getX(),
-				(float) anchorPoints2.getSecond().getY() };
-
-		float[] offset1AnchorPos1 = new float[] {
-				side1AnchorPos1[0]
-						+ (bandInfo.isOffset1Horizontal() ? (bandInfo
-								.getOffset1()) : 0),
-				side1AnchorPos1[1]
-						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
-								.getOffset1()) };
-		float[] offset1AnchorPos2 = new float[] {
-				side1AnchorPos2[0]
-						+ (bandInfo.isOffset1Horizontal() ? (bandInfo
-								.getOffset1()) : 0),
-				side1AnchorPos2[1]
-						+ (bandInfo.isOffset1Horizontal() ? 0 : bandInfo
-								.getOffset1()) };
-
-		float[] offset2AnchorPos1 = new float[] {
-				side2AnchorPos1[0]
-						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
-								.getOffset1()) : 0),
-				side2AnchorPos1[1]
-						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo
-								.getOffset1()) };
-		float[] offset2AnchorPos2 = new float[] {
-				side2AnchorPos2[0]
-						+ (bandInfo.isOffset2Horizontal() ? (bandInfo
-								.getOffset1()) : 0),
-				side2AnchorPos2[1]
-						+ (bandInfo.isOffset2Horizontal() ? 0 : bandInfo
-								.getOffset1()) };
-
-		Pair<float[], float[]> pair1 = new Pair<float[], float[]>(
-				side1AnchorPos1, side1AnchorPos2);
-		Pair<float[], float[]> pair2 = new Pair<float[], float[]>(
-				offset1AnchorPos1, offset1AnchorPos2);
-		Pair<float[], float[]> pair3 = new Pair<float[], float[]>(
-				offset2AnchorPos1, offset2AnchorPos2);
-		Pair<float[], float[]> pair4 = new Pair<float[], float[]>(
-				side2AnchorPos1, side2AnchorPos2);
-
-		List<Pair<float[], float[]>> anchorPoints = new ArrayList<Pair<float[], float[]>>();
-		anchorPoints.add(pair1);
-		anchorPoints.add(pair2);
-		anchorPoints.add(pair3);
-		anchorPoints.add(pair4);
-
-		// connectionBandRenderer.renderStraightBand(gl, leftTopPos,
-		// leftBottomPos, rightTopPos, rightBottomPos, false, 0, 0, false,
-		// new float[] { 0, 0, 0, 1 }, 1f);
-
-		// connectionBandRenderer.renderSingleBand(gl, side1AnchorPos1,
-		// side1AnchorPos2, side2AnchorPos1, side2AnchorPos2, false,
-		// bandInfo.getOffset1(), bandInfo.getOffset2(), new float[] { 0,
-		// 0, 0 }, 0.2f, bandInfo.isOffset1Horizontal(),
-		// bandInfo.isOffset2Horizontal());
 	}
 
 	@Override
@@ -1188,6 +745,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public TextureManager getTextureManager() {
 		return textureManager;
+	}
+
+	public int getMaxDataAmount() {
+		return maxDataAmount;
 	}
 
 }

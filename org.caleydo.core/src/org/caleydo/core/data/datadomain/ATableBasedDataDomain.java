@@ -327,9 +327,9 @@ public abstract class ATableBasedDataDomain
 		// events
 		ClusterManager clusterManager = new ClusterManager(this);
 		ClusterResult result = clusterManager.cluster(clusterState);
-		
+
 		// check if clustering failed. If so, we just ignore it.
-		if(result == null)
+		if (result == null)
 			return;
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
@@ -428,7 +428,6 @@ public abstract class ATableBasedDataDomain
 
 	@Override
 	public void registerEventListeners() {
-
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
@@ -752,5 +751,12 @@ public abstract class ATableBasedDataDomain
 
 	public void aggregateGroups(java.util.Set<Integer> groups) {
 		System.out.println("Received command to aggregate experiments, not implemented yet");
+	}
+
+	@Override
+	public int getDataAmount() {
+		if(table == null)
+			return 0;
+		return table.getColumnIDList().size() * table.getRowIDList().size();
 	}
 }

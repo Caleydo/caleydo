@@ -52,4 +52,10 @@ public class TissueDataDomain extends ADataDomain {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public int getDataAmount() {
+		// TODO Calculate properly
+		return 0;
+	}
 }

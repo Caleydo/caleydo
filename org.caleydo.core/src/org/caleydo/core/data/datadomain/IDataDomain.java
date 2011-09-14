@@ -60,14 +60,14 @@ public interface IDataDomain {
 	 * @return The dimension groups that have been created for this IDataDomain object (data set).
 	 */
 	public List<ADimensionGroupData> getDimensionGroups();
-	
+
 	/**
 	 * Sets the dimension groups for this IDataDomain object (data set).
 	 * 
 	 * @param dimensionGroups
 	 */
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups);
-	
+
 	/**
 	 * Adds a dimension group to this IDataDomain object (data set).
 	 * 
@@ -78,8 +78,13 @@ public interface IDataDomain {
 	public String getDataDomainType();
 
 	public void setDataDomainType(String dataDomainType);
-	
+
 	public Color getColor();
-	
+
 	public void setColor(Color color);
+
+	/**
+	 * @return The amount of data, i.e. the number of data items in the data set.
+	 */
+	public int getDataAmount();
 }
