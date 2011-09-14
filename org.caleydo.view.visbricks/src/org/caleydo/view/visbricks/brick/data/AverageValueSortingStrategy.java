@@ -6,6 +6,13 @@ import java.util.Set;
 import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * Strategy that sorts the bricks by the average value of the
+ * {@link ISegmentData}.
+ * 
+ * @author Partl
+ * 
+ */
 public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 
 	@Override
@@ -23,9 +30,11 @@ public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 	private void insertBrick(GLBrick brickToInsert, ArrayList<GLBrick> bricks) {
 
 		int count;
-		ISegmentData brickToInsertData = (ISegmentData) brickToInsert.getSegmentData();
+		ISegmentData brickToInsertData = (ISegmentData) brickToInsert
+				.getSegmentData();
 		for (count = 0; count < bricks.size(); count++) {
-			ISegmentData brickData = (ISegmentData) bricks.get(count).getSegmentData();
+			ISegmentData brickData = (ISegmentData) bricks.get(count)
+					.getSegmentData();
 			if (brickData.getContainerStatistics().getAverageValue() < brickToInsertData
 					.getContainerStatistics().getAverageValue())
 				break;

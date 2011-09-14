@@ -12,6 +12,12 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
+/**
+ * Renderer for a pathway icon and text.
+ * 
+ * @author Partl
+ * 
+ */
 public class CompactPathwayRenderer extends LayoutRenderer {
 
 	private static final int ICON_SIZE_PIXELS = 16;

@@ -20,8 +20,8 @@ import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
- * Brick layout for central brick in {@link DimensionGroup} conaining a caption
- * bar, toolbar and view.
+ * Brick layout for central brick in {@link DimensionGroup} containing a caption
+ * bar, toolbar, footer bar and view.
  * 
  * @author Christian Partl
  * 
@@ -314,42 +314,85 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return this;
 	}
 
+	/**
+	 * @return The elements displayed in the header bar.
+	 */
 	public ArrayList<ElementLayout> getHeaderBarElements() {
 		return headerBarElements;
 	}
 
+	/**
+	 * Sets the elements that should appear in the header bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param headerBarElements
+	 */
 	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
 		this.headerBarElements = headerBarElements;
 	}
 
+	/**
+	 * @return The elements displayed in the tool bar.
+	 */
 	public ArrayList<ElementLayout> getToolBarElements() {
 		return toolBarElements;
 	}
 
+	/**
+	 * Sets the elements that should appear in the tool bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param toolBarElements
+	 */
 	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
 		this.toolBarElements = toolBarElements;
 	}
 
+	/**
+	 * @return The elements displayed in the footer bar.
+	 */
 	public ArrayList<ElementLayout> getFooterBarElements() {
 		return footerBarElements;
 	}
 
+	/**
+	 * Sets the elements that should appear in the footer bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param footerBarElements
+	 */
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
 
+	/**
+	 * @return True, if the toolbar is shown, false otherwise.
+	 */
 	public boolean isShowToolBar() {
 		return showToolBar;
 	}
 
+	/**
+	 * Specifies whether the toolbar shall be shown.
+	 * 
+	 * @param showToolBar
+	 */
 	public void showToolBar(boolean showToolBar) {
 		this.showToolBar = showToolBar;
 	}
 
+	/**
+	 * @return True, if the footer bar is shown, false otherwise.
+	 */
 	public boolean isShowFooterBar() {
 		return showFooterBar;
 	}
 
+	/**
+	 * Specifies whether the footer bar shall be shown.
+	 * 
+	 * @param showFooterBar
+	 */
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}

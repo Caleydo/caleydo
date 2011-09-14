@@ -5,6 +5,12 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
+/**
+ * Listener for the event {@link AddGroupsToVisBricksEvent}.
+ * 
+ * @author Partl
+ *
+ */
 public class AddGroupsToVisBricksListener extends AEventListener<GLVisBricks> {
 
 	@Override

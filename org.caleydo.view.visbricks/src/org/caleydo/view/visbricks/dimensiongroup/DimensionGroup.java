@@ -93,7 +93,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	// protected DataTable set;
 	protected IDataDomain dataDomain;
 
-	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
+	private EventPublisher eventPublisher = GeneralManager.get()
+			.getEventPublisher();
 	private RecordVAUpdateListener recordVAUpdateListener;
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 	private IBrickSortingStrategy brickSortingStrategy;
@@ -185,7 +186,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * @param brickSortingStrategy
 	 *            setter, see {@link #brickSortingStrategy}
 	 */
-	public void setBrickSortingStrategy(IBrickSortingStrategy brickSortingStrategy) {
+	public void setBrickSortingStrategy(
+			IBrickSortingStrategy brickSortingStrategy) {
 		this.brickSortingStrategy = brickSortingStrategy;
 	}
 
@@ -243,11 +245,11 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		ABrickLayoutTemplate layoutTemplate;
 
 		if (isCollapsed) {
-			layoutTemplate = new CompactCentralBrickLayoutTemplate(centerBrick, this,
-					visBricks, centerBrick.getBrickConfigurer());
+			layoutTemplate = new CompactCentralBrickLayoutTemplate(centerBrick,
+					this, visBricks, centerBrick.getBrickConfigurer());
 		} else {
-			layoutTemplate = new CentralBrickLayoutTemplate(centerBrick, this, visBricks,
-					centerBrick.getBrickConfigurer());
+			layoutTemplate = new CentralBrickLayoutTemplate(centerBrick, this,
+					visBricks, centerBrick.getBrickConfigurer());
 		}
 		centerBrick.setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
@@ -263,7 +265,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		destroyOldBricks();
 
-		List<ISegmentData> segmentBrickData = dimensionGroupData.getSegmentData();
+		List<ISegmentData> segmentBrickData = dimensionGroupData
+				.getSegmentData();
 
 		if (segmentBrickData == null || segmentBrickData.size() <= 0)
 			return;
@@ -271,8 +274,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		Set<GLBrick> segmentBricks = new HashSet<GLBrick>();
 
 		for (ISegmentData brickData : segmentBrickData) {
-			GLBrick segmentBrick = createBrick(new ElementLayout("segmentBrick"),
-					brickData);
+			GLBrick segmentBrick = createBrick(
+					new ElementLayout("segmentBrick"), brickData);
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
@@ -308,43 +311,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			}
 		}
 
-		// if (recordVA.getGroupList() == null)
-		// return;
-		//
-		// ContentGroupList groupList = recordVA.getGroupList();
-		// // int count = 0;
-		// groupList.updateGroupInfo();
-		//
-		// for (Group group : groupList) {
-		// GLBrick subBrick = createBrick(new ElementLayout("subbrick"));
-		//
-		// ContentVirtualArray subVA = new ContentVirtualArray("CONTENT",
-		// recordVA.getVirtualArray().subList(group.getStartIndex(),
-		// group.getEndIndex() + 1));
-		//
-		// subBrick.setRecordVA(group, subVA);
-		//
-		// ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
-		// subBrick, glVisBricksView, this,
-		// subBrick.getLayoutConfigurer());
-		//
-		// subBrick.setBrickLayoutTemplate(layoutTemplate,
-		// layoutTemplate.getDefaultViewType());
-		// // FIXME temp solution
-		// subBrick.getLayout().setPixelGLConverter(
-		// pixelGLConverter);
-		// subBrick.getLayout().setPixelSizeY(80);
-		//
-		// if (centerBrick.getAverageValue() < subBrick.getAverageValue()) {
-		// insertTopBrick(subBrick, topBricks, topCol);
-		//
-		// } else {
-		//
-		// insertBottomBrick(subBrick, bottomBricks, bottomCol);
-		//
-		// }
-		// }
-		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+		ElementLayout brickSpacingLayout = new ElementLayout(
+				"brickSpacingLayout");
 		brickSpacingLayout.setPixelGLConverter(pixelGLConverter);
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
@@ -363,7 +331,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			count++;
 		}
 
-		visBricks.getRelationAnalyzer().updateRelations(dimensionGroupData.getRecordPerspective().getPerspectiveID(),
+		visBricks.getRelationAnalyzer().updateRelations(
+				dimensionGroupData.getRecordPerspective().getPerspectiveID(),
 				dimensionGroupData.getRecordPerspective().getVirtualArray());
 
 	}
@@ -374,9 +343,10 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLBrick createBrick(ElementLayout wrappingLayout, ISegmentData brickData) {
-		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-				0, 0, 0, -4, 4);
+	private GLBrick createBrick(ElementLayout wrappingLayout,
+			ISegmentData brickData) {
+		ViewFrustum brickFrustum = new ViewFrustum(
+				CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager
 				.get()
 				.getViewManager()
@@ -407,27 +377,6 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		return brick;
 	}
-
-	/**
-	 * Inserts the specified brick into the specified list of bricks and column
-	 * so that it's ordered based on average values.
-	 * 
-	 * @param subBrick
-	 * @param bricks
-	 * @param layout
-	 */
-	// private void insertBrick(GLBrick subBrick, ArrayList<GLBrick> bricks,
-	// Column layout) {
-	//
-	// int count;
-	// for (count = 0; count < bricks.size(); count++) {
-	// if (bricks.get(count).getAverageValue() > subBrick
-	// .getAverageValue())
-	// break;
-	// }
-	// bricks.add(count, subBrick);
-	// layout.add(count, subBrick.getLayout());
-	// }
 
 	/**
 	 * Destroys all sub-bricks
@@ -484,8 +433,10 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
+		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain
+				.getDataDomainID());
+		eventPublisher.addListener(RecordVAUpdateEvent.class,
+				recordVAUpdateListener);
 
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
 		layoutSizeCollisionListener.setHandler(this);
@@ -550,7 +501,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView,
+			GLMouseListener glMouseListener) {
 		// createBricks(table.getContentData(Set.CONTENT).getRecordVA());
 		createBricks(dimensionGroupData.getSummaryVA());
 		init(gl);
@@ -587,7 +539,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			detailRow.clear();
 			detailRow.append(groupColumn);
 			if (detailBrick != null) {
-				GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
+				GeneralManager.get().getViewManager()
+						.unregisterGLView(detailBrick);
 				detailBrick.unregisterEventListeners();
 				detailBrick.destroy();
 				detailBrick = null;
@@ -632,8 +585,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int pickingID, Pick pick) {
 		switch (pickingType) {
 		case MOVE_VERTICALLY_HANDLE:
 			if (pickingMode == PickingMode.CLICKED) {
@@ -645,7 +598,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX,
+			float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -667,7 +621,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX,
+			float mouseCoordinateY) {
 
 		System.out.println("handle drop");
 	}
@@ -746,6 +701,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		// groupColumn.updateSubLayout();
 	}
 
+	/**
+	 * @return GL minimum width of a dimension group.
+	 */
 	public float getMinWidth() {
 		return pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
 	}
@@ -826,6 +784,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return isDetailBrickShown;
 	}
 
+	/**
+	 * @return True, if the detail brick is expanded at the left or not.
+	 */
 	public boolean isExpandLeft() {
 		return expandLeft;
 	}
@@ -864,6 +825,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return 0;
 	}
 
+	@Override
 	public Row getLayout() {
 		return detailRow;
 	}
@@ -883,7 +845,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	// }
 
 	@Override
-	public void handleLayoutSizeCollision(int managingClassID, int layoutID, float toBigBy) {
+	public void handleLayoutSizeCollision(int managingClassID, int layoutID,
+			float toBigBy) {
 		if (managingClassID != uniqueID)
 			return;
 
@@ -919,6 +882,12 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		}
 	}
 
+	/**
+	 * Sets whether the views of all bricks of this dimension groups shall be
+	 * switched when switching the view in a single brick.
+	 * 
+	 * @param isGlobalViewSwitching
+	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 		this.isGlobalViewSwitching = isGlobalViewSwitching;
 		for (GLBrick brick : topBricks) {
@@ -932,6 +901,10 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		}
 	}
 
+	/**
+	 * @return True, if the views of all bricks of this dimension groups shall
+	 *         be switched when switching the view in a single brick.
+	 */
 	public boolean isGlobalViewSwitching() {
 		return isGlobalViewSwitching;
 	}
@@ -949,6 +922,15 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		}
 	}
 
+	/**
+	 * Shows a detailed brick.
+	 * 
+	 * @param brick
+	 *            The brick for which a detailed version shall be shown.
+	 * @param expandLeft
+	 *            Specifies, whether the detail brick shall be expanded on the
+	 *            left or on the right.
+	 */
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
 
 		if (detailBrick != null) {
@@ -971,9 +953,10 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		detailBrickLayout.setPixelSizeX(detailBrickWidth);
 		detailBrickLayout.setPixelSizeY(getDetailBrickHeightPixels());
 
-		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick,
-				this, glVisBricksView, detailBrick.getBrickConfigurer()), brick
-				.getCurrentViewType());
+		detailBrick.setBrickLayoutTemplate(
+				new DetailBrickLayoutTemplate(detailBrick, this,
+						glVisBricksView, detailBrick.getBrickConfigurer()),
+				brick.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
 		overviewDetailGapLayout.setPixelGLConverter(pixelGLConverter);
@@ -984,8 +967,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
 					detailBrick, brick, false));
 		} else {
-			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(brick,
-					detailBrick, true));
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
+					brick, detailBrick, true));
 		}
 
 		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
@@ -999,18 +982,27 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		brick.hideHandles();
 	}
 
+	/**
+	 * @param detailBrickWidth
+	 *            Pixel width of the detail brick.
+	 */
 	public void setDetailBrickWidth(int detailBrickWidth) {
 		detailBrickLayout.setPixelSizeX(detailBrickWidth);
 		showDetailBrick = true;
 	}
 
+	/**
+	 * Hides the detail brick.
+	 */
 	public void hideDetailedBrick() {
 		isDetailBrickShown = false;
 		hideDetailBrick = true;
 		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(isLeftmost());
 		if (otherDetailDimensionGroup.isDetailBrickShown()) {
-			otherDetailDimensionGroup.setDetailBrickWidth(otherDetailDimensionGroup
-					.getDetailBrickWidthPixels(otherDetailDimensionGroup.isLeftmost()));
+			otherDetailDimensionGroup
+					.setDetailBrickWidth(otherDetailDimensionGroup
+							.getDetailBrickWidthPixels(otherDetailDimensionGroup
+									.isLeftmost()));
 		}
 	}
 
@@ -1018,37 +1010,24 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return (int) (parentGLCanvas.getHeight() * 0.9f);
 	}
 
+	/**
+	 * @param isCurrentDimensionGroupLeft
+	 *            Specifies, whether the dimension group is on the left side.
+	 *            (When a detail brick is shown, only two dimension groups are
+	 *            visible)
+	 * @return Width of the detail brick
+	 */
 	public int getDetailBrickWidthPixels(boolean isCurrentDimensionGroupLeft) {
 
-		// DimensionGroupManager dimensionGroupManager = visBricks
-		// .getDimensionGroupManager();
-		// ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-		// .getDimensionGroups();
-		// int dimensionGroupIndex = dimensionGroups.indexOf(this);
-
 		DimensionGroup otherDimensionGroup = getOtherDetailDimensionGroup(isCurrentDimensionGroupLeft);
-		boolean otherDimensionGroupShowsDetail = otherDimensionGroup.isDetailBrickShown();
+		boolean otherDimensionGroupShowsDetail = otherDimensionGroup
+				.isDetailBrickShown();
 		int otherDimensionGroupColumnWidth = otherDimensionGroup
 				.getGroupColumnWidthPixels();
-		// if (isLeftmost()) {
-		// DimensionGroup dimensionGroupRight = dimensionGroups
-		// .get(dimensionGroupIndex + 1);
-		// otherDimensionGroupColumnWidth += dimensionGroupRight
-		// .getGroupColumnWidthPixels();
-		// otherDimensionGroupShowsDetail = dimensionGroupRight
-		// .isDetailBrickShown();
-		// }
-		// if (isRightmost()) {
-		// DimensionGroup dimensionGroupLeft = dimensionGroups
-		// .get(dimensionGroupIndex - 1);
-		// otherDimensionGroupColumnWidth += dimensionGroupLeft
-		// .getGroupColumnWidthPixels();
-		// otherDimensionGroupShowsDetail = dimensionGroupLeft
-		// .isDetailBrickShown();
-		// }
 
-		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL
-				- 2 * GLVisBricks.DIMENSION_GROUP_SIDE_SPACING
+		int detailAreaWidth = parentGLCanvas.getWidth() - 2
+				* OVERVIEW_DETAIL_GAP_PIXEL - 2
+				* GLVisBricks.DIMENSION_GROUP_SIDE_SPACING
 				- getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
@@ -1060,6 +1039,14 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return detailWidth;
 	}
 
+	/**
+	 * @param isCurrentDimensionGroupLeft
+	 *            Specifies, whether the dimension group is on the left side.
+	 *            (When a detail brick is shown, only two dimension groups are
+	 *            visible)
+	 * @return The other dimension group that is currently visible in the detail
+	 *         mode.
+	 */
 	private DimensionGroup getOtherDetailDimensionGroup(
 			boolean isCurrentDimensionGroupLeft) {
 
@@ -1077,6 +1064,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return dimensionGroups.get(dimensionGroupIndex - 1);
 	}
 
+	/**
+	 * @return True if this dimension group is the leftmost dimension group.
+	 */
 	public boolean isLeftmost() {
 		DimensionGroupManager dimensionGroupManager = visBricks
 				.getDimensionGroupManager();
@@ -1084,6 +1074,9 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		return (index == dimensionGroupManager.getCenterGroupStartIndex());
 	}
 
+	/**
+	 * @return True if this dimension group is the rightmost dimension group.
+	 */
 	public boolean isRightmost() {
 		DimensionGroupManager dimensionGroupManager = visBricks
 				.getDimensionGroupManager();
@@ -1092,13 +1085,22 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	public int getGroupColumnWidthPixels() {
-		return pixelGLConverter.getPixelWidthForGLWidth(groupColumn.getSizeScaledX());
+		return pixelGLConverter.getPixelWidthForGLWidth(groupColumn
+				.getSizeScaledX());
 	}
 
+	/**
+	 * @return Column of bricks.
+	 */
 	public Column getGroupColumn() {
 		return groupColumn;
 	}
 
+	/**
+	 * Sets the data for this dimension group.
+	 * 
+	 * @param dimensionGroupData
+	 */
 	public void setDimensionGroupData(ADimensionGroupData dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
 		dataDomain = dimensionGroupData.getDataDomain();

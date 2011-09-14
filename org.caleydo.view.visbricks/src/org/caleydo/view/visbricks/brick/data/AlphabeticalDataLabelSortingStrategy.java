@@ -4,8 +4,16 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
+import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * Strategy that sorts the segment bricks by the labels of their
+ * {@link ISegmentData}. The summary brick is added in the middle of the list.
+ * 
+ * @author Partl
+ * 
+ */
 public class AlphabeticalDataLabelSortingStrategy implements
 		IBrickSortingStrategy {
 
@@ -37,18 +45,18 @@ public class AlphabeticalDataLabelSortingStrategy implements
 			comparables.add(new DataLabelComparable(brick.getSegmentData()
 					.getLabel(), brick));
 		}
-//		comparables.add(new DataLabelComparable(summaryBrick.getBrickData()
-//				.getLabel(), summaryBrick));
-		
+		// comparables.add(new DataLabelComparable(summaryBrick.getBrickData()
+		// .getLabel(), summaryBrick));
+
 		Collections.sort(comparables);
 
 		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
-		
-		for(DataLabelComparable comparable : comparables) {
+
+		for (DataLabelComparable comparable : comparables) {
 			bricks.add(comparable.brick);
 		}
-		
-		bricks.add((int)Math.floor(bricks.size() / 2), summaryBrick);
+
+		bricks.add((int) Math.floor(bricks.size() / 2), summaryBrick);
 
 		return bricks;
 	}

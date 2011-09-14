@@ -23,6 +23,12 @@ import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
 
+/**
+ * Configurer for bricks to display pathway data.
+ * 
+ * @author Partl
+ *
+ */
 public class PathwayDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;

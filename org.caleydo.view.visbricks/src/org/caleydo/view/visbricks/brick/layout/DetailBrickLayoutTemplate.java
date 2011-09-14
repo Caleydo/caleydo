@@ -19,6 +19,13 @@ import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
+/**
+ * Layout for the detailed inspection of a brick. Contains a tool bar, a view
+ * and a footer bar.
+ * 
+ * @author Partl
+ * 
+ */
 public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 4;
@@ -64,8 +71,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				visBricks, false);
 		toolBar = new Row();
 		footerBar = new Row();
-		lockResizingButton = new Button(
-				PickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
 				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
@@ -273,7 +279,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.setSizeFixed(isResizingLocked);
 				lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				LOCK_RESIZING_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(
 				new APickingListener() {
@@ -364,23 +371,41 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				.isLeftmost());
 	}
 
+	/**
+	 * Sets the elements that should appear in the tool bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param toolBarElements
+	 */
 	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
 		this.toolBarElements = toolBarElements;
 	}
 
+	/**
+	 * Sets the elements that should appear in the footer bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param footerBarElements
+	 */
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
 
+	/**
+	 * Sets whether the footer bar shall be displayed.
+	 * 
+	 * @param showFooterBar
+	 */
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}
-	
+
 	@Override
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				LOCK_RESIZING_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
 				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),

@@ -22,6 +22,12 @@ import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.HistogramCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 
+/**
+ * Configurer for bricks to display numerical data.
+ * 
+ * @author Partl
+ *
+ */
 public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 
 	protected static final int HEATMAP_BUTTON_ID = 1;

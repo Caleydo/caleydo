@@ -15,7 +15,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
  * Subclasses of this class are intended to specify the elements and their
- * layout for different appearences of a brick.
+ * layout for different appearances of a brick.
  * 
  * @author Christian Partl
  * 

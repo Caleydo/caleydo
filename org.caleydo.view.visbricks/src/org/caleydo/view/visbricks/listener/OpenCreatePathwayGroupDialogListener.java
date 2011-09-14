@@ -5,6 +5,12 @@ import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
 
+/**
+ * Listener for the event {@link OpenCreatePathwayGroupDialogEvent}.
+ * 
+ * @author Partl
+ * 
+ */
 public class OpenCreatePathwayGroupDialogListener extends
 		AEventListener<GLBrick> {
 

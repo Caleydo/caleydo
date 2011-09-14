@@ -70,8 +70,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 				visBricks, false);
 
-		lockResizingButton = new Button(
-				PickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON,
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
 				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
@@ -187,9 +186,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	/**
 	 * Creates the toolbar containing buttons for view switching.
-	 * 
-	 * @param pixelHeight
-	 * @return
 	 */
 
 	protected Row createToolBar() {
@@ -408,14 +404,31 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		return this;
 	}
 
+	/**
+	 * Sets the elements that should appear in the toolbar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param toolBarElements
+	 */
 	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
 		this.toolBarElements = toolBarElements;
 	}
 
+	/**
+	 * Sets the elements that should appear in the footer bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param footerBarElements
+	 */
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
 
+	/**
+	 * Sets whether the footer bar shall be displayed.
+	 * 
+	 * @param showFooterBar
+	 */
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}

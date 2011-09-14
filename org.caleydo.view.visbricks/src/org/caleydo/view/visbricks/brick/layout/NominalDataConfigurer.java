@@ -20,6 +20,12 @@ import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
 
+/**
+ * Configurer for bricks to display nominal data.
+ * 
+ * @author Partl
+ *
+ */
 public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 
 	protected static final int PARCOORDS_BUTTON_ID = 2;

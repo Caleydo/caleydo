@@ -4,6 +4,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.PickingType;
 
+/**
+ * Renderer for a line of text for pathway description.
+ * 
+ * @author Partl
+ *
+ */
 public class PathwaysSummaryRenderer extends LabelRenderer {
 
 	public PathwaysSummaryRenderer(AGLView view, String caption,

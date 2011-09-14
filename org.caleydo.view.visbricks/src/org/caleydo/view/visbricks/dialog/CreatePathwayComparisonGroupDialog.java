@@ -35,6 +35,13 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
+/**
+ * Dialog where the user can specify the pathways that shall be displayed as a
+ * dimension group in visbricks.
+ * 
+ * @author Partl
+ * 
+ */
 public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 	private ATableBasedDataDomain sourceDataDomain;
@@ -68,11 +75,14 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 					String value2 = items[j].getText(columnIndex);
 					if ((collator.compare(value1, value2) < 0 && sortAscending)
 							|| (collator.compare(value1, value2) > 0 && !sortAscending)) {
-						String[] values = { items[i].getText(0), items[i].getText(1) };
-						PathwayGraph pathway = (PathwayGraph) items[i].getData();
+						String[] values = { items[i].getText(0),
+								items[i].getText(1) };
+						PathwayGraph pathway = (PathwayGraph) items[i]
+								.getData();
 						boolean checked = items[i].getChecked();
 						items[i].dispose();
-						TableItem item = new TableItem(pathwayTable, SWT.NONE, j);
+						TableItem item = new TableItem(pathwayTable, SWT.NONE,
+								j);
 						item.setText(values);
 						item.setData(pathway);
 						item.setChecked(checked);
@@ -124,7 +134,8 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 		for (PathwayGraph pathway : pathways) {
 
-			List<PathwayGraph> dbPathways = pathwayMap.get(pathway.getType().getName());
+			List<PathwayGraph> dbPathways = pathwayMap.get(pathway.getType()
+					.getName());
 			if (dbPathways == null) {
 				dbPathways = new ArrayList<PathwayGraph>();
 			}
@@ -223,8 +234,9 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		if (!pathways.isEmpty()) {
-			pathwayDimensionGroupData = new PathwayDimensionGroupData(sourceDataDomain,
-					pathwayDataDomain, dimensionPerspective, pathways, "PathwayGroup");
+			pathwayDimensionGroupData = new PathwayDimensionGroupData(
+					sourceDataDomain, pathwayDataDomain, dimensionPerspective,
+					pathways, "PathwayGroup");
 
 			super.okPressed();
 		}
@@ -262,7 +274,8 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	 * @param dimensionPerspective
 	 *            setter, see {@link #dimensionPerspective}
 	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+	public void setDimensionPerspective(
+			DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
 	}
 

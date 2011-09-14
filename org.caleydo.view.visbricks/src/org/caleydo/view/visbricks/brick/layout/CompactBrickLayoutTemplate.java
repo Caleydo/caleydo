@@ -262,10 +262,21 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.getBrickConfigurer());
 	}
 
+	/**
+	 * Sets the elements that should appear in the footer bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param footerBarElements
+	 */
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
 
+	/**
+	 * Sets whether the footer bar shall be displayed.
+	 * 
+	 * @param showFooterBar
+	 */
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}

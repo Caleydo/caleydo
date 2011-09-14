@@ -9,6 +9,12 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
+/**
+ * Renderer for the band between a normal brick (overview) and the detailed brick.
+ * 
+ * @author Partl
+ *
+ */
 public class OverviewDetailBandRenderer extends LayoutRenderer {
 
 	private GLBrick leftBrick;

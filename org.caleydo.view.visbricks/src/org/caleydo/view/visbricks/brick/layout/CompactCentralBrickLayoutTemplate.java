@@ -10,6 +10,12 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
+/**
+ * Layout for central brick that is displayed in the arch.
+ * 
+ * @author Partl
+ *
+ */
 public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
@@ -181,18 +187,38 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.getBrickConfigurer());
 	}
 
+	/**
+	 * @return True, if the footer bar is shown, false otherwise.
+	 */
 	public boolean isShowFooterBar() {
 		return showFooterBar;
 	}
 
+	/**
+	 * Specifies whether the footer bar shall be shown.
+	 * 
+	 * @param showFooterBar
+	 */
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}
 
+	/**
+	 * Sets the elements that should appear in the header bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param headerBarElements
+	 */
 	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
 		this.headerBarElements = headerBarElements;
 	}
 
+	/**
+	 * Sets the elements that should appear in the footer bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param footerBarElements
+	 */
 	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
 		this.footerBarElements = footerBarElements;
 	}
