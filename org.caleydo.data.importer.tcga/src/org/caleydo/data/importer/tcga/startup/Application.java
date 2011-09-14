@@ -72,10 +72,9 @@ public class Application
 		GeneralManager.get().init();
 
 		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
-		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
+		// loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
 
-		//		loadSources(DROPBOX_GBM_MI_RNA, DROPBOX_GBM_MI_RNA_GROUPING, "org.caleydo.datadomain.generic");
-		
+		loadSources(DROPBOX_GBM_MI_RNA, DROPBOX_GBM_MI_RNA_GROUPING, "org.caleydo.datadomain.generic");
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -88,8 +87,8 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(String dataSource, String groupingSource, String dataDomainType) throws FileNotFoundException,
-		IOException {
+	private void loadSources(String dataSource, String groupingSource, String dataDomainType)
+		throws FileNotFoundException, IOException {
 
 		convertGctFile(dataSource, dataDomainType);
 		loadClusterInfo(groupingSource);
@@ -98,7 +97,8 @@ public class Application
 		createSampleOfGenes(clusterResult);
 	}
 
-	protected void convertGctFile(String fileName, String dataDomainType) throws FileNotFoundException, IOException {
+	protected void convertGctFile(String fileName, String dataDomainType) throws FileNotFoundException,
+		IOException {
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -133,9 +133,7 @@ public class Application
 		// loadDataParameters.setMaxDefined(true);
 		// loadDataParameters.setMax(max);
 
-		dataDomain =
-			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType,
-				false);
+		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, false);
 		dataDomain.setColumnDimension(false);
 		loadDataParameters.setDataDomain(dataDomain);
 

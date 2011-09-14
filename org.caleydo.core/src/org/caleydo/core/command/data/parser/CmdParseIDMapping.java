@@ -49,12 +49,12 @@ public class CmdParseIDMapping
 	 */
 	private String delimiter;
 
-	private int startParsingInLine = 0;
+	private int startParsingAtLine = 0;
 
 	/**
 	 * Default is -1 indicating read till end of file.
 	 */
-	private int stopParsingInLine = -1;
+	private int stopParsingAtLine = -1;
 
 	private boolean bCreateReverseMap = false;
 
@@ -76,13 +76,7 @@ public class CmdParseIDMapping
 
 	private AStringConverter stringConverter;
 
-	// private ATableBasedDataDomain dataDomain;
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param cmdType
-	 */
 	public CmdParseIDMapping() {
 		super(CommandType.PARSE_ID_MAPPING);
 	}
@@ -100,8 +94,8 @@ public class CmdParseIDMapping
 			int[] iArrayStartStop = ConversionTools.convertStringToIntArray(attrib3, " ");
 
 			if (iArrayStartStop.length == 2) {
-				startParsingInLine = iArrayStartStop[0];
-				stopParsingInLine = iArrayStartStop[1];
+				startParsingAtLine = iArrayStartStop[0];
+				stopParsingAtLine = iArrayStartStop[1];
 			}
 		}
 
@@ -118,8 +112,8 @@ public class CmdParseIDMapping
 		final int stopParsingInLine, final String sLookupTableInfo, final String delimiter,
 		final String sCodeResolvingLUTTypes, final IDCategory idCategory) {
 
-		this.startParsingInLine = startParsingInLine;
-		this.stopParsingInLine = stopParsingInLine;
+		this.startParsingAtLine = startParsingInLine;
+		this.stopParsingAtLine = stopParsingInLine;
 		this.sLookupTableInfo = sLookupTableInfo;
 		this.delimiter = delimiter;
 		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
@@ -137,7 +131,6 @@ public class CmdParseIDMapping
 	}
 
 	private void extractParameters() {
-
 		StringTokenizer tokenizer = new StringTokenizer(sLookupTableInfo, ATextParser.SPACE);
 
 		String mappingTypeString = tokenizer.nextToken();
@@ -180,8 +173,6 @@ public class CmdParseIDMapping
 		if (fileName.contains("HOMO_SAPIENS") && fileName.contains("ENSEMBL"))
 			return;
 
-		// Remove old lookuptable if it already exists
-		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
 		if (idCategory == null)
 			throw new IllegalStateException("ID Category was null");
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
@@ -213,12 +204,11 @@ public class CmdParseIDMapping
 			idMappingParser = new IDMappingParser(idCategory, fileName, mappingType);
 			idMappingParser.setStringConverter(stringConverter);
 			idMappingParser.setTokenSeperator(delimiter);
-			idMappingParser.setStartParsingStopParsingAtLine(startParsingInLine, stopParsingInLine);
+			idMappingParser.setStartParsingStopParsingAtLine(startParsingAtLine, stopParsingAtLine);
 			idMappingParser.loadData();
 
 		}
 
-		/* --- create reverse Map ... --- */
 		if (bCreateReverseMap) {
 			idMappingManager.createReverseMap(mappingType);
 		}

@@ -10,20 +10,19 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Loader for raw data in text format.
+ * Base class for text parsers.
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public abstract class ATextParser {
-	
+
 	public static final String SPACE = " ";
 	public static final String SEMICOLON = ";";
 	public static final String TAB = "\t";
-	
-	/**
-	 * File name
-	 */
+
+	/** The path of the file to parse */
 	private String fileName = "";
 
 	/**
@@ -33,22 +32,13 @@ public abstract class ATextParser {
 	int nrLinesToRead = -1;
 	int nrLinesToReadWithClusterInfo = -1;
 
-	/**
-	 * Define numbers of lines to skip as assumed to be the header of a file. Defines how many lines are part
-	 * of the header file. By default these lines are skipped during parsing. Default is 32, because gpr files
-	 * have a header of that size!
-	 */
+	/** Defines numbers of lines to skip in the read file. This is, e.g., useful to ignore headers. */
 	protected int parsingStartLine = 0;
 
-	/**
-	 * Define numbers of lines to skip as assumed to be the header of a file. Default is -1 which means until
-	 * the end of file.
-	 */
-	protected int iStopParsingAtLine = Integer.MAX_VALUE;
+	/** Defines at which line to stop parsing */
+	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
-	/**
-	 * Define the separator TAB is the default token.
-	 */
+	/** Defines the token separator. TAB is default. */
 	protected String tokenSeperator = TAB;
 
 	protected int lineInFile = 0;
@@ -58,24 +48,22 @@ public abstract class ATextParser {
 	/**
 	 * Constructor.
 	 */
-	public ATextParser(final String sFileName) {
-		this.fileName = sFileName;
+	public ATextParser(final String fileName) {
+		this.fileName = fileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
 
 	/**
 	 * Set the current token separator.
 	 * 
-	 * @param sTokenSeparator
-	 *            current token separator
+	 * @param tokenSeparator
 	 */
-	public final void setTokenSeperator(final String sTokenSeparator) {
-
-		if (sTokenSeparator.equals("\\t")) {
+	public final void setTokenSeperator(final String tokenSeparator) {
+		if (tokenSeparator.equals("\\t")) {
 			tokenSeperator = "\t";
 		}
 		else {
-			tokenSeperator = sTokenSeparator;
+			tokenSeperator = tokenSeparator;
 		}
 	}
 
@@ -85,19 +73,17 @@ public abstract class ATextParser {
 	 * @return current token separator
 	 */
 	public final String getTokenSeperator() {
-
 		return tokenSeperator;
 	}
 
 	/**
 	 * Set the current file name.
 	 * 
-	 * @param setFileName
+	 * @param fileName
 	 *            set current file name
 	 */
-	public final void setFileName(String setFileName) {
-
-		this.fileName = setFileName;
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
 	}
 
 	/**
@@ -105,32 +91,28 @@ public abstract class ATextParser {
 	 * 
 	 * @return current file name
 	 */
-	public final String getFileName() {
-
+	public String getFileName() {
 		return this.fileName;
 	}
 
-	public final void setStartParsingStopParsingAtLine(final int iStartParsingAtLine,
-		final int iStopParsingAtLine) {
+	public final void setStartParsingStopParsingAtLine(int startParsingAtLine, int stopParsingAtLine) {
 
-		this.parsingStartLine = iStartParsingAtLine;
+		this.parsingStartLine = startParsingAtLine;
 
-		if (iStopParsingAtLine < 0) {
-			this.iStopParsingAtLine = Integer.MAX_VALUE;
+		if (stopParsingAtLine < 0) {
+			this.stopParsingAtLine = Integer.MAX_VALUE;
 			return;
 		}
 
-		if (iStartParsingAtLine > iStopParsingAtLine) {
-			this.iStopParsingAtLine = Integer.MAX_VALUE;
+		if (startParsingAtLine > stopParsingAtLine) {
+			this.stopParsingAtLine = Integer.MAX_VALUE;
 			return;
 		}
-		this.iStopParsingAtLine = iStopParsingAtLine;
+		this.stopParsingAtLine = stopParsingAtLine;
 
-		nrLinesToRead = iStopParsingAtLine - parsingStartLine + 1;
+		nrLinesToRead = stopParsingAtLine - parsingStartLine + 1;
 		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
 	}
-
-	
 
 	/**
 	 * Reads the file and counts the numbers of lines to be read.
@@ -143,7 +125,7 @@ public abstract class ATextParser {
 		try {
 			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
 
-			while (brFile.readLine() != null && iCountLines <= iStopParsingAtLine) {
+			while (brFile.readLine() != null && iCountLines <= stopParsingAtLine) {
 				if (iCountLines > this.parsingStartLine) {
 					iCountLinesToBeRead++;
 				}
@@ -159,8 +141,8 @@ public abstract class ATextParser {
 
 		nrLinesToRead = iCountLinesToBeRead + parsingStartLine;
 
-		if (iStopParsingAtLine == Integer.MAX_VALUE) {
-			iStopParsingAtLine = nrLinesToRead;
+		if (stopParsingAtLine == Integer.MAX_VALUE) {
+			stopParsingAtLine = nrLinesToRead;
 		}
 
 		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
@@ -189,13 +171,11 @@ public abstract class ATextParser {
 
 		Logger.log(new Status(IStatus.INFO, toString(), "File " + fileName + " successfully loaded."));
 
-		setArraysToDimensions();
-
 		return true;
 	}
 
 	protected abstract void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
 		throws IOException;
 
-	protected abstract void setArraysToDimensions();
+	// protected abstract void setArraysToDimensions();
 }

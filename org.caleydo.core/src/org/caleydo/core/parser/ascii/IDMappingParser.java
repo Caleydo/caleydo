@@ -49,8 +49,6 @@ public class IDMappingParser
 
 	protected SWTGUIManager swtGuiManager;
 
-	private boolean isDynamic;
-
 	private AStringConverter stringConverter = null;
 
 	/**
@@ -80,154 +78,110 @@ public class IDMappingParser
 	}
 
 	@Override
-	protected void loadDataParseFile(BufferedReader brFile, int numberOfLinesInFile) throws IOException {
-		String sLine;
+	protected void loadDataParseFile(BufferedReader reader, int numberOfLinesInFile) throws IOException {
 
-		int iLineInFile = 0;
+		String line;
 
-		progressBarFactor = 100f / iStopParsingAtLine;
+		int currentLine = 0;
 
-		while ((sLine = brFile.readLine()) != null && iLineInFile <= iStopParsingAtLine) {
+		progressBarFactor = 100f / stopParsingAtLine;
+
+		while ((line = reader.readLine()) != null && currentLine <= stopParsingAtLine) {
 			/**
 			 * Start parsing if current line lineInFile is larger than parsingStartLine ..
 			 */
-			if (iLineInFile >= parsingStartLine) {
+			if (currentLine >= parsingStartLine) {
 
-				boolean bMaintainLoop = true;
-				StringTokenizer strTokenText = new StringTokenizer(sLine, tokenSeperator);
+				boolean maintainLoop = true;
+				StringTokenizer textTokens = new StringTokenizer(line, tokenSeperator);
 
 				// Expect two Integer values in one row!
 				try {
-					// Check if line consists of just one column
-					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
 
-						// Special case for creating indexing of dimensions
-						if (mappingType.getToIDType().getTypeName().equals("record_")) {
-							if (stringConverter != null)
-								sLine = stringConverter.convert(sLine);
+					// Read all tokens
+					while (textTokens.hasMoreTokens() && maintainLoop) {
+						String token = textTokens.nextToken();
+						// Special case for creating dynamic IDs for rows
+						if (mappingType.getToIDType().isInternalType()) {
+							if (stringConverter != null) {
+								token = stringConverter.convert(token);
+							}
 
-							if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
-								try {
-									Integer id = Integer.parseInt(sLine);
-									idMappingManager.getMap(mappingType).put(id,
-										iLineInFile - parsingStartLine);
+							// Check for integer values that must be ignored
+							// - in that case no RefSeq is available or the
+							// cell is empty
+							try {
+								Float.valueOf(token);
+								if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
+									idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
+										currentLine - parsingStartLine);
 								}
-								catch (NumberFormatException e) {
+								else if (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED")) {
+									idMappingManager.getMap(mappingType).put(token,
+										currentLine - parsingStartLine);
 								}
 							}
-							else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
-								idMappingManager.getMap(mappingType).put(sLine,
-									iLineInFile - parsingStartLine);
+							catch (NumberFormatException e) {
+								// System.out.println(buffer + " " +
+								// (lineInFile - parsingStartLine));
+								idMappingManager.getMap(mappingType).put(token,
+									currentLine - parsingStartLine);
 							}
-							else
-								throw new IllegalStateException("Unsupported data type!");
+
+							break;
 						}
 						else {
-							idMappingManager.getMap(mappingType).put(sLine, strTokenText.nextToken());
-						}
-					}
-					else {
-						// Read all tokens
-						while (strTokenText.hasMoreTokens() && bMaintainLoop) {
-							String token = strTokenText.nextToken();
-
-							// Special case for creating dynamic IDs for rows
-							if (mappingType.getToIDType().isInternalType()) {
-
-								if (stringConverter != null) {
-									token = stringConverter.convert(token);
-								}
-
-								// Check for integer values that must be ignored
-								// - in that case no RefSeq is available or the
-								// cell is empty
-								try {
-									Float.valueOf(token);
-									if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
+							try {
+								if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
+									if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
 										idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
-											iLineInFile - parsingStartLine);
+											Integer.valueOf(textTokens.nextToken()));
 									}
-									else if (mappingType.getFromIDType().getTypeName()
-										.contains("UNSPECIFIED")) {
-										idMappingManager.getMap(mappingType).put(token,
-											iLineInFile - parsingStartLine);
-									}
-								}
-								catch (NumberFormatException e) {
-									// System.out.println(buffer + " " +
-									// (lineInFile - parsingStartLine));
-									idMappingManager.getMap(mappingType).put(token,
-										iLineInFile - parsingStartLine);
-								}
-
-								break;
-							}
-							else {
-								try {
-									if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
-										if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
-											idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
-												Integer.valueOf(strTokenText.nextToken()));
-										}
-										else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
-											idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
-												strTokenText.nextToken());
-										}
-										else
-											throw new IllegalStateException("Unsupported data type!");
-									}
-									else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
-										if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
-											idMappingManager.getMap(mappingType).put(token,
-												Integer.valueOf(strTokenText.nextToken()));
-										}
-										else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
-											idMappingManager.getMap(mappingType).put(token,
-												strTokenText.nextToken());
-										}
-										else
-											throw new IllegalStateException("Unsupported data type!");
+									else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+										idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
+											textTokens.nextToken());
 									}
 									else
 										throw new IllegalStateException("Unsupported data type!");
 								}
-								catch (NumberFormatException nfe) {
-									Logger.log(new Status(Status.ERROR, this.toString(),
-										"Caught NFE: could not parse: " + mappingType, nfe));
-									// throw new IllegalStateException();
+								else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
+									if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
+										idMappingManager.getMap(mappingType).put(token,
+											Integer.valueOf(textTokens.nextToken()));
+									}
+									else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+										idMappingManager.getMap(mappingType).put(token,
+											textTokens.nextToken());
+									}
+									else
+										throw new IllegalStateException("Unsupported data type!");
 								}
+								else
+									throw new IllegalStateException("Unsupported data type!");
 							}
-
-							break;
-						} // end of: while (( strToken.hasMoreTokens()
-							// )&&(bMaintainLoop)) {
+							catch (NumberFormatException nfe) {
+								Logger.log(new Status(Status.ERROR, this.toString(),
+									"Caught NFE: could not parse: " + mappingType, nfe));
+							}
+						}
+						break;
 					}
 				}
 				catch (NoSuchElementException nsee) {
-					/*
-					 * no ABORT was table. since no more tokens are in ParserTokenHandler skip rest of line..
-					 */
-					bMaintainLoop = false;
+					// no ABORT was table. since no more tokens are in ParserTokenHandler skip rest of line..
+					maintainLoop = false;
 
 					// reset return value to indicate error
-					iStopParsingAtLine = -1;
-
+					stopParsingAtLine = -1;
 				}
-
 			}
 
-			iLineInFile++;
+			currentLine++;
 
 			// Update progress bar only on each 100th line
-			if (iLineInFile % 1000 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * iLineInFile));
+			if (currentLine % 1000 == 0) {
+				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * currentLine));
 			}
 		}
-	}
-
-	@Override
-	protected void setArraysToDimensions() {
-		// TODO Auto-generated method stub
-
 	}
 }

@@ -162,11 +162,11 @@ public class TabularDataParser
 		String line;
 		String tempToken;
 		int columnIndex = 0;
-		float fProgressBarFactor = 100f / iStopParsingAtLine;
+		float fProgressBarFactor = 100f / stopParsingAtLine;
 
-		int max = iStopParsingAtLine - parsingStartLine + 1;
+		int max = stopParsingAtLine - parsingStartLine + 1;
 
-		while ((line = bufferReader.readLine()) != null && lineInFile <= iStopParsingAtLine) {
+		while ((line = bufferReader.readLine()) != null && lineInFile <= stopParsingAtLine) {
 
 			// Check if line should be ignored
 			if (lineInFile < this.parsingStartLine || line.isEmpty()) {
@@ -273,7 +273,6 @@ public class TabularDataParser
 		}
 	}
 
-	@Override
 	@SuppressWarnings("unchecked")
 	protected void setArraysToDimensions() {
 
@@ -345,5 +344,12 @@ public class TabularDataParser
 
 	public ArrayList<EColumnType> getColumnDataTypes() {
 		return columnDataTypes;
+	}
+
+	@Override
+	public boolean loadData() {
+	boolean isParsingOK = super.loadData();
+		setArraysToDimensions();
+		return isParsingOK;
 	}
 }
