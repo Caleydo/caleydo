@@ -56,8 +56,6 @@ import org.caleydo.core.manager.event.view.tablebased.YAxisSelectorEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -222,8 +220,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// alSelectionTypes.add(SelectionType.MOUSE_OVER);
 		// alSelectionTypes.add(SelectionType.SELECTION);
 
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
+		colorMapper = dataDomain.getColorMapper();
 
 		fAlXDistances = new ArrayList<Float>();
 

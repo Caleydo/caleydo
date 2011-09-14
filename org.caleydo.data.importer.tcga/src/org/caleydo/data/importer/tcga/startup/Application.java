@@ -29,7 +29,8 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -71,10 +72,12 @@ public class Application
 
 		GeneralManager.get().init();
 
-		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
+		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic",
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN));
 		// loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
 
-		loadSources(DROPBOX_GBM_MI_RNA, DROPBOX_GBM_MI_RNA_GROUPING, "org.caleydo.datadomain.generic");
+		loadSources(DROPBOX_GBM_MI_RNA, DROPBOX_GBM_MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_YELLOW_BLUE));
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -87,18 +90,18 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(String dataSource, String groupingSource, String dataDomainType)
-		throws FileNotFoundException, IOException {
+	private void loadSources(String dataSource, String groupingSource, String dataDomainType,
+		ColorMapper colorMapper) throws FileNotFoundException, IOException {
 
-		convertGctFile(dataSource, dataDomainType);
+		convertGctFile(dataSource, dataDomainType, colorMapper);
 		loadClusterInfo(groupingSource);
 
 		PerspectiveInitializationData clusterResult = runClusteringOnRows();
 		createSampleOfGenes(clusterResult);
 	}
 
-	protected void convertGctFile(String fileName, String dataDomainType) throws FileNotFoundException,
-		IOException {
+	protected void convertGctFile(String fileName, String dataDomainType, ColorMapper colorMapper)
+		throws FileNotFoundException, IOException {
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -134,6 +137,7 @@ public class Application
 		// loadDataParameters.setMax(max);
 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, false);
+		dataDomain.setColorMapper(colorMapper);
 		dataDomain.setColumnDimension(false);
 		loadDataParameters.setDataDomain(dataDomain);
 

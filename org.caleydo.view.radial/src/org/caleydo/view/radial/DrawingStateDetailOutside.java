@@ -190,7 +190,8 @@ public class DrawingStateDetailOutside extends ADrawingState {
 		}
 
 		if (pdCurrentMouseOverElement != null) {
-			APDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+			APDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator(
+					radialHierarchy.getDataDomain().getColorMapper());
 
 			if (isPartialDiscInDetailOutside(pdCurrentMouseOverElement)) {
 				pdCurrentMouseOverElement.decoratePDDrawingStrategyChildren(

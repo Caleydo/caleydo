@@ -34,8 +34,6 @@ import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
@@ -143,9 +141,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		renderStyle = new DendrogramRenderStyle(this, viewFrustum);
 
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
-
 		this.bRenderContentTree = bRenderGeneTree;
 
 		fPosCut = 0f;
@@ -185,7 +180,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 	@Override
 	public void init(GL2 gl) {
-
+		colorMapper = dataDomain.getColorMapper();
 	}
 
 	@Override
@@ -1229,9 +1224,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				} else
 					renderSymbol(gl);
 			} else {
-				if (!table.getDimensionPerspective(dimensionPerspectiveID).isTreeDefaultTree()
-						&& table.getDimensionPerspective(dimensionPerspectiveID).getTree() != null) {
-					tree = table.getDimensionPerspective(dimensionPerspectiveID).getTree();
+				if (!table.getDimensionPerspective(dimensionPerspectiveID)
+						.isTreeDefaultTree()
+						&& table.getDimensionPerspective(dimensionPerspectiveID)
+								.getTree() != null) {
+					tree = table.getDimensionPerspective(dimensionPerspectiveID)
+							.getTree();
 					groupList = (GroupType) new DimensionGroupList();
 					rootNode = tree.getRoot();
 				} else

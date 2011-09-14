@@ -9,8 +9,6 @@ import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -22,8 +20,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 	public HeatMapRenderer(GLHeatMap heatMap) {
 		super(heatMap);
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
+		colorMapper = heatMap.getDataDomain().getColorMapper();
 	}
 
 	@Override

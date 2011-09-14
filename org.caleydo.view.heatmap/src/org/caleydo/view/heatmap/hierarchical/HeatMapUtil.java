@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -18,8 +17,6 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -42,8 +39,7 @@ public class HeatMapUtil {
 		int numDimensions = dimensionVA.size();
 
 		ArrayList<Texture> textures = new ArrayList<Texture>();
-		ColorMapper colorMapping = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
+		ColorMapper colorMapping = table.getDataDomain().getColorMapper();
 
 		int numSamplesProcessed = 0;
 		boolean isNewTexture = true;

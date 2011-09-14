@@ -20,9 +20,7 @@ import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -57,7 +55,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	private boolean renderColorBars = true;
 
 	private Histogram histogram;
-	private ColorMapper colorMapping;
+	private ColorMapper colorMapper;
 	// private HistogramRenderStyle renderStyle;
 
 	private boolean bUpdateColorPointPosition = false;
@@ -73,8 +71,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	private TextRenderer textRenderer;
 
 	float fRenderWidth;
-
-	private ColorMappingManager colorMappingManager;
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -93,9 +89,8 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
-		colorMappingManager = ColorMappingManager.get();
-		colorMapping = colorMappingManager
-				.getColorMapping(ColorMappingType.GENE_EXPRESSION);
+
+		
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
@@ -110,6 +105,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void init(GL2 gl) {
+		colorMapper = dataDomain.getColorMapper();
 	}
 
 	@Override
@@ -165,8 +161,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 			pickingManager.handlePicking(this, gl);
 
 		if (bIsDisplayListDirtyLocal) {
-			colorMapping = ColorMappingManager.get().getColorMapping(
-					ColorMappingType.GENE_EXPRESSION);
 			buildDisplayList(gl, iGLDisplayListIndexLocal);
 			bIsDisplayListDirtyLocal = false;
 		}
@@ -185,8 +179,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void displayRemote(GL2 gl) {
 		if (bIsDisplayListDirtyRemote) {
-			colorMapping = ColorMappingManager.get().getColorMapping(
-					ColorMappingType.GENE_EXPRESSION);
 			buildDisplayList(gl, iGLDisplayListIndexRemote);
 			bIsDisplayListDirtyRemote = false;
 		}
@@ -233,7 +225,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		for (Integer iValue : histogram) {
 
 			if (useColor)
-				gl.glColor3fv(colorMapping.getColor(fContinuousColorRegion * iCount), 0);
+				gl.glColor3fv(colorMapper.getColor(fContinuousColorRegion * iCount), 0);
 
 			gl.glLineWidth(3.0f);
 			gl.glBegin(GL2.GL_POLYGON);
@@ -266,7 +258,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	private void renderColorBars(GL2 gl) {
 
 		fRenderWidth = (viewFrustum.getWidth() - 2 * sideSpacing);
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 
 		int iCount = 0;
 
@@ -289,9 +281,9 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				gl.glColor4f(markerPoint.getColor()[0], markerPoint.getColor()[1],
 						markerPoint.getColor()[2], 0.3f);
 
-				float fLeft = sideSpacing + (markerPoint.getValue() - fLeftSpread)
+				float fLeft = sideSpacing + (markerPoint.getMappingValue() - fLeftSpread)
 						* fRenderWidth;
-				float fRight = sideSpacing + markerPoint.getValue() * fRenderWidth;
+				float fRight = sideSpacing + markerPoint.getMappingValue() * fRenderWidth;
 
 				// the right part which picks the central line
 				if (!bIsFirstOrLast)
@@ -323,22 +315,22 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iLeftSpreadPickingID);
 				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(sideSpacing + (markerPoint.getValue() - fLeftSpread)
+				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() - fLeftSpread)
 						* fRenderWidth, 0, 0);
-				gl.glVertex3f(sideSpacing + (markerPoint.getValue() - fLeftSpread)
+				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() - fLeftSpread)
 						* fRenderWidth, viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
 				if (fLeftSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
-					renderCaption(gl, markerPoint.getValue() - fLeftSpread);
+					renderCaption(gl, markerPoint.getMappingValue() - fLeftSpread);
 
 			}
 
 			if (markerPoint.hasRightSpread()) {
 				float fRightSpread = markerPoint.getRightSpread();
 
-				float fLeft = sideSpacing + markerPoint.getValue() * fRenderWidth;
-				float fRight = sideSpacing + (markerPoint.getValue() + fRightSpread)
+				float fLeft = sideSpacing + markerPoint.getMappingValue() * fRenderWidth;
+				float fRight = sideSpacing + (markerPoint.getMappingValue() + fRightSpread)
 						* fRenderWidth;
 
 				int iRightSpreadPickingID = pickingManager.getPickingID(uniqueID,
@@ -377,14 +369,14 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(sideSpacing + (markerPoint.getValue() + fRightSpread)
+				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread)
 						* fRenderWidth, 0, 0);
-				gl.glVertex3f(sideSpacing + (markerPoint.getValue() + fRightSpread)
+				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread)
 						* fRenderWidth, viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
 				if (fRightSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
-					renderCaption(gl, markerPoint.getValue() + fRightSpread);
+					renderCaption(gl, markerPoint.getMappingValue() + fRightSpread);
 
 			}
 
@@ -403,7 +395,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 			// if (!bIsFirstOrLast)
 			// gl.glPopName();
 
-			renderCaption(gl, markerPoint.getValue());
+			renderCaption(gl, markerPoint.getMappingValue());
 
 			iCount++;
 		}
@@ -458,7 +450,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapping.getMarkerPoints();
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
 
 		float fClickedPointX = fArTargetWorldCoordinates[0];
@@ -466,7 +458,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		if (bIsFirstTimeUpdateColor && bUpdateColorPointPosition) {
 			bIsFirstTimeUpdateColor = false;
 			fColorPointPositionOffset = fClickedPointX - sideSpacing
-					- markerPoint.getValue() * (viewFrustum.getWidth() - 2 * sideSpacing);
+					- markerPoint.getMappingValue() * (viewFrustum.getWidth() - 2 * sideSpacing);
 			fClickedPointX -= fColorPointPositionOffset;
 		} else if (bUpdateColorPointPosition) {
 			fClickedPointX -= fColorPointPositionOffset;
@@ -483,7 +475,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		if (iColorMappingPointMoved > 0) {
 			ColorMarkerPoint previousPoint = markerPoints
 					.get(iColorMappingPointMoved - 1);
-			float fRightOfPrevious = previousPoint.getValue();
+			float fRightOfPrevious = previousPoint.getMappingValue();
 
 			fRightOfPrevious += previousPoint.getRightSpread();
 
@@ -503,7 +495,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 
 		if (iColorMappingPointMoved < markerPoints.size() - 1) {
 			ColorMarkerPoint nextPoint = markerPoints.get(iColorMappingPointMoved + 1);
-			float fLeftOfNext = nextPoint.getValue();
+			float fLeftOfNext = nextPoint.getMappingValue();
 
 			fLeftOfNext -= nextPoint.getLeftSpread();
 
@@ -525,20 +517,21 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				fClickedPointX = 0;
 			if (fClickedPointX > 1)
 				fClickedPointX = 1;
-			markerPoint.setValue(fClickedPointX);
+			markerPoint.setMappingValue(fClickedPointX);
 		} else if (bUpdateLeftSpread) {
-			float fTargetValue = markerPoint.getValue() - fClickedPointX;
+			float fTargetValue = markerPoint.getMappingValue() - fClickedPointX;
 			if (fTargetValue < 0.01f)
 				fTargetValue = 0.01f;
 			markerPoint.setLeftSpread(fTargetValue);
 		} else if (bUpdateRightSpread) {
-			float fTargetValue = fClickedPointX - markerPoint.getValue();
+			float fTargetValue = fClickedPointX - markerPoint.getMappingValue();
 			if (fTargetValue < 0.01f)
 				fTargetValue = 0.01f;
 			markerPoint.setRightSpread(fTargetValue);
 		}
-		colorMapping.update();
-		colorMappingManager.changeColorMapping(colorMapping);
+		colorMapper.update();
+		// FIXME should we trigger the event here?
+		// colorMappingManager.changeColorMapping(colorMapper);
 
 		// RedrawViewEvent event = new RedrawViewEvent();
 		// event.setSender(this);

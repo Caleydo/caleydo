@@ -9,16 +9,17 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.AEvent;
 import org.caleydo.core.manager.event.AEventListener;
 import org.caleydo.core.manager.event.IListenerOwner;
 import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
-import org.caleydo.core.util.conversion.ConversionTools;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
+import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
@@ -39,8 +40,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
-		IListenerOwner, IDataDomainBasedView<IDataDomain> {
+public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements
+		IViewCommandHandler, IListenerOwner, ITableBasedDataDomainView {
 
 	private CLabel colorMappingPreviewLabel;
 
@@ -51,7 +52,7 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 
 	protected Composite histoComposite;
 
-	protected IDataDomain dataDomain;
+	protected ATableBasedDataDomain dataDomain;
 
 	PreferenceStore store = GeneralManager.get().getPreferenceStore();
 
@@ -85,24 +86,24 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 
 		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
 		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-		
+
 		createGLCanvas();
-		
+
 		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
+			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+					.get().getDataDomainByID(serializedView.getDataDomainID());
 			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-				(IDataDomainBasedView<IDataDomain>) view;
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 			this.dataDomain = dataDomain;
 		}
 
 		view.initialize();
 		createPartControlGL();
-		
+
 		redrawView();
 	}
 
@@ -128,8 +129,8 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 				// TODO Auto-generated method stub
 				PreferenceDialog pref = PreferencesUtil.createPreferenceDialogOn(
 						new Shell(),
-						"org.caleydo.core.gui.preferences.ColorMappingPreferencePage", null,
-						null);
+						"org.caleydo.core.gui.preferences.ColorMappingPreferencePage",
+						null, null);
 
 				if (pref != null) {
 					pref.open();
@@ -151,14 +152,12 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 
 		labels = new ArrayList<CLabel>(3);
 
-		int iNumberOfMarkerPoints = store
-				.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
-						+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+		int numberOfMarkerPoints = dataDomain.getColorMapper().getMarkerPoints().size();
 
-		for (int count = 0; count < iNumberOfMarkerPoints; count++) {
+		for (int count = 0; count < numberOfMarkerPoints; count++) {
 			CLabel label = new CLabel(labelComposite, SWT.NONE);
 			labels.add(label);
-			if (count == iNumberOfMarkerPoints - 1) {
+			if (count == numberOfMarkerPoints - 1) {
 				label.setAlignment(SWT.RIGHT);
 			} else if (count > 0) {
 				label.setAlignment(SWT.CENTER);
@@ -171,36 +170,30 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 
 	private void updateColorLabel() {
 
-		int iNumberOfMarkerPoints = store
-				.getInt(PreferenceConstants.GENE_EXPRESSION_PREFIX
-						+ PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
+				.getMarkerPoints();
 
-		Color[] alColor = new Color[iNumberOfMarkerPoints];
-		int[] iArColorMarkerPoints = new int[iNumberOfMarkerPoints - 1];
-		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
+		Color[] alColor = new Color[markerPoints.size()];
+		int[] iArColorMarkerPoints = new int[markerPoints.size() - 1];
+		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
 
-			float normalizedValue = store
-					.getFloat(PreferenceConstants.GENE_EXPRESSION_PREFIX
-							+ PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
 
 			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getTable()
 					.getRawForNormalized(normalizedValue);
 
 			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
-			int iColorMarkerPoint = (int) (100 * normalizedValue);
+			int colorMarkerPoint = (int) (100 * normalizedValue);
 
 			// Gradient label does not need the 0 point
-			if (iColorMarkerPoint != 0) {
-				iArColorMarkerPoints[iCount - 2] = iColorMarkerPoint;
+			if (colorMarkerPoint != 0) {
+				iArColorMarkerPoints[iCount - 2] = colorMarkerPoint;
 			}
 
-			String color = store.getString(PreferenceConstants.GENE_EXPRESSION_PREFIX
-					+ PreferenceConstants.COLOR_MARKER_POINT_COLOR + iCount);
-
-			int[] iArColor = ConversionTools.getIntColorFromString(color);
+			int[] color = markerPoints.get(iCount - 1).getIntColor();
 
 			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
-					iArColor[0], iArColor[1], iArColor[2]);
+					color[0], color[1], color[2]);
 		}
 
 		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
@@ -272,7 +265,7 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 	public void createDefaultSerializedView() {
 
 		serializedView = new SerializedHistogramView();
-		
+
 		if (dataDomain == null)
 			determineDataConfiguration(serializedView);
 		else
@@ -285,13 +278,54 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements IVi
 	}
 
 	@Override
-	public void setDataDomain(IDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		//updateColorLabel();
 	}
 
 	@Override
-	public IDataDomain getDataDomain() {
+	public void initialize() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ASerializedView getSerializableRepresentation() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView serializedView) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public String getViewType() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int getID() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 }

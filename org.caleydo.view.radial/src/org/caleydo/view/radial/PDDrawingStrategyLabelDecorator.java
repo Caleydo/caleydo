@@ -7,8 +7,6 @@ import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 
 /**
  * PDDrawingStrategyLabelDecorator sets up a {@link LabelInfo} for the partial
@@ -17,6 +15,8 @@ import org.caleydo.core.util.mapping.color.ColorMappingType;
  * @author Christian Partl
  */
 public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator {
+
+	private ColorMapper colorMapper;
 
 	/**
 	 * Constructor.
@@ -28,8 +28,9 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public PDDrawingStrategyLabelDecorator() {
+	public PDDrawingStrategyLabelDecorator(ColorMapper colorMapper) {
 		super(null, 0);
+		this.colorMapper = colorMapper;
 	}
 
 	@Override
@@ -97,7 +98,8 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 
 	@Override
 	public APDDrawingStrategyDecorator clone() {
-		PDDrawingStrategyLabelDecorator clone = new PDDrawingStrategyLabelDecorator();
+		PDDrawingStrategyLabelDecorator clone = new PDDrawingStrategyLabelDecorator(
+				colorMapper);
 		clone.setDrawingStrategy(drawingStrategy);
 		return clone;
 	}
@@ -117,17 +119,15 @@ public class PDDrawingStrategyLabelDecorator extends APDDrawingStrategyDecorator
 
 		float fAverageExpressionValue = clusterNode.getAverageExpressionValue();
 		float fStandardDeviation = clusterNode.getStandardDeviation();
-		ColorMapper cmExpression = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
 
-		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue
+		float fArRGB[] = colorMapper.getColor(fAverageExpressionValue
 				- fStandardDeviation);
 		RectangleItem leftRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
-		fArRGB = cmExpression.getColor(fAverageExpressionValue);
+		fArRGB = colorMapper.getColor(fAverageExpressionValue);
 		RectangleItem middleRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
-		fArRGB = cmExpression.getColor(fAverageExpressionValue + fStandardDeviation);
+		fArRGB = colorMapper.getColor(fAverageExpressionValue + fStandardDeviation);
 		RectangleItem rightRectangleItem = new RectangleItem(fArRGB, 1, 1, true);
 
 		TextItem meanItem = new TextItem("Mean/Std-Dev:  ");

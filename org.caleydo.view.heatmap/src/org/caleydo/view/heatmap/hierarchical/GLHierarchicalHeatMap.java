@@ -51,8 +51,6 @@ import org.caleydo.core.manager.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.manager.view.RemoteRenderingTransformer;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -268,9 +266,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		alSelectionTypes.add(SelectionType.MOUSE_OVER);
 		alSelectionTypes.add(SelectionType.SELECTION);
 
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
-
 		glKeyListener = new GLHierarchicalHeatMapKeyListener(this);
 
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -291,7 +286,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
-
+		colorMapper = dataDomain.getColorMapper();
 		textRenderer = new CaleydoTextRenderer(24);
 
 		createHeatMap();

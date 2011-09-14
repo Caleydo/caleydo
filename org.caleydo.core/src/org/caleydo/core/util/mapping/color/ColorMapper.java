@@ -6,11 +6,6 @@ import java.util.Collections;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.conversion.ConversionTools;
-import org.eclipse.jface.preference.PreferenceStore;
-
 /**
  * Color mapping. The class is initialized with a list of inflection points and an associated color. A color
  * mapping for values between 0 and 1 based on the provided points is accessible.
@@ -20,11 +15,14 @@ import org.eclipse.jface.preference.PreferenceStore;
 @XmlType
 public class ColorMapper {
 
-	ArrayList<float[]> colorList;
-	ArrayList<ColorMarkerPoint> markerPoints;
-	ColorMappingType colorMappingType;
+	private ArrayList<float[]> colorList;
+	private ArrayList<ColorMarkerPoint> markerPoints;
 
-	float[] notANumberColor = { 0, 0, 1 };
+	// ColorMappingType colorMappingType;
+
+	private float[] notANumberColor = { 0.3f, 0.3f, 0.3f };
+	private String colorSchemeName = "Unspecified";
+	private String colorSchemeDescription = "No description given";
 
 	@XmlTransient
 	public static final int COLOR_DEPTH = 256;
@@ -33,7 +31,7 @@ public class ColorMapper {
 	 * Default no-arg constructor, needed for serialization.
 	 */
 	public ColorMapper() {
-
+		// initiFromPreferenceStore();
 	}
 
 	/**
@@ -49,18 +47,46 @@ public class ColorMapper {
 	 * interpolation to the next color begins.
 	 * </p>
 	 * 
-	 * @param alMarkerPoints
+	 * @param markerPoints
 	 * @throws IllegalArgumentException
 	 *             if values in marker points are not increasing, or if fvalue > 1 || fvalue < 0
 	 */
-	protected ColorMapper(ColorMappingType colorMappingType, ArrayList<ColorMarkerPoint> alMarkerPoints) {
-		this.colorMappingType = colorMappingType;
-		init(alMarkerPoints);
+	public ColorMapper(ArrayList<ColorMarkerPoint> markerPoints) {
+		init(markerPoints);
 	}
 
-	protected ColorMapper(ColorMappingType colorMappingType) {
-		this.colorMappingType = colorMappingType;
-		initiFromPreferenceStore();
+	public static ColorMapper createDefaultMapper(EDefaultColorSchemes mappingType) {
+		return mappingType.getDefaultColorMapper();
+	}
+
+	/**
+	 * @return the colorSchemeName, see {@link #colorSchemeName}
+	 */
+	public String getColorSchemeName() {
+		return colorSchemeName;
+	}
+
+	/**
+	 * @param colorSchemeName
+	 *            setter, see {@link #colorSchemeName}
+	 */
+	public void setColorSchemeName(String colorSchemeName) {
+		this.colorSchemeName = colorSchemeName;
+	}
+
+	/**
+	 * @return the colorSchemeDescription, see {@link #colorSchemeDescription}
+	 */
+	public String getColorSchemeDescription() {
+		return colorSchemeDescription;
+	}
+
+	/**
+	 * @param colorSchemeDescription
+	 *            setter, see {@link #colorSchemeDescription}
+	 */
+	public void setColorSchemeDescription(String colorSchemeDescription) {
+		this.colorSchemeDescription = colorSchemeDescription;
 	}
 
 	/**
@@ -80,69 +106,66 @@ public class ColorMapper {
 		}
 
 		setUpMapping();
-		notANumberColor =
-			ConversionTools.getFloatColorFromString(GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.NAN_COLOR));
 	}
 
 	/**
 	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
 	 * display list to dirty to have immediate effect.
 	 */
-	public void initiFromPreferenceStore() {
-		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-		int iNumberOfMarkerPoints =
-			store.getInt(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-
-		ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
-		for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-			float colorMarkerValue =
-				store
-					.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-			String color =
-				store.getString(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_COLOR
-					+ iCount);
-			float fLeftSpread =
-				store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
-					+ iCount);
-			float fRightSpread =
-				store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
-					+ iCount);
-
-			ColorMarkerPoint point =
-				new ColorMarkerPoint(colorMarkerValue, ConversionTools.getFloatColorFromString(color));
-
-			if (Float.compare(fLeftSpread, 0.0f) > 0)
-				point.setLeftSpread(fLeftSpread);
-			if (Float.compare(fRightSpread, 0.0f) > 0)
-				point.setRightSpread(fRightSpread);
-
-			alMarkerPoints.add(point);
-		}
-
-		init(alMarkerPoints);
-
-	}
+	// public void initiFromPreferenceStore() {
+	// PreferenceStore store = GeneralManager.get().getPreferenceStore();
+	// int iNumberOfMarkerPoints =
+	// store.getInt(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
+	//
+	// ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
+	// for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
+	// float colorMarkerValue =
+	// store
+	// .getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
+	// String color =
+	// store.getString(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_COLOR
+	// + iCount);
+	// float fLeftSpread =
+	// store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
+	// + iCount);
+	// float fRightSpread =
+	// store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
+	// + iCount);
+	//
+	// ColorMarkerPoint point =
+	// new ColorMarkerPoint(colorMarkerValue, ConversionTools.getFloatColorFromString(color));
+	//
+	// if (Float.compare(fLeftSpread, 0.0f) > 0)
+	// point.setLeftSpread(fLeftSpread);
+	// if (Float.compare(fRightSpread, 0.0f) > 0)
+	// point.setRightSpread(fRightSpread);
+	//
+	// alMarkerPoints.add(point);
+	// }
+	//
+	// init(alMarkerPoints);
+	//
+	// }
 
 	/**
 	 * Writes the color values of the current mapping to the preference store
 	 */
-	public void writeToPrefStore() {
-
-		PreferenceStore store = GeneralManager.get().getPreferenceStore();
-		int iCount = 1;
-		for (ColorMarkerPoint point : markerPoints) {
-			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount,
-				point.getValue());
-			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
-				+ iCount, point.getRightSpread());
-			store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
-				+ iCount, point.getLeftSpread());
-			iCount++;
-			store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,
-				markerPoints.size());
-		}
-	}
+	// public void writeToPrefStore() {
+	//
+	// PreferenceStore store = GeneralManager.get().getPreferenceStore();
+	// int iCount = 1;
+	// for (ColorMarkerPoint point : markerPoints) {
+	// store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount,
+	// point.getValue());
+	// store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
+	// + iCount, point.getRightSpread());
+	// store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
+	// + iCount, point.getLeftSpread());
+	// iCount++;
+	// store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,
+	// markerPoints.size());
+	// }
+	// }
 
 	/**
 	 * Initialize the color mapping
@@ -153,21 +176,21 @@ public class ColorMapper {
 	private void setUpMapping() {
 		Collections.sort(markerPoints);
 		ArrayList<ColorMarkerPoint> alFinalMarkerPoints = considerSpread();
-		float fSrcValue, fDestValue;
+		float srcValue, destValue;
 
 		for (int iCount = 0; iCount < alFinalMarkerPoints.size() - 1; iCount++) {
-			fSrcValue = alFinalMarkerPoints.get(iCount).getValue();
-			fDestValue = alFinalMarkerPoints.get(iCount + 1).getValue();
+			srcValue = alFinalMarkerPoints.get(iCount).getMappingValue();
+			destValue = alFinalMarkerPoints.get(iCount + 1).getMappingValue();
 
-			if (fDestValue < fSrcValue)
+			if (destValue < srcValue)
 				throw new IllegalArgumentException("Marker points values have to be increasing in size, "
 					+ "but this was not the case");
 
 			float[] fSrcColor = alFinalMarkerPoints.get(iCount).getColor();
 			float[] fDestColor = alFinalMarkerPoints.get(iCount + 1).getColor();
 
-			int iSrcIndex = (int) (fSrcValue * (COLOR_DEPTH - 1));
-			int iDestIndex = (int) (fDestValue * (COLOR_DEPTH - 1));
+			int iSrcIndex = (int) (srcValue * (COLOR_DEPTH - 1));
+			int iDestIndex = (int) (destValue * (COLOR_DEPTH - 1));
 
 			int iColorRange = iDestIndex - iSrcIndex;
 
@@ -234,12 +257,12 @@ public class ColorMapper {
 
 		for (ColorMarkerPoint point : markerPoints) {
 			if (point.hasLeftSpread()) {
-				float fLeftValue = point.getValue() - point.getLeftSpread();
+				float fLeftValue = point.getMappingValue() - point.getLeftSpread();
 				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fLeftValue, point.getColor()));
 			}
 			alFinalColorMarkerPoints.add(point);
 			if (point.hasRightSpread()) {
-				float fRightValue = point.getValue() + point.getRightSpread();
+				float fRightValue = point.getMappingValue() + point.getRightSpread();
 				alFinalColorMarkerPoints.add(new ColorMarkerPoint(fRightValue, point.getColor()));
 			}
 		}
@@ -255,14 +278,6 @@ public class ColorMapper {
 		this.colorList = colorList;
 	}
 
-	public ColorMappingType getColorMappingType() {
-		return colorMappingType;
-	}
-
-	public void setColorMappingType(ColorMappingType colorMappingType) {
-		this.colorMappingType = colorMappingType;
-	}
-
 	public float[] getNotANumberColor() {
 		return notANumberColor;
 	}
@@ -275,4 +290,8 @@ public class ColorMapper {
 		this.markerPoints = markerPoints;
 	}
 
+	@Override
+	public String toString() {
+		return colorSchemeName;
+	}
 }

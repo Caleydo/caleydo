@@ -142,7 +142,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// iMaxDisplayedHierarchyDepth = DISP_HIER_DEPTH_DEFAULT;
 		navigationHistory = new NavigationHistory(this, null);
 		drawingController = new DrawingController(this, navigationHistory);
-		drawingStrategyManager = new DrawingStrategyManager();
+		drawingStrategyManager = new DrawingStrategyManager(dataDomain.getColorMapper());
 		navigationHistory.setDrawingController(drawingController);
 		iUpwardNavigationSliderButtonID = 0;
 		iUpwardNavigationSliderID = 0;

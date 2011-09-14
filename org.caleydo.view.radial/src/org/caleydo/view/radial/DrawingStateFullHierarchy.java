@@ -196,7 +196,8 @@ public class DrawingStateFullHierarchy extends ADrawingState {
 		}
 
 		if (pdCurrentMouseOverElement != null) {
-			APDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator();
+			APDDrawingStrategyDecorator dsLabelDecorator = new PDDrawingStrategyLabelDecorator(
+					radialHierarchy.getDataDomain().getColorMapper());
 			pdCurrentMouseOverElement.decoratePDDrawingStrategyChildren(dsLabelDecorator,
 					Math.min(RadialHierarchyRenderStyle.MAX_LABELING_DEPTH,
 							iDisplayedHierarchyDepth));

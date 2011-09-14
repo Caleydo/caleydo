@@ -3,6 +3,7 @@ package org.caleydo.view.radial;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 
 /**
@@ -20,10 +21,13 @@ public final class DrawingStrategyManager {
 	private ArrayList<EPDDrawingStrategyType> alColorModes;
 	private int iColorModeIndex;
 
+	private ColorMapper colorMapper;
+
 	/**
 	 * Constructor.
 	 */
-	public DrawingStrategyManager() {
+	public DrawingStrategyManager(ColorMapper colorMapper) {
+		this.colorMapper = colorMapper;
 		alColorModes = new ArrayList<EPDDrawingStrategyType>();
 		iColorModeIndex = 0;
 	}
@@ -80,9 +84,10 @@ public final class DrawingStrategyManager {
 		case FIXED_COLOR:
 			return new PDDrawingStrategyFixedColor(pickingManager, viewID);
 		case LABEL_DECORATOR:
-			return new PDDrawingStrategyLabelDecorator();
+			return new PDDrawingStrategyLabelDecorator(colorMapper);
 		case EXPRESSION_COLOR:
-			return new PDDrawingStrategyExpressionColor(pickingManager, viewID);
+			return new PDDrawingStrategyExpressionColor(colorMapper, pickingManager,
+					viewID);
 		case INVISIBLE:
 			return new PDDrawingStrategyInvisible(pickingManager, viewID);
 		default:

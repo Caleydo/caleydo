@@ -1,5 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
+import java.util.ArrayList;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -48,6 +49,10 @@ import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
+import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
@@ -64,7 +69,7 @@ public abstract class ATableBasedDataDomain
 
 	protected boolean isColumnDimension = true;
 
-	/** The set which is currently loaded and used inside the views for this use case. */
+	/** The raw data for this data domain. */
 	protected DataTable table;
 
 	protected String recordDenominationSingular = "<not specified>";
@@ -116,6 +121,9 @@ public abstract class ATableBasedDataDomain
 	@XmlElement
 	private Set<String> dimensionPerspectiveIDs;
 
+	/** The color-mapper to be used by views of this data domain */
+	private ColorMapper colorMapper;
+
 	protected IDMappingManager recordIDMappingManager;
 	protected IDMappingManager dimensionIDMappingManager;
 
@@ -135,6 +143,7 @@ public abstract class ATableBasedDataDomain
 	 */
 	public ATableBasedDataDomain() {
 		super();
+
 	}
 
 	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
@@ -196,31 +205,23 @@ public abstract class ATableBasedDataDomain
 	protected abstract void assignIDCategories();
 
 	/**
-	 * Sets the set which is currently loaded and used inside the views for this use case.
+	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes
+	 * {@link #recordPerspectiveIDs} and {@link #dimensionPerspectiveIDs}.
 	 * 
 	 * @param table
 	 *            The new set which replaced the currently loaded one.
 	 */
 	public void setTable(DataTable table) {
-		assert (table != null);
-
-		// TODO - do we still need this?
-		DataTable oldTable = this.table;
+		if (table == null)
+			throw new IllegalArgumentException("DataTable was null");
 		this.table = table;
-
-		if (oldTable != null) {
-			oldTable.destroy();
-			oldTable = null;
-		}
 
 		recordPerspectiveIDs = table.getRecordPerspectiveIDs();
 		dimensionPerspectiveIDs = table.getDimensionPerspectiveIDs();
 	}
 
 	/**
-	 * Returns the root set which is currently loaded and used inside the views for this use case.
-	 * 
-	 * @return a data set
+	 * @return the table, see {@link #table}
 	 */
 	@XmlTransient
 	public DataTable getTable() {
@@ -369,6 +370,23 @@ public abstract class ATableBasedDataDomain
 	 */
 	public Set<String> getDimensionPerspectiveIDs() {
 		return dimensionPerspectiveIDs;
+	}
+
+	/**
+	 * @return the colorMapper, see {@link #colorMapper}
+	 */
+	public ColorMapper getColorMapper() {
+		if (colorMapper == null)
+			colorMapper = ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN);
+		return colorMapper;
+	}
+
+	/**
+	 * @param colorMapper
+	 *            setter, see {@link #colorMapper}
+	 */
+	public void setColorMapper(ColorMapper colorMapper) {
+		this.colorMapper = colorMapper;
 	}
 
 	/**

@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.mapping.IDMappingManager;
@@ -18,8 +17,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -89,8 +86,7 @@ public class GLPathwayContentCreator {
 		this.glPathwayView = glPathwayView;
 		idMappingManager = glPathwayView.getPathwayDataDomain().getGeneIDMappingManager();
 
-		colorMapper = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
+		colorMapper = glPathwayView.getDataDomain().getColorMapper();
 
 		hashPathway2VerticesDisplayListId = new HashMap<PathwayGraph, Integer>();
 		hashPathway2EdgesDisplayListId = new HashMap<PathwayGraph, Integer>();

@@ -5,12 +5,8 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
-import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 
 /**
  * A concrete implementation of ABookmarkContainer for the category
@@ -20,9 +16,8 @@ import org.caleydo.core.util.mapping.color.ColorMappingType;
  */
 class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager> {
 
-	ColorMapper colorMapping;
-	IDCategory category;
-	IDType idType;
+	private IDCategory category;
+	private IDType idType;
 
 	RecordBookmarkContainer(GLBookmarkView manager, IDCategory category, IDType idType) {
 		super(manager, category, manager.getDataDomain().getPrimaryRecordMappingType());
@@ -30,10 +25,8 @@ class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager>
 		this.idType = idType;
 		this.category = category;
 
-		colorMapping = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
-
-		selectionManager = new RecordSelectionManager(manager.getDataDomain().getRecordIDMappingManager(), idType);
+		selectionManager = new RecordSelectionManager(manager.getDataDomain()
+				.getRecordIDMappingManager(), idType);
 
 	}
 

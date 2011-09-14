@@ -7,8 +7,6 @@ import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 
@@ -21,6 +19,8 @@ import org.caleydo.core.view.opengl.picking.PickingType;
  */
 public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildIndicator {
 
+	ColorMapper colorMapper;
+
 	/**
 	 * Constructor.
 	 * 
@@ -31,8 +31,10 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 	 *            ID of the view where the elements will be displayed. Needed
 	 *            for picking.
 	 */
-	public PDDrawingStrategyExpressionColor(PickingManager pickingManager, int viewID) {
+	public PDDrawingStrategyExpressionColor(ColorMapper colorMapper,
+			PickingManager pickingManager, int viewID) {
 		super(pickingManager, viewID);
+		this.colorMapper = colorMapper;
 	}
 
 	@Override
@@ -116,9 +118,7 @@ public class PDDrawingStrategyExpressionColor extends APDDrawingStrategyChildInd
 			fAverageExpressionValue = 0.0f;
 		}
 
-		ColorMapper cmExpression = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
-		float fArRGB[] = cmExpression.getColor(fAverageExpressionValue);
+		float fArRGB[] = colorMapper.getColor(fAverageExpressionValue);
 
 		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };
 	}

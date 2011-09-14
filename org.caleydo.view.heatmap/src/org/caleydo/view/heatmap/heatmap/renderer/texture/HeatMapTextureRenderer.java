@@ -13,8 +13,6 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -113,8 +111,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		this.dimensionVA = dimensionVA;
 		this.recordVA = recordVA;
 
-		ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.GENE_EXPRESSION);
+		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 
 		int textureHeight = numberOfRecords = recordVA.size();
 		int textureWidth = numberOfDimensions = dimensionVA.size();

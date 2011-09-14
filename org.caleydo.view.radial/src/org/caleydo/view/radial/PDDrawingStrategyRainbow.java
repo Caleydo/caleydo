@@ -7,9 +7,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 
@@ -21,6 +19,8 @@ import org.caleydo.core.view.opengl.picking.PickingType;
  * @author Christian Partl
  */
 public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
+
+	ColorMapper colorMapper;
 
 	/**
 	 * Constructor. Initialized the rainbow color mapping. The colors generated
@@ -44,8 +44,8 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 		alMarkerPoints.add(new ColorMarkerPoint((240.0f / 360.0f), 0.0f, 0.0f, 1.0f));
 		alMarkerPoints.add(new ColorMarkerPoint(1.0f, 1.0f, 0.0f, 0.0f));
 
-		ColorMappingManager.get().initColorMapping(ColorMappingType.RAINBOW,
-				alMarkerPoints);
+		colorMapper = new ColorMapper(alMarkerPoints);
+
 	}
 
 	@Override
@@ -128,10 +128,9 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 			fMidAngle += 360;
 		}
 
-		ColorMapper cmRainbow = ColorMappingManager.get().getColorMapping(
-				ColorMappingType.RAINBOW);
+		
 
-		float fArRGB[] = cmRainbow.getColor(fMidAngle / 360.0f);
+		float fArRGB[] = colorMapper.getColor(fMidAngle / 360.0f);
 
 		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };
 	}

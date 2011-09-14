@@ -20,8 +20,6 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -88,8 +86,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	private ElementLayout detailLayout;
 	private ElementLayout overviewDetailConnectorLayout;
 
-	private ColorMapper colorMapper = ColorMappingManager.get().getColorMapping(
-			ColorMappingType.GENE_EXPRESSION);
+	private ColorMapper colorMapper;
 
 	private boolean updateVisualUncertainty = true;
 
@@ -112,7 +109,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
-
+		colorMapper = dataDomain.getColorMapper();
 		templateRenderer = new LayoutManager(this.viewFrustum);
 		if (template == null)
 			template = new LayoutTemplate();

@@ -9,8 +9,6 @@ import org.caleydo.core.manager.PreferenceManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.startup.gui.CaleydoProjectWizard;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
@@ -133,7 +131,7 @@ public class StartupProcessor {
 		startupProcedure.init(appInitData);
 		startupProcedure.execute();
 
-		ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
+//		ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
 	}
 
 	private void initRCPWorkbench() {

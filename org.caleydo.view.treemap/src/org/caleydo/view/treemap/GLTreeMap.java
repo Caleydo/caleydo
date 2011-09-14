@@ -26,8 +26,6 @@ import org.caleydo.core.manager.event.view.treemap.ToggleColoringModeEvent;
 import org.caleydo.core.manager.event.view.treemap.ToggleLabelEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.ColorMappingManager;
-import org.caleydo.core.util.mapping.color.ColorMappingType;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -169,7 +167,7 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		if (dataDomain == null)
 			return;
 		tree = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree();
-		colorMapper = ColorMappingManager.get().getColorMapping(ColorMappingType.GENE_EXPRESSION);
+		colorMapper = dataDomain.getColorMapper();
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
 		if (maxDepth == 0)

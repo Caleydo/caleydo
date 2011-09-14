@@ -2,6 +2,7 @@ package org.caleydo.view.filterpipeline.representation;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
@@ -214,8 +215,8 @@ public class FilterRepresentationSNR extends
 				histoComposite.setLayoutData(gridData);
 
 				RcpBasicGLHistogramView histogramView = new RcpBasicGLHistogramView();
-				histogramView.setDataDomain(DataDomainManager.get().getDataDomainByID(
-						"org.caleydo.datadomain.genetic"));
+				histogramView.setDataDomain((ATableBasedDataDomain) DataDomainManager
+						.get().getDataDomainByID("org.caleydo.datadomain.genetic"));
 
 				histogramView.createDefaultSerializedView();
 				histogramView.createPartControl(histoComposite);
