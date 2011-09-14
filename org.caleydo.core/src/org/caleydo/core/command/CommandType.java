@@ -14,7 +14,7 @@ public enum CommandType {
 	 * XML-value ( XML-Tag , XML-key )
 	 */
 	LOAD_DATA_FILE("cmd", "type", "", "No description available!"),
-	LOAD_LOOKUP_TABLE_FILE("cmd", "type", "", "Load a lookup table"),
+	PARSE_ID_MAPPING("cmd", "type", "", "Load a lookup table"),
 	
 	CREATE_DATA_TABLE("cmd", "type", "-1", "Create Data Table"),
 	CREATE_COLUMN("cmd", "type", "-1", "Create Dimension"),

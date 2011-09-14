@@ -11,7 +11,8 @@ import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
+import org.caleydo.core.parser.ascii.AStringConverter;
+import org.caleydo.core.parser.ascii.TabularDataParser;
 
 /**
  * Parameters to load the initial data-{@link DataTable}.
@@ -38,7 +39,7 @@ public class LoadDataParameters {
 	private String fileName;
 
 	/**
-	 * The input pattern for the {@link TabularAsciiDataReader}, specifying the order of how to treat values
+	 * The input pattern for the {@link TabularDataParser}, specifying the order of how to treat values
 	 * between delimiters. The string values must map to a {@link EColumnType}.
 	 */
 	private String inputPattern;
@@ -72,6 +73,9 @@ public class LoadDataParameters {
 	 * transformation). This is mapped to values of {@link ExternalDataRepresentation}.
 	 */
 	private String mathFilterMode;
+
+	/** String converter for the column headers */
+	private AStringConverter columnHeaderStringConverter;
 
 	/**
 	 * Determines whether a table in the DataTable is considered homogeneous or not. Homogeneous means, that
@@ -320,5 +324,19 @@ public class LoadDataParameters {
 	 */
 	public boolean isDataHomogeneous() {
 		return isDataHomogeneous;
+	}
+	
+	/**
+	 * @param columnHeaderStringConverter setter, see {@link #columnHeaderStringConverter}
+	 */
+	public void setColumnHeaderStringConverter(AStringConverter columnHeaderStringConverter) {
+		this.columnHeaderStringConverter = columnHeaderStringConverter;
+	}
+	
+	/**
+	 * @return the columnHeaderStringConverter, see {@link #columnHeaderStringConverter}
+	 */
+	public AStringConverter getColumnHeaderStringConverter() {
+		return columnHeaderStringConverter;
 	}
 }

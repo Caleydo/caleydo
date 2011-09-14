@@ -48,22 +48,27 @@ public class DataDomainGraph {
 
 		// FIXME: This is not generic at all, move the IDTypes of the DataDomains into IDataDomain
 		for (IDataDomain vertex : dataDomainGraph.vertexSet()) {
+			// break;
+			//
 			if (vertex != dataDomain) {
 				boolean mappingExists = false;
 
 				if (dataDomain instanceof ATableBasedDataDomain && vertex instanceof ATableBasedDataDomain) {
-					ATableBasedDataDomain setBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-					ATableBasedDataDomain setBasedVertex = (ATableBasedDataDomain) vertex;
+					ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+					ATableBasedDataDomain previouslyRegisteredDataDomain = (ATableBasedDataDomain) vertex;
 
 					// TODO: Also mapping between content and dimension?
-					boolean hasContentMapping =
-						setBasedVertex.getRecordIDMappingManager().hasMapping(
-							setBasedDataDomain.getPrimaryRecordMappingType(),
-							setBasedVertex.getPrimaryRecordMappingType());
-					boolean hasDimensionMapping =
-						setBasedVertex.getDimensionIDMappingManager().hasMapping(
-							setBasedDataDomain.getPrimaryDimensionMappingType(),
-							setBasedVertex.getPrimaryDimensionMappingType());
+					boolean hasContentMapping = false;
+					if (tableBasedDataDomain.getRecordIDCategory() == previouslyRegisteredDataDomain
+						.getRecordIDCategory()) {
+						hasContentMapping = true;
+					}
+					boolean hasDimensionMapping = false;
+					if (tableBasedDataDomain.getDimensionIDCategory() == previouslyRegisteredDataDomain
+						.getDimensionIDCategory()) {
+						hasDimensionMapping = true;
+					}
+
 					if (hasContentMapping || hasDimensionMapping) {
 						mappingExists = true;
 					}

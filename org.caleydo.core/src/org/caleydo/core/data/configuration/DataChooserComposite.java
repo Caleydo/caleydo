@@ -172,6 +172,7 @@ public class DataChooserComposite
 		else {
 			possibleRecordPerspectives = new String[] { "Choose data set first!" };
 			possibleDimensionPerspectives = new String[] { "Choose data set first!" };
+			return;
 		}
 
 		recordPerspectiveChooser.removeAll();

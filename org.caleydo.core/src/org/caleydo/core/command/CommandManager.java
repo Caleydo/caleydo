@@ -2,7 +2,7 @@ package org.caleydo.core.command;
 
 import org.caleydo.core.command.data.CmdDataCreateColumn;
 import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
+import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 
@@ -56,8 +56,8 @@ public class CommandManager {
 				createdCommand = new CmdCreateIDType();
 				break;
 			}
-			case LOAD_LOOKUP_TABLE_FILE: {
-				createdCommand = new CmdLoadFileLookupTable();
+			case PARSE_ID_MAPPING: {
+				createdCommand = new CmdParseIDMapping();
 				break;
 			}
 			case LOAD_DATA_FILE: {

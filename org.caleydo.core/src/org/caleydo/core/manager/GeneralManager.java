@@ -57,10 +57,6 @@ public class GeneralManager {
 		+ CALEYDO_FOLDER + File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
-	public static final String sDelimiter_Parser_DataItems = " ";
-	public static final String sDelimiter_Parser_DataType = ";";
-	public static final String sDelimiter_Parser_DataItems_Tab = "\t";
-
 	/**
 	 * General manager as a singleton
 	 */
@@ -168,7 +164,6 @@ public class GeneralManager {
 	public XmlParserManager getXmlParserManager() {
 		return xmlParserManager;
 	}
-
 
 	public CommandManager getCommandManager() {
 		return commandManager;

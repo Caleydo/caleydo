@@ -37,7 +37,7 @@ public class KMeansClusterer
 
 	private SimpleKMeans clusterer = null;
 
-	private int iNrCluster = 5;
+	private int numberOfCluster = 5;
 
 	public KMeansClusterer() {
 		clusterer = new SimpleKMeans();
@@ -63,7 +63,7 @@ public class KMeansClusterer
 			distanceMeasure = new EuclideanDistance();
 
 		try {
-			clusterer.setNumClusters(iNrCluster);
+			clusterer.setNumClusters(numberOfCluster);
 			clusterer.setMaxIterations(1000);
 			if (distanceMeasure != null)
 				clusterer.setDistanceFunction(distanceMeasure);
@@ -77,7 +77,7 @@ public class KMeansClusterer
 
 		buffer.append("@relation test\n\n");
 
-		int iPercentage = 1;
+		int percentage = 1;
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
@@ -86,7 +86,7 @@ public class KMeansClusterer
 
 			int iNrElements = recordVA.size();
 
-			if (iNrCluster >= iNrElements)
+			if (numberOfCluster >= iNrElements)
 				return null;
 
 			for (int nr = 0; nr < dimensionVA.size(); nr++) {
@@ -100,10 +100,10 @@ public class KMeansClusterer
 
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
-					if (iPercentage == tempPercentage) {
+					if (percentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
-						iPercentage++;
+							.triggerEvent(new ClusterProgressEvent(percentage, false));
+						percentage++;
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
@@ -130,7 +130,7 @@ public class KMeansClusterer
 
 			int iNrElements = dimensionVA.size();
 
-			if (iNrCluster >= iNrElements)
+			if (numberOfCluster >= iNrElements)
 				return null;
 
 			for (int nr = 0; nr < recordVA.size(); nr++) {
@@ -143,11 +143,11 @@ public class KMeansClusterer
 			for (Integer iDimensionIndex : dimensionVA) {
 
 				if (bClusteringCanceled == false) {
-					int tempPercentage = (int) ((float) isto / recordVA.size() * 100);
-					if (iPercentage == tempPercentage) {
+					int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
+					if (percentage == tempPercentage) {
 						GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
-						iPercentage++;
+							.triggerEvent(new ClusterProgressEvent(percentage, false));
+						percentage++;
 					}
 
 					for (Integer recordIndex : recordVA) {
@@ -227,7 +227,7 @@ public class KMeansClusterer
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
-		for (int i = 0; i < iNrCluster; i++) {
+		for (int i = 0; i < numberOfCluster; i++) {
 			clusterSizes.add(0);
 		}
 
@@ -235,7 +235,7 @@ public class KMeansClusterer
 		// System.out.println(data.numAttributes());
 		// System.out.println(data.numInstances());
 
-		for (int cluster = 0; cluster < iNrCluster; cluster++) {
+		for (int cluster = 0; cluster < numberOfCluster; cluster++) {
 			for (int i = 0; i < data.numInstances(); i++) {
 				if (ClusterAssignments[i] == cluster) {
 					sampleElements.add(i);
@@ -307,9 +307,9 @@ public class KMeansClusterer
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
-			iNrCluster = clusterState.getKMeansClusterCntGenes();
+			numberOfCluster = clusterState.getkMeansNumberOfClustersForRecords();
 		else
-			iNrCluster = clusterState.getKMeansClusterCntExperiments();
+			numberOfCluster = clusterState.getkMeansNumberOfClustersForDimensions();
 
 		return cluster(dataDomain.getTable(), clusterState);
 	}

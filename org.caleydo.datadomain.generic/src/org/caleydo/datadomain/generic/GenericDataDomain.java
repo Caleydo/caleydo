@@ -14,6 +14,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * Use case for generic set-based data which is not further specified.
@@ -46,6 +47,29 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
+	public void init() {
+		super.init();
+		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
+		// if (isColumnDimension) {
+		// primaryRecordMappingType = IDType.getIDType("DAVID");
+		// humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
+		//
+		// primaryDimensionMappingType = IDType.getIDType("DIMENSION");
+		// humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
+		// } else {
+		// primaryRecordMappingType = IDType.getIDType("DIMENSION");
+		// humanReadableRecordIDType = IDType.getIDType("DIMENSION");
+		//
+		// primaryDimensionMappingType = IDType.getIDType("DAVID");
+		// humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
+		// }
+		//
+
+		// Load IDs needed in this datadomain
+
+	}
+
+	@Override
 	protected void initIDMappings() {
 
 	}
@@ -64,12 +88,11 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			PerspectiveInitializationData	data) {
+			PerspectiveInitializationData data) {
 
 		// TODO Auto-generated method stub
 
 	}
-
 
 	@Override
 	protected void assignIDCategories() {
@@ -86,5 +109,8 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		humanReadableRecordIDType = recordIDType;
 		primaryDimensionMappingType = dimensionIDType;
 		humanReadableDimensionIDType = dimensionIDType;
+
+		contentLabelSingular = "generics";
+		recordLabelPlural = "generic";
 	}
 }

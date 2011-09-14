@@ -16,13 +16,27 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Abstract lookup table loader.
+ * <p>
+ * Loads ID mappings from a file to and {@link IDMappingManager}. The {@link IDMappingManager} is specified
+ * trough the {@link IDCategory}.
+ * </p>
+ * <p>
+ * Mappings can be loaded in two different ways:
+ * <ol>
+ * <li>From explicit mapping files, which contain something similar to <code>fromID;toID</code> where fromID
+ * is of the type fromIDType in and toID of type toIDType in {@link MappingType}.</li>
+ * <li>From an ID specified in a file to a dynamically generated ID, where the dynamic ID corresponds to the
+ * line number (where line number 0 is considered the line number of the first ID, i.e., skipped lines of the
+ * file are ignored).</li>
+ * </ol>
+ * </p>
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
+ * @author Alexander Lex
  */
-public class LookupTableLoader
-	extends AbstractLoader {
+public class IDMappingParser
+	extends ATextParser {
 	protected MappingType mappingType;
 
 	protected final IDMappingManager idMappingManager;
@@ -31,22 +45,38 @@ public class LookupTableLoader
 	 * Factor with that the line index must be multiplied to get a normalized (0-100) progress percentage
 	 * value.
 	 */
-	protected float fProgressBarFactor = 0;
+	protected float progressBarFactor = 0;
 
 	protected SWTGUIManager swtGuiManager;
+
+	private boolean isDynamic;
+
+	private AStringConverter stringConverter = null;
 
 	/**
 	 * Constructor.
 	 */
-	public LookupTableLoader(IDCategory idCategory, String sFileName, MappingType mappingType) {
-		super(sFileName);
+	public IDMappingParser(IDCategory idCategory, String fileName, MappingType mappingType) {
+		super(fileName);
 
 		this.mappingType = mappingType;
 
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
 		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 
-		setTokenSeperator(GeneralManager.sDelimiter_Parser_DataType);
+		setTokenSeperator(SEMICOLON);
+
+		// FIXME that should be set from somewhere else
+		if (mappingType.getFromIDType().getTypeName().contains("REFSEQ"))
+			stringConverter = new RefSeqStringConverter();
+	}
+
+	/**
+	 * @param stringConverter
+	 *            setter, see {@link #stringConverter}
+	 */
+	public void setStringConverter(AStringConverter stringConverter) {
+		this.stringConverter = stringConverter;
 	}
 
 	@Override
@@ -55,7 +85,7 @@ public class LookupTableLoader
 
 		int iLineInFile = 0;
 
-		fProgressBarFactor = 100f / iStopParsingAtLine;
+		progressBarFactor = 100f / iStopParsingAtLine;
 
 		while ((sLine = brFile.readLine()) != null && iLineInFile <= iStopParsingAtLine) {
 			/**
@@ -68,22 +98,13 @@ public class LookupTableLoader
 
 				// Expect two Integer values in one row!
 				try {
-					// Check if line consists of just one entity
+					// Check if line consists of just one column
 					if (sLine.length() != 0 && strTokenText.countTokens() == 1) {
 
 						// Special case for creating indexing of dimensions
 						if (mappingType.getToIDType().getTypeName().equals("record_")) {
-
-							// Remove multiple RefSeqs because all point to the
-							// same gene DAVID ID
-							if (sLine.contains(";")) {
-								sLine = sLine.substring(0, sLine.indexOf(";"));
-							}
-
-							// Remove version in RefSeq (NM_*.* -> NM_*)
-							if (sLine.contains(".")) {
-								sLine = sLine.substring(0, sLine.indexOf("."));
-							}
+							if (stringConverter != null)
+								sLine = stringConverter.convert(sLine);
 
 							if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
 								try {
@@ -108,43 +129,34 @@ public class LookupTableLoader
 					else {
 						// Read all tokens
 						while (strTokenText.hasMoreTokens() && bMaintainLoop) {
-							String buffer = strTokenText.nextToken();
+							String token = strTokenText.nextToken();
 
-							// Special case for creating indexing of dimensions
+							// Special case for creating dynamic IDs for rows
 							if (mappingType.getToIDType().isInternalType()) {
 
-								if (mappingType.getFromIDType().getTypeName().contains("REFSEQ")) {
-									// Remove multiple RefSeqs because all point to
-									// the same gene DAVID ID
-									if (buffer.contains(";")) {
-										buffer = sLine.substring(0, sLine.indexOf(";"));
-									}
-
-									// Remove version in RefSeq (NM_*.* -> NM_*)
-									if (buffer.contains(".")) {
-										buffer = buffer.substring(0, buffer.indexOf("."));
-									}
+								if (stringConverter != null) {
+									token = stringConverter.convert(token);
 								}
 
 								// Check for integer values that must be ignored
 								// - in that case no RefSeq is available or the
 								// cell is empty
 								try {
-									Float.valueOf(buffer);
+									Float.valueOf(token);
 									if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
-										idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
+										idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
 											iLineInFile - parsingStartLine);
 									}
 									else if (mappingType.getFromIDType().getTypeName()
 										.contains("UNSPECIFIED")) {
-										idMappingManager.getMap(mappingType).put(buffer,
+										idMappingManager.getMap(mappingType).put(token,
 											iLineInFile - parsingStartLine);
 									}
 								}
 								catch (NumberFormatException e) {
 									// System.out.println(buffer + " " +
 									// (lineInFile - parsingStartLine));
-									idMappingManager.getMap(mappingType).put(buffer,
+									idMappingManager.getMap(mappingType).put(token,
 										iLineInFile - parsingStartLine);
 								}
 
@@ -154,11 +166,11 @@ public class LookupTableLoader
 								try {
 									if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
 										if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
-											idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
+											idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
 												Integer.valueOf(strTokenText.nextToken()));
 										}
 										else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
-											idMappingManager.getMap(mappingType).put(Integer.valueOf(buffer),
+											idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
 												strTokenText.nextToken());
 										}
 										else
@@ -166,11 +178,11 @@ public class LookupTableLoader
 									}
 									else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
 										if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
-											idMappingManager.getMap(mappingType).put(buffer,
+											idMappingManager.getMap(mappingType).put(token,
 												Integer.valueOf(strTokenText.nextToken()));
 										}
 										else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
-											idMappingManager.getMap(mappingType).put(buffer,
+											idMappingManager.getMap(mappingType).put(token,
 												strTokenText.nextToken());
 										}
 										else
@@ -182,7 +194,7 @@ public class LookupTableLoader
 								catch (NumberFormatException nfe) {
 									Logger.log(new Status(Status.ERROR, this.toString(),
 										"Caught NFE: could not parse: " + mappingType, nfe));
-//									throw new IllegalStateException();
+									// throw new IllegalStateException();
 								}
 							}
 
@@ -208,7 +220,7 @@ public class LookupTableLoader
 
 			// Update progress bar only on each 100th line
 			if (iLineInFile % 1000 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (fProgressBarFactor * iLineInFile));
+				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * iLineInFile));
 			}
 		}
 	}

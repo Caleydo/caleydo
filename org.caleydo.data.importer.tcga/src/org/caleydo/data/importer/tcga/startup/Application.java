@@ -45,27 +45,37 @@ public class Application
 	public static String ALEX_TEST_1 = "data/genome/microarray/tcga/cnmf.normalized.gct";
 	public static String ALEX_TEST_1_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
 
-	public static String ALEX_TEST_2 =
-		System.getProperty("user.home") + System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
-	public static String ALEX_TEST_2_GROUPING =
-		System.getProperty("user.home") + System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
+	public static String DROPBOX_GBM_MRNA = System.getProperty("user.home")
+		+ System.getProperty("file.separator")
+		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
+	public static String DROPBOX_GBM_MRNA_GROUPING = System.getProperty("user.home")
+		+ System.getProperty("file.separator")
+		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
+
+	public static String DROPBOX_GBM_MI_RNA = System.getProperty("user.home")
+		+ System.getProperty("file.separator")
+		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mir_cnmf/cnmf.normalized.gct";
+	public static String DROPBOX_GBM_MI_RNA_GROUPING = System.getProperty("user.home")
+		+ System.getProperty("file.separator")
+		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mir_cnmf/cnmf.membership.txt";
 
 	private ATableBasedDataDomain dataDomain;
 
-	public String dataSource = ALEX_TEST_2;
-	public String groupingSource = ALEX_TEST_2_GROUPING;
+	private boolean useQuickClustering = true;
+
+	public String dataSource = DROPBOX_GBM_MRNA;
+	public String groupingSource = DROPBOX_GBM_MRNA_GROUPING;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
 		GeneralManager.get().init();
 
-		convertGctFile(dataSource);
+		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
+		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
 
-		loadClusterInfo(groupingSource);
-
-		PerspectiveInitializationData clusterResult = runClusteringOnRows();
-		createSampleOfGenes(clusterResult);
+		//		loadSources(DROPBOX_GBM_MI_RNA, DROPBOX_GBM_MI_RNA_GROUPING, "org.caleydo.datadomain.generic");
+		
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -78,7 +88,17 @@ public class Application
 	public void stop() {
 	}
 
-	protected void convertGctFile(String fileName) throws FileNotFoundException, IOException {
+	private void loadSources(String dataSource, String groupingSource, String dataDomainType) throws FileNotFoundException,
+		IOException {
+
+		convertGctFile(dataSource, dataDomainType);
+		loadClusterInfo(groupingSource);
+
+		PerspectiveInitializationData clusterResult = runClusteringOnRows();
+		createSampleOfGenes(clusterResult);
+	}
+
+	protected void convertGctFile(String fileName, String dataDomainType) throws FileNotFoundException, IOException {
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -114,7 +134,8 @@ public class Application
 		// loadDataParameters.setMax(max);
 
 		dataDomain =
-			(GeneticDataDomain) DataDomainManager.get().createDataDomain("org.caleydo.datadomain.genetic", false);
+			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType,
+				false);
 		dataDomain.setColumnDimension(false);
 		loadDataParameters.setDataDomain(dataDomain);
 
@@ -134,6 +155,7 @@ public class Application
 		}
 
 		loadDataParameters.setInputPattern(buffer.toString());
+		loadDataParameters.setColumnHeaderStringConverter(new TCGAIDStringConverter());
 		loadDataParameters.setColumnLabels(columnLabels);
 
 		DataTableUtils.createColumns(loadDataParameters);
@@ -170,8 +192,9 @@ public class Application
 			String[] columns = line.split(delimiter);
 
 			// this is specific to the two files used
-			//String originalID = columns[0].replace("-", ".");
-			String originalID = columns[0];
+			TCGAIDStringConverter stringConverter = new TCGAIDStringConverter();
+			String originalID = stringConverter.convert(columns[0]);
+			// String originalID = columns[0];
 
 			Integer mappedID =
 				dataDomain.getRecordIDMappingManager().getID(dataDomain.getHumanReadableRecordIDType(),
@@ -226,10 +249,18 @@ public class Application
 
 	private PerspectiveInitializationData runClusteringOnRows() {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
-		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-		clusterConfiguration.setAffinityPropClusterFactorGenes(9);
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		if (useQuickClustering) {
+			clusterConfiguration.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
+			clusterConfiguration.setkMeansNumberOfClustersForDimensions(5);
+
+		}
+		else {
+			clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+			clusterConfiguration.setAffinityPropClusterFactorGenes(9);
+
+		}
 
 		String recordPerspectiveID = dataDomain.getTable().getRecordPerspectiveIDs().iterator().next();
 		String dimensionPerspectiveID = dataDomain.getTable().getDimensionPerspectiveIDs().iterator().next();

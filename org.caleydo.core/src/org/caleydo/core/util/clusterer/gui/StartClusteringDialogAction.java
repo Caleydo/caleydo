@@ -57,8 +57,8 @@ public class StartClusteringDialogAction
 	private String clusterType;
 	private String distmeasure;
 	private String treeClusterAlgo;
-	private int iClusterCntGenes = 5;
-	private int iClusterCntExperiments = 5;
+	private int nrClustersRecords = 5;
+	private int nrClustersDimensions = 5;
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
 
@@ -482,9 +482,9 @@ public class StartClusteringDialogAction
 			temp = Integer.parseInt(text.getText());
 			if (temp > 0) {
 				if (bGeneFactor == true)
-					iClusterCntGenes = temp;
+					nrClustersRecords = temp;
 				else
-					iClusterCntExperiments = temp;
+					nrClustersDimensions = temp;
 			}
 			else {
 				Shell shell = new Shell();
@@ -560,8 +560,8 @@ public class StartClusteringDialogAction
 
 		clusterState.setAffinityPropClusterFactorGenes(fclusterFactorGenes);
 		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
-		clusterState.setKMeansClusterCntGenes(iClusterCntGenes);
-		clusterState.setKMeansClusterCntExperiments(iClusterCntExperiments);
+		clusterState.setkMeansNumberOfClustersForRecords(nrClustersRecords);
+		clusterState.setkMeansNumberOfClustersForDimensions(nrClustersDimensions);
 
 		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
 			clusterState = othersTab.getClusterState();

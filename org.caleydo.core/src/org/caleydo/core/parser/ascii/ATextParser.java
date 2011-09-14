@@ -15,7 +15,12 @@ import org.eclipse.core.runtime.Status;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public abstract class AbstractLoader {
+public abstract class ATextParser {
+	
+	public static final String SPACE = " ";
+	public static final String SEMICOLON = ";";
+	public static final String TAB = "\t";
+	
 	/**
 	 * File name
 	 */
@@ -24,9 +29,6 @@ public abstract class AbstractLoader {
 	/**
 	 * Defines the number of lines to be read from a file. only useful, if loadData_TestLinesToBeRead() was
 	 * called before reading the file.
-	 * 
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#computeNumberOfLinesInFile(BufferedReader)
-	 * @see org.caleydo.core.parser.ascii.AbstractLoader#loadData_TestLinesToBeRead(String)
 	 */
 	int nrLinesToRead = -1;
 	int nrLinesToReadWithClusterInfo = -1;
@@ -47,7 +49,7 @@ public abstract class AbstractLoader {
 	/**
 	 * Define the separator TAB is the default token.
 	 */
-	protected String tokenSeperator = GeneralManager.sDelimiter_Parser_DataItems_Tab;
+	protected String tokenSeperator = TAB;
 
 	protected int lineInFile = 0;
 
@@ -56,7 +58,7 @@ public abstract class AbstractLoader {
 	/**
 	 * Constructor.
 	 */
-	public AbstractLoader(final String sFileName) {
+	public ATextParser(final String sFileName) {
 		this.fileName = sFileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
 	}
@@ -128,25 +130,7 @@ public abstract class AbstractLoader {
 		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
 	}
 
-	/**
-	 * Get the line the parser starts to read from the file.
-	 * 
-	 * @return first line to be read
-	 */
-	public final int getStartParsingAtLine() {
-
-		return this.parsingStartLine;
-	}
-
-	/**
-	 * Return line to stop parsing.
-	 * 
-	 * @return last line to be parses
-	 */
-	public final int getStopParsingAtLine() {
-
-		return this.iStopParsingAtLine;
-	}
+	
 
 	/**
 	 * Reads the file and counts the numbers of lines to be read.

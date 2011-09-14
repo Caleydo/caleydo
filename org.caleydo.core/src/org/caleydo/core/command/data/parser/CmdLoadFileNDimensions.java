@@ -9,7 +9,8 @@ import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
+import org.caleydo.core.parser.ascii.ATextParser;
+import org.caleydo.core.parser.ascii.TabularDataParser;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.conversion.ConversionTools;
 import org.caleydo.core.util.logging.Logger;
@@ -17,8 +18,8 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Command loads data from file using a token pattern and a target DataTable. Use AMicroArrayLoader to load data
- * table.
+ * Command loads data from file using a token pattern and a target DataTable. Use AMicroArrayLoader to load
+ * data table.
  * 
  * @author Marc Streit
  */
@@ -52,7 +53,7 @@ public class CmdLoadFileNDimensions
 
 		StringTokenizer tokenizer =
 			new StringTokenizer(parameterHandler.getValueString(CommandType.TAG_ATTRIBUTE2.getXmlKey()),
-				GeneralManager.sDelimiter_Parser_DataItems);
+				ATextParser.SEMICOLON);
 
 		dimensionIDs = new ArrayList<Integer>();
 
@@ -99,16 +100,14 @@ public class CmdLoadFileNDimensions
 
 	@Override
 	public void doCommand() {
-		Logger.log(
-			new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Loading data from file "
-				+ loadDataParameters.getFileName() + " using token pattern "
-				+ loadDataParameters.getInputPattern() + ". Data is stored in Dimension with ID "
-				+ dimensionIDs.toString()));
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Loading data from file "
+			+ loadDataParameters.getFileName() + " using token pattern "
+			+ loadDataParameters.getInputPattern() + ". Data is stored in Dimension with ID "
+			+ dimensionIDs.toString()));
 
-		TabularAsciiDataReader loader =
-			new TabularAsciiDataReader(loadDataParameters.getFileName(), dataDomain);
+		TabularDataParser loader = new TabularDataParser(loadDataParameters.getFileName(), dataDomain);
 		loader.setTokenPattern(loadDataParameters.getInputPattern());
-		loader.setTargetDimensions(dimensionIDs);
+		loader.setTargetColumns(dimensionIDs);
 		loader.setStartParsingStopParsingAtLine(loadDataParameters.getStartParseFileAtLine(),
 			loadDataParameters.getStopParseFileAtLine());
 

@@ -135,11 +135,12 @@ public class ProjectLoader {
 
 		for (ADataDomain dataDomain : dataDomainList.getDataDomains()) {
 
+			dataDomain.init();
 			// Register data domain by hand because it restored from the serialization and not created via the
 			// DataDomainManager
 			DataDomainManager.get().register(dataDomain);
 			// DataDomainManager usually takes care of that, we need to do it manually for serialization
-			dataDomain.init();
+			
 
 			Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 			thread.start();

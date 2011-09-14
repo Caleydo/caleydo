@@ -12,8 +12,8 @@ import java.util.Map;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateColumn;
 import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileLookupTable;
 import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
+import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
@@ -28,7 +28,8 @@ import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.TabularAsciiDataReader;
+import org.caleydo.core.parser.ascii.AStringConverter;
+import org.caleydo.core.parser.ascii.TabularDataParser;
 
 /**
  * Utility class that features creating, loading and saving sets and dimensions.
@@ -148,7 +149,7 @@ public class DataTableUtils {
 			createColumnsFromExistingIDs = true;
 		}
 
-		TabularAsciiDataReader reader = new TabularAsciiDataReader(null, loadDataParameters.getDataDomain());
+		TabularDataParser reader = new TabularDataParser(null, loadDataParameters.getDataDomain());
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
 		ArrayList<EColumnType> dataTypes = reader.getColumnDataTypes();
 
@@ -158,6 +159,8 @@ public class DataTableUtils {
 		String columnLabel;
 
 		ATableBasedDataDomain dataDomain = loadDataParameters.getDataDomain();
+
+		AStringConverter columnHeaderStringConverter = loadDataParameters.getColumnHeaderStringConverter();
 
 		IDMappingManager columnIDMappingManager;
 		IDType columnIDType;
@@ -171,7 +174,6 @@ public class DataTableUtils {
 			columnIDMappingManager = dataDomain.getRecordIDMappingManager();
 			columnIDType = dataDomain.getRecordIDType();
 			hrColumnIDType = dataDomain.getHumanReadableRecordIDType();
-
 		}
 
 		MappingType mappingType = columnIDMappingManager.createMap(columnIDType, hrColumnIDType, false);
@@ -194,6 +196,9 @@ public class DataTableUtils {
 
 					cmdCreateColumn.doCommand();
 					columnLabel = columnLabelIterator.next();
+					if (columnHeaderStringConverter != null)
+						columnLabel = columnHeaderStringConverter.convert(columnLabel);
+					
 					NumericalColumn column = (NumericalColumn) cmdCreateColumn.getCreatedObject();
 					column.setLabel(columnLabel);
 					dimensionIDMap.put(column.getID(), columnLabel);
@@ -246,6 +251,11 @@ public class DataTableUtils {
 	 * Creates the set from a previously prepared dimension definition.
 	 */
 	public static DataTable createData(ATableBasedDataDomain dataDomain, boolean createDefaultPerspectives) {
+		return createData(dataDomain, createDefaultPerspectives, null);
+	}
+
+	public static DataTable createData(ATableBasedDataDomain dataDomain, boolean createDefaultPerspectives,
+		AStringConverter stringConverter) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> dimensionIDs = loadDataParameters.getColumnIds();
@@ -259,9 +269,9 @@ public class DataTableUtils {
 		cmdCreateSet.doCommand();
 
 		// Load dynamic mapping
-		CmdLoadFileLookupTable cmdLoadLookupTableFile =
-			(CmdLoadFileLookupTable) GeneralManager.get().getCommandManager()
-				.createCommandByType(CommandType.LOAD_LOOKUP_TABLE_FILE);
+		CmdParseIDMapping cmdParseIDMapping =
+			(CmdParseIDMapping) GeneralManager.get().getCommandManager()
+				.createCommandByType(CommandType.PARSE_ID_MAPPING);
 
 		IDType rowIDType;
 		if (dataDomain.isColumnDimension())
@@ -271,11 +281,12 @@ public class DataTableUtils {
 
 		String lookupTableInfo = loadDataParameters.getFileIDTypeName() + "_2_" + rowIDType + " REVERSE";
 
-		cmdLoadLookupTableFile.setAttributes(loadDataParameters.getFileName(),
+		cmdParseIDMapping.setAttributes(loadDataParameters.getFileName(),
 			loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
 			loadDataParameters.getDelimiter(), "", rowIDType.getIDCategory());
+		cmdParseIDMapping.setStringConverter(stringConverter);
 
-		cmdLoadLookupTableFile.doCommand();
+		cmdParseIDMapping.doCommand();
 
 		// --------- data loading ---------------
 

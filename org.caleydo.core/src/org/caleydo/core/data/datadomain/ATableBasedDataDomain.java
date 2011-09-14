@@ -193,12 +193,12 @@ public abstract class ATableBasedDataDomain
 
 		// table.setDataDomain(this);
 
-		DataTable oldSet = this.table;
+		DataTable oldTable = this.table;
 		this.table = table;
 
-		if (oldSet != null) {
-			oldSet.destroy();
-			oldSet = null;
+		if (oldTable != null) {
+			oldTable.destroy();
+			oldTable = null;
 		}
 
 		recordPerspectiveIDs = table.getRecordPerspectiveIDs();

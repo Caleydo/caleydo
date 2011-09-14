@@ -31,13 +31,12 @@ import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
 @XmlType
 public class ClusterConfiguration {
 
-	
 	private EClustererAlgo clustererAlgo;
 	private ClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
 	private ETreeClustererAlgo treeClustererAlgo;
-	private int kMeansClusterCntGenes;
-	private int kMeansClusterCntExperiments;
+	private int kMeansNumberOfClustersForRecords;
+	private int kMeansNumberOfClustersForDimensions;
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 
@@ -68,7 +67,6 @@ public class ClusterConfiguration {
 		this.setDistanceMeasure(dist);
 	}
 
-	
 	/**
 	 * @param recordPerspective
 	 *            setter, see {@link #sourceRecordPerspective}
@@ -163,20 +161,34 @@ public class ClusterConfiguration {
 		return distanceMeasure;
 	}
 
-	public void setKMeansClusterCntGenes(int iKMeansClusterCntGenes) {
-		this.kMeansClusterCntGenes = iKMeansClusterCntGenes;
+	/**
+	 * @param kMeansNumberOfClustersForRecords
+	 *            setter, see {@link #kMeansNumberOfClustersForRecords}
+	 */
+	public void setkMeansNumberOfClustersForRecords(int kMeansNumberOfClustersForRecords) {
+		this.kMeansNumberOfClustersForRecords = kMeansNumberOfClustersForRecords;
 	}
 
-	public int getKMeansClusterCntGenes() {
-		return kMeansClusterCntGenes;
+	/**
+	 * @return the kMeansNumberOfClustersForRecords, see {@link #kMeansNumberOfClustersForRecords}
+	 */
+	public int getkMeansNumberOfClustersForRecords() {
+		return kMeansNumberOfClustersForRecords;
 	}
 
-	public void setKMeansClusterCntExperiments(int iKMeansClusterCntExperiments) {
-		this.kMeansClusterCntExperiments = iKMeansClusterCntExperiments;
+	/**
+	 * @param kMeansNumberOfClustersForDimensions
+	 *            setter, see {@link #kMeansNumberOfClustersForDimensions}
+	 */
+	public void setkMeansNumberOfClustersForDimensions(int kMeansNumberOfClustersForDimensions) {
+		this.kMeansNumberOfClustersForDimensions = kMeansNumberOfClustersForDimensions;
 	}
 
-	public int getKMeansClusterCntExperiments() {
-		return kMeansClusterCntExperiments;
+	/**
+	 * @return the kMeansNumberOfClustersForDimensions, see {@link #kMeansNumberOfClustersForDimensions}
+	 */
+	public int getkMeansNumberOfClustersForDimensions() {
+		return kMeansNumberOfClustersForDimensions;
 	}
 
 	public void setAffinityPropClusterFactorGenes(float fAffinityPropClusterFactorGenes) {

@@ -5,8 +5,6 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
@@ -14,7 +12,9 @@ import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.specialized.Organism;
-import org.caleydo.core.parser.ascii.LookupTableLoader;
+import org.caleydo.core.parser.ascii.AStringConverter;
+import org.caleydo.core.parser.ascii.ATextParser;
+import org.caleydo.core.parser.ascii.IDMappingParser;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.conversion.ConversionTools;
 
@@ -24,7 +24,7 @@ import org.caleydo.core.util.conversion.ConversionTools;
  * @author Michael Kalkusch
  * @author Marc Streit
  */
-public class CmdLoadFileLookupTable
+public class CmdParseIDMapping
 	extends ACmdExternalAttributes {
 
 	protected String fileName;
@@ -47,7 +47,7 @@ public class CmdLoadFileLookupTable
 	 * 
 	 * @see org.caleydo.core.data.mapping.EIDType
 	 */
-	private String sLookupTableDelimiter;
+	private String delimiter;
 
 	private int startParsingInLine = 0;
 
@@ -74,6 +74,8 @@ public class CmdLoadFileLookupTable
 
 	private boolean isMultiMap;
 
+	private AStringConverter stringConverter;
+
 	// private ATableBasedDataDomain dataDomain;
 
 	/**
@@ -81,8 +83,8 @@ public class CmdLoadFileLookupTable
 	 * 
 	 * @param cmdType
 	 */
-	public CmdLoadFileLookupTable() {
-		super(CommandType.LOAD_LOOKUP_TABLE_FILE);
+	public CmdParseIDMapping() {
+		super(CommandType.PARSE_ID_MAPPING);
 	}
 
 	@Override
@@ -92,7 +94,7 @@ public class CmdLoadFileLookupTable
 
 		fileName = detail;
 		sLookupTableInfo = attrib1;
-		sLookupTableDelimiter = attrib2;
+		delimiter = attrib2;
 
 		if (attrib3 != null) {
 			int[] iArrayStartStop = ConversionTools.convertStringToIntArray(attrib3, " ");
@@ -112,24 +114,31 @@ public class CmdLoadFileLookupTable
 		extractParameters();
 	}
 
-	public void setAttributes(final String sFileName, final int startParsingInLine,
-		final int stopParsingInLine, final String sLookupTableInfo, final String sLookupTableDelimiter,
+	public void setAttributes(final String fileName, final int startParsingInLine,
+		final int stopParsingInLine, final String sLookupTableInfo, final String delimiter,
 		final String sCodeResolvingLUTTypes, final IDCategory idCategory) {
 
 		this.startParsingInLine = startParsingInLine;
 		this.stopParsingInLine = stopParsingInLine;
 		this.sLookupTableInfo = sLookupTableInfo;
-		this.sLookupTableDelimiter = sLookupTableDelimiter;
+		this.delimiter = delimiter;
 		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
-		this.fileName = sFileName;
+		this.fileName = fileName;
 		this.idCategory = idCategory;
 		extractParameters();
 	}
 
+	/**
+	 * @param stringConverter
+	 *            setter, see {@link #stringConverter}
+	 */
+	public void setStringConverter(AStringConverter stringConverter) {
+		this.stringConverter = stringConverter;
+	}
+
 	private void extractParameters() {
 
-		StringTokenizer tokenizer =
-			new StringTokenizer(sLookupTableInfo, GeneralManager.sDelimiter_Parser_DataItems);
+		StringTokenizer tokenizer = new StringTokenizer(sLookupTableInfo, ATextParser.SPACE);
 
 		String mappingTypeString = tokenizer.nextToken();
 		fromIDType = IDType.getIDType(mappingTypeString.substring(0, mappingTypeString.indexOf("_2_")));
@@ -144,8 +153,7 @@ public class CmdLoadFileLookupTable
 				bCreateReverseMap = true;
 			}
 			else if (sLookupTableOptions.equals("LUT")) {
-				tokenizer =
-					new StringTokenizer(sCodeResolvingLUTTypes, GeneralManager.sDelimiter_Parser_DataItems);
+				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes, ATextParser.SPACE);
 
 				sCodeResolvingLUTMappingType = tokenizer.nextToken();
 
@@ -161,7 +169,7 @@ public class CmdLoadFileLookupTable
 	 */
 	@Override
 	public void doCommand() {
-		LookupTableLoader loader = null;
+		IDMappingParser idMappingParser = null;
 
 		if (fileName.contains("ORGANISM")) {
 			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
@@ -174,10 +182,10 @@ public class CmdLoadFileLookupTable
 
 		// Remove old lookuptable if it already exists
 		// genomeIdManager.removeMapByType(EMappingType.valueOf(sLookupTableType));
-		if(idCategory == null)
+		if (idCategory == null)
 			throw new IllegalStateException("ID Category was null");
-		IDMappingManager genomeIdManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
-		MappingType mappingType = genomeIdManager.createMap(fromIDType, toIDType, isMultiMap);
+		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
+		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType, isMultiMap);
 
 		if (bResolveCodeMappingUsingCodeToId_LUT) {
 
@@ -188,29 +196,31 @@ public class CmdLoadFileLookupTable
 				IDType.getIDType(sCodeResolvingLUTMappingType.substring(
 					sCodeResolvingLUTMappingType.indexOf("_2_") + 3, sCodeResolvingLUTMappingType.length()));
 
-			genomeIdManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
+			idMappingManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
 		}
 
 		int index = 0;
 		if (fileName.equals("generate")) {
 
-			Map<String, Integer> hashTmp = genomeIdManager.getMap(mappingType);
-			for (Object refSeqIDObject : genomeIdManager.getMap(
-				genomeIdManager.getMappingType("DAVID_2_REFSEQ_MRNA")).values()) {
+			Map<String, Integer> hashTmp = idMappingManager.getMap(mappingType);
+			for (Object refSeqIDObject : idMappingManager.getMap(
+				idMappingManager.getMappingType("DAVID_2_REFSEQ_MRNA")).values()) {
 
 				hashTmp.put((String) refSeqIDObject, index++);
 			}
 		}
 		else if (!fileName.equals("already_loaded")) {
-			loader = new LookupTableLoader(idCategory, fileName, mappingType);
-			loader.setTokenSeperator(sLookupTableDelimiter);
-			loader.setStartParsingStopParsingAtLine(startParsingInLine, stopParsingInLine);
-			loader.loadData();
+			idMappingParser = new IDMappingParser(idCategory, fileName, mappingType);
+			idMappingParser.setStringConverter(stringConverter);
+			idMappingParser.setTokenSeperator(delimiter);
+			idMappingParser.setStartParsingStopParsingAtLine(startParsingInLine, stopParsingInLine);
+			idMappingParser.loadData();
+
 		}
 
 		/* --- create reverse Map ... --- */
 		if (bCreateReverseMap) {
-			genomeIdManager.createReverseMap(mappingType);
+			idMappingManager.createReverseMap(mappingType);
 		}
 	}
 

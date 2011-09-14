@@ -21,8 +21,8 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class TabularAsciiDataReader
-	extends AbstractLoader {
+public class TabularDataParser
+	extends ATextParser {
 
 	/**
 	 * Imports data from file to this table. uses first dimension and overwrites first selection.
@@ -46,7 +46,7 @@ public class TabularAsciiDataReader
 	/**
 	 * Constructor.
 	 */
-	public TabularAsciiDataReader(final String sFileName, ATableBasedDataDomain dataDomain) {
+	public TabularDataParser(final String sFileName, ATableBasedDataDomain dataDomain) {
 		super(sFileName);
 
 		this.dataDomain = dataDomain;
@@ -69,10 +69,10 @@ public class TabularAsciiDataReader
 
 		StringTokenizer tokenizer = new StringTokenizer(tokenPattern);
 
-		final String sTokenPatternParserSeperator = GeneralManager.sDelimiter_Parser_DataType;
+		final String delimiter = SEMICOLON;
 
 		while (tokenizer.hasMoreTokens()) {
-			String buffer = tokenizer.nextToken(sTokenPatternParserSeperator);
+			String buffer = tokenizer.nextToken(delimiter);
 
 			if (buffer.equalsIgnoreCase("abort")) {
 				columnDataTypes.add(EColumnType.ABORT);
@@ -106,7 +106,7 @@ public class TabularAsciiDataReader
 		return areAllTokensProper;
 	}
 
-	public void setTargetDimensions(final ArrayList<Integer> targetDimensionIDs) {
+	public void setTargetColumns(final ArrayList<Integer> targetDimensionIDs) {
 		for (int dimensionID : targetDimensionIDs) {
 			targetDimensions.add(GeneralManager.get().getColumnManager().getItem(dimensionID));
 		}
