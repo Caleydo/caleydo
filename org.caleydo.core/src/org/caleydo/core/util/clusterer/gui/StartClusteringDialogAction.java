@@ -62,7 +62,7 @@ public class StartClusteringDialogAction
 	private float fclusterFactorGenes = 1f;
 	private float fclusterFactorExperiments = 1f;
 
-	private String[] sArTypeOptions = { "DETERMINED_DEPENDING_ON_USE_CASE", "Experiment", "Both dimensions" };
+	private String[] typeOptions = { "DYNAMIC_RECORD", "DYNAMIC_EXPERIMENT", "Both dimensions" };
 	private String[] sArDistOptions = { "Euclidean distance", "Manhattan distance", "Chebyshev distance",
 			"Pearson correlation" };
 	private String[] sArDistOptionsWeka = { "Euclidean distance", "Manhattan distance" };// ,"Chebyshev distance"};
@@ -96,7 +96,8 @@ public class StartClusteringDialogAction
 
 		this.parentComposite = parentComposite;
 		this.dataDomain = dataDomain;
-		sArTypeOptions[0] = dataDomain.getRecordName(true, false);
+		typeOptions[0] = dataDomain.getRecordDenomination(true, false);
+		typeOptions[1] = dataDomain.getDimensionDenomination(true, false);
 	}
 
 	/**
@@ -223,10 +224,10 @@ public class StartClusteringDialogAction
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
 
 		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(sArTypeOptions);
+		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.setEnabled(true);
 		clusterTypeCombo.select(0);
-		clusterType = sArTypeOptions[0];
+		clusterType = typeOptions[0];
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -248,9 +249,9 @@ public class StartClusteringDialogAction
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
 
 		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(sArTypeOptions);
+		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.select(0);
-		clusterType = sArTypeOptions[0];
+		clusterType = typeOptions[0];
 
 		ModifyListener listenerIntGenes = new ModifyListener() {
 			@Override
@@ -308,11 +309,11 @@ public class StartClusteringDialogAction
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clusterType = clusterTypeCombo.getText();
-				if (clusterType.equals(sArTypeOptions[0])) {
+				if (clusterType.equals(typeOptions[0])) {
 					clusterCntGenes.setEnabled(true);
 					clusterCntExperiments.setEnabled(false);
 				}
-				else if (clusterType.equals(sArTypeOptions[1])) {
+				else if (clusterType.equals(typeOptions[1])) {
 					clusterCntGenes.setEnabled(false);
 					clusterCntExperiments.setEnabled(true);
 				}
@@ -338,9 +339,9 @@ public class StartClusteringDialogAction
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
 
 		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(sArTypeOptions);
+		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.select(0);
-		clusterType = sArTypeOptions[0];
+		clusterType = typeOptions[0];
 
 		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		distanceMeasureGroup.setText("Distance measure:");
@@ -399,11 +400,11 @@ public class StartClusteringDialogAction
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				clusterType = clusterTypeCombo.getText();
-				if (clusterType.equals(sArTypeOptions[0])) {
+				if (clusterType.equals(typeOptions[0])) {
 					clusterFactorGenes.setEnabled(true);
 					clusterFactorExperiments.setEnabled(false);
 				}
-				else if (clusterType.equals(sArTypeOptions[1])) {
+				else if (clusterType.equals(typeOptions[1])) {
 					clusterFactorGenes.setEnabled(false);
 					clusterFactorExperiments.setEnabled(true);
 				}
@@ -433,9 +434,9 @@ public class StartClusteringDialogAction
 		clusterComposite.setLayout(new RowLayout());
 
 		final Combo clusterTypeCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(sArTypeOptions);
+		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.select(0);
-		clusterType = sArTypeOptions[0];
+		clusterType = typeOptions[0];
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -535,11 +536,11 @@ public class StartClusteringDialogAction
 			return;
 		}
 
-		if (clusterType.equals(sArTypeOptions[0]))
+		if (clusterType.equals(typeOptions[0]))
 			clusterState.setClustererType(ClustererType.RECORD_CLUSTERING);
-		else if (clusterType.equals(sArTypeOptions[1]))
+		else if (clusterType.equals(typeOptions[1]))
 			clusterState.setClustererType(ClustererType.DIMENSION_CLUSTERING);
-		else if (clusterType.equals(sArTypeOptions[2]))
+		else if (clusterType.equals(typeOptions[2]))
 			clusterState.setClustererType(ClustererType.BI_CLUSTERING);
 
 		if (distmeasure.equals(sArDistOptions[0]))

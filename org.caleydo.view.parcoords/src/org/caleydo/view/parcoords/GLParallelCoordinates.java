@@ -1763,13 +1763,12 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			// y =table.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
 			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
-			
 
 		} else {
-			
+
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
 			y = table.getFloat(DataRepresentation.NORMALIZED, dimensionVA.get(0), id);
-		
+
 			// // get the value on the leftmost axis
 			// fYValue =
 			// table.get(dimensionVA.get(0)).getFloat(EDataRepresentation.NORMALIZED,
@@ -1793,13 +1792,15 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		int numLines = recordVA.size();
 		if (displayEveryNthPolyline == 1) {
 			message = "Parallel Coordinates - " + numLines + " "
-					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
-					+ " experiments";
+					+ dataDomain.getRecordDenomination(false, true) + " / "
+					+ dimensionVA.size() + " "
+					+ dataDomain.getDimensionDenomination(false, true);
 		} else {
 			message = "Parallel Coordinates showing a sample of " + numLines
 					/ displayEveryNthPolyline + " out of " + numLines + " "
-					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
-					+ " experiments";
+					+ dataDomain.getRecordDenomination(false, true) + " / "
+					+ dimensionVA.size() + " "
+					+ dataDomain.getDimensionDenomination(false, true);
 		}
 		return message;
 
@@ -1809,8 +1810,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	public String getDetailedInfo() {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Parallel Coordinates\n");
-		sInfoText.append(recordVA.size() + dataDomain.getRecordName(false, true)
-				+ " as polylines and " + dimensionVA.size() + " experiments as axis.\n");
+		sInfoText.append(recordVA.size() + dataDomain.getRecordDenomination(false, true)
+				+ " as polylines and " + dimensionVA.size() + " "
+				+ dataDomain.getDimensionDenomination(false, true) + " as axis.\n");
 
 		if (bUseRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
@@ -1820,10 +1822,13 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		}
 
 		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-			sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
-					+ " in the dataset\n");
+			sInfoText
+					.append("Showing all "
+							+ dataDomain.getRecordDenomination(false, true)
+							+ " in the dataset\n");
 		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-			sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
+			sInfoText.append("Showing all "
+					+ dataDomain.getRecordDenomination(false, true)
 					+ " that have a known DAVID ID mapping\n");
 		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 			sInfoText
@@ -2296,8 +2301,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			int dimensionCounter = 0;
 			for (Integer dimensionID : dimensionVA) {
 				float xValue = 0.2f * dimensionCounter++;
-			
-				float yValue = table.getFloat(DataRepresentation.NORMALIZED, dimensionID, index);
+
+				float yValue = table.getFloat(DataRepresentation.NORMALIZED, dimensionID,
+						index);
 				vertices[vertexCounter++] = xValue;
 				vertices[vertexCounter++] = yValue;
 			}
@@ -2447,7 +2453,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			return 80;
 		case LOW:
 			return 80;
-//			return Math.max(150, 30 * dimensionVA.size());
+			// return Math.max(150, 30 * dimensionVA.size());
 		default:
 			return 80;
 		}

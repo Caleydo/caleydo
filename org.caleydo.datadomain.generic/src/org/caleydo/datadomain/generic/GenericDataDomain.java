@@ -8,12 +8,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -42,8 +36,8 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
-		contentLabelSingular = "entity";
-		recordLabelPlural = "entities";
+		recordDenominationSingular = "entity";
+		recordDenominationPlural = "entities";
 	}
 
 	@Override
@@ -73,26 +67,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	protected void initIDMappings() {
 
 	}
-
-	@Override
-	public void handleRecordVADelta(RecordVADelta vaDelta, String info) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-			PerspectiveInitializationData data) {
-
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	protected void assignIDCategories() {
@@ -110,7 +85,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		primaryDimensionMappingType = dimensionIDType;
 		humanReadableDimensionIDType = dimensionIDType;
 
-		contentLabelSingular = "generics";
-		recordLabelPlural = "generic";
+		recordDenominationSingular = "generics";
+		recordDenominationPlural = "generic";
 	}
 }

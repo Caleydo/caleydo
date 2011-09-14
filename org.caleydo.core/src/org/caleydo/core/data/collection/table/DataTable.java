@@ -284,7 +284,7 @@ public class DataTable
 	}
 
 	/**
-	 * @return Returns a list of all dimension ids in the order they were initialized
+	 * @return Returns a clone of a list of all dimension ids in the order they were initialized.
 	 */
 	@SuppressWarnings("unchecked")
 	public List<Integer> getColumnIDList() {
@@ -292,7 +292,7 @@ public class DataTable
 	}
 
 	/**
-	 * @return Returns a list of all record ids in the order they were initialized
+	 * @return Returns a new list of all record ids in the order they were initialized
 	 */
 	public List<Integer> getRowIDList() {
 		ArrayList<Integer> list = new ArrayList<Integer>(metaData.depth);

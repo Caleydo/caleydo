@@ -27,11 +27,6 @@ public abstract class ADataDomain
 	extends AEventHandler
 	implements IDataDomain {
 
-	protected String contentLabelSingular = "<not specified>";
-	protected String recordLabelPlural = "<not specified>";
-
-	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
-
 	protected String dataDomainType;
 
 	@XmlTransient
@@ -51,7 +46,7 @@ public abstract class ADataDomain
 
 	/** bootstrap filename this application was started with */
 	protected String fileName;
-	
+
 	protected Color color;
 
 	/**
@@ -109,30 +104,6 @@ public abstract class ADataDomain
 	@Override
 	public EIconTextures getIcon() {
 		return icon;
-	}
-
-	public String getContentLabelSingular() {
-		return contentLabelSingular;
-	}
-
-	public void setContentLabelSingular(String contentLabelSingular) {
-		this.contentLabelSingular = contentLabelSingular;
-	}
-
-	public String getContentLabelPlural() {
-		return recordLabelPlural;
-	}
-
-	public void setContentLabelPlural(String contentLabelPlural) {
-		this.recordLabelPlural = contentLabelPlural;
-	}
-
-	public EDataFilterLevel getDataFilterLevel() {
-		return dataFilterLevel;
-	}
-
-	public void setDataFilterLevel(EDataFilterLevel dataFilterLevel) {
-		this.dataFilterLevel = dataFilterLevel;
 	}
 
 	@Override

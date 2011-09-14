@@ -73,18 +73,26 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 			primaryDimensionMappingType = IDType.getIDType("DIMENSION");
 			humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
+
+			recordDenominationSingular = "gene";
+			recordDenominationPlural = "genes";
+
+			dimensionDenominationSingular = "sample";
+			dimensionDenominationPlural = "samples";
 		} else {
 			primaryRecordMappingType = IDType.getIDType("DIMENSION");
 			humanReadableRecordIDType = IDType.getIDType("DIMENSION");
 
 			primaryDimensionMappingType = IDType.getIDType("DAVID");
 			humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
+
+			recordDenominationSingular = "sample";
+			recordDenominationPlural = "samples";
+
+			dimensionDenominationSingular = "gene";
+			dimensionDenominationPlural = "genes";
 		}
 		pathwayViewerMode = false;
-		contentLabelSingular = "gene";
-		recordLabelPlural = "genes";
-
-		// Load IDs needed in this datadomain
 
 	}
 
@@ -348,27 +356,27 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		}
 	}
 
-	@Override
-	public String getRecordLabel(IDType idType, Object id) {
-		return super.getRecordLabel(idType, id);
-		// String geneSymbol = null;
-		//
-		// Set<String> setGeneSymbols =
-		// getGeneIDMappingManager().getIDAsSet(idType,
-		// humanReadableRecordIDType, id);
-		//
-		// if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
-		// geneSymbol = (String) setGeneSymbols.toArray()[0];
-		// }
-		//
-		// if (geneSymbol != null)
-		// return geneSymbol;// + " | " + refSeq;
-		// // else if (refSeq != null)
-		// // return refSeq;
-		// else
-		// return "No mapping";
-
-	}
+	// @Override
+	// public String getRecordLabel(IDType idType, Object id) {
+	// return super.getRecordLabel(idType, id);
+	// // String geneSymbol = null;
+	// //
+	// // Set<String> setGeneSymbols =
+	// // getGeneIDMappingManager().getIDAsSet(idType,
+	// // humanReadableRecordIDType, id);
+	// //
+	// // if ((setGeneSymbols != null && !setGeneSymbols.isEmpty())) {
+	// // geneSymbol = (String) setGeneSymbols.toArray()[0];
+	// // }
+	// //
+	// // if (geneSymbol != null)
+	// // return geneSymbol;// + " | " + refSeq;
+	// // // else if (refSeq != null)
+	// // // return refSeq;
+	// // else
+	// // return "No mapping";
+	//
+	// }
 
 	public IDMappingManager getGeneIDMappingManager() {
 		if (isColumnDimension)

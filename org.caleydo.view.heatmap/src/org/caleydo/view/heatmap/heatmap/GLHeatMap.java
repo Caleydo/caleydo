@@ -276,9 +276,10 @@ public class GLHeatMap extends ATableBasedView {
 
 		if (recordVA == null)
 			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
-		
+
 		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
+					.getVirtualArray();
 
 		// FIXME: do we need to do this here?
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
@@ -290,12 +291,13 @@ public class GLHeatMap extends ATableBasedView {
 	public String getShortInfo() {
 
 		if (recordVA == null)
-			return "Heat Map - 0 " + dataDomain.getRecordName(false, true)
-					+ " / 0 experiments";
+			return "Heat Map - 0 " + dataDomain.getRecordDenomination(false, true)
+					+ " / 0 " + dataDomain.getDimensionDenomination(false, true);
 
 		return "Heat Map - " + recordVA.size() + " "
-				+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
-				+ " experiments";
+				+ dataDomain.getRecordDenomination(false, true) + " / "
+				+ dimensionVA.size() + " "
+				+ dataDomain.getDimensionDenomination(false, true);
 	}
 
 	@Override
@@ -304,8 +306,10 @@ public class GLHeatMap extends ATableBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Heat Map\n");
 
-		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
-				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
+		sInfoText.append(recordVA.size() + " "
+				+ dataDomain.getRecordDenomination(true, true) + " in rows and "
+				+ dimensionVA.size() + " "
+				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
 
 		if (bUseRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
@@ -620,8 +624,8 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 		super.handleRecordVAUpdate(recordPerspectiveID);
-//		if (table.getID() != dataTableID)
-//			return;
+		// if (table.getID() != dataTableID)
+		// return;
 
 		// FIXME clustering for context heat map
 		// if (delta.getVAType().equals(DataTable.RECORD_CONTEXT)
@@ -852,7 +856,8 @@ public class GLHeatMap extends ATableBasedView {
 		// .log(recordVA.size()));
 		// }
 
-//		RecordVirtualArray setRecordVA = table.getRecordData(recordPerspectiveID).getVA();
+		// RecordVirtualArray setRecordVA =
+		// table.getRecordData(recordPerspectiveID).getVA();
 		int numBricks = 1;
 		if (recordVA.getGroupList() != null) {
 			numBricks += recordVA.getGroupList().size();
@@ -881,12 +886,12 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public int getMinPixelWidth(DetailLevel detailLevel) {
 		switch (detailLevel) {
-//		case HIGH:
-//			return Math.max(150, 16 * table.getMetaData().size());
-//		case MEDIUM:
-//			return Math.max(150, 16 * table.getMetaData().size());
-//		case LOW:
-//			return Math.max(150, 16 * table.getMetaData().size());
+		// case HIGH:
+		// return Math.max(150, 16 * table.getMetaData().size());
+		// case MEDIUM:
+		// return Math.max(150, 16 * table.getMetaData().size());
+		// case LOW:
+		// return Math.max(150, 16 * table.getMetaData().size());
 		default:
 			return 100;
 		}

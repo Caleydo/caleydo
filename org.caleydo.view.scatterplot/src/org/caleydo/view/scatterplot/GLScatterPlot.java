@@ -2896,7 +2896,7 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	public String getShortInfo() {
 		if (recordVA == null)
-			return "Scatterplot - 0 " + dataDomain.getRecordName(false, true)
+			return "Scatterplot - 0 " + dataDomain.getRecordDenomination(false, true)
 					+ " / 0 experiments";
 
 		// return "Scatterplot - " + recordVA.size() + " "
@@ -2908,12 +2908,14 @@ public class GLScatterPlot extends ATableBasedView {
 
 		if (iDisplayEveryNthPoint == 1) {
 			tmpstring = "Scatterplot - " + iPointNr + " "
-					+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
-					+ " experiments";
+					+ dataDomain.getRecordDenomination(false, true) + " / "
+					+ dimensionVA.size() + " "
+					+ dataDomain.getDimensionDenomination(false, true);
 		} else {
 			tmpstring = "Scatterplot - " + iPointNr / iDisplayEveryNthPoint + " out of "
-					+ iPointNr + " " + dataDomain.getRecordName(false, true) + " / \n "
-					+ dimensionVA.size() + " experiments";
+					+ iPointNr + " " + dataDomain.getRecordDenomination(false, true)
+					+ " / \n " + dimensionVA.size() + " "
+					+ dataDomain.getDimensionDenomination(false, true);
 		}
 		return tmpstring;
 	}
@@ -2923,8 +2925,10 @@ public class GLScatterPlot extends ATableBasedView {
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Scatter Plot\n");
 
-		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
-				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
+		sInfoText.append(recordVA.size() + " "
+				+ dataDomain.getRecordDenomination(true, true) + " in rows and "
+				+ dimensionVA.size() + " "
+				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
 
 		if (bUseRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "

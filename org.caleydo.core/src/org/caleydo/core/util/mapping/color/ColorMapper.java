@@ -30,7 +30,7 @@ public class ColorMapper {
 	public static final int COLOR_DEPTH = 256;
 
 	/**
-	 * Default no-arg constructor, especially needed for xml-serialization.
+	 * Default no-arg constructor, needed for serialization.
 	 */
 	public ColorMapper() {
 
@@ -43,7 +43,7 @@ public class ColorMapper {
 	 * points the colors are interpolated.
 	 * </p>
 	 * <p>
-	 * Additionally the color marker points have spreads - which signal an area of constant color. For example
+	 * Additionally the color marker points have spreads - which define an area of constant color. For example
 	 * if a marker point has a value of 0.5 and a left spread of 0.1 and a right spread of 0.2 then the region
 	 * between 0.4 and 0.7 is in the constant color of the marker point. Only at the end of the spreads the
 	 * interpolation to the next color begins.

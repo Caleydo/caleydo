@@ -9,8 +9,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.filter.DimensionFilterManager;
-import org.caleydo.core.data.filter.RecordFilterManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
@@ -41,7 +39,6 @@ import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveList
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.EventPublisher;
 import org.caleydo.core.manager.event.data.StartClusteringEvent;
@@ -67,24 +64,29 @@ public abstract class ATableBasedDataDomain
 
 	protected boolean isColumnDimension = true;
 
-	private SelectionUpdateListener selectionUpdateListener;
-	private SelectionCommandListener selectionCommandListener;
-	private StartClusteringListener startClusteringListener;
-
-	private ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener;
-	private DimensionVADeltaListener dimensionVADeltaListener;
-	private ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener;
-	private RecordVADeltaListener recordVADeltaListener;
-
-	private AggregateGroupListener aggregateGroupListener;
-
 	/** The set which is currently loaded and used inside the views for this use case. */
 	protected DataTable table;
 
+	protected String recordDenominationSingular = "<not specified>";
+	protected String recordDenominationPlural = "<not specified>";
+
+	protected String dimensionDenominationSingular = "<not specified>";
+	protected String dimensionDenominationPlural = "<not specified>";
+
+	/**
+	 * The id type that should be used if an entity of this data domain should be printed human readable for
+	 * records
+	 */
 	protected IDType humanReadableRecordIDType;
+	/** Same as {@link #humanReadableRecordIDType} for dimensions */
 	protected IDType humanReadableDimensionIDType;
 
+	/**
+	 * The primary mapping type of the record. This type is not determined at run-time but something permanent
+	 * like an official gene mapping type like DAVID.
+	 */
 	protected IDType primaryRecordMappingType;
+	/** Same as {@link #primaryDimensionMappingType} for dimensions. */
 	protected IDType primaryDimensionMappingType;
 
 	protected IDCategory recordIDCategory;
@@ -103,21 +105,33 @@ public abstract class ATableBasedDataDomain
 	/** central {@link EventPublisher} to receive and send events */
 	protected EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
-	protected RecordFilterManager recordFilterManager;
-	protected DimensionFilterManager dimensionFilterManager;
-
+	/**
+	 * All recordPerspectiveIDs registered with the DataTable. This variable is syncronous with the keys of
+	 * the hashMap of the DatTable.
+	 */
 	@XmlElement
 	private Set<String> recordPerspectiveIDs;
+
+	/** Same as {@link #recordPerspectiveIDs} for dimensions */
 	@XmlElement
 	private Set<String> dimensionPerspectiveIDs;
 
 	protected IDMappingManager recordIDMappingManager;
 	protected IDMappingManager dimensionIDMappingManager;
 
-	// private RelationAnalyzer contentRelationAnalyzer;
+	private SelectionUpdateListener selectionUpdateListener;
+	private SelectionCommandListener selectionCommandListener;
+	private StartClusteringListener startClusteringListener;
+
+	private ReplaceDimensionPerspectiveListener replaceDimensionPerspectiveListener;
+	private DimensionVADeltaListener dimensionVADeltaListener;
+	private ReplaceRecordPerspectiveListener replaceRecordPerspectiveListener;
+	private RecordVADeltaListener recordVADeltaListener;
+
+	private AggregateGroupListener aggregateGroupListener;
 
 	/**
-	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
+	 * Constructor that should be used only for serialization
 	 */
 	public ATableBasedDataDomain() {
 		super();
@@ -125,7 +139,6 @@ public abstract class ATableBasedDataDomain
 
 	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
 		super(dataDomainType, dataDomainID);
-
 	}
 
 	/**
@@ -191,8 +204,7 @@ public abstract class ATableBasedDataDomain
 	public void setTable(DataTable table) {
 		assert (table != null);
 
-		// table.setDataDomain(this);
-
+		// TODO - do we still need this?
 		DataTable oldTable = this.table;
 		this.table = table;
 
@@ -229,38 +241,71 @@ public abstract class ATableBasedDataDomain
 		return dimensionIDMappingManager;
 	}
 
-	public void registerSubDataTable() {
-
-	}
-
+	/**
+	 * @return the recordIDType, see {@link #recordIDType}
+	 */
 	public IDType getRecordIDType() {
 		return recordIDType;
 	}
 
+	/**
+	 * @return the dimensionIDType, see {@link #dimensionIDType}
+	 */
 	public IDType getDimensionIDType() {
 		return dimensionIDType;
 	}
 
 	/**
-	 * Returns the ID type used for {@link Group}s in this dataDomain.
+	 * Returns
 	 * 
 	 * @return
 	 */
-	public IDType getRecordGroupIDType() {
-		return recordGroupIDType;
+	public IDType getPrimaryRecordMappingType() {
+		return primaryRecordMappingType;
 	}
 
+	public IDType getPrimaryDimensionMappingType() {
+		return dimensionIDType;
+	}
+
+	/**
+	 * @return the recordIDCategory, see {@link #recordIDCategory}
+	 */
 	public IDCategory getRecordIDCategory() {
 		return recordIDCategory;
 	}
 
+	/**
+	 * @return the dimensionIDCategory, see {@link #dimensionIDCategory}
+	 */
 	public IDCategory getDimensionIDCategory() {
 		return dimensionIDCategory;
 	}
 
 	/**
-	 * Returns a clone of the record selection manager. You have to set your virtual array manually. This is
-	 * the preferred way to initialize SelectionManagers.
+	 * @return the recordGroupIDType, see {@link #recordGroupIDType}
+	 */
+	public IDType getRecordGroupIDType() {
+		return recordGroupIDType;
+	}
+
+	/**
+	 * @return the humanReadableRecordIDType, see {@link #humanReadableRecordIDType}
+	 */
+	public IDType getHumanReadableRecordIDType() {
+		return humanReadableRecordIDType;
+	}
+
+	/**
+	 * @return the humanReadableDimensionIDType, see {@link #humanReadableDimensionIDType}
+	 */
+	public IDType getHumanReadableDimensionIDType() {
+		return humanReadableDimensionIDType;
+	}
+
+	/**
+	 * Returns a clone of the record selection manager. This is the preferred way to initialize
+	 * SelectionManagers.
 	 * 
 	 * @return a clone of the record selection manager
 	 */
@@ -269,8 +314,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * Returns a clone of the dimension selection manager. You have to set your virtual array manually. This
-	 * is the preferred way to initialize SelectionManagers.
+	 * Returns a clone of the dimension selection manager. This is the preferred way to initialize
+	 * SelectionManagers.
 	 * 
 	 * @return a clone of the dimension selection manager
 	 */
@@ -278,6 +323,12 @@ public abstract class ATableBasedDataDomain
 		return (DimensionSelectionManager) dimensionSelectionManager.clone();
 	}
 
+	/**
+	 * Returns a clone of the record group selection manager. This is the preferred way to initialize
+	 * SelectionManagers. *
+	 * 
+	 * @return a clone of the dimension selection manager
+	 */
 	public SelectionManager getRecordGroupSelectionManager() {
 		return recordGroupSelectionManager.clone();
 	}
@@ -306,12 +357,18 @@ public abstract class ATableBasedDataDomain
 		return va;
 	}
 
-	public Set<String> getDimensionPerspectiveIDs() {
-		return dimensionPerspectiveIDs;
-	}
-
+	/**
+	 * @return the recordPerspectiveIDs, see {@link #recordPerspectiveIDs}
+	 */
 	public Set<String> getRecordPerspectiveIDs() {
 		return recordPerspectiveIDs;
+	}
+
+	/**
+	 * @return the dimensionPerspectiveIDs, see {@link #dimensionPerspectiveIDs}
+	 */
+	public Set<String> getDimensionPerspectiveIDs() {
+		return dimensionPerspectiveIDs;
 	}
 
 	/**
@@ -356,36 +413,9 @@ public abstract class ATableBasedDataDomain
 	/**
 	 * Resets the context VA to it's initial state
 	 */
+	@Deprecated
 	public void resetRecordVA(String recordPerspectiveID) {
 		table.getRecordPerspective(recordPerspectiveID).reset();
-	}
-
-	/**
-	 * Replace record VA for a specific table.
-	 * 
-	 * @param perspectiveID
-	 * @param dataDomainID
-	 * @param recordPerspectiveID
-	 * @param data
-	 */
-	@Override
-	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,
-		PerspectiveInitializationData data) {
-
-		if (dataDomainID != this.dataDomainID) {
-			handleForeignRecordVAUpdate(dataDomainID, recordPerspectiveID, data);
-			return;
-		}
-
-		table.getRecordPerspective(recordPerspectiveID).init(data);
-
-		table.getRecordPerspective(recordPerspectiveID).init(data);
-
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
-		event.setSender(this);
-		event.setDataDomainID(dataDomainID);
-		event.setPerspectiveID(recordPerspectiveID);
-		eventPublisher.triggerEvent(event);
 	}
 
 	@Override
@@ -407,6 +437,31 @@ public abstract class ATableBasedDataDomain
 	}
 
 	@Override
+	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
+		// FIXME why is here nothing?
+		System.out.println("What?");
+
+	}
+
+	@Override
+	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,
+		PerspectiveInitializationData data) {
+
+		if (dataDomainID != this.dataDomainID) {
+			handleForeignRecordVAUpdate(dataDomainID, recordPerspectiveID, data);
+			return;
+		}
+
+		table.getRecordPerspective(recordPerspectiveID).init(data);
+
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
+		event.setSender(this);
+		event.setDataDomainID(dataDomainID);
+		event.setPerspectiveID(recordPerspectiveID);
+		eventPublisher.triggerEvent(event);
+	}
+
+	@Override
 	public void replaceDimensionPerspective(String dataDomainID, String dimensionPerspectiveID,
 		PerspectiveInitializationData data) {
 
@@ -420,10 +475,193 @@ public abstract class ATableBasedDataDomain
 	}
 
 	@Override
-	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info) {
-		// FIXME why is here nothing?
-		System.out.println("What?");
+	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
 
+		if (recordSelectionManager == null)
+			return;
+
+		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
+			recordSelectionManager.setDelta(selectionDelta);
+		}
+		else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
+			dimensionSelectionManager.getIDType())) {
+			dimensionSelectionManager.setDelta(selectionDelta);
+		}
+
+		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+			recordGroupSelectionManager.setDelta(selectionDelta);
+		}
+	}
+
+	@Override
+	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+		// TODO Auto-generated method stub
+	}
+
+	/**
+	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form
+	 * another dataDomain is available. If possible, it is converted to be compatible with the local
+	 * dataDomain and then sent out via a {@link SelectionUpdateEvent}.
+	 * 
+	 * @param dataDomainType
+	 *            the type of the dataDomain for which this selectionUpdate is intended
+	 * @param delta
+	 * @param scrollToSelection
+	 * @param info
+	 */
+	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta,
+		boolean scrollToSelection, String info) {
+		// may be interesting to implement in sub-class
+	}
+
+	/**
+	 * Interface used by {@link ForeignSelectionCommandListener} to signal foreign selection commands. Can be
+	 * implemented in concrete classes, has no functionality in base class.
+	 */
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
+		SelectionCommand selectionCommand) {
+		// may be interesting to implement in sub-class
+	}
+
+	/**
+	 * This method is called if a record VA Update was requested, but the dataDomainType specified was not
+	 * this dataDomains type. Concrete handling can only be done in concrete dataDomains.
+	 * 
+	 * @param tableID
+	 * @param dataDomainType
+	 * @param vaType
+	 * @param data
+	 */
+	public void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
+		PerspectiveInitializationData data) {
+		// may be interesting to implement in sub-class
+	}
+
+	/**
+	 * Returns the denomination for the records. For genetic data for example this would be "Gene"
+	 * 
+	 * @param capitalized
+	 *            if true, the label is returned capitalized, e.g., "Gene", if false it would be "gene"
+	 * @param plural
+	 *            if true, the label is returned in the plural form of the word, e.g., "genes" instead of the
+	 *            singular form, e.g., "gene"
+	 * @return the denomination formatted according to the parameters passed
+	 */
+	public String getRecordDenomination(boolean capitalized, boolean plural) {
+		String recordDenomination;
+		if (plural)
+			recordDenomination = recordDenominationPlural;
+		else
+			recordDenomination = recordDenominationSingular;
+
+		if (capitalized) {
+			// Make first char capitalized
+			recordDenomination =
+				recordDenomination.substring(0, 1).toUpperCase()
+					+ recordDenomination.substring(1, recordDenomination.length());
+		}
+		return recordDenomination;
+	}
+
+	/** Same as {@link #getRecordDenomination(boolean, boolean)} for dimensions. */
+	public String getDimensionDenomination(boolean capitalized, boolean plural) {
+		String dimensionDenomination;
+
+		if (plural)
+			dimensionDenomination = dimensionDenominationPlural;
+		else
+			dimensionDenomination = dimensionDenominationSingular;
+
+		if (capitalized) {
+			// Make first char capitalized
+			dimensionDenomination =
+				dimensionDenomination.substring(0, 1).toUpperCase()
+					+ dimensionDenomination.substring(1, dimensionDenomination.length());
+		}
+		return dimensionDenomination;
+	}
+
+	/**
+	 * Get the human readable record label for the id, which is of the {@link #recordIDType}.
+	 * 
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
+	public String getRecordLabel(Object id) {
+		return getRecordLabel(recordIDType, id);
+	}
+
+	/**
+	 * Get the human readable dimension label for the id, which is of the {@link #dimensionIDType}.
+	 * 
+	 * @param id
+	 *            the id to convert to a human readable label
+	 * @return the readable label
+	 */
+	public String getDimensionLabel(Object id) {
+		return getDimensionLabel(dimensionIDType, id);
+	}
+
+	/**
+	 * Get the human readable record label for the id, which is of the type specified.
+	 * 
+	 * @param idType
+	 *            the IDType of the id passed
+	 * @param id
+	 * @return the readable label
+	 */
+	public String getRecordLabel(IDType idType, Object id) {
+		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, humanReadableRecordIDType, id);
+		String label = "No Mapping";
+		if (ids != null && ids.size() > 0) {
+			label = ids.iterator().next();
+		}
+		return label;
+	}
+
+	/** Same as {@link #getRecordLabel(IDType, Object)} for dimensions */
+	public String getDimensionLabel(IDType idType, Object id) {
+		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, humanReadableDimensionIDType, id);
+		String label = "No Mapping";
+		if (ids != null && ids.size() > 0) {
+			label = ids.iterator().next();
+		}
+		return label;
+	}
+
+	public void aggregateGroups(java.util.Set<Integer> groups) {
+		System.out.println("Received command to aggregate experiments, not implemented yet");
+	}
+
+	// FIXME CONTEXT MENU
+	// /**
+	// * A dataDomain may contribute to the context menu. This function returns the recordItemContainer of the
+	// * context menu if one was specified. This should be overridden by subclasses if needed.
+	// *
+	// * @return a context menu item container related to record items
+	// */
+	// public AItemContainer getRecordItemContainer(IDType idType, int id) {
+	// return null;
+	// }
+
+	// FIXME CONTEXT MENU
+	// /**
+	// * A dataDomain may contribute to the context menu. This function returns dataDomain specific
+	// * implementations of a context menu for content groups. * @param idType
+	// *
+	// * @param ids
+	// * @return
+	// */
+	// public AItemContainer getRecordGroupItemContainer(IDType idType, ArrayList<Integer> ids) {
+	// return null;
+	// }
+
+	@Override
+	public int getDataAmount() {
+		if (table == null)
+			return 0;
+		return table.getMetaData().size() * table.getMetaData().depth();
 	}
 
 	@Override
@@ -515,248 +753,4 @@ public abstract class ATableBasedDataDomain
 		}
 	}
 
-	/**
-	 * Returns the label for the record. E.g. gene for genome use case, entity for generic use case
-	 * 
-	 * @param bUpperCase
-	 *            TRUE makes the label upper case
-	 * @param bPlural
-	 *            TRUE label = plural, FALSE label = singular
-	 * @return label valid for the specific use case
-	 */
-	public String getRecordName(boolean bCapitalized, boolean bPlural) {
-
-		String recordLabel = "";
-
-		if (bPlural)
-			recordLabel = recordLabelPlural;
-		else
-			recordLabel = contentLabelSingular;
-
-		if (bCapitalized) {
-
-			// Make first char capitalized
-			recordLabel =
-				recordLabel.substring(0, 1).toUpperCase() + recordLabel.substring(1, recordLabel.length());
-		}
-
-		return recordLabel;
-	}
-
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
-
-		if (recordSelectionManager == null)
-			return;
-
-		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(), recordSelectionManager.getIDType())) {
-			recordSelectionManager.setDelta(selectionDelta);
-		}
-		else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
-			dimensionSelectionManager.getIDType())) {
-			dimensionSelectionManager.setDelta(selectionDelta);
-		}
-
-		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
-			recordGroupSelectionManager.setDelta(selectionDelta);
-		}
-	}
-
-	@Override
-	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
-		// TODO Auto-generated method stub
-
-	}
-
-	/**
-	 * This method is called by the {@link ForeignSelectionUpdateListener}, signaling that a selection form
-	 * another dataDomain is available. If possible, it is converted to be compatible with the local
-	 * dataDomain and then sent out via a {@link SelectionUpdateEvent}.
-	 * 
-	 * @param dataDomainType
-	 *            the type of the dataDomain for which this selectionUpdate is intended
-	 * @param delta
-	 * @param scrollToSelection
-	 * @param info
-	 */
-	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta,
-		boolean scrollToSelection, String info) {
-		// may be interesting to implement in sub-class
-
-	}
-
-	/**
-	 * Interface used by {@link ForeignSelectionCommandListener} to signal foreign selection commands. Can be
-	 * implemented in concrete classes, has no functionality in base class.
-	 */
-	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
-		SelectionCommand selectionCommand) {
-		// may be interesting to implement in sub-class
-	}
-
-	/**
-	 * This method is called if a record VA Update was requested, but the dataDomainType specified was not
-	 * this dataDomains type. Concrete handling can only be done in concrete dataDomains.
-	 * 
-	 * @param tableID
-	 * @param dataDomainType
-	 * @param vaType
-	 * @param data
-	 */
-	public abstract void handleForeignRecordVAUpdate(String dataDomainType, String vaType,
-		PerspectiveInitializationData data);
-
-	/**
-	 * Returns the id type that should be used if an entity of this data domain should be printed human
-	 * readable
-	 * 
-	 * @return
-	 */
-	public IDType getHumanReadableRecordIDType() {
-		return humanReadableRecordIDType;
-	}
-
-	/**
-	 * @return the humanReadableDimensionIDType, see {@link #humanReadableDimensionIDType}
-	 */
-	public IDType getHumanReadableDimensionIDType() {
-		return humanReadableDimensionIDType;
-	}
-
-	/**
-	 * Get the human readable content label for a specific id. The id has to be of the recordIDType of the
-	 * dataDomain.
-	 * 
-	 * @param id
-	 *            the id to convert to a human readable label
-	 * @return the readable label
-	 */
-	public String getRecordLabel(Object id) {
-		return getRecordLabel(recordIDType, id);
-	}
-
-	/**
-	 * Get the human readable dimension label for a specific id. The id has to be of the dimensionIDType of
-	 * the dataDomain.
-	 * 
-	 * @param id
-	 *            the id to convert to a human readable label
-	 * @return the readable label
-	 */
-	public String getDimensionLabel(Object id) {
-		return getDimensionLabel(dimensionIDType, id);
-	}
-
-	public String getRecordLabel(IDType idType, Object id) {
-		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, humanReadableRecordIDType, id);
-		String label = "No Mapping";
-		if (ids != null && ids.size() > 0) {
-			label = ids.iterator().next();
-		}
-		return label;
-	}
-
-	public String getDimensionLabel(IDType idType, Object id) {
-		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, humanReadableDimensionIDType, id);
-		String label = "No Mapping";
-		if (ids != null && ids.size() > 0) {
-			label = ids.iterator().next();
-		}
-		return label;
-	}
-
-	// FIXME CONTEXT MENU
-	// /**
-	// * A dataDomain may contribute to the context menu. This function returns the recordItemContainer of the
-	// * context menu if one was specified. This should be overridden by subclasses if needed.
-	// *
-	// * @return a context menu item container related to record items
-	// */
-	// public AItemContainer getRecordItemContainer(IDType idType, int id) {
-	// return null;
-	// }
-
-	// FIXME CONTEXT MENU
-	// /**
-	// * A dataDomain may contribute to the context menu. This function returns dataDomain specific
-	// * implementations of a context menu for content groups. * @param idType
-	// *
-	// * @param ids
-	// * @return
-	// */
-	// public AItemContainer getRecordGroupItemContainer(IDType idType, ArrayList<Integer> ids) {
-	// return null;
-	// }
-
-	/**
-	 * Returns the primary mapping type of the record. This type is not determined at run-time but something
-	 * permanent like an official gene mapping type like DAVID.
-	 * 
-	 * @return
-	 */
-	public IDType getPrimaryRecordMappingType() {
-		return primaryRecordMappingType;
-	}
-
-	public IDType getPrimaryDimensionMappingType() {
-		return dimensionIDType;
-	}
-
-	/**
-	 * Create a new {@link RelationAnalyzer} for recordVAs of this DataDomain. The contentRelationAnalyzer
-	 * runs in a separate thread and listens to {@link ReplaceRecordVAEvent}s to do its business.
-	 */
-	// public void createContentRelationAnalyzer() {
-	// if (contentRelationAnalyzer != null)
-	// return;
-	// contentRelationAnalyzer = new RelationAnalyzer(this);
-	//
-	// Thread thread = new Thread(contentRelationAnalyzer, "Relation Analyzer");
-	// thread.start();
-	// }
-
-	/**
-	 * Returns the {@link RelationAnalyzer} of this dataDomain, or null if it has not been created (via
-	 * {@link #createContentRelationAnalyzer()}).
-	 * 
-	 * @return
-	 */
-
-	// public RelationAnalyzer getContentRelationAnalyzer() {
-	// return contentRelationAnalyzer;
-	// }
-
-	// public void createDimensionGroupsFromDimensionTree(ClusterTree tree) {
-	// dimensionGroups.clear();
-	// if (tree == null)
-	// return;
-	// ClusterNode rootNode = tree.getRoot();
-	// if (rootNode != null && rootNode.hasChildren())
-	// createDimensionGroupsFromDimensionTree(rootNode);
-	// }
-	//
-	// private void createDimensionGroupsFromDimensionTree(ClusterNode parent) {
-	//
-	// for (ClusterNode child : parent.getChildren()) {
-	// if (child.hasChildren()) {
-	// dimensionGroups.add(new TableBasedDimensionGroupData(this, child.getSubDataTable()));
-	// createDimensionGroupsFromDimensionTree(child);
-	// }
-	// }
-	//
-	// DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-	// event.setSender(this);
-	// GeneralManager.get().getEventPublisher().triggerEvent(event);
-	// }
-
-	public void aggregateGroups(java.util.Set<Integer> groups) {
-		System.out.println("Received command to aggregate experiments, not implemented yet");
-	}
-
-	@Override
-	public int getDataAmount() {
-		if(table == null)
-			return 0;
-		return table.getColumnIDList().size() * table.getRowIDList().size();
-	}
 }

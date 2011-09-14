@@ -3358,8 +3358,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public String getShortInfo() {
 		return "Hierarchical Heat Map (" + recordVA.size() + " "
-				+ dataDomain.getRecordName(false, true) + " / " + dimensionVA.size()
-				+ " experiments)";
+				+ dataDomain.getRecordDenomination(false, true) + " / "
+				+ dimensionVA.size() + " "
+				+ dataDomain.getDimensionDenomination(false, true);
 	}
 
 	@Override
@@ -3367,14 +3368,19 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		StringBuffer sInfoText = new StringBuffer();
 		sInfoText.append("<b>Type:</b> Hierarchical Heat Map\n");
 
-		sInfoText.append(recordVA.size() + " " + dataDomain.getRecordName(true, true)
-				+ " in rows and " + dimensionVA.size() + " experiments in columns.\n");
+		sInfoText.append(recordVA.size() + " "
+				+ dataDomain.getRecordDenomination(true, true) + " in rows and "
+				+ dimensionVA.size() + " "
+				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
 
 		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-			sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
-					+ " in the dataset\n");
+			sInfoText
+					.append("Showing all "
+							+ dataDomain.getRecordDenomination(false, true)
+							+ " in the dataset\n");
 		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-			sInfoText.append("Showing all " + dataDomain.getRecordName(false, true)
+			sInfoText.append("Showing all "
+					+ dataDomain.getRecordDenomination(false, true)
 					+ " that have a known DAVID ID mapping\n");
 		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
 			sInfoText
@@ -4652,7 +4658,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			warn();
 			recordDendrogramActive = false;
 			recordDendrogramRenderCut = false;
-//			table.getRecordPerspective(recordPerspectiveID).setTree(null);
+			// table.getRecordPerspective(recordPerspectiveID).setTree(null);
 
 		}
 
@@ -5026,7 +5032,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			recordDendrogramActive = false;
 			recordDendrogramRenderCut = false;
-//			table.getRecordPerspective(recordPerspectiveID).setTree(null);
+			// table.getRecordPerspective(recordPerspectiveID).setTree(null);
 
 		}
 
@@ -5161,7 +5167,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			recordDendrogramActive = false;
 			recordDendrogramRenderCut = false;
-//			table.getRecordPerspective(recordPerspectiveID).setTree(null);
+			// table.getRecordPerspective(recordPerspectiveID).setTree(null);
 
 		}
 
@@ -5212,7 +5218,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			dimensionDendrogramActive = false;
 			dimensionDendrogramRenderCut = false;
-//			table.getDimensionPerspective(dimensionPerspectiveID).setTree(null);
+			// table.getDimensionPerspective(dimensionPerspectiveID).setTree(null);
 			// dataDomain.createDimensionGroupsFromDimensionTree(null);
 		}
 

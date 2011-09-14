@@ -114,12 +114,12 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		contentTree.setExpanded(true);
 		contentTree.setData(-1);
 
-		contentTree.setText(dataDomain.getRecordName(true, true));
+		contentTree.setText(dataDomain.getRecordDenomination(true, true));
 
 		dimensionTree = new TreeItem(selectionTree, SWT.NONE);
 		dimensionTree.setExpanded(true);
 		dimensionTree.setData(-1);
-		dimensionTree.setText("Experiments");
+		dimensionTree.setText(dataDomain.getDimensionDenomination(true, true));
 
 		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
 		// pathwayTree.setText("Pathways");
