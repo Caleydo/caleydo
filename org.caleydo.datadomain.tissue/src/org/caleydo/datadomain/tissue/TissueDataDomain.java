@@ -36,10 +36,7 @@ public class TissueDataDomain extends ADataDomain {
 		// possibleIDCategories.put(EIDCategory.GENE, null);
 	}
 	
-	@Override
-	protected void initIDMappings() {
-		// nothing to do ATM
-	}
+
 
 	@Override
 	public void registerEventListeners() {

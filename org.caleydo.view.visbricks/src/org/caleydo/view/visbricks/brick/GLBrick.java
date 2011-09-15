@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
@@ -232,7 +233,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 								.getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
-
+				// FIXME this assumtion that records are genes is wrong!
 				for (Integer gene : recordVA) {
 					Set<Integer> davids = dataDomain.getRecordIDMappingManager()
 							.getIDAsSet(dataDomain.getRecordIDType(),
@@ -487,7 +488,6 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int pickingID, Pick pick) {
-
 
 	}
 

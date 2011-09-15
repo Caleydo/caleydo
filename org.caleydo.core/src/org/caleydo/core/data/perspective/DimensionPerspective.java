@@ -1,6 +1,7 @@
 package org.caleydo.core.data.perspective;
 
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +21,7 @@ public class DimensionPerspective
 	extends
 	ADataPerspective<DimensionVirtualArray, DimensionGroupList, DimensionVADelta, DimensionFilterManager> {
 
-	private static int dimensionDataRunningNumber;
+//	private static int dimensionDataRunningNumber;
 
 	public DimensionPerspective() {
 	}
@@ -31,8 +32,8 @@ public class DimensionPerspective
 
 	@Override
 	protected void init() {
-		perspectiveID = "DimensionPerspective_" + dimensionDataRunningNumber;
-		dimensionDataRunningNumber++;
+		perspectiveID = "DimensionPerspective_" + UUID.randomUUID();
+//		dimensionDataRunningNumber++;
 		filterManager = new DimensionFilterManager(dataDomain, this);
 		idType = dataDomain.getDimensionIDType();
 	}

@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -42,8 +43,10 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 
 	@Override
 	public void init() {
-		super.init();
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
+
+		super.init();
+
 		// if (isColumnDimension) {
 		// primaryRecordMappingType = IDType.getIDType("DAVID");
 		// humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
@@ -64,28 +67,32 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	protected void initIDMappings() {
+	public void createDefaultConfiguration() {
+		configuration = new DataDomainConfiguration();
+
+		configuration.setRecordIDCategory("UNSPECIFIED_RECORD");
+		configuration.setDimensionIDCategory("UNSPECIFIED_DIMENSION");
+
+		configuration.setHumanReadableRecordIDType("unspecified_record");
+		configuration.setHumanReadableDimensionIDType("unspecified_column");
+
+		// recordIDType = IDType.registerType("UNSPECIFIED_RECORD",
+		// recordIDCategory,
+		// EColumnType.STRING);
+		// dimensionIDType = IDType.registerType("UNSPECIFIED_DIMENSION",
+		// dimensionIDCategory, EColumnType.STRING);
+
+		// primaryRecordMappingType = recordIDType;//
+		// IDType.getIDType(DataTable.RECORD);
+		// humanReadableRecordIDType = recordIDType;
+		// primaryDimensionMappingType = dimensionIDType;
+		// humanReadableDimensionIDType = dimensionIDType;
+
+		configuration.setRecordDenominationPlural("records");
+		configuration.setRecordDenominationSingular("record");
+		configuration.setDimensionDenominationPlural("dimensions");
+		configuration.setDimensionDenominationSingular("dimension");
 
 	}
-	
 
-	@Override
-	protected void assignIDCategories() {
-
-		recordIDCategory = IDCategory.registerCategory("UNSPECIFIED_RECORD");
-		dimensionIDCategory = IDCategory.registerCategory("UNSPECIFIED_DIMENSION");
-
-		recordIDType = IDType.registerType("UNSPECIFIED_RECORD", recordIDCategory,
-				EColumnType.STRING);
-		dimensionIDType = IDType.registerType("UNSPECIFIED_DIMENSION",
-				dimensionIDCategory, EColumnType.STRING);
-
-		primaryRecordMappingType = recordIDType;// IDType.getIDType(DataTable.RECORD);
-		humanReadableRecordIDType = recordIDType;
-		primaryDimensionMappingType = dimensionIDType;
-		humanReadableDimensionIDType = dimensionIDType;
-
-		recordDenominationSingular = "generics";
-		recordDenominationPlural = "generic";
-	}
 }

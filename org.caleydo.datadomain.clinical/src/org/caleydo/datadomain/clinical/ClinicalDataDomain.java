@@ -42,10 +42,6 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 	}
 
-	@Override
-	protected void initIDMappings() {
-		// nothing to do ATM
-	}
 
 	@Override
 	public void setTable(DataTable set) {
@@ -91,7 +87,8 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	protected void assignIDCategories() {
+	public void createDefaultConfiguration() {
+// FIXME create default config
 		recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
 

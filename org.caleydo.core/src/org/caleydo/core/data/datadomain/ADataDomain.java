@@ -60,7 +60,6 @@ public abstract class ADataDomain
 		this.dataDomainType = dataDomainType;
 		this.dataDomainID = dataDomainID;
 		System.out.println("Creating dataDomain " + this);
-
 	}
 
 	/**
@@ -68,18 +67,10 @@ public abstract class ADataDomain
 	 * All initialization of the ADataDomain must be done in here instead of in the constructor. This is
 	 * called when the ADataDomain is created in the {@link DataDomainManager}.
 	 * </p>
-	 * <p>
-	 * Call super.init() if you override this method!
-	 * </p>
 	 */
 	public void init() {
-		initIDMappings();
-	}
 
-	/**
-	 * Load ID mappings in concrete implementing classes. This is called by {@link #init()}.
-	 */
-	protected abstract void initIDMappings();
+	}
 
 	@Override
 	public String getDataDomainID() {

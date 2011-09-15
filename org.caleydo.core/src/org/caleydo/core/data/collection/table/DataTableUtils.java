@@ -177,7 +177,7 @@ public class DataTableUtils {
 		}
 
 		MappingType mappingType = columnIDMappingManager.createMap(columnIDType, hrColumnIDType, false);
-		Map<Integer, String> dimensionIDMap = columnIDMappingManager.getMap(mappingType);
+		Map<Integer, String> columnIDMap = columnIDMappingManager.getMap(mappingType);
 
 		int columnCount = 0;
 
@@ -201,7 +201,7 @@ public class DataTableUtils {
 					
 					NumericalColumn column = (NumericalColumn) cmdCreateColumn.getCreatedObject();
 					column.setLabel(columnLabel);
-					dimensionIDMap.put(column.getID(), columnLabel);
+					columnIDMap.put(column.getID(), columnLabel);
 
 					if (!createColumnsFromExistingIDs)
 						columnIds.add(column.getID());
@@ -258,15 +258,15 @@ public class DataTableUtils {
 		AStringConverter stringConverter) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		ArrayList<Integer> dimensionIDs = loadDataParameters.getColumnIds();
+		ArrayList<Integer> columnIDs = loadDataParameters.getColumnIds();
 
 		// Create table
-		CmdDataCreateTable cmdCreateSet =
+		CmdDataCreateTable cmdCreateTable =
 			(CmdDataCreateTable) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.CREATE_DATA_TABLE);
 
-		cmdCreateSet.setAttributes(dimensionIDs, dataDomain);
-		cmdCreateSet.doCommand();
+		cmdCreateTable.setAttributes(columnIDs, dataDomain);
+		cmdCreateTable.doCommand();
 
 		// Load dynamic mapping
 		CmdParseIDMapping cmdParseIDMapping =
@@ -295,7 +295,7 @@ public class DataTableUtils {
 			(CmdLoadFileNDimensions) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.LOAD_DATA_FILE);
 
-		cmdLoadCSV.setAttributes(dimensionIDs, loadDataParameters);
+		cmdLoadCSV.setAttributes(columnIDs, loadDataParameters);
 		cmdLoadCSV.doCommand();
 
 		if (!cmdLoadCSV.isParsingOK()) {

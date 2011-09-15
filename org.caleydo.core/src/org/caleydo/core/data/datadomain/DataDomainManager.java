@@ -67,7 +67,7 @@ public class DataDomainManager {
 	 *            access the columns of the loaded files as records
 	 * @return the created {@link IDataDomain}
 	 */
-	public IDataDomain createDataDomain(String dataDomainType, boolean isColumnDimension) {
+	public IDataDomain createDataDomain(String dataDomainType, DataDomainConfiguration dataDomainConfiguration) {
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
@@ -77,8 +77,8 @@ public class DataDomainManager {
 
 		try {
 			ADataDomain dataDomain = (ADataDomain) ce[0].createExecutableExtension("class");
-			if (dataDomain instanceof ATableBasedDataDomain)
-				((ATableBasedDataDomain) dataDomain).setColumnDimension(isColumnDimension);		
+			if (dataDomainConfiguration != null && dataDomain instanceof ATableBasedDataDomain)
+				((ATableBasedDataDomain) dataDomain).setDataDomaiConfiguration(dataDomainConfiguration);
 			dataDomain.init();
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
@@ -99,7 +99,7 @@ public class DataDomainManager {
 	 * @return the created {@link IDataDomain}
 	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
-		return createDataDomain(dataDomainType, true);
+		return createDataDomain(dataDomainType, null);
 	}
 
 	/**
@@ -172,7 +172,7 @@ public class DataDomainManager {
 		else {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
-		
+
 		Color color = ColorManager.get().getFirstMarkedColorOfList(ColorManager.DATA_DOMAIN_COLORS, false);
 		ColorManager.get().markColor(ColorManager.DATA_DOMAIN_COLORS, color, true);
 		dataDomain.setColor(color);
@@ -197,7 +197,7 @@ public class DataDomainManager {
 		if (registeredDataDomainsByType.get(dataDomain.getDataDomainType()) != null) {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).remove(dataDomain);
 		}
-		
+
 		Color color = dataDomain.getColor();
 		ColorManager.get().markColor(ColorManager.DATA_DOMAIN_COLORS, color, false);
 
@@ -218,14 +218,25 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns a list containing all DataDomains that are of the type classType.
+	 * Returns a list of all data domains of this type registered or null if no such data domain is
+	 * regeisterd.
+	 * 
+	 * @param dataDomainType
+	 * @return
+	 */
+	public ArrayList<IDataDomain> getDataDomainsByType(String dataDomainType) {
+		return registeredDataDomainsByType.get(dataDomainType);
+	}
+
+	/**
+	 * Returns a list containing all DataDomains that are of the type classType. If no type is registered the
+	 * list is returned empty.
 	 * 
 	 * @param classType
 	 * @return
 	 */
 	public <T extends ADataDomain> ArrayList<T> getDataDomainsByType(Class<T> classType) {
 		ArrayList<T> result = new ArrayList<T>();
-		// ArrayList<ATableBasedDataDomain> tDataDomains = new ArrayList<ATableBasedDataDomain>();
 		Collection<IDataDomain> allDataDomains = getDataDomains();
 
 		Iterator<IDataDomain> iterator = allDataDomains.iterator();

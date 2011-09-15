@@ -48,14 +48,10 @@ public class CmdDataCreateTable
 
 		createdObject = new DataTable(dataDomain);
 
-		if (externalID != -1) {
-			generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
-		}
-
 		fillDataTables(createdObject);
 
-		Logger.log(new Status(IStatus.INFO, this.toString(), "New Set with internal ID "
-			+ createdObject.getID() + " and external ID " + externalID + " created."));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "New DataTable "
+			+ createdObject.getID() + " created."));
 
 		dataDomain.setTable(createdObject);
 	}
@@ -64,8 +60,8 @@ public class CmdDataCreateTable
 	public void undoCommand() {
 	}
 
-	public void setAttributes(ArrayList<Integer> iAlDimensionIDs, ATableBasedDataDomain dataDomain) {
+	public void setAttributes(ArrayList<Integer> dimensionIDs, ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
-		this.dimensionIDs = iAlDimensionIDs;
+		this.dimensionIDs = dimensionIDs;
 	}
 }

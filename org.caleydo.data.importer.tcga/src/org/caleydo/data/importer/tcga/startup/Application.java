@@ -14,6 +14,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -31,6 +32,7 @@ import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -40,44 +42,68 @@ import org.eclipse.equinox.app.IApplicationContext;
 public class Application
 	implements IApplication {
 
-	public static String NILS_FILE =
-		"/Users/nils/Data/Caleydo/testdata/20110728/ov/mrna_cnmf/outputprefix.expclu.gct";
+	public static final String CHECKED_IN_DATA = "data/genome/microarray/tcga/cnmf.normalized.gct";
+	public static final String CHECKED_IN_DATA_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
 
-	public static String ALEX_TEST_1 = "data/genome/microarray/tcga/cnmf.normalized.gct";
-	public static String ALEX_TEST_1_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
+	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
+		+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
 
-	public static String DROPBOX_GBM_MRNA = System.getProperty("user.home")
-		+ System.getProperty("file.separator")
-		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/outputprefix.expclu.gct";
-	public static String DROPBOX_GBM_MRNA_GROUPING = System.getProperty("user.home")
-		+ System.getProperty("file.separator")
-		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mrna_cnmf/cnmf.membership.txt";
+	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
+	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
 
-	public static String DROPBOX_GBM_MI_RNA = System.getProperty("user.home")
-		+ System.getProperty("file.separator")
-		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mir_cnmf/cnmf.normalized.gct";
-	public static String DROPBOX_GBM_MI_RNA_GROUPING = System.getProperty("user.home")
-		+ System.getProperty("file.separator")
-		+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/mir_cnmf/cnmf.membership.txt";
+	public static final String MI_RNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
+	public static final String MI_RNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
+
+	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
+	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
+		+ "methylation_cnmf/cnmf.membership.txt";
+
+	// Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/methylation_cnmf/
 
 	private ATableBasedDataDomain dataDomain;
 
 	private boolean useQuickClustering = true;
 
-	public String dataSource = DROPBOX_GBM_MRNA;
-	public String groupingSource = DROPBOX_GBM_MRNA_GROUPING;
+	// public String dataSource = DROPBOX_GBM_MRNA;
+	// public String groupingSource = DROPBOX_GBM_MRNA_GROUPING;
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
 		GeneralManager.get().init();
 
-		loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN));
-		// loadSources(DROPBOX_GBM_MRNA, DROPBOX_GBM_MRNA_GROUPING, "org.caleydo.datadomain.genetic");
+		DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
-		loadSources(DROPBOX_GBM_MI_RNA, DROPBOX_GBM_MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_YELLOW_BLUE));
+		loadSources(MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN), mrnaConfiguration);
+
+//		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
+//		mirnaConfiguration.setColumnDimension(false);
+//		mirnaConfiguration.setRecordIDCategory("MIRNA_SAMPLE");
+//		mirnaConfiguration.setDimensionIDCategory("miRNA");
+//		mirnaConfiguration.setHumanReadableRecordIDType("MIRNA_SAMPLE");
+//		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
+//		mirnaConfiguration.setRecordDenominationPlural("samples");
+//		mirnaConfiguration.setRecordDenominationSingular("sample");
+//		mirnaConfiguration.setDimensionDenominationPlural("miRNAs");
+//		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
+//
+//		loadSources(MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
+//			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_YELLOW_BLUE), mirnaConfiguration);
+
+		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
+		methylationConfiguration.setColumnDimension(false);
+		methylationConfiguration.setRecordIDCategory("METHYLATION_SAMPLE");
+		methylationConfiguration.setDimensionIDCategory("Methylation");
+		methylationConfiguration.setHumanReadableRecordIDType("METHYLATION_SAMPLE");
+		methylationConfiguration.setHumanReadableDimensionIDType("Methylation");
+		methylationConfiguration.setRecordDenominationPlural("samples");
+		methylationConfiguration.setRecordDenominationSingular("sample");
+		methylationConfiguration.setDimensionDenominationPlural("methylations");
+		methylationConfiguration.setDimensionDenominationSingular("methylation");
+
+		loadSources(METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_WHITE_GREY), methylationConfiguration);
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -91,17 +117,18 @@ public class Application
 	}
 
 	private void loadSources(String dataSource, String groupingSource, String dataDomainType,
-		ColorMapper colorMapper) throws FileNotFoundException, IOException {
+		ColorMapper colorMapper, DataDomainConfiguration configuration) throws FileNotFoundException,
+		IOException {
 
-		convertGctFile(dataSource, dataDomainType, colorMapper);
+		convertGctFile(dataSource, dataDomainType, colorMapper, configuration);
 		loadClusterInfo(groupingSource);
 
 		PerspectiveInitializationData clusterResult = runClusteringOnRows();
 		createSampleOfGenes(clusterResult);
 	}
 
-	protected void convertGctFile(String fileName, String dataDomainType, ColorMapper colorMapper)
-		throws FileNotFoundException, IOException {
+	protected void convertGctFile(String fileName, String dataDomainType, ColorMapper colorMapper,
+		DataDomainConfiguration configuration) throws FileNotFoundException, IOException {
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -136,9 +163,10 @@ public class Application
 		// loadDataParameters.setMaxDefined(true);
 		// loadDataParameters.setMax(max);
 
-		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, false);
+		dataDomain =
+			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, configuration);
 		dataDomain.setColorMapper(colorMapper);
-		dataDomain.setColumnDimension(false);
+		// dataDomain.setColumnDimension(false);
 		loadDataParameters.setDataDomain(dataDomain);
 
 		loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());

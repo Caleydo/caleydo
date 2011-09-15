@@ -32,7 +32,10 @@ public class IDCategory {
 	}
 
 	public static IDCategory getIDCategory(String categoryName) {
-		return registeredCategories.get(categoryName);
+		IDCategory category = registeredCategories.get(categoryName);
+		if(category == null)
+			throw new IllegalStateException("No category with name " + categoryName + " registered.");
+		return category;
 	}
 
 	public String getCategoryName() {

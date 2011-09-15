@@ -55,19 +55,21 @@ public class PathwayDataDomain extends ADataDomain {
 
 	@Override
 	public void init() {
-		super.init();
 
-		//PathwayManager.get().triggerParsingPathwayDatabases();
+		super.init();
+		IDMappingLoader.get().loadMappingFile(fileName);
+
+		// PathwayManager.get().triggerParsingPathwayDatabases();
 
 		// Trigger pathway loading
-		//new PathwayLoadingProgressIndicatorAction().run(null);
+		// new PathwayLoadingProgressIndicatorAction().run(null);
 	}
-	
-	@Override
-	protected void initIDMappings() {
-		// Load IDs needed in this datadomain
-		IDMappingLoader.get().loadMappingFile(fileName);
-	}
+
+	// @Override
+	// protected void initIDMappings() {
+	// // Load IDs needed in this datadomain
+	// IDMappingLoader.get().loadMappingFile(fileName);
+	// }
 
 	public IDType getPrimaryIDType() {
 		return primaryIDType;

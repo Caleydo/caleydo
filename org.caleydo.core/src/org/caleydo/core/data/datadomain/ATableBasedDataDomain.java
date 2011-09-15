@@ -12,6 +12,7 @@ import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingLoader;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -138,6 +139,9 @@ public abstract class ATableBasedDataDomain
 
 	private AggregateGroupListener aggregateGroupListener;
 
+	@XmlElement
+	protected DataDomainConfiguration configuration = null;
+
 	/**
 	 * Constructor that should be used only for serialization
 	 */
@@ -161,21 +165,46 @@ public abstract class ATableBasedDataDomain
 	 * @param isColumnDimension
 	 *            setter, see {@link #isColumnDimension}
 	 */
-	public void setColumnDimension(boolean isColumnDimension) {
-		this.isColumnDimension = isColumnDimension;
+	public void setDataDomaiConfiguration(DataDomainConfiguration dataDomainConfiguration) {
+		this.configuration = dataDomainConfiguration;
 	}
 
 	@Override
 	public void init() {
-		super.init();
-		assignIDCategories();
-		if (recordIDCategory == null || dimensionIDCategory == null) {
-			throw new IllegalStateException("A ID category in " + toString()
-				+ " was null, recordIDCategory: " + recordIDCategory + ", dimensionIDCategory: "
-				+ dimensionIDCategory);
+		if (configuration == null)
+			createDefaultConfiguration();
+		boolean externalMappingLoaded = false;
+
+		if (configuration.mappingFile != null) {
+			IDMappingLoader.get().loadMappingFile(configuration.mappingFile);
+			externalMappingLoaded = true;
 		}
-		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
-		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
+
+		isColumnDimension = configuration.isColumnDimension;
+
+		if (externalMappingLoaded) {
+			recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
+			dimensionIDCategory = IDCategory.getIDCategory(configuration.dimensionIDCategory);
+
+			humanReadableRecordIDType = IDType.getIDType(configuration.humanReadableRecordIDType);
+			humanReadableDimensionIDType = IDType.getIDType(configuration.humanReadableDimensionIDType);
+
+		}
+
+		else {
+			// if we don't have an external mapping we create the mapping based on the first column / row. We
+			// create the ids for that here.
+
+			recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
+			dimensionIDCategory = IDCategory.registerCategory(configuration.dimensionIDCategory);
+			humanReadableRecordIDType =
+				IDType.registerType(configuration.humanReadableRecordIDType, recordIDCategory,
+					EColumnType.STRING);
+			humanReadableDimensionIDType =
+				IDType.registerType(configuration.humanReadableDimensionIDType, dimensionIDCategory,
+					EColumnType.STRING);
+
+		}
 
 		recordIDType =
 			IDType.registerType("record_" + dataDomainID + "_" + hashCode(), recordIDCategory,
@@ -191,18 +220,40 @@ public abstract class ATableBasedDataDomain
 				EColumnType.INT);
 		recordGroupIDType.setInternalType(true);
 
+		if (configuration.primaryRecordMappingType != null)
+			primaryRecordMappingType = IDType.getIDType(configuration.primaryRecordMappingType);
+		else
+			primaryRecordMappingType = recordIDType;
+
+		if (configuration.primaryDimensionMappingType != null)
+			primaryDimensionMappingType = IDType.getIDType(configuration.primaryDimensionMappingType);
+		else
+			primaryDimensionMappingType = dimensionIDType;
+
+		recordDenominationPlural = configuration.recordDenominationPlural;
+		recordDenominationSingular = configuration.recordDenominationSingular;
+
+		dimensionDenominationPlural = configuration.dimensionDenominationPlural;
+		dimensionDenominationSingular = configuration.dimensionDenominationSingular;
+
+		// // those have to be set before this is called by the implementing class
+		// if (recordIDCategory == null || dimensionIDCategory == null) {
+		// throw new IllegalStateException("A ID category in " + toString()
+		// + " was null, recordIDCategory: " + recordIDCategory + ", dimensionIDCategory: "
+		// + dimensionIDCategory);
+		// }
+		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
+		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
+
 		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
 		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
 
+		super.init();
+
 	}
 
-	/**
-	 * Assign {@link #recordIDCategory} and {@link #dimensionIDCategory} in the concrete implementing classes.
-	 * ID Categories should typically be already existing through the data mapping. Assign the correct types
-	 * using {@link IDCategory#getIDCategory(String)}.
-	 */
-	protected abstract void assignIDCategories();
+	public abstract void createDefaultConfiguration();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes

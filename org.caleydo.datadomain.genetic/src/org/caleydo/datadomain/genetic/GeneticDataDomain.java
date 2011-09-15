@@ -5,6 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDCategory;
@@ -60,56 +61,89 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public GeneticDataDomain() {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 
 	}
 
-	@Override
-	public void init() {
-		super.init();
-		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-		if (isColumnDimension) {
-			primaryRecordMappingType = IDType.getIDType("DAVID");
-			humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
+	public void createDefaultConfiguration() {
 
-			primaryDimensionMappingType = IDType.getIDType("DIMENSION");
-			humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
+		configuration = new DataDomainConfiguration();
 
-			recordDenominationSingular = "gene";
-			recordDenominationPlural = "genes";
+		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 
-			dimensionDenominationSingular = "sample";
-			dimensionDenominationPlural = "samples";
-		} else {
-			primaryRecordMappingType = IDType.getIDType("DIMENSION");
-			humanReadableRecordIDType = IDType.getIDType("DIMENSION");
+		configuration.setColumnDimension(true);
 
-			primaryDimensionMappingType = IDType.getIDType("DAVID");
-			humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
+		configuration.setRecordIDCategory("GENE");
+		configuration.setDimensionIDCategory("EXPERIMENT");
 
-			recordDenominationSingular = "sample";
-			recordDenominationPlural = "samples";
+		configuration.setPrimaryRecordMappingType("DAVID");
+		configuration.setPrimaryDimensionMappingType("DIMENSION");
 
-			dimensionDenominationSingular = "gene";
-			dimensionDenominationPlural = "genes";
-		}
+		configuration.setHumanReadableRecordIDType("GENE_SYMBOL");
+		configuration.setHumanReadableDimensionIDType("DIMENSION");
+
+		configuration.setRecordDenominationPlural("genes");
+		configuration.setRecordDenominationSingular("gene");
+
+		configuration.setDimensionDenominationPlural("samples");
+		configuration.setDimensionDenominationSingular("sample");
+
+		// if (isColumnDimension) {
+		// recordIDCategory = IDCategory.getIDCategory("GENE");
+		// dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		//
+		// primaryRecordMappingType = IDType.getIDType("DAVID");
+		// humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
+		//
+		// primaryDimensionMappingType = IDType.getIDType("DIMENSION");
+		// humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
+		//
+		// recordDenominationSingular = "gene";
+		// recordDenominationPlural = "genes";
+		//
+		// dimensionDenominationSingular = "sample";
+		// dimensionDenominationPlural = "samples";
+		// } else {
+		// recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
+		// dimensionIDCategory = IDCategory.getIDCategory("GENE");
+		// primaryRecordMappingType = IDType.getIDType("DIMENSION");
+		// humanReadableRecordIDType = IDType.getIDType("DIMENSION");
+		//
+		// primaryDimensionMappingType = IDType.getIDType("DAVID");
+		// humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
+		//
+		// recordDenominationSingular = "sample";
+		// recordDenominationPlural = "samples";
+		//
+		// dimensionDenominationSingular = "gene";
+		// dimensionDenominationPlural = "genes";
+		// }
 		pathwayViewerMode = false;
 
 	}
 
-	@Override
-	protected void initIDMappings() {
-		IDMappingLoader.get().loadMappingFile("data/bootstrap/bootstrap.xml");
-	}
+	public static DataDomainConfiguration getConfigurationWithSamplesAsRows() {
+		DataDomainConfiguration configuration = new DataDomainConfiguration();
+		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 
-	@Override
-	protected void assignIDCategories() {
-		if (isColumnDimension) {
-			recordIDCategory = IDCategory.getIDCategory("GENE");
-			dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-		} else {
-			recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-			dimensionIDCategory = IDCategory.getIDCategory("GENE");
-		}
+		configuration.setColumnDimension(false);
+
+		configuration.setRecordIDCategory("EXPERIMENT");
+		configuration.setDimensionIDCategory("GENE");
+
+		configuration.setPrimaryRecordMappingType("DIMENSION");
+		configuration.setPrimaryDimensionMappingType("DAVID");
+
+		configuration.setHumanReadableRecordIDType("DIMENSION");
+		configuration.setHumanReadableDimensionIDType("GENE_SYMBOL");
+
+		configuration.setRecordDenominationPlural("samples");
+		configuration.setRecordDenominationSingular("sample");
+
+		configuration.setDimensionDenominationPlural("genes");
+		configuration.setDimensionDenominationSingular("gene");
+
+		return configuration;
 	}
 
 	@Override

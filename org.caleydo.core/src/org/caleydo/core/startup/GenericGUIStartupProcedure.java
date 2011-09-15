@@ -55,11 +55,11 @@ public class GenericGUIStartupProcedure
 		if (!startViewWithDataDomain.isEmpty())
 			return;
 
-		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser", dataDomain
-			.getDataDomainType()));
-
-		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords", dataDomain
-			.getDataDomainType()));
+//		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser", dataDomain
+//			.getDataDomainType()));
+//
+//		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords", dataDomain
+//			.getDataDomainType()));
 
 	}
 }

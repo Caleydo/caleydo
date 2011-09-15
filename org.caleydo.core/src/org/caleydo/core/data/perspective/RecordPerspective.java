@@ -2,6 +2,7 @@ package org.caleydo.core.data.perspective;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlRootElement;
 
@@ -20,7 +21,7 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 public class RecordPerspective
 	extends ADataPerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
 
-	private static int recordDataRunningNumber = 0;
+//	private static int recordDataRunningNumber = 0;
 
 	public RecordPerspective() {
 	}
@@ -31,8 +32,8 @@ public class RecordPerspective
 
 	@Override
 	protected void init() {
-		perspectiveID = "RecordPerspective_" + recordDataRunningNumber;
-		recordDataRunningNumber++;
+		perspectiveID = "RecordPerspective_" + UUID.randomUUID();
+//		recordDataRunningNumber++;
 		filterManager = new RecordFilterManager(dataDomain, this);
 		idType = dataDomain.getRecordIDType();
 	}

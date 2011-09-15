@@ -50,32 +50,32 @@ import org.eclipse.core.runtime.Status;
 public class DataTable
 	extends AUniqueObject {
 
-	protected HashMap<Integer, AColumn> hashColumns;
+	HashMap<Integer, AColumn> hashColumns;
 
 	/** List of dimension IDs in the order as they have been added */
-	protected ArrayList<Integer> defaultColumnIDs;
-	protected HashMap<String, RecordPerspective> hashRecordPerspectives;
-	protected HashMap<String, DimensionPerspective> hashDimensionPerspectives;
+	private ArrayList<Integer> defaultColumnIDs;
+	private HashMap<String, RecordPerspective> hashRecordPerspectives;
+	HashMap<String, DimensionPerspective> hashDimensionPerspectives;
 
-	protected NumericalColumn meanDimension;
+	private NumericalColumn meanDimension;
 
 	// protected DimensionData defaultDimensionData;
 	// protected RecordPerspective defaultRecordPerspective;
 
-	protected ExternalDataRepresentation externalDataRep;
+	ExternalDataRepresentation externalDataRep;
 
-	protected boolean isTableHomogeneous = false;
+	boolean isTableHomogeneous = false;
 
-	protected StatisticsResult statisticsResult;
+	private StatisticsResult statisticsResult;
 
-	protected DataTableDataType tableType = DataTableDataType.NUMERIC;
+	DataTableDataType tableType = DataTableDataType.NUMERIC;
 
-	ATableBasedDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 
-	boolean containsUncertaintyData = false;
+	private boolean containsUncertaintyData = false;
 
 	/** all metaData for this DataTable is held in or accessible through this object */
-	protected MetaData metaData;
+	private MetaData metaData;
 
 	/** everything related to uncertainty is held in or accessible through this object */
 	private Uncertainty uncertainty;
