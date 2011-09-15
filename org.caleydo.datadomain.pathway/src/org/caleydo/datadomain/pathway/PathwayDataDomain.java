@@ -13,7 +13,6 @@ import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.datadomain.pathway.rcp.PathwayLoadingProgressIndicatorAction;
 
 /**
  * TODO The use case for pathway input data.
@@ -48,17 +47,22 @@ public class PathwayDataDomain extends ADataDomain {
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
-		PathwayManager.get().triggerParsingPathwayDatabases();
-
-		// Trigger pathway loading
-		new PathwayLoadingProgressIndicatorAction().run(null);
-
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 
 		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry.get()
 				.getIDMappingManager(IDCategory.getIDCategory("GENE")));
 	}
 
+	@Override
+	public void init() {
+		super.init();
+
+		//PathwayManager.get().triggerParsingPathwayDatabases();
+
+		// Trigger pathway loading
+		//new PathwayLoadingProgressIndicatorAction().run(null);
+	}
+	
 	@Override
 	protected void initIDMappings() {
 		// Load IDs needed in this datadomain

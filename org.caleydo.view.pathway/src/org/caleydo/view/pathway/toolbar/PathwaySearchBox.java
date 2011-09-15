@@ -8,7 +8,7 @@ import org.caleydo.core.gui.util.SearchBox;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
@@ -146,12 +146,12 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 	 * @return
 	 */
 	private boolean loadPathway(String entity) {
-		EPathwayDatabaseType ePathwayDatabaseType;
+		PathwayDatabaseType ePathwayDatabaseType;
 
-		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
-		} else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
-			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
+		if (entity.contains(PathwayDatabaseType.KEGG.getName())) {
+			ePathwayDatabaseType = PathwayDatabaseType.KEGG;
+		} else if (entity.contains(PathwayDatabaseType.BIOCARTA.getName())) {
+			ePathwayDatabaseType = PathwayDatabaseType.BIOCARTA;
 		} else
 			return false;
 

@@ -5,7 +5,7 @@ import java.io.Serializable;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.util.graph.core.Graph;
 
 /**
@@ -17,7 +17,7 @@ public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
 		Comparable<PathwayGraph> {
 	private static final long serialVersionUID = 1L;
 
-	private EPathwayDatabaseType type;
+	private PathwayDatabaseType type;
 
 	private String sName;
 
@@ -31,7 +31,7 @@ public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
 
 	private int iHeight = -1;
 
-	public PathwayGraph(final EPathwayDatabaseType type, final String sName,
+	public PathwayGraph(final PathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sLink) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY));
 
@@ -62,7 +62,7 @@ public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
 		return sExternalLink;
 	}
 
-	public final EPathwayDatabaseType getType() {
+	public final PathwayDatabaseType getType() {
 
 		return type;
 	}

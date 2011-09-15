@@ -8,7 +8,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -39,7 +39,7 @@ public class GLPathwayTextureManager {
 		Texture pathwayTexture = null;
 
 		String sPathwayTexturePath = pathway.getImageLink();
-		EPathwayDatabaseType type = pathway.getType();
+		PathwayDatabaseType type = pathway.getType();
 
 		sPathwayTexturePath = PathwayManager.get().getPathwayDatabaseByType(type)
 				.getImagePath()
@@ -48,13 +48,13 @@ public class GLPathwayTextureManager {
 		Logger.log(new Status(IStatus.INFO, this.toString(),
 				"Load pathway texture with ID: " + pathway.getID()));
 
-		if (type == EPathwayDatabaseType.BIOCARTA) {
+		if (type == PathwayDatabaseType.BIOCARTA) {
 			pathwayTexture = PathwayManager.get()
-					.getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
+					.getPathwayResourceLoader(PathwayDatabaseType.BIOCARTA)
 					.getTexture(sPathwayTexturePath);
-		} else if (type == EPathwayDatabaseType.KEGG) {
+		} else if (type == PathwayDatabaseType.KEGG) {
 			pathwayTexture = PathwayManager.get()
-					.getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
+					.getPathwayResourceLoader(PathwayDatabaseType.KEGG)
 					.getTexture(sPathwayTexturePath);
 
 		} else {

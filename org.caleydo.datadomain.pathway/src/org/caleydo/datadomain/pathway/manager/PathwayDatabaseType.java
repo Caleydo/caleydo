@@ -5,33 +5,33 @@ package org.caleydo.datadomain.pathway.manager;
  * 
  * @author Marc Streit
  */
-public enum EPathwayDatabaseType {
+public enum PathwayDatabaseType {
 
 	KEGG("KEGG", "www.genome.jp/kegg"), BIOCARTA("BioCarta", "www.biocarta.com");
 
-	private String sName;
+	private String name;
 
-	private String sURL;
+	private String url;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param sName
-	 * @param sURL
+	 * @param name
+	 * @param url
 	 */
-	private EPathwayDatabaseType(String sName, String sURL) {
+	private PathwayDatabaseType(String name, String url) {
 
-		this.sName = sName;
-		this.sURL = sURL;
+		this.name = name;
+		this.url = url;
 	}
 
 	public String getName() {
 
-		return sName;
+		return name;
 	}
 
 	public String getURL() {
 
-		return sURL;
+		return url;
 	}
 }

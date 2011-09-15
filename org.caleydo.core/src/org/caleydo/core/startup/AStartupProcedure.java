@@ -1,10 +1,11 @@
 package org.caleydo.core.startup;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IFolderLayout;
+import org.osgi.framework.BundleException;
 
 /**
  * Abstract startup procedure. Handling of view initialization and application init data.
@@ -23,13 +24,13 @@ public abstract class AStartupProcedure {
 	}
 
 	/**
-	 * Initialization stuff that has to be done before the workbench opens
-	 * (e.g., copying the workbench data from a serialized project).
+	 * Initialization stuff that has to be done before the workbench opens (e.g., copying the workbench data
+	 * from a serialized project).
 	 */
 	public void initPreWorkbenchOpen() {
-		
+
 	}
-	
+
 	public void execute() {
 		loadPathways();
 
@@ -70,6 +71,12 @@ public abstract class AStartupProcedure {
 		if (!appInitData.isLoadPathways())
 			return;
 
-		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
+		try {
+			Platform.getBundle("org.caleydo.datadomain.pathway").start();
+		}
+		catch (BundleException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

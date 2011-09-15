@@ -64,7 +64,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.util.graph.EGraphItemKind;
@@ -528,7 +528,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 
-		if (pathway.getType().equals(EPathwayDatabaseType.BIOCARTA)) {
+		if (pathway.getType().equals(PathwayDatabaseType.BIOCARTA)) {
 			fPathwayScalingFactor = 5;
 		} else {
 			fPathwayScalingFactor = 3.2f;
@@ -660,7 +660,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 				// Load embedded pathway
 				if (tmpVertexGraphItemRep.getType() == EPathwayVertexType.map) {
 					PathwayGraph pathway = pathwayManager.searchPathwayByName(
-							tmpVertexGraphItemRep.getName(), EPathwayDatabaseType.KEGG);
+							tmpVertexGraphItemRep.getName(), PathwayDatabaseType.KEGG);
 
 					if (pathway != null) {
 						LoadPathwayEvent event = new LoadPathwayEvent();
@@ -702,7 +702,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(
 							pathwayManager.searchPathwayByName(
 									tmpVertexGraphItemRep.getName(),
-									EPathwayDatabaseType.KEGG),
+									PathwayDatabaseType.KEGG),
 							dataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 

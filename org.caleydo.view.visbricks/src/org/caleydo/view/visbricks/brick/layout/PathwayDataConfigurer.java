@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
@@ -194,9 +194,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		if (brick.getSegmentData() instanceof PathwaySegmentData) {
 			PathwaySegmentData brickData = (PathwaySegmentData) brick.getSegmentData();
 			if (brickData.getPathway() != null) {
-				EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
+				PathwayDatabaseType dataBaseType = brickData.getPathway().getType();
 				EIconTextures texture;
-				if (dataBaseType == EPathwayDatabaseType.KEGG) {
+				if (dataBaseType == PathwayDatabaseType.KEGG) {
 					texture = EIconTextures.CM_KEGG;
 				} else {
 					texture = EIconTextures.CM_BIOCARTA;

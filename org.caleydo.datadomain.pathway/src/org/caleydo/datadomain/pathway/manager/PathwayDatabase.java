@@ -14,7 +14,7 @@ public class PathwayDatabase implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
-	private EPathwayDatabaseType type;
+	private PathwayDatabaseType type;
 
 	private String sXMLPath;
 
@@ -25,7 +25,7 @@ public class PathwayDatabase implements Serializable {
 	/**
 	 * Constructor.
 	 */
-	public PathwayDatabase(final EPathwayDatabaseType type, final String sXMLPath,
+	public PathwayDatabase(final PathwayDatabaseType type, final String sXMLPath,
 			final String sImagePath, final String sImageMapPath) {
 		this.type = type;
 		this.sXMLPath = sXMLPath;
@@ -49,7 +49,7 @@ public class PathwayDatabase implements Serializable {
 		this.sImageMapPath = this.sImageMapPath.replace(
 				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
-		if (type == EPathwayDatabaseType.KEGG) {
+		if (type == PathwayDatabaseType.KEGG) {
 			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
 
 			if (eOrganism == Organism.HOMO_SAPIENS) {
@@ -62,7 +62,7 @@ public class PathwayDatabase implements Serializable {
 		}
 	}
 
-	public final EPathwayDatabaseType getType() {
+	public final PathwayDatabaseType getType() {
 		return type;
 	}
 

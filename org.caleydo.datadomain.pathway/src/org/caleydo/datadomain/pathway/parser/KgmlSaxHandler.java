@@ -11,7 +11,7 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.core.parser.xml.IXmlParserHandler;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.util.graph.IGraph;
@@ -172,7 +172,7 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// PNGs
 		sPathwayTexturePath = sPathwayTexturePath.replace(".gif", ".png");
 
-		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, sName,
+		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.KEGG, sName,
 				sTitle, sPathwayTexturePath, sExternalLink);
 	}
 
