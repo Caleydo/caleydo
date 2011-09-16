@@ -1,6 +1,6 @@
 package org.caleydo.view.radial.contextmenu;
 
-import org.caleydo.core.manager.event.view.radial.DetailOutsideEvent;
+import org.caleydo.core.event.view.radial.DetailOutsideEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class DetailOutsideItem extends AContextMenuItem {

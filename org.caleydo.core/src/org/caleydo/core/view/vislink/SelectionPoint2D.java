@@ -1,4 +1,4 @@
-package org.caleydo.core.view;
+package org.caleydo.core.view.vislink;
 
 import javax.xml.bind.annotation.XmlTransient;
 

@@ -13,9 +13,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.view.ConnectionMap;
-import org.caleydo.core.manager.view.SelectedElementRepList;
-import org.caleydo.core.manager.view.ViewManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
@@ -23,6 +21,8 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkAnimationStage;
 import org.caleydo.core.view.opengl.util.vislink.VisLinkScene;
+import org.caleydo.core.view.vislink.ConnectionMap;
+import org.caleydo.core.view.vislink.SelectedElementRepList;
 
 /**
  * Specialized connection line renderer for bucket view.

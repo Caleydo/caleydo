@@ -1,8 +1,8 @@
 package org.caleydo.view.radial.listener;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.view.radial.GLRadialHierarchy;
 
 /**

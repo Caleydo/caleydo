@@ -5,7 +5,7 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
-import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**

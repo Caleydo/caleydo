@@ -12,7 +12,6 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * TODO The use case for pathway input data.

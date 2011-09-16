@@ -2,7 +2,7 @@ package org.caleydo.view.grouper.event;
 
 import java.util.Set;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 public class CopyGroupsEvent extends AEvent {
 	private Set<Integer> setGroupsToCopy;

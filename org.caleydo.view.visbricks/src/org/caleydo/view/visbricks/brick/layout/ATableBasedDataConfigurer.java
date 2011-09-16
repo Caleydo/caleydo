@@ -4,8 +4,8 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

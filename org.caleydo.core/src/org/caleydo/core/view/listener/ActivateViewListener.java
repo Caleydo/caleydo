@@ -1,4 +1,4 @@
-package org.caleydo.core.view;
+package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
@@ -12,6 +12,7 @@ import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.ui.IViewPart;

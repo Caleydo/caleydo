@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.event;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Event for opening the dialog for creating pathway groups.

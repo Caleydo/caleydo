@@ -1,9 +1,9 @@
 package org.caleydo.view.scatterplot.actions;
 
+import org.caleydo.core.event.view.tablebased.ToggleMatrixZoomEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.tablebased.ToggleMatrixZoomEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;

@@ -1,10 +1,11 @@
-package org.caleydo.core.view;
+package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.view.ViewManager;
 
 /**
  * Handles {@link CreateGUIViewEvent}s by invoking the method on the related ViewManager.

@@ -4,13 +4,13 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.ClearSelectionsEvent;
+import org.caleydo.core.event.view.browser.ChangeURLEvent;
+import org.caleydo.core.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
-import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 
 public class SearchViewMediator {
 

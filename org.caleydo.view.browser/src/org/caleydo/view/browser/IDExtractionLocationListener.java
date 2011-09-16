@@ -5,7 +5,6 @@ import java.util.Iterator;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.util.graph.EGraphItemProperty;

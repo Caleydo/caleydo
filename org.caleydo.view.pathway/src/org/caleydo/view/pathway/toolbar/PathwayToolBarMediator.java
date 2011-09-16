@@ -1,10 +1,10 @@
 package org.caleydo.view.pathway.toolbar;
 
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.pathway.DisableGeneMappingEvent;
+import org.caleydo.core.event.view.pathway.EnableGeneMappingEvent;
+import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.view.pathway.DisableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.pathway.EnableGeneMappingEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**

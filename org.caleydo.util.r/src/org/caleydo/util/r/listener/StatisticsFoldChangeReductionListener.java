@@ -1,8 +1,8 @@
 package org.caleydo.util.r.listener;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.data.StatisticsFoldChangeReductionEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.util.r.RStatisticsPerformer;
 
 public class StatisticsFoldChangeReductionListener extends

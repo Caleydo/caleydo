@@ -9,8 +9,8 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;
+import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 
 /**
  * Class is responsible for rendering and drawing of connection lines (resp. planes) between views in the

@@ -12,7 +12,7 @@ import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.data.virtualarray.similarity.SimilarityMap;
 import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
-import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
+import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.visbricks.GLVisBricks;

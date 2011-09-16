@@ -4,7 +4,7 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.selection.AddSelectionEvent;
-import org.caleydo.core.view.ConnectedElementRepresentationManager;
+import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 
 /**
  * Listens for {@link AddSelectionEvent} to pass it to the related

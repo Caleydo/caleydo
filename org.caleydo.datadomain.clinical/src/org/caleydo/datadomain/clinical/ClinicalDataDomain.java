@@ -10,7 +10,6 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;

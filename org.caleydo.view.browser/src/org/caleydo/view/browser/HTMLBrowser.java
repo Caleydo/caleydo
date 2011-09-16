@@ -4,8 +4,8 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.serialize.SerializedDummyView;
 import org.caleydo.core.util.logging.Logger;

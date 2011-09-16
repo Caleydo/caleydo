@@ -1,8 +1,8 @@
 package org.caleydo.view.datagraph.listener;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.view.datagraph.GLDataGraph;
 
 public class DimensionGroupsChangedEventListener extends AEventListener<GLDataGraph> {

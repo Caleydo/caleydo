@@ -4,7 +4,7 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.serialize.SerializationData;
-import org.caleydo.core.view.CanvasConnectionMap;
+import org.caleydo.core.view.vislink.CanvasConnectionMap;
 
 /**
  * This interface has to be implemented by environment specific groupware-manager classes.

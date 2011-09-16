@@ -1,15 +1,15 @@
 package org.caleydo.view.bucket.toolbar;
 
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.remote.DisableConnectionLinesEvent;
+import org.caleydo.core.event.view.remote.EnableConnectionLinesEvent;
+import org.caleydo.core.event.view.remote.ResetRemoteRendererEvent;
+import org.caleydo.core.event.view.remote.ToggleNavigationModeEvent;
+import org.caleydo.core.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.remote.DisableConnectionLinesEvent;
-import org.caleydo.core.manager.event.view.remote.EnableConnectionLinesEvent;
-import org.caleydo.core.manager.event.view.remote.ResetRemoteRendererEvent;
-import org.caleydo.core.manager.event.view.remote.ToggleNavigationModeEvent;
-import org.caleydo.core.manager.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.view.bucket.listener.DisableConnectionLinesListener;
 import org.caleydo.view.bucket.listener.EnableConnectionLinesListener;

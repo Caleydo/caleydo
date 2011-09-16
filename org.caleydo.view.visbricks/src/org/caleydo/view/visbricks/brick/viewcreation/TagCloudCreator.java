@@ -2,7 +2,6 @@ package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
@@ -10,7 +9,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.tagclouds.GLTagCloud;
 import org.caleydo.view.visbricks.brick.GLBrick;
 

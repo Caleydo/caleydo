@@ -9,6 +9,7 @@ import org.caleydo.core.event.view.OpenViewEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.listener.ActivateViewListener;
 import org.eclipse.ui.PlatformUI;
 
 /**

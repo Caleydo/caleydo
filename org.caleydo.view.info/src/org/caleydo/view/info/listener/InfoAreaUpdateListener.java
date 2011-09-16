@@ -1,10 +1,10 @@
 package org.caleydo.view.info.listener;
 
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.view.infoarea.InfoAreaUpdateEvent;
-import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.view.infoarea.InfoAreaUpdateEvent;
+import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.view.info.InfoArea;
 
 /**

@@ -3,7 +3,7 @@
  */
 package org.caleydo.view.filterpipeline;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;

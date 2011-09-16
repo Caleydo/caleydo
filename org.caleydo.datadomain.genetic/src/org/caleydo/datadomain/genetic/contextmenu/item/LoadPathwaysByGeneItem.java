@@ -1,7 +1,7 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

@@ -1,4 +1,4 @@
-package org.caleydo.core.view;
+package org.caleydo.core.view.vislink;
 
 import gleem.linalg.Vec3f;
 
@@ -17,6 +17,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.selection.NewConnectionsEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.listener.NewConnectionsListener;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.graphics.Point;

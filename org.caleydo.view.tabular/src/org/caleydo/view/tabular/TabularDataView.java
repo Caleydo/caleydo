@@ -2,7 +2,6 @@ package org.caleydo.view.tabular;
 
 import java.util.Iterator;
 
-import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -23,11 +22,11 @@ import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
+import org.caleydo.core.event.view.ClearSelectionsEvent;
+import org.caleydo.core.event.view.SelectionCommandEvent;
+import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;

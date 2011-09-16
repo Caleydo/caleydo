@@ -2,9 +2,6 @@ package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.NominalColumn;
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.grouper.GrouperRenderStyle;

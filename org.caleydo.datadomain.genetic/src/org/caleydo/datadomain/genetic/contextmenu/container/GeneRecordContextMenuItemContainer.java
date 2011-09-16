@@ -4,7 +4,6 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
@@ -12,7 +11,6 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByGeneItem;
 import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * Implementation of AItemContainer for Genes. By passing an ID all relevant

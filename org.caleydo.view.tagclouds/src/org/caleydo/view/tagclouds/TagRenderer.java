@@ -4,10 +4,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.AColumn;
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.collection.dimension.NominalColumn;
-import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;

@@ -6,7 +6,7 @@ import java.io.IOException;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.specialized.Organism;
+import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.eclipse.core.runtime.IStatus;

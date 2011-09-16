@@ -5,7 +5,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.view.SelectionPoint2DList;
+import org.caleydo.core.view.vislink.SelectionPoint2DList;
 
 /**
  * Sends new 2d connection line vertices from a caleydo-client to a server.

@@ -1,4 +1,4 @@
-package org.caleydo.core.view;
+package org.caleydo.core.view.vislink;
 
 import gleem.linalg.Mat4f;
 import gleem.linalg.Rotf;
@@ -11,6 +11,7 @@ import java.util.Map.Entry;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 

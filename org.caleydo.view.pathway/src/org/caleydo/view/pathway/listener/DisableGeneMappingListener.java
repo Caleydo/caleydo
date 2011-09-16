@@ -1,6 +1,6 @@
 package org.caleydo.view.pathway.listener;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 public class DisableGeneMappingListener extends APathwayListener {
 

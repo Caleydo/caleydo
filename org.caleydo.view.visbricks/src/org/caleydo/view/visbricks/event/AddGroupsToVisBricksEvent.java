@@ -9,7 +9,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 

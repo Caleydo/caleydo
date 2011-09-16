@@ -1,6 +1,6 @@
 package org.caleydo.datadomain.genetic.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 

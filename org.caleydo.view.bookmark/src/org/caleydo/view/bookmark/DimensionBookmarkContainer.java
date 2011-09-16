@@ -1,7 +1,7 @@
 package org.caleydo.view.bookmark;
 
 import org.caleydo.core.data.selection.DimensionSelectionManager;
-import org.caleydo.core.manager.event.data.BookmarkEvent;
+import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.util.collection.UniqueList;
 
 /**

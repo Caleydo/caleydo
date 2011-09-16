@@ -14,7 +14,6 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.caleydo.view.visbricks.brick.GLBrick;

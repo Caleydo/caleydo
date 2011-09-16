@@ -1,7 +1,7 @@
 package org.caleydo.view.heatmap.listener;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.view.keyboard.WrapperKeyEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.view.keyboard.WrapperKeyEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.eclipse.swt.SWT;

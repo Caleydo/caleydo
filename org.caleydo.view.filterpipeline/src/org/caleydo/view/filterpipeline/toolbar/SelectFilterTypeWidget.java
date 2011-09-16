@@ -1,9 +1,9 @@
 package org.caleydo.view.filterpipeline.toolbar;
 
+import org.caleydo.core.event.view.filterpipeline.SetFilterTypeEvent;
+import org.caleydo.core.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent;
-import org.caleydo.core.manager.event.view.filterpipeline.SetFilterTypeEvent.FilterType;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;

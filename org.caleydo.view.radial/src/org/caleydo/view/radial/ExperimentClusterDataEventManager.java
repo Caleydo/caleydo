@@ -8,9 +8,9 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
-import org.caleydo.core.manager.event.view.ClusterNodeSelectionEvent;
-import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.event.view.ClearSelectionsEvent;
+import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.canvas.listener.ClusterNodeSelectionListener;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 

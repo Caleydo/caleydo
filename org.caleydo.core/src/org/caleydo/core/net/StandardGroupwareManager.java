@@ -5,7 +5,7 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.serialize.SerializationData;
-import org.caleydo.core.view.CanvasConnectionMap;
+import org.caleydo.core.view.vislink.CanvasConnectionMap;
 
 /**
  * GroupwareManager for standard networking environment where each user uses its own desktop for caleydo. One

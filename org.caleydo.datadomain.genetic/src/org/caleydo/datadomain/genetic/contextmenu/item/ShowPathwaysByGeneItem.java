@@ -4,11 +4,10 @@ import java.util.Arrays;
 import java.util.Set;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 
 /**
  * <p>

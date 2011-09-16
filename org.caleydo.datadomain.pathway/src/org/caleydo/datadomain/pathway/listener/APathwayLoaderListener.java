@@ -1,6 +1,6 @@
 package org.caleydo.datadomain.pathway.listener;
 
-import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.event.AEventListener;
 import org.caleydo.datadomain.pathway.IPathwayLoader;
 
 /**

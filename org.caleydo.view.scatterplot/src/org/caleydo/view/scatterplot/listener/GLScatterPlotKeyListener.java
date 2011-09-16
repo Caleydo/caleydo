@@ -1,6 +1,6 @@
 package org.caleydo.view.scatterplot.listener;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.view.scatterplot.GLScatterPlot;
 import org.eclipse.swt.SWT;
