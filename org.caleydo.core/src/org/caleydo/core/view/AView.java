@@ -8,9 +8,9 @@ import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.view.SelectionCommandEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 

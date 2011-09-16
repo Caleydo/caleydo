@@ -1,7 +1,7 @@
 package org.caleydo.core.plex;
 
+import org.caleydo.core.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;

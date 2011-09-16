@@ -6,8 +6,8 @@ import java.util.Collection;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.event.AEvent;
 import org.caleydo.core.manager.BasicInformation;
-import org.caleydo.core.manager.event.AEvent;
 
 /**
  * Central access point for xml-serialization related tasks.

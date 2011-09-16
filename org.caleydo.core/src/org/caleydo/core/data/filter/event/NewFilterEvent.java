@@ -1,7 +1,7 @@
 package org.caleydo.core.data.filter.event;
 
 import org.caleydo.core.data.filter.Filter;
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Base class for events signaling a new Filter

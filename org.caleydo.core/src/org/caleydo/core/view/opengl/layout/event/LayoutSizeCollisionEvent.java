@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.layout.event;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Event signalling that a layout can not be rendered within its borders.

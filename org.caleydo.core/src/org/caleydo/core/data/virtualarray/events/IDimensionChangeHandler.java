@@ -1,9 +1,8 @@
 package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for ListenerOwners handling dimension VA updates

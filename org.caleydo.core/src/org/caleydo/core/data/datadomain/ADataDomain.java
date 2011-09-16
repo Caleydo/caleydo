@@ -9,9 +9,9 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.event.AEventHandler;
+import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEventHandler;
-import org.caleydo.core.manager.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 

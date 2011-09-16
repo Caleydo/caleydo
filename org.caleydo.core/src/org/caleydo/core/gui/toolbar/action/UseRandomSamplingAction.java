@@ -1,8 +1,8 @@
 package org.caleydo.core.gui.toolbar.action;
 
+import org.caleydo.core.event.view.tablebased.UseRandomSamplingEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.tablebased.UseRandomSamplingEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;

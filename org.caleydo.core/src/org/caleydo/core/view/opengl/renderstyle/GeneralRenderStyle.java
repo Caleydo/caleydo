@@ -1,9 +1,9 @@
 package org.caleydo.core.view.opengl.renderstyle;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.SetMinViewSizeEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 

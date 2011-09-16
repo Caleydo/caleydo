@@ -1,7 +1,7 @@
 package org.caleydo.core.view.contextmenu.item;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.manager.event.data.StatisticsFoldChangeReductionEvent;
+import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class StatisticsFoldChangeReductionItem

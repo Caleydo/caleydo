@@ -3,7 +3,7 @@ package org.caleydo.core.data.virtualarray.events;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * <p>

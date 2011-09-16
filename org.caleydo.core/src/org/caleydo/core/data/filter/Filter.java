@@ -1,7 +1,5 @@
 package org.caleydo.core.data.filter;
 
-import java.util.Set;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.representation.AFilterRepresentation;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;

@@ -1,6 +1,6 @@
 package org.caleydo.core.view.swt.collab;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Test event for serialization stuff

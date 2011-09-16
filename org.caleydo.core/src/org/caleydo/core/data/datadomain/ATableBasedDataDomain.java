@@ -1,6 +1,5 @@
 package org.caleydo.core.data.datadomain;
 
-import java.util.ArrayList;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -41,19 +40,17 @@ import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveList
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.StartClusteringEvent;
+import org.caleydo.core.event.view.SelectionCommandEvent;
+import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
-import org.caleydo.core.manager.event.view.SelectionCommandEvent;
-import org.caleydo.core.manager.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
-import org.caleydo.core.util.color.Color;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
 import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;

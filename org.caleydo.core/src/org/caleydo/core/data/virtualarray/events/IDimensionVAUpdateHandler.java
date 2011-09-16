@@ -1,7 +1,7 @@
 package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 public interface IDimensionVAUpdateHandler
 	extends IListenerOwner {

@@ -2,9 +2,9 @@ package org.caleydo.core.view.contextmenu;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.EventPublisher;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;

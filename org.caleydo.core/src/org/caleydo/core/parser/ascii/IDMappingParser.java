@@ -7,8 +7,8 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;

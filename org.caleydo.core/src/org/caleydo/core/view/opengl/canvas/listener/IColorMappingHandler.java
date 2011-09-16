@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.histogram.UpdateColorMappingEvent;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 
 /**

@@ -1,9 +1,8 @@
 package org.caleydo.core.data.virtualarray.events;
 
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Handler interface for listeners for {@link RecordVADeltaEvent} and {@link ReplaceRecordPerspectiveEvent}.

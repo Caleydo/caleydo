@@ -2,8 +2,8 @@ package org.caleydo.core.data.filter.event;
 
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
 
 /**
  * Listener for {@link MoveFilterEvent}s.

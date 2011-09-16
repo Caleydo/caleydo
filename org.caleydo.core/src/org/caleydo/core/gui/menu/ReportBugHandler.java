@@ -1,7 +1,7 @@
 package org.caleydo.core.gui.menu;
 
+import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.browser.ChangeURLEvent;
 import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;

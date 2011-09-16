@@ -1,7 +1,7 @@
 package org.caleydo.core.view.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.group.InterchangeContentGroupsEvent;
-import org.caleydo.core.manager.event.view.group.InterchangeDimensionGroupsEvent;
+import org.caleydo.core.event.view.group.InterchangeContentGroupsEvent;
+import org.caleydo.core.event.view.group.InterchangeDimensionGroupsEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

@@ -1,6 +1,6 @@
 package org.caleydo.core.view.swt.collab;
 
-import org.caleydo.core.manager.vislink.VisLinkManager;
+import org.caleydo.core.view.vislink.VisLinkManager;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;
 

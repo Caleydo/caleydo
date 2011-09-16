@@ -1,16 +1,15 @@
 package org.caleydo.core.view;
 
-import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.data.BookmarkEvent;
+import org.caleydo.core.event.view.OpenMatchmakerViewEvent;
+import org.caleydo.core.event.view.OpenViewEvent;
+import org.caleydo.core.event.view.grouper.CompareGroupsEvent;
+import org.caleydo.core.event.view.remote.LoadPathwayEvent;
+import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.data.BookmarkEvent;
-import org.caleydo.core.manager.event.view.OpenMatchmakerViewEvent;
-import org.caleydo.core.manager.event.view.OpenViewEvent;
-import org.caleydo.core.manager.event.view.grouper.CompareGroupsEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.manager.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;

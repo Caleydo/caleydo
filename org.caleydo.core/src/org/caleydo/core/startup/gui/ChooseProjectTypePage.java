@@ -7,8 +7,8 @@ import java.util.Date;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.specialized.Organism;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.specialized.Organism;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;

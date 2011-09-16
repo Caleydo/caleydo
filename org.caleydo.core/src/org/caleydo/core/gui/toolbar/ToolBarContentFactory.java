@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
-import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.ViewManager;
 import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchWindow;

@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for view classes that need to get information on when to update a view. Implementation of this

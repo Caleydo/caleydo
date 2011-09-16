@@ -5,7 +5,6 @@ import java.util.Set;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * <p>

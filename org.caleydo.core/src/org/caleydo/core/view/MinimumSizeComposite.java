@@ -1,10 +1,10 @@
 package org.caleydo.core.view;
 
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.SetMinViewSizeEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.ScrolledComposite;

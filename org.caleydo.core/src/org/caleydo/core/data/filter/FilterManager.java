@@ -10,11 +10,11 @@ import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
 import org.caleydo.core.data.virtualarray.events.VADeltaEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.IListenerOwner;
 
 /**
  * <p>

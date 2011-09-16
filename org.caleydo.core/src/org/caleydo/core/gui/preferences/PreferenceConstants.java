@@ -1,6 +1,5 @@
 package org.caleydo.core.gui.preferences;
 
-import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
 /**
  * Constant definitions for plug-in preferences

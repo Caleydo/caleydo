@@ -2,10 +2,10 @@ package org.caleydo.core.gui.preferences;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.view.tablebased.RedrawViewEvent;
-import org.caleydo.core.manager.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.view.opengl.util.vislink.EVisLinkStyleType;
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.PreferenceStore;

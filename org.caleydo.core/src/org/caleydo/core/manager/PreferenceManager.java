@@ -4,7 +4,7 @@ import java.io.File;
 import java.io.IOException;
 
 import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.specialized.Organism;
+import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

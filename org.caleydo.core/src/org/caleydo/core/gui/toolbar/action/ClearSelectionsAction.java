@@ -1,7 +1,7 @@
 package org.caleydo.core.gui.toolbar.action;
 
+import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.ClearSelectionsEvent;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;

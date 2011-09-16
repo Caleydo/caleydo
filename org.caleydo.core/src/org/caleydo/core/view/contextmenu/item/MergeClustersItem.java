@@ -1,7 +1,7 @@
 package org.caleydo.core.view.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.group.MergeContentGroupsEvent;
-import org.caleydo.core.manager.event.view.group.MergeDimensionGroupsEvent;
+import org.caleydo.core.event.view.group.MergeContentGroupsEvent;
+import org.caleydo.core.event.view.group.MergeDimensionGroupsEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

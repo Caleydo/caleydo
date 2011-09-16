@@ -1,9 +1,9 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.data.ClusterProgressEvent;
-import org.caleydo.core.manager.event.data.RenameProgressBarEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.data.ClusterProgressEvent;
+import org.caleydo.core.event.data.RenameProgressBarEvent;
 
 public class ClusterProgressListener
 	extends AEventListener<ClusteringProgressBar> {

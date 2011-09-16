@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.remote.receiver;
 
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 public interface IContentGroupsActionHandler
 	extends IListenerOwner {

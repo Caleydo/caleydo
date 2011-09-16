@@ -1,7 +1,7 @@
 package org.caleydo.core.view.swt.collab;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
 
 public class RedrawCollabViewListener
 	extends AEventListener<CollabView> {

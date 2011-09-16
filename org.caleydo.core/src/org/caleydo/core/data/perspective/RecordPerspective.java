@@ -1,6 +1,5 @@
 package org.caleydo.core.data.perspective;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 

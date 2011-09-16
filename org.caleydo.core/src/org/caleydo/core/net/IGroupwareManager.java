@@ -3,8 +3,8 @@ package org.caleydo.core.net;
 import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.manager.view.CanvasConnectionMap;
 import org.caleydo.core.serialize.SerializationData;
+import org.caleydo.core.view.CanvasConnectionMap;
 
 /**
  * This interface has to be implemented by environment specific groupware-manager classes.

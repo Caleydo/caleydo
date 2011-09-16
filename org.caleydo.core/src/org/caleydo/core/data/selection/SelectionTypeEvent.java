@@ -1,6 +1,6 @@
 package org.caleydo.core.data.selection;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Create or remove a selection type

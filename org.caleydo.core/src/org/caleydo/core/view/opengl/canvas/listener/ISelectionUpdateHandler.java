@@ -1,7 +1,7 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for views, mediator or manager classes that needs to get selection-update information.

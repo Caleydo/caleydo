@@ -2,7 +2,7 @@ package org.caleydo.core.net.config;
 
 import java.util.Collection;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * <p>

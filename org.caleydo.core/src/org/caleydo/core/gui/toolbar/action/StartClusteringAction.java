@@ -1,13 +1,10 @@
 package org.caleydo.core.gui.toolbar.action;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.data.StartClusteringEvent;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.data.loader.ResourceLoader;

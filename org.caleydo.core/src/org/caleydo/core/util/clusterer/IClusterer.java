@@ -2,7 +2,7 @@ package org.caleydo.core.util.clusterer;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 
 /**

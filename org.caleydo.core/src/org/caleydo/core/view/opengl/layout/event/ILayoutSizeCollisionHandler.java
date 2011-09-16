@@ -1,6 +1,6 @@
 package org.caleydo.core.view.opengl.layout.event;
 
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for classes that want to handle collisions in the layouts

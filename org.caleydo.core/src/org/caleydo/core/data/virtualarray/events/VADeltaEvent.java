@@ -4,7 +4,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Event to signal that the virtual array has changed. It carries a {@link VirtualArrayDelta} as payload which

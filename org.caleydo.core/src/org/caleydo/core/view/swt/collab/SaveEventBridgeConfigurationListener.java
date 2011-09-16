@@ -2,8 +2,8 @@ package org.caleydo.core.view.swt.collab;
 
 import java.util.List;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.net.EventFilterBridge;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;

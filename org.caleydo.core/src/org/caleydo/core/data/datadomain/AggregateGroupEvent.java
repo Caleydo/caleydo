@@ -2,7 +2,7 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
 
-import org.caleydo.core.manager.event.AEvent;
+import org.caleydo.core.event.AEvent;
 
 /**
  * Event signaling that the groups specified should be aggregated into one dimension

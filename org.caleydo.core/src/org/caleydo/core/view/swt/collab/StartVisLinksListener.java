@@ -1,7 +1,7 @@
 package org.caleydo.core.view.swt.collab;
 
-import org.caleydo.core.manager.execution.DisplayLoopExecution;
-import org.caleydo.core.manager.vislink.VisLinkManager;
+import org.caleydo.core.util.execution.DisplayLoopExecution;
+import org.caleydo.core.view.vislink.VisLinkManager;
 import org.eclipse.swt.graphics.Rectangle;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;

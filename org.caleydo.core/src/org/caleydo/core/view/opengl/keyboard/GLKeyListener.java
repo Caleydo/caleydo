@@ -1,9 +1,9 @@
 package org.caleydo.core.view.opengl.keyboard;
 
-import org.caleydo.core.manager.event.AEvent;
-import org.caleydo.core.manager.event.AEventListener;
-import org.caleydo.core.manager.event.IListenerOwner;
-import org.caleydo.core.manager.event.view.keyboard.WrapperKeyEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.keyboard.WrapperKeyEvent;
 import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 

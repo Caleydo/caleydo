@@ -5,9 +5,9 @@ import java.util.Map.Entry;
 
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.EventPublisher;
-import org.caleydo.core.manager.event.data.RelationsUpdatedEvent;
 
 /**
  * Analyze the relations of groups (i.e. created through clustering) in multiple virtual arrays.

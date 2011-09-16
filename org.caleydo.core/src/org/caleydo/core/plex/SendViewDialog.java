@@ -1,10 +1,10 @@
 package org.caleydo.core.plex;
 
+import org.caleydo.core.event.view.CreateGUIViewEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.manager.event.view.CreateGUIViewEvent;
-import org.caleydo.core.manager.view.ViewManager;
 import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.net.NetworkManager;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.swt.SWT;

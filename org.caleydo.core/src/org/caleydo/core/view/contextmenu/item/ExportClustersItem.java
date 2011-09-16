@@ -1,7 +1,7 @@
 package org.caleydo.core.view.contextmenu.item;
 
-import org.caleydo.core.manager.event.view.group.ExportContentGroupsEvent;
-import org.caleydo.core.manager.event.view.group.ExportDimensionGroupsEvent;
+import org.caleydo.core.event.view.group.ExportContentGroupsEvent;
+import org.caleydo.core.event.view.group.ExportDimensionGroupsEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

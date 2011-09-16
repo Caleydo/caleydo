@@ -10,7 +10,7 @@ import java.net.SocketTimeoutException;
 
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.manager.event.EventPublisher;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.serialize.SerializationData;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;

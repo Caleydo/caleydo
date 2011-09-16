@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.canvas.listener;
 
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.manager.event.IListenerOwner;
+import org.caleydo.core.event.IListenerOwner;
 
 /**
  * Interface for classes that handle {@link SelectionCommand}s.
