@@ -77,19 +77,19 @@ public class Application
 		loadSources(MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN), mrnaConfiguration);
 
-//		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
-//		mirnaConfiguration.setColumnDimension(false);
-//		mirnaConfiguration.setRecordIDCategory("MIRNA_SAMPLE");
-//		mirnaConfiguration.setDimensionIDCategory("miRNA");
-//		mirnaConfiguration.setHumanReadableRecordIDType("MIRNA_SAMPLE");
-//		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
-//		mirnaConfiguration.setRecordDenominationPlural("samples");
-//		mirnaConfiguration.setRecordDenominationSingular("sample");
-//		mirnaConfiguration.setDimensionDenominationPlural("miRNAs");
-//		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
-//
-//		loadSources(MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
-//			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_YELLOW_BLUE), mirnaConfiguration);
+		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
+		mirnaConfiguration.setColumnDimension(false);
+		mirnaConfiguration.setRecordIDCategory("MIRNA_SAMPLE");
+		mirnaConfiguration.setDimensionIDCategory("miRNA");
+		mirnaConfiguration.setHumanReadableRecordIDType("MIRNA_SAMPLE");
+		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
+		mirnaConfiguration.setRecordDenominationPlural("samples");
+		mirnaConfiguration.setRecordDenominationSingular("sample");
+		mirnaConfiguration.setDimensionDenominationPlural("miRNAs");
+		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
+
+		loadSources(MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_YELLOW_BLUE), mirnaConfiguration);
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setColumnDimension(false);

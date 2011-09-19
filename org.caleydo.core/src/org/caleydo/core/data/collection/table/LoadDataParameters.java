@@ -29,7 +29,7 @@ public class LoadDataParameters {
 	private ATableBasedDataDomain dataDomain;
 
 	/** A list of ids for the dimensions (columns) in the file */
-	private ArrayList<Integer> dimensionIds;
+	private ArrayList<Integer> columnIDs;
 
 	/** Specifies the IDType that is used in the data file to identify the rows */
 	@XmlElement
@@ -112,18 +112,18 @@ public class LoadDataParameters {
 	}
 
 	/**
-	 * @return the dimensionIds, see {@link #dimensionIds}
+	 * @return the columnIDs, see {@link #columnIDs}
 	 */
-	public ArrayList<Integer> getColumnIds() {
-		return dimensionIds;
+	public ArrayList<Integer> getColumnIDs() {
+		return columnIDs;
 	}
 
 	/**
-	 * @param dimensionIds
-	 *            setter, see {@link #dimensionIds}
+	 * @param columnIDs
+	 *            setter, see {@link #columnIDs}
 	 */
-	public void setDimensionIds(ArrayList<Integer> dimensionIds) {
-		this.dimensionIds = dimensionIds;
+	public void setColumnIDs(ArrayList<Integer> columnIDs) {
+		this.columnIDs = columnIDs;
 	}
 
 	/**
@@ -325,14 +325,15 @@ public class LoadDataParameters {
 	public boolean isDataHomogeneous() {
 		return isDataHomogeneous;
 	}
-	
+
 	/**
-	 * @param columnHeaderStringConverter setter, see {@link #columnHeaderStringConverter}
+	 * @param columnHeaderStringConverter
+	 *            setter, see {@link #columnHeaderStringConverter}
 	 */
 	public void setColumnHeaderStringConverter(AStringConverter columnHeaderStringConverter) {
 		this.columnHeaderStringConverter = columnHeaderStringConverter;
 	}
-	
+
 	/**
 	 * @return the columnHeaderStringConverter, see {@link #columnHeaderStringConverter}
 	 */

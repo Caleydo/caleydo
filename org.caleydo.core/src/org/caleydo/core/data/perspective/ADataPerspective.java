@@ -421,4 +421,9 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	}
 
+	@Override
+	public String toString() {
+		return virtualArray.toString();
+	}
+
 }

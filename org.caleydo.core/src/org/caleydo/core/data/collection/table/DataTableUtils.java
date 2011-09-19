@@ -138,14 +138,15 @@ public class DataTableUtils {
 	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
 	 */
 	public static boolean createColumns(LoadDataParameters loadDataParameters) {
+		
 
-		ArrayList<Integer> columnIds = null;
+		ArrayList<Integer> columnIDs = null;
 		boolean createColumnsFromExistingIDs = false;
 
-		if (loadDataParameters.getColumnIds() == null)
-			columnIds = new ArrayList<Integer>();
+		if (loadDataParameters.getColumnIDs() == null)
+			columnIDs = new ArrayList<Integer>();
 		else {
-			columnIds = loadDataParameters.getColumnIds();
+			columnIDs = loadDataParameters.getColumnIDs();
 			createColumnsFromExistingIDs = true;
 		}
 
@@ -190,7 +191,7 @@ public class DataTableUtils {
 
 					if (createColumnsFromExistingIDs)
 						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL,
-							columnIds.get(columnCount++));
+							columnIDs.get(columnCount++));
 					else
 						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL);
 
@@ -204,7 +205,7 @@ public class DataTableUtils {
 					columnIDMap.put(column.getID(), columnLabel);
 
 					if (!createColumnsFromExistingIDs)
-						columnIds.add(column.getID());
+						columnIDs.add(column.getID());
 
 					break;
 				case STRING:
@@ -214,7 +215,7 @@ public class DataTableUtils {
 
 					if (createColumnsFromExistingIDs)
 						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL,
-							columnIds.get(columnCount++));
+							columnIDs.get(columnCount++));
 					else
 						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL);
 
@@ -225,7 +226,7 @@ public class DataTableUtils {
 					nominalColumn.setLabel(columnLabel);
 
 					if (!createColumnsFromExistingIDs)
-						columnIds.add(nominalColumn.getID());
+						columnIDs.add(nominalColumn.getID());
 
 				case SKIP:
 					// nothing to do, just skip
@@ -242,7 +243,7 @@ public class DataTableUtils {
 			}
 		}
 		columnIDMappingManager.createReverseMap(mappingType);
-		loadDataParameters.setDimensionIds(columnIds);
+		loadDataParameters.setColumnIDs(columnIDs);
 
 		return true;
 	}
@@ -258,7 +259,7 @@ public class DataTableUtils {
 		AStringConverter stringConverter) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		ArrayList<Integer> columnIDs = loadDataParameters.getColumnIds();
+		ArrayList<Integer> columnIDs = loadDataParameters.getColumnIDs();
 
 		// Create table
 		CmdDataCreateTable cmdCreateTable =

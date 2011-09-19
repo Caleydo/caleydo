@@ -5,7 +5,14 @@ package org.caleydo.core.data.datadomain;
 
 import javax.xml.bind.annotation.XmlElement;
 
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+
 /**
+ * Configuration for {@link ATableBasedDataDomain}. This initializes the parts of the configuration of the
+ * data domain which are specific to the type of the data set loaded. Examples are {@link IDType}s, and
+ * {@link IDCategory}s.
+ * 
  * @author Alexander Lex
  */
 public class DataDomainConfiguration {
@@ -18,12 +25,12 @@ public class DataDomainConfiguration {
 	String recordIDCategory;
 	@XmlElement
 	String dimensionIDCategory;
-	
+
 	@XmlElement
 	String primaryRecordMappingType;
 	@XmlElement
 	String humanReadableRecordIDType;
-	
+
 	@XmlElement
 	String primaryDimensionMappingType;
 	@XmlElement
@@ -134,21 +141,4 @@ public class DataDomainConfiguration {
 	public void setMappingFile(String mappingFile) {
 		this.mappingFile = mappingFile;
 	}
-
-	/**
-	 * @param recordIDType
-	 *            setter, see {@link #recordIDType}
-	 */
-	// public void setRecordIDType(IDType recordIDType) {
-	// this.recordIDType = recordIDType;
-	// }
-	//
-	// /**
-	// * @param dimensionIDType
-	// * setter, see {@link #dimensionIDType}
-	// */
-	// public void setDimensionIDType(IDType dimensionIDType) {
-	// this.dimensionIDType = dimensionIDType;
-	// }
-
 }
