@@ -12,6 +12,9 @@ import org.caleydo.core.data.id.IDType;
  * Configuration for {@link ATableBasedDataDomain}. This initializes the parts of the configuration of the
  * data domain which are specific to the type of the data set loaded. Examples are {@link IDType}s, and
  * {@link IDCategory}s.
+ * <p>
+ * TODO: check whether a valid configuration has been set
+ * </p>
  * 
  * @author Alexander Lex
  */

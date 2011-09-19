@@ -42,9 +42,9 @@
 
 	<!-- ************************** Experiments ************************** -->
 
-	<Cmd type="CREATE_ID_CATEGORY" detail="EXPERIMENT" />
+	<Cmd type="CREATE_ID_CATEGORY" detail="SAMPLE" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="DIMENSION" attrib1="EXPERIMENT"
+	<Cmd type="CREATE_ID_TYPE" detail="SAMPLE" attrib1="SAMPLE"
 		attrib2="STRING" />
 
 	<!-- TODO this should created dynamically when creating a new tree! -->

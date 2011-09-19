@@ -599,7 +599,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			int iCount = 0;
 			int iTextureCounter = 0;
-			
 
 			for (Integer recordID : recordVA) {
 				iCount++;
@@ -3332,12 +3331,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
 		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
-		
-		System.out.println(dataDomain.getRecordVA(recordPerspectiveID));
-		System.out.println(table.getRecordPerspective(recordPerspectiveID));
-		System.out.println(table.getColumnIDList());
-		System.out.println(dataDomain.getTable());
-		System.out.println(table);
 
 		// In case of importing group info
 		// if (table.isGeneClusterInfo())

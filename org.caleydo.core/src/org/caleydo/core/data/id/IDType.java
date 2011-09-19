@@ -4,6 +4,8 @@ import java.util.HashMap;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 
 public class IDType {
 
@@ -73,11 +75,14 @@ public class IDType {
 		if (!(columnType == EColumnType.STRING || columnType == EColumnType.INT))
 			throw new IllegalStateException(
 				"IDTypes are allowed to be only either of type STRING or INT, but was: " + columnType);
-		if (registeredTypes.containsKey(typeName))
-			throw new IllegalStateException("IDType for typeName " + typeName + " already created");
-
+		if (registeredTypes.containsKey(typeName)) {
+			Logger.log(new Status(Status.INFO, "IDType", "IDType for typeName " + typeName
+				+ " already created"));
+			return registeredTypes.get(typeName);
+		}
 		IDType idType = new IDType(typeName, idCategory, columnType);
 		registeredTypes.put(typeName, idType);
+		Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
 
 		return idType;
 	}
@@ -85,8 +90,9 @@ public class IDType {
 	/** Returns the IDType for the typeName specified, or null if no such type is registered */
 	public static IDType getIDType(String typeName) {
 		IDType requestedType = registeredTypes.get(typeName);
-		if(requestedType == null)
-			throw new IllegalStateException("Requested IDType for typeName \"" + typeName + "\" not registered.");
+		if (requestedType == null)
+			throw new IllegalStateException("Requested IDType for typeName \"" + typeName
+				+ "\" not registered.");
 		return requestedType;
 	}
 

@@ -72,16 +72,36 @@ public class Application
 
 		GeneralManager.get().init();
 
-		DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
+		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
+
+		DataDomainConfiguration mrnaConfiguration = new DataDomainConfiguration();
+		mrnaConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
+
+		mrnaConfiguration.setColumnDimension(false);
+
+		mrnaConfiguration.setRecordIDCategory("SAMPLE");
+		mrnaConfiguration.setDimensionIDCategory("SAMPLE");
+
+		mrnaConfiguration.setPrimaryRecordMappingType("SAMPLE");
+		mrnaConfiguration.setPrimaryDimensionMappingType("DAVID");
+
+		mrnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
+		mrnaConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
+
+		mrnaConfiguration.setRecordDenominationPlural("samples");
+		mrnaConfiguration.setRecordDenominationSingular("sample");
+
+		mrnaConfiguration.setDimensionDenominationPlural("genes");
+		mrnaConfiguration.setDimensionDenominationSingular("gene");
 
 		loadSources(MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN), mrnaConfiguration);
 
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setColumnDimension(false);
-		mirnaConfiguration.setRecordIDCategory("MIRNA_SAMPLE");
+		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setDimensionIDCategory("miRNA");
-		mirnaConfiguration.setHumanReadableRecordIDType("MIRNA_SAMPLE");
+		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
 		mirnaConfiguration.setRecordDenominationPlural("samples");
 		mirnaConfiguration.setRecordDenominationSingular("sample");
@@ -93,9 +113,9 @@ public class Application
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setColumnDimension(false);
-		methylationConfiguration.setRecordIDCategory("METHYLATION_SAMPLE");
+		methylationConfiguration.setRecordIDCategory("SAMPLE");
 		methylationConfiguration.setDimensionIDCategory("Methylation");
-		methylationConfiguration.setHumanReadableRecordIDType("METHYLATION_SAMPLE");
+		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		methylationConfiguration.setHumanReadableDimensionIDType("Methylation");
 		methylationConfiguration.setRecordDenominationPlural("samples");
 		methylationConfiguration.setRecordDenominationSingular("sample");

@@ -1190,7 +1190,7 @@ public abstract class AGLView
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();
-		System.out.println("Finalizing " + VIEW_TYPE);
+		System.out.println("Finalizing " + this);
 	}
 
 	/**
