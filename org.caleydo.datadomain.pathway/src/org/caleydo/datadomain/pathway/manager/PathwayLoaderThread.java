@@ -5,9 +5,12 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.StringTokenizer;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -19,15 +22,11 @@ import org.eclipse.core.runtime.Status;
  */
 public class PathwayLoaderThread extends Thread {
 
-	private PathwayDatabase pathwayDatabase;
-
 	/**
 	 * Constructor.
 	 */
-	public PathwayLoaderThread(final PathwayDatabase pathwayDatabases) {
+	public PathwayLoaderThread() {
 		super("Pathway Loader Thread");
-
-		this.pathwayDatabase = pathwayDatabases;
 
 		Logger.log(new Status(IStatus.INFO, this.toString(),
 				"Start pathway databases loader thread"));
@@ -37,10 +36,39 @@ public class PathwayLoaderThread extends Thread {
 	public void run() {
 		super.run();
 
-		loadAllPathwaysByType();
+		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+
+		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName())) {
+
+			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
+					.get().createDataDomain("org.caleydo.datadomain.pathway");
+			pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.BIOCARTA);
+
+			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
+					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
+					"data/html");
+
+			loadPathwaysByType(pathwayDatabase);
+		}
+
+		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName())) {
+
+			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
+					.get().createDataDomain("org.caleydo.datadomain.pathway");
+			pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.KEGG);
+
+			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
+					PathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
+
+			loadPathwaysByType(pathwayDatabase);
+		}
+
+		PathwayManager.get().notifyPathwayLoadingFinished(true);
 	}
 
-	public void loadAllPathwaysByType() {
+	public void loadPathwaysByType(PathwayDatabase pathwayDatabase) {
+
 		// // Try reading list of files directly from local hard dist
 		// File folder = new File(sXMLPath);
 		// File[] arFiles = folder.listFiles();
@@ -138,7 +166,7 @@ public class PathwayLoaderThread extends Thread {
 			throw new IllegalStateException("Error reading data from pathway list file: "
 					+ fileName);
 		}
-		
+
 		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing "
 				+ pathwayDatabase.getName() + " pathways."));
 	}

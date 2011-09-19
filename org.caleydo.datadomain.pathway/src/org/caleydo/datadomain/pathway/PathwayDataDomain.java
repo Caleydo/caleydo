@@ -12,6 +12,7 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 
 /**
  * TODO The use case for pathway input data.
@@ -29,6 +30,8 @@ public class PathwayDataDomain extends ADataDomain {
 	GeneticIDMappingHelper mappingHelper;
 
 	IDType primaryIDType;
+
+	private PathwayDatabaseType pathwayDatabaseType;
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -57,11 +60,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 		super.init();
 		IDMappingLoader.get().loadMappingFile(fileName);
-
-		// PathwayManager.get().triggerParsingPathwayDatabases();
-
-		// Trigger pathway loading
-		// new PathwayLoadingProgressIndicatorAction().run(null);
 	}
 
 	// @Override
@@ -103,6 +101,10 @@ public class PathwayDataDomain extends ADataDomain {
 	public int getDataAmount() {
 		// TODO Calculate properly
 		return 0;
+	}
+
+	public void setPathwayDatabaseType(PathwayDatabaseType pathwayDatabaseType) {
+		this.pathwayDatabaseType = pathwayDatabaseType;
 	}
 
 	//

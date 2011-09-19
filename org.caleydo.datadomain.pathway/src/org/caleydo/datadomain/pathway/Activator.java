@@ -4,6 +4,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.SerializationManager;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayLoaderThread;
@@ -44,23 +45,8 @@ public class Activator extends Plugin {
 	}
 
 	private void createPathwayDataDomains() {
-		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
-		// created pathway DD
-		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
-
-		PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(PathwayDatabaseType.BIOCARTA,
-				"data/html/", "data/images/", "data/html");
-		
-		new PathwayLoaderThread(pathwayDatabase).start();
-		
-		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
-
-		pathwayDatabase = PathwayManager.get().createPathwayDatabase(PathwayDatabaseType.KEGG,
-				"data/xml/", "data/images/", "");
-		
-		new PathwayLoaderThread(pathwayDatabase).start();
+		new PathwayLoaderThread().start();
 	}
 
 	/*
