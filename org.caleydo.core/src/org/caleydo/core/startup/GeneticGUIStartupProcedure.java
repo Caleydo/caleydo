@@ -64,8 +64,7 @@ public class GeneticGUIStartupProcedure
 				new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(),
 					REAL_DATA_SAMPLE_FILE, dataDomain);
 		else
-			// TODO temp "fix" for my gtk problem
-			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/tcga/cnmf.csv", dataDomain);
+			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
