@@ -87,7 +87,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
-	private final static int ARCH_PIXEL_HEIGHT = 150;
+	private final static int ARCH_PIXEL_HEIGHT = 30;
 	private final static float ARCH_BOTTOM_PERCENT = 0.5f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 

@@ -425,7 +425,7 @@ public abstract class ATableBasedDataDomain
 	 */
 	public ColorMapper getColorMapper() {
 		if (colorMapper == null)
-			colorMapper = ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN);
+			colorMapper = ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN);
 		return colorMapper;
 	}
 

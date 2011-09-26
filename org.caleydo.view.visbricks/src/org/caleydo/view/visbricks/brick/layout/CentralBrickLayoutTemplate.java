@@ -61,9 +61,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected Row toolBar;
 	protected Row footerBar;
 
-	public CentralBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, GLVisBricks visBricks,
-			IBrickConfigurer configurer) {
+	public CentralBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+			GLVisBricks visBricks, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
@@ -92,6 +91,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void setStaticLayouts() {
 		guiElementsHeight = 0;
 		Row baseRow = new Row("baseRow");
+		baseRow.setFrameColor(1, 0, 0, 0.5f);
+//		baseRow.setDebug(true);
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		setBaseElementLayout(baseRow);
@@ -102,11 +103,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
-					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
-							.getTextureManager(),
-					HandleRenderer.ALL_MOVE_HANDLES
-							| HandleRenderer.ALL_RESIZE_HANDLES));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
+					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
+					HandleRenderer.ALL_MOVE_HANDLES | HandleRenderer.ALL_RESIZE_HANDLES));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -126,8 +125,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("viewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1,
-					1, 1, 1 }));
+//			viewLayout.setDebug(true);
+			viewLayout
+					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
 			viewLayout.setZoomer(zoomer);
 		}
@@ -164,7 +164,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			baseColumn.append(spacingLayoutY);
 			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
 		}
-		baseColumn.append(viewLayout);
+//		if (!dimensionGroup.isProportionalMode())
+			baseColumn.append(viewLayout);
 		if (showToolBar) {
 			baseColumn.append(spacingLayoutY);
 			baseColumn.append(toolBar);
@@ -208,13 +209,12 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		headerBar.append(spacingLayoutX);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout(
-				"lockResizingButton");
+		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
 		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
-				lockResizingButton, brick, brick.getTextureManager()));
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
+				brick, brick.getTextureManager()));
 
 		headerBar.append(lockResizingButtonLayout);
 
@@ -270,8 +270,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 				lockResizingButton.setSelected(isResizingLocked);
 			}
 
-		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID);
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 	}
 
@@ -286,10 +285,9 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public int getMinWidthPixels() {
 		int headerBarWidth = calcSumPixelWidth(headerBar.getElements());
-		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar
-				.getElements()) : 0;
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
-				.getElements()) : 0;
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
+				: 0;
 
 		int minGuiElementWidth = Math.max(headerBarWidth,
 				Math.max(toolBarWidth, footerBarWidth))
@@ -305,8 +303,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
-		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup,
-				visBricks, brick.getBrickConfigurer());
+		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
+				brick.getBrickConfigurer());
 	}
 
 	@Override
@@ -401,8 +399,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID);
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 	}
 
 }

@@ -95,7 +95,7 @@ public class Application
 		mrnaConfiguration.setDimensionDenominationSingular("gene");
 
 		loadSources(MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BROWN_WHITE_GREEN), mrnaConfiguration);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration);
 
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setColumnDimension(false);
@@ -109,7 +109,7 @@ public class Application
 		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
 
 		loadSources(MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_YELLOW_BLUE), mirnaConfiguration);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration);
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setColumnDimension(false);
@@ -123,7 +123,7 @@ public class Application
 		methylationConfiguration.setDimensionDenominationSingular("methylation");
 
 		loadSources(METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.RED_WHITE_GREY), methylationConfiguration);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE), methylationConfiguration);
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")

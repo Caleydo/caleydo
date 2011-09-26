@@ -520,7 +520,8 @@ public abstract class AGLView
 	public abstract void displayRemote(final GL2 gl);
 
 	public final GLCanvas getParentGLCanvas() {
-		if (this.isRenderedRemote())
+	
+		if (parentGLCanvas == null && this.isRenderedRemote())
 			return getRemoteRenderingGLView().getParentGLCanvas();
 
 		return parentGLCanvas;

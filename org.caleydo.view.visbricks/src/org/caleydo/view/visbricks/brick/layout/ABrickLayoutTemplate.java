@@ -34,7 +34,6 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	protected EContainedViewType defaultViewType;
 	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
-	
 
 	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
@@ -188,6 +187,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 	 *         layout and view
 	 */
 	public int getDefaultHeightPixels() {
+
 		return getMinHeightPixels();
 	}
 
@@ -221,8 +221,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 				if (Float.isNaN(glSize)) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
 				} else {
-					pixelSize = pixelGLConverter
-							.getPixelWidthForGLWidth(glSize);
+					pixelSize = pixelGLConverter.getPixelWidthForGLWidth(glSize);
 				}
 			}
 			sum += pixelSize;
@@ -240,8 +239,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 				if (glSize == Float.NaN) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
 				} else {
-					pixelSize = pixelGLConverter
-							.getPixelHeightForGLHeight(glSize);
+					pixelSize = pixelGLConverter.getPixelHeightForGLHeight(glSize);
 				}
 			}
 			sum += pixelSize;
@@ -257,8 +255,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeY();
 				if (glSize != Float.NaN) {
-					pixelSize = pixelGLConverter
-							.getPixelHeightForGLHeight(glSize);
+					pixelSize = pixelGLConverter.getPixelHeightForGLHeight(glSize);
 				}
 			}
 			if (max < pixelSize)
@@ -275,8 +272,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeX();
 				if (glSize != Float.NaN) {
-					pixelSize = pixelGLConverter
-							.getPixelWidthForGLWidth(glSize);
+					pixelSize = pixelGLConverter.getPixelWidthForGLWidth(glSize);
 				}
 			}
 			if (max < pixelSize)
@@ -290,24 +286,24 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 		if (selected) {
 			float[] color = new float[4];
 			float[] selectionColor = SelectionType.SELECTION.getColor();
-			color[0] = selectionColor[0] * 0.4f
-					+ BorderedAreaRenderer.DEFAULT_COLOR[0] * 0.6f;
-			color[1] = selectionColor[1] * 0.4f
-					+ BorderedAreaRenderer.DEFAULT_COLOR[1] * 0.6f;
-			color[2] = selectionColor[2] * 0.4f
-					+ BorderedAreaRenderer.DEFAULT_COLOR[2] * 0.6f;
+			color[0] = selectionColor[0] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[0]
+					* 0.6f;
+			color[1] = selectionColor[1] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[1]
+					* 0.6f;
+			color[2] = selectionColor[2] * 0.4f + BorderedAreaRenderer.DEFAULT_COLOR[2]
+					* 0.6f;
 			color[3] = 1;
 			borderedAreaRenderer.setColor(color);
 		} else {
 			borderedAreaRenderer.setColor(BorderedAreaRenderer.DEFAULT_COLOR);
 		}
 	}
-	
+
 	/**
 	 * This method should be called if the layout template is no longer needed.
 	 */
 	public void destroy() {
-		if(viewLayout != null) {
+		if (viewLayout != null) {
 			viewLayout.destroy();
 			viewLayout = null;
 		}

@@ -27,30 +27,30 @@ public enum EDefaultColorSchemes {
 		new int[] { 5, 113, 176 },
 		new int[] { 247, 247, 247 },
 		new int[] { 202, 0, 32 }),
-	BROWN_WHITE_GREEN(
-		"Brown-White-Green",
+	GREEN_WHITE_BROWN(
+		"Green-White-Brown",
 		"3-class Brown-Blue-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
-		new int[] { 166, 97, 26 },
+		new int[] { 1, 133, 113 },
 		new int[] { 245, 245, 245 },
-		new int[] { 1, 133, 113 }),
-	PURPLE_WHITE_GREEN(
-		"Purple-White-Green",
+		new int[] { 166, 97, 26 }),
+	GREEN_WHITE_PURPLE(
+		"Green-White-Purple",
 		"3-class Purple-Green diverging color scheme from colorbrewer.org. Colorblind and print friendly. May cause issues with bad LCDs",
-		new int[] { 123, 50, 148 },
+		new int[] { 0, 136, 55 },
 		new int[] { 247, 247, 247 },
-		new int[] { 0, 136, 55 }),
-	RED_WHITE_GREY(
-		"Red-White-Grey",
+		new int[] { 123, 50, 148 }),
+	GREY_WHITE_RED(
+		"Grey-White-Red",
 		"3-class Red-Grey diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users and bad LCDs",
-		new int[] { 202, 0, 32 },
+		new int[] { 64, 64, 64 },
 		new int[] { 255, 255, 255 },
-		new int[] { 64, 64, 64 }),
-	RED_YELLOW_BLUE(
-		"Red-Yellow-Blue",
+		new int[] { 202, 0, 32 }),
+	BLUE_RED_YELLOW(
+		"Blue-Red-Yellow",
 		"3-class Spectral diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users",
+		new int[] { 43, 131, 186 },
 		new int[] { 215, 25, 28 },
-		new int[] { 253, 255, 191 },
-		new int[] { 43, 131, 186 }),
+		new int[] { 253, 255, 191 }),
 	GREEN_WHITE(
 		"Green-White",
 		"2-class Sequential Blue-Green color scheme from colorbrewer.org. Color-blind friendly. May cause issues with printing and bad LCDs",

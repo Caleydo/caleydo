@@ -453,4 +453,17 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		brick.removeSingleIDPickingListeners(
 				PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
+	
+	public int getDefaultHeightPixels() {
+		if (dimensionGroup.isProportionalMode()) {	
+			int height = dimensionGroup.getParentGLCanvas().getHeight() - 300;
+			int brickSize = (int) ((float) height
+					/ (float) dimensionGroup.getDimensionGroupData().getRecordPerspective().getVirtualArray().size() * brick.getRecordVA()
+					.size());
+			return brickSize;
+		}
+
+		return getMinHeightPixels();
+
+	}
 }

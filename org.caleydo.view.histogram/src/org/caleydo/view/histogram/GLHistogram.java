@@ -142,6 +142,8 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void setDetailLevel(DetailLevel detailLevel) {
+		// FIXME
+//		detailLevel = DetailLevel.LOW;
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -697,11 +699,11 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	public int getMinPixelHeight(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return getMinPixelHeight();
+			return 200;
 		case MEDIUM:
-			return getMinPixelHeight();
+			return 200;
 		case LOW:
-			return getMinPixelHeight();
+			return 50;
 		default:
 			return 50;
 		}
@@ -711,13 +713,13 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	public int getMinPixelWidth(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return 100;
+			return 200;
 		case MEDIUM:
-			return 100;
+			return 200;
 		case LOW:
-			return 100;
+			return 50	;
 		default:
-			return 100;
+			return 50;
 		}
 	}
 
