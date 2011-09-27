@@ -72,13 +72,13 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		configuration.setColumnDimension(true);
 
 		configuration.setRecordIDCategory("GENE");
-		configuration.setDimensionIDCategory("EXPERIMENT");
+		configuration.setDimensionIDCategory("SAMPLE");
 
 		configuration.setPrimaryRecordMappingType("DAVID");
-		configuration.setPrimaryDimensionMappingType("DIMENSION");
+		configuration.setPrimaryDimensionMappingType("SAMPLE");
 
 		configuration.setHumanReadableRecordIDType("GENE_SYMBOL");
-		configuration.setHumanReadableDimensionIDType("DIMENSION");
+		configuration.setHumanReadableDimensionIDType("SAMPLE");
 
 		configuration.setRecordDenominationPlural("genes");
 		configuration.setRecordDenominationSingular("gene");
