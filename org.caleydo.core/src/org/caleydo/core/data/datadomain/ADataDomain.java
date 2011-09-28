@@ -45,7 +45,7 @@ public abstract class ADataDomain
 	protected LoadDataParameters loadDataParameters;
 
 	/** bootstrap filename this application was started with */
-	protected String fileName;
+	protected String fileName = "data/bootstrap/bootstrap.xml";
 
 	protected Color color;
 

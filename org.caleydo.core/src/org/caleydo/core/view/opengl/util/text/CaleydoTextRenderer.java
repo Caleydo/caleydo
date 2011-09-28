@@ -190,6 +190,37 @@ public class CaleydoTextRenderer
 	}
 
 	/**
+	 * Calculates the required width of a text with a specified height.
+	 * 
+	 * @param text
+	 * @param height
+	 * @return Required width of the text
+	 */
+	public float getRequiredTextWidth(String text, float height) {
+
+		Rectangle2D bounds = super.getBounds(text);
+
+		double scaling = height / bounds.getHeight();
+
+		return (float) (bounds.getWidth() * scaling);
+	}
+
+	/**
+	 * Same as {@link #getRequiredTextWidth(String, float)}, but returns the specified maximum width if the
+	 * required text width exceeds this maximum.
+	 * 
+	 * @param text
+	 * @param height
+	 * @param maxWidth
+	 * @return
+	 */
+	public float getRequiredTextWidthWithMax(String text, float height, float maxWidth) {
+
+		float requiredWidth = getRequiredTextWidth(text, height);
+		return (requiredWidth > maxWidth) ? maxWidth : requiredWidth;
+	}
+
+	/**
 	 * Set the color of the text
 	 * 
 	 * @param color

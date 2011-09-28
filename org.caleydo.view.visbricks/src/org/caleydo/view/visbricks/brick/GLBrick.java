@@ -244,7 +244,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 										PathwayDataDomain.DATA_DOMAIN_TYPE);
 						Set<PathwayGraph> pathwayGraphs = pathwayDataDomain
 								.getMappingHelper().getPathwayGraphsByGeneID(
-										dataDomain.getPrimaryRecordMappingType(), david);
+										pathwayDataDomain.getDavidIDType(), david);
 
 						// int iPathwayCount = 0;
 						if (pathwayGraphs != null) {

@@ -40,7 +40,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	private final static int OVERVIEW_COMP_GROUP_HEIGHT_PIXELS = 32;
 
 	private LayoutManager layoutManager;
-	private ComparisonGroupOverviewRenderer compGroupOverviewRenderer;
+	private OverviewDataContainerRenderer compGroupOverviewRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
 	private List<ADimensionGroupData> dimensionGroups;
@@ -142,7 +142,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		Column bodyColumn = new Column("bodyColumn");
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		compGroupOverviewRenderer = new ComparisonGroupOverviewRenderer(this,
+		compGroupOverviewRenderer = new OverviewDataContainerRenderer(this,
 				view, dragAndDropController, getDimensionGroups());
 		compGroupLayout.setPixelGLConverter(pixelGLConverter);
 		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);

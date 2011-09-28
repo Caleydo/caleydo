@@ -103,7 +103,7 @@ public class ProjectLoader {
 		for (String plugIn : plugIns) {
 			Bundle bundle = Platform.getBundle(plugIn);
 			if (bundle == null) {
-				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: " + bundle));
+				Logger.log(new Status(IStatus.WARNING, toString(), "Could not load bundle: " + plugIn));
 				continue;
 			}
 			bundle.start();

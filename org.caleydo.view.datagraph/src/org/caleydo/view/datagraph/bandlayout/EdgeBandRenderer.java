@@ -137,25 +137,27 @@ public class EdgeBandRenderer {
 			float spacingY = (float) ((topNode.getPosition().getY() - topNode
 					.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
 					.getHeight() / 2.0f));
-			
+
 			int bandWidth = calcBandWidthPixels(dataAmount);
 
 			if (spacingX > spacingY) {
 				renderHorizontalBand(gl, leftNode, rightNode,
-						edgeRoutingStrategy, connectionBandRenderer, bandColor, bandWidth);
+						edgeRoutingStrategy, connectionBandRenderer, bandColor,
+						bandWidth);
 			} else {
 				renderVerticalBand(gl, bottomNode, topNode,
-						edgeRoutingStrategy, connectionBandRenderer, bandColor, bandWidth);
+						edgeRoutingStrategy, connectionBandRenderer, bandColor,
+						bandWidth);
 			}
 		}
 
 	}
 
 	protected int calcBandWidthPixels(int dataAmount) {
-		int bandWidth = (int)(dataAmount * (float)maxBandWidth/(float)maxDataAmount);
-		if(bandWidth > maxBandWidth)
+		int bandWidth = (int) (dataAmount * (float) maxBandWidth / (float) maxDataAmount);
+		if (bandWidth > maxBandWidth)
 			return maxBandWidth;
-		if(bandWidth < minBandWidth)
+		if (bandWidth < minBandWidth)
 			return minBandWidth;
 		return bandWidth;
 	}
@@ -202,6 +204,31 @@ public class EdgeBandRenderer {
 		edgePoints.add(bundlingPoint2);
 
 		edgeRoutingStrategy.createEdge(edgePoints);
+
+		// Point2D edgePoint1 = edgePoints.get(0);
+		// Point2D edgePoint2 = edgePoints.get(1);
+		//
+		// float deltaY = (float)(edgePoint1.getY() - edgePoint2.getY());
+		// float deltaX = (float)(edgePoint1.getX() - edgePoint2.getX());
+		//
+		// if (Math.abs(deltaY) < 0.1f) {
+		// Point2D guidingPoint1 = new Point2D.Float(
+		// (float) edgePoint1.getX() + ((deltaX < 0) ? 0.05f : -0.05f),
+		// (float) edgePoint1.getY() - 0.05f);
+		//
+		// Point2D guidingPoint2 = new Point2D.Float(
+		// (float) edgePoint2.getX() + ((deltaX < 0) ? -0.05f : 0.05f),
+		// (float) edgePoint2.getY() - 0.05f);
+		// edgePoints.add(1, guidingPoint2);
+		// edgePoints.add(1, guidingPoint1);
+		// gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL2.GL_POINTS);
+		// gl.glVertex2d(edgePoint1.getX(), edgePoint1.getY());
+		// gl.glVertex2d(edgePoint2.getX(), edgePoint2.getY());
+		// gl.glVertex2d(guidingPoint1.getX(), guidingPoint1.getY());
+		// gl.glVertex2d(guidingPoint2.getX(), guidingPoint2.getY());
+		// gl.glEnd();
+		// }
 
 		edgePoints.add(0, new Point2D.Float((float) bundlingPoint1.getX(),
 				(float) node1.getPosition().getY()));
@@ -299,7 +326,9 @@ public class EdgeBandRenderer {
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
-		for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
+		for (int i = 0; i < commonDimensionGroups.size(); i++) {
+			ADimensionGroupData dimensionGroupData = commonDimensionGroups
+					.get(i);
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
 					.getBottomDimensionGroupAnchorPoints(dimensionGroupData);
@@ -318,10 +347,17 @@ public class EdgeBandRenderer {
 
 			int width = bandWidthMap.get(dimensionGroupData);
 
-			Point2D nextBandAnchorPoint = new Point2D.Float(
-					(float) prevBandAnchorPoint.getX()
-							+ pixelGLConverter.getGLWidthForPixelWidth(width),
-					(float) prevBandAnchorPoint.getY());
+			Point2D nextBandAnchorPoint = null;
+
+			if (i == commonDimensionGroups.size() - 1) {
+				nextBandAnchorPoint = rightBandBundleConnecionPoint;
+			} else {
+				nextBandAnchorPoint = new Point2D.Float(
+						(float) prevBandAnchorPoint.getX()
+								+ pixelGLConverter
+										.getGLWidthForPixelWidth(width),
+						(float) prevBandAnchorPoint.getY());
+			}
 
 			Point2D bandOffsetPoint1 = new Point2D.Float(
 					(float) prevBandAnchorPoint.getX(),
@@ -370,7 +406,8 @@ public class EdgeBandRenderer {
 
 	protected void renderVerticalBand(GL2 gl, IDataGraphNode bottomNode,
 			IDataGraphNode topNode, IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer, Color color, int bandWidth) {
+			ConnectionBandRenderer connectionBandRenderer, Color color,
+			int bandWidth) {
 
 		Point2D positionBottom = bottomNode.getPosition();
 		Point2D positionTop = topNode.getPosition();
@@ -618,7 +655,8 @@ public class EdgeBandRenderer {
 
 	protected void renderHorizontalBand(GL2 gl, IDataGraphNode leftNode,
 			IDataGraphNode rightNode, IEdgeRoutingStrategy edgeRoutingStrategy,
-			ConnectionBandRenderer connectionBandRenderer, Color color, int bandWidth) {
+			ConnectionBandRenderer connectionBandRenderer, Color color,
+			int bandWidth) {
 
 		Point2D positionLeft = leftNode.getPosition();
 		Point2D positionRight = rightNode.getPosition();

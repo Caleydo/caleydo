@@ -49,17 +49,18 @@ public class PathwayDataDomain extends ADataDomain {
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
-		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
-
-		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry.get()
-				.getIDMappingManager(IDCategory.getIDCategory("GENE")));
 	}
 
 	@Override
 	public void init() {
 
 		super.init();
-		IDMappingLoader.get().loadMappingFile(fileName);
+//		IDMappingLoader.get().loadMappingFile(fileName);
+
+		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
+
+		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry.get()
+				.getIDMappingManager(IDCategory.getIDCategory("GENE")));
 	}
 
 	// @Override

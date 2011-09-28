@@ -18,7 +18,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 
-public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
+public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 	private final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
 
@@ -28,16 +28,10 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 	private IDataGraphNode node;
 	private AGLView view;
 	private Map<ADimensionGroupData, Pair<Point2D, Point2D>> dimensionGroupPositions;
-	// private float prevDraggingMouseX;
-	// private float prevDraggingMouseY;
-	// private float currentDimGroupWidth;
-	// private ADimensionGroupData draggedDimensionGroupData;
-	// private Point2D draggingPosition;
 	private DragAndDropController dragAndDropController;
-	// private List<ADimensionGroupData> dimensionGroupDatas;
 	private List<ComparisonGroupRepresentation> comparisonGroupRepresentations;
 
-	public ComparisonGroupOverviewRenderer(IDataGraphNode node, AGLView view,
+	public OverviewDataContainerRenderer(IDataGraphNode node, AGLView view,
 			DragAndDropController dragAndDropController,
 			List<ADimensionGroupData> dimensionGroupDatas) {
 
@@ -94,6 +88,7 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
 	}
 
+	@Override
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
 		// this.dimensionGroupDatas = dimensionGroupDatas;
 		comparisonGroupRepresentations.clear();
@@ -177,66 +172,12 @@ public class ComparisonGroupOverviewRenderer extends LayoutRenderer {
 				+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS);
 	}
 
+	@Override
 	public Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(
 			ADimensionGroupData dimensionGroupData) {
 		return dimensionGroupPositions.get(dimensionGroupData);
 	}
 
-	// @Override
-	// public void setDraggingStartPoint(float mouseCoordinateX,
-	// float mouseCoordinateY) {
-	// prevDraggingMouseX = mouseCoordinateX;
-	// prevDraggingMouseY = mouseCoordinateY;
-	// draggingPosition = node.getBottomDimensionGroupAnchorPoints(
-	// draggedDimensionGroupData).getFirst();
-	// // Point2D anchorPoint = getAnchorPointsOfDimensionGroup(
-	// // draggedDimensionGroupData).getFirst();
-	// // draggingPosition.setLocation(
-	// // draggingPosition.getX() + anchorPoint.getX(),
-	// // draggingPosition.getY() + anchorPoint.getY());
-	//
-	// }
-	//
-	// @Override
-	// public void handleDragging(GL2 gl, float mouseCoordinateX,
-	// float mouseCoordinateY) {
-	//
-	// gl.glColor4f(0.6f, 0.6f, 0.6f, 0.5f);
-	// gl.glBegin(GL2.GL_QUADS);
-	// gl.glVertex3f((float) draggingPosition.getX(),
-	// (float) draggingPosition.getY(), 0);
-	// gl.glVertex3f((float) draggingPosition.getX() + currentDimGroupWidth,
-	// (float) draggingPosition.getY(), 0);
-	// gl.glVertex3f((float) draggingPosition.getX() + currentDimGroupWidth,
-	// (float) draggingPosition.getY() + y, 0);
-	// gl.glVertex3f((float) draggingPosition.getX(),
-	// (float) draggingPosition.getY() + y, 0);
-	// gl.glEnd();
-	//
-	// if ((prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX
-	// <= mouseCoordinateX + 0.01)
-	// && (prevDraggingMouseY >= mouseCoordinateY - 0.01 && prevDraggingMouseY
-	// <= mouseCoordinateY + 0.01))
-	// return;
-	//
-	// float mouseDeltaX = prevDraggingMouseX - mouseCoordinateX;
-	// float mouseDeltaY = prevDraggingMouseY - mouseCoordinateY;
-	//
-	// draggingPosition.setLocation(draggingPosition.getX() - mouseDeltaX,
-	// draggingPosition.getY() - mouseDeltaY);
-	//
-	// prevDraggingMouseX = mouseCoordinateX;
-	// prevDraggingMouseY = mouseCoordinateY;
-	//
-	// view.setDisplayListDirty();
-	//
-	// }
-	//
-	// @Override
-	// public void handleDrop(GL2 gl, float mouseCoordinateX,
-	// float mouseCoordinateY) {
-	// dragAndDropController.clearDraggables();
-	// draggedDimensionGroupData = null;
-	// }
+
 
 }

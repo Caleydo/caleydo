@@ -142,6 +142,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 								.getDimensionPerspective(dimensionPerspectiveID), node,
 						DimensionPerspective.class);
 				dimensionGroupData.add(data);
+				dataDomain.addDimensionGroup(data);
 			}
 			return dimensionGroupData;
 		}
