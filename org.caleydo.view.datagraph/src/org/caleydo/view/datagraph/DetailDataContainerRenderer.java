@@ -15,15 +15,16 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
-	private ATableBasedDataDomain dataDomain;
-	private AGLView view;
-
 	private static final int MAX_TEXT_WIDTH_PIXELS = 80;
 	private static final int TEXT_HEIGHT_PIXELS = 12;
 	private static final int COLUMN_WIDTH_PIXELS = 20;
 	private static final int ROW_HEIGHT_PIXELS = 20;
 	private static final int CAPTION_SPACING = 5;
 	private static final int CELL_SPACING = 2;
+
+	private ATableBasedDataDomain dataDomain;
+	private AGLView view;
+	List<ADimensionGroupData> dimensionGroupDatas;
 
 	private class CellContainer {
 		private String caption;
@@ -38,10 +39,34 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			AGLView view) {
 		this.dataDomain = dataDomain;
 		this.view = view;
-		createRowsAndColumns();
+
+		// FIXME: Use from datadomain
+		dimensionGroupDatas = new ArrayList<ADimensionGroupData>();
+		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("Row1");
+		dimensionGroupDatas.add(data);
+
+		data = new FakeDimensionGroupData(0);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("AnotherRow");
+		dimensionGroupDatas.add(data);
+
+		data = new FakeDimensionGroupData(0);
+		data.setDimensionPerspectiveID("AnotherColumn2");
+		data.setRecordPerspectiveID("Row1");
+		dimensionGroupDatas.add(data);
+		data = new FakeDimensionGroupData(0);
+
+		data.setDimensionPerspectiveID("YetAnotherColumn2");
+		data.setRecordPerspectiveID("YetAnotherRow");
+		dimensionGroupDatas.add(data);
+		createRowsAndColumns(dimensionGroupDatas);
 	}
 
-	private void createRowsAndColumns() {
+	private void createRowsAndColumns(
+			List<ADimensionGroupData> dimensionGroupDatas) {
+		// FIXME: Use real data
 		// Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
 		// .getRecordPerspectiveIDs() : dataDomain
 		// .getDimensionPerspectiveIDs();
@@ -52,8 +77,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		String[] rowIDs = new String[] { "Row1", "RowPerspec2", "AnotherRow",
 				"YetAnotherRow" };
 		String[] columnIDs = new String[] { "Column1", "ColumnPerspec2",
-				"AnotherColumn", "YetAnotherColumn", "Column1",
-				"ColumnPerspec2", "AnotherColumn", "YetAnotherColumn" };
+				"AnotherColumn", "YetAnotherColumn", "Column2",
+				"ColumnPerspec22", "AnotherColumn2", "YetAnotherColumn2" };
 
 		rows.clear();
 		columns.clear();
@@ -67,12 +92,18 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		for (String id : columnIDs) {
 			CellContainer column = new CellContainer();
 			column.caption = id;
-			column.numSubdivisions = 1;
+			int numSubdivisions = 1;
+			for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
+				// FIXME: do it properly
+				if (((FakeDimensionGroupData) dimensionGroupData)
+						.getDimensionPerspectiveID().equals(id)) {
+					numSubdivisions++;
+				}
+			}
+
+			column.numSubdivisions = numSubdivisions;
 			columns.add(column);
 		}
-
-		columns.get(2).numSubdivisions = 2;
-		columns.get(4).numSubdivisions = 3;
 	}
 
 	@Override
@@ -165,9 +196,20 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentPositionX, 0, 0);
 			gl.glVertex3f(currentPositionX, y, 0);
+			for (int i = 1; i < column.numSubdivisions; i++) {
+				gl.glVertex3f(currentPositionX + i * columnWidth, 0, 0);
+				gl.glVertex3f(
+						currentPositionX + i * columnWidth,
+						y
+								- captionRowHeight
+								- pixelGLConverter
+										.getGLHeightForPixelHeight(CAPTION_SPACING),
+						0);
+			}
 			gl.glEnd();
 
-			gl.glColor3f(0.7f, 0.7f, 0.7f);
+			float currentDimGroupPositionX = currentPositionX;
+
 			for (CellContainer row : rows) {
 				float cellSpacingX = pixelGLConverter
 						.getGLWidthForPixelWidth(CELL_SPACING);
@@ -177,16 +219,52 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				float cellPositionX = currentPositionX + currentColumnWidth
 						- columnWidth;
 
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(cellPositionX + cellSpacingX, row.position
-						- rowHeight + cellSpacingY, 0);
-				gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
-						row.position - rowHeight + cellSpacingY, 0);
-				gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
-						row.position - cellSpacingY, 0);
-				gl.glVertex3f(cellPositionX + cellSpacingX, row.position
-						- cellSpacingY, 0);
-				gl.glEnd();
+				boolean dimensionGroupExists = false;
+
+				for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
+					// FIXME: Do properly
+					FakeDimensionGroupData fakeDimensionGroupData = (FakeDimensionGroupData) dimensionGroupData;
+					if (fakeDimensionGroupData.getDimensionPerspectiveID()
+							.equals(column.caption)
+							&& fakeDimensionGroupData.getRecordPerspectiveID()
+									.equals(row.caption)) {
+
+						gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+						gl.glColor3fv(dataDomain.getColor().getRGB(), 0);
+
+						gl.glBegin(GL2.GL_QUADS);
+						gl.glVertex3f(currentDimGroupPositionX + cellSpacingX,
+								row.position - rowHeight + cellSpacingY, 0);
+						gl.glVertex3f(currentDimGroupPositionX + columnWidth
+								- cellSpacingX, row.position - rowHeight
+								+ cellSpacingY, 0);
+						gl.glVertex3f(currentDimGroupPositionX + columnWidth
+								- cellSpacingX, row.position - cellSpacingY, 0);
+						gl.glVertex3f(currentDimGroupPositionX + cellSpacingX,
+								row.position - cellSpacingY, 0);
+						gl.glEnd();
+						gl.glPopAttrib();
+
+						currentDimGroupPositionX += columnWidth;
+						dimensionGroupExists = true;
+						break;
+					}
+				}
+				
+				if(!dimensionGroupExists) {
+					gl.glColor3f(0.7f, 0.7f, 0.7f);
+					gl.glBegin(GL2.GL_QUADS);
+					gl.glVertex3f(cellPositionX + cellSpacingX, row.position
+							- rowHeight + cellSpacingY, 0);
+					gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
+							row.position - rowHeight + cellSpacingY, 0);
+					gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
+							row.position - cellSpacingY, 0);
+					gl.glVertex3f(cellPositionX + cellSpacingX, row.position
+							- cellSpacingY, 0);
+					gl.glEnd();
+				}
+				
 			}
 
 			gl.glPopAttrib();
@@ -194,8 +272,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			column.position = currentPositionX;
 
 			currentPositionX += currentColumnWidth;
-
 		}
+
 	}
 
 	private float calcMaxTextWidth(List<CellContainer> containers) {
@@ -248,7 +326,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
-		createRowsAndColumns();
+		createRowsAndColumns(dimensionGroupDatas);
 	}
 
 	@Override

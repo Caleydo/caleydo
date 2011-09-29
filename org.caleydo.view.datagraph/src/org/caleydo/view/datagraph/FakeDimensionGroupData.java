@@ -11,6 +11,8 @@ import org.caleydo.core.data.virtualarray.group.Group;
 public class FakeDimensionGroupData extends ADimensionGroupData {
 	
 	private int id;
+	private String recordPerspectiveID;
+	private String dimensionPerspectiveID;
 	
 	public FakeDimensionGroupData(int id) {
 		this.id = id;
@@ -56,6 +58,22 @@ public class FakeDimensionGroupData extends ADimensionGroupData {
 	public ISegmentData getSummarySegementData() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public void setRecordPerspectiveID(String recordPerspectiveID) {
+		this.recordPerspectiveID = recordPerspectiveID;
+	}
+
+	public String getRecordPerspectiveID() {
+		return recordPerspectiveID;
+	}
+
+	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
+		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	}
+
+	public String getDimensionPerspectiveID() {
+		return dimensionPerspectiveID;
 	}
 
 }
