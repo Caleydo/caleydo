@@ -7,6 +7,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
@@ -28,7 +29,7 @@ public class DataNode extends ADraggableDataGraphNode {
 	private final static int SPACING_PIXELS = 4;
 	private final static int CAPTION_HEIGHT_PIXELS = 16;
 	private final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
-	private final static int OVERVIEW_COMP_GROUP_HEIGHT_PIXELS = 32;
+	private final static int MIN_DATA_CONTAINER_HEIGHT_PIXELS = 32;
 
 	private IDataDomain dataDomain;
 	private LayoutManager layoutManager;
@@ -98,10 +99,17 @@ public class DataNode extends ADraggableDataGraphNode {
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		dataContainerRenderer = new OverviewDataContainerRenderer(this,
-				view, dragAndDropController, getDimensionGroups());
-		compGroupLayout.setPixelGLConverter(pixelGLConverter);
-		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
+
+		if (dataDomain instanceof ATableBasedDataDomain) {
+			dataContainerRenderer = new DetailDataContainerRenderer(
+					(ATableBasedDataDomain) dataDomain, view);
+		} else {
+			dataContainerRenderer = new OverviewDataContainerRenderer(this,
+					view, dragAndDropController, getDimensionGroups());
+		}
+		// compGroupLayout.setPixelGLConverter(pixelGLConverter);
+		// compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
+		compGroupLayout.setRatioSizeY(1);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
 		compGroupLayout.setRenderer(dataContainerRenderer);
 
@@ -160,15 +168,18 @@ public class DataNode extends ADraggableDataGraphNode {
 
 	@Override
 	public int getHeightPixels() {
-		return 2 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+		return 2
+				* SPACING_PIXELS
+				+ CAPTION_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
-				+ OVERVIEW_COMP_GROUP_HEIGHT_PIXELS;
+				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
+						dataContainerRenderer.getMinHeightPixels());
 	}
 
 	@Override
 	public int getWidthPixels() {
 		return 2 * SPACING_PIXELS
-				+ dataContainerRenderer.getMinWidthPixels();
+				+ Math.max(200, dataContainerRenderer.getMinWidthPixels());
 	}
 
 	public void setDataDomain(IDataDomain dataDomain) {

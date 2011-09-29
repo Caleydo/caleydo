@@ -3,7 +3,6 @@ package org.caleydo.view.datagraph;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 
 import javax.media.opengl.GL2;
 
@@ -14,21 +13,22 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
-import com.jogamp.opengl.util.awt.TextRenderer;
-
 public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 	private ATableBasedDataDomain dataDomain;
 	private AGLView view;
 
-	private static final int MAX_TEXT_WIDTH_PIXELS = 60;
-	private static final int TEXT_HEIGHT_PIXELS = 10;
-	private static final int COLUMN_WIDTH_PIXELS = 10;
-	private static final int ROW_HEIGHT_PIXELS = 10;
+	private static final int MAX_TEXT_WIDTH_PIXELS = 80;
+	private static final int TEXT_HEIGHT_PIXELS = 12;
+	private static final int COLUMN_WIDTH_PIXELS = 20;
+	private static final int ROW_HEIGHT_PIXELS = 20;
+	private static final int CAPTION_SPACING = 5;
+	private static final int CELL_SPACING = 2;
 
 	private class CellContainer {
 		private String caption;
 		private int numSubdivisions;
+		private float position;
 	}
 
 	private List<CellContainer> rows = new ArrayList<CellContainer>();
@@ -42,12 +42,18 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 	}
 
 	private void createRowsAndColumns() {
-		Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
-				.getRecordPerspectiveIDs() : dataDomain
-				.getDimensionPerspectiveIDs();
-		Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
-				.getDimensionPerspectiveIDs() : dataDomain
-				.getRecordPerspectiveIDs();
+		// Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
+		// .getRecordPerspectiveIDs() : dataDomain
+		// .getDimensionPerspectiveIDs();
+		// Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
+		// .getDimensionPerspectiveIDs() : dataDomain
+		// .getRecordPerspectiveIDs();
+
+		String[] rowIDs = new String[] { "Row1", "RowPerspec2", "AnotherRow",
+				"YetAnotherRow" };
+		String[] columnIDs = new String[] { "Column1", "ColumnPerspec2",
+				"AnotherColumn", "YetAnotherColumn", "Column1",
+				"ColumnPerspec2", "AnotherColumn", "YetAnotherColumn" };
 
 		rows.clear();
 		columns.clear();
@@ -64,37 +70,147 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			column.numSubdivisions = 1;
 			columns.add(column);
 		}
+
+		columns.get(2).numSubdivisions = 2;
+		columns.get(4).numSubdivisions = 3;
 	}
 
 	@Override
 	public void render(GL2 gl) {
 		float captionColumnWidth = calcMaxTextWidth(rows);
-		float captionRowWidth = calcMaxTextWidth(columns);
+		float captionRowHeight = calcMaxTextWidth(columns);
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		float currentPositionY = y
-				- pixelGLConverter.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
+		float currentPositionX = (x / 2.0f)
+				- pixelGLConverter
+						.getGLWidthForPixelWidth(getMinWidthPixels() / 2);
+		float rowHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
+		float currentPositionY = y - captionRowHeight
+				- pixelGLConverter.getGLHeightForPixelHeight(CAPTION_SPACING);
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
+		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		gl.glColor3f(1, 1, 1);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, 0, 0);
+		gl.glVertex3f(x, 0, 0);
+		gl.glVertex3f(x, currentPositionY, 0);
+		gl.glVertex3f(0, currentPositionY, 0);
+
+		gl.glVertex3f(
+				currentPositionX
+						+ captionColumnWidth
+						+ pixelGLConverter
+								.getGLWidthForPixelWidth(CAPTION_SPACING),
+				currentPositionY, 0);
+		gl.glVertex3f(x, currentPositionY, 0);
+		gl.glVertex3f(x, y, 0);
+		gl.glVertex3f(
+				currentPositionX
+						+ captionColumnWidth
+						+ pixelGLConverter
+								.getGLWidthForPixelWidth(CAPTION_SPACING), y, 0);
+		gl.glEnd();
+		gl.glPopAttrib();
+
 		for (CellContainer row : rows) {
-			textRenderer.renderTextInBounds(gl, row.caption, 0,
-					currentPositionY, 0, captionColumnWidth, textHeight);
+			float textPositionY = currentPositionY - rowHeight
+					+ (rowHeight - textHeight) / 2.0f
+					+ pixelGLConverter.getGLHeightForPixelHeight(2);
+			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX,
+					textPositionY, 0, captionColumnWidth, textHeight);
+
+			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
+			gl.glColor3f(0, 0, 0);
+			gl.glLineWidth(1);
+			gl.glBegin(GL2.GL_LINES);
+			gl.glVertex3f(0, currentPositionY, 0);
+			gl.glVertex3f(x, currentPositionY, 0);
+			gl.glEnd();
+			gl.glPopAttrib();
+
+			row.position = currentPositionY;
+
+			currentPositionY -= rowHeight;
+
+		}
+
+		float columnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(COLUMN_WIDTH_PIXELS);
+		currentPositionX += captionColumnWidth
+				+ pixelGLConverter.getGLWidthForPixelWidth(CAPTION_SPACING);
+
+		for (CellContainer column : columns) {
+			float currentColumnWidth = columnWidth * column.numSubdivisions;
+
+			float textPositionX = currentPositionX
+					+ (currentColumnWidth - textHeight) / 2.0f
+					+ pixelGLConverter.getGLHeightForPixelHeight(2);
+
+			gl.glPushMatrix();
+			gl.glTranslatef(textPositionX, y, 0);
+			gl.glRotatef(-90, 0, 0, 1);
+
+			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
+					captionRowHeight, textHeight);
+			gl.glPopMatrix();
+
+			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
+			gl.glColor3f(0, 0, 0);
+			gl.glLineWidth(1);
+			gl.glBegin(GL2.GL_LINES);
+			gl.glVertex3f(currentPositionX, 0, 0);
+			gl.glVertex3f(currentPositionX, y, 0);
+			gl.glEnd();
+
+			gl.glColor3f(0.7f, 0.7f, 0.7f);
+			for (CellContainer row : rows) {
+				float cellSpacingX = pixelGLConverter
+						.getGLWidthForPixelWidth(CELL_SPACING);
+				float cellSpacingY = pixelGLConverter
+						.getGLHeightForPixelHeight(CELL_SPACING);
+
+				float cellPositionX = currentPositionX + currentColumnWidth
+						- columnWidth;
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(cellPositionX + cellSpacingX, row.position
+						- rowHeight + cellSpacingY, 0);
+				gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
+						row.position - rowHeight + cellSpacingY, 0);
+				gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
+						row.position - cellSpacingY, 0);
+				gl.glVertex3f(cellPositionX + cellSpacingX, row.position
+						- cellSpacingY, 0);
+				gl.glEnd();
+			}
+
+			gl.glPopAttrib();
+
+			column.position = currentPositionX;
+
+			currentPositionX += currentColumnWidth;
+
 		}
 	}
 
 	private float calcMaxTextWidth(List<CellContainer> containers) {
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
+		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		float maxTextWidth = Float.MIN_VALUE;
 
 		for (CellContainer container : containers) {
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					container.caption, TEXT_HEIGHT_PIXELS,
-					MAX_TEXT_WIDTH_PIXELS);
+					container.caption, pixelGLConverter
+							.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
+					pixelGLConverter
+							.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
 			if (textWidth > maxTextWidth)
 				maxTextWidth = textWidth;
 		}
@@ -109,7 +225,13 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		int captionWidth = pixelGLConverter
 				.getPixelWidthForGLWidth(calcMaxTextWidth(rows));
 
-		return captionWidth + columns.size() * COLUMN_WIDTH_PIXELS;
+		int sumColumnWidth = 0;
+
+		for (CellContainer column : columns) {
+			sumColumnWidth += column.numSubdivisions * COLUMN_WIDTH_PIXELS;
+		}
+
+		return captionWidth + sumColumnWidth + CAPTION_SPACING;
 
 	}
 
@@ -120,7 +242,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		int captionWidth = pixelGLConverter
 				.getPixelHeightForGLHeight(calcMaxTextWidth(columns));
 
-		return captionWidth + rows.size() * ROW_HEIGHT_PIXELS;
+		return captionWidth + rows.size() * ROW_HEIGHT_PIXELS + CAPTION_SPACING;
 
 	}
 

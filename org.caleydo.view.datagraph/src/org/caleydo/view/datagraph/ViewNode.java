@@ -215,7 +215,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	@Override
 	public int getWidthPixels() {
 		return 2 * SPACING_PIXELS
-				+ compGroupOverviewRenderer.getMinWidthPixels();
+				+ Math.max(200, compGroupOverviewRenderer.getMinWidthPixels());
 	}
 
 	@Override

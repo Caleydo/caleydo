@@ -105,8 +105,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		float currentPosX = pixelGLConverter
-				.getGLWidthForPixelWidth(getMinWidthPixels() / 2)
+		float currentPosX = (x / 2.0f)
 				- pixelGLConverter
 						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS
@@ -164,7 +163,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 	@Override
 	public int getMinWidthPixels() {
-		return Math.max(200, getDimensionGroupsWidthPixels());
+		return getDimensionGroupsWidthPixels();
 	}
 
 	private int getDimensionGroupsWidthPixels() {
@@ -177,7 +176,5 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 			ADimensionGroupData dimensionGroupData) {
 		return dimensionGroupPositions.get(dimensionGroupData);
 	}
-
-
 
 }

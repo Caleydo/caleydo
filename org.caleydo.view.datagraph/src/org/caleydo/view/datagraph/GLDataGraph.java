@@ -209,6 +209,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// dataGraph.addEdge(o5, o4);
 		// dataGraph.addEdge(o3, o2);
 
+		
+	}
+
+	@Override
+	public void init(GL2 gl) {
+		textRenderer = new CaleydoTextRenderer(24);
+		
 		maxNodeWidthPixels = Integer.MIN_VALUE;
 		maxNodeHeightPixels = Integer.MIN_VALUE;
 
@@ -221,11 +228,6 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		}
 
 		applyAutomaticLayout = true;
-	}
-
-	@Override
-	public void init(GL2 gl) {
-		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	@Override
