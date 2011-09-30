@@ -17,6 +17,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainGraph;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -45,6 +46,8 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.datagraph.bandlayout.EdgeBandRenderer;
 import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.event.AddDataContainerEvent;
+import org.caleydo.view.datagraph.listener.AddDataContainerEventListener;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
@@ -87,7 +90,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private Map<IDataDomain, Set<ViewNode>> viewNodesOfDataDomains;
 	private Map<IDataDomain, DataNode> dataNodesOfDataDomains;
 	private ConnectionBandRenderer connectionBandRenderer;
-	
+
 	private int maxDataAmount = Integer.MIN_VALUE;
 
 	private NewViewEventListener newViewEventListener;
@@ -95,6 +98,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private ViewClosedEventListener viewClosedEventListener;
 	private DataDomainsChangedEventListener dataDomainsChangedEventListener;
 	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
+	private AddDataContainerEventListener addDataContainerEventListener;
 
 	/**
 	 * Constructor.
@@ -209,13 +213,12 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// dataGraph.addEdge(o5, o4);
 		// dataGraph.addEdge(o3, o2);
 
-		
 	}
 
 	@Override
 	public void init(GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
-		
+
 		maxNodeWidthPixels = Integer.MIN_VALUE;
 		maxNodeHeightPixels = Integer.MIN_VALUE;
 
@@ -428,7 +431,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				gl.glPopAttrib();
 			}
 		}
-		
+
 		calcMaxDataAmount();
 
 		for (Pair<IDataGraphNode, IDataGraphNode> edge : bandConnectedNodes) {
@@ -446,10 +449,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		bandRenderer.renderEdgeBand(gl,
 				new SimpleEdgeRoutingStrategy(dataGraph));
 	}
-	
+
 	private void calcMaxDataAmount() {
-		for(DataNode dataNode: dataNodes) {
-			if(maxDataAmount < dataNode.getDataDomain().getDataAmount())
+		for (DataNode dataNode : dataNodes) {
+			if (maxDataAmount < dataNode.getDataDomain().getDataAmount())
 				maxDataAmount = dataNode.getDataDomain().getDataAmount();
 		}
 	}
@@ -530,6 +533,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		newDataDomainEventListener.setHandler(this);
 		eventPublisher.addListener(NewDataDomainEvent.class,
 				newDataDomainEventListener);
+		
+		addDataContainerEventListener = new AddDataContainerEventListener();
+		addDataContainerEventListener.setHandler(this);
+		eventPublisher.addListener(AddDataContainerEvent.class,
+				addDataContainerEventListener);
 	}
 
 	@Override
@@ -559,6 +567,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (newDataDomainEventListener != null) {
 			eventPublisher.removeListener(newDataDomainEventListener);
 			newDataDomainEventListener = null;
+		}
+		
+		if (addDataContainerEventListener != null) {
+			eventPublisher.removeListener(addDataContainerEventListener);
+			addDataContainerEventListener = null;
 		}
 	}
 
@@ -609,8 +622,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					break;
 				}
 			}
-			
-			if(iconPath.equals("")) {
+
+			if (iconPath.equals("")) {
 				iconPath = null;
 			}
 			if (iconPath != null) {
@@ -752,4 +765,14 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		return maxDataAmount;
 	}
 
+	public void createDataContainer(ATableBasedDataDomain dataDomain,
+			String recordPerspectiveID, String dimensionPerspectiveID) {
+		
+		// FIXME: Create proper DimensionGroup
+		FakeDimensionGroupData dimensionGroup = new FakeDimensionGroupData(0);
+		dimensionGroup.setDataDomain(dataDomain);
+		dimensionGroup.setDimensionPerspectiveID(dimensionPerspectiveID);
+		dimensionGroup.setRecordPerspectiveID(recordPerspectiveID);
+		dataDomain.addDimensionGroup(dimensionGroup);
+	}
 }

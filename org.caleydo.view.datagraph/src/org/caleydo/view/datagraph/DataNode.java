@@ -102,7 +102,7 @@ public class DataNode extends ADraggableDataGraphNode {
 
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			dataContainerRenderer = new DetailDataContainerRenderer(
-					(ATableBasedDataDomain) dataDomain, view);
+					(ATableBasedDataDomain) dataDomain, view, this, dragAndDropController);
 		} else {
 			dataContainerRenderer = new OverviewDataContainerRenderer(this,
 					view, dragAndDropController, getDimensionGroups());

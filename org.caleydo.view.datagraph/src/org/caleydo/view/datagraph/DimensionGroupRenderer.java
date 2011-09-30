@@ -11,11 +11,10 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
-public class ComparisonGroupRepresentation implements IDraggable {
+public class DimensionGroupRenderer extends ARenderer implements IDraggable {
 
 	private ADimensionGroupData dimensionGroupData;
-	private float x;
-	private float y;
+
 	private AGLView view;
 	private IDataGraphNode node;
 
@@ -24,18 +23,19 @@ public class ComparisonGroupRepresentation implements IDraggable {
 	private Point2D draggingPosition;
 	private SelectionType selectionType;
 
-	public ComparisonGroupRepresentation(
-			ADimensionGroupData dimensionGroupData, AGLView view,
-			DragAndDropController dragAndDropController, IDataGraphNode node) {
+	public DimensionGroupRenderer(ADimensionGroupData dimensionGroupData,
+			AGLView view, DragAndDropController dragAndDropController,
+			IDataGraphNode node) {
 		this.setDimensionGroupData(dimensionGroupData);
 		this.view = view;
 		this.node = node;
 	}
 
+	@Override
 	public void render(GL2 gl) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		gl.glColor3f(0.6f, 0.6f, 0.6f);
+		gl.glColor3fv(dimensionGroupData.getDataDomain().getColor().getRGB(), 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0.1f);
 		gl.glVertex3f(x, 0, 0.1f);
@@ -72,22 +72,6 @@ public class ComparisonGroupRepresentation implements IDraggable {
 
 	public ADimensionGroupData getDimensionGroupData() {
 		return dimensionGroupData;
-	}
-
-	public void setX(float x) {
-		this.x = x;
-	}
-
-	public float getX() {
-		return x;
-	}
-
-	public void setY(float y) {
-		this.y = y;
-	}
-
-	public float getY() {
-		return y;
 	}
 
 	@Override

@@ -19,26 +19,19 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 
 public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
-	private final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
-
 	private final static int SPACING_PIXELS = 2;
 	private final static int MIN_COMP_GROUP_WIDTH_PIXELS = 16;
 
-	private IDataGraphNode node;
-	private AGLView view;
 	private Map<ADimensionGroupData, Pair<Point2D, Point2D>> dimensionGroupPositions;
-	private DragAndDropController dragAndDropController;
-	private List<ComparisonGroupRepresentation> comparisonGroupRepresentations;
+	private List<DimensionGroupRenderer> comparisonGroupRepresentations;
 
 	public OverviewDataContainerRenderer(IDataGraphNode node, AGLView view,
 			DragAndDropController dragAndDropController,
 			List<ADimensionGroupData> dimensionGroupDatas) {
+		super(node, view, dragAndDropController);
 
-		this.node = node;
-		this.view = view;
-		this.dragAndDropController = dragAndDropController;
 		dimensionGroupPositions = new HashMap<ADimensionGroupData, Pair<Point2D, Point2D>>();
-		comparisonGroupRepresentations = new ArrayList<ComparisonGroupRepresentation>();
+		comparisonGroupRepresentations = new ArrayList<DimensionGroupRenderer>();
 		setDimensionGroups(dimensionGroupDatas);
 		createPickingListener();
 	}
@@ -48,10 +41,10 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-				ComparisonGroupRepresentation draggedComparisonGroupRepresentation = null;
+				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
 				int dimensionGroupID = pick.getID();
 
-				for (ComparisonGroupRepresentation comparisonGroupRepresentation : comparisonGroupRepresentations) {
+				for (DimensionGroupRenderer comparisonGroupRepresentation : comparisonGroupRepresentations) {
 					if (comparisonGroupRepresentation.getDimensionGroupData()
 							.getID() == dimensionGroupID) {
 						draggedComparisonGroupRepresentation = comparisonGroupRepresentation;
@@ -92,7 +85,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 		// this.dimensionGroupDatas = dimensionGroupDatas;
 		comparisonGroupRepresentations.clear();
 		for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
-			ComparisonGroupRepresentation comparisonGroupRepresentation = new ComparisonGroupRepresentation(
+			DimensionGroupRenderer comparisonGroupRepresentation = new DimensionGroupRenderer(
 					dimensionGroupData, view, dragAndDropController, node);
 			comparisonGroupRepresentations.add(comparisonGroupRepresentation);
 		}
@@ -112,7 +105,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 		dimensionGroupPositions.clear();
 
-		for (ComparisonGroupRepresentation comparisonGroupRepresentation : comparisonGroupRepresentations) {
+		for (DimensionGroupRenderer comparisonGroupRepresentation : comparisonGroupRepresentations) {
 			float currentDimGroupWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 

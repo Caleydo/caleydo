@@ -391,8 +391,8 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 			DragAndDropController dragAndDropController) {
 		ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
 		for (IDraggable draggable : draggables) {
-			if (draggable instanceof ComparisonGroupRepresentation) {
-				ComparisonGroupRepresentation comparisonGroupRepresentation = (ComparisonGroupRepresentation) draggable;
+			if (draggable instanceof DimensionGroupRenderer) {
+				DimensionGroupRenderer comparisonGroupRepresentation = (DimensionGroupRenderer) draggable;
 				dimensionGroupData.add(comparisonGroupRepresentation
 						.getDimensionGroupData());
 			}

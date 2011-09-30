@@ -2,29 +2,47 @@ package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.contextmenu.AddDataContainerItem;
 
 public class DetailDataContainerRenderer extends ADataContainerRenderer {
+
+	protected final static String EMPTY_CELL_PICKING_TYPE = "org.caleydo.view.datagraph.emptycell";
 
 	private static final int MAX_TEXT_WIDTH_PIXELS = 80;
 	private static final int TEXT_HEIGHT_PIXELS = 12;
 	private static final int COLUMN_WIDTH_PIXELS = 20;
 	private static final int ROW_HEIGHT_PIXELS = 20;
-	private static final int CAPTION_SPACING = 5;
-	private static final int CELL_SPACING = 2;
+	private static final int CAPTION_SPACING_PIXELS = 5;
+	private static final int CELL_SPACING_PIXELS = 2;
+	private static final int CELL_SIZE_PIXELS = 16;
 
 	private ATableBasedDataDomain dataDomain;
-	private AGLView view;
-	List<ADimensionGroupData> dimensionGroupDatas;
+//	private List<ADimensionGroupData> dimensionGroupDatas;
+	private List<DimensionGroupRenderer> dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
+	private Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
+	/**
+	 * Map containing all cells of the table identified by the concatenation of
+	 * the row.caption and column.caption
+	 */
+	private Map<String, ARenderer> cells = new HashMap<String, ARenderer>();
+	private List<CellContainer> rows = new ArrayList<CellContainer>();
+	private List<CellContainer> columns = new ArrayList<CellContainer>();
 
 	private class CellContainer {
 		private String caption;
@@ -32,36 +50,142 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		private float position;
 	}
 
-	private List<CellContainer> rows = new ArrayList<CellContainer>();
-	private List<CellContainer> columns = new ArrayList<CellContainer>();
-
 	public DetailDataContainerRenderer(ATableBasedDataDomain dataDomain,
-			AGLView view) {
+			AGLView view, IDataGraphNode node,
+			DragAndDropController dragAndDropController) {
+		super(node, view, dragAndDropController);
+
 		this.dataDomain = dataDomain;
-		this.view = view;
 
 		// FIXME: Use from datadomain
-		dimensionGroupDatas = new ArrayList<ADimensionGroupData>();
-		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("Row1");
-		dimensionGroupDatas.add(data);
-
-		data = new FakeDimensionGroupData(0);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("AnotherRow");
-		dimensionGroupDatas.add(data);
-
-		data = new FakeDimensionGroupData(0);
-		data.setDimensionPerspectiveID("AnotherColumn2");
-		data.setRecordPerspectiveID("Row1");
-		dimensionGroupDatas.add(data);
-		data = new FakeDimensionGroupData(0);
-
-		data.setDimensionPerspectiveID("YetAnotherColumn2");
-		data.setRecordPerspectiveID("YetAnotherRow");
-		dimensionGroupDatas.add(data);
+		List<ADimensionGroupData> dimensionGroupDatas = dataDomain.getDimensionGroups();
+//		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("Row1");
+//		dimensionGroupDatas.add(data);
+//
+//		data = new FakeDimensionGroupData(0);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("AnotherRow");
+//		dimensionGroupDatas.add(data);
+//
+//		data = new FakeDimensionGroupData(0);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("YetAnotherRow");
+//		dimensionGroupDatas.add(data);
+//
+//		data = new FakeDimensionGroupData(0);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("RowPerspec2");
+//		dimensionGroupDatas.add(data);
+//
+//		data = new FakeDimensionGroupData(0);
+//		data.setDimensionPerspectiveID("AnotherColumn2");
+//		data.setRecordPerspectiveID("Row1");
+//		dimensionGroupDatas.add(data);
+//		data = new FakeDimensionGroupData(0);
+//
+//		data.setDimensionPerspectiveID("YetAnotherColumn2");
+//		data.setRecordPerspectiveID("YetAnotherRow");
+//		dimensionGroupDatas.add(data);
 		createRowsAndColumns(dimensionGroupDatas);
+
+		createPickingListeners();
+	}
+
+	private void createPickingListeners() {
+		view.addMultiIDPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
+				int dimensionGroupID = pick.getID();
+
+				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+					if (dimensionGroupRenderer.getDimensionGroupData().getID() == dimensionGroupID) {
+						draggedComparisonGroupRepresentation = dimensionGroupRenderer;
+						break;
+					}
+				}
+				if (draggedComparisonGroupRepresentation == null)
+					return;
+
+				draggedComparisonGroupRepresentation
+						.setSelectionType(SelectionType.SELECTION);
+
+				dragAndDropController.clearDraggables();
+				dragAndDropController.setDraggingStartPosition(pick
+						.getPickedPoint());
+				dragAndDropController
+						.addDraggable(draggedComparisonGroupRepresentation);
+				view.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+			}
+
+			@Override
+			public void dragged(Pick pick) {
+				if (!dragAndDropController.isDragging()) {
+					dragAndDropController.startDragging("DimensionGroupDrag");
+				}
+			}
+
+		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
+
+		view.addMultiIDPickingListener(new APickingListener() {
+			
+			@Override
+			public void clicked(Pick pick) {
+				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
+				int dimensionGroupID = pick.getID();
+
+				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+					if (dimensionGroupRenderer.getDimensionGroupData().getID() == dimensionGroupID) {
+						draggedComparisonGroupRepresentation = dimensionGroupRenderer;
+						break;
+					}
+				}
+				if (draggedComparisonGroupRepresentation == null)
+					return;
+
+				draggedComparisonGroupRepresentation
+						.setSelectionType(SelectionType.SELECTION);
+
+				dragAndDropController.clearDraggables();
+				dragAndDropController.setDraggingStartPosition(pick
+						.getPickedPoint());
+				dragAndDropController
+						.addDraggable(draggedComparisonGroupRepresentation);
+				view.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+
+				Pair<CellContainer, CellContainer> rowAndColumn = null;
+
+				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers
+						.keySet()) {
+					if (emptyCellRenderer.getID() == pick.getID()) {
+						rowAndColumn = emptyCellRenderers
+								.get(emptyCellRenderer);
+						break;
+					}
+				}
+
+				if (rowAndColumn != null) {
+					view.getContextMenuCreator().addContextMenuItem(
+							new AddDataContainerItem(dataDomain, rowAndColumn
+									.getFirst().caption, rowAndColumn
+									.getSecond().caption));
+				}
+			}
+
+		}, EMPTY_CELL_PICKING_TYPE + node.getID());
 	}
 
 	private void createRowsAndColumns(
@@ -92,17 +216,51 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		for (String id : columnIDs) {
 			CellContainer column = new CellContainer();
 			column.caption = id;
+			column.numSubdivisions = 1;
+			columns.add(column);
+		}
+
+		cells.clear();
+		emptyCellRenderers.clear();
+		dimensionGroupRenderers.clear();
+
+		int emptyCellId = 0;
+		for (CellContainer column : columns) {
 			int numSubdivisions = 1;
-			for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
-				// FIXME: do it properly
-				if (((FakeDimensionGroupData) dimensionGroupData)
-						.getDimensionPerspectiveID().equals(id)) {
-					numSubdivisions++;
+			for (CellContainer row : rows) {
+				boolean dimensionGroupExists = false;
+				for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
+					// FIXME: do it properly
+					FakeDimensionGroupData fakeDimensionGroupData = (FakeDimensionGroupData) dimensionGroupData;
+					if (fakeDimensionGroupData.getDimensionPerspectiveID()
+							.equals(column.caption)
+							&& fakeDimensionGroupData.getRecordPerspectiveID()
+									.equals(row.caption)) {
+						numSubdivisions++;
+						if (numSubdivisions >= rows.size()) {
+							numSubdivisions = rows.size();
+						}
+						dimensionGroupExists = true;
+						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
+								fakeDimensionGroupData, view,
+								dragAndDropController, node);
+						cells.put(row.caption + column.caption,
+								dimensionGroupRenderer);
+						dimensionGroupRenderers.add(dimensionGroupRenderer);
+						break;
+					}
+				}
+				if (!dimensionGroupExists) {
+					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(
+							emptyCellId++);
+					cells.put(row.caption + column.caption, emptyCellRenderer);
+					emptyCellRenderers
+							.put(emptyCellRenderer,
+									new Pair<CellContainer, CellContainer>(row,
+											column));
 				}
 			}
-
 			column.numSubdivisions = numSubdivisions;
-			columns.add(column);
 		}
 	}
 
@@ -119,8 +277,10 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 						.getGLWidthForPixelWidth(getMinWidthPixels() / 2);
 		float rowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
-		float currentPositionY = y - captionRowHeight
-				- pixelGLConverter.getGLHeightForPixelHeight(CAPTION_SPACING);
+		float currentPositionY = y
+				- captionRowHeight
+				- pixelGLConverter
+						.getGLHeightForPixelHeight(CAPTION_SPACING_PIXELS);
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
@@ -136,7 +296,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				currentPositionX
 						+ captionColumnWidth
 						+ pixelGLConverter
-								.getGLWidthForPixelWidth(CAPTION_SPACING),
+								.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
 				currentPositionY, 0);
 		gl.glVertex3f(x, currentPositionY, 0);
 		gl.glVertex3f(x, y, 0);
@@ -144,7 +304,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				currentPositionX
 						+ captionColumnWidth
 						+ pixelGLConverter
-								.getGLWidthForPixelWidth(CAPTION_SPACING), y, 0);
+								.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
+				y, 0);
 		gl.glEnd();
 		gl.glPopAttrib();
 
@@ -173,7 +334,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		float columnWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(COLUMN_WIDTH_PIXELS);
 		currentPositionX += captionColumnWidth
-				+ pixelGLConverter.getGLWidthForPixelWidth(CAPTION_SPACING);
+				+ pixelGLConverter
+						.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
 		for (CellContainer column : columns) {
 			float currentColumnWidth = columnWidth * column.numSubdivisions;
@@ -203,7 +365,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 						y
 								- captionRowHeight
 								- pixelGLConverter
-										.getGLHeightForPixelHeight(CAPTION_SPACING),
+										.getGLHeightForPixelHeight(CAPTION_SPACING_PIXELS),
 						0);
 			}
 			gl.glEnd();
@@ -212,59 +374,48 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 			for (CellContainer row : rows) {
 				float cellSpacingX = pixelGLConverter
-						.getGLWidthForPixelWidth(CELL_SPACING);
+						.getGLWidthForPixelWidth(CELL_SPACING_PIXELS);
 				float cellSpacingY = pixelGLConverter
-						.getGLHeightForPixelHeight(CELL_SPACING);
+						.getGLHeightForPixelHeight(CELL_SPACING_PIXELS);
 
-				float cellPositionX = currentPositionX + currentColumnWidth
-						- columnWidth;
+				float emptyCellPositionX = currentPositionX
+						+ currentColumnWidth - columnWidth;
 
-				boolean dimensionGroupExists = false;
+				// boolean dimensionGroupExists = false;
 
-				for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
-					// FIXME: Do properly
-					FakeDimensionGroupData fakeDimensionGroupData = (FakeDimensionGroupData) dimensionGroupData;
-					if (fakeDimensionGroupData.getDimensionPerspectiveID()
-							.equals(column.caption)
-							&& fakeDimensionGroupData.getRecordPerspectiveID()
-									.equals(row.caption)) {
+				ARenderer cell = cells.get(row.caption + column.caption);
 
-						gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
-						gl.glColor3fv(dataDomain.getColor().getRGB(), 0);
+				gl.glPushMatrix();
+				int pickingID = 0;
+				if (cell instanceof DimensionGroupRenderer) {
 
-						gl.glBegin(GL2.GL_QUADS);
-						gl.glVertex3f(currentDimGroupPositionX + cellSpacingX,
-								row.position - rowHeight + cellSpacingY, 0);
-						gl.glVertex3f(currentDimGroupPositionX + columnWidth
-								- cellSpacingX, row.position - rowHeight
-								+ cellSpacingY, 0);
-						gl.glVertex3f(currentDimGroupPositionX + columnWidth
-								- cellSpacingX, row.position - cellSpacingY, 0);
-						gl.glVertex3f(currentDimGroupPositionX + cellSpacingX,
-								row.position - cellSpacingY, 0);
-						gl.glEnd();
-						gl.glPopAttrib();
+					pickingID = view.getPickingManager().getPickingID(
+							view.getID(),
+							DIMENSION_GROUP_PICKING_TYPE + node.getID(),
+							((DimensionGroupRenderer) cell)
+									.getDimensionGroupData().getID());
 
-						currentDimGroupPositionX += columnWidth;
-						dimensionGroupExists = true;
-						break;
-					}
-				}
-				
-				if(!dimensionGroupExists) {
-					gl.glColor3f(0.7f, 0.7f, 0.7f);
-					gl.glBegin(GL2.GL_QUADS);
-					gl.glVertex3f(cellPositionX + cellSpacingX, row.position
-							- rowHeight + cellSpacingY, 0);
-					gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
+					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX,
 							row.position - rowHeight + cellSpacingY, 0);
-					gl.glVertex3f(cellPositionX + columnWidth - cellSpacingX,
-							row.position - cellSpacingY, 0);
-					gl.glVertex3f(cellPositionX + cellSpacingX, row.position
-							- cellSpacingY, 0);
-					gl.glEnd();
+					currentDimGroupPositionX += columnWidth;
+				} else {
+
+					pickingID = view.getPickingManager().getPickingID(
+							view.getID(),
+							EMPTY_CELL_PICKING_TYPE + node.getID(),
+							((EmptyCellRenderer) cell).getID());
+
+					gl.glTranslatef(emptyCellPositionX + cellSpacingX,
+							row.position - rowHeight + cellSpacingY, 0);
 				}
-				
+				cell.setLimits(pixelGLConverter
+						.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+						pixelGLConverter
+								.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
+				gl.glPushName(pickingID);
+				cell.render(gl);
+				gl.glPopName();
+				gl.glPopMatrix();
 			}
 
 			gl.glPopAttrib();
@@ -309,7 +460,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			sumColumnWidth += column.numSubdivisions * COLUMN_WIDTH_PIXELS;
 		}
 
-		return captionWidth + sumColumnWidth + CAPTION_SPACING;
+		return captionWidth + sumColumnWidth + CAPTION_SPACING_PIXELS;
 
 	}
 
@@ -320,7 +471,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		int captionWidth = pixelGLConverter
 				.getPixelHeightForGLHeight(calcMaxTextWidth(columns));
 
-		return captionWidth + rows.size() * ROW_HEIGHT_PIXELS + CAPTION_SPACING;
+		return captionWidth + rows.size() * ROW_HEIGHT_PIXELS
+				+ CAPTION_SPACING_PIXELS;
 
 	}
 
