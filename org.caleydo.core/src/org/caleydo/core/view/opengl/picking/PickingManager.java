@@ -78,10 +78,20 @@ public class PickingManager {
 			picks.add(pick);
 		}
 
+		/**
+		 * Returns all picking types that have been added to the container.
+		 * 
+		 * @return
+		 */
 		private Set<String> getPickingTypes() {
 			return hashPickingTypeToPicks.keySet();
 		}
 
+		/**
+		 * Creates a deep copy of the container.
+		 * 
+		 * @return
+		 */
 		private ViewSpecificHitListContainer copy() {
 			ViewSpecificHitListContainer copy = new ViewSpecificHitListContainer();
 			for (String pickingType : hashPickingTypeToPicks.keySet()) {
@@ -189,6 +199,10 @@ public class PickingManager {
 	 */
 	private HashMap<Integer, ViewSpecificHitListContainer> hashViewIDToViewSpecificHitListContainer;
 
+	/**
+	 * HashMap with the view ID as key and a {@link ViewSpecificHitListContainer} as value. The Container
+	 * stores list of hits from the previous picking procedure for one view.
+	 */
 	private HashMap<Integer, ViewSpecificHitListContainer> hashViewIDToPreviousViewSpecificHitListContainer;
 	/**
 	 * HashMap with the view ID as key and a flag as value which helps determine whether a mouse was newly
