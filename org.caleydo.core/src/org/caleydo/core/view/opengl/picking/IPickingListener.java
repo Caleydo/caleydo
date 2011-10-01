@@ -45,5 +45,12 @@ public interface IPickingListener {
 	 * @param pick
 	 */
 	public void dragged(Pick pick);
+	
+	/**
+	 * Called, when the mouse has left the object corresponding to this listener.
+	 * 
+	 * @param pick
+	 */
+	public void mouseOut(Pick pick);
 
 }

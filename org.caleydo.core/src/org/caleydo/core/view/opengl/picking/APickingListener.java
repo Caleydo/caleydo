@@ -30,5 +30,9 @@ public abstract class APickingListener implements IPickingListener {
 	@Override
 	public void dragged(Pick pick) {
 	}
+	
+	@Override
+	public void mouseOut(Pick pick) {
+	}
 
 }

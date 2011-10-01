@@ -97,6 +97,12 @@ public class DataNode extends ADraggableDataGraphNode {
 		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+		
+		ElementLayout toggleDataContainerDetailLayout = new ElementLayout("lineSeparator");
+//		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+//		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
+//		lineSeparatorLayout.setRatioSizeX(1);
+//		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 

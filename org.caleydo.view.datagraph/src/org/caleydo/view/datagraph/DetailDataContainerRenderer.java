@@ -138,29 +138,13 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		view.addMultiIDPickingListener(new APickingListener() {
 			
 			@Override
-			public void clicked(Pick pick) {
-				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
-				int dimensionGroupID = pick.getID();
-
-				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
-					if (dimensionGroupRenderer.getDimensionGroupData().getID() == dimensionGroupID) {
-						draggedComparisonGroupRepresentation = dimensionGroupRenderer;
-						break;
-					}
-				}
-				if (draggedComparisonGroupRepresentation == null)
-					return;
-
-				draggedComparisonGroupRepresentation
-						.setSelectionType(SelectionType.SELECTION);
-
-				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick
-						.getPickedPoint());
-				dragAndDropController
-						.addDraggable(draggedComparisonGroupRepresentation);
-				view.setDisplayListDirty();
-
+			public void mouseOver(Pick pick) {
+				System.out.println("overx " + pick.getID() + " " + this.hashCode());
+			}
+			
+			@Override
+			public void mouseOut(Pick pick) {
+				System.out.println("out " + pick.getID() + " " + this.hashCode());
 			}
 
 			@Override

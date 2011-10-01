@@ -653,6 +653,9 @@ public abstract class AGLView
 			case DRAGGED:
 				pickingListener.dragged(pick);
 				break;
+			case MOUSE_OUT:
+				pickingListener.mouseOut(pick);
+				break;
 		}
 	}
 
