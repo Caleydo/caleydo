@@ -105,10 +105,13 @@ public class DataNode extends ADraggableDataGraphNode {
 		// lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		// lineSeparatorLayout.setRatioSizeX(1);
 		// lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
-		
+
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] {
-				1, 1, 1, 1 }));
+
+		if (getDimensionGroups().size() > 0) {
+			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
+					1, 1 }));
+		}
 
 		Column bodyColumn = new Column("bodyColumn");
 
@@ -132,10 +135,10 @@ public class DataNode extends ADraggableDataGraphNode {
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setRatioSizeX(0);
-		
+
 		bodyColumn.append(compGroupLayout);
 		bodyColumn.append(spacingLayoutY);
-		
+
 		bodyRow.append(bodyColumn);
 
 		baseColumn.append(spacingLayoutY);

@@ -600,9 +600,8 @@ public abstract class AGLView
 					catch (IllegalArgumentException e) {
 					}
 
-					pickingManager.flushHits(uniqueID, pickingType);
-
 				}
+				pickingManager.flushHits(uniqueID, pickingType);
 			}
 		}
 

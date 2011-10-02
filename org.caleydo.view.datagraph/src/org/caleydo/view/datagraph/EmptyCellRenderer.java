@@ -5,19 +5,23 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 
 public class EmptyCellRenderer extends ColorRenderer {
+	
+	public static final float[] DEFAULT_COLOR = { 0.8f, 0.8f, 0.8f, 1f };
+	public static final float[] DEFAULT_BORDER_COLOR = { 0.6f, 0.6f, 0.6f, 1f };
 
 	private int id;
 
 	public EmptyCellRenderer(int id) {
-		super(new float[] { 0.8f, 0.8f, 0.8f, 1f }, new float[] { 0.6f, 0.6f,
-				0.6f, 1f }, 2);
+		super(DEFAULT_COLOR, DEFAULT_BORDER_COLOR, 2);
 		this.setID(id);
 	}
 
 	@Override
 	public void render(GL2 gl) {
-		
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, 0.1f);
 		super.render(gl);
+		gl.glPopMatrix();
 
 //		float[] color = new float[] { 0.8f, 0.8f, 0.8f };
 //		gl.glColor3fv(color, 0);

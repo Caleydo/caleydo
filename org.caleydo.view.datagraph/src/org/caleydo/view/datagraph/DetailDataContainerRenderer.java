@@ -74,32 +74,44 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
-				int dimensionGroupID = pick.getID();
-
-				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
-					if (dimensionGroupRenderer.getDimensionGroupData().getID() == dimensionGroupID) {
-						draggedComparisonGroupRepresentation = dimensionGroupRenderer;
-						break;
-					}
-				}
-				if (draggedComparisonGroupRepresentation == null)
+				DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+						.getID());
+				if (dimensionGroupRenderer == null)
 					return;
 
-				draggedComparisonGroupRepresentation
+				dimensionGroupRenderer
 						.setSelectionType(SelectionType.SELECTION);
 
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick
 						.getPickedPoint());
-				dragAndDropController
-						.addDraggable(draggedComparisonGroupRepresentation);
+				dragAndDropController.addDraggable(dimensionGroupRenderer);
 				view.setDisplayListDirty();
 
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
+				DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+						.getID());
+				if (dimensionGroupRenderer == null)
+					return;
+
+				dimensionGroupRenderer.setColor(dimensionGroupRenderer
+						.getBorderColor());
+
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
+						.getID());
+				if (dimensionGroupRenderer == null)
+					return;
+
+				dimensionGroupRenderer
+						.setColor(dataDomain.getColor().getRGBA());
+
 			}
 
 			@Override
@@ -109,20 +121,42 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				}
 			}
 
+			private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
+				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+					if (dimensionGroupRenderer.getDimensionGroupData().getID() == id) {
+						return dimensionGroupRenderer;
+					}
+				}
+				return null;
+			}
+
 		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
 
 		view.addMultiIDPickingListener(new APickingListener() {
 
 			@Override
 			public void mouseOver(Pick pick) {
-				System.out.println("overx " + pick.getID() + " "
-						+ this.hashCode());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
+						.getID());
+				if (emptyCellRenderer == null)
+					return;
+
+				emptyCellRenderer.setColor(emptyCellRenderer
+						.getBorderColor());
+				view.setDisplayListDirty();
+//System.out.println("over");
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				System.out.println("out " + pick.getID() + " "
-						+ this.hashCode());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
+						.getID());
+				if (emptyCellRenderer == null)
+					return;
+
+				emptyCellRenderer.setColor(EmptyCellRenderer.DEFAULT_COLOR);
+				view.setDisplayListDirty();
+//				System.out.println("out");
 			}
 
 			@Override
@@ -145,6 +179,16 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 									.getFirst().caption, rowAndColumn
 									.getSecond().caption));
 				}
+			}
+
+			private EmptyCellRenderer getEmptyCellRenderer(int id) {
+				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers
+						.keySet()) {
+					if (emptyCellRenderer.getID() == id) {
+						return emptyCellRenderer;
+					}
+				}
+				return null;
 			}
 
 		}, EMPTY_CELL_PICKING_TYPE + node.getID());
@@ -278,12 +322,12 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			float textPositionY = currentPositionY - rowHeight
 					+ (rowHeight - textHeight) / 2.0f
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
-			
-//			gl.glColor3f(0, 0, 0);
-			textRenderer.setColor(new float[] {0,0,0});
+
+			// gl.glColor3f(0, 0, 0);
+			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX,
 					textPositionY, 0, captionColumnWidth, textHeight);
-			
+
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			gl.glLineWidth(1);
@@ -315,8 +359,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			gl.glPushMatrix();
 			gl.glTranslatef(textPositionX, y, 0);
 			gl.glRotatef(-90, 0, 0, 1);
-//			gl.glColor3f(0, 0, 0);
-			textRenderer.setColor(new float[] {0,0,0});
+			// gl.glColor3f(0, 0, 0);
+			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
 					captionRowHeight, textHeight);
 			gl.glPopMatrix();

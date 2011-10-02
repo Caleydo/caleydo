@@ -66,14 +66,16 @@ public class PickingManager {
 		 * @param pick
 		 *            the pick itself
 		 */
-		private void addPicksForPickingType(String pickingType, Pick pick) {
+		private void addPicksForPickingType(String pickingType, Pick pick, boolean clearPicksBeforeAdding) {
 			ArrayList<Pick> picks = hashPickingTypeToPicks.get(pickingType);
 			if (picks == null) {
 				picks = new ArrayList<Pick>();
 				hashPickingTypeToPicks.put(pickingType, picks);
 			}
 			else {
-				picks.clear();
+				if (clearPicksBeforeAdding) {
+					picks.clear();
+				}
 			}
 			picks.add(pick);
 		}
@@ -336,6 +338,8 @@ public class PickingManager {
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), true);
+			// pickPoint = glMouseListener.getPickedPoint();
+			// ePickingMode = PickingMode.MOUSE_OVER;
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
 			&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
@@ -422,7 +426,7 @@ public class PickingManager {
 						Pick pick =
 							new Pick(previousPick.getID(), PickingMode.MOUSE_OUT, tmpPickPoint,
 								glMouseListener.getPickedPointDragStart(), fMinimumZValue);
-						hitContainer.addPicksForPickingType(pickingType, pick);
+						hitContainer.addPicksForPickingType(pickingType, pick, true);
 					}
 				}
 			}
@@ -598,6 +602,8 @@ public class PickingManager {
 
 		HashMap<Integer, ViewSpecificHitListContainer> currentHitListContainers =
 			new HashMap<Integer, ViewSpecificHitListContainer>();
+		HashMap<Integer, HashMap<String, ArrayList<Pick>>> picksToAddToPreviousHitListContainers =
+			new HashMap<Integer, HashMap<String, ArrayList<Pick>>>();
 
 		for (int pickingID : alPickingIDs) {
 			Pair<Integer, String> pickAssociatedValues = hashPickingIDToViewID.get(pickingID);
@@ -614,7 +620,47 @@ public class PickingManager {
 				hitContainer = new ViewSpecificHitListContainer();
 				hashViewIDToViewSpecificHitListContainer.put(viewIDToUse, hitContainer);
 			}
-			hitContainer.addPicksForPickingType(eType, pick);
+			ViewSpecificHitListContainer previousHitContainer =
+				hashViewIDToPreviousViewSpecificHitListContainer.get(viewIDToUse);
+
+			boolean addPick = true;
+
+			if (previousHitContainer != null) {
+				ArrayList<Pick> previousPicks = previousHitContainer.getPicksForPickingType(eType);
+
+				if (previousPicks != null) {
+					for (Pick previousPick : previousPicks) {
+						// Do not add the same Mouse_Over pick again (Mouse_Over should only be called once)
+						if (previousPick.getID() == pick.getID()
+							&& pick.getPickingMode() == PickingMode.MOUSE_OVER) {
+							addPick = false;
+						}
+					}
+				}
+			}
+			if (addPick) {
+				hitContainer.addPicksForPickingType(eType, pick, true);
+			}
+			else {
+				// This Mouse_over pick must be remembered, but not called for the next time if a mouse out
+				// happens.
+				HashMap<String, ArrayList<Pick>> typeSpecificPicks =
+					picksToAddToPreviousHitListContainers.get(viewIDToUse);
+				if (typeSpecificPicks == null) {
+					typeSpecificPicks = new HashMap<String, ArrayList<Pick>>();
+				}
+
+				ArrayList<Pick> picks = typeSpecificPicks.get(eType);
+
+				if (picks == null) {
+					picks = new ArrayList<Pick>();
+				}
+
+				picks.add(pick);
+				typeSpecificPicks.put(eType, picks);
+				picksToAddToPreviousHitListContainers.put(viewIDToUse, typeSpecificPicks);
+
+			}
 
 			currentHitListContainers.put(viewIDToUse, hitContainer);
 		}
@@ -642,12 +688,42 @@ public class PickingManager {
 							}
 						}
 
+						HashMap<String, ArrayList<Pick>> typeSpecificPicks =
+							picksToAddToPreviousHitListContainers.get(viewID);
+						if (typeSpecificPicks != null) {
+
+							ArrayList<Pick> picks = typeSpecificPicks.get(pickingType);
+
+							if (picks != null) {
+								for (Pick pick : picks) {
+									// Some Mouse_over picks were not added to the hitListContainer but
+									// occurred, so no Mouse_Out should be called.
+									if (previousPick.getID() == pick.getID()) {
+										isMouseOutOnPreviousPick = false;
+										break;
+									}
+								}
+							}
+						}
+
 						if (isMouseOutOnPreviousPick) {
 							hitContainer.addPicksForPickingType(pickingType, new Pick(previousPick.getID(),
-								PickingMode.MOUSE_OUT, pickedPoint, dragStartPoint, fMinimumZValue));
+								PickingMode.MOUSE_OUT, pickedPoint, dragStartPoint, fMinimumZValue), false);
 						}
 					}
 
+				}
+			}
+
+			// Add mouse over picks for the next run
+			HashMap<String, ArrayList<Pick>> typeSpecificPicks =
+				picksToAddToPreviousHitListContainers.get(viewID);
+			if (typeSpecificPicks != null) {
+				for (String pickingType : typeSpecificPicks.keySet()) {
+					ArrayList<Pick> picks = typeSpecificPicks.get(pickingType);
+					for (Pick pick : picks) {
+						copyWithoutMouseOut.addPicksForPickingType(pickingType, pick, true);
+					}
 				}
 			}
 
