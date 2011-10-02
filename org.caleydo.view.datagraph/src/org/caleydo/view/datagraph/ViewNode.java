@@ -171,10 +171,41 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
-		if (groups == null) {
-			groups = new ArrayList<ADimensionGroupData>();
-		}
+//		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
+//		if (groups == null) {
+//			groups = new ArrayList<ADimensionGroupData>();
+//		}
+		
+		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
+		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("Row1");
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(1);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("AnotherRow");
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(2);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("YetAnotherRow");
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(3);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("RowPerspec2");
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(4);
+		data.setDimensionPerspectiveID("AnotherColumn2");
+		data.setRecordPerspectiveID("Row1");
+		groups.add(data);
+		
+		data = new FakeDimensionGroupData(5);
+		data.setDimensionPerspectiveID("YetAnotherColumn2");
+		data.setRecordPerspectiveID("YetAnotherRow");
+		groups.add(data);
 
 		return groups;
 	}
@@ -191,7 +222,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		float spacingHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(getHeightPixels());
 		gl.glPushMatrix();
-		gl.glTranslatef(x - spacingWidth / 2.0f, y - spacingHeight / 2.0f, 0.1f);
+		gl.glTranslatef(x - spacingWidth / 2.0f, y - spacingHeight / 2.0f, 0f);
 
 		// layoutManager.setViewFrustum(new ViewFrustum(
 		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x

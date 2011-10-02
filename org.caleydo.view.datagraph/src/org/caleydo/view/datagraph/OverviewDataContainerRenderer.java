@@ -2,9 +2,7 @@ package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.media.opengl.GL2;
 
@@ -22,7 +20,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 	private final static int SPACING_PIXELS = 2;
 	private final static int MIN_COMP_GROUP_WIDTH_PIXELS = 16;
 
-	private Map<ADimensionGroupData, Pair<Point2D, Point2D>> dimensionGroupPositions;
+	
 	private List<DimensionGroupRenderer> comparisonGroupRepresentations;
 
 	public OverviewDataContainerRenderer(IDataGraphNode node, AGLView view,
@@ -30,7 +28,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 			List<ADimensionGroupData> dimensionGroupDatas) {
 		super(node, view, dragAndDropController);
 
-		dimensionGroupPositions = new HashMap<ADimensionGroupData, Pair<Point2D, Point2D>>();
+		
 		comparisonGroupRepresentations = new ArrayList<DimensionGroupRenderer>();
 		setDimensionGroups(dimensionGroupDatas);
 		createPickingListener();
@@ -145,7 +143,7 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 			Point2D position2 = new Point2D.Float(currentPosX
 					+ currentDimGroupWidth, 0);
 			dimensionGroupPositions.put(
-					comparisonGroupRepresentation.getDimensionGroupData(),
+					comparisonGroupRepresentation.getDimensionGroupData().getID(),
 					new Pair<Point2D, Point2D>(position1, position2));
 
 			currentPosX += step;
@@ -161,12 +159,6 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 	private int getDimensionGroupsWidthPixels() {
 		return (node.getDimensionGroups().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
 				+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS);
-	}
-
-	@Override
-	public Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(
-			ADimensionGroupData dimensionGroupData) {
-		return dimensionGroupPositions.get(dimensionGroupData);
 	}
 
 }

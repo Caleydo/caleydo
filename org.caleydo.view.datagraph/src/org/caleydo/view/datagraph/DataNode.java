@@ -97,18 +97,20 @@ public class DataNode extends ADraggableDataGraphNode {
 		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
-		
-		ElementLayout toggleDataContainerDetailLayout = new ElementLayout("lineSeparator");
-//		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
-//		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
-//		lineSeparatorLayout.setRatioSizeX(1);
-//		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+
+		ElementLayout toggleDataContainerDetailLayout = new ElementLayout(
+				"lineSeparator");
+		// lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
+		// lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
+		// lineSeparatorLayout.setRatioSizeX(1);
+		// lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 
 		if (dataDomain instanceof ATableBasedDataDomain) {
 			dataContainerRenderer = new DetailDataContainerRenderer(
-					(ATableBasedDataDomain) dataDomain, view, this, dragAndDropController);
+					(ATableBasedDataDomain) dataDomain, view, this,
+					dragAndDropController);
 		} else {
 			dataContainerRenderer = new OverviewDataContainerRenderer(this,
 					view, dragAndDropController, getDimensionGroups());
@@ -135,10 +137,54 @@ public class DataNode extends ADraggableDataGraphNode {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
-		if (groups == null) {
-			groups = new ArrayList<ADimensionGroupData>();
-		}
+		// List<ADimensionGroupData> groups =
+		// representedView.getDimensionGroups();
+		// if (groups == null) {
+		// groups = new ArrayList<ADimensionGroupData>();
+		// }
+
+		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
+		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("Row1");
+		if (dataDomain instanceof ATableBasedDataDomain)
+			data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(1);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("AnotherRow");
+		if (dataDomain instanceof ATableBasedDataDomain)
+			data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(2);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("YetAnotherRow");
+		if (dataDomain instanceof ATableBasedDataDomain)
+			data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(3);
+		data.setDimensionPerspectiveID("ColumnPerspec2");
+		data.setRecordPerspectiveID("RowPerspec2");
+		if (dataDomain instanceof ATableBasedDataDomain)
+			data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(4);
+		data.setDimensionPerspectiveID("AnotherColumn2");
+		data.setRecordPerspectiveID("Row1");
+		if (dataDomain instanceof ATableBasedDataDomain)
+			data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		groups.add(data);
+
+		data = new FakeDimensionGroupData(5);
+		data.setDimensionPerspectiveID("YetAnotherColumn2");
+		data.setRecordPerspectiveID("YetAnotherRow");
+		if (dataDomain instanceof ATableBasedDataDomain)
+			data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		groups.add(data);
 
 		return groups;
 	}
@@ -155,7 +201,7 @@ public class DataNode extends ADraggableDataGraphNode {
 		float height = pixelGLConverter
 				.getGLHeightForPixelHeight(getHeightPixels());
 		gl.glPushMatrix();
-		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0.1f);
+		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0f);
 
 		// layoutManager.setViewFrustum(new ViewFrustum(
 		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x

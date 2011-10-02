@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -326,24 +327,34 @@ public class EdgeBandRenderer {
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
-		for (int i = 0; i < commonDimensionGroups.size(); i++) {
-			ADimensionGroupData dimensionGroupData = commonDimensionGroups
-					.get(i);
+		List<Pair<Double, ADimensionGroupData>> sortedDimensionGroups = new ArrayList<Pair<Double, ADimensionGroupData>>(
+				commonDimensionGroups.size());
+		for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
+			sortedDimensionGroups
+					.add(new Pair<Double, ADimensionGroupData>(node
+							.getBottomDimensionGroupAnchorPoints(
+									dimensionGroupData).getFirst().getX(),
+							dimensionGroupData));
+		}
+
+		Collections.sort(sortedDimensionGroups);
+
+		for (int i = 0; i < sortedDimensionGroups.size(); i++) {
+			ADimensionGroupData dimensionGroupData = sortedDimensionGroups.get(
+					i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
 					.getBottomDimensionGroupAnchorPoints(dimensionGroupData);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
-			dimensionGroupAnchorOffsetPoints
-					.setFirst(new Point2D.Float(
-							(float) dimensionGroupAnchorPoints.getFirst()
-									.getX(), (float) dimensionGroupAnchorPoints
-									.getFirst().getY() - 0.1f));
+			Pair<Point2D, Point2D> nodeBottomAnchorPoints = node
+					.getBottomAnchorPoints();
+			dimensionGroupAnchorOffsetPoints.setFirst(new Point2D.Float(
+					(float) dimensionGroupAnchorPoints.getFirst().getX(),
+					(float) nodeBottomAnchorPoints.getFirst().getY() - 0.1f));
 
-			dimensionGroupAnchorOffsetPoints
-					.setSecond(new Point2D.Float(
-							(float) dimensionGroupAnchorPoints.getSecond()
-									.getX(), (float) dimensionGroupAnchorPoints
-									.getSecond().getY() - 0.1f));
+			dimensionGroupAnchorOffsetPoints.setSecond(new Point2D.Float(
+					(float) dimensionGroupAnchorPoints.getSecond().getX(),
+					(float) nodeBottomAnchorPoints.getSecond().getY() - 0.1f));
 
 			int width = bandWidthMap.get(dimensionGroupData);
 
@@ -361,11 +372,11 @@ public class EdgeBandRenderer {
 
 			Point2D bandOffsetPoint1 = new Point2D.Float(
 					(float) prevBandAnchorPoint.getX(),
-					(float) dimensionGroupAnchorPoints.getFirst().getY() - 0.2f);
+					(float) nodeBottomAnchorPoints.getFirst().getY() - 0.17f);
 
 			Point2D bandOffsetPoint2 = new Point2D.Float(
 					(float) nextBandAnchorPoint.getX(),
-					(float) dimensionGroupAnchorPoints.getSecond().getY() - 0.2f);
+					(float) nodeBottomAnchorPoints.getSecond().getY() - 0.17f);
 
 			anchorPoints.add(dimensionGroupAnchorPoints);
 			anchorPoints.add(dimensionGroupAnchorOffsetPoints);

@@ -26,14 +26,14 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 	private static final int MAX_TEXT_WIDTH_PIXELS = 80;
 	private static final int TEXT_HEIGHT_PIXELS = 12;
-	private static final int COLUMN_WIDTH_PIXELS = 20;
-	private static final int ROW_HEIGHT_PIXELS = 20;
+	private static final int COLUMN_WIDTH_PIXELS = 22;
+	private static final int ROW_HEIGHT_PIXELS = 22;
 	private static final int CAPTION_SPACING_PIXELS = 5;
-	private static final int CELL_SPACING_PIXELS = 2;
+	private static final int CELL_SPACING_PIXELS = 3;
 	private static final int CELL_SIZE_PIXELS = 16;
 
 	private ATableBasedDataDomain dataDomain;
-//	private List<ADimensionGroupData> dimensionGroupDatas;
+	// private List<ADimensionGroupData> dimensionGroupDatas;
 	private List<DimensionGroupRenderer> dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
 	private Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
 	/**
@@ -58,36 +58,11 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		this.dataDomain = dataDomain;
 
 		// FIXME: Use from datadomain
-		List<ADimensionGroupData> dimensionGroupDatas = dataDomain.getDimensionGroups();
-//		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("Row1");
-//		dimensionGroupDatas.add(data);
-//
-//		data = new FakeDimensionGroupData(0);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("AnotherRow");
-//		dimensionGroupDatas.add(data);
-//
-//		data = new FakeDimensionGroupData(0);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("YetAnotherRow");
-//		dimensionGroupDatas.add(data);
-//
-//		data = new FakeDimensionGroupData(0);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("RowPerspec2");
-//		dimensionGroupDatas.add(data);
-//
-//		data = new FakeDimensionGroupData(0);
-//		data.setDimensionPerspectiveID("AnotherColumn2");
-//		data.setRecordPerspectiveID("Row1");
-//		dimensionGroupDatas.add(data);
-//		data = new FakeDimensionGroupData(0);
-//
-//		data.setDimensionPerspectiveID("YetAnotherColumn2");
-//		data.setRecordPerspectiveID("YetAnotherRow");
-//		dimensionGroupDatas.add(data);
+		// List<ADimensionGroupData> dimensionGroupDatas = dataDomain
+		// .getDimensionGroups();
+		List<ADimensionGroupData> dimensionGroupDatas = node
+				.getDimensionGroups();
+
 		createRowsAndColumns(dimensionGroupDatas);
 
 		createPickingListeners();
@@ -136,15 +111,17 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
 
 		view.addMultiIDPickingListener(new APickingListener() {
-			
+
 			@Override
 			public void mouseOver(Pick pick) {
-				System.out.println("overx " + pick.getID() + " " + this.hashCode());
+				System.out.println("overx " + pick.getID() + " "
+						+ this.hashCode());
 			}
-			
+
 			@Override
 			public void mouseOut(Pick pick) {
-				System.out.println("out " + pick.getID() + " " + this.hashCode());
+				System.out.println("out " + pick.getID() + " "
+						+ this.hashCode());
 			}
 
 			@Override
@@ -228,6 +205,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
 								fakeDimensionGroupData, view,
 								dragAndDropController, node);
+						dimensionGroupRenderer
+								.setRenderDimensionGroupLabel(false);
 						cells.put(row.caption + column.caption,
 								dimensionGroupRenderer);
 						dimensionGroupRenderers.add(dimensionGroupRenderer);
@@ -381,6 +360,19 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX,
 							row.position - rowHeight + cellSpacingY, 0);
+
+					Point2D position1 = new Point2D.Float(
+							currentDimGroupPositionX + cellSpacingX,
+							row.position - rowHeight + cellSpacingY);
+					Point2D position2 = new Point2D.Float(
+							(float) position1.getX()
+									+ pixelGLConverter
+											.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+							(float) position1.getY());
+					dimensionGroupPositions.put(((DimensionGroupRenderer) cell)
+							.getDimensionGroupData().getID(),
+							new Pair<Point2D, Point2D>(position1, position2));
+
 					currentDimGroupPositionX += columnWidth;
 				} else {
 
@@ -463,13 +455,6 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 	@Override
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
 		createRowsAndColumns(dimensionGroupDatas);
-	}
-
-	@Override
-	public Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(
-			ADimensionGroupData dimensionGroupData) {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

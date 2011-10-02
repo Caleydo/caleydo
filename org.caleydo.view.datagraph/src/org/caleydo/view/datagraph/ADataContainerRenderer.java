@@ -1,7 +1,9 @@
 package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
@@ -16,18 +18,22 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 	protected IDataGraphNode node;
 	protected AGLView view;
 	protected DragAndDropController dragAndDropController;
+	protected Map<Integer, Pair<Point2D, Point2D>> dimensionGroupPositions;
 
 	public ADataContainerRenderer(IDataGraphNode node, AGLView view,
 			DragAndDropController dragAndDropController) {
 		this.node = node;
 		this.view = view;
 		this.dragAndDropController = dragAndDropController;
+		dimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
 	}
 
 	public abstract void setDimensionGroups(
 			List<ADimensionGroupData> dimensionGroupDatas);
 
-	public abstract Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(
-			ADimensionGroupData dimensionGroupData);
+	public Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(
+			ADimensionGroupData dimensionGroupData) {
+		return dimensionGroupPositions.get(dimensionGroupData.getID());
+	}
 
 }

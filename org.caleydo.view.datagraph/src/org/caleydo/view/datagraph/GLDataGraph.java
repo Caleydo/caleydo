@@ -414,7 +414,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				edgePoints.add(position2);
 
 				connectionBandRenderer.init(gl);
+				gl.glPushMatrix();
+				gl.glTranslatef(0, 0, -0.1f);
 				connectionBandRenderer.renderInterpolatedCurve(gl, edgePoints);
+				gl.glPopMatrix();
 				//
 				// float x1 = pixelGLConverter
 				// .getGLWidthForPixelWidth((int) position1.getX());
