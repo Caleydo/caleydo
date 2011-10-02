@@ -7,11 +7,15 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
-public class DimensionGroupRenderer extends ARenderer implements IDraggable {
+public class DimensionGroupRenderer extends ColorRenderer implements IDraggable {
+
+	private static final int TEXT_SPACING_PIXELS = 2;
 
 	private ADimensionGroupData dimensionGroupData;
 
@@ -24,9 +28,13 @@ public class DimensionGroupRenderer extends ARenderer implements IDraggable {
 	private SelectionType selectionType;
 	private boolean renderDimensionGroupLabel;
 
+	private int textHeightPixels;
+
 	public DimensionGroupRenderer(ADimensionGroupData dimensionGroupData,
 			AGLView view, DragAndDropController dragAndDropController,
-			IDataGraphNode node) {
+			IDataGraphNode node, float[] color) {
+		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f,
+				color[2] - 0.2f, 1f }, 2);
 		this.setDimensionGroupData(dimensionGroupData);
 		this.view = view;
 		this.node = node;
@@ -36,21 +44,23 @@ public class DimensionGroupRenderer extends ARenderer implements IDraggable {
 	@Override
 	public void render(GL2 gl) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
+		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		// FIXME: Use color from data domain
 
-		float[] color = new float[] { 0.5f, 0.5f, 0.5f };
-		if (dimensionGroupData.getDataDomain() != null) {
-			color = dimensionGroupData.getDataDomain().getColor().getRGB();
-		}
-
-		gl.glColor4f(color[0], color[1], color[2], 1f);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, 0.1f);
-		gl.glVertex3f(x, 0, 0.1f);
-		gl.glVertex3f(x, y, 0.1f);
-		gl.glVertex3f(0, y, 0.1f);
-		gl.glEnd();
+		// float[] color = new float[] { 0.5f, 0.5f, 0.5f };
+		// if (dimensionGroupData.getDataDomain() != null) {
+		// color = dimensionGroupData.getDataDomain().getColor().getRGB();
+		// }
+		//
+		// gl.glColor4f(color[0], color[1], color[2], 1f);
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glVertex3f(0, 0, 0.1f);
+		// gl.glVertex3f(x, 0, 0.1f);
+		// gl.glVertex3f(x, y, 0.1f);
+		// gl.glVertex3f(0, y, 0.1f);
+		// gl.glEnd();
+		super.render(gl);
 
 		if (selectionType != null && selectionType != SelectionType.NORMAL) {
 			gl.glColor4fv(selectionType.getColor(), 0);
@@ -65,35 +75,52 @@ public class DimensionGroupRenderer extends ARenderer implements IDraggable {
 			gl.glPopAttrib();
 		}
 
-		gl.glPushAttrib(GL2.GL_LINE_BIT);
-		gl.glLineWidth(2);
-
-		// gl.glColor3f(0.3f, 0.3f, 0.3f);
-		gl.glColor3f(color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f);
-		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(x, 0, 0);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(0, y, 0);
-
-		// gl.glColor3f(0.7f, 0.7f, 0.7f);
-		gl.glColor3f(color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f);
-		gl.glVertex3f(0, y, 0);
-		gl.glVertex3f(x, y, 0);
-		gl.glVertex3f(x, 0, 0);
-		gl.glVertex3f(x, y, 0);
-
-		gl.glEnd();
-
-		gl.glPopAttrib();
+		// gl.glPushAttrib(GL2.GL_LINE_BIT);
+		// gl.glLineWidth(2);
+		//
+		// // gl.glColor3f(0.3f, 0.3f, 0.3f);
+		// gl.glColor3f(color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f);
+		// gl.glBegin(GL2.GL_LINES);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(x, 0, 0);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(0, y, 0);
+		//
+		// // gl.glColor3f(0.7f, 0.7f, 0.7f);
+		// gl.glColor3f(color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f);
+		// gl.glVertex3f(0, y, 0);
+		// gl.glVertex3f(x, y, 0);
+		// gl.glVertex3f(x, 0, 0);
+		// gl.glVertex3f(x, y, 0);
+		//
+		// gl.glEnd();
+		//
+		// gl.glPopAttrib();
 
 		if (renderDimensionGroupLabel) {
 			gl.glPushMatrix();
-			gl.glTranslatef(0, y, 0.1f);
+			float textPositionX = (x - pixelGLConverter
+					.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
+			gl.glTranslatef(
+					textPositionX,
+					y
+							- pixelGLConverter
+									.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+					0.1f);
 			gl.glRotatef(-90, 0, 0, 1);
 
-			textRenderer.renderTextInBounds(gl, dimensionGroupData.getLabel(),
-					0, 0, 0, y, x);
+			textRenderer
+					.renderTextInBounds(
+							gl,
+							dimensionGroupData.getLabel(),
+							0,
+							0,
+							0,
+							y
+									- pixelGLConverter
+											.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+							pixelGLConverter
+									.getGLHeightForPixelHeight(textHeightPixels));
 			gl.glPopMatrix();
 		}
 
@@ -120,7 +147,7 @@ public class DimensionGroupRenderer extends ARenderer implements IDraggable {
 	@Override
 	public void handleDragging(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
-		gl.glColor4f(0.6f, 0.6f, 0.6f, 0.5f);
+		gl.glColor4f(color[0], color[1], color[2], 0.5f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f((float) draggingPosition.getX(),
 				(float) draggingPosition.getY(), 0);
@@ -169,6 +196,14 @@ public class DimensionGroupRenderer extends ARenderer implements IDraggable {
 
 	public boolean isRenderDimensionGroupLabel() {
 		return renderDimensionGroupLabel;
+	}
+
+	public void setTextHeightPixels(int textHeightPixels) {
+		this.textHeightPixels = textHeightPixels;
+	}
+
+	public int getTextHeightPixels() {
+		return textHeightPixels;
 	}
 
 }

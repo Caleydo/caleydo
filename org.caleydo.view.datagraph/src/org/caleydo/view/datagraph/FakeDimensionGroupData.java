@@ -51,7 +51,7 @@ public class FakeDimensionGroupData extends ADimensionGroupData {
 	@Override
 	public String getLabel() {
 		// TODO Auto-generated method stub
-		return "fake";
+		return "fakeDimensionGroup";
 	}
 
 	@Override

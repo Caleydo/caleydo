@@ -14,6 +14,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -40,7 +41,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 	 * Map containing all cells of the table identified by the concatenation of
 	 * the row.caption and column.caption
 	 */
-	private Map<String, ARenderer> cells = new HashMap<String, ARenderer>();
+	private Map<String, ColorRenderer> cells = new HashMap<String, ColorRenderer>();
 	private List<CellContainer> rows = new ArrayList<CellContainer>();
 	private List<CellContainer> columns = new ArrayList<CellContainer>();
 
@@ -204,7 +205,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 						dimensionGroupExists = true;
 						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
 								fakeDimensionGroupData, view,
-								dragAndDropController, node);
+								dragAndDropController, node, dataDomain
+										.getColor().getRGBA());
 						dimensionGroupRenderer
 								.setRenderDimensionGroupLabel(false);
 						cells.put(row.caption + column.caption,
@@ -276,9 +278,12 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			float textPositionY = currentPositionY - rowHeight
 					+ (rowHeight - textHeight) / 2.0f
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
+			
+//			gl.glColor3f(0, 0, 0);
+			textRenderer.setColor(new float[] {0,0,0});
 			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX,
 					textPositionY, 0, captionColumnWidth, textHeight);
-
+			
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			gl.glLineWidth(1);
@@ -310,7 +315,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			gl.glPushMatrix();
 			gl.glTranslatef(textPositionX, y, 0);
 			gl.glRotatef(-90, 0, 0, 1);
-
+//			gl.glColor3f(0, 0, 0);
+			textRenderer.setColor(new float[] {0,0,0});
 			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
 					captionRowHeight, textHeight);
 			gl.glPopMatrix();
@@ -346,7 +352,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 				// boolean dimensionGroupExists = false;
 
-				ARenderer cell = cells.get(row.caption + column.caption);
+				ColorRenderer cell = cells.get(row.caption + column.caption);
 
 				gl.glPushMatrix();
 				int pickingID = 0;

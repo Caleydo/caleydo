@@ -37,10 +37,10 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	private final static int SPACING_PIXELS = 4;
 	private final static int CAPTION_HEIGHT_PIXELS = 16;
 	private final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
-	private final static int OVERVIEW_COMP_GROUP_HEIGHT_PIXELS = 32;
+	private final static int MIN_OVERVIEW_COMP_GROUP_HEIGHT_PIXELS = 32;
 
 	private LayoutManager layoutManager;
-	private OverviewDataContainerRenderer compGroupOverviewRenderer;
+	private OverviewDataContainerRenderer overviewDataContainerRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
 	private List<ADimensionGroupData> dimensionGroups;
@@ -142,12 +142,12 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		Column bodyColumn = new Column("bodyColumn");
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		compGroupOverviewRenderer = new OverviewDataContainerRenderer(this,
+		overviewDataContainerRenderer = new OverviewDataContainerRenderer(this,
 				view, dragAndDropController, getDimensionGroups());
-		compGroupLayout.setPixelGLConverter(pixelGLConverter);
-		compGroupLayout.setPixelSizeY(OVERVIEW_COMP_GROUP_HEIGHT_PIXELS);
+//		compGroupLayout.setPixelGLConverter(pixelGLConverter);
+		compGroupLayout.setRatioSizeY(1);
 		// compGroupLayout.setPixelSizeX(compGroupOverviewRenderer.getMinWidthPixels());
-		compGroupLayout.setRenderer(compGroupOverviewRenderer);
+		compGroupLayout.setRenderer(overviewDataContainerRenderer);
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingY");
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
@@ -240,13 +240,14 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 	public int getHeightPixels() {
 		return 4 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
-				+ OVERVIEW_COMP_GROUP_HEIGHT_PIXELS;
+				+ Math.max(MIN_OVERVIEW_COMP_GROUP_HEIGHT_PIXELS,
+						overviewDataContainerRenderer.getMinHeightPixels());
 	}
 
 	@Override
 	public int getWidthPixels() {
 		return 2 * SPACING_PIXELS
-				+ Math.max(200, compGroupOverviewRenderer.getMinWidthPixels());
+				+ Math.max(200, overviewDataContainerRenderer.getMinWidthPixels());
 	}
 
 	@Override
@@ -273,7 +274,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 		float spacingY = pixelGLConverter
 				.getGLHeightForPixelHeight(SPACING_PIXELS);
 
-		Pair<Point2D, Point2D> anchorPoints = compGroupOverviewRenderer
+		Pair<Point2D, Point2D> anchorPoints = overviewDataContainerRenderer
 				.getAnchorPointsOfDimensionGroup(dimensionGroup);
 
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
@@ -442,7 +443,7 @@ public class ViewNode extends ADraggableDataGraphNode implements IDropArea {
 
 	@Override
 	public void update() {
-		compGroupOverviewRenderer.setDimensionGroups(getDimensionGroups());
+		overviewDataContainerRenderer.setDimensionGroups(getDimensionGroups());
 	}
 
 }

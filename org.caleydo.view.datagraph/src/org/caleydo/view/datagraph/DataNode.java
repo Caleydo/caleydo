@@ -19,6 +19,7 @@ import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
+import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -104,6 +105,12 @@ public class DataNode extends ADraggableDataGraphNode {
 		// lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		// lineSeparatorLayout.setRatioSizeX(1);
 		// lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+		
+		Row bodyRow = new Row("bodyRow");
+		bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] {
+				1, 1, 1, 1 }));
+
+		Column bodyColumn = new Column("bodyColumn");
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 
@@ -125,9 +132,14 @@ public class DataNode extends ADraggableDataGraphNode {
 		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setRatioSizeX(0);
+		
+		bodyColumn.append(compGroupLayout);
+		bodyColumn.append(spacingLayoutY);
+		
+		bodyRow.append(bodyColumn);
 
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(compGroupLayout);
+		baseColumn.append(bodyRow);
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(captionLayout);
 		baseColumn.append(spacingLayoutY);
