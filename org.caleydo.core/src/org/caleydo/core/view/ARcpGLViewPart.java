@@ -8,6 +8,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
@@ -24,7 +25,6 @@ import org.eclipse.swt.widgets.Composite;
 public abstract class ARcpGLViewPart
 	extends CaleydoRCPViewPart {
 
-	protected Frame frameGL;
 	protected GLCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
 
@@ -54,11 +54,10 @@ public abstract class ARcpGLViewPart
 
 	public void createPartControlGL() {
 
-		if (frameGL == null) {
-			frameGL = SWT_AWT.new_Frame(parentComposite);
-		}
-
+		Frame frameGL = SWT_AWT.new_Frame(parentComposite);
 		frameGL.add(glCanvas);
+		
+		GeneralManager.get().getViewManager().registerRCPView(this, view);
 	}
 
 	@Override
@@ -72,6 +71,7 @@ public abstract class ARcpGLViewPart
 	@Override
 	public void dispose() {
 		super.dispose();
+		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
 		getGLView().destroy();
 	}
 

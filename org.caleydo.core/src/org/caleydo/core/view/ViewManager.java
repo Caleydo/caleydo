@@ -45,21 +45,27 @@ public class ViewManager
 	extends AManager<IView>
 	implements IListenerOwner {
 
-	protected HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView;
+	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView =
+		new HashMap<GLCanvas, ArrayList<AGLView>>();
 
-	protected HashMap<Integer, AGLView> hashGLViewID2GLView;
+	private HashMap<Integer, AGLView> hashGLViewID2GLView = new HashMap<Integer, AGLView>();
+
+	private HashMap<ARcpGLViewPart, IView> hashRCP2View = new HashMap<ARcpGLViewPart, IView>();
+
+	private HashMap<IView, ARcpGLViewPart> hashView2RCP = new HashMap<IView, ARcpGLViewPart>();
 
 	private FPSAnimator fpsAnimator;
 
-	private PickingManager pickingManager;
+	private PickingManager pickingManager = new PickingManager();
 
-	private ConnectedElementRepresentationManager connectedElementRepManager;
+	private ConnectedElementRepresentationManager connectedElementRepManager =
+		ConnectedElementRepresentationManager.get();
 
-	private GLInfoAreaManager infoAreaManager;
+	private GLInfoAreaManager infoAreaManager = new GLInfoAreaManager();
 
 	private Composite activeSWTView;
 
-	private Set<Object> busyRequests;
+	private Set<Object> busyRequests = new HashSet<Object>();
 
 	private CreateGUIViewListener createGUIViewListener;
 
@@ -73,20 +79,7 @@ public class ViewManager
 	 * Constructor.
 	 */
 	public ViewManager() {
-		pickingManager = new PickingManager();
-		connectedElementRepManager = ConnectedElementRepresentationManager.get();
-		infoAreaManager = new GLInfoAreaManager();
-
-		hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
-		hashGLViewID2GLView = new HashMap<Integer, AGLView>();
-
-		busyRequests = new HashSet<Object>();
-
 		registerEventListeners();
-	}
-
-	public void init() {
-
 	}
 
 	@Override
@@ -135,6 +128,35 @@ public class ViewManager
 
 		hashGLCanvas2GLView.get(glCanvas).add(glView);
 		glCanvas.addGLEventListener(glView);
+	}
+
+	/**
+	 * Associate an RCP view with the Caleydo view contained inside the RCP view.
+	 * 
+	 * @param rcpView
+	 * @param view
+	 */
+	public void registerRCPView(final ARcpGLViewPart rcpView, final IView view) {
+		if (!hashRCP2View.containsKey(rcpView))
+			hashRCP2View.put(rcpView, view);
+
+		if (!hashView2RCP.containsKey(view))
+			hashView2RCP.put(view, rcpView);
+	}
+
+	/**
+	 * Remove association between an RCP view and the Caleydo view contained inside the RCP view.
+	 * 
+	 * @param rcpView
+	 * @param view
+	 */
+	public void unregisterRCPView(final ARcpGLViewPart rcpView, final IView view) {
+
+		if (hashRCP2View.containsKey(rcpView))
+			hashRCP2View.remove(rcpView);
+
+		if (hashView2RCP.containsKey(view))
+			hashView2RCP.remove(view);
 	}
 
 	/**
@@ -189,7 +211,7 @@ public class ViewManager
 
 		if (fpsAnimator == null)
 			initAnimator();
-		
+
 		fpsAnimator.start();
 		fpsAnimator.setIgnoreExceptions(true);
 		fpsAnimator.setPrintExceptions(true);
@@ -209,7 +231,7 @@ public class ViewManager
 
 		fpsAnimator.add(glCaleydoCanvas);
 	}
-	
+
 	private void initAnimator() {
 		fpsAnimator = new FPSAnimator(60);
 
@@ -361,11 +383,11 @@ public class ViewManager
 	 * @return {@link DisplayLoopExecution} for executing code in the display loop
 	 */
 	public DisplayLoopExecution getDisplayLoopExecution() {
-		
+
 		// lazy creation of animator and display loop
 		if (displayLoopExecution == null)
 			initAnimator();
-		
+
 		return displayLoopExecution;
 	}
 }

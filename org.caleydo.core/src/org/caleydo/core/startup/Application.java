@@ -25,7 +25,6 @@ public class Application
 	public Object start(IApplicationContext context) throws Exception {
 
 		GeneralManager.get().getPreferenceStore();
-		GeneralManager.get().getViewManager().init();
 
 		StartupProcessor.get().initStartupProcudure(context.getArguments());
 
