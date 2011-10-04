@@ -12,9 +12,9 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * Renderer for a {@link Button}.
  * 
  * @author Christian Partl
- * 
  */
-public class ButtonRenderer extends LayoutRenderer {
+public class ButtonRenderer
+	extends LayoutRenderer {
 
 	public static final int TEXTURE_ROTATION_0 = 0;
 	public static final int TEXTURE_ROTATION_90 = 1;
@@ -25,6 +25,7 @@ public class ButtonRenderer extends LayoutRenderer {
 	private AGLView view;
 	private Button button;
 	private int textureRotation;
+	private float zCoordinate = 0;
 
 	/**
 	 * Constructor.
@@ -38,8 +39,7 @@ public class ButtonRenderer extends LayoutRenderer {
 	 * @param textureManager
 	 *            TextureManager.
 	 */
-	public ButtonRenderer(Button button, AGLView view,
-			TextureManager textureManager) {
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager) {
 		this.view = view;
 		this.button = button;
 		this.textureManager = textureManager;
@@ -58,13 +58,10 @@ public class ButtonRenderer extends LayoutRenderer {
 	 * @param textureManager
 	 *            TextureManager.
 	 * @param textureRotation
-	 *            Specifies the angle the texture of the button should be
-	 *            rotated. Possible values: TEXTURE_ROTATION_0,
-	 *            TEXTURE_ROTATION_90, TEXTURE_ROTATION_180,
-	 *            TEXTURE_ROTATION_270
+	 *            Specifies the angle the texture of the button should be rotated. Possible values:
+	 *            TEXTURE_ROTATION_0, TEXTURE_ROTATION_90, TEXTURE_ROTATION_180, TEXTURE_ROTATION_270
 	 */
-	public ButtonRenderer(Button button, AGLView view,
-			TextureManager textureManager, int textureRotation) {
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager, int textureRotation) {
 		this.view = view;
 		this.button = button;
 		this.textureManager = textureManager;
@@ -75,8 +72,12 @@ public class ButtonRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-				button.getPickingType(), button.getButtonID()));
+		if (!button.isVisible())
+			return;
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, zCoordinate);
+		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), button.getPickingType(),
+			button.getButtonID()));
 
 		Vec3f lowerLeftCorner = new Vec3f(0, 0, 0);
 		Vec3f lowerRightCorner = new Vec3f(x, 0, 0);
@@ -84,26 +85,22 @@ public class ButtonRenderer extends LayoutRenderer {
 		Vec3f upperLeftCorner = new Vec3f(0, y, 0);
 
 		switch (textureRotation) {
-		case TEXTURE_ROTATION_0:
-			textureManager.renderTexture(gl, button.getIconTexture(),
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, 1, 1, 1, 1);
-			break;
-		case TEXTURE_ROTATION_90:
-			textureManager.renderTexture(gl, button.getIconTexture(),
-					lowerRightCorner, upperRightCorner, upperLeftCorner,
-					lowerLeftCorner, 1, 1, 1, 1);
-			break;
-		case TEXTURE_ROTATION_180:
-			textureManager.renderTexture(gl, button.getIconTexture(),
-					upperRightCorner, upperLeftCorner, lowerLeftCorner,
-					lowerRightCorner, 1, 1, 1, 1);
-			break;
-		case TEXTURE_ROTATION_270:
-			textureManager.renderTexture(gl, button.getIconTexture(),
-					upperLeftCorner, lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, 1, 1, 1, 1);
-			break;
+			case TEXTURE_ROTATION_0:
+				textureManager.renderTexture(gl, button.getIconTexture(), lowerLeftCorner, lowerRightCorner,
+					upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+				break;
+			case TEXTURE_ROTATION_90:
+				textureManager.renderTexture(gl, button.getIconTexture(), lowerRightCorner, upperRightCorner,
+					upperLeftCorner, lowerLeftCorner, 1, 1, 1, 1);
+				break;
+			case TEXTURE_ROTATION_180:
+				textureManager.renderTexture(gl, button.getIconTexture(), upperRightCorner, upperLeftCorner,
+					lowerLeftCorner, lowerRightCorner, 1, 1, 1, 1);
+				break;
+			case TEXTURE_ROTATION_270:
+				textureManager.renderTexture(gl, button.getIconTexture(), upperLeftCorner, lowerLeftCorner,
+					lowerRightCorner, upperRightCorner, 1, 1, 1, 1);
+				break;
 		}
 
 		if (button.isSelected()) {
@@ -131,7 +128,24 @@ public class ButtonRenderer extends LayoutRenderer {
 		}
 
 		gl.glPopName();
+		gl.glPopMatrix();
 
+	}
+
+	public int getTextureRotation() {
+		return textureRotation;
+	}
+
+	public void setTextureRotation(int textureRotation) {
+		this.textureRotation = textureRotation;
+	}
+
+	public void setZCoordinate(float z) {
+		this.zCoordinate = z;
+	}
+
+	public float getZCoordinate() {
+		return zCoordinate;
 	}
 
 }

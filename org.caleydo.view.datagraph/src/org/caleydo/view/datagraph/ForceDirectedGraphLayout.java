@@ -6,6 +6,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.caleydo.view.datagraph.node.IDataGraphNode;
+
 public class ForceDirectedGraphLayout {
 	// AN ALGORITHM FOR DRAWING GENERAL UNDIRECTED GRAPHS
 	// by Tomihisa KAMADA and Satoru KAWAI, 1988

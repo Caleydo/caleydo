@@ -140,7 +140,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		expandButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				PickingType.BRICK_EXPAND_BUTTON, EXPAND_BUTTON_ID,
+				PickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID,
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_180));
 

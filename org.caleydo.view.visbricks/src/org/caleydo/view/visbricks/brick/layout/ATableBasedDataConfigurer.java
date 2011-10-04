@@ -80,7 +80,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(spacingLayoutX);
 
 		Button clusterButton = new Button(
-				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON, CLUSTER_BUTTON_ID,
+				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
 				EIconTextures.CLUSTER_ICON);
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -196,7 +196,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 					}
 					dimensionGroup.updateLayout();
 				}
-			}, button.getPickingType().name(), button.getButtonID());
+			}, button.getPickingType(), button.getButtonID());
 
 			layoutTemplate.registerViewTypeChangeListener(button);
 		}

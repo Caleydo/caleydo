@@ -1,6 +1,5 @@
 package org.caleydo.core.view.opengl.util.button;
 
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -13,9 +12,10 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 public class Button {
 
 	private boolean isSelected;
+	private boolean isVisible;
 	private int buttonID;
 	private EIconTextures iconTexture;
-	private PickingType pickingType;
+	private String pickingType;
 
 	/**
 	 * @param pickingType
@@ -25,9 +25,10 @@ public class Button {
 	 * @param iconTexture
 	 *            Texture for the button.
 	 */
-	public Button(PickingType pickingType, int buttonID,
+	public Button(String pickingType, int buttonID,
 			EIconTextures iconTexture) {
 		isSelected = false;
+		setVisible(true);
 		this.buttonID = buttonID;
 		this.pickingType = pickingType;
 		this.setIconTexture(iconTexture);
@@ -52,7 +53,7 @@ public class Button {
 	/**
 	 * @return Picking type of button.
 	 */
-	public PickingType getPickingType() {
+	public String getPickingType() {
 		return pickingType;
 	}
 
@@ -61,7 +62,7 @@ public class Button {
 	 * 
 	 * @param pickingType
 	 */
-	public void setPickingType(PickingType pickingType) {
+	public void setPickingType(String pickingType) {
 		this.pickingType = pickingType;
 	}
 
@@ -95,6 +96,14 @@ public class Button {
 	 */
 	public EIconTextures getIconTexture() {
 		return iconTexture;
+	}
+
+	public void setVisible(boolean isVisible) {
+		this.isVisible = isVisible;
+	}
+
+	public boolean isVisible() {
+		return isVisible;
 	}
 
 }

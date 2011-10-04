@@ -12,6 +12,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class DimensionGroupRenderer extends ColorRenderer implements IDraggable {
 

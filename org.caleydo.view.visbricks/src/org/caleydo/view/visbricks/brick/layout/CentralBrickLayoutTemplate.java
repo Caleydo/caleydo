@@ -66,10 +66,10 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
-		clusterButton = new Button(PickingType.DIMENSION_GROUP_CLUSTER_BUTTON,
+		clusterButton = new Button(PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
 				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
-		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();

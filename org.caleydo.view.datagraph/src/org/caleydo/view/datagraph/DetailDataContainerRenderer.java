@@ -20,6 +20,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.contextmenu.AddDataContainerItem;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
@@ -141,10 +142,9 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				if (emptyCellRenderer == null)
 					return;
 
-				emptyCellRenderer.setColor(emptyCellRenderer
-						.getBorderColor());
+				emptyCellRenderer.setColor(emptyCellRenderer.getBorderColor());
 				view.setDisplayListDirty();
-//System.out.println("over");
+				// System.out.println("over");
 			}
 
 			@Override
@@ -156,7 +156,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 				emptyCellRenderer.setColor(EmptyCellRenderer.DEFAULT_COLOR);
 				view.setDisplayListDirty();
-//				System.out.println("out");
+				// System.out.println("out");
 			}
 
 			@Override
@@ -293,30 +293,30 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
-		gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
-		gl.glColor3f(1, 1, 1);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(x, 0, 0);
-		gl.glVertex3f(x, currentPositionY, 0);
-		gl.glVertex3f(0, currentPositionY, 0);
-
-		gl.glVertex3f(
-				currentPositionX
-						+ captionColumnWidth
-						+ pixelGLConverter
-								.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
-				currentPositionY, 0);
-		gl.glVertex3f(x, currentPositionY, 0);
-		gl.glVertex3f(x, y, 0);
-		gl.glVertex3f(
-				currentPositionX
-						+ captionColumnWidth
-						+ pixelGLConverter
-								.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
-				y, 0);
-		gl.glEnd();
-		gl.glPopAttrib();
+		// gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
+		// gl.glColor3f(1, 1, 1);
+		// gl.glBegin(GL2.GL_QUADS);
+		// gl.glVertex3f(0, 0, 0);
+		// gl.glVertex3f(x, 0, 0);
+		// gl.glVertex3f(x, currentPositionY, 0);
+		// gl.glVertex3f(0, currentPositionY, 0);
+		//
+		// gl.glVertex3f(
+		// currentPositionX
+		// + captionColumnWidth
+		// + pixelGLConverter
+		// .getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
+		// currentPositionY, 0);
+		// gl.glVertex3f(x, currentPositionY, 0);
+		// gl.glVertex3f(x, y, 0);
+		// gl.glVertex3f(
+		// currentPositionX
+		// + captionColumnWidth
+		// + pixelGLConverter
+		// .getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
+		// y, 0);
+		// gl.glEnd();
+		// gl.glPopAttrib();
 
 		for (CellContainer row : rows) {
 			float textPositionY = currentPositionY - rowHeight
@@ -505,6 +505,14 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 	@Override
 	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
 		createRowsAndColumns(dimensionGroupDatas);
+	}
+
+	@Override
+	public void destroy() {
+		view.removeMultiIDPickingListeners(EMPTY_CELL_PICKING_TYPE
+				+ node.getID());
+		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
+				+ node.getID());
 	}
 
 }

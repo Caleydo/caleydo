@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.node.ADataNode;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
@@ -89,8 +91,8 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 			// FIXME: Determine color properly
 			float[] color = new float[] { 0.5f, 0.5f, 0.5f, 1f };
-			if (node instanceof DataNode) {
-				color = ((DataNode) node).getDataDomain().getColor().getRGBA();
+			if (node instanceof ADataNode) {
+				color = ((ADataNode) node).getDataDomain().getColor().getRGBA();
 			} else {
 				ArrayList<IDataDomain> dataDomains = DataDomainManager.get()
 						.getDataDomainsByType("org.caleydo.datadomain.genetic");
@@ -206,6 +208,12 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 		return pixelGLConverter.getPixelHeightForGLHeight(maxTextWidth);
 
+	}
+
+	@Override
+	public void destroy() {
+		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
+				+ node.getID());
 	}
 
 }

@@ -1,7 +1,6 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.node;
 
 import java.awt.geom.Point2D;
-import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL2;
 
@@ -11,6 +10,8 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.GLDataGraph;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
@@ -117,15 +118,11 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 		view.removeSingleIDPickingListener(pickingListener,
 				PickingType.DATA_GRAPH_NODE.name(), id);
 	}
+
 	
-	@Override
-	public Rectangle2D getBoundingBox() {
-		
-		Point2D position = getPosition();
-		double x = position.getX() - getWidth() / 2 - 0.2;
-		double y = position.getY() - getHeight() / 2 - 0.2;
-		
-		return new Rectangle2D.Double(x, y, getWidth() + 0.4, getHeight() + 0.4);
-	}
+
+	
+
+	
 
 }

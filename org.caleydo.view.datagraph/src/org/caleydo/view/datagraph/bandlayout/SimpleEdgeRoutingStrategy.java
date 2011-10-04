@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.caleydo.view.datagraph.Graph;
-import org.caleydo.view.datagraph.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 

@@ -17,8 +17,8 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.view.datagraph.DataNode;
-import org.caleydo.view.datagraph.IDataGraphNode;
+import org.caleydo.view.datagraph.node.ADataNode;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class EdgeBandRenderer {
 
@@ -67,12 +67,12 @@ public class EdgeBandRenderer {
 		Color bandColor = null;
 		int dataAmount = 0;
 
-		if (node1 instanceof DataNode) {
-			bandColor = ((DataNode) node1).getDataDomain().getColor();
-			dataAmount = ((DataNode) node1).getDataDomain().getDataAmount();
-		} else if (node2 instanceof DataNode) {
-			bandColor = ((DataNode) node2).getDataDomain().getColor();
-			dataAmount = ((DataNode) node2).getDataDomain().getDataAmount();
+		if (node1 instanceof ADataNode) {
+			bandColor = ((ADataNode) node1).getDataDomain().getColor();
+			dataAmount = ((ADataNode) node1).getDataDomain().getDataAmount();
+		} else if (node2 instanceof ADataNode) {
+			bandColor = ((ADataNode) node2).getDataDomain().getColor();
+			dataAmount = ((ADataNode) node2).getDataDomain().getDataAmount();
 		}
 		if (bandColor == null)
 			bandColor = new Color(0.5f, 0.5f, 0.5f, 1f);

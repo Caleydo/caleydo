@@ -71,10 +71,11 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				visBricks, false);
 		toolBar = new Row();
 		footerBar = new Row();
-		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
-				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
 		viewSwitchingModeButton.setSelected(dimensionGroup
 				.isGlobalViewSwitching());
@@ -243,7 +244,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		closeButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		closeButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		closeButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				PickingType.BRICK_CLOSE_BUTTON, CLOSE_BUTTON_ID,
+				PickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID,
 				EIconTextures.REMOVE), brick, brick.getTextureManager()));
 
 		// toolBar.append(ratioSpacingLayoutX);

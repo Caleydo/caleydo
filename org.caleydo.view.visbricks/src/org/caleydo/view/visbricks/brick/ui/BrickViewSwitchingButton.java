@@ -1,6 +1,5 @@
 package org.caleydo.view.visbricks.brick.ui;
 
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -24,7 +23,7 @@ public class BrickViewSwitchingButton extends Button implements
 	 * @param viewType
 	 *            The view type that is associated with this button.
 	 */
-	public BrickViewSwitchingButton(PickingType pickingType, int buttonID,
+	public BrickViewSwitchingButton(String pickingType, int buttonID,
 			EIconTextures iconTexture, EContainedViewType viewType) {
 		super(pickingType, buttonID, iconTexture);
 		this.viewType = viewType;

@@ -10,6 +10,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class ADataContainerRenderer extends LayoutRenderer {
 
@@ -35,5 +36,7 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 			ADimensionGroupData dimensionGroupData) {
 		return dimensionGroupPositions.get(dimensionGroupData.getID());
 	}
+	
+	public abstract void destroy();
 
 }

@@ -3,9 +3,6 @@ package org.caleydo.view.datagraph;
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
-import java.io.File;
-import java.io.IOException;
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
@@ -54,12 +51,10 @@ import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 import org.caleydo.view.datagraph.listener.NewDataDomainEventListener;
 import org.caleydo.view.datagraph.listener.NewViewEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.core.runtime.IConfigurationElement;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
+import org.caleydo.view.datagraph.node.ADataNode;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.NodeCreator;
+import org.caleydo.view.datagraph.node.ViewNode;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -85,10 +80,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private boolean applyAutomaticLayout;
 	private Map<IDataGraphNode, Pair<Float, Float>> relativeNodePositions;
 	private int lastNodeID = 0;
-	private Set<DataNode> dataNodes;
+	private Set<ADataNode> dataNodes;
 	private Set<ViewNode> viewNodes;
 	private Map<IDataDomain, Set<ViewNode>> viewNodesOfDataDomains;
-	private Map<IDataDomain, DataNode> dataNodesOfDataDomains;
+	private Map<IDataDomain, ADataNode> dataNodesOfDataDomains;
 	private ConnectionBandRenderer connectionBandRenderer;
 
 	private int maxDataAmount = Integer.MIN_VALUE;
@@ -99,6 +94,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private DataDomainsChangedEventListener dataDomainsChangedEventListener;
 	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
 	private AddDataContainerEventListener addDataContainerEventListener;
+
+	private NodeCreator nodeCreator;
 
 	/**
 	 * Constructor.
@@ -115,10 +112,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		graphLayout = new ForceDirectedGraphLayout();
 		relativeNodePositions = new HashMap<IDataGraphNode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
-		dataNodes = new HashSet<DataNode>();
+		dataNodes = new HashSet<ADataNode>();
 		viewNodes = new HashSet<ViewNode>();
 		viewNodesOfDataDomains = new HashMap<IDataDomain, Set<ViewNode>>();
-		dataNodesOfDataDomains = new HashMap<IDataDomain, DataNode>();
+		dataNodesOfDataDomains = new HashMap<IDataDomain, ADataNode>();
+		nodeCreator = new NodeCreator();
 
 		DataDomainGraph dataDomainGraph = DataDomainManager.get()
 				.getDataDomainGraph();
@@ -454,7 +452,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	private void calcMaxDataAmount() {
-		for (DataNode dataNode : dataNodes) {
+		for (ADataNode dataNode : dataNodes) {
 			if (maxDataAmount < dataNode.getDataDomain().getDataAmount())
 				maxDataAmount = dataNode.getDataDomain().getDataAmount();
 		}
@@ -536,7 +534,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		newDataDomainEventListener.setHandler(this);
 		eventPublisher.addListener(NewDataDomainEvent.class,
 				newDataDomainEventListener);
-		
+
 		addDataContainerEventListener = new AddDataContainerEventListener();
 		addDataContainerEventListener.setHandler(this);
 		eventPublisher.addListener(AddDataContainerEvent.class,
@@ -571,7 +569,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			eventPublisher.removeListener(newDataDomainEventListener);
 			newDataDomainEventListener = null;
 		}
-		
+
 		if (addDataContainerEventListener != null) {
 			eventPublisher.removeListener(addDataContainerEventListener);
 			addDataContainerEventListener = null;
@@ -600,50 +598,49 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void addView(AGLView view) {
 		if (!view.isRenderedRemote() && view.isDataView()) {
 
-			IExtensionRegistry registry = Platform.getExtensionRegistry();
-			IExtensionPoint point = registry
-					.getExtensionPoint("org.eclipse.ui.views");
-			IExtension[] extensions = point.getExtensions();
-			String viewID = view.getViewType();
-			String viewName = viewID;
-			String iconPath = null;
-			boolean viewNameObtained = false;
+			// IExtensionRegistry registry = Platform.getExtensionRegistry();
+			// IExtensionPoint point = registry
+			// .getExtensionPoint("org.eclipse.ui.views");
+			// IExtension[] extensions = point.getExtensions();
+			// String viewID = view.getViewType();
+			// String viewName = viewID;
+			// String iconPath = null;
+			// boolean viewNameObtained = false;
+			//
+			// for (IExtension extension : extensions) {
+			// IConfigurationElement[] elements = extension
+			// .getConfigurationElements();
+			// for (IConfigurationElement element : elements) {
+			// if (element.getAttribute("id").equals(viewID)) {
+			// viewName = element.getAttribute("name");
+			// iconPath = element.getAttribute("icon");
+			// viewNameObtained = true;
+			// break;
+			//
+			// }
+			// }
+			// if (viewNameObtained) {
+			// break;
+			// }
+			// }
+			//
+			// if (iconPath.equals("")) {
+			// iconPath = null;
+			// }
+			// if (iconPath != null) {
+			// ClassLoader classLoader = view.getClass().getClassLoader();
+			// URL url = classLoader.getResource(iconPath);
+			// try {
+			// url = FileLocator.resolve(url);
+			// } catch (IOException e) {
+			// // TODO Auto-generated catch block
+			// e.printStackTrace();
+			// }
+			// iconPath = new File(url.getFile()).getAbsolutePath();
+			// }
 
-			for (IExtension extension : extensions) {
-				IConfigurationElement[] elements = extension
-						.getConfigurationElements();
-				for (IConfigurationElement element : elements) {
-					if (element.getAttribute("id").equals(viewID)) {
-						viewName = element.getAttribute("name");
-						iconPath = element.getAttribute("icon");
-						viewNameObtained = true;
-						break;
-
-					}
-				}
-				if (viewNameObtained) {
-					break;
-				}
-			}
-
-			if (iconPath.equals("")) {
-				iconPath = null;
-			}
-			if (iconPath != null) {
-				ClassLoader classLoader = view.getClass().getClassLoader();
-				URL url = classLoader.getResource(iconPath);
-				try {
-					url = FileLocator.resolve(url);
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-				iconPath = new File(url.getFile()).getAbsolutePath();
-			}
-
-			ViewNode node = new ViewNode(graphLayout, this,
-					dragAndDropController, lastNodeID++, view, viewName,
-					iconPath);
+			ViewNode node = nodeCreator.createViewNode(graphLayout, this,
+					dragAndDropController, lastNodeID++, view);
 			dataGraph.addNode(node);
 			viewNodes.add(node);
 			Set<IDataDomain> dataDomains = view.getDataDomains();
@@ -657,7 +654,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					}
 					viewNodes.add(node);
 					viewNodesOfDataDomains.put(dataDomain, viewNodes);
-					DataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+					ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
 					if (dataNode != null) {
 						dataGraph.addEdge(dataNode, node);
 					}
@@ -706,7 +703,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	public void updateDataDomain(IDataDomain dataDomain) {
-		DataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+		ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
 		if (dataNode != null) {
 			dataNode.update();
 			setDisplayListDirty();
@@ -714,9 +711,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	public void addDataDomain(IDataDomain dataDomain) {
-		DataNode dataNode = null;
+		ADataNode dataNode = null;
 		boolean nodeAdded = false;
-		for (DataNode node : dataNodes) {
+		for (ADataNode node : dataNodes) {
 			if (node.getDataDomain() == dataDomain) {
 				dataNode = node;
 				nodeAdded = true;
@@ -724,8 +721,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			}
 		}
 		if (!nodeAdded) {
-			dataNode = new DataNode(graphLayout, this, dragAndDropController,
-					lastNodeID++, dataDomain);
+			dataNode = nodeCreator.createDataNode(graphLayout, this,
+					dragAndDropController, lastNodeID++, dataDomain);
 			dataGraph.addNode(dataNode);
 			dataNodes.add(dataNode);
 			dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
@@ -739,7 +736,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		for (IDataDomain neighborDataDomain : neighbors) {
 			nodeAdded = false;
-			for (DataNode node : dataNodes) {
+			for (ADataNode node : dataNodes) {
 				if (node.getDataDomain() == neighborDataDomain) {
 					dataGraph.addEdge(dataNode, node);
 					nodeAdded = true;
@@ -747,8 +744,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				}
 			}
 			if (!nodeAdded) {
-				DataNode node = new DataNode(graphLayout, this,
-						dragAndDropController, lastNodeID++, neighborDataDomain);
+				ADataNode node = nodeCreator
+						.createDataNode(graphLayout, this,
+								dragAndDropController, lastNodeID++,
+								neighborDataDomain);
 				dataGraph.addNode(node);
 				dataNodes.add(node);
 				dataNodesOfDataDomains.put(node.getDataDomain(), node);
@@ -770,7 +769,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public void createDataContainer(ATableBasedDataDomain dataDomain,
 			String recordPerspectiveID, String dimensionPerspectiveID) {
-		
+
 		// FIXME: Create proper DimensionGroup
 		FakeDimensionGroupData dimensionGroup = new FakeDimensionGroupData(0);
 		dimensionGroup.setDataDomain(dataDomain);

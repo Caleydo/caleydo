@@ -8,6 +8,7 @@ import java.util.Set;
 import java.util.Vector;
 
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class Graph<NodeType extends IDataGraphNode> {
 	Vector<NodeType> nodes = null;

@@ -70,10 +70,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 				visBricks, false);
 
-		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON,
+		lockResizingButton = new Button(
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
-				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON,
+				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
 		viewSwitchingModeButton.setSelected(dimensionGroup
 				.isGlobalViewSwitching());
@@ -249,7 +250,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				PickingType.BRICK_COLLAPSE_BUTTON, COLLAPSE_BUTTON_ID,
+				PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID,
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90));
 
@@ -453,13 +454,14 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		brick.removeSingleIDPickingListeners(
 				PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
-	
+
 	public int getDefaultHeightPixels() {
-		if (dimensionGroup.isProportionalMode()) {	
+		if (dimensionGroup.isProportionalMode()) {
 			int height = dimensionGroup.getParentGLCanvas().getHeight() - 300;
 			int brickSize = (int) ((float) height
-					/ (float) dimensionGroup.getDimensionGroupData().getRecordPerspective().getVirtualArray().size() * brick.getRecordVA()
-					.size());
+					/ (float) dimensionGroup.getDimensionGroupData()
+							.getRecordPerspective().getVirtualArray().size() * brick
+					.getRecordVA().size());
 			return brickSize;
 		}
 

@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.node;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -24,9 +24,6 @@ public interface IDataGraphNode extends IDraggable {
 
 	public float getWidth();
 
-	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
-			ADimensionGroupData dimensionGroup);
-
 	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
 			ADimensionGroupData dimensionGroup);
 
@@ -47,4 +44,6 @@ public interface IDataGraphNode extends IDraggable {
 	public void update();
 	
 	public Rectangle2D getBoundingBox();
+	
+	public void init();
 }
