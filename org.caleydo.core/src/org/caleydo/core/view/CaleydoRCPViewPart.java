@@ -32,6 +32,7 @@ import org.eclipse.ui.part.ViewPart;
  * Base class for all RCP views available in Caleydo.
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 public abstract class CaleydoRCPViewPart
 	extends ViewPart {

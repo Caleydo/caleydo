@@ -332,7 +332,12 @@ public class DataTable
 	 * @return the associated {@link RecordPerspective} object, or null if no such object is registered.
 	 */
 	public RecordPerspective getRecordPerspective(String recordPerspectiveID) {
+		if (recordPerspectiveID == null)
+			throw new IllegalArgumentException("perspectiveID was null");
 		RecordPerspective recordData = hashRecordPerspectives.get(recordPerspectiveID);
+		if (recordData == null)
+			throw new IllegalStateException("No RecordPerspective registered for " + recordPerspectiveID
+				+ ", registered Perspectives: " + hashRecordPerspectives);
 		return recordData;
 	}
 
@@ -357,7 +362,13 @@ public class DataTable
 	 * @return the associated {@link DimensionPerspective} object, or null if no such object is registered.
 	 */
 	public DimensionPerspective getDimensionPerspective(String dimensionPerspectiveID) {
-		return hashDimensionPerspectives.get(dimensionPerspectiveID);
+		if (dimensionPerspectiveID == null)
+			throw new IllegalArgumentException("perspectiveID was null");
+		DimensionPerspective dimensionPerspective = hashDimensionPerspectives.get(dimensionPerspectiveID);
+		if (dimensionPerspective == null)
+			throw new IllegalStateException("No DimensionPerspective registered for "
+				+ dimensionPerspectiveID + ", registered Perspectives: " + hashDimensionPerspectives);
+		return dimensionPerspective;
 	}
 
 	/**

@@ -66,8 +66,8 @@ public class ProjectSaver {
 	public static final String RECENT_PROJECT_FOLDER_TMP = GeneralManager.CALEYDO_HOME_PATH
 		+ "recent_project_tmp" + File.separator;
 
-	public static final String WORKBENCH_MEMENTO_FOLDER = ".metadata" + File.separator + ".plugins"
-		+ File.separator + "org.eclipse.ui.workbench" + File.separator;
+	public static final String WORKBENCH_MEMENTO_FOLDER = GeneralManager.CALEYDO_HOME_PATH + ".metadata" + File.separator
+		+ ".plugins" + File.separator + "org.eclipse.ui.workbench" + File.separator;
 
 	public static final String WORKBENCH_MEMENTO_FILE = "workbench.xml";
 
@@ -322,9 +322,9 @@ public class ProjectSaver {
 		saveMementoToFile(memento);
 
 		try {
-			FileOperations.copyFolder(new File(GeneralManager.CALEYDO_HOME_PATH
-				+ ProjectSaver.WORKBENCH_MEMENTO_FOLDER + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
-				dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE));
+			FileOperations.copyFolder(new File(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
+				+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(dirName
+				+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		}
 		catch (Exception e) {
 			throw new RuntimeException("Error saving workbench data (file access)", e);

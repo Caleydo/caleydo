@@ -100,7 +100,7 @@ public abstract class ASerializedView {
 	}
 
 	/**
-	 * Gets the according view frustum for the view. Overwrite methode in subclass if a different frustum is
+	 * Gets the according view frustum for the view. Overwrite method in subclass if a different frustum is
 	 * needed.
 	 * 
 	 * @return ViewFrustum for open-gl rendering

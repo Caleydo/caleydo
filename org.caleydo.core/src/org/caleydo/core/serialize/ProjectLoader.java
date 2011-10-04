@@ -49,6 +49,7 @@ public class ProjectLoader {
 	 */
 	public void loadProjectFromZIP(String fileName) {
 		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
+//		FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH);
 
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_ZIP_FOLDER);
@@ -226,17 +227,19 @@ public class ProjectLoader {
 
 	public void loadWorkbenchData(String dirName) {
 		try {
+			// clear old workbench file 
+			FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER + ProjectSaver.WORKBENCH_MEMENTO_FILE);
+			
 			File workbenchFile = new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE);
 
 			if (!workbenchFile.exists()) {
 				Logger.log(new Status(Status.INFO, this.toString(), "Could not load workbench data from "
 					+ workbenchFile));
-
 				return;
 			}
 
 			FileOperations.copyFolder(new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
-				GeneralManager.CALEYDO_HOME_PATH + ProjectSaver.WORKBENCH_MEMENTO_FOLDER
+				ProjectSaver.WORKBENCH_MEMENTO_FOLDER
 					+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		}
 		catch (IOException e) {

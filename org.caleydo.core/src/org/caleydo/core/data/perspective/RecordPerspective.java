@@ -20,8 +20,6 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 public class RecordPerspective
 	extends ADataPerspective<RecordVirtualArray, RecordGroupList, RecordVADelta, RecordFilterManager> {
 
-	// private static int recordDataRunningNumber = 0;
-
 	public RecordPerspective() {
 	}
 
@@ -31,8 +29,9 @@ public class RecordPerspective
 
 	@Override
 	protected void init() {
-		perspectiveID = "RecordPerspective_" + UUID.randomUUID();
-		// recordDataRunningNumber++;
+		// if this perspective is de-serialized the perspectiveID is already set.
+		if (perspectiveID == null)
+			perspectiveID = "RecordPerspective_" + UUID.randomUUID();
 		filterManager = new RecordFilterManager(dataDomain, this);
 		idType = dataDomain.getRecordIDType();
 	}
@@ -61,6 +60,5 @@ public class RecordPerspective
 	protected List<Integer> getIDList() {
 		return dataDomain.getTable().getRowIDList();
 	}
-
 
 }
