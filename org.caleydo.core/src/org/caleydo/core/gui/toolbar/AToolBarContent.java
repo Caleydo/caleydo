@@ -30,11 +30,6 @@ public abstract class AToolBarContent {
 	protected int renderType = STANDARD_RENDERING;
 
 	/**
-	 * specifies the if the related view is attached or detached to caleydo's main window
-	 */
-	protected boolean attached = false;
-
-	/**
 	 * Returns the related view type for this toolbar content
 	 * 
 	 * @return class object of the view related to this toolbar content
@@ -88,13 +83,5 @@ public abstract class AToolBarContent {
 
 	public void setRenderType(int renderType) {
 		this.renderType = renderType;
-	}
-
-	public boolean isAttached() {
-		return attached;
-	}
-
-	public void setAttached(boolean attached) {
-		this.attached = attached;
 	}
 }

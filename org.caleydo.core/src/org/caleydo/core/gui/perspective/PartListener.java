@@ -13,12 +13,12 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IPartListener2;
+import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
@@ -94,7 +94,6 @@ public class PartListener
 		if (!(activePart instanceof CaleydoRCPViewPart)) {
 			return;
 		}
-		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
 
 		if (!(activePart instanceof ARcpGLViewPart)) {
 			return;
@@ -126,13 +125,25 @@ public class PartListener
 			viewPart.getSWTComposite().forceFocus();
 
 		drawInlineToolBar(viewPart);
-		
+		updateSupportViews(viewPart);
+	}
+
+	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
+	private void updateSupportViews(CaleydoRCPViewPart viewPart) {
 		if (viewPart.getView() instanceof IDataDomainBasedView) {
-			IDataDomain dataDomain = ((IDataDomainBasedView)viewPart.getView()).getDataDomain();
-			
-			for (AGLView view : GeneralManager.get().getViewManager().getAllGLViews()) {
-				if (view instanceof IDataDomainBasedView)
-					((IDataDomainBasedView)view).setDataDomain(dataDomain);
+			IDataDomain dataDomain = ((IDataDomainBasedView<?>) viewPart.getView()).getDataDomain();
+
+			for (IViewPart rcpViewPart : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+				.getViews()) {
+
+				if (!(rcpViewPart instanceof CaleydoRCPViewPart))
+					continue;
+
+				CaleydoRCPViewPart caleydoRCPViewPart = (CaleydoRCPViewPart) rcpViewPart;
+
+				if (caleydoRCPViewPart.isSupportView() && caleydoRCPViewPart instanceof IDataDomainBasedView) {
+					((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
+				}
 			}
 		}
 	}

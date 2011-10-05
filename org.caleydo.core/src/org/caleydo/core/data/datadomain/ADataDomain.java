@@ -50,9 +50,6 @@ public abstract class ADataDomain
 	/** parameters for loading the data-{@link set} */
 	protected LoadDataParameters loadDataParameters;
 
-	/** bootstrap filename this application was started with */
-	protected String fileName = "data/bootstrap/bootstrap.xml";
-
 	protected Color color;
 
 	/**
@@ -111,18 +108,6 @@ public abstract class ADataDomain
 	@Override
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
 		this.loadDataParameters = loadDataParameters;
-
-		fileName = loadDataParameters.getFileName();
-	}
-
-	@Override
-	public String getFileName() {
-		return fileName;
-	}
-
-	@Override
-	public void setFileName(String bootSrapFileName) {
-		this.fileName = bootSrapFileName;
 	}
 
 	@Override

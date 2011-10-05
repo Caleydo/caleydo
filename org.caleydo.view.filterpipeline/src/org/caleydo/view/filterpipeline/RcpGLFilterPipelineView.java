@@ -42,6 +42,7 @@ public class RcpGLFilterPipelineView
 		}
 
 		eventPublisher = GeneralManager.get().getEventPublisher();
+		isSupportView = true;
 		registerEventListeners();
 	}
 

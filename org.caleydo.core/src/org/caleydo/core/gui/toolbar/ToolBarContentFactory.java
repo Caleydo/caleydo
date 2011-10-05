@@ -137,18 +137,12 @@ public class ToolBarContentFactory {
 	public List<AToolBarContent> getToolBarContent(List<IView> views) {
 		List<AToolBarContent> contents = new ArrayList<AToolBarContent>();
 
-		boolean isViewAttached = true;
-		if (views.size() > 0) {
-			isViewAttached = isViewAttached(views.get(0));
-		}
-
 		for (IView view : views) {
 			if (view != null) {
 				AToolBarContent content = getContent(view);
 				if (content != null) {
 					int renderType = retrieveRenderType(view);
 					content.setRenderType(renderType);
-					content.setAttached(isViewAttached);
 					contents.add(content);
 				}
 			}
@@ -168,52 +162,6 @@ public class ToolBarContentFactory {
 	private int retrieveRenderType(IView view) {
 		int type = AToolBarContent.STANDARD_RENDERING;
 		return type;
-	}
-
-	/**
-	 * determines if a view is attached to the caleydo's main window or not
-	 * 
-	 * @param interfaceType
-	 *            view as used by {@link ViewManager}
-	 * @return true if the view is attached, false otherwise
-	 */
-	private boolean isViewAttached(IView view) {
-
-		if (view instanceof CaleydoRCPViewPart) {
-			return ((CaleydoRCPViewPart) view).isAttached();
-		}
-		else if (view instanceof AView) {
-			CaleydoRCPViewPart relatedView = getRelatedViewPart(view);
-			if (relatedView != null) {
-				return relatedView.isAttached();
-			}
-		}
-
-		// GeneralManager.get().getLogger().log(
-		// new Status(IStatus.WARNING, Activator.PLUGIN_ID, "Could not find view with view-id=" + view
-		// + " in the workbench"));
-		return false;
-	}
-
-	private CaleydoRCPViewPart getRelatedViewPart(IView view) {
-
-		IWorkbenchWindow[] windows = PlatformUI.getWorkbench().getWorkbenchWindows();
-		ToolBarInfo info = toolBarInfos.get(view.getViewType());
-		if (info != null) {
-			String rcpViewPartID = info.viewType;
-			for (IWorkbenchWindow window : windows) {
-				IWorkbenchPage[] pages = window.getPages();
-				for (IWorkbenchPage page : pages) {
-					IViewPart relatedView = page.findView(rcpViewPartID);
-					if (relatedView != null) {
-						if (relatedView instanceof CaleydoRCPViewPart) {
-							return (CaleydoRCPViewPart) relatedView;
-						}
-					}
-				}
-			}
-		}
-		return null;
 	}
 
 	private AToolBarContent getContent(IView view) {

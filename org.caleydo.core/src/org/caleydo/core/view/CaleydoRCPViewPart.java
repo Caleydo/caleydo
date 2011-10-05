@@ -50,9 +50,9 @@ public abstract class CaleydoRCPViewPart
 	protected AView view;
 
 	/**
-	 * stores the attach status of the viewpart, true means within caleydo's main window, false otherwise
+	 * Flat determines whether a view changes its content when another data domain is selected.
 	 */
-	protected boolean attached;
+	protected boolean isSupportView = false;
 
 	protected Composite parentComposite;
 
@@ -85,14 +85,6 @@ public abstract class CaleydoRCPViewPart
 
 	public Composite getSWTComposite() {
 		return parentComposite;
-	}
-
-	public boolean isAttached() {
-		return attached;
-	}
-
-	public void setAttached(boolean attached) {
-		this.attached = attached;
 	}
 
 	@Override
@@ -218,5 +210,15 @@ public abstract class CaleydoRCPViewPart
 
 	public ASerializedView getSerializedView() {
 		return serializedView;
+	}
+
+	/**
+	 * Returns the purpose of a view. Support views change its content upon selection of a different data
+	 * domain in another view.
+	 * 
+	 * @return
+	 */
+	public boolean isSupportView() {
+		return isSupportView;
 	}
 }

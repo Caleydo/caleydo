@@ -147,7 +147,6 @@ public class ProjectLoader {
 				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 
 				// Overwrite filename with new one in caleydo project (data.csv)
-				dataDomain.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
 				dataDomain.getLoadDataParameters()
 					.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
 

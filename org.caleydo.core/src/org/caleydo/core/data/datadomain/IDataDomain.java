@@ -50,12 +50,6 @@ public interface IDataDomain {
 	 */
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters);
 
-	/** Sets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public String getFileName();
-
-	/** Gets the name of the boots-trap xml-file this useCase was or should be loaded */
-	public void setFileName(String bootstrapFileName);
-
 	/**
 	 * @return The dimension groups that have been created for this IDataDomain object (data set).
 	 */
