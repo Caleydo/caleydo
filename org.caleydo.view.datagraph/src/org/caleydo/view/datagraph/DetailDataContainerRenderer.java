@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
@@ -47,6 +49,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 	private List<CellContainer> columns = new ArrayList<CellContainer>();
 
 	private class CellContainer {
+		private String id;
 		private String caption;
 		private int numSubdivisions;
 		private float position;
@@ -58,10 +61,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		super(node, view, dragAndDropController);
 
 		this.dataDomain = dataDomain;
+		// DataDomainManager.get().getDataDomainByType(dataDomainType);
 
-		// FIXME: Use from datadomain
-		// List<ADimensionGroupData> dimensionGroupDatas = dataDomain
-		// .getDimensionGroups();
 		List<ADimensionGroupData> dimensionGroupDatas = node
 				.getDimensionGroups();
 
@@ -174,10 +175,18 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				}
 
 				if (rowAndColumn != null) {
-					view.getContextMenuCreator().addContextMenuItem(
-							new AddDataContainerItem(dataDomain, rowAndColumn
-									.getFirst().caption, rowAndColumn
-									.getSecond().caption));
+
+					String recordPerspectiveID = dataDomain.isColumnDimension() ? rowAndColumn
+							.getFirst().id : rowAndColumn.getSecond().id;
+					String dimensionPerspectiveID = dataDomain
+							.isColumnDimension() ? rowAndColumn.getSecond().id
+							: rowAndColumn.getFirst().id;
+
+					view.getContextMenuCreator()
+							.addContextMenuItem(
+									new AddDataContainerItem(dataDomain,
+											recordPerspectiveID,
+											dimensionPerspectiveID));
 				}
 			}
 
@@ -196,32 +205,46 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 	private void createRowsAndColumns(
 			List<ADimensionGroupData> dimensionGroupDatas) {
-		// FIXME: Use real data
-		// Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
-		// .getRecordPerspectiveIDs() : dataDomain
-		// .getDimensionPerspectiveIDs();
-		// Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
-		// .getDimensionPerspectiveIDs() : dataDomain
-		// .getRecordPerspectiveIDs();
+		Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
+				.getRecordPerspectiveIDs() : dataDomain
+				.getDimensionPerspectiveIDs();
+		Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
+				.getDimensionPerspectiveIDs() : dataDomain
+				.getRecordPerspectiveIDs();
 
-		String[] rowIDs = new String[] { "Row1", "RowPerspec2", "AnotherRow",
-				"YetAnotherRow" };
-		String[] columnIDs = new String[] { "Column1", "ColumnPerspec2",
-				"AnotherColumn", "YetAnotherColumn", "Column2",
-				"ColumnPerspec22", "AnotherColumn2", "YetAnotherColumn2" };
+		// String[] rowIDs = new String[] { "Row1", "RowPerspec2", "AnotherRow",
+		// "YetAnotherRow" };
+		// String[] columnIDs = new String[] { "Column1", "ColumnPerspec2",
+		// "AnotherColumn", "YetAnotherColumn", "Column2",
+		// "ColumnPerspec22", "AnotherColumn2", "YetAnotherColumn2" };
 
 		rows.clear();
 		columns.clear();
 
 		for (String id : rowIDs) {
 			CellContainer row = new CellContainer();
-			row.caption = id;
+			row.id = id;
+
+			if (dataDomain.isColumnDimension()) {
+				row.caption = dataDomain.getTable().getRecordPerspective(id)
+						.getLabel();
+			} else {
+				row.caption = dataDomain.getTable().getDimensionPerspective(id)
+						.getLabel();
+			}
 			row.numSubdivisions = 1;
 			rows.add(row);
 		}
 		for (String id : columnIDs) {
 			CellContainer column = new CellContainer();
-			column.caption = id;
+			column.id = id;
+			if (dataDomain.isColumnDimension()) {
+				column.caption = dataDomain.getTable()
+						.getDimensionPerspective(id).getLabel();
+			} else {
+				column.caption = dataDomain.getTable().getRecordPerspective(id)
+						.getLabel();
+			}
 			column.numSubdivisions = 1;
 			columns.add(column);
 		}
@@ -236,25 +259,30 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			for (CellContainer row : rows) {
 				boolean dimensionGroupExists = false;
 				for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
-					// FIXME: do it properly
-					FakeDimensionGroupData fakeDimensionGroupData = (FakeDimensionGroupData) dimensionGroupData;
-					if (fakeDimensionGroupData.getDimensionPerspectiveID()
-							.equals(column.caption)
-							&& fakeDimensionGroupData.getRecordPerspectiveID()
-									.equals(row.caption)) {
+
+					TableBasedDimensionGroupData tableBasedDimensionGroupData = (TableBasedDimensionGroupData) dimensionGroupData;
+					String recordPerspectiveID = dataDomain.isColumnDimension() ? row.id
+							: column.id;
+					String dimensionPerspectiveID = dataDomain
+							.isColumnDimension() ? column.id : row.id;
+
+					if (tableBasedDimensionGroupData.getDimensionPerspective()
+							.getPerspectiveID().equals(dimensionPerspectiveID)
+							&& tableBasedDimensionGroupData
+									.getRecordPerspective().getPerspectiveID()
+									.equals(recordPerspectiveID)) {
 						numSubdivisions++;
 						if (numSubdivisions >= rows.size()) {
 							numSubdivisions = rows.size();
 						}
 						dimensionGroupExists = true;
 						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-								fakeDimensionGroupData, view,
+								tableBasedDimensionGroupData, view,
 								dragAndDropController, node, dataDomain
 										.getColor().getRGBA());
 						dimensionGroupRenderer
 								.setRenderDimensionGroupLabel(false);
-						cells.put(row.caption + column.caption,
-								dimensionGroupRenderer);
+						cells.put(row.id + column.id, dimensionGroupRenderer);
 						dimensionGroupRenderers.add(dimensionGroupRenderer);
 						break;
 					}
@@ -262,7 +290,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				if (!dimensionGroupExists) {
 					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(
 							emptyCellId++);
-					cells.put(row.caption + column.caption, emptyCellRenderer);
+					cells.put(row.id + column.id, emptyCellRenderer);
 					emptyCellRenderers
 							.put(emptyCellRenderer,
 									new Pair<CellContainer, CellContainer>(row,
@@ -396,7 +424,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 				// boolean dimensionGroupExists = false;
 
-				ColorRenderer cell = cells.get(row.caption + column.caption);
+				ColorRenderer cell = cells.get(row.id + column.id);
 
 				gl.glPushMatrix();
 				int pickingID = 0;
@@ -462,7 +490,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 		for (CellContainer container : containers) {
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					container.caption, pixelGLConverter
+					container.id, pixelGLConverter
 							.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
 					pixelGLConverter
 							.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));

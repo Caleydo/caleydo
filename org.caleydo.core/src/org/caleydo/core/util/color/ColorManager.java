@@ -16,7 +16,7 @@ import org.caleydo.core.util.collection.Pair;
 public class ColorManager {
 
 	public static String DATA_DOMAIN_COLORS = "dataDomainColors";
-	
+
 	private volatile static ColorManager instance;
 
 	private Map<String, List<Pair<Color, Boolean>>> colorLists =
@@ -28,7 +28,6 @@ public class ColorManager {
 		// Colors from colorbrewer qualitative Set3
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(141f / 255f, 211f / 255f, 199f / 255f),
 			false));
-		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 1f, 179f / 255f), false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(190f / 255f, 186f / 255f, 218f / 255f),
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(251f / 255f, 128f / 255f, 114f / 255f),
@@ -41,14 +40,14 @@ public class ColorManager {
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(252f / 255f, 205f / 255f, 229f / 255f),
 			false));
-		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(217f / 255f, 217f / 255f, 217f / 255f),
-			false));
+//		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(217f / 255f, 217f / 255f, 217f / 255f),
+//			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(188f / 255f, 128f / 255f, 189f / 255f),
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(204f / 255f, 235f / 255f, 197f / 255f),
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 237f / 255f, 111f / 255f), false));
-
+//		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 1f, 179f / 255f), false));
 		// 141, 211, 199;
 		// 255, 255, 179;
 		// 190, 186, 218;
@@ -64,7 +63,7 @@ public class ColorManager {
 
 		colorLists.put(DATA_DOMAIN_COLORS, dataDomainColorList);
 	}
-	
+
 	public static ColorManager get() {
 		if (instance == null) {
 			synchronized (GeneralManager.class) {
@@ -142,7 +141,7 @@ public class ColorManager {
 
 		list.add(new Pair<Color, Boolean>(color, isColorMarked));
 	}
-	
+
 	public boolean doesColorListExist(String colorListID) {
 		return colorLists.containsKey(colorListID);
 	}

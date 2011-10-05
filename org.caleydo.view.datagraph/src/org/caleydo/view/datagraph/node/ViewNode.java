@@ -54,12 +54,12 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
-		dimensionGroups = new ArrayList<ADimensionGroupData>();
-		dimensionGroups.add(new FakeDimensionGroupData(0));
-		dimensionGroups.add(new FakeDimensionGroupData(1));
-		dimensionGroups.add(new FakeDimensionGroupData(2));
-		dimensionGroups.add(new FakeDimensionGroupData(5));
-		dimensionGroups.add(new FakeDimensionGroupData(4));
+//		dimensionGroups = new ArrayList<ADimensionGroupData>();
+//		dimensionGroups.add(new FakeDimensionGroupData(0));
+//		dimensionGroups.add(new FakeDimensionGroupData(1));
+//		dimensionGroups.add(new FakeDimensionGroupData(2));
+//		dimensionGroups.add(new FakeDimensionGroupData(5));
+//		dimensionGroups.add(new FakeDimensionGroupData(4));
 
 		this.representedView = representedView;
 
@@ -191,41 +191,41 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-//		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
-//		if (groups == null) {
-//			groups = new ArrayList<ADimensionGroupData>();
-//		}
+		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
+		if (groups == null) {
+			groups = new ArrayList<ADimensionGroupData>();
+		}
 		
-		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
-		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("Row1");
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(1);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("AnotherRow");
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(2);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("YetAnotherRow");
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(3);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("RowPerspec2");
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(4);
-		data.setDimensionPerspectiveID("AnotherColumn2");
-		data.setRecordPerspectiveID("Row1");
-		groups.add(data);
-		
-		data = new FakeDimensionGroupData(5);
-		data.setDimensionPerspectiveID("YetAnotherColumn2");
-		data.setRecordPerspectiveID("YetAnotherRow");
-		groups.add(data);
+//		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
+//		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("Row1");
+//		groups.add(data);
+//
+//		data = new FakeDimensionGroupData(1);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("AnotherRow");
+//		groups.add(data);
+//
+//		data = new FakeDimensionGroupData(2);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("YetAnotherRow");
+//		groups.add(data);
+//
+//		data = new FakeDimensionGroupData(3);
+//		data.setDimensionPerspectiveID("ColumnPerspec2");
+//		data.setRecordPerspectiveID("RowPerspec2");
+//		groups.add(data);
+//
+//		data = new FakeDimensionGroupData(4);
+//		data.setDimensionPerspectiveID("AnotherColumn2");
+//		data.setRecordPerspectiveID("Row1");
+//		groups.add(data);
+//		
+//		data = new FakeDimensionGroupData(5);
+//		data.setDimensionPerspectiveID("YetAnotherColumn2");
+//		data.setRecordPerspectiveID("YetAnotherRow");
+//		groups.add(data);
 
 		return groups;
 	}

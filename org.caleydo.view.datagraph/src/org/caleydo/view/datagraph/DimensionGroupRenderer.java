@@ -61,7 +61,10 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 		// gl.glVertex3f(x, y, 0.1f);
 		// gl.glVertex3f(0, y, 0.1f);
 		// gl.glEnd();
+		gl.glPushMatrix();
+		gl.glTranslatef(0, 0, 0.1f);
 		super.render(gl);
+		gl.glPopMatrix();
 
 		if (selectionType != null && selectionType != SelectionType.NORMAL) {
 			gl.glColor4fv(selectionType.getColor(), 0);

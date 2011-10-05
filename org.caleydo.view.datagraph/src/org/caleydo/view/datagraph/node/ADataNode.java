@@ -4,10 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.FakeDimensionGroupData;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 
@@ -27,12 +25,12 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 			final DragAndDropController dragAndDropController, Integer id,
 			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id);
-		dimensionGroups = new ArrayList<ADimensionGroupData>();
-		dimensionGroups.add(new FakeDimensionGroupData(0));
-		dimensionGroups.add(new FakeDimensionGroupData(1));
-		dimensionGroups.add(new FakeDimensionGroupData(2));
-		dimensionGroups.add(new FakeDimensionGroupData(3));
-		dimensionGroups.add(new FakeDimensionGroupData(4));
+//		dimensionGroups = new ArrayList<ADimensionGroupData>();
+//		dimensionGroups.add(new FakeDimensionGroupData(0));
+//		dimensionGroups.add(new FakeDimensionGroupData(1));
+//		dimensionGroups.add(new FakeDimensionGroupData(2));
+//		dimensionGroups.add(new FakeDimensionGroupData(3));
+//		dimensionGroups.add(new FakeDimensionGroupData(4));
 
 		this.dataDomain = dataDomain;
 
@@ -163,54 +161,54 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 
 	@Override
 	public List<ADimensionGroupData> getDimensionGroups() {
-		// List<ADimensionGroupData> groups =
-		// representedView.getDimensionGroups();
-		// if (groups == null) {
-		// groups = new ArrayList<ADimensionGroupData>();
-		// }
+		List<ADimensionGroupData> groups = dataDomain.getDimensionGroups();
+		if (groups == null) {
+			groups = new ArrayList<ADimensionGroupData>();
+		}
 
-		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
-		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("Row1");
-		if (dataDomain instanceof ATableBasedDataDomain)
-			data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(1);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("AnotherRow");
-		if (dataDomain instanceof ATableBasedDataDomain)
-			data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(2);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("YetAnotherRow");
-		if (dataDomain instanceof ATableBasedDataDomain)
-			data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(3);
-		data.setDimensionPerspectiveID("ColumnPerspec2");
-		data.setRecordPerspectiveID("RowPerspec2");
-		if (dataDomain instanceof ATableBasedDataDomain)
-			data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(4);
-		data.setDimensionPerspectiveID("AnotherColumn2");
-		data.setRecordPerspectiveID("Row1");
-		if (dataDomain instanceof ATableBasedDataDomain)
-			data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		groups.add(data);
-
-		data = new FakeDimensionGroupData(5);
-		data.setDimensionPerspectiveID("YetAnotherColumn2");
-		data.setRecordPerspectiveID("YetAnotherRow");
-		if (dataDomain instanceof ATableBasedDataDomain)
-			data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		groups.add(data);
+		// List<ADimensionGroupData> groups = new
+		// ArrayList<ADimensionGroupData>();
+		// FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("Row1");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(1);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("AnotherRow");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(2);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("YetAnotherRow");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(3);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("RowPerspec2");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(4);
+		// data.setDimensionPerspectiveID("AnotherColumn2");
+		// data.setRecordPerspectiveID("Row1");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(5);
+		// data.setDimensionPerspectiveID("YetAnotherColumn2");
+		// data.setRecordPerspectiveID("YetAnotherRow");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
 
 		return groups;
 	}

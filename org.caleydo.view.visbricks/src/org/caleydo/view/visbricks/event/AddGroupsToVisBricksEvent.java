@@ -51,6 +51,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	ArrayList<ADimensionGroupData> dimensionGroupData = null;
 
 	public AddGroupsToVisBricksEvent() {
+		createFromNodes = false;
 	}
 
 	/**
@@ -61,6 +62,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	 */
 	public AddGroupsToVisBricksEvent(ArrayList<ADimensionGroupData> dimensionGroupData) {
 		this.dimensionGroupData = dimensionGroupData;
+		createFromNodes = false;
 	}
 
 	/**

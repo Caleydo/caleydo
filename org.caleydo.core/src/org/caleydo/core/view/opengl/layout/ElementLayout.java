@@ -355,6 +355,16 @@ public class ElementLayout {
 			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
 	}
+	
+	public void clearBackgroundRenderers() {
+		if(backgroundRenderers != null)
+			backgroundRenderers.clear();
+	}
+	
+	public void clearForegroundRenderers() {
+		if(foregroundRenderers != null)
+			foregroundRenderers.clear();
+	}
 
 	/**
 	 * Resets the sizes provided to the defaults

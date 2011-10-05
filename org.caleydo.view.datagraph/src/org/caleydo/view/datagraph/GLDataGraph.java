@@ -14,6 +14,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainGraph;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -679,7 +680,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			return;
 
 		Set<IDataDomain> dataDomains = viewNode.getDataDomains();
-
+		
 		if (dataDomains != null) {
 			for (IDataDomain dataDomain : dataDomains) {
 				Set<ViewNode> viewNodes = viewNodesOfDataDomains
@@ -693,13 +694,39 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dataGraph.removeNode(viewNode);
 		viewNodes.remove(viewNode);
 		viewNode.destroy();
-		applyAutomaticLayout = true;
+		// applyAutomaticLayout = true;
 		setDisplayListDirty();
 	}
 
 	public void updateView(AGLView view) {
-		removeView(view);
-		addView(view);
+
+		ViewNode viewNode = null;
+		for (ViewNode node : viewNodes) {
+			if (node.getRepresentedView() == view) {
+				viewNode = node;
+				break;
+			}
+		}
+		
+		Set<IDataDomain> dataDomains = view.getDataDomains();
+		if (dataDomains != null && !dataDomains.isEmpty()) {
+			viewNode.setDataDomains(dataDomains);
+			for (IDataDomain dataDomain : dataDomains) {
+				Set<ViewNode> viewNodes = viewNodesOfDataDomains
+						.get(dataDomain);
+				if (viewNodes == null) {
+					viewNodes = new HashSet<ViewNode>();
+				}
+				viewNodes.add(viewNode);
+				viewNodesOfDataDomains.put(dataDomain, viewNodes);
+				ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+				if (dataNode != null) {
+					dataGraph.addEdge(dataNode, viewNode);
+				}
+			}
+		}
+
+		viewNode.update();
 	}
 
 	public void updateDataDomain(IDataDomain dataDomain) {
@@ -770,11 +797,18 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void createDataContainer(ATableBasedDataDomain dataDomain,
 			String recordPerspectiveID, String dimensionPerspectiveID) {
 
+		TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
+				dataDomain, dataDomain.getTable().getRecordPerspective(
+						recordPerspectiveID), dataDomain.getTable()
+						.getDimensionPerspective(dimensionPerspectiveID));
+		dataDomain.addDimensionGroup(data);
+
 		// FIXME: Create proper DimensionGroup
-		FakeDimensionGroupData dimensionGroup = new FakeDimensionGroupData(0);
-		dimensionGroup.setDataDomain(dataDomain);
-		dimensionGroup.setDimensionPerspectiveID(dimensionPerspectiveID);
-		dimensionGroup.setRecordPerspectiveID(recordPerspectiveID);
-		dataDomain.addDimensionGroup(dimensionGroup);
+		// FakeDimensionGroupData dimensionGroup = new
+		// FakeDimensionGroupData(0);
+		// dimensionGroup.setDataDomain(dataDomain);
+		// dimensionGroup.setDimensionPerspectiveID(dimensionPerspectiveID);
+		// dimensionGroup.setRecordPerspectiveID(recordPerspectiveID);
+		// dataDomain.addDimensionGroup(dimensionGroup);
 	}
 }

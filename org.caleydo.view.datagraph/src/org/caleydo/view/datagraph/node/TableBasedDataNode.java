@@ -20,20 +20,28 @@ import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.OverviewDataContainerRenderer;
 
 public class TableBasedDataNode extends ADataNode {
-	
+
 	private final static String TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE = "org.caleydo.view.datagraph.toggledatacontainerbutton";
 	private final static int TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID = 0;
-	
+
 	private ATableBasedDataDomain dataDomain;
 	private ButtonRenderer toggleDataContainerButtonRenderer;
 	private Button toggleDataContainerButton;
 	private ALayoutState currentState;
 	private ElementLayout dataContainerLayout;
 	private ADataContainerRenderer dataContainerRenderer;
-	
+	private Row bodyRow;
+
 	private abstract class ALayoutState {
 		protected ADataContainerRenderer dataContainerRenderer;
 		protected int textureRotation;
+
+		public void apply() {
+			TableBasedDataNode.this.dataContainerRenderer = dataContainerRenderer;
+			dataContainerLayout.setRenderer(dataContainerRenderer);
+			toggleDataContainerButtonRenderer
+					.setTextureRotation(currentState.textureRotation);
+		}
 
 		public abstract ALayoutState getNextState();
 	}
@@ -41,14 +49,25 @@ public class TableBasedDataNode extends ADataNode {
 	private class OverviewState extends ALayoutState {
 
 		public OverviewState() {
-			dataContainerRenderer = new OverviewDataContainerRenderer(TableBasedDataNode.this,
-					view, dragAndDropController, getDimensionGroups());
+			dataContainerRenderer = new OverviewDataContainerRenderer(
+					TableBasedDataNode.this, view, dragAndDropController,
+					getDimensionGroups());
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_270;
 		}
 
 		@Override
 		public ALayoutState getNextState() {
 			return new DetailState();
+		}
+
+		@Override
+		public void apply() {
+			super.apply();
+			bodyRow.clearBackgroundRenderers();
+			if (getDimensionGroups().size() > 0) {
+				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] {
+						1, 1, 1, 1 }));
+			}
 		}
 	}
 
@@ -64,6 +83,14 @@ public class TableBasedDataNode extends ADataNode {
 		public ALayoutState getNextState() {
 			return new OverviewState();
 		}
+
+		@Override
+		public void apply() {
+			super.apply();
+			bodyRow.clearBackgroundRenderers();
+			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
+					1, 1 }));
+		}
 	}
 
 	public TableBasedDataNode(ForceDirectedGraphLayout graphLayout,
@@ -71,13 +98,13 @@ public class TableBasedDataNode extends ADataNode {
 			Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
-		
+
 		currentState = new OverviewState();
 		dataContainerRenderer = currentState.dataContainerRenderer;
 
 		addPickingListeners();
 	}
-	
+
 	private void addPickingListeners() {
 		view.addSingleIDPickingListener(new APickingListener() {
 
@@ -85,10 +112,8 @@ public class TableBasedDataNode extends ADataNode {
 			public void clicked(Pick pick) {
 				dataContainerRenderer.destroy();
 				currentState = currentState.getNextState();
-				dataContainerRenderer = currentState.dataContainerRenderer;
-				dataContainerLayout.setRenderer(dataContainerRenderer);
-				toggleDataContainerButtonRenderer
-						.setTextureRotation(currentState.textureRotation);
+				currentState.apply();
+
 				view.setDisplayListDirty();
 			}
 
@@ -137,19 +162,13 @@ public class TableBasedDataNode extends ADataNode {
 		// toggleDataContainerButton.setVisible(false);
 		// }
 		toggleDataContainerButtonRenderer = new ButtonRenderer(
-				toggleDataContainerButton, view, view.getTextureManager(),
-				currentState.textureRotation);
+				toggleDataContainerButton, view, view.getTextureManager());
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
 		toggleDataContainerDetailLayout
 				.setRenderer(toggleDataContainerButtonRenderer);
 		titleRow.append(toggleDataContainerDetailLayout);
 
-		Row bodyRow = new Row("bodyRow");
-
-		if (getDimensionGroups().size() > 0) {
-			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
-					1, 1 }));
-		}
+		bodyRow = new Row("bodyRow");
 
 		Column bodyColumn = new Column("bodyColumn");
 
@@ -170,6 +189,8 @@ public class TableBasedDataNode extends ADataNode {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
+
+		currentState.apply();
 
 		return baseRow;
 	}

@@ -7,8 +7,6 @@ import java.util.List;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -17,7 +15,6 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class OverviewDataContainerRenderer extends ADataContainerRenderer {
@@ -25,7 +22,8 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 	private final static int SPACING_PIXELS = 4;
 	private final static int MIN_COMP_GROUP_WIDTH_PIXELS = 16;
 	private final static int MAX_TEXT_WIDTH_PIXELS = 80;
-	private static final int TEXT_HEIGHT_PIXELS = 13;
+	private final static int TEXT_HEIGHT_PIXELS = 13;
+	private final static int SIDE_SPACING_PIXELS = 20;
 
 	private List<DimensionGroupRenderer> comparisonGroupRepresentations;
 
@@ -90,22 +88,23 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 		for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
 
 			// FIXME: Determine color properly
-			float[] color = new float[] { 0.5f, 0.5f, 0.5f, 1f };
-			if (node instanceof ADataNode) {
-				color = ((ADataNode) node).getDataDomain().getColor().getRGBA();
-			} else {
-				ArrayList<IDataDomain> dataDomains = DataDomainManager.get()
-						.getDataDomainsByType("org.caleydo.datadomain.genetic");
-				if (dataDomains != null && dataDomains.size() > 0) {
-					float[] tmpColor = dataDomains.get(0).getColor().getRGB();
-					color = new float[] { tmpColor[0], tmpColor[1],
-							tmpColor[2], 1f };
-				}
-			}
+			float[] color = dimensionGroupData.getDataDomain().getColor()
+					.getRGBA();
+			// if (node instanceof ADataNode) {
+			// color = ((ADataNode) node).getDataDomain().getColor().getRGBA();
+			// } else {
+			// ArrayList<IDataDomain> dataDomains = DataDomainManager.get()
+			// .getDataDomainsByType("org.caleydo.datadomain.genetic");
+			// if (dataDomains != null && dataDomains.size() > 0) {
+			// float[] tmpColor = dataDomains.get(0).getColor().getRGB();
+			// color = new float[] { tmpColor[0], tmpColor[1],
+			// tmpColor[2], 1f };
+			// }
+			// }
 
-			if (dimensionGroupData.getDataDomain() != null) {
-				color = dimensionGroupData.getDataDomain().getColor().getRGBA();
-			}
+			// if (dimensionGroupData.getDataDomain() != null) {
+			// color = dimensionGroupData.getDataDomain().getColor().getRGBA();
+			// }
 			DimensionGroupRenderer comparisonGroupRepresentation = new DimensionGroupRenderer(
 					dimensionGroupData, view, dragAndDropController, node,
 					color);
@@ -186,7 +185,8 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 	private int getDimensionGroupsWidthPixels() {
 		return (node.getDimensionGroups().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
-				+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS);
+				+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS) + 2
+				* SIDE_SPACING_PIXELS;
 	}
 
 	private int getMaxDimensionGroupLabelHeight() {
