@@ -75,22 +75,20 @@ public class Application
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
 		DataDomainConfiguration mrnaConfiguration = new DataDomainConfiguration();
+		mrnaConfiguration.setLabel("mRNA data");
 		mrnaConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 
 		mrnaConfiguration.setColumnDimension(false);
 
 		mrnaConfiguration.setRecordIDCategory("SAMPLE");
-		mrnaConfiguration.setDimensionIDCategory("SAMPLE");
-
 		mrnaConfiguration.setPrimaryRecordMappingType("SAMPLE");
-		mrnaConfiguration.setPrimaryDimensionMappingType("DAVID");
-
 		mrnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		mrnaConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-
 		mrnaConfiguration.setRecordDenominationPlural("samples");
 		mrnaConfiguration.setRecordDenominationSingular("sample");
 
+		mrnaConfiguration.setDimensionIDCategory("GENE");
+		mrnaConfiguration.setPrimaryDimensionMappingType("DAVID");
+		mrnaConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
 		mrnaConfiguration.setDimensionDenominationPlural("genes");
 		mrnaConfiguration.setDimensionDenominationSingular("gene");
 
@@ -98,13 +96,15 @@ public class Application
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration);
 
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
+		mirnaConfiguration.setLabel("miRNA data");
 		mirnaConfiguration.setColumnDimension(false);
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
-		mirnaConfiguration.setDimensionIDCategory("miRNA");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
 		mirnaConfiguration.setRecordDenominationPlural("samples");
 		mirnaConfiguration.setRecordDenominationSingular("sample");
+
+		mirnaConfiguration.setDimensionIDCategory("miRNA");
+		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
 		mirnaConfiguration.setDimensionDenominationPlural("miRNAs");
 		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
 
@@ -112,18 +112,21 @@ public class Application
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration);
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
+		methylationConfiguration.setLabel("Methylation data");
 		methylationConfiguration.setColumnDimension(false);
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
-		methylationConfiguration.setDimensionIDCategory("Methylation");
 		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		methylationConfiguration.setHumanReadableDimensionIDType("Methylation");
 		methylationConfiguration.setRecordDenominationPlural("samples");
 		methylationConfiguration.setRecordDenominationSingular("sample");
+
+		methylationConfiguration.setDimensionIDCategory("Methylation");
+		methylationConfiguration.setHumanReadableDimensionIDType("Methylation");
 		methylationConfiguration.setDimensionDenominationPlural("methylations");
 		methylationConfiguration.setDimensionDenominationSingular("methylation");
 
 		loadSources(METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE), methylationConfiguration);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
+			methylationConfiguration);
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")

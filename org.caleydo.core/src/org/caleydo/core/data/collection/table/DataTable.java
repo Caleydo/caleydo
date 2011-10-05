@@ -615,6 +615,8 @@ public class DataTable
 			data.setData(getColumnIDList());
 		recordPerspective.init(data);
 
+		recordPerspective.setLabel("Default");
+
 		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
 	}
 
@@ -627,6 +629,8 @@ public class DataTable
 		else
 			data.setData(getRowIDList());
 		dimensionPerspective.init(data);
+
+		dimensionPerspective.setLabel("Default");
 
 		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 	}

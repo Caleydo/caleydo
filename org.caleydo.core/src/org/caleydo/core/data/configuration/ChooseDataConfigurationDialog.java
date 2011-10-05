@@ -16,13 +16,19 @@ public class ChooseDataConfigurationDialog
 	private DataConfiguration dataConfiguration;
 
 	private DataChooserComposite dataChooserComposite;
+	private String windowTitle;
 
-	public ChooseDataConfigurationDialog(Shell parent) {
-		this(parent, SWT.DIALOG_TRIM | SWT.APPLICATION_MODAL);
+	public ChooseDataConfigurationDialog(Shell parent, String windowTitle) {
+		super(parent);
+		this.windowTitle = windowTitle;
+
 	}
 
-	public ChooseDataConfigurationDialog(Shell parent, int style) {
-		super(parent);
+	@Override
+	protected void configureShell(Shell shell) {
+
+		super.configureShell(shell);
+		shell.setText(windowTitle);
 	}
 
 	@Override
@@ -59,7 +65,7 @@ public class ChooseDataConfigurationDialog
 	}
 
 	public static void main(String[] args) {
-		ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(new Shell());
+		ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(new Shell(), "Bla");
 		dialog.open();
 	}
 

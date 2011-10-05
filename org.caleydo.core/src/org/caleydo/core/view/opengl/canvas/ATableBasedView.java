@@ -457,7 +457,7 @@ public abstract class ATableBasedView
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		selectionUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		recordVAUpdateListener = new RecordVAUpdateListener();

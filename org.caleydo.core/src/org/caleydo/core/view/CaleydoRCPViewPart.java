@@ -131,7 +131,9 @@ public abstract class CaleydoRCPViewPart
 				DataDomainManager.get().getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
 
-			DataConfiguration config = DataConfigurationChooser.determineDataConfiguration(availableDomains);
+			DataConfiguration config =
+				DataConfigurationChooser.determineDataConfiguration(availableDomains,
+					serializedView.getViewType());
 			serializedView.setDataDomainID(config.getDataDomain().getDataDomainID());
 			serializedView.setRecordPerspectiveID(config.getRecordPerspective().getPerspectiveID());
 			serializedView.setDimensionPerspectiveID(config.getDimensionPerspective().getPerspectiveID());

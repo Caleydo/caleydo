@@ -146,7 +146,7 @@ public class DataDomainManager {
 			dataDomain = possibleDataDomains.get(0);
 		else {
 			ChooseDataConfigurationDialog chooseDataDomainDialog =
-				new ChooseDataConfigurationDialog(new Shell());
+				new ChooseDataConfigurationDialog(new Shell(), "DataDomainManager");
 			chooseDataDomainDialog.setBlockOnOpen(true);
 			chooseDataDomainDialog.open();
 			dataDomain = chooseDataDomainDialog.getDataConfiguration().getDataDomain();

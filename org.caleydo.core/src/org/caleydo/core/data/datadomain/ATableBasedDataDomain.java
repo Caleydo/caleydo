@@ -172,6 +172,8 @@ public abstract class ATableBasedDataDomain
 			createDefaultConfiguration();
 		boolean externalMappingLoaded = false;
 
+		label = configuration.label;
+
 		if (configuration.mappingFile != null) {
 			IDMappingLoader.get().loadMappingFile(configuration.mappingFile);
 			externalMappingLoaded = true;

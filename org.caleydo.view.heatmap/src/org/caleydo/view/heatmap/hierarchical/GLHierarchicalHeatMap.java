@@ -3337,10 +3337,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public String toString() {
-		return "Standalone hierarchical heat map, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
-				+ ", remoteRenderer: " + getRemoteRenderingGLView();
+		return "Heat map for " + dataDomain;
+
+		// ", rendered remote: " + isRenderedRemote()
+		// + ", contentSize: " + recordVA.size() + ", dimensionSize: "
+		// + dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
+		// + ", remoteRenderer: " + getRemoteRenderingGLView();
 	}
 
 	@Override

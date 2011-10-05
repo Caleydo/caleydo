@@ -11,6 +11,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
 /**
@@ -33,7 +34,8 @@ public class DataConfigurationChooser {
 	 * @return a {@link DataConfiguration} object with all the data set.
 	 */
 
-	public static DataConfiguration determineDataConfiguration(ArrayList<IDataDomain> possibleDataDomains) {
+	public static DataConfiguration determineDataConfiguration(ArrayList<IDataDomain> possibleDataDomains,
+		String viewName) {
 		IDataDomain chosenDataDomain = null;
 		String recordPerspectiveID = null;
 		RecordPerspective recordPerspective = null;
@@ -63,7 +65,9 @@ public class DataConfigurationChooser {
 			}
 		}
 		if (chosenDataDomain == null || recordPerspectiveID == null || dimensionPerspectiveID == null) {
-			ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(new Shell());
+
+			Shell shell = new Shell(SWT.APPLICATION_MODAL);
+			ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(shell, viewName);
 			// dialog.setPossibleDataDomains(availableDomains);
 			dialog.setBlockOnOpen(true);
 			dialog.open();

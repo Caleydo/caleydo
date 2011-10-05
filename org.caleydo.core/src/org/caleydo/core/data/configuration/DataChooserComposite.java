@@ -76,7 +76,7 @@ public class DataChooserComposite
 
 		int labelWidth = 150;
 		Label dataDomainLabel = new Label(this, SWT.BORDER);
-		dataDomainLabel.setText("Data Domain:");
+		dataDomainLabel.setText("Data set:");
 		GridData data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 1;
 		data.minimumWidth = labelWidth;
@@ -94,8 +94,8 @@ public class DataChooserComposite
 		possibleDataDomains = new String[tDataDomains.size()];
 		for (int count = 0; count < tDataDomains.size(); count++) {
 			possibleDataDomains[count] = tDataDomains.get(count).getDataDomainID();
-			String possibleDataDomain = possibleDataDomains[count];
-			dataDomainChooser.add(possibleDataDomain, count);
+			// String possibleDataDomain = possibleDataDomains[count];
+			dataDomainChooser.add(tDataDomains.get(count).getLabel(), count);
 		}
 		if (possibleDataDomains.length == 1) {
 			dataDomainChooser.select(0);
