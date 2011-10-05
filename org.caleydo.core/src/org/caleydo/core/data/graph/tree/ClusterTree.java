@@ -16,8 +16,8 @@ public class ClusterTree
 	 * Constructor 
 	 * @param leaveIDType
 	 */
-	public ClusterTree(IDType leaveIDType) {
-		super(leaveIDType);
+	public ClusterTree(IDType leaveIDType, int expectedSize) {
+		super(leaveIDType, expectedSize);
 	}
 
 //	public void createSubDataTables(DataTable table) {

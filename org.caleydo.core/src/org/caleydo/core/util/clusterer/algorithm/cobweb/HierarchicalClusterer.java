@@ -43,7 +43,9 @@ public class HierarchicalClusterer
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
-			tree = new ClusterTree(table.getDataDomain().getRecordIDType());
+			tree =
+				new ClusterTree(table.getDataDomain().getRecordIDType(), clusterState
+					.getSourceRecordPerspective().getVirtualArray().size());
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
 
@@ -82,7 +84,9 @@ public class HierarchicalClusterer
 			}
 		}
 		else {
-			tree = new ClusterTree(table.getDataDomain().getDimensionIDType());
+			tree =
+				new ClusterTree(table.getDataDomain().getDimensionIDType(), clusterState
+					.getSourceDimensionPerspective().getVirtualArray().size());
 
 			GeneralManager.get().getEventPublisher()
 				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));

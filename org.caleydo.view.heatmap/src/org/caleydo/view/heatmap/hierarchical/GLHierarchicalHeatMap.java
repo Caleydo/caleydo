@@ -2453,14 +2453,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public void display(GL2 gl) {
 		// processEvents();
-		if (generalManager.isWiiModeActive()) {
-			handleWiiInput();
-		}
-
-		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
-			handleTrackInput(gl);
-		}
-
+		
 		if (bIsDraggingActiveLevel2) {
 			handleCursorDraggingLevel2(gl);
 			if (glMouseListener.wasMouseReleased()) {
@@ -4464,120 +4457,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		setDisplayListDirty();
 
-	}
-
-	private void handleWiiInput() {
-		// float fHeadPositionX =
-		// generalManager.getWiiRemote().getCurrentSmoothHeadPosition()[0];
-		//
-		// if (fHeadPositionX < -1.2f) {
-		// bIsHeatmapInFocus = false;
-		// }
-		// else {
-		// bIsHeatmapInFocus = true;
-		// }
-
-		setDisplayListDirty();
-	}
-
-	private void handleTrackInput(final GL2 gl) {
-
-		// // TODO: very performance intensive - better solution needed (only in
-		// reshape)!
-		// getParentGLCanvas().getParentComposite().getDisplay().asyncExec(new
-		// Runnable() {
-		// @Override
-		// public void run() {
-		// upperLeftScreenPos =
-		// getParentGLCanvas().getParentComposite().toDisplay(1, 1);
-		// }
-		// });
-		//
-		// Rectangle screenRect = getParentGLCanvas().getBounds();
-		// float[] fArTrackPos =
-		// generalManager.getTrackDataProvider().getEyeTrackData();
-		//
-		// fArTrackPos[0] -= upperLeftScreenPos.x;
-		// fArTrackPos[1] -= upperLeftScreenPos.y;
-		//
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] /
-		// screenRect.width * 8f,
-		// (1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio,
-		// 0.01f));
-		//
-		// float fSwitchBorder = 200;
-		//
-		// if (!bIsHeatmapInFocus)
-		// fSwitchBorder = 450;
-		//
-		// if (fArTrackPos[0] < fSwitchBorder) {
-		// bIsHeatmapInFocus = false;
-		// }
-		// else {
-		// bIsHeatmapInFocus = true;
-		// }
-		//
-		// // Manipulate selected overview chunk (level 1)
-		// if (fArTrackPos[0] < 50) {
-		// int iNrPixelsPerSelectionBar = (int) (screenRect.getHeight() /
-		// iNrSelBar);
-		// iSelectorBar = (int) ((fArTrackPos[1] + 17) /
-		// iNrPixelsPerSelectionBar * 1.1f); // TODO: play with
-		// // these
-		// // correction
-		// // factors
-		//
-		// if (iSelectorBar <= 0)
-		// iSelectorBar = 1;
-		// else if (iSelectorBar > iNrSelBar)
-		// iSelectorBar = iNrSelBar;
-		// }
-		//
-		// // Manipulate selected level 2 chunk
-		// if (!bIsHeatmapInFocus && fArTrackPos[0] > 50 && fArTrackPos[0] <
-		// 450) {
-		// float fTextureHeight = viewFrustum.getHeight() - 0.6f;
-		// float fStep = fTextureHeight / (iAlNumberSamples.get(iSelectorBar -
-		// 1));// * 2);
-		// float fYPosMouse =
-		// ((1f - fArTrackPos[1] / (float) screenRect.getHeight())) * 8f *
-		// fAspectRatio - 0.4f;
-		//
-		// int iselElement = (int) Math.floor((fTextureHeight - fYPosMouse) /
-		// fStep);
-		// if (iSamplesPerHeatmap % 2 == 0) {
-		// if ((iselElement - (int) Math.floor(iSamplesPerHeatmap / 2) + 1) >= 0
-		// && (iselElement + (int) Math.floor(iSamplesPerHeatmap / 2)) <
-		// iAlNumberSamples
-		// .get(iSelectorBar - 1)) {
-		// iFirstSampleLevel2 = iselElement - (int)
-		// Math.floor(iSamplesPerHeatmap / 2) + 1;
-		// fPosCursorFirstElementLevel3 = fTextureHeight - (iFirstSampleLevel2 *
-		// fStep);
-		// iLastSampleLevel2 = iselElement + (int) Math.floor(iSamplesPerHeatmap
-		// / 2);
-		// fPosCursorLastElementLevel3 = fTextureHeight - ((iLastSampleLevel2 +
-		// 1) * fStep);
-		// }
-		// }
-		// else {
-		// if ((iselElement - (int) Math.ceil(iSamplesPerHeatmap / 2)) >= 0
-		// && (iselElement + (int) Math.floor(iSamplesPerHeatmap / 2)) <
-		// iAlNumberSamples
-		// .get(iSelectorBar - 1)) {
-		// iFirstSampleLevel2 = iselElement - (int) Math.ceil(iSamplesPerHeatmap
-		// / 2);
-		// fPosCursorFirstElementLevel3 = fTextureHeight - (iFirstSampleLevel2 *
-		// fStep);
-		// iLastSampleLevel2 = iselElement + (int) Math.floor(iSamplesPerHeatmap
-		// / 2);
-		// fPosCursorLastElementLevel3 = fTextureHeight - ((iLastSampleLevel2 +
-		// 1) * fStep);
-		// }
-		// }
-		// }
-		//
-		// setDisplayListDirty();
 	}
 
 	@Override

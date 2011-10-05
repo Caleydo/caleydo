@@ -183,7 +183,7 @@ public class PoincareDisk {
 
 	public void clearHighlightedNodes() {
 		PoincareNode tempNode;
-		for (int i = 1; i <= tree.getNumberOfNodes(); i++) {
+		for (int i = 1; i <= tree.getRoot().getChildren().size(); i++) {
 			tempNode = getNodeByCompareableValue(i);
 			if (tempNode != null) {
 				getNodeByCompareableValue(i).highLighted = false;

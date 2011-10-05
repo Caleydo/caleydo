@@ -12,10 +12,6 @@ class NodeInfo {
 
 	private boolean bIsRootNode;
 
-	private int iNumberOfKids;
-
-	private int iNumberOfSiblings;
-
 	private int iLayer;
 
 	private int iDepth;
@@ -41,22 +37,6 @@ class NodeInfo {
 
 	public boolean isRootNode() {
 		return bIsRootNode;
-	}
-
-	public void increaseNumberOfKids() {
-		this.iNumberOfKids++;
-	}
-
-	public int getNumberOfKids() {
-		return iNumberOfKids;
-	}
-
-	public void increaseNumberOfSiblings() {
-		this.iNumberOfSiblings++;
-	}
-
-	public int getNumberOfSiblings() {
-		return iNumberOfSiblings;
 	}
 
 	public void setLayer(int iLayer) {

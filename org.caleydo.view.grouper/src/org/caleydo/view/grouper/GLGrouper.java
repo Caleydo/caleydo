@@ -300,7 +300,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	 * according to the structure of the composite GroupRepresentation tree.
 	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree = new ClusterTree(dataDomain.getDimensionIDType());
+		tree = new ClusterTree(dataDomain.getDimensionIDType(), rootGroup.getChildren().size());
 		ClusterNode rootNode = rootGroup.getClusterNode();
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
@@ -1078,7 +1078,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	 */
 	public void createNewGroup(Set<Integer> setContainedGroups) {
 
-		tree = new ClusterTree(dataDomain.getDimensionIDType());
+		tree = new ClusterTree(dataDomain.getDimensionIDType(), 3);
 		GroupRepresentation newGroup = new GroupRepresentation(new ClusterNode(tree,
 				"group" + lastUsedGroupID, lastUsedGroupID++, false, -1), renderStyle,
 				drawingStrategyManager
@@ -1242,7 +1242,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	 *            ID of the group where the copied groups should be pasted in.
 	 */
 	public void pasteGroups(int iParentGroupID) {
-		tree = new ClusterTree(dataDomain.getDimensionIDType());
+		tree = new ClusterTree(dataDomain.getDimensionIDType(), 3);
 		GroupRepresentation parent = hashGroups.get(iParentGroupID);
 
 		if (parent == null || setCopiedGroups == null || parent.isLeaf())

@@ -21,7 +21,6 @@ import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.tracking.TrackDataProvider;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -52,7 +51,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 	public final static String VIEW_TYPE = "org.caleydo.view.hyperbolic";
 
-	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
 
 	private RemoteLevelElement remoteNodeElement;

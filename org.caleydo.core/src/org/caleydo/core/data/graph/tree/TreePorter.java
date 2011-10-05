@@ -71,13 +71,6 @@ public class TreePorter {
 	public ClusterTree importTree(String fileName, IDType leafIDType) throws JAXBException,
 		FileNotFoundException {
 
-		ClusterTree tree = new ClusterTree(leafIDType);
-		// tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
-		ClusterNode rootNode = null;
-
-		DirectedGraph<ClusterNode, DefaultEdge> graph =
-			new DefaultDirectedGraph<ClusterNode, DefaultEdge>(DefaultEdge.class);
-
 		JAXBContext jaxbContext = null;
 		TreePorter treePorter = null;
 		Unmarshaller unmarshaller;
@@ -88,17 +81,24 @@ public class TreePorter {
 			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 				.getResource(fileName));
 
+		ClusterTree tree = new ClusterTree(leafIDType, treePorter.nodeSet.size());
+		// tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
+		ClusterNode rootNode = null;
+
+		DirectedGraph<ClusterNode, DefaultEdge> graph =
+			new DefaultDirectedGraph<ClusterNode, DefaultEdge>(DefaultEdge.class);
+
 		tree.setSortingStrategy(treePorter.sortingStrategy);
 
 		int size = (int) (treePorter.nodeSet.size() * 1.5);
 		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(size);
-//		HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
+		// HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
 		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs =
 			new HashMap<Integer, ArrayList<Integer>>(size);
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
-//			hashClusterNodes.put(node.toString(), node);
+			// hashClusterNodes.put(node.toString(), node);
 			hashClusterNr.put(node.getID(), node);
 			if (node.isRootNode())
 				rootNode = node;

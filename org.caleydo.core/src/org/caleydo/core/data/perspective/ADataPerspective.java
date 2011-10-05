@@ -357,7 +357,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	/** Creates a default tree of depth 1, assuming only one group */
 	private void createDefaultTree() {
 		isTreeDefaultTree = true;
-		tree = new ClusterTree(idType);
+		tree = new ClusterTree(idType, virtualArray.size());
 		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
 		tree.setRootNode(root);
 		for (Integer id : virtualArray) {
@@ -369,7 +369,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		GroupType groupList = createGroupList();
 		int groupCounter = 0;
 		isTreeDefaultTree = true;
-		tree = new ClusterTree(idType);
+		tree = new ClusterTree(idType, data.getIndices().size());
 		int clusterNr = 0;
 		ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true, -1);
 		tree.setRootNode(root);

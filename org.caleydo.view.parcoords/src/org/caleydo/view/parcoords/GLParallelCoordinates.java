@@ -18,7 +18,6 @@ import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
 
 import java.awt.Point;
-import java.awt.Rectangle;
 import java.awt.geom.Rectangle2D;
 import java.nio.FloatBuffer;
 import java.nio.IntBuffer;
@@ -342,9 +341,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		gl.glEnable(GL2.GL_BLEND);
-
-		if (generalManager.getTrackDataProvider().isTrackModeActive())
-			handleTrackInput(gl);
 
 		// TODO another display list
 		// clipToFrustum(gl);
@@ -2078,71 +2074,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		}
 		setDisplayListDirty();
 
-	}
-
-	private void handleTrackInput(final GL2 gl) {
-
-		// TODO: very performance intensive - better solution needed (only in
-		// reshape)!
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				upperLeftScreenPos = parentComposite.toDisplay(1, 1);
-			}
-		});
-
-		Rectangle screenRect = getParentGLCanvas().getBounds();
-		float[] fArTrackPos = generalManager.getTrackDataProvider().getEyeTrackData();
-
-		fArTrackPos[0] -= upperLeftScreenPos.x;
-		fArTrackPos[1] -= upperLeftScreenPos.y;
-
-		// GLHelperFunctions.drawPointAt(gl, new Vec3f(fArTrackPos[0] /
-		// screenRect.width * 8f,
-		// (1f - fArTrackPos[1] / screenRect.height) * 8f * fAspectRatio,
-		// 0.01f));
-
-		float fTrackX = (generalManager.getTrackDataProvider().getEyeTrackData()[0])
-				/ screenRect.width;
-
-		fTrackX *= renderStyle.getWidthOfCoordinateSystem();
-
-		int iAxisNumber = 0;
-		for (int iCount = 0; iCount < axisSpacings.size() - 1; iCount++) {
-			if (axisSpacings.get(iCount) < fTrackX
-					&& axisSpacings.get(iCount + 1) > fTrackX) {
-				if (fTrackX - axisSpacings.get(iCount) < axisSpacings.get(iCount)
-						- fTrackX) {
-					iAxisNumber = iCount;
-				} else {
-					iAxisNumber = iCount + 1;
-				}
-
-				break;
-			}
-		}
-
-		int iNumberOfAxis = dimensionVA.size();
-
-		float fOriginalAxisSpacing = renderStyle.getAxisSpacing(iNumberOfAxis);
-
-		float fFocusAxisSpacing = fOriginalAxisSpacing * 2;
-
-		float fReducedSpacing = (renderStyle.getWidthOfCoordinateSystem() - 2 * fFocusAxisSpacing)
-				/ (iNumberOfAxis - 3);
-
-		float fCurrentX = 0;
-		axisSpacings.clear();
-		for (int iCount = 0; iCount < iNumberOfAxis; iCount++) {
-			axisSpacings.add(fCurrentX);
-			if (iCount + 1 == iAxisNumber || iCount == iAxisNumber) {
-				fCurrentX += fFocusAxisSpacing;
-			} else {
-				fCurrentX += fReducedSpacing;
-			}
-		}
-
-		setDisplayListDirty();
 	}
 
 	public void resetAxisSpacing() {

@@ -12,8 +12,6 @@ import org.caleydo.core.net.IGroupwareManager;
 import org.caleydo.core.parser.xml.XmlParserManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
-import org.caleydo.core.util.tracking.TrackDataProvider;
-import org.caleydo.core.util.wii.WiiRemote;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.core.runtime.IConfigurationElement;
@@ -72,13 +70,9 @@ public class GeneralManager {
 	private XmlParserManager xmlParserManager;
 	private IDCreator idCreator;
 	private ResourceLoader resourceLoader;
-	private WiiRemote wiiRemote;
-	private TrackDataProvider trackDataProvider;
 	private IGroupwareManager groupwareManager;
 	private SerializationManager serializationManager;
 	private IStatisticsPerformer rStatisticsPerformer;
-
-	private boolean bIsWiiMode = false;
 
 	public void init() {
 
@@ -100,13 +94,6 @@ public class GeneralManager {
 		serializationManager = SerializationManager.get();
 
 		resourceLoader = new ResourceLoader();
-
-		wiiRemote = new WiiRemote();
-		if (GeneralManager.get().isWiiModeActive()) {
-			wiiRemote.connect();
-		}
-
-		trackDataProvider = new TrackDataProvider();
 	}
 
 	/**
@@ -179,18 +166,6 @@ public class GeneralManager {
 
 	public IDCreator getIDCreator() {
 		return idCreator;
-	}
-
-	public boolean isWiiModeActive() {
-		return bIsWiiMode;
-	}
-
-	public WiiRemote getWiiRemote() {
-		return wiiRemote;
-	}
-
-	public TrackDataProvider getTrackDataProvider() {
-		return trackDataProvider;
 	}
 
 	public IStatisticsPerformer getRStatisticsPerformer() {

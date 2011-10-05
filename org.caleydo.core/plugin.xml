@@ -152,16 +152,6 @@
             name="Report Bug">
       </command>
       <command
-            defaultHandler="org.caleydo.core.util.tracking.StartTrackingHandler"
-            id="org.caleydo.core.util.tracking.start_tracking"
-            name="Start Tracking">
-      </command>
-      <command
-            defaultHandler="org.caleydo.core.util.tracking.StopTrackingHandler"
-            id="org.caleydo.core.util.tracking.stop_tracking"
-            name="Stop Tracking">
-      </command>
-      <command
             defaultHandler="org.caleydo.core.util.clusterer.gui.ClusterHandler"
             id="org.caleydo.core.util.clusterer.gui.cluster"
             name="Cluster">
@@ -246,16 +236,6 @@
                   commandId="org.caleydo.core.plex.open_collab"
                   label="Collaboration"
                   mnemonic="T"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.core.util.tracking.start_tracking"
-                  label="Start Tracking"
-                  style="push">
-            </command>
-            <command
-                  commandId="org.caleydo.core.util.tracking.stop_tracking"
-                  label="Stop Tracking"
                   style="push">
             </command>
          </menu>

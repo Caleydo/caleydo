@@ -32,7 +32,7 @@ public class TreeTester {
 
 		tree =
 			new Tree<DefaultNode>(IDType.registerType("test", IDCategory.registerCategory("testcategory"),
-				EColumnType.INT));
+				EColumnType.INT), 3);
 		// tree.getRoot();
 		DefaultNode node = new DefaultNode(tree, "Root", 1);
 		tree.setRootNode(node);

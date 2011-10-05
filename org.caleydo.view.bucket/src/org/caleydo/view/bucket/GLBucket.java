@@ -88,7 +88,6 @@ import org.caleydo.view.pathway.GLPathway;
 import org.caleydo.view.pathway.SerializedPathwayView;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -164,9 +163,7 @@ public class GLBucket extends AGLView implements
 	 * Used for dragging views to the pool area.
 	 */
 	private int iPoolLevelCommonID = -1;
-
-	private GLOffScreenTextureRenderer glOffScreenRenderer;
-
+	
 	private boolean bUpdateOffScreenTextures = true;
 
 	private boolean connectionLinesEnabled = true;
@@ -201,8 +198,6 @@ public class GLBucket extends AGLView implements
 	protected ResetViewListener resetViewListener;
 	protected SelectionUpdateListener selectionUpdateListener;
 
-	private Point upperLeftScreenPos = new Point(0, 0);
-
 	/**
 	 * Constructor.
 	 */
@@ -215,10 +210,6 @@ public class GLBucket extends AGLView implements
 
 		viewCamera.setCameraRotation(new Rotf());
 		viewCamera.setCameraPosition(new Vec3f(0, 0, -8));
-
-		if (generalManager.getTrackDataProvider().isTrackModeActive()) {
-			glOffScreenRenderer = new GLOffScreenTextureRenderer();
-		}
 
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			layoutRenderStyle = new BucketLayoutRenderStyle(viewFrustum);
@@ -240,14 +231,7 @@ public class GLBucket extends AGLView implements
 		}
 
 		focusLevel = layoutRenderStyle.initFocusLevel();
-
-		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()
-				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-			stackLevel = ((BucketLayoutRenderStyle) layoutRenderStyle)
-					.initStackLevelWii();
-		} else {
-			stackLevel = layoutRenderStyle.initStackLevel();
-		}
+		stackLevel = layoutRenderStyle.initStackLevel();
 
 		poolLevel = layoutRenderStyle.initPoolLevel(-1);
 		externalSelectionLevel = layoutRenderStyle.initMemoLevel();
@@ -275,8 +259,6 @@ public class GLBucket extends AGLView implements
 
 		iPoolLevelCommonID = generalManager.getIDCreator().createID(
 				ManagedObjectType.REMOTE_LEVEL_ELEMENT);
-		
-
 	}
 
 	@Override
@@ -316,9 +298,6 @@ public class GLBucket extends AGLView implements
 
 		infoAreaManager = new GLInfoAreaManager();
 		infoAreaManager.initInfoInPlace(viewFrustum);
-
-		if (generalManager.getTrackDataProvider().isTrackModeActive())
-			glOffScreenRenderer.init(gl);
 	}
 
 	@Override
@@ -444,41 +423,11 @@ public class GLBucket extends AGLView implements
 		// layoutRenderStyle.initStackLevel();
 		// layoutRenderStyle.initMemoLevel();
 
-		if (GeneralManager.get().getTrackDataProvider().isTrackModeActive()
-				&& layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
-
-			// TODO: very performance intensive - better solution needed (only
-			// in reshape)!
-			parentComposite.getDisplay().asyncExec(new Runnable() {
-				@Override
-				public void run() {
-					upperLeftScreenPos = parentComposite.toDisplay(0, 0);
-				}
-			});
-
-			((BucketLayoutRenderStyle) layoutRenderStyle).initFocusLevelTrack(gl,
-					getParentGLCanvas().getBounds(), upperLeftScreenPos);
-
-			((BucketLayoutRenderStyle) layoutRenderStyle).initStackLevelTrack();
-		}
-
 		doSlerpActions(gl);
 		initNewView(gl);
-
-		if (!generalManager.getTrackDataProvider().isTrackModeActive()) {
-			renderRemoteLevel(gl, focusLevel);
-			renderRemoteLevel(gl, stackLevel);
-		} else {
-			if (bUpdateOffScreenTextures) {
-				updateOffScreenTextures(gl);
-			}
-
-			renderRemoteLevel(gl, focusLevel);
-			// renderRemoteLevel(gl, stackLevel);
-
-			glOffScreenRenderer.renderRubberBucket(gl, stackLevel,
-					(BucketLayoutRenderStyle) layoutRenderStyle, this);
-		}
+		
+		renderRemoteLevel(gl, focusLevel);
+		renderRemoteLevel(gl, stackLevel);
 
 		if (!bucketMouseWheelListener.isZoomActionRunning()) {
 			renderPoolAndMemoLayerBackground(gl);
@@ -2668,44 +2617,6 @@ public class GLBucket extends AGLView implements
 		return containedGLViews;
 	}
 
-	private void updateOffScreenTextures(final GL2 gl) {
-
-		if (glOffScreenRenderer == null)
-			return;
-
-		bUpdateOffScreenTextures = false;
-
-		gl.glPushMatrix();
-
-		int iViewWidth = parentGLCanvas.getWidth();
-		int iViewHeight = parentGLCanvas.getHeight();
-
-		if (stackLevel.getElementByPositionIndex(0).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl,
-					stackLevel.getElementByPositionIndex(0).getGLView().getID(), 0,
-					iViewWidth, iViewHeight);
-		}
-
-		if (stackLevel.getElementByPositionIndex(1).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl,
-					stackLevel.getElementByPositionIndex(1).getGLView().getID(), 1,
-					iViewWidth, iViewHeight);
-		}
-
-		if (stackLevel.getElementByPositionIndex(2).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl,
-					stackLevel.getElementByPositionIndex(2).getGLView().getID(), 2,
-					iViewWidth, iViewHeight);
-		}
-
-		if (stackLevel.getElementByPositionIndex(3).getGLView() != null) {
-			glOffScreenRenderer.renderToTexture(gl,
-					stackLevel.getElementByPositionIndex(3).getGLView().getID(), 3,
-					iViewWidth, iViewHeight);
-		}
-
-		gl.glPopMatrix();
-	}
 
 	@Override
 	public void clearAllSelections() {

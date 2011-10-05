@@ -189,28 +189,6 @@ public class HTMLBrowser extends ASWTView {
 
 		browser = new Browser(parentComposite, SWT.BORDER);
 
-		// Mechanism prevents the browser to steal the focus from other views
-		browser.addProgressListener(new ProgressListener() {
-
-			@Override
-			public void completed(ProgressEvent event) {
-				// Give the focus back to active view
-				if (GeneralManager.get().getViewManager().getActiveSWTView() != null) {
-					GeneralManager.get().getViewManager().getActiveSWTView()
-							.setFocus();
-				}
-			}
-
-			@Override
-			public void changed(ProgressEvent event) {
-				// Give the focus back to active view
-				if (GeneralManager.get().getViewManager().getActiveSWTView() != null) {
-					GeneralManager.get().getViewManager().getActiveSWTView()
-							.setFocus();
-				}
-			}
-		});
-
 		// idExtractionLocationListener = new
 		// IDExtractionLocationListener(browser, uniqueID, -1);
 		// browser.addLocationListener(idExtractionLocationListener);

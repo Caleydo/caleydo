@@ -3,7 +3,6 @@ package org.caleydo.core.gui;
 import java.util.HashMap;
 
 import org.caleydo.core.manager.GeneralManager;
-import org.eclipse.jface.action.IStatusLineManager;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Label;
@@ -31,8 +30,6 @@ public class SWTGUIManager {
 	protected ProgressBar loadingProgressBar;
 
 	protected Label loadingProgressBarLabel;
-
-	protected IStatusLineManager externalRCPStatusLine;
 
 	/**
 	 * Constructor.
@@ -66,8 +63,4 @@ public class SWTGUIManager {
 		this.loadingProgressBarLabel = progressLabel;
 	}
 
-	public void setExternalRCPStatusLine(IStatusLineManager statusLine, Display display) {
-		this.display = display;
-		this.externalRCPStatusLine = statusLine;
-	}
 }

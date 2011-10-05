@@ -3,11 +3,9 @@ package org.caleydo.view.datawindows;
 import java.util.ArrayList;
 
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.util.tracking.TrackDataProvider;
 
 public class EyeTracking {
 	private int[] rawEyeTrackerPosition;
-	private TrackDataProvider tracker;
 	private float[] receivedEyeData;
 	private float[] eyeTrackerOffset;
 	private int[] fixedCoordinate;
@@ -45,21 +43,9 @@ public class EyeTracking {
 	@SuppressWarnings("static-access")
 	public void startTracking() {
 
-		tracker = new TrackDataProvider();
-
-		tracker.startTracking();
-
 	}
 
 	public void receiveData() {
-
-		receivedEyeData = tracker.getEyeTrackData();
-		rawEyeTrackerPosition[0] = (int) receivedEyeData[0];
-		rawEyeTrackerPosition[1] = (int) receivedEyeData[1];
-		// if(this.rawEyeTrackerPosition[0]!=0){
-		// //System.out.println("eyeTracker Working: "+
-		// rawEyeTrackerPosition[0]+" "+rawEyeTrackerPosition[0]);
-		// }
 
 	}
 

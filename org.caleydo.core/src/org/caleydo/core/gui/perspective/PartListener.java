@@ -2,6 +2,8 @@ package org.caleydo.core.gui.perspective;
 
 import java.util.List;
 
+import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.RcpToolBarView;
@@ -11,12 +13,12 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.IView;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.Separator;
 import org.eclipse.ui.IPartListener2;
-import org.eclipse.ui.IViewPart;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
@@ -69,7 +71,6 @@ public class PartListener
 			return;
 		}
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
-		viewPart.setAttached(isViewAttached(viewPart));
 
 		if (viewPart instanceof ARcpGLViewPart) {
 			ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
@@ -94,8 +95,6 @@ public class PartListener
 			return;
 		}
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
-
-		viewPart.setAttached(isViewAttached(viewPart));
 
 		if (!(activePart instanceof ARcpGLViewPart)) {
 			return;
@@ -127,6 +126,15 @@ public class PartListener
 			viewPart.getSWTComposite().forceFocus();
 
 		drawInlineToolBar(viewPart);
+		
+		if (viewPart.getView() instanceof IDataDomainBasedView) {
+			IDataDomain dataDomain = ((IDataDomainBasedView)viewPart.getView()).getDataDomain();
+			
+			for (AGLView view : GeneralManager.get().getViewManager().getAllGLViews()) {
+				if (view instanceof IDataDomainBasedView)
+					((IDataDomainBasedView)view).setDataDomain(dataDomain);
+			}
+		}
 	}
 
 	@Override
@@ -172,14 +180,5 @@ public class PartListener
 	 */
 	private List<IView> getAllViews(CaleydoRCPViewPart viewPart) {
 		return viewPart.getAllViews();
-	}
-
-	public boolean isViewAttached(IViewPart viewPart) {
-		if (viewPart.getSite().getShell().getText().equals("Caleydo")) {
-			return true;
-		}
-		else {
-			return false;
-		}
 	}
 }

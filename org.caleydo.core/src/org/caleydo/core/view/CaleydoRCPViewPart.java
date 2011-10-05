@@ -47,7 +47,7 @@ public abstract class CaleydoRCPViewPart
 
 	protected EventPublisher eventPublisher = null;
 
-	protected IView view;
+	protected AView view;
 
 	/**
 	 * stores the attach status of the viewpart, true means within caleydo's main window, false otherwise

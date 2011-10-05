@@ -35,10 +35,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private boolean isDirty;
 
-	private HashMap<NodeType, NodeInfo> mNodeMap;
-
-	private HashMap<Integer, Integer> mLayerMap;
-
 	private ESortingStrategy sortingStrategy = ESortingStrategy.DEFAULT;
 
 	/**
@@ -46,7 +42,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * existing tree. For other cases use {@link #Tree(IDType)} instead.
 	 */
 	public Tree() {
-		init();
+		init(100);
 	}
 
 	/**
@@ -55,8 +51,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * 
 	 * @param leaveIDType
 	 */
-	public Tree(IDType leaveIDType) {
-		init();
+	public Tree(IDType leaveIDType, int expectedSize) {
+		init(expectedSize);
 		initializeIDTypes(leaveIDType);
 	}
 
@@ -117,12 +113,10 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		return leafIDType;
 	}
 
-	private void init() {
+	private void init(int expectedSize) {
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
-		hashNodes = new HashMap<Integer, NodeType>();
-		mNodeMap = new HashMap<NodeType, NodeInfo>();
-		mLayerMap = new HashMap<Integer, Integer>();
-		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>();
+		hashNodes = new HashMap<Integer, NodeType>(expectedSize*2);
+		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>((int)(expectedSize*1.5f));
 	}
 
 	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
@@ -132,11 +126,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public void setRootNode(NodeType rootNode) {
 		this.rootNode = rootNode;
 		graph.addVertex(rootNode);
-
-		NodeInfo info = new NodeInfo("root", true, 1);
-		mNodeMap.put(this.rootNode, info);
-
-		increaseNumberOfElementsInLayer(1);
 		setDirty();
 
 		// TODO: this should be removed later on, only for testing purposes
@@ -179,20 +168,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		graph.addVertex(childNode);
 		graph.addEdge(parentNode, childNode);
 
-		NodeInfo parentInfo = mNodeMap.get(parentNode);
-		int currentLayer = parentInfo.getLayer() + 1;
-		increaseNumberOfElementsInLayer(currentLayer);
-
-		NodeInfo info = new NodeInfo("child", false, currentLayer);
-
-		mNodeMap.put(childNode, info);
-		parentInfo.increaseNumberOfKids();
-
-		for (NodeType tmpChild : getChildren(parentNode)) {
-			NodeInfo tmpInfo = mNodeMap.get(tmpChild);
-			if (tmpInfo != null)
-				tmpInfo.increaseNumberOfSiblings();
-		}
 		setDirty();
 
 		hashNodes.put(childNode.getID(), childNode);
@@ -309,38 +284,13 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
 	}
+	
+	public int getNumberOfNodes() {
+		return hashNodes.size();
+	}
 
 	public ArrayList<Integer> getNodeIDsFromLeafID(int iLeafID) {
 		return hashLeafIDToNodeIDs.get(iLeafID);
-	}
-
-	/**
-	 * Each key in the mLayerMap holds the number of the elements in the particular layer. This function
-	 * increases the elements - number of the given layer.
-	 * 
-	 * @param layer
-	 *            Its is the key of the layerMap, representing the layer
-	 */
-	public void increaseNumberOfElementsInLayer(int layer) {
-		if (mLayerMap.containsKey(layer))
-			mLayerMap.put(layer, mLayerMap.get(layer) + 1);
-		else
-			mLayerMap.put(layer, 1);
-	}
-
-	/**
-	 * Returns the number of elements in the given layer
-	 * 
-	 * @param layer
-	 *            The value of this key gets returned
-	 * @return the number of elements
-	 */
-	public int getNumberOfElementsInLayer(int layer) {
-		if (mLayerMap.containsKey(layer))
-			return mLayerMap.get(layer);
-		else
-			return 0;
-
 	}
 
 	/**
@@ -361,15 +311,6 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 		rootNode.calculateHierarchyDepth();
 		rootNode.calculateLeaveIDs();
 		rootNode.calculateHierarchyLevels(0);
-	}
-
-	/**
-	 * Returns the number of all nodes in the tree
-	 * 
-	 * @return number of nodes
-	 */
-	public int getNumberOfNodes() {
-		return mNodeMap.size();
 	}
 
 	/**

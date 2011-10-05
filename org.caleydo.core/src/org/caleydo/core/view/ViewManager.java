@@ -63,8 +63,6 @@ public class ViewManager
 
 	private GLInfoAreaManager infoAreaManager = new GLInfoAreaManager();
 
-	private Composite activeSWTView;
-
 	private Set<Object> busyRequests = new HashSet<Object>();
 
 	private CreateGUIViewListener createGUIViewListener;
@@ -242,17 +240,6 @@ public class ViewManager
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
 		fpsAnimator.remove(glCanvas);
-	}
-
-	public void setActiveSWTView(Composite composite) {
-		if (composite == null)
-			throw new IllegalStateException("Tried to set a null object as active SWT view.");
-
-		activeSWTView = composite;
-	}
-
-	public Composite getActiveSWTView() {
-		return activeSWTView;
 	}
 
 	/**

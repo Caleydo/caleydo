@@ -16,6 +16,8 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * <p>
@@ -83,11 +85,12 @@ public class DataDomainManager {
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
 			register(dataDomain);
-			return dataDomain;
+			return dataDomain;			
 		}
 		catch (Exception ex) {
 			throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
 		}
+		
 	}
 
 	/**
