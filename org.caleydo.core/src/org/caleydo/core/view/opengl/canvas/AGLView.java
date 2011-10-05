@@ -520,7 +520,7 @@ public abstract class AGLView
 	public abstract void displayRemote(final GL2 gl);
 
 	public final GLCanvas getParentGLCanvas() {
-	
+
 		if (parentGLCanvas == null && this.isRenderedRemote())
 			return getRemoteRenderingGLView().getParentGLCanvas();
 
@@ -539,20 +539,35 @@ public abstract class AGLView
 		// parentGLCanvas.initPixelGLConverter(viewFrustum);
 	}
 
+	/**
+	 * Set the level of detail to be displayed
+	 * 
+	 * @param detailLevel
+	 */
+	public void setDetailLevel(DetailLevel detailLevel) {
+		this.detailLevel = detailLevel;
+		setDisplayListDirty();
+	}
+
 	private void updateDetailMode() {
+
+		DetailLevel detailLevel = this.detailLevel;
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
 		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 		if (pixelHeight > getMinPixelHeight(DetailLevel.HIGH)
 			&& pixelWidth > getMinPixelWidth(DetailLevel.HIGH)) {
-			setDetailLevel(DetailLevel.HIGH);
+			detailLevel = DetailLevel.HIGH;
 		}
 		else if (pixelHeight > getMinPixelHeight(DetailLevel.MEDIUM)
 			&& pixelWidth > getMinPixelWidth(DetailLevel.MEDIUM)) {
-			setDetailLevel(DetailLevel.MEDIUM);
+			detailLevel = DetailLevel.MEDIUM;
 		}
-		else
-			setDetailLevel(DetailLevel.LOW);
-		setDisplayListDirty();
+		else {
+			detailLevel = DetailLevel.LOW;
+		}
+		if (!this.detailLevel.equals(detailLevel)) {
+			setDetailLevel(detailLevel);
+		}
 	}
 
 	/**
@@ -899,16 +914,6 @@ public abstract class AGLView
 	 * Broadcast elements only with a given type.
 	 */
 	public abstract void broadcastElements(EVAOperation type);
-
-	/**
-	 * Set the level of detail to be displayed
-	 * 
-	 * @param detailLevel
-	 */
-	public void setDetailLevel(DetailLevel detailLevel) {
-		this.detailLevel = detailLevel;
-		setDisplayListDirty();
-	}
 
 	public void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;

@@ -1,8 +1,9 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.selection.events;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
+import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 
 /**
  * Listener for {@link ClusterNodeSelectionEvent}.

@@ -453,7 +453,7 @@ public class GLHeatMap extends ATableBasedView {
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-		event.setDataDomainID(dataDomain.getDataDomainID());
+//		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);

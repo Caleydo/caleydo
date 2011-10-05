@@ -14,12 +14,12 @@ import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.selection.events.ForeignSelectionCommandListener;
+import org.caleydo.core.data.selection.events.ForeignSelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
-import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

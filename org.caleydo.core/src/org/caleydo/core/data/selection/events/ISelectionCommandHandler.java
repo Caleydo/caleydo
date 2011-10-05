@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.selection.events;
 
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;

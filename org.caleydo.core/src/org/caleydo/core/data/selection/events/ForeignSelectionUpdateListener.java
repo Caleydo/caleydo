@@ -1,4 +1,4 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.selection.events;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.delta.SelectionDelta;

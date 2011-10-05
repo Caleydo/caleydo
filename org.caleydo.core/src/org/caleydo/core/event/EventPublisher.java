@@ -40,8 +40,7 @@ public class EventPublisher {
 			allListeners = new HashMap<String, Collection<AEventListener<?>>>();
 			listenerMap.put(eventClass, allListeners);
 		}
-		Collection<AEventListener<?>> domainSpecificListeners =
-			allListeners.get(listener.getDataDomainID());
+		Collection<AEventListener<?>> domainSpecificListeners = allListeners.get(listener.getDataDomainID());
 		if (domainSpecificListeners == null) {
 			domainSpecificListeners = new ArrayList<AEventListener<?>>();
 			allListeners.put(listener.getDataDomainID(), domainSpecificListeners);
@@ -59,8 +58,7 @@ public class EventPublisher {
 	 *            IMediatorReceiver to handle events
 	 */
 	public synchronized void removeListener(Class<? extends AEvent> eventClass, AEventListener<?> listener) {
-		Collection<AEventListener<?>> listeners =
-			listenerMap.get(eventClass).get(listener.getDataDomainID());
+		Collection<AEventListener<?>> listeners = listenerMap.get(eventClass).get(listener.getDataDomainID());
 		listeners.remove(listener);
 	}
 
@@ -96,12 +94,11 @@ public class EventPublisher {
 			listenerMap.get(event.getClass());
 		if (dataDomainToListenersMap == null)
 			return;
-		// if we have a dataDomainType we also want to notify those listeners that did not register for a
-		// dataDomain
+		// we also want to notify those listeners that did not register for a dataDomain
+		triggerEvents(event, dataDomainToListenersMap.get(null));
+		// if the data domain is specified in the event we call those listeners now
 		if (dataDomainID != null)
-			triggerEvents(event, dataDomainToListenersMap.get(null));
-
-		triggerEvents(event, dataDomainToListenersMap.get(dataDomainID));
+			triggerEvents(event, dataDomainToListenersMap.get(dataDomainID));
 		// Collection<AEventListener<?>> listeners = listenerMap.get(event.getClass()).get();
 
 	}

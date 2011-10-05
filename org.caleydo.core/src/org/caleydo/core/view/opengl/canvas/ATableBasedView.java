@@ -20,6 +20,11 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
+import org.caleydo.core.data.selection.events.ClearSelectionsListener;
+import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
+import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.SelectionCommandListener;
+import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -39,13 +44,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 import org.caleydo.core.view.opengl.canvas.listener.SwitchDataRepresentationListener;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.eclipse.core.runtime.IStatus;
@@ -189,7 +189,6 @@ public abstract class ATableBasedView
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
-			// SelectionDelta internalDelta = contentSelectionManager.getCompleteDelta();
 			initForAddedElements();
 			handleConnectedElementReps(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
@@ -202,38 +201,6 @@ public abstract class ATableBasedView
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
-
-		// else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-		// && dataDomain.getDataDomainType().equals("org.caleydo.datadomain.clinical")) {
-		//
-		// contentSelectionManager.setDelta(selectionDelta);
-		// //
-		// handleConnectedElementRep(selectionDelta);
-		// reactOnExternalSelection(scrollToSelection);
-		// setDisplayListDirty();
-		// }
-		//
-		// // FIXME: this is not nice since we use expression index for unspecified
-		// // data
-		// else if (selectionDelta.getIDType() == EIDType.EXPRESSION_INDEX
-		// && dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-		//
-		// contentSelectionManager.setDelta(selectionDelta);
-		// // handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
-		// handleConnectedElementRep(selectionDelta);
-		// reactOnExternalSelection(scrollToSelection);
-		// setDisplayListDirty();
-		// }
-		//
-		// else if (selectionDelta.getIDType() == EIDType.EXPERIMENT_INDEX
-		// && dataDomain.getDataDomainType().equals("org.caleydo.datadomain.generic")) {
-		//
-		// dimensionSelectionManager.setDelta(selectionDelta);
-		// // handleConnectedElementRep(contentSelectionManager.getCompleteDelta());
-		// handleConnectedElementRep(selectionDelta);
-		// reactOnExternalSelection(scrollToSelection);
-		// setDisplayListDirty();
-		// }
 
 	}
 
@@ -457,7 +424,6 @@ public abstract class ATableBasedView
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
@@ -472,7 +438,7 @@ public abstract class ATableBasedView
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
+		selectionCommandListener.setDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
 
 		redrawViewListener = new RedrawViewListener();
@@ -567,7 +533,7 @@ public abstract class ATableBasedView
 	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
 		this.dimensionVA = dimensionVA;
 	}
-	
+
 	public RecordSelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
 	}
@@ -575,7 +541,7 @@ public abstract class ATableBasedView
 	public DimensionSelectionManager getDimensionSelectionManager() {
 		return dimensionSelectionManager;
 	}
-	
+
 	public DataTable getTable() {
 		return table;
 	}

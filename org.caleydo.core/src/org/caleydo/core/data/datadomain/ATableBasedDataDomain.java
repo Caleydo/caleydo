@@ -23,6 +23,12 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.selection.events.ForeignSelectionCommandListener;
+import org.caleydo.core.data.selection.events.ForeignSelectionUpdateListener;
+import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
+import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.SelectionCommandListener;
+import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
@@ -51,12 +57,6 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
-import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionCommandListener;
-import org.caleydo.core.view.opengl.canvas.listener.ForeignSelectionUpdateListener;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionCommandListener;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 
 @XmlType
 @XmlRootElement

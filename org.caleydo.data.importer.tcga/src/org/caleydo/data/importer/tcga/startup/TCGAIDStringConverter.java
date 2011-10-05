@@ -13,7 +13,13 @@ public class TCGAIDStringConverter
 
 	@Override
 	public String convert(String string) {
-		return string.replace("-", ".");
+		string = string.replace("-", ".");
+		// make stuff like TCGA-02-0001-01C-01R-0177-01 to 02-0001
+		if (string.length() > 12)
+			string = string.substring(5, 12);
+		else
+			string = string.substring(5);
+		return string;
 	}
 
 }

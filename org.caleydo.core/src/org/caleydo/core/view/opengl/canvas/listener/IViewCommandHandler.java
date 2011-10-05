@@ -1,5 +1,6 @@
 package org.caleydo.core.view.opengl.canvas.listener;
 
+import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
 import org.caleydo.core.event.IListenerOwner;
 

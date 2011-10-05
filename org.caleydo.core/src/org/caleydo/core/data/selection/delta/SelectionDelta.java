@@ -10,7 +10,7 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
- * HashMap based implementation of SelectionDelta. Therefore all elements are unique and no ordering is
+ * HashMap based implementation of IDelta for selections. All elements are unique and no ordering is
  * preserved.
  * 
  * @author Alexander Lex
@@ -22,7 +22,6 @@ public class SelectionDelta
 	private HashMap<Integer, SelectionDeltaItem> selectionItems = null;
 
 	private IDType idType;
-//	private IDType secondaryIDType = null;
 
 	/**
 	 * Default Constructor.
@@ -37,12 +36,6 @@ public class SelectionDelta
 		selectionItems = new HashMap<Integer, SelectionDeltaItem>();
 		this.idType = idType;
 	}
-
-//	public SelectionDelta(IDType idType, IDType internalIDType) {
-//		this(idType);
-//
-//		this.secondaryIDType = internalIDType;
-//	}
 
 	@Override
 	public Collection<SelectionDeltaItem> getAllItems() {
@@ -65,14 +58,8 @@ public class SelectionDelta
 		SelectionDeltaItem item = new SelectionDeltaItem(selectionID, selectionType);
 		selectionItems.put(selectionID, item);
 		return item;
-		// if (item != null)
-		// System.out.println("ID: " + iSelectionID + " Old: " +
-		// item.getSelectionType() + " New: " + selectionType);
-		//
 	}
 
-
-	
 	/**
 	 * Stores a selectionDeltaItem in the delta that triggers a removal of a particular element from a
 	 * selection type in the receiving selection manager
@@ -104,8 +91,7 @@ public class SelectionDelta
 	public SelectionDelta clone() {
 		SelectionDelta newDelta = new SelectionDelta(idType);
 		for (SelectionDeltaItem item : selectionItems.values()) {
-			SelectionDeltaItem newItem =
-				newDelta.addSelection(item.getID(), item.getSelectionType());
+			SelectionDeltaItem newItem = newDelta.addSelection(item.getID(), item.getSelectionType());
 			for (Integer iConnetionID : item.getConnectionIDs()) {
 				newItem.addConnectionID(iConnetionID);
 			}
@@ -132,7 +118,8 @@ public class SelectionDelta
 	}
 
 	/**
-	 * Does the same as {@link #addConnectionID(Integer, Integer)} but for a bunch of connection ids at a time.
+	 * Does the same as {@link #addConnectionID(Integer, Integer)} but for a bunch of connection ids at a
+	 * time.
 	 * 
 	 * @param selectionID
 	 * @param connectionIDs
@@ -162,7 +149,6 @@ public class SelectionDelta
 		this.idType = idType;
 	}
 
-	
 	public HashMap<Integer, SelectionDeltaItem> getSelectionItems() {
 		return selectionItems;
 	}
@@ -173,7 +159,8 @@ public class SelectionDelta
 
 	@Override
 	public String toString() {
-		String output = "";
+
+		String output = "Delta for " + idType + ", elements: ";
 		for (Integer key : selectionItems.keySet()) {
 			output = output + selectionItems.get(key);
 		}

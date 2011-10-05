@@ -1,9 +1,10 @@
-package org.caleydo.core.view.opengl.canvas.listener;
+package org.caleydo.core.data.selection.events;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
+import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 
 /**
  * Listener for clear selection events. This listener calls a related {@link IViewCommandHandler}.

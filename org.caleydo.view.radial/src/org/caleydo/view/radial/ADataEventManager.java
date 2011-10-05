@@ -1,14 +1,14 @@
 package org.caleydo.view.radial;
 
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
+import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.listener.ISelectionUpdateHandler;
-import org.caleydo.core.view.opengl.canvas.listener.SelectionUpdateListener;
 
 /**
  * ADataEventManager is the abstract base class for all DataEventManagers, which

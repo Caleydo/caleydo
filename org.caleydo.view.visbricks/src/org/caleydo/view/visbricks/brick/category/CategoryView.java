@@ -5,6 +5,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
@@ -13,7 +14,6 @@ import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.ClearSelectionsListener;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
