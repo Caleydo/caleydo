@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -33,15 +34,14 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 	 */
 	public RcpInfoAreaView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedInfoAreaView.class);
+			viewContext = JAXBContext.newInstance(SerializedInfoAreaView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
@@ -87,7 +87,7 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 		infoArea = new InfoArea();
 
 		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-				serializedView.getDataDomainID());
+				((ASerializedTopLevelDataView) serializedView).getDataDomainID());
 		infoArea.setDataDomain((ATableBasedDataDomain) dataDomain);
 
 		infoArea.registerEventListeners();

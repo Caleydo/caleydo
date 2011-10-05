@@ -3,16 +3,16 @@ package org.caleydo.view.selectionbrowser;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
- * Serialized <INSERT VIEW NAME> view.
+ * Serialized of the selection browser view.
  * 
  * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
-public class SerializedSelectionBrowserView extends ASerializedView {
+public class SerializedSelectionBrowserView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

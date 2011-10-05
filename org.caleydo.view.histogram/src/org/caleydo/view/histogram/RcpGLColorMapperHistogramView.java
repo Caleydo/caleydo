@@ -16,6 +16,7 @@ import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
@@ -94,7 +95,9 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements
 
 		if (view instanceof IDataDomainBasedView<?>) {
 			ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-					.get().getDataDomainByID(serializedView.getDataDomainID());
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serializedView)
+									.getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
@@ -269,7 +272,8 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements
 		if (dataDomain == null)
 			determineDataConfiguration(serializedView);
 		else
-			serializedView.setDataDomainID(dataDomain.getDataDomainID());
+			((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
+					.getDataDomainID());
 	}
 
 	@Override

@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
@@ -16,7 +17,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedTissueViewBrowserView extends ASerializedView {
+public class SerializedTissueViewBrowserView extends ASerializedTopLevelDataView {
 
 	/** list of initially contained view-ids */
 	private List<ASerializedView> initialContainedViews;

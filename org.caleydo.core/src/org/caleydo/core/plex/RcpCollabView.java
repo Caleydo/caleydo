@@ -1,8 +1,5 @@
 package org.caleydo.core.plex;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.swt.ASWTView;
 import org.caleydo.core.view.swt.collab.CollabView;
@@ -17,11 +14,6 @@ public class RcpCollabView
 		super.createPartControl(parent);
 		
 		view = new CollabView(parentComposite);
-
-		if (view instanceof IDataDomainBasedView<?>) {
-				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
-						.get().getDataDomainByID(serializedView.getDataDomainID()));
-		}
 
 		((ASWTView)view).draw();
 	}

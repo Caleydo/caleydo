@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.swt.ASWTView;
 import org.eclipse.swt.SWT;
@@ -24,15 +25,14 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 
 	public RcpSelectionBrowserView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedSelectionBrowserView.class);
+			viewContext = JAXBContext.newInstance(SerializedSelectionBrowserView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
-	
+
 	@Override
 	public void createPartControl(Composite parent) {
 		final Composite parentComposite = new Composite(parent, SWT.NULL);
@@ -55,11 +55,13 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 		view = new SelectionBrowserView(infoComposite);
 
 		if (view instanceof IDataDomainBasedView<?>) {
-				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
-						.get().getDataDomainByID(serializedView.getDataDomainID()));
+			((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serializedView)
+									.getDataDomainID()));
 		}
-		
-		((ASWTView)view).draw();
+
+		((ASWTView) view).draw();
 
 	}
 
@@ -72,7 +74,7 @@ public class RcpSelectionBrowserView extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 
-//		selectionBrowser.dispose();
+		// selectionBrowser.dispose();
 	}
 
 	@Override

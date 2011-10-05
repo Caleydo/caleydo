@@ -10,6 +10,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -34,7 +35,7 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 			viewTypes.add(SerializedHeatMapView.class);
 			viewTypes.add(SerializedParallelCoordinatesView.class);
 			viewTypes.add(SerializedPathwayView.class);
-			
+
 			Class<?>[] classes = new Class<?>[viewTypes.size()];
 			classes = viewTypes.toArray(classes);
 			viewContext = JAXBContext.newInstance(classes);
@@ -49,15 +50,15 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		
+
 		createGLCanvas();
-		
+
 		view = new GLBucket(glCanvas, parentComposite, serializedView.getViewFrustum());
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-				(IDataDomainBasedView<IDataDomain>) view;
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 		view.initFromSerializableRepresentation(serializedView);
@@ -84,8 +85,8 @@ public class RcpGLBucketView extends ARcpGLViewPart {
 
 		super.dispose();
 
-		GeneralManager.get().getViewManager()
-				.getConnectedElementRepresentationManager().clearByView(view.getID());
+		GeneralManager.get().getViewManager().getConnectedElementRepresentationManager()
+				.clearByView(view.getID());
 
 		PathwayManager.get().resetPathwayVisiblityState();
 	}

@@ -23,6 +23,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.ViewActivationEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
@@ -493,10 +494,8 @@ public abstract class AGLViewBrowser
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT,
-			element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION,
-			glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -705,8 +704,7 @@ public abstract class AGLViewBrowser
 	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT,
-			element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
@@ -996,8 +994,7 @@ public abstract class AGLViewBrowser
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT,
-			element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION,
 			element.getID()));
 	}
@@ -1634,8 +1631,8 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * Creates and initializes a new view based on its serialized form. The view
-	 * is already added to the list of event receivers and senders.
+	 * Creates and initializes a new view based on its serialized form. The view is already added to the list
+	 * of event receivers and senders.
 	 * 
 	 * @param gl
 	 * @param serView
@@ -1649,22 +1646,24 @@ public abstract class AGLViewBrowser
 		Class viewClass;
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
-		} catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view "+serView.getViewType());
 		}
-		
-		AGLView glView = GeneralManager.get().getViewManager()
+		catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view " + serView.getViewType());
+		}
+
+		AGLView glView =
+			GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(serView.getDataDomainID()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager.get()
+				.getDataDomainByID(((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
-		
+
 		glView.initialize();
 		triggerMostRecentDelta();
-		
+
 		return glView;
 	}
 
@@ -1904,7 +1903,7 @@ public abstract class AGLViewBrowser
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-	
+
 	public void renderText(GL2 gl, String text, float size, float x, float y, float z) {
 		textRenderer.setColor(0.3f, 0.3f, 0.3f, 1);
 		textRenderer.begin3DRendering();

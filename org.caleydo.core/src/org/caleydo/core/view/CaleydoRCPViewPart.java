@@ -14,8 +14,10 @@ import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.core.util.collection.Pair;
@@ -106,18 +108,23 @@ public abstract class CaleydoRCPViewPart
 	 */
 	protected void determineDataConfiguration(ASerializedView serializedView) {
 
+		if (!(serializedView instanceof ASerializedTopLevelDataView))
+			return;
+
+		ASerializedTopLevelDataView serializedTopLevelDataView = (ASerializedTopLevelDataView) serializedView;
+
 		// first we check if the data domain was manually specified
 		for (Pair<String, String> startView : StartupProcessor.get().getAppInitData()
 			.getAppArgumentStartViewWithDataDomain()) {
 			if (startView.getFirst().equals(serializedView.getViewID())) {
 				String dataDomainType = startView.getSecond();
 				// StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
-				serializedView.setDataDomainID(dataDomainType);
+				serializedTopLevelDataView.setDataDomainID(dataDomainType);
 			}
 		}
 
 		// then we check whether the serialization has a datadomain already
-		String dataDomainID = serializedView.getDataDomainID();
+		String dataDomainID = serializedTopLevelDataView.getDataDomainID();
 		if (dataDomainID == null) {
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()
@@ -126,10 +133,11 @@ public abstract class CaleydoRCPViewPart
 			DataConfiguration config =
 				DataConfigurationChooser.determineDataConfiguration(availableDomains,
 					serializedView.getViewType());
-			serializedView.setDataDomainID(config.getDataDomain().getDataDomainID());
-			serializedView.setRecordPerspectiveID(config.getRecordPerspective().getPerspectiveID());
-			serializedView.setDimensionPerspectiveID(config.getDimensionPerspective().getPerspectiveID());
-
+			serializedTopLevelDataView.setDataDomainID(config.getDataDomain().getDataDomainID());
+			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective()
+				.getPerspectiveID());
+			serializedTopLevelDataView.setDimensionPerspectiveID(config.getDimensionPerspective()
+				.getPerspectiveID());
 		}
 	}
 
@@ -171,7 +179,9 @@ public abstract class CaleydoRCPViewPart
 			catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-			if (DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID()) == null)
+			if (serializedView instanceof ASerializedTopLevelDataView
+				&& DataDomainManager.get().getDataDomainByID(
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID()) == null)
 				serializedView = null;
 		}
 		// this is the case if either the view has not been saved to a memento before, or the configuration

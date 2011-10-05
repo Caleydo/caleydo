@@ -3,16 +3,17 @@ package org.caleydo.view.filter;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
- * Serialized <INSERT VIEW NAME> view.
+ * Serialized filter view view.
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
-public class SerializedFilterView extends ASerializedView {
+public class SerializedFilterView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

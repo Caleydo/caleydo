@@ -13,6 +13,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
@@ -54,7 +55,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner,
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					serializedView.getDataDomainID());
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);

@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -16,7 +17,7 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 	 */
 	public RcpGLHierarchicalHeatMapView() {
 		super();
-		
+
 		try {
 			viewContext = JAXBContext
 					.newInstance(SerializedHierarchicalHeatMapView.class);
@@ -30,15 +31,16 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		
-		view = new GLHierarchicalHeatMap(glCanvas, parentComposite, serializedView.getViewFrustum());
+
+		view = new GLHierarchicalHeatMap(glCanvas, parentComposite,
+				serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-				(IDataDomainBasedView<IDataDomain>) view;
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 

@@ -28,6 +28,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.ToggleMagnifyingGlassEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -1099,10 +1100,15 @@ public abstract class AGLView
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-		if (dimensionPerspectiveID == null)
-			dimensionPerspectiveID = serialzedView.getDimensionPerspectiveID();
-		if (recordPerspectiveID == null)
-			recordPerspectiveID = serialzedView.getRecordPerspectiveID();
+
+		// FIXME ALEX: Move to subclasses
+		if (serialzedView instanceof ASerializedTopLevelDataView) {
+			if (dimensionPerspectiveID == null)
+				dimensionPerspectiveID =
+					((ASerializedTopLevelDataView) serialzedView).getDimensionPerspectiveID();
+			if (recordPerspectiveID == null)
+				recordPerspectiveID = ((ASerializedTopLevelDataView) serialzedView).getRecordPerspectiveID();
+		}
 	}
 
 	@Override

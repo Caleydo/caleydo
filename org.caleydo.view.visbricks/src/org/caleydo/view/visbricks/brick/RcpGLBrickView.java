@@ -6,6 +6,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -21,10 +22,9 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 	 */
 	public RcpGLBrickView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedBrickView.class);
+			viewContext = JAXBContext.newInstance(SerializedBrickView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -38,12 +38,12 @@ public class RcpGLBrickView extends ARcpGLViewPart {
 		view = new GLBrick(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(serializedView.getDataDomainID());
-			if(dataDomain == null)
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
+			if (dataDomain == null)
 				throw new IllegalStateException("DataDomain null");
 			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-				(IDataDomainBasedView<IDataDomain>) view;
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 		view.initialize();

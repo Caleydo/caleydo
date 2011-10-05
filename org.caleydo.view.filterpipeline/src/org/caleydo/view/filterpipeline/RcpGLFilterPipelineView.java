@@ -3,9 +3,6 @@ package org.caleydo.view.filterpipeline;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
@@ -55,13 +52,6 @@ public class RcpGLFilterPipelineView
 		
 		view = new GLFilterPipeline(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					serializedView.getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
 		view.initialize();
 
 		createPartControlGL();

@@ -4,6 +4,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.core.view.swt.ASWTView;
 import org.eclipse.swt.widgets.Composite;
@@ -15,15 +16,17 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		
+
 		view = new TabularDataView(parentComposite);
 
 		if (view instanceof IDataDomainBasedView<?>) {
-				((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
-						.get().getDataDomainByID(serializedView.getDataDomainID()));
+			((IDataDomainBasedView<IDataDomain>) view).setDataDomain(DataDomainManager
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serializedView)
+									.getDataDomainID()));
 		}
 
-		((ASWTView)view).draw();
+		((ASWTView) view).draw();
 	}
 
 	@Override
@@ -35,8 +38,7 @@ public class RcpTabularDataView extends CaleydoRCPViewPart {
 	public void dispose() {
 		super.dispose();
 		tabularDataView.unregisterEventListeners();
-		GeneralManager.get().getViewManager()
-				.unregisterItem(tabularDataView.getID());
+		GeneralManager.get().getViewManager().unregisterItem(tabularDataView.getID());
 	}
 
 	public TabularDataView getTabularDataView() {

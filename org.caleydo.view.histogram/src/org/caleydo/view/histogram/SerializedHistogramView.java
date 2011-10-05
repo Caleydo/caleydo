@@ -3,7 +3,7 @@ package org.caleydo.view.histogram;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedHistogramView extends ASerializedView {
+public class SerializedHistogramView extends ASerializedTopLevelDataView {
 
 	public SerializedHistogramView() {
 	}

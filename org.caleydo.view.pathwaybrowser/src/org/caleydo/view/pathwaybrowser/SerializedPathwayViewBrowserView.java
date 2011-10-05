@@ -29,11 +29,6 @@ public class SerializedPathwayViewBrowserView extends ASerializedView {
 		init();
 	}
 
-	public SerializedPathwayViewBrowserView(String dataDomainType) {
-		super(dataDomainType);
-		init();
-	}
-
 	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();
 

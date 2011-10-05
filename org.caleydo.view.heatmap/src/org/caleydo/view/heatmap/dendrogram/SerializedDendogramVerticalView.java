@@ -3,7 +3,7 @@ package org.caleydo.view.heatmap.dendrogram;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized form of a dengrogram view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedDendogramVerticalView extends ASerializedView {
+public class SerializedDendogramVerticalView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

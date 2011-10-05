@@ -119,7 +119,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 					+ experimentIndex % 24 + ".jpg");
 
 			SerializedTextureView tissue = new SerializedTextureView();
-			tissue.setDataDomainID("org.caleydo.view.texture");
+			//tissue.setDataDomainID("org.caleydo.view.texture");
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
 
 			tissue.setExperimentIndex(experimentIndex);

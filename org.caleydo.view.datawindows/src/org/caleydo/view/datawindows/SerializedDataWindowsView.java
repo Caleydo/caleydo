@@ -20,10 +20,6 @@ public class SerializedDataWindowsView extends ASerializedView {
 	public SerializedDataWindowsView() {
 	}
 
-	public SerializedDataWindowsView(String dataDomainType) {
-		super(dataDomainType);
-	}
-
 	@Override
 	public String getViewType() {
 		return GLDataWindows.VIEW_TYPE;

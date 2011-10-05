@@ -22,10 +22,6 @@ public class SerializedHyperbolicView extends ASerializedView {
 	public SerializedHyperbolicView() {
 	}
 
-	public SerializedHyperbolicView(String dataDomainType) {
-		super(dataDomainType);
-	}
-
 	@Override
 	public ViewFrustum getViewFrustum() {
 		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,

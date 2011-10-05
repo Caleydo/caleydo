@@ -20,6 +20,7 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -441,7 +442,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(serView.getDataDomainID()));
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
 
 		if (glView instanceof GLPathway) {
@@ -627,7 +629,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	public void loadDependentPathways(Set<PathwayGraph> newPathwayGraphs) {
 
 		for (PathwayGraph pathway : newPathwayGraphs) {
-			addPathwayView(pathway.getID(), null); // FIXME set data domain for pathway
+			addPathwayView(pathway.getID(), null); // FIXME set data domain for
+													// pathway
 		}
 	}
 

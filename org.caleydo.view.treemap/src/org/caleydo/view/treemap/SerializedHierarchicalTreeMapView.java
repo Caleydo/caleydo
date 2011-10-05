@@ -3,7 +3,7 @@ package org.caleydo.view.treemap;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized form of a hierarchical treemap view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedHierarchicalTreeMapView extends ASerializedView {
+public class SerializedHierarchicalTreeMapView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

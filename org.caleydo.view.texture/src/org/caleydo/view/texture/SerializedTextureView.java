@@ -26,11 +26,6 @@ public class SerializedTextureView extends ASerializedView {
 	 * Default constructor with default initialization
 	 */
 	public SerializedTextureView() {
-
-	}
-
-	public SerializedTextureView(String dataDomainType) {
-		super(dataDomainType);
 	}
 
 	@Override

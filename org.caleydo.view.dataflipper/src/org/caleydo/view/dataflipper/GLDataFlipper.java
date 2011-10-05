@@ -26,6 +26,7 @@ import org.caleydo.core.event.view.ViewActivationEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.path.GuidanceNode;
 import org.caleydo.core.util.path.HistoryNode;
@@ -700,7 +701,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(serView.getDataDomainID()));
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
 		glView.initialize();
 
@@ -1657,13 +1659,15 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(dataDomainType)).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray().size();
+					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray()
+					.size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray().size();
+					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray()
+					.size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -2292,7 +2296,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		} else if (interfaceType.equals("org.caleydo.view.tissuebrowser")) {
 			serView = new SerializedTissueViewBrowserView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.pathwaybrowser")) {
-			serView = new SerializedPathwayViewBrowserView(dataDomainType);
+			serView = new SerializedPathwayViewBrowserView();
 		}
 		// else if (interfaceType.equals("org.caleydo.view.glyph")) {
 		// serView = new SerializedGlyphView(dataDomainType);
@@ -2300,7 +2304,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		else if (interfaceType.equals("org.caleydo.view.browser")) {
 			serView = new SerializedHTMLBrowserView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.texture")) {
-			serView = new SerializedTextureView(dataDomainType);
+			serView = new SerializedTextureView();
 		}
 
 		return serView;

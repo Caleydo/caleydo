@@ -38,6 +38,7 @@ import org.caleydo.core.event.view.remote.ToggleNavigationModeEvent;
 import org.caleydo.core.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
@@ -163,7 +164,7 @@ public class GLBucket extends AGLView implements
 	 * Used for dragging views to the pool area.
 	 */
 	private int iPoolLevelCommonID = -1;
-	
+
 	private boolean bUpdateOffScreenTextures = true;
 
 	private boolean connectionLinesEnabled = true;
@@ -425,7 +426,7 @@ public class GLBucket extends AGLView implements
 
 		doSlerpActions(gl);
 		initNewView(gl);
-		
+
 		renderRemoteLevel(gl, focusLevel);
 		renderRemoteLevel(gl, stackLevel);
 
@@ -2500,16 +2501,17 @@ public class GLBucket extends AGLView implements
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(serView.getDataDomainID()));
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
 
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 
 			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
-//			glPathway.setDataDomain(dataDomain);
-			glPathway.setPathwayDataDomain((PathwayDataDomain)DataDomainManager
-					.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE));
+			// glPathway.setDataDomain(dataDomain);
+			glPathway.setPathwayDataDomain((PathwayDataDomain) DataDomainManager.get()
+					.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE));
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
@@ -2616,7 +2618,6 @@ public class GLBucket extends AGLView implements
 	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
 	}
-
 
 	@Override
 	public void clearAllSelections() {
@@ -2858,7 +2859,7 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;	
+		this.dataDomain = dataDomain;
 		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 		recordPerspective.setPrivate(true);
 		recordPerspective.init(null);

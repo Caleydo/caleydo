@@ -3,7 +3,7 @@ package org.caleydo.view.radial;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 
@@ -14,7 +14,7 @@ import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
  */
 @XmlRootElement
 @XmlType
-public class SerializedRadialHierarchyView extends ASerializedView {
+public class SerializedRadialHierarchyView extends ASerializedTopLevelDataView {
 
 	private EDrawingStateType drawingStateType;
 	private int maxDisplayedHierarchyDepth;

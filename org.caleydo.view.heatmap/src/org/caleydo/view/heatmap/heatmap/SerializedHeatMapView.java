@@ -3,7 +3,7 @@ package org.caleydo.view.heatmap.heatmap;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedHeatMapView extends ASerializedView {
+public class SerializedHeatMapView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

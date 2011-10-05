@@ -26,48 +26,14 @@ public abstract class ASerializedView {
 	public ASerializedView() {
 	}
 
-	public ASerializedView(String dataDomainID) {
-		this.dataDomainID = dataDomainID;
-	}
-
 	protected int viewID;
 
 	protected String viewType;
-
-	protected String dataDomainID;
 
 	/**
 	 * The full qualified view class name needed for the creation of views using reflections.
 	 */
 	protected String viewClassType;
-
-	/**
-	 * Specifies which {@link DimensionPerspective} is used to view the data in the {@link DataTable}
-	 */
-	protected String dimensionPerspectiveID;
-
-	/**
-	 * Specifies which {@link recordData} is used to view the data in the {@link DataTable}
-	 */
-	protected String recordPerspectiveID;
-
-	/**
-	 * Sets the data domain associated with a view
-	 * 
-	 * @param dataDomain
-	 */
-	public void setDataDomainID(String dataDomainID) {
-		this.dataDomainID = dataDomainID;
-	}
-
-	/**
-	 * Returns the data domain a view is associated with
-	 * 
-	 * @return
-	 */
-	public String getDataDomainID() {
-		return dataDomainID;
-	}
 
 	/**
 	 * Gets the view-id as used by ViewManager implementations
@@ -114,25 +80,5 @@ public abstract class ASerializedView {
 	 */
 	public String getViewClassType() {
 		return null;
-	}
-
-	/** Set the {@link #recordPerspectiveID} */
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
-
-	/** Get the {@link #recordPerspectiveID} */
-	public String getRecordPerspectiveID() {
-		return recordPerspectiveID;
-	}
-
-	/** Set the {@link #dimensionPerspectiveID} */
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-	}
-
-	/** Set the {@link #dimensionPerspectiveID} */
-	public String getDimensionPerspectiveID() {
-		return dimensionPerspectiveID;
 	}
 }

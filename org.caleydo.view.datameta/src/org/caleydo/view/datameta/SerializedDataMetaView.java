@@ -3,7 +3,7 @@ package org.caleydo.view.datameta;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized data meta view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedDataMetaView extends ASerializedView {
+public class SerializedDataMetaView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

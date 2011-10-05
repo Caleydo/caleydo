@@ -3,7 +3,7 @@ package org.caleydo.view.bookmark;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized form of a bookmark view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedBookmarkView extends ASerializedView {
+public class SerializedBookmarkView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

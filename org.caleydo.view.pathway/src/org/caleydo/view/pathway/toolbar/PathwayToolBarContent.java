@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.view.pathway.GLPathway;
 
 /**
@@ -47,8 +48,8 @@ public class PathwayToolBarContent extends AToolBarContent {
 		container.setImagePath(PATHWAY_IMAGE_PATH);
 		container.setTitle(PATHWAY_VIEW_TITLE);
 
-		container.setPathwayToolBarMediator(new PathwayToolBarMediator(targetViewData
-				.getDataDomainID()));
+		container.setPathwayToolBarMediator(new PathwayToolBarMediator(
+				((ASerializedTopLevelDataView) targetViewData).getDataDomainID()));
 		container.setTargetViewData(targetViewData);
 
 		return container;

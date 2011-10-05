@@ -20,10 +20,6 @@ public class SerializedVisBricksView extends ASerializedView {
 	public SerializedVisBricksView() {
 	}
 
-	public SerializedVisBricksView(String dataDomainType) {
-		super(dataDomainType);
-	}
-
 	@Override
 	public String getViewType() {
 		return GLVisBricks.VIEW_TYPE;

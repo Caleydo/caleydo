@@ -20,10 +20,6 @@ public class SerializedTemplateView extends ASerializedView {
 	public SerializedTemplateView() {
 	}
 
-	public SerializedTemplateView(String dataDomainType) {
-		super(dataDomainType);
-	}
-
 	@Override
 	public String getViewType() {
 		return GLTemplate.VIEW_TYPE;

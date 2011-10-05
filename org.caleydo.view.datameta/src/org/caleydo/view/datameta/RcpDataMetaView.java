@@ -8,6 +8,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
@@ -33,7 +34,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	private ATableBasedDataDomain dataDomain;
 
 	private DataTable table;
-	
+
 	private Composite parent;
 
 	/**
@@ -44,7 +45,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		eventPublisher = GeneralManager.get().getEventPublisher();
 		isSupportView = true;
-		
+
 		try {
 			viewContext = JAXBContext.newInstance(SerializedDataMetaView.class);
 		} catch (JAXBException ex) {
@@ -56,11 +57,13 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	public void createPartControl(Composite parent) {
 
 		if (dataDomain == null) {
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-					serializedView.getDataDomainID());
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.getDataDomainByID(
+							((ASerializedTopLevelDataView) serializedView)
+									.getDataDomainID());
 			table = dataDomain.getTable();
 		}
-		
+
 		this.parent = parent;
 		parentComposite = new Composite(parent, SWT.NULL);
 		parentComposite.setLayout(new GridLayout(1, false));
@@ -83,7 +86,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 		label = new Label(infoComposite, SWT.NONE);
 		label.setText("Source: " + dataDomain.getLoadDataParameters().getFileName());
-		
+
 		// Tree<ClusterNode> dimensionTree =
 		// dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
 
@@ -121,10 +124,12 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		histogramView.setDataDomain(dataDomain);
 		SerializedHistogramView serializedHistogramView = new SerializedHistogramView(
 				dataDomain.getDataDomainID());
-		serializedHistogramView.setDimensionPerspectiveID(serializedView
-				.getDimensionPerspectiveID());
-		serializedHistogramView.setRecordPerspectiveID(serializedView
-				.getRecordPerspectiveID());
+		serializedHistogramView
+				.setDimensionPerspectiveID(((ASerializedTopLevelDataView) serializedView)
+						.getDimensionPerspectiveID());
+		serializedHistogramView
+				.setRecordPerspectiveID(((ASerializedTopLevelDataView) serializedView)
+						.getRecordPerspectiveID());
 
 		histogramView.setExternalSerializedView(serializedHistogramView);
 		histogramView.createPartControl(composite);
@@ -142,7 +147,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		item2.setExpanded(true);
 
 		bar.setSpacing(2);
-		
+
 		parent.layout();
 	}
 
@@ -158,14 +163,14 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-	
+
 		// Do nothing if new datadomain is the same as the current one
 		if (dataDomain == this.dataDomain)
 			return;
-		
+
 		this.dataDomain = dataDomain;
 		this.table = dataDomain.getTable();
-	
+
 		parentComposite.dispose();
 		createPartControl(parent);
 	}

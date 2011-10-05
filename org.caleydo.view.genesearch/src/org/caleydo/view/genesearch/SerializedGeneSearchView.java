@@ -3,7 +3,7 @@ package org.caleydo.view.genesearch;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized gene search view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedGeneSearchView extends ASerializedView {
+public class SerializedGeneSearchView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

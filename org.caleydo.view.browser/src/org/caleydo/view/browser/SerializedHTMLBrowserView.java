@@ -3,16 +3,17 @@ package org.caleydo.view.browser;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized form of a html-browser view.
  * 
  * @author Werner Puff
+ * @deprecated This class should be extended from ASerializedView
  */
 @XmlRootElement
 @XmlType
-public class SerializedHTMLBrowserView extends ASerializedView {
+public class SerializedHTMLBrowserView extends ASerializedTopLevelDataView {
 
 	public SerializedHTMLBrowserView() {
 	}

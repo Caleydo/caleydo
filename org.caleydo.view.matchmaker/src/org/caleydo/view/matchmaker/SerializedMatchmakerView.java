@@ -3,7 +3,7 @@ package org.caleydo.view.matchmaker;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized form of the matchmaker view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedMatchmakerView extends ASerializedView {
+public class SerializedMatchmakerView extends ASerializedTopLevelDataView {
 
 	public SerializedMatchmakerView() {
 	}

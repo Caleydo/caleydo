@@ -20,6 +20,7 @@ import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -502,18 +503,18 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		// Heat map
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
-		serView.setDataDomainID("org.caleydo.datadomain.genetic");
+		// FIXME serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		AGLView view = createView(gl, serView);
-//		((ATableBasedView) view).renderContext(true);
+		// ((ATableBasedView) view).renderContext(true);
 
 		remoteElementHeatMap = new RemoteLevelElement(null);
 		remoteElementHeatMap.setGLView(view);
 
 		// Parallel coordinates
 		serView = new SerializedParallelCoordinatesView();
-		serView.setDataDomainID("org.caleydo.datadomain.genetic");
+		// FIXME serView.setDataDomainID("org.caleydo.datadomain.genetic");
 		view = createView(gl, serView);
-//		((ATableBasedView) view).renderContext(true);
+		// ((ATableBasedView) view).renderContext(true);
 
 		remoteElementParCoords = new RemoteLevelElement(null);
 		remoteElementParCoords.setGLView(view);
@@ -575,7 +576,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
-					.get().getDataDomainByID(serView.getDataDomainID()));
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
 		glView.initialize();
 		glView.initRemote(gl, this, glMouseListener);

@@ -18,8 +18,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 		super();
 
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedDataGraphView.class);
+			viewContext = JAXBContext.newInstance(SerializedDataGraphView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -32,15 +31,6 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 		createGLCanvas();
 		view = new GLDataGraph(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					serializedView.getDataDomainID());
-			if (dataDomain == null)
-				throw new IllegalStateException("DataDomain null");
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
 		view.initialize();
 		createPartControlGL();
 	}

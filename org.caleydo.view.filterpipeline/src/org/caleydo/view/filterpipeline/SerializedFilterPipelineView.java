@@ -3,7 +3,7 @@ package org.caleydo.view.filterpipeline;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
  * Serialized filter pipeline view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedFilterPipelineView extends ASerializedView {
+public class SerializedFilterPipelineView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization

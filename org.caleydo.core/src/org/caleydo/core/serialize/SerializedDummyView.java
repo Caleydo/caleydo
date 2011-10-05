@@ -13,7 +13,7 @@ import javax.xml.bind.annotation.XmlType;
 @XmlRootElement
 @XmlType
 public class SerializedDummyView
-	extends ASerializedView {
+	extends ASerializedTopLevelDataView {
 
 	public SerializedDummyView() {
 	}
