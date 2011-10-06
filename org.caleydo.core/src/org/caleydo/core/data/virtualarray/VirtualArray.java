@@ -23,9 +23,9 @@ import org.eclipse.core.runtime.Status;
 /**
  * <p>
  * A VirtualArray is a list of indices referring to a collection. It is most commonly used in combination with
- * {@link AColumn}s or Records (which are the records in the ADimensions). A VirtualArray is of use when
- * the collections themselves are immutable, or are shared between multiple clients (i.e. views) using
- * different VirtualArrays on them.
+ * {@link AColumn}s or Records (which are the records in the ADimensions). A VirtualArray is of use when the
+ * collections themselves are immutable, or are shared between multiple clients (i.e. views) using different
+ * VirtualArrays on them.
  * </p>
  * 
  * @author Alexander Lex
@@ -76,7 +76,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public VirtualArray(String vaType, List<Integer> initialList) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		this.vaType = vaType;
-		virtualArrayList.addAll(initialList);
+		if (initialList != null)
+			virtualArrayList.addAll(initialList);
 	}
 
 	public String getVaType() {
@@ -469,7 +470,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	public void tableID(int iUniqueID) {
 		this.uniqueID = iUniqueID;
 	}
-
 
 	/** TODO: remove this, this violates encapsulation */
 	@XmlElementWrapper

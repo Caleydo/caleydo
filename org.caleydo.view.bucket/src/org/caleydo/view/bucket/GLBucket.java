@@ -2485,11 +2485,7 @@ public class GLBucket extends AGLView implements
 						serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
-		if (glView instanceof GLHeatMap) {
-			GLHeatMap heatMap = ((GLHeatMap) glView);
-			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
-
-		}
+		
 
 		if (glView instanceof ITableBasedDataDomainView) {
 			ITableBasedDataDomainView tableBasedView = (ITableBasedDataDomainView) glView;
@@ -2503,6 +2499,12 @@ public class GLBucket extends AGLView implements
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
 							((ASerializedTopLevelDataView) serView).getDataDomainID()));
+		}
+		
+		if (glView instanceof GLHeatMap) {
+			GLHeatMap heatMap = ((GLHeatMap) glView);
+			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
+
 		}
 
 		if (glView instanceof GLPathway) {
