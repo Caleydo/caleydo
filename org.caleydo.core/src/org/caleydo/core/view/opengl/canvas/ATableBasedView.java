@@ -129,6 +129,10 @@ public abstract class ATableBasedView
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		
+		if (this.dataDomain == dataDomain)
+			return;
+		
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
 		recordSelectionManager = this.dataDomain.getRecordSelectionManager();
@@ -142,6 +146,8 @@ public abstract class ATableBasedView
 		DataDomainsChangedEvent event = new DataDomainsChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
+		setDisplayListDirty();
 	}
 
 	@Override

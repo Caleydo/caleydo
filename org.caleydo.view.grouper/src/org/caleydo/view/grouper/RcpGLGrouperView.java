@@ -23,6 +23,8 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
+		
+		isSupportView = true;
 	}
 
 	@Override

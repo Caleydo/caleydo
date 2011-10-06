@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.views">
       <view
-            allowMultiple="true"
+            allowMultiple="false"
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.genesearch.RcpGeneSearchView"
             icon="resources/icons/search.png"

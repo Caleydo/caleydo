@@ -300,7 +300,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	 * according to the structure of the composite GroupRepresentation tree.
 	 */
 	public void updateClusterTreeAccordingToGroupHierarchy() {
-		tree = new ClusterTree(dataDomain.getDimensionIDType(), rootGroup.getChildren().size());
+		tree = new ClusterTree(dataDomain.getDimensionIDType(), rootGroup.getChildren()
+				.size());
 		ClusterNode rootNode = rootGroup.getClusterNode();
 		rootNode.setTree(tree);
 		tree.setRootNode(rootNode);
@@ -1381,8 +1382,18 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 
+		if (this.dataDomain == dataDomain)
+			return;
+
 		this.dataDomain = dataDomain;
 		table = this.dataDomain.getTable();
+
+		// FIXME: we need to determine which perspective to use!
+		if (dataDomain.getDimensionPerspectiveIDs().iterator().hasNext())
+			dimensionPerspectiveID = dataDomain.getDimensionPerspectiveIDs().iterator()
+					.next();
+		if (dataDomain.getRecordPerspectiveIDs().iterator().hasNext())
+			recordPerspectiveID = dataDomain.getRecordPerspectiveIDs().iterator().next();
 
 		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
 				.getVirtualArray();
@@ -1405,6 +1416,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		eventPublisher.triggerEvent(selectionTypeEvent);
 
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
+		
+		setDisplayListDirty();
 	}
 
 	@Override

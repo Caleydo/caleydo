@@ -1057,7 +1057,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedVisBricksView serializedForm = new SerializedVisBricksView();
+		SerializedVisBricksView serializedForm = new SerializedVisBricksView(dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1624,7 +1624,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
 		contentSelectionManager.clearSelections();
-		//
+
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
 		cse.setDataDomainID(getDataDomain().getDataDomainID());
 		cse.setSender(this);

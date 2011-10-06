@@ -12,6 +12,7 @@ import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.IView;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
@@ -141,8 +142,13 @@ public class PartListener
 
 				CaleydoRCPViewPart caleydoRCPViewPart = (CaleydoRCPViewPart) rcpViewPart;
 
-				if (caleydoRCPViewPart.isSupportView() && caleydoRCPViewPart instanceof IDataDomainBasedView) {
-					((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
+				if (caleydoRCPViewPart.isSupportView()) {
+					if (caleydoRCPViewPart instanceof IDataDomainBasedView) {
+						((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
+					}
+					else if (caleydoRCPViewPart.getView() instanceof IDataDomainBasedView) {
+						((IDataDomainBasedView) (caleydoRCPViewPart.getView())).setDataDomain(dataDomain);
+					}
 				}
 			}
 		}
