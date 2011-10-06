@@ -140,7 +140,7 @@ public class TableBasedDataNode extends ADataNode {
 		Row titleRow = new Row("titleRow");
 
 		ElementLayout captionLayout = createDefaultCaptionLayout(
-				dataDomain.getDataDomainID(), getID());
+				dataDomain.getLabel(), getID());
 
 		titleRow.append(captionLayout);
 		titleRow.setYDynamic(true);
@@ -157,10 +157,10 @@ public class TableBasedDataNode extends ADataNode {
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 		// FIXME: set button invisible if there are not more than 1 perspectives
-		// if (dataDomain.getRecordPerspectiveIDs().size() <= 1
-		// && dataDomain.getDimensionPerspectiveIDs().size() <= 1) {
-		// toggleDataContainerButton.setVisible(false);
-		// }
+		if (dataDomain.getRecordPerspectiveIDs().size() <= 1
+				&& dataDomain.getDimensionPerspectiveIDs().size() <= 1) {
+			toggleDataContainerButton.setVisible(false);
+		}
 		toggleDataContainerButtonRenderer = new ButtonRenderer(
 				toggleDataContainerButton, view, view.getTextureManager());
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
@@ -207,10 +207,10 @@ public class TableBasedDataNode extends ADataNode {
 	@Override
 	public void update() {
 		// FIXME: set button visible if there are more than 1 perspectives
-		// if (dataDomain.getRecordPerspectiveIDs().size() > 1
-		// || dataDomain.getDimensionPerspectiveIDs().size() > 1) {
-		// toggleDataContainerButton.setVisible(true);
-		// }
+		if (dataDomain.getRecordPerspectiveIDs().size() > 1
+				|| dataDomain.getDimensionPerspectiveIDs().size() > 1) {
+			toggleDataContainerButton.setVisible(true);
+		}
 		dataContainerRenderer.setDimensionGroups(getDimensionGroups());
 	}
 

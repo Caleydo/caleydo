@@ -45,7 +45,7 @@ public class PathwayDataNode extends ADataNode {
 		baseRow.append(spacingLayoutX);
 
 		ElementLayout captionLayout = createDefaultCaptionLayout(
-				dataDomain.getDataDomainID(), getID());
+				dataDomain.getLabel(), getID());
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 

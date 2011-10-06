@@ -7,7 +7,6 @@ import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingLoader;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -106,6 +105,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 	public void setPathwayDatabaseType(PathwayDatabaseType pathwayDatabaseType) {
 		this.pathwayDatabaseType = pathwayDatabaseType;
+		label = pathwayDatabaseType.getName();
 	}
 
 	//
