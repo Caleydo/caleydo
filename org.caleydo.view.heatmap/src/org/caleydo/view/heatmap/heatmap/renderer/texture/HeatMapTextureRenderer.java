@@ -57,9 +57,12 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	private int groupIndex = -1;
 
 	private int viewID;
+	
+	private ColorMapper colorMapper;
 
 	public HeatMapTextureRenderer(GLHeatMap heatMap) {
 		super(heatMap);
+		colorMapper = heatMap.getDataDomain().getColorMapper();
 	}
 
 	/**
@@ -67,6 +70,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	 */
 	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap) {
 		super(null);
+		colorMapper = uncertaintyHeatMap.getColorMapper();
 		viewID = uncertaintyHeatMap.getID();
 	}
 
@@ -110,8 +114,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		this.table = table;
 		this.dimensionVA = dimensionVA;
 		this.recordVA = recordVA;
-
-		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 
 		int textureHeight = numberOfRecords = recordVA.size();
 		int textureWidth = numberOfDimensions = dimensionVA.size();

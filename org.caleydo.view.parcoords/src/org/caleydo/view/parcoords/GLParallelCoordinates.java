@@ -2109,7 +2109,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public void destroy() {
-		selectionTransformer.destroy();
+		//selectionTransformer.destroy();
 		super.destroy();
 	}
 
