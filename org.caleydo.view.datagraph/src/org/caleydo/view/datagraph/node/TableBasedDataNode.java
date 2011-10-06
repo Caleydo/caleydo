@@ -147,11 +147,11 @@ public class TableBasedDataNode extends ADataNode {
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
-		ElementLayout toggleDataContainerDetailLayout = new ElementLayout(
+		ElementLayout toggleDataContainerButtonLayout = new ElementLayout(
 				"toggleDataContainerLayout");
-		toggleDataContainerDetailLayout.setPixelGLConverter(pixelGLConverter);
-		toggleDataContainerDetailLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		toggleDataContainerDetailLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
+		toggleDataContainerButtonLayout.setPixelGLConverter(pixelGLConverter);
+		toggleDataContainerButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+		toggleDataContainerButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 		toggleDataContainerButton = new Button(
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
@@ -164,9 +164,10 @@ public class TableBasedDataNode extends ADataNode {
 		toggleDataContainerButtonRenderer = new ButtonRenderer(
 				toggleDataContainerButton, view, view.getTextureManager());
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
-		toggleDataContainerDetailLayout
+		toggleDataContainerButtonLayout
 				.setRenderer(toggleDataContainerButtonRenderer);
-		titleRow.append(toggleDataContainerDetailLayout);
+		titleRow.append(spacingLayoutX);
+		titleRow.append(toggleDataContainerButtonLayout);
 
 		bodyRow = new Row("bodyRow");
 

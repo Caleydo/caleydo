@@ -23,8 +23,8 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 public class EdgeBandRenderer {
 
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
-	protected final static int DEFAULT_MAX_BAND_WIDTH = 50;
-	protected final static int DEFAULT_MIN_BAND_WIDTH = 10;
+	protected final static int DEFAULT_MAX_BAND_WIDTH = 40;
+	protected final static int DEFAULT_MIN_BAND_WIDTH = 8;
 
 	protected IDataGraphNode node1;
 	protected IDataGraphNode node2;

@@ -26,11 +26,11 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.view.datagraph.ADataContainerRenderer;
 import org.caleydo.view.datagraph.DimensionGroupRenderer;
-import org.caleydo.view.datagraph.FakeDimensionGroupData;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.OverviewDataContainerRenderer;
 import org.caleydo.view.datagraph.ViewNodeBackGroundRenderer;
+import org.caleydo.view.datagraph.contextmenu.OpenViewItem;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.eclipse.core.runtime.FileLocator;
@@ -41,7 +41,7 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
 public class ViewNode extends ADefaultTemplateNode implements IDropArea {
-	
+
 	private OverviewDataContainerRenderer overviewDataContainerRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
@@ -54,21 +54,39 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
-//		dimensionGroups = new ArrayList<ADimensionGroupData>();
-//		dimensionGroups.add(new FakeDimensionGroupData(0));
-//		dimensionGroups.add(new FakeDimensionGroupData(1));
-//		dimensionGroups.add(new FakeDimensionGroupData(2));
-//		dimensionGroups.add(new FakeDimensionGroupData(5));
-//		dimensionGroups.add(new FakeDimensionGroupData(4));
+		// dimensionGroups = new ArrayList<ADimensionGroupData>();
+		// dimensionGroups.add(new FakeDimensionGroupData(0));
+		// dimensionGroups.add(new FakeDimensionGroupData(1));
+		// dimensionGroups.add(new FakeDimensionGroupData(2));
+		// dimensionGroups.add(new FakeDimensionGroupData(5));
+		// dimensionGroups.add(new FakeDimensionGroupData(4));
 
 		this.representedView = representedView;
 
-		// TODO: this is not nice
-		if (representedView instanceof GLVisBricks) {
-			view.addSingleIDPickingListener(new APickingListener() {
+		registerPickingListeners();
+		setRepresentedViewInfo();
+		setupLayout();
+	}
 
-				@Override
-				public void dragged(Pick pick) {
+	private void registerPickingListeners() {
+		// TODO: this is not nice
+
+		view.addSingleIDPickingListener(new APickingListener() {
+
+			@Override
+			public void rightClicked(Pick pick) {
+				view.getContextMenuCreator().addContextMenuItem(
+						new OpenViewItem(representedView));
+			}
+
+			@Override
+			public void doubleClicked(Pick pick) {
+				view.openView(representedView);
+			}
+
+			@Override
+			public void dragged(Pick pick) {
+				if (representedView instanceof GLVisBricks) {
 					DragAndDropController dragAndDropController = ViewNode.this.dragAndDropController;
 					if (dragAndDropController.isDragging()
 							&& dragAndDropController.getDraggingMode().equals(
@@ -76,13 +94,11 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 						dragAndDropController.setDropArea(ViewNode.this);
 					}
 				}
-			}, PickingType.DATA_GRAPH_NODE.name(), id);
-		}
-		setRepresentedViewInfo();
+			}
+		}, PickingType.DATA_GRAPH_NODE.name(), id);
 
-		setupLayout();
 	}
-	
+
 	private void setRepresentedViewInfo() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry
@@ -125,10 +141,11 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 			iconPath = new File(url.getFile()).getAbsolutePath();
 		}
 	}
-	
+
 	@Override
 	protected ElementLayout setupLayout() {
-		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR, id);
+		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR,
+				id);
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
@@ -185,7 +202,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
-		
+
 		return baseRow;
 	}
 
@@ -195,158 +212,159 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		if (groups == null) {
 			groups = new ArrayList<ADimensionGroupData>();
 		}
-		
-//		List<ADimensionGroupData> groups = new ArrayList<ADimensionGroupData>();
-//		FakeDimensionGroupData data = new FakeDimensionGroupData(0);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("Row1");
-//		groups.add(data);
-//
-//		data = new FakeDimensionGroupData(1);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("AnotherRow");
-//		groups.add(data);
-//
-//		data = new FakeDimensionGroupData(2);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("YetAnotherRow");
-//		groups.add(data);
-//
-//		data = new FakeDimensionGroupData(3);
-//		data.setDimensionPerspectiveID("ColumnPerspec2");
-//		data.setRecordPerspectiveID("RowPerspec2");
-//		groups.add(data);
-//
-//		data = new FakeDimensionGroupData(4);
-//		data.setDimensionPerspectiveID("AnotherColumn2");
-//		data.setRecordPerspectiveID("Row1");
-//		groups.add(data);
-//		
-//		data = new FakeDimensionGroupData(5);
-//		data.setDimensionPerspectiveID("YetAnotherColumn2");
-//		data.setRecordPerspectiveID("YetAnotherRow");
-//		groups.add(data);
+
+		// List<ADimensionGroupData> groups = new
+		// ArrayList<ADimensionGroupData>();
+		// FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("Row1");
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(1);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("AnotherRow");
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(2);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("YetAnotherRow");
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(3);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("RowPerspec2");
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(4);
+		// data.setDimensionPerspectiveID("AnotherColumn2");
+		// data.setRecordPerspectiveID("Row1");
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(5);
+		// data.setDimensionPerspectiveID("YetAnotherColumn2");
+		// data.setRecordPerspectiveID("YetAnotherRow");
+		// groups.add(data);
 
 		return groups;
 	}
 
-//	@Override
-//	public void render(GL2 gl) {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		float spacingWidth = pixelGLConverter
-//				.getGLWidthForPixelWidth(getWidthPixels());
-//		float spacingHeight = pixelGLConverter
-//				.getGLHeightForPixelHeight(getHeightPixels());
-//		gl.glPushMatrix();
-//		gl.glTranslatef(x - spacingWidth / 2.0f, y - spacingHeight / 2.0f, 0f);
-//
-//		// layoutManager.setViewFrustum(new ViewFrustum(
-//		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x
-//		// + spacingWidth, y - spacingHeight, y + spacingHeight,
-//		// -1, 20));
-//		layoutManager.setViewFrustum(new ViewFrustum(
-//				CameraProjectionMode.ORTHOGRAPHIC, 0, spacingWidth, 0,
-//				spacingHeight, -1, 20));
-//
-//		layoutManager.render(gl);
-//		gl.glPopMatrix();
-//	}
-//
-//	@Override
-//	public int getHeightPixels() {
-//		return 4 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
-//				+ LINE_SEPARATOR_HEIGHT_PIXELS
-//				+ Math.max(MIN_OVERVIEW_COMP_GROUP_HEIGHT_PIXELS,
-//						overviewDataContainerRenderer.getMinHeightPixels());
-//	}
-//
-//	@Override
-//	public int getWidthPixels() {
-//		return 2 * SPACING_PIXELS
-//				+ Math.max(200, overviewDataContainerRenderer.getMinWidthPixels());
-//	}
-//
-//
-//	@Override
-//	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
-//			ADimensionGroupData dimensionGroup) {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		float width = pixelGLConverter
-//				.getGLWidthForPixelWidth(getWidthPixels());
-//		float height = pixelGLConverter
-//				.getGLHeightForPixelHeight(getHeightPixels());
-//		float spacingX = pixelGLConverter
-//				.getGLWidthForPixelWidth(SPACING_PIXELS);
-//		float spacingY = pixelGLConverter
-//				.getGLHeightForPixelHeight(SPACING_PIXELS);
-//
-//		Pair<Point2D, Point2D> anchorPoints = overviewDataContainerRenderer
-//				.getAnchorPointsOfDimensionGroup(dimensionGroup);
-//
-//		Point2D first = (Point2D) anchorPoints.getFirst().clone();
-//		Point2D second = (Point2D) anchorPoints.getSecond().clone();
-//
-//		first.setLocation(anchorPoints.getFirst().getX() + x - width / 2.0f
-//				+ spacingX, anchorPoints.getFirst().getY() + y - height / 2.0f
-//				+ spacingY);
-//		second.setLocation(anchorPoints.getSecond().getX() + x - width / 2.0f
-//				+ spacingX, anchorPoints.getSecond().getY() + y - height / 2.0f
-//				+ spacingY);
-//
-//		return new Pair<Point2D, Point2D>(first, second);
-//	}
-//
-//	@Override
-//	public Pair<Point2D, Point2D> getTopAnchorPoints() {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		float width = pixelGLConverter
-//				.getGLWidthForPixelWidth(getWidthPixels());
-//		float height = pixelGLConverter
-//				.getGLHeightForPixelHeight(getHeightPixels());
-//
-//		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
-//
-//		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
-//				/ 2.0f));
-//		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y + height
-//				/ 2.0f));
-//
-//		return anchorPoints;
-//	}
-//
-//	@Override
-//	public Pair<Point2D, Point2D> getBottomAnchorPoints() {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		float width = pixelGLConverter
-//				.getGLWidthForPixelWidth(getWidthPixels());
-//		float height = pixelGLConverter
-//				.getGLHeightForPixelHeight(getHeightPixels());
-//
-//		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
-//
-//		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y - height
-//				/ 2.0f));
-//		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
-//				/ 2.0f));
-//
-//		return anchorPoints;
-//	}
+	// @Override
+	// public void render(GL2 gl) {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// float spacingWidth = pixelGLConverter
+	// .getGLWidthForPixelWidth(getWidthPixels());
+	// float spacingHeight = pixelGLConverter
+	// .getGLHeightForPixelHeight(getHeightPixels());
+	// gl.glPushMatrix();
+	// gl.glTranslatef(x - spacingWidth / 2.0f, y - spacingHeight / 2.0f, 0f);
+	//
+	// // layoutManager.setViewFrustum(new ViewFrustum(
+	// // ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x
+	// // + spacingWidth, y - spacingHeight, y + spacingHeight,
+	// // -1, 20));
+	// layoutManager.setViewFrustum(new ViewFrustum(
+	// CameraProjectionMode.ORTHOGRAPHIC, 0, spacingWidth, 0,
+	// spacingHeight, -1, 20));
+	//
+	// layoutManager.render(gl);
+	// gl.glPopMatrix();
+	// }
+	//
+	// @Override
+	// public int getHeightPixels() {
+	// return 4 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+	// + LINE_SEPARATOR_HEIGHT_PIXELS
+	// + Math.max(MIN_OVERVIEW_COMP_GROUP_HEIGHT_PIXELS,
+	// overviewDataContainerRenderer.getMinHeightPixels());
+	// }
+	//
+	// @Override
+	// public int getWidthPixels() {
+	// return 2 * SPACING_PIXELS
+	// + Math.max(200, overviewDataContainerRenderer.getMinWidthPixels());
+	// }
+	//
+	//
+	// @Override
+	// public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
+	// ADimensionGroupData dimensionGroup) {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// float width = pixelGLConverter
+	// .getGLWidthForPixelWidth(getWidthPixels());
+	// float height = pixelGLConverter
+	// .getGLHeightForPixelHeight(getHeightPixels());
+	// float spacingX = pixelGLConverter
+	// .getGLWidthForPixelWidth(SPACING_PIXELS);
+	// float spacingY = pixelGLConverter
+	// .getGLHeightForPixelHeight(SPACING_PIXELS);
+	//
+	// Pair<Point2D, Point2D> anchorPoints = overviewDataContainerRenderer
+	// .getAnchorPointsOfDimensionGroup(dimensionGroup);
+	//
+	// Point2D first = (Point2D) anchorPoints.getFirst().clone();
+	// Point2D second = (Point2D) anchorPoints.getSecond().clone();
+	//
+	// first.setLocation(anchorPoints.getFirst().getX() + x - width / 2.0f
+	// + spacingX, anchorPoints.getFirst().getY() + y - height / 2.0f
+	// + spacingY);
+	// second.setLocation(anchorPoints.getSecond().getX() + x - width / 2.0f
+	// + spacingX, anchorPoints.getSecond().getY() + y - height / 2.0f
+	// + spacingY);
+	//
+	// return new Pair<Point2D, Point2D>(first, second);
+	// }
+	//
+	// @Override
+	// public Pair<Point2D, Point2D> getTopAnchorPoints() {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// float width = pixelGLConverter
+	// .getGLWidthForPixelWidth(getWidthPixels());
+	// float height = pixelGLConverter
+	// .getGLHeightForPixelHeight(getHeightPixels());
+	//
+	// Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+	//
+	// anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
+	// / 2.0f));
+	// anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y + height
+	// / 2.0f));
+	//
+	// return anchorPoints;
+	// }
+	//
+	// @Override
+	// public Pair<Point2D, Point2D> getBottomAnchorPoints() {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// float width = pixelGLConverter
+	// .getGLWidthForPixelWidth(getWidthPixels());
+	// float height = pixelGLConverter
+	// .getGLHeightForPixelHeight(getHeightPixels());
+	//
+	// Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+	//
+	// anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y - height
+	// / 2.0f));
+	// anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
+	// / 2.0f));
+	//
+	// return anchorPoints;
+	// }
 
 	public void setDataDomains(Set<IDataDomain> dataDomains) {
 		this.dataDomains = dataDomains;
@@ -356,69 +374,69 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		return dataDomains;
 	}
 
-//	@Override
-//	public Pair<Point2D, Point2D> getLeftAnchorPoints() {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		float width = pixelGLConverter
-//				.getGLWidthForPixelWidth(getWidthPixels());
-//		float height = pixelGLConverter
-//				.getGLHeightForPixelHeight(getHeightPixels());
-//
-//		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
-//
-//		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
-//				/ 2.0f));
-//		anchorPoints.setSecond(new Point2D.Float(x - width / 2.0f, y - height
-//				/ 2.0f));
-//
-//		return anchorPoints;
-//	}
-//
-//	@Override
-//	public Pair<Point2D, Point2D> getRightAnchorPoints() {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		float width = pixelGLConverter
-//				.getGLWidthForPixelWidth(getWidthPixels());
-//		float height = pixelGLConverter
-//				.getGLHeightForPixelHeight(getHeightPixels());
-//
-//		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
-//
-//		anchorPoints.setFirst(new Point2D.Float(x + width / 2.0f, y + height
-//				/ 2.0f));
-//		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
-//				/ 2.0f));
-//
-//		return anchorPoints;
-//	}
-//
-//	@Override
-//	public Point2D getPosition() {
-//		Point2D position = graphLayout.getNodePosition(this, true);
-//		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-//				.getX());
-//		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-//				.getY());
-//		return new Point2D.Float(x, y);
-//	}
-//
-//	@Override
-//	public float getHeight() {
-//		return pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
-//	}
-//
-//	@Override
-//	public float getWidth() {
-//		return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-//	}
+	// @Override
+	// public Pair<Point2D, Point2D> getLeftAnchorPoints() {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// float width = pixelGLConverter
+	// .getGLWidthForPixelWidth(getWidthPixels());
+	// float height = pixelGLConverter
+	// .getGLHeightForPixelHeight(getHeightPixels());
+	//
+	// Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+	//
+	// anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
+	// / 2.0f));
+	// anchorPoints.setSecond(new Point2D.Float(x - width / 2.0f, y - height
+	// / 2.0f));
+	//
+	// return anchorPoints;
+	// }
+	//
+	// @Override
+	// public Pair<Point2D, Point2D> getRightAnchorPoints() {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// float width = pixelGLConverter
+	// .getGLWidthForPixelWidth(getWidthPixels());
+	// float height = pixelGLConverter
+	// .getGLHeightForPixelHeight(getHeightPixels());
+	//
+	// Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
+	//
+	// anchorPoints.setFirst(new Point2D.Float(x + width / 2.0f, y + height
+	// / 2.0f));
+	// anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
+	// / 2.0f));
+	//
+	// return anchorPoints;
+	// }
+	//
+	// @Override
+	// public Point2D getPosition() {
+	// Point2D position = graphLayout.getNodePosition(this, true);
+	// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+	// .getX());
+	// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+	// .getY());
+	// return new Point2D.Float(x, y);
+	// }
+	//
+	// @Override
+	// public float getHeight() {
+	// return pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+	// }
+	//
+	// @Override
+	// public float getWidth() {
+	// return pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
+	// }
 
 	public AGLView getRepresentedView() {
 		return representedView;
@@ -463,6 +481,14 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 	@Override
 	protected ADataContainerRenderer getDataContainerRenderer() {
 		return overviewDataContainerRenderer;
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		overviewDataContainerRenderer.destroy();
+		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(),
+				id);
 	}
 
 }

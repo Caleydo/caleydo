@@ -29,6 +29,7 @@ import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
@@ -45,18 +46,21 @@ import org.caleydo.view.datagraph.bandlayout.EdgeBandRenderer;
 import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
+import org.caleydo.view.datagraph.event.OpenViewEvent;
 import org.caleydo.view.datagraph.listener.AddDataContainerEventListener;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 import org.caleydo.view.datagraph.listener.NewDataDomainEventListener;
 import org.caleydo.view.datagraph.listener.NewViewEventListener;
+import org.caleydo.view.datagraph.listener.OpenViewEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 import org.caleydo.view.datagraph.node.NodeCreator;
 import org.caleydo.view.datagraph.node.ViewNode;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * This class is responsible for rendering the radial hierarchy and receiving
@@ -95,6 +99,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private DataDomainsChangedEventListener dataDomainsChangedEventListener;
 	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
 	private AddDataContainerEventListener addDataContainerEventListener;
+	private OpenViewEventListener openViewEventListener;
 
 	private NodeCreator nodeCreator;
 
@@ -540,6 +545,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		addDataContainerEventListener.setHandler(this);
 		eventPublisher.addListener(AddDataContainerEvent.class,
 				addDataContainerEventListener);
+
+		openViewEventListener = new OpenViewEventListener();
+		openViewEventListener.setHandler(this);
+		eventPublisher.addListener(OpenViewEvent.class, openViewEventListener);
 	}
 
 	@Override
@@ -574,6 +583,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (addDataContainerEventListener != null) {
 			eventPublisher.removeListener(addDataContainerEventListener);
 			addDataContainerEventListener = null;
+		}
+
+		if (openViewEventListener != null) {
+			eventPublisher.removeListener(openViewEventListener);
+			openViewEventListener = null;
 		}
 	}
 
@@ -680,7 +694,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			return;
 
 		Set<IDataDomain> dataDomains = viewNode.getDataDomains();
-		
+
 		if (dataDomains != null) {
 			for (IDataDomain dataDomain : dataDomains) {
 				Set<ViewNode> viewNodes = viewNodesOfDataDomains
@@ -707,7 +721,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				break;
 			}
 		}
-		
+
 		Set<IDataDomain> dataDomains = view.getDataDomains();
 		if (dataDomains != null && !dataDomains.isEmpty()) {
 			viewNode.setDataDomains(dataDomains);
@@ -724,9 +738,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					dataGraph.addEdge(dataNode, viewNode);
 				}
 			}
-		}
 
-		viewNode.update();
+			viewNode.update();
+		}
 	}
 
 	public void updateDataDomain(IDataDomain dataDomain) {
@@ -810,5 +824,19 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// dimensionGroup.setDimensionPerspectiveID(dimensionPerspectiveID);
 		// dimensionGroup.setRecordPerspectiveID(recordPerspectiveID);
 		// dataDomain.addDimensionGroup(dimensionGroup);
+	}
+
+	public void openView(AGLView view) {
+		final ARcpGLViewPart viewPart = GeneralManager.get().getViewManager()
+				.getViewPartFromView(view);
+
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+						.getActivePage().activate(viewPart);
+			}
+		});
+
 	}
 }

@@ -156,6 +156,14 @@ public class ViewManager
 		if (hashView2RCP.containsKey(view))
 			hashView2RCP.remove(view);
 	}
+	
+	public ARcpGLViewPart getViewPartFromView(IView view) {
+		return hashView2RCP.get(view);
+	}
+	
+	public IView getViewFromViewPart(ARcpGLViewPart viewPart) {
+		return hashRCP2View.get(viewPart);
+	}
 
 	/**
 	 * Removes all views, canvas and GL2 event listeners

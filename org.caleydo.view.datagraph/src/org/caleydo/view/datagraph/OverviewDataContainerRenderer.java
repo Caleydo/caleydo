@@ -122,7 +122,8 @@ public class OverviewDataContainerRenderer extends ADataContainerRenderer {
 
 		float currentPosX = (x / 2.0f)
 				- pixelGLConverter
-						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2);
+						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
+								/ 2 - SIDE_SPACING_PIXELS);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS
 				+ MIN_COMP_GROUP_WIDTH_PIXELS);
 
