@@ -90,8 +90,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 
 		viewType = VIEW_TYPE;
 
-		
-
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
 		// registerEventListeners();
@@ -106,26 +104,20 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void init(GL2 gl) {
 		colorMapper = dataDomain.getColorMapper();
+		displayListIndex = gl.glGenLists(1);
+
 	}
 
 	@Override
 	public void initLocal(GL2 gl) {
-
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
-
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
-
 	}
 
 	@Override
@@ -143,7 +135,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void setDetailLevel(DetailLevel detailLevel) {
 		// FIXME
-//		detailLevel = DetailLevel.LOW;
+		// detailLevel = DetailLevel.LOW;
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -162,16 +154,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
-
-		if (!lazyMode)
-			checkForHits(gl);
 
 		// if (eBusyModeState != EBusyModeState.OFF) {
 		// renderBusyMode(gl);
@@ -180,24 +163,22 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		display(gl);
-		checkForHits(gl);
+		if (!lazyMode)
+			checkForHits(gl);
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		// processEvents();
 		if (bUpdateColorPointPosition || bUpdateLeftSpread || bUpdateRightSpread)
 			updateColorPointPosition(gl);
-		// clipToFrustum(gl);
-		//
-		gl.glCallList(iGLDisplayListToCall);
+
+		gl.glCallList(displayListIndex);
 		// buildDisplayList(gl, iGLDisplayListIndexRemote);
 	}
 
@@ -332,8 +313,8 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				float fRightSpread = markerPoint.getRightSpread();
 
 				float fLeft = sideSpacing + markerPoint.getMappingValue() * fRenderWidth;
-				float fRight = sideSpacing + (markerPoint.getMappingValue() + fRightSpread)
-						* fRenderWidth;
+				float fRight = sideSpacing
+						+ (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth;
 
 				int iRightSpreadPickingID = pickingManager.getPickingID(uniqueID,
 						PickingType.HISTOGRAM_RIGHT_SPREAD_COLOR_LINE, iCount);
@@ -371,10 +352,12 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 				gl.glColor3f(0, 0, 1);
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL2.GL_LINES);
-				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread)
-						* fRenderWidth, 0, 0);
-				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() + fRightSpread)
-						* fRenderWidth, viewFrustum.getHeight(), 0);
+				gl.glVertex3f(sideSpacing
+						+ (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth,
+						0, 0);
+				gl.glVertex3f(sideSpacing
+						+ (markerPoint.getMappingValue() + fRightSpread) * fRenderWidth,
+						viewFrustum.getHeight(), 0);
 				gl.glEnd();
 				gl.glPopName();
 				if (fRightSpread > HistogramRenderStyle.SPREAD_CAPTION_THRESHOLD)
@@ -460,7 +443,8 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		if (bIsFirstTimeUpdateColor && bUpdateColorPointPosition) {
 			bIsFirstTimeUpdateColor = false;
 			fColorPointPositionOffset = fClickedPointX - sideSpacing
-					- markerPoint.getMappingValue() * (viewFrustum.getWidth() - 2 * sideSpacing);
+					- markerPoint.getMappingValue()
+					* (viewFrustum.getWidth() - 2 * sideSpacing);
 			fClickedPointX -= fColorPointPositionOffset;
 		} else if (bUpdateColorPointPosition) {
 			fClickedPointX -= fColorPointPositionOffset;
@@ -600,11 +584,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		}
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
@@ -618,11 +597,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		return null;
 	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void handleRedrawView() {
@@ -717,7 +691,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		case MEDIUM:
 			return 200;
 		case LOW:
-			return 50	;
+			return 50;
 		default:
 			return 50;
 		}

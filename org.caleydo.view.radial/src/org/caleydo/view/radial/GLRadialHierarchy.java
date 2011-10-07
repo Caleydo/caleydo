@@ -155,6 +155,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		gl.glEnable(GL2.GL_LINE_SMOOTH);
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -162,9 +163,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void initLocal(GL2 gl) {
-
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL2 canvas
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -191,8 +189,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 
 	}
@@ -346,19 +342,12 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		// setDisplayListDirty();
-		if (bIsDisplayListDirtyLocal && !bIsAnimationActive) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
 
 		if (!lazyMode)
 			checkForHits(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 	}
@@ -366,20 +355,18 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public void displayRemote(GL2 gl) {
 
-		if (bIsDisplayListDirtyRemote && !bIsAnimationActive) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
-		checkForHits(gl);
 
 		// glMouseListener.resetEvents();
 	}
 
 	@Override
 	public void display(GL2 gl) {
+
+		if (isDisplayListDirty && !bIsAnimationActive) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
+		}
 
 		if (pdRealRootElement != null && pdCurrentRootElement != null) {
 
@@ -405,10 +392,12 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 				LabelManager.get().setControlBox(controlBox);
 				drawingController.draw(fXCenter, fYCenter, gl, new GLU());
 			} else
-				gl.glCallList(iGLDisplayListToCall);
+				gl.glCallList(displayListIndex);
 		} else {
 			renderSymbol(gl, EIconTextures.RADIAL_SYMBOL, 0.5f);
 		}
+		if (!lazyMode)
+			checkForHits(gl);
 	}
 
 	/**
@@ -774,12 +763,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -789,12 +772,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	public String getShortInfo() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void clearAllSelections() {
-		selectionManager.clearSelections();
-
 	}
 
 	@Override

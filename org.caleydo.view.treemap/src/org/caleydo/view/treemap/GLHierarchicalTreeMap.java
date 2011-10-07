@@ -105,6 +105,10 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public void init(GL2 gl) {
+		if (isDisplayListDirty) {
+			displayListIndex = gl.glGenLists(1);
+			isDisplayListDirty = false;
+		}
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TreeMapRenderStyle(viewFrustum);
 
@@ -123,7 +127,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	@Override
 	public void initLocal(GL2 gl) {
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
+
 		init(gl);
 	}
 
@@ -145,8 +149,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		
 		init(gl);
 
 	}
@@ -414,10 +417,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	}
 
-	@Override
-	public void clearAllSelections() {
 
-	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {

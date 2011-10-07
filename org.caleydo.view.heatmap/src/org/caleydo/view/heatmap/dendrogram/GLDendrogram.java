@@ -181,14 +181,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	@Override
 	public void init(GL2 gl) {
 		colorMapper = dataDomain.getColorMapper();
+		displayListIndex = gl.glGenLists(1);
+		iGLDisplayListCutOffValue = gl.glGenLists(1);
 	}
 
 	@Override
 	public void initLocal(GL2 gl) {
-
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		iGLDisplayListCutOffValue = gl.glGenLists(1);
 		init(gl);
 	}
 
@@ -198,9 +196,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-		iGLDisplayListCutOffValue = gl.glGenLists(1);
 		init(gl);
 
 	}
@@ -220,16 +215,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 		pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
-		checkForHits(gl);
-
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 	}
@@ -239,19 +226,16 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		if (table == null)
 			return;
 
-		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
-		checkForHits(gl);
+
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		// processEvents();
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
+		}
 
 		if (bIsDraggingActive) {
 			handleDragging(gl);
@@ -260,10 +244,12 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			}
 		}
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 
 		// display list for cut off value
 		gl.glCallList(iGLDisplayListCutOffValue);
+		if (!lazyMode)
+			checkForHits(gl);
 	}
 
 	/**
@@ -1238,7 +1224,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		}
 
 		if (tree != null && tree.getRoot() != null) {
-			if (bHasFrustumChanged || bRedrawDendrogram) {
+			if (hasFrustumChanged || bRedrawDendrogram) {
 				if (bRenderContentTree) {
 					xGlobalMax = viewFrustum.getWidth();
 					fSampleHeight = viewFrustum.getHeight() / rootNode.getNrLeaves();
@@ -1253,7 +1239,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				determinePositions();
 				// bIsDisplayListDirtyRemote = false;
 				bRedrawDendrogram = false;
-				bHasFrustumChanged = false;
+				hasFrustumChanged = false;
 			}
 
 			gl.glLineWidth(renderStyle.getDendrogramLineWidth());
@@ -1632,13 +1618,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				+ rootNode.getNrLeaves()
 				+ ((bRenderContentTree) ? " genes" : " experiments")
 				+ ", remoteRenderer: " + getRemoteRenderingGLView();
-	}
-
-	@Override
-	public void clearAllSelections() {
-
-		recordSelectionManager.clearSelections();
-		dimensionSelectionManager.clearSelections();
 	}
 
 	@Override

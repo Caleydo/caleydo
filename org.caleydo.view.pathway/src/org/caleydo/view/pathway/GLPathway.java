@@ -55,6 +55,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordContextMenuItemContainer;
 import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
@@ -86,7 +87,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
-	private ATableBasedDataDomain dataDomain;
+	private GeneticDataDomain dataDomain;
 	protected PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
 
@@ -126,6 +127,8 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 	protected SelectionCommandListener selectionCommandListener;
 
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
+
+	// protected IDMappingManager contentIDMappingManager;
 
 	/**
 	 * Constructor.
@@ -172,25 +175,19 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void initLocal(final GL2 gl) {
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
-		// TODO: individual toolboxrenderer
 	}
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
-
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
 	@Override
 	public void init(final GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
@@ -209,27 +206,21 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 		initPathwayData(gl);
 
 		pickingManager.handlePicking(this, gl);
-		if (bIsDisplayListDirtyLocal) {
-			rebuildPathwayDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+		if (isDisplayListDirty) {
+			rebuildPathwayDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		display(gl);
 	}
 
 	@Override
 	public void displayRemote(final GL2 gl) {
-		// // Check if pathway exists or if it is already loaded
-		// // FIXME: not good because check in every rendered frame
-		// if (!generalManager.getPathwayManager().hasItem(pathway.getID()))
-		// return;
 
-		if (bIsDisplayListDirtyRemote) {
+		if (isDisplayListDirty) {
 			calculatePathwayScaling(gl, pathway);
-			rebuildPathwayDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
+			rebuildPathwayDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		display(gl);
 
@@ -237,15 +228,12 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void display(final GL2 gl) {
-		// processEvents();
 		checkForHits(gl);
-
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		// TODO: also put this in global DL
 		renderPathway(gl, pathway);
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 	}
 
 	protected void initPathwayData(final GL2 gl) {
@@ -420,11 +408,18 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 			// for (Integer iDavid : DataTableRefSeq) {
 
-			Set<Integer> DataTableExpressionIndex = contentIDMappingManager.getIDAsSet(
-					IDType.getIDType("DAVID"), dataDomain.getRecordIDType(), davidID);
-			if (DataTableExpressionIndex == null)
+			IDType geneIDType;
+			if (dataDomain.isColumnDimension())
+				geneIDType = dataDomain.getRecordIDType();
+			else
+				geneIDType = dataDomain.getDimensionIDType();
+
+			Set<Integer> dataTableExpressionIndex = pathwayDataDomain
+					.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
+							geneIDType, davidID);
+			if (dataTableExpressionIndex == null)
 				continue;
-			alExpressionIndex.addAll(DataTableExpressionIndex);
+			alExpressionIndex.addAll(dataTableExpressionIndex);
 			// }
 		}
 
@@ -904,7 +899,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void handleClearSelections() {
-		clearAllSelections();
+		selectionManager.clearSelections();
 		setDisplayListDirty();
 	}
 
@@ -915,10 +910,10 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 		super.destroy();
 	}
 
-	@Override
-	public void clearAllSelections() {
-		selectionManager.clearSelections();
-	}
+	// @Override
+	// public void clearAllSelections() {
+	// selectionManager.clearSelections();
+	// }
 
 	@Override
 	public void registerEventListeners() {
@@ -1067,7 +1062,11 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+		if (!(dataDomain instanceof GeneticDataDomain))
+			throw new IllegalArgumentException(
+					"Pathway view can handle only genetic data domain, tried to set: "
+							+ dataDomain);
+		this.dataDomain = (GeneticDataDomain) dataDomain;
 		selectionManager = dataDomain.getRecordSelectionManager();
 	}
 
@@ -1075,7 +1074,5 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
-	
-	
-	
+
 }

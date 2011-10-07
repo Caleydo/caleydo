@@ -486,10 +486,6 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	}
 
 	@Override
-	public void clearAllSelections() {
-	}
-
-	@Override
 	public void init(GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
 	}

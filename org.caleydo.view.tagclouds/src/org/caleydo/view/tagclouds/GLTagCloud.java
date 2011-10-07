@@ -17,7 +17,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -126,8 +125,7 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 		if (table == null)
 			table = dataDomain.getTable();
 		if (recordVA == null)
-			recordVA = table.getRecordPerspective(recordPerspectiveID)
-					.getVirtualArray();
+			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
 		if (dimensionVA == null)
 			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
 					.getVirtualArray();
@@ -187,22 +185,19 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 			visibleDimensionVA = clippedDimensionVA;
 
-			Column previousDimensionColumn = new Column(
-					"previousDimensionColumn");
+			Column previousDimensionColumn = new Column("previousDimensionColumn");
 			previousDimensionColumn.setPixelGLConverter(pixelGLConverter);
 			previousDimensionColumn.setPixelSizeX(15);
 
-			ElementLayout previousButtonLayout = new ElementLayout(
-					"previousButtonLayout");
+			ElementLayout previousButtonLayout = new ElementLayout("previousButtonLayout");
 			previousButtonLayout.setPixelGLConverter(pixelGLConverter);
 			previousButtonLayout.setPixelSizeY(20);
 			// previousButtonLayout.setDebug(true);
 
 			previousDimensionColumn.append(previousButtonLayout);
 
-			ButtonRenderer previousButtonRenderer = new ButtonRenderer(
-					previousButton, this, textureManager,
-					ButtonRenderer.TEXTURE_ROTATION_90);
+			ButtonRenderer previousButtonRenderer = new ButtonRenderer(previousButton,
+					this, textureManager, ButtonRenderer.TEXTURE_ROTATION_90);
 
 			previousButtonLayout.setRenderer(previousButtonRenderer);
 
@@ -210,14 +205,13 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 			nextDimensionColumn.setPixelGLConverter(pixelGLConverter);
 			nextDimensionColumn.setPixelSizeX(15);
 
-			ElementLayout nextButtonLayout = new ElementLayout(
-					"nextButtonLayout");
+			ElementLayout nextButtonLayout = new ElementLayout("nextButtonLayout");
 			nextButtonLayout.setPixelGLConverter(pixelGLConverter);
 			nextButtonLayout.setPixelSizeY(20);
 			// nextButtonLayout.setDebug(true);
 
-			ButtonRenderer nextButtonRenderer = new ButtonRenderer(nextButton,
-					this, textureManager, ButtonRenderer.TEXTURE_ROTATION_270);
+			ButtonRenderer nextButtonRenderer = new ButtonRenderer(nextButton, this,
+					textureManager, ButtonRenderer.TEXTURE_ROTATION_270);
 
 			nextButtonLayout.setRenderer(nextButtonRenderer);
 
@@ -295,8 +289,8 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 			for (Entry<String, Integer> entry : stringOccurences.entrySet()) {
 
-				sortedContent.add(new Pair<Integer, String>(entry.getValue(),
-						entry.getKey()));
+				sortedContent.add(new Pair<Integer, String>(entry.getValue(), entry
+						.getKey()));
 
 			}
 
@@ -312,12 +306,12 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 			double totalOccurencesRendered = 0;
 
-			for (int count = sortedContent.size() - 1; (count >= sortedContent
-					.size() - numberEntries)
+			for (int count = sortedContent.size() - 1; (count >= sortedContent.size()
+					- numberEntries)
 					&& (count > 0); count--) {
 				Pair<Integer, String> sortedPair = sortedContent.get(count);
-				shortenedAlpahbeticalList.add(new Pair<String, Integer>(
-						sortedPair.getSecond(), sortedPair.getFirst()));
+				shortenedAlpahbeticalList.add(new Pair<String, Integer>(sortedPair
+						.getSecond(), sortedPair.getFirst()));
 				totalOccurencesRendered += Math.log(sortedPair.getFirst());
 			}
 
@@ -330,8 +324,8 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 				ratio = Math.log(entry.getSecond()) / totalOccurencesRendered
 						* remainingRatio;
 				tagLayout.setRatioSizeY((float) ratio);
-				TagRenderer tagRenderer = new TagRenderer(textRenderer,
-						entry.getFirst(), this);
+				TagRenderer tagRenderer = new TagRenderer(textRenderer, entry.getFirst(),
+						this);
 				tagRenderer.setEven(isEven);
 				if (shortenedAlpahbeticalList.size() < numberEntries)
 					tagRenderer.setAllowTextScaling(true);
@@ -341,14 +335,12 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 			}
 
-			ElementLayout selectionTagLayout = new ElementLayout(
-					"selectionTagLayout");
+			ElementLayout selectionTagLayout = new ElementLayout("selectionTagLayout");
 			selectionTagLayout.setGrabX(true);
 			// selectionTagLayout.setDebug(true);
 			selectionRow.setFrameColor(1, 0, 0, 1);
 			selectionRow.append(selectionTagLayout);
-			TagRenderer tagRenderer = new TagRenderer(textRenderer, this,
-					dimensionID);
+			TagRenderer tagRenderer = new TagRenderer(textRenderer, this, dimensionID);
 			selectedTagRenderers.add(tagRenderer);
 			selectionTagLayout.setRenderer(tagRenderer);
 
@@ -358,6 +350,8 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
+
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TagCloudRenderStyle(viewFrustum);
 
@@ -377,19 +371,15 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite().addKeyListener(
-								glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -402,8 +392,7 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 		initMapping();
 		layoutManager.updateLayout();
@@ -435,8 +424,8 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 
 		switch (pickingType) {
 		case TAG_DIMENSION_CHANGE:
@@ -494,11 +483,9 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 		super.registerEventListeners();
 
 		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain
-				.getDataDomainID());
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				selectionUpdateListener);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 	}
 
@@ -537,18 +524,6 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
 		// TODO Auto-generated method stub
 
 	}

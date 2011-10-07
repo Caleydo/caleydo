@@ -109,6 +109,10 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
+
+		selectionTransformer = new StandardTransformer(uniqueID);
+
 		super.renderStyle = renderStyle;
 
 		textRenderer = new CaleydoTextRenderer(24);
@@ -131,10 +135,6 @@ public class GLHeatMap extends ATableBasedView {
 			}
 		});
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
-		selectionTransformer = new StandardTransformer(uniqueID);
 		init(gl);
 	}
 
@@ -155,11 +155,6 @@ public class GLHeatMap extends ATableBasedView {
 		});
 
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
-		selectionTransformer = new StandardTransformer(uniqueID);
 
 		init(gl);
 	}
@@ -195,11 +190,10 @@ public class GLHeatMap extends ATableBasedView {
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
 		numSentClearSelectionEvents = 0;
@@ -211,7 +205,7 @@ public class GLHeatMap extends ATableBasedView {
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 	}
@@ -221,14 +215,13 @@ public class GLHeatMap extends ATableBasedView {
 		if (table == null)
 			return;
 
-		if (bIsDisplayListDirtyRemote) {
+		if (isDisplayListDirty) {
 			templateRenderer.updateLayout();
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 			generalManager.getViewManager().getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		display(gl);
 		numSentClearSelectionEvents = 0;
@@ -239,13 +232,13 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public void display(GL2 gl) {
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		if (bHasFrustumChanged) {
-			bHasFrustumChanged = false;
+		if (hasFrustumChanged) {
+			hasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
@@ -309,7 +302,7 @@ public class GLHeatMap extends ATableBasedView {
 				+ dimensionVA.size() + " "
 				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
 
-		if (bUseRandomSampling) {
+		if (useRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
 					+ numberOfRandomElements + "\n");
 		} else {
@@ -453,7 +446,7 @@ public class GLHeatMap extends ATableBasedView {
 		handleConnectedElementReps(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
-//		event.setDataDomainID(dataDomain.getDataDomainID());
+		// event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
 		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);

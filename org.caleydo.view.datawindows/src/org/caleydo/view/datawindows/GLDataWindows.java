@@ -164,8 +164,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void initLocal(GL2 gl) {
 
-		iGLDisplayListIndexLocal = gl.glGenLists(5);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
+	
 		init(gl);
 
 	}
@@ -175,10 +174,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		init(gl);
 	}
 
@@ -195,20 +190,19 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		remoteElementParCoords.getGLView().processEvents();
 		remoteElementHyperbolic.getGLView().processEvents();
 
-		if (bIsDisplayListDirtyLocal) {
+		if (isDisplayListDirty) {
 
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
+	
 		display(gl);
 
 		pickingManager.handlePicking(this, gl);
 		checkForHits(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF)
+		if (busyState != EBusyState.OFF)
 			renderBusyMode(gl);
 
 	}
@@ -326,8 +320,8 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		if (bHasFrustumChanged) {
-			bHasFrustumChanged = false;
+		if (hasFrustumChanged) {
+			hasFrustumChanged = false;
 		}
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
@@ -492,15 +486,11 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public void init(GL2 gl) {
-
+		displayListIndex = gl.glGenLists(5);
 		// Heat map
 		ASerializedView serView = new SerializedHeatMapView();// SerializedHierarchicalHeatMapView();//
 		// FIXME serView.setDataDomainID("org.caleydo.datadomain.genetic");

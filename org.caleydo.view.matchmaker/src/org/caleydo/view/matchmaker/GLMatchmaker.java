@@ -143,6 +143,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		// recordVA = useCase.getRecordVA(RecordVAType.CONTENT);
 		// dimensionVA = useCase.getDimensionVA(DimensionVAType.STORAGE);
 
@@ -174,9 +175,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public void initLocal(GL2 gl) {
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		// Register keyboard listener to GL2 canvas
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -202,8 +200,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -225,8 +221,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 			compareViewStateController.handleMouseWheel(gl, wheelAmount, wheelPoint);
 		}
 
-		compareViewStateController.executeDrawingPreprocessing(gl,
-				bIsDisplayListDirtyLocal);
+		compareViewStateController.executeDrawingPreprocessing(gl, isDisplayListDirty);
 
 		pickingManager.handlePicking(this, gl);
 
@@ -260,13 +255,12 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 		compareViewStateController.drawActiveElements(gl);
 
-		// if (bIsDisplayListDirtyLocal) {
-		bIsDisplayListDirtyLocal = false;
-		buildDisplayList(gl, iGLDisplayListIndexLocal);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-		// }
+		if (isDisplayListDirty) {
+			isDisplayListDirty = false;
+			buildDisplayList(gl, displayListIndex);
+		}
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 
 		compareViewStateController.handleDragging(gl);
 
@@ -297,12 +291,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
@@ -312,12 +300,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	public String getShortInfo() {
 		// TODO Auto-generated method stub
 		return null;
-	}
-
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -541,7 +523,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// return;
 
 		compareViewStateController.setTablesToCompare(setsToCompare);
-		compareViewStateController.handleReplaceRecordVA(dataTableID, dataDomain.getDataDomainType(), recordPerspectiveID);
+		compareViewStateController.handleReplaceRecordVA(dataTableID,
+				dataDomain.getDataDomainType(), recordPerspectiveID);
 		clusteredSets.clear();
 
 	}

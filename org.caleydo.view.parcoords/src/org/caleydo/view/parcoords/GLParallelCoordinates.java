@@ -232,16 +232,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public void initLocal(final GL2 gl) {
-		textRenderer = new CaleydoTextRenderer(24);
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
-		// glSelectionHeatMap.addSets(alSets);
-		// glSelectionHeatMap.initRemote(gl, getID(),
-		// glMouseListener,
-		// remoteRenderingGLCanvas);
-
-		selectionTransformer = new StandardTransformer(uniqueID);
 		init(gl);
 	}
 
@@ -250,19 +240,14 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
-		selectionTransformer = new StandardTransformer(uniqueID);
 		init(gl);
-		// toggleRenderContext();
 	}
 
 	@Override
 	public void init(final GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
-
+		displayListIndex = gl.glGenLists(1);
+		selectionTransformer = new StandardTransformer(uniqueID);
 		initData();
 
 		updateSpacings();
@@ -290,12 +275,11 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal) {
+		if (isDisplayListDirty) {
 			handleUnselection();
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
 
@@ -306,7 +290,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 	}
@@ -318,13 +302,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			return;
 
 		handleUnselection();
-		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
-
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
 
 		checkForHits(gl);
@@ -336,14 +317,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		processEvents();
 		// displayVBO(gl);
 
-		// setDetailLevel(DetailLevel.HIGH);
-
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
 		gl.glEnable(GL2.GL_BLEND);
-
-		// TODO another display list
-		// clipToFrustum(gl);
 
 		gl.glTranslatef(xSideSpacing, fYTranslation, 0.0f);
 
@@ -358,7 +332,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			}
 		}
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 
 		if (bIsAngularBrushingActive && iSelectedLineID != -1) {
 			handleAngularBrushing(gl);
@@ -376,16 +350,16 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	/**
 	 * Reset all selections and deselections
 	 */
-	@Override
-	public void clearAllSelections() {
-
-		recordSelectionManager.clearSelections();
-		dimensionSelectionManager.clearSelections();
-
-		clearFilters();
-		setDisplayListDirty();
-		connectedElementRepresentationManager.clear(recordIDType);
-	}
+//	@Override
+//	public void clearAllSelections() {
+//
+//		recordSelectionManager.clearSelections();
+//		dimensionSelectionManager.clearSelections();
+//
+//		clearFilters();
+//		setDisplayListDirty();
+//		connectedElementRepresentationManager.clear(recordIDType);
+//	}
 
 	/**
 	 * Clears gates and angluar filter
@@ -1151,8 +1125,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				fArTargetWorldCoordinates[1], draggedObject, bIsGateDraggingFirstTime);
 		bIsGateDraggingFirstTime = false;
 
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
+		isDisplayListDirty = true;
 		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSender(this);
@@ -1805,7 +1778,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				+ " as polylines and " + dimensionVA.size() + " "
 				+ dataDomain.getDimensionDenomination(false, true) + " as axis.\n");
 
-		if (bUseRandomSampling) {
+		if (useRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
 					+ numberOfRandomElements + "\n");
 		} else {
@@ -1893,8 +1866,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			fCurrentAngle = getAngle(vecTempLine, vecCenterLine);
 
-			bIsDisplayListDirtyLocal = true;
-			bIsDisplayListDirtyRemote = true;
+			setDisplayListDirty();
 		}
 
 		rotf.set(new Vec3f(0, 0, 1), fCurrentAngle);
@@ -2109,7 +2081,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public void destroy() {
-		//selectionTransformer.destroy();
+		// selectionTransformer.destroy();
 		super.destroy();
 	}
 

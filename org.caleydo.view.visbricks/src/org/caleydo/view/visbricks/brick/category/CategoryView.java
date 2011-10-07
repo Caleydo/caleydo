@@ -65,8 +65,6 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void initLocal(GL2 gl) {
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 
@@ -76,8 +74,6 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 
 	}
@@ -108,22 +104,10 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		// if (bIsDisplayListDirtyLocal) {
-		// colorMapping = ColorMappingManager.get().getColorMapping(
-		// EColorMappingType.GENE_EXPRESSION);
-		// buildDisplayList(gl, iGLDisplayListIndexLocal);
-		// bIsDisplayListDirtyLocal = false;
-		// }
-		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
 
 		if (!lazyMode)
 			checkForHits(gl);
-
-		// if (eBusyModeState != EBusyModeState.OFF) {
-		// renderBusyMode(gl);
-		// }
 	}
 
 	@Override
@@ -176,11 +160,6 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 		}
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
@@ -194,11 +173,7 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 		return null;
 	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void handleRedrawView() {

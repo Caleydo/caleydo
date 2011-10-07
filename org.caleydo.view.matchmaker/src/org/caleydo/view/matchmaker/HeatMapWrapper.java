@@ -34,7 +34,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.core.view.opengl.util.ColorUtil;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
@@ -43,6 +42,7 @@ import org.caleydo.view.heatmap.heatmap.template.MatchmakerDetailTemplate;
 import org.caleydo.view.matchmaker.layout.AHeatMapLayout;
 import org.caleydo.view.matchmaker.layout.HeatMapLayoutDetailViewRight;
 import org.caleydo.view.matchmaker.rendercommand.IHeatMapRenderCommand;
+import org.caleydo.view.matchmaker.renderer.util.ColorUtil;
 import org.caleydo.view.matchmaker.state.ACompareViewState;
 
 /**

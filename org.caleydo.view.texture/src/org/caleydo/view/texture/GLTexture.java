@@ -69,19 +69,15 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	public void displayLocal(final GL2 gl) {
 
 		pickingManager.handlePicking(this, gl);
-		if (bIsDisplayListDirtyLocal) {
+		if (isDisplayListDirty) {
 			// rebuildPathwayDisplayList(gl);
-			bIsDisplayListDirtyLocal = false;
+			isDisplayListDirty = false;
 		}
 		display(gl);
 	}
 
 	@Override
 	public void displayRemote(final GL2 gl) {
-		if (bIsDisplayListDirtyRemote) {
-			// rebuildPathwayDisplayList(gl);
-			bIsDisplayListDirtyRemote = false;
-		}
 
 		display(gl);
 	}
@@ -136,8 +132,8 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		// if (detailLevel == EDetailLevel.VERY_LOW) {
 		// return;
 		// }
@@ -186,21 +182,9 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

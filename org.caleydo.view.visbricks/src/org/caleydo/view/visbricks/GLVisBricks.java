@@ -204,6 +204,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
+
 		textRenderer = new CaleydoTextRenderer(24);
 		// dataDomain.createContentRelationAnalyzer();
 		// relationAnalyzer = dataDomain.getContentRelationAnalyzer();
@@ -460,8 +462,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			}
 		});
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 	}
 
@@ -474,8 +474,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		if (!uninitializedDimensionGroups.isEmpty()) {
 			while (uninitializedDimensionGroups.peek() != null) {
 				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
@@ -485,9 +483,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			initLayouts();
 		}
 
-		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 		}
 
 		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
@@ -1057,7 +1055,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedVisBricksView serializedForm = new SerializedVisBricksView(dataDomain.getDataDomainID());
+		SerializedVisBricksView serializedForm = new SerializedVisBricksView(
+				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1141,7 +1140,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	@Override
 	public void clearAllSelections() {
 		contentSelectionManager.clearSelections();
 		updateConnectionLinesBetweenDimensionGroups();

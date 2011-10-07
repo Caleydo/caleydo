@@ -143,6 +143,8 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 	@Override
 	public void init(GL2 gl) {
+
+		displayListIndex = gl.glGenLists(1);
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new FilterPipelineRenderStyle(viewFrustum);
 		selectionManager = new SelectionManager(IDType.registerType("filter_"
@@ -202,8 +204,6 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -755,16 +755,6 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 
 	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {

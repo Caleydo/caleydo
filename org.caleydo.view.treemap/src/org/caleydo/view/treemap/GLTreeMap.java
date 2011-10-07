@@ -137,12 +137,8 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 	}
 
 	@Override
-	public void clearAllSelections() {
-		treeSelectionManager.clearSelections();
-	}
-
-	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		if (textRenderer == null)
 			textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN, 24));
 		renderer.initCache(gl);
@@ -157,9 +153,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -198,11 +191,11 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 
 	@Override
 	public void display(GL2 gl) {
-		if (bIsDisplayListDirtyLocal) {
+		if (isDisplayListDirty) {
 			renderer.initCache(gl);
 			renderer.initRenderer(viewFrustum, getActivePickingManager(), getPickingViewID(), treeSelectionManager, textRenderer);
 			renderer.renderTreeMap(gl, treeMapModel.getRoot());
-			bIsDisplayListDirtyLocal = false;
+			isDisplayListDirty = false;
 			setHighLightingListDirty();
 		}
 
@@ -312,6 +305,10 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		leafEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(leafEvent);
 
+	}
+
+	public void clearAllSelections() {
+		treeSelectionManager.clearSelections();
 	}
 
 	public void processMouseWheeleEvent(MouseWheelEvent e) {

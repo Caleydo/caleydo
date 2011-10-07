@@ -26,7 +26,6 @@ import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
@@ -89,7 +88,7 @@ public abstract class ATableBasedView
 	 */
 	protected EDataFilterLevel dataFilterLevel = EDataFilterLevel.ONLY_CONTEXT;
 
-	protected boolean bUseRandomSampling = true;
+	protected boolean useRandomSampling = true;
 
 	protected int numberOfRandomElements = 100;
 
@@ -129,10 +128,10 @@ public abstract class ATableBasedView
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		
+
 		if (this.dataDomain == dataDomain)
 			return;
-		
+
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
 		recordSelectionManager = this.dataDomain.getRecordSelectionManager();
@@ -146,7 +145,7 @@ public abstract class ATableBasedView
 		DataDomainsChangedEvent event = new DataDomainsChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-		
+
 		setDisplayListDirty();
 	}
 
@@ -195,7 +194,6 @@ public abstract class ATableBasedView
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
-			initForAddedElements();
 			handleConnectedElementReps(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
@@ -250,23 +248,6 @@ public abstract class ATableBasedView
 
 	}
 
-	/**
-	 * This method is called when new elements are added from external - if you need to react to it do it
-	 * here, if not don't do anything.
-	 */
-	protected void initForAddedElements() {
-	}
-
-	@Override
-	public void clearAllSelections() {
-		connectedElementRepresentationManager.clear(recordIDType);
-		connectedElementRepresentationManager.clear(dimensionIDType);
-		recordSelectionManager.clearSelections();
-		dimensionSelectionManager.clearSelections();
-
-		setDisplayListDirty();
-	}
-
 	// @Override
 	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer
 	// eventContainer) {
@@ -302,7 +283,12 @@ public abstract class ATableBasedView
 
 	@Override
 	public void handleClearSelections() {
-		clearAllSelections();
+		connectedElementRepresentationManager.clear(recordIDType);
+		connectedElementRepresentationManager.clear(dimensionIDType);
+		recordSelectionManager.clearSelections();
+		dimensionSelectionManager.clearSelections();
+
+		setDisplayListDirty();
 		setDisplayListDirty();
 	}
 
@@ -378,22 +364,13 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Broadcast all elements independent of their type.
-	 */
-	// public abstract void broadcastElements();
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// nothing to do
-	}
-
-	/**
 	 * Set whether to use random sampling or not, synchronized
 	 * 
-	 * @param bUseRandomSampling
+	 * @param useRandomSampling
 	 */
-	public final void useRandomSampling(boolean bUseRandomSampling) {
-		if (this.bUseRandomSampling != bUseRandomSampling) {
-			this.bUseRandomSampling = bUseRandomSampling;
+	public final void useRandomSampling(boolean useRandomSampling) {
+		if (this.useRandomSampling != useRandomSampling) {
+			this.useRandomSampling = useRandomSampling;
 		}
 		// TODO, probably do this with initCompleteList, take care of selection
 		// manager though
@@ -407,7 +384,7 @@ public abstract class ATableBasedView
 	 *            the number
 	 */
 	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
-		if (iNumberOfRandomElements != this.numberOfRandomElements && bUseRandomSampling) {
+		if (iNumberOfRandomElements != this.numberOfRandomElements && useRandomSampling) {
 			this.numberOfRandomElements = iNumberOfRandomElements;
 			initData();
 			return;

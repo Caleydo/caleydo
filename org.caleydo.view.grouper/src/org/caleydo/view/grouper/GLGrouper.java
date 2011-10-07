@@ -163,14 +163,12 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	@Override
 	public void initLocal(GL2 gl) {
-
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		// Register keyboard listener to GL2 canvas
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -182,57 +180,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 		init(gl);
 	}
-
-	/**
-	 * Creates a new shallow tree for cluster nodes and GroupRepresentations.
-	 */
-	// private void createNewHierarchy() {
-	// ClusterTree tree = new ClusterTree(dataDomain.getDimensionIDType());
-	// IGroupDrawingStrategy groupDrawingStrategy = drawingStrategyManager
-	// .getGroupDrawingStrategy(EGroupDrawingStrategyType.NORMAL);
-	// lastUsedGroupID = 0;
-	//
-	// ClusterNode rootNode = new ClusterNode(tree, "Root", lastUsedGroupID++,
-	// true, -1);
-	// tree.setRootNode(rootNode);
-	//
-	// rootGroup = new GroupRepresentation(rootNode, renderStyle,
-	// groupDrawingStrategy,
-	// drawingStrategyManager, this, false);
-	// hashGroups.put(rootGroup.getID(), rootGroup);
-	// // selectionManager.initialAdd(rootGroup.getID());
-	// ArrayList<Integer> indexList = dimensionVA.getIndexList();
-	//
-	// for (Integer currentIndex : indexList) {
-	//
-	// String nodeName = dataDomain.getDimensionLabel(currentIndex);
-	// int leafID = currentIndex;
-	// ClusterNode currentNode = new ClusterNode(tree, nodeName,
-	// lastUsedGroupID++,
-	// false, leafID);
-	// tree.addChild(rootNode, currentNode);
-	//
-	// GroupRepresentation groupRep = new GroupRepresentation(currentNode,
-	// renderStyle, groupDrawingStrategy, drawingStrategyManager, this, true);
-	// rootGroup.add(groupRep);
-	//
-	// hashGroups.put(groupRep.getID(), groupRep);
-	// // selectionManager.initialAdd(groupRep.getID());
-	// }
-	//
-	// rootGroup.calculateHierarchyLevels(0);
-	// // ClusterHelper.determineNrElements(tree);
-	// // ClusterHelper.determineHierarchyDepth(tree);
-	// ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
-	// ClustererType.DIMENSION_CLUSTERING, dataDomain.getTable(), table
-	// .getDimensionPerspective(dimensionPerspectiveID)
-	// .getVirtualArray(),
-	// table.getRecordPerspective(recordPerspectiveID).getVirtualArray());
-	// table.getDimensionPerspective(dimensionPerspectiveID).setTree(tree);
-	//
-	// // dataDomain.createDimensionGroupsFromDimensionTree(tree);
-	// // useCase.replaceVirtualArray(idCategory, vaType, virtualArray)
-	// }
 
 	/**
 	 * Creates a new composite GroupRepresentation tree according to the
@@ -390,8 +337,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 
 	}
@@ -415,34 +360,22 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		if (bIsDisplayListDirtyLocal) {
-			bIsDisplayListDirtyLocal = false;
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
 
-		if (!lazyMode)
-			checkForHits(gl);
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		if (bIsDisplayListDirtyRemote) {
-			bIsDisplayListDirtyRemote = false;
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
-		checkForHits(gl);
 	}
 
 	@Override
 	public void display(GL2 gl) {
-		// processEvents();
-		gl.glCallList(iGLDisplayListToCall);
+		if (isDisplayListDirty) {
+			isDisplayListDirty = false;
+			buildDisplayList(gl, displayListIndex);
+		}
+		gl.glCallList(displayListIndex);
 
 		if (glMouseListener.wasMouseReleased() && !dragAndDropController.isDragging()
 				&& potentialNewSelection) {
@@ -462,6 +395,9 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 			setDisplayListDirty();
 		}
 		dragAndDropController.handleDragging(gl, glMouseListener);
+
+		if (!lazyMode)
+			checkForHits(gl);
 	}
 
 	/**
@@ -830,11 +766,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
@@ -848,11 +779,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		return null;
 	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public void handleRedrawView() {
@@ -1416,7 +1342,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		eventPublisher.triggerEvent(selectionTypeEvent);
 
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
-		
+
 		setHierarchyChanged(true);
 		setDisplayListDirty();
 	}

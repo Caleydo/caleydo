@@ -286,6 +286,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		colorMapper = dataDomain.getColorMapper();
 		textRenderer = new CaleydoTextRenderer(24);
 
@@ -369,8 +370,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 		});
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 
 	}
@@ -389,8 +388,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 
 	}
@@ -728,18 +725,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			pickingManager.handlePicking(this, gl);
 		}
 
-		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
 
-		if (!lazyMode)
-			checkForHits(gl);
-
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 	}
@@ -750,14 +738,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		if (table == null)
 			return;
 
-		if (bIsDisplayListDirtyRemote) {
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-			bIsDisplayListDirtyRemote = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
-		checkForHits(gl);
 
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
 				.getViewManager().getConnectedElementRepresentationManager();
@@ -2453,7 +2434,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public void display(GL2 gl) {
 		// processEvents();
-		
+
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
+		}
+
 		if (bIsDraggingActiveLevel2) {
 			handleCursorDraggingLevel2(gl);
 			if (glMouseListener.wasMouseReleased()) {
@@ -2516,7 +2502,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		// }
 		// }
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 
 		if (recordVA.getGroupList() != null)
 			glHeatMapView.setClusterVisualizationGenesActiveFlag(true);
@@ -2546,6 +2532,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		ConnectedElementRepresentationManager cerm = GeneralManager.get()
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
+
+		if (!lazyMode)
+			checkForHits(gl);
 
 	}
 
@@ -2831,11 +2820,11 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			bRedrawTextures = false;
 		}
 
-		if (bHasFrustumChanged) {
+		if (hasFrustumChanged) {
 			glHeatMapView.setDisplayListDirty();
 			glRecordDendrogramView.setRedrawDendrogram();
 			glDimensionDendrogramView.setRedrawDendrogram();
-			bHasFrustumChanged = false;
+			hasFrustumChanged = false;
 		}
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
@@ -4410,35 +4399,35 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		return null;
 	}
 
-	@Override
-	public void clearAllSelections() {
-
-		recordSelectionManager.clearSelections();
-		dimensionSelectionManager.clearSelections();
-
-		if (bSkipLevel1 == false)
-			initPosCursorLevel1();
-		bRedrawTextures = true;
-		setDisplayListDirty();
-
-		glHeatMapView.setDisplayListDirty();
-		glRecordDendrogramView.setDisplayListDirty();
-		glDimensionDendrogramView.setDisplayListDirty();
-
-		// group/cluster selections
-		if (dimensionVA.getGroupList() != null) {
-			DimensionGroupList groupList = dimensionVA.getGroupList();
-
-			for (Group group : groupList)
-				group.setSelectionType(SelectionType.NORMAL);
-		}
-		if (recordVA.getGroupList() != null) {
-			RecordGroupList groupList = recordVA.getGroupList();
-
-			for (Group group : groupList)
-				group.setSelectionType(SelectionType.NORMAL);
-		}
-	}
+	// @Override
+	// public void clearAllSelections() {
+	//
+	// recordSelectionManager.clearSelections();
+	// dimensionSelectionManager.clearSelections();
+	//
+	// if (bSkipLevel1 == false)
+	// initPosCursorLevel1();
+	// bRedrawTextures = true;
+	// setDisplayListDirty();
+	//
+	// glHeatMapView.setDisplayListDirty();
+	// glRecordDendrogramView.setDisplayListDirty();
+	// glDimensionDendrogramView.setDisplayListDirty();
+	//
+	// // group/cluster selections
+	// if (dimensionVA.getGroupList() != null) {
+	// DimensionGroupList groupList = dimensionVA.getGroupList();
+	//
+	// for (Group group : groupList)
+	// group.setSelectionType(SelectionType.NORMAL);
+	// }
+	// if (recordVA.getGroupList() != null) {
+	// RecordGroupList groupList = recordVA.getGroupList();
+	//
+	// for (Group group : groupList)
+	// group.setSelectionType(SelectionType.NORMAL);
+	// }
+	// }
 
 	@SuppressWarnings("unused")
 	private void activateGroupHandling() {

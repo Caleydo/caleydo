@@ -320,7 +320,7 @@ public class GLBucket extends AGLView implements
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 
@@ -2579,7 +2579,7 @@ public class GLBucket extends AGLView implements
 	public void enableBusyMode(boolean busyMode) {
 		super.enableBusyMode(busyMode);
 
-		if (eBusyModeState == EBusyModeState.ON) {
+		if (busyState == EBusyState.ON) {
 			parentGLCanvas.removeMouseListener(bucketMouseWheelListener);
 			parentGLCanvas.removeMouseWheelListener(bucketMouseWheelListener);
 		} else {
@@ -2621,12 +2621,6 @@ public class GLBucket extends AGLView implements
 		return containedGLViews;
 	}
 
-	@Override
-	public void clearAllSelections() {
-		for (AGLView view : containedGLViews) {
-			view.clearAllSelections();
-		}
-	}
 
 	/**
 	 * FIXME: should be moved to a bucket-mediator registers the event-listeners

@@ -404,7 +404,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		display(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 
@@ -868,17 +868,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// }
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
 
-	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public String getDetailedInfo() {

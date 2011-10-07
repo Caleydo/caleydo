@@ -248,7 +248,7 @@ public class GLScatterPlot extends ATableBasedView {
 		selectAxesfromExternal();
 		clearAllSelections();
 
-		bUseRandomSampling = false;
+		useRandomSampling = false;
 	}
 
 	/**
@@ -279,7 +279,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// iGLDisplayListIndexMatrixFull = iGLDisplayListIndexLocal + 4;
 		// iGLDisplayListIndexMatrixSelection = iGLDisplayListIndexLocal + 5;
 
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
+		displayListIndex = gl.glGenLists(1);
 		// iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		iGLDisplayListIndexCoord = gl.glGenLists(1);
 		iGLDisplayListIndexMouseOver = gl.glGenLists(1);
@@ -289,7 +289,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		init(gl);
 
-		gl.glNewList(iGLDisplayListIndexLocal, GL2.GL_COMPILE);
+		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 		gl.glEndList();
 		gl.glNewList(iGLDisplayListIndexCoord, GL2.GL_COMPILE);
 		gl.glEndList();
@@ -324,8 +324,6 @@ public class GLScatterPlot extends ATableBasedView {
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -355,7 +353,7 @@ public class GLScatterPlot extends ATableBasedView {
 				if (bClearSomeDisplayLists) {
 					gl.glNewList(iGLDisplayListIndexCoord, GL2.GL_COMPILE);
 					gl.glEndList();
-					gl.glNewList(iGLDisplayListIndexLocal, GL2.GL_COMPILE);
+					gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 					gl.glEndList();
 					gl.glNewList(iGLDisplayListIndexSelection, GL2.GL_COMPILE);
 					gl.glEndList();
@@ -438,20 +436,19 @@ public class GLScatterPlot extends ATableBasedView {
 				pickingManager.handlePicking(this, gl);
 		}
 
-		if (bIsDisplayListDirtyLocal) {
+		if (isDisplayListDirty) {
 
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
 
 		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 
 		display(gl);
 
 		if (!lazyMode)
 			checkForHits(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF)
+		if (busyState != EBusyState.OFF)
 			renderBusyMode(gl);
 
 	}
@@ -499,7 +496,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		}
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
 		if (detailLevel == DetailLevel.HIGH) {
 			gl.glCallList(iGLDisplayListIndexCoord);
 			gl.glCallList(iGLDisplayListIndexMouseOver);
@@ -563,9 +560,9 @@ public class GLScatterPlot extends ATableBasedView {
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		if (bHasFrustumChanged) {
+		if (hasFrustumChanged) {
 			// renderStyle.setCenterOffsets();
-			bHasFrustumChanged = false;
+			hasFrustumChanged = false;
 
 			this.bRedrawTextures = true;
 			this.bUpdateMainView = true;
@@ -2152,7 +2149,7 @@ public class GLScatterPlot extends ATableBasedView {
 		Collection<Integer> tmpSet = this.recordVA.getIndexList();
 		Collection<Integer> selectionSet = new ArrayList<Integer>();
 		for (Integer recordIndex : tmpSet) {
-			if (bUseRandomSampling)
+			if (useRandomSampling)
 				if (recordIndex % iDisplayEveryNthPoint != 0)
 					continue;
 			selectionSet.add(recordIndex);
@@ -2414,7 +2411,7 @@ public class GLScatterPlot extends ATableBasedView {
 				throw new IllegalStateException("No such element in virtual array");
 			}
 
-			if (bUseRandomSampling)
+			if (useRandomSampling)
 				if (recordIndex % iDisplayEveryNthPoint != 0)
 					continue;
 
@@ -2927,7 +2924,7 @@ public class GLScatterPlot extends ATableBasedView {
 				+ dimensionVA.size() + " "
 				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
 
-		if (bUseRandomSampling) {
+		if (useRandomSampling) {
 			sInfoText.append("Random sampling active, sample size: "
 					+ numberOfRandomElements + "\n");
 		} else {
@@ -3171,7 +3168,6 @@ public class GLScatterPlot extends ATableBasedView {
 	// setDisplayListDirty();
 	// }
 
-	@Override
 	public void clearAllSelections() {
 
 		dimensionSelectionManager.clearSelections();

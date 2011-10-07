@@ -109,6 +109,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	@Override
 	public void init(GL2 gl) {
+
+		displayListIndex = gl.glGenLists(1);
 		colorMapper = dataDomain.getColorMapper();
 		templateRenderer = new LayoutManager(this.viewFrustum);
 		if (template == null)
@@ -189,8 +191,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -372,18 +372,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
 		// TODO Auto-generated method stub
 
 	}

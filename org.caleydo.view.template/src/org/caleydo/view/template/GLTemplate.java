@@ -39,7 +39,8 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	 * @param label
 	 * @param viewFrustum
 	 */
-	public GLTemplate(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLTemplate(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -48,6 +49,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TemplateRenderStyle(viewFrustum);
 
@@ -65,19 +67,15 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay()
-				.asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						glParentView.getParentComposite()
-								.addKeyListener(glKeyListener);
-					}
-				});
+		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				glParentView.getParentComposite().addKeyListener(glKeyListener);
+			}
+		});
 
 		this.glMouseListener = glMouseListener;
 
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 		init(gl);
 	}
 
@@ -122,8 +120,8 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 
 		// TODO: Implement picking processing here!
 	}
@@ -162,31 +160,16 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleRedrawView() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void handleUpdateView() {
 		// TODO Auto-generated method stub
-
 	}
 
 	@Override
 	public void handleClearSelections() {
 		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

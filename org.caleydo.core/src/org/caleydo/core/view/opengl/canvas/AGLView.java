@@ -18,7 +18,6 @@ import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -26,7 +25,6 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.ToggleMagnifyingGlassEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
@@ -40,7 +38,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.GLMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
-import org.caleydo.core.view.opengl.canvas.listener.ToggleMagnifyingGlassListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -50,7 +47,6 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
-import org.caleydo.core.view.opengl.util.GLMagnifyingGlass;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -90,7 +86,7 @@ public abstract class AGLView
 
 	public final static String VIEW_TYPE = "unspecified";
 
-	public enum EBusyModeState {
+	public enum EBusyState {
 		SWITCH_OFF,
 		ON,
 		OFF
@@ -133,33 +129,23 @@ public abstract class AGLView
 
 	protected IGLRemoteRenderingView glRemoteRenderingView;
 
-	protected boolean bIsDisplayListDirtyLocal = true;
-	protected boolean bIsDisplayListDirtyRemote = true;
+	/** Flag determining whether the display list is invalid and has to be rebuild */
+	protected boolean isDisplayListDirty = true;
 
-	protected int iGLDisplayListIndexLocal;
-	protected int iGLDisplayListIndexRemote;
+	/** The index of the main display list as required by opengl */
+	protected int displayListIndex = 0;
 
-	protected int iGLDisplayListToCall = 0;
-
-	protected boolean bHasFrustumChanged = false;
+	protected boolean hasFrustumChanged = false;
 
 	protected GeneralRenderStyle renderStyle;
 
 	protected TextureManager textureManager;
 
-	private int iFrameCounter = 0;
-	private int iRotationFrameCounter = 0;
+	private int frameCounter = 0;
+	private int rotationFrameCounter = 0;
 	private static final int NUMBER_OF_FRAMES = 15;
 
-	protected GLMagnifyingGlass magnifyingGlass;
-
-	private ToggleMagnifyingGlassListener magnifyingGlassListener;
-
-	private boolean bShowMagnifyingGlass;
-
-	protected EBusyModeState eBusyModeState = EBusyModeState.OFF;
-
-	protected IDMappingManager contentIDMappingManager;
+	protected EBusyState busyState = EBusyState.OFF;
 
 	/**
 	 * The virtual array that manages the contents (the indices) in the dimensions
@@ -186,9 +172,6 @@ public abstract class AGLView
 	 */
 	private BlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>> queue =
 		new LinkedBlockingQueue<Pair<AEventListener<? extends IListenerOwner>, AEvent>>();
-
-	// /** id of the related view in the gui (e.g. RCP) */
-	// private String viewGUIID;
 
 	private boolean isVisible = true;
 
@@ -237,8 +220,6 @@ public abstract class AGLView
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
-
-		bShowMagnifyingGlass = false;
 
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
 
@@ -319,25 +300,12 @@ public abstract class AGLView
 
 			displayLocal(gl);
 
-			// if (bShowMagnifyingGlass) {
-			// if (magnifyingGlass == null) {
-			// magnifyingGlass = new GLMagnifyingGlass();
-			// }
-			// magnifyingGlass.draw(gl, glMouseListener);
-			// }
-
 			// fpsCounter.draw();
 		}
 		catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);
 		}
 	}
-
-	// @Override
-	// public final void displayChanged(GLAutoDrawable drawable, boolean modeChanged, boolean deviceChanged) {
-	//
-	// ((GLEventListener) parentGLCanvas).displayChanged(drawable, modeChanged, deviceChanged);
-	// }
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -363,7 +331,7 @@ public abstract class AGLView
 			viewFrustum.setRight(8);
 
 			setDisplayListDirty();
-			bHasFrustumChanged = true;
+			hasFrustumChanged = true;
 		}
 
 		GL2 gl = drawable.getGL().getGL2();
@@ -395,7 +363,7 @@ public abstract class AGLView
 	 * Everything returns to "normal". Note that virtual array manipulations are not considered selections and
 	 * are therefore not retable.
 	 */
-	public abstract void clearAllSelections();
+	// public abstract void clearAllSelections();
 
 	/**
 	 * Reset the view to its initial state by calling {@link #initData()}
@@ -409,8 +377,7 @@ public abstract class AGLView
 	 * Set the display list to dirty. May be overridden by subclasses.
 	 */
 	public void setDisplayListDirty() {
-		bIsDisplayListDirtyLocal = true;
-		bIsDisplayListDirtyRemote = true;
+		isDisplayListDirty = true;
 	}
 
 	/**
@@ -912,16 +879,18 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Broadcast elements only with a given type.
+	 * Broadcast elements only with a given type. This is used only for pathways so that the genes in a
+	 * pathway are removed when it is closed
 	 */
-	public abstract void broadcastElements(EVAOperation type);
+	@Deprecated
+	public void broadcastElements(EVAOperation type) {
+	}
 
 	public void setRemoteLevelElement(RemoteLevelElement element) {
 		this.remoteLevelElement = element;
 	}
 
 	public RemoteLevelElement getRemoteLevelElement() {
-
 		return remoteLevelElement;
 	}
 
@@ -945,14 +914,14 @@ public abstract class AGLView
 	}
 
 	protected void renderBusyMode(final GL2 gl) {
-		float fTransparency = 0.3f * iFrameCounter / NUMBER_OF_FRAMES;
-		float fLoadingTransparency = 0.8f * iFrameCounter / NUMBER_OF_FRAMES;
+		float fTransparency = 0.3f * frameCounter / NUMBER_OF_FRAMES;
+		float fLoadingTransparency = 0.8f * frameCounter / NUMBER_OF_FRAMES;
 
-		if (eBusyModeState == EBusyModeState.ON && iFrameCounter < NUMBER_OF_FRAMES) {
-			iFrameCounter++;
+		if (busyState == EBusyState.ON && frameCounter < NUMBER_OF_FRAMES) {
+			frameCounter++;
 		}
-		else if (eBusyModeState == EBusyModeState.SWITCH_OFF) {
-			iFrameCounter--;
+		else if (busyState == EBusyState.SWITCH_OFF) {
+			frameCounter--;
 		}
 
 		gl.glColor4f(1, 1, 1, fTransparency);
@@ -1010,7 +979,7 @@ public abstract class AGLView
 		texCoords = circleTexture.getImageTexCoords();
 
 		gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
-		gl.glRotatef(-iRotationFrameCounter, 0, 0, 1);
+		gl.glRotatef(-rotationFrameCounter, 0, 0, 1);
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -1022,17 +991,17 @@ public abstract class AGLView
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 		gl.glVertex3f(0.1f, -0.1f, 4.22f);
 		gl.glEnd();
-		gl.glRotatef(+iRotationFrameCounter, 0, 0, 1);
+		gl.glRotatef(+rotationFrameCounter, 0, 0, 1);
 		gl.glTranslatef(fXCenter + 0.6f, fYCenter, 0);
 
-		iRotationFrameCounter += 3;
+		rotationFrameCounter += 3;
 		gl.glPopAttrib();
 
 		circleTexture.disable();
 
-		if (eBusyModeState == EBusyModeState.SWITCH_OFF && iFrameCounter <= 0) {
+		if (busyState == EBusyState.SWITCH_OFF && frameCounter <= 0) {
 			pickingManager.enablePicking(true);
-			eBusyModeState = EBusyModeState.OFF;
+			busyState = EBusyState.OFF;
 		}
 
 		// System.out.println("Busy mode status: " +eBusyModeState);
@@ -1046,16 +1015,17 @@ public abstract class AGLView
 	 *            true if the busy mode should be enabled, false if it should be disabled
 	 */
 	public void enableBusyMode(final boolean bBusyMode) {
-		if (!bBusyMode && eBusyModeState == EBusyModeState.ON) {
-			eBusyModeState = EBusyModeState.SWITCH_OFF;
+		if (!bBusyMode && busyState == EBusyState.ON) {
+			busyState = EBusyState.SWITCH_OFF;
 			pickingManager.enablePicking(true);
 		}
 		else if (bBusyMode) {
 			pickingManager.enablePicking(false);
-			eBusyModeState = EBusyModeState.ON;
+			busyState = EBusyState.ON;
 		}
 	}
 
+	@Deprecated
 	public abstract int getNumberOfSelections(SelectionType SelectionType);
 
 	public final float getAspectRatio() {
@@ -1113,22 +1083,10 @@ public abstract class AGLView
 
 	@Override
 	public void registerEventListeners() {
-		magnifyingGlassListener = new ToggleMagnifyingGlassListener();
-		magnifyingGlassListener.setHandler(this);
-		eventPublisher.addListener(ToggleMagnifyingGlassEvent.class, magnifyingGlassListener);
-
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-		if (magnifyingGlassListener != null) {
-			eventPublisher.removeListener(magnifyingGlassListener);
-			magnifyingGlassListener = null;
-		}
-	}
-
-	public void handleToggleMagnifyingGlassEvent() {
-		bShowMagnifyingGlass = !bShowMagnifyingGlass;
 	}
 
 	/**

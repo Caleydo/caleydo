@@ -107,7 +107,8 @@ public class GLBookmarkView extends AGLView implements
 	/**
 	 * Constructor.
 	 */
-	public GLBookmarkView(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLBookmarkView(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBookmarkView.VIEW_TYPE;
@@ -181,38 +182,24 @@ public class GLBookmarkView extends AGLView implements
 
 	@Override
 	public void display(GL2 gl) {
+		if (isDisplayListDirty) {
+			isDisplayListDirty = false;
+			buildDisplayList(gl, displayListIndex);
+		}
 
-		gl.glCallList(iGLDisplayListToCall);
+		gl.glCallList(displayListIndex);
+		checkForHits(gl);
 	}
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-
 		pickingManager.handlePicking(this, gl);
-
-		if (bIsDisplayListDirtyLocal) {
-			bIsDisplayListDirtyLocal = false;
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		display(gl);
-		checkForHits(gl);
-		// pickingIDManager.reset();
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
-
-		if (bIsDisplayListDirtyRemote) {
-			bIsDisplayListDirtyRemote = false;
-			buildDisplayList(gl, iGLDisplayListIndexRemote);
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
-		checkForHits(gl);
-		// pickingIDManager.reset();
 	}
 
 	/**
@@ -244,8 +231,8 @@ public class GLBookmarkView extends AGLView implements
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		switch (pickingType) {
 		case BOOKMARK_ELEMENT:
 			Pair<IDCategory, Integer> pair = pickingIDManager.getPrivateID(externalID);
@@ -262,7 +249,7 @@ public class GLBookmarkView extends AGLView implements
 
 		if (dataDomain.getDataDomainID() != event.getDataDomainID())
 			return;
-		
+
 		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer.get(event
 				.getIDType().getIDCategory());
 		if (container == null)
@@ -289,25 +276,18 @@ public class GLBookmarkView extends AGLView implements
 
 	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(1);
 		textRenderer = new CaleydoTextRenderer(24);
 		bookmarkTemplate.setPixelGLConverter(pixelGLConverter);
 	}
 
 	@Override
 	protected void initLocal(GL2 gl) {
-
-		iGLDisplayListIndexLocal = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		init(gl);
 	}
 
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		init(gl);
 	}
 
@@ -319,17 +299,7 @@ public class GLBookmarkView extends AGLView implements
 		return serializedForm;
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
 
-	}
-
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
@@ -392,7 +362,8 @@ public class GLBookmarkView extends AGLView implements
 				geneContainer);
 		bookmarkContainers.add(geneContainer);
 
-		DimensionBookmarkContainer experimentContainer = new DimensionBookmarkContainer(this);
+		DimensionBookmarkContainer experimentContainer = new DimensionBookmarkContainer(
+				this);
 		mainColumn.append(experimentContainer.getLayout());
 		hashCategoryToBookmarkContainer.put(dataDomain.getDimensionIDCategory(),
 				experimentContainer);

@@ -117,9 +117,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	@Override
 	public void initLocal(GL2 gl) {
 
-		iGLDisplayListIndexLocal = gl.glGenLists(5);
-
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
 		init(gl);
 
 	}
@@ -129,9 +126,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 			final GLMouseListener glMouseListener) {
 
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		init(gl);
 	}
@@ -143,19 +137,11 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
-		if (bIsDisplayListDirtyLocal) {
-			buildDisplayList(gl, iGLDisplayListIndexLocal);
-			bIsDisplayListDirtyLocal = false;
-		}
-		iGLDisplayListToCall = iGLDisplayListIndexLocal;
-
 		// pickingManager.handlePicking(this, gl);
 
 		display(gl);
-		checkForHits(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF)
+		if (busyState != EBusyState.OFF)
 			renderBusyMode(gl);
 
 	}
@@ -169,6 +155,10 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 	@Override
 	public void display(GL2 gl) {
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
+		}
 
 		doSlerpActions();
 		initNewView(gl);
@@ -211,6 +201,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 		// gl.glEnd();
 		// gl.glPopName();
 
+		checkForHits(gl);
+
 	}
 
 	// creates a slerp rotating the tree to the right position
@@ -231,8 +223,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
-		if (bHasFrustumChanged) {
-			bHasFrustumChanged = false;
+		if (hasFrustumChanged) {
+			hasFrustumChanged = false;
 		}
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
@@ -386,13 +378,8 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public void init(GL2 gl) {
+		displayListIndex = gl.glGenLists(5);
 
 		// initNewView(gl);
 

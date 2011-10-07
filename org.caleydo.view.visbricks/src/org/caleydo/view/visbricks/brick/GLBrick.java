@@ -156,11 +156,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		return null;
 	}
 
-	@Override
-	public void clearAllSelections() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void init(GL2 gl) {

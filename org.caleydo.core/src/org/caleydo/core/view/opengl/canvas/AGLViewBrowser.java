@@ -231,8 +231,6 @@ public abstract class AGLViewBrowser
 
 	@Override
 	public void initLocal(final GL2 gl) {
-		// iGLDisplayList = gl.glGenLists(1);
-
 		init(gl);
 	}
 
@@ -248,9 +246,7 @@ public abstract class AGLViewBrowser
 		// });
 
 		this.glMouseListener = glMouseListener;
-
-		iGLDisplayListIndexRemote = gl.glGenLists(1);
-		iGLDisplayListToCall = iGLDisplayListIndexRemote;
+		displayListIndex = gl.glGenLists(1);
 		init(gl);
 	}
 
@@ -291,7 +287,7 @@ public abstract class AGLViewBrowser
 
 		display(gl);
 
-		if (eBusyModeState != EBusyModeState.OFF) {
+		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 
@@ -1745,13 +1741,6 @@ public abstract class AGLViewBrowser
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
-	}
-
-	@Override
-	public void clearAllSelections() {
-		for (AGLView view : containedGLViews) {
-			view.clearAllSelections();
-		}
 	}
 
 	/**
