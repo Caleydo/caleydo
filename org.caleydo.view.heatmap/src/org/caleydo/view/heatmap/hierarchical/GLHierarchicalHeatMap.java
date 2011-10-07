@@ -123,6 +123,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	private final static int MIN_SAMPLES_PER_HEATMAP = 14;
 	private final static int MAX_SAMPLES_PER_HEATMAP = 50;
 
+	protected int numberOfSamplesPerTexture = 100;
+
+	protected int numberOfSamplesPerHeatmap = 100;
+	
 	private int iNumberOfElements = 0;
 	/**
 	 * if only a small number of genes is in the data set, level_1 (overViewBar)
@@ -4829,7 +4833,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 *            the number
 	 */
 	public final void setNumberOfSamplesPerTexture(int iNumberOfSamplesPerTexture) {
-		this.iNumberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
+		this.numberOfSamplesPerTexture = iNumberOfSamplesPerTexture;
 	}
 
 	/**
@@ -4839,7 +4843,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 *            the number
 	 */
 	public final void setNumberOfSamplesPerHeatmap(int iNumberOfSamplesPerHeatmap) {
-		this.iNumberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
+		this.numberOfSamplesPerHeatmap = iNumberOfSamplesPerHeatmap;
 	}
 
 	@Override

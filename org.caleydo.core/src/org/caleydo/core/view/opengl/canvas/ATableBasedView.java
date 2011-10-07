@@ -66,8 +66,6 @@ public abstract class ATableBasedView
 
 	protected ATableBasedDataDomain dataDomain;
 
-	// protected ArrayList<Boolean> alUseInRandomSampling;
-
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
@@ -91,10 +89,6 @@ public abstract class ATableBasedView
 	protected boolean useRandomSampling = true;
 
 	protected int numberOfRandomElements = 100;
-
-	protected int iNumberOfSamplesPerTexture = 100;
-
-	protected int iNumberOfSamplesPerHeatmap = 100;
 
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
@@ -224,9 +218,7 @@ public abstract class ATableBasedView
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
 		if (!this.dimensionPerspectiveID.equals(dimensionPerspectiveID))
 			return;
-		// dimensionVA.setGroupList(null);
-		// // reactOnDimensionVAChanges(delta);
-		// dimensionSelectionManager.setVADelta(delta);
+
 		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
 		setDisplayListDirty();
 	}
@@ -247,34 +239,6 @@ public abstract class ATableBasedView
 	protected void reactOnRecordVAChanges() {
 
 	}
-
-	// @Override
-	// public void triggerEvent(EMediatorType eMediatorType, IEventContainer
-	// eventContainer) {
-	// generalManager.getEventPublisher().triggerEvent(eMediatorType, this,
-	// eventContainer);
-	// }
-
-	// @Override
-	// public void handleExternalEvent(IMediatorSender eventTrigger,
-	// IEventContainer eventContainer,
-	// EMediatorType eMediatorType) {
-	// switch (eventContainer.getEventType()) {
-	// case VIEW_COMMAND:
-	// ViewCommandEventContainer viewCommandEventContainer =
-	// (ViewCommandEventContainer) eventContainer;
-	//
-	// if (viewCommandEventContainer.getViewCommand() == EViewCommand.REDRAW) {
-	// setDisplayListDirty();
-	// }
-	// else if (viewCommandEventContainer.getViewCommand() ==
-	// EViewCommand.CLEAR_SELECTIONS) {
-	// clearAllSelections();
-	// setDisplayListDirty();
-	// }
-	// break;
-	// }
-	// }
 
 	@Override
 	public void handleRedrawView() {
@@ -372,29 +336,24 @@ public abstract class ATableBasedView
 		if (this.useRandomSampling != useRandomSampling) {
 			this.useRandomSampling = useRandomSampling;
 		}
-		// TODO, probably do this with initCompleteList, take care of selection
-		// manager though
 		initData();
 	}
 
 	/**
 	 * Set the number of samples which are shown in the view. The distribution is purely random
 	 * 
-	 * @param iNumberOfRandomElements
+	 * @param numberOfRandomElements
 	 *            the number
 	 */
-	public final void setNumberOfSamplesToShow(int iNumberOfRandomElements) {
-		if (iNumberOfRandomElements != this.numberOfRandomElements && useRandomSampling) {
-			this.numberOfRandomElements = iNumberOfRandomElements;
+	public final void setNumberOfSamplesToShow(int numberOfRandomElements) {
+		if (numberOfRandomElements != this.numberOfRandomElements && useRandomSampling) {
+			this.numberOfRandomElements = numberOfRandomElements;
 			initData();
 			return;
 		}
-		// TODO, probably do this with initCompleteList, take care of selection
-		// manager though
-		this.numberOfRandomElements = iNumberOfRandomElements;
-	}
 
-	// public abstract void resetSelections();
+		this.numberOfRandomElements = numberOfRandomElements;
+	}
 
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
