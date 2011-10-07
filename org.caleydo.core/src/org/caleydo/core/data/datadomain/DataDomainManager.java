@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.UUID;
 
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
 import org.caleydo.core.event.data.NewDataDomainEvent;
@@ -85,12 +86,12 @@ public class DataDomainManager {
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
 			register(dataDomain);
-			return dataDomain;			
+
+			return dataDomain;
 		}
 		catch (Exception ex) {
 			throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
 		}
-		
 	}
 
 	/**

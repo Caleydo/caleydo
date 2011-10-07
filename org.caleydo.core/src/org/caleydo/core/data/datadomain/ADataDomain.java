@@ -45,6 +45,9 @@ public abstract class ADataDomain
 	protected LoadDataParameters loadDataParameters;
 
 	protected Color color;
+	
+	/** determines which view will be opened after a datadomain is created */
+	protected String defaultStartViewType;
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
@@ -148,5 +151,12 @@ public abstract class ADataDomain
 		if (loadDataParameters.getLabel() == null)
 			return dataDomainID;
 		return loadDataParameters.getLabel();
+	}
+
+	/**
+	 * @return the defaultStartViewType, see {@link #defaultStartViewType}
+	 */
+	public String getDefaultStartViewType() {
+		return defaultStartViewType;
 	}
 }

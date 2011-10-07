@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
+import java.util.UUID;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -18,6 +19,8 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.RCPViewInitializationData;
+import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -44,6 +47,9 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
+import org.eclipse.ui.IWorkbenchPage;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * File dialog for opening raw text data files.
@@ -87,9 +93,8 @@ public class ImportDataDialog
 	private ATableBasedDataDomain dataDomain = null;
 
 	private boolean isGenetic = false;
-	
+
 	IDMappingManager idMappingManager;
-	
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
@@ -140,6 +145,29 @@ public class ImportDataDialog
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
 
+		// Open default start view for the newly created data domain
+		try {
+			
+			String secondaryID = UUID.randomUUID().toString();
+			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
+			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
+			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
+			
+			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
+				PlatformUI
+					.getWorkbench()
+					.getActiveWorkbenchWindow()
+					.getActivePage()
+					.showView(dataDomain.getDefaultStartViewType(), secondaryID,
+						IWorkbenchPage.VIEW_ACTIVATE);
+				
+			}
+		}
+		catch (PartInitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		super.okPressed();
 	}
 
@@ -156,7 +184,7 @@ public class ImportDataDialog
 			idMappingManager = dataDomain.getRecordIDMappingManager();
 		else
 			idMappingManager = dataDomain.getDimensionIDMappingManager();
-		
+
 		int numGridCols = 5;
 
 		loadDataParameters.setDataDomain(dataDomain);
@@ -175,7 +203,7 @@ public class ImportDataDialog
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
 		buttonFileChooser.setText("Choose data file...");
 		// buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		
+
 		txtFileName = new Text(inputFileGroup, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -196,13 +224,13 @@ public class ImportDataDialog
 
 				loadDataParameters.setFileName(inputFile);
 				txtFileName.setText(inputFile);
-				
+
 				txtDataSetLabel.setText(determineDataSetLabel());
-				
+
 				createDataPreviewTable("\t");
 			}
 		});
-		
+
 		Group dataSetLabelGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		dataSetLabelGroup.setText("Data set name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
@@ -292,13 +320,13 @@ public class ImportDataDialog
 	}
 
 	private String determineDataSetLabel() {
-		
+
 		if (inputFile == null || inputFile.isEmpty())
 			return "<insert data set name>";
-		
-		return inputFile.substring(inputFile.lastIndexOf("/")+1, inputFile.lastIndexOf("."));
+
+		return inputFile.substring(inputFile.lastIndexOf("/") + 1, inputFile.lastIndexOf("."));
 	}
-	
+
 	private void createDelimiterGroup() {
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");

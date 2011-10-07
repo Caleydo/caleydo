@@ -12,6 +12,7 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
@@ -92,6 +93,7 @@ public abstract class CaleydoRCPViewPart
 	@Override
 	public void dispose() {
 		// unregisterEventListeners();
+		RCPViewManager.get().removeRCPView(this.getViewSite().getSecondaryId());
 		super.dispose();
 	}
 
@@ -99,8 +101,9 @@ public abstract class CaleydoRCPViewPart
 	 * Determines and sets the dataDomain based on the following rules:
 	 * <ul>
 	 * <li>If no dataDomain is registered, null is returned</li>
-	 * <li>If a dataDomainType is set in the serializable representation this is used</li>
+	 * <li>If a dataDomainID is set in the serializable representation this is used</li>
 	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
+	 * <li>Else if there was a dataDomainID provided during the creation of the view</li>
 	 * <li>Else an exception is thrown</li>
 	 * <ul>
 	 * 
@@ -113,18 +116,36 @@ public abstract class CaleydoRCPViewPart
 
 		ASerializedTopLevelDataView serializedTopLevelDataView = (ASerializedTopLevelDataView) serializedView;
 
-		// first we check if the data domain was manually specified
-		for (Pair<String, String> startView : StartupProcessor.get().getAppInitData()
-			.getAppArgumentStartViewWithDataDomain()) {
-			if (startView.getFirst().equals(serializedView.getViewID())) {
-				String dataDomainType = startView.getSecond();
-				// StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
-				serializedTopLevelDataView.setDataDomainID(dataDomainType);
-			}
-		}
+		// // first we check if the data domain was manually specified
+		// for (Pair<String, String> startView : StartupProcessor.get().getAppInitData()
+		// .getAppArgumentStartViewWithDataDomain()) {
+		// if (startView.getFirst().equals(serializedView.getViewID())) {
+		// String dataDomainType = startView.getSecond();
+		// // StartupProcessor.get().getAppArgumentStartViewWithDataDomain().remove(startView);
+		// serializedTopLevelDataView.setDataDomainID(dataDomainType);
+		// }
+		// }
 
 		// then we check whether the serialization has a datadomain already
 		String dataDomainID = serializedTopLevelDataView.getDataDomainID();
+
+		// check whether the data domain ID was provided during the view creation
+		if (dataDomainID == null) {
+			RCPViewInitializationData rcpViewInitData =
+				RCPViewManager.get().getRCPViewInitializationData(this.getViewSite().getSecondaryId());
+			if (rcpViewInitData != null) {
+				dataDomainID = rcpViewInitData.getDataDomainID();
+				serializedTopLevelDataView.setDataDomainID(dataDomainID);
+				
+				// FIXME ALEX: set the default perspectives!
+				serializedTopLevelDataView.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager
+					.get().getDataDomainByID(dataDomainID)).getRecordPerspectiveIDs().iterator().next());
+				serializedTopLevelDataView.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager
+					.get().getDataDomainByID(dataDomainID)).getDimensionPerspectiveIDs().iterator().next());
+			}
+		}
+
+		// ask the user to choose the data domain ID
 		if (dataDomainID == null) {
 			ArrayList<IDataDomain> availableDomains =
 				DataDomainManager.get().getAssociationManager()

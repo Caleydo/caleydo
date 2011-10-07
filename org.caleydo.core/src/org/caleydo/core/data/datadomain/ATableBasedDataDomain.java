@@ -1,6 +1,7 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
+import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -144,13 +145,16 @@ public abstract class ATableBasedDataDomain
 	 */
 	public ATableBasedDataDomain() {
 		super();
-
 	}
 
 	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
 		super(dataDomainType, dataDomainID);
 	}
 
+	{
+		defaultStartViewType = "org.caleydo.view.heatmap.hierarchical";
+	}
+	
 	/**
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */

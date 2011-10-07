@@ -1,5 +1,7 @@
 package org.caleydo.core.view;
 
+import java.util.HashMap;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
@@ -24,6 +26,9 @@ public class RCPViewManager
 	private static RCPViewManager rcpViewManager = null;
 
 	private ActivateViewListener activateViewListener;
+
+	private HashMap<String, RCPViewInitializationData> rcpSecondaryID2ViewInitializationData =
+		new HashMap<String, RCPViewInitializationData>();
 
 	/**
 	 * Constructor, only called internally
@@ -77,5 +82,17 @@ public class RCPViewManager
 				activateViewListener.handleEvent(event);
 			}
 		});
+	}
+
+	public void addRCPView(String secondaryID, RCPViewInitializationData rcpViewInitData) {
+		rcpSecondaryID2ViewInitializationData.put(secondaryID, rcpViewInitData);
+	}
+
+	public void removeRCPView(String secondaryID) {
+		rcpSecondaryID2ViewInitializationData.remove(secondaryID);
+	}
+	
+	public RCPViewInitializationData getRCPViewInitializationData(String secondaryID) {
+		return rcpSecondaryID2ViewInitializationData.get(secondaryID);
 	}
 }
