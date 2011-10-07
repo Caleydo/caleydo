@@ -32,7 +32,6 @@ import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -75,7 +74,6 @@ public class Application
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
 		DataDomainConfiguration mrnaConfiguration = new DataDomainConfiguration();
-		mrnaConfiguration.setLabel("mRNA data");
 		mrnaConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 
 		mrnaConfiguration.setColumnDimension(false);
@@ -92,11 +90,10 @@ public class Application
 		mrnaConfiguration.setDimensionDenominationPlural("genes");
 		mrnaConfiguration.setDimensionDenominationSingular("gene");
 
-		loadSources(MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
+		loadSources("mRNA data", MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration);
 
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
-		mirnaConfiguration.setLabel("miRNA data");
 		mirnaConfiguration.setColumnDimension(false);
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
@@ -108,11 +105,10 @@ public class Application
 		mirnaConfiguration.setDimensionDenominationPlural("miRNAs");
 		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
 
-		loadSources(MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
+		loadSources("miRNA data", MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration);
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
-		methylationConfiguration.setLabel("Methylation data");
 		methylationConfiguration.setColumnDimension(false);
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
 		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
@@ -124,7 +120,7 @@ public class Application
 		methylationConfiguration.setDimensionDenominationPlural("methylations");
 		methylationConfiguration.setDimensionDenominationSingular("methylation");
 
-		loadSources(METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
+		loadSources("Methylation data", METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
 			methylationConfiguration);
 
@@ -139,18 +135,18 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(String dataSource, String groupingSource, String dataDomainType,
+	private void loadSources(String label, String dataSource, String groupingSource, String dataDomainType,
 		ColorMapper colorMapper, DataDomainConfiguration configuration) throws FileNotFoundException,
 		IOException {
 
-		convertGctFile(dataSource, dataDomainType, colorMapper, configuration);
+		convertGctFile(label, dataSource, dataDomainType, colorMapper, configuration);
 		loadClusterInfo(groupingSource);
 
 		PerspectiveInitializationData clusterResult = runClusteringOnRows();
 		createSampleOfGenes(clusterResult);
 	}
 
-	protected void convertGctFile(String fileName, String dataDomainType, ColorMapper colorMapper,
+	protected void convertGctFile(String label, String fileName, String dataDomainType, ColorMapper colorMapper,
 		DataDomainConfiguration configuration) throws FileNotFoundException, IOException {
 		String delimiter = "\t";
 
@@ -176,7 +172,7 @@ public class Application
 		String[] headers = headerString.split(delimiter);
 
 		LoadDataParameters loadDataParameters = new LoadDataParameters();
-
+		loadDataParameters.setLabel(label);
 		loadDataParameters.setFileName(fileName);
 		loadDataParameters.setDelimiter(delimiter);
 		loadDataParameters.setStartParseFileAtLine(3);

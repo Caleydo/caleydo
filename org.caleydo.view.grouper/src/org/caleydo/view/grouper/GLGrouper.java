@@ -1417,6 +1417,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 
 		selectionManager.addTypeToDeltaBlacklist(selectionTypeClicked);
 		
+		setHierarchyChanged(true);
 		setDisplayListDirty();
 	}
 

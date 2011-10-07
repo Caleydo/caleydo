@@ -21,7 +21,6 @@ public class DataDomainSerializationData {
 	/** content of the set file the application is based on, only used to sync remote clients */
 	private byte[] setFileContent;
 
-
 	/** virtual arrays of this application stored in relation with their their-key */
 	private HashMap<String, RecordPerspective> recordPerspectiveMap;
 	private HashMap<String, DimensionPerspective> dimensionPerspectiveMap;

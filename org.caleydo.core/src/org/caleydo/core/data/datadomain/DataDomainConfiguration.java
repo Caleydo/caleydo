@@ -21,12 +21,6 @@ import org.caleydo.core.data.id.IDType;
 public class DataDomainConfiguration {
 
 	/**
-	 * @see ADataDomain#label
-	 */
-	@XmlElement
-	String label;
-
-	/**
 	 * @see {@link ATableBasedDataDomain#isColumnDimension}
 	 */
 	@XmlElement
@@ -57,14 +51,6 @@ public class DataDomainConfiguration {
 	String dimensionDenominationSingular = "not set";
 	@XmlElement
 	String dimensionDenominationPlural = "not set";
-
-	/**
-	 * @param label
-	 *            setter, see {@link #label}
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
 
 	/**
 	 * @param isColumnDimension

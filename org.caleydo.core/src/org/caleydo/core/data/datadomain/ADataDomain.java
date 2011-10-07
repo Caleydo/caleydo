@@ -39,12 +39,6 @@ public abstract class ADataDomain
 	 */
 	protected String dataDomainID = "unspecified";
 
-	/**
-	 * The human readable label, identifier for the data domain. If the label is not set, the dataDomainID
-	 * will be returned
-	 */
-	protected String label;
-
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	/** parameters for loading the data-{@link set} */
@@ -151,8 +145,8 @@ public abstract class ADataDomain
 	 * @return the label, see {@link #label}
 	 */
 	public String getLabel() {
-		if (label == null)
+		if (loadDataParameters.getLabel() == null)
 			return dataDomainID;
-		return label;
+		return loadDataParameters.getLabel();
 	}
 }

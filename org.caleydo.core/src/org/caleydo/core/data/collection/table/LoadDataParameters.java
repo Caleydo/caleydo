@@ -24,6 +24,12 @@ import org.caleydo.core.parser.ascii.TabularDataParser;
 @XmlType
 public class LoadDataParameters {
 
+	/**
+	 * The human readable label, identifier for the data domain. If the label is not set, the dataDomainID
+	 * will be returned
+	 */
+	private String label;
+	
 	/** The data domain associated with the loading process */
 	@XmlTransient
 	private ATableBasedDataDomain dataDomain;
@@ -133,6 +139,23 @@ public class LoadDataParameters {
 		return fileName;
 	}
 
+
+	/**
+	 * @param label
+	 *            setter, see {@link #label}
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @param label
+	 *            getter, see {@link #label}
+	 */
+	public String getLabel() {
+		return label;
+	}
+	
 	/**
 	 * @param fileName
 	 *            setter, see {@link #fileName}

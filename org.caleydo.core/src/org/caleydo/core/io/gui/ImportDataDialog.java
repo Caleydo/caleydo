@@ -58,6 +58,7 @@ public class ImportDataDialog
 
 	private Composite composite;
 
+	private Text txtDataSetLabel;
 	private Text txtFileName;
 	private Text txtStartParseAtLine;
 	private Text txtMin;
@@ -133,7 +134,7 @@ public class ImportDataDialog
 		if (success) {
 			success = DataTableUtils.createColumns(loadDataParameters);
 		}
-		readParameters();
+		fillLoadDataParameters();
 
 		DataTable table = DataTableUtils.createData(dataDomain, true);
 		if (table == null)
@@ -172,9 +173,9 @@ public class ImportDataDialog
 		inputFileGroup.setLayoutData(gridData);
 
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
-		buttonFileChooser.setText("Choose data file..");
+		buttonFileChooser.setText("Choose data file...");
 		// buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
+		
 		txtFileName = new Text(inputFileGroup, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
@@ -188,17 +189,30 @@ public class ImportDataDialog
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
 
-				String fileName = fileDialog.open();
+				inputFile = fileDialog.open();
 
-				if (fileName == null)
+				if (inputFile == null)
 					return;
 
-				loadDataParameters.setFileName(fileName);
-				txtFileName.setText(fileName);
-
+				loadDataParameters.setFileName(inputFile);
+				txtFileName.setText(inputFile);
+				
+				txtDataSetLabel.setText(determineDataSetLabel());
+				
 				createDataPreviewTable("\t");
 			}
 		});
+		
+		Group dataSetLabelGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		dataSetLabelGroup.setText("Data set name");
+		dataSetLabelGroup.setLayout(new GridLayout(1, false));
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.horizontalSpan = numGridCols;
+		dataSetLabelGroup.setLayoutData(gridData);
+
+		txtDataSetLabel = new Text(dataSetLabelGroup, SWT.BORDER);
+		txtDataSetLabel.setText(determineDataSetLabel());
+		txtDataSetLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");
@@ -229,7 +243,6 @@ public class ImportDataDialog
 		idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
 		idTypes = new ArrayList<IDType>();
 
-		
 		HashSet<IDType> tempIDTypes = idMappingManager.getIDTypes();
 
 		for (IDType idType : tempIDTypes) {
@@ -278,6 +291,14 @@ public class ImportDataDialog
 		}
 	}
 
+	private String determineDataSetLabel() {
+		
+		if (inputFile == null || inputFile.isEmpty())
+			return "<insert data set name>";
+		
+		return inputFile.substring(inputFile.lastIndexOf("/")+1, inputFile.lastIndexOf("."));
+	}
+	
 	private void createDelimiterGroup() {
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");
@@ -517,7 +538,6 @@ public class ImportDataDialog
 				// }
 			}
 		});
-
 	}
 
 	private void createDataPropertiesGroup() {
@@ -709,7 +729,7 @@ public class ImportDataDialog
 	/**
 	 * Reads the min and max values (if set) from the dialog
 	 */
-	private void readParameters() {
+	private void fillLoadDataParameters() {
 		if (txtMin.getEnabled() && !txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {
@@ -732,6 +752,7 @@ public class ImportDataDialog
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
 		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
+		loadDataParameters.setLabel(txtDataSetLabel.getText());
 	}
 
 	/**
@@ -806,8 +827,6 @@ public class ImportDataDialog
 
 	private void determineFileIDType() {
 		// FIXME this should be moved to genetic data domain
-
-		
 
 		TableItem[] items = previewTable.getItems();
 		ArrayList<String> idList = new ArrayList<String>();

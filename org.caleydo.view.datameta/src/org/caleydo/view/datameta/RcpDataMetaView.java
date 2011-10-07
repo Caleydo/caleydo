@@ -77,6 +77,10 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		infoComposite.setLayoutData(gridData);
 
 		Label label = new Label(infoComposite, SWT.NONE);
+		label.setText("Name: "
+				+ dataDomain.getLabel());
+		
+		label = new Label(infoComposite, SWT.NONE);
 		label.setText(dataDomain.getRecordDenomination(true, true) + ": "
 				+ table.getMetaData().depth());
 

@@ -3,6 +3,7 @@ package org.caleydo.datadomain.pathway;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
@@ -47,7 +48,8 @@ public class PathwayDataDomain extends ADataDomain {
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
-
+		
+		this.loadDataParameters = new LoadDataParameters();
 	}
 
 	@Override
@@ -105,7 +107,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 	public void setPathwayDatabaseType(PathwayDatabaseType pathwayDatabaseType) {
 		this.pathwayDatabaseType = pathwayDatabaseType;
-		label = pathwayDatabaseType.getName();
+		loadDataParameters.setLabel(pathwayDatabaseType.getName());
 	}
 
 	//
