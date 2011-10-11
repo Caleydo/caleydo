@@ -5,6 +5,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -81,4 +82,16 @@ public interface IDataDomain {
 	 * @return The amount of data, i.e. the number of data items in the data set.
 	 */
 	public int getDataAmount();
+	
+	/**
+	 * @return The ID categories that are defined for this datadomain.
+	 */
+	public Set<IDCategory> getIDCategories();
+	
+	/**
+	 * Adds an ID category to this datadomain.
+	 * 
+	 * @param category
+	 */
+	public void addIDCategory(IDCategory category);
 }

@@ -249,6 +249,9 @@ public abstract class ATableBasedDataDomain
 		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
 		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
+		
+		addIDCategory(dimensionIDCategory);
+		addIDCategory(recordIDCategory);
 
 		super.init();
 

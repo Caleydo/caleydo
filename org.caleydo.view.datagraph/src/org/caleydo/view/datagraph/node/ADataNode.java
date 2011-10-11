@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
@@ -16,7 +19,7 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 
 	protected IDataDomain dataDomain;
 
-	private List<ADimensionGroupData> dimensionGroups;
+	// private List<ADimensionGroupData> dimensionGroups;
 
 	// protected ADataContainerRenderer dataContainerRenderer;
 	// private ANodeLayout layout;
@@ -25,18 +28,41 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 			final DragAndDropController dragAndDropController, Integer id,
 			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id);
-//		dimensionGroups = new ArrayList<ADimensionGroupData>();
-//		dimensionGroups.add(new FakeDimensionGroupData(0));
-//		dimensionGroups.add(new FakeDimensionGroupData(1));
-//		dimensionGroups.add(new FakeDimensionGroupData(2));
-//		dimensionGroups.add(new FakeDimensionGroupData(3));
-//		dimensionGroups.add(new FakeDimensionGroupData(4));
+		// dimensionGroups = new ArrayList<ADimensionGroupData>();
+		// dimensionGroups.add(new FakeDimensionGroupData(0));
+		// dimensionGroups.add(new FakeDimensionGroupData(1));
+		// dimensionGroups.add(new FakeDimensionGroupData(2));
+		// dimensionGroups.add(new FakeDimensionGroupData(3));
+		// dimensionGroups.add(new FakeDimensionGroupData(4));
 
 		this.dataDomain = dataDomain;
 
 		// setupLayout();
 		// init();
 
+	}
+
+	@Override
+	protected void createPickingListeners() {
+		super.createPickingListeners();
+
+		view.addSingleIDPickingListener(new APickingListener() {
+
+			@Override
+			public void mouseOver(Pick pick) {
+				view.setCurrentMouseOverNode(ADataNode.this);
+				view.setDisplayListDirty();
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				if (view.getCurrentMouseOverNode() == ADataNode.this) {
+					view.setCurrentMouseOverNode(null);
+					view.setDisplayListDirty();
+				}
+			}
+
+		}, PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	//
@@ -211,6 +237,13 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 		// groups.add(data);
 
 		return groups;
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(),
+				id);
 	}
 
 	public void setDataDomain(IDataDomain dataDomain) {

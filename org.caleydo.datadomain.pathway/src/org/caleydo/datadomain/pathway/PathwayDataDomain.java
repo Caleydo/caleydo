@@ -45,10 +45,11 @@ public class PathwayDataDomain extends ADataDomain {
 	public PathwayDataDomain() {
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
-				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
+				+ extensionID++);
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
-		
+
 		this.loadDataParameters = new LoadDataParameters();
 	}
 
@@ -56,12 +57,14 @@ public class PathwayDataDomain extends ADataDomain {
 	public void init() {
 
 		super.init();
-//		IDMappingLoader.get().loadMappingFile(fileName);
+		// IDMappingLoader.get().loadMappingFile(fileName);
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 
-		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry.get()
-				.getIDMappingManager(IDCategory.getIDCategory("GENE")));
+		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry
+				.get().getIDMappingManager(IDCategory.getIDCategory("GENE")));
+
+		addIDCategory(IDCategory.getIDCategory("GENE"));
 	}
 
 	// @Override

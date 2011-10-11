@@ -3,13 +3,14 @@ package org.caleydo.core.data.datadomain;
 import java.util.HashSet;
 import java.util.Set;
 
-import org.jgrapht.graph.SimpleGraph;
+import org.caleydo.core.data.id.IDCategory;
+import org.jgrapht.graph.Multigraph;
 
 /**
  * @author Alexander Lex
  */
 public class DataDomainGraph {
-	SimpleGraph<IDataDomain, Edge> dataDomainGraph;
+	Multigraph<IDataDomain, Edge> dataDomainGraph;
 
 	public static final String CLINICAL = "org.caleydo.datadomain.clinical";
 	public static final String TISSUE = "org.caleydo.datadomain.tissue";
@@ -19,7 +20,7 @@ public class DataDomainGraph {
 
 	public DataDomainGraph() {
 		EdgeFactory edgeFactory = new EdgeFactory();
-		dataDomainGraph = new SimpleGraph<IDataDomain, Edge>(edgeFactory);
+		dataDomainGraph = new Multigraph<IDataDomain, Edge>(edgeFactory);
 
 		// initDataDomainGraph();
 	}
@@ -44,71 +45,112 @@ public class DataDomainGraph {
 
 		dataDomainGraph.addVertex(dataDomain);
 
-		// FIXME: This is not generic at all, move the IDTypes of the DataDomains into IDataDomain
 		for (IDataDomain vertex : dataDomainGraph.vertexSet()) {
-			// break;
-			//
 			if (vertex != dataDomain) {
-				boolean mappingExists = false;
+				for (IDCategory category : vertex.getIDCategories()) {
+					for (IDCategory currentCategory : dataDomain.getIDCategories()) {
+						if (category == currentCategory) {
+							Edge edge = new Edge(dataDomain, vertex, category);
 
-				if (dataDomain instanceof ATableBasedDataDomain && vertex instanceof ATableBasedDataDomain) {
-					ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-					ATableBasedDataDomain previouslyRegisteredDataDomain = (ATableBasedDataDomain) vertex;
+							if (dataDomain instanceof ATableBasedDataDomain
+								&& vertex instanceof ATableBasedDataDomain) {
+								ATableBasedDataDomain tableBasedDataDomain =
+									(ATableBasedDataDomain) dataDomain;
+								ATableBasedDataDomain previouslyRegisteredDataDomain =
+									(ATableBasedDataDomain) vertex;
 
-					// TODO: Also mapping between content and dimension?
-					boolean hasContentMapping = false;
-					if (tableBasedDataDomain.getRecordIDCategory() == previouslyRegisteredDataDomain
-						.getRecordIDCategory()) {
-						hasContentMapping = true;
+								if (currentCategory == tableBasedDataDomain.getDimensionIDCategory()) {
+									edge.setInfoVertex1("Column");
+								}
+								else if (currentCategory == tableBasedDataDomain.getRecordIDCategory()) {
+									edge.setInfoVertex1("Row");
+								}
+
+								if (currentCategory == previouslyRegisteredDataDomain
+									.getDimensionIDCategory()) {
+									edge.setInfoVertex2("Column");
+								}
+								else if (currentCategory == previouslyRegisteredDataDomain
+									.getRecordIDCategory()) {
+									edge.setInfoVertex2("Row");
+								}
+							}
+							dataDomainGraph.addEdge(dataDomain, vertex, edge);
+						}
 					}
-					boolean hasDimensionMapping = false;
-					if (tableBasedDataDomain.getDimensionIDCategory() == previouslyRegisteredDataDomain
-						.getDimensionIDCategory()) {
-						hasDimensionMapping = true;
-					}
-
-					if (hasContentMapping || hasDimensionMapping) {
-						mappingExists = true;
-					}
 				}
-
-				if ((dataDomain.getDataDomainID().startsWith(CLINICAL) && vertex.getDataDomainID()
-					.startsWith(TISSUE))
-					|| (vertex.getDataDomainID().startsWith(CLINICAL) && dataDomain.getDataDomainID()
-						.startsWith(TISSUE))) {
-					mappingExists = true;
-				}
-				if ((dataDomain.getDataDomainID().startsWith(CLINICAL) && vertex.getDataDomainID()
-					.startsWith(ORGAN))
-					|| (vertex.getDataDomainID().startsWith(CLINICAL) && dataDomain.getDataDomainID()
-						.startsWith(ORGAN))) {
-					mappingExists = true;
-				}
-
-				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID().startsWith(
-					PATHWAY))
-					|| (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
-						.startsWith(PATHWAY))) {
-					mappingExists = true;
-				}
-
-				if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID().startsWith(
-					TISSUE))
-					|| (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
-						.startsWith(TISSUE))) {
-					mappingExists = true;
-				}
-
-				if (dataDomain.getDataDomainID().startsWith(PATHWAY)
-					&& vertex.getDataDomainID().startsWith(PATHWAY))
-					mappingExists = true;
-
-				if (mappingExists) {
-					dataDomainGraph.addEdge(dataDomain, vertex);
-				}
-
 			}
 		}
+
+		// FIXME: This is not generic at all, move the IDTypes of the DataDomains into IDataDomain
+		// for (IDataDomain vertex : dataDomainGraph.vertexSet()) {
+		// // break;
+		// //
+		// if (vertex != dataDomain) {
+		// boolean mappingExists = false;
+		//
+		// if (dataDomain instanceof ATableBasedDataDomain && vertex instanceof ATableBasedDataDomain) {
+		// ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+		// ATableBasedDataDomain previouslyRegisteredDataDomain = (ATableBasedDataDomain) vertex;
+		//
+		// // TODO: Also mapping between content and dimension?
+		// boolean hasContentMapping = false;
+		// if (tableBasedDataDomain.getRecordIDCategory() == previouslyRegisteredDataDomain
+		// .getRecordIDCategory()) {
+		// hasContentMapping = true;
+		// }
+		// boolean hasDimensionMapping = false;
+		// if (tableBasedDataDomain.getDimensionIDCategory() == previouslyRegisteredDataDomain
+		// .getDimensionIDCategory()) {
+		// hasDimensionMapping = true;
+		// }
+		//
+		// if (hasContentMapping || hasDimensionMapping) {
+		// mappingExists = true;
+		// }
+		// }
+		//
+		// if ((dataDomain.getDataDomainID().startsWith(CLINICAL) && vertex.getDataDomainID()
+		// .startsWith(TISSUE))
+		// || (vertex.getDataDomainID().startsWith(CLINICAL) && dataDomain.getDataDomainID()
+		// .startsWith(TISSUE))) {
+		// mappingExists = true;
+		// }
+		// if ((dataDomain.getDataDomainID().startsWith(CLINICAL) && vertex.getDataDomainID()
+		// .startsWith(ORGAN))
+		// || (vertex.getDataDomainID().startsWith(CLINICAL) && dataDomain.getDataDomainID()
+		// .startsWith(ORGAN))) {
+		// mappingExists = true;
+		// }
+		//
+		// if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID().startsWith(
+		// PATHWAY))
+		// || (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
+		// .startsWith(PATHWAY))) {
+		// mappingExists = true;
+		// }
+		//
+		// if ((dataDomain.getDataDomainID().startsWith(GENETIC) && vertex.getDataDomainID().startsWith(
+		// TISSUE))
+		// || (vertex.getDataDomainID().startsWith(GENETIC) && dataDomain.getDataDomainID()
+		// .startsWith(TISSUE))) {
+		// mappingExists = true;
+		// }
+		//
+		// if (dataDomain.getDataDomainID().startsWith(PATHWAY)
+		// && vertex.getDataDomainID().startsWith(PATHWAY))
+		// mappingExists = true;
+		//
+		// if (mappingExists) {
+		// dataDomainGraph.addEdge(dataDomain, vertex);
+		// }
+		//
+		// }
+		// }
+	}
+
+	public Set<Edge> getEdges(IDataDomain dataDomain1, IDataDomain dataDomain2) {
+		return dataDomainGraph.getAllEdges(dataDomain1, dataDomain2);
 	}
 
 	public void removeDataDomain(IDataDomain dataDomain) {
@@ -129,7 +171,7 @@ public class DataDomainGraph {
 
 	}
 
-	public SimpleGraph<IDataDomain, Edge> getGraph() {
+	public Multigraph<IDataDomain, Edge> getGraph() {
 		return dataDomainGraph;
 	}
 

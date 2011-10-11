@@ -34,10 +34,10 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
 		this.dragAndDropController = dragAndDropController;
 
-		createPickingListener();
+		createPickingListeners();
 	}
 
-	private void createPickingListener() {
+	protected void createPickingListeners() {
 		pickingListener = new APickingListener() {
 
 			@Override

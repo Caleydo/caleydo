@@ -84,16 +84,34 @@ public class ConnectionBandRenderer {
 	 *            the curve at their ends.
 	 */
 	public void renderInterpolatedCurve(GL2 gl, List<Point2D> linePoints) {
-		for (int i = 0; i < linePoints.size() - 3; i++) {
-			List<Vec3f> curvePoints =
-				computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1), linePoints.get(i + 2),
-					linePoints.get(i + 3));
-			gl.glBegin(GL2.GL_LINE_STRIP);
-			for (int j = 0; j < curvePoints.size(); j++) {
-				gl.glVertex3f(curvePoints.get(j).x(), curvePoints.get(j).y(), curvePoints.get(j).z());
-			}
-			gl.glEnd();
+
+		List<Vec3f> curvePoints = calcInterpolatedCurve(gl, linePoints);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (Vec3f point : curvePoints) {
+			gl.glVertex3f(point.x(), point.y(), point.z());
 		}
+		gl.glEnd();
+	}
+
+	/**
+	 * Calculates a curve by interpolating the specified line points.
+	 * 
+	 * @param gl
+	 * @param linePoints
+	 *            Points that shall be interpolated with a curve. Note that the list must at least contain 4
+	 *            points and the first and the last point of the list are not interpolated but used to direct
+	 *            the curve at their ends.
+	 * @return Interpolated curve points.
+	 */
+	public List<Vec3f> calcInterpolatedCurve(GL2 gl, List<Point2D> linePoints) {
+
+		List<Vec3f> curvePoints = new ArrayList<Vec3f>();
+		for (int i = 0; i < linePoints.size() - 3; i++) {
+			curvePoints.addAll(computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1),
+				linePoints.get(i + 2), linePoints.get(i + 3)));
+		}
+
+		return curvePoints;
 	}
 
 	/**
@@ -535,11 +553,11 @@ public class ConnectionBandRenderer {
 			Vec3f vec =
 				new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst().getY(), z);
 			inputPoints.add(vec);
-//			gl.glColor4f(1, 0, 0, 1);
-//			gl.glBegin(GL.GL_POINTS);
-//			gl.glVertex3f(vec.x(), vec.y(), -1);
-//			gl.glEnd();
-//			 GLHelperFunctions.drawPointAt(gl, vec);
+			// gl.glColor4f(1, 0, 0, 1);
+			// gl.glBegin(GL.GL_POINTS);
+			// gl.glVertex3f(vec.x(), vec.y(), -1);
+			// gl.glEnd();
+			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
@@ -570,10 +588,10 @@ public class ConnectionBandRenderer {
 			Vec3f vec =
 				new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond().getY(), z);
 			inputPoints.add(vec);
-//			gl.glColor4f(1, 0, 0, 1);
-//			gl.glBegin(GL.GL_POINTS);
-//			gl.glVertex3f(vec.x(), vec.y(), vec.z());
-//			gl.glEnd();
+			// gl.glColor4f(1, 0, 0, 1);
+			// gl.glBegin(GL.GL_POINTS);
+			// gl.glVertex3f(vec.x(), vec.y(), vec.z());
+			// gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));

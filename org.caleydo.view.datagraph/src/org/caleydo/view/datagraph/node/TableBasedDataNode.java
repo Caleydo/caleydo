@@ -9,6 +9,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -18,6 +19,7 @@ import org.caleydo.view.datagraph.DetailDataContainerRenderer;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.OverviewDataContainerRenderer;
+import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
 
 public class TableBasedDataNode extends ADataNode {
 
@@ -119,6 +121,20 @@ public class TableBasedDataNode extends ADataNode {
 
 		}, TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+
+		// FIXME: Use in DataContainer and get views properly
+		view.addSingleIDPickingListener(new APickingListener() {
+
+			@Override
+			public void rightClicked(Pick pick) {
+				view.getContextMenuCreator()
+						.addContextMenuItem(
+								new CreateViewItem("Parallel Coordinates",
+										"org.caleydo.view.parcoords",
+										dataDomain, null));
+			}
+
+		}, PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	@Override

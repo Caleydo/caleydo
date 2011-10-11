@@ -1,7 +1,9 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
@@ -9,6 +11,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.event.AEventHandler;
 import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -28,6 +31,9 @@ public abstract class ADataDomain
 	implements IDataDomain {
 
 	protected String dataDomainType;
+	
+	@XmlTransient
+	protected Set<IDCategory> idCategories = new HashSet<IDCategory>();
 
 	@XmlTransient
 	protected List<ADimensionGroupData> dimensionGroups = new ArrayList<ADimensionGroupData>();
@@ -158,5 +164,15 @@ public abstract class ADataDomain
 	 */
 	public String getDefaultStartViewType() {
 		return defaultStartViewType;
+	}
+	
+	@Override
+	public Set<IDCategory> getIDCategories() {
+		return idCategories;
+	}
+	
+	@Override
+	public void addIDCategory(IDCategory category) {
+		idCategories.add(category);
 	}
 }
