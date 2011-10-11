@@ -151,7 +151,7 @@ public class ProjectLoader {
 					.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
 
 				DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
-				//dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
+				dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);
 
 				HashMap<String, RecordPerspective> recordPerspectives =
 					new HashMap<String, RecordPerspective>();
