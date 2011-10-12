@@ -28,7 +28,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	protected final static int CAPTION_HEIGHT_PIXELS = 16;
 	protected final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected final static int MIN_DATA_CONTAINER_HEIGHT_PIXELS = 32;
-	protected final static int MIN_DATA_CONTAINER_WIDTH_PIXELS = 200;
+	protected final static int MIN_DATA_CONTAINER_WIDTH_PIXELS = 180;
 	
 	protected LayoutManager layoutManager;
 	

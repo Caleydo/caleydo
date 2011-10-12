@@ -12,7 +12,11 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -53,6 +57,9 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		private String caption;
 		private int numSubdivisions;
 		private float position;
+		private boolean isVisible;
+		private List<CellContainer> childContainers = new ArrayList<CellContainer>();
+		private CellContainer parentContainer;
 	}
 
 	public DetailDataContainerRenderer(ATableBasedDataDomain dataDomain,
@@ -176,17 +183,49 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 				if (rowAndColumn != null) {
 
-					String recordPerspectiveID = dataDomain.isColumnDimension() ? rowAndColumn
-							.getFirst().id : rowAndColumn.getSecond().id;
-					String dimensionPerspectiveID = dataDomain
-							.isColumnDimension() ? rowAndColumn.getSecond().id
-							: rowAndColumn.getFirst().id;
+					// String recordPerspectiveID =
+					// dataDomain.isColumnDimension() ? rowAndColumn
+					// .getFirst().id : rowAndColumn.getSecond().id;
+					// String dimensionPerspectiveID = dataDomain
+					// .isColumnDimension() ? rowAndColumn.getSecond().id
+					// : rowAndColumn.getFirst().id;
 
-					view.getContextMenuCreator()
-							.addContextMenuItem(
-									new AddDataContainerItem(dataDomain,
-											recordPerspectiveID,
-											dimensionPerspectiveID));
+					String recordPerspectiveID = rowAndColumn.getFirst().id;
+
+					CellContainer column = rowAndColumn.getSecond();
+					String dimensionPerspectiveID = column.id;
+					Group group = null;
+					DimensionVirtualArray dimensionVA = null;
+					boolean createDimensionPerspective = false;
+
+					if (!dataDomain.getTable().containsDimensionPerspective(
+							dimensionPerspectiveID)) {
+						// FIXME: Check additionally if the group has a
+						// dimensionperspective
+
+						DimensionPerspective perspective = dataDomain
+								.getTable().getDimensionPerspective(
+										column.parentContainer.id);
+
+						int groupIndex = column.parentContainer.childContainers
+								.indexOf(column);
+
+						dimensionVA = perspective.getVirtualArray();
+
+						DimensionGroupList groupList = dimensionVA
+								.getGroupList();
+						group = groupList.get(groupIndex);
+
+						createDimensionPerspective = true;
+
+					}
+
+					view.getContextMenuCreator().addContextMenuItem(
+							new AddDataContainerItem(dataDomain,
+									recordPerspectiveID,
+									dimensionPerspectiveID,
+									createDimensionPerspective, dimensionVA,
+									group));
 				}
 			}
 
@@ -205,12 +244,15 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 	private void createRowsAndColumns(
 			List<ADimensionGroupData> dimensionGroupDatas) {
-		Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
-				.getRecordPerspectiveIDs() : dataDomain
-				.getDimensionPerspectiveIDs();
-		Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
-				.getDimensionPerspectiveIDs() : dataDomain
-				.getRecordPerspectiveIDs();
+		// Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
+		// .getRecordPerspectiveIDs() : dataDomain
+		// .getDimensionPerspectiveIDs();
+		// Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
+		// .getDimensionPerspectiveIDs() : dataDomain
+		// .getRecordPerspectiveIDs();
+
+		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
+		Set<String> columnIDs = dataDomain.getDimensionPerspectiveIDs();
 
 		// String[] rowIDs = new String[] { "Row1", "RowPerspec2", "AnotherRow",
 		// "YetAnotherRow" };
@@ -225,28 +267,65 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			CellContainer row = new CellContainer();
 			row.id = id;
 
-			if (dataDomain.isColumnDimension()) {
-				row.caption = dataDomain.getTable().getRecordPerspective(id)
-						.getLabel();
-			} else {
-				row.caption = dataDomain.getTable().getDimensionPerspective(id)
-						.getLabel();
-			}
+			// if (dataDomain.isColumnDimension()) {
+			// row.caption = dataDomain.getTable().getRecordPerspective(id)
+			// .getLabel();
+			// } else {
+			// row.caption = dataDomain.getTable().getDimensionPerspective(id)
+			// .getLabel();
+			// }
+			row.caption = dataDomain.getTable().getRecordPerspective(id)
+					.getLabel();
+
 			row.numSubdivisions = 1;
+			row.isVisible = true;
 			rows.add(row);
 		}
 		for (String id : columnIDs) {
+
+			DimensionPerspective perspective = dataDomain.getTable()
+					.getDimensionPerspective(id);
+			if (perspective.isPrivate()) {
+				continue;
+			}
+
 			CellContainer column = new CellContainer();
 			column.id = id;
-			if (dataDomain.isColumnDimension()) {
-				column.caption = dataDomain.getTable()
-						.getDimensionPerspective(id).getLabel();
-			} else {
-				column.caption = dataDomain.getTable().getRecordPerspective(id)
-						.getLabel();
-			}
+			// if (dataDomain.isColumnDimension()) {
+			// column.caption = dataDomain.getTable()
+			// .getDimensionPerspective(id).getLabel();
+			// } else {
+			// column.caption = dataDomain.getTable().getRecordPerspective(id)
+			// .getLabel();
+			// }
+			column.caption = dataDomain.getTable().getDimensionPerspective(id)
+					.getLabel();
+
 			column.numSubdivisions = 1;
+			column.isVisible = true;
 			columns.add(column);
+
+			DimensionGroupList groupList = perspective.getVirtualArray()
+					.getGroupList();
+
+			if (groupList != null) {
+				for (int i = 0; i < groupList.size(); i++) {
+
+					Group group = groupList.get(i);
+					CellContainer subColumn = new CellContainer();
+					subColumn.caption = group.getClusterNode().getLabel();
+					subColumn.id = group.getPerspectiveID() != null ? group
+							.getPerspectiveID() : column.id + i;
+					subColumn.numSubdivisions = 1;
+					subColumn.isVisible = true;
+
+					subColumn.parentContainer = column;
+					column.childContainers.add(subColumn);
+
+					columns.add(subColumn);
+
+				}
+			}
 		}
 
 		cells.clear();
@@ -261,10 +340,14 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
 
 					TableBasedDimensionGroupData tableBasedDimensionGroupData = (TableBasedDimensionGroupData) dimensionGroupData;
-					String recordPerspectiveID = dataDomain.isColumnDimension() ? row.id
-							: column.id;
-					String dimensionPerspectiveID = dataDomain
-							.isColumnDimension() ? column.id : row.id;
+					// String recordPerspectiveID =
+					// dataDomain.isColumnDimension() ? row.id
+					// : column.id;
+					// String dimensionPerspectiveID = dataDomain
+					// .isColumnDimension() ? column.id : row.id;
+
+					String recordPerspectiveID = row.id;
+					String dimensionPerspectiveID = column.id;
 
 					if (tableBasedDimensionGroupData.getDimensionPerspective()
 							.getPerspectiveID().equals(dimensionPerspectiveID)
@@ -378,6 +461,9 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 						.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
 		for (CellContainer column : columns) {
+			if (!column.isVisible) {
+				continue;
+			}
 			float currentColumnWidth = columnWidth * column.numSubdivisions;
 
 			float textPositionX = currentPositionX
@@ -511,7 +597,9 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 		int sumColumnWidth = 0;
 
 		for (CellContainer column : columns) {
-			sumColumnWidth += column.numSubdivisions * COLUMN_WIDTH_PIXELS;
+			if (column.isVisible) {
+				sumColumnWidth += column.numSubdivisions * COLUMN_WIDTH_PIXELS;
+			}
 		}
 
 		return captionWidth + sumColumnWidth + CAPTION_SPACING_PIXELS;

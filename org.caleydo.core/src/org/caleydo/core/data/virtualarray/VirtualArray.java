@@ -518,4 +518,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		return groupList;
 
 	}
+	
+	public List<Integer> getSubList(int fromIndex, int toIndex) {
+		return virtualArrayList.subList(fromIndex, toIndex);
+	}
 }

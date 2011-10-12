@@ -26,8 +26,12 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.Edge;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.view.DataDomainsChangedEvent;
@@ -403,33 +407,32 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		Set<Edge> edges = dataDomainGraph.getEdges(node1.getDataDomain(),
 				node2.getDataDomain());
-		
+
 		StringBuffer stringBuffer = new StringBuffer();
-		
+
 		Iterator<Edge> iterator = edges.iterator();
-		while(iterator.hasNext()) {
+		while (iterator.hasNext()) {
 			Edge e = iterator.next();
 			IDCategory category = e.getIdCategory();
-			if(category != null) {
+			if (category != null) {
 				stringBuffer.append(e.getIdCategory().getCategoryName());
 			} else {
 				stringBuffer.append("Unknown Mapping");
 			}
-			if(iterator.hasNext()) {
+			if (iterator.hasNext()) {
 				stringBuffer.append(", ");
 			}
 		}
-		
+
 		String edgeLabel = stringBuffer.toString();
 
 		float height = pixelGLConverter.getGLHeightForPixelHeight(14);
-		float requiredWidth = textRenderer.getRequiredTextWidth(
-				edgeLabel, height);
-
-		textRenderer.renderTextInBounds(gl, edgeLabel,
-				centerPoint.x() - (requiredWidth / 2.0f), centerPoint.y()
-						- (height / 2.0f), centerPoint.z(), requiredWidth,
+		float requiredWidth = textRenderer.getRequiredTextWidth(edgeLabel,
 				height);
+
+		textRenderer.renderTextInBounds(gl, edgeLabel, centerPoint.x()
+				- (requiredWidth / 2.0f), centerPoint.y() - (height / 2.0f),
+				centerPoint.z(), requiredWidth, height);
 	}
 
 	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
@@ -664,6 +667,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public void updateView(AGLView view) {
 
+		if (view.isRenderedRemote())
+			return;
+
 		ViewNode viewNode = null;
 		for (ViewNode node : viewNodes) {
 			if (node.getRepresentedView() == view) {
@@ -671,6 +677,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				break;
 			}
 		}
+
+		if (viewNode == null)
+			return;
 
 		Set<IDataDomain> dataDomains = view.getDataDomains();
 		if (dataDomains != null && !dataDomains.isEmpty()) {
@@ -759,12 +768,33 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	public void createDataContainer(ATableBasedDataDomain dataDomain,
-			String recordPerspectiveID, String dimensionPerspectiveID) {
+			String recordPerspectiveID, String dimensionPerspectiveID,
+			boolean createDimensionPerspective,
+			DimensionVirtualArray dimensionVA, Group group) {
 
+		DimensionPerspective dimensionPerspective = null;
+
+		if (createDimensionPerspective) {
+			dimensionPerspective = new DimensionPerspective(dataDomain);
+			List<Integer> indices = dimensionVA.getSubList(
+					group.getStartIndex(), group.getEndIndex() + 1);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(indices);
+			dimensionPerspective.init(data);
+			// TODO: Shall we really set it private?
+			dimensionPerspective.setPrivate(true);
+			group.setPerspectiveID(dimensionPerspective.getPerspectiveID());
+			dataDomain.getTable().registerDimensionPerspective(
+					dimensionPerspective);
+		} else {
+			dimensionPerspective = dataDomain.getTable()
+					.getDimensionPerspective(dimensionPerspectiveID);
+		}
+
+		// FIXME: This should only be a datacontainer in the future
 		TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
 				dataDomain, dataDomain.getTable().getRecordPerspective(
-						recordPerspectiveID), dataDomain.getTable()
-						.getDimensionPerspective(dimensionPerspectiveID));
+						recordPerspectiveID), dimensionPerspective);
 		dataDomain.addDimensionGroup(data);
 
 		// FIXME: Create proper DimensionGroup

@@ -342,6 +342,22 @@ public class DataTable
 	}
 
 	/**
+	 * @param recordPerspectiveID
+	 * @return True, if a {@link RecordPerspective} with the specified ID is registered, false otherwise.
+	 */
+	public boolean containsRecordPerspective(String recordPerspectiveID) {
+		return hashRecordPerspectives.containsKey(recordPerspectiveID);
+	}
+	
+	/**
+	 * @param dimensionPerspectiveID
+	 * @return True, if a {@link DimensionPerspective} with the specified ID is registered, false otherwise.
+	 */
+	public boolean containsDimensionPerspective(String dimensionPerspectiveID) {
+		return hashDimensionPerspectives.containsKey(dimensionPerspectiveID);
+	}
+
+	/**
 	 * Register a new {@link RecordPerspective} with this DataTable
 	 * 
 	 * @param recordPerspective

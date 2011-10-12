@@ -39,6 +39,11 @@ public class Group
 	private ClusterNode clusterNode;
 
 	/**
+	 * In some cases a perspective is created for a group, this is the corresponding ID.
+	 */
+	private String perspectiveID = null;
+
+	/**
 	 * array with mean expression values --> representative element
 	 */
 	private float[] meanValuesRepresentativeElement;
@@ -183,5 +188,13 @@ public class Group
 
 	public void resetVisualGenesCounter() {
 		visibleNrGenes = 0;
+	}
+
+	public void setPerspectiveID(String perspectiveID) {
+		this.perspectiveID = perspectiveID;
+	}
+
+	public String getPerspectiveID() {
+		return perspectiveID;
 	}
 }
