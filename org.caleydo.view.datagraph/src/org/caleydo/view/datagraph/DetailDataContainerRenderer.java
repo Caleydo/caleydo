@@ -32,7 +32,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 	protected final static String EMPTY_CELL_PICKING_TYPE = "org.caleydo.view.datagraph.emptycell";
 
-	private static final int MAX_TEXT_WIDTH_PIXELS = 80;
+	private static final int MAX_TEXT_WIDTH_PIXELS = 90;
 	private static final int TEXT_HEIGHT_PIXELS = 12;
 	private static final int COLUMN_WIDTH_PIXELS = 22;
 	private static final int ROW_HEIGHT_PIXELS = 22;
@@ -108,7 +108,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 				dimensionGroupRenderer.setColor(dimensionGroupRenderer
 						.getBorderColor());
-
+				view.setDisplayListDirty();
 			}
 
 			@Override
@@ -120,7 +120,7 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 
 				dimensionGroupRenderer
 						.setColor(dataDomain.getColor().getRGBA());
-
+				view.setDisplayListDirty();
 			}
 
 			@Override
@@ -397,54 +397,54 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 						.getGLWidthForPixelWidth(getMinWidthPixels() / 2);
 		float rowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
-		float currentPositionY = y
-				- captionRowHeight
-				- pixelGLConverter
-						.getGLHeightForPixelHeight(CAPTION_SPACING_PIXELS);
+		float captionSpacingY = pixelGLConverter
+				.getGLHeightForPixelHeight(CAPTION_SPACING_PIXELS);
+
+		float captionSpacingX = pixelGLConverter
+				.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
+
+		float currentPositionY = y - captionRowHeight - captionSpacingY;
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
-
-		// gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT);
-		// gl.glColor3f(1, 1, 1);
-		// gl.glBegin(GL2.GL_QUADS);
-		// gl.glVertex3f(0, 0, 0);
-		// gl.glVertex3f(x, 0, 0);
-		// gl.glVertex3f(x, currentPositionY, 0);
-		// gl.glVertex3f(0, currentPositionY, 0);
-		//
-		// gl.glVertex3f(
-		// currentPositionX
-		// + captionColumnWidth
-		// + pixelGLConverter
-		// .getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
-		// currentPositionY, 0);
-		// gl.glVertex3f(x, currentPositionY, 0);
-		// gl.glVertex3f(x, y, 0);
-		// gl.glVertex3f(
-		// currentPositionX
-		// + captionColumnWidth
-		// + pixelGLConverter
-		// .getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
-		// y, 0);
-		// gl.glEnd();
-		// gl.glPopAttrib();
 
 		for (CellContainer row : rows) {
 			float textPositionY = currentPositionY - rowHeight
 					+ (rowHeight - textHeight) / 2.0f
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
+			if (row.parentContainer == null) {
+
+				gl.glColor3f(0.7f, 0.7f, 0.7f);
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0);
+				gl.glVertex3f(
+						currentPositionX
+								+ captionColumnWidth
+								+ pixelGLConverter
+										.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
+						currentPositionY - rowHeight, 0);
+				gl.glVertex3f(
+						currentPositionX
+								+ captionColumnWidth
+								+ pixelGLConverter
+										.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
+						currentPositionY, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glEnd();
+			}
+
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
-			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX,
-					textPositionY, 0, captionColumnWidth, textHeight);
+			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX
+					+ captionSpacingX, textPositionY, 0, captionColumnWidth - 2
+					* captionSpacingX, textHeight);
 
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(0, currentPositionY, 0);
-			gl.glVertex3f(x, currentPositionY, 0);
+			gl.glVertex3f(0, currentPositionY, 0.1f);
+			gl.glVertex3f(x, currentPositionY, 0.1f);
 			gl.glEnd();
 			gl.glPopAttrib();
 
@@ -466,34 +466,68 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			}
 			float currentColumnWidth = columnWidth * column.numSubdivisions;
 
+			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
+
+			float childIndent = 0;
+
+			gl.glColor3f(0.7f, 0.7f, 0.7f);
+			if (column.parentContainer == null) {
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(currentPositionX, y - captionRowHeight
+						- captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y
+						- captionRowHeight - captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
+				gl.glVertex3f(currentPositionX, y, 0);
+				gl.glEnd();
+			} else {
+
+				childIndent = captionSpacingY * 2;
+
+				gl.glColor3f(0.8f, 0.8f, 0.8f);
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(currentPositionX, y - captionRowHeight
+						- captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y
+						- captionRowHeight - captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
+				gl.glVertex3f(currentPositionX, y, 0);
+
+				gl.glColor3f(0.7f, 0.7f, 0.7f);
+
+				gl.glVertex3f(currentPositionX, y - childIndent, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y
+						- childIndent, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
+				gl.glVertex3f(currentPositionX, y, 0);
+
+				gl.glEnd();
+			}
+
 			float textPositionX = currentPositionX
 					+ (currentColumnWidth - textHeight) / 2.0f
 					+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
 			gl.glPushMatrix();
-			gl.glTranslatef(textPositionX, y, 0);
+			gl.glTranslatef(textPositionX, y - childIndent - captionSpacingY, 0);
 			gl.glRotatef(-90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
-					captionRowHeight, textHeight);
+					captionRowHeight - childIndent - 2 * captionSpacingY, textHeight);
 			gl.glPopMatrix();
 
-			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			gl.glLineWidth(1);
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentPositionX, 0, 0);
-			gl.glVertex3f(currentPositionX, y, 0);
+			gl.glVertex3f(currentPositionX, y - childIndent, 0);
 			for (int i = 1; i < column.numSubdivisions; i++) {
 				gl.glVertex3f(currentPositionX + i * columnWidth, 0, 0);
-				gl.glVertex3f(
-						currentPositionX + i * columnWidth,
-						y
-								- captionRowHeight
-								- pixelGLConverter
-										.getGLHeightForPixelHeight(CAPTION_SPACING_PIXELS),
-						0);
+				gl.glVertex3f(currentPositionX + i * columnWidth, y
+						- captionRowHeight - captionSpacingY, 0);
 			}
 			gl.glEnd();
 

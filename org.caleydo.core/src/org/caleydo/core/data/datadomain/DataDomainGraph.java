@@ -39,7 +39,7 @@ public class DataDomainGraph {
 	// dataDomainGraph.addEdge(TISSUE, GENETIC);
 	// }
 
-	public void addDataDomain(IDataDomain dataDomain) {
+	public synchronized void addDataDomain(IDataDomain dataDomain) {
 		if (dataDomainGraph.containsVertex(dataDomain))
 			return;
 
@@ -150,17 +150,17 @@ public class DataDomainGraph {
 	}
 
 	public Set<Edge> getEdges(IDataDomain dataDomain1, IDataDomain dataDomain2) {
-		return dataDomainGraph.getAllEdges(dataDomain1, dataDomain2);
+		return new HashSet<Edge>(dataDomainGraph.getAllEdges(dataDomain1, dataDomain2));
 	}
 
-	public void removeDataDomain(IDataDomain dataDomain) {
+	public synchronized void removeDataDomain(IDataDomain dataDomain) {
 		if (dataDomainGraph.containsVertex(dataDomain)) {
 			dataDomainGraph.removeAllEdges(dataDomainGraph.edgesOf(dataDomain));
 			dataDomainGraph.removeVertex(dataDomain);
 		}
 	}
 
-	public Set<IDataDomain> getNeighboursOf(IDataDomain vertex) {
+	public synchronized Set<IDataDomain> getNeighboursOf(IDataDomain vertex) {
 		Set<Edge> edges = dataDomainGraph.edgesOf(vertex);
 		Set<IDataDomain> vertices = new HashSet<IDataDomain>();
 		for (Edge edge : edges) {
@@ -171,12 +171,12 @@ public class DataDomainGraph {
 
 	}
 
-	public Multigraph<IDataDomain, Edge> getGraph() {
+	public synchronized Multigraph<IDataDomain, Edge> getGraph() {
 		return dataDomainGraph;
 	}
 
 	public Set<IDataDomain> getDataDomains() {
-		return dataDomainGraph.vertexSet();
+		return new HashSet<IDataDomain>(dataDomainGraph.vertexSet());
 	}
 
 	public static void main(String args[]) {
