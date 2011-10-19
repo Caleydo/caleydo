@@ -3,6 +3,8 @@ package org.caleydo.view.datagraph;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
+import org.caleydo.view.datagraph.toolbar.DataGraphToolBarContent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
@@ -32,6 +34,9 @@ public class Activator extends AbstractUIPlugin {
 		plugin = this;
 
 		registerDataDomains();
+
+		ToolBarContentFactory.get().addToolBarContent(GLDataGraph.VIEW_TYPE,
+				false, new DataGraphToolBarContent());
 	}
 
 	/*

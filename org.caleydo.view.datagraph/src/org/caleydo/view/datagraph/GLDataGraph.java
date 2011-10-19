@@ -59,9 +59,11 @@ import org.caleydo.view.datagraph.bandlayout.EdgeBandRenderer;
 import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
+import org.caleydo.view.datagraph.event.ApplySpringBasedLayoutEvent;
 import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 import org.caleydo.view.datagraph.event.OpenViewEvent;
 import org.caleydo.view.datagraph.listener.AddDataContainerEventListener;
+import org.caleydo.view.datagraph.listener.ApplySpringBasedLayoutEventListener;
 import org.caleydo.view.datagraph.listener.CreateViewFromDataContainerEventListener;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
@@ -118,6 +120,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private AddDataContainerEventListener addDataContainerEventListener;
 	private OpenViewEventListener openViewEventListener;
 	private CreateViewFromDataContainerEventListener createViewFromDataContainerEventListener;
+	private ApplySpringBasedLayoutEventListener applySpringBasedLayoutEventListener;
 
 	private IDataGraphNode currentMouseOverNode;
 
@@ -537,6 +540,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		createViewFromDataContainerEventListener.setHandler(this);
 		eventPublisher.addListener(CreateViewFromDataContainerEvent.class,
 				createViewFromDataContainerEventListener);
+
+		applySpringBasedLayoutEventListener = new ApplySpringBasedLayoutEventListener();
+		applySpringBasedLayoutEventListener.setHandler(this);
+		eventPublisher.addListener(ApplySpringBasedLayoutEvent.class,
+				applySpringBasedLayoutEventListener);
 	}
 
 	@Override
@@ -582,6 +590,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			eventPublisher
 					.removeListener(createViewFromDataContainerEventListener);
 			createViewFromDataContainerEventListener = null;
+		}
+
+		if (applySpringBasedLayoutEventListener != null) {
+			eventPublisher.removeListener(applySpringBasedLayoutEventListener);
+			applySpringBasedLayoutEventListener = null;
 		}
 	}
 
@@ -859,5 +872,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public IDataGraphNode getCurrentMouseOverNode() {
 		return currentMouseOverNode;
+	}
+
+	public void applySpringBasedLayout() {
+		// TODO: Choose correct layout
+		setApplyAutomaticLayout(true);
+		setDisplayListDirty();
 	}
 }
