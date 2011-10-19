@@ -12,6 +12,7 @@ import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 public class ConnectionBandRenderer {
@@ -553,10 +554,11 @@ public class ConnectionBandRenderer {
 			Vec3f vec =
 				new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst().getY(), z);
 			inputPoints.add(vec);
-			// gl.glColor4f(1, 0, 0, 1);
-			// gl.glBegin(GL.GL_POINTS);
-			// gl.glVertex3f(vec.x(), vec.y(), -1);
-			// gl.glEnd();
+//			gl.glPointSize(4);
+//			gl.glColor4f(1, 0, 0, 1);
+//			gl.glBegin(GL2.GL_POINTS);
+//			gl.glVertex3f(vec.x(), vec.y(), -1);
+//			gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
@@ -588,10 +590,11 @@ public class ConnectionBandRenderer {
 			Vec3f vec =
 				new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond().getY(), z);
 			inputPoints.add(vec);
-			// gl.glColor4f(1, 0, 0, 1);
-			// gl.glBegin(GL.GL_POINTS);
-			// gl.glVertex3f(vec.x(), vec.y(), vec.z());
-			// gl.glEnd();
+//			gl.glPointSize(4);
+//			gl.glColor4f(1, 0, 0, 1);
+//			gl.glBegin(GL2.GL_POINTS);
+//			gl.glVertex3f(vec.x(), vec.y(), vec.z());
+//			gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
