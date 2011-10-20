@@ -76,7 +76,11 @@ import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 import org.caleydo.view.datagraph.node.NodeCreator;
 import org.caleydo.view.datagraph.node.ViewNode;
+import org.eclipse.jface.dialogs.IInputValidator;
+import org.eclipse.jface.dialogs.InputDialog;
+import org.eclipse.jface.window.Window;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -780,35 +784,71 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		return maxDataAmount;
 	}
 
-	public void createDataContainer(ATableBasedDataDomain dataDomain,
-			String recordPerspectiveID, String dimensionPerspectiveID,
-			boolean createDimensionPerspective,
-			DimensionVirtualArray dimensionVA, Group group) {
+	public void createDataContainer(final ATableBasedDataDomain dataDomain,
+			final String recordPerspectiveID,
+			final String dimensionPerspectiveID,
+			final boolean createDimensionPerspective,
+			final DimensionVirtualArray dimensionVA, final Group group) {
 
-		DimensionPerspective dimensionPerspective = null;
+		final String recordPerspectiveLabel = dataDomain.getTable()
+				.getRecordPerspective(recordPerspectiveID).getLabel();
 
-		if (createDimensionPerspective) {
-			dimensionPerspective = new DimensionPerspective(dataDomain);
-			List<Integer> indices = dimensionVA.getSubList(
-					group.getStartIndex(), group.getEndIndex() + 1);
-			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(indices);
-			dimensionPerspective.init(data);
-			// TODO: Shall we really set it private?
-			dimensionPerspective.setPrivate(true);
-			group.setPerspectiveID(dimensionPerspective.getPerspectiveID());
-			dataDomain.getTable().registerDimensionPerspective(
-					dimensionPerspective);
-		} else {
-			dimensionPerspective = dataDomain.getTable()
-					.getDimensionPerspective(dimensionPerspectiveID);
-		}
+		final String dimensionPerspeciveLabel = (createDimensionPerspective) ? (group
+				.getClusterNode().getLabel()) : dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID).getLabel();
 
-		// FIXME: This should only be a datacontainer in the future
-		TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-				dataDomain, dataDomain.getTable().getRecordPerspective(
-						recordPerspectiveID), dimensionPerspective);
-		dataDomain.addDimensionGroup(data);
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+
+				IInputValidator validator = new IInputValidator() {
+					public String isValid(String newText) {
+						if (newText.equalsIgnoreCase(""))
+							return "Please enter a name for the data container.";
+						else
+							return null;
+					}
+				};
+
+				InputDialog dialog = new InputDialog(
+						new Shell(),
+						"Create Data Container",
+						"Name",
+						dimensionPerspeciveLabel + "/" + recordPerspectiveLabel,
+						validator);
+				if (dialog.open() == Window.OK) {
+					DimensionPerspective dimensionPerspective = null;
+
+					if (createDimensionPerspective) {
+						dimensionPerspective = new DimensionPerspective(
+								dataDomain);
+						List<Integer> indices = dimensionVA.getSubList(
+								group.getStartIndex(), group.getEndIndex() + 1);
+						PerspectiveInitializationData data = new PerspectiveInitializationData();
+						data.setData(indices);
+						dimensionPerspective.init(data);
+						// TODO: Shall we really set it private?
+						dimensionPerspective.setPrivate(true);
+						group.setPerspectiveID(dimensionPerspective
+								.getPerspectiveID());
+						dataDomain.getTable().registerDimensionPerspective(
+								dimensionPerspective);
+					} else {
+						dimensionPerspective = dataDomain
+								.getTable()
+								.getDimensionPerspective(dimensionPerspectiveID);
+					}
+
+					// FIXME: This should only be a datacontainer in the future
+					TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
+							dataDomain, dataDomain.getTable()
+									.getRecordPerspective(recordPerspectiveID),
+							dimensionPerspective);
+					data.setLabel(dialog.getValue());
+					dataDomain.addDimensionGroup(data);
+				}
+			}
+		});
 
 		// FIXME: Create proper DimensionGroup
 		// FakeDimensionGroupData dimensionGroup = new

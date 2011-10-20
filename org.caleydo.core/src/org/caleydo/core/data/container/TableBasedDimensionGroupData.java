@@ -172,6 +172,10 @@ public class TableBasedDimensionGroupData
 		return label;
 	}
 
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
 	public ISegmentData getSummarySegementData() {
 		ISegmentData tempSegmentData =
 			new TableBasedSegmentData(dataDomain, recordPerspective, dimensionPerspective, new Group(), this);
