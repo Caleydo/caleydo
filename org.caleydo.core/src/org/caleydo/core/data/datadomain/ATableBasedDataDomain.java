@@ -1,7 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
-import java.util.UUID;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
@@ -65,8 +64,6 @@ public abstract class ATableBasedDataDomain
 	extends ADataDomain
 	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
-
-	protected boolean isColumnDimension = true;
 
 	/** The raw data for this data domain. */
 	protected DataTable table;
@@ -154,13 +151,6 @@ public abstract class ATableBasedDataDomain
 	{
 		defaultStartViewType = "org.caleydo.view.heatmap.hierarchical";
 	}
-	
-	/**
-	 * @return the isColumnDimension, see {@link #isColumnDimension}
-	 */
-	public boolean isColumnDimension() {
-		return isColumnDimension;
-	}
 
 	/**
 	 * @param isColumnDimension
@@ -174,6 +164,9 @@ public abstract class ATableBasedDataDomain
 	public void init() {
 		if (configuration == null)
 			createDefaultConfiguration();
+		else if (!loadDataParameters.isColumnDimension())
+			createDefaultConfigurationWithSamplesAsRows();
+
 		boolean externalMappingLoaded = false;
 
 		if (configuration.mappingFile != null) {
@@ -181,21 +174,16 @@ public abstract class ATableBasedDataDomain
 			externalMappingLoaded = true;
 		}
 
-		isColumnDimension = configuration.isColumnDimension;
-
 		if (externalMappingLoaded) {
 			recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
 			dimensionIDCategory = IDCategory.getIDCategory(configuration.dimensionIDCategory);
 
 			humanReadableRecordIDType = IDType.getIDType(configuration.humanReadableRecordIDType);
 			humanReadableDimensionIDType = IDType.getIDType(configuration.humanReadableDimensionIDType);
-
 		}
-
 		else {
 			// if we don't have an external mapping we create the mapping based on the first column / row. We
 			// create the ids for that here.
-
 			recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
 			dimensionIDCategory = IDCategory.registerCategory(configuration.dimensionIDCategory);
 			humanReadableRecordIDType =
@@ -204,7 +192,6 @@ public abstract class ATableBasedDataDomain
 			humanReadableDimensionIDType =
 				IDType.registerType(configuration.humanReadableDimensionIDType, dimensionIDCategory,
 					EColumnType.STRING);
-
 		}
 
 		recordIDType =
@@ -258,6 +245,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public abstract void createDefaultConfiguration();
+
+	public abstract void createDefaultConfigurationWithSamplesAsRows();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes

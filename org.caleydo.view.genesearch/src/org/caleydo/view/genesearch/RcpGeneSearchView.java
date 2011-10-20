@@ -104,7 +104,6 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 	private IDType davidIDType = IDType.getIDType("DAVID");
 	private IDType geneNameIDType = IDType.getIDType("GENE_NAME");
 	private IDType refseqMrnaIDTYpe = IDType.getIDType("REFSEQ_MRNA");
-	private IDType refseqMrnaIntIDType = IDType.getIDType("REFSEQ_MRNA_INT");
 	private IDType entrez = IDType.getIDType("ENTREZ_GENE_ID");
 
 	public RcpGeneSearchView() {
@@ -185,7 +184,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart implements
 
 		useGeneDavidID = new Button(searchDataKindGroup, SWT.CHECK);
 		useGeneDavidID.setText("David ID");
-		if (idMappingManager.hasMapping(davidIDType, refseqMrnaIntIDType))
+		if (idMappingManager.hasMapping(davidIDType, refseqMrnaIDTYpe))
 			useGeneDavidID.setSelection(true);
 		else
 			useGeneDavidID.setEnabled(false);

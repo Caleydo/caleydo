@@ -190,23 +190,12 @@ public class CmdParseIDMapping
 			idMappingManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
 		}
 
-		int index = 0;
-		if (fileName.equals("generate")) {
-
-			Map<String, Integer> hashTmp = idMappingManager.getMap(mappingType);
-			for (Object refSeqIDObject : idMappingManager.getMap(
-				idMappingManager.getMappingType("DAVID_2_REFSEQ_MRNA")).values()) {
-
-				hashTmp.put((String) refSeqIDObject, index++);
-			}
-		}
-		else if (!fileName.equals("already_loaded")) {
+		if (!fileName.equals("already_loaded")) {
 			idMappingParser = new IDMappingParser(idCategory, fileName, mappingType);
 			idMappingParser.setStringConverter(stringConverter);
 			idMappingParser.setTokenSeperator(delimiter);
 			idMappingParser.setStartParsingStopParsingAtLine(startParsingAtLine, stopParsingAtLine);
 			idMappingParser.loadData();
-
 		}
 
 		if (bCreateReverseMap) {

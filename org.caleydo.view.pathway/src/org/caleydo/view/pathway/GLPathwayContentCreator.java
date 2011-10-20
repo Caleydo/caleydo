@@ -108,14 +108,6 @@ public class GLPathwayContentCreator {
 		buildHighlightedCompoundNodeDisplayList(gl);
 
 		this.internalSelectionManager = internalSelectionManager;
-
-		// hashElementId2MappingColorArray.clear();
-
-		// if
-		// (!generalManager.getIDMappingManager().hasMapping(EIDType.REFSEQ_MRNA_INT,
-		// EIDType.EXPRESSION_INDEX)) {
-		// bEnableGeneMapping = false;
-		// }
 	}
 
 	public void buildPathwayDisplayList(final GL2 gl, final IUniqueObject containingView,

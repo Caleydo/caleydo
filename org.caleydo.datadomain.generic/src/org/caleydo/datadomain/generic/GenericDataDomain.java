@@ -43,24 +43,6 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 
 		super.init();
-
-		// if (isColumnDimension) {
-		// primaryRecordMappingType = IDType.getIDType("DAVID");
-		// humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
-		//
-		// primaryDimensionMappingType = IDType.getIDType("DIMENSION");
-		// humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
-		// } else {
-		// primaryRecordMappingType = IDType.getIDType("DIMENSION");
-		// humanReadableRecordIDType = IDType.getIDType("DIMENSION");
-		//
-		// primaryDimensionMappingType = IDType.getIDType("DAVID");
-		// humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
-		// }
-		//
-
-		// Load IDs needed in this datadomain
-
 	}
 
 	@Override
@@ -89,7 +71,21 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 		configuration.setRecordDenominationSingular("record");
 		configuration.setDimensionDenominationPlural("dimensions");
 		configuration.setDimensionDenominationSingular("dimension");
-
 	}
 
+	@Override
+	public void createDefaultConfigurationWithSamplesAsRows() {
+		configuration = new DataDomainConfiguration();
+
+		configuration.setRecordIDCategory("UNSPECIFIED_DIMENSION");
+		configuration.setDimensionIDCategory("UNSPECIFIED_RECORD");
+
+		configuration.setHumanReadableRecordIDType("unspecified_column");
+		configuration.setHumanReadableDimensionIDType("unspecified_record");
+
+		configuration.setRecordDenominationPlural("dimensions");
+		configuration.setRecordDenominationSingular("dimension");
+		configuration.setDimensionDenominationPlural("records");
+		configuration.setDimensionDenominationSingular("record");
+	}
 }

@@ -1359,34 +1359,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			recordSelectionManager.clearSelection(selectionType);
 
-			// TODO: Integrate multi spotting support again
-			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX) {
-			// // Resolve multiple spotting on chip and add all to the
-			// // selection manager.
-			// Integer iRefSeqID =
-			// idMappingManager.getID(EMappingType.EXPRESSION_INDEX_2_REFSEQ_MRNA_INT,
-			// externalID);
-			// if (iRefSeqID == null) {
-			// pickingManager.flushHits(uniqueID, ePickingType);
-			// return;
-			// }
-			// int iConnectionID =
-			// generalManager.getIDManager().createID(EManagedObjectType.CONNECTION);
-			// for (Object iExpressionIndex : idMappingManager.getMultiID(
-			// EMappingType.REFSEQ_MRNA_INT_2_EXPRESSION_INDEX, iRefSeqID))
-			// {
-			// polylineSelectionManager.addToType(SelectionType, (Integer)
-			// iExpressionIndex);
-			// polylineSelectionManager.addConnectionID(iConnectionID,
-			// (Integer) iExpressionIndex);
-			// }
-			// }
-			// else {
 			recordSelectionManager.addToType(selectionType, pickingID);
 			recordSelectionManager.addConnectionID(generalManager.getIDCreator()
 					.createID(ManagedObjectType.CONNECTION), pickingID);
-
-			// }
 
 			// if (ePolylineDataType == EIDType.EXPRESSION_INDEX &&
 			// !bAngularBrushingSelectPolyline) {

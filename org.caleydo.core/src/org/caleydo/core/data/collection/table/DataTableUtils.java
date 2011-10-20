@@ -139,7 +139,6 @@ public class DataTableUtils {
 	 */
 	public static boolean createColumns(LoadDataParameters loadDataParameters) {
 		
-
 		ArrayList<Integer> columnIDs = null;
 		boolean createColumnsFromExistingIDs = false;
 
@@ -166,7 +165,7 @@ public class DataTableUtils {
 		IDMappingManager columnIDMappingManager;
 		IDType columnIDType;
 		IDType hrColumnIDType;
-		if (dataDomain.isColumnDimension()) {
+		if (dataDomain.getLoadDataParameters().isColumnDimension()) {
 			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
 			columnIDType = dataDomain.getDimensionIDType();
 			hrColumnIDType = dataDomain.getHumanReadableDimensionIDType();
@@ -269,13 +268,13 @@ public class DataTableUtils {
 		cmdCreateTable.setAttributes(columnIDs, dataDomain);
 		cmdCreateTable.doCommand();
 
-		// Load dynamic mapping
+		// --------- load dynamic mapping ---------------
 		CmdParseIDMapping cmdParseIDMapping =
 			(CmdParseIDMapping) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.PARSE_ID_MAPPING);
 
 		IDType rowIDType;
-		if (dataDomain.isColumnDimension())
+		if (dataDomain.getLoadDataParameters().isColumnDimension())
 			rowIDType = dataDomain.getRecordIDType();
 		else
 			rowIDType = dataDomain.getDimensionIDType();
@@ -290,8 +289,6 @@ public class DataTableUtils {
 		cmdParseIDMapping.doCommand();
 
 		// --------- data loading ---------------
-
-		// Trigger file loading command
 		CmdLoadFileNDimensions cmdLoadCSV =
 			(CmdLoadFileNDimensions) GeneralManager.get().getCommandManager()
 				.createCommandByType(CommandType.LOAD_DATA_FILE);
@@ -304,7 +301,6 @@ public class DataTableUtils {
 			return null;
 		}
 
-		// ----------------------------------------
 		DataTable table = dataDomain.getTable();
 
 		if (createDefaultPerspectives) {

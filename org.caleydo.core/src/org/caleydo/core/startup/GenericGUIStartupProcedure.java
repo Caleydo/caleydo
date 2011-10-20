@@ -30,7 +30,7 @@ public class GenericGUIStartupProcedure
 		this.dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get()
 				.createDataDomain("org.caleydo.datadomain.generic");
-
+		
 		super.init(appInitData);
 	}
 

@@ -92,7 +92,7 @@ public class DataTable
 	public DataTable(ATableBasedDataDomain dataDomain) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.DATA_TABLE));
 		this.dataDomain = dataDomain;
-		isColumnDimension = dataDomain.isColumnDimension();
+		isColumnDimension = dataDomain.getLoadDataParameters().isColumnDimension();
 		// initWithDataDomain();
 	}
 

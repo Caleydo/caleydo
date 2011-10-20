@@ -68,9 +68,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		configuration = new DataDomainConfiguration();
 
 		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
-
-		configuration.setColumnDimension(true);
-
 		configuration.setRecordIDCategory("GENE");
 		configuration.setDimensionIDCategory("SAMPLE");
 
@@ -120,11 +117,10 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	}
 
-	public static DataDomainConfiguration getConfigurationWithSamplesAsRows() {
-		DataDomainConfiguration configuration = new DataDomainConfiguration();
-		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
+	public void createDefaultConfigurationWithSamplesAsRows() {
 
-		configuration.setColumnDimension(false);
+		configuration = new DataDomainConfiguration();
+		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 
 		configuration.setRecordIDCategory("SAMPLE");
 		configuration.setDimensionIDCategory("GENE");
@@ -140,8 +136,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		configuration.setDimensionDenominationPlural("genes");
 		configuration.setDimensionDenominationSingular("gene");
-
-		return configuration;
 	}
 
 	@Override
@@ -411,14 +405,14 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// }
 
 	public IDMappingManager getGeneIDMappingManager() {
-		if (isColumnDimension)
+		if (loadDataParameters.isColumnDimension())
 			return recordIDMappingManager;
 		else
 			return dimensionIDMappingManager;
 	}
 
 	public IDMappingManager getSampleIDMappingManager() {
-		if (isColumnDimension)
+		if (loadDataParameters.isColumnDimension())
 			return dimensionIDMappingManager;
 		else
 			return recordIDMappingManager;

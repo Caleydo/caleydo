@@ -43,6 +43,11 @@ public class PathwayLoaderThread extends Thread {
 
 			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
 					.get().createDataDomain("org.caleydo.datadomain.pathway");
+			
+			pathwayDataDomain.init();
+			Thread thread = new Thread(pathwayDataDomain, pathwayDataDomain.getDataDomainType());
+			thread.start();
+			
 			pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.BIOCARTA);
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
@@ -56,6 +61,11 @@ public class PathwayLoaderThread extends Thread {
 
 			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
 					.get().createDataDomain("org.caleydo.datadomain.pathway");
+
+			pathwayDataDomain.init();
+			Thread thread = new Thread(pathwayDataDomain, pathwayDataDomain.getDataDomainType());
+			thread.start();
+			
 			pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.KEGG);
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(

@@ -18,9 +18,6 @@
 	<Cmd type="CREATE_ID_TYPE" detail="REFSEQ_MRNA" attrib1="GENE"
 		attrib2="STRING" />
 
-	<Cmd type="CREATE_ID_TYPE" detail="REFSEQ_MRNA_INT" attrib1="GENE"
-		attrib2="INT" />
-
 	<Cmd type="CREATE_ID_TYPE" detail="ENSEMBL_GENE_ID" attrib1="GENE"
 		attrib2="STRING" />
 
@@ -58,14 +55,6 @@
 		detail="data/genome/mapping/david/ORGANISM_DAVID2REFSEQ_MRNA.txt"
 		attrib1="DAVID_2_REFSEQ_MRNA REVERSE" attrib2="\t" attrib3="0 -1"
 		attrib5="true" attrib6="GENE" />
-
-	<Cmd type="PARSE_ID_MAPPING" detail="generate"
-		attrib1="REFSEQ_MRNA_2_REFSEQ_MRNA_INT REVERSE" attrib5="false"
-		attrib6="GENE" />
-
-	<Cmd type="PARSE_ID_MAPPING" detail="already_loaded"
-		attrib1="DAVID_2_REFSEQ_MRNA REVERSE LUT" attrib2="\t" attrib3="0 -1"
-		attrib4="DAVID_2_REFSEQ_MRNA_INT" attrib6="GENE" />
 
 	<Cmd type="PARSE_ID_MAPPING"
 		detail="data/genome/mapping/david/ORGANISM_DAVID2ENTREZ_GENE_ID.txt"

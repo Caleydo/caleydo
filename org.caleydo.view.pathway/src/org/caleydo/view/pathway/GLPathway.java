@@ -395,21 +395,8 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 				continue;
 			}
 
-			// Set<Integer> DataTableRefSeq =
-			// idMappingManager.getID(EIDType.DAVID,
-			// EIDType.REFSEQ_MRNA_INT, iDavidID);
-			//
-			// if (DataTableRefSeq == null) {
-			// generalManager.getLogger().log(
-			// new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
-			// "No RefSeq IDs found for David: " + iDavidID));
-			// continue;
-			// }
-
-			// for (Integer iDavid : DataTableRefSeq) {
-
 			IDType geneIDType;
-			if (dataDomain.isColumnDimension())
+			if (dataDomain.getLoadDataParameters().isColumnDimension())
 				geneIDType = dataDomain.getRecordIDType();
 			else
 				geneIDType = dataDomain.getDimensionIDType();
@@ -420,7 +407,6 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 			if (dataTableExpressionIndex == null)
 				continue;
 			alExpressionIndex.addAll(dataTableExpressionIndex);
-			// }
 		}
 
 		return alExpressionIndex;
@@ -825,19 +811,7 @@ public class GLPathway extends AGLView implements ITableBasedDataDomainView,
 					// "Invalid David Gene ID."));
 					continue;
 				}
-
-				// Set<Integer> DataTableRefSeq =
-				// idMappingManager.getID(EIDType.DAVID,
-				// EIDType.REFSEQ_MRNA_INT, iDavidID);
-				//
-				// if (DataTableRefSeq == null) {
-				//
-				// generalManager.getLogger().log(
-				// new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
-				// "No RefSeq IDs found for David: " + iDavidID));
-				// continue;
-				// }
-
+				
 				// for (Object iRefSeqID : DataTableRefSeq) {
 				delta.add(VADeltaItem.create(type, (Integer) iDavidID));
 				// }

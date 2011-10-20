@@ -1050,9 +1050,6 @@ public abstract class AGLView
 
 		pickingManager.removeViewSpecificData(uniqueID);
 
-		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager()
-		// .clearByView(EIDType.REFSEQ_MRNA_INT, uniqueID);
-
 		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
 		generalManager.getViewManager().unregisterGLView(this);
 		unregisterEventListeners();

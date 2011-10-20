@@ -498,31 +498,6 @@ public class TabularDataView extends ASWTView implements
 		recordSelectionManager.clearSelection(SelectionType);
 		recordSelectionManager.addToType(SelectionType, recordIndex);
 
-		// if (dataDomain.equals("org.caleydo.datadomain.genetic")) {
-		// // Resolve multiple spotting on chip and add all to the
-		// // selection manager.
-		// Integer iRefSeqID = null;
-		// // FIXME: Due to new mapping system, a mapping involving expression
-		// // index can return a Set of
-		// // values, depending on the IDType that has been specified when
-		// // loading expression data.
-		// // Possibly a different handling of the Set is required.
-		// Set<Integer> setRefSeqIDs = idMappingManager.getIDAsSet(
-		// EIDType.EXPRESSION_INDEX, EIDType.REFSEQ_MRNA_INT, recordIndex);
-		//
-		// if ((setRefSeqIDs != null && !setRefSeqIDs.isEmpty())) {
-		// iRefSeqID = (Integer) setRefSeqIDs.toArray()[0];
-		// }
-		// if (iRefSeqID != null) {
-		// for (Object iExpressionIndex : idMappingManager
-		// .<Integer, Object> getIDAsSet(EIDType.REFSEQ_MRNA_INT,
-		// EIDType.EXPRESSION_INDEX, iRefSeqID)) {
-		// contentSelectionManager.addToType(SelectionType,
-		// (Integer) iExpressionIndex);
-		// }
-		// }
-		// }
-
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 
 		// SelectionCommand command = new

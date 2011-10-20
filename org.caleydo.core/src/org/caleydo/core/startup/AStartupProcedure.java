@@ -1,6 +1,6 @@
 package org.caleydo.core.startup;
 
-import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.core.runtime.Platform;
@@ -16,7 +16,7 @@ public abstract class AStartupProcedure {
 
 	protected ApplicationInitData appInitData;
 
-	protected IDataDomain dataDomain;
+	protected ADataDomain dataDomain;
 
 	public void init(ApplicationInitData appInitData) {
 		this.appInitData = appInitData;

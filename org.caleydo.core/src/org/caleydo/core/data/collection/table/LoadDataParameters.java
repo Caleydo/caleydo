@@ -83,6 +83,10 @@ public class LoadDataParameters {
 	/** String converter for the column headers */
 	private AStringConverter columnHeaderStringConverter;
 
+	/** determine whether a dimension is shown as column or row */
+	@XmlElement
+	boolean isColumnDimension;
+	
 	/**
 	 * Determines whether a table in the DataTable is considered homogeneous or not. Homogeneous means, that
 	 * the same maximum and minimum are used for normalization.
@@ -362,5 +366,20 @@ public class LoadDataParameters {
 	 */
 	public AStringConverter getColumnHeaderStringConverter() {
 		return columnHeaderStringConverter;
+	}
+	
+	/**
+	 * @param isColumnDimension
+	 *            setter, see {@link #isColumnDimension}
+	 */
+	public void setColumnDimension(boolean isColumnDimension) {
+		this.isColumnDimension = isColumnDimension;
+	}
+	
+	/**
+	 * @return the isColumnDimension, see {@link #isColumnDimension}
+	 */
+	public boolean isColumnDimension() {
+		return isColumnDimension;
 	}
 }

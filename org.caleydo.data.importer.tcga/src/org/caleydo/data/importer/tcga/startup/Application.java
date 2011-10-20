@@ -73,10 +73,10 @@ public class Application
 
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
+		boolean isColumnDimension = false;
+		
 		DataDomainConfiguration mrnaConfiguration = new DataDomainConfiguration();
 		mrnaConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
-
-		mrnaConfiguration.setColumnDimension(false);
 
 		mrnaConfiguration.setRecordIDCategory("SAMPLE");
 		mrnaConfiguration.setPrimaryRecordMappingType("SAMPLE");
@@ -91,10 +91,9 @@ public class Application
 		mrnaConfiguration.setDimensionDenominationSingular("gene");
 
 		loadSources("mRNA data", MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration, isColumnDimension);
 
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
-		mirnaConfiguration.setColumnDimension(false);
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		mirnaConfiguration.setRecordDenominationPlural("samples");
@@ -106,10 +105,9 @@ public class Application
 		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
 
 		loadSources("miRNA data", MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration, isColumnDimension);
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
-		methylationConfiguration.setColumnDimension(false);
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
 		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		methylationConfiguration.setRecordDenominationPlural("samples");
@@ -122,7 +120,7 @@ public class Application
 
 		loadSources("Methylation data", METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
-			methylationConfiguration);
+			methylationConfiguration, isColumnDimension);
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
@@ -136,10 +134,10 @@ public class Application
 	}
 
 	private void loadSources(String label, String dataSource, String groupingSource, String dataDomainType,
-		ColorMapper colorMapper, DataDomainConfiguration configuration) throws FileNotFoundException,
+		ColorMapper colorMapper, DataDomainConfiguration configuration, boolean isColumnDimension) throws FileNotFoundException,
 		IOException {
 
-		convertGctFile(label, dataSource, dataDomainType, colorMapper, configuration);
+		convertGctFile(label, dataSource, dataDomainType, colorMapper, configuration, isColumnDimension);
 		loadClusterInfo(groupingSource);
 
 		PerspectiveInitializationData clusterResult = runClusteringOnRows();
@@ -147,7 +145,7 @@ public class Application
 	}
 
 	protected void convertGctFile(String label, String fileName, String dataDomainType, ColorMapper colorMapper,
-		DataDomainConfiguration configuration) throws FileNotFoundException, IOException {
+		DataDomainConfiguration configuration, boolean isColumnDimension) throws FileNotFoundException, IOException {
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -184,13 +182,18 @@ public class Application
 
 		dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, configuration);
+		
 		dataDomain.setColorMapper(colorMapper);
-		// dataDomain.setColumnDimension(false);
+		
 		loadDataParameters.setDataDomain(dataDomain);
-
-		loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
 		loadDataParameters.setMathFilterMode("Normal");
 		loadDataParameters.setIsDataHomogeneous(true);
+		loadDataParameters.setColumnDimension(isColumnDimension);
+
+		dataDomain.init();
+		loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+		Thread thread = new Thread(dataDomain, dataDomainType);
+		thread.start();
 
 		// construct input pattern string based on number of columns in file
 		StringBuffer buffer = new StringBuffer("SKIP;SKIP;");

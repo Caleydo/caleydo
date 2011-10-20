@@ -60,8 +60,8 @@ public class IDType {
 	}
 
 	/**
-	 * Register a new IDType. Checks whether the typeName is already used, and whether the columnType is
-	 * legal.
+	 * Register a new IDType. Checks whether whether the columnType is legal. If the typeName is already
+	 * registered, it is replaced with the newly created one.
 	 * 
 	 * @param typeName
 	 *            see {@link #typeName}
@@ -75,17 +75,30 @@ public class IDType {
 		if (!(columnType == EColumnType.STRING || columnType == EColumnType.INT))
 			throw new IllegalStateException(
 				"IDTypes are allowed to be only either of type STRING or INT, but was: " + columnType);
-		if (registeredTypes.containsKey(typeName)) {
-			Logger.log(new Status(Status.INFO, "IDType", "IDType for typeName " + typeName
-				+ " already created"));
-			return registeredTypes.get(typeName);
-		}
+
 		IDType idType = new IDType(typeName, idCategory, columnType);
 		registeredTypes.put(typeName, idType);
 		Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
 
 		return idType;
 	}
+
+	// /**
+	// * Unregister an IDType. Checks whether the IDType is registered.
+	// *
+	// * @param idType
+	// * see {@link #idType}
+	// */
+	// public static void unregisterType(IDType idType) {
+	// if (registeredTypes.containsKey(idType.getTypeName())) {
+	// Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
+	// registeredTypes.remove(idType.getTypeName());
+	// }
+	// else {
+	// Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType "
+	// + idType.getTypeName() + " because it does not exist."));
+	// }
+	// }
 
 	/** Returns the IDType for the typeName specified, or null if no such type is registered */
 	public static IDType getIDType(String typeName) {

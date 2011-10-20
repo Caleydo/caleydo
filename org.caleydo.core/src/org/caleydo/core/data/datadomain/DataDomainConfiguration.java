@@ -20,11 +20,6 @@ import org.caleydo.core.data.id.IDType;
  */
 public class DataDomainConfiguration {
 
-	/**
-	 * @see {@link ATableBasedDataDomain#isColumnDimension}
-	 */
-	@XmlElement
-	boolean isColumnDimension;
 	@XmlElement
 	String mappingFile;
 	@XmlElement
@@ -51,14 +46,6 @@ public class DataDomainConfiguration {
 	String dimensionDenominationSingular = "not set";
 	@XmlElement
 	String dimensionDenominationPlural = "not set";
-
-	/**
-	 * @param isColumnDimension
-	 *            setter, see {@link #isColumnDimension}
-	 */
-	public void setColumnDimension(boolean isColumnDimension) {
-		this.isColumnDimension = isColumnDimension;
-	}
 
 	/**
 	 * @param recordIDCategory

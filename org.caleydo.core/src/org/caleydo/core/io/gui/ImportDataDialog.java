@@ -72,6 +72,7 @@ public class ImportDataDialog
 
 	private Button buttonHomogeneous;
 	private Button buttonUncertaintyDataProvided;
+	private Button buttonSwapRowsWithColumns;
 
 	private Table previewTable;
 
@@ -87,8 +88,6 @@ public class ImportDataDialog
 	private LoadDataParameters loadDataParameters = new LoadDataParameters();
 
 	private String mathFilterMode = "Log2";
-
-	private boolean isUncertaintyDataProvided = false;
 
 	private ATableBasedDataDomain dataDomain = null;
 
@@ -134,17 +133,31 @@ public class ImportDataDialog
 
 	@Override
 	protected void okPressed() {
-
+		
+		// We have to call the init again in order to reinitialize the mappings
+		if (buttonSwapRowsWithColumns.getSelection()) {
+			
+			// Unregister old IDTypes before creating the new ones
+//			IDType.unregisterType(dataDomain.getDimensionIDType());
+//			IDType.unregisterType(dataDomain.getHumanReadableDimensionIDType());
+//			IDType.unregisterType(dataDomain.getRecordIDType());
+//			IDType.unregisterType(dataDomain.getHumanReadableRecordIDType());
+			
+			dataDomain.createDefaultConfigurationWithSamplesAsRows();
+			dataDomain.init();
+		}
+		
+		fillLoadDataParameters();
+		
 		boolean success = readDimensionDefinition();
 		if (success) {
 			success = DataTableUtils.createColumns(loadDataParameters);
 		}
-		fillLoadDataParameters();
-
+		
 		DataTable table = DataTableUtils.createData(dataDomain, true);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
-
+		
 		// Open default start view for the newly created data domain
 		try {
 			
@@ -180,11 +193,9 @@ public class ImportDataDialog
 	}
 
 	private void createGUI(Composite parent) {
-		if (dataDomain.isColumnDimension())
-			idMappingManager = dataDomain.getRecordIDMappingManager();
-		else
-			idMappingManager = dataDomain.getDimensionIDMappingManager();
-
+	
+		idMappingManager = dataDomain.getRecordIDMappingManager();
+		
 		int numGridCols = 5;
 
 		loadDataParameters.setDataDomain(dataDomain);
@@ -582,13 +593,11 @@ public class ImportDataDialog
 		buttonUncertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
 		buttonUncertaintyDataProvided.setText("Uncertainty data");
 		buttonUncertaintyDataProvided.setEnabled(true);
-		buttonUncertaintyDataProvided.setSelection(isUncertaintyDataProvided);
-		buttonUncertaintyDataProvided.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				isUncertaintyDataProvided = buttonUncertaintyDataProvided.getSelection();
-			}
-		});
+		
+		buttonSwapRowsWithColumns = new Button(dataPropertiesGroup, SWT.CHECK);
+		buttonSwapRowsWithColumns.setText("Swap rows and columns");
+		buttonSwapRowsWithColumns.setEnabled(true);
+		buttonSwapRowsWithColumns.setSelection(false);
 	}
 
 	private void createDataPreviewTable(final String sDelimiter) {
@@ -780,6 +789,7 @@ public class ImportDataDialog
 
 		loadDataParameters.setMathFilterMode(mathFilterMode);
 		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
+		loadDataParameters.setColumnDimension(!buttonSwapRowsWithColumns.getSelection());
 		loadDataParameters.setLabel(txtDataSetLabel.getText());
 	}
 
@@ -803,7 +813,7 @@ public class ImportDataDialog
 			else {
 
 				// in uncertainty mode each second column is flagged with "CERTAINTY"
-				if (isUncertaintyDataProvided && (columnIndex % 2 != 0)) {
+				if (buttonUncertaintyDataProvided.getSelection() && (columnIndex % 2 != 0)) {
 					inputPattern.append("CERTAINTY;");
 					continue;
 				}
