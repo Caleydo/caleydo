@@ -24,13 +24,13 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
-import org.caleydo.view.datagraph.ADataContainerRenderer;
-import org.caleydo.view.datagraph.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.OverviewDataContainerRenderer;
 import org.caleydo.view.datagraph.ViewNodeBackGroundRenderer;
 import org.caleydo.view.datagraph.contextmenu.OpenViewItem;
+import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
+import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
+import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.eclipse.core.runtime.FileLocator;
@@ -42,7 +42,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
-	private OverviewDataContainerRenderer overviewDataContainerRenderer;
+	private DataContainerListRenderer overviewDataContainerRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
 	private List<ADimensionGroupData> dimensionGroups;
@@ -149,7 +149,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
-		Column baseColumn = new Column();
+		baseColumn = new Column();
 		baseColumn.setPixelGLConverter(pixelGLConverter);
 
 		baseRow.append(spacingLayoutX);
@@ -181,10 +181,10 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(),
 				true));
 
-		Column bodyColumn = new Column("bodyColumn");
+		bodyColumn = new Column("bodyColumn");
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		overviewDataContainerRenderer = new OverviewDataContainerRenderer(this,
+		overviewDataContainerRenderer = new DataContainerListRenderer(this,
 				view, dragAndDropController, getDimensionGroups());
 		compGroupLayout.setRatioSizeY(1);
 		compGroupLayout.setRenderer(overviewDataContainerRenderer);
@@ -202,6 +202,8 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
+		
+		setUpsideDown(isUpsideDown);
 
 		return baseRow;
 	}

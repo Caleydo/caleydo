@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.datacontainer;
 
 import java.awt.geom.Point2D;
 import java.util.HashMap;
@@ -14,29 +14,43 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class ADataContainerRenderer extends LayoutRenderer {
 
-	protected final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
+	public final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
 
 	protected IDataGraphNode node;
 	protected AGLView view;
 	protected DragAndDropController dragAndDropController;
-	protected Map<Integer, Pair<Point2D, Point2D>> dimensionGroupPositions;
+	protected Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions;
+	protected Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions;
+	protected boolean isUpsideDown = false;
 
 	public ADataContainerRenderer(IDataGraphNode node, AGLView view,
 			DragAndDropController dragAndDropController) {
 		this.node = node;
 		this.view = view;
 		this.dragAndDropController = dragAndDropController;
-		dimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
+		bottomDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
+		topDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
 	}
 
 	public abstract void setDimensionGroups(
 			List<ADimensionGroupData> dimensionGroupDatas);
 
-	public Pair<Point2D, Point2D> getAnchorPointsOfDimensionGroup(
+	public Pair<Point2D, Point2D> getBottomAnchorPointsOfDimensionGroup(
 			ADimensionGroupData dimensionGroupData) {
-		return dimensionGroupPositions.get(dimensionGroupData.getID());
+		return bottomDimensionGroupPositions.get(dimensionGroupData.getID());
 	}
-	
+
+	public Pair<Point2D, Point2D> getTopAnchorPointsOfDimensionGroup(
+			ADimensionGroupData dimensionGroupData) {
+		return topDimensionGroupPositions.get(dimensionGroupData.getID());
+	}
+
 	public abstract void destroy();
+
+	public abstract void setUpsideDown(boolean isUpsideDown);
+
+	public boolean isUpsideDown() {
+		return isUpsideDown;
+	}
 
 }

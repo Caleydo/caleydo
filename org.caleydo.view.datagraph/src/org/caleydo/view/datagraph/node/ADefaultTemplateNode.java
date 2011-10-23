@@ -9,6 +9,7 @@ import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
+import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
@@ -18,9 +19,9 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.ADataContainerRenderer;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 
 public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
@@ -29,16 +30,19 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	protected final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected final static int MIN_DATA_CONTAINER_HEIGHT_PIXELS = 32;
 	protected final static int MIN_DATA_CONTAINER_WIDTH_PIXELS = 180;
-	
+
 	protected LayoutManager layoutManager;
-	
+	protected boolean isUpsideDown = true;
+	protected Column baseColumn;
+	protected Column bodyColumn;
+
 	public ADefaultTemplateNode(ForceDirectedGraphLayout graphLayout,
 			GLDataGraph view, DragAndDropController dragAndDropController,
 			int id) {
 		super(graphLayout, view, dragAndDropController, id);
 
 	}
-	
+
 	@Override
 	public void init() {
 		// layout = nodeLayout;
@@ -50,11 +54,29 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		layoutTemplate.setBaseElementLayout(baseLayout);
 		layoutManager.setTemplate(layoutTemplate);
 	}
-	
+
 	@Override
 	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
 			ADimensionGroupData dimensionGroup) {
 
+		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
+				.getBottomAnchorPointsOfDimensionGroup(dimensionGroup);
+
+		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints);
+	}
+
+	@Override
+	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
+			ADimensionGroupData dimensionGroup) {
+
+		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
+				.getTopAnchorPointsOfDimensionGroup(dimensionGroup);
+
+		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints);
+	}
+
+	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
+			Pair<Point2D, Point2D> anchorPoints) {
 		Point2D position = graphLayout.getNodePosition(this, true);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
@@ -68,9 +90,6 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getGLWidthForPixelWidth(SPACING_PIXELS);
 		float spacingY = pixelGLConverter
 				.getGLHeightForPixelHeight(SPACING_PIXELS);
-
-		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getAnchorPointsOfDimensionGroup(dimensionGroup);
 
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
 		Point2D second = (Point2D) anchorPoints.getSecond().clone();
@@ -212,7 +231,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 						getDataContainerRenderer().getMinWidthPixels());
 		// return layout.getWidthPixels();
 	}
-	
+
 	protected Row createDefaultBaseRow(float[] color, int pickingID) {
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(0, 0, 1, 0);
@@ -292,7 +311,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
 
 	}
-	
+
 	@Override
 	public Rectangle2D getBoundingBox() {
 
@@ -301,6 +320,22 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		double y = position.getY() - getHeight() / 2 - 0.2;
 
 		return new Rectangle2D.Double(x, y, getWidth() + 0.4, getHeight() + 0.4);
+	}
+
+	@Override
+	public boolean isUpsideDown() {
+		return isUpsideDown;
+	}
+
+	@Override
+	public void setUpsideDown(boolean isUpsideDown) {
+		this.isUpsideDown = isUpsideDown;
+
+		baseColumn.setBottomUp(!isUpsideDown);
+		bodyColumn.setBottomUp(!isUpsideDown);
+
+		view.setDisplayListDirty();
+		getDataContainerRenderer().setUpsideDown(isUpsideDown);
 	}
 
 	protected abstract ElementLayout setupLayout();

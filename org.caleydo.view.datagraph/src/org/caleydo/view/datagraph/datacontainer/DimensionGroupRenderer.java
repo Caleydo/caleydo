@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.datacontainer;
 
 import java.awt.geom.Point2D;
 
@@ -28,6 +28,7 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 	private Point2D draggingPosition;
 	private SelectionType selectionType;
 	private boolean renderDimensionGroupLabel;
+	private boolean isUpsideDown = false;
 
 	private int textHeightPixels;
 
@@ -103,15 +104,28 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 		if (renderDimensionGroupLabel) {
 			gl.glPushMatrix();
-			float textPositionX = (x - pixelGLConverter
-					.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
-			gl.glTranslatef(
-					textPositionX,
-					y
-							- pixelGLConverter
-									.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-					0.1f);
-			gl.glRotatef(-90, 0, 0, 1);
+			
+			if(isUpsideDown) {
+				float textPositionX = pixelGLConverter
+						.getGLHeightForPixelHeight(textHeightPixels - 2)
+						+ (x - pixelGLConverter
+								.getGLHeightForPixelHeight(textHeightPixels - 2))
+						/ 2.0f;
+
+				gl.glTranslatef(textPositionX, pixelGLConverter
+						.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS), 0.1f);
+				gl.glRotatef(90, 0, 0, 1);
+			} else {
+				float textPositionX = (x - pixelGLConverter
+						.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
+				gl.glTranslatef(
+						textPositionX,
+						y
+								- pixelGLConverter
+										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+						0.1f);
+				gl.glRotatef(-90, 0, 0, 1);
+			}
 
 			textRenderer
 					.renderTextInBounds(
@@ -208,6 +222,14 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 	public int getTextHeightPixels() {
 		return textHeightPixels;
+	}
+
+	public boolean isUpsideDown() {
+		return isUpsideDown;
+	}
+
+	public void setUpsideDown(boolean isUpsideDown) {
+		this.isUpsideDown = isUpsideDown;
 	}
 
 }

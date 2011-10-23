@@ -80,14 +80,14 @@ public class EdgeBandRenderer {
 
 		if (!commonDimensionGroupsNode1.isEmpty()) {
 
-			connector1 = new BundleConnector(node1, pixelGLConverter,
+			connector1 = new BottomBundleConnector(node1, pixelGLConverter,
 					connectionBandRenderer, commonDimensionGroupsNode1,
 					minBandWidth, maxBandWidth, maxDataAmount);
-			connector2 = new BundleConnector(node2, pixelGLConverter,
+			connector2 = new BottomBundleConnector(node2, pixelGLConverter,
 					connectionBandRenderer, commonDimensionGroupsNode2,
 					minBandWidth, maxBandWidth, maxDataAmount);
 
-			bandWidth = ((BundleConnector) connector1).getBandWidth();
+			bandWidth = ((BottomBundleConnector) connector1).getBandWidth();
 
 			// renderBundledBand(gl, node1, node2, commonDimensionGroupsNode1,
 			// commonDimensionGroupsNode2, edgeRoutingStrategy,

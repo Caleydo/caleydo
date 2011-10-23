@@ -18,14 +18,14 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class BundleConnector extends ANodeConnector {
+public class TopBundleConnector extends ANodeConnector {
 
 	protected Point2D bundlingPoint;
 	protected List<ADimensionGroupData> commonDimensionGroups;
 	protected int bandWidth;
 	Map<ADimensionGroupData, Integer> bandWidthMap = new HashMap<ADimensionGroupData, Integer>();
 
-	public BundleConnector(IDataGraphNode node,
+	public TopBundleConnector(IDataGraphNode node,
 
 	PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
@@ -110,12 +110,12 @@ public class BundleConnector extends ANodeConnector {
 	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
 			Color color) {
 
-//		Point2D bandAnchorPoint1 = null;
-//		Point2D bandAnchorPoint2 = null;
+		// Point2D bandAnchorPoint1 = null;
+		// Point2D bandAnchorPoint2 = null;
 
 		calcBandAnchorPoints(isEnd1, bandPoints);
-		
-		if(!isEnd1) {
+
+		if (!isEnd1) {
 			Point2D temp = bandAnchorPoint1;
 			bandAnchorPoint1 = bandAnchorPoint2;
 			bandAnchorPoint2 = temp;

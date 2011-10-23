@@ -14,12 +14,12 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.datagraph.ADataContainerRenderer;
-import org.caleydo.view.datagraph.DetailDataContainerRenderer;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.OverviewDataContainerRenderer;
 import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
+import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
+import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
+import org.caleydo.view.datagraph.datacontainer.matrix.DataContainerMatrixRenderer;
 
 public class TableBasedDataNode extends ADataNode {
 
@@ -33,6 +33,7 @@ public class TableBasedDataNode extends ADataNode {
 	private ElementLayout dataContainerLayout;
 	private ADataContainerRenderer dataContainerRenderer;
 	private Row bodyRow;
+	
 
 	private abstract class ALayoutState {
 		protected ADataContainerRenderer dataContainerRenderer;
@@ -40,6 +41,7 @@ public class TableBasedDataNode extends ADataNode {
 
 		public void apply() {
 			TableBasedDataNode.this.dataContainerRenderer = dataContainerRenderer;
+			dataContainerRenderer.setUpsideDown(isUpsideDown);
 			dataContainerLayout.setRenderer(dataContainerRenderer);
 			toggleDataContainerButtonRenderer
 					.setTextureRotation(currentState.textureRotation);
@@ -51,7 +53,7 @@ public class TableBasedDataNode extends ADataNode {
 	private class OverviewState extends ALayoutState {
 
 		public OverviewState() {
-			dataContainerRenderer = new OverviewDataContainerRenderer(
+			dataContainerRenderer = new DataContainerListRenderer(
 					TableBasedDataNode.this, view, dragAndDropController,
 					getDimensionGroups());
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_270;
@@ -76,8 +78,9 @@ public class TableBasedDataNode extends ADataNode {
 	private class DetailState extends ALayoutState {
 
 		public DetailState() {
-			dataContainerRenderer = new DetailDataContainerRenderer(dataDomain,
+			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain,
 					view, TableBasedDataNode.this, dragAndDropController);
+			
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_90;
 		}
 
@@ -146,7 +149,7 @@ public class TableBasedDataNode extends ADataNode {
 				getID());
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
-		Column baseColumn = new Column();
+		baseColumn = new Column();
 		baseColumn.setPixelGLConverter(pixelGLConverter);
 
 		baseRow.append(spacingLayoutX);
@@ -187,7 +190,7 @@ public class TableBasedDataNode extends ADataNode {
 
 		bodyRow = new Row("bodyRow");
 
-		Column bodyColumn = new Column("bodyColumn");
+		bodyColumn = new Column("bodyColumn");
 
 		dataContainerLayout = new ElementLayout("dataContainerLayout");
 		dataContainerLayout.setRatioSizeY(1);
@@ -206,6 +209,8 @@ public class TableBasedDataNode extends ADataNode {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
+		
+		setUpsideDown(isUpsideDown);
 
 		currentState.apply();
 

@@ -8,10 +8,10 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.datagraph.ADataContainerRenderer;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.OverviewDataContainerRenderer;
+import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
+import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 
 public class PathwayDataNode extends ADataNode {
 
@@ -23,7 +23,7 @@ public class PathwayDataNode extends ADataNode {
 			Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
-		dataContainerRenderer = new OverviewDataContainerRenderer(this, view,
+		dataContainerRenderer = new DataContainerListRenderer(this, view,
 				dragAndDropController, getDimensionGroups());
 
 	}
@@ -37,7 +37,7 @@ public class PathwayDataNode extends ADataNode {
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
-		Column baseColumn = new Column();
+		baseColumn = new Column();
 		baseColumn.setPixelGLConverter(pixelGLConverter);
 
 		baseRow.append(spacingLayoutX);
@@ -56,7 +56,7 @@ public class PathwayDataNode extends ADataNode {
 					1, 1 }));
 		}
 
-		Column bodyColumn = new Column("bodyColumn");
+		bodyColumn = new Column("bodyColumn");
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupLayout.setRatioSizeY(1);
@@ -76,6 +76,8 @@ public class PathwayDataNode extends ADataNode {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(captionLayout);
 		baseColumn.append(spacingLayoutY);
+		
+		setUpsideDown(isUpsideDown);
 
 		return baseRow;
 	}

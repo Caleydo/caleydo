@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.datacontainer.matrix;
 
 import javax.media.opengl.GL2;
 

@@ -26,6 +26,9 @@ public interface IDataGraphNode extends IDraggable {
 
 	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
 			ADimensionGroupData dimensionGroup);
+	
+	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
+			ADimensionGroupData dimensionGroup);
 
 	public Pair<Point2D, Point2D> getTopAnchorPoints();
 
@@ -46,4 +49,9 @@ public interface IDataGraphNode extends IDraggable {
 	public Rectangle2D getBoundingBox();
 	
 	public void init();
+	
+	public void setUpsideDown(boolean isUpsideDown);
+	
+	public boolean isUpsideDown();
+	
 }
