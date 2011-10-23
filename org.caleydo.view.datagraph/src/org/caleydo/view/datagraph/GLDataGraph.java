@@ -827,6 +827,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						PerspectiveInitializationData data = new PerspectiveInitializationData();
 						data.setData(indices);
 						dimensionPerspective.init(data);
+						dimensionPerspective.setLabel(dimensionPerspeciveLabel);
 						// TODO: Shall we really set it private?
 						dimensionPerspective.setPrivate(true);
 						group.setPerspectiveID(dimensionPerspective

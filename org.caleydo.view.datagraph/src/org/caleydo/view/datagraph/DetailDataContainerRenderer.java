@@ -460,7 +460,8 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				+ pixelGLConverter
 						.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
-		for (CellContainer column : columns) {
+		for (int i = 0; i < columns.size(); i++) {
+			CellContainer column = columns.get(i);
 			if (!column.isVisible) {
 				continue;
 			}
@@ -504,6 +505,13 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 				gl.glVertex3f(currentPositionX, y, 0);
 
 				gl.glEnd();
+
+				// gl.glColor3f(1,1,1);
+				// gl.glBegin(GL2.GL_LINES);
+				// gl.glVertex3f(currentPositionX, y - captionRowHeight
+				// - captionSpacingY, 1);
+				// gl.glVertex3f(currentPositionX, y - childIndent, 1);
+				// gl.glEnd();
 			}
 
 			float textPositionX = currentPositionX
@@ -516,19 +524,24 @@ public class DetailDataContainerRenderer extends ADataContainerRenderer {
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
-					captionRowHeight - childIndent - 2 * captionSpacingY, textHeight);
+					captionRowHeight - childIndent - 2 * captionSpacingY,
+					textHeight);
 			gl.glPopMatrix();
 
 			gl.glColor3f(0, 0, 0);
+			if ((column.parentContainer != null) && (i != 0)
+					&& (columns.get(i - 1) != column.parentContainer)) {
+				gl.glColor3f(0.5f, 0.5f, 0.5f);
+			}
 			gl.glLineWidth(1);
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(currentPositionX, 0, 0);
 			gl.glVertex3f(currentPositionX, y - childIndent, 0);
-			for (int i = 1; i < column.numSubdivisions; i++) {
-				gl.glVertex3f(currentPositionX + i * columnWidth, 0, 0);
-				gl.glVertex3f(currentPositionX + i * columnWidth, y
-						- captionRowHeight - captionSpacingY, 0);
-			}
+			// for (int i = 1; i < column.numSubdivisions; i++) {
+			// gl.glVertex3f(currentPositionX + i * columnWidth, 0, 0);
+			// gl.glVertex3f(currentPositionX + i * columnWidth, y
+			// - captionRowHeight - captionSpacingY, 0);
+			// }
 			gl.glEnd();
 
 			float currentDimGroupPositionX = currentPositionX;
