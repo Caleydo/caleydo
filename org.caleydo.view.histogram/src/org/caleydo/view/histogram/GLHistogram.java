@@ -6,15 +6,17 @@ import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
@@ -22,11 +24,10 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -43,8 +44,7 @@ import com.jogamp.opengl.util.awt.TextRenderer;
  * 
  * @author Alexander Lex
  */
-public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
-		IViewCommandHandler {
+public class GLHistogram extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
 
@@ -66,13 +66,11 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	private int iColorMappingPointMoved = -1;
 
 	protected RedrawViewListener redrawViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
+	// protected ClearSelectionsListener clearSelectionsListener;
 
 	private TextRenderer textRenderer;
 
 	float fRenderWidth;
-
-	private ATableBasedDataDomain dataDomain;
 
 	private float sideSpacing = SIDE_SPACING;
 
@@ -89,6 +87,7 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
+		label = "Histogram";
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
@@ -525,11 +524,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public String getDetailedInfo() {
-		return new String("");
-	}
-
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
@@ -584,20 +578,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 		}
 	}
 
-
-	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	@Override
 	public void handleRedrawView() {
 		setDisplayListDirty();
@@ -606,11 +586,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// nothing to do because histogram has no selections
 	}
 
 	@Override
@@ -644,17 +619,6 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-		initData();
 	}
 
 	@Override
@@ -708,13 +672,9 @@ public class GLHistogram extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-
-	}
-
-	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

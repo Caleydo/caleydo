@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -38,11 +38,7 @@ public class HeatMapCreator implements IRemoteViewCreator {
 								-1, 1));
 
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
-		RecordVirtualArray recordVA = remoteRenderingView.getRecordVA();
-		if (recordVA != null)
-			heatMap.setRecordVA(recordVA);
-		heatMap.setDimensionVA(remoteRenderingView.getSegmentData()
-				.getDimensionPerspective().getVirtualArray());
+		heatMap.setDataContainer(remoteRenderingView.getDataContainer());
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		heatMap.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		heatMap.initialize();

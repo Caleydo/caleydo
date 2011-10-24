@@ -31,8 +31,10 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
+import javax.xml.crypto.Data;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -41,6 +43,8 @@ import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.event.view.tablebased.SetPointSizeEvent;
 import org.caleydo.core.event.view.tablebased.SwitchMatrixViewEvent;
@@ -255,8 +259,8 @@ public class GLScatterPlot extends ATableBasedView {
 	 * Aligns the dimension of the Scatter-Matrix With the Dimension-Size
 	 */
 	private void updateMaxAxis() {
-		if (MAX_AXES > dimensionVA.size())
-			MAX_AXES = dimensionVA.size();
+		if (MAX_AXES > dataContainer.getNrDimensions())
+			MAX_AXES = dataContainer.getNrDimensions();
 
 	}
 
@@ -336,10 +340,6 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
-		if (table == null)
-			return;
-
 		// textRenderer.dispose();
 		// textRenderer = new CaleydoTextRenderer(new Font("Arial", Font.PLAIN,
 		// 24), false);
@@ -455,27 +455,6 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public void displayRemote(GL2 gl) {
-
-		// if (set == null)
-		// return;
-		//
-		// // if (bIsTranslationAnimationActive) {
-		// // bIsDisplayListDirtyRemote = true;
-		// // doTranslation();
-		// // }
-		//
-		// if (bIsDisplayListDirtyRemote) {
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		// bIsDisplayListDirtyRemote = false;
-		// //
-		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
-		// }
-		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
-		//
-		// display(gl);
-		// checkForHits(gl);
-
-		// glMouseListener.resetEvents();
 	}
 
 	@Override
@@ -527,10 +506,6 @@ public class GLScatterPlot extends ATableBasedView {
 						-renderStyle.getCenterYOffset(), 0);
 
 		}
-
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		// if (!isRenderedRemote())
-		// contextMenu.render(gl, this);
 	}
 
 	private void buildDisplayListSelection(final GL2 gl, int iGLDisplayListIndex) {
@@ -1243,7 +1218,13 @@ public class GLScatterPlot extends ATableBasedView {
 
 		Texture tempTextur;
 
-		Collection<Integer> tmpSet = this.recordVA.getIndexList();
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+		DataTable table = dataDomain.getTable();
+
+		Collection<Integer> tmpSet = recordVA.getIndexList();
 
 		int iNumberOfActuelelements = numberOfRandomElements;
 		int iActualPointsSkipped = 1;
@@ -1425,6 +1406,10 @@ public class GLScatterPlot extends ATableBasedView {
 
 							int current_SELECTED_X_AXIS = iAxisX;
 							int current_SELECTED_Y_AXIS = iAxisY;
+
+							DimensionVirtualArray dimensionVA = dataContainer
+									.getDimensionPerspective().getVirtualArray();
+							DataTable table = dataDomain.getTable();
 
 							xnormalized = table
 									.getFloat(DataRepresentation.NORMALIZED,

@@ -25,7 +25,8 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
 		float baseSize = (y - (zoomedElements.size() * minSelectedFieldHeight));
 
-		RecordVirtualArray recordVA = heatMap.getRecordVA();
+		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray();
 
 		int level1Elements = 0;
 		Integer[] zoomedArray = new Integer[zoomedElements.size()];
@@ -44,8 +45,7 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 
 			for (int innerCount = count + 1; innerCount < zoomedArray.length; innerCount++) {
 
-				int indexOfInnerZoomedElement = recordVA
-						.indexOf(zoomedArray[innerCount]);
+				int indexOfInnerZoomedElement = recordVA.indexOf(zoomedArray[innerCount]);
 				int difference = Math.abs(indexOfInnerZoomedElement
 						- indexOfZoomedElement);
 				if (difference <= spread * 2) {
@@ -72,7 +72,8 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		if (heatMap.getZoomedElements().contains(recordID))
 			return minSelectedFieldHeight;
 		else {
-			RecordVirtualArray recordVA = heatMap.getRecordVA();
+			RecordVirtualArray recordVA = heatMap.getDataContainer()
+					.getRecordPerspective().getVirtualArray();
 			for (int selectedContentID : heatMap.getZoomedElements()) {
 				int selectedContentIndex = recordVA.indexOf(selectedContentID);
 				for (int count = 1; count <= spread; count++) {

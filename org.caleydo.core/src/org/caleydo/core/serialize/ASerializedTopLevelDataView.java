@@ -4,10 +4,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 
 /**
- * Abstract class for all serialized view representations that handle a single data domain (NOT embedded views with data domains). 
+ * Abstract class for all serialized view representations that handle a single {@link ATableBasedDataDomain}
+ * (NOT embedded views with data domains).
  * 
  * @author Marc Streit
  */

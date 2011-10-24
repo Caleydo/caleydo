@@ -9,7 +9,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.container.ADataContainer;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -28,7 +28,7 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * A {@link ADataPerspective} holds all relevant meta data for either records through the
  * {@link RecordPerspective} or dimensions through the {@link DimensionPerspective}. For many uses both, a
- * RecordPerspective and a DimsenionPerspective are necessary. {@link ADataContainer} is designed to hold
+ * RecordPerspective and a DimsenionPerspective are necessary. {@link DataContainer} is designed to hold
  * combinations of Record- and DimensionPerspectives.
  * </p>
  * <p>
@@ -164,7 +164,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 * 
 	 * @return
 	 */
-	public String getPerspectiveID() {
+	public String getID() {
 		return perspectiveID;
 	}
 

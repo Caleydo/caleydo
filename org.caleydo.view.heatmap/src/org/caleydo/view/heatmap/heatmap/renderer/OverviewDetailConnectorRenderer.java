@@ -4,6 +4,7 @@ import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -41,9 +42,12 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 
 		float yOverview = overviewHeatMap.getSelectedClusterY();
 
+		RecordVirtualArray recordVA = detailHeatMap.getDataContainer()
+				.getRecordPerspective().getVirtualArray();
+
 		try {
-			int lastElementIndex = detailHeatMap.getRecordVA().size() - 1;
-			int lastElementID = detailHeatMap.getRecordVA().get(lastElementIndex);
+			int lastElementIndex = recordVA.size() - 1;
+			int lastElementID = recordVA.get(lastElementIndex);
 			float lastElementHeight = detailHeatMap.getFieldHeight(lastElementID) / 2;
 			float height = detailHeatMap.getYCoordinateByContentIndex(lastElementIndex)
 					+ lastElementHeight - detailHeatMap.getYCoordinateByContentIndex(0);

@@ -38,6 +38,8 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
+		
+		label = "Pathway Browser";
 
 		viewType = VIEW_TYPE;
 		viewSymbol = EIconTextures.PATHWAY_SYMBOL;
@@ -142,18 +144,6 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 				fScalingFactorSpawnLevel));
 
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
-	}
-
-	@Override
-	public String getShortInfo() {
-		return "Pathway Browser";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("Pathway Browser");
-		return sInfoText.toString();
 	}
 
 	@Override

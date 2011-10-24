@@ -23,7 +23,8 @@ public class CaptionCageRenderer extends AHeatMapRenderer {
 
 		// if (!contentSpacing.isUseFishEye()) {
 
-		RecordVirtualArray recordVA = heatMap.getRecordVA();
+		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray();
 
 		for (Integer recordID : recordVA) {
 			if (heatMap.isHideElements()

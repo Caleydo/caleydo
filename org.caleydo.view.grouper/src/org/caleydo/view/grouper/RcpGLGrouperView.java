@@ -23,7 +23,7 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
-		
+
 		isSupportView = true;
 	}
 
@@ -34,15 +34,8 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 		createGLCanvas();
 
 		view = new GLGrouper(glCanvas, parentComposite, serializedView.getViewFrustum());
+		initializeData();
 		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView)serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-
 		view.initialize();
 		createPartControlGL();
 	}

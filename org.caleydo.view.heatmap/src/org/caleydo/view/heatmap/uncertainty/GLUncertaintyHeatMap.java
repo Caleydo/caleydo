@@ -9,7 +9,11 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
@@ -226,14 +230,18 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 
-		if (recordVA != null)
-			detailHeatMap.setRecordVA(recordVA);
-
-		detailHeatMap.setDimensionPerspectiveID(dimensionPerspectiveID);
-
 		detailHeatMap.setDataDomain(dataDomain);
+
+		RecordPerspective detailHMRecordPerspective = new RecordPerspective(dataDomain);
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(dataContainer.getRecordPerspective().getVirtualArray()
+				.getIndexList());
+		detailHMRecordPerspective.init(data);
+
+		DataContainer detailHeatMapContainer = new DataContainer(dataDomain,
+				detailHMRecordPerspective, dataContainer.getDimensionPerspective());
+		detailHeatMap.setDataContainer(detailHeatMapContainer);
 		detailHeatMap.setRemoteRenderingGLView(this);
-		detailHeatMap.setTable(table);
 		detailHeatMap.setRenderTemplate(new UncertaintyDetailHeatMapTemplate(
 				detailHeatMap, this));
 		detailHeatMap.initialize();
@@ -281,18 +289,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public String getShortInfo() {
-
-		return "LayoutTemplate Caleydo View";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "LayoutTemplate Caleydo View";
-
-	}
-
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
 
@@ -304,14 +300,16 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			case CLICKED:
 
 				overviewHeatMap.setSelectedGroup(externalID);
-				RecordGroupList groupList = recordVA.getGroupList();
+				RecordGroupList groupList = dataContainer.getRecordPerspective()
+						.getVirtualArray().getGroupList();
 
 				// null if data set is not clustered
 				if (groupList == null)
 					break;
 
-				ArrayList<Integer> clusterElements = recordVA.getIDsOfGroup(groupList
+				ArrayList<Integer> clusterElements = dataContainer.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList
 						.get(externalID).getGroupID());
+				detailHeatMap.
 				RecordVirtualArray clusterVA = new RecordVirtualArray(
 						recordPerspectiveID, clusterElements);
 				detailHeatMap.setRecordVA(clusterVA);
@@ -403,21 +401,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected void initLists() {
-
-		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
-		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
-
-		// In case of importing group info
-		// if (table.isGeneClusterInfo())
-		// recordVA.setGroupList(table.getContentGroupList());
-		// if (table.isExperimentClusterInfo())
-		// dimensionVA.setGroupList(table.getDimensionGroupList());
-
-		setDisplayListDirty();
-	}
-
-	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
@@ -438,7 +421,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	}
 
 	public void initMultiLevelUncertainty() {
-
+		DataTable table = dataDomain.getTable();
 		if (table.getUncertainty() == null)
 			return;
 
@@ -458,11 +441,11 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		multiLevelUncertainty.add(convertedSNR);
 
-		Collection<double[]> statisticsUncertainties = this.table.getStatisticsResult()
+		Collection<double[]> statisticsUncertainties = table.getStatisticsResult()
 				.getAllFoldChangeUncertainties();
 		multiLevelUncertainty.addAll(statisticsUncertainties);
 
-		for (Integer recordID : recordVA) {
+		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
 			for (double[] uncertaintyLevel : multiLevelUncertainty) {
 
 				double uncertainty = uncertaintyLevel[recordID];

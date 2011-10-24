@@ -37,9 +37,7 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 								-1, 1));
 
 		parCoords.setRemoteRenderingGLView(remoteRenderingView);
-		parCoords.setRecordVA(remoteRenderingView.getRecordVA());
-		parCoords.setDimensionVA(remoteRenderingView.getSegmentData()
-				.getDimensionPerspective().getVirtualArray());
+		parCoords.setDataContainer(remoteRenderingView.getDataContainer());
 		parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		parCoords.initialize();
 		parCoords.initRemote(gl, remoteRenderingView, glMouseListener);

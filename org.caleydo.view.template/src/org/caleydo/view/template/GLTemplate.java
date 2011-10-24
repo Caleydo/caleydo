@@ -1,17 +1,21 @@
 package org.caleydo.view.template;
 
+import java.util.ArrayList;
+
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
+import org.caleydo.core.view.opengl.canvas.AGLView.EBusyState;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -20,14 +24,20 @@ import org.caleydo.view.template.renderstyle.TemplateRenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
 /**
+ * <p>
  * Sample GL2 view.
+ * </p>
+ * <p>
+ * This Template is derived from {@link ATableBasedView}, but if the view does
+ * not use a table, changing that to {@link AGLView} is necessary.
+ * </p>
  * 
  * @author Marc Streit
  */
 
-public class GLTemplate extends AGLView implements IViewCommandHandler,
-		ISelectionUpdateHandler {
+public class GLTemplate extends ATableBasedView {
 
+	// TODO: RENAME
 	public final static String VIEW_TYPE = "org.caleydo.view.template";
 
 	private TemplateRenderStyle renderStyle;
@@ -45,12 +55,13 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLTemplate.VIEW_TYPE;
+		// TODO: RENAME
+		label = "Template";
 	}
 
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-		// renderStyle = new GeneralRenderStyle(viewFrustum);
 		renderStyle = new TemplateRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
@@ -81,15 +92,17 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 
 	@Override
 	public void displayLocal(GL2 gl) {
-
 		pickingManager.handlePicking(this, gl);
 		display(gl);
-		checkForHits(gl);
+		if (busyState != EBusyState.OFF) {
+			renderBusyMode(gl);
+		}
+
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
-
+		display(gl);
 	}
 
 	@Override
@@ -105,19 +118,10 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 		gl.glVertex3f(1, 0, 0);
 		gl.glEnd();
 		gl.glPopName();
+
+		checkForHits(gl);
 	}
-
-	@Override
-	public String getShortInfo() {
-
-		return "LayoutTemplate Caleydo View";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "LayoutTemplate Caleydo View";
-
-	}
+	
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
@@ -150,13 +154,7 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		// TODO Auto-generated method stub
-
-	}
-
+	
 	@Override
 	public void handleRedrawView() {
 		// TODO Auto-generated method stub
@@ -168,13 +166,10 @@ public class GLTemplate extends AGLView implements IViewCommandHandler,
 	}
 
 	@Override
-	public void handleClearSelections() {
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
+		return null;
 	}
 
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 }

@@ -34,11 +34,10 @@ public class TableBasedDimensionGroupData
 	 * @param recordPerspective
 	 * @param dimensionPerspective
 	 */
-	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain,
-		RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective) {
+	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataContainer dataContainer) {
 		this.dataDomain = dataDomain;
-		this.recordPerspective = recordPerspective;
-		this.dimensionPerspective = dimensionPerspective;
+		this.recordPerspective = dataContainer.getRecordPerspective();
+		this.dimensionPerspective = dataContainer.getDimensionPerspective();
 		this.label = recordPerspective.getLabel();
 	}
 
@@ -55,18 +54,17 @@ public class TableBasedDimensionGroupData
 	 * @param dataPerspectiveClass
 	 *            the class type of the newly generated perspective
 	 */
-	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain,
-		RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective, ClusterNode rootNode,
-		Class<? extends ADataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
-		super(dataDomain, recordPerspective, dimensionPerspective);
-
+	public TableBasedDimensionGroupData(ATableBasedDataDomain dataDomain, DataContainer dataContainer,
+		ClusterNode rootNode, Class<? extends ADataPerspective<?, ?, ?, ?>> dataPerspectiveClass) {
+		// super(dataDomain, recordPerspective, dimensionPerspective);
+		this.dataDomain = dataDomain;
 		label = rootNode.getLabel();
 		if (dataPerspectiveClass.equals(RecordPerspective.class)) {
 			this.recordPerspective = new RecordPerspective();
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData((ClusterTree) rootNode.getTree(), rootNode);
 			this.recordPerspective.init(data);
-			dataDomain.getTable().registerRecordPerspecive(recordPerspective);
+			dataDomain.getTable().registerRecordPerspecive(this.recordPerspective);
 
 		}
 		else if (dataPerspectiveClass.equals(DimensionPerspective.class)) {

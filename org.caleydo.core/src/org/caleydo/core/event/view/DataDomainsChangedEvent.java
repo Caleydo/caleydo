@@ -7,7 +7,9 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * This event should be triggered when the data domain(s) of a view change(s).
  * 
  * @author Partl
+ * @deprecated this is no longer supported - new datadomains open new views
  */
+@Deprecated 
 public class DataDomainsChangedEvent
 	extends AEvent {
 	

@@ -1,5 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
@@ -9,11 +10,13 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingLoader;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -65,8 +68,22 @@ public abstract class ATableBasedDataDomain
 	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
 	ISelectionCommandHandler {
 
+	protected boolean isColumnDimension = true;
+
 	/** The raw data for this data domain. */
 	protected DataTable table;
+
+	/**
+	 * <p>
+	 * The {@link DataContainer} registered for this data domain. A {@link DataContainer} is defined by its
+	 * combination of {@link RecordPerspective} and {@link DimensionPerspective}.
+	 * </p>
+	 * <p>
+	 * The key in this hasMap is created as a concatenation of the {@link ADataPerspective#getID()} s using
+	 * {@link #createKey(String, String)},
+	 * </p>
+	 */
+	protected HashMap<String, DataContainer> dataContainers = new HashMap<String, DataContainer>();
 
 	protected String recordDenominationSingular = "<not specified>";
 	protected String recordDenominationPlural = "<not specified>";
@@ -153,6 +170,13 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
+	 * @return the isColumnDimension, see {@link #isColumnDimension}
+	 */
+	public boolean isColumnDimension() {
+		return isColumnDimension;
+	}
+
+	/**
 	 * @param isColumnDimension
 	 *            setter, see {@link #isColumnDimension}
 	 */
@@ -164,9 +188,6 @@ public abstract class ATableBasedDataDomain
 	public void init() {
 		if (configuration == null)
 			createDefaultConfiguration();
-		else if (!loadDataParameters.isColumnDimension())
-			createDefaultConfigurationWithSamplesAsRows();
-
 		boolean externalMappingLoaded = false;
 
 		if (configuration.mappingFile != null) {
@@ -174,16 +195,21 @@ public abstract class ATableBasedDataDomain
 			externalMappingLoaded = true;
 		}
 
+//		isColumnDimension = configuration.isColu;
+
 		if (externalMappingLoaded) {
 			recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
 			dimensionIDCategory = IDCategory.getIDCategory(configuration.dimensionIDCategory);
 
 			humanReadableRecordIDType = IDType.getIDType(configuration.humanReadableRecordIDType);
 			humanReadableDimensionIDType = IDType.getIDType(configuration.humanReadableDimensionIDType);
+
 		}
+
 		else {
 			// if we don't have an external mapping we create the mapping based on the first column / row. We
 			// create the ids for that here.
+
 			recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
 			dimensionIDCategory = IDCategory.registerCategory(configuration.dimensionIDCategory);
 			humanReadableRecordIDType =
@@ -192,6 +218,7 @@ public abstract class ATableBasedDataDomain
 			humanReadableDimensionIDType =
 				IDType.registerType(configuration.humanReadableDimensionIDType, dimensionIDCategory,
 					EColumnType.STRING);
+
 		}
 
 		recordIDType =
@@ -224,19 +251,13 @@ public abstract class ATableBasedDataDomain
 		dimensionDenominationPlural = configuration.dimensionDenominationPlural;
 		dimensionDenominationSingular = configuration.dimensionDenominationSingular;
 
-		// // those have to be set before this is called by the implementing class
-		// if (recordIDCategory == null || dimensionIDCategory == null) {
-		// throw new IllegalStateException("A ID category in " + toString()
-		// + " was null, recordIDCategory: " + recordIDCategory + ", dimensionIDCategory: "
-		// + dimensionIDCategory);
-		// }
 		recordIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(recordIDCategory);
 		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(dimensionIDCategory);
 
 		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager, recordIDType);
 		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDMappingManager, dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
-		
+
 		addIDCategory(dimensionIDCategory);
 		addIDCategory(recordIDCategory);
 
@@ -245,8 +266,6 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public abstract void createDefaultConfiguration();
-
-	public abstract void createDefaultConfigurationWithSamplesAsRows();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes
@@ -270,6 +289,43 @@ public abstract class ATableBasedDataDomain
 	@XmlTransient
 	public DataTable getTable() {
 		return table;
+	}
+
+	/**
+	 * Returns the {@link DataContainer} for the {@link RecordPerspective} and the
+	 * {@link DimensionPerspective} specified. </p>
+	 * <p>
+	 * If such a container exists already, the existing container is returned. If not, a new container is
+	 * created.
+	 * </p>
+	 * 
+	 * @param recordPerspectiveID
+	 * @param dimensionPerspectiveID
+	 * @return
+	 */
+	public DataContainer getDataContainer(String recordPerspectiveID, String dimensionPerspectiveID) {
+		DataContainer container = dataContainers.get(createKey(recordPerspectiveID, dimensionPerspectiveID));
+		if (container == null) {
+			RecordPerspective recordPerspective = table.getRecordPerspective(recordPerspectiveID);
+			if (recordPerspective == null)
+				throw new IllegalArgumentException(
+					"No record perspective registered with this datadomain for " + recordPerspectiveID);
+
+			DimensionPerspective dimensionPerspective = table.getDimensionPerspective(dimensionPerspectiveID);
+			if (dimensionPerspective == null)
+				throw new IllegalArgumentException(
+					"No dimension perspective registered with this datadomain for " + dimensionPerspectiveID);
+
+			container = new DataContainer(this, recordPerspective, dimensionPerspective);
+
+			dataContainers.put(createKey(recordPerspectiveID, dimensionPerspectiveID), container);
+		}
+
+		return container;
+	}
+
+	private String createKey(String recordPerspectiveID, String dimensionPerspectiveID) {
+		return recordPerspectiveID + "_" + dimensionPerspectiveID;
 	}
 
 	/**
@@ -457,8 +513,8 @@ public abstract class ATableBasedDataDomain
 			DimensionPerspective dimensionPerspective = clusterState.getTargetDimensionPerspective();
 			dimensionPerspective.init(dimensionResult);
 
-			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID, dimensionPerspective
-				.getPerspectiveID(), this));
+			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID,
+				dimensionPerspective.getID(), this));
 		}
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING
@@ -467,8 +523,8 @@ public abstract class ATableBasedDataDomain
 			RecordPerspective recordPerspective = clusterState.getTargetRecordPerspective();
 			recordPerspective.init(recordResult);
 
-			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID, recordPerspective
-				.getPerspectiveID(), this));
+			eventPublisher
+				.triggerEvent(new RecordVAUpdateEvent(dataDomainID, recordPerspective.getID(), this));
 		}
 	}
 
@@ -491,8 +547,7 @@ public abstract class ATableBasedDataDomain
 		RecordPerspective recordData = table.getRecordPerspective(vaDelta.getVAType());
 		recordData.setVADelta(vaDelta);
 
-		RecordVAUpdateEvent event =
-			new RecordVAUpdateEvent(dataDomainID, recordData.getPerspectiveID(), this);
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, recordData.getID(), this);
 
 		eventPublisher.triggerEvent(event);
 

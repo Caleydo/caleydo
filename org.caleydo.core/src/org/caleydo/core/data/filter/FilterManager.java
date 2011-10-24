@@ -170,13 +170,13 @@ public abstract class FilterManager<PerspectiveType extends ADataPerspective<?, 
 			metaFilter = (RecordMetaOrFilter) filter;
 		}
 		else {
-			metaFilter = new RecordMetaOrFilter(perspective.getPerspectiveID());
+			metaFilter = new RecordMetaOrFilter(perspective.getID());
 			metaFilter.setDataDomain(filter.getDataDomain());
 			metaFilter.getFilterList().add((RecordFilter) filter);
 		}
 
 		metaFilter.getFilterList().addAll(combineFilters);
-		metaFilter.updateDelta(perspective.getPerspectiveID());
+		metaFilter.updateDelta(perspective.getID());
 
 		filterPipe.set(index, (FilterType) metaFilter);
 		filterPipe.removeAll(combineFilters);

@@ -34,17 +34,19 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 
 		view = new GLHierarchicalHeatMap(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
+
+//		if (view instanceof IDataDomainBasedView<?>) {
+//			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+//					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
+//			@SuppressWarnings("unchecked")
+//			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
+//			dataDomainBasedView.setDataDomain(dataDomain);
+//		}
+		initializeData();
 		view.initFromSerializableRepresentation(serializedView);
-
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-
 		view.initialize();
+		
+		
 		createPartControlGL();
 	}
 

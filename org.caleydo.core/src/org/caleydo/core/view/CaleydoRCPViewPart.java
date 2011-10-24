@@ -156,9 +156,9 @@ public abstract class CaleydoRCPViewPart
 					serializedView.getViewType());
 			serializedTopLevelDataView.setDataDomainID(config.getDataDomain().getDataDomainID());
 			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective()
-				.getPerspectiveID());
+				.getID());
 			serializedTopLevelDataView.setDimensionPerspectiveID(config.getDimensionPerspective()
-				.getPerspectiveID());
+				.getID());
 		}
 	}
 

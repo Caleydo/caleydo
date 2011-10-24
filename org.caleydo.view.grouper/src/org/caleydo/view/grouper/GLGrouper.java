@@ -9,28 +9,24 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
-import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
-import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
@@ -39,13 +35,12 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -86,8 +81,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
-		IViewCommandHandler, ISelectionUpdateHandler, IClusterNodeEventReceiver {
+public class GLGrouper extends ATableBasedView implements IClusterNodeEventReceiver {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.grouper";
 
@@ -113,8 +107,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	private DrawingStrategyManager drawingStrategyManager = null;
 	private DragAndDropController dragAndDropController = null;
 	protected RedrawViewListener redrawViewListener = null;
-	protected ClearSelectionsListener clearSelectionsListener = null;
-	protected SelectionUpdateListener selectionUpdateListener = null;
 	protected ClusterNodeSelectionListener clusterNodeSelectionListener = null;
 
 	private CreateGroupListener createGroupListener = null;
@@ -128,10 +120,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	private SelectionType selectionTypeClicked;
 
 	private ClusterTree tree;
-
-	private ATableBasedDataDomain dataDomain;
-
-	private DataTable table;
 
 	/**
 	 * Constructor.
@@ -268,17 +256,18 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
 		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
-				ClustererType.DIMENSION_CLUSTERING, dataDomain.getTable(), table
-						.getDimensionPerspective(dimensionPerspectiveID)
-						.getVirtualArray(),
-				table.getRecordPerspective(recordPerspectiveID).getVirtualArray());
+				ClustererType.DIMENSION_CLUSTERING, dataDomain.getTable(), dataContainer
+						.getDimensionPerspective().getVirtualArray(), dataContainer
+						.getRecordPerspective().getVirtualArray());
 
 		tree.setDirty();
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData(tree, tree.getRoot());
 
-		eventPublisher.triggerEvent(new ReplaceDimensionPerspectiveEvent(dataDomain
-				.getDataDomainID(), dimensionPerspectiveID, data));
+		eventPublisher
+				.triggerEvent(new ReplaceDimensionPerspectiveEvent(dataDomain
+						.getDataDomainID(), dataContainer.getDimensionPerspective()
+						.getID(), data));
 
 		UpdateViewEvent event = new UpdateViewEvent();
 		event.setSender(this);
@@ -469,11 +458,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public String getDetailedInfo() {
-		return new String("");
-	}
-
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
@@ -615,8 +599,7 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 						}
 
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
-								dataDomain, dimensionPerspectiveID, recordPerspectiveID,
-								selectedNodes);
+								dataDomain, dataContainer, selectedNodes);
 
 						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
 
@@ -766,20 +749,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		eventPublisher.triggerEvent(selectionUpdateEvent);
 	}
 
-
-	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
 	@Override
 	public void handleRedrawView() {
 		setDisplayListDirty();
@@ -788,11 +757,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	public void handleUpdateView() {
 		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// nothing to do because histogram has no selections
 	}
 
 	@Override
@@ -809,10 +773,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
-
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 
 		createGroupListener = new CreateGroupListener();
 		createGroupListener.setHandler(this);
@@ -833,10 +793,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		deleteGroupsListener.setHandler(this);
 		deleteGroupsListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(DeleteGroupsEvent.class, deleteGroupsListener);
-
-		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
 		clusterNodeSelectionListener = new ClusterNodeSelectionListener();
 		clusterNodeSelectionListener.setHandler(this);
@@ -876,10 +832,6 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		if (deleteGroupsListener != null) {
 			eventPublisher.removeListener(deleteGroupsListener);
 			deleteGroupsListener = null;
-		}
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
 		}
 		if (clusterNodeSelectionListener != null) {
 			eventPublisher.removeListener(clusterNodeSelectionListener);
@@ -1224,8 +1176,8 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
 			Collection<SelectionDeltaItem> deltaItems = selectionDelta.getAllItems();
-			Tree<ClusterNode> experimentTree = table.getDimensionPerspective(
-					dimensionPerspectiveID).getTree();
+			Tree<ClusterNode> experimentTree = dataContainer.getDimensionPerspective()
+					.getTree();
 
 			if (experimentTree != null) {
 				// selectionManager.clearSelections();
@@ -1301,40 +1253,13 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
+	public void initialize() {
+		super.initialize();
 
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-
-		if (this.dataDomain == dataDomain)
-			return;
-
-		this.dataDomain = dataDomain;
-		table = this.dataDomain.getTable();
-
-		// FIXME: we need to determine which perspective to use!
-		if (dataDomain.getDimensionPerspectiveIDs().iterator().hasNext())
-			dimensionPerspectiveID = dataDomain.getDimensionPerspectiveIDs().iterator()
-					.next();
-		if (dataDomain.getRecordPerspectiveIDs().iterator().hasNext())
-			recordPerspectiveID = dataDomain.getRecordPerspectiveIDs().iterator().next();
-
-		dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
-				.getVirtualArray();
-		drawingStrategyManager = new DrawingStrategyManager(dimensionPerspectiveID,
-				pickingManager, uniqueID, renderStyle);
-		DimensionPerspective dimensionPerspective = table
-				.getDimensionPerspective(dimensionPerspectiveID);
-		if (dimensionPerspective.getTree() != null) {
-			tree = table.getDimensionPerspective(dimensionPerspectiveID).getTree();
-			initHierarchy(tree);
-		} else {
-			throw new IllegalStateException("No tree available for "
-					+ dimensionPerspectiveID);
-		}
-
+		drawingStrategyManager = new DrawingStrategyManager(dataContainer
+				.getDimensionPerspective().getID(), pickingManager, uniqueID, renderStyle);
+		tree = dataContainer.getDimensionPerspective().getTree();
+		initHierarchy(tree);
 		selectionManager = new SelectionManager(tree.getNodeIDType());
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
@@ -1348,12 +1273,9 @@ public class GLGrouper extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
-
-	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

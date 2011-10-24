@@ -1,14 +1,14 @@
 package org.caleydo.view.datagraph.contextmenu;
 
-import org.caleydo.core.data.container.ADataContainer;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 
 public class CreateViewItem extends AContextMenuItem {
 
-	public CreateViewItem(String viewName, String viewType,
-			IDataDomain dataDomain, ADataContainer dataContainer) {
+	public CreateViewItem(String viewName, String viewType, IDataDomain dataDomain,
+			DataContainer dataContainer) {
 
 		setLabel("Show in " + viewName);
 

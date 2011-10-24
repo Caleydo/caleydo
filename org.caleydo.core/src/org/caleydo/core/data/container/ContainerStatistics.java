@@ -14,7 +14,7 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
  * @author Alexander Lex
  */
 public class ContainerStatistics {
-	private ADataContainer container;
+	private DataContainer container;
 
 	/** The average of all cells in the container */
 	private float averageValue = Float.NEGATIVE_INFINITY;
@@ -24,7 +24,7 @@ public class ContainerStatistics {
 	/**
 	 * 
 	 */
-	public ContainerStatistics(ADataContainer container) {
+	public ContainerStatistics(DataContainer container) {
 		this.container = container;
 	}
 
@@ -68,7 +68,7 @@ public class ContainerStatistics {
 	}
 
 	private void calculateHistogram() {
-		if (!container.getDataDomain().getTable().isSetHomogeneous()) {
+		if (!container.getDataDomain().getTable().isDataHomogeneous()) {
 			throw new UnsupportedOperationException(
 				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}

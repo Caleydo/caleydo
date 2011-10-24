@@ -6,8 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -36,21 +35,20 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	 * @param set
 	 * @param showStandardDeviation
 	 */
-	public OverviewHeatMapRenderer(RecordVirtualArray recordVA,
-			DimensionVirtualArray dimensionVA, DataTable table,
+	public OverviewHeatMapRenderer(DataContainer dataContainer, DataTable table,
 			boolean showStandardDeviation) {
 		colorMapper = table.getDataDomain().getColorMapper();
 		this.showStandardDeviation = showStandardDeviation;
 
-		float[] expressionValues = new float[recordVA.size()];
+		float[] expressionValues = new float[dataContainer.getNrRecords()];
 		heatMapValuesMean = new ArrayList<Float>();
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		for (int dimensionID : dimensionVA) {
+		for (int dimensionID : dataContainer.getDimensionPerspective().getVirtualArray()) {
 
 			int index = 0;
-			for (int recordIndex : recordVA) {
+			for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()) {
 				expressionValues[index] = table.getFloat(DataRepresentation.NORMALIZED,
 						dimensionID, recordIndex);
 				index++;

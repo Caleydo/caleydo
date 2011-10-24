@@ -354,9 +354,9 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 					String dimensionPerspectiveID = column.id;
 
 					if (tableBasedDimensionGroupData.getDimensionPerspective()
-							.getPerspectiveID().equals(dimensionPerspectiveID)
+							.getID().equals(dimensionPerspectiveID)
 							&& tableBasedDimensionGroupData
-									.getRecordPerspective().getPerspectiveID()
+									.getRecordPerspective().getID()
 									.equals(recordPerspectiveID)) {
 						numSubdivisions++;
 						if (numSubdivisions >= rows.size()) {

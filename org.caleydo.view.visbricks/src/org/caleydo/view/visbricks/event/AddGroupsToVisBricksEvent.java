@@ -3,6 +3,7 @@ package org.caleydo.view.visbricks.event;
 import java.util.ArrayList;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -43,8 +44,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  */
 public class AddGroupsToVisBricksEvent extends AEvent {
 
-	private String dimensionPerspectiveID;
-	private String recordPerspectiveID;
+	private DataContainer dataContainer;
 	private ArrayList<ClusterNode> selectedNodes;
 	private boolean createFromNodes = true;
 
@@ -73,11 +73,9 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	 * @param dimensionPerspectiveID
 	 * @param recordPerspectiveID
 	 */
-	public AddGroupsToVisBricksEvent(String dataDomainID, String dimensionPerspectiveID,
-			String recordPerspectiveID) {
+	public AddGroupsToVisBricksEvent(String dataDomainID, DataContainer dataContainer) {
 		this.dataDomainID = dataDomainID;
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-		this.recordPerspectiveID = recordPerspectiveID;
+		this.dataContainer = dataContainer;
 		createFromNodes = false;
 	}
 
@@ -91,17 +89,15 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	 * @param recordPerspectiveID
 	 * @param selectedNodes
 	 */
-	public AddGroupsToVisBricksEvent(String dataDomainID, String dimensionPerspectiveID,
-			String recordPerspectiveID, ArrayList<ClusterNode> selectedNodes) {
+	public AddGroupsToVisBricksEvent(String dataDomainID, DataContainer dataContainer,
+			ArrayList<ClusterNode> selectedNodes) {
 		this.dataDomainID = dataDomainID;
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-		this.recordPerspectiveID = recordPerspectiveID;
+		this.dataContainer = dataContainer;
 		this.selectedNodes = selectedNodes;
 	}
 
 	public boolean checkIntegrity() {
-		if (dimensionGroupData == null
-				&& (dataDomainID == null || dimensionPerspectiveID == null || recordPerspectiveID == null))
+		if (dimensionGroupData == null && (dataDomainID == null || dataContainer == null))
 			return false;
 		if (createFromNodes && selectedNodes == null)
 			return false;
@@ -124,9 +120,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		else if (!createFromNodes && selectedNodes == null) {
 			dimensionGroupData = new ArrayList<ADimensionGroupData>(1);
 			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-					dataDomain, dataDomain.getTable().getRecordPerspective(
-							recordPerspectiveID), dataDomain.getTable()
-							.getDimensionPerspective(dimensionPerspectiveID));
+					dataDomain, dataContainer);
 			dimensionGroupData.add(data);
 			return dimensionGroupData;
 
@@ -139,9 +133,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 				if (node.isLeaf())
 					continue;
 				TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-						dataDomain, dataDomain.getTable().getRecordPerspective(
-								recordPerspectiveID), dataDomain.getTable()
-								.getDimensionPerspective(dimensionPerspectiveID), node,
+						dataDomain, dataContainer, node,
 						DimensionPerspective.class);
 				dimensionGroupData.add(data);
 				dataDomain.addDimensionGroup(data);

@@ -66,7 +66,8 @@ public class ClusterRenderer extends LayoutRenderer {
 
 	public void init() {
 
-		DimensionVirtualArray dimensionVA = uncertaintyHeatMap.getDimensionVA();
+		DimensionVirtualArray dimensionVA = uncertaintyHeatMap.getDataContainer()
+				.getDimensionPerspective().getVirtualArray();
 		DataTable table = uncertaintyHeatMap.getDataDomain().getTable();
 
 		clusterHeatMapLayout = new Column("heatmap");
@@ -84,10 +85,11 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterVisUncBarLayout.setRenderer(visUncBarTextureRenderer);
 
 		clusterLayout.append(clusterVisUncBarLayout);
-		
-		// only add data uncertainty plot if an uncertainty in data space is available
+
+		// only add data uncertainty plot if an uncertainty in data space is
+		// available
 		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
-			
+
 			clusterDataUncBarLayout = new Column("data uncertainty bar");
 			clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
 					.getPixelGLConverter());
@@ -105,9 +107,9 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		clusterLayout.append(clusterHeatMapLayout);
 
-		textureRenderer.init(uncertaintyHeatMap.getTable(), dimensionVA, clusterVA, uncertaintyHeatMap.getRenderingRepresentation());
+		textureRenderer.init(uncertaintyHeatMap.getRenderingRepresentation());
 		textureRenderer.setGroupIndex(clusterIndex);
-		
+
 		visUncBarTextureRenderer.init(uncertaintyHeatMap, table, clusterVA, dimensionVA,
 				uncertaintyHeatMap.getColorMapper());
 
@@ -128,8 +130,8 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		setMouseOverElements = uncertaintyHeatMap.getRecordSelectionManager()
 				.getElements(SelectionType.MOUSE_OVER);
-		setSelectedElements = uncertaintyHeatMap.getRecordSelectionManager()
-				.getElements(SelectionType.SELECTION);
+		setSelectedElements = uncertaintyHeatMap.getRecordSelectionManager().getElements(
+				SelectionType.SELECTION);
 
 		gl.glLineWidth(2f);
 
@@ -167,16 +169,15 @@ public class ClusterRenderer extends LayoutRenderer {
 		}
 	}
 
-	public void updateVisualUncertainty(final GL2 gl, final PixelGLConverter pixelGLConverter) {
-		if (textureRenderer != null
-				&& visUncBarTextureRenderer != null) {
+	public void updateVisualUncertainty(final GL2 gl,
+			final PixelGLConverter pixelGLConverter) {
+		if (textureRenderer != null && visUncBarTextureRenderer != null) {
 
-			visUncBarTextureRenderer
-					.initTextures(calcVisualUncertainty(gl, pixelGLConverter,
-							textureRenderer));
+			visUncBarTextureRenderer.initTextures(calcVisualUncertainty(gl,
+					pixelGLConverter, textureRenderer));
 		}
 	}
-	
+
 	private ArrayList<Float> calcVisualUncertainty(final GL2 gl,
 			final PixelGLConverter pixelGLConverter, HeatMapTextureRenderer renderer) {
 

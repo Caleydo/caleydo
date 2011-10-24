@@ -58,7 +58,7 @@ public class TagRenderer extends LayoutRenderer {
 			break;
 		}
 
-		if (!tagCloud.getRecordVA().contains(recordID))
+		if (!tagCloud.getD().contains(recordID))
 			return;
 		text = tagCloud.getTable().getRawAsString(dimensionID, recordID);
 

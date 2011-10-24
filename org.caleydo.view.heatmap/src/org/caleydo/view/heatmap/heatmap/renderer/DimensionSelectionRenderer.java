@@ -41,7 +41,7 @@ public class DimensionSelectionRenderer extends AHeatMapRenderer {
 
 		selectedSet = heatMap.getDimensionSelectionManager().getElements(selectionType);
 		int columnIndex = 0;
-		for (int tempColumn : heatMap.getDimensionVA()) {
+		for (int tempColumn : heatMap.getDataContainer().getDimensionPerspective().getVirtualArray()) {
 			for (Integer selectedColumn : selectedSet) {
 				if (tempColumn == selectedColumn) {
 					// TODO we need indices of all elements

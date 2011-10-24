@@ -24,7 +24,7 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = heatMap.getDimensionVA();
+		DimensionVirtualArray dimensionVA = heatMap.getDataContainer().getDimensionPerspective().getVirtualArray();
 		heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 		float xPosition = 0;

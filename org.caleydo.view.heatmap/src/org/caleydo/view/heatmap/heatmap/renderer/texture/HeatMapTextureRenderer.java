@@ -6,8 +6,11 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -48,16 +51,13 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 	private int numberOfDimensions;
 
-	private RecordVirtualArray recordVA;
-
-	private DimensionVirtualArray dimensionVA;
-
-	private DataTable table;
+	private ATableBasedDataDomain dataDomain;
+	private DataContainer dataContainer;
 
 	private int groupIndex = -1;
 
 	private int viewID;
-	
+
 	private ColorMapper colorMapper;
 
 	public HeatMapTextureRenderer(GLHeatMap heatMap) {
@@ -82,7 +82,10 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 
-		int recordElements = heatMap.getRecordVA().size();
+		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray();
+
+		int recordElements = recordVA.size();
 
 		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
 		if (heatMap.isHideElements()) {
@@ -90,14 +93,15 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		recordSpacing.calculateRecordSpacing(recordElements, heatMap.getDimensionVA()
-				.size(), parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+		recordSpacing.calculateRecordSpacing(recordElements, heatMap.getDataContainer()
+				.getDimensionPerspective().getVirtualArray().size(),
+				parameters.getSizeScaledX(), parameters.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(recordSpacing);
 
 		float yPosition = parameters.getSizeScaledY();
 		recordSpacing.getYDistances().clear();
-		for (Integer recordID : heatMap.getRecordVA()) {
+		for (Integer recordID : recordVA) {
 
 			float fieldHeight = recordSpacing.getFieldHeight(recordID);
 			yPosition -= fieldHeight;
@@ -108,15 +112,12 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
-	public void init(DataTable table, DimensionVirtualArray dimensionVA,
-			RecordVirtualArray recordVA, DataRepresentation dataRepresentation) {
+	public void init(DataRepresentation dataRepresentation) {
 
-		this.table = table;
-		this.dimensionVA = dimensionVA;
-		this.recordVA = recordVA;
-
-		int textureHeight = numberOfRecords = recordVA.size();
-		int textureWidth = numberOfDimensions = dimensionVA.size();
+		int textureHeight = numberOfRecords = heatMap.getDataContainer()
+				.getRecordPerspective().getVirtualArray().size();
+		int textureWidth = numberOfDimensions = heatMap.getDataContainer()
+				.getDimensionPerspective().getVirtualArray().size();
 
 		numberOfTextures = (int) Math.ceil((double) numberOfRecords
 				/ MAX_SAMPLES_PER_TEXTURE);
@@ -155,11 +156,13 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		int textureCounter = 0;
 		float opacity = 1;
 
-		for (Integer recordID : recordVA) {
+		for (Integer recordID : heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray()) {
 
 			recordCount++;
 
-			for (Integer dimensionID : dimensionVA) {
+			for (Integer dimensionID : heatMap.getDataContainer()
+					.getDimensionPerspective().getVirtualArray()) {
 				// if
 				// (contentSelectionManager.checkStatus(SelectionType.DESELECTED,
 				// recordIndex)) {
@@ -168,7 +171,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				// fOpacity = 1.0f;
 				// }
 
-				lookupValue = table.getFloat(dataRepresentation, dimensionID, recordID);
+				lookupValue = heatMap.getDataDomain().getTable()
+						.getFloat(dataRepresentation, dimensionID, recordID);
 
 				float[] mappingColor = colorMapper.getColor(lookupValue);
 
@@ -268,6 +272,12 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		startRecord = startRecord < 0 ? 0 : startRecord;
 		endRecord = endRecord > numberOfRecords - 1 ? numberOfRecords - 1 : endRecord;
 
+		DataTable table = heatMap.getDataDomain().getTable();
+		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = heatMap.getDataContainer()
+				.getDimensionPerspective().getVirtualArray();
+		
 		for (int dimensionCount = 0; dimensionCount < numberOfDimensions; dimensionCount++) {
 			val = 0;
 

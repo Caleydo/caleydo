@@ -19,7 +19,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
  * 
  * @author Alexander Lex
  */
-public abstract class ADataContainer
+public class DataContainer
 	implements IDataContainer {
 
 	private static int idCounter;
@@ -38,8 +38,7 @@ public abstract class ADataContainer
 	/**
 	 * Empty constructor, nothing initialized
 	 */
-	public ADataContainer() {
-
+	public DataContainer() {
 	}
 
 	/**
@@ -49,7 +48,7 @@ public abstract class ADataContainer
 	 * @param recordPerspective
 	 * @param dimensionPerspective
 	 */
-	public ADataContainer(ATableBasedDataDomain dataDomain, RecordPerspective recordPerspective,
+	public DataContainer(ATableBasedDataDomain dataDomain, RecordPerspective recordPerspective,
 		DimensionPerspective dimensionPerspective) {
 		this.dataDomain = dataDomain;
 		this.recordPerspective = recordPerspective;
@@ -92,17 +91,48 @@ public abstract class ADataContainer
 	}
 
 	/**
+	 * Checks whether the specified container id matches to the record perspective in this
+	 * {@link DataContainer}
+	 * 
+	 * @param recordPerspectiveID
+	 * @return true if the specified id equals the id of the perspective in this container
+	 */
+	public boolean hasRecordPerspective(String recordPerspectiveID) {
+		return recordPerspective.getID().equals(recordPerspectiveID);
+	}
+
+	/**
+	 * Same as {@link #hasRecordPerspective(String)} for dimensions
+	 * 
+	 * @param dimensionPerspectiveID
+	 * @return true if the specified id equals the id of the perspective in this container
+	 */
+	public boolean hasDimensionPerspective(String dimensionPerspectiveID) {
+		return dimensionPerspective.getID().equals(dimensionPerspectiveID);
+	}
+
+	/**
 	 * @return the statistics, see {@link #containerStatistics}
 	 */
 	public ContainerStatistics getContainerStatistics() {
 		return containerStatistics;
 	}
-	
+
 	/**
 	 * @return the id, see {@link #id}
 	 */
 	public int getID() {
 		return id;
+	}
+
+	/** Returns the size of the virtual array in the record perspective, i.e. the number of records */
+	public int getNrRecords() {
+		return recordPerspective.getVirtualArray().size();
+	}
+
+	/** Same as {@link #getNrRecords()} for dimensions */
+	public int getNrDimensions() {
+		return dimensionPerspective.getVirtualArray().size();
 	}
 
 }

@@ -528,7 +528,7 @@ public abstract class AGLViewBrowser
 		}
 
 		if (level == poolLevel) {
-			String sRenderText = glView.getShortInfo();
+			String sRenderText = glView.getLabel();
 
 			// FIXME: after view plugin restructuring
 			// if (glView instanceof GLTissue)
@@ -877,7 +877,7 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getShortInfo();
+		String sText = element.getGLView().getLabel();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -1687,7 +1687,7 @@ public abstract class AGLViewBrowser
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) lastSelectionDelta);
-			event.setInfo(getShortInfo());
+			event.setInfo(getLabel());
 			eventPublisher.triggerEvent(event);
 		}
 	}

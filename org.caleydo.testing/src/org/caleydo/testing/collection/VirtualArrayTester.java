@@ -26,7 +26,7 @@ public class VirtualArrayTester extends TestCase {
 	}
 
 	public void testBasics() {
-		assertEquals(size, virtualArray.size().intValue());
+		assertEquals(size, virtualArray.size());
 	}
 
 	public void testBulkRemoveIndex() {
@@ -38,7 +38,7 @@ public class VirtualArrayTester extends TestCase {
 		Collections.shuffle(shuffeledList);
 		virtualArray.removeInBulk(shuffeledList);
 
-		assertEquals(0, virtualArray.size().intValue());
+		assertEquals(0, virtualArray.size());
 	}
 
 //	public void testRemoveID() {
@@ -66,7 +66,7 @@ public class VirtualArrayTester extends TestCase {
 		remove(0, 501, shuffeledList);
 		remove(500, size, shuffeledList);
 
-		assertEquals(0, virtualArray.size().intValue());
+		assertEquals(0, virtualArray.size());
 	}
 
 	private void remove(int from, int to, ArrayList<Integer> shuffeledList) {

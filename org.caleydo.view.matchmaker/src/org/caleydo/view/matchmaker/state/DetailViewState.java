@@ -224,7 +224,7 @@ public class DetailViewState extends ACompareViewStateStatic {
 		GLHeatMap detailHeatMap = heatMapWrapper
 				.getHeatMapByContentID(lastDetailContentID);
 
-		int numberOfVisibleLines = detailHeatMap.getNumberOfVisibleElements() - 1;
+		int numberOfVisibleLines = detailHeatMap.getNumberOfVisibleRecords() - 1;
 		if (numberOfVisibleLines < 0)
 			return;
 

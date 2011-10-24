@@ -20,8 +20,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	private boolean isDirty = false;
 	private GLUncertaintyHeatMap uncertaintyHeatmap;
 
-	public BarPlotRenderer(GLHeatMap heatMap,
-			GLUncertaintyHeatMap uncertaintyHeatmap) {
+	public BarPlotRenderer(GLHeatMap heatMap, GLUncertaintyHeatMap uncertaintyHeatmap) {
 		super(heatMap);
 		this.uncertaintyHeatmap = uncertaintyHeatmap;
 	}
@@ -31,19 +30,20 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 
-		int contentElements = heatMap.getRecordVA().size();
+		int nrRecordElements = heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray().size();
 
-		RecordSelectionManager selectionManager = heatMap
-				.getRecordSelectionManager();
+		RecordSelectionManager selectionManager = heatMap.getRecordSelectionManager();
 		if (heatMap.isHideElements()) {
 
-			contentElements -= selectionManager
+			nrRecordElements -= selectionManager
 					.getNumberOfElements(GLHeatMap.SELECTION_HIDDEN);
 		}
 
-		recordSpacing.calculateRecordSpacing(contentElements, heatMap
-				.getDimensionVA().size(), parameters.getSizeScaledX(), parameters
-				.getSizeScaledY(), heatMapTemplate.getMinSelectedFieldHeight());
+		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getDataContainer()
+				.getDimensionPerspective().getVirtualArray().size(),
+				parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(recordSpacing);
 
 		// ((AContentRenderer) renderer).setContentSpacing(contentSpacing);
@@ -62,17 +62,12 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 			isDirty = false;
 		}
 
-		ArrayList<double[]> uncertainties = uncertaintyHeatmap
-				.getMultiLevelUncertainty();
-
-		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
-		DataTable set = heatMap.getTable();
-		if (set == null)
-			return;
+		ArrayList<double[]> uncertainties = uncertaintyHeatmap.getMultiLevelUncertainty();
 
 		PixelGLConverter conv = heatMap.getPixelGLConverter();
 
-		for (Integer recordID : heatMap.getRecordVA()) {
+		for (Integer recordID : heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray()) {
 			fieldHeight = recordSpacing.getFieldHeight(recordID);
 
 			// we treat normal and deselected the same atm
@@ -88,13 +83,11 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 			xPosition = 0;
 
 			int screenHeight = conv.getPixelHeightForGLHeight(fieldHeight);
-			
-			float uncertaintyMax = uncertaintyHeatmap
-					.getMaxUncertainty(recordID);
+
+			float uncertaintyMax = uncertaintyHeatmap.getMaxUncertainty(recordID);
 			if (screenHeight < 15) {
 				renderBlock(gl, yPosition, xPosition, fieldHeight, fieldWidth,
-						uncertaintyMax,
-						GLUncertaintyHeatMap.getUncertaintyColor(0));
+						uncertaintyMax, GLUncertaintyHeatMap.getUncertaintyColor(0));
 			} else {
 
 				for (int i = 0; i < uncertainties.size(); i++) {
@@ -102,8 +95,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 					float uncertainty = (float) uncertainties.get(i)[recordID];
 
 					float height = fieldHeight / (float) uncertainties.size();
-					float yPos = yPosition + height
-							* (uncertainties.size() - i - 1);
+					float yPos = yPosition + height * (uncertainties.size() - i - 1);
 					// certainty[i] = certainty[i] > 1 ? 1 : certainty[i];
 					// certainty[i] = certainty[i] < 0 ? 0 : certainty[i];
 
@@ -113,16 +105,14 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 					// uncertainty,
 					// GLUncertaintyHeatMap.DATA_VALID[i]);
 					// } else {
-					renderBlock(gl, yPos, xPosition, height, fieldWidth,
-							uncertainty,
+					renderBlock(gl, yPos, xPosition, height, fieldWidth, uncertainty,
 							GLUncertaintyHeatMap.getUncertaintyColor(i + 1));
 					// }
 				}
 			}
 			if (screenHeight >= 1) {
-				renderVLine(gl, yPosition, xPosition + fieldWidth
-						* (uncertaintyMax), fieldHeight, 
-						GLUncertaintyHeatMap.getUncertaintyColor(0));
+				renderVLine(gl, yPosition, xPosition + fieldWidth * (uncertaintyMax),
+						fieldHeight, GLUncertaintyHeatMap.getUncertaintyColor(0));
 			}
 
 			recordSpacing.getYDistances().add(yPosition);
@@ -131,8 +121,8 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	}
 
 	private void renderBlock(final GL2 gl, final float fYPosition,
-			final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth, final float uncertainty, float[] rgba) {
+			final float fXPosition, final float fFieldHeight, final float fFieldWidth,
+			final float uncertainty, float[] rgba) {
 
 		float certainWidth = fFieldWidth * (1 - uncertainty);
 		float unCertainWidth = fFieldWidth * (uncertainty);
@@ -148,8 +138,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 		gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glVertex3f(fXPosition, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
@@ -157,12 +146,10 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glColor4fv(rgba, 0);
 		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition, FIELD_Z);
-		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + certainWidth + unCertainWidth, fYPosition
 				+ fFieldHeight, FIELD_Z);
-		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight,
-				FIELD_Z);
+		gl.glVertex3f(fXPosition + unCertainWidth, fYPosition + fFieldHeight, FIELD_Z);
 		gl.glEnd();
 
 		// gl.glPopName();
@@ -170,9 +157,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	}
 
 	private void renderVLine(final GL2 gl, final float fYPosition,
-			final float fXPosition, 
-			final float fFieldHeight,
-			float[] rgba) {
+			final float fXPosition, final float fFieldHeight, float[] rgba) {
 
 		gl.glBegin(GL2.GL_LINES);
 		gl.glColor4fv(rgba, 0);
@@ -189,8 +174,9 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 		if (recordSpacing != null)
 			return y
 					- recordSpacing.getYDistances().get(recordIndex)
-					- recordSpacing.getFieldHeight(heatMap.getRecordVA().get(
-							recordIndex)) / 2;
+					- recordSpacing.getFieldHeight(heatMap.getDataContainer()
+							.getRecordPerspective().getVirtualArray().get(recordIndex))
+					/ 2;
 		return 0;
 	}
 

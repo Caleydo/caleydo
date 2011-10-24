@@ -61,8 +61,8 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		viewSwitchingButtons.add(overviewHeatMapButton);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -89,8 +89,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate
-				.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
@@ -123,8 +122,8 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		viewSwitchingButtons.add(histogramButton);
 		viewSwitchingButtons.add(overviewHeatMapButton);
 
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		layoutTemplate.setToolBarElements(toolBarElements);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
@@ -168,8 +167,8 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		viewSwitchingButtons.add(histogramButton);
 		viewSwitchingButtons.add(overviewHeatMapButton);
 
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		layoutTemplate.setToolBarElements(toolBarElements);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
@@ -189,53 +188,45 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void setBrickViews(GLBrick brick, GL2 gl,
-			GLMouseListener glMouseListener, ABrickLayoutTemplate brickLayout) {
+	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+			ABrickLayoutTemplate brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
 			HeatMapCreator heatMapCreator = new HeatMapCreator();
-			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl,
-					glMouseListener);
-			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(
-					heatMap);
+			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl, glMouseListener);
+			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
 			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
 			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
 					heatMapLayoutRenderer);
 		}
 
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
-				glMouseListener);
-		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(
-				parCoords);
+		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
+		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
 		HistogramCreator histogramCreator = new HistogramCreator();
-		AGLView histogram = histogramCreator.createRemoteView(brick, gl,
-				glMouseListener);
-		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(
-				histogram);
+		AGLView histogram = histogramCreator.createRemoteView(brick, gl, glMouseListener);
+		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
 		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
 		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getRecordVA(), brick.getSegmentData()
-						.getDimensionPerspective().getVirtualArray(), brick
-						.getSegmentData().getDataDomain().getTable(), true);
+				brick.getDataContainer(), brick.getSegmentData().getDataDomain()
+						.getTable(), true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getRecordVA(), brick.getSegmentData()
-						.getDimensionPerspective().getVirtualArray(), brick
-						.getSegmentData().getDataDomain().getTable(), false);
+				brick.getDataContainer(), brick.getSegmentData().getDataDomain()
+						.getTable(), false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);
@@ -251,8 +242,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate
-				.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		layoutTemplate.setHeaderBarElements(headerBarElements);

@@ -1,20 +1,22 @@
 package org.caleydo.view.visbricks.brick.category;
 
+import java.util.ArrayList;
+
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -27,15 +29,13 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Alexander Lex
  */
-public class CategoryView extends AGLView implements ITableBasedDataDomainView,
-		IViewCommandHandler {
+public class CategoryView extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
 
 	boolean bUseDetailLevel = true;
 
 	protected RedrawViewListener redrawViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
 
 	float fRenderWidth;
 
@@ -106,8 +106,6 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 
 		display(gl);
 
-		if (!lazyMode)
-			checkForHits(gl);
 	}
 
 	@Override
@@ -121,17 +119,14 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
 
 		display(gl);
-		checkForHits(gl);
+
 	}
 
 	@Override
 	public void display(GL2 gl) {
 		System.out.println("not much");
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return new String("");
+		if (!lazyMode)
+			checkForHits(gl);
 	}
 
 	@Override
@@ -160,21 +155,6 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 		}
 	}
 
-
-	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-
-
 	@Override
 	public void handleRedrawView() {
 		setDisplayListDirty();
@@ -186,25 +166,12 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public void handleClearSelections() {
-		// nothing to do because histogram has no selections
-	}
-
-	@Override
-	public ASerializedView getSerializableRepresentation() {
-		return null;
-	}
-
-	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
 		redrawViewListener = new RedrawViewListener();
 		redrawViewListener.setHandler(this);
 		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
 
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
 	}
 
 	@Override
@@ -218,17 +185,6 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-		initData();
 	}
 
 	@Override
@@ -272,13 +228,16 @@ public class CategoryView extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	public ASerializedView getSerializableRepresentation() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

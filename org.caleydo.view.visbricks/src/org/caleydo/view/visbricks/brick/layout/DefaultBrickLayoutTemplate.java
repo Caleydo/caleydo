@@ -461,7 +461,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 			int brickSize = (int) ((float) height
 					/ (float) dimensionGroup.getDimensionGroupData()
 							.getRecordPerspective().getVirtualArray().size() * brick
-					.getRecordVA().size());
+					.getDataContainer().getNrRecords());
 			return brickSize;
 		}
 

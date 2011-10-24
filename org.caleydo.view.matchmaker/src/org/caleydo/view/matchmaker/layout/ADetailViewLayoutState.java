@@ -90,7 +90,7 @@ public abstract class ADetailViewLayoutState {
 
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
-			int numElements = heatMap.getNumberOfVisibleElements();
+			int numElements = heatMap.getNumberOfVisibleRecords();
 			totalNumberOfElements += numElements;
 			totalHeatMapOverheadSize += heatMap.getRequiredOverheadSpacing();
 			if (heatMap.isForceMinSpacing()) {
@@ -133,7 +133,7 @@ public abstract class ADetailViewLayoutState {
 
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
-			int numElements = heatMap.getNumberOfVisibleElements();
+			int numElements = heatMap.getNumberOfVisibleRecords();
 
 			if (numElements * defaultSpacing < hmMinSpacing) {
 				minSizeGranted++;
@@ -189,7 +189,7 @@ public abstract class ADetailViewLayoutState {
 
 		for (Group group : selectedGroups.keySet()) {
 			GLHeatMap heatMap = heatMapWrapper.getHeatMap(group.getGroupID());
-			int numElements = heatMap.getNumberOfVisibleElements();
+			int numElements = heatMap.getNumberOfVisibleRecords();
 			float currentHeatMapOverheadSize = heatMap.getRequiredOverheadSpacing();
 			float size = 0;
 			if (layout.isUseZoom() && heatMap.isForceMinSpacing()) {

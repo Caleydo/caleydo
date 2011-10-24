@@ -10,22 +10,18 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.RecordSelectionManager;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
@@ -48,8 +44,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
-		IViewCommandHandler, ISelectionUpdateHandler {
+public class GLTagCloud extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.tagclouds";
 
@@ -61,14 +56,8 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 
 	private TagCloudRenderStyle renderStyle;
 
-	private DataTable table;
-
-	private ATableBasedDataDomain dataDomain;
-
 	private LayoutManager layoutManager;
 	private LayoutTemplate layoutTemplate;
-
-	private SelectionUpdateListener selectionUpdateListener = new SelectionUpdateListener();
 
 	private Column baseColumn;
 	private Row tagCloudRow;
@@ -122,13 +111,13 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 	@Override
 	@SuppressWarnings("unchecked")
 	public void initData() {
-		if (table == null)
-			table = dataDomain.getTable();
-		if (recordVA == null)
-			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
-		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
-					.getVirtualArray();
+
+		DataTable table = dataDomain.getTable();
+
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
 		if (contentSelectionManager == null)
 			contentSelectionManager = dataDomain.getRecordSelectionManager();
 
@@ -412,18 +401,6 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public String getShortInfo() {
-
-		return "LayoutTemplate Caleydo View";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "LayoutTemplate Caleydo View";
-
-	}
-
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
 
@@ -508,52 +485,6 @@ public class GLTagCloud extends AGLView implements ITableBasedDataDomainView,
 				tagRenderer.selectionUpdated();
 		}
 
-	}
-
-	@Override
-	public void handleRedrawView() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	public void setTable(DataTable table) {
-		this.table = table;
-	}
-
-	public DataTable getTable() {
-		return table;
-	}
-
-	public void setRecordVA(RecordVirtualArray recordVA) {
-		this.recordVA = recordVA;
 	}
 
 	public RecordSelectionManager getContentSelectionManager() {

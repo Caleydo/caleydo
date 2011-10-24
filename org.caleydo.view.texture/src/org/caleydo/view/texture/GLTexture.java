@@ -154,34 +154,6 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	}
 
 	@Override
-	public String getShortInfo() {
-		// PathwayGraph pathway =
-		// (generalManager.getPathwayManager().getItem(iPathwayID));
-		//
-		// return pathway.getTitle() + " (" +pathway.getType().getName() + ")";
-
-		return info;
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		// StringBuffer sInfoText = new StringBuffer();
-		// PathwayGraph pathway =
-		// (generalManager.getPathwayManager().getItem(iPathwayID));
-		//
-		// sInfoText.append("<b>Pathway</b>\n\n<b>Name:</b> "+
-		// pathway.getTitle()
-		// + "\n<b>Type:</b> "+pathway.getType().getName());
-		//
-		// // generalManager.getSWTGUIManager().setExternalRCPStatusLineMessage(
-		// // pathway.getType().getName() + " Pathway: " + sPathwayTitle);
-		//
-		// return sInfoText.toString();
-
-		return info;
-	}
-
-	@Override
 	public int getNumberOfSelections(SelectionType selectionType) {
 		// TODO Auto-generated method stub
 		return 0;

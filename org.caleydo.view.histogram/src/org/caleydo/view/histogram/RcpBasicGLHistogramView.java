@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -48,8 +49,7 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 	protected Composite histoComposite;
 
 	protected ATableBasedDataDomain dataDomain;
-
-	PreferenceStore store = GeneralManager.get().getPreferenceStore();
+	protected DataContainer dataContainer;
 
 	/**
 	 * Constructor.
@@ -281,7 +281,11 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+	}
 
+	@Override
+	public void setDataContainer(DataContainer dataContainer) {
+		this.dataContainer = dataContainer;
 	}
 
 	@Override
@@ -312,18 +316,6 @@ public class RcpBasicGLHistogramView extends ARcpGLViewPart implements
 	public int getID() {
 		// TODO Auto-generated method stub
 		return 0;
-	}
-
-	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

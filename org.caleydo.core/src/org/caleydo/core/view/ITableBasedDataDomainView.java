@@ -1,6 +1,7 @@
 package org.caleydo.core.view;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 
@@ -14,19 +15,12 @@ public interface ITableBasedDataDomainView
 	extends IDataDomainBasedView<ATableBasedDataDomain>, IView {
 
 	/**
-	 * Set the perspectiveID for the records, thereby defining which perspective the view should use. The
-	 * perspective is expected to be registered with the {@link DataTable}
+	 * Set the perspectives for the records and dimensions, thereby defining which perspectives the view
+	 * should use. The perspective is expected to be registered with the {@link DataTable}
 	 * 
 	 * @param recordPerspectiveID
-	 */
-	public void setRecordPerspectiveID(String recordPerspectiveID);
-
-	/**
-	 * Set the perspectiveID for the dimensions, thereby defining which perspective the view should use. The
-	 * perspective is expected to be registered with the {@link DataTable}
-	 * 
 	 * @param dimensionPerspectiveID
 	 */
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID);
+	public void setDataContainer(DataContainer dataContainer);
 
 }

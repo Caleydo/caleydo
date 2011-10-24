@@ -55,16 +55,16 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	// private ArrayList<FieldWidthElement> alFieldWidths;
 
-	private HashMap<Integer, Float> hashLevelToWidth;
+	// private HashMap<Integer, Float> hashLevelToWidth;
 
 	GLHeatMap heatMap;
 	GLHierarchicalHeatMap hierarchicalHeatMap;
 
-	private boolean useFishEye = true;
+	// private boolean useFishEye = true;
 
-	public void setUseFishEye(boolean useFishEye) {
-		this.useFishEye = useFishEye;
-	}
+	// public void setUseFishEye(boolean useFishEye) {
+	// this.useFishEye = useFishEye;
+	// }
 
 	public HeatMapRenderStyle(GLHeatMap heatMap, ViewFrustum viewFrustum) {
 
@@ -75,21 +75,22 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		// alFieldWidths = new ArrayList<FieldWidthElement>();
 
 		// init fish eye
-		float fDelta = (selectedFieldHeight - normalFieldHeight) / (iLevels + 1);
-		hashLevelToWidth = new HashMap<Integer, Float>();
-		hashLevelToWidth.put(iNotSelectedLevel, normalFieldHeight);
-		float fCurrentWidth = normalFieldHeight;
-		for (int iCount = -iLevels; iCount <= iLevels; iCount++) {
-			if (iCount < 0) {
-				fCurrentWidth += fDelta;
-			} else if (iCount == 0) {
-				fCurrentWidth = selectedFieldHeight;
-			} else {
-				fCurrentWidth -= fDelta;
-			}
+		// float fDelta = (selectedFieldHeight - normalFieldHeight) / (iLevels +
+		// 1);
+		// hashLevelToWidth = new HashMap<Integer, Float>();
+		// hashLevelToWidth.put(iNotSelectedLevel, normalFieldHeight);
+		// float fCurrentWidth = normalFieldHeight;
+		// for (int iCount = -iLevels; iCount <= iLevels; iCount++) {
+		// if (iCount < 0) {
+		// fCurrentWidth += fDelta;
+		// } else if (iCount == 0) {
+		// fCurrentWidth = selectedFieldHeight;
+		// } else {
+		// fCurrentWidth -= fDelta;
+		// }
 
-			hashLevelToWidth.put(iCount, fCurrentWidth);
-		}
+		// hashLevelToWidth.put(iCount, fCurrentWidth);
+		// }
 
 	}
 
@@ -102,34 +103,40 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	}
 
-	/**
-	 * Initializes or updates field sizes based on selections, virtual arrays
-	 * etc. Call this every time something has changed.
-	 */
-	public void updateFieldSizesWithFish() {
-		int numberSelected = heatMap.getRecordSelectionManager().getNumberOfElements(
-				SelectionType.MOUSE_OVER);
-		numberSelected += heatMap.getRecordSelectionManager().getNumberOfElements(
-				SelectionType.SELECTION);
-
-		int numberTotal = heatMap.getRecordVA().size();
-
-		float selecteFieldHeightPercentage = SELECTED_FIELD_HEIGHT_PERCENTAGE;
-		if (numberSelected > 0 && SELECTED_FIELD_HEIGHT_PERCENTAGE * numberSelected > 1) {
-			selecteFieldHeightPercentage = 1.0f / numberSelected;
-		}
-
-		selectedFieldHeight = getRenderHeight() * MAXIMUM_SELECTED_AREA_PERCENTAGE
-				* selecteFieldHeightPercentage;
-		normalFieldHeight = (getRenderHeight() - numberSelected * selectedFieldHeight)
-				/ (numberTotal - numberSelected);
-
-		normalFieldHeight = normalFieldHeight > selectedFieldHeight ? selectedFieldHeight
-				: normalFieldHeight;
-
-		fieldWidth = getRenderWidth() / heatMap.getDimensionVA().size();
-
-	}
+	// /**
+	// * Initializes or updates field sizes based on selections, virtual arrays
+	// * etc. Call this every time something has changed.
+	// */
+	// public void updateFieldSizesWithFish() {
+	// int numberSelected =
+	// heatMap.getRecordSelectionManager().getNumberOfElements(
+	// SelectionType.MOUSE_OVER);
+	// numberSelected +=
+	// heatMap.getRecordSelectionManager().getNumberOfElements(
+	// SelectionType.SELECTION);
+	//
+	// int numberTotal = heatMap.getRecordVA().size();
+	//
+	// float selecteFieldHeightPercentage = SELECTED_FIELD_HEIGHT_PERCENTAGE;
+	// if (numberSelected > 0 && SELECTED_FIELD_HEIGHT_PERCENTAGE *
+	// numberSelected > 1) {
+	// selecteFieldHeightPercentage = 1.0f / numberSelected;
+	// }
+	//
+	// selectedFieldHeight = getRenderHeight() *
+	// MAXIMUM_SELECTED_AREA_PERCENTAGE
+	// * selecteFieldHeightPercentage;
+	// normalFieldHeight = (getRenderHeight() - numberSelected *
+	// selectedFieldHeight)
+	// / (numberTotal - numberSelected);
+	//
+	// normalFieldHeight = normalFieldHeight > selectedFieldHeight ?
+	// selectedFieldHeight
+	// : normalFieldHeight;
+	//
+	// fieldWidth = getRenderWidth() / heatMap.getDimensionVA().size();
+	//
+	// }
 
 	public float getHeightExperimentDendrogram() {
 		return fHeightExperimentDendrogram;
@@ -172,11 +179,11 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		this.fWidthLevel3 = fWidthLevel3;
 	}
 
-	public float getYCenter() {
-
-		// TODO: this is only correct for 4 rows
-		return viewFrustum.getHeight() / 2;
-	}
+	// public float getYCenter() {
+	//
+	// // TODO: this is only correct for 4 rows
+	// return viewFrustum.getHeight() / 2;
+	// }
 
 	public float getXCenter() {
 
@@ -191,19 +198,19 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 		return 0.3f;
 	}
 
-	private float getRenderWidth() {
-
-		if (heatMap.getDetailLevel() == DetailLevel.HIGH)
-			return viewFrustum.getWidth() - 2.4f * getXSpacing();
-		return viewFrustum.getWidth();
-	}
-
-	public float getRenderHeight() {
-		if (heatMap.getDetailLevel() == DetailLevel.HIGH)
-			return viewFrustum.getHeight() - 2 * getYSpacing();
-		return viewFrustum.getHeight();
-
-	}
+	// private float getRenderWidth() {
+	//
+	// if (heatMap.getDetailLevel() == DetailLevel.HIGH)
+	// return viewFrustum.getWidth() - 2.4f * getXSpacing();
+	// return viewFrustum.getWidth();
+	// }
+	//
+	// public float getRenderHeight() {
+	// if (heatMap.getDetailLevel() == DetailLevel.HIGH)
+	// return viewFrustum.getHeight() - 2 * getYSpacing();
+	// return viewFrustum.getHeight();
+	//
+	// }
 
 	public float getSizeHeatmapArrow() {
 		return fSizeHeatmapArrow;

@@ -239,7 +239,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * 
 	 * @return the size
 	 */
-	public Integer size() {
+	public int size() {
 		return virtualArrayList.size();
 	}
 

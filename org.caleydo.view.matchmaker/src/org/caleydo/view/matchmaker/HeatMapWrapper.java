@@ -442,7 +442,7 @@ public class HeatMapWrapper {
 		float totalHeatMapOverheadSpacing = 0;
 		for (Group tempGroup : selectedGroups.keySet()) {
 			GLHeatMap tempHeatMap = hashHeatMaps.get(tempGroup.getGroupID());
-			numTotalSamples += tempHeatMap.getNumberOfVisibleElements();
+			numTotalSamples += tempHeatMap.getNumberOfVisibleRecords();
 			totalHeatMapOverheadSpacing += tempHeatMap.getRequiredOverheadSpacing();
 		}
 

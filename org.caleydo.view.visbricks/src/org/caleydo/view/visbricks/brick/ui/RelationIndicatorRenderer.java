@@ -52,7 +52,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
 		perspectiveID = brick.getDimensionGroup().getDimensionGroupData()
-				.getRecordPerspective().getPerspectiveID();
+				.getRecordPerspective().getID();
 		groupID = brick.getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
@@ -75,7 +75,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		int count = 0;
 		for (DimensionGroup dimensionGroup : dimensionGroups) {
 			currentID = dimensionGroup.getDimensionGroupData().getRecordPerspective()
-					.getPerspectiveID();
+					.getID();
 			if (currentID.equals(perspectiveID) && isLeft) {
 				neighborPerspectiveID = previousID;
 				if (neighborPerspectiveID != null)

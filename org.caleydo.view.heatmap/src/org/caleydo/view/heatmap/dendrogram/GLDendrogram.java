@@ -25,6 +25,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -210,9 +211,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (table == null)
-			return;
-
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -223,8 +221,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		if (table == null)
-			return;
 
 		display(gl);
 
@@ -590,6 +586,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			return isPartOfSubTree;
 		} else {
 
+			RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+					.getVirtualArray();
 			int index = recordVA.indexOf(currentNode.getLeafID());
 			if (recordVA.indicesOf(currentNode.getLeafID()).size() > 1) {
 				throw new IllegalStateException("duplicate element");
@@ -1203,19 +1201,16 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			iAlClusterNodes.clear();
 
 			if (bRenderContentTree == true) {
-				if (table.getRecordPerspective(recordPerspectiveID).getTree() != null) {
-					tree = table.getRecordPerspective(recordPerspectiveID).getTree();
+				if (dataContainer.getRecordPerspective().getTree() != null) {
+					tree = dataContainer.getRecordPerspective().getTree();
 					groupList = (GroupType) new RecordGroupList();
 					rootNode = tree.getRoot();
 				} else
 					renderSymbol(gl);
 			} else {
-				if (!table.getDimensionPerspective(dimensionPerspectiveID)
-						.isTreeDefaultTree()
-						&& table.getDimensionPerspective(dimensionPerspectiveID)
-								.getTree() != null) {
-					tree = table.getDimensionPerspective(dimensionPerspectiveID)
-							.getTree();
+				if (!dataContainer.getDimensionPerspective().isTreeDefaultTree()
+						&& dataContainer.getDimensionPerspective().getTree() != null) {
+					tree = dataContainer.getDimensionPerspective().getTree();
 					groupList = (GroupType) new DimensionGroupList();
 					rootNode = tree.getRoot();
 				} else
@@ -1330,9 +1325,11 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		iAlClusterNodes.clear();
 		getNumberOfClustersRec(rootNode);
 		if (bRenderContentTree)
-			groupList = (GroupType) recordVA.buildNewGroupList(iAlClusterNodes);
+			groupList = (GroupType) dataContainer.getRecordPerspective()
+					.getVirtualArray().buildNewGroupList(iAlClusterNodes);
 		else
-			groupList = (GroupType) dimensionVA.buildNewGroupList(iAlClusterNodes);
+			groupList = (GroupType) dataContainer.getDimensionPerspective()
+					.getVirtualArray().buildNewGroupList(iAlClusterNodes);
 
 		triggerGroupListEvent();
 
@@ -1342,15 +1339,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		if (bRenderContentTree) {
 			NewRecordGroupInfoEvent newGroupInfoEvent = new NewRecordGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(recordPerspectiveID);
+			newGroupInfoEvent.setVAType(dataContainer.getRecordPerspective().getID());
 			newGroupInfoEvent.setGroupList((RecordGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
-			newGroupInfoEvent.setTableID(table.getID());
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
 			NewDimensionGroupInfoEvent newGroupInfoEvent = new NewDimensionGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(dimensionPerspectiveID);
+			newGroupInfoEvent.setVAType(dataContainer.getDimensionPerspective().getID());
 			newGroupInfoEvent.setGroupList((DimensionGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
@@ -1496,7 +1492,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getShortInfo());
+				event.setInfo(getLabel());
 				eventPublisher.triggerEvent(event);
 
 				setDisplayListDirty();
@@ -1581,30 +1577,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getShortInfo());
+				event.setInfo(getLabel());
 				eventPublisher.triggerEvent(event);
 
 				setDisplayListDirty();
 			}
 			break;
 		}
-	}
-
-	@Override
-	public String getShortInfo() {
-
-		if (tree == null)
-			return new String("Dendrogram - no tree available");
-
-		if (bRenderContentTree)
-			return new String("Dendrogram - " + rootNode.getNrLeaves() + " genes");
-		else
-			return new String("Dendrogram - " + rootNode.getNrLeaves() + " experiments");
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return new String("Dendrogram view detailedInfo()");
 	}
 
 	@Override
@@ -1640,17 +1619,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
 			int dimensionIndex) throws InvalidAttributeValueException {
 		return null;
-	}
-
-	@Override
-	protected void initLists() {
-
-		// if (bRenderOnlyContext)
-		// recordVAType = EVAType.CONTENT_CONTEXT;
-		// else
-		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
-		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
-
 	}
 
 	/**

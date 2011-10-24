@@ -1,5 +1,6 @@
 package org.caleydo.core.data.collection.table;
 
+import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -54,8 +55,17 @@ public class DataTable
 
 	/** List of dimension IDs in the order as they have been added */
 	private ArrayList<Integer> defaultColumnIDs;
+	/** Container holding all the record perspectives registered. The perspectiveIDs are the keys */
 	private HashMap<String, RecordPerspective> hashRecordPerspectives;
-	HashMap<String, DimensionPerspective> hashDimensionPerspectives;
+	/** same as {@link #hashRecordPerspectives} for dimensions */
+	private HashMap<String, DimensionPerspective> hashDimensionPerspectives;
+	/**
+	 * Default record perspective. Initially all the data is contained in this perspective. If not otherwise
+	 * specified, filters, clusterings etc. are always applied to this perspective
+	 */
+	private RecordPerspective defaultRecordPerspective;
+	/** Same as {@link #defaultRecordPerspective} for dimensions */
+	private DimensionPerspective defaultDimensionPerspective;
 
 	private NumericalColumn meanDimension;
 
@@ -319,8 +329,15 @@ public class DataTable
 	 * 
 	 * @return
 	 */
-	public boolean isSetHomogeneous() {
+	public boolean isDataHomogeneous() {
 		return isTableHomogeneous;
+	}
+
+	/**
+	 * @return the defaultRecordPerspective, see {@link #defaultRecordPerspective}
+	 */
+	public RecordPerspective getDefaultRecordPerspective() {
+		return defaultRecordPerspective;
 	}
 
 	/**
@@ -363,10 +380,17 @@ public class DataTable
 	 * @param recordPerspective
 	 */
 	public void registerRecordPerspecive(RecordPerspective recordPerspective) {
-		if (recordPerspective.getPerspectiveID() == null)
+		if (recordPerspective.getID() == null)
 			throw new IllegalStateException("Record perspective not correctly initiaklized: "
 				+ recordPerspective);
-		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
+		hashRecordPerspectives.put(recordPerspective.getID(), recordPerspective);
+	}
+
+	/**
+	 * @return the defaultDimensionPerspective, see {@link #defaultDimensionPerspective}
+	 */
+	public DimensionPerspective getDefaultDimensionPerspective() {
+		return defaultDimensionPerspective;
 	}
 
 	/**
@@ -393,10 +417,10 @@ public class DataTable
 	 * @param dimensionPerspective
 	 */
 	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
-		if (dimensionPerspective.getPerspectiveID() == null)
+		if (dimensionPerspective.getID() == null)
 			throw new IllegalStateException("Dimension perspective not correctly initiaklized: "
 				+ dimensionPerspective);
-		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
+		hashDimensionPerspectives.put(dimensionPerspective.getID(), dimensionPerspective);
 	}
 
 	/**
@@ -622,32 +646,32 @@ public class DataTable
 	// ---------------------- helper functions ------------------------------
 
 	void createDefaultRecordPerspective() {
-		RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+		defaultRecordPerspective = new RecordPerspective(dataDomain);
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		if (isColumnDimension)
 			data.setData(getRowIDList());
 		else
 			data.setData(getColumnIDList());
-		recordPerspective.init(data);
+		defaultRecordPerspective.init(data);
 
-		recordPerspective.setLabel("Default");
+		defaultRecordPerspective.setLabel("Default");
 
-		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
+		hashRecordPerspectives.put(defaultRecordPerspective.getID(), defaultRecordPerspective);
 	}
 
 	void createDefaultDimensionPerspective() {
 
-		DimensionPerspective dimensionPerspective = new DimensionPerspective(dataDomain);
+		defaultDimensionPerspective = new DimensionPerspective(dataDomain);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		if (isColumnDimension)
 			data.setData(getColumnIDList());
 		else
 			data.setData(getRowIDList());
-		dimensionPerspective.init(data);
+		defaultDimensionPerspective.init(data);
 
-		dimensionPerspective.setLabel("Default");
+		defaultDimensionPerspective.setLabel("Default");
 
-		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
+		hashDimensionPerspectives.put(defaultDimensionPerspective.getID(), defaultDimensionPerspective);
 	}
 }

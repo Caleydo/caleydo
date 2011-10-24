@@ -1,6 +1,6 @@
 package org.caleydo.view.datagraph.event;
 
-import org.caleydo.core.data.container.ADataContainer;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.event.AEvent;
 
@@ -8,10 +8,10 @@ public class CreateViewFromDataContainerEvent extends AEvent {
 
 	private String viewType;
 	private IDataDomain dataDomain;
-	private ADataContainer dataContainer;
+	private DataContainer dataContainer;
 
-	public CreateViewFromDataContainerEvent(String viewType,
-			IDataDomain dataDomain, ADataContainer dataContainer) {
+	public CreateViewFromDataContainerEvent(String viewType, IDataDomain dataDomain,
+			DataContainer dataContainer) {
 		this.setViewType(viewType);
 		this.setDataDomain(dataDomain);
 		this.setDataContainer(dataContainer);
@@ -39,11 +39,11 @@ public class CreateViewFromDataContainerEvent extends AEvent {
 		return dataDomain;
 	}
 
-	public void setDataContainer(ADataContainer dataContainer) {
+	public void setDataContainer(DataContainer dataContainer) {
 		this.dataContainer = dataContainer;
 	}
 
-	public ADataContainer getDataContainer() {
+	public DataContainer getDataContainer() {
 		return dataContainer;
 	}
 

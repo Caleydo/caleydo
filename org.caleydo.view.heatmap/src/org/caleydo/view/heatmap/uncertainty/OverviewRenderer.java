@@ -62,7 +62,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		// overviewLayout.clear();
 		clusterLayoutList.clear();
 
-		RecordVirtualArray recordVA = uncertaintyHeatMap.getRecordVA();
+		RecordVirtualArray recordVA = uncertaintyHeatMap.getDataContainer().getRecordPerspective().getVirtualArray();
 		RecordGroupList clusterList = recordVA.getGroupList();
 
 		int counter = 0;
@@ -72,7 +72,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		// If the dataset is unclustered yet, the whole VA is given to the
 		// detail heat map.
 		if (clusterList == null && detailHeatMap != null) {
-			detailHeatMap.setRecordVA(recordVA);
+			detailHeatMap.setDataContainer(uncertaintyHeatMap.getDataContainer());
 			detailHeatMap.setDisplayListDirty();
 		}
 

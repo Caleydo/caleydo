@@ -19,14 +19,11 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
@@ -85,6 +82,8 @@ public abstract class AGLView
 	implements GLEventListener, IResettableView, IMouseWheelHandler {
 
 	public final static String VIEW_TYPE = "unspecified";
+	/** The human readable label identifying the view, aka the view name */
+	protected String label = "Unspecified view name";
 
 	public enum EBusyState {
 		SWITCH_OFF,
@@ -146,24 +145,6 @@ public abstract class AGLView
 	private static final int NUMBER_OF_FRAMES = 15;
 
 	protected EBusyState busyState = EBusyState.OFF;
-
-	/**
-	 * The virtual array that manages the contents (the indices) in the dimensions
-	 */
-	protected RecordVirtualArray recordVA;
-	/**
-	 * The type of the content VA
-	 */
-	protected String recordPerspectiveID;
-
-	/**
-	 * The id of the virtual array that manages the dimension references in the set
-	 */
-	protected DimensionVirtualArray dimensionVA;
-	/**
-	 * The type of the dimension VA
-	 */
-	protected String dimensionPerspectiveID;
 
 	protected ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
@@ -275,6 +256,21 @@ public abstract class AGLView
 		initLocal(gl);
 	}
 
+	/**
+	 * @param label
+	 *            setter, see {@link #label}
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+
+	/**
+	 * @return the label, see {@link #label}
+	 */
+	public String getLabel() {
+		return label;
+	}
+
 	@Override
 	public final void display(GLAutoDrawable drawable) {
 		try {
@@ -350,9 +346,6 @@ public abstract class AGLView
 	 * <p>
 	 * Method responsible for initialization of the data. It is intended to be overridden, all subclasses must
 	 * use this method to initialize their members related to {@link AView#table}.
-	 * </p>
-	 * <p>
-	 * Note: This is completely independent of {@link #init(GL)}
 	 * </p>
 	 */
 	public void initData() {
@@ -539,8 +532,7 @@ public abstract class AGLView
 	}
 
 	/**
-	 * This class uses the pickingManager to check if any events have occurred it calls the abstract
-	 * handleEvents method where the events should be handled
+	 * Check whether we had a picking hit somewhere during the previous run
 	 * 
 	 * @param gl
 	 */
@@ -829,51 +821,6 @@ public abstract class AGLView
 	abstract protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
 		final int pickingID, final Pick pick);
 
-	/**
-	 * Returns a short info string about the view. Typically this should mention the name of the view plus the
-	 * number of elements displayed. This method is intended to be called only by remote views, for calls
-	 * within the local class implementing this view use {@link #getShortInfoLocal()}.
-	 * 
-	 * @return the info string
-	 */
-	public abstract String getShortInfo();
-
-	/**
-	 * The variaton of {@link #getShortInfo()} which must be called locally. This takes care of integrating
-	 * possible information from a remote rendering view.
-	 * 
-	 * @return the info string
-	 */
-	protected String getShortInfoLocal() {
-		if (isRenderedRemote())
-			return (((AGLView) getRemoteRenderingGLView()).getShortInfo());
-		else
-			return getShortInfo();
-	}
-
-	/**
-	 * Returns a extensive info string about the view. Typically this should mention the name of the view plus
-	 * the number of elements displayed, plus possible states of the view. This method is intended to be
-	 * called only by remote views, for calls within the local class implementing this view use
-	 * {@link #getShortInfoLocal()}.
-	 * 
-	 * @return the info string
-	 */
-	public abstract String getDetailedInfo();
-
-	/**
-	 * The variaton of {@link #getDetailedInfo()} which must be called locally. This takes care of integrating
-	 * possible information from a remote rendering view.
-	 * 
-	 * @return the info string
-	 */
-	protected String getDetailInfoLocal() {
-		if (isRenderedRemote())
-			return (((AGLView) getRemoteRenderingGLView()).getDetailedInfo());
-		else
-			return getDetailedInfo();
-	}
-
 	public final IViewCamera getViewCamera() {
 		return viewCamera;
 	}
@@ -896,12 +843,6 @@ public abstract class AGLView
 
 	public final boolean isRenderedRemote() {
 		return glRemoteRenderingView != null;
-	}
-
-	public final boolean rendersContextOnly() {
-		if (recordPerspectiveID.equals(recordPerspectiveID))
-			return false;
-		return true;
 	}
 
 	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
@@ -1032,14 +973,6 @@ public abstract class AGLView
 		return fAspectRatio;
 	}
 
-	public RecordVirtualArray getRecordVA() {
-		return recordVA;
-	}
-
-	public final DimensionVirtualArray getDimensionVA() {
-		return dimensionVA;
-	}
-
 	public final DetailLevel getDetailLevel() {
 		return detailLevel;
 	}
@@ -1067,15 +1000,6 @@ public abstract class AGLView
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-
-		// FIXME ALEX: Move to subclasses
-		if (serialzedView instanceof ASerializedTopLevelDataView) {
-			if (dimensionPerspectiveID == null)
-				dimensionPerspectiveID =
-					((ASerializedTopLevelDataView) serialzedView).getDimensionPerspectiveID();
-			if (recordPerspectiveID == null)
-				recordPerspectiveID = ((ASerializedTopLevelDataView) serialzedView).getRecordPerspectiveID();
-		}
 	}
 
 	@Override

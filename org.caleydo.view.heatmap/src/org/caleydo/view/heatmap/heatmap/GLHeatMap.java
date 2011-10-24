@@ -9,8 +9,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -142,9 +140,10 @@ public class GLHeatMap extends ATableBasedView {
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
 
-		if (glRemoteRenderingView != null
-				&& glRemoteRenderingView.getViewType().equals("org.caleydo.view.bucket"))
-			renderStyle.setUseFishEye(false);
+		// if (glRemoteRenderingView != null
+		// &&
+		// glRemoteRenderingView.getViewType().equals("org.caleydo.view.bucket"))
+		// renderStyle.setUseFishEye(false);
 
 		// Register keyboard listener to GL2 canvas
 		parentComposite.getDisplay().asyncExec(new Runnable() {
@@ -184,18 +183,35 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (table == null)
-			return;
-
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
+		
+		display(gl);
+		
+		if (busyState != EBusyState.OFF) {
+			renderBusyMode(gl);
+		}
+	}
+
+	@Override
+	public void displayRemote(GL2 gl) {		
+
+		display(gl);
+	
+	}
+
+	@Override
+	public void display(GL2 gl) {
+
+		if(dataContainer == null)
+			return;
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 		}
 
-		display(gl);
+		gl.glCallList(displayListIndex);
 		numSentClearSelectionEvents = 0;
 
 		if (!lazyMode)
@@ -205,120 +221,23 @@ public class GLHeatMap extends ATableBasedView {
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
-		if (busyState != EBusyState.OFF) {
-			renderBusyMode(gl);
-		}
+		
+		
 	}
 
-	@Override
-	public void displayRemote(GL2 gl) {
-		if (table == null)
-			return;
-
-		if (isDisplayListDirty) {
-			templateRenderer.updateLayout();
-			buildDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
-			generalManager.getViewManager().getConnectedElementRepresentationManager()
-					.clearTransformedConnections();
-		}
-
-		display(gl);
-		numSentClearSelectionEvents = 0;
-		checkForHits(gl);
-
-		// glMouseListener.resetEvents();
-	}
-
-	@Override
-	public void display(GL2 gl) {
-		gl.glCallList(displayListIndex);
-	}
-
-	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int displayListIndex) {
 
 		if (hasFrustumChanged) {
 			hasFrustumChanged = false;
 		}
-		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
+		gl.glNewList(displayListIndex, GL2.GL_COMPILE);
 
-		if (recordVA.size() == 0) {
+		if (dataContainer.getNrRecords() == 0 || dataContainer.getNrDimensions() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
 			templateRenderer.render(gl);
 		}
 		gl.glEndList();
-	}
-
-	@Override
-	protected void initLists() {
-		// todo this is not nice here, we may need a more intelligent way to
-		// determine which to use
-
-		// if (recordPerspectiveID.equals(CONTENT_EMBEDDED_VA)) {
-		// table.setRecordVA(recordPerspectiveID, new
-		// RecordVirtualArray(recordPerspectiveID));
-		// } else {
-		// if (bRenderOnlyContext)
-		// recordPerspectiveID = DataTable.RECORD_CONTEXT;
-		// else
-		// recordPerspectiveID = DataTable.RECORD;
-		// }
-
-		if (recordVA == null)
-			recordVA = table.getRecordPerspective(recordPerspectiveID).getVirtualArray();
-
-		if (dimensionVA == null)
-			dimensionVA = table.getDimensionPerspective(dimensionPerspectiveID)
-					.getVirtualArray();
-
-		// FIXME: do we need to do this here?
-		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		if (getRemoteRenderingGLView() instanceof GLHierarchicalHeatMap)
-			renderStyle.setUseFishEye(false);
-	}
-
-	@Override
-	public String getShortInfo() {
-
-		if (recordVA == null)
-			return "Heat Map - 0 " + dataDomain.getRecordDenomination(false, true)
-					+ " / 0 " + dataDomain.getDimensionDenomination(false, true);
-
-		return "Heat Map - " + recordVA.size() + " "
-				+ dataDomain.getRecordDenomination(false, true) + " / "
-				+ dimensionVA.size() + " "
-				+ dataDomain.getDimensionDenomination(false, true);
-	}
-
-	@Override
-	public String getDetailedInfo() {
-
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("<b>Type:</b> Heat Map\n");
-
-		sInfoText.append(recordVA.size() + " "
-				+ dataDomain.getRecordDenomination(true, true) + " in rows and "
-				+ dimensionVA.size() + " "
-				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
-
-		if (useRandomSampling) {
-			sInfoText.append("Random sampling active, sample size: "
-					+ numberOfRandomElements + "\n");
-		} else {
-			sInfoText.append("Random sampling inactive\n");
-		}
-
-		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-			sInfoText.append("Showing all genes in the dataset\n");
-		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-			sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
-		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-			sInfoText
-					.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
-		}
-
-		return sInfoText.toString();
 	}
 
 	@Override
@@ -448,7 +367,7 @@ public class GLHeatMap extends ATableBasedView {
 		event.setSender(this);
 		// event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
-		event.setInfo(getShortInfoLocal());
+		event.setInfo(getLabel());
 		eventPublisher.triggerEvent(event);
 
 		setDisplayListDirty();
@@ -480,7 +399,8 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void upDownSelect(boolean isUp) {
-		RecordVirtualArray virtualArray = recordVA;
+		RecordVirtualArray virtualArray = dataContainer.getRecordPerspective()
+				.getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
@@ -491,7 +411,8 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void leftRightSelect(boolean isLeft) {
-		DimensionVirtualArray virtualArray = dimensionVA;
+		DimensionVirtualArray virtualArray = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for selectNext Operation");
@@ -503,7 +424,8 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public void enterPressedSelect() {
-		DimensionVirtualArray virtualArray = dimensionVA;
+		DimensionVirtualArray virtualArray = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
 		if (virtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
@@ -516,8 +438,10 @@ public class GLHeatMap extends ATableBasedView {
 			createDimensionSelection(SelectionType.SELECTION, selectedElement);
 		}
 
-		RecordVirtualArray contentVirtualArray = recordVA;
-		if (contentVirtualArray == null)
+		RecordVirtualArray recordVirtualArray = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		;
+		if (recordVirtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
 		elements = recordSelectionManager.getElements(SelectionType.MOUSE_OVER);
@@ -565,7 +489,8 @@ public class GLHeatMap extends ATableBasedView {
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int recordIndex : recordVA.indicesOf(id)) {
+		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
+				.indicesOf(id)) {
 			if (recordIndex == -1) {
 				continue;
 			}
@@ -594,7 +519,8 @@ public class GLHeatMap extends ATableBasedView {
 	public Float getYCoordinateByContentIndex(int recordIndex) {
 
 		if (isHideElements()) {
-			Integer recordID = recordVA.get(recordIndex);
+			Integer recordID = dataContainer.getRecordPerspective().getVirtualArray()
+					.get(recordIndex);
 			if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				return null;
 		}
@@ -667,10 +593,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public String toString() {
-		return "Standalone heat map, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
-				+ ", remoteRenderer:" + getRemoteRenderingGLView();
+		return "Heat map for " + dataContainer;
 	}
 
 	@Override
@@ -679,14 +602,14 @@ public class GLHeatMap extends ATableBasedView {
 		super.destroy();
 	}
 
-	public void useFishEye(boolean useFishEye) {
-		renderStyle.setUseFishEye(useFishEye);
-	}
+	// public void useFishEye(boolean useFishEye) {
+	// renderStyle.setUseFishEye(useFishEye);
+	// }
 
-	public void setRecordVA(RecordVirtualArray recordVA) {
-		this.recordVA = recordVA;
-		setDisplayListDirty();
-	}
+	// public void setRecordVA(RecordVirtualArray recordVA) {
+	// this.recordVA = recordVA;
+	// setDisplayListDirty();
+	// }
 
 	public boolean isSendClearSelectionsEvent() {
 		return sendClearSelectionsEvent;
@@ -694,10 +617,6 @@ public class GLHeatMap extends ATableBasedView {
 
 	public void setSendClearSelectionsEvent(boolean sendClearSelectionsEvent) {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
-	}
-
-	public void setTable(DataTable set) {
-		this.table = set;
 	}
 
 	public PickingManager getPickingManager() {
@@ -731,12 +650,12 @@ public class GLHeatMap extends ATableBasedView {
 	 * 
 	 * @return
 	 */
-	public int getNumberOfVisibleElements() {
+	public int getNumberOfVisibleRecords() {
+		int size = dataContainer.getRecordPerspective().getVirtualArray().size();
 		if (isHideElements())
-			return recordVA.size()
-					- recordSelectionManager.getNumberOfElements(SELECTION_HIDDEN);
+			return size - recordSelectionManager.getNumberOfElements(SELECTION_HIDDEN);
 		else
-			return recordVA.size();
+			return size;
 	}
 
 	/**
@@ -825,7 +744,8 @@ public class GLHeatMap extends ATableBasedView {
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
 			int recordID = elementIterator.next();
-			if (!recordVA.contains(recordID))
+			if (!dataContainer.getRecordPerspective().getVirtualArray()
+					.contains(recordID))
 				elementIterator.remove();
 			else if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				elementIterator.remove();
@@ -839,6 +759,8 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public int getMinPixelHeight() {
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
 		// TODO: Calculate depending on content
 		// int pixelHeight = 10;
 		// if (recordVA.size() > 1) {

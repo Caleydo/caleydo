@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
@@ -16,22 +17,22 @@ import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -73,8 +74,8 @@ import org.eclipse.swt.widgets.Shell;
  * @author Alexander Lex
  * 
  */
-public class GLBrick extends AGLView implements ITableBasedDataDomainView,
-		IGLRemoteRenderingView, ISelectionUpdateHandler, ILayoutedElement {
+public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
+		ILayoutedElement {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
@@ -99,13 +100,11 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 	// private DataTable set;
 	// private GLHeatMap heatMap;
-	private ATableBasedDataDomain dataDomain;
 
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
 	private RelationsUpdatedListener relationsUpdateListener;
-	private SelectionUpdateListener selectionUpdateListener;
 	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
 
 	private BrickState expandedBrickState;
@@ -117,7 +116,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
-	private ISegmentData segmentData;
+	private ISegmentData dataContainer;
 
 	private SelectionManager contentGroupSelectionManager;
 
@@ -137,6 +136,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBrick.VIEW_TYPE;
+		label = "Brick";
 
 		views = new HashMap<EContainedViewType, AGLView>();
 		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
@@ -155,8 +155,6 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-
 
 	@Override
 	public void init(GL2 gl) {
@@ -198,8 +196,8 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 				SelectionType currentSelectionType = contentGroupSelectionManager.getSelectionType();
 				contentGroupSelectionManager.clearSelection(currentSelectionType);
-				contentGroupSelectionManager.addToType(currentSelectionType, segmentData
-						.getGroup().getID());
+				contentGroupSelectionManager.addToType(currentSelectionType,
+						dataContainer.getGroup().getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
@@ -223,12 +221,14 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 			public void rightClicked(Pick pick) {
 
 				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-						dataDomain, recordVA, dimensionGroup.getDimensionGroupData()
-								.getDimensionPerspective()));
+						dataDomain, dataContainer.getRecordPerspective()
+								.getVirtualArray(), dimensionGroup
+								.getDimensionGroupData().getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 				// FIXME this assumtion that records are genes is wrong!
-				for (Integer gene : recordVA) {
+				for (Integer gene : dataContainer.getRecordPerspective()
+						.getVirtualArray()) {
 					Set<Integer> davids = dataDomain.getRecordIDMappingManager()
 							.getIDAsSet(dataDomain.getRecordIDType(),
 									dataDomain.getPrimaryRecordMappingType(), gene);
@@ -321,7 +321,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 		if (dimensionGroup.getCenterBrick() == this)
 			return;
 
-		for (Integer recordID : recordVA) {
+		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
 			recordSelectionManager.addToType(selectedByGroupSelectionType, recordID);
 		}
 
@@ -559,63 +559,35 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 
 	}
 
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// /**
+	// * Set the recordVA this brick should render plus the groupID that is
+	// * associated with this recordVA.
+	// *
+	// * @param groupID
+	// * @param recordVA
+	// */
+	// public void setRecordVA(Group group, RecordVirtualArray recordVA) {
+	// this.group = group;
+	// if (group != null)
+	// this.groupID = group.getGroupID();
+	// this.recordVA = recordVA;
+	// }
 
-	@Override
-	public String getDetailedInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	// @Override
+	// public void setDataContainer(DataContainer dataContainer) {
+	// super.setDataContainer(dataContainer);
+	//
+	// }
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	/**
-	 * Set the recordVA this brick should render plus the groupID that is
-	 * associated with this recordVA.
-	 * 
-	 * @param groupID
-	 * @param recordVA
-	 */
-	public void setRecordVA(Group group, RecordVirtualArray recordVA) {
-		this.group = group;
-		if (group != null)
-			this.groupID = group.getGroupID();
-		this.recordVA = recordVA;
-	}
-
-	/**
-	 * Set the group of this brick.
-	 * 
-	 * @param group
-	 */
-	public void setGroup(Group group) {
-		this.group = group;
-		this.groupID = group.getGroupID();
-	}
+	// /**
+	// * Set the group of this brick.
+	// *
+	// * @param group
+	// */
+	// public void setGroup(Group group) {
+	// this.group = group;
+	// this.groupID = group.getGroupID();
+	// }
 
 	/**
 	 * Set the {@link GLVisBricks} view managing this brick, which is needed for
@@ -660,7 +632,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	 * @return
 	 */
 	public Group getGroup() {
-		return segmentData.getGroup();
+		return dataContainer.getGroup();
 
 	}
 
@@ -1074,19 +1046,17 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	public void setBrickData(ISegmentData brickData) {
-		this.segmentData = brickData;
-		recordVA = brickData.getRecordPerspective().getVirtualArray();
-		dimensionVA = brickData.getDimensionPerspective().getVirtualArray();
+		this.dataContainer = brickData;
 		group = brickData.getGroup();
 		groupID = brickData.getGroup().getGroupID();
 		// brickData.setBrickData(this);
 	}
 
 	/**
-	 * @return the segmentData, see {@link #segmentData}
+	 * @return the segmentData, see {@link #dataContainer}
 	 */
 	public ISegmentData getSegmentData() {
-		return segmentData;
+		return dataContainer;
 	}
 
 	public IBrickConfigurer getBrickConfigurer() {
@@ -1110,7 +1080,7 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 				dialog.create();
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);
-				dialog.setDimensionPerspective(segmentData.getDimensionPerspective());
+				dialog.setDimensionPerspective(dataContainer.getDimensionPerspective());
 
 				dialog.setBlockOnOpen(true);
 
@@ -1136,13 +1106,16 @@ public class GLBrick extends AGLView implements ITableBasedDataDomainView,
 	}
 
 	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
+	public void handleUpdateView() {
+		// TODO Auto-generated method stub
+
 	}
 
 	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -19,7 +19,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
  * @author Alexander Lex
  */
 public abstract class ADimensionGroupData
-	extends ADataContainer {
+	extends DataContainer {
 
 	public ADimensionGroupData() {
 	}

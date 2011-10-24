@@ -143,7 +143,7 @@ public class ImportDataDialog
 //			IDType.unregisterType(dataDomain.getRecordIDType());
 //			IDType.unregisterType(dataDomain.getHumanReadableRecordIDType());
 			
-			dataDomain.createDefaultConfigurationWithSamplesAsRows();
+//			dataDomain.createDefaultConfigurationWithSamplesAsRows();
 			dataDomain.init();
 		}
 		

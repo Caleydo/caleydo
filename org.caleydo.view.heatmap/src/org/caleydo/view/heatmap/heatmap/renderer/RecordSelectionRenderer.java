@@ -32,7 +32,8 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 		int lineIndex = 0;
 		// FIXME this iterates over all elements but could do by only iterating
 		// of the selected elements
-		for (int recordIndex : heatMap.getRecordVA()) {
+		for (int recordIndex : heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray()) {
 			if (heatMap.getRecordSelectionManager().checkStatus(
 					GLHeatMap.SELECTION_HIDDEN, recordIndex))
 				continue;
@@ -47,11 +48,11 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 							currentLine));
 
 					float z = SELECTION_Z * selectionType.getPriority();
-					
+
 					gl.glBegin(GL2.GL_LINE_LOOP);
 					gl.glVertex3f(xPosition, yPosition, z);
 					gl.glVertex3f(xPosition, yPosition + fieldHeight, z);
-					gl.glVertex3f(xPosition + width, yPosition + fieldHeight,z);
+					gl.glVertex3f(xPosition + width, yPosition + fieldHeight, z);
 					gl.glVertex3f(xPosition + width, yPosition, z);
 					gl.glEnd();
 					gl.glPopName();
@@ -63,7 +64,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {	
+	public void render(GL2 gl) {
 		renderSelection(gl, SelectionType.MOUSE_OVER);
 		renderSelection(gl, SelectionType.SELECTION);
 	}

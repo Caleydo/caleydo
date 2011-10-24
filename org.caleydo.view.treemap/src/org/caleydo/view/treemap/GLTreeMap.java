@@ -604,14 +604,4 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		return rect;
 	}
 
-	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
-
-	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-	}
-
 }

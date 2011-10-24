@@ -17,6 +17,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -1212,6 +1213,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					dimensionGroup
 							.setBrickSortingStrategy(new AverageValueSortingStrategy());
 				}
+				dimensionGroup.setDataDomain(dataDomain);
 				dimensionGroup.setDimensionGroupData(data);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
@@ -1391,17 +1393,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return dataDomain;
 	}
 
-	@Override
-	public String getShortInfo() {
-
-		return "LayoutTemplate Caleydo View";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "LayoutTemplate Caleydo View";
-
-	}
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -1683,15 +1674,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return true;
 	}
 
-	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
 
-	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-	}
 
 	private void checkForPerparedPerspectives() {
 		Set<String> recordPerspectiveIDs = dataDomain.getTable()
@@ -1724,12 +1707,18 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			RecordPerspective currentPerspective = dataDomain.getTable()
 					.getRecordPerspective(chosenRecordPerspectiveID);
 			if (currentPerspective.getLabel().contains("clusters")) {
+			DataContainer dataContainer =	dataDomain.getDataContainer(chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
 				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-						dataDomain.getDataDomainID(), chosenDimensionPerspectiveID,
-						chosenRecordPerspectiveID);
+						dataDomain.getDataDomainID(), dataContainer);
 				event.setDataDomainID(dataDomain.getDataDomainID());
 				eventPublisher.triggerEvent(event);
 			}
 		}
+	}
+
+	@Override
+	public void setDataContainer(DataContainer dataContainer) {
+		// TODO Auto-generated method stub
+		
 	}
 }

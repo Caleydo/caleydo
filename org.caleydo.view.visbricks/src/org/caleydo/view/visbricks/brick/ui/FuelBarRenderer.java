@@ -29,12 +29,12 @@ public class FuelBarRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		RecordVirtualArray recordVA = brick.getRecordVA();
+		RecordVirtualArray recordVA = brick.getDataContainer().getRecordPerspective().getVirtualArray();
 
 		if (recordVA == null)
 			return;
 
-		RecordVirtualArray setRecordVA = brick.getDimensionGroup().getRecordVA();
+		RecordVirtualArray setRecordVA = brick.getDimensionGroup().getDataContainer().getRecordPerspective().getVirtualArray();
 
 		if (setRecordVA == null)
 			return;

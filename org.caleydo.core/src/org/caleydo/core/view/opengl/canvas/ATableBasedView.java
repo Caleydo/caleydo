@@ -7,6 +7,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -40,6 +41,8 @@ import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -62,9 +65,9 @@ public abstract class ATableBasedView
 	implements ITableBasedDataDomainView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
 	IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
-	protected DataTable table;
-
 	protected ATableBasedDataDomain dataDomain;
+
+	protected DataContainer dataContainer;
 
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -126,19 +129,7 @@ public abstract class ATableBasedView
 		if (this.dataDomain == dataDomain)
 			return;
 
-		this.dataDomain = (ATableBasedDataDomain) dataDomain;
-
-		recordSelectionManager = this.dataDomain.getRecordSelectionManager();
-		dimensionSelectionManager = this.dataDomain.getDimensionSelectionManager();
-
-		recordIDType = dataDomain.getRecordIDType();
-		dimensionIDType = dataDomain.getDimensionIDType();
-
-		initData();
-
-		DataDomainsChangedEvent event = new DataDomainsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		this.dataDomain =  dataDomain;
 
 		setDisplayListDirty();
 	}
@@ -148,20 +139,52 @@ public abstract class ATableBasedView
 		return dataDomain;
 	}
 
+	/**
+	 * @return the dataContainer, see {@link #dataContainer}
+	 */
+	public DataContainer getDataContainer() {
+		return dataContainer;
+	}
+
+	/**
+	 * @param dataContainer
+	 *            setter, see {@link #dataContainer}
+	 */
+	public void setDataContainer(DataContainer dataContainer) {
+		this.dataContainer = dataContainer;
+	}
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		recordSelectionManager = this.dataDomain.getRecordSelectionManager();
+		dimensionSelectionManager = this.dataDomain.getDimensionSelectionManager();
+
+		recordIDType = dataDomain.getRecordIDType();
+		dimensionIDType = dataDomain.getDimensionIDType();
+
+		initData();
+	}
+
 	@Override
 	public void initData() {
-		if (table == null)
-			table = dataDomain.getTable();
-
 		super.initData();
-
-		initLists();
 	}
 
 	/**
 	 * View specific data initialization
 	 */
-	protected abstract void initLists();
+	// protected abstract void initLists();
+
+	@Override
+	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
+		if (serialzedView instanceof ASerializedTopLevelDataView) {
+			ASerializedTopLevelDataView topSerializedView = (ASerializedTopLevelDataView) serialzedView;
+			dataContainer =
+				dataDomain.getDataContainer(topSerializedView.getRecordPerspectiveID(),
+					topSerializedView.getDimensionPerspectiveID());
+		}
+	}
 
 	/**
 	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
@@ -204,23 +227,19 @@ public abstract class ATableBasedView
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (this.recordPerspectiveID == null || !this.recordPerspectiveID.equals(recordPerspectiveID))
-			return;
-		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
+		if (dataContainer.hasRecordPerspective(recordPerspectiveID)) {
 
-		reactOnRecordVAChanges();
-
-		// reactOnExternalSelection();
-		setDisplayListDirty();
+			reactOnRecordVAChanges();
+			// reactOnExternalSelection();
+			setDisplayListDirty();
+		}
 	}
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!this.dimensionPerspectiveID.equals(dimensionPerspectiveID))
-			return;
-
-		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
-		setDisplayListDirty();
+		if (dataContainer.hasDimensionPerspective(dimensionPerspectiveID)) {
+			setDisplayListDirty();
+		}
 	}
 
 	/**
@@ -287,14 +306,14 @@ public abstract class ATableBasedView
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
-						if (!recordVA.contains(id))
+						if (!dataContainer.getRecordPerspective().getVirtualArray().contains(id))
 							return;
 
 					}
 					else if (selectionDelta.getIDType() == dimensionIDType) {
 						id = item.getID();
 						idType = dimensionIDType;
-						if (!dimensionVA.contains(id))
+						if (!dataContainer.getDimensionPerspective().getVirtualArray().contains(id))
 							return;
 					}
 					else
@@ -438,24 +457,14 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
-
-	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
-	}
-
-	@Override
 	public boolean isDataView() {
 		return true;
 	}
 
 	public void switchDataRepresentation() {
 		if (dimensionDataRepresentation.equals(DataRepresentation.NORMALIZED)) {
-			if (!table.containsFoldChangeRepresentation())
-				table.createFoldChangeRepresentation();
+			if (!dataDomain.getTable().containsFoldChangeRepresentation())
+				dataDomain.getTable().createFoldChangeRepresentation();
 			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
 		}
 		else
@@ -468,23 +477,11 @@ public abstract class ATableBasedView
 		return dimensionDataRepresentation;
 	}
 
-	public void setRecordVA(RecordVirtualArray recordVA) {
-		this.recordVA = recordVA;
-	}
-
-	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
-		this.dimensionVA = dimensionVA;
-	}
-
 	public RecordSelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
 	}
 
 	public DimensionSelectionManager getDimensionSelectionManager() {
 		return dimensionSelectionManager;
-	}
-
-	public DataTable getTable() {
-		return table;
 	}
 }

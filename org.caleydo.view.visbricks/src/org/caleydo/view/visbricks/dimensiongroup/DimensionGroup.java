@@ -8,16 +8,18 @@ import java.util.List;
 import java.util.Queue;
 import java.util.Set;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.EventPublisher;
@@ -26,6 +28,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -63,7 +66,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
+public class DimensionGroup extends ATableBasedView implements
 		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
@@ -91,10 +94,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	protected Column topCol;
 	// private ViewFrustum brickFrustum;
 	// protected DataTable set;
-	protected IDataDomain dataDomain;
-
+	
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-	private RecordVAUpdateListener recordVAUpdateListener;
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 	private IBrickSortingStrategy brickSortingStrategy;
 
@@ -127,7 +128,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	private ElementLayout overviewDetailGapLayout;
 
 	/** This variable hold the data the dimension group is supposed to show */
-	private ADimensionGroupData dimensionGroupData;
+	private ADimensionGroupData dataContainer;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
@@ -239,8 +240,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
 		minWidth = pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
 
-		centerBrick = createBrick(centerLayout,
-				dimensionGroupData.getSummarySegementData());
+		centerBrick = createBrick(centerLayout, dataContainer.getSummarySegementData());
 		// centerBrick.setBrickData(dimensionGroupData.getSummaryBrickData());
 		// centerBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 		// centerBrick.setRecordVA(new Group(), recordVA);
@@ -268,7 +268,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 
 		destroyOldBricks();
 
-		List<ISegmentData> segmentBrickData = dimensionGroupData.getSegmentData();
+		List<ISegmentData> segmentBrickData = dataContainer.getSegmentData();
 
 		if (segmentBrickData == null || segmentBrickData.size() <= 0)
 			return;
@@ -333,8 +333,8 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 		}
 
 		visBricks.getRelationAnalyzer().updateRelations(
-				dimensionGroupData.getRecordPerspective().getPerspectiveID(),
-				dimensionGroupData.getRecordPerspective().getVirtualArray());
+				dataContainer.getRecordPerspective().getID(),
+				dataContainer.getRecordPerspective().getVirtualArray());
 
 	}
 
@@ -353,12 +353,12 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 				.createGLView(GLBrick.class, parentGLCanvas, parentComposite,
 						brickFrustum);
 
+		brick.setDataDomain(dataDomain);
 		brick.setBrickData(brickData);
 		brick.setDataDomain(brickData.getDataDomain());
 		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
 
-		// brick.setDataDomain(dataDomain);
 		// brick.setTable(set);
 		brick.setVisBricks(visBricks);
 		brick.setLayout(wrappingLayout);
@@ -461,15 +461,14 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (!dimensionGroupData.getRecordPerspective().getPerspectiveID()
-				.equals(recordPerspectiveID))
+		if (!dataContainer.getRecordPerspective().getID().equals(recordPerspectiveID))
 			return;
 
 		topCol.clear();
 		topBricks.clear();
 		bottomCol.clear();
 		bottomBricks.clear();
-		createSubBricks(dimensionGroupData.getSummaryVA());
+		createSubBricks(dataContainer.getSummaryVA());
 		detailRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -497,7 +496,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		// createBricks(table.getContentData(Set.CONTENT).getRecordVA());
-		createBricks(dimensionGroupData.getSummaryVA());
+		createBricks(dataContainer.getSummaryVA());
 		init(gl);
 	}
 
@@ -726,7 +725,7 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * @return
 	 */
 	public int getTableID() {
-		return dimensionGroupData.getID();
+		return dataContainer.getID();
 	}
 
 	/**
@@ -796,18 +795,6 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 */
 	public GLBrick getCenterBrick() {
 		return centerBrick;
-	}
-
-	@Override
-	public String getShortInfo() {
-
-		return "Dimension Group";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 	@Override
@@ -1092,11 +1079,24 @@ public class DimensionGroup extends AGLView implements IRecordVAUpdateHandler,
 	 * @param dimensionGroupData
 	 */
 	public void setDimensionGroupData(ADimensionGroupData dimensionGroupData) {
-		this.dimensionGroupData = dimensionGroupData;
+		this.dataContainer = dimensionGroupData;
 		dataDomain = dimensionGroupData.getDataDomain();
 	}
 
 	public ADimensionGroupData getDimensionGroupData() {
-		return dimensionGroupData;
+		return dataContainer;
+	}
+
+	@Override
+	public void handleUpdateView() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

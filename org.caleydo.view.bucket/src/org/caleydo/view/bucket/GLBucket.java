@@ -13,6 +13,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -108,6 +109,7 @@ public class GLBucket extends AGLView implements
 	public final static String VIEW_TYPE = "org.caleydo.view.bucket";
 
 	protected ATableBasedDataDomain dataDomain;
+	protected DataContainer dataContainer;
 
 	private ARemoteViewLayoutRenderStyle.LayoutMode layoutMode;
 	// private RecordPerspective recordPerspective;
@@ -534,7 +536,7 @@ public class GLBucket extends AGLView implements
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		if (level == poolLevel) {
-			String sRenderText = glView.getShortInfo();
+			String sRenderText = glView.getLabel();
 
 			// Limit pathway name in length
 			int iMaxChars;
@@ -891,7 +893,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getShortInfo();
+		String sText = element.getGLView().getLabel();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -2033,23 +2035,6 @@ public class GLBucket extends AGLView implements
 		}
 	}
 
-	@Override
-	public String getShortInfo() {
-		AGLView activeView = GeneralManager.get().getViewManager()
-				.getGLView(iActiveViewID);
-		if (activeView == null)
-			return "Bucket";
-		else
-			return "Bucket, active embedded view: " + activeView.getShortInfo();
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("Bucket / Jukebox");
-		return sInfoText.toString();
-	}
-
 	public void toggleLayoutMode() {
 		if (layoutMode.equals(ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET)) {
 			// layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.LIST;
@@ -2485,14 +2470,9 @@ public class GLBucket extends AGLView implements
 						serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
-		
-
-		if (glView instanceof ITableBasedDataDomainView) {
-			ITableBasedDataDomainView tableBasedView = (ITableBasedDataDomainView) glView;
-
-			tableBasedView.setRecordPerspectiveID(recordPerspectiveID);
-			tableBasedView.setDimensionPerspectiveID(dimensionPerspectiveID);
-			// tableBasedView
+		if (glView instanceof ATableBasedView) {
+			ATableBasedView tableBasedView = (ATableBasedView) glView;
+			tableBasedView.setDataContainer(dataContainer);
 		}
 
 		if (glView instanceof IDataDomainBasedView<?>) {
@@ -2500,7 +2480,7 @@ public class GLBucket extends AGLView implements
 					.get().getDataDomainByID(
 							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
-		
+
 		if (glView instanceof GLHeatMap) {
 			GLHeatMap heatMap = ((GLHeatMap) glView);
 			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
@@ -2517,8 +2497,7 @@ public class GLBucket extends AGLView implements
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
-			glPathway.setRecordPerspectiveID(recordPerspectiveID);
-			glPathway.setDimensionPerspectiveID(dimensionPerspectiveID);
+			glPathway.setDataContainer(dataContainer);
 		}
 
 		glView.initialize();
@@ -2538,7 +2517,7 @@ public class GLBucket extends AGLView implements
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) lastSelectionDelta);
-			event.setInfo(getShortInfo());
+			event.setInfo(getLabel());
 			eventPublisher.triggerEvent(event);
 		}
 	}
@@ -2620,7 +2599,6 @@ public class GLBucket extends AGLView implements
 	public List<AGLView> getRemoteRenderedViews() {
 		return containedGLViews;
 	}
-
 
 	/**
 	 * FIXME: should be moved to a bucket-mediator registers the event-listeners
@@ -2860,7 +2838,8 @@ public class GLBucket extends AGLView implements
 		recordPerspective.setPrivate(true);
 		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspecive(recordPerspective);
-		recordPerspectiveID = recordPerspective.getPerspectiveID();
+		dataContainer = dataDomain.getDataContainer(recordPerspective.getID(), dataDomain
+				.getTable().getDefaultDimensionPerspective().getID());
 	}
 
 	@Override

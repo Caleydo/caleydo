@@ -22,7 +22,8 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 		float yPosition = y;
 		float fieldHeight = 0;
 
-		RecordVirtualArray recordVA = heatMap.getRecordVA();
+		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
+				.getVirtualArray();
 
 		for (Integer recordID : recordVA) {
 
@@ -33,13 +34,12 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 			}
 
 			fieldHeight = recordSpacing.getFieldHeight(recordID);
-			
+
 			if (fieldHeight < HeatMapRenderStyle.MIN_FIELD_HEIGHT_FOR_CAPTION)
 				continue;
-			
+
 			try {
-				yPosition = recordSpacing.getYDistances().get(
-						recordVA.indexOf(recordID));
+				yPosition = recordSpacing.getYDistances().get(recordVA.indexOf(recordID));
 			} catch (Exception e) {
 				// TODO: handle exception
 			}
@@ -64,9 +64,9 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 
 		if (spacing < 0)
 			spacing = 0;
-		
-//		//FIXME just for karl big captions
-		if (spacing >0.1f)
+
+		// //FIXME just for karl big captions
+		if (spacing > 0.1f)
 			spacing = 0.1f;
 
 		heatMap.getTextRenderer().renderTextInBounds(gl, label, xOrigin, yOrigin, 0, x,

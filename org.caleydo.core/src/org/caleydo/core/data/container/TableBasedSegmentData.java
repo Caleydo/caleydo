@@ -11,7 +11,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
  * @author Partl
  */
 public class TableBasedSegmentData
-	extends ADataContainer
+	extends DataContainer
 	implements ISegmentData {
 
 	private Group group;

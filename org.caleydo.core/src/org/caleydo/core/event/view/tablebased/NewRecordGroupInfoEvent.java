@@ -16,10 +16,10 @@ import org.caleydo.core.event.AEvent;
 public class NewRecordGroupInfoEvent
 	extends AEvent {
 
-	private String vaType = null;
+	private String perspectiveID = null;
 	private RecordGroupList groupList = null;
 	private boolean bDeleteTree = false;
-	private int tableID;
+
 
 	public NewRecordGroupInfoEvent() {
 	}
@@ -27,20 +27,20 @@ public class NewRecordGroupInfoEvent
 	@Override
 	public boolean checkIntegrity() {
 
-		if (vaType != null && bDeleteTree == true)
+		if (perspectiveID != null && bDeleteTree == true)
 			return true;
-		else if (vaType != null && groupList != null && bDeleteTree == false)
+		else if (perspectiveID != null && groupList != null && bDeleteTree == false)
 			return true;
 		else
 			return false;
 	}
 
 	public void setVAType(String vaType) {
-		this.vaType = vaType;
+		this.perspectiveID = vaType;
 	}
 
 	public String getVAType() {
-		return vaType;
+		return perspectiveID;
 	}
 
 	public void setGroupList(RecordGroupList groupList) {
@@ -58,13 +58,4 @@ public class NewRecordGroupInfoEvent
 	public boolean isDeleteTree() {
 		return bDeleteTree;
 	}
-
-	public int getTableID() {
-		return tableID;
-	}
-
-	public void setTableID(int tableID) {
-		this.tableID = tableID;
-	}
-
 }

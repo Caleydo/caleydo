@@ -32,24 +32,24 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	// private float yOverheadToHeatMap;
 
 	protected RecordSpacing recordSpacing;
-	
+
 	private boolean renderAsTexture;
 
 	public AHeatMapTemplate(GLHeatMap heatMap) {
 		this(heatMap, false);
 	}
-	
+
 	public AHeatMapTemplate(GLHeatMap heatMap, boolean renderAsTexture) {
-		
+
 		this.heatMap = heatMap;
 		recordSpacing = new RecordSpacing(heatMap);
 		this.renderAsTexture = renderAsTexture;
-		
+
 		if (renderAsTexture)
 			heatMapRenderer = new HeatMapTextureRenderer(heatMap);
 		else
 			heatMapRenderer = new HeatMapRenderer(heatMap);
-	
+
 		heatMapRenderer.setRecordSpacing(recordSpacing);
 		recordCaptionRenderer = new RecordCaptionRenderer(heatMap);
 		recordCaptionRenderer.setRecordSpacing(recordSpacing);
@@ -64,10 +64,10 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	}
 
 	public void initRendererData() {
-		
+
 		if (renderAsTexture) {
-			 ((HeatMapTextureRenderer)heatMapRenderer).init(heatMap.getTable(), heatMap.getDimensionVA(),
-						heatMap.getRecordVA(), heatMap.getRenderingRepresentation());			
+			((HeatMapTextureRenderer) heatMapRenderer).init(heatMap
+					.getRenderingRepresentation());
 		}
 	}
 
