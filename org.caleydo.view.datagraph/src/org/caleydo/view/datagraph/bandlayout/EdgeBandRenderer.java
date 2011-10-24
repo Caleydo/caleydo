@@ -80,14 +80,27 @@ public class EdgeBandRenderer {
 
 		if (!commonDimensionGroupsNode1.isEmpty()) {
 
-			connector1 = new BottomBundleConnector(node1, pixelGLConverter,
-					connectionBandRenderer, commonDimensionGroupsNode1,
-					minBandWidth, maxBandWidth, maxDataAmount);
-			connector2 = new BottomBundleConnector(node2, pixelGLConverter,
-					connectionBandRenderer, commonDimensionGroupsNode2,
-					minBandWidth, maxBandWidth, maxDataAmount);
+			if (node1.isUpsideDown()) {
+				connector1 = new TopBundleConnector(node1, pixelGLConverter,
+						connectionBandRenderer, commonDimensionGroupsNode1,
+						minBandWidth, maxBandWidth, maxDataAmount);
+			} else {
+				connector1 = new BottomBundleConnector(node1, pixelGLConverter,
+						connectionBandRenderer, commonDimensionGroupsNode1,
+						minBandWidth, maxBandWidth, maxDataAmount);
+			}
 
-			bandWidth = ((BottomBundleConnector) connector1).getBandWidth();
+			if (node2.isUpsideDown()) {
+				connector2 = new TopBundleConnector(node2, pixelGLConverter,
+						connectionBandRenderer, commonDimensionGroupsNode2,
+						minBandWidth, maxBandWidth, maxDataAmount);
+			} else {
+				connector2 = new BottomBundleConnector(node2, pixelGLConverter,
+						connectionBandRenderer, commonDimensionGroupsNode2,
+						minBandWidth, maxBandWidth, maxDataAmount);
+			}
+
+			bandWidth = ((ABundleConnector) connector1).getBandWidth();
 
 			// renderBundledBand(gl, node1, node2, commonDimensionGroupsNode1,
 			// commonDimensionGroupsNode2, edgeRoutingStrategy,
@@ -202,7 +215,6 @@ public class EdgeBandRenderer {
 		return bandWidth;
 	}
 
-
 	protected void renderBand(GL2 gl,
 			ConnectionBandRenderer connectionBandRenderer,
 			List<Vec3f> bandPoints, Color color) {
@@ -225,7 +237,7 @@ public class EdgeBandRenderer {
 		}
 		gl.glEnd();
 
-	}	
+	}
 
 	public int getMaxBandWidth() {
 		return maxBandWidth;

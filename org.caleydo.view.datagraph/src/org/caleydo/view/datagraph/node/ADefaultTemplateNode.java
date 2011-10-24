@@ -62,21 +62,6 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
 				.getBottomAnchorPointsOfDimensionGroup(dimensionGroup);
 
-		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints);
-	}
-
-	@Override
-	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
-			ADimensionGroupData dimensionGroup) {
-
-		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getTopAnchorPointsOfDimensionGroup(dimensionGroup);
-
-		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints);
-	}
-
-	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
-			Pair<Point2D, Point2D> anchorPoints) {
 		Point2D position = graphLayout.getNodePosition(this, true);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
@@ -90,6 +75,71 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getGLWidthForPixelWidth(SPACING_PIXELS);
 		float spacingY = pixelGLConverter
 				.getGLHeightForPixelHeight(SPACING_PIXELS);
+
+		Point2D first = (Point2D) anchorPoints.getFirst().clone();
+		Point2D second = (Point2D) anchorPoints.getSecond().clone();
+
+		first.setLocation(anchorPoints.getFirst().getX() + x + spacingX - width
+				/ 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
+				/ 2.0f);
+		second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
+				- width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
+				- height / 2.0f);
+
+		return new Pair<Point2D, Point2D>(first, second);
+	}
+
+	@Override
+	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
+			ADimensionGroupData dimensionGroup) {
+
+		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
+				.getTopAnchorPointsOfDimensionGroup(dimensionGroup);
+
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+		float spacingX = pixelGLConverter
+				.getGLWidthForPixelWidth(SPACING_PIXELS);
+		float spacingY = pixelGLConverter.getGLHeightForPixelHeight(3
+				* SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+				+ LINE_SEPARATOR_HEIGHT_PIXELS);
+
+		Point2D first = (Point2D) anchorPoints.getFirst().clone();
+		Point2D second = (Point2D) anchorPoints.getSecond().clone();
+
+		first.setLocation(anchorPoints.getFirst().getX() + x + spacingX - width
+				/ 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
+				/ 2.0f);
+		second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
+				- width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
+				- height / 2.0f);
+
+		return new Pair<Point2D, Point2D>(first, second);
+	}
+
+	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
+			Pair<Point2D, Point2D> anchorPoints, int spacingXPixels,
+			int spacingYPixels) {
+		Point2D position = graphLayout.getNodePosition(this, true);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+		float spacingX = pixelGLConverter
+				.getGLWidthForPixelWidth(spacingXPixels);
+		float spacingY = pixelGLConverter
+				.getGLHeightForPixelHeight(spacingYPixels);
 
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
 		Point2D second = (Point2D) anchorPoints.getSecond().clone();

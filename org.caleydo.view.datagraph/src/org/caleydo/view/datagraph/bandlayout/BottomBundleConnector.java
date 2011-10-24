@@ -5,9 +5,7 @@ import gleem.linalg.Vec3f;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.media.opengl.GL2;
 
@@ -18,12 +16,9 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class BottomBundleConnector extends ANodeConnector {
+public class BottomBundleConnector extends ABundleConnector {
 
 	protected Point2D bundlingPoint;
-	protected List<ADimensionGroupData> commonDimensionGroups;
-	protected int bandWidth;
-	Map<ADimensionGroupData, Integer> bandWidthMap = new HashMap<ADimensionGroupData, Integer>();
 
 	public BottomBundleConnector(IDataGraphNode node,
 
@@ -31,11 +26,10 @@ public class BottomBundleConnector extends ANodeConnector {
 			ConnectionBandRenderer connectionBandRenderer,
 			List<ADimensionGroupData> commonDimensionGroups, int minBandWidth,
 			int maxBandWidth, int maxDataAmount) {
-		super(node, pixelGLConverter, connectionBandRenderer);
-
-		this.commonDimensionGroups = commonDimensionGroups;
+		super(node, pixelGLConverter, connectionBandRenderer,
+				commonDimensionGroups, minBandWidth, maxBandWidth,
+				maxDataAmount);
 		calcBundlingPoint();
-		calcBandWidths(minBandWidth, maxBandWidth, maxDataAmount);
 	}
 
 	protected void calcBundlingPoint() {
@@ -53,48 +47,6 @@ public class BottomBundleConnector extends ANodeConnector {
 				.getBoundingBox().getMinY() - 0.1f);
 	}
 
-	protected void calcBandWidths(int minBandWidth, int maxBandWidth,
-			int maxDataAmount) {
-		bandWidth = 0;
-
-		for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
-			int width = calcDimensionGroupBandWidthPixels(dimensionGroupData,
-					minBandWidth, maxBandWidth, maxDataAmount);
-			bandWidth += width;
-			bandWidthMap.put(dimensionGroupData, width);
-		}
-
-		if (bandWidth > maxBandWidth) {
-
-			int diff = bandWidth - maxBandWidth;
-
-			int newBandWidth = 0;
-
-			for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
-				int width = bandWidthMap.get(dimensionGroupData);
-				int newWidth = width
-						- (int) Math
-								.ceil(((float) width / (float) bandWidth * (float) diff));
-				bandWidthMap.put(dimensionGroupData, newWidth);
-				newBandWidth += newWidth;
-			}
-
-			bandWidth = newBandWidth;
-		}
-	}
-
-	protected int calcDimensionGroupBandWidthPixels(
-			ADimensionGroupData dimensionGroupData, int minBandWidth,
-			int maxBandWidth, int maxDataAmount) {
-		// TODO: implement properly
-
-		return minBandWidth;
-	}
-
-	public int getBandWidth() {
-		return bandWidth;
-	}
-
 	@Override
 	public Point2D getBandConnectionPoint() {
 		return bundlingPoint;
@@ -110,12 +62,12 @@ public class BottomBundleConnector extends ANodeConnector {
 	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
 			Color color) {
 
-//		Point2D bandAnchorPoint1 = null;
-//		Point2D bandAnchorPoint2 = null;
+		// Point2D bandAnchorPoint1 = null;
+		// Point2D bandAnchorPoint2 = null;
 
 		calcBandAnchorPoints(isEnd1, bandPoints);
-		
-		if(!isEnd1) {
+
+		if (!isEnd1) {
 			Point2D temp = bandAnchorPoint1;
 			bandAnchorPoint1 = bandAnchorPoint2;
 			bandAnchorPoint2 = temp;
