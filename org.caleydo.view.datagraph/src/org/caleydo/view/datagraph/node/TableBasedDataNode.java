@@ -1,7 +1,14 @@
 package org.caleydo.view.datagraph.node;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -33,7 +40,7 @@ public class TableBasedDataNode extends ADataNode {
 	private ElementLayout dataContainerLayout;
 	private ADataContainerRenderer dataContainerRenderer;
 	private Row bodyRow;
-	
+	private List<DataContainer> dataContainers;
 
 	private abstract class ALayoutState {
 		protected ADataContainerRenderer dataContainerRenderer;
@@ -55,7 +62,7 @@ public class TableBasedDataNode extends ADataNode {
 		public OverviewState() {
 			dataContainerRenderer = new DataContainerListRenderer(
 					TableBasedDataNode.this, view, dragAndDropController,
-					getDimensionGroups());
+					getDataContainers());
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_270;
 		}
 
@@ -68,7 +75,7 @@ public class TableBasedDataNode extends ADataNode {
 		public void apply() {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
-			if (getDimensionGroups().size() > 0) {
+			if (getDataContainers().size() > 0) {
 				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] {
 						1, 1, 1, 1 }));
 			}
@@ -80,7 +87,7 @@ public class TableBasedDataNode extends ADataNode {
 		public DetailState() {
 			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain,
 					view, TableBasedDataNode.this, dragAndDropController);
-			
+
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_90;
 		}
 
@@ -209,7 +216,7 @@ public class TableBasedDataNode extends ADataNode {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
-		
+
 		setUpsideDown(isUpsideDown);
 
 		currentState.apply();
@@ -227,17 +234,95 @@ public class TableBasedDataNode extends ADataNode {
 
 	@Override
 	public void update() {
-		// FIXME: set button visible if there are more than 1 perspectives
+		
+		retrieveDataContainers();
 		if (dataDomain.getRecordPerspectiveIDs().size() > 1
 				|| dataDomain.getDimensionPerspectiveIDs().size() > 1) {
 			toggleDataContainerButton.setVisible(true);
 		}
-		dataContainerRenderer.setDimensionGroups(getDimensionGroups());
+		currentState.apply();
+		dataContainerRenderer.setDataContainers(getDataContainers());
 	}
 
 	@Override
 	protected ADataContainerRenderer getDataContainerRenderer() {
 		return dataContainerRenderer;
+	}
+	
+	protected void retrieveDataContainers() {
+		Collection<DataContainer> containerCollection = dataDomain
+				.getAllDataContainers();
+		if (containerCollection == null) {
+			dataContainers = new ArrayList<DataContainer>();
+			return;
+		}
+		List<Pair<String, DataContainer>> sortedDataContainers = new ArrayList<Pair<String, DataContainer>>();
+		for (DataContainer container : containerCollection) {
+			sortedDataContainers.add(new Pair<String, DataContainer>(container
+					.getLabel(), container));
+		}
+
+		Collections.sort(sortedDataContainers);
+
+		dataContainers = new ArrayList<DataContainer>(
+				sortedDataContainers.size());
+
+		for (Pair<String, DataContainer> pair : sortedDataContainers) {
+			dataContainers.add(pair.getSecond());
+		}
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		
+		if(dataContainers == null)
+			retrieveDataContainers();
+		
+		return dataContainers;
+
+		// List<ADimensionGroupData> groups = new
+		// ArrayList<ADimensionGroupData>();
+		// FakeDimensionGroupData data = new FakeDimensionGroupData(0);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("Row1");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(1);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("AnotherRow");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(2);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("YetAnotherRow");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(3);
+		// data.setDimensionPerspectiveID("ColumnPerspec2");
+		// data.setRecordPerspectiveID("RowPerspec2");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(4);
+		// data.setDimensionPerspectiveID("AnotherColumn2");
+		// data.setRecordPerspectiveID("Row1");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
+		//
+		// data = new FakeDimensionGroupData(5);
+		// data.setDimensionPerspectiveID("YetAnotherColumn2");
+		// data.setRecordPerspectiveID("YetAnotherRow");
+		// if (dataDomain instanceof ATableBasedDataDomain)
+		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
+		// groups.add(data);
 	}
 
 }

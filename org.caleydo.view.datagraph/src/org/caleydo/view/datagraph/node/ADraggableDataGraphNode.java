@@ -119,10 +119,4 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 				PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
-	
-
-	
-
-	
-
 }

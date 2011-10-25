@@ -30,6 +30,8 @@ public class DataContainer
 	protected RecordPerspective recordPerspective;
 	protected DimensionPerspective dimensionPerspective;
 
+	protected String label;
+
 	/**
 	 * Object holding respectively calculating all forms of (statistical) meta-data for this container
 	 */
@@ -133,6 +135,16 @@ public class DataContainer
 	/** Same as {@link #getNrRecords()} for dimensions */
 	public int getNrDimensions() {
 		return dimensionPerspective.getVirtualArray().size();
+	}
+
+	public String getLabel() {
+		if (label == null)
+			return dimensionPerspective.getLabel() + "/" + recordPerspective.getLabel();
+		return label;
+	}
+
+	public void setLabel(String label) {
+		this.label = label;
 	}
 
 }

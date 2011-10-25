@@ -9,7 +9,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -24,11 +24,10 @@ public class TopBundleConnector extends ABundleConnector {
 
 	PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<ADimensionGroupData> commonDimensionGroups, int minBandWidth,
+			List<DataContainer> commonDataContainers, int minBandWidth,
 			int maxBandWidth, int maxDataAmount) {
 		super(node, pixelGLConverter, connectionBandRenderer,
-				commonDimensionGroups, minBandWidth, maxBandWidth,
-				maxDataAmount);
+				commonDataContainers, minBandWidth, maxBandWidth, maxDataAmount);
 
 		calcBundlingPoint();
 	}
@@ -36,15 +35,15 @@ public class TopBundleConnector extends ABundleConnector {
 	protected void calcBundlingPoint() {
 		float summedX = 0;
 
-		for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
+		for (DataContainer dataContainer : commonDataContainers) {
 			Pair<Point2D, Point2D> anchorPoints = node
-					.getBottomDimensionGroupAnchorPoints(dimensionGroupData);
+					.getBottomDataContainerAnchorPoints(dataContainer);
 			summedX += anchorPoints.getFirst().getX()
 					+ anchorPoints.getSecond().getX();
 		}
 
 		bundlingPoint = new Point2D.Float(summedX
-				/ ((float) commonDimensionGroups.size() * 2.0f), (float) node
+				/ ((float) commonDataContainers.size() * 2.0f), (float) node
 				.getBoundingBox().getMaxY() + 0.1f);
 	}
 
@@ -134,22 +133,22 @@ public class TopBundleConnector extends ABundleConnector {
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
-		List<Pair<Double, ADimensionGroupData>> sortedDimensionGroups = new ArrayList<Pair<Double, ADimensionGroupData>>(
-				commonDimensionGroups.size());
-		for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
-			sortedDimensionGroups.add(new Pair<Double, ADimensionGroupData>(
-					node.getTopDimensionGroupAnchorPoints(dimensionGroupData)
-							.getFirst().getX(), dimensionGroupData));
+		List<Pair<Double, DataContainer>> sortedDataContainers = new ArrayList<Pair<Double, DataContainer>>(
+				commonDataContainers.size());
+		for (DataContainer dataContainer : commonDataContainers) {
+			sortedDataContainers.add(new Pair<Double, DataContainer>(node
+					.getTopDataContainerAnchorPoints(dataContainer).getFirst()
+					.getX(), dataContainer));
 		}
 
-		Collections.sort(sortedDimensionGroups);
+		Collections.sort(sortedDataContainers);
 
-		for (int i = 0; i < sortedDimensionGroups.size(); i++) {
-			ADimensionGroupData dimensionGroupData = sortedDimensionGroups.get(
+		for (int i = 0; i < sortedDataContainers.size(); i++) {
+			DataContainer dataContainer = sortedDataContainers.get(
 					i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
-					.getTopDimensionGroupAnchorPoints(dimensionGroupData);
+					.getTopDataContainerAnchorPoints(dataContainer);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
 			Pair<Point2D, Point2D> nodeTopAnchorPoints = node
 					.getTopAnchorPoints();
@@ -161,16 +160,15 @@ public class TopBundleConnector extends ABundleConnector {
 					(float) dimensionGroupAnchorPoints.getSecond().getX(),
 					(float) nodeTopAnchorPoints.getSecond().getY() + 0.1f));
 
-//			dimensionGroupAnchorPoints = new Pair<Point2D, Point2D>(
-//					dimensionGroupAnchorPoints.getSecond(),
-//					dimensionGroupAnchorPoints.getFirst());
+			// dimensionGroupAnchorPoints = new Pair<Point2D, Point2D>(
+			// dimensionGroupAnchorPoints.getSecond(),
+			// dimensionGroupAnchorPoints.getFirst());
 
-
-			int width = bandWidthMap.get(dimensionGroupData);
+			int width = bandWidthMap.get(dataContainer);
 
 			Point2D nextBandAnchorPoint = null;
 
-			if (i == commonDimensionGroups.size() - 1) {
+			if (i == commonDataContainers.size() - 1) {
 				nextBandAnchorPoint = rightBandBundleConnecionPoint;
 			} else {
 				nextBandAnchorPoint = new Point2D.Float(

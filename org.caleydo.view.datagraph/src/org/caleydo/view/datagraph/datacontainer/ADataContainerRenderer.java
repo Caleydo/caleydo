@@ -5,7 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -32,17 +32,17 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 		topDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
 	}
 
-	public abstract void setDimensionGroups(
-			List<ADimensionGroupData> dimensionGroupDatas);
+	public abstract void setDataContainers(
+			List<DataContainer> dataContainers);
 
-	public Pair<Point2D, Point2D> getBottomAnchorPointsOfDimensionGroup(
-			ADimensionGroupData dimensionGroupData) {
-		return bottomDimensionGroupPositions.get(dimensionGroupData.getID());
+	public Pair<Point2D, Point2D> getBottomAnchorPointsOfDataContainer(
+			DataContainer dataContainer) {
+		return bottomDimensionGroupPositions.get(dataContainer.getID());
 	}
 
-	public Pair<Point2D, Point2D> getTopAnchorPointsOfDimensionGroup(
-			ADimensionGroupData dimensionGroupData) {
-		return topDimensionGroupPositions.get(dimensionGroupData.getID());
+	public Pair<Point2D, Point2D> getTopAnchorPointsOfDataContainer(
+			DataContainer dataContainer) {
+		return topDimensionGroupPositions.get(dataContainer.getID());
 	}
 
 	public abstract void destroy();

@@ -216,7 +216,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 							ADataContainerRenderer.DIMENSION_GROUP_PICKING_TYPE
 									+ node.getID(),
 							((DimensionGroupRenderer) cell)
-									.getDimensionGroupData().getID());
+									.getDataContainer().getID());
 
 					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX,
 							row.position + cellSpacingY, 0);
@@ -238,12 +238,12 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 
 					bottomDimensionGroupPositions.put(
 							((DimensionGroupRenderer) cell)
-									.getDimensionGroupData().getID(),
+									.getDataContainer().getID(),
 							new Pair<Point2D, Point2D>(bottomPosition1,
 									bottomPosition2));
 					topDimensionGroupPositions.put(
 							((DimensionGroupRenderer) cell)
-									.getDimensionGroupData().getID(),
+									.getDataContainer().getID(),
 							new Pair<Point2D, Point2D>(topPosition1,
 									topPosition2));
 

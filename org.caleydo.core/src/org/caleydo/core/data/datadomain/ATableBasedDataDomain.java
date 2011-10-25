@@ -1,5 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
@@ -195,7 +196,7 @@ public abstract class ATableBasedDataDomain
 			externalMappingLoaded = true;
 		}
 
-//		isColumnDimension = configuration.isColu;
+		// isColumnDimension = configuration.isColu;
 
 		if (externalMappingLoaded) {
 			recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
@@ -322,6 +323,13 @@ public abstract class ATableBasedDataDomain
 		}
 
 		return container;
+	}
+
+	/**
+	 * @return All {@link DataContainer}s of this datadomain.
+	 */
+	public Collection<DataContainer> getAllDataContainers() {
+		return dataContainers.values();
 	}
 
 	private String createKey(String recordPerspectiveID, String dimensionPerspectiveID) {

@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -56,72 +56,77 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getBottomDimensionGroupAnchorPoints(
-			ADimensionGroupData dimensionGroup) {
+	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
+			DataContainer dataContainer) {
 
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getBottomAnchorPointsOfDimensionGroup(dimensionGroup);
+				.getBottomAnchorPointsOfDataContainer(dataContainer);
 
-		Point2D position = graphLayout.getNodePosition(this, true);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-				.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-				.getY());
-		float width = pixelGLConverter
-				.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter
-				.getGLHeightForPixelHeight(getHeightPixels());
-		float spacingX = pixelGLConverter
-				.getGLWidthForPixelWidth(SPACING_PIXELS);
-		float spacingY = pixelGLConverter
-				.getGLHeightForPixelHeight(SPACING_PIXELS);
+		// Point2D position = graphLayout.getNodePosition(this, true);
+		// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+		// .getX());
+		// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+		// .getY());
+		// float width = pixelGLConverter
+		// .getGLWidthForPixelWidth(getWidthPixels());
+		// float height = pixelGLConverter
+		// .getGLHeightForPixelHeight(getHeightPixels());
+		// float spacingX = pixelGLConverter
+		// .getGLWidthForPixelWidth(SPACING_PIXELS);
+		// float spacingY = pixelGLConverter
+		// .getGLHeightForPixelHeight(SPACING_PIXELS);
+		//
+		// Point2D first = (Point2D) anchorPoints.getFirst().clone();
+		// Point2D second = (Point2D) anchorPoints.getSecond().clone();
+		//
+		// first.setLocation(anchorPoints.getFirst().getX() + x + spacingX -
+		// width
+		// / 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
+		// / 2.0f);
+		// second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
+		// - width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
+		// - height / 2.0f);
 
-		Point2D first = (Point2D) anchorPoints.getFirst().clone();
-		Point2D second = (Point2D) anchorPoints.getSecond().clone();
-
-		first.setLocation(anchorPoints.getFirst().getX() + x + spacingX - width
-				/ 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
-				/ 2.0f);
-		second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
-				- width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
-				- height / 2.0f);
-
-		return new Pair<Point2D, Point2D>(first, second);
+		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
+				SPACING_PIXELS, SPACING_PIXELS);
 	}
 
 	@Override
-	public Pair<Point2D, Point2D> getTopDimensionGroupAnchorPoints(
-			ADimensionGroupData dimensionGroup) {
+	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(
+			DataContainer dataContainer) {
 
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
-				.getTopAnchorPointsOfDimensionGroup(dimensionGroup);
+				.getTopAnchorPointsOfDataContainer(dataContainer);
 
-		Point2D position = graphLayout.getNodePosition(this, true);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-				.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-				.getY());
-		float width = pixelGLConverter
-				.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter
-				.getGLHeightForPixelHeight(getHeightPixels());
-		float spacingX = pixelGLConverter
-				.getGLWidthForPixelWidth(SPACING_PIXELS);
-		float spacingY = pixelGLConverter.getGLHeightForPixelHeight(3
-				* SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
-				+ LINE_SEPARATOR_HEIGHT_PIXELS);
+		// Point2D position = graphLayout.getNodePosition(this, true);
+		// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+		// .getX());
+		// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+		// .getY());
+		// float width = pixelGLConverter
+		// .getGLWidthForPixelWidth(getWidthPixels());
+		// float height = pixelGLConverter
+		// .getGLHeightForPixelHeight(getHeightPixels());
+		// float spacingX = pixelGLConverter
+		// .getGLWidthForPixelWidth(SPACING_PIXELS);
+		// float spacingY = pixelGLConverter.getGLHeightForPixelHeight(3
+		// * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+		// + LINE_SEPARATOR_HEIGHT_PIXELS);
+		//
+		// Point2D first = (Point2D) anchorPoints.getFirst().clone();
+		// Point2D second = (Point2D) anchorPoints.getSecond().clone();
+		//
+		// first.setLocation(anchorPoints.getFirst().getX() + x + spacingX -
+		// width
+		// / 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
+		// / 2.0f);
+		// second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
+		// - width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
+		// - height / 2.0f);
 
-		Point2D first = (Point2D) anchorPoints.getFirst().clone();
-		Point2D second = (Point2D) anchorPoints.getSecond().clone();
-
-		first.setLocation(anchorPoints.getFirst().getX() + x + spacingX - width
-				/ 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
-				/ 2.0f);
-		second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
-				- width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
-				- height / 2.0f);
-
-		return new Pair<Point2D, Point2D>(first, second);
+		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
+				SPACING_PIXELS, 3 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+						+ LINE_SEPARATOR_HEIGHT_PIXELS);
 	}
 
 	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(

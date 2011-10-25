@@ -8,7 +8,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -74,10 +74,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				: new TopDownDataContainerMatrixRenderingStrategy();
 		// DataDomainManager.get().getDataDomainByType(dataDomainType);
 
-		List<ADimensionGroupData> dimensionGroupDatas = node
-				.getDimensionGroups();
-
-		createRowsAndColumns(dimensionGroupDatas);
+		createRowsAndColumns(node.getDataContainers());
 		createPickingListeners();
 
 	}
@@ -136,7 +133,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 			private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
 				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
-					if (dimensionGroupRenderer.getDimensionGroupData().getID() == id) {
+					if (dimensionGroupRenderer.getDataContainer().getID() == id) {
 						return dimensionGroupRenderer;
 					}
 				}
@@ -246,8 +243,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		}, EMPTY_CELL_PICKING_TYPE + node.getID());
 	}
 
-	private void createRowsAndColumns(
-			List<ADimensionGroupData> dimensionGroupDatas) {
+	private void createRowsAndColumns(List<DataContainer> dataContainers) {
 		// Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
 		// .getRecordPerspectiveIDs() : dataDomain
 		// .getDimensionPerspectiveIDs();
@@ -341,9 +337,10 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			int numSubdivisions = 1;
 			for (CellContainer row : rows) {
 				boolean dimensionGroupExists = false;
-				for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
+				for (DataContainer dataContainer : dataContainers) {
 
-					TableBasedDimensionGroupData tableBasedDimensionGroupData = (TableBasedDimensionGroupData) dimensionGroupData;
+					// TableBasedDimensionGroupData tableBasedDimensionGroupData
+					// = (TableBasedDimensionGroupData) dataContainer;
 					// String recordPerspectiveID =
 					// dataDomain.isColumnDimension() ? row.id
 					// : column.id;
@@ -353,10 +350,9 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 					String recordPerspectiveID = row.id;
 					String dimensionPerspectiveID = column.id;
 
-					if (tableBasedDimensionGroupData.getDimensionPerspective()
-							.getID().equals(dimensionPerspectiveID)
-							&& tableBasedDimensionGroupData
-									.getRecordPerspective().getID()
+					if (dataContainer.getDimensionPerspective().getID()
+							.equals(dimensionPerspectiveID)
+							&& dataContainer.getRecordPerspective().getID()
 									.equals(recordPerspectiveID)) {
 						numSubdivisions++;
 						if (numSubdivisions >= rows.size()) {
@@ -364,9 +360,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						}
 						dimensionGroupExists = true;
 						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-								tableBasedDimensionGroupData, view,
-								dragAndDropController, node, dataDomain
-										.getColor().getRGBA());
+								dataContainer, view, dragAndDropController,
+								node, dataDomain.getColor().getRGBA());
 						dimensionGroupRenderer
 								.setRenderDimensionGroupLabel(false);
 						cells.put(row.id + column.id, dimensionGroupRenderer);
@@ -694,8 +689,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
-		createRowsAndColumns(dimensionGroupDatas);
+	public void setDataContainers(List<DataContainer> dataContainers) {
+		createRowsAndColumns(dataContainers);
 	}
 
 	@Override

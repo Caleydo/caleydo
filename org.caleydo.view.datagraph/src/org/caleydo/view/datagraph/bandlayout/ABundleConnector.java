@@ -4,25 +4,25 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class ABundleConnector extends ANodeConnector {
 
-	protected List<ADimensionGroupData> commonDimensionGroups;
+	protected List<DataContainer> commonDataContainers;
 	protected int bandWidth;
-	protected Map<ADimensionGroupData, Integer> bandWidthMap = new HashMap<ADimensionGroupData, Integer>();
+	protected Map<DataContainer, Integer> bandWidthMap = new HashMap<DataContainer, Integer>();
 
 	public ABundleConnector(IDataGraphNode node,
 			PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<ADimensionGroupData> commonDimensionGroups, int minBandWidth,
+			List<DataContainer> commonDataContainers, int minBandWidth,
 			int maxBandWidth, int maxDataAmount) {
 		super(node, pixelGLconverter, connectionBandRenderer);
 
-		this.commonDimensionGroups = commonDimensionGroups;
+		this.commonDataContainers = commonDataContainers;
 		calcBandWidths(minBandWidth, maxBandWidth, maxDataAmount);
 	}
 
@@ -30,11 +30,11 @@ public abstract class ABundleConnector extends ANodeConnector {
 			int maxDataAmount) {
 		bandWidth = 0;
 
-		for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
-			int width = calcDimensionGroupBandWidthPixels(dimensionGroupData,
+		for (DataContainer dataContainer : commonDataContainers) {
+			int width = calcDimensionGroupBandWidthPixels(dataContainer,
 					minBandWidth, maxBandWidth, maxDataAmount);
 			bandWidth += width;
-			bandWidthMap.put(dimensionGroupData, width);
+			bandWidthMap.put(dataContainer, width);
 		}
 
 		if (bandWidth > maxBandWidth) {
@@ -43,7 +43,7 @@ public abstract class ABundleConnector extends ANodeConnector {
 
 			int newBandWidth = 0;
 
-			for (ADimensionGroupData dimensionGroupData : commonDimensionGroups) {
+			for (DataContainer dimensionGroupData : commonDataContainers) {
 				int width = bandWidthMap.get(dimensionGroupData);
 				int newWidth = width
 						- (int) Math
@@ -57,8 +57,8 @@ public abstract class ABundleConnector extends ANodeConnector {
 	}
 
 	protected int calcDimensionGroupBandWidthPixels(
-			ADimensionGroupData dimensionGroupData, int minBandWidth,
-			int maxBandWidth, int maxDataAmount) {
+			DataContainer dataContainer, int minBandWidth, int maxBandWidth,
+			int maxDataAmount) {
 		// TODO: implement properly
 
 		return minBandWidth;

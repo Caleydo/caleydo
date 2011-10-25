@@ -6,7 +6,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -29,11 +29,11 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	public DataContainerListRenderer(IDataGraphNode node, AGLView view,
 			DragAndDropController dragAndDropController,
-			List<ADimensionGroupData> dimensionGroupDatas) {
+			List<DataContainer> dataContainers) {
 		super(node, view, dragAndDropController);
 
 		dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
-		setDimensionGroups(dimensionGroupDatas);
+		setDataContainers(dataContainers);
 		createPickingListener();
 	}
 
@@ -46,7 +46,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 				int dimensionGroupID = pick.getID();
 
 				for (DimensionGroupRenderer comparisonGroupRepresentation : dimensionGroupRenderers) {
-					if (comparisonGroupRepresentation.getDimensionGroupData()
+					if (comparisonGroupRepresentation.getDataContainer()
 							.getID() == dimensionGroupID) {
 						draggedComparisonGroupRepresentation = comparisonGroupRepresentation;
 						break;
@@ -82,14 +82,14 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroupDatas) {
+	public void setDataContainers(List<DataContainer> dataContainers) {
 		dimensionGroupRenderers.clear();
-		for (ADimensionGroupData dimensionGroupData : dimensionGroupDatas) {
-			float[] color = dimensionGroupData.getDataDomain().getColor()
+		for (DataContainer dataContainer : dataContainers) {
+			float[] color = dataContainer.getDataDomain().getColor()
 					.getRGBA();
 
 			DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-					dimensionGroupData, view, dragAndDropController, node,
+					dataContainer, view, dragAndDropController, node,
 					color);
 			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
 			dimensionGroupRenderer.setUpsideDown(isUpsideDown);
@@ -119,7 +119,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
 					DIMENSION_GROUP_PICKING_TYPE + node.getID(),
-					dimensionGroupRenderer.getDimensionGroupData().getID());
+					dimensionGroupRenderer.getDataContainer().getID());
 
 			gl.glPushName(pickingID);
 
@@ -139,11 +139,11 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 			Point2D topPosition2 = new Point2D.Float(currentPosX
 					+ currentDimGroupWidth, y);
 			bottomDimensionGroupPositions
-					.put(dimensionGroupRenderer.getDimensionGroupData().getID(),
+					.put(dimensionGroupRenderer.getDataContainer().getID(),
 							new Pair<Point2D, Point2D>(bottomPosition1,
 									bottomPosition2));
 			topDimensionGroupPositions.put(dimensionGroupRenderer
-					.getDimensionGroupData().getID(),
+					.getDataContainer().getID(),
 					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
@@ -162,8 +162,8 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	}
 
 	private int getDimensionGroupsWidthPixels() {
-		return (node.getDimensionGroups().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
-				+ ((node.getDimensionGroups().size() - 1) * SPACING_PIXELS) + 2
+		return (node.getDataContainers().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
+				+ ((node.getDataContainers().size() - 1) * SPACING_PIXELS) + 2
 				* SIDE_SPACING_PIXELS;
 	}
 
@@ -174,9 +174,9 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		float maxTextWidth = Float.MIN_VALUE;
 
-		for (ADimensionGroupData dimensionGroupData : node.getDimensionGroups()) {
+		for (DataContainer dataContainer : node.getDataContainers()) {
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					dimensionGroupData.getLabel(), pixelGLConverter
+					dataContainer.getLabel(), pixelGLConverter
 							.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
 					pixelGLConverter
 							.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));

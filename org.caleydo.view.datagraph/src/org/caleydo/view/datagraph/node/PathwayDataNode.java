@@ -1,5 +1,9 @@
 package org.caleydo.view.datagraph.node;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -24,7 +28,7 @@ public class PathwayDataNode extends ADataNode {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
 		dataContainerRenderer = new DataContainerListRenderer(this, view,
-				dragAndDropController, getDimensionGroups());
+				dragAndDropController, getDataContainers());
 
 	}
 
@@ -51,7 +55,7 @@ public class PathwayDataNode extends ADataNode {
 
 		Row bodyRow = new Row("bodyRow");
 
-		if (getDimensionGroups().size() > 0) {
+		if (getDataContainers().size() > 0) {
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
 					1, 1 }));
 		}
@@ -76,7 +80,7 @@ public class PathwayDataNode extends ADataNode {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(captionLayout);
 		baseColumn.append(spacingLayoutY);
-		
+
 		setUpsideDown(isUpsideDown);
 
 		return baseRow;
@@ -84,7 +88,7 @@ public class PathwayDataNode extends ADataNode {
 
 	@Override
 	public void update() {
-		dataContainerRenderer.setDimensionGroups(getDimensionGroups());
+		dataContainerRenderer.setDataContainers(getDataContainers());
 	}
 
 	@Override
@@ -95,6 +99,12 @@ public class PathwayDataNode extends ADataNode {
 	@Override
 	protected ADataContainerRenderer getDataContainerRenderer() {
 		return dataContainerRenderer;
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		//FIXME: This will probably change
+		return new ArrayList<DataContainer>(dataDomain.getDimensionGroups());
 	}
 
 }

@@ -4,7 +4,7 @@ import java.awt.geom.Point2D;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -18,7 +18,7 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 	private static final int TEXT_SPACING_PIXELS = 2;
 
-	private ADimensionGroupData dimensionGroupData;
+	private DataContainer dataContainer;
 
 	private AGLView view;
 	private IDataGraphNode node;
@@ -32,12 +32,12 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 	private int textHeightPixels;
 
-	public DimensionGroupRenderer(ADimensionGroupData dimensionGroupData,
+	public DimensionGroupRenderer(DataContainer dataContainer,
 			AGLView view, DragAndDropController dragAndDropController,
 			IDataGraphNode node, float[] color) {
 		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f,
 				color[2] - 0.2f, 1f }, 2);
-		this.setDimensionGroupData(dimensionGroupData);
+		this.setDataContainer(dataContainer);
 		this.view = view;
 		this.node = node;
 		renderDimensionGroupLabel = true;
@@ -130,7 +130,7 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 			textRenderer
 					.renderTextInBounds(
 							gl,
-							dimensionGroupData.getLabel(),
+							dataContainer.getLabel(),
 							0,
 							0,
 							0,
@@ -144,12 +144,12 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 	}
 
-	public void setDimensionGroupData(ADimensionGroupData dimensionGroupData) {
-		this.dimensionGroupData = dimensionGroupData;
+	public void setDataContainer(DataContainer dimensionGroupData) {
+		this.dataContainer = dimensionGroupData;
 	}
 
-	public ADimensionGroupData getDimensionGroupData() {
-		return dimensionGroupData;
+	public DataContainer getDataContainer() {
+		return dataContainer;
 	}
 
 	@Override
@@ -157,8 +157,8 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 			float mouseCoordinateY) {
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
-		draggingPosition = node.getBottomDimensionGroupAnchorPoints(
-				dimensionGroupData).getFirst();
+		draggingPosition = node.getBottomDataContainerAnchorPoints(
+				dataContainer).getFirst();
 
 	}
 

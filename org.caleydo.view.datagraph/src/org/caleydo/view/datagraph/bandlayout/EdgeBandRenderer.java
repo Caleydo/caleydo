@@ -8,7 +8,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
@@ -42,16 +42,16 @@ public class EdgeBandRenderer {
 
 	public void renderEdgeBand(GL2 gl, IEdgeRoutingStrategy edgeRoutingStrategy) {
 
-		List<ADimensionGroupData> commonDimensionGroupsNode1 = new ArrayList<ADimensionGroupData>();
-		List<ADimensionGroupData> commonDimensionGroupsNode2 = new ArrayList<ADimensionGroupData>();
+		List<DataContainer> commonDataContainersNode1 = new ArrayList<DataContainer>();
+		List<DataContainer> commonDataContainersNode2 = new ArrayList<DataContainer>();
 
-		for (ADimensionGroupData dimensionGroupData1 : node1
-				.getDimensionGroups()) {
-			for (ADimensionGroupData dimensionGroupData2 : node2
-					.getDimensionGroups()) {
+		for (DataContainer dimensionGroupData1 : node1
+				.getDataContainers()) {
+			for (DataContainer dimensionGroupData2 : node2
+					.getDataContainers()) {
 				if (dimensionGroupData1.getID() == dimensionGroupData2.getID()) {
-					commonDimensionGroupsNode1.add(dimensionGroupData1);
-					commonDimensionGroupsNode2.add(dimensionGroupData2);
+					commonDataContainersNode1.add(dimensionGroupData1);
+					commonDataContainersNode2.add(dimensionGroupData2);
 				}
 			}
 		}
@@ -78,25 +78,25 @@ public class EdgeBandRenderer {
 
 		int bandWidth = 0;
 
-		if (!commonDimensionGroupsNode1.isEmpty()) {
+		if (!commonDataContainersNode1.isEmpty()) {
 
 			if (node1.isUpsideDown()) {
 				connector1 = new TopBundleConnector(node1, pixelGLConverter,
-						connectionBandRenderer, commonDimensionGroupsNode1,
+						connectionBandRenderer, commonDataContainersNode1,
 						minBandWidth, maxBandWidth, maxDataAmount);
 			} else {
 				connector1 = new BottomBundleConnector(node1, pixelGLConverter,
-						connectionBandRenderer, commonDimensionGroupsNode1,
+						connectionBandRenderer, commonDataContainersNode1,
 						minBandWidth, maxBandWidth, maxDataAmount);
 			}
 
 			if (node2.isUpsideDown()) {
 				connector2 = new TopBundleConnector(node2, pixelGLConverter,
-						connectionBandRenderer, commonDimensionGroupsNode2,
+						connectionBandRenderer, commonDataContainersNode2,
 						minBandWidth, maxBandWidth, maxDataAmount);
 			} else {
 				connector2 = new BottomBundleConnector(node2, pixelGLConverter,
-						connectionBandRenderer, commonDimensionGroupsNode2,
+						connectionBandRenderer, commonDataContainersNode2,
 						minBandWidth, maxBandWidth, maxDataAmount);
 			}
 

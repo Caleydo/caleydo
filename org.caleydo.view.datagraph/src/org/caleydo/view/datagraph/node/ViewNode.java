@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -29,8 +30,8 @@ import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.ViewNodeBackGroundRenderer;
 import org.caleydo.view.datagraph.contextmenu.OpenViewItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
-import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
+import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.eclipse.core.runtime.FileLocator;
@@ -45,7 +46,6 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 	private DataContainerListRenderer overviewDataContainerRenderer;
 	private AGLView representedView;
 	private Set<IDataDomain> dataDomains;
-	private List<ADimensionGroupData> dimensionGroups;
 	private String viewName;
 	private String iconPath;
 
@@ -185,7 +185,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		overviewDataContainerRenderer = new DataContainerListRenderer(this,
-				view, dragAndDropController, getDimensionGroups());
+				view, dragAndDropController, getDataContainers());
 		compGroupLayout.setRatioSizeY(1);
 		compGroupLayout.setRenderer(overviewDataContainerRenderer);
 
@@ -202,18 +202,20 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		baseColumn.append(lineSeparatorLayout);
 		baseColumn.append(titleRow);
 		baseColumn.append(spacingLayoutY);
-		
+
 		setUpsideDown(isUpsideDown);
 
 		return baseRow;
 	}
 
 	@Override
-	public List<ADimensionGroupData> getDimensionGroups() {
+	public List<DataContainer> getDataContainers() {
 		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
 		if (groups == null) {
-			groups = new ArrayList<ADimensionGroupData>();
+			return new ArrayList<DataContainer>();
 		}
+
+		return new ArrayList<DataContainer>(groups);
 
 		// List<ADimensionGroupData> groups = new
 		// ArrayList<ADimensionGroupData>();
@@ -247,7 +249,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		// data.setRecordPerspectiveID("YetAnotherRow");
 		// groups.add(data);
 
-		return groups;
+		// return groups;
 	}
 
 	// @Override
@@ -455,18 +457,20 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables,
 			float mouseCoordinateX, float mouseCoordinateY,
 			DragAndDropController dragAndDropController) {
-		ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
+		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof DimensionGroupRenderer) {
-				DimensionGroupRenderer comparisonGroupRepresentation = (DimensionGroupRenderer) draggable;
-				dimensionGroupData.add(comparisonGroupRepresentation
-						.getDimensionGroupData());
+				DimensionGroupRenderer dimensionGroupRenderer = (DimensionGroupRenderer) draggable;
+				dataContainers.add(dimensionGroupRenderer.getDataContainer());
 			}
 		}
 
-		if (!dimensionGroupData.isEmpty()) {
-			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-			event.setDimensionGroupData(dimensionGroupData);
+		if (!dataContainers.isEmpty()) {
+			// FIXME: this needs to be looked at again
+			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+					dataContainers.get(0).getDataDomain().getDataDomainID(),
+					dataContainers.get(0));
+			// event.setDimensionGroupData(dimensionGroupData);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
@@ -477,7 +481,7 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	@Override
 	public void update() {
-		overviewDataContainerRenderer.setDimensionGroups(getDimensionGroups());
+		overviewDataContainerRenderer.setDataContainers(getDataContainers());
 	}
 
 	@Override
