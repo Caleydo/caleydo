@@ -129,7 +129,7 @@ public class BottomBundleConnector extends ABundleConnector {
 				leftBandBundleConnecionPoint, rightBandBundleConnecionPoint));
 
 		connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-				color.getRGB(), 0.5f);
+				color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
@@ -192,7 +192,7 @@ public class BottomBundleConnector extends ABundleConnector {
 					nextBandAnchorPoint));
 
 			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-					color.getRGB(), 0.5f);
+					color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 			prevBandAnchorPoint = nextBandAnchorPoint;
 		}

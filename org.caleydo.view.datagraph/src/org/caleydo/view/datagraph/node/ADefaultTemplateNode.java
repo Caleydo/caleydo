@@ -32,7 +32,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	protected final static int MIN_DATA_CONTAINER_WIDTH_PIXELS = 180;
 
 	protected LayoutManager layoutManager;
-	protected boolean isUpsideDown = true;
+	protected boolean isUpsideDown = false;
 	protected Column baseColumn;
 	protected Column bodyColumn;
 
@@ -59,33 +59,11 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
 			DataContainer dataContainer) {
 
+		if (getDataContainerRenderer() == null)
+			return null;
+
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
 				.getBottomAnchorPointsOfDataContainer(dataContainer);
-
-		// Point2D position = graphLayout.getNodePosition(this, true);
-		// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-		// .getX());
-		// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-		// .getY());
-		// float width = pixelGLConverter
-		// .getGLWidthForPixelWidth(getWidthPixels());
-		// float height = pixelGLConverter
-		// .getGLHeightForPixelHeight(getHeightPixels());
-		// float spacingX = pixelGLConverter
-		// .getGLWidthForPixelWidth(SPACING_PIXELS);
-		// float spacingY = pixelGLConverter
-		// .getGLHeightForPixelHeight(SPACING_PIXELS);
-		//
-		// Point2D first = (Point2D) anchorPoints.getFirst().clone();
-		// Point2D second = (Point2D) anchorPoints.getSecond().clone();
-		//
-		// first.setLocation(anchorPoints.getFirst().getX() + x + spacingX -
-		// width
-		// / 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
-		// / 2.0f);
-		// second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
-		// - width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
-		// - height / 2.0f);
 
 		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
 				SPACING_PIXELS, SPACING_PIXELS);
@@ -95,34 +73,11 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(
 			DataContainer dataContainer) {
 
+		if (getDataContainerRenderer() == null)
+			return null;
+
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
 				.getTopAnchorPointsOfDataContainer(dataContainer);
-
-		// Point2D position = graphLayout.getNodePosition(this, true);
-		// float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
-		// .getX());
-		// float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
-		// .getY());
-		// float width = pixelGLConverter
-		// .getGLWidthForPixelWidth(getWidthPixels());
-		// float height = pixelGLConverter
-		// .getGLHeightForPixelHeight(getHeightPixels());
-		// float spacingX = pixelGLConverter
-		// .getGLWidthForPixelWidth(SPACING_PIXELS);
-		// float spacingY = pixelGLConverter.getGLHeightForPixelHeight(3
-		// * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
-		// + LINE_SEPARATOR_HEIGHT_PIXELS);
-		//
-		// Point2D first = (Point2D) anchorPoints.getFirst().clone();
-		// Point2D second = (Point2D) anchorPoints.getSecond().clone();
-		//
-		// first.setLocation(anchorPoints.getFirst().getX() + x + spacingX -
-		// width
-		// / 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
-		// / 2.0f);
-		// second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
-		// - width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
-		// - height / 2.0f);
 
 		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
 				SPACING_PIXELS, 3 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
@@ -274,7 +229,9 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				+ CAPTION_HEIGHT_PIXELS
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
 				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
-						getDataContainerRenderer().getMinHeightPixels());
+						((getDataContainerRenderer() == null) ? 0
+								: getDataContainerRenderer()
+										.getMinHeightPixels()));
 		// return layout.getHeightPixels();
 	}
 
@@ -283,7 +240,9 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		return 2
 				* SPACING_PIXELS
 				+ Math.max(MIN_DATA_CONTAINER_WIDTH_PIXELS,
-						getDataContainerRenderer().getMinWidthPixels());
+						((getDataContainerRenderer() == null) ? 0
+								: getDataContainerRenderer()
+										.getMinWidthPixels()));
 		// return layout.getWidthPixels();
 	}
 
@@ -390,7 +349,9 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		bodyColumn.setBottomUp(!isUpsideDown);
 
 		view.setDisplayListDirty();
-		getDataContainerRenderer().setUpsideDown(isUpsideDown);
+		if (getDataContainerRenderer() != null) {
+			getDataContainerRenderer().setUpsideDown(isUpsideDown);
+		}
 	}
 
 	protected abstract ElementLayout setupLayout();

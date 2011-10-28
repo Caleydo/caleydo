@@ -74,7 +74,6 @@ public class LeftSideConnector extends ASideConnector {
 		Pair<Point2D, Point2D> bandAnchorPoints = new Pair<Point2D, Point2D>(
 				bandAnchorPoint2, bandAnchorPoint1);
 
-
 		Point2D bandOffsetAnchorPoint1 = calcPointOnLineWithFixedX(
 				bandAnchorPoint1, vecXPoint1, vecYPoint1,
 				(float) nodeOffsetAnchorPoints.getSecond().getX(),
@@ -101,7 +100,7 @@ public class LeftSideConnector extends ASideConnector {
 		bandConnectionPoints.add(bandAnchorPoints);
 
 		connectionBandRenderer.renderComplexBand(gl, bandConnectionPoints,
-				false, color.getRGB(), 0.5f);
+				false, color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 	}
 

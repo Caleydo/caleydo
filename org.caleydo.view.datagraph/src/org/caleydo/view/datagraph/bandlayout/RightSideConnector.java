@@ -101,7 +101,7 @@ public class RightSideConnector extends ASideConnector {
 		bandConnectionPoints.add(bandAnchorPoints);
 
 		connectionBandRenderer.renderComplexBand(gl, bandConnectionPoints,
-				false, color.getRGB(), 0.5f);
+				false, color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 	}
 

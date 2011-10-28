@@ -31,8 +31,8 @@ public class TopSideConnector extends ASideConnector {
 		Point2D nodePosition = node.getPosition();
 		Point2D otherNodePosition = otherNode.getPosition();
 
-		float spacingY = (float) ((otherNodePosition.getY() - otherNode.getHeight() / 2.0f) - (nodePosition
-				.getY() + node.getHeight() / 2.0f));
+		float spacingY = (float) ((otherNodePosition.getY() - otherNode
+				.getHeight() / 2.0f) - (nodePosition.getY() + node.getHeight() / 2.0f));
 		float deltaX = (float) (nodePosition.getX() - otherNodePosition.getX());
 
 		nodeAnchorPoints = node.getTopAnchorPoints();
@@ -45,24 +45,22 @@ public class TopSideConnector extends ASideConnector {
 				.min(0.2f * spacingY,
 						pixelGLConverter
 								.getGLHeightForPixelHeight(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
-		bandConnectionPoint = new Point2D.Float(edgeAnchorX,
-				edgeAnchorY);
+		bandConnectionPoint = new Point2D.Float(edgeAnchorX, edgeAnchorY);
 
 	}
 
 	@Override
 	public Point2D getBandHelperPoint() {
-		return new Point2D.Float(
-				(float) bandConnectionPoint.getX(),
+		return new Point2D.Float((float) bandConnectionPoint.getX(),
 				(float) nodeAnchorPoints.getFirst().getY());
 	}
 
 	@Override
 	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
 			Color color) {
-		
-		float nodeEdgeAnchorSpacing = (float) bandConnectionPoint
-				.getY() - (float) nodeAnchorPoints.getFirst().getY();
+
+		float nodeEdgeAnchorSpacing = (float) bandConnectionPoint.getY()
+				- (float) nodeAnchorPoints.getFirst().getY();
 
 		Pair<Point2D, Point2D> nodeOffsetAnchorPoints = new Pair<Point2D, Point2D>();
 		nodeOffsetAnchorPoints.setFirst(new Point2D.Float(
@@ -73,7 +71,7 @@ public class TopSideConnector extends ASideConnector {
 				(float) nodeAnchorPoints.getSecond().getX(),
 				(float) nodeAnchorPoints.getSecond().getY() + 0.3f
 						* nodeEdgeAnchorSpacing));
-		
+
 		calcBandDependentParameters(isEnd1, bandPoints);
 
 		Pair<Point2D, Point2D> bandAnchorPoints = new Pair<Point2D, Point2D>(
@@ -97,15 +95,15 @@ public class TopSideConnector extends ASideConnector {
 
 		Pair<Point2D, Point2D> bandOffsetAnchorPoints = new Pair<Point2D, Point2D>(
 				bandOffsetAnchorPoint2, bandOffsetAnchorPoint1);
-		
+
 		List<Pair<Point2D, Point2D>> bandConnectionPoints = new ArrayList<Pair<Point2D, Point2D>>();
 		bandConnectionPoints.add(nodeAnchorPoints);
 		bandConnectionPoints.add(nodeOffsetAnchorPoints);
 		bandConnectionPoints.add(bandOffsetAnchorPoints);
 		bandConnectionPoints.add(bandAnchorPoints);
-		
-		connectionBandRenderer.renderComplexBand(gl,
-				bandConnectionPoints, false, color.getRGB(), 0.5f);
+
+		connectionBandRenderer.renderComplexBand(gl, bandConnectionPoints,
+				false, color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 	}
 

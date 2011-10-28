@@ -15,7 +15,6 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
-import org.caleydo.view.datagraph.node.ViewNode;
 
 public class EdgeBandRenderer {
 
@@ -41,7 +40,8 @@ public class EdgeBandRenderer {
 		this.maxDataAmount = maxDataAmount;
 	}
 
-	public void renderEdgeBand(GL2 gl, IEdgeRoutingStrategy edgeRoutingStrategy) {
+	public void renderEdgeBand(GL2 gl,
+			IEdgeRoutingStrategy edgeRoutingStrategy, boolean highlightBand) {
 
 		List<DataContainer> commonDataContainersNode1 = new ArrayList<DataContainer>();
 		List<DataContainer> commonDataContainersNode2 = new ArrayList<DataContainer>();
@@ -153,7 +153,7 @@ public class EdgeBandRenderer {
 		if (!commonDataContainersNode1.isEmpty()) {
 
 			// TODO: finish this
-			if (!(node1 instanceof ViewNode)) {
+			if (node1.showsDataContainers()) {
 				// AGLView representedView =
 				// ((ViewNode)node1).getRepresentedView();
 				//
@@ -185,7 +185,7 @@ public class EdgeBandRenderer {
 						.getBandWidth();
 			}
 
-			if (!(node2 instanceof ViewNode)) {
+			if (node2.showsDataContainers()) {
 				// AGLView representedView =
 				// ((ViewNode)node1).getRepresentedView();
 				//
@@ -217,6 +217,9 @@ public class EdgeBandRenderer {
 
 		}
 
+		connector1.setHighlightBand(highlightBand);
+		connector2.setHighlightBand(highlightBand);
+
 		List<Point2D> edgePoints = new ArrayList<Point2D>();
 
 		edgePoints.add(connector1.getBandConnectionPoint());
@@ -229,7 +232,8 @@ public class EdgeBandRenderer {
 
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
 				gl, edgePoints, bandWidth, pixelGLConverter);
-		renderBand(gl, connectionBandRenderer, bandPoints, bandColor);
+		renderBand(gl, connectionBandRenderer, bandPoints, bandColor,
+				highlightBand);
 
 		connector1.render(gl, bandPoints, true, bandColor);
 		connector2.render(gl, bandPoints, false, bandColor);
@@ -247,10 +251,10 @@ public class EdgeBandRenderer {
 
 	protected void renderBand(GL2 gl,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<Vec3f> bandPoints, Color color) {
+			List<Vec3f> bandPoints, Color color, boolean highlightBand) {
 
 		gl.glColor4f(color.getRGB()[0], color.getRGB()[1], color.getRGB()[2],
-				0.5f);
+				(highlightBand) ? 1 : 0.5f);
 		connectionBandRenderer.render(gl, bandPoints);
 		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_LINE_STRIP);

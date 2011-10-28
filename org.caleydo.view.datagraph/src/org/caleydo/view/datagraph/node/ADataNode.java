@@ -1,8 +1,6 @@
 package org.caleydo.view.datagraph.node;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
@@ -38,28 +36,28 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 
 	}
 
-	@Override
-	protected void createPickingListeners() {
-		super.createPickingListeners();
-
-		view.addSingleIDPickingListener(new APickingListener() {
-
-			@Override
-			public void mouseOver(Pick pick) {
-				view.setCurrentMouseOverNode(ADataNode.this);
-				view.setDisplayListDirty();
-			}
-
-			@Override
-			public void mouseOut(Pick pick) {
-				if (view.getCurrentMouseOverNode() == ADataNode.this) {
-					view.setCurrentMouseOverNode(null);
-					view.setDisplayListDirty();
-				}
-			}
-
-		}, PickingType.DATA_GRAPH_NODE.name(), id);
-	}
+//	@Override
+//	protected void createPickingListeners() {
+//		super.createPickingListeners();
+//
+//		view.addSingleIDPickingListener(new APickingListener() {
+//
+//			@Override
+//			public void mouseOver(Pick pick) {
+//				view.setCurrentMouseOverNode(ADataNode.this);
+//				view.setDisplayListDirty();
+//			}
+//
+//			@Override
+//			public void mouseOut(Pick pick) {
+//				if (view.getCurrentMouseOverNode() == ADataNode.this) {
+//					view.setCurrentMouseOverNode(null);
+//					view.setDisplayListDirty();
+//				}
+//			}
+//
+//		}, PickingType.DATA_GRAPH_NODE.name(), id);
+//	}
 
 	//
 	// private void setupLayout() {
@@ -181,8 +179,6 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	// layoutManager.setTemplate(layoutTemplate);
 	// }
 
-	
-
 	@Override
 	public void destroy() {
 		super.destroy();
@@ -196,6 +192,11 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 
 	public IDataDomain getDataDomain() {
 		return dataDomain;
+	}
+
+	@Override
+	public boolean showsDataContainers() {
+		return true;
 	}
 
 }

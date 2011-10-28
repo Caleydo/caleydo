@@ -19,6 +19,7 @@ public abstract class ANodeConnector {
 	protected ConnectionBandRenderer connectionBandRenderer;
 	protected Point2D bandAnchorPoint1;
 	protected Point2D bandAnchorPoint2;
+	protected boolean highlightBand;
 
 	public ANodeConnector(IDataGraphNode node,
 			PixelGLConverter pixelGLconverter,
@@ -99,6 +100,14 @@ public abstract class ANodeConnector {
 
 	public IDataGraphNode getNode() {
 		return node;
+	}
+
+	public boolean isHighlightBand() {
+		return highlightBand;
+	}
+
+	public void setHighlightBand(boolean highlightBand) {
+		this.highlightBand = highlightBand;
 	}
 
 }

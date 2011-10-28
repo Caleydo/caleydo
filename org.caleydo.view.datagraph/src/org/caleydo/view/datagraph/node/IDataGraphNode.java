@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
@@ -14,6 +13,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 public interface IDataGraphNode extends IDraggable {
 
 	public List<DataContainer> getDataContainers();
+
+	public boolean showsDataContainers();
 
 	public void render(GL2 gl);
 

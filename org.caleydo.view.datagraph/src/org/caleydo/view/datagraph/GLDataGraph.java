@@ -439,7 +439,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		textRenderer.renderTextInBounds(gl, edgeLabel, centerPoint.x()
 				- (requiredWidth / 2.0f), centerPoint.y() - (height / 2.0f),
-				centerPoint.z(), requiredWidth, height);
+				centerPoint.z() + 0.1f, requiredWidth, height);
 	}
 
 	private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
@@ -448,8 +448,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		EdgeBandRenderer bandRenderer = new EdgeBandRenderer(node1, node2,
 				pixelGLConverter, viewFrustum, maxDataAmount);
 
-		bandRenderer.renderEdgeBand(gl,
-				new SimpleEdgeRoutingStrategy(dataGraph));
+		bandRenderer
+				.renderEdgeBand(
+						gl,
+						new SimpleEdgeRoutingStrategy(dataGraph),
+						(node1 == getCurrentMouseOverNode() || node2 == getCurrentMouseOverNode()));
 	}
 
 	private void calcMaxDataAmount() {

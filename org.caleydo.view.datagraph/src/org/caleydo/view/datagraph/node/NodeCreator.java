@@ -11,6 +11,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.visbricks.GLVisBricks;
 import org.eclipse.core.runtime.Status;
 
 public class NodeCreator {
@@ -24,6 +25,7 @@ public class NodeCreator {
 		dataNodeClasses.put(PathwayDataDomain.class, PathwayDataNode.class);
 
 		viewNodeClasses.put(AGLView.class, ViewNode.class);
+		viewNodeClasses.put(GLVisBricks.class, VisBricksNode.class);
 	}
 
 	public ADataNode createDataNode(ForceDirectedGraphLayout graphLayout,

@@ -51,6 +51,16 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
 			@Override
 			public void mouseOver(Pick pick) {
+				view.setCurrentMouseOverNode(ADraggableDataGraphNode.this);
+				view.setDisplayListDirty();
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				if (view.getCurrentMouseOverNode() == ADraggableDataGraphNode.this) {
+					view.setCurrentMouseOverNode(null);
+					view.setDisplayListDirty();
+				}
 			}
 
 			@Override

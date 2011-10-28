@@ -129,7 +129,7 @@ public class TopBundleConnector extends ABundleConnector {
 				rightBandBundleConnecionPoint, leftBandBundleConnecionPoint));
 
 		connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-				color.getRGB(), 0.5f);
+				color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
@@ -144,8 +144,8 @@ public class TopBundleConnector extends ABundleConnector {
 		Collections.sort(sortedDataContainers);
 
 		for (int i = 0; i < sortedDataContainers.size(); i++) {
-			DataContainer dataContainer = sortedDataContainers.get(
-					i).getSecond();
+			DataContainer dataContainer = sortedDataContainers.get(i)
+					.getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
 					.getTopDataContainerAnchorPoints(dataContainer);
@@ -194,7 +194,7 @@ public class TopBundleConnector extends ABundleConnector {
 					nextBandAnchorPoint));
 
 			connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-					color.getRGB(), 0.5f);
+					color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 			prevBandAnchorPoint = nextBandAnchorPoint;
 		}
