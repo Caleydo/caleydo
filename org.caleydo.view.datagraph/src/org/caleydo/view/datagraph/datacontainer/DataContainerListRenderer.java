@@ -85,12 +85,10 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	public void setDataContainers(List<DataContainer> dataContainers) {
 		dimensionGroupRenderers.clear();
 		for (DataContainer dataContainer : dataContainers) {
-			float[] color = dataContainer.getDataDomain().getColor()
-					.getRGBA();
+			float[] color = dataContainer.getDataDomain().getColor().getRGBA();
 
 			DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-					dataContainer, view, dragAndDropController, node,
-					color);
+					dataContainer, view, dragAndDropController, node, color);
 			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
 			dimensionGroupRenderer.setUpsideDown(isUpsideDown);
 			dimensionGroupRenderers.add(dimensionGroupRenderer);
@@ -102,20 +100,27 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
+		float dimensionGroupWidth = (x - pixelGLConverter
+				.getGLWidthForPixelWidth(2 * SIDE_SPACING_PIXELS
+						+ (node.getDataContainers().size() - 1)
+						* SPACING_PIXELS))
+				/ (float) node.getDataContainers().size();
 
-		float currentPosX = (x / 2.0f)
-				- pixelGLConverter
-						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
-								/ 2 - SIDE_SPACING_PIXELS);
-		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS
-				+ MIN_COMP_GROUP_WIDTH_PIXELS);
+		float currentPosX = pixelGLConverter
+				.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
+		// float currentPosX = (x / 2.0f)
+		// - pixelGLConverter
+		// .getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
+		// / 2 - SIDE_SPACING_PIXELS);
+		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS)
+				+ dimensionGroupWidth;
 
 		bottomDimensionGroupPositions.clear();
 		topDimensionGroupPositions.clear();
 
 		for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
-			float currentDimGroupWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
+			// float currentDimGroupWidth = pixelGLConverter
+			// .getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
 					DIMENSION_GROUP_PICKING_TYPE + node.getID(),
@@ -123,7 +128,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 			gl.glPushName(pickingID);
 
-			dimensionGroupRenderer.setLimits(currentDimGroupWidth, y);
+			dimensionGroupRenderer.setLimits(dimensionGroupWidth, y);
 			gl.glPushMatrix();
 			gl.glTranslatef(currentPosX, 0, 0);
 
@@ -134,17 +139,16 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
 			Point2D bottomPosition2 = new Point2D.Float(currentPosX
-					+ currentDimGroupWidth, 0);
+					+ dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX
-					+ currentDimGroupWidth, y);
-			bottomDimensionGroupPositions
-					.put(dimensionGroupRenderer.getDataContainer().getID(),
-							new Pair<Point2D, Point2D>(bottomPosition1,
-									bottomPosition2));
+					+ dimensionGroupWidth, y);
+			bottomDimensionGroupPositions.put(dimensionGroupRenderer
+					.getDataContainer().getID(), new Pair<Point2D, Point2D>(
+					bottomPosition1, bottomPosition2));
 			topDimensionGroupPositions.put(dimensionGroupRenderer
-					.getDataContainer().getID(),
-					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+					.getDataContainer().getID(), new Pair<Point2D, Point2D>(
+					topPosition1, topPosition2));
 
 			currentPosX += step;
 		}

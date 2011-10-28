@@ -14,6 +14,7 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -184,8 +185,13 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 		bodyColumn = new Column("bodyColumn");
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
-		overviewDataContainerRenderer = new DataContainerListRenderer(this,
-				view, dragAndDropController, getDataContainers());
+		if (representedView instanceof ATableBasedView) {
+			overviewDataContainerRenderer = new DataContainerListRenderer(this,
+					view, dragAndDropController, new ArrayList<DataContainer>());
+		} else {
+			overviewDataContainerRenderer = new DataContainerListRenderer(this,
+					view, dragAndDropController, getDataContainers());
+		}
 		compGroupLayout.setRatioSizeY(1);
 		compGroupLayout.setRenderer(overviewDataContainerRenderer);
 
@@ -210,11 +216,19 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	@Override
 	public List<DataContainer> getDataContainers() {
+
+		if (representedView instanceof ATableBasedView) {
+			DataContainer dataContainer = ((ATableBasedView) representedView)
+					.getDataContainer();
+			List<DataContainer> containers = new ArrayList<DataContainer>();
+			containers.add(dataContainer);
+			return containers;
+		}
+
 		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
 		if (groups == null) {
 			return new ArrayList<DataContainer>();
 		}
-
 		return new ArrayList<DataContainer>(groups);
 
 		// List<ADimensionGroupData> groups = new
@@ -481,7 +495,13 @@ public class ViewNode extends ADefaultTemplateNode implements IDropArea {
 
 	@Override
 	public void update() {
-		overviewDataContainerRenderer.setDataContainers(getDataContainers());
+		if (representedView instanceof ATableBasedView) {
+			overviewDataContainerRenderer
+					.setDataContainers(new ArrayList<DataContainer>());
+		} else {
+			overviewDataContainerRenderer
+					.setDataContainers(getDataContainers());
+		}
 	}
 
 	@Override

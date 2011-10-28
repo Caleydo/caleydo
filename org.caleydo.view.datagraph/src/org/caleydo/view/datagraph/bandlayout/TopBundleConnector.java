@@ -37,7 +37,7 @@ public class TopBundleConnector extends ABundleConnector {
 
 		for (DataContainer dataContainer : commonDataContainers) {
 			Pair<Point2D, Point2D> anchorPoints = node
-					.getBottomDataContainerAnchorPoints(dataContainer);
+					.getTopDataContainerAnchorPoints(dataContainer);
 			summedX += anchorPoints.getFirst().getX()
 					+ anchorPoints.getSecond().getX();
 		}

@@ -97,4 +97,8 @@ public abstract class ANodeConnector {
 		
 	}
 
+	public IDataGraphNode getNode() {
+		return node;
+	}
+
 }

@@ -15,12 +15,13 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.ViewNode;
 
 public class EdgeBandRenderer {
 
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
 	protected final static int DEFAULT_MAX_BAND_WIDTH = 40;
-	protected final static int DEFAULT_MIN_BAND_WIDTH = 8;
+	protected final static int DEFAULT_MIN_BAND_WIDTH = 10;
 
 	protected IDataGraphNode node1;
 	protected IDataGraphNode node2;
@@ -45,10 +46,8 @@ public class EdgeBandRenderer {
 		List<DataContainer> commonDataContainersNode1 = new ArrayList<DataContainer>();
 		List<DataContainer> commonDataContainersNode2 = new ArrayList<DataContainer>();
 
-		for (DataContainer dimensionGroupData1 : node1
-				.getDataContainers()) {
-			for (DataContainer dimensionGroupData2 : node2
-					.getDataContainers()) {
+		for (DataContainer dimensionGroupData1 : node1.getDataContainers()) {
+			for (DataContainer dimensionGroupData2 : node2.getDataContainers()) {
 				if (dimensionGroupData1.getID() == dimensionGroupData2.getID()) {
 					commonDataContainersNode1.add(dimensionGroupData1);
 					commonDataContainersNode2.add(dimensionGroupData2);
@@ -78,113 +77,144 @@ public class EdgeBandRenderer {
 
 		int bandWidth = 0;
 
+		Point2D position1 = node1.getPosition();
+		Point2D position2 = node2.getPosition();
+
+		float deltaX = (float) (position1.getX() - position2.getX());
+		float deltaY = (float) (position1.getY() - position2.getY());
+
+		IDataGraphNode leftNode = null;
+		IDataGraphNode rightNode = null;
+		IDataGraphNode bottomNode = null;
+		IDataGraphNode topNode = null;
+
+		if (deltaX < 0) {
+			if (deltaY < 0) {
+				// -2
+				// 1-
+
+				leftNode = node1;
+				rightNode = node2;
+				bottomNode = node1;
+				topNode = node2;
+			} else {
+				// 1-
+				// -2
+
+				leftNode = node1;
+				rightNode = node2;
+				bottomNode = node2;
+				topNode = node1;
+			}
+		} else {
+			if (deltaY < 0) {
+				// 2-
+				// -1
+
+				leftNode = node2;
+				rightNode = node1;
+				bottomNode = node1;
+				topNode = node2;
+			} else {
+				// -1
+				// 2-
+
+				leftNode = node2;
+				rightNode = node1;
+				bottomNode = node2;
+				topNode = node1;
+			}
+		}
+
+		float spacingX = (float) ((rightNode.getPosition().getX() - rightNode
+				.getWidth() / 2.0f) - (leftNode.getPosition().getX() + leftNode
+				.getWidth() / 2.0f));
+		float spacingY = (float) ((topNode.getPosition().getY() - topNode
+				.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
+				.getHeight() / 2.0f));
+
+		bandWidth = calcBandWidthPixels(dataAmount);
+
+		if (spacingX > spacingY) {
+
+			connector1 = new RightSideConnector(leftNode, pixelGLConverter,
+					connectionBandRenderer, viewFrustum, rightNode);
+			connector2 = new LeftSideConnector(rightNode, pixelGLConverter,
+					connectionBandRenderer, viewFrustum, leftNode);
+
+		} else {
+			connector1 = new TopSideConnector(bottomNode, pixelGLConverter,
+					connectionBandRenderer, viewFrustum, topNode);
+			connector2 = new BottomSideConnector(topNode, pixelGLConverter,
+					connectionBandRenderer, viewFrustum, bottomNode);
+
+		}
+
 		if (!commonDataContainersNode1.isEmpty()) {
 
-			if (node1.isUpsideDown()) {
-				connector1 = new TopBundleConnector(node1, pixelGLConverter,
-						connectionBandRenderer, commonDataContainersNode1,
-						minBandWidth, maxBandWidth, maxDataAmount);
-			} else {
-				connector1 = new BottomBundleConnector(node1, pixelGLConverter,
-						connectionBandRenderer, commonDataContainersNode1,
-						minBandWidth, maxBandWidth, maxDataAmount);
-			}
+			// TODO: finish this
+			if (!(node1 instanceof ViewNode)) {
+				// AGLView representedView =
+				// ((ViewNode)node1).getRepresentedView();
+				//
+				// if(representedView instanceof ATableBasedView) {
+				//
+				// }
 
-			if (node2.isUpsideDown()) {
-				connector2 = new TopBundleConnector(node2, pixelGLConverter,
-						connectionBandRenderer, commonDataContainersNode2,
-						minBandWidth, maxBandWidth, maxDataAmount);
-			} else {
-				connector2 = new BottomBundleConnector(node2, pixelGLConverter,
-						connectionBandRenderer, commonDataContainersNode2,
-						minBandWidth, maxBandWidth, maxDataAmount);
-			}
+				ANodeConnector currentConnector = null;
 
-			bandWidth = ((ABundleConnector) connector1).getBandWidth();
-
-			// renderBundledBand(gl, node1, node2, commonDimensionGroupsNode1,
-			// commonDimensionGroupsNode2, edgeRoutingStrategy,
-			// connectionBandRenderer, bandColor);
-		} else {
-
-			Point2D position1 = node1.getPosition();
-			Point2D position2 = node2.getPosition();
-
-			float deltaX = (float) (position1.getX() - position2.getX());
-			float deltaY = (float) (position1.getY() - position2.getY());
-
-			IDataGraphNode leftNode = null;
-			IDataGraphNode rightNode = null;
-			IDataGraphNode bottomNode = null;
-			IDataGraphNode topNode = null;
-
-			if (deltaX < 0) {
-				if (deltaY < 0) {
-					// -2
-					// 1-
-
-					leftNode = node1;
-					rightNode = node2;
-					bottomNode = node1;
-					topNode = node2;
+				if (node1.isUpsideDown()) {
+					currentConnector = new TopBundleConnector(node1,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode1, minBandWidth,
+							maxBandWidth, maxDataAmount);
 				} else {
-					// 1-
-					// -2
-
-					leftNode = node1;
-					rightNode = node2;
-					bottomNode = node2;
-					topNode = node1;
+					currentConnector = new BottomBundleConnector(node1,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode1, minBandWidth,
+							maxBandWidth, maxDataAmount);
 				}
-			} else {
-				if (deltaY < 0) {
-					// 2-
-					// -1
 
-					leftNode = node2;
-					rightNode = node1;
-					bottomNode = node1;
-					topNode = node2;
+				if (connector1.getNode() == node1) {
+					connector1 = currentConnector;
 				} else {
-					// -1
-					// 2-
-
-					leftNode = node2;
-					rightNode = node1;
-					bottomNode = node2;
-					topNode = node1;
+					connector2 = currentConnector;
 				}
+
+				bandWidth = ((ABundleConnector) currentConnector)
+						.getBandWidth();
 			}
 
-			float spacingX = (float) ((rightNode.getPosition().getX() - rightNode
-					.getWidth() / 2.0f) - (leftNode.getPosition().getX() + leftNode
-					.getWidth() / 2.0f));
-			float spacingY = (float) ((topNode.getPosition().getY() - topNode
-					.getHeight() / 2.0f) - (bottomNode.getPosition().getY() + topNode
-					.getHeight() / 2.0f));
+			if (!(node2 instanceof ViewNode)) {
+				// AGLView representedView =
+				// ((ViewNode)node1).getRepresentedView();
+				//
+				// if(representedView instanceof ATableBasedView) {
+				//
+				// }
+				ANodeConnector currentConnector = null;
 
-			bandWidth = calcBandWidthPixels(dataAmount);
+				if (node2.isUpsideDown()) {
+					currentConnector = new TopBundleConnector(node2,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode2, minBandWidth,
+							maxBandWidth, maxDataAmount);
+				} else {
+					currentConnector = new BottomBundleConnector(node2,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode2, minBandWidth,
+							maxBandWidth, maxDataAmount);
+				}
 
-			if (spacingX > spacingY) {
-
-				connector1 = new RightSideConnector(leftNode, pixelGLConverter,
-						connectionBandRenderer, viewFrustum, rightNode);
-				connector2 = new LeftSideConnector(rightNode, pixelGLConverter,
-						connectionBandRenderer, viewFrustum, leftNode);
-
-				// renderHorizontalBand(gl, leftNode, rightNode,
-				// edgeRoutingStrategy, connectionBandRenderer, bandColor,
-				// bandWidth);
-			} else {
-				connector1 = new TopSideConnector(bottomNode, pixelGLConverter,
-						connectionBandRenderer, viewFrustum, topNode);
-				connector2 = new BottomSideConnector(topNode, pixelGLConverter,
-						connectionBandRenderer, viewFrustum, bottomNode);
-
-				// renderVerticalBand(gl, bottomNode, topNode,
-				// edgeRoutingStrategy, connectionBandRenderer, bandColor,
-				// bandWidth);
+				if (connector1.getNode() == node2) {
+					connector1 = currentConnector;
+				} else {
+					connector2 = currentConnector;
+				}
+				bandWidth = ((ABundleConnector) currentConnector)
+						.getBandWidth();
 			}
+
 		}
 
 		List<Point2D> edgePoints = new ArrayList<Point2D>();
