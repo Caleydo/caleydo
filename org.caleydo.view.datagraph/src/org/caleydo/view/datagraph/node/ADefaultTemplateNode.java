@@ -19,7 +19,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 
@@ -36,7 +36,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	protected Column baseColumn;
 	protected Column bodyColumn;
 
-	public ADefaultTemplateNode(ForceDirectedGraphLayout graphLayout,
+	public ADefaultTemplateNode(AGraphLayout graphLayout,
 			GLDataGraph view, DragAndDropController dragAndDropController,
 			int id) {
 		super(graphLayout, view, dragAndDropController, id);
@@ -87,7 +87,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
 			Pair<Point2D, Point2D> anchorPoints, int spacingXPixels,
 			int spacingYPixels) {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
@@ -116,7 +116,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	@Override
 	public Pair<Point2D, Point2D> getTopAnchorPoints() {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
@@ -138,7 +138,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	@Override
 	public Pair<Point2D, Point2D> getBottomAnchorPoints() {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
@@ -160,7 +160,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	@Override
 	public Pair<Point2D, Point2D> getLeftAnchorPoints() {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
@@ -182,7 +182,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	@Override
 	public Pair<Point2D, Point2D> getRightAnchorPoints() {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
@@ -204,7 +204,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	@Override
 	public Point2D getPosition() {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
@@ -299,7 +299,7 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 
 	@Override
 	public void render(GL2 gl) {
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
 				.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position

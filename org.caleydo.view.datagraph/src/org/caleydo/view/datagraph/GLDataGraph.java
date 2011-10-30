@@ -95,13 +95,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.datagraph";
 
-	public final static int BOUNDS_SPACING_PIXELS = 30;
+	public final static int BOUNDS_SPACING_PIXELS = 10;
 
 	private GLDataGraphKeyListener glKeyListener;
 	private boolean useDetailLevel = false;
 
 	private Graph<IDataGraphNode> dataGraph;
-	private ForceDirectedGraphLayout graphLayout;
+	private AGraphLayout graphLayout;
 	private int maxNodeWidthPixels;
 	private int maxNodeHeightPixels;
 	private DragAndDropController dragAndDropController;
@@ -115,6 +115,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private ConnectionBandRenderer connectionBandRenderer;
 
 	private int maxDataAmount = Integer.MIN_VALUE;
+	private boolean nodePositionsUpdated = false;
 
 	private NewViewEventListener newViewEventListener;
 	private NewDataDomainEventListener newDataDomainEventListener;
@@ -142,7 +143,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		viewType = GLDataGraph.VIEW_TYPE;
 		glKeyListener = new GLDataGraphKeyListener();
 		dataGraph = new Graph<IDataGraphNode>();
-		graphLayout = new ForceDirectedGraphLayout();
+		graphLayout = new BipartiteGraphLayout(this, dataGraph);
+//		graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
 		relativeNodePositions = new HashMap<IDataGraphNode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
 		dataNodes = new HashSet<ADataNode>();
@@ -273,22 +275,21 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		int drawingAreaWidth = pixelGLConverter
 				.getPixelWidthForGLWidth(viewFrustum.getWidth())
 				- 2
-				* BOUNDS_SPACING_PIXELS - maxNodeWidthPixels;
+				* BOUNDS_SPACING_PIXELS;
 		int drawingAreaHeight = pixelGLConverter
 				.getPixelHeightForGLHeight(viewFrustum.getHeight())
 				- 2
-				* BOUNDS_SPACING_PIXELS - maxNodeHeightPixels;
+				* BOUNDS_SPACING_PIXELS;
 		if (applyAutomaticLayout) {
-			graphLayout.setGraph(dataGraph);
+//			graphLayout.setGraph(dataGraph);
 			Rectangle2D rect = new Rectangle();
 
-			rect.setFrame(BOUNDS_SPACING_PIXELS + (maxNodeWidthPixels / 2.0f),
-					BOUNDS_SPACING_PIXELS + (maxNodeHeightPixels / 2.0f),
+			rect.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS,
 					drawingAreaWidth, drawingAreaHeight);
 			graphLayout.clearNodePositions();
 			graphLayout.layout(rect);
 		} else {
-			if (!dragAndDropController.isDragging()) {
+			if (!dragAndDropController.isDragging() && !nodePositionsUpdated) {
 				for (IDataGraphNode node : dataGraph.getNodes()) {
 					Pair<Float, Float> relativePosition = relativeNodePositions
 							.get(node);
@@ -300,7 +301,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		}
 
 		for (IDataGraphNode node : dataGraph.getNodes()) {
-			Point2D position = graphLayout.getNodePosition(node, true);
+			Point2D position = graphLayout.getNodePosition(node);
 			float relativePosX = (float) position.getX() / drawingAreaWidth;
 			float relativePosY = (float) position.getY() / drawingAreaHeight;
 			relativeNodePositions.put(node, new Pair<Float, Float>(
@@ -312,6 +313,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		renderEdges(gl);
 
 		gl.glEndList();
+
+		applyAutomaticLayout = false;
+		nodePositionsUpdated = false;
 
 	}
 
@@ -947,5 +951,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// TODO: Choose correct layout
 		setApplyAutomaticLayout(true);
 		setDisplayListDirty();
+	}
+
+	public boolean isNodePositionsUpdated() {
+		return nodePositionsUpdated;
+	}
+
+	public void setNodePositionsUpdated(boolean nodePositionsUpdated) {
+		this.nodePositionsUpdated = nodePositionsUpdated;
 	}
 }

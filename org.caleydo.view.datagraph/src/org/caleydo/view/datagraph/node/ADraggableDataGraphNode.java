@@ -10,12 +10,13 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
-	protected ForceDirectedGraphLayout graphLayout;
+	protected AGraphLayout graphLayout;
 	protected GLDataGraph view;
 	protected PixelGLConverter pixelGLConverter;
 	protected int id;
@@ -24,8 +25,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
 
-	public ADraggableDataGraphNode(ForceDirectedGraphLayout graphLayout,
-			GLDataGraph view,
+	public ADraggableDataGraphNode(AGraphLayout graphLayout, GLDataGraph view,
 			final DragAndDropController dragAndDropController, int id) {
 		this.graphLayout = graphLayout;
 		this.view = view;
@@ -97,7 +97,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 		int mouseDeltaYPixels = pixelGLConverter
 				.getPixelHeightForGLHeight(mouseDeltaY);
 
-		Point2D position = graphLayout.getNodePosition(this, true);
+		Point2D position = graphLayout.getNodePosition(this);
 
 		position.setLocation(position.getX() - mouseDeltaXPixels,
 				position.getY() - mouseDeltaYPixels);

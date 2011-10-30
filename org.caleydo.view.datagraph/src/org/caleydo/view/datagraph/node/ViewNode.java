@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.ViewNodeBackGroundRenderer;
 import org.caleydo.view.datagraph.contextmenu.OpenViewItem;
@@ -41,7 +41,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	protected String viewName;
 	protected String iconPath;
 
-	public ViewNode(ForceDirectedGraphLayout graphLayout, GLDataGraph view,
+	public ViewNode(AGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, Integer id,
 			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);

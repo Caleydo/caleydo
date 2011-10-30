@@ -21,7 +21,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
@@ -52,6 +52,7 @@ public class TableBasedDataNode extends ADataNode {
 			dataContainerLayout.setRenderer(dataContainerRenderer);
 			toggleDataContainerButtonRenderer
 					.setTextureRotation(currentState.textureRotation);
+			graphLayout.updateNodePositions();
 		}
 
 		public abstract ALayoutState getNextState();
@@ -105,7 +106,7 @@ public class TableBasedDataNode extends ADataNode {
 		}
 	}
 
-	public TableBasedDataNode(ForceDirectedGraphLayout graphLayout,
+	public TableBasedDataNode(AGraphLayout graphLayout,
 			GLDataGraph view, DragAndDropController dragAndDropController,
 			Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);

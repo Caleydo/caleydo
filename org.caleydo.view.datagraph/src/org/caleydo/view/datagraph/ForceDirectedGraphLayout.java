@@ -8,7 +8,7 @@ import java.util.Map;
 
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class ForceDirectedGraphLayout {
+public class ForceDirectedGraphLayout extends AGraphLayout {
 	// AN ALGORITHM FOR DRAWING GENERAL UNDIRECTED GRAPHS
 	// by Tomihisa KAMADA and Satoru KAWAI, 1988
 
@@ -16,9 +16,6 @@ public class ForceDirectedGraphLayout {
 	// http://www.cg.tuwien.ac.at/courses/InfoVis/HallOfFame/2005/07_Pfeffer_SpringEmbedders/pfeffer05_files/Source.pdf
 
 	// data
-	protected Graph<IDataGraphNode> graph = null;
-
-	protected Map<Object, Point2D> nodePositions = null;
 
 	protected Map<Object, Point2D> centeredPositions = null;
 
@@ -52,6 +49,11 @@ public class ForceDirectedGraphLayout {
 	protected boolean initializeForces = true;
 
 	protected boolean initializeConstraints = false;
+
+	public ForceDirectedGraphLayout(GLDataGraph view,
+			Graph<IDataGraphNode> graph) {
+		super(view, graph);
+	}
 
 	// ###################
 	// ## layout source ##
@@ -361,6 +363,7 @@ public class ForceDirectedGraphLayout {
 	// ########################
 	// ## layout calculation ##
 	// ########################
+	@Override
 	public void layout(Rectangle2D area) {
 		if (area == null)
 			return;
@@ -464,6 +467,47 @@ public class ForceDirectedGraphLayout {
 		if (forceMax <= 1) {
 			running = false;
 		}
+		updateNodePositions();
+	}
+
+	@Override
+	public void updateNodePositions() {
+		if (nodesToLayout == null)
+			return;
+
+		for (IDataGraphNode node : nodesToLayout) {
+
+			Point2D nodePosition = getNodePosition(node);
+			if (nodePosition == null)
+				continue;
+
+			double nodePositionX = nodePosition.getX();
+			if (nodePositionX + node.getWidthPixels() / 2.0f > layoutingArea
+					.getMaxX()) {
+				nodePositionX = layoutingArea.getMaxX() - node.getWidthPixels()
+						/ 2.0f;
+			} else if (nodePositionX - node.getWidthPixels() / 2.0f < layoutingArea
+					.getMinX()) {
+				nodePositionX = layoutingArea.getMinX() + node.getWidthPixels()
+						/ 2.0f;
+			}
+
+			double nodePositionY = getNodePosition(node).getY();
+			if (nodePositionY + node.getHeightPixels() / 2.0f > layoutingArea
+					.getMaxY()) {
+				nodePositionY = layoutingArea.getMaxY()
+						- node.getHeightPixels() / 2.0f;
+			} else if (nodePositionY - node.getHeightPixels() / 2.0f < layoutingArea
+					.getMinY()) {
+				nodePositionY = layoutingArea.getMinY()
+						+ node.getHeightPixels() / 2.0f;
+			}
+
+			setNodePosition(node, new Point2D.Float((float) nodePositionX,
+					(float) nodePositionY));
+		}
+
+		view.setNodePositionsUpdated(true);
 	}
 
 	protected Collection<IDataGraphNode> getNodesToLayout() {
@@ -627,6 +671,7 @@ public class ForceDirectedGraphLayout {
 
 	// --- setter ---
 	// nodes
+	@Override
 	public void setNodePosition(Object node, Point2D position) {
 		// TODO Auto-generated method stub
 		nodePositions.put(node, position);
@@ -635,6 +680,7 @@ public class ForceDirectedGraphLayout {
 
 	// --- getter ---
 	// node position
+	@Override
 	public Point2D getNodePosition(Object node) {
 		return getNodePosition(node, true);
 	}

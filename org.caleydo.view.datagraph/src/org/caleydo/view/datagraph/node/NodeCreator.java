@@ -9,7 +9,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.eclipse.core.runtime.Status;
@@ -28,9 +28,9 @@ public class NodeCreator {
 		viewNodeClasses.put(GLVisBricks.class, VisBricksNode.class);
 	}
 
-	public ADataNode createDataNode(ForceDirectedGraphLayout graphLayout,
-			GLDataGraph view, DragAndDropController dragAndDropController,
-			int id, IDataDomain dataDomain) {
+	public ADataNode createDataNode(AGraphLayout graphLayout, GLDataGraph view,
+			DragAndDropController dragAndDropController, int id,
+			IDataDomain dataDomain) {
 
 		Class<? extends ADataNode> nodeClass = dataNodeClasses.get(dataDomain
 				.getClass());
@@ -46,11 +46,11 @@ public class NodeCreator {
 
 		if (nodeClass != null) {
 			try {
-				ADataNode node = nodeClass.getConstructor(
-						graphLayout.getClass(), view.getClass(),
-						dragAndDropController.getClass(), Integer.class,
-						IDataDomain.class).newInstance(graphLayout, view,
-						dragAndDropController, id, dataDomain);
+				ADataNode node = nodeClass.getConstructor(AGraphLayout.class,
+						view.getClass(), dragAndDropController.getClass(),
+						Integer.class, IDataDomain.class).newInstance(
+						graphLayout, view, dragAndDropController, id,
+						dataDomain);
 				node.init();
 
 				return node;
@@ -63,9 +63,9 @@ public class NodeCreator {
 		return null;
 	}
 
-	public ViewNode createViewNode(ForceDirectedGraphLayout graphLayout,
-			GLDataGraph view, DragAndDropController dragAndDropController,
-			int id, AGLView representedView) {
+	public ViewNode createViewNode(AGraphLayout graphLayout, GLDataGraph view,
+			DragAndDropController dragAndDropController, int id,
+			AGLView representedView) {
 
 		Class<? extends ViewNode> nodeClass = viewNodeClasses
 				.get(representedView.getClass());
@@ -81,11 +81,10 @@ public class NodeCreator {
 
 		if (nodeClass != null) {
 			try {
-				ViewNode node = nodeClass.getConstructor(
-						graphLayout.getClass(), view.getClass(),
-						dragAndDropController.getClass(), Integer.class,
-						AGLView.class).newInstance(graphLayout, view,
-						dragAndDropController, id, representedView);
+				ViewNode node = nodeClass.getConstructor(AGraphLayout.class,
+						view.getClass(), dragAndDropController.getClass(),
+						Integer.class, AGLView.class).newInstance(graphLayout,
+						view, dragAndDropController, id, representedView);
 				node.init();
 
 				return node;

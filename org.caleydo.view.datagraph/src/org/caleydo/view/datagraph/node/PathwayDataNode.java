@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
@@ -22,7 +22,7 @@ public class PathwayDataNode extends ADataNode {
 	private ADataContainerRenderer dataContainerRenderer;
 	private PathwayDataDomain dataDomain;
 
-	public PathwayDataNode(ForceDirectedGraphLayout graphLayout,
+	public PathwayDataNode(AGraphLayout graphLayout,
 			GLDataGraph view, DragAndDropController dragAndDropController,
 			Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
