@@ -56,7 +56,6 @@ public class Activator extends Plugin {
 
 	private void registerDataDomains() {
 		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-//		dataDomainTypes.add("org.caleydo.datadomain.pathway");
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 
 		DataDomainManager

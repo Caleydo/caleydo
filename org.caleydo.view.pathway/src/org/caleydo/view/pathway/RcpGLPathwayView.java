@@ -17,6 +17,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.swt.widgets.Composite;
@@ -60,9 +61,6 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner,
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
-
-		((GLPathway) view).setDataDomain((ATableBasedDataDomain) DataDomainManager.get()
-				.getDataDomainByType("org.caleydo.datadomain.genetic"));
 
 		view.initialize();
 		createPartControlGL();

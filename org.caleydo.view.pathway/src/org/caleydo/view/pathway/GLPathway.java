@@ -12,14 +12,13 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -32,8 +31,6 @@ import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
-import org.caleydo.core.data.virtualarray.events.RecordVADeltaListener;
-import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
@@ -140,17 +137,18 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
+		
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
-		// hashPathwayContainingSelectedVertex2VertexCount = new
-		// HashMap<Integer, Integer>();
 
 		connectedElementRepresentationManager = generalManager.getViewManager()
 				.getConnectedElementRepresentationManager();
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
+		
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
-
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -982,10 +980,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	public PathwayDataDomain getPathwayDataDomain() {
 		return pathwayDataDomain;
-	}
-
-	public void setPathwayDataDomain(PathwayDataDomain dataDomain) {
-		this.pathwayDataDomain = dataDomain;
 	}
 
 	@Override

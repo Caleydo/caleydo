@@ -189,6 +189,9 @@ public abstract class ATableBasedDataDomain
 	public void init() {
 		if (configuration == null)
 			createDefaultConfiguration();
+		else if (loadDataParameters != null && !loadDataParameters.isColumnDimension())
+			createDefaultConfigurationWithSamplesAsRows();
+
 		boolean externalMappingLoaded = false;
 
 		if (configuration.mappingFile != null) {
@@ -267,6 +270,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public abstract void createDefaultConfiguration();
+	
+	public abstract void createDefaultConfigurationWithSamplesAsRows();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes

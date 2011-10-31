@@ -156,7 +156,7 @@ public class GLBucket extends AGLView implements
 	/**
 	 * The current view in which the user is performing actions.
 	 */
-	private int iActiveViewID = -1;
+	private int activeViewID = -1;
 
 	// private int iGLDisplayList;
 
@@ -451,7 +451,7 @@ public class GLBucket extends AGLView implements
 		// comment here for connection lines
 		// transform-selections here
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
-			glConnectionLineRenderer.setActiveViewID(iActiveViewID); // FIXME:
+			glConnectionLineRenderer.setActiveViewID(activeViewID); // FIXME:
 			// added
 			glConnectionLineRenderer.render(gl);
 		}
@@ -1820,11 +1820,11 @@ public class GLBucket extends AGLView implements
 				// .setDataAboutView(externalID);
 
 				// Prevent update flood when moving mouse over view
-				if (iActiveViewID == externalID) {
+				if (activeViewID == externalID) {
 					break;
 				}
 
-				iActiveViewID = externalID;
+				activeViewID = externalID;
 
 				setDisplayListDirty();
 
@@ -2491,9 +2491,7 @@ public class GLBucket extends AGLView implements
 			GLPathway glPathway = (GLPathway) glView;
 
 			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
-			// glPathway.setDataDomain(dataDomain);
-			glPathway.setPathwayDataDomain((PathwayDataDomain) DataDomainManager.get()
-					.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE));
+			glPathway.setDataDomain(dataDomain);
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);

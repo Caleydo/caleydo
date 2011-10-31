@@ -334,7 +334,7 @@ public class ViewManager
 		}
 		catch (Exception e) {
 			e.printStackTrace();
-			throw new IllegalStateException("Cannot create GL2 view " + viewClass);
+			throw new IllegalStateException("Cannot create GL view " + viewClass);
 		}
 
 		return view;

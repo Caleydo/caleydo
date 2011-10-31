@@ -10,9 +10,13 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.gui.preferences.PreferenceConstants;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
+import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * TODO The use case for pathway input data.
@@ -31,7 +35,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 	IDType primaryIDType;
 
-	private PathwayDatabaseType pathwayDatabaseType;
+	//private PathwayDatabaseType pathwayDatabaseType;
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -65,8 +69,38 @@ public class PathwayDataDomain extends ADataDomain {
 				.get().getIDMappingManager(IDCategory.getIDCategory("GENE")));
 
 		addIDCategory(IDCategory.getIDCategory("GENE"));
+		
+		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+		
+		loadDataParameters.setLabel(pathwayDataSources);
+		
+		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName())) {
+
+			//pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.BIOCARTA);
+
+			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
+					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
+					"data/html");
+
+			PathwayManager.get().loadPathwaysByType(pathwayDatabase);
+		}
+
+		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName())) {
+			
+			//pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.KEGG);
+
+			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
+					PathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
+
+			PathwayManager.get().loadPathwaysByType(pathwayDatabase);
+		}
+
+		PathwayManager.get().notifyPathwayLoadingFinished(true);
 	}
 
+
+	
 	// @Override
 	// protected void initIDMappings() {
 	// // Load IDs needed in this datadomain
@@ -108,10 +142,10 @@ public class PathwayDataDomain extends ADataDomain {
 		return 0;
 	}
 
-	public void setPathwayDatabaseType(PathwayDatabaseType pathwayDatabaseType) {
-		this.pathwayDatabaseType = pathwayDatabaseType;
-		loadDataParameters.setLabel(pathwayDatabaseType.getName());
-	}
+//	public void setPathwayDatabaseType(PathwayDatabaseType pathwayDatabaseType) {
+//		//this.pathwayDatabaseType = pathwayDatabaseType;
+//		loadDataParameters.setLabel(pathwayDatabaseType.getName());
+//	}
 
 	//
 	// @Override

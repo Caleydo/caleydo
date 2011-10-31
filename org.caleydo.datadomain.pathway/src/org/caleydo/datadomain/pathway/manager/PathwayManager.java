@@ -1,12 +1,18 @@
 package org.caleydo.datadomain.pathway.manager;
 
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import org.caleydo.core.manager.AManager;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
@@ -207,10 +213,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return hashPathwayDatabase.get(type);
 	}
 
-	protected PathwayGraph getCurrenPathwayGraph() {
-		return currentPathwayGraph;
-	}
-
 	public void notifyPathwayLoadingFinished(boolean pathwayLoadingFinished) {
 		this.pathwayLoadingFinished = pathwayLoadingFinished;
 	}
@@ -280,5 +282,107 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 	public PathwayParserManager getXmlParserManager() {
 		return xmlParserManager;
+	}
+	
+	public void loadPathwaysByType(PathwayDatabase pathwayDatabase) {
+
+		// // Try reading list of files directly from local hard dist
+		// File folder = new File(sXMLPath);
+		// File[] arFiles = folder.listFiles();
+
+		GeneralManager generalManager = GeneralManager.get();
+
+		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Start parsing "
+				+ pathwayDatabase.getName() + " pathways."));
+
+		BufferedReader file = null;
+		String line = null;
+		String fileName = "";
+		String pathwayPath = pathwayDatabase.getXMLPath();
+		IPathwayResourceLoader pathwayResourceLoader = null;
+		Organism organism = GeneralManager.get().getBasicInfo().getOrganism();
+
+		if (pathwayDatabase.getType() == PathwayDatabaseType.KEGG) {
+
+			if (organism == Organism.HOMO_SAPIENS) {
+				fileName = "data/pathway_list_KEGG_homo_sapiens.txt";
+			} else if (organism == Organism.MUS_MUSCULUS) {
+				fileName = "data/pathway_list_KEGG_mus_musculus.txt";
+			} else {
+				throw new IllegalStateException("Cannot load pathways from organism "
+						+ organism);
+			}
+
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
+					"Loading KEGG Pathways...");
+		} else if (pathwayDatabase.getType() == PathwayDatabaseType.BIOCARTA) {
+
+			if (organism == Organism.HOMO_SAPIENS) {
+				fileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
+			} else if (organism == Organism.MUS_MUSCULUS) {
+				fileName = "data/pathway_list_BIOCARTA_mus_musculus.txt";
+			} else {
+				throw new IllegalStateException("Cannot load pathways from organism "
+						+ organism);
+			}
+
+			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
+					"Loading BioCarta Pathways...");
+		}
+
+		PathwayManager.get().createPathwayResourceLoader(pathwayDatabase.getType());
+		pathwayResourceLoader = PathwayManager.get().getPathwayResourceLoader(
+				pathwayDatabase.getType());
+
+		try {
+
+			if (pathwayDatabase.getType() == PathwayDatabaseType.KEGG
+					|| pathwayDatabase.getType() == PathwayDatabaseType.BIOCARTA)
+				file = pathwayResourceLoader.getResource(fileName);
+			else
+				file = GeneralManager.get().getResourceLoader().getResource(fileName);
+
+			StringTokenizer tokenizer;
+			String pathwayName;
+			PathwayGraph tmpPathwayGraph;
+			while ((line = file.readLine()) != null) {
+				tokenizer = new StringTokenizer(line, " ");
+
+				pathwayName = tokenizer.nextToken();
+
+				// Skip non pathway files
+				if (!pathwayName.endsWith(".xml") && !line.contains("h_")
+						&& !line.contains("m_")) {
+					continue;
+				}
+
+				PathwayManager.get().getXmlParserManager()
+						.parseXmlFileByName(pathwayPath + pathwayName);
+
+				currentPathwayGraph.setWidth(Integer.valueOf(tokenizer.nextToken())
+						.intValue());
+				currentPathwayGraph.setHeight(Integer.valueOf(tokenizer.nextToken())
+						.intValue());
+
+				int iImageWidth = currentPathwayGraph.getWidth();
+				int iImageHeight = currentPathwayGraph.getHeight();
+
+				if (iImageWidth == -1 || iImageHeight == -1) {
+					Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread",
+							"Pathway texture width=" + iImageWidth + " / height="
+									+ iImageHeight));
+				}
+			}
+
+		} catch (FileNotFoundException e) {
+			throw new IllegalStateException("Pathway list file " + fileName
+					+ " not found.");
+		} catch (IOException e) {
+			throw new IllegalStateException("Error reading data from pathway list file: "
+					+ fileName);
+		}
+
+		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing "
+				+ pathwayDatabase.getName() + " pathways."));
 	}
 }

@@ -1,14 +1,7 @@
 package org.caleydo.datadomain.pathway;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.SerializationManager;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayLoaderThread;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
 
@@ -46,7 +39,13 @@ public class Activator extends Plugin {
 
 	private void createPathwayDataDomains() {
 
-		new PathwayLoaderThread().start();
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
+				.get().createDataDomain("org.caleydo.datadomain.pathway");
+		
+		pathwayDataDomain.init();
+		
+		Thread thread = new Thread(pathwayDataDomain, pathwayDataDomain.getDataDomainType());
+		thread.start();
 	}
 
 	/*
