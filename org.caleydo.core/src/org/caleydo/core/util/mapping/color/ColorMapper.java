@@ -242,7 +242,7 @@ public class ColorMapper {
 	}
 
 	public static void createColorMappingPreview(ColorMapper colorMapper,
-		CLabel colorMappingPreview, ArrayList<CLabel> mappingLabels) {
+		CLabel colorMappingPreview) {
 
 		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 
@@ -251,12 +251,6 @@ public class ColorMapper {
 		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
 
 			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
-
-//			double correspondingValue =
-//				((ATableBasedDataDomain) dataDomain).getTable().getRawForNormalized(normalizedValue);
-//
-//			if (mappingLabels != null)
-//				mappingLabels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
 
 			int colorMarkerPoint = (int) (100 * normalizedValue);
 
@@ -274,38 +268,4 @@ public class ColorMapper {
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
 		colorMappingPreview.update();
 	}
-	
-//	public static void updateColorMappingPreview(ATableBasedDataDomain dataDomain,
-//		CLabel colorMappingPreview, ArrayList<CLabel> mappingLabels) {
-//
-//		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
-//
-//		Color[] alColor = new Color[markerPoints.size()];
-//		int[] colorMarkerPoints = new int[markerPoints.size() - 1];
-//		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
-//
-//			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
-//
-//			double correspondingValue =
-//				((ATableBasedDataDomain) dataDomain).getTable().getRawForNormalized(normalizedValue);
-//
-//			if (mappingLabels != null)
-//				mappingLabels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
-//
-//			int colorMarkerPoint = (int) (100 * normalizedValue);
-//
-//			// Gradient label does not need the 0 point
-//			if (colorMarkerPoint != 0) {
-//				colorMarkerPoints[iCount - 2] = colorMarkerPoint;
-//			}
-//
-//			int[] color = markerPoints.get(iCount - 1).getIntColor();
-//
-//			alColor[iCount - 1] =
-//				new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
-//		}
-//
-//		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
-//		colorMappingPreview.update();
-//	}
 }

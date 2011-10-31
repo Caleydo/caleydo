@@ -2,7 +2,6 @@ package org.caleydo.core.util.mapping.color;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
@@ -74,7 +73,7 @@ public class ChooseColorMappingDialog
 			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 			gridData.minimumWidth = 250;
 			colorMappingPreview.setLayoutData(gridData);
-			ColorMapper.createColorMappingPreview(ColorMapper.createDefaultMapper(colorScheme), colorMappingPreview, null);
+			ColorMapper.createColorMappingPreview(ColorMapper.createDefaultMapper(colorScheme), colorMappingPreview);
 		}
 		
 		return parent;

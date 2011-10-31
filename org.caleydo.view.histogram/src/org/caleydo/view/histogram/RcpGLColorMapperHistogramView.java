@@ -2,16 +2,21 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
 import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
@@ -34,7 +39,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 				// dialog.setPossibleDataDomains(availableDomains);
 				dialog.setBlockOnOpen(true);
 				dialog.open();
-				ColorMapper.createColorMappingPreview(dialog.getColorMapper(), colorMappingPreview, labels);
+				updateColorMappingPreview();
 			}
 		});
 
@@ -57,7 +62,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 			}
 		}
 
-		ColorMapper.createColorMappingPreview(dataDomain.getColorMapper(), colorMappingPreview, labels);
+		updateColorMappingPreview();
 	}
 
 	@Override
@@ -65,8 +70,43 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 		colorMappingPreview.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				ColorMapper.createColorMappingPreview(dataDomain.getColorMapper(), colorMappingPreview, labels);
+				updateColorMappingPreview();
 			}
 		});
+	}
+	
+	private void updateColorMappingPreview() {
+
+		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
+				.getMarkerPoints();
+
+		Color[] alColor = new Color[markerPoints.size()];
+		int[] colorMarkerPoints = new int[markerPoints.size() - 1];
+		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
+
+			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
+
+			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getTable()
+					.getRawForNormalized(normalizedValue);
+
+			if (labels != null)
+				labels.get(iCount - 1).setText(
+						Formatter.formatNumber(correspondingValue));
+
+			int colorMarkerPoint = (int) (100 * normalizedValue);
+
+			// Gradient label does not need the 0 point
+			if (colorMarkerPoint != 0) {
+				colorMarkerPoints[iCount - 2] = colorMarkerPoint;
+			}
+
+			int[] color = markerPoints.get(iCount - 1).getIntColor();
+
+			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
+					color[0], color[1], color[2]);
+		}
+
+		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
+		colorMappingPreview.update();
 	}
 }
