@@ -43,7 +43,6 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -74,7 +73,6 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.RemoteRenderingTransformer;
 import org.caleydo.datadomain.pathway.IPathwayLoader;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.listener.LoadPathwaysByGeneListener;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -453,7 +451,8 @@ public class GLBucket extends AGLView implements
 		if (glConnectionLineRenderer != null && connectionLinesEnabled) {
 			glConnectionLineRenderer.setActiveViewID(activeViewID); // FIXME:
 			// added
-			glConnectionLineRenderer.render(gl);
+			// FIXME: causes crash when added
+			//glConnectionLineRenderer.render(gl);
 		}
 	}
 
@@ -2470,35 +2469,32 @@ public class GLBucket extends AGLView implements
 						serView.getViewFrustum());
 		glView.setRemoteRenderingGLView(this);
 
-		if (glView instanceof ATableBasedView) {
-			ATableBasedView tableBasedView = (ATableBasedView) glView;
-			tableBasedView.setDataContainer(dataContainer);
-		}
-
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
 							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
-
-		if (glView instanceof GLHeatMap) {
-			GLHeatMap heatMap = ((GLHeatMap) glView);
-			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
-
+		
+		if (glView instanceof ATableBasedView) {
+			ATableBasedView tableBasedView = (ATableBasedView) glView;
+			tableBasedView.setDataContainer(dataContainer);
+			tableBasedView.initialize();
 		}
-
+		
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
-
 			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());
-			glPathway.setDataDomain(dataDomain);
 			glPathway.enablePathwayTextures(pathwayTexturesEnabled);
 			glPathway.enableNeighborhood(neighborhoodEnabled);
 			glPathway.enableGeneMapping(geneMappingEnabled);
 			glPathway.setDataContainer(dataContainer);
 		}
 
-		glView.initialize();
+		if (glView instanceof GLHeatMap) {
+			GLHeatMap heatMap = ((GLHeatMap) glView);
+			heatMap.setRenderTemplate(new BucketTemplate(heatMap));
+		}
+
 		triggerMostRecentDelta();
 
 		return glView;

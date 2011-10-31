@@ -67,7 +67,6 @@ public abstract class ARcpGLViewPart
 		}
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
-		
 	}
 
 	public void createPartControlGL() {

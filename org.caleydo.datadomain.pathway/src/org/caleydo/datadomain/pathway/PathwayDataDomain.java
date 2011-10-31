@@ -35,7 +35,7 @@ public class PathwayDataDomain extends ADataDomain {
 
 	IDType primaryIDType;
 
-	//private PathwayDatabaseType pathwayDatabaseType;
+	// private PathwayDatabaseType pathwayDatabaseType;
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -49,8 +49,7 @@ public class PathwayDataDomain extends ADataDomain {
 	public PathwayDataDomain() {
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
-				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER
-				+ extensionID++);
+				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
@@ -61,23 +60,33 @@ public class PathwayDataDomain extends ADataDomain {
 	public void init() {
 
 		super.init();
-		// IDMappingLoader.get().loadMappingFile(fileName);
 
 		primaryIDType = IDType.getIDType("PATHWAY_VERTEX");
 
-		mappingHelper = new GeneticIDMappingHelper(IDMappingManagerRegistry
-				.get().getIDMappingManager(IDCategory.getIDCategory("GENE")));
+		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				IDCategory.getIDCategory("GENE"));
+		mappingHelper = new GeneticIDMappingHelper(geneIDMappingManager);
 
 		addIDCategory(IDCategory.getIDCategory("GENE"));
-		
+
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see org.caleydo.core.event.AEventHandler#run()
+	 */
+	@Override
+	public void run() {
+
 		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
-		
+
 		loadDataParameters.setLabel(pathwayDataSources);
-		
+
 		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName())) {
 
-			//pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.BIOCARTA);
+			// pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.BIOCARTA);
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
 					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
@@ -87,8 +96,8 @@ public class PathwayDataDomain extends ADataDomain {
 		}
 
 		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName())) {
-			
-			//pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.KEGG);
+
+			// pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.KEGG);
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
 					PathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
@@ -97,10 +106,10 @@ public class PathwayDataDomain extends ADataDomain {
 		}
 
 		PathwayManager.get().notifyPathwayLoadingFinished(true);
+
+		super.run();
 	}
 
-
-	
 	// @Override
 	// protected void initIDMappings() {
 	// // Load IDs needed in this datadomain
@@ -142,10 +151,11 @@ public class PathwayDataDomain extends ADataDomain {
 		return 0;
 	}
 
-//	public void setPathwayDatabaseType(PathwayDatabaseType pathwayDatabaseType) {
-//		//this.pathwayDatabaseType = pathwayDatabaseType;
-//		loadDataParameters.setLabel(pathwayDatabaseType.getName());
-//	}
+	// public void setPathwayDatabaseType(PathwayDatabaseType
+	// pathwayDatabaseType) {
+	// //this.pathwayDatabaseType = pathwayDatabaseType;
+	// loadDataParameters.setLabel(pathwayDatabaseType.getName());
+	// }
 
 	//
 	// @Override

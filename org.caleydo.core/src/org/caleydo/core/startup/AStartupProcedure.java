@@ -1,11 +1,10 @@
 package org.caleydo.core.startup;
 
 import org.caleydo.core.data.datadomain.ADataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.ui.IFolderLayout;
-import org.osgi.framework.BundleException;
 
 /**
  * Abstract startup procedure. Handling of view initialization and application init data.
@@ -71,12 +70,6 @@ public abstract class AStartupProcedure {
 		if (!appInitData.isLoadPathways())
 			return;
 
-		try {
-			Platform.getBundle("org.caleydo.datadomain.pathway").start();
-		}
-		catch (BundleException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
 	}
 }

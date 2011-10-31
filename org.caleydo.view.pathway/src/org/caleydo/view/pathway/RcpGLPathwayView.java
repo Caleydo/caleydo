@@ -53,16 +53,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner,
 		createGLCanvas();
 
 		view = new GLPathway(glCanvas, parentComposite, serializedView.getViewFrustum());
-		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-
-		view.initialize();
+		initializeData();
 		createPartControlGL();
 	}
 

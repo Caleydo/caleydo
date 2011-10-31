@@ -85,7 +85,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
-	private GeneticDataDomain dataDomain;
 	protected PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
 
@@ -147,8 +146,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
-		
-		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -170,6 +167,15 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		return pathway;
 	}
 
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.ATableBasedView#initialize()
+	 */
+	@Override
+	public void initialize() {
+		super.initialize();
+		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
+	}
+	
 	@Override
 	public void initLocal(final GL2 gl) {
 		init(gl);
@@ -188,7 +194,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
-
+		
 		initPathwayData(gl);
 	}
 
