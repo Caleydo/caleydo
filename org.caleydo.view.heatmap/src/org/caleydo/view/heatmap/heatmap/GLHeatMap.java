@@ -43,7 +43,6 @@ import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordContextMen
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
-import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -579,6 +578,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public void handleUpdateView() {
+		
 		setDisplayListDirty();
 	}
 

@@ -14,7 +14,7 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.view.histogram.GLHistogram;
-import org.caleydo.view.histogram.RcpBasicGLHistogramView;
+import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -214,7 +214,7 @@ public class FilterRepresentationSNR extends
 				// gridData2.grabExcessVerticalSpace = true;
 				histoComposite.setLayoutData(gridData);
 
-				RcpBasicGLHistogramView histogramView = new RcpBasicGLHistogramView();
+				RcpGLHistogramView histogramView = new RcpGLHistogramView();
 				histogramView.setDataDomain((ATableBasedDataDomain) DataDomainManager
 						.get().getDataDomainByID("org.caleydo.datadomain.genetic"));
 

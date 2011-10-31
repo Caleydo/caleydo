@@ -7,7 +7,6 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -16,11 +15,8 @@ import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 
 public class HeatMapRenderer extends AHeatMapRenderer {
 
-	private ColorMapper colorMapper;
-
 	public HeatMapRenderer(GLHeatMap heatMap) {
 		super(heatMap);
-		colorMapper = heatMap.getDataDomain().getColorMapper();
 	}
 
 	@Override
@@ -48,6 +44,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	@Override
 	public void render(final GL2 gl) {
 
+		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 		recordSpacing.getYDistances().clear();
 		float yPosition = y;
 		float xPosition = 0;
@@ -76,7 +73,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 					.getDimensionPerspective().getVirtualArray()) {
 
 				renderElement(gl, dimensionID, recordID, yPosition, xPosition,
-						fieldHeight, fieldWidth);
+						fieldHeight, fieldWidth, colorMapper);
 
 				xPosition += fieldWidth;
 
@@ -88,7 +85,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 	private void renderElement(final GL2 gl, final int dimensionID, final int recordID,
 			final float fYPosition, final float fXPosition, final float fFieldHeight,
-			final float fFieldWidth) {
+			final float fFieldWidth, ColorMapper colorMapper) {
 
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 

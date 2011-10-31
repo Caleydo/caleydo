@@ -2,138 +2,40 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.IListenerOwner;
-import org.caleydo.core.event.view.ClearSelectionsEvent;
-import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
-import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
-import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.ITableBasedDataDomainView;
-import org.caleydo.core.view.MinimumSizeComposite;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.eclipse.jface.action.IAction;
-import org.eclipse.jface.preference.PreferenceDialog;
-import org.eclipse.jface.preference.PreferenceStore;
+import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
+import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
-import org.eclipse.swt.events.MouseListener;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.dialogs.PreferencesUtil;
 
-public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements
-		IViewCommandHandler, IListenerOwner, ITableBasedDataDomainView {
+public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
-	private CLabel colorMappingPreviewLabel;
+	private CLabel colorMappingPreview;
 
 	private ArrayList<CLabel> labels;
 
-	protected RedrawViewListener redrawViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
-
-	protected Composite histoComposite;
-
-	protected ATableBasedDataDomain dataDomain;
-	protected DataContainer dataContainer;
-
-	/**
-	 * Constructor.
-	 */
-	public RcpGLColorMapperHistogramView() {
-		super();
-
-		try {
-			viewContext = JAXBContext.newInstance(SerializedHistogramView.class);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContext", ex);
-		}
-	}
-
-	@Override
-	public void createPartControl(Composite parent) {
-
-		minSizeComposite = new MinimumSizeComposite(parent, SWT.H_SCROLL | SWT.V_SCROLL);
-		// fillToolBar();
-		histoComposite = new Composite(minSizeComposite, SWT.NULL);
-		minSizeComposite.setContent(histoComposite);
-		minSizeComposite.setMinSize(160, 80);
-		minSizeComposite.setExpandHorizontal(true);
-		minSizeComposite.setExpandVertical(true);
-
-		GridLayout baseLayout = new GridLayout(1, false);
-		baseLayout.verticalSpacing = 2;
-		histoComposite.setLayout(baseLayout);
-
-		parentComposite = new Composite(histoComposite, SWT.EMBEDDED);
-		parentComposite.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		createGLCanvas();
-
-		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
-
-		initializeData();
-		createPartControlGL();
-
-		redrawView();
-	}
-
 	public void redrawView() {
 
-		colorMappingPreviewLabel = new CLabel(histoComposite, SWT.SHADOW_IN);
+		colorMappingPreview = new CLabel(histoComposite, SWT.SHADOW_IN);
 		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 		gridData.heightHint = 10;
 		gridData.grabExcessHorizontalSpace = true;
-		// colorData.
-		colorMappingPreviewLabel.setLayoutData(gridData);
-		// colorMappingPreviewLabel.setBounds(0, 0, buttonComposite.getSize().x,
-		// 3);//setSize(, 3);
-
-		colorMappingPreviewLabel.addMouseListener(new MouseListener() {
-			@Override
-			public void mouseDown(MouseEvent e) {
-
-			}
+		colorMappingPreview.setLayoutData(gridData);
+		colorMappingPreview.addMouseListener(new MouseAdapter() {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				// TODO Auto-generated method stub
-				PreferenceDialog pref = PreferencesUtil.createPreferenceDialogOn(
-						new Shell(),
-						"org.caleydo.core.gui.preferences.ColorMappingPreferencePage",
-						null, null);
-
-				if (pref != null) {
-					pref.open();
-				}
+				ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(SWT.APPLICATION_MODAL), dataDomain);
+				// dialog.setPossibleDataDomains(availableDomains);
+				dialog.setBlockOnOpen(true);
+				dialog.open();
+				ColorMapper.createColorMappingPreview(dialog.getColorMapper(), colorMappingPreview, labels);
 			}
-
-			@Override
-			public void mouseUp(MouseEvent e) {
-				// TODO Auto-generated method stub
-
-			}
-
 		});
 
 		FillLayout fillLayout = new FillLayout();
@@ -155,163 +57,16 @@ public class RcpGLColorMapperHistogramView extends ARcpGLViewPart implements
 			}
 		}
 
-		updateColorLabel();
-
-	}
-
-	private void updateColorLabel() {
-
-		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
-				.getMarkerPoints();
-
-		Color[] alColor = new Color[markerPoints.size()];
-		int[] iArColorMarkerPoints = new int[markerPoints.size() - 1];
-		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
-
-			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
-
-			double correspondingValue = ((ATableBasedDataDomain) dataDomain).getTable()
-					.getRawForNormalized(normalizedValue);
-
-			labels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
-			int colorMarkerPoint = (int) (100 * normalizedValue);
-
-			// Gradient label does not need the 0 point
-			if (colorMarkerPoint != 0) {
-				iArColorMarkerPoints[iCount - 2] = colorMarkerPoint;
-			}
-
-			int[] color = markerPoints.get(iCount - 1).getIntColor();
-
-			alColor[iCount - 1] = new Color(PlatformUI.getWorkbench().getDisplay(),
-					color[0], color[1], color[2]);
-		}
-
-		colorMappingPreviewLabel.setBackground(alColor, iArColorMarkerPoints);
-		colorMappingPreviewLabel.update();
-	}
-
-	public static void createToolBarItems(int viewID) {
-		alToolbar = new ArrayList<IAction>();
-	}
-
-	@Override
-	public void handleRedrawView() {
-		colorMappingPreviewLabel.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				updateColorLabel();
-			}
-		});
+		ColorMapper.createColorMappingPreview(dataDomain.getColorMapper(), colorMappingPreview, labels);
 	}
 
 	@Override
 	public void handleUpdateView() {
-		handleRedrawView();
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// nothing to do here
-	}
-
-	@Override
-	public void registerEventListeners() {
-
-		redrawViewListener = new RedrawViewListener();
-		redrawViewListener.setHandler(this);
-		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
-
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-
-		if (redrawViewListener != null) {
-			eventPublisher.removeListener(redrawViewListener);
-			redrawViewListener = null;
-		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
-		}
-	}
-
-	@Override
-	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
-
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		colorMappingPreview.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				listener.handleEvent(event);
+				ColorMapper.createColorMappingPreview(dataDomain.getColorMapper(), colorMappingPreview, labels);
 			}
 		});
-	}
-
-	@Override
-	public void createDefaultSerializedView() {
-
-		serializedView = new SerializedHistogramView();
-
-		if (dataDomain == null)
-			determineDataConfiguration(serializedView);
-		else
-			((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
-					.getDataDomainID());
-	}
-
-	@Override
-	public String getViewGUIID() {
-		return GLHistogram.VIEW_TYPE;
-	}
-
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-	}
-
-	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ASerializedView getSerializableRepresentation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public void initFromSerializableRepresentation(ASerializedView serializedView) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public String getViewType() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getID() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
-
-	@Override
-	public void setDataContainer(DataContainer dataContainer) {
-		this.dataContainer = dataContainer;
-
 	}
 }

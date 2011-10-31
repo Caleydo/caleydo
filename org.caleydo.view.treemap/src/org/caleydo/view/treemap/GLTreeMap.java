@@ -18,7 +18,6 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.event.view.histogram.UpdateColorMappingEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.event.view.treemap.LevelHighlightingEvent;
@@ -32,9 +31,7 @@ import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IColorMappingHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -60,7 +57,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Lafer
  * 
  */
-public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISelectionUpdateHandler, IViewCommandHandler, IColorMappingHandler {
+public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISelectionUpdateHandler, IViewCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.treemap";
 
@@ -103,7 +100,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 	private ToggleColoringModeListener coloringModeListener;
 	private ToggleLabelListener labelListener;
 	UpdateViewListener updateViewListener;
-	UpdateColorMappingListener updateColorMappingListener;
 	LevelHighlightingListener levelHighlightingListener;
 
 	public GLTreeMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
@@ -492,11 +488,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		updateColorMappingListener = new UpdateColorMappingListener();
-		// updateColorMappingListener.setDataDomainType(dataDomain.getDataDomainType());
-		updateColorMappingListener.setHandler(this);
-		eventPublisher.addListener(UpdateColorMappingEvent.class, updateColorMappingListener);
-
 		updateViewListener = new UpdateViewListener();
 		// updateViewListener.setDataDomainType(dataDomain.getDataDomainType());
 		updateViewListener.setHandler(this);
@@ -526,11 +517,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		if (levelHighlightingListener != null) {
 			eventPublisher.removeListener(levelHighlightingListener);
 			levelHighlightingListener = null;
-		}
-
-		if (updateColorMappingListener != null) {
-			eventPublisher.removeListener(updateColorMappingListener);
-			updateColorMappingListener = null;
 		}
 
 		if (updateViewListener != null) {
@@ -565,7 +551,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 
 	@Override
 	public void handleRedrawView() {
-		// TODO Auto-generated method stub
 		setDisplayListDirty();
 	}
 

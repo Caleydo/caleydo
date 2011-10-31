@@ -4670,6 +4670,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		// TODO: maybe causes side effects
 		// initData();
+		
+		colorMapper = dataDomain.getColorMapper();
+		glHeatMapView.handleUpdateView();
 
 		setDisplayListDirty();
 	}

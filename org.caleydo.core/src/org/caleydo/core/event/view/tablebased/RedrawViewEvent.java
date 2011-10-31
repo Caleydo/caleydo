@@ -6,7 +6,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
 
 /**
- * This event signals a view that a change has occured in some part that affects the display of the view,
+ * This event signals a view that a change has occurred in some part that affects the display of the view,
  * outside of other update events such as {@link SelectionUpdate}. An example is a change in color mapping.
  * 
  * @author Werner Puff

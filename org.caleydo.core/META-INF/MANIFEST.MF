@@ -116,7 +116,6 @@ Export-Package: org.caleydo.core.command;
  org.caleydo.core.event.view.filterpipeline;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.event.view.group;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.event.view.grouper;uses:="org.caleydo.core.manager.event",
- org.caleydo.core.event.view.histogram;uses:="org.caleydo.core.util.mapping.color,org.caleydo.core.manager.event",
  org.caleydo.core.event.view.infoarea;uses:="org.caleydo.core.manager.event",
  org.caleydo.core.event.view.keyboard;uses:="org.eclipse.swt.events,org.caleydo.core.manager.event",
  org.caleydo.core.event.view.matchmaker;uses:="org.caleydo.core.manager.event",

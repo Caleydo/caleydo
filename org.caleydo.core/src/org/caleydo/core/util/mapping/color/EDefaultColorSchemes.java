@@ -63,7 +63,7 @@ public enum EDefaultColorSchemes {
 	private String colorSchemeName;
 	/**
 	 * The description of the color scheme, including a brief statement of the source, whether or not the
-	 * scheme is color-blind freindly, causes issues with printing or LCDs.
+	 * scheme is color-blind friendly, causes issues with printing or LCDs.
 	 */
 	private String colorSchemeDescription;
 
@@ -108,6 +108,13 @@ public enum EDefaultColorSchemes {
 	 */
 	public String getColorSchemeDescription() {
 		return colorSchemeDescription;
+	}
+	
+	/**
+	 * @return the colorMarkerPoints, see {@link #colorMarkerPoints}
+	 */
+	public ArrayList<ColorMarkerPoint> getColorMarkerPoints() {
+		return colorMarkerPoints;
 	}
 
 	ColorMapper getDefaultColorMapper() {

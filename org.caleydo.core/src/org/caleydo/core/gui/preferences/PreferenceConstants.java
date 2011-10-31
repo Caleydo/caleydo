@@ -28,16 +28,6 @@ public class PreferenceConstants {
 
 	public static final String BROWSER_QUERY_DATABASE = "browserQueryDatabase";
 
-	// Color Mapping
-//	public static final String GENE_EXPRESSION_PREFIX = ColorMappingType.GENE_EXPRESSION + "_";
-//	public static final String NUMBER_OF_COLOR_MARKER_POINTS = "numberOfColorMarkerPoints";
-//	public static final String COLOR_MARKER_POINT_VALUE = "colorMarkerPointValue";
-//	public static final String COLOR_MARKER_POINT_LEFT_SPREAD = "colorMarkerPointLeftSpread";
-//	public static final String COLOR_MARKER_POINT_RIGHT_SPREAD = "colorMarkerPointRightSpread";
-//	public static final String COLOR_MARKER_POINT_COLOR = "colorMarkerPointColor";
-//	public static final String NAN_COLOR = "nanColor";
-//	public static final String COLOR_MAPPING_USED = "colorMappingUsed";
-
 	// Heat Map
 	public static final String HM_NUM_RANDOM_SAMPLING_POINT = "hmNumRandomSamplinPoints";
 	public static final String HM_LIMIT_REMOTE_TO_CONTEXT = "hmLimitRemoteToContext";

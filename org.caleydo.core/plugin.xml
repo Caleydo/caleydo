@@ -284,11 +284,6 @@
       <extension
          point="org.eclipse.ui.preferencePages">
             <page
-            class="org.caleydo.core.gui.preferences.ColorMappingPreferencePage"
-            id="org.caleydo.core.gui.preferences.ColorMappingPreferencePage"
-            name="Color Mapping">
- 			</page>
-            <page
                   class="org.caleydo.core.gui.preferences.GeneralPreferencePage"
                   id="org.caleydo.core.gui.preferences.GeneralPreferencePage"
                   name="General">

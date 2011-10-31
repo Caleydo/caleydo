@@ -6,6 +6,12 @@ import java.util.Collections;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.util.format.Formatter;
+import org.eclipse.swt.custom.CLabel;
+import org.eclipse.swt.graphics.Color;
+import org.eclipse.ui.PlatformUI;
+
 /**
  * Color mapping. The class is initialized with a list of inflection points and an associated color. A color
  * mapping for values between 0 and 1 based on the provided points is accessible.
@@ -31,7 +37,6 @@ public class ColorMapper {
 	 * Default no-arg constructor, needed for serialization.
 	 */
 	public ColorMapper() {
-		// initiFromPreferenceStore();
 	}
 
 	/**
@@ -55,8 +60,8 @@ public class ColorMapper {
 		init(markerPoints);
 	}
 
-	public static ColorMapper createDefaultMapper(EDefaultColorSchemes mappingType) {
-		return mappingType.getDefaultColorMapper();
+	public static ColorMapper createDefaultMapper(EDefaultColorSchemes colorSchema) {
+		return colorSchema.getDefaultColorMapper();
 	}
 
 	/**
@@ -107,65 +112,6 @@ public class ColorMapper {
 
 		setUpMapping();
 	}
-
-	/**
-	 * Initializes a gene expression color mapping from values stored in the preference store. Sets all
-	 * display list to dirty to have immediate effect.
-	 */
-	// public void initiFromPreferenceStore() {
-	// PreferenceStore store = GeneralManager.get().getPreferenceStore();
-	// int iNumberOfMarkerPoints =
-	// store.getInt(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS);
-	//
-	// ArrayList<ColorMarkerPoint> alMarkerPoints = new ArrayList<ColorMarkerPoint>();
-	// for (int iCount = 1; iCount <= iNumberOfMarkerPoints; iCount++) {
-	// float colorMarkerValue =
-	// store
-	// .getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount);
-	// String color =
-	// store.getString(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_COLOR
-	// + iCount);
-	// float fLeftSpread =
-	// store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
-	// + iCount);
-	// float fRightSpread =
-	// store.getFloat(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
-	// + iCount);
-	//
-	// ColorMarkerPoint point =
-	// new ColorMarkerPoint(colorMarkerValue, ConversionTools.getFloatColorFromString(color));
-	//
-	// if (Float.compare(fLeftSpread, 0.0f) > 0)
-	// point.setLeftSpread(fLeftSpread);
-	// if (Float.compare(fRightSpread, 0.0f) > 0)
-	// point.setRightSpread(fRightSpread);
-	//
-	// alMarkerPoints.add(point);
-	// }
-	//
-	// init(alMarkerPoints);
-	//
-	// }
-
-	/**
-	 * Writes the color values of the current mapping to the preference store
-	 */
-	// public void writeToPrefStore() {
-	//
-	// PreferenceStore store = GeneralManager.get().getPreferenceStore();
-	// int iCount = 1;
-	// for (ColorMarkerPoint point : markerPoints) {
-	// store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_VALUE + iCount,
-	// point.getValue());
-	// store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_RIGHT_SPREAD
-	// + iCount, point.getRightSpread());
-	// store.setValue(colorMappingType + "_" + PreferenceConstants.COLOR_MARKER_POINT_LEFT_SPREAD
-	// + iCount, point.getLeftSpread());
-	// iCount++;
-	// store.setValue(colorMappingType + "_" + PreferenceConstants.NUMBER_OF_COLOR_MARKER_POINTS,
-	// markerPoints.size());
-	// }
-	// }
 
 	/**
 	 * Initialize the color mapping
@@ -294,4 +240,72 @@ public class ColorMapper {
 	public String toString() {
 		return colorSchemeName;
 	}
+
+	public static void createColorMappingPreview(ColorMapper colorMapper,
+		CLabel colorMappingPreview, ArrayList<CLabel> mappingLabels) {
+
+		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
+
+		Color[] alColor = new Color[markerPoints.size()];
+		int[] colorMarkerPoints = new int[markerPoints.size() - 1];
+		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
+
+			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
+
+//			double correspondingValue =
+//				((ATableBasedDataDomain) dataDomain).getTable().getRawForNormalized(normalizedValue);
+//
+//			if (mappingLabels != null)
+//				mappingLabels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
+
+			int colorMarkerPoint = (int) (100 * normalizedValue);
+
+			// Gradient label does not need the 0 point
+			if (colorMarkerPoint != 0) {
+				colorMarkerPoints[iCount - 2] = colorMarkerPoint;
+			}
+
+			int[] color = markerPoints.get(iCount - 1).getIntColor();
+
+			alColor[iCount - 1] =
+				new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
+		}
+
+		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
+		colorMappingPreview.update();
+	}
+	
+//	public static void updateColorMappingPreview(ATableBasedDataDomain dataDomain,
+//		CLabel colorMappingPreview, ArrayList<CLabel> mappingLabels) {
+//
+//		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper().getMarkerPoints();
+//
+//		Color[] alColor = new Color[markerPoints.size()];
+//		int[] colorMarkerPoints = new int[markerPoints.size() - 1];
+//		for (int iCount = 1; iCount <= markerPoints.size(); iCount++) {
+//
+//			float normalizedValue = markerPoints.get(iCount - 1).getMappingValue();
+//
+//			double correspondingValue =
+//				((ATableBasedDataDomain) dataDomain).getTable().getRawForNormalized(normalizedValue);
+//
+//			if (mappingLabels != null)
+//				mappingLabels.get(iCount - 1).setText(Formatter.formatNumber(correspondingValue));
+//
+//			int colorMarkerPoint = (int) (100 * normalizedValue);
+//
+//			// Gradient label does not need the 0 point
+//			if (colorMarkerPoint != 0) {
+//				colorMarkerPoints[iCount - 2] = colorMarkerPoint;
+//			}
+//
+//			int[] color = markerPoints.get(iCount - 1).getIntColor();
+//
+//			alColor[iCount - 1] =
+//				new Color(PlatformUI.getWorkbench().getDisplay(), color[0], color[1], color[2]);
+//		}
+//
+//		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
+//		colorMappingPreview.update();
+//	}
 }

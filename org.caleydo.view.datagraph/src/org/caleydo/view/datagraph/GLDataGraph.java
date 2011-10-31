@@ -607,12 +607,6 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleUpdateView() {
-
-		setDisplayListDirty();
-	}
-
 	public void setApplyAutomaticLayout(boolean applyAutomaticLayout) {
 		this.applyAutomaticLayout = applyAutomaticLayout;
 	}
