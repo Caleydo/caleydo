@@ -290,18 +290,6 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public String getShortInfo() {
-
-		return "TODO: Hyperbolic info";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-
-		return "TODO: Hyperbolic Detail Info";
-	}
-
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {

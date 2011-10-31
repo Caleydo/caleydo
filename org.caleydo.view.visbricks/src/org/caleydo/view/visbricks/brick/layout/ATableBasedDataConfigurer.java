@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -44,10 +44,10 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CLUSTER_BUTTON_ID = 1;
 
-	protected ADimensionGroupData dimensionGroupData;
+	protected DataContainer dataContainer;
 
-	public ATableBasedDataConfigurer(ADimensionGroupData dimensionGroupData) {
-		this.dimensionGroupData = dimensionGroupData;
+	public ATableBasedDataConfigurer(DataContainer dimensionGroupData) {
+		this.dataContainer = dimensionGroupData;
 	}
 
 	protected ArrayList<ElementLayout> createHeaderBarElements(
@@ -70,7 +70,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), dimensionGroupData.getLabel(),
+				.getDimensionGroup().getVisBricksView(), dataContainer.getLabel(),
 				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -101,8 +101,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 					public void run() {
 						StartClusteringDialog dialog = new StartClusteringDialog(
 								new Shell(), brick.getDataDomain());
-						ADimensionGroupData data = brick.getDimensionGroup()
-								.getDimensionGroupData();
+						DataContainer data = brick.getDimensionGroup().getDataContainer();
 						dialog.setDimensionPerspective(data.getDimensionPerspective());
 						dialog.setRecordPerspective(data.getRecordPerspective());
 						dialog.open();
@@ -150,7 +149,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), dimensionGroupData.getLabel(),
+				.getDimensionGroup().getVisBricksView(), dataContainer.getLabel(),
 				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 

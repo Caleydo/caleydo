@@ -1,5 +1,7 @@
 package org.caleydo.core.view;
 
+import java.util.List;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -22,5 +24,12 @@ public interface ITableBasedDataDomainView
 	 * @param dimensionPerspectiveID
 	 */
 	public void setDataContainer(DataContainer dataContainer);
+
+	/**
+	 * Returns all {@link DataContainer}s that this view and all of its remote views render.
+	 * 
+	 * @return
+	 */
+	public List<DataContainer> getDataContainers();
 
 }

@@ -51,7 +51,6 @@ public class ExperimentClusterDataEventManager extends ADataEventManager impleme
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);
 				selectionUpdateEvent.setSelectionDelta(delta);
-				selectionUpdateEvent.setInfo(radialHierarchy.getShortInfo());
 				eventPublisher.triggerEvent(selectionUpdateEvent);
 			}
 		} else {

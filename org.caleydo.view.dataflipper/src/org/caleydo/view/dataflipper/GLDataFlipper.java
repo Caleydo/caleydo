@@ -19,7 +19,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.ClusterSetEvent;
 import org.caleydo.core.event.view.ViewActivationEvent;
@@ -780,8 +779,8 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 									.getDestinationRemoteLevelElement()))
 						renderConnectionsLeft = false;
 
-					((GLParallelCoordinates) glView)
-							.setRenderConnectionState(renderConnectionsLeft);
+					// ((GLParallelCoordinates) glView)
+					// .setRenderConnectionState(renderConnectionsLeft);
 
 				}
 
@@ -866,28 +865,6 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		// generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
 		// generalManager.getViewGLCanvasManager().getConnectedElementRepresentationManager().clearTransformedConnections();
 		// }
-	}
-
-
-
-
-
-	@Override
-	public String getDetailedInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getShortInfo() {
-		// TODO return something usefull
-		return "DataFilpper";
 	}
 
 	@Override
@@ -1650,15 +1627,13 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(dataDomainType)).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray()
+					.getDataDomainByID(dataDomainType)).getTable().getDefaultDimensionPerspective().getVirtualArray()
 					.size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray()
+					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable().getDefaultDimensionPerspective().getVirtualArray()
 					.size();
 			if (numberOfPatients > 20)
 				return false;
@@ -2030,7 +2005,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getShortInfo();
+		String sText = element.getGLView().getLabel();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -2494,5 +2469,11 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					browserView.makeRegularScreenshots(false);
 			}
 		});
+	}
+
+	@Override
+	public int getNumberOfSelections(SelectionType SelectionType) {
+		// TODO Auto-generated method stub
+		return 0;
 	}
 }

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.format.Formatter;
 import org.caleydo.core.util.mapping.color.ChooseColorMappingDialog;
-import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.CLabel;
@@ -35,10 +34,12 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
 			@Override
 			public void mouseDoubleClick(MouseEvent e) {
-				ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(SWT.APPLICATION_MODAL), dataDomain);
+				ChooseColorMappingDialog dialog = new ChooseColorMappingDialog(new Shell(
+						SWT.APPLICATION_MODAL), dataDomain);
 				// dialog.setPossibleDataDomains(availableDomains);
 				dialog.setBlockOnOpen(true);
 				dialog.open();
+
 				updateColorMappingPreview();
 			}
 		});
@@ -74,7 +75,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 			}
 		});
 	}
-	
+
 	private void updateColorMappingPreview() {
 
 		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
@@ -109,4 +110,5 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 		colorMappingPreview.setBackground(alColor, colorMarkerPoints);
 		colorMappingPreview.update();
 	}
+
 }

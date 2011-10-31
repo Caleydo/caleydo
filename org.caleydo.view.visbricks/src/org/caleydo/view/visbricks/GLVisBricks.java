@@ -16,7 +16,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -173,7 +172,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private boolean isConnectionLinesDirty = true;
 
 	private Set<IDataDomain> dataDomains;
-	private List<ADimensionGroupData> dimensionGroupData;
+	private List<DataContainer> dataContainers;
 
 	/**
 	 * Constructor.
@@ -197,7 +196,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		relationAnalyzer = new RelationAnalyzer();
 
 		dataDomains = new HashSet<IDataDomain>();
-		dimensionGroupData = new ArrayList<ADimensionGroupData>();
+		dataContainers = new ArrayList<DataContainer>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
@@ -1167,9 +1166,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	 * Creates visible groups of bricks for the specified list of dimension
 	 * group data.
 	 * 
-	 * @param dimensionGroupData
+	 * @param dataContainer
 	 */
-	public void addDimensionGroups(List<ADimensionGroupData> dimensionGroupData) {
+	public void addDimensionGroups(List<DataContainer> newDataContainers) {
 
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
@@ -1177,11 +1176,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// BrickDimensionGroupDataCreator creator = new
 		// BrickDimensionGroupDataCreator();
 
-		for (ADimensionGroupData data : dimensionGroupData) {
+		for (DataContainer data : newDataContainers) {
 
 			boolean dimensionGroupExists = false;
 			for (DimensionGroup dimensionGroup : dimensionGroups) {
-				if (dimensionGroup.getDimensionGroupData().getID() == data.getID()) {
+				if (dimensionGroup.getDataContainer().getID() == data.getID()) {
 					dimensionGroupExists = true;
 					break;
 				}
@@ -1214,7 +1213,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 							.setBrickSortingStrategy(new AverageValueSortingStrategy());
 				}
 				dimensionGroup.setDataDomain(dataDomain);
-				dimensionGroup.setDimensionGroupData(data);
+				dimensionGroup.setDataContainer(data);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);
 				dimensionGroup.setVisBricksView(this);
@@ -1224,7 +1223,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				uninitializedDimensionGroups.add(dimensionGroup);
 				dataDomains.add(data.getDataDomain());
-				this.dimensionGroupData.add(data);
+				
 			}
 		}
 
@@ -1392,7 +1391,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
-
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -1665,16 +1663,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public List<ADimensionGroupData> getDimensionGroups() {
-		return dimensionGroupData;
-	}
-
-	@Override
 	public boolean isDataView() {
 		return true;
 	}
-
-
 
 	private void checkForPerparedPerspectives() {
 		Set<String> recordPerspectiveIDs = dataDomain.getTable()
@@ -1707,7 +1698,8 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			RecordPerspective currentPerspective = dataDomain.getTable()
 					.getRecordPerspective(chosenRecordPerspectiveID);
 			if (currentPerspective.getLabel().contains("clusters")) {
-			DataContainer dataContainer =	dataDomain.getDataContainer(chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
+				DataContainer dataContainer = dataDomain.getDataContainer(
+						chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
 				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
 						dataDomain.getDataDomainID(), dataContainer);
 				event.setDataDomainID(dataDomain.getDataDomainID());
@@ -1719,6 +1711,12 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void setDataContainer(DataContainer dataContainer) {
 		// TODO Auto-generated method stub
-		
+
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

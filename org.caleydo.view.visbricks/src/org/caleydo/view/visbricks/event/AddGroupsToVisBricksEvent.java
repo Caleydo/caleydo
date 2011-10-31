@@ -2,13 +2,13 @@ package org.caleydo.view.visbricks.event;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
@@ -48,7 +48,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	private ArrayList<ClusterNode> selectedNodes;
 	private boolean createFromNodes = true;
 
-	ArrayList<ADimensionGroupData> dimensionGroupData = null;
+	ArrayList<DataContainer> subDataContainers = null;
 
 	public AddGroupsToVisBricksEvent() {
 		createFromNodes = false;
@@ -58,10 +58,10 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	 * Specify a list of pre-existing {@link ADimensionGroupData}s to be added
 	 * to VisBricks
 	 * 
-	 * @param dimensionGroupData
+	 * @param subDataContainers
 	 */
-	public AddGroupsToVisBricksEvent(ArrayList<ADimensionGroupData> dimensionGroupData) {
-		this.dimensionGroupData = dimensionGroupData;
+	public AddGroupsToVisBricksEvent(ArrayList<DataContainer> subDataContainers) {
+		this.subDataContainers = subDataContainers;
 		createFromNodes = false;
 	}
 
@@ -81,8 +81,8 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 
 	/**
 	 * Specify a record and dimension perspective, plus a liust of
-	 * {@link ClusterNode}s. For each ClusterNode, a new
-	 * {@link ADimensionGroupData} is created.
+	 * {@link ClusterNode}s. For each ClusterNode, a new {@link DataContainer}
+	 * is created.
 	 * 
 	 * @param dataDomainID
 	 * @param dimensionPerspectiveID
@@ -97,7 +97,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	}
 
 	public boolean checkIntegrity() {
-		if (dimensionGroupData == null && (dataDomainID == null || dataContainer == null))
+		if (subDataContainers == null && (dataDomainID == null || dataContainer == null))
 			return false;
 		if (createFromNodes && selectedNodes == null)
 			return false;
@@ -105,40 +105,45 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		return true;
 	}
 
-	public void setDimensionGroupData(ArrayList<ADimensionGroupData> dimensionGroupData) {
-		this.dimensionGroupData = dimensionGroupData;
+	public void setDimensionGroupData(ArrayList<DataContainer> dimensionGroupData) {
+		this.subDataContainers = dimensionGroupData;
 	}
 
-	public ArrayList<ADimensionGroupData> getDimensionGroupData() {
+	public ArrayList<DataContainer> getDimensionGroupData() {
 		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
 				.get().getDataDomainByID(dataDomainID);
 		// case 1: pre-existing dimension group data
-		if (dimensionGroupData != null)
-			return dimensionGroupData;
+		if (subDataContainers != null)
+			return subDataContainers;
 
 		// case 2: exactly one dimension group data, no clusterNode
 		else if (!createFromNodes && selectedNodes == null) {
-			dimensionGroupData = new ArrayList<ADimensionGroupData>(1);
-			TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-					dataDomain, dataContainer);
-			dimensionGroupData.add(data);
-			return dimensionGroupData;
+			subDataContainers = new ArrayList<DataContainer>(1);
+			subDataContainers.add(dataContainer);
+			return subDataContainers;
 
 		}
 		// case 3: build from clusterNodes
 		else {
-			dimensionGroupData = new ArrayList<ADimensionGroupData>(selectedNodes.size());
+			subDataContainers = new ArrayList<DataContainer>(selectedNodes.size());
 
 			for (ClusterNode node : selectedNodes) {
 				if (node.isLeaf())
 					continue;
-				TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-						dataDomain, dataContainer, node,
-						DimensionPerspective.class);
-				dimensionGroupData.add(data);
-				dataDomain.addDimensionGroup(data);
+
+				DimensionPerspective dimensionPerspective = new DimensionPerspective(
+						dataDomain);
+				PerspectiveInitializationData data = new PerspectiveInitializationData();
+				data.setData((ClusterTree) node.getTree(), node);
+				dimensionPerspective.init(data);
+				// dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
+
+				DataContainer subDataContainer = new DataContainer(dataDomain,
+						dataContainer.getRecordPerspective(), dimensionPerspective);
+				subDataContainers.add(subDataContainer);
+				// dataDomain.addDimensionGroup(data);
 			}
-			return dimensionGroupData;
+			return subDataContainers;
 		}
 	}
 

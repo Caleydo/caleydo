@@ -14,6 +14,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
@@ -67,6 +68,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private RecordVAUpdateListener recordVAUpdateListener;
+	
+	private RecordPerspective recordPerspective;
 
 	private IDType primaryIDType;
 
@@ -91,7 +94,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 		this.foreignDataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 				.getDataDomainByID(FOREIGN_DATADOMAIN_TYPE);
 
-		recordVA = foreignDataDomain.getRecordVA(recordPerspectiveID);
+		recordPerspective = foreignDataDomain.getTable().getDefaultRecordPerspective();
 		primaryIDType = foreignDataDomain.getRecordIDType();
 
 		experiementSelectionManager = foreignDataDomain.getRecordSelectionManager();
@@ -134,7 +137,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private void updateViews() {
 
-		if (recordVA.size() > MAX_VIEWS)
+		if (recordPerspective.getVirtualArray().size() > MAX_VIEWS)
 			return;
 
 		newViews.clear();
@@ -143,7 +146,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 		clearRemoteLevel(poolLevel);
 		clearRemoteLevel(transitionLevel);
 
-		for (Integer experimentIndex : recordVA) {
+		for (Integer experimentIndex : recordPerspective.getVirtualArray()) {
 			newViews.add(allTissueViews.get(experimentIndex));
 		}
 	}
@@ -244,17 +247,6 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
 
-	@Override
-	public String getShortInfo() {
-		return "Tissue Browser";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("Tissue Browser");
-		return sInfoText.toString();
-	}
 
 	// /**
 	// * This method generates only valid associations for Asslaber dataset!
@@ -359,13 +351,12 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID);
-		RecordVADelta vaDelta = new RecordVADelta(recordPerspectiveID, primaryIDType);
+		RecordVADelta vaDelta = new RecordVADelta(recordPerspective.getID(), primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
 		RecordVADeltaEvent virtualArrayUpdateEvent = new RecordVADeltaEvent();
 		virtualArrayUpdateEvent.setSender(this);
 		virtualArrayUpdateEvent.setVirtualArrayDelta(vaDelta);
-		virtualArrayUpdateEvent.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(virtualArrayUpdateEvent);
 	}
 

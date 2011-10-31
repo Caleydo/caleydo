@@ -17,6 +17,7 @@ import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.filter.DimensionFilterManager;
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
@@ -72,8 +73,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Thomas Geymayer
  */
 
-public class GLFilterPipeline extends ATableBasedView implements IViewCommandHandler,
-		ISelectionUpdateHandler, IRadialMenuListener {
+public class GLFilterPipeline extends ATableBasedView implements IRadialMenuListener {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.filterpipeline";
 
@@ -376,16 +376,6 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	}
 
 	@Override
-	public String getShortInfo() {
-		return "Filterpipeline " + filterType;
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "Filterpipeline " + filterType;
-	}
-
-	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
 		int newFullSizedFilter = -1;
@@ -637,15 +627,15 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		filterList.clear();
 		int filterID = 0;
 
-		RecordFilterManager recordFilterManager = dataDomain.getTable()
-				.getRecordPerspective(recordPerspectiveID).getFilterManager();
-		RecordVirtualArray recordVA = dataDomain.getTable()
-				.getRecordPerspective(recordPerspectiveID).getVirtualArray();
-		DimensionVirtualArray dimensionVA = dataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray();
+		RecordFilterManager recordFilterManager = dataContainer.getRecordPerspective()
+				.getFilterManager();
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
 
-		DimensionFilterManager dimensionFilterManager = dataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getFilterManager();
+		DimensionFilterManager dimensionFilterManager = dataContainer
+				.getDimensionPerspective().getFilterManager();
 
 		VirtualArray<?, ?, ?> currentVA;
 		FilterManager<?, ?, ?, ?> filterManager;
@@ -699,17 +689,20 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 		if (table.getUncertainty().getNormalizedUncertainty() != null)
 			return;
 
-		RecordFilter contentFilter = new RecordFilter(recordPerspectiveID);
+		RecordFilter contentFilter = new RecordFilter(dataContainer
+				.getRecordPerspective().getID());
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
-		table.getUncertainty().calculateRawAverageUncertainty(dimensionPerspectiveID);
+		table.getUncertainty().calculateRawAverageUncertainty(
+				dataContainer.getDimensionPerspective().getID());
 
 		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty()
 				.getRawUncertainty());
 
-		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(
-				recordPerspectiveID, dimensionPerspectiveID);
+		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(dataContainer
+				.getRecordPerspective().getID(), dataContainer.getDimensionPerspective()
+				.getID());
 		filterRep.setFilter(contentFilter);
 		filterRep.setTable(table);
 		filterRep.setHistogram(histogram);
@@ -730,46 +723,8 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 			updateFilterPipeline();
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleRedrawView() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	public void setControlPressed(boolean state) {
 		bControlPressed = state;
-	}
-
-	@Override
-	protected void initLists() {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override
@@ -782,5 +737,18 @@ public class GLFilterPipeline extends ATableBasedView implements IViewCommandHan
 	@Override
 	public boolean isDataView() {
 		return false;
+	}
+
+	@Override
+	public void handleUpdateView() {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+		dataContainers.add(dataContainer);
+		return dataContainers;
 	}
 }

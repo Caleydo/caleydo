@@ -7,12 +7,14 @@ import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
@@ -1275,6 +1277,12 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
 		// TODO Auto-generated method stub
 		return null;
 	}

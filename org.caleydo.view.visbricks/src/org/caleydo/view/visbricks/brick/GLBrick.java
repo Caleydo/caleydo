@@ -12,8 +12,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
-import org.caleydo.core.data.container.ISegmentData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -25,7 +24,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -110,15 +108,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private BrickState expandedBrickState;
 
 	/** The id of the group in the recordVA this brick is rendering. */
-	private int groupID = -1;
+	// private int groupID = -1;
 	/** The group on which the recordVA of this brick is based on */
-	private Group group;
+	// private Group group;
 
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
-	private ISegmentData dataContainer;
 
-	private SelectionManager contentGroupSelectionManager;
+	private SelectionManager recordGroupSelectionManager;
 
 	/** The average value of the data of this brick */
 	// private double averageValue = Double.NaN;
@@ -146,7 +143,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	@Override
 	public void initialize() {
 		super.initialize();
-		contentGroupSelectionManager = dataDomain.getRecordGroupSelectionManager();
+		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager();
 		registerPickingListeners();
 	}
 
@@ -194,15 +191,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void clicked(Pick pick) {
 
-				SelectionType currentSelectionType = contentGroupSelectionManager.getSelectionType();
-				contentGroupSelectionManager.clearSelection(currentSelectionType);
-				contentGroupSelectionManager.addToType(currentSelectionType,
-						dataContainer.getGroup().getID());
+				SelectionType currentSelectionType = recordGroupSelectionManager.getSelectionType();
+				recordGroupSelectionManager.clearSelection(currentSelectionType);
+				recordGroupSelectionManager.addToType(currentSelectionType, dataContainer
+						.getRecordGroup().getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
 				event.setSender(this);
-				SelectionDelta delta = contentGroupSelectionManager.getDelta();
+				SelectionDelta delta = recordGroupSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 
@@ -222,8 +219,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
 						dataDomain, dataContainer.getRecordPerspective()
-								.getVirtualArray(), dimensionGroup
-								.getDimensionGroupData().getDimensionPerspective()));
+								.getVirtualArray(), dimensionGroup.getDataContainer()
+								.getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 				// FIXME this assumtion that records are genes is wrong!
@@ -622,19 +619,19 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * 
 	 * @return
 	 */
-	public int getGroupID() {
-		return groupID;
-	}
+	// public int getGroupID() {
+	// return groupID;
+	// }
 
 	/**
 	 * Returns the group on which the recordVA of this brick is based on.
 	 * 
 	 * @return
 	 */
-	public Group getGroup() {
-		return dataContainer.getGroup();
-
-	}
+	// public Group getGroup() {
+	// return return group;
+	//
+	// }
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
@@ -872,7 +869,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	public String toString() {
-		return "Brick: " + groupID + " in ";// + table.getLabel();
+		return "Brick: " + dataContainer;// + table.getLabel();
 
 	}
 
@@ -903,18 +900,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @return
 	 */
 	public SelectionManager getRecordGroupSelectionManager() {
-		return contentGroupSelectionManager;
+		return recordGroupSelectionManager;
 	}
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == contentGroupSelectionManager.getIDType()) {
-			contentGroupSelectionManager.setDelta(selectionDelta);
-			if (group == null)
-				return;
-			if (contentGroupSelectionManager.checkStatus(
-					contentGroupSelectionManager.getSelectionType(), getGroup().getID())) {
+		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+			recordGroupSelectionManager.setDelta(selectionDelta);
+
+			if (recordGroupSelectionManager.checkStatus(recordGroupSelectionManager
+					.getSelectionType(), dataContainer.getRecordGroup().getID())) {
 				brickLayout.setShowHandles(true);
 				brickLayout.setSelected(true);
 				visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -930,8 +926,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @return true, if the brick us currently selected, false otherwise
 	 */
 	public boolean isActive() {
-		return contentGroupSelectionManager.checkStatus(SelectionType.SELECTION,
-				getGroup().getID());
+		return recordGroupSelectionManager.checkStatus(SelectionType.SELECTION,
+				dataContainer.getRecordGroup().getID());
 	}
 
 	/**
@@ -1045,20 +1041,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		return wrappingLayout;
 	}
 
-	public void setBrickData(ISegmentData brickData) {
-		this.dataContainer = brickData;
-		group = brickData.getGroup();
-		groupID = brickData.getGroup().getGroupID();
-		// brickData.setBrickData(this);
-	}
-
-	/**
-	 * @return the segmentData, see {@link #dataContainer}
-	 */
-	public ISegmentData getSegmentData() {
-		return dataContainer;
-	}
-
 	public IBrickConfigurer getBrickConfigurer() {
 		return brickConfigurer;
 	}
@@ -1081,12 +1063,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);
 				dialog.setDimensionPerspective(dataContainer.getDimensionPerspective());
+				dialog.setRecordPerspective(dataContainer.getRecordPerspective());
 
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == Status.OK) {
 					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-					ArrayList<ADimensionGroupData> dimensionGroupData = new ArrayList<ADimensionGroupData>();
+					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 					// FIXME: DataDomainByType may be not appropriate
 					// IDataDomain pathwayDataDomain = DataDomainManager.get()
 					// .getDataDomainByType("org.caleydo.datadomain.pathway");
@@ -1094,10 +1077,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 							.getPathwayDimensionGroupData();
 
 					IDataDomain pathwayDataDomain = dialog.getPathwayDataDomain();
-					pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
+					// FIXME this is probably not registered
+					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
 
-					dimensionGroupData.add(pathwayDimensionGroupData);
-					event.setDimensionGroupData(dimensionGroupData);
+					dataContainers.add(pathwayDimensionGroupData);
+					event.setDimensionGroupData(dataContainers);
 					event.setSender(this);
 					eventPublisher.triggerEvent(event);
 				}

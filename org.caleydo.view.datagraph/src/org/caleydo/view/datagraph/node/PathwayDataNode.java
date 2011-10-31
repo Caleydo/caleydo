@@ -103,8 +103,11 @@ public class PathwayDataNode extends ADataNode {
 
 	@Override
 	public List<DataContainer> getDataContainers() {
-		//FIXME: This will probably change
-		return new ArrayList<DataContainer>(dataDomain.getDimensionGroups());
+		
+		// FIXME: not clear what we want here
+		return new ArrayList<DataContainer>();
+	
+		// return new ArrayList<DataContainer>(dataDomain.get);
 	}
 
 }

@@ -9,7 +9,6 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.container.TableBasedDimensionGroupData;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.selection.SelectionType;

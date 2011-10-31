@@ -1,4 +1,4 @@
-package org.caleydo.datadomain.genetic.contextmenu.item;
+package org.caleydo.datadomain.pathway.contextmenu.item;
 
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

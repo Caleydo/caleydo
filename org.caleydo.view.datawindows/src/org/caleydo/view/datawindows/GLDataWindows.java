@@ -360,15 +360,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		gl.glPopName();
 	}
 
-	@Override
-	public String getShortInfo() {
-		return "TODO: Data Windows Info";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "TODO: Data Windows Detail Info";
-	}
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
@@ -459,14 +450,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		serializedForm.setViewID(this.getID());
 
 		return serializedForm;
-	}
-
-	@Override
-	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
-				+ ", remoteRenderer:" + getRemoteRenderingGLView();
 	}
 
 	@Override

@@ -14,7 +14,7 @@ public class TagRenderer extends LayoutRenderer {
 	private String text = "";
 
 	private GLTagCloud tagCloud;
-	private RecordSelectionManager contentSelectionManager;
+	private RecordSelectionManager recordSelectionManager;
 	private Integer dimensionID;
 
 	private float color[];
@@ -33,7 +33,7 @@ public class TagRenderer extends LayoutRenderer {
 			Integer dimensionID) {
 		this.textRenderer = textRenderer;
 		this.tagCloud = tagCloud;
-		this.contentSelectionManager = tagCloud.getContentSelectionManager();
+		this.recordSelectionManager = tagCloud.getRecordSelectionManager();
 		this.dimensionID = dimensionID;
 		color = SelectionType.MOUSE_OVER.getColor();
 	}
@@ -47,7 +47,7 @@ public class TagRenderer extends LayoutRenderer {
 	}
 
 	public void selectionUpdated() {
-		Set<Integer> selectedElements = contentSelectionManager
+		Set<Integer> selectedElements = recordSelectionManager
 				.getElements(SelectionType.MOUSE_OVER);
 		if (selectedElements.isEmpty())
 			return;
@@ -58,9 +58,9 @@ public class TagRenderer extends LayoutRenderer {
 			break;
 		}
 
-		if (!tagCloud.getD().contains(recordID))
+		if (!tagCloud.getDataContainer().getRecordPerspective().getVirtualArray().contains(recordID))
 			return;
-		text = tagCloud.getTable().getRawAsString(dimensionID, recordID);
+		text = tagCloud.getDataDomain().getTable().getRawAsString(dimensionID, recordID);
 
 	}
 

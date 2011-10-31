@@ -3,9 +3,16 @@
  */
 package org.caleydo.core.data.container;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
 /**
  * <p>
@@ -19,8 +26,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
  * 
  * @author Alexander Lex
  */
-public class DataContainer
-	implements IDataContainer {
+public class DataContainer {
 
 	private static int idCounter;
 	private int id;
@@ -33,9 +39,16 @@ public class DataContainer
 	protected String label;
 
 	/**
+	 * A Group describes a part of a virtual array, e.g. a cluster. The group for a data container is only set
+	 * when the DataContainer is a sub-container of another recordVirtualArray.group which
+	 */
+	protected Group recordGroup;
+	/**
 	 * Object holding respectively calculating all forms of (statistical) meta-data for this container
 	 */
 	protected ContainerStatistics containerStatistics;
+
+	// protected List<DataContainer> recordSubDataContainers;
 
 	/**
 	 * Empty constructor, nothing initialized
@@ -62,32 +75,33 @@ public class DataContainer
 		containerStatistics = new ContainerStatistics(this);
 	}
 
-	@Override
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getID() {
+		return id;
+	}
+
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
-	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 
-	@Override
 	public RecordPerspective getRecordPerspective() {
 		return recordPerspective;
 	}
 
-	@Override
 	public void setRecordPerspective(RecordPerspective recordPerspective) {
 		this.recordPerspective = recordPerspective;
 	}
 
-	@Override
 	public DimensionPerspective getDimensionPerspective() {
 		return dimensionPerspective;
 	}
 
-	@Override
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
 	}
@@ -120,13 +134,6 @@ public class DataContainer
 		return containerStatistics;
 	}
 
-	/**
-	 * @return the id, see {@link #id}
-	 */
-	public int getID() {
-		return id;
-	}
-
 	/** Returns the size of the virtual array in the record perspective, i.e. the number of records */
 	public int getNrRecords() {
 		return recordPerspective.getVirtualArray().size();
@@ -145,6 +152,63 @@ public class DataContainer
 
 	public void setLabel(String label) {
 		this.label = label;
+	}
+
+	/**
+	 * @return the recordGroup, see {@link #recordGroup}
+	 */
+	public Group getRecordGroup() {
+		return recordGroup;
+	}
+
+	/**
+	 * @param recordGroup
+	 *            setter, see {@link #recordGroup}
+	 */
+	public void setRecordGroup(Group recordGroup) {
+		this.recordGroup = recordGroup;
+	}
+
+	/**
+	 * Creates and returns one {@link DataContainer} for each group in the {@link RecordPerspective}, where
+	 * the new {@link RecordPerspective} contains the elements of the group. The {@link DimensionPerspective}
+	 * is the same as for this container.
+	 * 
+	 * @return a new list of new {@link DataContainer}s
+	 */
+	public List<DataContainer> createRecordSubDataContainers() {
+		// if (recordSubDataContainers != null)
+		// return recordSubDataContainers;
+
+		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
+
+		// TODO implement
+		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+
+		if (recordVA.getGroupList() == null)
+			return null;
+
+		RecordGroupList groupList = recordVA.getGroupList();
+		groupList.updateGroupInfo();
+
+		for (Group group : groupList) {
+
+			List<Integer> indices =
+				recordVA.getVirtualArray().subList(group.getStartIndex(), group.getEndIndex() + 1);
+
+			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(indices);
+			recordPerspective.init(data);
+
+			DataContainer subDataContainer =
+				new DataContainer(dataDomain, recordPerspective, dimensionPerspective);
+			subDataContainer.setRecordGroup(group);
+			recordSubDataContainers.add(subDataContainer);
+
+		}
+
+		return recordSubDataContainers;
 	}
 
 }

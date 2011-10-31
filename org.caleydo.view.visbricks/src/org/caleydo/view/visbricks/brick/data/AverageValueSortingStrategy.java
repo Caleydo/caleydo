@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.data;
 import java.util.ArrayList;
 import java.util.Set;
 
-import org.caleydo.core.data.container.ISegmentData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -30,11 +30,10 @@ public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 	private void insertBrick(GLBrick brickToInsert, ArrayList<GLBrick> bricks) {
 
 		int count;
-		ISegmentData brickToInsertData = (ISegmentData) brickToInsert
-				.getSegmentData();
+		DataContainer brickToInsertData =  brickToInsert.getDataContainer();
 		for (count = 0; count < bricks.size(); count++) {
-			ISegmentData brickData = (ISegmentData) bricks.get(count)
-					.getSegmentData();
+			DataContainer brickData = (DataContainer) bricks.get(count)
+					.getDataContainer();
 			if (brickData.getContainerStatistics().getAverageValue() < brickToInsertData
 					.getContainerStatistics().getAverageValue())
 				break;

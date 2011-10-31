@@ -2,22 +2,23 @@ package org.caleydo.view.bookmark;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.event.view.SelectionCommandEvent;
@@ -26,6 +27,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -42,9 +44,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Alexander Lex
  */
-public class GLBookmarkView extends AGLView implements
-		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
-		ISelectionCommandHandler {
+public class GLBookmarkView extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.bookmark";
 
@@ -218,17 +218,7 @@ public class GLBookmarkView extends AGLView implements
 		gl.glEndList();
 	}
 
-	@Override
-	public String getDetailedInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
@@ -299,14 +289,6 @@ public class GLBookmarkView extends AGLView implements
 		return serializedForm;
 	}
 
-
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
@@ -337,10 +319,6 @@ public class GLBookmarkView extends AGLView implements
 		return pickingIDManager;
 	}
 
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
@@ -368,5 +346,24 @@ public class GLBookmarkView extends AGLView implements
 		hashCategoryToBookmarkContainer.put(dataDomain.getDimensionIDCategory(),
 				experimentContainer);
 		bookmarkContainers.add(experimentContainer);
+	}
+
+	@Override
+	public void handleUpdateView() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

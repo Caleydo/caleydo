@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Set;
 
-import org.caleydo.core.data.container.ISegmentData;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -14,11 +13,9 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  * @author Partl
  * 
  */
-public class AlphabeticalDataLabelSortingStrategy implements
-		IBrickSortingStrategy {
+public class AlphabeticalDataLabelSortingStrategy implements IBrickSortingStrategy {
 
-	private class DataLabelComparable implements
-			Comparable<DataLabelComparable> {
+	private class DataLabelComparable implements Comparable<DataLabelComparable> {
 
 		private String id;
 		private GLBrick brick;
@@ -42,8 +39,8 @@ public class AlphabeticalDataLabelSortingStrategy implements
 		ArrayList<DataLabelComparable> comparables = new ArrayList<DataLabelComparable>();
 
 		for (GLBrick brick : segmentBricks) {
-			comparables.add(new DataLabelComparable(brick.getSegmentData()
-					.getLabel(), brick));
+			comparables.add(new DataLabelComparable(brick.getDataContainer().getLabel(),
+					brick));
 		}
 		// comparables.add(new DataLabelComparable(summaryBrick.getBrickData()
 		// .getLabel(), summaryBrick));

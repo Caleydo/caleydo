@@ -15,7 +15,8 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -27,7 +28,7 @@ import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
  * Configurer for bricks to display pathway data.
  * 
  * @author Partl
- *
+ * 
  */
 public class PathwayDataConfigurer implements IBrickConfigurer {
 
@@ -100,7 +101,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick()
-				.getSegmentData().getLabel(), PickingType.BRICK, layoutTemplate
+				.getDataContainer().getLabel(), PickingType.BRICK, layoutTemplate
 				.getBrick().getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -119,7 +120,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick()
-				.getSegmentData().getLabel(), PickingType.BRICK, layoutTemplate
+				.getDataContainer().getLabel(), PickingType.BRICK, layoutTemplate
 				.getBrick().getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -179,8 +180,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		views.put(EContainedViewType.PATHWAY_VIEW, pathway);
 		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW, pathwayRenderer);
 
-		int numPathways = brick.getDimensionGroup().getDimensionGroupData()
-				.getGroups().size();
+		int numPathways = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+				.getDataContainer()).getPathways().size();
 		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
 				"Pathways: " + numPathways, PickingType.BRICK, brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
@@ -191,8 +192,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
 
-		if (brick.getSegmentData() instanceof PathwaySegmentData) {
-			PathwaySegmentData brickData = (PathwaySegmentData) brick.getSegmentData();
+		if (brick.getDataContainer() instanceof PathwayDataContainer) {
+			PathwayDataContainer brickData = (PathwayDataContainer) brick
+					.getDataContainer();
 			if (brickData.getPathway() != null) {
 				PathwayDatabaseType dataBaseType = brickData.getPathway().getType();
 				EIconTextures texture;
@@ -202,7 +204,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 					texture = EIconTextures.CM_BIOCARTA;
 				}
 				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick,
-						brick.getSegmentData().getLabel(), PickingType.BRICK,
+						brick.getDataContainer().getLabel(), PickingType.BRICK,
 						brick.getID(), brick.getTextureManager(), texture);
 
 				containedViewRenderers.put(EContainedViewType.PATHWAY_COMPACT,

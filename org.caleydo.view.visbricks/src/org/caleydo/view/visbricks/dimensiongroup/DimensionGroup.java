@@ -12,14 +12,11 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
-import org.caleydo.core.data.container.ISegmentData;
-import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.EventPublisher;
@@ -94,7 +91,7 @@ public class DimensionGroup extends ATableBasedView implements
 	protected Column topCol;
 	// private ViewFrustum brickFrustum;
 	// protected DataTable set;
-	
+
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 	private IBrickSortingStrategy brickSortingStrategy;
@@ -126,9 +123,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 	private Column detailBrickLayout;
 	private ElementLayout overviewDetailGapLayout;
-
-	/** This variable hold the data the dimension group is supposed to show */
-	private ADimensionGroupData dataContainer;
 
 	public static int BOTTOM_COLUMN_ID = 0;
 	public static int TOP_COLUMN_ID = 1;
@@ -232,7 +226,7 @@ public class DimensionGroup extends ATableBasedView implements
 	/**
 	 * Creates all bricks of the dimension group
 	 */
-	protected void createBricks(RecordVirtualArray recordVA) {
+	protected void createBricks() {
 		// create basic layouts
 
 		// minPixelWidth = PIXEL_PER_DIMENSION * table.size();
@@ -240,7 +234,7 @@ public class DimensionGroup extends ATableBasedView implements
 		minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
 		minWidth = pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
 
-		centerBrick = createBrick(centerLayout, dataContainer.getSummarySegementData());
+		centerBrick = createBrick(centerLayout, dataContainer);
 		// centerBrick.setBrickData(dimensionGroupData.getSummaryBrickData());
 		// centerBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 		// centerBrick.setRecordVA(new Group(), recordVA);
@@ -257,25 +251,25 @@ public class DimensionGroup extends ATableBasedView implements
 		centerBrick.setBrickLayoutTemplate(layoutTemplate,
 				layoutTemplate.getDefaultViewType());
 
-		createSubBricks(recordVA);
+		createSubBricks();
 	}
 
 	/**
 	 * Creates all bricks except for the center brick based on the groupList in
 	 * the recordVA
 	 */
-	protected void createSubBricks(RecordVirtualArray recordVA) {
+	protected void createSubBricks() {
 
 		destroyOldBricks();
 
-		List<ISegmentData> segmentBrickData = dataContainer.getSegmentData();
+		List<DataContainer> segmentBrickData = dataContainer.createRecordSubDataContainers();
 
 		if (segmentBrickData == null || segmentBrickData.size() <= 0)
 			return;
 
 		Set<GLBrick> segmentBricks = new HashSet<GLBrick>();
 
-		for (ISegmentData brickData : segmentBrickData) {
+		for (DataContainer brickData : segmentBrickData) {
 			GLBrick segmentBrick = createBrick(new ElementLayout("segmentBrick"),
 					brickData);
 
@@ -344,7 +338,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLBrick createBrick(ElementLayout wrappingLayout, ISegmentData brickData) {
+	private GLBrick createBrick(ElementLayout wrappingLayout, DataContainer dataContainer) {
 		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				0, 0, 0, -4, 4);
 		GLBrick brick = (GLBrick) GeneralManager
@@ -354,8 +348,7 @@ public class DimensionGroup extends ATableBasedView implements
 						brickFrustum);
 
 		brick.setDataDomain(dataDomain);
-		brick.setBrickData(brickData);
-		brick.setDataDomain(brickData.getDataDomain());
+		brick.setDataContainer(dataContainer);
 		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
 
@@ -468,7 +461,7 @@ public class DimensionGroup extends ATableBasedView implements
 		topBricks.clear();
 		bottomCol.clear();
 		bottomBricks.clear();
-		createSubBricks(dataContainer.getSummaryVA());
+		createSubBricks();
 		detailRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -496,7 +489,7 @@ public class DimensionGroup extends ATableBasedView implements
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		// createBricks(table.getContentData(Set.CONTENT).getRecordVA());
-		createBricks(dataContainer.getSummaryVA());
+		createBricks();
 		init(gl);
 	}
 
@@ -927,7 +920,7 @@ public class DimensionGroup extends ATableBasedView implements
 
 		detailBrickLayout.setPixelGLConverter(pixelGLConverter);
 
-		detailBrick = createBrick(detailBrickLayout, brick.getSegmentData());
+		detailBrick = createBrick(detailBrickLayout, brick.getDataContainer());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
 		// detailBrick.setRecordVA(brick.getGroup(), brick.getRecordVA());
@@ -1073,19 +1066,6 @@ public class DimensionGroup extends ATableBasedView implements
 		return groupColumn;
 	}
 
-	/**
-	 * Sets the data for this dimension group.
-	 * 
-	 * @param dimensionGroupData
-	 */
-	public void setDimensionGroupData(ADimensionGroupData dimensionGroupData) {
-		this.dataContainer = dimensionGroupData;
-		dataDomain = dimensionGroupData.getDataDomain();
-	}
-
-	public ADimensionGroupData getDimensionGroupData() {
-		return dataContainer;
-	}
 
 	@Override
 	public void handleUpdateView() {

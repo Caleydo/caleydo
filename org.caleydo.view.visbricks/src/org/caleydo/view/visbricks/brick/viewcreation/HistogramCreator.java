@@ -19,9 +19,8 @@ import org.caleydo.view.visbricks.brick.GLBrick;
  */
 public class HistogramCreator implements IRemoteViewCreator {
 
-	
 	public HistogramCreator() {
-		
+
 	}
 
 	@Override
@@ -35,12 +34,13 @@ public class HistogramCreator implements IRemoteViewCreator {
 						GLHistogram.class,
 						remoteRenderingView.getParentGLCanvas(),
 						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
-								1, 0, 1, -1, 1));
+						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+								-1, 1));
 
 		histogram.setRemoteRenderingGLView(remoteRenderingView);
-		
-		histogram.setHistogram(remoteRenderingView.getSegmentData().getContainerStatistics().getHistogram());
+
+		histogram.setHistogram(remoteRenderingView.getDataContainer()
+				.getContainerStatistics().getHistogram());
 		histogram.setDataDomain(remoteRenderingView.getDataDomain());
 		histogram.initialize();
 		histogram.initRemote(gl, remoteRenderingView, glMouseListener);

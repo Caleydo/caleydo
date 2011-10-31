@@ -459,8 +459,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (dimensionGroup.isProportionalMode()) {
 			int height = dimensionGroup.getParentGLCanvas().getHeight() - 300;
 			int brickSize = (int) ((float) height
-					/ (float) dimensionGroup.getDimensionGroupData()
-							.getRecordPerspective().getVirtualArray().size() * brick
+					/ (float) dimensionGroup.getDataContainer()
+							.getNrRecords() * brick
 					.getDataContainer().getNrRecords());
 			return brickSize;
 		}

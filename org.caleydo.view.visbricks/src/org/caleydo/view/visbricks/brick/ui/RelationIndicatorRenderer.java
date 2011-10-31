@@ -51,9 +51,9 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
-		perspectiveID = brick.getDimensionGroup().getDimensionGroupData()
+		perspectiveID = brick.getDimensionGroup().getDataContainer()
 				.getRecordPerspective().getID();
-		groupID = brick.getGroupID();
+		groupID = brick.getDataContainer().getRecordGroup().getGroupID();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
 	}
@@ -74,7 +74,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		int count = 0;
 		for (DimensionGroup dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getDimensionGroupData().getRecordPerspective()
+			currentID = dimensionGroup.getDataContainer().getRecordPerspective()
 					.getID();
 			if (currentID.equals(perspectiveID) && isLeft) {
 				neighborPerspectiveID = previousID;
@@ -125,7 +125,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		float yOffset = 0;
 		for (GLBrick brick : neighborBrickOrder) {
 
-			int foreignGroupID = brick.getGroup().getGroupID();
+			int foreignGroupID = brick.getDataContainer().getRecordGroup().getGroupID();
 			float similarity = similarities[foreignGroupID];
 			float height = similarity * y;
 			gl.glBegin(GL2.GL_POLYGON);
@@ -133,7 +133,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(0, yOffset, 0);
 			gl.glVertex3f(x, yOffset, 0);
 			if (brick.getRecordGroupSelectionManager().checkStatus(
-					SelectionType.SELECTION, brick.getGroup().getID()))
+					SelectionType.SELECTION, brick.getDataContainer().getRecordGroup().getID()))
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 			else
 

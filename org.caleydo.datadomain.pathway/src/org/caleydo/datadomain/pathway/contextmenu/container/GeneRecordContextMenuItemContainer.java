@@ -1,4 +1,4 @@
-package org.caleydo.datadomain.genetic.contextmenu.container;
+package org.caleydo.datadomain.pathway.contextmenu.container;
 
 import java.util.Set;
 
@@ -8,9 +8,9 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.genetic.contextmenu.item.LoadPathwaysByGeneItem;
-import org.caleydo.datadomain.genetic.contextmenu.item.ShowPathwaysByGeneItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByGeneItem;
+import org.caleydo.datadomain.pathway.contextmenu.item.ShowPathwaysByGeneItem;
 
 /**
  * Implementation of AItemContainer for Genes. By passing an ID all relevant

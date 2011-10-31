@@ -80,7 +80,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.RemoteRenderingTransformer;
-import org.caleydo.datadomain.genetic.contextmenu.container.GeneRecordGroupContextMenuItemContainer;
+import org.caleydo.datadomain.pathway.contextmenu.container.GeneRecordGroupContextMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.dendrogram.GLDendrogram;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;

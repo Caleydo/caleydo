@@ -5,17 +5,17 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.selection.RecordSelectionManager;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -67,7 +67,6 @@ public class GLTagCloud extends ATableBasedView {
 	private final static int BUTTON_PREVIOUS_ID = 0;
 	private final static int BUTTON_NEXT_ID = 1;
 
-	private RecordSelectionManager contentSelectionManager;
 
 	private ArrayList<TagRenderer> selectedTagRenderers = new ArrayList<TagRenderer>();
 
@@ -118,8 +117,7 @@ public class GLTagCloud extends ATableBasedView {
 				.getVirtualArray();
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
-		if (contentSelectionManager == null)
-			contentSelectionManager = dataDomain.getRecordSelectionManager();
+	
 
 		for (Integer dimensionID : dimensionVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
@@ -155,14 +153,14 @@ public class GLTagCloud extends ATableBasedView {
 				.getPixelWidthForGLWidth(viewFrustum.getWidth())
 				/ MIN_NUMBER_PIXELS_PER_DIMENSION;
 
-		if (dimensionVA.size() > numberOfVisibleDimensions) {
+		if (dataContainer.getNrDimensions() > numberOfVisibleDimensions) {
 			if (clippedDimensionVA == null) {
 				clippedDimensionVA = new DimensionVirtualArray();
 
 				firstDimensionIndex = 0;
 				lastDimensionIndex = numberOfVisibleDimensions - 1;
 				for (int count = 0; count < numberOfVisibleDimensions; count++) {
-					clippedDimensionVA.append(dimensionVA.get(count));
+					clippedDimensionVA.append(dataContainer.getDimensionPerspective().getVirtualArray().get(count));
 
 				}
 			} else if (clippedDimensionVA.size() > numberOfVisibleDimensions) {
@@ -211,7 +209,7 @@ public class GLTagCloud extends ATableBasedView {
 			baseRow.append(nextDimensionColumn);
 
 		} else {
-			visibleDimensionVA = dimensionVA;
+			visibleDimensionVA = dataContainer.getDimensionPerspective().getVirtualArray();
 			baseRow.append(baseColumn);
 			clippedDimensionVA = null;
 		}
@@ -409,7 +407,7 @@ public class GLTagCloud extends ATableBasedView {
 			switch (pickingMode) {
 			case CLICKED:
 				if (externalID == BUTTON_NEXT_ID) {
-					if (lastDimensionIndex != dimensionVA.size() - 1) {
+					if (lastDimensionIndex != dataContainer.getNrDimensions() - 1) {
 						firstDimensionIndex++;
 						lastDimensionIndex++;
 						updateClippedVA();
@@ -439,7 +437,7 @@ public class GLTagCloud extends ATableBasedView {
 	private void updateClippedVA() {
 		clippedDimensionVA = new DimensionVirtualArray();
 		for (int count = firstDimensionIndex; count <= lastDimensionIndex; count++) {
-			clippedDimensionVA.append(dimensionVA.get(count));
+			clippedDimensionVA.append(dataContainer.getDimensionPerspective().getVirtualArray().get(count));
 		}
 	}
 
@@ -450,46 +448,21 @@ public class GLTagCloud extends ATableBasedView {
 		return serializedForm;
 	}
 
-	@Override
-	public String toString() {
-		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
-	}
+	
 
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-
-		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		selectionUpdateListener.setHandler(this);
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
-		}
-	}
+	
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == contentSelectionManager.getIDType()) {
-			contentSelectionManager.setDelta(selectionDelta);
+		if (selectionDelta.getIDType() == recordSelectionManager.getIDType()) {
+			recordSelectionManager.setDelta(selectionDelta);
 			for (TagRenderer tagRenderer : selectedTagRenderers)
 				tagRenderer.selectionUpdated();
 		}
 
 	}
 
-	public RecordSelectionManager getContentSelectionManager() {
-		return contentSelectionManager;
-	}
 
 	@Override
 	public int getMinPixelHeight(DetailLevel detailLevel) {
@@ -513,7 +486,7 @@ public class GLTagCloud extends ATableBasedView {
 		case MEDIUM:
 			return 100;
 		case LOW:
-			return Math.max(150, 30 * table.getMetaData().size());
+			return Math.max(150, 30 * dataContainer.getNrRecords());
 		default:
 			return 100;
 		}
@@ -525,13 +498,18 @@ public class GLTagCloud extends ATableBasedView {
 		initMapping();
 	}
 
+	
+	
 	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	public void handleUpdateView() {
+		// TODO Auto-generated method stub
+		
 	}
 }

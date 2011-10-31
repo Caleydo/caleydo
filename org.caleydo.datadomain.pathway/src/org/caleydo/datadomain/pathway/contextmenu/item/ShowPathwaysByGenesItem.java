@@ -1,4 +1,4 @@
-package org.caleydo.datadomain.genetic.contextmenu.item;
+package org.caleydo.datadomain.pathway.contextmenu.item;
 
 import java.util.ArrayList;
 import java.util.Collections;

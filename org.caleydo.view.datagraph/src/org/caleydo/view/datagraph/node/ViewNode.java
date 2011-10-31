@@ -7,11 +7,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -35,7 +34,7 @@ import org.eclipse.core.runtime.Platform;
 
 public class ViewNode extends ADefaultTemplateNode {
 
-//	private DataContainerListRenderer overviewDataContainerRenderer;
+	// private DataContainerListRenderer overviewDataContainerRenderer;
 	protected AGLView representedView;
 	protected Set<IDataDomain> dataDomains;
 	protected String viewName;
@@ -74,8 +73,7 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	private void setRepresentedViewInfo() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry
-				.getExtensionPoint("org.eclipse.ui.views");
+		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.ui.views");
 		IExtension[] extensions = point.getExtensions();
 		String viewID = representedView.getViewType();
 		viewName = viewID;
@@ -83,8 +81,7 @@ public class ViewNode extends ADefaultTemplateNode {
 		boolean viewNameObtained = false;
 
 		for (IExtension extension : extensions) {
-			IConfigurationElement[] elements = extension
-					.getConfigurationElements();
+			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for (IConfigurationElement element : elements) {
 				if (element.getAttribute("id").equals(viewID)) {
 					viewName = element.getAttribute("name");
@@ -103,8 +100,7 @@ public class ViewNode extends ADefaultTemplateNode {
 			iconPath = null;
 		}
 		if (iconPath != null) {
-			ClassLoader classLoader = representedView.getClass()
-					.getClassLoader();
+			ClassLoader classLoader = representedView.getClass().getClassLoader();
 			URL url = classLoader.getResource(iconPath);
 			try {
 				url = FileLocator.resolve(url);
@@ -117,8 +113,7 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	@Override
 	protected ElementLayout setupLayout() {
-		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR,
-				id);
+		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR, id);
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
@@ -137,8 +132,8 @@ public class ViewNode extends ADefaultTemplateNode {
 			iconLayout.setPixelGLConverter(pixelGLConverter);
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath, view
-					.getTextureManager(), true));
+			iconLayout.setRenderer(new TextureRenderer(iconPath,
+					view.getTextureManager(), true));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -150,27 +145,26 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
-				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(),
-				true));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
+				1, 1 }, iconPath, view.getTextureManager(), true));
 
 		bodyColumn = new Column("bodyColumn");
 
 		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
-//		if (representedView instanceof ATableBasedView) {
-//			overviewDataContainerRenderer = new DataContainerListRenderer(this,
-//					view, dragAndDropController, new ArrayList<DataContainer>());
-//		} else {
-//			overviewDataContainerRenderer = new DataContainerListRenderer(this,
-//					view, dragAndDropController, getDataContainers());
-//		}
-		
+		// if (representedView instanceof ATableBasedView) {
+		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
+		// view, dragAndDropController, new ArrayList<DataContainer>());
+		// } else {
+		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
+		// view, dragAndDropController, getDataContainers());
+		// }
+
 		bodySpacingLayoutY.setRatioSizeY(1);
 
 		ElementLayout spacingLayoutY = createDefaultSpacingY();
 
 		bodyColumn.append(bodySpacingLayoutY);
-//		bodyColumn.append(spacingLayoutY);
+		// bodyColumn.append(spacingLayoutY);
 
 		bodyRow.append(bodyColumn);
 
@@ -189,21 +183,21 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	public List<DataContainer> getDataContainers() {
 
-		if (representedView instanceof ATableBasedView) {
-			DataContainer dataContainer = ((ATableBasedView) representedView)
-					.getDataContainer();
-			List<DataContainer> containers = new ArrayList<DataContainer>();
-			containers.add(dataContainer);
-			return containers;
+		if (representedView instanceof ITableBasedDataDomainView) {
+			return ((ITableBasedDataDomainView) representedView).getDataContainers();
+			// DataContainer dataContainer = ((ATableBasedView) representedView)
+			// .getDataContainers();
+			// List<DataContainer> containers = new ArrayList<DataContainer>();
+			// containers.add(dataContainer);
+			// return containers;
 		}
 
-		List<ADimensionGroupData> groups = representedView.getDimensionGroups();
-		if (groups == null) {
-			return new ArrayList<DataContainer>();
-		}
-		return new ArrayList<DataContainer>(groups);
+		// List<ADimensionGroupData> groups = representedView.get();
+		// if (groups == null) {
+		return new ArrayList<DataContainer>();
+		// }
+		// return new ArrayList<DataContainer>(groups);
 	}
-
 
 	public void setDataDomains(Set<IDataDomain> dataDomains) {
 		this.dataDomains = dataDomains;
@@ -219,13 +213,13 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	@Override
 	public void update() {
-//		if (representedView instanceof ATableBasedView) {
-//			overviewDataContainerRenderer
-//					.setDataContainers(new ArrayList<DataContainer>());
-//		} else {
-//			overviewDataContainerRenderer
-//					.setDataContainers(getDataContainers());
-//		}
+		// if (representedView instanceof ATableBasedView) {
+		// overviewDataContainerRenderer
+		// .setDataContainers(new ArrayList<DataContainer>());
+		// } else {
+		// overviewDataContainerRenderer
+		// .setDataContainers(getDataContainers());
+		// }
 	}
 
 	@Override
@@ -236,9 +230,8 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	public void destroy() {
 		super.destroy();
-//		overviewDataContainerRenderer.destroy();
-		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(),
-				id);
+		// overviewDataContainerRenderer.destroy();
+		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	@Override

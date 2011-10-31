@@ -11,7 +11,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.data.PathwaySegmentData;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.GLPathway;
@@ -32,7 +32,7 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		Collection<PathwayGraph> pathways = PathwayManager.get().getAllItems();
 
-		PathwayGraph pathway = ((PathwaySegmentData) (remoteRenderingView.getSegmentData()))
+		PathwayGraph pathway = ((PathwayDataContainer) (remoteRenderingView.getDataContainer()))
 				.getPathway();
 
 		if (pathway == null) {
@@ -58,8 +58,8 @@ public class PathwayCreator implements IRemoteViewCreator {
 
 		pathwayView.setPathway(pathway);
 		// FIXME: DataDomainByType may be not appropriate
-		pathwayView.setPathwayDataDomain((PathwayDataDomain) (DataDomainManager.get()
-				.getDataDomainByType(serPathway.getDataDomainID())));
+//		pathwayView.setPathwayDataDomain((PathwayDataDomain) (DataDomainManager.get()
+//				.getDataDomainByType(serPathway.getDataDomainID())));
 		pathwayView.enablePathwayTextures(true);
 		pathwayView.enableNeighborhood(true);
 		pathwayView.enableGeneMapping(true);

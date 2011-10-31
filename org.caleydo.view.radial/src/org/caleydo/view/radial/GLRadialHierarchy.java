@@ -7,6 +7,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
@@ -16,6 +17,7 @@ import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
@@ -36,6 +38,7 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -59,8 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Christian Partl
  */
-public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
-		ITableBasedDataDomainView {
+public class GLRadialHierarchy extends ATableBasedView{
 
 	public final static String VIEW_TYPE = "org.caleydo.view.radial";
 
@@ -113,7 +115,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
 
-	private ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -464,10 +465,6 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		}
 	}
 
-	@Override
-	public String getDetailedInfo() {
-		return new String("");
-	}
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
@@ -762,17 +759,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		this.bIsNewSelection = bIsNewSelection;
 	}
 
-	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
 
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
@@ -1006,8 +993,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 	@Override
 	public void handleUpdateView() {
 		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = dataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID).getTree();
+		Tree<ClusterNode> tree = dataContainer.getDimensionPerspective().getTree();
 		if (tree != null) {
 
 			// if (pdRealRootElement == null) {
@@ -1018,8 +1004,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
 			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
 			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, ((ATableBasedDataDomain) dataDomain).getTable()
-					.getDimensionPerspective(dimensionPerspectiveID).getTreeRoot(),
+			initHierarchy(tree, dataContainer.getDimensionPerspective().getTreeRoot(),
 					new ExperimentClusterDataEventManager(this), alColorModes);
 			// }
 
@@ -1136,8 +1121,7 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 		// alColorModes);
 		// }
 
-		Tree<ClusterNode> tree = dataDomain.getTable()
-				.getRecordPerspective(recordPerspectiveID).getTree();
+		Tree<ClusterNode> tree = dataContainer.getRecordPerspective().getTree();
 		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
 		if (tree != null) {
 			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
@@ -1163,13 +1147,12 @@ public class GLRadialHierarchy extends AGLView implements IViewCommandHandler,
 
 	}
 
-	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
+	
 
 	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

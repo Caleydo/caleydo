@@ -127,7 +127,6 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 				SelectionUpdateEvent selectionUpdateEvent = new SelectionUpdateEvent();
 				selectionUpdateEvent.setSender(this);
 				selectionUpdateEvent.setSelectionDelta(delta);
-				selectionUpdateEvent.setInfo(radialHierarchy.getShortInfo());
 				eventPublisher.triggerEvent(selectionUpdateEvent);
 			}
 		} else {

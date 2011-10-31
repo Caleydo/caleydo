@@ -1,6 +1,7 @@
 package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -26,8 +27,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements
-		IViewCommandHandler, IListenerOwner, ITableBasedDataDomainView {
+public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
+		IListenerOwner, ITableBasedDataDomainView {
 
 	protected UpdateViewListener updateViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
@@ -72,7 +73,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
 		((GLHistogram) view).setRenderColorBars(false);
 		initialize();
-	
+
 		createPartControlGL();
 		redrawView();
 	}
@@ -197,5 +198,10 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 	@Override
 	public void handleRedrawView() {
 		handleUpdateView();
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		return ((ITableBasedDataDomainView) view).getDataContainers();
 	}
 }

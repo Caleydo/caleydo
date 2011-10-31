@@ -1,10 +1,8 @@
 package org.caleydo.core.view;
 
-import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -81,9 +79,6 @@ public abstract class AView
 		return null;
 	}
 
-	public List<ADimensionGroupData> getDimensionGroups() {
-		return null;
-	}
 	
 	/**
 	 * Determines whether the view displays concrete data of a data set or not.

@@ -5,6 +5,7 @@ import static org.caleydo.view.histogram.HistogramRenderStyle.SIDE_SPACING;
 import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
@@ -12,6 +13,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;

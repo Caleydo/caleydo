@@ -1903,6 +1903,8 @@ public class GLScatterPlot extends ATableBasedView {
 		textRenderer.setColor(0, 0, 0, 1);
 		// Markers On Axis
 
+		DataTable table = dataDomain.getTable();
+
 		float fXPosition = XYAXISDISTANCE;
 		float fYPosition = XYAXISDISTANCE;
 		float fMarkerSpacingY = renderStyle.getAxisHeight() / (NUMBER_AXIS_MARKERS + 1);
@@ -1911,7 +1913,7 @@ public class GLScatterPlot extends ATableBasedView {
 			float fCurrentHeight = fMarkerSpacingY * iInnerCount;
 			float fCurrentWidth = fMarkerSpacingX * iInnerCount;
 
-			if (table.isSetHomogeneous()) {
+			if (table.isDataHomogeneous()) {
 				float fNumber = (float) table.getRawForNormalized(fCurrentHeight
 						/ renderStyle.getAxisHeight());
 				// float max = (float) table.getMax();
@@ -2034,6 +2036,9 @@ public class GLScatterPlot extends ATableBasedView {
 		if (isRenderedRemote())
 			fScaling *= 1.5f;
 
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+
 		String sAxisLabel = "X-Axis: "
 				+ dataDomain.getDimensionLabel(dimensionVA.get(iSelectedAxisIndexX));
 		if (bRender2Axis)
@@ -2119,6 +2124,12 @@ public class GLScatterPlot extends ATableBasedView {
 		EScatterPointType tmpPointStyle = POINTSTYLE;
 		float[] fArMappingColor = { 0.0f, 0.0f, 0.0f }; // (black);
 
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		DataTable table = dataDomain.getTable();
+
 		iDisplayEveryNthPoint = recordVA.size() / numberOfRandomElements;
 
 		if (iDisplayEveryNthPoint == 0)
@@ -2131,7 +2142,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		// recordVA = useCase.getVA(EVAType.CONTENT);
 		// Collection<Integer> selectionSet = recordVA.getIndexList();
-		Collection<Integer> tmpSet = this.recordVA.getIndexList();
+		Collection<Integer> tmpSet = recordVA.getIndexList();
 		Collection<Integer> selectionSet = new ArrayList<Integer>();
 		for (Integer recordIndex : tmpSet) {
 			if (useRandomSampling)
@@ -2224,6 +2235,10 @@ public class GLScatterPlot extends ATableBasedView {
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+		DataTable table = dataDomain.getTable();
+
 		float xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
 				dimensionVA.get(iSelectedAxisIndexX), recordIndex);
 		float ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
@@ -2297,6 +2312,10 @@ public class GLScatterPlot extends ATableBasedView {
 
 		String sLabel = null;
 		String recordLabel = dataDomain.getRecordLabel(recordIndex);
+
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+		DataTable table = dataDomain.getTable();
 
 		sLabel = recordLabel
 				+ "("
@@ -2380,6 +2399,12 @@ public class GLScatterPlot extends ATableBasedView {
 	 */
 	private void updateSelection() {
 
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		DataTable table = dataDomain.getTable();
+
 		float XScale = renderStyle.getRenderWidth() - XYAXISDISTANCE * 2.0f;
 		float YScale = renderStyle.getRenderHeight() - XYAXISDISTANCE * 2.0f;
 		float x = 0.0f;
@@ -2422,7 +2447,6 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
 	}
 
@@ -2462,6 +2486,10 @@ public class GLScatterPlot extends ATableBasedView {
 
 			// float[] fArMappingColor = new float[]{1.0f, 0.1f, 0.5f};
 			float[] fArMappingColor = tmpSelectionType.getColor();
+
+			DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+					.getVirtualArray();
+			DataTable table = dataDomain.getTable();
 
 			for (int recordIndex : selectionSet) {
 
@@ -2748,6 +2776,8 @@ public class GLScatterPlot extends ATableBasedView {
 
 	public void selectAxesfromExternal() {
 
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
 		int iMouseOverSelections = dimensionSelectionManager
 				.getNumberOfElements(SelectionType.MOUSE_OVER);
 
@@ -2807,6 +2837,8 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	public void selectNewSelectionAxes() {
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
 		dimensionSelectionManager.clearSelection(SelectionType.SELECTION);
 
 		dimensionSelectionManager.addToType(SelectionType.SELECTION,
@@ -2838,11 +2870,13 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
 	}
 
 	public void selectNewMouseOverAxes() {
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+
 		dimensionSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 
 		dimensionSelectionManager.addToType(SelectionType.MOUSE_OVER,
@@ -2855,78 +2889,7 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
-	}
-
-	@Override
-	protected void initLists() {
-
-		recordVA = dataDomain.getRecordVA(recordPerspectiveID);
-		dimensionVA = dataDomain.getDimensionVA(dimensionPerspectiveID);
-
-		// AlSelectionTypes.clear();
-		// addSelectionType();
-		// AlSelectionTypes.add(SelectionType.SELECTION);
-		// currentSelection = SelectionType.SELECTION;
-
-	}
-
-	@Override
-	public String getShortInfo() {
-		if (recordVA == null)
-			return "Scatterplot - 0 " + dataDomain.getRecordDenomination(false, true)
-					+ " / 0 experiments";
-
-		// return "Scatterplot - " + recordVA.size() + " "
-		// + useCase.getContentLabel(false, true) + " / "
-		// + dimensionVA.size() + " experiments";
-
-		String tmpstring;
-		int iPointNr = recordVA.size();
-
-		if (iDisplayEveryNthPoint == 1) {
-			tmpstring = "Scatterplot - " + iPointNr + " "
-					+ dataDomain.getRecordDenomination(false, true) + " / "
-					+ dimensionVA.size() + " "
-					+ dataDomain.getDimensionDenomination(false, true);
-		} else {
-			tmpstring = "Scatterplot - " + iPointNr / iDisplayEveryNthPoint + " out of "
-					+ iPointNr + " " + dataDomain.getRecordDenomination(false, true)
-					+ " / \n " + dimensionVA.size() + " "
-					+ dataDomain.getDimensionDenomination(false, true);
-		}
-		return tmpstring;
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		StringBuffer sInfoText = new StringBuffer();
-		sInfoText.append("<b>Type:</b> Scatter Plot\n");
-
-		sInfoText.append(recordVA.size() + " "
-				+ dataDomain.getRecordDenomination(true, true) + " in rows and "
-				+ dimensionVA.size() + " "
-				+ dataDomain.getDimensionDenomination(true, true) + " in columns.\n");
-
-		if (useRandomSampling) {
-			sInfoText.append("Random sampling active, sample size: "
-					+ numberOfRandomElements + "\n");
-		} else {
-			sInfoText.append("Random sampling inactive\n");
-		}
-
-		if (dataFilterLevel == EDataFilterLevel.COMPLETE) {
-			sInfoText.append("Showing all genes in the dataset\n");
-		} else if (dataFilterLevel == EDataFilterLevel.ONLY_MAPPING) {
-			sInfoText.append("Showing all genes that have a known DAVID ID mapping\n");
-		} else if (dataFilterLevel == EDataFilterLevel.ONLY_CONTEXT) {
-			sInfoText
-					.append("Showing all genes that are contained in any of the KEGG or Biocarta pathways\n");
-		}
-
-		// return sInfoText.toString();
-		return "TODO: ScatterploT Deatil Info";
 	}
 
 	public void addSelectionType() {
@@ -3140,7 +3103,6 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		event.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event);
 		setDisplayListDirty();
 	}
@@ -3188,7 +3150,6 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
-		event2.setInfo(getShortInfo());
 		eventPublisher.triggerEvent(event2);
 
 		fRectangleDragStartPoint = new float[3];
@@ -3218,7 +3179,8 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!this.dimensionPerspectiveID.equals(dimensionPerspectiveID))
+		if (!dataContainer.getDimensionPerspective().getID()
+				.equals(dimensionPerspectiveID))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
 
@@ -3260,10 +3222,8 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote()
-				+ ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID
-				+ ", remoteRenderer:" + getRemoteRenderingGLView();
+		return "Scatterplot for " + dataContainer;
+
 	}
 
 	@Override
@@ -3284,7 +3244,7 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int recordIndex : recordVA.indicesOf(iDimensionIndex)) {
+		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray().indicesOf(iDimensionIndex)) {
 			if (recordIndex == -1) {
 				throw new IllegalStateException("No such element in virtual array");
 

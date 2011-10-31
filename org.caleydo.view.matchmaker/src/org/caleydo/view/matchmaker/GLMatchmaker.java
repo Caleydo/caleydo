@@ -4,24 +4,22 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.events.IRecordVAUpdateHandler;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
@@ -37,8 +35,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -72,9 +70,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLMatchmaker extends AGLView implements IViewCommandHandler,
-		IGLRemoteRenderingView, ISelectionUpdateHandler, ISelectionCommandHandler,
-		IRecordVAUpdateHandler, IDataDomainBasedView<ATableBasedDataDomain> {
+public class GLMatchmaker extends ATableBasedView implements 	IGLRemoteRenderingView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.matchmaker";
 
@@ -82,9 +78,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	private CompareGroupsEventListener compareGroupsEventListener;
 	private DuplicateTableBarItemEventListener duplicateSetBarItemEventListener;
-	private SelectionUpdateListener selectionUpdateListener;
 	private AdjustPValueOfSetEventListener adjustPValueOfSetEventListener;
-	private SelectionCommandListener selectionCommandListener;
 	private CompareMouseWheelListener compareMouseWheelListener;
 	private ReplaceRecordPerspectiveListener replaceRecordVAListener;
 	private UseSortingListener useSortingListener;
@@ -92,7 +86,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	private UseBandBundlingListener useBandBundlingListener;
 	private NewContentGroupInfoEventListener newContentGroupInfoEventListener;
 	private CreateSelectionTypesListener createSelectionTypesListener;
-	private ClearSelectionsListener clearSelectionsListener;
 	private HideHeatMapElementsEventListener hideHeatMapElementsEventListener;
 
 	private boolean isControlPressed;
@@ -103,8 +96,6 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 
 	private ArrayList<DataTable> setsToCompare;
 	private ArrayList<Integer> clusteredSets;
-
-	protected ATableBasedDataDomain dataDomain;
 
 	/**
 	 * Constructor.
@@ -275,10 +266,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 		// gl.glEndList();
 	}
 
-	@Override
-	public String getDetailedInfo() {
-		return new String("");
-	}
+	
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
@@ -290,17 +278,8 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 				externalID, pick, isControlPressed);
 	}
 
-	@Override
-	public int getNumberOfSelections(SelectionType selectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public String getShortInfo() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+	
+	
 
 	@Override
 	public void handleRedrawView() {
@@ -508,7 +487,7 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	// }
 
 	@Override
-	public void handleRecordVAUpdate(int dataTableID, String info) {
+	public void handleRecordVAUpdate(String recordPerspectiveID) {
 		clusteredSets.add(dataTableID);
 
 		// Check if all sets are properly clustered
@@ -573,5 +552,12 @@ public class GLMatchmaker extends AGLView implements IViewCommandHandler,
 	@Override
 	public boolean isDataView() {
 		return true;
+	}
+
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+			throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

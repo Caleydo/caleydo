@@ -9,11 +9,14 @@ import java.util.Queue;
 import java.util.Set;
 import java.util.Vector;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.treemap.ZoomInEvent;
@@ -23,6 +26,7 @@ import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
@@ -47,7 +51,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Michael Lafer
  */
 
-public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandler, ITableBasedDataDomainView, IGLRemoteRenderingView {
+public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemoteRenderingView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
 
@@ -132,7 +136,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 	}
 
 	public void initData() {
-		bDisplayData = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree() != null;
+		bDisplayData = dataContainer.getRecordPerspective().getTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
 			view.initData();
 	}
@@ -315,7 +319,7 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		Set<Integer> elements = mainTreeMapView.getSelectionManager().getElements(SelectionType.SELECTION);
 		if (elements.size() == 1 /* && thumbnailTreemapViews.size() < 3 */) {
 
-			ClusterNode dataRoot = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree().getNodeByNumber(elements.iterator().next());
+			ClusterNode dataRoot = dataContainer.getRecordPerspective().getTree().getNodeByNumber(elements.iterator().next());
 
 			mainTreeMapView.setRemotePickingManager(null, 0);
 			mainTreeMapView.clearAllSelections();
@@ -390,17 +394,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		}
 	}
 
-	@Override
-	public String getShortInfo() {
-
-		return "Hierarchical Tree Map (" + dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getVirtualArray().size() + " nodes displayed)";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return getShortInfo();
-
-	}
 
 	/**
 	 * Invokes the zoom out function when a thumbnail treemap is clicked or
@@ -437,11 +430,6 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		setDisplayListDirty();
 	}
 
-	@Override
-	public String toString() {
-		return "Standalone Scatterplot, rendered remote: " + isRenderedRemote() + ", contentSize: " + recordVA.size() + ", dimensionSize: "
-				+ dimensionVA.size() + ", recordVAType: " + recordPerspectiveID + ", remoteRenderer:" + getRemoteRenderingGLView();
-	}
 
 	@Override
 	public void registerEventListeners() {
@@ -479,34 +467,12 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 
 	}
 
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			if (dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree() != null) {
+			if (dataContainer.getRecordPerspective().getTree() != null) {
 				for (GLTreeMap view : thumbnailTreemapViews) {
 					view.setDataDomain(dataDomain);
 				}
@@ -545,14 +511,11 @@ public class GLHierarchicalTreeMap extends AGLView implements IViewCommandHandle
 		mainTreeMapView.setInteractive(true);
 	}
 
-	@Override
-	public void setRecordPerspectiveID(String recordPerspectiveID) {
-		this.recordPerspectiveID = recordPerspectiveID;
-	}
 
 	@Override
-	public void setDimensionPerspectiveID(String dimensionPerspectiveID) {
-		this.dimensionPerspectiveID = dimensionPerspectiveID;
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id) throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

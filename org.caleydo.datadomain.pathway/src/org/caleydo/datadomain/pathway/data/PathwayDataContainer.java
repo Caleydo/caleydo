@@ -1,11 +1,12 @@
 package org.caleydo.datadomain.pathway.data;
 
-import org.caleydo.core.data.container.ISegmentData;
-import org.caleydo.core.data.container.TableBasedSegmentData;
+import java.util.ArrayList;
+import java.util.List;
+
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
@@ -16,27 +17,21 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * @author Partl
  * 
  */
-public class PathwaySegmentData extends TableBasedSegmentData implements ISegmentData {
+public class PathwayDataContainer extends DataContainer {
 
 	private PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
-	private Group group;
-	private PathwayDimensionGroupData dimensionGroupData;
+	
+	
 
-	public PathwaySegmentData(ATableBasedDataDomain dataDomain,
+	public PathwayDataContainer(ATableBasedDataDomain dataDomain,
 			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
-			DimensionPerspective dimensionPerspective, Group group, PathwayGraph pathway,
-			PathwayDimensionGroupData dimensionGroupData) {
-		super(dataDomain, recordPerspective, dimensionPerspective, group, dimensionGroupData);
+			DimensionPerspective dimensionPerspective, PathwayGraph pathway) {
+		super(dataDomain, recordPerspective, dimensionPerspective);
 		this.pathwayDataDomain = pathwayDataDomain;
-		this.group = group;
-		this.pathway = pathway;
-		this.dimensionGroupData = dimensionGroupData;
-	}
 
-	@Override
-	public Group getGroup() {
-		return group;
+		this.pathway = pathway;
+
 	}
 
 	@Override

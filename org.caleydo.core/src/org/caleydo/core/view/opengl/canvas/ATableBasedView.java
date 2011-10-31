@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
@@ -483,5 +484,12 @@ public abstract class ATableBasedView
 
 	public DimensionSelectionManager getDimensionSelectionManager() {
 		return dimensionSelectionManager;
+	}
+	
+	@Override
+	public List<DataContainer> getDataContainers() {
+		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+		dataContainers.add(dataContainer);
+		return dataContainers;
 	}
 }

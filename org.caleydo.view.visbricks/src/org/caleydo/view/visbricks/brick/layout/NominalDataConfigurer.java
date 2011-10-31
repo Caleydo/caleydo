@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -31,8 +31,8 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
 
-	public NominalDataConfigurer(ADimensionGroupData dimensionGroupData) {
-		super(dimensionGroupData);
+	public NominalDataConfigurer(DataContainer dataContainer) {
+		super(dataContainer);
 	}
 
 	@Override

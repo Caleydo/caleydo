@@ -5,17 +5,19 @@ import java.awt.Font;
 import java.awt.event.MouseWheelEvent;
 import java.util.ArrayList;
 
+import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
@@ -27,11 +29,10 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -57,7 +58,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Michael Lafer
  * 
  */
-public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISelectionUpdateHandler, IViewCommandHandler {
+public class GLTreeMap extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.treemap";
 
@@ -155,7 +156,7 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 	public void initData() {
 		if (dataDomain == null)
 			return;
-		tree = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree();
+		tree = dataContainer.getRecordPerspective().getTree();
 		colorMapper = dataDomain.getColorMapper();
 		int maxDepth = Integer.MAX_VALUE;
 		maxDepth = GeneralManager.get().getPreferenceStore().getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
@@ -280,7 +281,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(delta);
-		event.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(event);
 
 		SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());
@@ -298,7 +298,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		leafEvent.setDataDomainID(dataDomain.getDataDomainID());
 
 		leafEvent.setSelectionDelta(newDelta);
-		leafEvent.setInfo(getShortInfoLocal());
 		eventPublisher.triggerEvent(leafEvent);
 
 	}
@@ -343,32 +342,10 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 	}
 
 	@Override
-	public String getShortInfo() {
-		return "TreeMap";
-	}
-
-	@Override
-	public String getDetailedInfo() {
-		return "TreeMap";
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 		if (dataDomain != null) {
-			tree = dataDomain.getTable().getRecordPerspective(recordPerspectiveID).getTree();
+			tree = dataContainer.getRecordPerspective().getTree();
 			if (tree != null) {
 				treeSelectionManager = new SelectionManager(tree.getNodeIDType());
 			}
@@ -565,12 +542,6 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 
 	}
 
-	@Override
-	public void distributeColorMapping(ColorMapper colorMapping) {
-		colorMapper = colorMapping;
-
-	}
-
 	public void setInteractive(boolean flag) {
 		bIsInteractive = flag;
 	}
@@ -587,6 +558,12 @@ public class GLTreeMap extends AGLView implements ITableBasedDataDomainView, ISe
 		rect[3] = node.getMaxY();
 
 		return rect;
+	}
+
+	@Override
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id) throws InvalidAttributeValueException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

@@ -4,7 +4,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -51,24 +51,24 @@ public interface IDataDomain {
 	 */
 	public void setLoadDataParameters(LoadDataParameters loadDataParameters);
 
-	/**
-	 * @return The dimension groups that have been created for this IDataDomain object (data set).
-	 */
-	public List<ADimensionGroupData> getDimensionGroups();
-
-	/**
-	 * Sets the dimension groups for this IDataDomain object (data set).
-	 * 
-	 * @param dimensionGroups
-	 */
-	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups);
-
-	/**
-	 * Adds a dimension group to this IDataDomain object (data set).
-	 * 
-	 * @param dimensionGroup
-	 */
-	public void addDimensionGroup(ADimensionGroupData dimensionGroup);
+//	/**
+//	 * @return The dimension groups that have been created for this IDataDomain object (data set).
+//	 */
+//	public List<DataContainer> getDimensionGroups();
+//
+//	/**
+//	 * Sets the dimension groups for this IDataDomain object (data set).
+//	 * 
+//	 * @param dimensionGroups
+//	 */
+//	public void setDimensionGroups(List<DataContainer> dimensionGroups);
+//
+//	/**
+//	 * Adds a dimension group to this IDataDomain object (data set).
+//	 * 
+//	 * @param dimensionGroup
+//	 */
+//	public void addDimensionGroup(DataContainer dimensionGroup);
 
 	public String getDataDomainType();
 

@@ -13,6 +13,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
@@ -48,6 +49,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	private PathwayDataDomain pathwayDataDomain;
 	private RecordVirtualArray sourceVA;
 	private DimensionPerspective dimensionPerspective;
+	private RecordPerspective recordPerspective;
 
 	private Map<String, List<PathwayGraph>> pathwayMap;
 
@@ -235,7 +237,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		if (!pathways.isEmpty()) {
 			pathwayDimensionGroupData = new PathwayDimensionGroupData(
-					sourceDataDomain, pathwayDataDomain, dimensionPerspective,
+					sourceDataDomain, pathwayDataDomain, recordPerspective, dimensionPerspective,
 					pathways, "PathwayGroup");
 
 			super.okPressed();
@@ -277,6 +279,13 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	public void setDimensionPerspective(
 			DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
+	}
+	
+	/**
+	 * @param recordPerspective setter, see {@link #recordPerspective}
+	 */
+	public void setRecordPerspective(RecordPerspective recordPerspective) {
+		this.recordPerspective = recordPerspective;
 	}
 
 }

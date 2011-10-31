@@ -1,8 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlRootElement;
@@ -10,11 +8,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.LoadDataParameters;
-import org.caleydo.core.data.container.ADimensionGroupData;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.event.AEventHandler;
-import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -35,9 +30,7 @@ public abstract class ADataDomain
 	@XmlTransient
 	protected Set<IDCategory> idCategories = new HashSet<IDCategory>();
 
-	@XmlTransient
-	protected List<ADimensionGroupData> dimensionGroups = new ArrayList<ADimensionGroupData>();
-
+	
 	/**
 	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
@@ -118,27 +111,27 @@ public abstract class ADataDomain
 		return dataDomainID;
 	}
 
-	@Override
-	@XmlTransient
-	public List<ADimensionGroupData> getDimensionGroups() {
-		return dimensionGroups;
-	}
+//	@Override
+//	@XmlTransient
+//	public List<ADimensionGroupData> getDimensionGroups() {
+//		return dimensionGroups;
+//	}
 
-	@Override
-	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
-		this.dimensionGroups = dimensionGroups;
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
-
-	@Override
-	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-		dimensionGroups.add(dimensionGroup);
-		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-		event.setSender(this);
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
+//	@Override
+//	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
+//		this.dimensionGroups = dimensionGroups;
+//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+//		event.setSender(this);
+//		GeneralManager.get().getEventPublisher().triggerEvent(event);
+//	}
+//
+//	@Override
+//	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
+//		dimensionGroups.add(dimensionGroup);
+//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+//		event.setSender(this);
+//		GeneralManager.get().getEventPublisher().triggerEvent(event);
+//	}
 
 	@Override
 	public Color getColor() {

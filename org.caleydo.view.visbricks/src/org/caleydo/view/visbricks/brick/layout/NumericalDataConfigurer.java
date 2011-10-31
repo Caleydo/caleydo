@@ -6,7 +6,7 @@ import java.util.HashSet;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -35,8 +35,8 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	protected static final int HISTOGRAM_BUTTON_ID = 3;
 	protected static final int OVERVIEW_HEATMAP_BUTTON_ID = 4;
 
-	public NumericalDataConfigurer(ADimensionGroupData dimensionGroupData) {
-		super(dimensionGroupData);
+	public NumericalDataConfigurer(DataContainer dataContainer) {
+		super(dataContainer);
 	}
 
 	@Override
@@ -218,14 +218,14 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getDataContainer(), brick.getSegmentData().getDataDomain()
+				brick.getDataContainer(), brick.getDataDomain()
 						.getTable(), true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getDataContainer(), brick.getSegmentData().getDataDomain()
+				brick.getDataContainer(), brick.getDataDomain()
 						.getTable(), false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,

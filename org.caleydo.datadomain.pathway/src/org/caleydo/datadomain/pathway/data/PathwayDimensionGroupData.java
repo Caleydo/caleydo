@@ -4,16 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import org.caleydo.core.data.container.ADimensionGroupData;
-import org.caleydo.core.data.container.ISegmentData;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
-import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
@@ -29,82 +26,85 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Partl
  * 
  */
-public class PathwayDimensionGroupData extends ADimensionGroupData {
+public class PathwayDimensionGroupData extends DataContainer {
 
 	protected PathwayDataDomain pathwayDataDomain;
+	protected GeneticDataDomain geneticDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
 
-	private String label;
+	private List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
 
 	public PathwayDimensionGroupData(ATableBasedDataDomain dataDomain,
-			PathwayDataDomain pathwayDataDomain,
+			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
 			DimensionPerspective dimensionPerspective, ArrayList<PathwayGraph> pathways,
 			String label) {
 		this.dataDomain = dataDomain;
 		this.pathwayDataDomain = pathwayDataDomain;
 		this.dimensionPerspective = dimensionPerspective;
+		this.recordPerspective = recordPerspective;
 		this.pathways = pathways;
 		this.label = label;
 	}
 
-	@Override
-	public RecordVirtualArray getSummaryVA() {
-		// TODO: Is this a good way?
-		ArrayList<RecordVirtualArray> recordVAs = getSegmentVAs();
-		ArrayList<Integer> summaryBrickIDs = new ArrayList<Integer>();
-		for (RecordVirtualArray recordVA : recordVAs) {
-			summaryBrickIDs.addAll(recordVA.getVirtualArray());
-		}
+	// @Override
+	// public RecordVirtualArray getSummaryVA() {
+	// // TODO: Is this a good way?
+	// ArrayList<RecordVirtualArray> recordVAs = getSegmentVAs();
+	// ArrayList<Integer> summaryBrickIDs = new ArrayList<Integer>();
+	// for (RecordVirtualArray recordVA : recordVAs) {
+	// summaryBrickIDs.addAll(recordVA.getVirtualArray());
+	// }
+	//
+	// RecordGroupList groupList = new RecordGroupList();
+	// groupList.setGroups(getGroups());
+	// RecordVirtualArray summaryBrickVA = new RecordVirtualArray("CONTENT",
+	// summaryBrickIDs);
+	// summaryBrickVA.setGroupList(groupList);
+	//
+	// return summaryBrickVA;
+	// }
 
-		RecordGroupList groupList = new RecordGroupList();
-		groupList.setGroups(getGroups());
-		RecordVirtualArray summaryBrickVA = new RecordVirtualArray("CONTENT",
-				summaryBrickIDs);
-		summaryBrickVA.setGroupList(groupList);
-
-		return summaryBrickVA;
-	}
-
-	@Override
-	public ArrayList<RecordVirtualArray> getSegmentVAs() {
-
-		ArrayList<RecordVirtualArray> recordVAs = new ArrayList<RecordVirtualArray>();
-
-		for (PathwayGraph pathway : pathways) {
-			List<IGraphItem> vertexGraphItemReps = pathway
-					.getAllItemsByKind(EGraphItemKind.NODE);
-
-			List<Integer> ids = new ArrayList<Integer>();
-
-			for (IGraphItem itemRep : vertexGraphItemReps) {
-
-				List<IGraphItem> vertexGraphItems = itemRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-
-				for (IGraphItem item : vertexGraphItems) {
-					int davidId = PathwayItemManager.get()
-							.getDavidIdByPathwayVertexGraphItem(
-									(PathwayVertexGraphItem) item);
-
-					if (davidId != -1) {
-						// TODO: Map to content id type (given as parameter)
-						Set<Integer> recordIDs = pathwayDataDomain
-								.getGeneIDMappingManager().getIDAsSet(
-										IDType.getIDType("DAVID"),
-										dataDomain.getRecordIDType(), davidId);
-
-						if (recordIDs != null && recordIDs.size() > 0) {
-							ids.addAll(recordIDs);
-						}
-					}
-				}
-			}
-
-			recordVAs.add(new RecordVirtualArray("CONTENT", ids));
-		}
-
-		return recordVAs;
-	}
+	// @Override
+	// public ArrayList<RecordVirtualArray> getSegmentVAs() {
+	//
+	// ArrayList<RecordVirtualArray> recordVAs = new
+	// ArrayList<RecordVirtualArray>();
+	//
+	// for (PathwayGraph pathway : pathways) {
+	// List<IGraphItem> vertexGraphItemReps = pathway
+	// .getAllItemsByKind(EGraphItemKind.NODE);
+	//
+	// List<Integer> ids = new ArrayList<Integer>();
+	//
+	// for (IGraphItem itemRep : vertexGraphItemReps) {
+	//
+	// List<IGraphItem> vertexGraphItems = itemRep
+	// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
+	//
+	// for (IGraphItem item : vertexGraphItems) {
+	// int davidId = PathwayItemManager.get()
+	// .getDavidIdByPathwayVertexGraphItem(
+	// (PathwayVertexGraphItem) item);
+	//
+	// if (davidId != -1) {
+	// // TODO: Map to content id type (given as parameter)
+	// Set<Integer> recordIDs = pathwayDataDomain
+	// .getGeneIDMappingManager().getIDAsSet(
+	// IDType.getIDType("DAVID"),
+	// dataDomain.getRecordIDType(), davidId);
+	//
+	// if (recordIDs != null && recordIDs.size() > 0) {
+	// ids.addAll(recordIDs);
+	// }
+	// }
+	// }
+	// }
+	//
+	// recordVAs.add(new RecordVirtualArray("CONTENT", ids));
+	// }
+	//
+	// return recordVAs;
+	// }
 
 	/**
 	 * @return All pathways of this dimension group.
@@ -120,24 +120,23 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 	 */
 	public void setPathways(ArrayList<PathwayGraph> pathways) {
 		this.pathways = pathways;
+		initializeData();
 	}
 
-	@Override
-	public ArrayList<Group> getGroups() {
-		ArrayList<Group> groups = new ArrayList<Group>();
+	private void initializeData() {
 
-		int groupID = 0;
+		ArrayList<Integer> groups = new ArrayList<Integer>();
+		ArrayList<Integer> sampleElements = new ArrayList<Integer>();
+		List<Integer> allIDsInPathwayDimensionGroup = new ArrayList<Integer>();
+
 		int startIndex = 0;
 		for (PathwayGraph pathway : pathways) {
-
-			Group group = new Group();
-			group.setGroupID(groupID);
-			group.setStartIndex(startIndex);
-
+			List<Integer> idsInPathway = new ArrayList<Integer>();
 			List<IGraphItem> vertexGraphItemReps = pathway
 					.getAllItemsByKind(EGraphItemKind.NODE);
 
 			int groupSize = 0;
+
 			for (IGraphItem itemRep : vertexGraphItemReps) {
 
 				List<IGraphItem> vertexGraphItems = itemRep
@@ -149,89 +148,166 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 									(PathwayVertexGraphItem) item);
 
 					if (davidId != -1) {
-						Set<Integer> recordIDs = pathwayDataDomain
-								.getGeneIDMappingManager().getIDAsSet(
-										IDType.getIDType("DAVID"),
-										dataDomain.getRecordIDType(), davidId);
+						Set<Integer> ids = pathwayDataDomain.getGeneIDMappingManager()
+								.getIDAsSet(IDType.getIDType("DAVID"),
+										geneticDataDomain.getGeneIDType(), davidId);
 
-						if (recordIDs != null && recordIDs.size() > 0) {
+						if (ids != null && ids.size() > 0) {
 							groupSize++;
+							allIDsInPathwayDimensionGroup.addAll(ids);
+							idsInPathway.addAll(ids);
 						}
 
 					}
 				}
 			}
 
-			group.setSize(groupSize);
-			groups.add(group);
+			groups.add(groupSize);
+			sampleElements.add(startIndex);
 			startIndex += groupSize;
-			groupID++;
-		}
 
-		return groups;
-	}
-
-	@Override
-	public List<ISegmentData> getSegmentData() {
-
-		List<ISegmentData> segmentData = new ArrayList<ISegmentData>();
-
-		int groupID = 0;
-		int startIndex = 0;
-		for (PathwayGraph pathway : pathways) {
-
-			Group group = new Group();
-			List<Integer> ids = new ArrayList<Integer>();
-			group.setGroupID(groupID);
-			group.setStartIndex(startIndex);
-
-			List<IGraphItem> vertexGraphItemReps = pathway
-					.getAllItemsByKind(EGraphItemKind.NODE);
-
-			int groupSize = 0;
-			for (IGraphItem itemRep : vertexGraphItemReps) {
-
-				List<IGraphItem> vertexGraphItems = itemRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-
-				for (IGraphItem item : vertexGraphItems) {
-					int davidId = PathwayItemManager.get()
-							.getDavidIdByPathwayVertexGraphItem(
-									(PathwayVertexGraphItem) item);
-
-					if (davidId != -1) {
-						groupSize++;
-						Set<Integer> recordIDs = pathwayDataDomain
-								.getGeneIDMappingManager().getIDAsSet(
-										IDType.getIDType("DAVID"),
-										dataDomain.getRecordIDType(), davidId);
-
-						if (recordIDs != null && recordIDs.size() > 0) {
-							ids.addAll(recordIDs);
-						}
-					}
-				}
-			}
-
-			group.setSize(groupSize);
-			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			// here we create the
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(ids);
-			recordPerspective.init(data);
-			segmentData.add(new PathwaySegmentData(dataDomain, pathwayDataDomain,
-					recordPerspective, dimensionPerspective, group, pathway, this));
+			data.setData(idsInPathway);
+			PathwayDataContainer pathwayDataContainer;
+			if (dataDomain.isColumnDimension()) {
+				RecordPerspective pathwayRecordPerspective = new RecordPerspective(
+						dataDomain);
+				pathwayRecordPerspective.init(data);
 
-			startIndex += groupSize;
-			groupID++;
+				pathwayDataContainer = new PathwayDataContainer(dataDomain,
+						pathwayDataDomain, pathwayRecordPerspective,
+						dimensionPerspective, pathway);
+			} else {
+				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(
+						dataDomain);
+				pathwayDimensionPerspective.init(data);
+
+				pathwayDataContainer = new PathwayDataContainer(dataDomain,
+						pathwayDataDomain, recordPerspective,
+						pathwayDimensionPerspective, pathway);
+			}
+			recordSubDataContainers.add(pathwayDataContainer);
 		}
 
-		return segmentData;
+		if (dataDomain.isColumnDimension()) {
+			recordPerspective = new RecordPerspective(dataDomain);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
+			recordPerspective.init(data);
+		} else {
+			dimensionPerspective = new DimensionPerspective(dataDomain);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
+			dimensionPerspective.init(data);
+		}
 	}
 
-	@Override
-	public String getLabel() {
-		return label;
-	}
+	// @Override
+	// public ArrayList<Group> getGroups() {
+	// ArrayList<Group> groups = new ArrayList<Group>();
+	//
+	// int groupID = 0;
+	// int startIndex = 0;
+	// for (PathwayGraph pathway : pathways) {
+	//
+	// Group group = new Group();
+	// group.setGroupID(groupID);
+	// group.setStartIndex(startIndex);
+	//
+	// List<IGraphItem> vertexGraphItemReps = pathway
+	// .getAllItemsByKind(EGraphItemKind.NODE);
+	//
+	// int groupSize = 0;
+	// for (IGraphItem itemRep : vertexGraphItemReps) {
+	//
+	// List<IGraphItem> vertexGraphItems = itemRep
+	// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
+	//
+	// for (IGraphItem item : vertexGraphItems) {
+	// int davidId = PathwayItemManager.get()
+	// .getDavidIdByPathwayVertexGraphItem(
+	// (PathwayVertexGraphItem) item);
+	//
+	// if (davidId != -1) {
+	// Set<Integer> recordIDs = pathwayDataDomain
+	// .getGeneIDMappingManager().getIDAsSet(
+	// IDType.getIDType("DAVID"),
+	// dataDomain.getRecordIDType(), davidId);
+	//
+	// if (recordIDs != null && recordIDs.size() > 0) {
+	// groupSize++;
+	// }
+	//
+	// }
+	// }
+	// }
+	//
+	// group.setSize(groupSize);
+	// groups.add(group);
+	// startIndex += groupSize;
+	// groupID++;
+	// }
+	//
+	// return groups;
+	// }
+
+	// @Override
+	// public List<DataContainer> getDa() {
+	//
+	// List<ISegmentData> segmentData = new ArrayList<ISegmentData>();
+	//
+	// int groupID = 0;
+	// int startIndex = 0;
+	// for (PathwayGraph pathway : pathways) {
+	//
+	// Group group = new Group();
+	// List<Integer> ids = new ArrayList<Integer>();
+	// group.setGroupID(groupID);
+	// group.setStartIndex(startIndex);
+	//
+	// List<IGraphItem> vertexGraphItemReps = pathway
+	// .getAllItemsByKind(EGraphItemKind.NODE);
+	//
+	// int groupSize = 0;
+	// for (IGraphItem itemRep : vertexGraphItemReps) {
+	//
+	// List<IGraphItem> vertexGraphItems = itemRep
+	// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
+	//
+	// for (IGraphItem item : vertexGraphItems) {
+	// int davidId = PathwayItemManager.get()
+	// .getDavidIdByPathwayVertexGraphItem(
+	// (PathwayVertexGraphItem) item);
+	//
+	// if (davidId != -1) {
+	// groupSize++;
+	// Set<Integer> recordIDs = pathwayDataDomain
+	// .getGeneIDMappingManager().getIDAsSet(
+	// IDType.getIDType("DAVID"),
+	// dataDomain.getRecordIDType(), davidId);
+	//
+	// if (recordIDs != null && recordIDs.size() > 0) {
+	// ids.addAll(recordIDs);
+	// }
+	// }
+	// }
+	// }
+	//
+	// group.setSize(groupSize);
+	// RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+	// PerspectiveInitializationData data = new PerspectiveInitializationData();
+	// data.setData(ids);
+	// recordPerspective.init(data);
+	// segmentData.add(new PathwaySegmentData(dataDomain, pathwayDataDomain,
+	// recordPerspective, dimensionPerspective, group, pathway, this));
+	//
+	// startIndex += groupSize;
+	// groupID++;
+	// }
+	//
+	// return segmentData;
+	// }
 
 	/**
 	 * @return the pathwayDataDomain, see {@link #pathwayDataDomain}
@@ -240,10 +316,7 @@ public class PathwayDimensionGroupData extends ADimensionGroupData {
 		return pathwayDataDomain;
 	}
 
-	@Override
-	public ISegmentData getSummarySegementData() {
-		// TODO Auto-generated method stub
-		return null;
+	public List<DataContainer> createRecordSubDataContainers() {
+		return recordSubDataContainers;
 	}
-
 }

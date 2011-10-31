@@ -9,6 +9,7 @@ import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -143,6 +144,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		super.setTable(set);
 
 	}
+	
+	
 
 	/**
 	 * Initializes a virtual array with all elements, according to the data
@@ -417,27 +420,13 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		else
 			return recordIDMappingManager;
 	}
-
-	// FIXME CONTEXT MENU
-	// @Override
-	// public AItemContainer getRecordItemContainer(IDType idType, int id) {
-	//
-	// GeneContextMenuItemContainer geneContainer = new
-	// GeneContextMenuItemContainer();
-	// geneContainer.setDataDomain(this);
-	// geneContainer.tableID(idType, id);
-	// return geneContainer;
-	// }
-
-	// FIXME CONTEXT MENU
-	// @Override
-	// public AItemContainer getRecordGroupItemContainer(IDType idType,
-	// ArrayList<Integer> ids) {
-	// GeneRecordGroupMenuItemContainer geneContentGroupContainer = new
-	// GeneRecordGroupMenuItemContainer();
-	// geneContentGroupContainer.setDataDomain(this);
-	// geneContentGroupContainer.setGeneIDs(recordIDType, ids);
-	// return geneContentGroupContainer;
-	// }
+	
+	public IDType getGeneIDType()
+	{
+		if (loadDataParameters.isColumnDimension())
+			return getRecordIDType();
+		else
+			return getDimensionIDType();
+	}
 
 }
