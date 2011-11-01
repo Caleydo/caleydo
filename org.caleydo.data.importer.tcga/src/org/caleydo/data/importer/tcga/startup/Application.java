@@ -74,7 +74,7 @@ public class Application
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
 		boolean isColumnDimension = false;
-		
+
 		DataDomainConfiguration mrnaConfiguration = new DataDomainConfiguration();
 		mrnaConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 
@@ -91,7 +91,8 @@ public class Application
 		mrnaConfiguration.setDimensionDenominationSingular("gene");
 
 		loadSources("mRNA data", MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration, isColumnDimension);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration,
+			isColumnDimension);
 
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
@@ -105,7 +106,8 @@ public class Application
 		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
 
 		loadSources("miRNA data", MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration, isColumnDimension);
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration,
+			isColumnDimension);
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
@@ -134,8 +136,8 @@ public class Application
 	}
 
 	private void loadSources(String label, String dataSource, String groupingSource, String dataDomainType,
-		ColorMapper colorMapper, DataDomainConfiguration configuration, boolean isColumnDimension) throws FileNotFoundException,
-		IOException {
+		ColorMapper colorMapper, DataDomainConfiguration configuration, boolean isColumnDimension)
+		throws FileNotFoundException, IOException {
 
 		convertGctFile(label, dataSource, dataDomainType, colorMapper, configuration, isColumnDimension);
 		loadClusterInfo(groupingSource);
@@ -144,8 +146,9 @@ public class Application
 		createSampleOfGenes(clusterResult);
 	}
 
-	protected void convertGctFile(String label, String fileName, String dataDomainType, ColorMapper colorMapper,
-		DataDomainConfiguration configuration, boolean isColumnDimension) throws FileNotFoundException, IOException {
+	protected void convertGctFile(String label, String fileName, String dataDomainType,
+		ColorMapper colorMapper, DataDomainConfiguration configuration, boolean isColumnDimension)
+		throws FileNotFoundException, IOException {
 		String delimiter = "\t";
 
 		// open file to read second line to determine number of rows and columns
@@ -182,9 +185,9 @@ public class Application
 
 		dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, configuration);
-		
+
 		dataDomain.setColorMapper(colorMapper);
-		
+
 		loadDataParameters.setDataDomain(dataDomain);
 		loadDataParameters.setMathFilterMode("Normal");
 		loadDataParameters.setIsDataHomogeneous(true);
@@ -213,10 +216,9 @@ public class Application
 		DataTableUtils.createColumns(loadDataParameters);
 
 		// the place the matrix is stored:
-		DataTable table = DataTableUtils.createData(dataDomain, true);
+		DataTable table = DataTableUtils.createData(dataDomain, true, false);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
-
 	}
 
 	private void loadClusterInfo(String clusterFile) throws FileNotFoundException, IOException {
@@ -277,6 +279,8 @@ public class Application
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 			recordPerspective.setLabel(groupList.size() + " clusters");
+			if (groupList.size() == 4)
+				recordPerspective.setDefault(true);
 			ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
 			ArrayList<Integer> clusterSizes = new ArrayList<Integer>(groupList.size());
 			ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
@@ -294,9 +298,7 @@ public class Application
 
 			recordPerspective.init(data);
 			dataDomain.getTable().registerRecordPerspecive(recordPerspective);
-
 		}
-
 	}
 
 	private PerspectiveInitializationData runClusteringOnRows() {
@@ -311,7 +313,6 @@ public class Application
 		else {
 			clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
 			clusterConfiguration.setAffinityPropClusterFactorGenes(9);
-
 		}
 
 		String recordPerspectiveID = dataDomain.getTable().getRecordPerspectiveIDs().iterator().next();
@@ -332,7 +333,6 @@ public class Application
 			+ dimensionPerspective.getVirtualArray().size());
 
 		return result.getDimensionResult();
-
 	}
 
 	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {

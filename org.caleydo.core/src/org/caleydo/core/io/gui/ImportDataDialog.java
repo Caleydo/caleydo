@@ -154,7 +154,7 @@ public class ImportDataDialog
 			success = DataTableUtils.createColumns(loadDataParameters);
 		}
 		
-		DataTable table = DataTableUtils.createData(dataDomain, true);
+		DataTable table = DataTableUtils.createData(dataDomain, true, true);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
 		

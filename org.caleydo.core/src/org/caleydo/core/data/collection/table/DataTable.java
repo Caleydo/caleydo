@@ -1,6 +1,5 @@
 package org.caleydo.core.data.collection.table;
 
-import java.io.ObjectInputStream.GetField;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -365,7 +364,7 @@ public class DataTable
 	public boolean containsRecordPerspective(String recordPerspectiveID) {
 		return hashRecordPerspectives.containsKey(recordPerspectiveID);
 	}
-	
+
 	/**
 	 * @param dimensionPerspectiveID
 	 * @return True, if a {@link DimensionPerspective} with the specified ID is registered, false otherwise.
@@ -384,6 +383,13 @@ public class DataTable
 			throw new IllegalStateException("Record perspective not correctly initiaklized: "
 				+ recordPerspective);
 		hashRecordPerspectives.put(recordPerspective.getID(), recordPerspective);
+
+		if (recordPerspective.isDefault()) {
+			if (defaultRecordPerspective != null)
+				throw new IllegalStateException(
+					"The default record perspective is already set. It is not possible to have multiple defaults.");
+			defaultRecordPerspective = recordPerspective;
+		}
 	}
 
 	/**
@@ -421,6 +427,13 @@ public class DataTable
 			throw new IllegalStateException("Dimension perspective not correctly initiaklized: "
 				+ dimensionPerspective);
 		hashDimensionPerspectives.put(dimensionPerspective.getID(), dimensionPerspective);
+
+		if (dimensionPerspective.isDefault()) {
+			if (defaultDimensionPerspective != null)
+				throw new IllegalStateException(
+					"The default dimension perspective is already set. It is not possible to have multiple defaults.");
+			defaultDimensionPerspective = dimensionPerspective;
+		}
 	}
 
 	/**
@@ -647,14 +660,13 @@ public class DataTable
 
 	void createDefaultRecordPerspective() {
 		defaultRecordPerspective = new RecordPerspective(dataDomain);
-
+		defaultRecordPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		if (isColumnDimension)
 			data.setData(getRowIDList());
 		else
 			data.setData(getColumnIDList());
 		defaultRecordPerspective.init(data);
-
 		defaultRecordPerspective.setLabel("Default");
 
 		hashRecordPerspectives.put(defaultRecordPerspective.getID(), defaultRecordPerspective);
@@ -663,6 +675,7 @@ public class DataTable
 	void createDefaultDimensionPerspective() {
 
 		defaultDimensionPerspective = new DimensionPerspective(dataDomain);
+		defaultDimensionPerspective.setDefault(true);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		if (isColumnDimension)
 			data.setData(getColumnIDList());

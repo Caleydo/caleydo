@@ -46,6 +46,7 @@ public abstract class ARcpGLViewPart
 		glCapabilities.setStencilBits(1);
 
 		glCanvas = new GLCanvas(glCapabilities);
+		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glCanvas);
 	}
 
 	@Override

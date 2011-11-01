@@ -138,7 +138,7 @@ public class DataTableUtils {
 	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
 	 */
 	public static boolean createColumns(LoadDataParameters loadDataParameters) {
-		
+
 		ArrayList<Integer> columnIDs = null;
 		boolean createColumnsFromExistingIDs = false;
 
@@ -198,7 +198,7 @@ public class DataTableUtils {
 					columnLabel = columnLabelIterator.next();
 					if (columnHeaderStringConverter != null)
 						columnLabel = columnHeaderStringConverter.convert(columnLabel);
-					
+
 					NumericalColumn column = (NumericalColumn) cmdCreateColumn.getCreatedObject();
 					column.setLabel(columnLabel);
 					columnIDMap.put(column.getID(), columnLabel);
@@ -250,11 +250,14 @@ public class DataTableUtils {
 	/**
 	 * Creates the set from a previously prepared dimension definition.
 	 */
-	public static DataTable createData(ATableBasedDataDomain dataDomain, boolean createDefaultPerspectives) {
-		return createData(dataDomain, createDefaultPerspectives, null);
+	public static DataTable createData(ATableBasedDataDomain dataDomain,
+		boolean createDefaultDimensionPerspectives, boolean createDefaultRecordPerspective) {
+		return createData(dataDomain, createDefaultDimensionPerspectives, createDefaultRecordPerspective,
+			null);
 	}
 
-	public static DataTable createData(ATableBasedDataDomain dataDomain, boolean createDefaultPerspectives,
+	public static DataTable createData(ATableBasedDataDomain dataDomain,
+		boolean createDefaultDimensionPerspectives, boolean createDefaultRecordPerspective,
 		AStringConverter stringConverter) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
@@ -303,10 +306,11 @@ public class DataTableUtils {
 
 		DataTable table = dataDomain.getTable();
 
-		if (createDefaultPerspectives) {
-			table.createDefaultRecordPerspective();
+		if (createDefaultDimensionPerspectives)
 			table.createDefaultDimensionPerspective();
-		}
+
+		if (createDefaultRecordPerspective)
+			table.createDefaultRecordPerspective();
 
 		// loadTrees(loadDataParameters, set);
 

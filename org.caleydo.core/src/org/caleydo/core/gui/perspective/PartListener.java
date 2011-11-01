@@ -6,13 +6,10 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
-import org.caleydo.core.gui.toolbar.RcpToolBarView;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.IView;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;
@@ -34,33 +31,19 @@ public class PartListener
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
-		IWorkbenchPart activePart = partRef.getPart(false);
-
-		if (!(activePart instanceof ARcpGLViewPart))
-			return;
-
-		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
-
-		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glView.getGLCanvas());
+//		IWorkbenchPart activePart = partRef.getPart(false);
+//
+//		if (!(activePart instanceof ARcpGLViewPart))
+//			return;
+//
+//		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
+//
+//		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glView.getGLCanvas());
 	}
 
 	@Override
 	public void partClosed(IWorkbenchPartReference partRef) {
-		IWorkbenchPart activePart = partRef.getPart(false);
 
-		if (!(activePart instanceof ARcpGLViewPart))
-			return;
-
-		if (PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage() == null)
-			return;
-
-		// Remove view specific toolbar from general toolbar view
-		RcpToolBarView toolBarView =
-			(RcpToolBarView) PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.findView(RcpToolBarView.ID);
-
-		if (toolBarView == null)
-			return;
 	}
 
 	@Override
@@ -77,7 +60,6 @@ public class PartListener
 			ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
 			glViewPart.getGLView().setVisible(true);
-
 		}
 
 		drawInlineToolBar(viewPart);
@@ -99,12 +81,13 @@ public class PartListener
 		if (!(activePart instanceof ARcpGLViewPart)) {
 			return;
 		}
+		
 		ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
 		// GeneralManager.get().getViewGLCanvasManager()
 		// .unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas());
+		
 		glViewPart.getGLView().setVisible(false);
-
 	}
 
 	@Override
@@ -145,6 +128,8 @@ public class PartListener
 				if (caleydoRCPViewPart.isSupportView()) {
 					if (caleydoRCPViewPart instanceof IDataDomainBasedView) {
 						((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
+						
+						
 					}
 					else if (caleydoRCPViewPart.getView() instanceof IDataDomainBasedView) {
 						((IDataDomainBasedView) (caleydoRCPViewPart.getView())).setDataDomain(dataDomain);
@@ -161,7 +146,7 @@ public class PartListener
 	/**
 	 * Draws the toolbar items within the views default toolbar (inline)
 	 * 
-	 * @param viewPart
+	 * @param viewPartcreatePartControl
 	 *            view to add the toolbar items
 	 */
 	private void drawInlineToolBar(CaleydoRCPViewPart viewPart) {

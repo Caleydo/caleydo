@@ -67,6 +67,12 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	@XmlElement
 	protected boolean isPrivate;
+	
+	/**
+	 * Flag determining whether this perspective is the default perspective that for instance will be displayed by the support views.
+	 */
+	@XmlElement	
+	protected boolean isDefault;
 
 	/**
 	 * Flag telling us whether the tree has been automatically generated (i.e., is the default tree), or
@@ -152,6 +158,20 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	public boolean isPrivate() {
 		return isPrivate;
+	}
+	
+	/**
+	 * @param isDefault setter, see {@link #isDefault}
+	 */
+	public void setDefault(boolean isDefault) {
+		this.isDefault = isDefault;
+	}
+	
+	/**
+	 * @return the isDefault, see {@link #isDefault}
+	 */
+	public boolean isDefault() {
+		return isDefault;
 	}
 
 	/**

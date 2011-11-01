@@ -5,11 +5,10 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
@@ -19,21 +18,22 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class RcpInfoAreaView extends CaleydoRCPViewPart {
+public class RcpInfoAreaView extends CaleydoRCPViewPart implements
+		IDataDomainBasedView<ATableBasedDataDomain> {
 
 	public static final String VIEW_TYPE = "org.caleydo.view.info";
 
-	public static boolean bHorizontal = false;
+	private ATableBasedDataDomain dataDomain;
 
-	private Composite parentComposite;
-
-	private InfoArea infoArea;
+	private Composite parent;
 
 	/**
 	 * Constructor.
 	 */
 	public RcpInfoAreaView() {
 		super();
+
+		isSupportView = true;
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedInfoAreaView.class);
@@ -44,23 +44,26 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
 	@Override
 	public void createPartControl(Composite parent) {
-		final Composite parentComposite = new Composite(parent, SWT.NULL);
+		this.parent = parent;
 
-		// FIXME: when view plugin reorganizatin is done
-		// if (!GenomePerspective.bIsWideScreen) {
-		// bHorizontal = true;
-		// }
+		parentComposite = new Composite(parent, SWT.NULL);
+		parentComposite.setLayout(new GridLayout(1, false));
 
-		if (bHorizontal) {
-			parentComposite.setLayout(new GridLayout(10, false));
-		} else {
-			parentComposite.setLayout(new GridLayout(1, false));
+		if (dataDomain == null) {
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.getDataDomainByID(
+							((ASerializedTopLevelDataView) serializedView)
+									.getDataDomainID());
+			if (dataDomain == null)
+				return;
 		}
 
-		this.parentComposite = parentComposite;
-
-		addInfoBar();
-
+		InfoArea infoArea = new InfoArea();
+		infoArea.setDataDomain((ATableBasedDataDomain) dataDomain);
+		infoArea.registerEventListeners();
+		infoArea.createControl(parentComposite);
+		
+		parent.layout();
 	}
 
 	@Override
@@ -68,42 +71,40 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart {
 
 	}
 
-	private void addInfoBar() {
-
-		Composite infoComposite = new Composite(parentComposite, SWT.NULL);
-		infoComposite.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-
-		GridLayout layout;
-		if (bHorizontal) {
-			layout = new GridLayout(2, false);
-		} else {
-			layout = new GridLayout(1, false);
-		}
-
-		layout.marginBottom = layout.marginTop = layout.marginLeft = layout.marginRight = layout.horizontalSpacing = layout.verticalSpacing = 0;
-		layout.marginHeight = layout.marginWidth = 0;
-
-		infoComposite.setLayout(layout);
-		infoArea = new InfoArea();
-
-		IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-				((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-		infoArea.setDataDomain((ATableBasedDataDomain) dataDomain);
-
-		infoArea.registerEventListeners();
-		infoArea.createControl(infoComposite);
-	}
-
 	@Override
 	public void dispose() {
 		super.dispose();
-
-		infoArea.dispose();
 	}
 
 	@Override
 	public void createDefaultSerializedView() {
 		serializedView = new SerializedInfoAreaView();
-		determineDataConfiguration(serializedView);
+		determineDataConfiguration(serializedView, false);
+	}
+
+	@Override
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+
+		// Do nothing if new data domain is the same as the current one
+		if (dataDomain == this.dataDomain)
+			return;
+
+		this.dataDomain = dataDomain;
+
+		((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
+				.getDataDomainID());
+		((ASerializedTopLevelDataView) serializedView).setRecordPerspectiveID(dataDomain
+				.getTable().getDefaultRecordPerspective().getID());
+		((ASerializedTopLevelDataView) serializedView)
+				.setDimensionPerspectiveID(dataDomain.getTable()
+						.getDefaultDimensionPerspective().getID());
+
+		parentComposite.dispose();
+		createPartControl(parent);
+	}
+
+	@Override
+	public ATableBasedDataDomain getDataDomain() {
+		return dataDomain;
 	}
 }

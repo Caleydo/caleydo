@@ -83,7 +83,7 @@ public class DataChooserComposite
 		dataDomainLabel.setLayoutData(data);
 
 		dataDomainChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
-		dataDomainChooser.setText("Choose data set:");
+		dataDomainChooser.setText("Choose data set");
 		data = new GridData(GridData.FILL_HORIZONTAL);
 		data.horizontalSpan = 1;
 		data.minimumWidth = 400;

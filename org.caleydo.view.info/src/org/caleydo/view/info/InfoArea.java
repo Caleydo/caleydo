@@ -169,6 +169,10 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	private void updateTree(final boolean isContent,
 			final SelectionManager selectionManager, final TreeItem tree,
 			final String info) {
+		
+		if (parentComposite.isDisposed())
+			return;
+		
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {

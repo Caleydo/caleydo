@@ -35,7 +35,7 @@ public class DataConfigurationChooser {
 	 */
 
 	public static DataConfiguration determineDataConfiguration(ArrayList<IDataDomain> possibleDataDomains,
-		String viewName) {
+		String viewName, boolean letUserChoose) {
 		IDataDomain chosenDataDomain = null;
 		String recordPerspectiveID = null;
 		RecordPerspective recordPerspective = null;
@@ -64,7 +64,7 @@ public class DataConfigurationChooser {
 				}
 			}
 		}
-		if (chosenDataDomain == null || recordPerspectiveID == null || dimensionPerspectiveID == null) {
+		if ((chosenDataDomain == null || recordPerspectiveID == null || dimensionPerspectiveID == null) && letUserChoose) {
 
 			Shell shell = new Shell(SWT.APPLICATION_MODAL);
 			ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(shell, viewName);
@@ -73,7 +73,6 @@ public class DataConfigurationChooser {
 			dialog.open();
 			DataConfiguration config = dialog.getDataConfiguration();
 			return config;
-
 		}
 		else {
 			DataConfiguration config = new DataConfiguration();
@@ -82,7 +81,6 @@ public class DataConfigurationChooser {
 			config.setRecordPerspective(recordPerspective);
 			return config;
 		}
-
 	}
 
 	// ----------------- Private Implemetations ---------------------------
