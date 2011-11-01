@@ -7,13 +7,14 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
 @XmlType
 @XmlRootElement
 public class RecordVirtualArray
-	extends VirtualArray<RecordVirtualArray,  RecordVADelta, RecordGroupList> {
+	extends VirtualArray<RecordVirtualArray, RecordVADelta, RecordGroupList> {
 
 	public RecordVirtualArray() {
 		super();
@@ -22,8 +23,8 @@ public class RecordVirtualArray
 	/**
 	 * Constructor, creates an empty Virtual Array
 	 */
-	public RecordVirtualArray(String vaType) {
-		super(vaType);
+	public RecordVirtualArray(IDType idType) {
+		super(idType);
 
 	}
 
@@ -33,13 +34,18 @@ public class RecordVirtualArray
 	 * 
 	 * @param initialList
 	 */
-	public RecordVirtualArray(String vaType, List<Integer> initialList) {
-		super(vaType, initialList);
+	public RecordVirtualArray(IDType idType, List<Integer> initialList) {
+		super(idType, initialList);
 	}
 
 	@Override
 	public RecordVirtualArray getNewInstance() {
-		return new RecordVirtualArray();
+		return new RecordVirtualArray(idType);
+	}
+	
+	@Override
+	public RecordVADelta getConcreteVADeltaInstance() {
+		return new RecordVADelta();
 	}
 
 	/**
@@ -60,5 +66,7 @@ public class RecordVirtualArray
 		// TODO Auto-generated method stub
 		return super.getGroupList();
 	}
+
+	
 
 }

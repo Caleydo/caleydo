@@ -20,6 +20,8 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
@@ -124,11 +126,23 @@ public class Application
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
 			methylationConfiguration, isColumnDimension);
 
+		calculateVAIntersections();
+
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
 			+ "export_" + (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal", true);
 
 		return IApplication.EXIT_OK;
+	}
+
+	private void calculateVAIntersections() {
+		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(5);
+		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
+			ATableBasedDataDomain.class)) {
+			vasToIntersect.add(dataDomain.getTable().getDefaultRecordPerspective().getVirtualArray());
+		}
+		List<RecordVirtualArray> intersectedVAs = VAUtils.createIntersectingVAs(vasToIntersect);
+
 	}
 
 	@Override

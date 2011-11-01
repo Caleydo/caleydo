@@ -5,12 +5,14 @@ import java.util.Collections;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;
@@ -35,25 +37,22 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	extends AUniqueObject
 	implements Iterable<Integer>, IUniqueObject, Cloneable {
 
+	@XmlTransient
+	protected IDType idType;
+
 	ArrayList<Integer> virtualArrayList;
 	boolean useHashBacking = true;
 	IDMap idMap;
 
 	GroupType groupList = null;
 
-	private String vaType;
-
 	public VirtualArray() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 	}
 
-	/**
-	 * Constructor, creates an empty Virtual Array
-	 */
-	public VirtualArray(String vaType) {
+	public VirtualArray(IDType idType) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
-		this.vaType = vaType;
-
+		setIdType(idType);
 	}
 
 	{
@@ -61,28 +60,52 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		idMap = new IDMap(virtualArrayList);
 	}
 
-	void setHashDirty() {
-		idMap.setDirty();
-	}
-
-	public abstract ConcreteType getNewInstance();
-
 	/**
 	 * Constructor. Pass the length of the managed collection and a predefined array list of indices on the
 	 * collection. This will serve as the starting point for the virtual array.
 	 * 
 	 * @param initialList
 	 */
-	public VirtualArray(String vaType, List<Integer> initialList) {
+	public VirtualArray(IDType idType, List<Integer> initialList) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
-		this.vaType = vaType;
+		setIdType(idType);
 		if (initialList != null)
 			virtualArrayList.addAll(initialList);
 	}
 
-	public String getVaType() {
-		return vaType;
+	/**
+	 * @param idType
+	 *            setter, see {@link #idType}
+	 */
+	public void setIdType(IDType idType) {
+		this.idType = idType;
 	}
+
+	/**
+	 * @return the idType, see {@link #idType}
+	 */
+	@XmlTransient
+	public IDType getIdType() {
+		return idType;
+	}
+
+	void setHashDirty() {
+		idMap.setDirty();
+	}
+
+	/**
+	 * Gets a new instance of the same concrete type as this objects'.
+	 * 
+	 * @return
+	 */
+	public abstract ConcreteType getNewInstance();
+
+	/**
+	 * Get a new instance of a va delta matching this virtual arrays concrete type.
+	 * 
+	 * @return
+	 */
+	public abstract VADelta getConcreteVADeltaInstance();
 
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
@@ -486,10 +509,6 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		idMap.setDirty();
 	}
 
-	public void setVaType(String vaType) {
-		this.vaType = vaType;
-	}
-
 	@Override
 	public String toString() {
 
@@ -497,8 +516,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		if (groupList != null)
 			hasGrouping = true;
 
-		return "ID: " + getID() + ", Type: " + vaType + ", size: " + virtualArrayList.size()
-			+ ", hasGrouping: " + hasGrouping + virtualArrayList;
+		return "ID: " + getID() + ", size: " + virtualArrayList.size() + ", hasGrouping: " + hasGrouping
+			+ virtualArrayList;
 	}
 
 	/**
@@ -518,7 +537,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		return groupList;
 
 	}
-	
+
 	public List<Integer> getSubList(int fromIndex, int toIndex) {
 		return virtualArrayList.subList(fromIndex, toIndex);
 	}

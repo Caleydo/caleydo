@@ -50,7 +50,7 @@ public class DimensionPerspective
 
 	@Override
 	protected DimensionVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
-		return new DimensionVirtualArray(perspectiveID, indexList);
+		return new DimensionVirtualArray(idType, indexList);
 	}
 
 	@Override

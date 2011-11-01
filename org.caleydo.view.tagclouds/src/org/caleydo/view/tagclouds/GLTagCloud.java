@@ -67,7 +67,6 @@ public class GLTagCloud extends ATableBasedView {
 	private final static int BUTTON_PREVIOUS_ID = 0;
 	private final static int BUTTON_NEXT_ID = 1;
 
-
 	private ArrayList<TagRenderer> selectedTagRenderers = new ArrayList<TagRenderer>();
 
 	/** list sorted based on number of occurrences */
@@ -117,7 +116,6 @@ public class GLTagCloud extends ATableBasedView {
 				.getVirtualArray();
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
-	
 
 		for (Integer dimensionID : dimensionVA) {
 			HashMap<String, Integer> stringOccurences = new HashMap<String, Integer>();
@@ -155,12 +153,13 @@ public class GLTagCloud extends ATableBasedView {
 
 		if (dataContainer.getNrDimensions() > numberOfVisibleDimensions) {
 			if (clippedDimensionVA == null) {
-				clippedDimensionVA = new DimensionVirtualArray();
+				clippedDimensionVA = new DimensionVirtualArray(dimensionIDType);
 
 				firstDimensionIndex = 0;
 				lastDimensionIndex = numberOfVisibleDimensions - 1;
 				for (int count = 0; count < numberOfVisibleDimensions; count++) {
-					clippedDimensionVA.append(dataContainer.getDimensionPerspective().getVirtualArray().get(count));
+					clippedDimensionVA.append(dataContainer.getDimensionPerspective()
+							.getVirtualArray().get(count));
 
 				}
 			} else if (clippedDimensionVA.size() > numberOfVisibleDimensions) {
@@ -209,7 +208,8 @@ public class GLTagCloud extends ATableBasedView {
 			baseRow.append(nextDimensionColumn);
 
 		} else {
-			visibleDimensionVA = dataContainer.getDimensionPerspective().getVirtualArray();
+			visibleDimensionVA = dataContainer.getDimensionPerspective()
+					.getVirtualArray();
 			baseRow.append(baseColumn);
 			clippedDimensionVA = null;
 		}
@@ -435,9 +435,10 @@ public class GLTagCloud extends ATableBasedView {
 	}
 
 	private void updateClippedVA() {
-		clippedDimensionVA = new DimensionVirtualArray();
+		clippedDimensionVA = new DimensionVirtualArray(dimensionIDType);
 		for (int count = firstDimensionIndex; count <= lastDimensionIndex; count++) {
-			clippedDimensionVA.append(dataContainer.getDimensionPerspective().getVirtualArray().get(count));
+			clippedDimensionVA.append(dataContainer.getDimensionPerspective()
+					.getVirtualArray().get(count));
 		}
 	}
 
@@ -447,10 +448,6 @@ public class GLTagCloud extends ATableBasedView {
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
-
-	
-
-	
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
@@ -462,7 +459,6 @@ public class GLTagCloud extends ATableBasedView {
 		}
 
 	}
-
 
 	@Override
 	public int getMinPixelHeight(DetailLevel detailLevel) {
@@ -498,8 +494,6 @@ public class GLTagCloud extends ATableBasedView {
 		initMapping();
 	}
 
-	
-	
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 			throws InvalidAttributeValueException {

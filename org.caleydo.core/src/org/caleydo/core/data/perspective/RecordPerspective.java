@@ -48,7 +48,7 @@ public class RecordPerspective
 
 	@Override
 	protected RecordVirtualArray newConcreteVirtualArray(List<Integer> indexList) {
-		return new RecordVirtualArray(perspectiveID, indexList);
+		return new RecordVirtualArray(idType, indexList);
 	}
 
 	@Override

@@ -5,6 +5,9 @@ import java.util.Collections;
 
 import junit.framework.TestCase;
 
+import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -16,7 +19,8 @@ public class VirtualArrayTester extends TestCase {
 
 	protected void setUp() throws Exception {
 		super.setUp();
-		virtualArray = new RecordVirtualArray();
+		virtualArray = new RecordVirtualArray(IDType.registerType("Test",
+				IDCategory.registerCategory("Test"), EColumnType.FLOAT));
 		for (int count = 0; count < size; count++)
 			virtualArray.append(count);
 	}
@@ -41,18 +45,18 @@ public class VirtualArrayTester extends TestCase {
 		assertEquals(0, virtualArray.size());
 	}
 
-//	public void testRemoveID() {
-//		ArrayList<Integer> shuffeledList = new ArrayList<Integer>();
-//		{
-//			for (int count = 0; count < size; count++)
-//				shuffeledList.add(count);
-//		}
-//		Collections.shuffle(shuffeledList);
-//		for (Integer id : shuffeledList)
-//			virtualArray.removeByElement(id);
-//
-//		assertEquals(0, virtualArray.size().intValue());
-//	}
+	// public void testRemoveID() {
+	// ArrayList<Integer> shuffeledList = new ArrayList<Integer>();
+	// {
+	// for (int count = 0; count < size; count++)
+	// shuffeledList.add(count);
+	// }
+	// Collections.shuffle(shuffeledList);
+	// for (Integer id : shuffeledList)
+	// virtualArray.removeByElement(id);
+	//
+	// assertEquals(0, virtualArray.size().intValue());
+	// }
 
 	public void testRemoveIDWithDelta() {
 

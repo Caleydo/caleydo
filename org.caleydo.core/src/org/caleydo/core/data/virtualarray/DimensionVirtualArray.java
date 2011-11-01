@@ -7,6 +7,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.graph.tree.ClusterNode;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 
@@ -16,14 +17,13 @@ public class DimensionVirtualArray
 	extends VirtualArray<DimensionVirtualArray, DimensionVADelta, DimensionGroupList> {
 
 	public DimensionVirtualArray() {
-		super("DIMENSION");
 	}
 
 	/**
 	 * Constructor, creates an empty Virtual Array
 	 */
-	public DimensionVirtualArray(String vaType) {
-		super(vaType);
+	public DimensionVirtualArray(IDType idType) {
+		super(idType);
 	}
 
 	/**
@@ -32,13 +32,18 @@ public class DimensionVirtualArray
 	 * 
 	 * @param initialList
 	 */
-	public DimensionVirtualArray(String vaType, List<Integer> initialList) {
-		super(vaType, initialList);
+	public DimensionVirtualArray(IDType idType, List<Integer> initialList) {
+		super(idType, initialList);
 	}
 
 	@Override
 	public DimensionVirtualArray getNewInstance() {
-		return new DimensionVirtualArray();
+		return new DimensionVirtualArray(idType);
+	}
+
+	@Override
+	public DimensionVADelta getConcreteVADeltaInstance() {
+		return new DimensionVADelta();
 	}
 
 	/**
@@ -53,4 +58,5 @@ public class DimensionVirtualArray
 		groupList = (DimensionGroupList) buildNewGroupList(new DimensionGroupList(), clusterNodes);
 		return groupList;
 	}
+
 }
