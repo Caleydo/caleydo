@@ -12,6 +12,8 @@ import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -22,6 +24,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.startup.StartupProcessor;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -98,7 +101,31 @@ public abstract class CaleydoRCPViewPart
 	}
 
 	/**
-	 * Determines and sets the dataDomain based on the following rules:
+	 * <p>
+	 * If applicable initializes the {@link #view} with the {@link ADataDomain} and the {@link DataContainer}
+	 * as they are specified in the {@link #serializedView}.
+	 * </p>
+	 * <p>
+	 * Calls {@link AGLView#initialize()} and
+	 * {@link IView#initFromSerializableRepresentation(ASerializedView)} with the {@link #serializedView}
+	 * variable.
+	 * </p>
+	 */
+	protected void initializeViewWithData() {
+		if (view instanceof IDataDomainBasedView<?>) {
+			IDataDomain dataDomain =
+				DataDomainManager.get().getDataDomainByID(
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
+			dataDomainBasedView.setDataDomain(dataDomain);
+		}
+		view.initFromSerializableRepresentation(serializedView);
+		view.initialize();
+	}
+
+	/**
+	 * Determines and sets the dataDomain to the {@link #serializedView} based on the following rules:
 	 * <ul>
 	 * <li>If no dataDomain is registered, null is returned</li>
 	 * <li>If a dataDomainID is set in the serializable representation this is used</li>
@@ -136,12 +163,13 @@ public abstract class CaleydoRCPViewPart
 			if (rcpViewInitData != null) {
 				dataDomainID = rcpViewInitData.getDataDomainID();
 				serializedTopLevelDataView.setDataDomainID(dataDomainID);
-				
+
 				// FIXME ALEX: set the default perspectives!
 				serializedTopLevelDataView.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager
 					.get().getDataDomainByID(dataDomainID)).getRecordPerspectiveIDs().iterator().next());
-				serializedTopLevelDataView.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager
-					.get().getDataDomainByID(dataDomainID)).getDimensionPerspectiveIDs().iterator().next());
+				serializedTopLevelDataView
+					.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
+						.getDataDomainByID(dataDomainID)).getDimensionPerspectiveIDs().iterator().next());
 			}
 		}
 
@@ -155,10 +183,8 @@ public abstract class CaleydoRCPViewPart
 				DataConfigurationChooser.determineDataConfiguration(availableDomains,
 					serializedView.getViewType());
 			serializedTopLevelDataView.setDataDomainID(config.getDataDomain().getDataDomainID());
-			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective()
-				.getID());
-			serializedTopLevelDataView.setDimensionPerspectiveID(config.getDimensionPerspective()
-				.getID());
+			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective().getID());
+			serializedTopLevelDataView.setDimensionPerspectiveID(config.getDimensionPerspective().getID());
 		}
 	}
 

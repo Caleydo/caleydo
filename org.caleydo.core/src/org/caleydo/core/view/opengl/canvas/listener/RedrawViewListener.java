@@ -5,7 +5,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 
 /**
- * Listener for redraw view events This listener calls a related {@link IViewCommandHandler}.
+ * Listener for {@link RedrawViewEvent}s. 
  * 
  * @author Werner Puff
  */

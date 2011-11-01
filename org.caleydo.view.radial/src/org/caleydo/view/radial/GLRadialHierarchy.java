@@ -29,10 +29,11 @@ import org.caleydo.core.event.view.radial.GoBackInHistoryEvent;
 import org.caleydo.core.event.view.radial.GoForthInHistoryEvent;
 import org.caleydo.core.event.view.radial.SetMaxDisplayedHierarchyDepthEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
@@ -42,7 +43,6 @@ import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
-import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -62,7 +62,7 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Christian Partl
  */
-public class GLRadialHierarchy extends ATableBasedView{
+public class GLRadialHierarchy extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.radial";
 
@@ -109,12 +109,11 @@ public class GLRadialHierarchy extends ATableBasedView{
 	private ChangeColorModeListener changeColorModeListener;
 	private SetMaxDisplayedHierarchyDepthListener setMaxDisplayedHierarchyDepthListener;
 	private DetailOutsideListener detailOutsideListener;
-	private UpdateViewListener updateViewListener;
+	private UpdateColorMappingListener updateViewListener;
 	private ClearSelectionsListener clearSelectionsListener;
 
 	private SelectionManager selectionManager;
 	boolean bUseDetailLevel = true;
-
 
 	/**
 	 * Constructor.
@@ -465,7 +464,6 @@ public class GLRadialHierarchy extends ATableBasedView{
 		}
 	}
 
-
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
@@ -759,8 +757,6 @@ public class GLRadialHierarchy extends ATableBasedView{
 		this.bIsNewSelection = bIsNewSelection;
 	}
 
-
-
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView(
@@ -927,10 +923,6 @@ public class GLRadialHierarchy extends ATableBasedView{
 		detailOutsideListener.setHandler(this);
 		eventPublisher.addListener(DetailOutsideEvent.class, detailOutsideListener);
 
-		updateViewListener = new UpdateViewListener();
-		updateViewListener.setHandler(this);
-		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
-
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
@@ -990,33 +982,33 @@ public class GLRadialHierarchy extends ATableBasedView{
 		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleUpdateView() {
-		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
-		Tree<ClusterNode> tree = dataContainer.getDimensionPerspective().getTree();
-		if (tree != null) {
-
-			// if (pdRealRootElement == null) {
-			if (dataEventManager != null)
-				dataEventManager.unregisterEventListeners();
-			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
-			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
-			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-			// new GeneClusterDataEventManager(this), alColorModes);
-			initHierarchy(tree, dataContainer.getDimensionPerspective().getTreeRoot(),
-					new ExperimentClusterDataEventManager(this), alColorModes);
-			// }
-
-		} else {
-			hashPartialDiscs.clear();
-			navigationHistory.reset();
-			pdCurrentRootElement = null;
-			pdCurrentSelectedElement = null;
-			pdRealRootElement = null;
-		}
-		setDisplayListDirty();
-	}
+//	@Override
+//	public void handleUpdateView() {
+//		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
+//		Tree<ClusterNode> tree = dataContainer.getDimensionPerspective().getTree();
+//		if (tree != null) {
+//
+//			// if (pdRealRootElement == null) {
+//			if (dataEventManager != null)
+//				dataEventManager.unregisterEventListeners();
+//			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
+//			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+//			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+//			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+//			// new GeneClusterDataEventManager(this), alColorModes);
+//			initHierarchy(tree, dataContainer.getDimensionPerspective().getTreeRoot(),
+//					new ExperimentClusterDataEventManager(this), alColorModes);
+//			// }
+//
+//		} else {
+//			hashPartialDiscs.clear();
+//			navigationHistory.reset();
+//			pdCurrentRootElement = null;
+//			pdCurrentSelectedElement = null;
+//			pdRealRootElement = null;
+//		}
+//		setDisplayListDirty();
+//	}
 
 	/**
 	 * Handles the alternative partial disc selection triggered by pressing a
@@ -1146,8 +1138,6 @@ public class GLRadialHierarchy extends ATableBasedView{
 		// partialDiscTree.setNodeIDType(tree.getNodeIDType());
 
 	}
-
-	
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)

@@ -33,13 +33,8 @@ public class CategoryView extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
 
-	boolean bUseDetailLevel = true;
-
-	protected RedrawViewListener redrawViewListener;
-
-	float fRenderWidth;
-
-	private ATableBasedDataDomain dataDomain;
+	
+	float renderWidth;
 
 	/**
 	 * Constructor.
@@ -84,19 +79,7 @@ public class CategoryView extends ATableBasedView {
 
 	}
 
-	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
-		if (bUseDetailLevel) {
-			super.setDetailLevel(detailLevel);
-			// renderStyle.setDetailLevel(detailLevel);
-			if (detailLevel == DetailLevel.LOW) {
-				// sideSpacing = 0;
-			} else {
-				// sideSpacing = SIDE_SPACING;
-			}
-		}
 
-	}
 
 	@Override
 	public void displayLocal(GL2 gl) {
@@ -110,14 +93,6 @@ public class CategoryView extends ATableBasedView {
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		// if (bIsDisplayListDirtyRemote) {
-		// colorMapping = ColorMappingManager.get().getColorMapping(
-		// EColorMappingType.GENE_EXPRESSION);
-		// buildDisplayList(gl, iGLDisplayListIndexRemote);
-		// bIsDisplayListDirtyRemote = false;
-		// }
-		// iGLDisplayListToCall = iGLDisplayListIndexRemote;
-
 		display(gl);
 
 	}
@@ -155,15 +130,7 @@ public class CategoryView extends ATableBasedView {
 		}
 	}
 
-	@Override
-	public void handleRedrawView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleUpdateView() {
-		setDisplayListDirty();
-	}
+	
 
 	@Override
 	public void registerEventListeners() {

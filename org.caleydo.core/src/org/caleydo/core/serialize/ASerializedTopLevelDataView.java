@@ -9,7 +9,7 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
 
 /**
  * Abstract class for all serialized view representations that handle a single {@link ATableBasedDataDomain}
- * (NOT embedded views with data domains).
+ * (In contrast to container views that hold multiple of those views).
  * 
  * @author Marc Streit
  */

@@ -18,17 +18,14 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.treemap.ZoomInEvent;
 import org.caleydo.core.event.view.treemap.ZoomOutEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -51,7 +48,7 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Michael Lafer
  */
 
-public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemoteRenderingView {
+public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteRenderingView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
 
@@ -153,7 +150,6 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemote
 
 		this.glMouseListener = glMouseListener;
 
-		
 		init(gl);
 
 	}
@@ -394,7 +390,6 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemote
 		}
 	}
 
-
 	/**
 	 * Invokes the zoom out function when a thumbnail treemap is clicked or
 	 * delegates events to the embedded treemap.
@@ -410,26 +405,12 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemote
 
 	}
 
-
-
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedTreeMapView serializedForm = new SerializedTreeMapView(dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
-
-	@Override
-	public void handleUpdateView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleRedrawView() {
-
-		setDisplayListDirty();
-	}
-
 
 	@Override
 	public void registerEventListeners() {
@@ -466,7 +447,6 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemote
 		}
 
 	}
-
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
@@ -510,7 +490,6 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements  IGLRemote
 		mainTreeMapView = treemap;
 		mainTreeMapView.setInteractive(true);
 	}
-
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id) throws InvalidAttributeValueException {

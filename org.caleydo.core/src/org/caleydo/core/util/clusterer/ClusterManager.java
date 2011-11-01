@@ -3,7 +3,6 @@ package org.caleydo.core.util.clusterer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterer;
@@ -14,6 +13,7 @@ import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
@@ -70,9 +70,6 @@ public class ClusterManager {
 					clusterResult = runClustering(new AlphabeticalPartitioner(), clusterConfiguration);
 					break;
 			}
-
-			if (clusterResult != null)
-				GeneralManager.get().getEventPublisher().triggerEvent(new UpdateViewEvent());
 
 			return clusterResult;
 		}

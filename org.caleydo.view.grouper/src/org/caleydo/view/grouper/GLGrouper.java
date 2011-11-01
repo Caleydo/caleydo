@@ -32,11 +32,11 @@ import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEven
 import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -271,9 +271,9 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						.getDataDomainID(), dataContainer.getDimensionPerspective()
 						.getID(), data));
 
-		UpdateViewEvent event = new UpdateViewEvent();
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
+		// UpdateViewEvent event = new UpdateViewEvent();
+		// event.setSender(this);
+		// eventPublisher.triggerEvent(event);
 
 		triggerSelectionEvents();
 	}
@@ -753,11 +753,6 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 	@Override
 	public void handleRedrawView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleUpdateView() {
 		setDisplayListDirty();
 	}
 

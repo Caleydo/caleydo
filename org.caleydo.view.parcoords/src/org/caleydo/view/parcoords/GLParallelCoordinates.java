@@ -58,12 +58,12 @@ import org.caleydo.core.event.view.tablebased.BookmarkButtonEvent;
 import org.caleydo.core.event.view.tablebased.ResetAxisSpacingEvent;
 import org.caleydo.core.event.view.tablebased.ResetParallelCoordinatesEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.event.view.tablebased.UseRandomSamplingEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -1259,10 +1259,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		selectionUpdateEvent.setSelectionDelta(recordSelectionManager.getDelta());
 		selectionUpdateEvent.setSender(this);
 		eventPublisher.triggerEvent(selectionUpdateEvent);
-		// send out a major update which tells the hhm to update its textures
-		UpdateViewEvent updateView = new UpdateViewEvent();
-		updateView.setSender(this);
-		eventPublisher.triggerEvent(updateView);
 	}
 
 	@Override
@@ -1973,11 +1969,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				dataDomain.getDataDomainID());
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
-	}
-
-	@Override
-	public void handleUpdateView() {
-		setDisplayListDirty();
 	}
 
 	@Override

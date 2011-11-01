@@ -67,7 +67,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 	}
 
 	@Override
-	public void handleUpdateView() {
+	public void handleRedrawView() {
 		colorMappingPreview.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -91,8 +91,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 					.getRawForNormalized(normalizedValue);
 
 			if (labels != null)
-				labels.get(iCount - 1).setText(
-						Formatter.formatNumber(correspondingValue));
+				labels.get(iCount - 1)
+						.setText(Formatter.formatNumber(correspondingValue));
 
 			int colorMarkerPoint = (int) (100 * normalizedValue);
 

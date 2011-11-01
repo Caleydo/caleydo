@@ -16,11 +16,12 @@ import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.MinimumSizeComposite;
+import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
@@ -30,7 +31,7 @@ import org.eclipse.swt.widgets.Composite;
 public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
 		IListenerOwner, ITableBasedDataDomainView {
 
-	protected UpdateViewListener updateViewListener;
+	protected UpdateColorMappingListener updateViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
 
 	protected Composite histoComposite;
@@ -71,7 +72,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		createGLCanvas();
 
 		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
-		((GLHistogram) view).setRenderColorBars(false);
+//		((GLHistogram) view).setRenderColorBars(false);
+		initializeViewWithData();
 		initialize();
 
 		createPartControlGL();
@@ -86,22 +88,13 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		alToolbar = new ArrayList<IAction>();
 	}
 
-	@Override
-	public void handleUpdateView() {
 
-	}
 
-	@Override
-	public void handleClearSelections() {
-		// nothing to do here
-	}
+
 
 	@Override
 	public void registerEventListeners() {
 
-		updateViewListener = new UpdateViewListener();
-		updateViewListener.setHandler(this);
-		eventPublisher.addListener(RedrawViewEvent.class, updateViewListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
@@ -162,8 +155,9 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	@Override
 	public void initialize() {
-		// TODO Auto-generated method stub
-
+		ATableBasedView glHistogram = (ATableBasedView) view;
+		setDataDomain(glHistogram.getDataDomain());
+		setDataContainer(glHistogram.getDataContainer());
 	}
 
 	@Override
@@ -197,11 +191,17 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	@Override
 	public void handleRedrawView() {
-		handleUpdateView();
+		
 	}
 
 	@Override
 	public List<DataContainer> getDataContainers() {
 		return ((ITableBasedDataDomainView) view).getDataContainers();
+	}
+
+	@Override
+	public void handleClearSelections() {
+		// TODO Auto-generated method stub
+		
 	}
 }

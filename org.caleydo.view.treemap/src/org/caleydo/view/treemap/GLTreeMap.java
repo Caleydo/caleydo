@@ -21,7 +21,6 @@ import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.event.view.treemap.LevelHighlightingEvent;
 import org.caleydo.core.event.view.treemap.ToggleColoringModeEvent;
 import org.caleydo.core.event.view.treemap.ToggleLabelEvent;
@@ -29,11 +28,12 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -100,7 +100,7 @@ public class GLTreeMap extends ATableBasedView {
 	private SelectionUpdateListener selectionUpdateListener;
 	private ToggleColoringModeListener coloringModeListener;
 	private ToggleLabelListener labelListener;
-	UpdateViewListener updateViewListener;
+	private UpdateColorMappingListener updateViewListener;
 	LevelHighlightingListener levelHighlightingListener;
 
 	public GLTreeMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
@@ -465,11 +465,6 @@ public class GLTreeMap extends ATableBasedView {
 		selectionUpdateListener.setHandler(this);
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 
-		updateViewListener = new UpdateViewListener();
-		// updateViewListener.setDataDomainType(dataDomain.getDataDomainType());
-		updateViewListener.setHandler(this);
-		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
-
 	}
 
 	@Override
@@ -524,22 +519,6 @@ public class GLTreeMap extends ATableBasedView {
 
 			setDisplayListDirty();
 		}
-	}
-
-	@Override
-	public void handleRedrawView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleUpdateView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
 	}
 
 	public void setInteractive(boolean flag) {

@@ -3206,10 +3206,6 @@ public class GLScatterPlot extends ATableBasedView {
 		return serializedForm;
 	}
 
-	@Override
-	public void handleUpdateView() {
-		setDisplayListDirty();
-	}
 
 	@Override
 	public void handleRedrawView() {

@@ -740,12 +740,6 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
 	public List<DataContainer> getDataContainers() {
 		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 		dataContainers.add(dataContainer);

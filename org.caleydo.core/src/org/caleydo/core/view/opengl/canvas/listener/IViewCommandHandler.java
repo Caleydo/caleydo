@@ -20,12 +20,6 @@ public interface IViewCommandHandler
 	public void handleRedrawView();
 
 	/**
-	 * Handler method to be called when a major view update is required. It has to be called by a
-	 * {@link UpdateViewListener}.
-	 */
-	public void handleUpdateView();
-
-	/**
 	 * Handler method to be called when a clear selections view update event is is caught by a related
 	 * {@link ClearSelectionsListener}.
 	 */

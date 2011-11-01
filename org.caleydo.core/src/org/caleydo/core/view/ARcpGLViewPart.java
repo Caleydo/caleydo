@@ -8,6 +8,8 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
@@ -20,7 +22,7 @@ import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * Shared object for all Caleydo RCP OpenGL2 views.
+ * Base class for all RCP views that use OpenGL.
  * 
  * @author Marc Streit
  * @author Werner Puff
@@ -55,25 +57,14 @@ public abstract class ARcpGLViewPart
 		minSizeComposite.setExpandHorizontal(true);
 		minSizeComposite.setExpandVertical(true);
 	}
+
 	
-	protected void initializeData()
-	{
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-		view.initFromSerializableRepresentation(serializedView);
-		view.initialize();
-	}
 
 	public void createPartControlGL() {
 
 		Frame frameGL = SWT_AWT.new_Frame(parentComposite);
 		frameGL.add(glCanvas);
-		
+
 		GeneralManager.get().getViewManager().registerRCPView(this, view);
 	}
 

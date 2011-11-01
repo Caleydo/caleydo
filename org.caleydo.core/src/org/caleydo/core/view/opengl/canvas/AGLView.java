@@ -501,34 +501,36 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Set the level of detail to be displayed
+	 * Set the level of detail to be displayed, choose from the options in {@link DetailLevel}. If the
+	 * specified detail level differs from the current {@link #setDisplayListDirty()} is called.
 	 * 
 	 * @param detailLevel
 	 */
 	public void setDetailLevel(DetailLevel detailLevel) {
-		this.detailLevel = detailLevel;
-		setDisplayListDirty();
+		if (this.detailLevel != detailLevel) {
+			this.detailLevel = detailLevel;
+			setDisplayListDirty();
+		}
 	}
 
 	private void updateDetailMode() {
 
-		DetailLevel detailLevel = this.detailLevel;
+		DetailLevel newDetailLevel; 
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
 		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 		if (pixelHeight > getMinPixelHeight(DetailLevel.HIGH)
 			&& pixelWidth > getMinPixelWidth(DetailLevel.HIGH)) {
-			detailLevel = DetailLevel.HIGH;
+			newDetailLevel = DetailLevel.HIGH;
 		}
 		else if (pixelHeight > getMinPixelHeight(DetailLevel.MEDIUM)
 			&& pixelWidth > getMinPixelWidth(DetailLevel.MEDIUM)) {
-			detailLevel = DetailLevel.MEDIUM;
+			newDetailLevel = DetailLevel.MEDIUM;
 		}
 		else {
-			detailLevel = DetailLevel.LOW;
+			newDetailLevel = DetailLevel.LOW;
 		}
-		if (!this.detailLevel.equals(detailLevel)) {
-			setDetailLevel(detailLevel);
-		}
+		setDetailLevel(newDetailLevel);
+
 	}
 
 	/**

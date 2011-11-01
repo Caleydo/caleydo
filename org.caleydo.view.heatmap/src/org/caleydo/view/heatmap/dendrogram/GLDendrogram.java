@@ -33,9 +33,7 @@ import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.view.tablebased.NewDimensionGroupInfoEvent;
 import org.caleydo.core.event.view.tablebased.NewRecordGroupInfoEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
@@ -44,7 +42,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
-import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -107,12 +104,9 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 	private int iMaxDepth = 0;
 
-	private ColorMapper colorMapper;
-
 	private boolean bRedrawDendrogram = true;
 
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
-	private UpdateViewListener updateViewListener;
 
 	private int iGLDisplayListCutOffValue = 0;
 
@@ -155,10 +149,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		updateViewListener = new UpdateViewListener();
-		updateViewListener.setHandler(this);
-		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
-
 		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
 		clusterNodeMouseOverListener.setHandler(this);
 		eventPublisher.addListener(ClusterNodeSelectionEvent.class,
@@ -169,10 +159,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (updateViewListener != null) {
-			eventPublisher.removeListener(updateViewListener);
-			updateViewListener = null;
-		}
 		if (clusterNodeMouseOverListener != null) {
 			eventPublisher.removeListener(clusterNodeMouseOverListener);
 			clusterNodeMouseOverListener = null;
@@ -181,7 +167,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 	@Override
 	public void init(GL2 gl) {
-		colorMapper = dataDomain.getColorMapper();
 		displayListIndex = gl.glGenLists(1);
 		iGLDisplayListCutOffValue = gl.glGenLists(1);
 	}
@@ -693,7 +678,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	private void renderSubTreeRec(GL2 gl, ClusterNode currentNode) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
-		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
 
 		if (bUseBlackColoring)
 			gl.glColor4f(0, 0, 0, 1);
@@ -954,7 +939,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
-		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
 
 		if (bUseBlackColoring)
 			gl.glColor4f(0, 0, 0, 1);
@@ -1076,7 +1061,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			float fOpacity) {
 
 		float fLookupValue = currentNode.getAverageExpressionValue();
-		float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+		float[] fArMappingColor = dataDomain.getColorMapper().getColor(fLookupValue);
 
 		if (bUseBlackColoring)
 			gl.glColor4f(0, 0, 0, 1);
@@ -1772,14 +1757,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		}
 	}
 
-	@Override
-	public void handleUpdateView() {
-		tree = null;
-		// setInitialPositionOfCut();
-		resetAllTreeSelections();
-		bRedrawDendrogram = true;
-		setDisplayListDirty();
-	}
+	
+//	public void handleRedrawView() {
+//		tree = null;
+//		// setInitialPositionOfCut();
+//		resetAllTreeSelections();
+//		bRedrawDendrogram = true;
+//		setDisplayListDirty();
+//	}
 
 	/**
 	 * Toggles the coloring scheme of the dendrogram view. Either normal

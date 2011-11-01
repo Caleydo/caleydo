@@ -366,10 +366,6 @@ public class SelectionBrowserView extends ASWTView implements
 		// nothing to do here
 	}
 
-	@Override
-	public void handleUpdateView() {
-		// nothing to do here
-	}
 
 	@Override
 	public void handleClearSelections() {

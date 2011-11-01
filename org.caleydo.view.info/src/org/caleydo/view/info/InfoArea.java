@@ -261,11 +261,6 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	}
 
 	@Override
-	public void handleUpdateView() {
-		// nothing to do here
-	}
-
-	@Override
 	public void handleClearSelections() {
 		contentTree.removeAll();
 		dimensionTree.removeAll();

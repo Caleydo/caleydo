@@ -358,27 +358,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	}
 
-	@Override
-	public void handleRedrawView() {
-		// TODO Auto-generated method stub
-	}
 
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-	}
 
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
+	
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {

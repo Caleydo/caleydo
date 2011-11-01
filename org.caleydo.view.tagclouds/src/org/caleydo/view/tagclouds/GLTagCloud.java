@@ -506,10 +506,4 @@ public class GLTagCloud extends ATableBasedView {
 		// TODO Auto-generated method stub
 		return null;
 	}
-
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-		
-	}
 }

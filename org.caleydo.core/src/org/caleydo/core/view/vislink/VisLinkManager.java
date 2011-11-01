@@ -330,11 +330,7 @@ public class VisLinkManager
 
 	}
 
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	public String getAppName() {
 		return appName;

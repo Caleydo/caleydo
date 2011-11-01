@@ -42,7 +42,7 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 //			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 //			dataDomainBasedView.setDataDomain(dataDomain);
 //		}
-		initializeData();
+		initializeViewWithData();
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
 		

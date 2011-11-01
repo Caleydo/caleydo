@@ -47,11 +47,12 @@ import org.caleydo.core.event.view.group.InterchangeDimensionGroupsEvent;
 import org.caleydo.core.event.view.group.MergeContentGroupsEvent;
 import org.caleydo.core.event.view.group.MergeDimensionGroupsEvent;
 import org.caleydo.core.event.view.tablebased.NewRecordGroupInfoEvent;
-import org.caleydo.core.event.view.tablebased.UpdateViewEvent;
 import org.caleydo.core.io.gui.ExportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.mapping.color.ColorMapper;
+import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -65,7 +66,6 @@ import org.caleydo.core.view.opengl.canvas.listener.NewContentGroupInfoActionLis
 import org.caleydo.core.view.opengl.canvas.listener.RecordGroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.listener.RecordGroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.RecordGroupMergingActionListener;
-import org.caleydo.core.view.opengl.canvas.listener.UpdateViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IContentGroupsActionHandler;
 import org.caleydo.core.view.opengl.canvas.remote.receiver.IDimensionGroupsActionHandler;
@@ -106,7 +106,8 @@ import com.jogamp.opengl.util.texture.TextureIO;
  */
 public class GLHierarchicalHeatMap extends ATableBasedView implements
 		IContentGroupsActionHandler, IDimensionGroupsActionHandler,
-		IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView {
+		IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView,
+		IColorMappingUpdateListener {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.heatmap.hierarchical";
 
@@ -142,8 +143,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 */
 	private boolean bSkipLevel2 = false;
 	private final static int MIN_SAMPLES_SKIP_LEVEL_2 = 120;
-
-	private ColorMapper colorMapper;
 
 	private int iNrTextures = 0;
 	/** array of textures for holding the data samples */
@@ -236,7 +235,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	private RecordGroupMergingActionListener contentGroupMergingListener;
 	private DimensionGroupMergingActionListener dimensionGroupMergingListener;
-	private UpdateViewListener updateViewListener;
+	private UpdateColorMappingListener updateViewListener;
 	private ClusterNodeSelectionListener clusterNodeMouseOverListener;
 	private NewContentGroupInfoActionListener newGroupInfoActionListener;
 
@@ -293,7 +292,6 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-		colorMapper = dataDomain.getColorMapper();
 		textRenderer = new CaleydoTextRenderer(24);
 
 		createHeatMap();
@@ -548,7 +546,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					fLookupValue = dataDomain.getTable().getFloat(
 							dimensionDataRepresentation, iDimensionIndex, recordIndex);
 
-					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+					float[] fArMappingColor = dataDomain.getColorMapper().getColor(
+							fLookupValue);
 
 					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
 							fArMappingColor[2], fOpacity };
@@ -622,7 +621,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					fLookupValue = dataDomain.getTable().getFloat(
 							dimensionDataRepresentation, dimensionID, recordID);
 
-					float[] fArMappingColor = colorMapper.getColor(fLookupValue);
+					float[] fArMappingColor = dataDomain.getColorMapper().getColor(
+							fLookupValue);
 
 					float[] fArRgba = { fArMappingColor[0], fArMappingColor[1],
 							fArMappingColor[2], fOpacity };
@@ -4603,9 +4603,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		eventPublisher.addListener(MergeDimensionGroupsEvent.class,
 				dimensionGroupMergingListener);
 
-		updateViewListener = new UpdateViewListener();
+		updateViewListener = new UpdateColorMappingListener();
 		updateViewListener.setHandler(this);
-		eventPublisher.addListener(UpdateViewEvent.class, updateViewListener);
+		eventPublisher.addListener(UpdateColorMappingEvent.class, updateViewListener);
 
 		clusterNodeMouseOverListener = new ClusterNodeSelectionListener();
 		clusterNodeMouseOverListener.setHandler(this);
@@ -4663,16 +4663,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleUpdateView() {
+	public void updateColorMapping() {
 		bRedrawTextures = true;
 		bFirstStartExperimentDendrogram = true;
 		bFirstStartGeneDendrogram = true;
-
-		// TODO: maybe causes side effects
-		// initData();
-		
-		colorMapper = dataDomain.getColorMapper();
-		glHeatMapView.handleUpdateView();
 
 		setDisplayListDirty();
 	}

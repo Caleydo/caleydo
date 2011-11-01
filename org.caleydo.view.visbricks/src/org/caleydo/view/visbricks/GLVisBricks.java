@@ -1128,11 +1128,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
 
-	}
 
 	@Override
 	public void handleClearSelections() {

@@ -121,7 +121,6 @@ public class GLTemplate extends ATableBasedView {
 
 		checkForHits(gl);
 	}
-	
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
@@ -154,16 +153,12 @@ public class GLTemplate extends ATableBasedView {
 
 	}
 
-	
 	@Override
 	public void handleRedrawView() {
-		// TODO Auto-generated method stub
+		setDisplayListDirty();
 	}
 
-	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-	}
+
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)

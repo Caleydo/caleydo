@@ -110,20 +110,9 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
-
-	// protected SelectionUpdateListener selectionUpdateListener;
-	// protected RecordVADeltaListener virtualArrayUpdateListener;
-	//
-	// protected ReplaceRecordPerspectiveListener replaceVirtualArrayListener;
-
-	protected RedrawViewListener redrawViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
-
-	protected SelectionCommandListener selectionCommandListener;
-
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
-	// protected IDMappingManager contentIDMappingManager;
+
 
 	/**
 	 * Constructor.
@@ -138,7 +127,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
-		
+
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
 		connectedElementRepresentationManager = generalManager.getViewManager()
@@ -167,7 +156,9 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		return pathway;
 	}
 
-	/* (non-Javadoc)
+	/*
+	 * (non-Javadoc)
+	 * 
 	 * @see org.caleydo.core.view.opengl.canvas.ATableBasedView#initialize()
 	 */
 	@Override
@@ -175,7 +166,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		super.initialize();
 		gLPathwayContentCreator = new GLPathwayContentCreator(viewFrustum, this);
 	}
-	
+
 	@Override
 	public void initLocal(final GL2 gl) {
 		init(gl);
@@ -194,7 +185,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
-		
+
 		initPathwayData(gl);
 	}
 
@@ -815,7 +806,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					// "Invalid David Gene ID."));
 					continue;
 				}
-				
+
 				// for (Object iRefSeqID : DataTableRefSeq) {
 				delta.add(VADeltaItem.create(type, (Integer) iDavidID));
 				// }
@@ -835,7 +826,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		return label + ": " + pathway.getName();
 	}
 
-	
 	@Override
 	public void initData() {
 		connectedElementRepresentationManager.clear(dataDomain.getRecordIDType());
@@ -844,38 +834,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	}
 
-	// @Override
-	// public int getNumberOfSelections(SelectionType SelectionType) {
-	// return selectionManager.getElements(SelectionType).size();
-	// }
-
-	@Override
-	public void handleRedrawView() {
-		setDisplayListDirty();
-	}
-
-	@Override
-	public void handleUpdateView() {
-		setDisplayListDirty();
-	}
-
-	// @Override
-	// public void handleClearSelections() {
-	// selectionManager.clearSelections();
-	// setDisplayListDirty();
-	// }
-
 	@Override
 	public void destroy() {
 		pathwayManager.setPathwayVisibilityState(pathway, false);
 
 		super.destroy();
 	}
-
-	// @Override
-	// public void clearAllSelections() {
-	// selectionManager.clearSelections();
-	// }
 
 	@Override
 	public void registerEventListeners() {
@@ -890,35 +854,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		disableGeneMappingListener.setHandler(this);
 		eventPublisher.addListener(DisableGeneMappingEvent.class,
 				disableGeneMappingListener);
-
-		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
-		// virtualArrayUpdateListener = new RecordVAUpdateListener();
-		// virtualArrayUpdateListener.setHandler(this);
-		// eventPublisher.addListener(VirtualArrayUpdateEvent.class,
-		// virtualArrayUpdateListener);
-
-		redrawViewListener = new RedrawViewListener();
-		redrawViewListener.setHandler(this);
-		eventPublisher.addListener(RedrawViewEvent.class, redrawViewListener);
-
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		clearSelectionsListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-
-		selectionCommandListener = new SelectionCommandListener();
-		selectionCommandListener.setHandler(this);
-		selectionCommandListener.setDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(SelectionCommandEvent.class, selectionCommandListener);
-
-		// replaceVirtualArrayListener = new ReplaceRecordVAListener();
-		// replaceVirtualArrayListener.setHandler(this);
-		// eventPublisher.addListener(ReplaceVAEvent.class,
-		// replaceVirtualArrayListener);
 
 		switchDataRepresentationListener = new SwitchDataRepresentationListener();
 		switchDataRepresentationListener.setHandler(this);
@@ -940,23 +875,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					disableGeneMappingListener);
 			disableGeneMappingListener = null;
 		}
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
-		}
-		// if (virtualArrayUpdateListener != null) {
-		// eventPublisher.removeListener(virtualArrayUpdateListener);
-		// virtualArrayUpdateListener = null;
-		// }
-		if (selectionCommandListener != null) {
-			eventPublisher.removeListener(selectionCommandListener);
-			selectionCommandListener = null;
-		}
-
-		// if (replaceVirtualArrayListener != null) {
-		// eventPublisher.removeListener(replaceVirtualArrayListener);
-		// replaceVirtualArrayListener = null;
-		// }
 
 		if (switchDataRepresentationListener != null) {
 			eventPublisher.removeListener(switchDataRepresentationListener);

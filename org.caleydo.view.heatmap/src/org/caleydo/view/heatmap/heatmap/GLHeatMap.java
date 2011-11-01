@@ -576,11 +576,6 @@ public class GLHeatMap extends ATableBasedView {
 		return serializedForm;
 	}
 
-	@Override
-	public void handleUpdateView() {
-		
-		setDisplayListDirty();
-	}
 
 	public void setClusterVisualizationGenesActiveFlag(boolean bClusterVisualizationActive) {
 		this.bClusterVisualizationGenesActive = bClusterVisualizationActive;

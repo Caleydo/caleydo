@@ -349,12 +349,6 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	public void handleUpdateView() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
