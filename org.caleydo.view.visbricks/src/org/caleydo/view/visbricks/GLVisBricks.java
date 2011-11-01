@@ -1220,6 +1220,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dimensionGroup.initialize();
 
 				dimensionGroups.add(dimensionGroup);
+				dataContainers.add(data);
 
 				uninitializedDimensionGroups.add(dimensionGroup);
 				dataDomains.add(data.getDataDomain());
@@ -1717,6 +1718,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public List<DataContainer> getDataContainers() {
 		// TODO Auto-generated method stub
-		return null;
+		return dataContainers;
 	}
 }

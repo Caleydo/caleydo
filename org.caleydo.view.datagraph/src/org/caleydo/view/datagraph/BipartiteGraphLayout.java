@@ -119,12 +119,15 @@ public class BipartiteGraphLayout extends AGraphLayout {
 			}
 		}
 
-		float dataNodesCenterY = (float) layoutArea.getMinY()
-				+ maxDataNodeHeightPixels / 2.0f + maxBendPointOffsetYPixels;
+		float dataNodesBottomY = (float) layoutArea.getMinY()
+				+ maxBendPointOffsetYPixels;
 
 		for (IDataGraphNode node : dataNodes) {
-			setNodePosition(node, new Point2D.Float(currentDataNodePositionX
-					+ node.getWidthPixels() / 2.0f, dataNodesCenterY));
+			setNodePosition(
+					node,
+					new Point2D.Float(currentDataNodePositionX
+							+ node.getWidthPixels() / 2.0f, dataNodesBottomY
+							+ node.getHeightPixels() / 2.0f));
 
 			currentDataNodePositionX += node.getWidthPixels()
 					+ dataNodeSpacingPixels;
