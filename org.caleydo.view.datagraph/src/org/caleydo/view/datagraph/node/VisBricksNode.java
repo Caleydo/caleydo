@@ -26,9 +26,9 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 	protected DataContainerListRenderer dataContainerListRenderer;
 
-	public VisBricksNode(AGraphLayout graphLayout,
-			GLDataGraph view, DragAndDropController dragAndDropController,
-			Integer id, AGLView representedView) {
+	public VisBricksNode(AGraphLayout graphLayout, GLDataGraph view,
+			DragAndDropController dragAndDropController, Integer id,
+			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id, representedView);
 
 	}
@@ -125,6 +125,12 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 		// overviewDataContainerRenderer.destroy();
 		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(),
 				id);
+	}
+
+	@Override
+	public void update() {
+		dataContainerListRenderer.setDataContainers(getDataContainers());
+
 	}
 
 }
