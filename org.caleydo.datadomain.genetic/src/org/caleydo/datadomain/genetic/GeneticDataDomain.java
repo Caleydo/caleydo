@@ -64,9 +64,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 	}
 
+	@Override
 	public void createDefaultConfiguration() {
 
 		configuration = new DataDomainConfiguration();
+		configuration.setDefaultConfiguration(true);
 
 		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 		configuration.setRecordIDCategory("GENE");
@@ -84,43 +86,15 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		configuration.setDimensionDenominationPlural("samples");
 		configuration.setDimensionDenominationSingular("sample");
 
-		// if (isColumnDimension) {
-		// recordIDCategory = IDCategory.getIDCategory("GENE");
-		// dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-		//
-		// primaryRecordMappingType = IDType.getIDType("DAVID");
-		// humanReadableRecordIDType = IDType.getIDType("GENE_SYMBOL");
-		//
-		// primaryDimensionMappingType = IDType.getIDType("DIMENSION");
-		// humanReadableDimensionIDType = IDType.getIDType("DIMENSION");
-		//
-		// recordDenominationSingular = "gene";
-		// recordDenominationPlural = "genes";
-		//
-		// dimensionDenominationSingular = "sample";
-		// dimensionDenominationPlural = "samples";
-		// } else {
-		// recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
-		// dimensionIDCategory = IDCategory.getIDCategory("GENE");
-		// primaryRecordMappingType = IDType.getIDType("DIMENSION");
-		// humanReadableRecordIDType = IDType.getIDType("DIMENSION");
-		//
-		// primaryDimensionMappingType = IDType.getIDType("DAVID");
-		// humanReadableDimensionIDType = IDType.getIDType("GENE_SYMBOL");
-		//
-		// recordDenominationSingular = "sample";
-		// recordDenominationPlural = "samples";
-		//
-		// dimensionDenominationSingular = "gene";
-		// dimensionDenominationPlural = "genes";
-		// }
 		pathwayViewerMode = false;
 
 	}
 
-	public void createDefaultConfigurationWithSamplesAsRows() {
+	@Override
+	public void createDefaultConfigurationWithColumnsAsRecords() {
 
 		configuration = new DataDomainConfiguration();
+		configuration.setDefaultConfiguration(true);
 		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 
 		configuration.setRecordIDCategory("SAMPLE");
@@ -144,8 +118,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		super.setTable(set);
 
 	}
-	
-	
 
 	/**
 	 * Initializes a virtual array with all elements, according to the data
@@ -420,9 +392,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		else
 			return recordIDMappingManager;
 	}
-	
-	public IDType getGeneIDType()
-	{
+
+	public IDType getGeneIDType() {
 		if (loadDataParameters.isColumnDimension())
 			return getRecordIDType();
 		else

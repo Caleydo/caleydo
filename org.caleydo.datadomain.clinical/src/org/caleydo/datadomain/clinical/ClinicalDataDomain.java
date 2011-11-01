@@ -89,6 +89,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	@Override
 	public void createDefaultConfiguration() {
 		// FIXME create default config
+		
 		recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
 		
@@ -96,7 +97,7 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void createDefaultConfigurationWithSamplesAsRows() {
+	public void createDefaultConfigurationWithColumnsAsRecords() {
 		// FIXME create default config
 		throw new IllegalStateException();
 	}

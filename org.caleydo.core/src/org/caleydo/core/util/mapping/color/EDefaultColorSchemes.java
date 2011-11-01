@@ -117,6 +117,7 @@ public enum EDefaultColorSchemes {
 		return colorMarkerPoints;
 	}
 
+	
 	ColorMapper getDefaultColorMapper() {
 		ColorMapper colorMapper = new ColorMapper(colorMarkerPoints);
 		colorMapper.setColorSchemeName(colorSchemeName);

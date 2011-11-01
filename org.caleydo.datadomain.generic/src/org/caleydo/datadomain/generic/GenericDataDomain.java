@@ -48,6 +48,7 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	@Override
 	public void createDefaultConfiguration() {
 		configuration = new DataDomainConfiguration();
+		configuration.setDefaultConfiguration(true);
 
 		configuration.setRecordIDCategory("UNSPECIFIED_RECORD");
 		configuration.setDimensionIDCategory("UNSPECIFIED_DIMENSION");
@@ -74,8 +75,9 @@ public class GenericDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void createDefaultConfigurationWithSamplesAsRows() {
+	public void createDefaultConfigurationWithColumnsAsRecords() {
 		configuration = new DataDomainConfiguration();
+		configuration.setDefaultConfiguration(true);
 
 		configuration.setRecordIDCategory("UNSPECIFIED_DIMENSION");
 		configuration.setDimensionIDCategory("UNSPECIFIED_RECORD");

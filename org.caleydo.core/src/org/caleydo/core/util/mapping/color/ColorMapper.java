@@ -60,6 +60,12 @@ public class ColorMapper {
 		init(markerPoints);
 	}
 
+	/**
+	 * Returns a new {@link ColorMapper} for the schema specified
+	 * 
+	 * @param colorSchema
+	 * @return
+	 */
 	public static ColorMapper createDefaultMapper(EDefaultColorSchemes colorSchema) {
 		return colorSchema.getDefaultColorMapper();
 	}
@@ -241,8 +247,7 @@ public class ColorMapper {
 		return colorSchemeName;
 	}
 
-	public static void createColorMappingPreview(ColorMapper colorMapper,
-		CLabel colorMappingPreview) {
+	public static void createColorMappingPreview(ColorMapper colorMapper, CLabel colorMappingPreview) {
 
 		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
 

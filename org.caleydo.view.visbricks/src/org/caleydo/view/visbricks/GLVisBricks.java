@@ -72,7 +72,6 @@ import org.caleydo.view.visbricks.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
 import org.caleydo.view.visbricks.listener.NewSubDataTablesListener;
-import org.caleydo.view.visbricks.renderstyle.VisBricksRenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -100,8 +99,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ConnectionsModeListener trendHighlightModeListener;
 
 	private ATableBasedDataDomain dataDomain;
-
-	private VisBricksRenderStyle renderStyle;
 
 	private DimensionGroupManager dimensionGroupManager;
 
@@ -212,15 +209,9 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 		contentSelectionManager = dataDomain.getRecordSelectionManager();
 
-		// renderStyle = new GeneralRenderStyle(viewFrustum);
-		renderStyle = new VisBricksRenderStyle(viewFrustum);
-
-		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 		subDataTablesUpdated();
 		connectionRenderer.init(gl);
-		// viewFrustum.setProjectionMode(ECameraProjectionMode.PERSPECTIVE);
-		// viewCamera.setCameraRotation(new Rotf());
 
 		checkForPerparedPerspectives();
 
@@ -509,11 +500,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void display(GL2 gl) {
 		handleHorizontalMoveDragging(gl);
-		// viewFrustum.getFar();
-		// viewCamera.setCameraPosition(new Vec3f(-0.5f,-0.5f,-1.f));
-		// GLHelperFunctions.drawPointAt(gl, 0,0,0);
-		// gl.glCallList(iGLDisplayListToCall);
-
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
@@ -1128,8 +1114,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
-
-
 	@Override
 	public void handleClearSelections() {
 		clearAllSelections();
@@ -1220,7 +1204,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 				uninitializedDimensionGroups.add(dimensionGroup);
 				dataDomains.add(data.getDataDomain());
-				
+
 			}
 		}
 
@@ -1377,17 +1361,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	// //
 	// // dimensionGroupManager.calculateGroupDivision();
 	// }
-
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -1715,5 +1688,16 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public List<DataContainer> getDataContainers() {
 		// TODO Auto-generated method stub
 		return dataContainers;
+	}
+
+	@Override
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+
+	}
+
+	@Override
+	public ATableBasedDataDomain getDataDomain() {
+		return dataDomain;
 	}
 }

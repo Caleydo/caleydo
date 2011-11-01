@@ -188,11 +188,19 @@ public abstract class ATableBasedDataDomain
 
 	@Override
 	public void init() {
-		if (configuration == null)
-			createDefaultConfiguration();
-		else if (loadDataParameters != null && !loadDataParameters.isColumnDimension())
-			createDefaultConfigurationWithSamplesAsRows();
-
+		if (configuration == null || configuration.isDefaultConfiguration()) {
+			if (loadDataParameters != null && !loadDataParameters.isColumnDimension()) {
+				if (configuration.isDefaultConfiguration()) {
+					IDType.unregisterType(recordIDType);
+					IDType.unregisterType(dimensionIDType);
+					IDType.unregisterType(recordGroupIDType);
+				}
+				createDefaultConfigurationWithColumnsAsRecords();
+				
+			}
+			else
+				createDefaultConfiguration();
+		}
 		boolean externalMappingLoaded = false;
 
 		if (configuration.mappingFile != null) {
@@ -200,21 +208,17 @@ public abstract class ATableBasedDataDomain
 			externalMappingLoaded = true;
 		}
 
-		// isColumnDimension = configuration.isColu;
-
 		if (externalMappingLoaded) {
 			recordIDCategory = IDCategory.getIDCategory(configuration.recordIDCategory);
 			dimensionIDCategory = IDCategory.getIDCategory(configuration.dimensionIDCategory);
 
 			humanReadableRecordIDType = IDType.getIDType(configuration.humanReadableRecordIDType);
 			humanReadableDimensionIDType = IDType.getIDType(configuration.humanReadableDimensionIDType);
-
 		}
 
 		else {
 			// if we don't have an external mapping we create the mapping based on the first column / row. We
 			// create the ids for that here.
-
 			recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
 			dimensionIDCategory = IDCategory.registerCategory(configuration.dimensionIDCategory);
 			humanReadableRecordIDType =
@@ -270,9 +274,14 @@ public abstract class ATableBasedDataDomain
 
 	}
 
+	/** Create a default {@link DataDomainConfiguration} where the columns are the dimensions */
 	public abstract void createDefaultConfiguration();
-	
-	public abstract void createDefaultConfigurationWithSamplesAsRows();
+
+	/**
+	 * Create a default {@link DataDomainConfiguration} where the columns are the records (i.e. perceived
+	 * swapped compared to the data source)
+	 */
+	public abstract void createDefaultConfigurationWithColumnsAsRecords();
 
 	/**
 	 * Sets the {@link #table} of this dataDomain. The table may not be null. Initializes

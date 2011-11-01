@@ -75,30 +75,41 @@ public class IDType {
 		if (!(columnType == EColumnType.STRING || columnType == EColumnType.INT))
 			throw new IllegalStateException(
 				"IDTypes are allowed to be only either of type STRING or INT, but was: " + columnType);
-
-		IDType idType = new IDType(typeName, idCategory, columnType);
-		registeredTypes.put(typeName, idType);
-		Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
-
+		IDType idType = registeredTypes.get(typeName);
+		if (idType != null) {
+			if (!idType.getIDCategory().equals(idCategory) || !idType.getColumnType().equals(columnType))
+				throw new IllegalStateException("Tried to register id type: " + typeName
+					+ " but was already registered with conflicting parameters. \n Previousl registered type"
+					+ idType + ", Category: " + idCategory + ", ColumnType: " + columnType);
+		}
+		else {
+			idType = new IDType(typeName, idCategory, columnType);
+			registeredTypes.put(typeName, idType);
+			Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
+		}
 		return idType;
 	}
 
-	// /**
-	// * Unregister an IDType. Checks whether the IDType is registered.
-	// *
-	// * @param idType
-	// * see {@link #idType}
-	// */
-	// public static void unregisterType(IDType idType) {
-	// if (registeredTypes.containsKey(idType.getTypeName())) {
-	// Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
-	// registeredTypes.remove(idType.getTypeName());
-	// }
-	// else {
-	// Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType "
-	// + idType.getTypeName() + " because it does not exist."));
-	// }
-	// }
+	/**
+	 * Unregister an IDType. Checks whether the IDType is registered.
+	 * 
+	 * @param idType
+	 *            see {@link #idType}
+	 */
+	public static void unregisterType(IDType idType) {
+		if(idType == null)
+			return;
+		if (registeredTypes.containsKey(idType.getTypeName())) {
+			Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
+			registeredTypes.remove(idType.getTypeName());
+			idType.setTypeName("INVALID");
+		}
+		else {
+			Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType "
+				+ idType.getTypeName() + " because it does not exist."));
+		}
+	}
+	
 
 	/** Returns the IDType for the typeName specified, or null if no such type is registered */
 	public static IDType getIDType(String typeName) {
@@ -157,5 +168,7 @@ public class IDType {
 	public String toString() {
 		return typeName;
 	}
+
+	
 
 }

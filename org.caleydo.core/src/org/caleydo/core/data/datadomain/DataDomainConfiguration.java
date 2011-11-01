@@ -4,6 +4,7 @@
 package org.caleydo.core.data.datadomain;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlTransient;
 
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -19,6 +20,14 @@ import org.caleydo.core.data.id.IDType;
  * @author Alexander Lex
  */
 public class DataDomainConfiguration {
+
+	/**
+	 * Flag determining whether this configuration was created as a default configuration by a data domain
+	 * (true) or was manually specified (false, the default). We may throw away defaults and rebuild them
+	 * (e.g. when column - dimension association is changed).
+	 */
+	@XmlTransient
+	boolean isDefaultConfiguration = false;
 
 	@XmlElement
 	String mappingFile;
@@ -46,6 +55,21 @@ public class DataDomainConfiguration {
 	String dimensionDenominationSingular = "not set";
 	@XmlElement
 	String dimensionDenominationPlural = "not set";
+
+	/**
+	 * @param isDefaultConfiguration
+	 *            setter, see {@link #isDefaultConfiguration}.
+	 */
+	public void setDefaultConfiguration(boolean isDefaultConfiguration) {
+		this.isDefaultConfiguration = isDefaultConfiguration;
+	}
+
+	/**
+	 * @return the isDefaultConfiguration, see {@link #isDefaultConfiguration}
+	 */
+	public boolean isDefaultConfiguration() {
+		return isDefaultConfiguration;
+	}
 
 	/**
 	 * @param recordIDCategory
