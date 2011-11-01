@@ -537,6 +537,47 @@ public class ConnectionBandRenderer {
 		// gl.glPopName();
 	}
 
+	public void renderComplexCurve(GL2 gl, List<Point2D> anchorPoints) {
+		if (anchorPoints == null || anchorPoints.size() < 2)
+			return;
+
+		// gl.glPushName(pickingManager.getPickingID(viewID,
+		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
+
+		// float yCorrection = 0;
+		float z = 0f;
+
+		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
+		for (Point2D anchorPoint : anchorPoints) {
+			Vec3f vec = new Vec3f((float) anchorPoint.getX(), (float) anchorPoint.getY(), z);
+			inputPoints.add(vec);
+			// gl.glPointSize(4);
+			// gl.glColor4f(1, 0, 0, 1);
+			// gl.glBegin(GL2.GL_POINTS);
+			// gl.glVertex3f(vec.x(), vec.y(), -1);
+			// gl.glEnd();
+			// GLHelperFunctions.drawPointAt(gl, vec);
+		}
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+		// side1AnchorPos1[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+		// side2AnchorPos1[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1], z));
+
+		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
+		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
+
+		// Band border
+		gl.glLineWidth(2);
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		for (int i = 0; i < outputPoints.size(); i++) {
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+		}
+		gl.glEnd();
+	}
+
 	public void renderComplexBand(GL2 gl, List<Pair<Point2D, Point2D>> anchorPoints, boolean highlight,
 		float[] color, float opacity) {
 
@@ -554,11 +595,11 @@ public class ConnectionBandRenderer {
 			Vec3f vec =
 				new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst().getY(), z);
 			inputPoints.add(vec);
-//			gl.glPointSize(4);
-//			gl.glColor4f(1, 0, 0, 1);
-//			gl.glBegin(GL2.GL_POINTS);
-//			gl.glVertex3f(vec.x(), vec.y(), -1);
-//			gl.glEnd();
+			// gl.glPointSize(4);
+			// gl.glColor4f(1, 0, 0, 1);
+			// gl.glBegin(GL2.GL_POINTS);
+			// gl.glVertex3f(vec.x(), vec.y(), -1);
+			// gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
@@ -590,11 +631,11 @@ public class ConnectionBandRenderer {
 			Vec3f vec =
 				new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond().getY(), z);
 			inputPoints.add(vec);
-//			gl.glPointSize(4);
-//			gl.glColor4f(1, 0, 0, 1);
-//			gl.glBegin(GL2.GL_POINTS);
-//			gl.glVertex3f(vec.x(), vec.y(), vec.z());
-//			gl.glEnd();
+			// gl.glPointSize(4);
+			// gl.glColor4f(1, 0, 0, 1);
+			// gl.glBegin(GL2.GL_POINTS);
+			// gl.glVertex3f(vec.x(), vec.y(), vec.z());
+			// gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
 		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));

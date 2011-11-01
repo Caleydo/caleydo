@@ -4,15 +4,16 @@ import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
+import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class AGraphLayout {
 
-	protected Graph<IDataGraphNode> graph = null;
+	protected Graph graph = null;
 	protected Map<Object, Point2D> nodePositions = null;
 	protected GLDataGraph view;
 
-	public AGraphLayout(GLDataGraph view, Graph<IDataGraphNode> graph) {
+	public AGraphLayout(GLDataGraph view, Graph graph) {
 		this.view = view;
 		this.graph = graph;
 	}
@@ -26,7 +27,11 @@ public abstract class AGraphLayout {
 	public abstract void layout(Rectangle2D area);
 
 	public abstract void updateNodePositions();
-	
+
 	public abstract void clearNodePositions();
+
+	public abstract AEdgeRenderer getLayoutSpecificEdgeRenderer(Edge edge);
+
+	public abstract AEdgeRenderer getCustomLayoutEdgeRenderer(Edge edge);
 
 }

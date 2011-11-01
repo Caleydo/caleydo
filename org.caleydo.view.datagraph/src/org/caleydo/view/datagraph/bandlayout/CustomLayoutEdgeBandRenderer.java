@@ -13,10 +13,12 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.datagraph.Edge;
+import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class EdgeBandRenderer {
+public class CustomLayoutEdgeBandRenderer extends AEdgeRenderer {
 
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
 	protected final static int DEFAULT_MAX_BAND_WIDTH = 40;
@@ -30,18 +32,19 @@ public class EdgeBandRenderer {
 	protected int minBandWidth = DEFAULT_MIN_BAND_WIDTH;
 	protected int maxDataAmount;
 
-	public EdgeBandRenderer(IDataGraphNode node1, IDataGraphNode node2,
-			PixelGLConverter pixelGLConverter, ViewFrustum viewFrustum,
-			int maxDataAmount) {
-		this.node1 = node1;
-		this.node2 = node2;
-		this.pixelGLConverter = pixelGLConverter;
-		this.viewFrustum = viewFrustum;
-		this.maxDataAmount = maxDataAmount;
+	public CustomLayoutEdgeBandRenderer(Edge edge, GLDataGraph view) {
+		super(edge, view);
+		this.node1 = edge.getNode1();
+		this.node2 = edge.getNode2();
+		this.pixelGLConverter = view.getPixelGLConverter();
+		this.viewFrustum = view.getViewFrustum();
 	}
 
-	public void renderEdgeBand(GL2 gl,
-			IEdgeRoutingStrategy edgeRoutingStrategy, boolean highlightBand) {
+	@Override
+	public void renderEdge(GL2 gl,
+			ConnectionBandRenderer connectionBandRenderer, boolean highlight) {
+
+		maxDataAmount = view.getMaxDataAmount();
 
 		List<DataContainer> commonDataContainersNode1 = new ArrayList<DataContainer>();
 		List<DataContainer> commonDataContainersNode2 = new ArrayList<DataContainer>();
@@ -55,9 +58,10 @@ public class EdgeBandRenderer {
 			}
 		}
 
-		ConnectionBandRenderer connectionBandRenderer = new ConnectionBandRenderer();
-
-		connectionBandRenderer.init(gl);
+		// ConnectionBandRenderer connectionBandRenderer = new
+		// ConnectionBandRenderer();
+		//
+		// connectionBandRenderer.init(gl);
 
 		Color bandColor = null;
 		int dataAmount = 0;
@@ -217,14 +221,15 @@ public class EdgeBandRenderer {
 
 		}
 
-		connector1.setHighlightBand(highlightBand);
-		connector2.setHighlightBand(highlightBand);
+		connector1.setHighlightBand(highlight);
+		connector2.setHighlightBand(highlight);
 
 		List<Point2D> edgePoints = new ArrayList<Point2D>();
 
 		edgePoints.add(connector1.getBandConnectionPoint());
 		edgePoints.add(connector2.getBandConnectionPoint());
 
+		edgeRoutingStrategy.setNodes(node1, node2);
 		edgeRoutingStrategy.createEdge(edgePoints);
 
 		edgePoints.add(0, connector1.getBandHelperPoint());
@@ -232,8 +237,7 @@ public class EdgeBandRenderer {
 
 		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
 				gl, edgePoints, bandWidth, pixelGLConverter);
-		renderBand(gl, connectionBandRenderer, bandPoints, bandColor,
-				highlightBand);
+		renderBand(gl, connectionBandRenderer, bandPoints, bandColor, highlight);
 
 		connector1.render(gl, bandPoints, true, bandColor);
 		connector2.render(gl, bandPoints, false, bandColor);

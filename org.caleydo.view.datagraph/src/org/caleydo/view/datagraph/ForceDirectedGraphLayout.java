@@ -6,7 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
+import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeBandRenderer;
+import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeLineRenderer;
+import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.ViewNode;
 
 public class ForceDirectedGraphLayout extends AGraphLayout {
 	// AN ALGORITHM FOR DRAWING GENERAL UNDIRECTED GRAPHS
@@ -50,15 +57,18 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 	protected boolean initializeConstraints = false;
 
-	public ForceDirectedGraphLayout(GLDataGraph view,
-			Graph<IDataGraphNode> graph) {
+	protected IEdgeRoutingStrategy edgeRoutingStrategy;
+
+	public ForceDirectedGraphLayout(GLDataGraph view, Graph graph) {
 		super(view, graph);
+
+		edgeRoutingStrategy = new SimpleEdgeRoutingStrategy(graph);
 	}
 
 	// ###################
 	// ## layout source ##
 	// ###################
-	public void setGraph(Graph<IDataGraphNode> graph) {
+	public void setGraph(Graph graph) {
 		this.graph = graph;
 
 		initializeNodes = true;
@@ -706,5 +716,30 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (nodePositions != null)
 			nodePositions.clear();
 		nodePositions = null;
+	}
+
+	@Override
+	public AEdgeRenderer getLayoutSpecificEdgeRenderer(Edge edge) {
+
+		IDataGraphNode node1 = edge.getNode1();
+		IDataGraphNode node2 = edge.getNode2();
+
+		AEdgeRenderer edgeRenderer = null;
+
+		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
+			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
+
+		} else {
+			edgeRenderer = new CustomLayoutEdgeLineRenderer(edge, view,
+					view.getEdgeLabel((ADataNode) node1, (ADataNode) node2));
+		}
+
+		edgeRenderer.setEdgeRoutingStrategy(edgeRoutingStrategy);
+		return edgeRenderer;
+	}
+
+	@Override
+	public AEdgeRenderer getCustomLayoutEdgeRenderer(Edge edge) {
+		return getLayoutSpecificEdgeRenderer(edge);
 	}
 }

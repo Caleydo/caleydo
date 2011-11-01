@@ -11,9 +11,9 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 
-	private Graph<IDataGraphNode> dataGraph;
+	private Graph dataGraph;
 
-	public SimpleEdgeRoutingStrategy(Graph<IDataGraphNode> dataGraph) {
+	public SimpleEdgeRoutingStrategy(Graph dataGraph) {
 		this.dataGraph = dataGraph;
 	}
 
@@ -248,6 +248,11 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 		}
 
 		return null;
+	}
+
+	@Override
+	public void setNodes(IDataGraphNode node1, IDataGraphNode node2) {
+		// This strategy does not need concrete nodes
 	}
 
 }

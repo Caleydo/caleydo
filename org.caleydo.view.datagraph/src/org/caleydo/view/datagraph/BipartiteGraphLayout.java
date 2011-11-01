@@ -2,13 +2,23 @@ package org.caleydo.view.datagraph;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
+import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
+import org.caleydo.view.datagraph.bandlayout.BipartiteEdgeLineRenderer;
+import org.caleydo.view.datagraph.bandlayout.BipartiteInsideLayerRoutingStrategy;
+import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeBandRenderer;
+import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeLineRenderer;
+import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.ViewNode;
 
 public class BipartiteGraphLayout extends AGraphLayout {
 
@@ -16,10 +26,24 @@ public class BipartiteGraphLayout extends AGraphLayout {
 	protected static final int MAX_NODE_SPACING_PIXELS = 300;
 
 	private Rectangle2D layoutArea;
+	private IEdgeRoutingStrategy customEdgeRoutingStrategy;
+	private BipartiteInsideLayerRoutingStrategy insideLayerEdgeRoutingStrategy;
+	private int maxDataNodeHeightPixels;
+	private List<IDataGraphNode> sortedDataNodes;
+	private List<IDataGraphNode> sortedViewNodes;
 
-	public BipartiteGraphLayout(GLDataGraph view, Graph<IDataGraphNode> graph) {
+	public int getMaxDataNodeHeightPixels() {
+		return maxDataNodeHeightPixels;
+	}
+
+	public BipartiteGraphLayout(GLDataGraph view, Graph graph) {
 		super(view, graph);
 		nodePositions = new HashMap<Object, Point2D>();
+		sortedDataNodes = new ArrayList<IDataGraphNode>();
+		sortedViewNodes = new ArrayList<IDataGraphNode>();
+		customEdgeRoutingStrategy = new SimpleEdgeRoutingStrategy(graph);
+		insideLayerEdgeRoutingStrategy = new BipartiteInsideLayerRoutingStrategy(
+				this, view.getPixelGLConverter());
 	}
 
 	@Override
@@ -46,7 +70,7 @@ public class BipartiteGraphLayout extends AGraphLayout {
 
 		int summedDataNodesWidthPixels = 0;
 		int summedViewNodesWidthPixels = 0;
-		int maxDataNodeHeightPixels = Integer.MIN_VALUE;
+		maxDataNodeHeightPixels = Integer.MIN_VALUE;
 		int maxViewNodeHeightPixels = Integer.MIN_VALUE;
 
 		for (IDataGraphNode node : nodes) {
@@ -63,6 +87,12 @@ public class BipartiteGraphLayout extends AGraphLayout {
 			}
 		}
 
+		sortedDataNodes.clear();
+		sortedViewNodes.clear();
+		// TODO: do a proper sort
+		sortedDataNodes.addAll(dataNodes);
+		sortedViewNodes.addAll(viewNodes);
+
 		float dataNodeSpacingPixels = (float) (layoutArea.getWidth() - summedDataNodesWidthPixels)
 				/ (float) (dataNodes.size() - 1);
 		dataNodeSpacingPixels = Math.max(dataNodeSpacingPixels,
@@ -75,8 +105,22 @@ public class BipartiteGraphLayout extends AGraphLayout {
 						- summedDataNodesWidthPixels - (dataNodes.size() - 1)
 						* dataNodeSpacingPixels) / 2.0f), layoutArea.getMinX());
 
+		int maxBendPointOffsetYPixels = Integer.MIN_VALUE;
+		for (Edge edge : graph.getAllEdges()) {
+			if (edge.getNode1() instanceof ADataNode
+					&& edge.getNode2() instanceof ADataNode) {
+				int bendPointOffsetYPixels = insideLayerEdgeRoutingStrategy
+						.calcEdgeBendPointYOffsetPixels(edge.getNode1(),
+								edge.getNode2());
+				if (bendPointOffsetYPixels > maxBendPointOffsetYPixels) {
+					maxBendPointOffsetYPixels = bendPointOffsetYPixels;
+				}
+
+			}
+		}
+
 		float dataNodesCenterY = (float) layoutArea.getMinY()
-				+ maxDataNodeHeightPixels / 2.0f;
+				+ maxDataNodeHeightPixels / 2.0f + maxBendPointOffsetYPixels;
 
 		for (IDataGraphNode node : dataNodes) {
 			setNodePosition(node, new Point2D.Float(currentDataNodePositionX
@@ -121,6 +165,55 @@ public class BipartiteGraphLayout extends AGraphLayout {
 	@Override
 	public void clearNodePositions() {
 		nodePositions.clear();
+	}
+
+	@Override
+	public AEdgeRenderer getLayoutSpecificEdgeRenderer(Edge edge) {
+
+		IDataGraphNode node1 = edge.getNode1();
+		IDataGraphNode node2 = edge.getNode2();
+
+		AEdgeRenderer edgeRenderer = null;
+
+		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
+			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
+			edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);
+
+		} else {
+			edgeRenderer = new BipartiteEdgeLineRenderer(edge, view,
+					view.getEdgeLabel((ADataNode) node1, (ADataNode) node2));
+			edgeRenderer.setEdgeRoutingStrategy(insideLayerEdgeRoutingStrategy);
+		}
+
+		return edgeRenderer;
+	}
+
+	@Override
+	public AEdgeRenderer getCustomLayoutEdgeRenderer(Edge edge) {
+		IDataGraphNode node1 = edge.getNode1();
+		IDataGraphNode node2 = edge.getNode2();
+
+		AEdgeRenderer edgeRenderer = null;
+
+		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
+			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
+
+		} else {
+			edgeRenderer = new CustomLayoutEdgeLineRenderer(edge, view,
+					view.getEdgeLabel((ADataNode) node1, (ADataNode) node2));
+		}
+
+		edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);
+		return edgeRenderer;
+	}
+
+	public int getSlotDistance(IDataGraphNode node1, IDataGraphNode node2) {
+		int index1 = sortedDataNodes.indexOf(node1);
+		int index2 = sortedDataNodes.indexOf(node2);
+		if (index1 == -1 || index2 == -1)
+			return 0;
+
+		return Math.abs(index1 - index2);
 	}
 
 }
