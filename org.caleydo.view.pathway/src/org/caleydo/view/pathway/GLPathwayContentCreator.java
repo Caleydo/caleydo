@@ -54,7 +54,6 @@ public class GLPathwayContentCreator {
 	private int highlightedCompoundNodeDisplayListId = -1;
 
 	private boolean enableEdgeRendering = false;
-	private boolean enableIdenticalNodeHighlighting = true;
 	private boolean enableNeighborhood = false;
 	private boolean enableGeneMapping = true;
 
@@ -124,8 +123,6 @@ public class GLPathwayContentCreator {
 			hashPathway2VerticesDisplayListId.put(pathway, iVerticesDisplayListId);
 		}
 
-		// performIdenticalNodeHighlighting();
-
 		gl.glNewList(iVerticesDisplayListId, GL2.GL_COMPILE);
 		extractVertices(gl, containingView, pathway);
 		gl.glEndList();
@@ -169,9 +166,6 @@ public class GLPathwayContentCreator {
 
 		// Copy selection IDs to array list object
 		for (Integer graphItemID : iAlTmpSelectedGraphItemIds) {
-			if (!enableIdenticalNodeHighlighting) {
-				continue;
-			}
 
 			// // Perform identical node highlighting only on nodes with depth 0
 			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
@@ -526,7 +520,7 @@ public class GLPathwayContentCreator {
 			short[][] shArCoords = vertexRep.getCoords();
 
 			gl.glLineWidth(3);
-			if (enableGeneMapping && glPathwayView.iCurrentDimensionIndex != -1) {
+			if (enableGeneMapping && glPathwayView.selectedSampleIndex != -1) {
 
 				tmpNodeColor = determineNodeColor(vertexRep);
 				gl.glLineWidth(4);
@@ -660,7 +654,7 @@ public class GLPathwayContentCreator {
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			gl.glLineWidth(1);
-			if (enableGeneMapping && glPathwayView.iCurrentDimensionIndex != -1) {
+			if (enableGeneMapping && glPathwayView.selectedSampleIndex != -1) {
 
 				tmpNodeColor = determineNodeColor(vertexRep);
 
@@ -872,7 +866,7 @@ public class GLPathwayContentCreator {
 
 				float expressionValue = geneticDataDomain.getTable().getFloat(
 						dimensionDataRepresentation,
-						glPathwayView.iCurrentDimensionIndex, iExpressionIndex);
+						glPathwayView.selectedSampleIndex, iExpressionIndex);
 
 				return colorMapper.getColor(expressionValue);
 
@@ -888,11 +882,6 @@ public class GLPathwayContentCreator {
 
 	public void enableGeneMapping(final boolean bEnableGeneMappging) {
 		this.enableGeneMapping = bEnableGeneMappging;
-	}
-
-	public void enableIdenticalNodeHighlighting(
-			final boolean bEnableIdenticalNodeHighlighting) {
-		this.enableIdenticalNodeHighlighting = bEnableIdenticalNodeHighlighting;
 	}
 
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {

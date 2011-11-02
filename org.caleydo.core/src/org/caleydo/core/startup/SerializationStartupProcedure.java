@@ -32,7 +32,7 @@ public class SerializationStartupProcedure
 	@Override
 	public void initPreWorkbenchOpen() {
 		super.initPreWorkbenchOpen();
-
+		
 		if (loadSampleProject) {
 			loader.loadProjectFromZIP(SAMPLE_PROJECT_LOCATION);
 			loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);

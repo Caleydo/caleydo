@@ -72,7 +72,7 @@ public class Application
 	public Object start(IApplicationContext context) throws Exception {
 
 		GeneralManager.get().init();
-
+		
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
 		boolean isColumnDimension = false;
@@ -96,6 +96,9 @@ public class Application
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration,
 			isColumnDimension);
 
+		// Trigger pathway loading
+		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
+		
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
@@ -125,13 +128,13 @@ public class Application
 		loadSources("Methylation data", METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
 			methylationConfiguration, isColumnDimension);
-
+		
 		calculateVAIntersections();
 
 		// the default save path is usually your home directory
 		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
 			+ "export_" + (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal", true);
-
+		
 		return IApplication.EXIT_OK;
 	}
 

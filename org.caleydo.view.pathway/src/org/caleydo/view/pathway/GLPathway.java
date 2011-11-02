@@ -19,25 +19,20 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
+import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
-import org.caleydo.core.data.selection.events.SelectionCommandListener;
-import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.data.virtualarray.events.RecordVADeltaEvent;
-import org.caleydo.core.event.view.ClearSelectionsEvent;
-import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.SwitchDataRepresentationEvent;
 import org.caleydo.core.event.view.pathway.DisableGeneMappingEvent;
 import org.caleydo.core.event.view.pathway.EnableGeneMappingEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
-import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.serialize.ASerializedView;
@@ -47,7 +42,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
-import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -95,6 +89,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
+	private SelectionManager geneSelectionManager;
+
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
@@ -106,13 +102,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
 
-	int iCurrentDimensionIndex = -1;
+	int selectedSampleIndex = -1;
 
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
-
-
 
 	/**
 	 * Constructor.
@@ -243,7 +237,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// selectionManager.initialAdd(tmpPathwayVertexGraphItemRep.getId());
 		// }
 
-		gLPathwayContentCreator.init(gl, recordSelectionManager);
+		gLPathwayContentCreator.init(gl, geneSelectionManager);
 
 		// Create new pathway manager for GL2 context
 		if (!hashGLcontext2TextureManager.containsKey(gl)) {
@@ -322,26 +316,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathway == null)
 			return;
 
-		if (selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {
-			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
-				if (item.getSelectionType() == SelectionType.MOUSE_OVER
-						&& !item.isRemove()) {
-					iCurrentDimensionIndex = item.getID();
-					System.out.println(item);
-					break;
-				}
-			}
-			setDisplayListDirty();
-
-		} else if (selectionDelta.getIDType().getIDCategory() == dataDomain
-				.getRecordIDCategory()) {
-
+		if (selectionDelta.getIDType().getIDCategory() == geneSelectionManager
+				.getIDType().getIDCategory()) {
 			SelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
-			recordSelectionManager.setDelta(resolvedDelta);
+			geneSelectionManager.setDelta(resolvedDelta);
 
 			setDisplayListDirty();
 
-			int iPathwayHeight = pathway.getHeight();
+			int pathwayHeight = pathway.getHeight();
 			for (SelectionDeltaItem item : resolvedDelta) {
 				if (item.getSelectionType() != SelectionType.MOUSE_OVER
 						&& item.getSelectionType() != SelectionType.SELECTION) {
@@ -362,7 +344,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 						dataDomain.getRecordIDType(), viewID, vertexRep.getXOrigin()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 								+ vecTranslation.x(),
-						(iPathwayHeight - vertexRep.getYOrigin())
+						(pathwayHeight - vertexRep.getYOrigin())
 								* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 								+ vecTranslation.y(), 0);
 
@@ -371,6 +353,16 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 							elementRep, item.getSelectionType());
 				}
 			}
+		} else {
+			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
+				if (item.getSelectionType() == SelectionType.MOUSE_OVER
+						&& !item.isRemove()) {
+					selectedSampleIndex = item.getID();
+					System.out.println(item);
+					break;
+				}
+			}
+			setDisplayListDirty();
 		}
 	}
 
@@ -389,14 +381,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				continue;
 			}
 
-			IDType geneIDType;
-			if (dataDomain.getLoadDataParameters().isColumnDimension())
-				geneIDType = dataDomain.getRecordIDType();
-			else
-				geneIDType = dataDomain.getDimensionIDType();
+			IDType geneIDType = geneSelectionManager.getIDType();
 
 			Set<Integer> dataTableExpressionIndex = pathwayDataDomain
-					.getGeneIDMappingManager().getIDAsSet(IDType.getIDType("DAVID"),
+					.getGeneIDMappingManager().getIDAsSet(pathwayDataDomain.getDavidIDType(),
 							geneIDType, davidID);
 			if (dataTableExpressionIndex == null)
 				continue;
@@ -408,7 +396,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	private SelectionDelta createExternalSelectionDelta(SelectionDelta selectionDelta) {
 		SelectionDelta newSelectionDelta = new SelectionDelta(
-				dataDomain.getRecordIDType());
+				geneSelectionManager.getIDType());
 
 		for (SelectionDeltaItem item : selectionDelta) {
 			for (Integer expressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item
@@ -418,8 +406,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 						expressionIndex, item.getSelectionType());
 				newItem.setRemove(item.isRemove());
 
-				for (Integer iConnectionID : item.getConnectionIDs()) {
-					newSelectionDelta.addConnectionID(expressionIndex, iConnectionID);
+				for (Integer connectionID : item.getConnectionIDs()) {
+					newSelectionDelta.addConnectionID(expressionIndex, connectionID);
 				}
 			}
 		}
@@ -438,24 +426,18 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
-			// FIXME: Due to new mapping system, a mapping involving expression
-			// index can return a Set of
-			// values, depending on the IDType that has been specified when
-			// loading expression data.
-			// Possibly a different handling of the Set is required.
 			Set<Integer> tableIDs = idMappingManager.getIDAsSet(
 					selectionDelta.getIDType(), pathwayDataDomain.getDavidIDType(),
 					item.getID());
 
 			if (tableIDs == null || tableIDs.isEmpty()) {
 				continue;
-				// throw new
-				// IllegalStateException("Cannot resolve RefSeq ID to David ID.");
 			}
-			Integer iDavidID = (Integer) tableIDs.toArray()[0];
+
+			Integer davidID = (Integer) tableIDs.toArray()[0];
 
 			pathwayVertexGraphItem = pathwayItemManager
-					.getPathwayVertexGraphItemByDavidId(iDavidID);
+					.getPathwayVertexGraphItemByDavidId(davidID);
 
 			// Ignore David IDs that do not exist in any pathway
 			if (pathwayVertexGraphItem == null) {
@@ -595,14 +577,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gLPathwayContentCreator.enableNeighborhood(bEnableNeighborhood);
 	}
 
-	public void enableIdenticalNodeHighlighting(
-			final boolean bEnableIdenticalNodeHighlighting) {
-		setDisplayListDirty();
-
-		gLPathwayContentCreator
-				.enableIdenticalNodeHighlighting(bEnableIdenticalNodeHighlighting);
-	}
-
 	public void enableAnnotation(final boolean bEnableAnnotation) {
 		gLPathwayContentCreator.enableAnnotation(bEnableAnnotation);
 	}
@@ -704,32 +678,30 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				return;
 			}
 
-			if (recordSelectionManager.checkStatus(selectionType, externalID)) {
+			if (geneSelectionManager.checkStatus(selectionType, externalID)) {
 				break;
 			}
 
-			recordSelectionManager.clearSelection(selectionType);
+			geneSelectionManager.clearSelection(selectionType);
 
 			SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
 					selectionType);
-			sendSelectionCommandEvent(dataDomain.getRecordIDType(), command);
+			sendSelectionCommandEvent(geneSelectionManager.getIDType(), command);
 
 			// Add new vertex to internal selection manager
-			recordSelectionManager
+			geneSelectionManager
 					.addToType(selectionType, tmpVertexGraphItemRep.getId());
 
 			int iConnectionID = generalManager.getIDCreator().createID(
 					ManagedObjectType.CONNECTION);
-			recordSelectionManager.addConnectionID(iConnectionID,
+			geneSelectionManager.addConnectionID(iConnectionID,
 					tmpVertexGraphItemRep.getId());
-			connectedElementRepresentationManager.clear(dataDomain.getRecordIDType(),
-					selectionType);
-			// gLPathwayContentCreator
-			// .performIdenticalNodeHighlighting(selectionType);
+			connectedElementRepresentationManager.clear(
+					geneSelectionManager.getIDType(), selectionType);
 
 			createConnectionLines(selectionType, iConnectionID);
 
-			SelectionDelta selectionDelta = createExternalSelectionDelta(recordSelectionManager
+			SelectionDelta selectionDelta = createExternalSelectionDelta(geneSelectionManager
 					.getDelta());
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
@@ -756,7 +728,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			return;
 
 		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
-		int iPathwayHeight = pathway.getHeight();
+		int pathwayHeight = pathway.getHeight();
 
 		int viewID = uniqueID;
 		// If rendered remote (hierarchical heat map) - use the remote view ID
@@ -764,16 +736,16 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// AGLViewBrowser)
 		// viewID = glRemoteRenderingView.getID();
 
-		for (int iVertexRepID : recordSelectionManager.getElements(selectionType)) {
+		for (int vertexRepID : geneSelectionManager.getElements(selectionType)) {
 			tmpPathwayVertexGraphItemRep = pathwayItemManager
-					.getPathwayVertexRep(iVertexRepID);
+					.getPathwayVertexRep(vertexRepID);
 
 			SelectedElementRep elementRep = new SelectedElementRep(
 					dataDomain.getRecordIDType(), viewID,
 					tmpPathwayVertexGraphItemRep.getXOrigin()
 							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 							+ vecTranslation.x(),
-					(iPathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())
+					(pathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())
 							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 							+ vecTranslation.y(), 0);
 
@@ -829,7 +801,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void initData() {
 		connectedElementRepresentationManager.clear(dataDomain.getRecordIDType());
-		iCurrentDimensionIndex = -1;
+		selectedSampleIndex = -1;
 		super.initData();
 
 	}
@@ -933,6 +905,13 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			throw new IllegalArgumentException(
 					"Pathway view can handle only genetic data domain, tried to set: "
 							+ dataDomain);
+
+		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
+				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType()))
+			geneSelectionManager = dataDomain.getRecordSelectionManager();
+		else
+			geneSelectionManager = dataDomain.getDimensionSelectionManager();
+
 		super.setDataDomain(dataDomain);
 	}
 
