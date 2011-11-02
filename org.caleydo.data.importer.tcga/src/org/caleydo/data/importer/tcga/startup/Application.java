@@ -67,20 +67,24 @@ public class Application
 
 	// public String dataSource = DROPBOX_GBM_MRNA;
 	// public String groupingSource = DROPBOX_GBM_MRNA_GROUPING;
-	
+
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
 		String[] runConfigParameters = (String[]) context.getArguments().get("application.args");
-		if (runConfigParameters == null && runConfigParameters.length != 1)
-		{
-			System.out.println("Usage: caleydo_tcga_data_exporter <output_path_including_file_name>");
+		String outputFile = "";
+
+		if (runConfigParameters == null || runConfigParameters.length != 1) {
+			// System.out.println("Usage: caleydo_tcga_data_exporter <output_path_including_file_name>");
+			outputFile =
+				System.getProperty("user.home") + System.getProperty("file.separator") + "export_"
+					+ (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal";
 		}
-		
-		String outputFile = runConfigParameters[0];
-		
+		else
+			outputFile = runConfigParameters[0];
+
 		GeneralManager.get().init();
-		
+
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
 
 		boolean isColumnDimension = false;
@@ -104,9 +108,9 @@ public class Application
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration,
 			isColumnDimension);
 
-		// Trigger pathway loading
-		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
-		
+		// // Trigger pathway loading
+		// DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
+
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
@@ -136,36 +140,31 @@ public class Application
 		loadSources("Methylation data", METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
 			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
 			methylationConfiguration, isColumnDimension);
-		
+
 		calculateVAIntersections();
 
-		// the default save path is usually your home directory
-//		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
-//			+ "export_" + (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal", true);
-
 		new ProjectSaver().save(outputFile, true);
-		
+
 		return IApplication.EXIT_OK;
 	}
 
 	private void calculateVAIntersections() {
 		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(5);
-//		int loopCount = 0;
-		ArrayList<ATableBasedDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
-			ATableBasedDataDomain.class);
+		// int loopCount = 0;
+		ArrayList<ATableBasedDataDomain> dataDomains =
+			DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
-//			if (loopCount == 1) {
-//				loopCount++;
-//				continue;
-//			}
+			// if (loopCount == 1) {
+			// loopCount++;
+			// continue;
+			// }
 			vasToIntersect.add(dataDomain.getTable().getDefaultRecordPerspective().getVirtualArray());
-//			loopCount++;
+			// loopCount++;
 
 		}
 		List<RecordVirtualArray> intersectedVAs = VAUtils.createIntersectingVAs(vasToIntersect);
 
-		for(int i = 0; i< dataDomains.size(); i++)
-		{
+		for (int i = 0; i < dataDomains.size(); i++) {
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(intersectedVAs.get(i));
 			RecordPerspective intersectedPerspective = new RecordPerspective(dataDomains.get(i));
@@ -173,7 +172,7 @@ public class Application
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
 			dataDomains.get(i).getTable().registerRecordPerspecive(intersectedPerspective);
-			
+
 		}
 	}
 
