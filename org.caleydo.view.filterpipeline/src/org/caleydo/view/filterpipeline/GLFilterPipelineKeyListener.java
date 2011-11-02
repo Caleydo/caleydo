@@ -38,7 +38,7 @@ public class GLFilterPipelineKeyListener
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event)
 	{
-		if( event.keyCode == SWT.CONTROL )
+		if( event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1 )
 			glFilterPipeline.setControlPressed(true);
 	}
 
@@ -48,7 +48,7 @@ public class GLFilterPipelineKeyListener
 	@Override
 	protected void handleKeyReleasedEvent(KeyEvent event)
 	{
-		if( event.keyCode == SWT.CONTROL )
+		if( event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1 )
 			glFilterPipeline.setControlPressed(false);
 	}
 

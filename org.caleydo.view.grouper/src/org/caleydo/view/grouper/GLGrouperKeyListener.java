@@ -28,7 +28,8 @@ public class GLGrouperKeyListener extends GLKeyListener<GLGrouper> {
 
 	@Override
 	protected void handleKeyPressedEvent(KeyEvent event) {
-		if (event.keyCode == SWT.CONTROL) {
+		// Nils -- key code events described here: http://book.javanb.com/swt-the-standard-widget-toolkit/ch02lev1sec2.html
+		if (event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1) {
 			glGrouper.setControlPressed(true);
 		}
 
@@ -42,7 +43,8 @@ public class GLGrouperKeyListener extends GLKeyListener<GLGrouper> {
 
 	@Override
 	protected void handleKeyReleasedEvent(KeyEvent event) {
-		if (event.keyCode == SWT.CONTROL) {
+		// Nils -- key code events described here: http://book.javanb.com/swt-the-standard-widget-toolkit/ch02lev1sec2.html
+		if (event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1) {
 			glGrouper.setControlPressed(false);
 		}
 	}
