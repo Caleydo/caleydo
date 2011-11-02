@@ -194,15 +194,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// // FIXME make this a filter?
 	// table.setRecordVA(DataTable.RECORD, recordVA);
 	// }
-
-	public boolean isPathwayViewerMode() {
-		return pathwayViewerMode;
-	}
-
-	public void setPathwayViewerMode(boolean pathwayViewerMode) {
-		this.pathwayViewerMode = pathwayViewerMode;
-	}
-
+	
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();

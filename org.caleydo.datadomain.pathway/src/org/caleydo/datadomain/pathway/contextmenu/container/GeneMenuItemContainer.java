@@ -14,12 +14,12 @@ import org.caleydo.datadomain.pathway.contextmenu.item.ShowPathwaysByGeneItem;
 
 /**
  * Implementation of AItemContainer for Genes. By passing an ID all relevant
- * context menu items are constructed automatically
+ * context menu items are constructed automatically.
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GeneRecordContextMenuItemContainer extends AContextMenuItemContainer {
+public class GeneMenuItemContainer extends AContextMenuItemContainer {
 
 	public void setData(IDType idType, int id) {
 
@@ -28,8 +28,11 @@ public class GeneRecordContextMenuItemContainer extends AContextMenuItemContaine
 				dataDomain.getDataDomainID());
 		addContextMenuItem(menuItem);
 
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+		
 		Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager()
-				.getIDAsSet(idType, dataDomain.getPrimaryRecordMappingType(), id);
+				.getIDAsSet(idType, pathwayDataDomain.getDavidIDType(), id);
 		if (davids == null)
 			return;
 		for (Integer david : davids) {
@@ -53,14 +56,13 @@ public class GeneRecordContextMenuItemContainer extends AContextMenuItemContaine
 
 		if (pathwayDataDomain != null) {
 			LoadPathwaysByGeneItem loadPathwaysByGeneItem = new LoadPathwaysByGeneItem();
-			loadPathwaysByGeneItem.setDavid(dataDomain.getPrimaryRecordMappingType(),
+			loadPathwaysByGeneItem.setDavidID(pathwayDataDomain.getDavidIDType(),
 					davidID, dataDomain.getDataDomainID());
 			addContextMenuItem(loadPathwaysByGeneItem);
 
-			// FIXME: make setter consistent
 			ShowPathwaysByGeneItem showPathwaysByGeneItem = new ShowPathwaysByGeneItem(
 					pathwayDataDomain);
-			showPathwaysByGeneItem.setDavidID(dataDomain.getPrimaryRecordMappingType(),
+			showPathwaysByGeneItem.setDavidID(pathwayDataDomain.getDavidIDType(),
 					davidID, dataDomain.getDataDomainID());
 			addContextMenuItem(showPathwaysByGeneItem);
 		}

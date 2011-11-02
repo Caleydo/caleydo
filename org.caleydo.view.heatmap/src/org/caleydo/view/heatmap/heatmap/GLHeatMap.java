@@ -39,7 +39,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.StandardTransformer;
-import org.caleydo.datadomain.pathway.contextmenu.container.GeneRecordContextMenuItemContainer;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
@@ -185,25 +186,24 @@ public class GLHeatMap extends ATableBasedView {
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
-		
 		display(gl);
-		
+
 		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
 	}
 
 	@Override
-	public void displayRemote(GL2 gl) {		
+	public void displayRemote(GL2 gl) {
 
 		display(gl);
-	
+
 	}
 
 	@Override
 	public void display(GL2 gl) {
 
-		if(dataContainer == null)
+		if (dataContainer == null)
 			return;
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
@@ -220,8 +220,6 @@ public class GLHeatMap extends ATableBasedView {
 				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 
-		
-		
 	}
 
 	private void buildDisplayList(final GL2 gl, int displayListIndex) {
@@ -265,11 +263,25 @@ public class GLHeatMap extends ATableBasedView {
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
-				contexMenuItemContainer.setDataDomain(dataDomain);
-				contexMenuItemContainer.setData(recordIDType, pickingID);
-				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);
-				contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+				if (dataDomain instanceof GeneticDataDomain
+						&& dataDomain.getLoadDataParameters().isColumnDimension()) {
+
+					GeneticDataDomain geneticDataDomain = (GeneticDataDomain) dataDomain;
+					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+					contexMenuItemContainer.setDataDomain(dataDomain);
+					contexMenuItemContainer.setData(geneticDataDomain.getGeneIDType(),
+							pickingID);
+					contextMenuCreator
+							.addContextMenuItemContainer(contexMenuItemContainer);
+					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+				} else {
+					AContextMenuItem menuItem = new BookmarkMenuItem(
+							"Bookmark Experiment: "
+									+ dataDomain.getDimensionLabel(dimensionIDType,
+											pickingID), dimensionIDType, pickingID,
+							dataDomain.getDataDomainID());
+					contextMenuCreator.addContextMenuItem(menuItem);
+				}
 
 				break;
 
@@ -278,7 +290,7 @@ public class GLHeatMap extends ATableBasedView {
 
 			}
 
-			createContentSelection(selectionType, pickingID);
+			createRecordSelection(selectionType, pickingID);
 
 			break;
 
@@ -293,10 +305,25 @@ public class GLHeatMap extends ATableBasedView {
 				break;
 			case RIGHT_CLICKED:
 
-				AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Experiment: "
-						+ dataDomain.getDimensionLabel(dimensionIDType, pickingID),
-						dimensionIDType, pickingID, dataDomain.getDataDomainID());
-				contextMenuCreator.addContextMenuItem(menuItem);
+				if (dataDomain instanceof GeneticDataDomain
+						&& !dataDomain.getLoadDataParameters().isColumnDimension()) {
+
+					GeneticDataDomain geneticDataDomain = (GeneticDataDomain) dataDomain;
+					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
+					contexMenuItemContainer.setDataDomain(dataDomain);
+					contexMenuItemContainer.setData(geneticDataDomain.getGeneIDType(),
+							pickingID);
+					contextMenuCreator
+							.addContextMenuItemContainer(contexMenuItemContainer);
+					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
+				} else {
+					AContextMenuItem menuItem = new BookmarkMenuItem(
+							"Bookmark Experiment: "
+									+ dataDomain.getDimensionLabel(dimensionIDType,
+											pickingID), dimensionIDType, pickingID,
+							dataDomain.getDataDomainID());
+					contextMenuCreator.addContextMenuItem(menuItem);
+				}
 
 			default:
 				return;
@@ -336,7 +363,7 @@ public class GLHeatMap extends ATableBasedView {
 		}
 	}
 
-	private void createContentSelection(SelectionType selectionType, int recordID) {
+	private void createRecordSelection(SelectionType selectionType, int recordID) {
 		if (recordSelectionManager.checkStatus(selectionType, recordID))
 			return;
 
@@ -406,7 +433,7 @@ public class GLHeatMap extends ATableBasedView {
 		int selectedElement = cursorSelect(virtualArray, recordSelectionManager, isUp);
 		if (selectedElement < 0)
 			return;
-		createContentSelection(SelectionType.MOUSE_OVER, selectedElement);
+		createRecordSelection(SelectionType.MOUSE_OVER, selectedElement);
 	}
 
 	public void leftRightSelect(boolean isLeft) {
@@ -447,7 +474,7 @@ public class GLHeatMap extends ATableBasedView {
 		selectedElement = -1;
 		if (elements.size() == 1) {
 			selectedElement = (Integer) elements.toArray()[0];
-			createContentSelection(SelectionType.SELECTION, selectedElement);
+			createRecordSelection(SelectionType.SELECTION, selectedElement);
 		}
 	}
 
@@ -575,7 +602,6 @@ public class GLHeatMap extends ATableBasedView {
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
-
 
 	public void setClusterVisualizationGenesActiveFlag(boolean bClusterVisualizationActive) {
 		this.bClusterVisualizationGenesActive = bClusterVisualizationActive;

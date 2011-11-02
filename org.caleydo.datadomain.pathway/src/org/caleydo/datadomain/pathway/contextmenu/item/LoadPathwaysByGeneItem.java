@@ -36,7 +36,7 @@ public class LoadPathwaysByGeneItem extends AContextMenuItem {
 	 * @param david
 	 *            the david ID
 	 */
-	public void setDavid(IDType idType, int david, String dataDomainID) {
+	public void setDavidID(IDType idType, int david, String dataDomainID) {
 		
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);

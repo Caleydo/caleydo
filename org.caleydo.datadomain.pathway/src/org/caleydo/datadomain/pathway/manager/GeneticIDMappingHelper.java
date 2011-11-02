@@ -33,16 +33,20 @@ public class GeneticIDMappingHelper {
 	 * TODO
 	 * 
 	 * @param idType
-	 * @param geneID
+	 * @param id
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
 	 */
-	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int geneID) {
+	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int id) {
 
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
 
-		PathwayVertexGraphItem pathwayVertexGraphItem = convertGeneIDToPathwayVertex(
-				idType, geneID);
+		PathwayVertexGraphItem pathwayVertexGraphItem;
+		if (idType == IDType.getIDType("DAVID"))
+			pathwayVertexGraphItem = PathwayItemManager.get().getPathwayVertexGraphItemByDavidId(id);
+		else 
+			throw new IllegalStateException("Only David IDs can be resolved to pathways lists");
+		
 		if (pathwayVertexGraphItem == null)
 			return null;
 
@@ -56,34 +60,5 @@ public class GeneticIDMappingHelper {
 		}
 
 		return newPathways;
-	}
-
-	/**
-	 * TODO: Marc document
-	 * 
-	 * @param idType
-	 * @param geneID
-	 * @return the PathwayVertexGraphItem corresponding to the mapping or null
-	 *         if no such mapping exists
-	 */
-	public PathwayVertexGraphItem convertGeneIDToPathwayVertex(IDType idType, int geneID) {
-
-		// int iGraphItemID = 0;
-		Integer iDavidID = -1;
-
-		if (idType == IDType.getIDType("REF_SEQ_MRNA_INT")) {
-			iDavidID = idMappingManager.getID(IDType.getIDType("REF_SEQ_MRNA_INT"),
-					IDType.getIDType("DAVID"), geneID);
-		} else if (idType == IDType.getIDType("DAVID")) {
-			iDavidID = geneID;
-		} else
-			return null;
-
-		if (iDavidID == null || iDavidID == -1)
-			return null;
-		// throw new
-		// IllegalStateException("Cannot resolve RefSeq ID to David ID.");
-
-		return PathwayItemManager.get().getPathwayVertexGraphItemByDavidId(iDavidID);
 	}
 }

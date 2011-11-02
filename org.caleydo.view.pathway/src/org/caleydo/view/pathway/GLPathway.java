@@ -49,7 +49,7 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.contextmenu.container.GeneRecordContextMenuItemContainer;
+import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
@@ -90,7 +90,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private SelectionManager geneSelectionManager;
-	private SelectionManager dimensionSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -659,7 +658,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					for (IGraphItem pathwayVertexGraphItem : tmpVertexGraphItemRep
 							.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
 
-						GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
+						GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 						contexMenuItemContainer
 								.setDataDomain((ATableBasedDataDomain) dataDomain);
 						contexMenuItemContainer
@@ -910,10 +909,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
 				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType())) {
 			geneSelectionManager = dataDomain.getRecordSelectionManager();
-			dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
 		} else {
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
-			dimensionSelectionManager = dataDomain.getRecordSelectionManager();
 		}
 		super.setDataDomain(dataDomain);
 	}

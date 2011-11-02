@@ -45,7 +45,6 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 	 */
 	public void setDavidID(IDType idType, int david, String dataDomainID) {
 
-		
 		Set<PathwayGraph> pathwayGraphs = dataDomain.getMappingHelper()
 				.getPathwayGraphsByGeneID(idType, david);
 

@@ -4,13 +4,11 @@ import java.util.ArrayList;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;
-import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.item.ShowPathwaysByGenesItem;
 
-public class GeneRecordGroupContextMenuItemContainer extends AContextMenuItemContainer {
+public class GeneGroupContextMenuItemContainer extends AContextMenuItemContainer {
 
 	public void setData(IDType idType, ArrayList<Integer> genes) {
 

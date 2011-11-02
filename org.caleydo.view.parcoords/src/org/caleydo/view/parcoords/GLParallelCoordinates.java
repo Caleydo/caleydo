@@ -81,7 +81,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
 import org.caleydo.core.view.vislink.StandardTransformer;
-import org.caleydo.datadomain.pathway.contextmenu.container.GeneRecordContextMenuItemContainer;
+import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.parcoords.PCRenderStyle.PolyLineState;
 import org.caleydo.view.parcoords.listener.AngularBrushingListener;
 import org.caleydo.view.parcoords.listener.ApplyCurrentSelectionToVirtualArrayListener;
@@ -1293,7 +1293,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			case RIGHT_CLICKED:
 				selectionType = SelectionType.SELECTION;
 
-				GeneRecordContextMenuItemContainer contexMenuItemContainer = new GeneRecordContextMenuItemContainer();
+				GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 				contexMenuItemContainer.setDataDomain(dataDomain);
 				contexMenuItemContainer.setData(recordIDType, pickingID);
 				contextMenuCreator.addContextMenuItemContainer(contexMenuItemContainer);

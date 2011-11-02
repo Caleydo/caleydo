@@ -3,6 +3,7 @@ package org.caleydo.core.view.contextmenu;
 import java.util.ArrayList;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -28,7 +29,12 @@ public class ContextMenuCreator {
 
 		Runnable runnable = new Runnable() {
 			public void run() {
-				AWTBridgePopupFix.showMenu(menuCreator);
+
+				Menu popupMenu = menuCreator.create(parent);
+				PopupOverAwtHelper popupMenuOverAwtHelper = new PopupOverAwtHelper(popupMenu);
+				Point cursorLocation = menuCreator.getParent().getDisplay().getCursorLocation();
+
+				popupMenuOverAwtHelper.swtDirectShowMenu(cursorLocation.x, cursorLocation.y);
 			}
 		};
 		parent.getDisplay().asyncExec(runnable);
