@@ -67,10 +67,18 @@ public class Application
 
 	// public String dataSource = DROPBOX_GBM_MRNA;
 	// public String groupingSource = DROPBOX_GBM_MRNA_GROUPING;
-
+	
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
+		String[] runConfigParameters = (String[]) context.getArguments().get("application.args");
+		if (runConfigParameters == null && runConfigParameters.length != 1)
+		{
+			System.out.println("Usage: caleydo_tcga_data_exporter <output_path_including_file_name>");
+		}
+		
+		String outputFile = runConfigParameters[0];
+		
 		GeneralManager.get().init();
 		
 		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
@@ -132,8 +140,10 @@ public class Application
 		calculateVAIntersections();
 
 		// the default save path is usually your home directory
-		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
-			+ "export_" + (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal", true);
+//		new ProjectSaver().save(System.getProperty("user.home") + System.getProperty("file.separator")
+//			+ "export_" + (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal", true);
+
+		new ProjectSaver().save(outputFile, true);
 		
 		return IApplication.EXIT_OK;
 	}

@@ -20,4 +20,16 @@
             name="Caleydo TCGA Data Importer">
       </product>
    </extension>
+   <extension
+         id="product"
+         point="org.eclipse.core.runtime.products">
+      <product
+            application="org.caleydo.data.importer.tcga.application"
+            name="Caleydo TCGA Data Importer">
+         <property
+               name="appName"
+               value="Caleydo TCGA Data Importer">
+         </property>
+      </product>
+   </extension>
 </plugin>

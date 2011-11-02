@@ -13,3 +13,4 @@ Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.datadomain.genetic;bundle-version="2.0.0",
  org.caleydo.datadomain.pathway;bundle-version="2.0.0"
 Bundle-Activator: org.caleydo.data.importer.tcga.startup.Activator
+Bundle-ClassPath: .
