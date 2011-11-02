@@ -129,7 +129,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private boolean isSizeFixed = false;
 	private boolean isInitialized = false;
 
-	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLBrick(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBrick.VIEW_TYPE;
@@ -143,7 +144,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	@Override
 	public void initialize() {
 		super.initialize();
-		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager();
+		recordGroupSelectionManager = dataDomain
+				.getRecordGroupSelectionManager();
 		registerPickingListeners();
 	}
 
@@ -162,26 +164,28 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		if (brickLayout == null) {
 
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
-					brickConfigurer);
+			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
+					dimensionGroup, brickConfigurer);
 
 		}
 
 		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
 
 		currentViewType = brickLayout.getDefaultViewType();
-		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
+		brickLayout
+				.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentViewType);
 		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks.registerMouseWheelListener((IMouseWheelHandler) brickLayout
-					.getViewRenderer());
+			visBricks
+					.registerMouseWheelListener((IMouseWheelHandler) brickLayout
+							.getViewRenderer());
 		}
 
 		templateRenderer.setTemplate(brickLayout);
-		float defaultHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-				.getDefaultHeightPixels());
-		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
-				.getDefaultWidthPixels());
+		float defaultHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(brickLayout.getDefaultHeightPixels());
+		float defaultWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(brickLayout.getDefaultWidthPixels());
 		wrappingLayout.setAbsoluteSizeY(defaultHeight);
 		wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		templateRenderer.updateLayout();
@@ -192,9 +196,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			public void clicked(Pick pick) {
 
 				SelectionType currentSelectionType = recordGroupSelectionManager.getSelectionType();
-				recordGroupSelectionManager.clearSelection(currentSelectionType);
-				recordGroupSelectionManager.addToType(currentSelectionType, dataContainer
-						.getRecordGroup().getID());
+				recordGroupSelectionManager
+						.clearSelection(currentSelectionType);
+				if (dataContainer.getRecordGroup() != null)
+					recordGroupSelectionManager.addToType(currentSelectionType,
+							dataContainer.getRecordGroup().getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
@@ -217,18 +223,23 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-						dataDomain, dataContainer.getRecordPerspective()
-								.getVirtualArray(), dimensionGroup.getDataContainer()
-								.getDimensionPerspective()));
+				contextMenuCreator
+						.addContextMenuItem(new CreatePathwayGroupFromDataItem(
+								dataDomain, dataContainer
+										.getRecordPerspective()
+										.getVirtualArray(), dimensionGroup
+										.getDataContainer()
+										.getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 				// FIXME this assumtion that records are genes is wrong!
 				for (Integer gene : dataContainer.getRecordPerspective()
 						.getVirtualArray()) {
-					Set<Integer> davids = dataDomain.getRecordIDMappingManager()
-							.getIDAsSet(dataDomain.getRecordIDType(),
-									dataDomain.getPrimaryRecordMappingType(), gene);
+					Set<Integer> davids = dataDomain
+							.getRecordIDMappingManager().getIDAsSet(
+									dataDomain.getRecordIDType(),
+									dataDomain.getPrimaryRecordMappingType(),
+									gene);
 					if (davids == null || davids.size() == 0)
 						continue;
 					for (Integer david : davids) {
@@ -237,7 +248,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 										PathwayDataDomain.DATA_DOMAIN_TYPE);
 						Set<PathwayGraph> pathwayGraphs = pathwayDataDomain
 								.getMappingHelper().getPathwayGraphsByGeneID(
-										pathwayDataDomain.getDavidIDType(), david);
+										pathwayDataDomain.getDavidIDType(),
+										david);
 
 						// int iPathwayCount = 0;
 						if (pathwayGraphs != null) {
@@ -245,14 +257,16 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 							for (PathwayGraph pathwayGraph : pathwayGraphs) {
 
-								if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
-									hashPathwaysToOccurences.put(pathwayGraph, 1);
+								if (!hashPathwaysToOccurences
+										.containsKey(pathwayGraph))
+									hashPathwaysToOccurences.put(pathwayGraph,
+											1);
 								else {
 									int occurences = hashPathwaysToOccurences
 											.get(pathwayGraph);
 									occurences++;
-									hashPathwaysToOccurences
-											.put(pathwayGraph, occurences);
+									hashPathwaysToOccurences.put(pathwayGraph,
+											occurences);
 								}
 
 							}
@@ -318,8 +332,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (dimensionGroup.getCenterBrick() == this)
 			return;
 
-		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
-			recordSelectionManager.addToType(selectedByGroupSelectionType, recordID);
+		for (Integer recordID : dataContainer.getRecordPerspective()
+				.getVirtualArray()) {
+			recordSelectionManager.addToType(selectedByGroupSelectionType,
+					recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -337,7 +353,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
+	public void initRemote(GL2 gl, AGLView glParentView,
+			GLMouseListener glMouseListener) {
 		init(gl);
 
 	}
@@ -365,14 +382,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		templateRenderer.render(gl);
 
-		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK,
-				getID()));
+		gl.glPushName(getPickingManager().getPickingID(getID(),
+				PickingType.BRICK, getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0f);
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), 0);
-		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0);
+		gl.glVertex3f(0, 0, 0.1f);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0.1f);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(),
+				wrappingLayout.getSizeScaledY(), 0.1f);
+		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0.1f);
 		gl.glEnd();
 		gl.glPopName();
 
@@ -464,21 +482,24 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+			int height) {
 
 		super.reshape(drawable, x, y, width, height);
 		if (templateRenderer != null)
 			templateRenderer.updateLayout();
 
 		if (!isSizeFixed) {
-			wrappingLayout.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
+			wrappingLayout
+					.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
+			wrappingLayout
+					.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
 		}
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType,
+			PickingMode pickingMode, int pickingID, Pick pick) {
 
 	}
 
@@ -523,8 +544,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
 				.getMinWidthPixels());
-		float minHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-				.getMinHeightPixels());
+		float minHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
 		// float minWidth = pixelGLConverter
 		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
 		if (newWidth < minWidth - 0.001f) {
@@ -724,7 +745,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
 		float defaultHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(defaultHeightPixels);
-		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(defaultWidthPixels);
+		float defaultWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(defaultWidthPixels);
 
 		if (isSizeFixed) {
 
@@ -766,7 +788,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param brickLayoutTemplate
 	 * @param viewType
 	 */
-	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate,
+	public void setBrickLayoutTemplate(
+			ABrickLayoutTemplate brickLayoutTemplate,
 			EContainedViewType viewType) {
 		if (brickLayout != null)
 			brickLayout.destroy();
@@ -800,14 +823,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		relationsUpdateListener = new RelationsUpdatedListener();
 		relationsUpdateListener.setHandler(this);
 
-		relationsUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
+		relationsUpdateListener.setExclusiveDataDomainID(dataDomain
+				.getDataDomainID());
+		eventPublisher.addListener(RelationsUpdatedEvent.class,
+				relationsUpdateListener);
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
 
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+		selectionUpdateListener.setExclusiveDataDomainID(dataDomain
+				.getDataDomainID());
+		eventPublisher.addListener(SelectionUpdateEvent.class,
+				selectionUpdateListener);
 
 		openCreatePathwayGroupDialogListener = new OpenCreatePathwayGroupDialogListener();
 		openCreatePathwayGroupDialogListener.setHandler(this);
@@ -906,11 +933,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+		if (selectionDelta.getIDType() == recordGroupSelectionManager
+				.getIDType()) {
 			recordGroupSelectionManager.setDelta(selectionDelta);
 
-			if (recordGroupSelectionManager.checkStatus(recordGroupSelectionManager
-					.getSelectionType(), dataContainer.getRecordGroup().getID())) {
+			
+			if (recordGroupSelectionManager.checkStatus(
+					
+					recordGroupSelectionManager.getSelectionType(),
+					dataContainer.getRecordGroup().getID())) {
 				brickLayout.setShowHandles(true);
 				brickLayout.setSelected(true);
 				visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -918,6 +949,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				brickLayout.setSelected(false);
 				brickLayout.setShowHandles(false);
 			}
+			
 			templateRenderer.updateLayout();
 		}
 	}
@@ -941,18 +973,21 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		if (!isInOverviewMode && isInitialized) {
 			expandedBrickState = new BrickState(currentViewType,
-					wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
+					wrappingLayout.getSizeScaledY(),
+					wrappingLayout.getSizeScaledX());
 		}
 
-		ABrickLayoutTemplate layoutTemplate = brickLayout.getCollapsedLayoutTemplate();
+		ABrickLayoutTemplate layoutTemplate = brickLayout
+				.getCollapsedLayoutTemplate();
 		// isSizeFixed = false;
 
-		setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
+		setBrickLayoutTemplate(layoutTemplate,
+				layoutTemplate.getDefaultViewType());
 
-		float minHeight = pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-				.getMinHeightPixels());
-		float minWidth = pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-				.getMinWidthPixels());
+		float minHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
+		float minWidth = pixelGLConverter
+				.getGLHeightForPixelHeight(layoutTemplate.getMinWidthPixels());
 		float currentSize = wrappingLayout.getSizeScaledY();
 		wrappingLayout.setAbsoluteSizeY(minHeight);
 		wrappingLayout.setAbsoluteSizeX(minWidth);
@@ -967,18 +1002,22 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// if (!isInOverviewMode)
 		// return;
 
-		ABrickLayoutTemplate layoutTemplate = brickLayout.getExpandedLayoutTemplate();
+		ABrickLayoutTemplate layoutTemplate = brickLayout
+				.getExpandedLayoutTemplate();
 
 		if (expandedBrickState != null) {
-			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
+			setBrickLayoutTemplate(layoutTemplate,
+					expandedBrickState.getViewType());
 			wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
 			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
 		} else {
 			setBrickLayoutTemplate(layoutTemplate, currentViewType);
 			float defaultHeight = pixelGLConverter
-					.getGLHeightForPixelHeight(layoutTemplate.getDefaultHeightPixels());
-			float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(layoutTemplate
-					.getDefaultWidthPixels());
+					.getGLHeightForPixelHeight(layoutTemplate
+							.getDefaultHeightPixels());
+			float defaultWidth = pixelGLConverter
+					.getGLWidthForPixelWidth(layoutTemplate
+							.getDefaultWidthPixels());
 			wrappingLayout.setAbsoluteSizeY(defaultHeight);
 			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
@@ -1062,8 +1101,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				dialog.create();
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);
-				dialog.setDimensionPerspective(dataContainer.getDimensionPerspective());
-				dialog.setRecordPerspective(dataContainer.getRecordPerspective());
+				dialog.setDimensionPerspective(dataContainer
+						.getDimensionPerspective());
+				dialog.setRecordPerspective(dataContainer
+						.getRecordPerspective());
 
 				dialog.setBlockOnOpen(true);
 
@@ -1076,7 +1117,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
 							.getPathwayDimensionGroupData();
 
-					IDataDomain pathwayDataDomain = dialog.getPathwayDataDomain();
+					IDataDomain pathwayDataDomain = dialog
+							.getPathwayDataDomain();
 					// FIXME this is probably not registered
 					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
 
@@ -1089,10 +1131,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		});
 	}
 
-
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
+			int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

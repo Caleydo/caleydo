@@ -213,7 +213,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		subDataTablesUpdated();
 		connectionRenderer.init(gl);
 
-		checkForPerparedPerspectives();
+		checkForPreparedPerspectives();
 
 	}
 
@@ -1637,7 +1637,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return true;
 	}
 
-	private void checkForPerparedPerspectives() {
+	private void checkForPreparedPerspectives() {
 		Set<String> recordPerspectiveIDs = dataDomain.getTable()
 				.getRecordPerspectiveIDs();
 		Set<String> dimensionPerspectiveIDs = dataDomain.getTable()
