@@ -12,19 +12,25 @@ public class PerspectiveInitializationData {
 	 * sample element for every group.
 	 */
 	private List<Integer> indices;
+
+	private List<Integer> sampleElements;
 	/**
 	 * The sizes of the clusters in a list sorted so that combined with the {@link VirtualArray} the clusters
 	 * are uniquely identified. Used for initialization.
 	 */
-	private List<Integer> sampleElements;
+	private List<Integer> clusterSizes;
+
 	/**
 	 * The tree that shows relation between the elements in the {@link VirtualArray}. Always needs to be in
 	 * sync with the VAs.
 	 */
-	private List<Integer> clusterSizes;
-
 	private ClusterTree tree;
+	/**
+	 * The root of the {@link #tree} which must not be the actual root but can be any node.
+	 */
 	private ClusterNode rootNode;
+
+	private VirtualArray<?, ?, ?> virtualArray;
 
 	/**
 	 * Initialize from index list only
@@ -81,6 +87,19 @@ public class PerspectiveInitializationData {
 		this.rootNode = rootNode;
 	}
 
+	public void setData(VirtualArray<?, ?, ?> virtualArray) {
+		if (virtualArray == null)
+			throw new IllegalArgumentException("VA was null");
+		this.virtualArray = virtualArray;
+	}
+
+	/**
+	 * @return the virtualArray, see {@link #virtualArray}
+	 */
+	public VirtualArray<?, ?, ?> getVirtualArray() {
+		return virtualArray;
+	}
+	
 	public List<Integer> getIndices() {
 		return indices;
 	}

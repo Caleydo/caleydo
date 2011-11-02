@@ -319,6 +319,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 * 
 	 * @param data
 	 */
+	@SuppressWarnings("unchecked")
 	public void init(PerspectiveInitializationData data) {
 
 		// Case 1: we want an empty perspective
@@ -339,6 +340,13 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		// Case 4: we have a tree and nothing else, with either the default root or a specific node as root
 		else if (data.getTree() != null && data.getIndices() == null) {
 			createEverythingFromTree(data);
+		}
+		// Case 5: we initialize from a given virtual array
+		else if(data.getVirtualArray() != null)
+		{
+			virtualArray = (VA)data.getVirtualArray();
+			// FIXME we need to create a tree with groups here
+			createDefaultTree();
 		}
 
 		else {

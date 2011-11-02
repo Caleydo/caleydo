@@ -137,12 +137,31 @@ public class Application
 
 	private void calculateVAIntersections() {
 		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(5);
-		for (ATableBasedDataDomain dataDomain : DataDomainManager.get().getDataDomainsByType(
-			ATableBasedDataDomain.class)) {
+//		int loopCount = 0;
+		ArrayList<ATableBasedDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
+			ATableBasedDataDomain.class);
+		for (ATableBasedDataDomain dataDomain : dataDomains) {
+//			if (loopCount == 1) {
+//				loopCount++;
+//				continue;
+//			}
 			vasToIntersect.add(dataDomain.getTable().getDefaultRecordPerspective().getVirtualArray());
+//			loopCount++;
+
 		}
 		List<RecordVirtualArray> intersectedVAs = VAUtils.createIntersectingVAs(vasToIntersect);
 
+		for(int i = 0; i< dataDomains.size(); i++)
+		{
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(intersectedVAs.get(i));
+			RecordPerspective intersectedPerspective = new RecordPerspective(dataDomains.get(i));
+			intersectedPerspective.setLabel("Intersected");
+			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
+			intersectedPerspective.init(data);
+			dataDomains.get(i).getTable().registerRecordPerspecive(intersectedPerspective);
+			
+		}
 	}
 
 	@Override
