@@ -11,14 +11,14 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class Graph {
 	Vector<IDataGraphNode> nodes = null;
-	Map<IDataGraphNode, Set<IDataGraphNode>> nodeConnections = null;
+	Map<IDataGraphNode, Set<Edge>> nodeConnections = null;
 	Set<Edge> edges;
 
 	// TODO custom constructor has to be created
 
 	public Graph() {
 		nodes = new Vector<IDataGraphNode>();
-		nodeConnections = new HashMap<IDataGraphNode, Set<IDataGraphNode>>();
+		nodeConnections = new HashMap<IDataGraphNode, Set<Edge>>();
 		edges = new HashSet<Edge>();
 	}
 
@@ -34,15 +34,25 @@ public class Graph {
 		return nodes.size();
 	}
 
+	public Set<Edge> getEdgesOfNode(IDataGraphNode node) {
+		return nodeConnections.get(node);
+	}
+
 	public boolean incident(IDataGraphNode node1, IDataGraphNode node2) {
 		if (nodeConnections == null)
 			return false;
 
-		Set<IDataGraphNode> connections = nodeConnections.get(node1);
+		Set<Edge> connections = nodeConnections.get(node1);
 		if (connections == null)
 			return false;
 
-		return connections.contains(node2);
+		for (Edge edge : connections) {
+			if (edge.getNode1() == node2 || edge.getNode2() == node2) {
+				return true;
+			}
+		}
+
+		return false;
 	}
 
 	public boolean hasEdges() {
@@ -67,22 +77,6 @@ public class Graph {
 		if (!nodes.contains(node2))
 			nodes.add(node2);
 
-		Set<IDataGraphNode> node1Edges = nodeConnections.get(node1);
-
-		if (node1Edges == null) {
-			node1Edges = new HashSet<IDataGraphNode>();
-		}
-		node1Edges.add(node2);
-		nodeConnections.put(node1, node1Edges);
-
-		Set<IDataGraphNode> node2Edges = nodeConnections.get(node2);
-
-		if (node2Edges == null) {
-			node2Edges = new HashSet<IDataGraphNode>();
-		}
-		node2Edges.add(node1);
-		nodeConnections.put(node2, node2Edges);
-		
 		Edge newEdge = null;
 
 		boolean edgeExists = false;
@@ -98,8 +92,24 @@ public class Graph {
 		if (!edgeExists) {
 			newEdge = new Edge(node1, node2);
 			edges.add(newEdge);
+
+			Set<Edge> node1Edges = nodeConnections.get(node1);
+
+			if (node1Edges == null) {
+				node1Edges = new HashSet<Edge>();
+			}
+			node1Edges.add(newEdge);
+			nodeConnections.put(node1, node1Edges);
+
+			Set<Edge> node2Edges = nodeConnections.get(node2);
+
+			if (node2Edges == null) {
+				node2Edges = new HashSet<Edge>();
+			}
+			node2Edges.add(newEdge);
+			nodeConnections.put(node2, node2Edges);
 		}
-		
+
 		return newEdge;
 	}
 
@@ -109,29 +119,32 @@ public class Graph {
 
 	public void removeNode(IDataGraphNode node) {
 
-		Set<IDataGraphNode> neighbors = nodeConnections.get(node);
+		Set<Edge> nodeEdges = nodeConnections.get(node);
 
-		if (neighbors != null) {
-			for (IDataGraphNode neighbor : neighbors) {
-				Set<IDataGraphNode> neighborConnections = nodeConnections
-						.get(neighbor);
-				if (neighborConnections != null) {
-					neighborConnections.remove(node);
+		if (nodeEdges != null) {
+			for (Edge edge : nodeEdges) {
+				IDataGraphNode neighbor = edge.getNode1() == node ? edge
+						.getNode2() : edge.getNode1();
+				Set<Edge> neighborEdges = nodeConnections.get(neighbor);
+				if (neighborEdges != null) {
+					neighborEdges.remove(edge);
 				}
+
+				edges.remove(edge);
 			}
 		}
 
-		Set<Edge> edgesToRemove = new HashSet<Edge>();
-
-		for (Edge edge : edges) {
-			if (edge.getNode1() == node || edge.getNode2() == node) {
-				edgesToRemove.add(edge);
-			}
-		}
-
-		for (Edge edge : edgesToRemove) {
-			edges.remove(edge);
-		}
+		// Set<Edge> edgesToRemove = new HashSet<Edge>();
+		//
+		// for (Edge edge : edges) {
+		// if (edge.getNode1() == node || edge.getNode2() == node) {
+		// edgesToRemove.add(edge);
+		// }
+		// }
+		//
+		// for (Edge edge : edgesToRemove) {
+		// edges.remove(edge);
+		// }
 
 		nodeConnections.remove(node);
 		nodes.remove(node);

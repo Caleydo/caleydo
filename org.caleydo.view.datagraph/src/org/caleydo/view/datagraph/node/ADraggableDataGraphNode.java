@@ -1,6 +1,7 @@
 package org.caleydo.view.datagraph.node;
 
 import java.awt.geom.Point2D;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
@@ -11,8 +12,10 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.AGraphLayout;
-import org.caleydo.view.datagraph.ForceDirectedGraphLayout;
+import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.Graph;
+import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
@@ -21,6 +24,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	protected PixelGLConverter pixelGLConverter;
 	protected int id;
 	protected DragAndDropController dragAndDropController;
+	protected boolean isCustomPosition = false;
 	private IPickingListener pickingListener;
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
@@ -110,6 +114,21 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 		view.setDisplayListDirty();
 		view.setApplyAutomaticLayout(false);
 
+		if (!isCustomPosition) {
+			Graph graph = graphLayout.getGraph();
+
+			Set<Edge> edges = graph.getEdgesOfNode(this);
+
+			if (edges != null) {
+				for (Edge edge : edges) {
+					AEdgeRenderer edgeRenderer = graphLayout
+							.getCustomLayoutEdgeRenderer(edge);
+					edge.setEdgeRenderer(edgeRenderer);
+				}
+			}
+		}
+
+		isCustomPosition = true;
 	}
 
 	@Override
@@ -127,6 +146,16 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	public void destroy() {
 		view.removeSingleIDPickingListener(pickingListener,
 				PickingType.DATA_GRAPH_NODE.name(), id);
+	}
+
+	@Override
+	public boolean isCustomPosition() {
+		return isCustomPosition;
+	}
+
+	@Override
+	public void setCustomPosition(boolean isCustomPosition) {
+		this.isCustomPosition = isCustomPosition;
 	}
 
 }

@@ -275,6 +275,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				- 2
 				* BOUNDS_SPACING_PIXELS;
 		if (applyAutomaticLayout) {
+			for(IDataGraphNode node : dataGraph.getNodes()) {
+				node.setCustomPosition(false);
+			}
+			for(Edge edge : dataGraph.getAllEdges()) {
+				AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
+				edge.setEdgeRenderer(edgeRenderer);
+			}
 			// graphLayout.setGraph(dataGraph);
 			Rectangle2D rect = new Rectangle();
 

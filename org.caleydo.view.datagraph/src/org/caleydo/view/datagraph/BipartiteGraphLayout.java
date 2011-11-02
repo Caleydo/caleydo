@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Set;
 
 import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
+import org.caleydo.view.datagraph.bandlayout.BipartiteEdgeBandRenderer;
 import org.caleydo.view.datagraph.bandlayout.BipartiteEdgeLineRenderer;
 import org.caleydo.view.datagraph.bandlayout.BipartiteInsideLayerRoutingStrategy;
 import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeBandRenderer;
@@ -123,11 +124,14 @@ public class BipartiteGraphLayout extends AGraphLayout {
 				+ maxBendPointOffsetYPixels;
 
 		for (IDataGraphNode node : dataNodes) {
-			setNodePosition(
-					node,
-					new Point2D.Float(currentDataNodePositionX
-							+ node.getWidthPixels() / 2.0f, dataNodesBottomY
-							+ node.getHeightPixels() / 2.0f));
+			if (!node.isCustomPosition()) {
+				setNodePosition(
+						node,
+						new Point2D.Float(currentDataNodePositionX
+								+ node.getWidthPixels() / 2.0f,
+								dataNodesBottomY + node.getHeightPixels()
+										/ 2.0f));
+			}
 
 			currentDataNodePositionX += node.getWidthPixels()
 					+ dataNodeSpacingPixels;
@@ -146,12 +150,17 @@ public class BipartiteGraphLayout extends AGraphLayout {
 						- summedViewNodesWidthPixels - (viewNodes.size() - 1)
 						* viewNodeSpacingPixels) / 2.0f), layoutArea.getMinX());
 
-		float viewNodesCenterY = (float) layoutArea.getHeight()
-				+ (float) layoutArea.getMinY() - maxViewNodeHeightPixels / 2.0f;
+		float viewNodesTopY = (float) layoutArea.getHeight()
+				+ (float) layoutArea.getMinY();
 
 		for (IDataGraphNode node : viewNodes) {
-			setNodePosition(node, new Point2D.Float(currentViewNodePositionX
-					+ node.getWidthPixels() / 2.0f, viewNodesCenterY));
+			if (!node.isCustomPosition()) {
+				setNodePosition(
+						node,
+						new Point2D.Float(currentViewNodePositionX
+								+ node.getWidthPixels() / 2.0f, viewNodesTopY
+								- node.getHeightPixels() / 2.0f));
+			}
 
 			currentViewNodePositionX += node.getWidthPixels()
 					+ viewNodeSpacingPixels;
@@ -179,7 +188,7 @@ public class BipartiteGraphLayout extends AGraphLayout {
 		AEdgeRenderer edgeRenderer = null;
 
 		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
-			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
+			edgeRenderer = new BipartiteEdgeBandRenderer(edge, view);
 			edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);
 
 		} else {

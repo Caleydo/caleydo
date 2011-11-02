@@ -5,7 +5,6 @@ import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
 import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class AGraphLayout {
 
@@ -33,5 +32,9 @@ public abstract class AGraphLayout {
 	public abstract AEdgeRenderer getLayoutSpecificEdgeRenderer(Edge edge);
 
 	public abstract AEdgeRenderer getCustomLayoutEdgeRenderer(Edge edge);
+
+	public Graph getGraph() {
+		return graph;
+	}
 
 }
