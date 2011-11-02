@@ -9,8 +9,8 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.eclipse.core.runtime.Status;
 

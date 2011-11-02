@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.rendering.connectors;
 
 import gleem.linalg.Vec3f;
 
@@ -15,9 +15,9 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class RightSideConnector extends ASideConnector {
+public class LeftSideConnector extends ASideConnector {
 
-	public RightSideConnector(IDataGraphNode node,
+	public LeftSideConnector(IDataGraphNode node,
 			PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
 			ViewFrustum viewFrustum, IDataGraphNode otherNode) {
@@ -28,19 +28,18 @@ public class RightSideConnector extends ASideConnector {
 	}
 
 	protected void calcBandConnectionPoint() {
-		Point2D nodePosition = node.getPosition();
-		Point2D otherNodePosition = otherNode.getPosition();
-		float spacingX = (float) ((otherNodePosition.getX() - otherNode
-				.getWidth() / 2.0f) - (nodePosition.getX() + node.getWidth() / 2.0f));
+		Point2D nodePosition = otherNode.getPosition();
+		Point2D otherNodePosition = node.getPosition();
+		float spacingX = (float) ((otherNodePosition.getX() - node.getWidth() / 2.0f) - (nodePosition
+				.getX() + otherNode.getWidth() / 2.0f));
 		float deltaY = (float) (nodePosition.getY() - otherNodePosition.getY());
 
-		nodeAnchorPoints = node.getRightAnchorPoints();
-
+		nodeAnchorPoints = node.getLeftAnchorPoints();
 		float ratioY = deltaY / viewFrustum.getHeight();
 
-		float edgeAnchorY = (float) nodePosition.getY() - ratioY
+		float edgeAnchorY = (float) otherNodePosition.getY() + ratioY
 				* node.getHeight() / 2.0f;
-		float edgeAnchorX = (float) (nodeAnchorPoints.getFirst().getX() + Math
+		float edgeAnchorX = (float) (nodeAnchorPoints.getFirst().getX() - Math
 				.min(0.2f * spacingX,
 						pixelGLConverter
 								.getGLWidthForPixelWidth(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
@@ -57,16 +56,16 @@ public class RightSideConnector extends ASideConnector {
 	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
 			Color color) {
 
-		float nodeEdgeAnchorSpacing = (float) bandConnectionPoint.getX()
-				- (float) nodeAnchorPoints.getFirst().getX();
+		float nodeEdgeAnchorSpacing = (float) Math.abs(bandConnectionPoint
+				.getX() - (float) nodeAnchorPoints.getFirst().getX());
 
 		Pair<Point2D, Point2D> nodeOffsetAnchorPoints = new Pair<Point2D, Point2D>();
 		nodeOffsetAnchorPoints.setFirst(new Point2D.Float(
-				(float) nodeAnchorPoints.getFirst().getX() + 0.3f
+				(float) nodeAnchorPoints.getFirst().getX() - 0.3f
 						* nodeEdgeAnchorSpacing, (float) nodeAnchorPoints
 						.getFirst().getY()));
 		nodeOffsetAnchorPoints.setSecond(new Point2D.Float(
-				(float) nodeAnchorPoints.getSecond().getX() + 0.3f
+				(float) nodeAnchorPoints.getSecond().getX() - 0.3f
 						* nodeEdgeAnchorSpacing, (float) nodeAnchorPoints
 						.getSecond().getY()));
 

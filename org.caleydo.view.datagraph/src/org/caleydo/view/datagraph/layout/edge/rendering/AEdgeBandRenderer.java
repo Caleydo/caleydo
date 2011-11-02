@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.rendering;
 
 import gleem.linalg.Vec3f;
 
@@ -16,6 +16,10 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ABundleConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ANodeConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.BottomBundleConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.TopBundleConnector;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 

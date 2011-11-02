@@ -1,10 +1,13 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.layout;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
-import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
+import org.caleydo.view.datagraph.Edge;
+import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.Graph;
+import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 
 public abstract class AGraphLayout {
 

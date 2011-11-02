@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.rendering.connectors;
 
 import java.util.HashMap;
 import java.util.List;

@@ -15,11 +15,11 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
 public class VisBricksNode extends ViewNode implements IDropArea {

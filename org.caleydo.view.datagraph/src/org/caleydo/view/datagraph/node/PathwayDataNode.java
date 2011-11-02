@@ -12,10 +12,10 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public class PathwayDataNode extends ADataNode {
 

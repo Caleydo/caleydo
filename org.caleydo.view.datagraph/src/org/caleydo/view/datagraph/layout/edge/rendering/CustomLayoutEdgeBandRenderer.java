@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.rendering;
 
 import java.util.List;
 
@@ -7,6 +7,11 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ANodeConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.BottomSideConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.LeftSideConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.RightSideConnector;
+import org.caleydo.view.datagraph.layout.edge.rendering.connectors.TopSideConnector;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class CustomLayoutEdgeBandRenderer extends AEdgeBandRenderer {

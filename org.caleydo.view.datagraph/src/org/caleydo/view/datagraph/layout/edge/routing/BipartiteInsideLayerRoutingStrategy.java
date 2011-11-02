@@ -1,10 +1,10 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.routing;
 
 import java.awt.geom.Point2D;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.view.datagraph.BipartiteGraphLayout;
+import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class BipartiteInsideLayerRoutingStrategy implements

@@ -11,11 +11,11 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.Graph;
-import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
+import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 

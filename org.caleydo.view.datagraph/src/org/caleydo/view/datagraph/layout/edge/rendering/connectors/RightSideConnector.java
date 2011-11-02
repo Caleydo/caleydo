@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.rendering.connectors;
 
 import gleem.linalg.Vec3f;
 
@@ -15,9 +15,9 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class BottomSideConnector extends ASideConnector {
+public class RightSideConnector extends ASideConnector {
 
-	public BottomSideConnector(IDataGraphNode node,
+	public RightSideConnector(IDataGraphNode node,
 			PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
 			ViewFrustum viewFrustum, IDataGraphNode otherNode) {
@@ -28,71 +28,68 @@ public class BottomSideConnector extends ASideConnector {
 	}
 
 	protected void calcBandConnectionPoint() {
-
-		Point2D otherNodePosition = otherNode.getPosition();
 		Point2D nodePosition = node.getPosition();
+		Point2D otherNodePosition = otherNode.getPosition();
+		float spacingX = (float) ((otherNodePosition.getX() - otherNode
+				.getWidth() / 2.0f) - (nodePosition.getX() + node.getWidth() / 2.0f));
+		float deltaY = (float) (nodePosition.getY() - otherNodePosition.getY());
 
-		float spacingY = (float) ((nodePosition.getY() - node.getHeight() / 2.0f) - (otherNodePosition
-				.getY() + otherNode.getHeight() / 2.0f));
-		float deltaX = (float) (otherNodePosition.getX() - nodePosition.getX());
+		nodeAnchorPoints = node.getRightAnchorPoints();
 
-		nodeAnchorPoints = node.getBottomAnchorPoints();
+		float ratioY = deltaY / viewFrustum.getHeight();
 
-		float ratioX = deltaX / viewFrustum.getWidth();
-
-		float edgeAnchorX = (float) nodePosition.getX() + ratioX
-				* node.getWidth() / 2.0f;
-		float edgeAnchorY = (float) (nodeAnchorPoints.getFirst().getY() - Math
-				.min(0.2f * spacingY,
+		float edgeAnchorY = (float) nodePosition.getY() - ratioY
+				* node.getHeight() / 2.0f;
+		float edgeAnchorX = (float) (nodeAnchorPoints.getFirst().getX() + Math
+				.min(0.2f * spacingX,
 						pixelGLConverter
-								.getGLHeightForPixelHeight(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
+								.getGLWidthForPixelWidth(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
 		bandConnectionPoint = new Point2D.Float(edgeAnchorX, edgeAnchorY);
-
 	}
 
 	@Override
 	public Point2D getBandHelperPoint() {
-		return new Point2D.Float((float) bandConnectionPoint.getX(),
-				(float) nodeAnchorPoints.getFirst().getY());
+		return new Point2D.Float((float) nodeAnchorPoints.getFirst().getX(),
+				(float) bandConnectionPoint.getY());
 	}
 
 	@Override
 	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
 			Color color) {
-		float nodeEdgeAnchorSpacing = (float) Math.abs(bandConnectionPoint
-				.getY() - (float) nodeAnchorPoints.getFirst().getY());
+
+		float nodeEdgeAnchorSpacing = (float) bandConnectionPoint.getX()
+				- (float) nodeAnchorPoints.getFirst().getX();
 
 		Pair<Point2D, Point2D> nodeOffsetAnchorPoints = new Pair<Point2D, Point2D>();
 		nodeOffsetAnchorPoints.setFirst(new Point2D.Float(
-				(float) nodeAnchorPoints.getFirst().getX(),
-				(float) nodeAnchorPoints.getFirst().getY() - 0.3f
-						* nodeEdgeAnchorSpacing));
+				(float) nodeAnchorPoints.getFirst().getX() + 0.3f
+						* nodeEdgeAnchorSpacing, (float) nodeAnchorPoints
+						.getFirst().getY()));
 		nodeOffsetAnchorPoints.setSecond(new Point2D.Float(
-				(float) nodeAnchorPoints.getSecond().getX(),
-				(float) nodeAnchorPoints.getSecond().getY() - 0.3f
-						* nodeEdgeAnchorSpacing));
+				(float) nodeAnchorPoints.getSecond().getX() + 0.3f
+						* nodeEdgeAnchorSpacing, (float) nodeAnchorPoints
+						.getSecond().getY()));
 
 		calcBandDependentParameters(isEnd1, bandPoints);
 
 		Pair<Point2D, Point2D> bandAnchorPoints = new Pair<Point2D, Point2D>(
 				bandAnchorPoint2, bandAnchorPoint1);
 
-
-		Point2D bandOffsetAnchorPoint1 = calcPointOnLineWithFixedY(
+		Point2D bandOffsetAnchorPoint1 = calcPointOnLineWithFixedX(
 				bandAnchorPoint1, vecXPoint1, vecYPoint1,
-				(float) nodeOffsetAnchorPoints.getFirst().getY(),
-				(float) nodeOffsetAnchorPoints.getFirst().getX(),
 				(float) nodeOffsetAnchorPoints.getSecond().getX(),
-				(float) nodeOffsetAnchorPoints.getSecond().getX(),
-				(float) nodeOffsetAnchorPoints.getSecond().getX());
-
-		Point2D bandOffsetAnchorPoint2 = calcPointOnLineWithFixedY(
-				bandAnchorPoint2, vecXPoint2, vecYPoint2,
 				(float) nodeOffsetAnchorPoints.getSecond().getY(),
+				(float) nodeOffsetAnchorPoints.getFirst().getY(),
+				(float) nodeOffsetAnchorPoints.getSecond().getY(),
+				(float) nodeOffsetAnchorPoints.getSecond().getY());
+
+		Point2D bandOffsetAnchorPoint2 = calcPointOnLineWithFixedX(
+				bandAnchorPoint2, vecXPoint2, vecYPoint2,
 				(float) nodeOffsetAnchorPoints.getFirst().getX(),
-				(float) nodeOffsetAnchorPoints.getSecond().getX(),
-				(float) nodeOffsetAnchorPoints.getFirst().getX(),
-				(float) nodeOffsetAnchorPoints.getFirst().getX());
+				(float) nodeOffsetAnchorPoints.getSecond().getY(),
+				(float) nodeOffsetAnchorPoints.getFirst().getY(),
+				(float) nodeOffsetAnchorPoints.getFirst().getY(),
+				(float) nodeOffsetAnchorPoints.getFirst().getY());
 
 		Pair<Point2D, Point2D> bandOffsetAnchorPoints = new Pair<Point2D, Point2D>(
 				bandOffsetAnchorPoint2, bandOffsetAnchorPoint1);

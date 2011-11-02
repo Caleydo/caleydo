@@ -19,9 +19,9 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 

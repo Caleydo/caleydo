@@ -1,6 +1,6 @@
 package org.caleydo.view.datagraph;
 
-import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class Edge {

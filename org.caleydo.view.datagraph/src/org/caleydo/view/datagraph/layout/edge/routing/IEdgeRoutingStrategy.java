@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph.bandlayout;
+package org.caleydo.view.datagraph.layout.edge.routing;
 
 import java.awt.geom.Point2D;
 import java.util.List;

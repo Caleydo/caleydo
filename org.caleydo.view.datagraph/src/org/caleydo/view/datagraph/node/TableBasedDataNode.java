@@ -21,12 +21,12 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.matrix.DataContainerMatrixRenderer;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public class TableBasedDataNode extends ADataNode {
 

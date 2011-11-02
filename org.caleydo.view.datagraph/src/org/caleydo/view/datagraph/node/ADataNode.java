@@ -3,8 +3,8 @@ package org.caleydo.view.datagraph.node;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.AGraphLayout;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public abstract class ADataNode extends ADefaultTemplateNode {
 

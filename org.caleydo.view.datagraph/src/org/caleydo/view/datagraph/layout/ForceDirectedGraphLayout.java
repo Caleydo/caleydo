@@ -1,4 +1,4 @@
-package org.caleydo.view.datagraph;
+package org.caleydo.view.datagraph.layout;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -6,11 +6,14 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.caleydo.view.datagraph.bandlayout.AEdgeRenderer;
-import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeBandRenderer;
-import org.caleydo.view.datagraph.bandlayout.CustomLayoutEdgeLineRenderer;
-import org.caleydo.view.datagraph.bandlayout.IEdgeRoutingStrategy;
-import org.caleydo.view.datagraph.bandlayout.SimpleEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.Edge;
+import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.Graph;
+import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.CustomLayoutEdgeBandRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.CustomLayoutEdgeLineRenderer;
+import org.caleydo.view.datagraph.layout.edge.routing.IEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.layout.edge.routing.SimpleEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 import org.caleydo.view.datagraph.node.ViewNode;
