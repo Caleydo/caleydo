@@ -9,6 +9,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
+import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public interface IDataGraphNode extends IDraggable {
 
@@ -59,5 +60,7 @@ public interface IDataGraphNode extends IDraggable {
 	public boolean isCustomPosition();
 
 	public void setCustomPosition(boolean isCustomPosition);
+	
+	public void setGraphLayout(AGraphLayout graphLayout);
 
 }

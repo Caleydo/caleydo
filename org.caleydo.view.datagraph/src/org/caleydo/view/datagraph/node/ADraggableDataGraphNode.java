@@ -158,4 +158,9 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 		this.isCustomPosition = isCustomPosition;
 	}
 
+	@Override
+	public void setGraphLayout(AGraphLayout graphLayout) {
+		this.graphLayout = graphLayout;
+	}
+
 }

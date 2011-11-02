@@ -10,7 +10,7 @@ import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.datagraph.GLDataGraph;
 
 public class DataGraphToolBarContent extends AToolBarContent {
-	
+
 	public static final String VIEW_TITLE = "Data Graph";
 
 	@Override
@@ -22,14 +22,16 @@ public class DataGraphToolBarContent extends AToolBarContent {
 	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
 
-//		container.setImagePath(IMAGE_PATH);
+		// container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		IToolBarItem goBackInHistory = new ApplySpringBasedLayoutAction();
-		
-		actionList.add(goBackInHistory);
+		IToolBarItem applySpringBasedLayoutAction = new ApplySpringBasedLayoutAction();
+		IToolBarItem applyBipartiteLayoutAction = new ApplyBipartiteLayoutAction();
+
+		actionList.add(applySpringBasedLayoutAction);
+		actionList.add(applyBipartiteLayoutAction);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

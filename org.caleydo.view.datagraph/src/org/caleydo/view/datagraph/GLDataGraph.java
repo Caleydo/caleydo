@@ -36,6 +36,7 @@ import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
@@ -52,14 +53,14 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
-import org.caleydo.view.datagraph.event.ApplySpringBasedLayoutEvent;
+import org.caleydo.view.datagraph.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 import org.caleydo.view.datagraph.event.OpenViewEvent;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.datagraph.listener.AddDataContainerEventListener;
-import org.caleydo.view.datagraph.listener.ApplySpringBasedLayoutEventListener;
+import org.caleydo.view.datagraph.listener.ApplySpecificGraphLayoutEventListener;
 import org.caleydo.view.datagraph.listener.CreateViewFromDataContainerEventListener;
 import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
@@ -72,6 +73,7 @@ import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 import org.caleydo.view.datagraph.node.NodeCreator;
 import org.caleydo.view.datagraph.node.ViewNode;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
 import org.eclipse.jface.window.Window;
@@ -121,7 +123,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private AddDataContainerEventListener addDataContainerEventListener;
 	private OpenViewEventListener openViewEventListener;
 	private CreateViewFromDataContainerEventListener createViewFromDataContainerEventListener;
-	private ApplySpringBasedLayoutEventListener applySpringBasedLayoutEventListener;
+	private ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener;
 
 	private IDataGraphNode currentMouseOverNode;
 
@@ -277,11 +279,12 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				- 2
 				* BOUNDS_SPACING_PIXELS;
 		if (applyAutomaticLayout) {
-			for(IDataGraphNode node : dataGraph.getNodes()) {
+			for (IDataGraphNode node : dataGraph.getNodes()) {
 				node.setCustomPosition(false);
 			}
-			for(Edge edge : dataGraph.getAllEdges()) {
-				AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
+			for (Edge edge : dataGraph.getAllEdges()) {
+				AEdgeRenderer edgeRenderer = graphLayout
+						.getLayoutSpecificEdgeRenderer(edge);
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 			// graphLayout.setGraph(dataGraph);
@@ -519,10 +522,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		eventPublisher.addListener(CreateViewFromDataContainerEvent.class,
 				createViewFromDataContainerEventListener);
 
-		applySpringBasedLayoutEventListener = new ApplySpringBasedLayoutEventListener();
-		applySpringBasedLayoutEventListener.setHandler(this);
-		eventPublisher.addListener(ApplySpringBasedLayoutEvent.class,
-				applySpringBasedLayoutEventListener);
+		applySpecificGraphLayoutEventListener = new ApplySpecificGraphLayoutEventListener();
+		applySpecificGraphLayoutEventListener.setHandler(this);
+		eventPublisher.addListener(ApplySpecificGraphLayoutEvent.class,
+				applySpecificGraphLayoutEventListener);
 	}
 
 	@Override
@@ -570,9 +573,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			createViewFromDataContainerEventListener = null;
 		}
 
-		if (applySpringBasedLayoutEventListener != null) {
-			eventPublisher.removeListener(applySpringBasedLayoutEventListener);
-			applySpringBasedLayoutEventListener = null;
+		if (applySpecificGraphLayoutEventListener != null) {
+			eventPublisher
+					.removeListener(applySpecificGraphLayoutEventListener);
+			applySpecificGraphLayoutEventListener = null;
 		}
 	}
 
@@ -584,8 +588,6 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
-
-
 
 	public void setApplyAutomaticLayout(boolean applyAutomaticLayout) {
 		this.applyAutomaticLayout = applyAutomaticLayout;
@@ -898,10 +900,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					// recordPerspectiveID), dimensionPerspective);
 
 					// FIXME: This should only be a datacontainer in the future
-//					TableBasedDimensionGroupData data = new TableBasedDimensionGroupData(
-//							dataDomain, dataContainer);
-//					data.setLabel(dialog.getValue());
-//					dataDomain.addDimensionGroup(data);
+					// TableBasedDimensionGroupData data = new
+					// TableBasedDimensionGroupData(
+					// dataDomain, dataContainer);
+					// data.setLabel(dialog.getValue());
+					// dataDomain.addDimensionGroup(data);
 				}
 			}
 		});
@@ -962,8 +965,20 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		return currentMouseOverNode;
 	}
 
-	public void applySpringBasedLayout() {
-		// TODO: Choose correct layout
+	public void applyGraphLayout(Class<? extends AGraphLayout> graphLayoutClass) {
+
+		try {
+			graphLayout = graphLayoutClass.getConstructor(GLDataGraph.class,
+					Graph.class).newInstance(this, dataGraph);
+
+			for (IDataGraphNode node : dataGraph.getNodes()) {
+				node.setGraphLayout(graphLayout);
+			}
+		} catch (Exception e) {
+			Logger.log(new Status(Status.ERROR, this.toString(),
+					"Failed to create Graph Layout", e));
+		}
+
 		setApplyAutomaticLayout(true);
 		setDisplayListDirty();
 	}

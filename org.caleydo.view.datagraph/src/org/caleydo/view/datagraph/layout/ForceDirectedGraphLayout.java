@@ -480,6 +480,11 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (forceMax <= 1) {
 			running = false;
 		}
+		
+		for(IDataGraphNode node : nodesToLayout) {
+			node.setUpsideDown(false);
+		}
+		
 		updateNodePositions();
 	}
 
