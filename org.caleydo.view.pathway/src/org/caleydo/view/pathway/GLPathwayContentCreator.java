@@ -59,7 +59,7 @@ public class GLPathwayContentCreator {
 
 	private HashMap<PathwayGraph, Integer> hashPathway2VerticesDisplayListId;
 	private HashMap<PathwayGraph, Integer> hashPathway2EdgesDisplayListId;
-	
+
 	private ColorMapper colorMapper;
 
 	private SelectionManager internalSelectionManager;
@@ -849,24 +849,33 @@ public class GLPathwayContentCreator {
 
 	private float[] determineNodeColor(PathwayVertexGraphItemRep vertexRep) {
 
-		int iDavidID = pathwayItemManager
+		int davidID = pathwayItemManager
 				.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) vertexRep
 						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0));
 
-		if (iDavidID == -1 || iDavidID == 0)
+		if (davidID == -1 || davidID == 0)
 			return null;
 		else {
 
-			Set<Integer> ids = idMappingManager.<Integer, Integer> getIDAsSet(
-					glPathwayView.getPathwayDataDomain().getDavidIDType(), glPathwayView
-							.getDataDomain().getRecordIDType(), iDavidID);
-			if (ids == null)
+			Set<Integer> expressionIndices = idMappingManager
+					.<Integer, Integer> getIDAsSet(glPathwayView.getPathwayDataDomain()
+							.getDavidIDType(), glPathwayView.getGeneSelectionManager()
+							.getIDType(), davidID);
+			if (expressionIndices == null)
 				return null;
-			for (Integer iExpressionIndex : ids) {
+			for (Integer expressionIndex : expressionIndices) {
 
-				float expressionValue = geneticDataDomain.getTable().getFloat(
-						dimensionDataRepresentation,
-						glPathwayView.selectedSampleIndex, iExpressionIndex);
+				float expressionValue = 0;
+
+				if (glPathwayView.getGeneSelectionManager().getIDType() == geneticDataDomain
+						.getRecordIDType())
+					expressionValue = geneticDataDomain.getTable().getFloat(
+							dimensionDataRepresentation,
+							glPathwayView.selectedSampleIndex, expressionIndex);
+				else
+					expressionValue = geneticDataDomain.getTable().getFloat(
+							dimensionDataRepresentation, expressionIndex,
+							glPathwayView.selectedSampleIndex);
 
 				return colorMapper.getColor(expressionValue);
 

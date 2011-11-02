@@ -90,6 +90,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private SelectionManager geneSelectionManager;
+	private SelectionManager dimensionSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -353,12 +354,13 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 							elementRep, item.getSelectionType());
 				}
 			}
-		} else {
+		} else if (selectionDelta.getIDType().getIDCategory() == dimensionSelectionManager
+				.getIDType().getIDCategory()) {
+
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
 				if (item.getSelectionType() == SelectionType.MOUSE_OVER
 						&& !item.isRemove()) {
 					selectedSampleIndex = item.getID();
-					System.out.println(item);
 					break;
 				}
 			}
@@ -384,8 +386,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			IDType geneIDType = geneSelectionManager.getIDType();
 
 			Set<Integer> dataTableExpressionIndex = pathwayDataDomain
-					.getGeneIDMappingManager().getIDAsSet(pathwayDataDomain.getDavidIDType(),
-							geneIDType, davidID);
+					.getGeneIDMappingManager().getIDAsSet(
+							pathwayDataDomain.getDavidIDType(), geneIDType, davidID);
 			if (dataTableExpressionIndex == null)
 				continue;
 			alExpressionIndex.addAll(dataTableExpressionIndex);
@@ -689,15 +691,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			sendSelectionCommandEvent(geneSelectionManager.getIDType(), command);
 
 			// Add new vertex to internal selection manager
-			geneSelectionManager
-					.addToType(selectionType, tmpVertexGraphItemRep.getId());
+			geneSelectionManager.addToType(selectionType, tmpVertexGraphItemRep.getId());
 
 			int iConnectionID = generalManager.getIDCreator().createID(
 					ManagedObjectType.CONNECTION);
 			geneSelectionManager.addConnectionID(iConnectionID,
 					tmpVertexGraphItemRep.getId());
-			connectedElementRepresentationManager.clear(
-					geneSelectionManager.getIDType(), selectionType);
+			connectedElementRepresentationManager.clear(geneSelectionManager.getIDType(),
+					selectionType);
 
 			createConnectionLines(selectionType, iConnectionID);
 
@@ -907,11 +908,13 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 							+ dataDomain);
 
 		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
-				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType()))
+				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType())) {
 			geneSelectionManager = dataDomain.getRecordSelectionManager();
-		else
+			dimensionSelectionManager = dataDomain.getDimensionSelectionManager();
+		} else {
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
-
+			dimensionSelectionManager = dataDomain.getRecordSelectionManager();
+		}
 		super.setDataDomain(dataDomain);
 	}
 
@@ -927,4 +930,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		return null;
 	}
 
+	/**
+	 * @return the geneSelectionManager, see {@link #geneSelectionManager}
+	 */
+	public SelectionManager getGeneSelectionManager() {
+		return geneSelectionManager;
+	}
 }
