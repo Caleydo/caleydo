@@ -1,6 +1,7 @@
 package org.caleydo.data.importer.tcga.startup;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -9,6 +10,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Unmarshaller;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
@@ -46,104 +51,48 @@ public class Application
 	public static final String CHECKED_IN_DATA = "data/genome/microarray/tcga/cnmf.normalized.gct";
 	public static final String CHECKED_IN_DATA_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
 
-	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
-		+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
-
-	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
-	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
-
-	public static final String MI_RNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
-	public static final String MI_RNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
-
-	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
-	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
-		+ "methylation_cnmf/cnmf.membership.txt";
-
-	// Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/methylation_cnmf/
-
 	private ATableBasedDataDomain dataDomain;
 
 	private boolean useQuickClustering = true;
 
-	// public String dataSource = DROPBOX_GBM_MRNA;
-	// public String groupingSource = DROPBOX_GBM_MRNA_GROUPING;
+	/** {link JAXBContext} for DataTypeSet (de-)serialization */
+	private JAXBContext context;
+
+	private String inputDataTypeSetCollectionFile = "";
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
 		String[] runConfigParameters = (String[]) context.getArguments().get("application.args");
-		String outputFile = "";
+		String outputCaleydoProjectFile = "";
 
-		if (runConfigParameters == null || runConfigParameters.length != 1) {
-			// System.out.println("Usage: caleydo_tcga_data_exporter <output_path_including_file_name>");
-			outputFile =
+		if (runConfigParameters == null || runConfigParameters.length != 2) {
+
+			inputDataTypeSetCollectionFile =
+				System.getProperty("user.home") + System.getProperty("file.separator") + "tcga_test_data.xml";
+
+			outputCaleydoProjectFile =
 				System.getProperty("user.home") + System.getProperty("file.separator") + "export_"
 					+ (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal";
 		}
-		else
-			outputFile = runConfigParameters[0];
+		else {
+			outputCaleydoProjectFile = runConfigParameters[0];
+			inputDataTypeSetCollectionFile = runConfigParameters[1];
+		}
 
 		GeneralManager.get().init();
-
-		// DataDomainConfiguration mrnaConfiguration = GeneticDataDomain.getConfigurationWithSamplesAsRows();
+		createJAXBContext();
+		DataTypeSetCollection dataTypeSetCollection = deserialzeDataTypeSets();
 
 		boolean isColumnDimension = false;
 
-		DataDomainConfiguration mrnaConfiguration = new DataDomainConfiguration();
-		mrnaConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
-
-		mrnaConfiguration.setRecordIDCategory("SAMPLE");
-		mrnaConfiguration.setPrimaryRecordMappingType("SAMPLE");
-		mrnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		mrnaConfiguration.setRecordDenominationPlural("samples");
-		mrnaConfiguration.setRecordDenominationSingular("sample");
-
-		mrnaConfiguration.setDimensionIDCategory("GENE");
-		mrnaConfiguration.setPrimaryDimensionMappingType("DAVID");
-		mrnaConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-		mrnaConfiguration.setDimensionDenominationPlural("genes");
-		mrnaConfiguration.setDimensionDenominationSingular("gene");
-
-		loadSources("mRNA data", MRNA, MRNA_GROUPING, "org.caleydo.datadomain.genetic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED), mrnaConfiguration,
-			isColumnDimension);
-
-		// // Trigger pathway loading
-		// DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
-
-		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
-		mirnaConfiguration.setRecordIDCategory("SAMPLE");
-		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		mirnaConfiguration.setRecordDenominationPlural("samples");
-		mirnaConfiguration.setRecordDenominationSingular("sample");
-
-		mirnaConfiguration.setDimensionIDCategory("miRNA");
-		mirnaConfiguration.setHumanReadableDimensionIDType("miRNA");
-		mirnaConfiguration.setDimensionDenominationPlural("miRNAs");
-		mirnaConfiguration.setDimensionDenominationSingular("miRNA");
-
-		loadSources("miRNA data", MI_RNA, MI_RNA_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_BROWN), mirnaConfiguration,
-			isColumnDimension);
-
-		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
-		methylationConfiguration.setRecordIDCategory("SAMPLE");
-		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		methylationConfiguration.setRecordDenominationPlural("samples");
-		methylationConfiguration.setRecordDenominationSingular("sample");
-
-		methylationConfiguration.setDimensionIDCategory("Methylation");
-		methylationConfiguration.setHumanReadableDimensionIDType("Methylation");
-		methylationConfiguration.setDimensionDenominationPlural("methylations");
-		methylationConfiguration.setDimensionDenominationSingular("methylation");
-
-		loadSources("Methylation data", METHYLATION, METHYLATION_GROUPING, "org.caleydo.datadomain.generic",
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.GREEN_WHITE_PURPLE),
-			methylationConfiguration, isColumnDimension);
+		// Iteratur over data type sets and trigger processing
+		for (DataTypeSet dataTypeSet : dataTypeSetCollection.getDataTypeSetCollection())
+			loadSources(dataTypeSet, isColumnDimension);
 
 		calculateVAIntersections();
 
-		new ProjectSaver().save(outputFile, true);
+		new ProjectSaver().save(outputCaleydoProjectFile, true);
 
 		return IApplication.EXIT_OK;
 	}
@@ -180,12 +129,13 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(String label, String dataSource, String groupingSource, String dataDomainType,
-		ColorMapper colorMapper, DataDomainConfiguration configuration, boolean isColumnDimension)
+	private void loadSources(DataTypeSet dataTypeSet, boolean isColumnDimension)
 		throws FileNotFoundException, IOException {
 
-		convertGctFile(label, dataSource, dataDomainType, colorMapper, configuration, isColumnDimension);
-		loadClusterInfo(groupingSource);
+		convertGctFile(dataTypeSet.getName(), dataTypeSet.getDataPath(), dataTypeSet.getDataDomainType(),
+			ColorMapper.createDefaultMapper(EDefaultColorSchemes.valueOf(dataTypeSet.getColorScheme())),
+			dataTypeSet.getDataDomainConfiguration(), isColumnDimension);
+		loadClusterInfo(dataTypeSet.getGroupingPath());
 
 		PerspectiveInitializationData clusterResult = runClusteringOnRows();
 		createSampleOfGenes(clusterResult);
@@ -398,5 +348,33 @@ public class Application
 		sampledDimensionPerspective.setLabel("Clustered, sampled genes, size: "
 			+ sampledDimensionPerspective.getVirtualArray().size());
 		dataDomain.getTable().registerDimensionPerspective(sampledDimensionPerspective);
+	}
+
+	private void createJAXBContext() {
+		try {
+			Class<?>[] serializableClasses = new Class<?>[2];
+			serializableClasses[0] = DataTypeSet.class;
+			serializableClasses[1] = DataTypeSetCollection.class;
+			context = JAXBContext.newInstance(serializableClasses);
+		}
+		catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContexts", ex);
+		}
+	}
+
+	private DataTypeSetCollection deserialzeDataTypeSets() {
+
+		DataTypeSetCollection dataTypeSetCollection = null;
+		try {
+			Unmarshaller unmarshaller = context.createUnmarshaller();
+
+			dataTypeSetCollection =
+				(DataTypeSetCollection) unmarshaller.unmarshal(new File(inputDataTypeSetCollectionFile));
+		}
+		catch (JAXBException ex) {
+			throw new RuntimeException("Could not create JAXBContexts", ex);
+		}
+
+		return dataTypeSetCollection;
 	}
 }
