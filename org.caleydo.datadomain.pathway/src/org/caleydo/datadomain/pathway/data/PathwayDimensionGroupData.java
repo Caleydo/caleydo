@@ -23,7 +23,8 @@ import org.caleydo.util.graph.IGraphItem;
  * Implementation of {@link ADimensionGroupData} for pathways. In this case a
  * dimension group consists of several pathways.
  * 
- * @author Partl
+ * @author Christian Partl
+ * @author Alexander Lex
  * 
  */
 public class PathwayDimensionGroupData extends DataContainer {

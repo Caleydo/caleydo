@@ -1,8 +1,5 @@
 package org.caleydo.datadomain.pathway.data;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -14,7 +11,8 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * Implementation of {@link ISegmentData} for pathways. In this case each
  * segment group refers to one pathway ({@link PathwayGraph}).
  * 
- * @author Partl
+ * @author Christian Partl
+ * @author Alexander Lex
  * 
  */
 public class PathwayDataContainer extends DataContainer {
