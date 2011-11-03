@@ -15,6 +15,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
@@ -24,6 +25,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.contextmenu.AddDataContainerItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
+import org.caleydo.view.datagraph.event.AddDataContainerEvent;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class DataContainerMatrixRenderer extends ADataContainerRenderer {
@@ -169,12 +171,21 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 			@Override
 			public void rightClicked(Pick pick) {
+				triggerDataContainerCreation(pick.getID(), true);
+			}
 
+			@Override
+			public void clicked(Pick pick) {
+				triggerDataContainerCreation(pick.getID(), false);
+			}
+
+			private void triggerDataContainerCreation(int id,
+					boolean useContextMenu) {
 				Pair<CellContainer, CellContainer> rowAndColumn = null;
 
 				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers
 						.keySet()) {
-					if (emptyCellRenderer.getID() == pick.getID()) {
+					if (emptyCellRenderer.getID() == id) {
 						rowAndColumn = emptyCellRenderers
 								.get(emptyCellRenderer);
 						break;
@@ -182,13 +193,6 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				}
 
 				if (rowAndColumn != null) {
-
-					// String recordPerspectiveID =
-					// dataDomain.isColumnDimension() ? rowAndColumn
-					// .getFirst().id : rowAndColumn.getSecond().id;
-					// String dimensionPerspectiveID = dataDomain
-					// .isColumnDimension() ? rowAndColumn.getSecond().id
-					// : rowAndColumn.getFirst().id;
 
 					String recordPerspectiveID = rowAndColumn.getFirst().id;
 
@@ -220,12 +224,23 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 					}
 
-					view.getContextMenuCreator().addContextMenuItem(
-							new AddDataContainerItem(dataDomain,
-									recordPerspectiveID,
-									dimensionPerspectiveID,
-									createDimensionPerspective, dimensionVA,
-									group));
+					if (useContextMenu) {
+						view.getContextMenuCreator().addContextMenuItem(
+								new AddDataContainerItem(dataDomain,
+										recordPerspectiveID,
+										dimensionPerspectiveID,
+										createDimensionPerspective,
+										dimensionVA, group));
+
+					} else {
+						AddDataContainerEvent event = new AddDataContainerEvent(
+								dataDomain, recordPerspectiveID,
+								dimensionPerspectiveID,
+								createDimensionPerspective, dimensionVA, group);
+						event.setSender(this);
+						GeneralManager.get().getEventPublisher()
+								.triggerEvent(event);
+					}
 				}
 			}
 

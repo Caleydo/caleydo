@@ -42,9 +42,6 @@ public class BipartiteInsideLayerRoutingStrategy implements
 			rightPoint = point2;
 		}
 
-		double anchorPositionX = point1.getX()
-				- (point1.getX() - point2.getX()) / 2.0;
-
 		float anchorPositionY = (float) point1.getY()
 				- pixelGLConverter.getGLHeightForPixelHeight((int) (node1
 						.getHeightPixels() / 2.0f)
@@ -54,14 +51,11 @@ public class BipartiteInsideLayerRoutingStrategy implements
 				+ node1.getWidth() / 2.0f, anchorPositionY);
 		Point2D anchorPoint2 = new Point2D.Float((float) rightPoint.getX()
 				- node2.getWidth() / 2.0f, anchorPositionY);
-		Point2D anchorPoint3 = new Point2D.Float((float) anchorPositionX,
-				anchorPositionY);
 
 		edgePoints.clear();
 
 		edgePoints.add(leftPoint);
 		edgePoints.add(anchorPoint1);
-		// edgePoints.add(anchorPoint3);
 		edgePoints.add(anchorPoint2);
 		edgePoints.add(rightPoint);
 
