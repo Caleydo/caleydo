@@ -1,9 +1,14 @@
 package org.caleydo.core.view.contextmenu;
 
+import java.awt.MouseInfo;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Menu;
@@ -16,7 +21,7 @@ public class ContextMenuCreator {
 
 	private AGLView view;
 
-	public void open(AGLView view) {
+	public void open(final AGLView view) {
 
 		if (view.isRenderedRemote())
 			this.view = (AGLView) view.getRemoteRenderingGLView();
@@ -30,11 +35,37 @@ public class ContextMenuCreator {
 		Runnable runnable = new Runnable() {
 			public void run() {
 
-				Menu popupMenu = menuCreator.create(parent);
-				PopupOverAwtHelper popupMenuOverAwtHelper = new PopupOverAwtHelper(popupMenu);
-				Point cursorLocation = menuCreator.getParent().getDisplay().getCursorLocation();
+				// Menu popupMenu = menuCreator.create(parent);
+				// PopupOverAwtHelper popupMenuOverAwtHelper = new PopupOverAwtHelper(popupMenu);
+				// Point cursorLocation = menuCreator.getParent().getDisplay().getCursorLocation();
+				//
+				// popupMenuOverAwtHelper.swtDirectShowMenu(cursorLocation.x, cursorLocation.y);
 
-				popupMenuOverAwtHelper.swtDirectShowMenu(cursorLocation.x, cursorLocation.y);
+				// new PopupDemo(view.getParentGLCanvas()).setVisible(true);
+
+				final JPopupMenu popup = new JPopupMenu();
+				JMenuItem menuItem1 = new JMenuItem("Option 1");
+				popup.add(menuItem1);
+
+				JMenuItem menuItem2 = new JMenuItem("Option 2");
+				popup.add(menuItem2);
+
+				view.getParentGLCanvas().addMouseListener(new MouseAdapter() {
+
+					@Override
+					public void mouseReleased(MouseEvent e) {
+
+						int cursorLocationX =
+							MouseInfo.getPointerInfo().getLocation().x
+								- view.getParentGLCanvas().getLocationOnScreen().x;
+						int cursorLocationY =
+							MouseInfo.getPointerInfo().getLocation().y
+								- view.getParentGLCanvas().getLocationOnScreen().y;
+						popup.show(view.getParentGLCanvas().getParent(), cursorLocationX, cursorLocationY);
+
+					}
+				});
+
 			}
 		};
 		parent.getDisplay().asyncExec(runnable);
