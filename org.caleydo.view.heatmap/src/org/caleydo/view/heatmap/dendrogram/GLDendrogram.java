@@ -1405,7 +1405,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		}
 
 		SelectionType selectionType = SelectionType.NORMAL;
-		ContextMenuCreator contextMenuCreator = new ContextMenuCreator();
 
 		switch (pickingType) {
 

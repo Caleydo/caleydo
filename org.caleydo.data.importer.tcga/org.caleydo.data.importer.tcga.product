@@ -3,7 +3,6 @@
 
 <product name="Caleydo TCGA Data Importer" uid="org.caleydo.data.importer.tcga.product" id="org.caleydo.data.importer.tcga.product" application="org.caleydo.data.importer.tcga.application" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -15,7 +14,6 @@
 
    <windowImages/>
 
-
    <launcher>
       <solaris/>
       <win useIco="false">
@@ -23,10 +21,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>

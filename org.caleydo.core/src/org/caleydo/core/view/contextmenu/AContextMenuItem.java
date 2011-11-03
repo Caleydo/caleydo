@@ -1,15 +1,18 @@
 package org.caleydo.core.view.contextmenu;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
+
+import javax.swing.JComponent;
+import javax.swing.JMenu;
+import javax.swing.JMenuItem;
+import javax.swing.JPopupMenu;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionAdapter;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.widgets.Menu;
-import org.eclipse.swt.widgets.MenuItem;
+import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 
 /**
  * Abstract base class for items in the context menu. A item must be supplied with a string to display its
@@ -20,52 +23,48 @@ import org.eclipse.swt.widgets.MenuItem;
  */
 public abstract class AContextMenuItem {
 
-	private MenuItem menuItem;
+	private JMenuItem menuItem;
 
 	private ArrayList<AContextMenuItem> subMenuItems = new ArrayList<AContextMenuItem>();
-
-	private int style = SWT.PUSH;
 
 	private String label = "<not set>";
 
 	private ArrayList<AEvent> events = new ArrayList<AEvent>();
 
-	public void setStyle(int style) {
-		this.style = style;
-	}
-
 	public void setLabel(String label) {
 		this.label = label;
 	}
 
-	public void create(Menu parent) {
+	public void create(JComponent parent) {
 
 		if (!subMenuItems.isEmpty()) {
-			
-			menuItem = new MenuItem(parent, SWT.CASCADE);
-			final Menu submenu = new Menu(parent.getParent(), SWT.DROP_DOWN);
-			menuItem.setMenu(submenu);
 
+			final JMenu submenu = new JMenu();
+			
 			for (AContextMenuItem subMenuItem : subMenuItems) {
 				subMenuItem.create(submenu);
 			}
+			
+			submenu.setText(label);
+			parent.add(submenu);
 		}
-		else 
-			menuItem = new MenuItem(parent, style);
+		else {
+			menuItem = new JMenuItem();
+			menuItem.setText(label);
+			
+			ActionListener menuListener = new ActionListener() {
+				public void actionPerformed(ActionEvent event) {
+					triggerEvent();
+				}
+			};
 
-	
-		menuItem.setText(label);
-
-		menuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				triggerEvent();
-				
-//				if (!menuItem.getParent().getShell().isDisposed())
-//					menuItem.getParent().getShell().dispose();
-			}
-		});
-
+			menuItem.addActionListener(menuListener);
+			
+			if (this instanceof SeparatorMenuItem)
+				((JPopupMenu)parent).addSeparator();
+			else
+				parent.add(menuItem);				
+		}
 	}
 
 	/**
@@ -93,8 +92,8 @@ public abstract class AContextMenuItem {
 	protected void addSubItem(AContextMenuItem contextMenuItem) {
 		subMenuItems.add(contextMenuItem);
 	}
-	
-	public MenuItem getMenuItem() {
+
+	public JMenuItem getMenuItem() {
 		return menuItem;
 	}
 }

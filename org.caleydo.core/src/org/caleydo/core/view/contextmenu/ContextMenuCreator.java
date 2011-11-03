@@ -5,13 +5,11 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 
-import javax.swing.JMenuItem;
 import javax.swing.JPopupMenu;
+import javax.swing.SwingUtilities;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Menu;
 
 public class ContextMenuCreator {
 
@@ -31,44 +29,24 @@ public class ContextMenuCreator {
 		this.parent = view.getParentComposite();
 
 		final ContextMenuCreator menuCreator = this;
+		final JPopupMenu popup = menuCreator.create();
 
-		Runnable runnable = new Runnable() {
-			public void run() {
+		view.getParentGLCanvas().addMouseListener(new MouseAdapter() {
 
-				// Menu popupMenu = menuCreator.create(parent);
-				// PopupOverAwtHelper popupMenuOverAwtHelper = new PopupOverAwtHelper(popupMenu);
-				// Point cursorLocation = menuCreator.getParent().getDisplay().getCursorLocation();
-				//
-				// popupMenuOverAwtHelper.swtDirectShowMenu(cursorLocation.x, cursorLocation.y);
+			@Override
+			public void mouseReleased(MouseEvent e) {
 
-				// new PopupDemo(view.getParentGLCanvas()).setVisible(true);
-
-				final JPopupMenu popup = new JPopupMenu();
-				JMenuItem menuItem1 = new JMenuItem("Option 1");
-				popup.add(menuItem1);
-
-				JMenuItem menuItem2 = new JMenuItem("Option 2");
-				popup.add(menuItem2);
-
-				view.getParentGLCanvas().addMouseListener(new MouseAdapter() {
-
-					@Override
-					public void mouseReleased(MouseEvent e) {
-
-						int cursorLocationX =
-							MouseInfo.getPointerInfo().getLocation().x
-								- view.getParentGLCanvas().getLocationOnScreen().x;
-						int cursorLocationY =
-							MouseInfo.getPointerInfo().getLocation().y
-								- view.getParentGLCanvas().getLocationOnScreen().y;
-						popup.show(view.getParentGLCanvas().getParent(), cursorLocationX, cursorLocationY);
-
-					}
-				});
-
+				if (SwingUtilities.isRightMouseButton(e) || e.isPopupTrigger()) {
+					int cursorLocationX =
+						MouseInfo.getPointerInfo().getLocation().x
+							- view.getParentGLCanvas().getLocationOnScreen().x;
+					int cursorLocationY =
+						MouseInfo.getPointerInfo().getLocation().y
+							- view.getParentGLCanvas().getLocationOnScreen().y;
+					popup.show(view.getParentGLCanvas().getParent(), cursorLocationX, cursorLocationY);
+				}
 			}
-		};
-		parent.getDisplay().asyncExec(runnable);
+		});
 	}
 
 	public Composite getParent() {
@@ -94,9 +72,9 @@ public class ContextMenuCreator {
 		return false;
 	}
 
-	public Menu create(Control parent) {
+	public JPopupMenu create() {
 
-		Menu menu = new Menu(parent);
+		JPopupMenu menu = new JPopupMenu();
 
 		for (AContextMenuItem menuItem : menuItems) {
 			menuItem.create(menu);
