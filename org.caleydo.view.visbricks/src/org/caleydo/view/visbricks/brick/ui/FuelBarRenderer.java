@@ -69,7 +69,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(fuelWidth, 0, 0);
 		if (selectionManager.checkStatus(SelectionType.SELECTION, brick
-				.getDataContainer().getRecordGroup().getID())) {
+				.getDataContainer().getRecordPerspective().getTreeRoot().getID())) {
 			float[] baseColor = SelectionType.SELECTION.getColor();
 
 			gl.glColor3f(baseColor[0] + 0.3f, baseColor[1] + 0.3f, baseColor[2] + 0.3f);

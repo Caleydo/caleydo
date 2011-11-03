@@ -6,7 +6,10 @@ package org.caleydo.core.data.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -37,6 +40,9 @@ public class DataContainer {
 	protected DimensionPerspective dimensionPerspective;
 
 	protected String label;
+	
+	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
+	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER, EColumnType.INT);
 
 	/**
 	 * A Group describes a part of a virtual array, e.g. a cluster. The group for a data container is only set
@@ -68,6 +74,7 @@ public class DataContainer {
 		this.dataDomain = dataDomain;
 		this.recordPerspective = recordPerspective;
 		this.dimensionPerspective = dimensionPerspective;
+		
 	}
 
 	{

@@ -175,19 +175,7 @@ public class Group
 
 	@Override
 	public String toString() {
-		return "NrElem.: " + size;
-	}
-
-	public void increaseContainedNumberOfGenesByOne() {
-		visibleNrGenes++;
-	}
-
-	public int getContainedNrGenes() {
-		return visibleNrGenes;
-	}
-
-	public void resetVisualGenesCounter() {
-		visibleNrGenes = 0;
+		return "Group: " + groupID + ", size: " + size;
 	}
 
 	public void setPerspectiveID(String perspectiveID) {

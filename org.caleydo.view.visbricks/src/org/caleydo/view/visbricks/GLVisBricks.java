@@ -213,7 +213,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		subDataTablesUpdated();
 		connectionRenderer.init(gl);
 
-		checkForPreparedPerspectives();
+		// checkForPreparedPerspectives();
 
 	}
 
@@ -1637,6 +1637,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return true;
 	}
 
+	/**
+	 * Automatically create data containers if we have pre-clustered data.
+	 * Temporary solution, should not be used
+	 */
+	@Deprecated
 	private void checkForPreparedPerspectives() {
 		Set<String> recordPerspectiveIDs = dataDomain.getTable()
 				.getRecordPerspectiveIDs();

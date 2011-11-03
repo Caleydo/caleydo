@@ -14,19 +14,15 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -53,7 +49,6 @@ public class GLHistogram extends ATableBasedView {
 	private boolean renderColorBars = true;
 
 	private Histogram histogram;
-	private ColorMapper colorMapper;
 	// private HistogramRenderStyle renderStyle;
 
 	private boolean bUpdateColorPointPosition = false;
@@ -97,7 +92,6 @@ public class GLHistogram extends ATableBasedView {
 
 	@Override
 	public void init(GL2 gl) {
-		colorMapper = dataDomain.getColorMapper();
 		displayListIndex = gl.glGenLists(1);
 
 	}
@@ -195,7 +189,9 @@ public class GLHistogram extends ATableBasedView {
 		for (Integer iValue : histogram) {
 
 			if (useColor)
-				gl.glColor3fv(colorMapper.getColor(fContinuousColorRegion * iCount), 0);
+				gl.glColor3fv(
+						dataDomain.getColorMapper().getColor(
+								fContinuousColorRegion * iCount), 0);
 
 			gl.glLineWidth(3.0f);
 			gl.glBegin(GL2.GL_POLYGON);
@@ -228,7 +224,8 @@ public class GLHistogram extends ATableBasedView {
 	private void renderColorBars(GL2 gl) {
 
 		fRenderWidth = (viewFrustum.getWidth() - 2 * sideSpacing);
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
+		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
+				.getMarkerPoints();
 
 		int iCount = 0;
 
@@ -422,7 +419,8 @@ public class GLHistogram extends ATableBasedView {
 				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
 						currentPoint.y);
 
-		ArrayList<ColorMarkerPoint> markerPoints = colorMapper.getMarkerPoints();
+		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
+				.getMarkerPoints();
 		ColorMarkerPoint markerPoint = markerPoints.get(iColorMappingPointMoved);
 
 		float fClickedPointX = fArTargetWorldCoordinates[0];
@@ -502,7 +500,7 @@ public class GLHistogram extends ATableBasedView {
 				fTargetValue = 0.01f;
 			markerPoint.setRightSpread(fTargetValue);
 		}
-		colorMapper.update();
+		dataDomain.getColorMapper().update();
 
 		RedrawViewEvent event = new RedrawViewEvent();
 		event.setSender(this);

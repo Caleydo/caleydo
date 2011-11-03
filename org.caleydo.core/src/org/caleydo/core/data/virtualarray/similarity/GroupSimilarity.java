@@ -3,9 +3,12 @@ package org.caleydo.core.data.virtualarray.similarity;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * The similarity of one group in source VA1 to all groups in target VA2. You can get two types of information
@@ -69,19 +72,20 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	public int[] getScores() {
 		return scores;
 	}
-	
+
 	/**
 	 * Returns a new virtual array containing all elements which occur in the primary group of this group
 	 * similarity and an external group specified through the foreign group ID.
 	 * 
-	 * @param foreignGroupID Returns null if createSimilarity flag is false.
+	 * @param foreignGroupID
+	 *            Returns null if createSimilarity flag is false.
 	 * @return
 	 */
 	public VAType getSimilarityVAs(int foreignGroupID) {
-		
+
 		if (!createSimilarityVAs)
 			return null;
-		
+
 		return similarityVAs.get(foreignGroupID);
 	}
 
@@ -120,12 +124,16 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 
 		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
 			Integer id = va1.get(vaIndex);
+			if (va1.getIdType() != va2.getIdType()) {
+				IDMappingManager idMappingManager =
+					IDMappingManagerRegistry.get().getIDMappingManager(va1.getIdType().getIDCategory());
+				id = idMappingManager.getID(va1.getIdType(), va2.getIdType(), id);
+			}
 			List<Group> groups2 = va2.getGroupOf(id);
-			
-			if(groups2.size()>1)
-			{
-				System.out.println("Similarity size sum: " +groups2.size());
-//				throw new IllegalArgumentException("wa");
+
+			if (groups2.size() > 1) {
+				System.out.println("Similarity size sum: " + groups2.size());
+				// throw new IllegalArgumentException("wa");
 			}
 
 			for (Group group2 : groups2) {
@@ -142,10 +150,9 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 			sum += scores[count];
 			similarities[count] = ((float) scores[count]) / group.getSize();
 		}
-	
-		if(sum != group.getSize())
-		{
-			System.out.println("Similarity size sum " + sum + "!= group sum " +group.getSize());
+
+		if (sum != group.getSize()) {
+			System.out.println("Similarity size sum " + sum + "!= group sum " + group.getSize());
 		}
 	}
 

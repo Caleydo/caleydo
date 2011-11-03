@@ -61,7 +61,8 @@ public class IDType {
 
 	/**
 	 * Register a new IDType. Checks whether whether the columnType is legal. If the typeName is already
-	 * registered, it is replaced with the newly created one.
+	 * registered, a check is conducted whether the registered and the new one match, and if they do, the
+	 * previously registered type is returned. Else an exception is thrown. 
 	 * 
 	 * @param typeName
 	 *            see {@link #typeName}
@@ -97,7 +98,7 @@ public class IDType {
 	 *            see {@link #idType}
 	 */
 	public static void unregisterType(IDType idType) {
-		if(idType == null)
+		if (idType == null)
 			return;
 		if (registeredTypes.containsKey(idType.getTypeName())) {
 			Logger.log(new Status(Status.INFO, "IDType", "Unregistered IDType " + idType.getTypeName()));
@@ -109,7 +110,6 @@ public class IDType {
 				+ idType.getTypeName() + " because it does not exist."));
 		}
 	}
-	
 
 	/** Returns the IDType for the typeName specified, or null if no such type is registered */
 	public static IDType getIDType(String typeName) {
@@ -168,7 +168,5 @@ public class IDType {
 	public String toString() {
 		return typeName;
 	}
-
-	
 
 }
