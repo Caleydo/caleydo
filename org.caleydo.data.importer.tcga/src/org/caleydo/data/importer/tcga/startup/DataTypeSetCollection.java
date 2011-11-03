@@ -23,7 +23,6 @@ public class DataTypeSetCollection {
 	/**
 	 * @return the dataTypeSetCollection, see {@link #dataTypeSetCollection}
 	 */
-	@XmlElementWrapper
 	public ArrayList<DataTypeSet> getDataTypeSetCollection() {
 		return dataTypeSetCollection;
 	}
