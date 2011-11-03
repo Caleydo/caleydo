@@ -252,7 +252,7 @@ public abstract class AGLView
 		gl.glColorMaterial(GL2.GL_FRONT, GL2.GL_DIFFUSE);
 
 		glMouseListener.addGLCanvas(this);
-
+		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
 		initLocal(gl);
 	}
 
@@ -515,7 +515,7 @@ public abstract class AGLView
 
 	private void updateDetailMode() {
 
-		DetailLevel newDetailLevel; 
+		DetailLevel newDetailLevel;
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
 		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
 		if (pixelHeight > getMinPixelHeight(DetailLevel.HIGH)
@@ -849,7 +849,8 @@ public abstract class AGLView
 
 	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
 		this.glRemoteRenderingView = glRemoteRenderingView;
-		pixelGLConverter = new PixelGLConverter(glRemoteRenderingView.getViewFrustum(), parentGLCanvas);
+		pixelGLConverter = glRemoteRenderingView.getPixelGLConverter();
+		// pixelGLConverter = new PixelGLConverter(glRemoteRenderingView.getViewFrustum(), parentGLCanvas);
 	}
 
 	public final IGLRemoteRenderingView getRemoteRenderingGLView() {

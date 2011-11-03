@@ -303,6 +303,11 @@ public abstract class ATableBasedView
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
+						if(dataContainer == null)
+						{
+							Logger.log(new Status(Status.ERROR, this.toString(), "dataContainer was null"));
+							return;
+						}
 						if (!dataContainer.getRecordPerspective().getVirtualArray().contains(id))
 							return;
 

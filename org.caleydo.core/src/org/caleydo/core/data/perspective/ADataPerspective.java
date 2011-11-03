@@ -67,11 +67,12 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	@XmlElement
 	protected boolean isPrivate;
-	
+
 	/**
-	 * Flag determining whether this perspective is the default perspective that for instance will be displayed by the support views.
+	 * Flag determining whether this perspective is the default perspective that for instance will be
+	 * displayed by the support views.
 	 */
-	@XmlElement	
+	@XmlElement
 	protected boolean isDefault;
 
 	/**
@@ -159,14 +160,15 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	public boolean isPrivate() {
 		return isPrivate;
 	}
-	
+
 	/**
-	 * @param isDefault setter, see {@link #isDefault}
+	 * @param isDefault
+	 *            setter, see {@link #isDefault}
 	 */
 	public void setDefault(boolean isDefault) {
 		this.isDefault = isDefault;
 	}
-	
+
 	/**
 	 * @return the isDefault, see {@link #isDefault}
 	 */
@@ -194,6 +196,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	public void setIDType(IDType idType) {
 		this.idType = idType;
+		if (virtualArray != null)
+			virtualArray.setIdType(idType);
 	}
 
 	/**
@@ -342,9 +346,9 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			createEverythingFromTree(data);
 		}
 		// Case 5: we initialize from a given virtual array
-		else if(data.getVirtualArray() != null)
-		{
-			virtualArray = (VA)data.getVirtualArray();
+		else if (data.getVirtualArray() != null) {
+			virtualArray = (VA) data.getVirtualArray();
+			virtualArray.setIdType(idType);
 			// FIXME we need to create a tree with groups here
 			createDefaultTree();
 		}

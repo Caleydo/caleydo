@@ -131,7 +131,6 @@ public class GLHistogram extends ATableBasedView {
 				sideSpacing = SIDE_SPACING;
 			}
 		}
-
 	}
 
 	@Override

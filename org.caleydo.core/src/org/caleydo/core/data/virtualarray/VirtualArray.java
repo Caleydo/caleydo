@@ -29,6 +29,7 @@ import org.eclipse.core.runtime.Status;
  * collections themselves are immutable, or are shared between multiple clients (i.e. views) using different
  * VirtualArrays on them.
  * </p>
+ * <p>FIXME: Groups and group interactions are somewhat undefined </p>
  * 
  * @author Alexander Lex
  */
@@ -221,6 +222,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 */
 	public Integer remove(int index) {
 		idMap.setDirty();
+		groupList.removeElementOfVA(index);
 		return virtualArrayList.remove(index);
 	}
 

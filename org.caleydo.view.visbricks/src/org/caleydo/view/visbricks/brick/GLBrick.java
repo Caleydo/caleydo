@@ -372,11 +372,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, 0.1f);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0.1f);
+		gl.glVertex3f(0, 0, 0.0f);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0.0f);
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(),
-				0.1f);
-		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0.1f);
+				0.0f);
+		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), 0.0f);
 		gl.glEnd();
 		gl.glPopName();
 

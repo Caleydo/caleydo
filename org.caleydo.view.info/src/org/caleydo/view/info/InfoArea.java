@@ -159,20 +159,17 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		} else if (selectionDelta.getIDType() == dimensionSelectionManager.getIDType()) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 			updateTree(false, dimensionSelectionManager, dimensionTree, info);
-		} else
-			throw new IllegalStateException(
-					"Mapping does not match, no selection manager can handle: "
-							+ selectionDelta.getIDType());
+		}
 
 	}
 
 	private void updateTree(final boolean isContent,
 			final SelectionManager selectionManager, final TreeItem tree,
 			final String info) {
-		
+
 		if (parentComposite.isDisposed())
 			return;
-		
+
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {

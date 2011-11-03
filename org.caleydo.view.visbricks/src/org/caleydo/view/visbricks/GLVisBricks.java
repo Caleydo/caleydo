@@ -1192,7 +1192,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 					dimensionGroup
 							.setBrickSortingStrategy(new AverageValueSortingStrategy());
 				}
-				dimensionGroup.setDataDomain(dataDomain);
+				dimensionGroup.setDataDomain(data.getDataDomain());
 				dimensionGroup.setDataContainer(data);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricks(this);

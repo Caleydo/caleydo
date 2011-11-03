@@ -42,7 +42,7 @@ public class RecordVirtualArray
 	public RecordVirtualArray getNewInstance() {
 		return new RecordVirtualArray(idType);
 	}
-	
+
 	@Override
 	public RecordVADelta getConcreteVADeltaInstance() {
 		return new RecordVADelta();
@@ -60,13 +60,4 @@ public class RecordVirtualArray
 		groupList = (RecordGroupList) buildNewGroupList(new RecordGroupList(), clusterNodes);
 		return groupList;
 	}
-
-	@Override
-	public RecordGroupList getGroupList() {
-		// TODO Auto-generated method stub
-		return super.getGroupList();
-	}
-
-	
-
 }
