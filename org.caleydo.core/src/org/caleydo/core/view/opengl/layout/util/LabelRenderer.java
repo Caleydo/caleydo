@@ -55,10 +55,10 @@ public class LabelRenderer
 			gl.glPushName(pickingID);
 			gl.glColor4f(1, 1, 1, 0);
 			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex2f(0, 0);
-			gl.glVertex2f(x, 0);
-			gl.glVertex2f(x, y);
-			gl.glVertex2f(0, y);
+			gl.glVertex3f(0, 0, 0.1f);
+			gl.glVertex3f(x, 0, 0.1f);
+			gl.glVertex3f(x, y, 0.1f);
+			gl.glVertex3f(0, y, 0.1f);
 			gl.glEnd();
 			gl.glPopName();
 		}
@@ -68,7 +68,7 @@ public class LabelRenderer
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, text, 0, ySpacing, 0, x, y - 2 * ySpacing);
+		textRenderer.renderTextInBounds(gl, text, 0, ySpacing, 0.1f, x, y - 2 * ySpacing);
 
 	}
 }
