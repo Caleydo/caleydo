@@ -281,6 +281,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// float centerLayoutWidth = viewFrustum.getWidth();
 
 		centerRowLayout = new Row("centerArchRow");
+		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
 		// centerRowLayout.setDebug(false);
 

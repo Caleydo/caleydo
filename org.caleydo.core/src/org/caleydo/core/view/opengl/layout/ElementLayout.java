@@ -93,6 +93,12 @@ public class ElementLayout {
 
 	protected Zoomer zoomer;
 
+	/**
+	 * Determines the point in time this element layout is rendered if its {@link LayoutContainer} uses
+	 * priority rendering.
+	 */
+	protected int renderingPriority = 0;
+
 	public ElementLayout() {
 		renderer = new LayoutRenderer();
 		layoutName = "";
@@ -102,14 +108,12 @@ public class ElementLayout {
 		renderer = new LayoutRenderer();
 		this.layoutName = layoutName;
 	}
-	
-	public void destroy()
-	{
-		if (zoomer != null)
-		{
+
+	public void destroy() {
+		if (zoomer != null) {
 			zoomer.destroy();
 			zoomer = null;
-		}		
+		}
 	}
 
 	/**
@@ -355,14 +359,14 @@ public class ElementLayout {
 			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
 	}
-	
+
 	public void clearBackgroundRenderers() {
-		if(backgroundRenderers != null)
+		if (backgroundRenderers != null)
 			backgroundRenderers.clear();
 	}
-	
+
 	public void clearForegroundRenderers() {
-		if(foregroundRenderers != null)
+		if (foregroundRenderers != null)
 			foregroundRenderers.clear();
 	}
 
@@ -379,7 +383,6 @@ public class ElementLayout {
 	}
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
-
 
 	private void resetX() {
 		absoluteSizeX = Float.NaN;
@@ -479,8 +482,6 @@ public class ElementLayout {
 	void setTranslateY(float translateY) {
 		this.translateY = translateY;
 	}
-	
-
 
 	protected void updateSpacings() {
 		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
@@ -593,6 +594,24 @@ public class ElementLayout {
 	 */
 	public float getRatioSizeY() {
 		return ratioSizeY;
+	}
+
+	/**
+	 * @return The rendering priority, which determines the point in time this element layout is rendered if
+	 *         its {@link LayoutContainer} uses priority rendering.
+	 */
+	public int getRenderingPriority() {
+		return renderingPriority;
+	}
+
+	/**
+	 * Sets the rendering priority and therefore determines the point in time this element layout is rendered
+	 * if its {@link LayoutContainer} uses priority rendering.
+	 * 
+	 * @param renderingPriority
+	 */
+	public void setRenderingPriority(int renderingPriority) {
+		this.renderingPriority = renderingPriority;
 	}
 
 }

@@ -137,6 +137,7 @@ public class DimensionGroup extends ATableBasedView implements
 		viewType = VIEW_TYPE;
 
 		detailRow = new Row("detailRow");
+		detailRow.setRenderingPriority(1);
 		detailRow.setXDynamic(true);
 		detailRow.setFrameColor(1, 0, 1, 1);
 		detailRow.sethAlign(HAlign.CENTER);
