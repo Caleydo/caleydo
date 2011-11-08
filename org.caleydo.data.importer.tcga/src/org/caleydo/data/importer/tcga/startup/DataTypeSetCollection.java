@@ -20,17 +20,10 @@ public class DataTypeSetCollection {
 
 	ArrayList<DataTypeSet> dataTypeSetCollection = new ArrayList<DataTypeSet>();
 
-	/**
-	 * @return the dataTypeSetCollection, see {@link #dataTypeSetCollection}
-	 */
 	public ArrayList<DataTypeSet> getDataTypeSetCollection() {
 		return dataTypeSetCollection;
 	}
 
-	/**
-	 * @param dataTypeSetCollection
-	 *            setter, see {@link #dataTypeSetCollection}
-	 */
 	public void setDataTypeSetCollection(ArrayList<DataTypeSet> dataTypeSetCollection) {
 		this.dataTypeSetCollection = dataTypeSetCollection;
 	}
