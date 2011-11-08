@@ -44,7 +44,7 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 					yPosition = recordSpacing.getYDistances().get(lineIndex);
 					xPosition = 0;
 					gl.glPushName(heatMap.getPickingManager().getPickingID(
-							heatMap.getID(), PickingType.HEAT_MAP_LINE_SELECTION,
+							heatMap.getID(), PickingType.HEAT_MAP_RECORD_SELECTION,
 							currentLine));
 
 					float z = SELECTION_Z * selectionType.getPriority();

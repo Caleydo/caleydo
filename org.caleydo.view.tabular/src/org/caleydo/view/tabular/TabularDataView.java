@@ -345,8 +345,8 @@ public class TabularDataView extends ASWTView implements
 					item.setText(i++, text);
 				} else if (rawDataType == RawDataType.FLOAT) {
 
-					fValue = table.getFloat(DataRepresentation.RAW, dimensionID,
-							recordIndex);
+					fValue = table.getFloat(DataRepresentation.RAW, recordIndex,
+							dimensionID);
 
 					item.setText(i++, Float.toString(fValue));
 				} else {
@@ -432,7 +432,7 @@ public class TabularDataView extends ASWTView implements
 					String value;
 					if (rawDataType == RawDataType.FLOAT) {
 						value = Float.toString(table.getFloat(DataRepresentation.RAW,
-								dimensionNumber, recordVA.get(i)));
+								recordVA.get(i), dimensionNumber));
 
 					} else if (rawDataType == RawDataType.STRING)
 						value = table.getRaw(dimensionNumber, recordVA.get(i));

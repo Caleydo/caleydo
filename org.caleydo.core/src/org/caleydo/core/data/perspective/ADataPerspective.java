@@ -368,6 +368,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	}
 
 	// ------------------ Abstract Methods that need the concrete data types ---------------
+	
 
 	/** Get the human readable label of the element specified by the ID */
 	protected abstract String getElementLabel(Integer id);

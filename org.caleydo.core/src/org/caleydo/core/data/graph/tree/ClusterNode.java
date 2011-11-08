@@ -8,6 +8,9 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionType;
 
 /**
@@ -39,9 +42,12 @@ public class ClusterNode
 	@XmlTransient
 	private boolean isPartOfSubTree = false;
 	private Vec3f vPosSubTree;
+
+	private ADataPerspective<?, ?, ?, ?> perspective;
+
 	/** A data perspective containing all sub-elements of this node */
-//	@XmlTransient
-//	private ADataPerspective<?, ?, ?, ?> dataPerspective = null;
+	// @XmlTransient
+	// private ADataPerspective<?, ?, ?, ?> dataPerspective = null;
 
 	public ClusterNode() {
 	}
@@ -77,16 +83,35 @@ public class ClusterNode
 	 * 
 	 * @param set
 	 */
-//	public void fillDataPerspective(ADataPerspective<?, ?, ?, ?> dataPerspective) {
-//		PerspectiveInitializationData perspectiveInitializationData = new PerspectiveInitializationData();
-//		perspectiveInitializationData.setData((ClusterTree) tree, this);
-//		dataPerspective.init(perspectiveInitializationData);
-//		this.dataPerspective = dataPerspective;
-//	}
+	// public void fillDataPerspective(ADataPerspective<?, ?, ?, ?> dataPerspective) {
+	// PerspectiveInitializationData perspectiveInitializationData = new PerspectiveInitializationData();
+	// perspectiveInitializationData.setData((ClusterTree) tree, this);
+	// dataPerspective.init(perspectiveInitializationData);
+	// this.dataPerspective = dataPerspective;
+	// }
 
-//	public ADataPerspective<?, ?, ?, ?> getPerspective() {
-//		return dataPerspective;
-//	}
+	@SuppressWarnings("unchecked")
+	public <PerspectiveType extends ADataPerspective<?, ?, ?, ?>> PerspectiveType getSubPerspective(
+		Class<PerspectiveType> concreteClass, ATableBasedDataDomain dataDomain) {
+		if (perspective != null)
+			return (PerspectiveType) perspective;
+		try {
+			perspective = concreteClass.newInstance();
+		}
+		catch (InstantiationException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		catch (IllegalAccessException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		perspective.setDataDomain(dataDomain);
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData((ClusterTree) getTree(), this);
+		perspective.init(data);
+		return (PerspectiveType) perspective;
+	}
 
 	/**
 	 * Returns a metaset if this node or any of its sub-nodes contain the SubDataTable specified by the ID

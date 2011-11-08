@@ -15,42 +15,44 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Monitor;
 import org.eclipse.swt.widgets.Shell;
 
+/**
+ * Base class for filter dialogs
+ * 
+ * @author Alexander Lex
+ * @author Thomas Geymayer
+ * @author Marc Streit
+ */
 public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<?>, FilterType extends Filter<DeltaType>> {
 
 	protected Composite parentComposite;
 
 	protected FilterType filter;
-	
+
 	protected Button okButton;
 
 	protected boolean isDirty = true;
-	
+
 	/**
-	 * Whether currently the filter representation is displayed. Used to prevent
-	 * multiple open filter representations of the same filter.
+	 * Whether currently the filter representation is displayed. Used to prevent multiple open filter
+	 * representations of the same filter.
 	 */
 	protected boolean isDisplayed = false;
 
 	/**
-	 * 
-	 * @return true if a new window was opened,
-	 *         false if a window was already opened
+	 * @return true if a new window was opened, false if a window was already opened
 	 */
-	public synchronized boolean create()
-	{
+	public synchronized boolean create() {
 		// get focus instead of creating new dialog if a dialog is
 		// already opened
 		final boolean requestFocus = isDisplayed;
-		
+
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				if( requestFocus )
-				{
+				if (requestFocus) {
 					parentComposite.setFocus();
 				}
-				else
-				{
+				else {
 					parentComposite = new Shell();
 					parentComposite.setLayout(new GridLayout(1, false));
 				}
@@ -74,20 +76,18 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 
 				Label dummy = new Label(composite, SWT.NONE);
 				dummy.setLayoutData(gridData);
-				
+
 				okButton = new Button(composite, SWT.PUSH);
 				okButton.setText("  OK  ");
 				final Button deleteButton = new Button(composite, SWT.PUSH);
 				deleteButton.setText("Delete");
 				Button cancelButton = new Button(composite, SWT.PUSH);
 				cancelButton.setText("Cancel");
-				Listener listener = new Listener()
-				{
-					public void handleEvent(Event event)
-					{
-						if( event.widget == deleteButton )
+				Listener listener = new Listener() {
+					public void handleEvent(Event event) {
+						if (event.widget == deleteButton)
 							triggerRemoveFilterEvent();
-						else if( event.widget == okButton )
+						else if (event.widget == okButton)
 							applyFilter();
 
 						isDisplayed = false;
@@ -97,7 +97,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 				okButton.addListener(SWT.Selection, listener);
 				deleteButton.addListener(SWT.Selection, listener);
 				cancelButton.addListener(SWT.Selection, listener);
-				
+
 				Monitor primary = parentComposite.getDisplay().getPrimaryMonitor();
 				Rectangle bounds = primary.getBounds();
 				Rectangle rect = parentComposite.getBounds();
@@ -119,6 +119,6 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 	protected abstract void createVADelta();
 
 	protected abstract void triggerRemoveFilterEvent();
-	
+
 	protected abstract void applyFilter();
 }

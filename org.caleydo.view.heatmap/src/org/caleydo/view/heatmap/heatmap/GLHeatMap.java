@@ -247,7 +247,7 @@ public class GLHeatMap extends ATableBasedView {
 		SelectionType selectionType;
 
 		switch (pickingType) {
-		case HEAT_MAP_LINE_SELECTION:
+		case HEAT_MAP_RECORD_SELECTION:
 			iCurrentMouseOverElement = pickingID;
 			switch (pickingMode) {
 

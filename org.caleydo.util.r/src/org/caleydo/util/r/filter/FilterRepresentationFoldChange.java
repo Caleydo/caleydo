@@ -4,7 +4,8 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings;
 import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
@@ -15,6 +16,7 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
+import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyAdapter;
 import org.eclipse.swt.events.KeyEvent;
@@ -38,8 +40,9 @@ public class FilterRepresentationFoldChange extends
 
 	private final static String TITLE = "Fold Change Filter";
 
-	private DataTable set1;
-	private DataTable set2;
+	private ATableBasedDataDomain dataDomain;
+	private DataContainer dataContainer1;
+	private DataContainer dataContainer2;
 
 	private float foldChange = 3;
 	private float foldChangeUncertainty = 1.2f;
@@ -131,8 +134,8 @@ public class FilterRepresentationFoldChange extends
 				evaluatorCheckBox[1].setText("Greater (up regulated)");
 
 				try {
-					FoldChangeSettings settings = set1.getStatisticsResult()
-							.getFoldChangeResult(set2).getSecond();
+					FoldChangeSettings settings = dataContainer1.getContainerStatistics()
+							.foldChange().getResult(dataContainer2).getSecond();
 					switch (settings.getEvaluator()) {
 					case GREATER:
 						evaluatorCheckBox[1].setSelection(true);
@@ -206,7 +209,8 @@ public class FilterRepresentationFoldChange extends
 						// parentComposite.layout();
 					}
 				});
-				set1.getStatisticsResult().getFoldChangeResult(set2).getFirst();
+				dataContainer1.getContainerStatistics().foldChange()
+						.getResult(dataContainer2).getFirst();
 
 				Composite histoComposite = new Composite(parentComposite, SWT.NULL);
 				histoComposite.setLayout(new FillLayout(SWT.VERTICAL));
@@ -219,10 +223,13 @@ public class FilterRepresentationFoldChange extends
 				histoComposite.setLayoutData(gridData);
 
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
-				histogramView.setDataDomain(DataDomainManager.get().getDataDomainByID(
-						"org.caleydo.datadomain.genetic"));
-
-				histogramView.createDefaultSerializedView();
+				histogramView.setDataDomain(dataDomain);
+				histogramView.setDataContainer(dataContainer1);
+				SerializedHistogramView serializedHistogramView = new SerializedHistogramView(dataDomain.getDataDomainID());
+				serializedHistogramView.setDimensionPerspectiveID(dataContainer1.getDimensionPerspective().getID());
+				serializedHistogramView.setRecordPerspectiveID(dataContainer1.getRecordPerspective().getID());
+				
+				histogramView.setExternalSerializedView(serializedHistogramView);
 				histogramView.createPartControl(histoComposite);
 				((GLHistogram) (histogramView.getGLView())).setHistogram(histogram);
 				// Usually the canvas is registered to the GL2 animator in the
@@ -241,16 +248,23 @@ public class FilterRepresentationFoldChange extends
 		return true;
 	}
 
+	/**
+	 * @param dataDomain setter, see {@link #dataDomain}
+	 */
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+	
 	public void setHistogram(Histogram histogram) {
 		this.histogram = histogram;
 	}
 
-	public void setTable1(DataTable set1) {
-		this.set1 = set1;
+	public void setDataContainer1(DataContainer dataContainer1) {
+		this.dataContainer1 = dataContainer1;
 	}
 
-	public void setTable2(DataTable set2) {
-		this.set2 = set2;
+	public void setDataContainer2(DataContainer dataContainer2) {
+		this.dataContainer2 = dataContainer2;
 	}
 
 	@Override
@@ -274,10 +288,10 @@ public class FilterRepresentationFoldChange extends
 		RecordVirtualArray recordVA = subFilter.getDataDomain().getTable()
 				.getRecordPerspective(filter.getPerspectiveID()).getVirtualArray();
 
-		double[] resultVector = set1.getStatisticsResult().getFoldChangeResult(set2)
-				.getFirst();
-		FoldChangeSettings settings = set1.getStatisticsResult()
-				.getFoldChangeResult(set2).getSecond();
+		double[] resultVector = dataContainer1.getContainerStatistics().foldChange()
+				.getResult(dataContainer2).getFirst();
+		FoldChangeSettings settings = dataContainer1.getContainerStatistics()
+				.foldChange().getResult(dataContainer2).getSecond();
 
 		double foldChangeRatio = settings.getRatio();
 		double foldChangeRatioUncertainty = settings.getRatioUncertainty();
@@ -362,13 +376,10 @@ public class FilterRepresentationFoldChange extends
 			FoldChangeSettings foldChangeSettings = new FoldChangeSettings(foldChange,
 					foldChangeUncertainty, foldChangeEvaluator);
 
-			set1.getStatisticsResult().setFoldChangeSettings(set2, foldChangeSettings);
-			set2.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
-
-			// FIXME: just for uncertainty paper so that the uncertainty view
-			// can access it via the main set
-			DataTable table = filter.getDataDomain().getTable();
-			table.getStatisticsResult().setFoldChangeSettings(set1, foldChangeSettings);
+			dataContainer1.getContainerStatistics().foldChange()
+					.setFoldChangeSettings(dataContainer2, foldChangeSettings);
+			dataContainer2.getContainerStatistics().foldChange()
+					.setFoldChangeSettings(dataContainer1, foldChangeSettings);
 
 			createVADelta();
 			filter.updateFilterManager();

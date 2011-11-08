@@ -17,8 +17,8 @@ public class SerializedHistogramView extends ASerializedTopLevelDataView {
 	public SerializedHistogramView() {
 	}
 
-	public SerializedHistogramView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedHistogramView(String dataDomainID) {
+		super(dataDomainID);
 	}
 
 	@Override

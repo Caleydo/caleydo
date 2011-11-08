@@ -67,7 +67,7 @@ public class HeatMapUtil {
 				}
 				;
 				float fLookupValue = table.getFloat(DataRepresentation.NORMALIZED,
-						dimensionIndex, recordIndex);
+						recordIndex, dimensionIndex);
 
 				float[] fArMappingColor = colorMapping.getColor(fLookupValue);
 

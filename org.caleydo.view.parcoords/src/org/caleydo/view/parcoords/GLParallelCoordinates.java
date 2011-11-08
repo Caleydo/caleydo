@@ -537,8 +537,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			Integer dimensionID = dimensionVA.get(dimensionCount);
 
 			currentX = axisSpacings.get(dimensionCount);
-			currentY = table.getFloat(DataRepresentation.NORMALIZED, dimensionID,
-					recordID);
+			currentY = table.getFloat(DataRepresentation.NORMALIZED, recordID,
+					dimensionID);
 			if (Float.isNaN(currentY)) {
 				currentY = NAN_Y_OFFSET / renderStyle.getAxisHeight();
 			}
@@ -564,7 +564,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				if (rawDataType == RawDataType.FLOAT) {
 
 					sRawValue = Formatter.formatNumber(table.getFloat(
-							DataRepresentation.RAW, dimensionID, recordID));
+							DataRepresentation.RAW, recordID, dimensionID));
 
 				} else if (rawDataType == RawDataType.STRING) {
 					sRawValue = table.getRaw(dimensionID, recordID);
@@ -1119,7 +1119,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 					usedDataRepresentation = DataRepresentation.NORMALIZED;
 
 				currentValue = dataDomain.getTable().getFloat(usedDataRepresentation,
-						axisID, recordID);
+						recordID, axisID);
 
 				if (Float.isNaN(currentValue)) {
 					continue;
@@ -1143,7 +1143,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 					.getVirtualArray()) {
 
 				currentValue = dataDomain.getTable().getFloat(
-						DataRepresentation.NORMALIZED, axisID, polylineIndex);
+						DataRepresentation.NORMALIZED, polylineIndex, axisID);
 
 				if (Float.isNaN(currentValue)) {
 					deselectedLines.add(polylineIndex);
@@ -1169,7 +1169,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 						.getVirtualArray()) {
 
 					currentValue = dataDomain.getTable().getFloat(DataRepresentation.RAW,
-							dimensionID, recordID);
+							recordID, dimensionID);
 
 					if (Float.isNaN(currentValue)) {
 						continue;
@@ -1671,7 +1671,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
 			y = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED,
-					dimensionVA.get(0), id);
+					id, dimensionVA.get(0));
 
 			// // get the value on the leftmost axis
 			// fYValue =
@@ -1729,10 +1729,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		Vec3f vecLeftPoint = new Vec3f(0, 0, 0);
 		Vec3f vecRightPoint = new Vec3f(0, 0, 0);
 
-		vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, leftAxisIndex,
-				iSelectedLineID) * renderStyle.getAxisHeight());
-		vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, rightAxisIndex,
-				iSelectedLineID) * renderStyle.getAxisHeight());
+		vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iSelectedLineID,
+				leftAxisIndex) * renderStyle.getAxisHeight());
+		vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iSelectedLineID,
+				rightAxisIndex) * renderStyle.getAxisHeight());
 
 		vecLeftPoint.setX(axisSpacings.get(iPosition));
 		vecRightPoint.setX(axisSpacings.get(iPosition + 1));
@@ -1839,9 +1839,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		for (Integer iCurrent : recordVA) {
 
 			vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED,
-					leftAxisIndex, iCurrent) * renderStyle.getAxisHeight());
+					iCurrent, leftAxisIndex) * renderStyle.getAxisHeight());
 			vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED,
-					rightAxisIndex, iCurrent) * renderStyle.getAxisHeight());
+					iCurrent, rightAxisIndex) * renderStyle.getAxisHeight());
 
 			vecLeftPoint.setX(axisSpacings.get(iPosition));
 			vecRightPoint.setX(axisSpacings.get(iPosition + 1));

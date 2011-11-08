@@ -52,8 +52,8 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			for (int recordIndex : dataContainer.getRecordPerspective()
 					.getVirtualArray()) {
 				expressionValues[index] = table
-						.getFloat(DataRepresentation.NORMALIZED, dimensionID,
-								recordIndex);
+						.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+								dimensionID);
 				index++;
 			}
 

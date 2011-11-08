@@ -3,13 +3,22 @@
  */
 package org.caleydo.core.data.container;
 
+import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 /**
- * This class is intended to calculate and hold all kins of derived meta-data for a container, like averages,
- * histograms, etc.
+ * <p>
+ * {@link ContainerStatistics} provides access and calculates derivable meta-data for the data specified by a
+ * {@link DataContainer}, such as averages, histograms, etc.
+ * </p>
+ * <p>
+ * Everything is calcualted lazy.
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -19,11 +28,14 @@ public class ContainerStatistics {
 	/** The average of all cells in the container */
 	private float averageValue = Float.NEGATIVE_INFINITY;
 
+	/** The histogram for the data in this container along the dimensions */
 	private Histogram histogram = null;
 
-	/**
-	 * 
-	 */
+	/** The fold-change properties of this container with another container */
+	private FoldChange foldChange;
+
+	private ArrayList<AverageRecord> averageRecords;
+
 	public ContainerStatistics(DataContainer container) {
 		this.container = container;
 	}
@@ -51,7 +63,7 @@ public class ContainerStatistics {
 			for (Integer dimensionID : dimensionVA) {
 				float value =
 					container.getDataDomain().getTable()
-						.getFloat(DataRepresentation.NORMALIZED, dimensionID, contenID);
+						.getFloat(DataRepresentation.NORMALIZED, contenID, dimensionID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
 					count++;
@@ -85,8 +97,8 @@ public class ContainerStatistics {
 			{
 				for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
 					float value =
-						container.getDataDomain().getTable().
-							getFloat(DataRepresentation.NORMALIZED, dimensionID, recordID);
+						container.getDataDomain().getTable()
+							.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
 
 					// this works because the values in the container are already noramlized
 					int iIndex = (int) (value * numberOfBuckets);
@@ -96,6 +108,60 @@ public class ContainerStatistics {
 					histogram.set(iIndex, ++iNumOccurences);
 				}
 			}
+		}
+	}
+
+	/**
+	 * @return the foldChange, see {@link #foldChange}
+	 */
+	public FoldChange foldChange() {
+		if(foldChange == null)
+			foldChange = new FoldChange();
+		return foldChange;
+	}
+
+	/**
+	 * @return the averageRecords, see {@link #averageRecords}
+	 */
+	public ArrayList<AverageRecord> getAverageRecords() {
+		if (averageRecords == null)
+			calculateAverageRecords();
+		return averageRecords;
+	}
+
+	/**
+	 * Calculates the arithmetic mean and the standard deviation from the arithmetic mean of the records
+	 */
+	private void calculateAverageRecords() {
+		averageRecords = new ArrayList<AverageRecord>();
+
+		DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
+		DataTable table = container.getDataDomain().getTable();
+
+		for (Integer recordID : recordVA) {
+			AverageRecord averageRecord = new AverageRecord();
+			double sumOfValues = 0;
+			double sumDeviation = 0;
+
+			int nrValidValues = 0;
+			for (Integer dimensionID : dimensionVA) {
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				if (!value.isNaN()) {
+					sumOfValues += value;
+					nrValidValues++;
+				}
+			}
+			averageRecord.arithmeticMean = sumOfValues / nrValidValues;
+
+			for (Integer dimensionID : dimensionVA) {
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				if (!value.isNaN()) {
+					sumDeviation = Math.pow(-averageRecord.arithmeticMean, 2);
+				}
+			}
+			averageRecord.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);
+			averageRecords.add(averageRecord);
 		}
 	}
 }

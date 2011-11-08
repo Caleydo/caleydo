@@ -149,16 +149,16 @@ public class DataTable
 
 	/**
 	 * Get the dimension associated with the ID provided. Returns null if no such dimension is registered.
-	 * 
 	 * @param dimensionID
 	 *            a unique dimension ID
+	 * 
 	 * @return
 	 */
 	// public ADimension get(Integer dimensionID) {
 	// return hashDimensions.get(dimensionID);
 	// }
 
-	public float getFloat(DataRepresentation dataRepresentation, Integer dimensionID, Integer recordID) {
+	public float getFloat(DataRepresentation dataRepresentation, Integer recordID, Integer dimensionID) {
 		if (isColumnDimension)
 			return hashColumns.get(dimensionID).getFloat(dataRepresentation, recordID);
 		else
@@ -188,7 +188,7 @@ public class DataTable
 		RawDataType rawDataType = hashColumns.get(columnID).getRawDataType();
 		String result;
 		if (rawDataType == RawDataType.FLOAT) {
-			result = Float.toString(getFloat(DataRepresentation.RAW, columnID, rowID));
+			result = Float.toString(getFloat(DataRepresentation.RAW, rowID, columnID));
 		}
 		else if (rawDataType == RawDataType.STRING) {
 			result = getRaw(columnID, rowID);
@@ -496,6 +496,7 @@ public class DataTable
 	 * 
 	 * @return the dimension containing means for all content elements
 	 */
+	@Deprecated
 	public NumericalColumn getMeanDimension(String dimensionPerspectiveID) {
 		if (!tableType.equals(DataTableDataType.NUMERIC) || !isTableHomogeneous)
 			throw new IllegalStateException(
@@ -511,7 +512,7 @@ public class DataTable
 			for (int contentCount = 0; contentCount < metaData.depth(); contentCount++) {
 				float sum = 0;
 				for (int dimensionID : dimensionVA) {
-					sum += getFloat(DataRepresentation.RAW, dimensionID, contentCount);
+					sum += getFloat(DataRepresentation.RAW, contentCount, dimensionID);
 				}
 				meanValues[contentCount] = sum / metaData.size();
 			}
@@ -521,6 +522,7 @@ public class DataTable
 		return meanDimension;
 	}
 
+	@Deprecated
 	public void setStatisticsResult(StatisticsResult statisticsResult) {
 		this.statisticsResult = statisticsResult;
 	}

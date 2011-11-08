@@ -226,7 +226,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
 				
-				// FIXME this assumtion that records are genes is wrong!
+				// FIXME this assumption that records are genes is wrong!
 				for (Integer gene : dataContainer.getRecordPerspective()
 						.getVirtualArray()) {
 					Set<Integer> davids = dataDomain.getRecordIDMappingManager()
@@ -1087,7 +1087,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
 
 					dataContainers.add(pathwayDimensionGroupData);
-					event.setDimensionGroupData(dataContainers);
+					event.setDataContainers(dataContainers);
 					event.setSender(this);
 					eventPublisher.triggerEvent(event);
 				}

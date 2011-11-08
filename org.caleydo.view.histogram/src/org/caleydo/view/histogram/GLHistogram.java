@@ -112,7 +112,7 @@ public class GLHistogram extends ATableBasedView {
 	public void initData() {
 		super.initData();
 		if (histogram == null) {
-			histogram = dataDomain.getTable().getMetaData().getHistogram();
+			histogram = dataContainer.getContainerStatistics().getHistogram();
 		}
 	}
 

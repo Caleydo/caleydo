@@ -27,15 +27,15 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * <p>
  * There are three ways to specify a group to be added:
  * <ol>
- * <li>by adding a list of pre-existing {@link ADimensionGroupData}s, using the
+ * <li>by adding a list of pre-existing {@link DataContainer}s, using the
  * {@link #AddGroupsToVisBricksEvent(ArrayList)} constructor or the
- * {@link #setDimensionGroupData(ArrayList)} method,</li>
+ * {@link #setDataContainers(ArrayList)} method,</li>
  * <li>by specifying exactly one {@link DimensionPerspective} and one
  * {@link RecordPerspective} using the
  * {@link #AddGroupsToVisBricksEvent(String, String, String)} constructor,</li>
- * <li>or by specifying a {@link DimensionPerspective}, a
- * {@link RecordPerspective} and a list of {@link ClusterNode}s. This creates a
- * new {@link ADimensionGroupData} for every node.</li>
+ * <li>or by specifying a {@link DataContainer} and a list of
+ * {@link ClusterNode}s. This creates a new {@link DataContainer} for every
+ * node.</li>
  * </ol>
  * </p>
  * 
@@ -105,8 +105,8 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		return true;
 	}
 
-	public void setDimensionGroupData(ArrayList<DataContainer> dimensionGroupData) {
-		this.subDataContainers = dimensionGroupData;
+	public void setDataContainers(ArrayList<DataContainer> dataContainers) {
+		this.subDataContainers = dataContainers;
 	}
 
 	public ArrayList<DataContainer> getDimensionGroupData() {
@@ -131,11 +131,15 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 				if (node.isLeaf())
 					continue;
 
-				DimensionPerspective dimensionPerspective = new DimensionPerspective(
-						dataDomain);
-				PerspectiveInitializationData data = new PerspectiveInitializationData();
-				data.setData((ClusterTree) node.getTree(), node);
-				dimensionPerspective.init(data);
+				DimensionPerspective dimensionPerspective = node.getSubPerspective(
+						DimensionPerspective.class, dataDomain);
+				// DimensionPerspective dimensionPerspective = new
+				// DimensionPerspective(
+				// dataDomain);
+				// PerspectiveInitializationData data = new
+				// PerspectiveInitializationData();
+				// data.setData((ClusterTree) node.getTree(), node);
+				// dimensionPerspective.init(data);
 				// dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
 
 				DataContainer subDataContainer = new DataContainer(dataDomain,

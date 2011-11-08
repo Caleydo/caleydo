@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -19,30 +20,51 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
 /**
  * <p>
- * Base class for all classes that hold a {@link ATableBasedDataDomain}, a {@link DimensionPerspective} and a
- * {@link RecordPerspective}. Provides setters and getters to all these.
+ * A DataContainer holds all the "rules" and properties on how the data in the underlying {@link DataTable}
+ * should be accessed. It does so by holding references to one {@link DimensionPerspective} and one
+ * {@link RecordPerspective}, who define things like order, groups, and hierarchical relationships for either
+ * the dimensions or the records of a DataTable.
  * </p>
  * <p>
- * When your sub-class already has a superclass use {@link IDataContainer} instead, otherwise this class is
- * prefered.
+ * While the perspectives are only defined for either the records or the dimensions, and thereby cannot
+ * reference specific cells (and consequently no data), the DataContainer defines a concrete subset of the
+ * data.
+ * </p>
+ * <p>
+ * This allows to calculate statistics (see {@link ContainerStatistics}) for a DataContainer, thereby
+ * providing things like histograms or averages.
+ * </p>
+ * <p>
+ * A DataContainer should be created/accessed by using
+ * {@link ATableBasedDataDomain#getDataContainer(String, String)}, where the Strings are the IDs of the
+ * perspectives that define the DataContainer. The dataDomain registers the dataContainer for those
+ * perspective and provides other instances which need a DataContainer for the same combination of
+ * perspectives with the same instance of the DataContainer, thereby avoiding double-calculation of derived
+ * meta-data (which can be both, computatonally and storage-wise expensive)
  * </p>
  * 
  * @author Alexander Lex
  */
 public class DataContainer {
 
+	/** The static counter used to create unique ids */
 	private static int idCounter;
+	/** The unique id of the data container */
 	private int id;
 
 	protected ATableBasedDataDomain dataDomain;
 
+	/** The recordPerspective defines the properties of the records (occurence, order, groups, relationships) */
 	protected RecordPerspective recordPerspective;
+	/** Same as {@link #recordPerspective} for dimensions */
 	protected DimensionPerspective dimensionPerspective;
 
+	/** A human-readable label for the {@link DataContainer} */
 	protected String label;
-	
+
 	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
-	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER, EColumnType.INT);
+	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER,
+		EColumnType.INT);
 
 	/**
 	 * A Group describes a part of a virtual array, e.g. a cluster. The group for a data container is only set
@@ -54,8 +76,6 @@ public class DataContainer {
 	 */
 	protected ContainerStatistics containerStatistics;
 
-	// protected List<DataContainer> recordSubDataContainers;
-
 	/**
 	 * Empty constructor, nothing initialized
 	 */
@@ -63,8 +83,6 @@ public class DataContainer {
 	}
 
 	/**
-	 * Constructor using the actual objects, sets the ids as well based on the ids of the objects.
-	 * 
 	 * @param dataDomain
 	 * @param recordPerspective
 	 * @param dimensionPerspective
@@ -74,7 +92,7 @@ public class DataContainer {
 		this.dataDomain = dataDomain;
 		this.recordPerspective = recordPerspective;
 		this.dimensionPerspective = dimensionPerspective;
-		
+
 	}
 
 	{
@@ -97,18 +115,32 @@ public class DataContainer {
 		this.dataDomain = dataDomain;
 	}
 
+	/**
+	 * @return the recordPerspective, see {@link #recordPerspective}
+	 */
 	public RecordPerspective getRecordPerspective() {
 		return recordPerspective;
 	}
 
+	/**
+	 * @param recordPerspective
+	 *            setter, see {@link #recordPerspective}
+	 */
 	public void setRecordPerspective(RecordPerspective recordPerspective) {
 		this.recordPerspective = recordPerspective;
 	}
 
+	/**
+	 * @return the dimensionPerspective, see {@link #dimensionPerspective}
+	 */
 	public DimensionPerspective getDimensionPerspective() {
 		return dimensionPerspective;
 	}
 
+	/**
+	 * @param dimensionPerspective
+	 *            setter, see {@link #dimensionPerspective}
+	 */
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
 	}
@@ -151,12 +183,21 @@ public class DataContainer {
 		return dimensionPerspective.getVirtualArray().size();
 	}
 
+	/**
+	 * Getter for {@link #label}, creates a default label if none was set
+	 * 
+	 * @return
+	 */
 	public String getLabel() {
 		if (label == null)
-			return dimensionPerspective.getLabel() + "/" + recordPerspective.getLabel();
+			label = dimensionPerspective.getLabel() + "/" + recordPerspective.getLabel();
 		return label;
 	}
 
+	/**
+	 * @param label
+	 *            setter, see {@link #label}
+	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
@@ -177,19 +218,16 @@ public class DataContainer {
 	}
 
 	/**
-	 * Creates and returns one {@link DataContainer} for each group in the {@link RecordPerspective}, where
-	 * the new {@link RecordPerspective} contains the elements of the group. The {@link DimensionPerspective}
-	 * is the same as for this container.
+	 * Creates and returns one new {@link DataContainer} for each group in the {@link RecordPerspective},
+	 * where the new {@link RecordPerspective} contains the elements of the group. The
+	 * {@link DimensionPerspective} is the same as for this container.
 	 * 
 	 * @return a new list of new {@link DataContainer}s
 	 */
 	public List<DataContainer> createRecordSubDataContainers() {
-		// if (recordSubDataContainers != null)
-		// return recordSubDataContainers;
 
 		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
 
-		// TODO implement
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
 
 		if (recordVA.getGroupList() == null)

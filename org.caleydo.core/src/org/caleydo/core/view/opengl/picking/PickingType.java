@@ -56,7 +56,7 @@ public enum PickingType {
 	PATHWAY_TEXTURE_SELECTION,
 
 	// heat map
-	HEAT_MAP_LINE_SELECTION,
+	HEAT_MAP_RECORD_SELECTION,
 	HEAT_MAP_DIMENSION_SELECTION,
 
 	// heat map detail button

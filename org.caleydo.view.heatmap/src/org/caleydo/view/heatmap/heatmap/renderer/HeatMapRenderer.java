@@ -90,7 +90,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 		// GLHelperFunctions.drawPointAt(gl, 0, fYPosition, 0);
 
 		float value = heatMap.getDataDomain().getTable()
-				.getFloat(heatMap.getRenderingRepresentation(), dimensionID, recordID);
+				.getFloat(heatMap.getRenderingRepresentation(), recordID, dimensionID);
 
 		float fOpacity = 1.0f;
 
@@ -120,7 +120,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
 				PickingType.HEAT_MAP_DIMENSION_SELECTION, dimensionID));
 		gl.glPushName(heatMap.getPickingManager().getPickingID(heatMap.getID(),
-				PickingType.HEAT_MAP_LINE_SELECTION, recordID));
+				PickingType.HEAT_MAP_RECORD_SELECTION, recordID));
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(fXPosition, fYPosition, FIELD_Z);
 		gl.glVertex3f(fXPosition + fFieldWidth, fYPosition, FIELD_Z);

@@ -57,8 +57,8 @@ public class DataTableExporter {
 				}
 				out.print(identifier + "\t");
 				for (Integer dimensionIndex : dimensionsToExport) {
-					out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW, dimensionIndex,
-						recordIndex));
+					out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW, recordIndex,
+						dimensionIndex));
 					out.print("\t");
 				}
 				out.println();
@@ -126,7 +126,7 @@ public class DataTableExporter {
 				out.print(identifier + "\t");
 				for (Integer dimensionID : dimensionVA) {
 
-					out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW, dimensionID, recordID));
+					out.print(dataDomain.getTable().getFloat(DataRepresentation.RAW, recordID, dimensionID));
 
 					out.print("\t");
 

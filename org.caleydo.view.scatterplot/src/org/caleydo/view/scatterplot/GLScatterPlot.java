@@ -1264,9 +1264,9 @@ public class GLScatterPlot extends ATableBasedView {
 						int selectedYAxis = iAxisY;
 
 						xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-								dimensionVA.get(selectedXAxis), recordIndex);
+								recordIndex, dimensionVA.get(selectedXAxis));
 						ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-								dimensionVA.get(selectedYAxis), recordIndex);
+								recordIndex, dimensionVA.get(selectedYAxis));
 
 						ix = (int) Math.floor(xnormalized * (double) (iTextureWidth - 1));
 						iy = ix
@@ -1413,12 +1413,12 @@ public class GLScatterPlot extends ATableBasedView {
 
 							xnormalized = table
 									.getFloat(DataRepresentation.NORMALIZED,
-											dimensionVA.get(current_SELECTED_X_AXIS),
-											recordIndex);
+											recordIndex,
+											dimensionVA.get(current_SELECTED_X_AXIS));
 							ynormalized = table
 									.getFloat(DataRepresentation.NORMALIZED,
-											dimensionVA.get(current_SELECTED_Y_AXIS),
-											recordIndex);
+											recordIndex,
+											dimensionVA.get(current_SELECTED_Y_AXIS));
 
 							ix = (int) Math.floor(xnormalized
 									* (double) (iTextureWidth - 1));
@@ -2162,9 +2162,9 @@ public class GLScatterPlot extends ATableBasedView {
 			}
 
 			xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-					dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+					recordIndex, dimensionVA.get(iSelectedAxisIndexX));
 			ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-					dimensionVA.get(iSelectedAxisIndexY), recordIndex);
+					recordIndex, dimensionVA.get(iSelectedAxisIndexY));
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2183,9 +2183,9 @@ public class GLScatterPlot extends ATableBasedView {
 
 			if (bRender2Axis) {
 				xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-						dimensionVA.get(iSelectedAxisIndexX2), recordIndex);
+						recordIndex, dimensionVA.get(iSelectedAxisIndexX2));
 				ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-						dimensionVA.get(iSelectedAxisIndexY2), recordIndex);
+						recordIndex, dimensionVA.get(iSelectedAxisIndexY2));
 
 				x_2 = transformOnXZoom(xnormalized) * XScale;
 				y_2 = transformOnYZoom(ynormalized) * YScale;
@@ -2240,9 +2240,9 @@ public class GLScatterPlot extends ATableBasedView {
 		DataTable table = dataDomain.getTable();
 
 		float xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-				dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+				recordIndex, dimensionVA.get(iSelectedAxisIndexX));
 		float ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-				dimensionVA.get(iSelectedAxisIndexY), recordIndex);
+				recordIndex, dimensionVA.get(iSelectedAxisIndexY));
 
 		float x = transformOnXZoom(xnormalized) * XScale;
 		float y = transformOnYZoom(ynormalized) * YScale;
@@ -2320,10 +2320,10 @@ public class GLScatterPlot extends ATableBasedView {
 		sLabel = recordLabel
 				+ "("
 				+ +table.getFloat(DataRepresentation.RAW,
-						dimensionVA.get(iSelectedAxisIndexX), recordIndex)
+						recordIndex, dimensionVA.get(iSelectedAxisIndexX))
 				+ " / "
 				+ table.getFloat(DataRepresentation.RAW,
-						dimensionVA.get(iSelectedAxisIndexY), recordIndex) + ")";
+						recordIndex, dimensionVA.get(iSelectedAxisIndexY)) + ")";
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -2426,9 +2426,9 @@ public class GLScatterPlot extends ATableBasedView {
 					continue;
 
 			float xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-					dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+					recordIndex, dimensionVA.get(iSelectedAxisIndexX));
 			float ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-					dimensionVA.get(iSelectedAxisIndexY), recordIndex);
+					recordIndex, dimensionVA.get(iSelectedAxisIndexY));
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2494,9 +2494,9 @@ public class GLScatterPlot extends ATableBasedView {
 			for (int recordIndex : selectionSet) {
 
 				float xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-						dimensionVA.get(iSelectedAxisIndexX), recordIndex);
+						recordIndex, dimensionVA.get(iSelectedAxisIndexX));
 				float ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-						dimensionVA.get(iSelectedAxisIndexY), recordIndex);
+						recordIndex, dimensionVA.get(iSelectedAxisIndexY));
 
 				x = transformOnXZoom(xnormalized) * XScale;
 				y = transformOnYZoom(ynormalized) * YScale;

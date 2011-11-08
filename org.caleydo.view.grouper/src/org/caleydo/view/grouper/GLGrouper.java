@@ -20,6 +20,7 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -29,6 +30,7 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
 import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
+import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
@@ -36,8 +38,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
+import org.caleydo.core.view.contextmenu.item.StatisticsFoldChangeReductionItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -552,17 +554,6 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						ArrayList<ICompositeGraphic> orderedComposites = getOrderedCompositeList(
 								setClickedGroups, false);
 
-						boolean isLeafContained = false;
-						for (ICompositeGraphic composite : orderedComposites) {
-							// FIXME here
-							// selectedTables.add(((GroupRepresentation)
-							// composite)
-							// .getClusterNode().getPerspective());
-
-							if (isLeafContained == false)
-								isLeafContained = composite.isLeaf();
-						}
-
 						RenameGroupItem renameItem = new RenameGroupItem(externalID,
 								dataDomain.getDataDomainID());
 						contextMenuCreator.addContextMenuItem(renameItem);
@@ -634,13 +625,36 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 							// .addContextMenuItem(pValueReductionItem);
 							// }
 							//
-							// if (orderedComposites.size() == 2) {
-							// StatisticsFoldChangeReductionItem
-							// foldChangeReductionItem = new
-							// StatisticsFoldChangeReductionItem(
-							// selectedTables.get(0), selectedTables.get(1));
-							// contextMenuCreator
-							// .addContextMenuItem(foldChangeReductionItem);
+							if (orderedComposites.size() == 2) {
+								DimensionPerspective subDimensionPerspective1 = selectedNodes
+										.get(0).getSubPerspective(
+												DimensionPerspective.class, dataDomain);
+
+								dataDomain.getTable().registerDimensionPerspective(
+										subDimensionPerspective1);
+								DataContainer dataContainer1 = dataDomain
+										.getDataContainer(dataContainer
+												.getRecordPerspective().getID(),
+												subDimensionPerspective1.getID());
+
+								DimensionPerspective subDimensionPerspective2 = selectedNodes
+										.get(1).getSubPerspective(
+												DimensionPerspective.class, dataDomain);
+								dataDomain.getTable().registerDimensionPerspective(
+										subDimensionPerspective2);
+								DataContainer dataContainer2 = dataDomain
+										.getDataContainer(dataContainer
+												.getRecordPerspective().getID(),
+												subDimensionPerspective2.getID());
+
+								StatisticsFoldChangeReductionEvent event = new StatisticsFoldChangeReductionEvent(
+										dataContainer1, dataContainer2, false);
+
+								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
+										event);
+								contextMenuCreator
+										.addContextMenuItem(foldChangeReductionItem);
+							}
 							//
 							// StatisticsTwoSidedTTestReductionItem
 							// twoSidedTTestReductionItem = new

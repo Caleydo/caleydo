@@ -27,6 +27,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.AView;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
@@ -48,6 +49,7 @@ import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -571,7 +573,7 @@ public abstract class AGLView
 							handlePickingEvents(type, ePickingMode, externalID, tempPick);
 						}
 						catch (Exception e) {
-							System.out.println("ERROR in picking caught:" + e.toString());
+							Logger.log(new Status(Status.ERROR, this.toString(), "Caught exception when picking",  e));
 						}
 					}
 					catch (IllegalArgumentException e) {

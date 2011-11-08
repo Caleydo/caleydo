@@ -574,8 +574,8 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex,
-							recordVA.get(iOffset + index));
+						table.getFloat(DataRepresentation.NORMALIZED, recordVA.get(iOffset + index),
+							iDimensionIndex);
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
 			}
@@ -585,8 +585,8 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 				fArExpressionValues = new float[iNrElementsInGroup];
 				for (int index = 0; index < iNrElementsInGroup; index++) {
 					fArExpressionValues[index] +=
-						table.getFloat(DataRepresentation.NORMALIZED, dimensionVA.get(iOffset + index),
-							recordIndex);
+						table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+							dimensionVA.get(iOffset + index));
 				}
 				representative.add(ClusterHelper.arithmeticMean(fArExpressionValues));
 			}

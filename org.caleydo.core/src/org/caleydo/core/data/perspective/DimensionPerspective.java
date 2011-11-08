@@ -21,7 +21,6 @@ public class DimensionPerspective
 	extends
 	ADataPerspective<DimensionVirtualArray, DimensionGroupList, DimensionVADelta, DimensionFilterManager> {
 
-	
 	public DimensionPerspective() {
 	}
 

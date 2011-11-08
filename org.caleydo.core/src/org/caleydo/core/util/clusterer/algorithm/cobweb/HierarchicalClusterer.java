@@ -68,7 +68,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.getFloat(DataRepresentation.RAW, iDimensionIndex, recordIndex)
+						buffer.append(table.getFloat(DataRepresentation.RAW, recordIndex, iDimensionIndex)
 							+ ", ");
 
 					}
@@ -109,7 +109,7 @@ public class HierarchicalClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(table.getFloat(DataRepresentation.RAW, iDimensionIndex, recordIndex)
+						buffer.append(table.getFloat(DataRepresentation.RAW, recordIndex, iDimensionIndex)
 							+ ", ");
 
 					}

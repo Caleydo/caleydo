@@ -138,7 +138,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
 						dArInstance1[isto] =
-							table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
+							table.getFloat(DataRepresentation.NORMALIZED, recordIndex1, iDimensionIndex1);
 						isto++;
 					}
 
@@ -150,8 +150,8 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer iDimensionIndex2 : dimensionVA) {
 								dArInstance2[isto] =
-									table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex2,
-										recordIndex2);
+									table.getFloat(DataRepresentation.NORMALIZED, recordIndex2,
+										iDimensionIndex2);
 								isto++;
 							}
 
@@ -191,7 +191,7 @@ public class TreeClusterer
 					isto = 0;
 					for (Integer recordIndex1 : recordVA) {
 						dArInstance1[isto] =
-							table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex1, recordIndex1);
+							table.getFloat(DataRepresentation.NORMALIZED, recordIndex1, iDimensionIndex1);
 						isto++;
 					}
 
@@ -202,8 +202,8 @@ public class TreeClusterer
 						if (icnt2 < icnt1) {
 							for (Integer recordIndex2 : recordVA) {
 								dArInstance2[isto] =
-									table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex2,
-										recordIndex2);
+									table.getFloat(DataRepresentation.NORMALIZED, recordIndex2,
+										iDimensionIndex2);
 								isto++;
 							}
 

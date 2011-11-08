@@ -107,8 +107,8 @@ public class KMeansClusterer
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex,
-							recordIndex) + ", ");
+						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+							iDimensionIndex) + ", ");
 
 					}
 					buffer.append("\n");
@@ -151,8 +151,8 @@ public class KMeansClusterer
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, iDimensionIndex,
-							recordIndex) + ", ");
+						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+							iDimensionIndex) + ", ");
 
 					}
 					buffer.append("\n");
