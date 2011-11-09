@@ -1,10 +1,9 @@
 package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings;
-import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.container.FoldChangeSettings;
+import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;

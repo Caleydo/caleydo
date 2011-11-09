@@ -2,6 +2,8 @@ package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
@@ -35,24 +37,25 @@ public class FilterRepresentationPValue extends
 		AFilterRepresentation<RecordVADelta, RecordFilter> {
 
 	private final static String TITLE = "Variance Filter";
-	
-	private DataTable set;
+
+	private ATableBasedDataDomain dataDomain;
+	private DataContainer dataContainer1;
 
 	private Histogram histogram;
 	private float pValue = -1;
 	private float pValueMax = -1;
-	
+
 	public boolean create() {
-		
-		if( !super.create() )
+
+		if (!super.create())
 			return false;
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
-				((Shell)parentComposite).setText(TITLE);
-				
+				((Shell) parentComposite).setText(TITLE);
+
 				GridData gridData = new GridData();
 				gridData.grabExcessHorizontalSpace = true;
 				gridData.horizontalAlignment = GridData.FILL;
@@ -64,10 +67,9 @@ public class FilterRepresentationPValue extends
 				Label pValueLabel = new Label(infoComposite, SWT.NONE);
 				pValueLabel.setText("p-Value:");
 
-
 				final Text pValueInputField = new Text(infoComposite, SWT.SINGLE);
 				final Slider pValueSlider = new Slider(infoComposite, SWT.HORIZONTAL);
-				
+
 				if (pValue == -1) {
 					pValueMax = histogram.getMax();
 					pValue = pValueMax;
@@ -135,8 +137,7 @@ public class FilterRepresentationPValue extends
 				histoComposite.setLayoutData(gridData);
 
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
-				histogramView.setDataDomain(DataDomainManager.get().getDataDomainByID(
-						"org.caleydo.datadomain.genetic"));
+				histogramView.setDataDomain(dataDomain);
 
 				histogramView.createDefaultSerializedView();
 				histogramView.createPartControl(histoComposite);
@@ -150,9 +151,9 @@ public class FilterRepresentationPValue extends
 						.registerGLCanvasToAnimator(histogramView.getGLCanvas());
 			}
 		});
-		
+
 		addOKCancel();
-		
+
 		return true;
 	}
 
@@ -174,19 +175,20 @@ public class FilterRepresentationPValue extends
 
 	private void createVADelta(RecordFilter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
-				.getDataDomain().getRecordIDType());
-		RecordVirtualArray recordVA = subFilter.getDataDomain()
-				.getRecordFilterManager().getBaseVA();
+		RecordVADelta recordVADelta = new RecordVADelta(dataContainer1
+				.getRecordPerspective().getID(), subFilter.getDataDomain()
+				.getRecordIDType());
 
-		double[] tTestResult = ((FilterRepresentationPValue) subFilter.getFilterRep())
-				.getTable().getStatisticsResult().getOneSidedTTestResult();
+		RecordVirtualArray recordVA = dataContainer1.getRecordPerspective()
+				.getVirtualArray();
+
+		double[] tTestResult = dataContainer1.getContainerStatistics().tTest().getOneSidedTTestResult();//((FilterRepresentationPValue) subFilter.getFilterRep())
+	
 
 		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
 			if (tTestResult != null && tTestResult[recordIndex] > pValue)
-				recordVADelta
-						.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
+				recordVADelta.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 		}
 		subFilter.setVADelta(recordVADelta);
 	}
@@ -199,21 +201,24 @@ public class FilterRepresentationPValue extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setTable(DataTable set) {
-		this.set = set;
-	}
-
-	public DataTable getTable() {
-		return set;
-	}
-	
 	@Override
 	protected void applyFilter() {
-		if (isDirty)
-		{
+		if (isDirty) {
 			createVADelta();
 			filter.updateFilterManager();
 		}
 		isDirty = false;
+	}
+
+	/**
+	 * @param dataDomain
+	 *            setter, see {@link #dataDomain}
+	 */
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	public void setDataContainer1(DataContainer dataContainer1) {
+		this.dataContainer1 = dataContainer1;
 	}
 }

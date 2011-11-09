@@ -2,7 +2,10 @@ package org.caleydo.util.r.filter;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
@@ -26,23 +29,24 @@ public class FilterRepresentationTwoSidedTTest extends
 		AFilterRepresentation<RecordVADelta, RecordFilter> {
 
 	private final static String TITLE = "Two-sided T-Test Filter";
-	
-	private DataTable set1;
-	private DataTable set2;
+
+	private ATableBasedDataDomain dataDomain;
+	private DataContainer dataContainer1;
+	private DataContainer dataContainer2;
 
 	private float pValue = 1f;
 
 	public boolean create() {
-		
-		if( !super.create() )
+
+		if (!super.create())
 			return false;
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
 
-				((Shell)parentComposite).setText(TITLE);
-				
+				((Shell) parentComposite).setText(TITLE);
+
 				final Slider pValueSlider = new Slider(parentComposite, SWT.HORIZONTAL);
 
 				final Label pValueLabel = new Label(parentComposite, SWT.NULL);
@@ -69,7 +73,7 @@ public class FilterRepresentationTwoSidedTTest extends
 						// parentComposite.layout();
 					}
 				});
-				
+
 				final Button applyFilterButton = new Button(parentComposite, SWT.PUSH);
 				applyFilterButton.setText("Apply");
 				applyFilterButton.addSelectionListener(new SelectionAdapter() {
@@ -81,9 +85,9 @@ public class FilterRepresentationTwoSidedTTest extends
 				});
 			}
 		});
-		
+
 		addOKCancel();
-		
+
 		return true;
 	}
 
@@ -101,24 +105,25 @@ public class FilterRepresentationTwoSidedTTest extends
 
 	private void createVADelta(RecordFilter subFilter) {
 
-		RecordVADelta recordVADelta = new RecordVADelta(DataTable.RECORD, subFilter
-				.getDataDomain().getRecordIDType());
-		RecordVirtualArray recordVA = subFilter.getDataDomain()
-				.getRecordFilterManager().getBaseVA();
+		RecordVADelta recordVADelta = new RecordVADelta(dataContainer1
+				.getRecordPerspective().getID(), subFilter.getDataDomain()
+				.getRecordIDType());
+		RecordVirtualArray recordVA = dataContainer1.getRecordPerspective()
+				.getVirtualArray();
 
 		ArrayList<Double> tTestResult = ((FilterRepresentationTwoSidedTTest) subFilter
 				.getFilterRep())
-				.getTable1()
-				.getStatisticsResult()
+				.getDataContainer1()
+				.getContainerStatistics()
+				.tTest()
 				.getTwoSidedTTestResult(
 						((FilterRepresentationTwoSidedTTest) subFilter.getFilterRep())
-								.getTable2());
+								.getDataContainer2());
 
 		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 
 			if (tTestResult != null && tTestResult.get(recordIndex) > pValue)
-				recordVADelta
-						.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
+				recordVADelta.add(VADeltaItem.removeElement(recordVA.get(recordIndex)));
 		}
 		subFilter.setVADelta(recordVADelta);
 	}
@@ -131,29 +136,42 @@ public class FilterRepresentationTwoSidedTTest extends
 		GeneralManager.get().getEventPublisher().triggerEvent(filterEvent);
 	}
 
-	public void setTable1(DataTable set1) {
-		this.set1 = set1;
-	}
-
-	public void setTable2(DataTable set2) {
-		this.set2 = set2;
-	}
-
-	public DataTable getTable1() {
-		return set1;
-	}
-
-	public DataTable getTable2() {
-		return set2;
-	}
-	
 	@Override
 	protected void applyFilter() {
-		if (isDirty)
-		{
+		if (isDirty) {
 			createVADelta();
 			filter.updateFilterManager();
 		}
 		isDirty = false;
+	}
+
+	/**
+	 * @param dataDomain
+	 *            setter, see {@link #dataDomain}
+	 */
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		this.dataDomain = dataDomain;
+	}
+
+	public void setDataContainer1(DataContainer dataContainer1) {
+		this.dataContainer1 = dataContainer1;
+	}
+
+	/**
+	 * @return the dataContainer1, see {@link #dataContainer1}
+	 */
+	public DataContainer getDataContainer1() {
+		return dataContainer1;
+	}
+
+	public void setDataContainer2(DataContainer dataContainer2) {
+		this.dataContainer2 = dataContainer2;
+	}
+
+	/**
+	 * @return the dataContainer2, see {@link #dataContainer2}
+	 */
+	public DataContainer getDataContainer2() {
+		return dataContainer2;
 	}
 }

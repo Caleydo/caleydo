@@ -8,8 +8,8 @@ public class RecordVADelta
 	public RecordVADelta() {
 	}
 
-	public RecordVADelta(String vaType, IDType idType) {
-		super(vaType, idType);
+	public RecordVADelta(String recordPerspectiveID, IDType idType) {
+		super(recordPerspectiveID, idType);
 	}
 
 	@Override

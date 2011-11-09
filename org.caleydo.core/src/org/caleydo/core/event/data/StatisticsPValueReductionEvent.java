@@ -2,30 +2,29 @@ package org.caleydo.core.event.data;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.event.AEvent;
 
 public class StatisticsPValueReductionEvent
 	extends AEvent {
 
-	private ArrayList<DataTable> sets;
+	private ArrayList<DataContainer> dataContainers;
 
-	public StatisticsPValueReductionEvent(ArrayList<DataTable> sets) {
-		this.sets = sets;
+	public StatisticsPValueReductionEvent(ArrayList<DataContainer> dataContainers) {
+		this.dataContainers = dataContainers;
 	}
 
-	public void setTables(ArrayList<DataTable> sets) {
-		this.sets = sets;
+	public void setDataContainers(ArrayList<DataContainer> dataContainers) {
+		this.dataContainers = dataContainers;
 	}
 
-	public ArrayList<DataTable> getTables() {
-		return sets;
+	public ArrayList<DataContainer> getDataContainers() {
+		return dataContainers;
 	}
 
 	@Override
 	public boolean checkIntegrity() {
-
-		if (sets.size() == 0)
+		if (dataContainers == null || dataContainers.size() == 0)
 			return false;
 
 		return true;

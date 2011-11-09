@@ -75,8 +75,6 @@ public class DataTable
 
 	boolean isTableHomogeneous = false;
 
-	private StatisticsResult statisticsResult;
-
 	DataTableDataType tableType = DataTableDataType.NUMERIC;
 
 	private ATableBasedDataDomain dataDomain;
@@ -119,7 +117,6 @@ public class DataTable
 		hashRecordPerspectives = new HashMap<String, RecordPerspective>(6);
 		hashDimensionPerspectives = new HashMap<String, DimensionPerspective>(3);
 		defaultColumnIDs = new ArrayList<Integer>();
-		statisticsResult = new StatisticsResult(this);
 		metaData = new MetaData(this);
 		normalization = new Normalization(this);
 	}
@@ -149,9 +146,9 @@ public class DataTable
 
 	/**
 	 * Get the dimension associated with the ID provided. Returns null if no such dimension is registered.
+	 * 
 	 * @param dimensionID
 	 *            a unique dimension ID
-	 * 
 	 * @return
 	 */
 	// public ADimension get(Integer dimensionID) {
@@ -479,16 +476,6 @@ public class DataTable
 	}
 
 	/**
-	 * Returns the statistics results. E.g. comparative t-test between sets.
-	 * 
-	 * @return the statistics result object containing all results.
-	 */
-	@XmlTransient
-	public StatisticsResult getStatisticsResult() {
-		return statisticsResult;
-	}
-
-	/**
 	 * Returns a dimension containing the mean values of all the dimensions in the table. The mean dimension
 	 * contains raw and normalized values. The mean is calculated based on the raw data, that means for
 	 * calculating the means possibly specified cut-off values are not considered, since cut-off values are
@@ -520,11 +507,6 @@ public class DataTable
 			// meanDimension.normalize();
 		}
 		return meanDimension;
-	}
-
-	@Deprecated
-	public void setStatisticsResult(StatisticsResult statisticsResult) {
-		this.statisticsResult = statisticsResult;
 	}
 
 	public void setContainsUncertaintyData(boolean containsUncertaintyData) {

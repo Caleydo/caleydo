@@ -10,7 +10,7 @@ public interface IStatisticsPerformer {
 
 	public void performTest();
 
-	public void twoSidedTTest(ArrayList<DataTable> setsToCompare);
+	public void twoSidedTTest(ArrayList<DataContainer> setsToCompare);
 
 	public void foldChange(DataContainer container1, DataContainer container2, boolean betweenRecords);
 }

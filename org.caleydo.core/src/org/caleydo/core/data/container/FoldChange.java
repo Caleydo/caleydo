@@ -6,8 +6,7 @@ package org.caleydo.core.data.container;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings;
-import org.caleydo.core.data.collection.table.statistics.FoldChangeSettings.FoldChangeEvaluator;
+import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;
 

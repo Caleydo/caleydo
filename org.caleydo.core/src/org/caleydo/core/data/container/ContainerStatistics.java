@@ -34,6 +34,8 @@ public class ContainerStatistics {
 	/** The fold-change properties of this container with another container */
 	private FoldChange foldChange;
 
+	private TTest tTest;
+
 	private ArrayList<AverageRecord> averageRecords;
 
 	public ContainerStatistics(DataContainer container) {
@@ -112,12 +114,23 @@ public class ContainerStatistics {
 	}
 
 	/**
-	 * @return the foldChange, see {@link #foldChange}
+	 * Access anything related to fold-changes between this container and others
 	 */
 	public FoldChange foldChange() {
-		if(foldChange == null)
+		if (foldChange == null)
 			foldChange = new FoldChange();
 		return foldChange;
+	}
+
+	/**
+	 * Access anything related to t-tests
+	 * 
+	 * @return
+	 */
+	public TTest tTest() {
+		if (tTest == null)
+			tTest = new TTest();
+		return tTest;
 	}
 
 	/**

@@ -177,8 +177,9 @@ public class ClusterHelper {
 		Pair<Float, Integer> result = new Pair<Float, Integer>();
 
 		if (node.isLeaf()) {
-			float uncertainty =
-				(float) table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
+			float uncertainty = 0;
+			// FIXME
+//				(float) table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
 			result.setFirst(uncertainty);
 			result.setSecond(1);
 			node.setUncertainty(uncertainty);

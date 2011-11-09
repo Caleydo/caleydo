@@ -26,14 +26,14 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	private IDType idType;
 
 	@XmlElement
-	private String vaType;
+	private String perspectiveID;
 
 	public VirtualArrayDelta() {
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
 
-	public VirtualArrayDelta(String vaType, IDType idType) {
-		this.vaType = vaType;
+	public VirtualArrayDelta(String perspectiveID, IDType idType) {
+		this.perspectiveID = perspectiveID;
 		this.idType = idType;
 		deltaItems = new UniqueList<VADeltaItem>();
 	}
@@ -46,7 +46,7 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	 * @return
 	 */
 	public String getVAType() {
-		return vaType;
+		return perspectiveID;
 	}
 
 	/**
@@ -55,7 +55,7 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 	 * @param vaType
 	 */
 	public void setVAType(String vaType) {
-		this.vaType = vaType;
+		this.perspectiveID = vaType;
 	}
 
 	@Override

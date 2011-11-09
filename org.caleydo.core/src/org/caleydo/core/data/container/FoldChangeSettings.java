@@ -1,4 +1,4 @@
-package org.caleydo.core.data.collection.table.statistics;
+package org.caleydo.core.data.container;
 
 public class FoldChangeSettings {
 
