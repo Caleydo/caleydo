@@ -587,6 +587,10 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						ArrayList<ClusterNode> selectedNodes = new ArrayList<ClusterNode>(
 								selectedGroups.size());
+
+						// here all groups are selected, even the groups with
+						// only one element
+						// FIXME: we want only the top-level groups instead
 						for (Integer groupID : selectedGroups) {
 							selectedNodes.add(hashGroups.get(groupID).getClusterNode());
 						}

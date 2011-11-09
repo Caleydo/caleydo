@@ -7,6 +7,13 @@ import org.caleydo.view.grouper.event.CreateGroupEvent;
 
 public class CreateGroupListener extends AEventListener<GLGrouper> {
 
+	/**
+	 * 
+	 */
+	public CreateGroupListener() {
+		System.out.println("waaa");
+	}
+
 	@Override
 	public void handleEvent(AEvent event) {
 		CreateGroupEvent createGroupEvent;

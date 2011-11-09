@@ -128,6 +128,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 			subDataContainers = new ArrayList<DataContainer>(selectedNodes.size());
 
 			for (ClusterNode node : selectedNodes) {
+				// FIXME: this should be removed as soon as the selected nodes are correct 
 				if (node.isLeaf())
 					continue;
 

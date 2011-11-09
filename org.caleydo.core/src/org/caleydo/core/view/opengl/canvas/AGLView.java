@@ -439,6 +439,11 @@ public abstract class AGLView
 	 */
 	public abstract void display(final GL2 gl);
 
+	@Override
+	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+	}
+	
 	/**
 	 * This method should be called every display cycle when it is save to change the state of the object. It
 	 * processes all the previously submitted events.
@@ -993,10 +998,6 @@ public abstract class AGLView
 		unregisterEventListeners();
 	}
 
-	@Override
-	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
-	}
 
 	// @Override
 	// public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {

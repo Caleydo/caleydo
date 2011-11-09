@@ -154,6 +154,17 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	}
 
+	/**
+	 * <p>
+	 * Computation of fold change between two data containers. Implemented to
+	 * imitate R behaviour:
+	 * </p>
+	 * <p>
+	 * Fold changes are commonly used in the biological sciences as a mechanism
+	 * for comparing the relative size of two measurements. They are computed
+	 * as: num/denom if num>denom, and as -denom/num otherwise.
+	 * </p>
+	 */
 	public void foldChange(DataContainer container1, DataContainer container2,
 			boolean betweenRecords) {
 
@@ -172,9 +183,14 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		ArrayList<AverageRecord> averageRecords2 = container2.getContainerStatistics()
 				.getAverageRecords();
 		double[] resultVec = new double[averageRecords1.size()];
+
 		for (int count = 0; count < container1.getNrRecords(); count++) {
-			resultVec[count] = averageRecords1.get(count).getArithmeticMean()
-					/ averageRecords2.get(count).getArithmeticMean();
+			double mean1 = averageRecords1.get(count).getArithmeticMean();
+			double mean2 = averageRecords2.get(count).getArithmeticMean();
+			if (mean1 > mean2)
+				resultVec[count] = mean1 / mean2;
+			else
+				resultVec[count] = mean2 * -1 / mean1;
 		}
 
 		container1.getContainerStatistics().foldChange().setResult(container2, resultVec);
@@ -210,7 +226,8 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 		// DataTable table = table1.getDataDomain().getTable();
 		// table.getStatisticsResult().setResult(table1, resultVec);
 
-		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective().getID());
+		RecordFilter contentFilter = new RecordFilter(container1.getRecordPerspective()
+				.getID());
 		contentFilter.setDataDomain(container1.getDataDomain());
 		contentFilter.setLabel("Fold change " + container1.getLabel() + " and "
 				+ container2.getLabel());
@@ -230,156 +247,162 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 	public void oneSidedTTest(ArrayList<DataTable> sets) {
 
-//		// TODO: don't recalculate if pvalue array is already calculated
-//		// however, the evaluation must be done using the new pvalue
-//		// boolean allCalculated = true;
-//		// for (DataTable set : sets) {
-//		// if (table.getStatisticsResult().getOneSidedTTestResult() == null)
-//		// continue;
-//		//
-//		// allCalculated = false;
-//		// }
-//		//
-//		// if (!allCalculated)
-//		// return;
-//
-//		// ContentMetaFilter metaFilter = null;
-//		// if (sets.size() > 1) {
-//		// metaFilter = new ContentMetaFilter();
-//		// metaFilter.setLabel("p-Value Reduction");
-//		// FilterRepresentationPValue filterRep = new
-//		// FilterRepresentationPValue();
-//		// filterRep.setFilter(metaFilter);
-//		// filterRep.create();
-//		// metaFilter.setFilterRep(filterRep);
-//		// }
-//
-//		for (DataTable table : sets) {
-//
-//			RecordVirtualArray recordVA = table.getBaseRecordVA();
-//			// getContentData(DataTable.CONTENT).getRecordVA();
-//
-//			double[] pValueVector = new double[table.getBaseRecordVA().size()];
-//			// table.getContentData(DataTable.CONTENT).getRecordVA().size()];
-//
-//			for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
-//
-//				DimensionVirtualArray dimensionVA1 = table.getDimensionPerspective(
-//						DataTable.DIMENSION).getDimensionVA();
-//
-//				double[] compareVec1 = new double[dimensionVA1.size()];
-//
-//				int dimensionCount = 0;
-//				for (Integer dimensionIndex : dimensionVA1) {
-//					compareVec1[dimensionCount++] = table.get(dimensionIndex).getFloat(
-//							DataRepresentation.RAW, recordIndex);
-//				}
-//
-//				engine.assign("set", compareVec1);
-//
-//				REXP compareResult = engine.eval("t.test(set)");
-//
-//				// System.out.println(compareVec1[0] + " " + compareVec1[1] +
-//				// " " +compareVec1[2]);
-//
-//				// If all values in the vector are the same R returns null
-//				if (compareResult == null)
-//					pValueVector[recordIndex] = 0;
-//				else {
-//					REXP pValue = (REXP) compareResult.asVector().get(2);
-//					pValueVector[recordIndex] = pValue.asDouble();
-//					// System.out.println(pValue.asDouble());
-//				}
-//			}
-//
-//			table.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
-//
-//			RecordFilter contentFilter = new RecordFilter();
-//			contentFilter.setDataDomain(table.getDataDomain());
-//			contentFilter.setLabel("p-Value Reduction of " + table.getLabel());
-//
-//			Histogram histogram = HistogramCreator.createHistogram(pValueVector);
-//
-//			// if (metaFilter != null) {
-//			// metaFilter.getFilterList().add(contentFilter);
-//			// metaFilter.setDataDomain(table.getDataDomain());
-//			// } else {
-//			FilterRepresentationPValue filterRep = new FilterRepresentationPValue();
-//			filterRep.setFilter(contentFilter);
-//			filterRep.setTable(table);
-//			filterRep.setHistogram(histogram);
-//			contentFilter.setFilterRep(filterRep);
-//			contentFilter.openRepresentation();
-//			// }
-//		}
-//
-//		// if (metaFilter != null)
-//		// metaFilter.openRepresentation();
+		// // TODO: don't recalculate if pvalue array is already calculated
+		// // however, the evaluation must be done using the new pvalue
+		// // boolean allCalculated = true;
+		// // for (DataTable set : sets) {
+		// // if (table.getStatisticsResult().getOneSidedTTestResult() == null)
+		// // continue;
+		// //
+		// // allCalculated = false;
+		// // }
+		// //
+		// // if (!allCalculated)
+		// // return;
+		//
+		// // ContentMetaFilter metaFilter = null;
+		// // if (sets.size() > 1) {
+		// // metaFilter = new ContentMetaFilter();
+		// // metaFilter.setLabel("p-Value Reduction");
+		// // FilterRepresentationPValue filterRep = new
+		// // FilterRepresentationPValue();
+		// // filterRep.setFilter(metaFilter);
+		// // filterRep.create();
+		// // metaFilter.setFilterRep(filterRep);
+		// // }
+		//
+		// for (DataTable table : sets) {
+		//
+		// RecordVirtualArray recordVA = table.getBaseRecordVA();
+		// // getContentData(DataTable.CONTENT).getRecordVA();
+		//
+		// double[] pValueVector = new double[table.getBaseRecordVA().size()];
+		// // table.getContentData(DataTable.CONTENT).getRecordVA().size()];
+		//
+		// for (int recordIndex = 0; recordIndex < recordVA.size();
+		// recordIndex++) {
+		//
+		// DimensionVirtualArray dimensionVA1 = table.getDimensionPerspective(
+		// DataTable.DIMENSION).getDimensionVA();
+		//
+		// double[] compareVec1 = new double[dimensionVA1.size()];
+		//
+		// int dimensionCount = 0;
+		// for (Integer dimensionIndex : dimensionVA1) {
+		// compareVec1[dimensionCount++] = table.get(dimensionIndex).getFloat(
+		// DataRepresentation.RAW, recordIndex);
+		// }
+		//
+		// engine.assign("set", compareVec1);
+		//
+		// REXP compareResult = engine.eval("t.test(set)");
+		//
+		// // System.out.println(compareVec1[0] + " " + compareVec1[1] +
+		// // " " +compareVec1[2]);
+		//
+		// // If all values in the vector are the same R returns null
+		// if (compareResult == null)
+		// pValueVector[recordIndex] = 0;
+		// else {
+		// REXP pValue = (REXP) compareResult.asVector().get(2);
+		// pValueVector[recordIndex] = pValue.asDouble();
+		// // System.out.println(pValue.asDouble());
+		// }
+		// }
+		//
+		// table.getStatisticsResult().setOneSiddedTTestResult(pValueVector);
+		//
+		// RecordFilter contentFilter = new RecordFilter();
+		// contentFilter.setDataDomain(table.getDataDomain());
+		// contentFilter.setLabel("p-Value Reduction of " + table.getLabel());
+		//
+		// Histogram histogram = HistogramCreator.createHistogram(pValueVector);
+		//
+		// // if (metaFilter != null) {
+		// // metaFilter.getFilterList().add(contentFilter);
+		// // metaFilter.setDataDomain(table.getDataDomain());
+		// // } else {
+		// FilterRepresentationPValue filterRep = new
+		// FilterRepresentationPValue();
+		// filterRep.setFilter(contentFilter);
+		// filterRep.setTable(table);
+		// filterRep.setHistogram(histogram);
+		// contentFilter.setFilterRep(filterRep);
+		// contentFilter.openRepresentation();
+		// // }
+		// }
+		//
+		// // if (metaFilter != null)
+		// // metaFilter.openRepresentation();
 	}
 
 	public void twoSidedTTest(ArrayList<DataTable> sets) {
 
-//		// Perform t-test between all neighboring sets (A<->B<->C)
-//		// for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
-//		//
-//		// if (setIndex + 1 == sets.size())
-//		// break;
-//
-//		DataTable set1 = sets.get(0);
-//		DataTable set2 = sets.get(1);
-//
-//		ArrayList<Double> pValueVector = new ArrayList<Double>();
-//
-//		for (int recordIndex = 0; recordIndex < set1
-//				.get(set1.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA()
-//						.get(0)).size(); recordIndex++) {
-//
-//			DimensionVirtualArray dimensionVA1 = set1.getDimensionPerspective(
-//					DataTable.DIMENSION).getDimensionVA();
-//			DimensionVirtualArray dimensionVA2 = set2.getDimensionPerspective(
-//					DataTable.DIMENSION).getDimensionVA();
-//
-//			double[] compareVec1 = new double[dimensionVA1.size()];
-//			double[] compareVec2 = new double[dimensionVA2.size()];
-//
-//			int dimensionCount = 0;
-//			for (Integer dimensionIndex : dimensionVA1) {
-//				compareVec1[dimensionCount++] = set1.get(dimensionIndex).getFloat(
-//						DataRepresentation.RAW, recordIndex);
-//			}
-//
-//			dimensionCount = 0;
-//			for (Integer dimensionIndex : dimensionVA2) {
-//				compareVec2[dimensionCount++] = set2.get(dimensionIndex).getFloat(
-//						DataRepresentation.RAW, recordIndex);
-//			}
-//
-//			engine.assign("set_1", compareVec1);
-//			engine.assign("set_2", compareVec2);
-//
-//			REXP compareResult = engine.eval("t.test(set_1,set_2)");
-//
-//			// System.out.println("T-Test result: " + compareResult);
-//
-//			REXP pValue = (REXP) compareResult.asVector().get(2);
-//			pValueVector.add(pValue.asDouble());
-//			// System.out.println(pValue.asDouble());
-//		}
-//
-//		set1.getStatisticsResult().setTwoSiddedTTestResult(set2, pValueVector);
-//		set2.getStatisticsResult().setTwoSiddedTTestResult(set1, pValueVector);
-//
-//		RecordFilter contentFilter = new RecordFilter();
-//		contentFilter.setDataDomain(set1.getDataDomain());
-//		contentFilter.setLabel("Two sided t-test of " + set1.getLabel() + " and "
-//				+ set2.getLabel());
-//
-//		FilterRepresentationTwoSidedTTest filterRep = new FilterRepresentationTwoSidedTTest();
-//		filterRep.setFilter(contentFilter);
-//		filterRep.setTable1(set1);
-//		filterRep.setTable2(set2);
-//		contentFilter.setFilterRep(filterRep);
-//		contentFilter.openRepresentation();
+		// // Perform t-test between all neighboring sets (A<->B<->C)
+		// // for (int setIndex = 0; setIndex < sets.size(); setIndex++) {
+		// //
+		// // if (setIndex + 1 == sets.size())
+		// // break;
+		//
+		// DataTable set1 = sets.get(0);
+		// DataTable set2 = sets.get(1);
+		//
+		// ArrayList<Double> pValueVector = new ArrayList<Double>();
+		//
+		// for (int recordIndex = 0; recordIndex < set1
+		// .get(set1.getDimensionPerspective(DataTable.DIMENSION).getDimensionVA()
+		// .get(0)).size(); recordIndex++) {
+		//
+		// DimensionVirtualArray dimensionVA1 = set1.getDimensionPerspective(
+		// DataTable.DIMENSION).getDimensionVA();
+		// DimensionVirtualArray dimensionVA2 = set2.getDimensionPerspective(
+		// DataTable.DIMENSION).getDimensionVA();
+		//
+		// double[] compareVec1 = new double[dimensionVA1.size()];
+		// double[] compareVec2 = new double[dimensionVA2.size()];
+		//
+		// int dimensionCount = 0;
+		// for (Integer dimensionIndex : dimensionVA1) {
+		// compareVec1[dimensionCount++] = set1.get(dimensionIndex).getFloat(
+		// DataRepresentation.RAW, recordIndex);
+		// }
+		//
+		// dimensionCount = 0;
+		// for (Integer dimensionIndex : dimensionVA2) {
+		// compareVec2[dimensionCount++] = set2.get(dimensionIndex).getFloat(
+		// DataRepresentation.RAW, recordIndex);
+		// }
+		//
+		// engine.assign("set_1", compareVec1);
+		// engine.assign("set_2", compareVec2);
+		//
+		// REXP compareResult = engine.eval("t.test(set_1,set_2)");
+		//
+		// // System.out.println("T-Test result: " + compareResult);
+		//
+		// REXP pValue = (REXP) compareResult.asVector().get(2);
+		// pValueVector.add(pValue.asDouble());
+		// // System.out.println(pValue.asDouble());
+		// }
+		//
+		// set1.getStatisticsResult().setTwoSiddedTTestResult(set2,
+		// pValueVector);
+		// set2.getStatisticsResult().setTwoSiddedTTestResult(set1,
+		// pValueVector);
+		//
+		// RecordFilter contentFilter = new RecordFilter();
+		// contentFilter.setDataDomain(set1.getDataDomain());
+		// contentFilter.setLabel("Two sided t-test of " + set1.getLabel() +
+		// " and "
+		// + set2.getLabel());
+		//
+		// FilterRepresentationTwoSidedTTest filterRep = new
+		// FilterRepresentationTwoSidedTTest();
+		// filterRep.setFilter(contentFilter);
+		// filterRep.setTable1(set1);
+		// filterRep.setTable2(set2);
+		// contentFilter.setFilterRep(filterRep);
+		// contentFilter.openRepresentation();
 	}
 
 	@Override

@@ -238,7 +238,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	public ClusterTree getTree() {
 		// this should only happen when we de-serialize with a default tree.
 		if (tree == null)
-			createDefaultTree();
+			createDefaultTreeAndGroupList();
 		return tree;
 	}
 
@@ -308,8 +308,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	public void setVADelta(DeltaType delta) {
 		virtualArray.setDelta(delta);
-		createDefaultTree();
-		virtualArray.setGroupList(null);
+		createDefaultTreeAndGroupList();
+		// virtualArray.setGroupList(null);
 	}
 
 	/**
@@ -333,7 +333,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		// Case 2: we only have a virtual array
 		else if (data.getIndices() != null && data.getClusterSizes() == null && data.getTree() == null) {
 			createVA(data.getIndices());
-			createDefaultTree();
+			createDefaultTreeAndGroupList();
 		}
 		// Case 3: we have a virtual array and grouping
 		else if (data.getIndices() != null && data.getClusterSizes() != null) {
@@ -350,7 +350,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			virtualArray = (VA) data.getVirtualArray();
 			virtualArray.setIdType(idType);
 			// FIXME we need to create a tree with groups here
-			createDefaultTree();
+			createDefaultTreeAndGroupList();
 		}
 
 		else {
@@ -368,7 +368,6 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	}
 
 	// ------------------ Abstract Methods that need the concrete data types ---------------
-	
 
 	/** Get the human readable label of the element specified by the ID */
 	protected abstract String getElementLabel(Integer id);
@@ -387,8 +386,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	// -------------------------- Initialization Methods -------------------------------------
 
-	/** Creates a default tree of depth 1, assuming only one group */
-	private void createDefaultTree() {
+	/** Creates a default tree of depth 1 and a {@link GroupList} with one group */
+	private void createDefaultTreeAndGroupList() {
 		isTreeDefaultTree = true;
 		tree = new ClusterTree(idType, virtualArray.size());
 		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
@@ -396,6 +395,11 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		for (Integer id : virtualArray) {
 			tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id, false, id));
 		}
+		GroupType groupList = createGroupList();
+		Group group = new Group(virtualArray.size(), 0);
+		groupList.add(0, group);
+		virtualArray.setGroupList(groupList);
+
 	}
 
 	private void createGroupListAndDefaultTreeFromClusterSizes(PerspectiveInitializationData data) {
