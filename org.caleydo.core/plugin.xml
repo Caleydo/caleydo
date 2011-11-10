@@ -65,7 +65,7 @@
          </property>
          <property
                name="windowImages"
-               value="resources/icons/caleydo16.gif,resources/icons/caleydo32.gif,resources/icons/caleydo48.gif,resources/icons/caleydo64.gif,resources/icons/caleydo128.gif">
+               value="platform:/plugin/org.caleydo.data/resources/icons/caleydo/caleydo16.gif,platform:/plugin/org.caleydo.data/resources/icons/caleydo/caleydo32.gif,platform:/plugin/org.caleydo.data/resources/icons/caleydo/caleydo48.gif,platform:/plugin/org.caleydo.data/resources/icons/caleydo/caleydo64.gif,platform:/plugin/org.caleydo.data/resources/icons/caleydo/caleydo128.gif">
          </property>
          <property
                name="preferenceCustomization"

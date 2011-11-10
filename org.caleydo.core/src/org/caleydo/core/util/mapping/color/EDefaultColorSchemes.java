@@ -35,7 +35,7 @@ public enum EDefaultColorSchemes {
 		new int[] { 166, 97, 26 }),
 	GREEN_WHITE_PURPLE(
 		"Green-White-Purple",
-		"3-class Purple-Green diverging color scheme from colorbrewer.org. Colorblind and print friendly. May cause issues with bad LCDs",
+		"3-class Purple-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly. May cause issues with bad LCDs",
 		new int[] { 0, 136, 55 },
 		new int[] { 247, 247, 247 },
 		new int[] { 123, 50, 148 }),
