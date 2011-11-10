@@ -7,7 +7,7 @@ import java.util.HashMap;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -46,7 +46,7 @@ public abstract class ACompareViewStateStatic extends ACompareViewState {
 	}
 
 	@Override
-	public void setTablesToCompare(ArrayList<DataTable> setsToCompare) {
+	public void setTablesToCompare(ArrayList<DataContainer> setsToCompare) {
 		setBar.setTables(setsToCompare);
 	}
 

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -249,7 +250,7 @@ public class OverviewState extends ACompareViewStateStatic {
 	}
 
 	@Override
-	public void setTablesInFocus(ArrayList<DataTable> setsInFocus) {
+	public void setTablesInFocus(ArrayList<DataContainer> setsInFocus) {
 		// FIXME: Maybe we can put this in the base class.
 
 		if (setsInFocus.size() >= getMinSetsInFocus()
@@ -262,7 +263,7 @@ public class OverviewState extends ACompareViewStateStatic {
 				heatMapWrappers.clear();
 
 				int heatMapWrapperID = 0;
-				for (@SuppressWarnings("unused") DataTable set : setsInFocus) {
+				for (@SuppressWarnings("unused") DataContainer set : setsInFocus) {
 					AHeatMapLayout layout = null;
 					if (heatMapWrapperID == 0) {
 						layout = new HeatMapLayoutOverviewLeft(renderCommandFactory);

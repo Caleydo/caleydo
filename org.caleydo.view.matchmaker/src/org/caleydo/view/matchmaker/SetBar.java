@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -100,7 +101,7 @@ public class SetBar extends AGLGUIElement {
 		updateItemProperties();
 	}
 
-	public void setTables(ArrayList<DataTable> sets) {
+	public void setTables(ArrayList<DataContainer> sets) {
 		// this.sets.clear();
 		// this.sets.addAll(sets);
 		items.clear();
@@ -110,7 +111,7 @@ public class SetBar extends AGLGUIElement {
 		int itemID = 0;
 		float currentPositionX = position.x();
 
-		for (DataTable set : sets) {
+		for (DataContainer set : sets) {
 			SetBarItem item = new SetBarItem(itemID, viewID, pickingManager,
 					textRenderer, this);
 			item.setTable(set);
@@ -165,7 +166,7 @@ public class SetBar extends AGLGUIElement {
 			view.getContextMenuCreator().addContextMenuItem(
 					new DuplicateTableBarElementItem(itemID));
 
-			ArrayList<DataTable> tables = new ArrayList<DataTable>();
+			ArrayList<DataContainer> tables = new ArrayList<DataContainer>();
 			tables.add(items.get(itemID).getTable());
 			view.getContextMenuCreator().addContextMenuItem(new ClusterTableItem(tables));
 
@@ -248,7 +249,7 @@ public class SetBar extends AGLGUIElement {
 	}
 
 	public void updateSelectedItems(ArrayList<SetBarItem> itemsInFocus) {
-		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
+		ArrayList<DataContainer> setsInFocus = new ArrayList<DataContainer>();
 
 		for (SetBarItem item : itemsInFocus) {
 			setsInFocus.add(item.getTable());
@@ -299,8 +300,8 @@ public class SetBar extends AGLGUIElement {
 		selectionWindow.adjustWindowSizeCentered(windowSize);
 	}
 
-	public ArrayList<DataTable> getTablesInFocus() {
-		ArrayList<DataTable> setsInFocus = new ArrayList<DataTable>();
+	public ArrayList<DataContainer> getTablesInFocus() {
+		ArrayList<DataContainer> setsInFocus = new ArrayList<DataContainer>();
 
 		for (SetBarItem item : selectionWindow.getSelectedItems()) {
 			setsInFocus.add(item.getTable());

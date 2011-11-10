@@ -9,6 +9,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -30,7 +31,7 @@ public class SetBarItem implements IDraggable, IDropArea {
 	private static final float VERTICAL_TEXT_PADDING_PORTION = 0.7f;
 	private static final String TEXT_FOR_HEIGHT_CALCULATION = "Text without characters below the bottom textline";
 
-	private DataTable table;
+	private DataContainer table;
 	private Vec3f position;
 	private float height;
 	private float width;
@@ -158,11 +159,11 @@ public class SetBarItem implements IDraggable, IDropArea {
 				+ (VERTICAL_TEXT_PADDING_PORTION / 2.0f * height), position.z() + 0.1f);
 	}
 
-	public DataTable getTable() {
+	public DataContainer getTable() {
 		return table;
 	}
 
-	public void setTable(DataTable table) {
+	public void setTable(DataContainer table) {
 		this.table = table;
 	}
 

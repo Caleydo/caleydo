@@ -10,6 +10,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -83,7 +84,7 @@ public abstract class ACompareViewState {
 
 	// protected HashMap<ClusterNode, Vec3f> hashNodePositions;
 
-	protected ArrayList<DataTable> setsInFocus;
+	protected ArrayList<DataContainer> setsInFocus;
 	protected HashMap<HeatMapWrapper, HashMap<Integer, ArrayList<Vec3f>>> recordIDToIndividualLines;
 	protected int numSetsInFocus;
 
@@ -134,7 +135,7 @@ public abstract class ACompareViewState {
 
 		heatMapWrappers = new ArrayList<HeatMapWrapper>();
 		layouts = new ArrayList<AHeatMapLayout>();
-		setsInFocus = new ArrayList<DataTable>();
+		setsInFocus = new ArrayList<DataContainer>();
 
 		setsChanged = false;
 
@@ -630,7 +631,7 @@ public abstract class ACompareViewState {
 			float[] leftBottomPos = new float[] { overviewX, overviewLastPosY, 0 };
 
 			RecordVirtualArray detailVA = heatMapWrapper.getHeatMapByContentID(
-					va.get(group.getStartIndex())).getRecordVA();
+					va.get(group.getStartIndex())).getDataContainer().getRecordPerspective().getVirtualArray();
 			float[] rightTopPos = null;
 			float[] rightBottomPos = null;
 			// float bundlingOffsetX = 0;
@@ -801,7 +802,7 @@ public abstract class ACompareViewState {
 	public abstract void handleSelectionCommand(IDCategory category,
 			SelectionCommand selectionCommand);
 
-	public abstract void setTablesInFocus(ArrayList<DataTable> setsInFocus);
+	public abstract void setTablesInFocus(ArrayList<DataContainer> setsInFocus);
 
 	public abstract void adjustPValue();
 

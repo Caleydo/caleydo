@@ -9,6 +9,7 @@ import java.util.HashMap;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.ESelectionCommandType;
@@ -58,10 +59,8 @@ public class HeatMapWrapper {
 	private static int selectionTypeNumber = 0;
 
 	private HeatMapOverview overview;
-	private DataTable table;
+	private DataContainer table;
 
-	private String recordVAType = DataTable.RECORD;
-	private RecordVirtualArray recordVA;
 	private AHeatMapLayout layout;
 	private HashMap<Integer, GLHeatMap> hashHeatMaps;
 	private HashMap<Group, Boolean> selectedGroups;
@@ -155,7 +154,7 @@ public class HeatMapWrapper {
 		return table;
 	}
 
-	public void setTable(DataTable table) {
+	public void setTable(DataContainer table) {
 		this.table = table;
 		recordVA = table.getRecordPerspective(DataTable.RECORD).getVirtualArray();
 
