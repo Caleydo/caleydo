@@ -870,12 +870,12 @@ public class GLPathwayContentCreator {
 				if (glPathwayView.getGeneSelectionManager().getIDType() == geneticDataDomain
 						.getRecordIDType())
 					expressionValue = geneticDataDomain.getTable().getFloat(
-							dimensionDataRepresentation,
-							expressionIndex, glPathwayView.selectedSampleIndex);
+							dimensionDataRepresentation, expressionIndex,
+							glPathwayView.selectedSampleIndex);
 				else
 					expressionValue = geneticDataDomain.getTable().getFloat(
-							dimensionDataRepresentation, glPathwayView.selectedSampleIndex,
-							expressionIndex);
+							dimensionDataRepresentation,
+							glPathwayView.selectedSampleIndex, expressionIndex);
 
 				return colorMapper.getColor(expressionValue);
 

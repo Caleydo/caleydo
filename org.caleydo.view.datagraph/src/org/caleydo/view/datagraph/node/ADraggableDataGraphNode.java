@@ -47,10 +47,8 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick
-						.getPickedPoint());
-				dragAndDropController
-						.addDraggable(ADraggableDataGraphNode.this);
+				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.addDraggable(ADraggableDataGraphNode.this);
 			}
 
 			@Override
@@ -80,31 +78,27 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
 
 	}
 
 	@Override
-	public void handleDragging(GL2 gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		if ((prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
 				&& (prevDraggingMouseY >= mouseCoordinateY - 0.01 && prevDraggingMouseY <= mouseCoordinateY + 0.01))
 			return;
 
 		float mouseDeltaX = prevDraggingMouseX - mouseCoordinateX;
 		float mouseDeltaY = prevDraggingMouseY - mouseCoordinateY;
-		int mouseDeltaXPixels = pixelGLConverter
-				.getPixelWidthForGLWidth(mouseDeltaX);
-		int mouseDeltaYPixels = pixelGLConverter
-				.getPixelHeightForGLHeight(mouseDeltaY);
+		int mouseDeltaXPixels = pixelGLConverter.getPixelWidthForGLWidth(mouseDeltaX);
+		int mouseDeltaYPixels = pixelGLConverter.getPixelHeightForGLHeight(mouseDeltaY);
 
 		Point2D position = graphLayout.getNodePosition(this);
 
-		position.setLocation(position.getX() - mouseDeltaXPixels,
-				position.getY() - mouseDeltaYPixels);
+		position.setLocation(position.getX() - mouseDeltaXPixels, position.getY()
+				- mouseDeltaYPixels);
 
 		graphLayout.setNodePosition(this, position);
 
@@ -132,8 +126,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		dragAndDropController.clearDraggables();
 	}
 

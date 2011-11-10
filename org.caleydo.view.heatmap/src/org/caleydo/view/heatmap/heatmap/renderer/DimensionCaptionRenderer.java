@@ -24,7 +24,8 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		DimensionVirtualArray dimensionVA = heatMap.getDataContainer().getDimensionPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = heatMap.getDataContainer()
+				.getDimensionPerspective().getVirtualArray();
 		heatMap.getTextRenderer().setColor(0, 0, 0, 1);
 
 		float xPosition = 0;
@@ -32,8 +33,10 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 		// offset to center the caption
 		float xOffset = 0;
 
-		float height = (float) heatMap.getTextRenderer().getScaledBounds(gl, "TEST", fFontScaling,
-				HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE).getHeight();
+		float height = (float) heatMap
+				.getTextRenderer()
+				.getScaledBounds(gl, "TEST", fFontScaling,
+						HeatMapRenderStyle.LABEL_TEXT_MIN_SIZE).getHeight();
 
 		if (fieldWidth > height)
 			xOffset = (fieldWidth - height) / 2;

@@ -13,7 +13,7 @@ import org.caleydo.core.event.IListenerOwner;
 public interface IColorMappingUpdateListener
 	extends IListenerOwner {
 
-	/** see {@link UpdateColorMappingEvent} S*/
+	/** see {@link UpdateColorMappingEvent} S */
 	public void updateColorMapping();
 
 }

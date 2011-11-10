@@ -12,11 +12,9 @@ import org.eclipse.swt.events.KeyEvent;
  * Keyboard listener for GLFilterPipeline
  * 
  * @author Thomas Geymayer
- *
+ * 
  */
-public class GLFilterPipelineKeyListener
-	extends GLKeyListener<GLFilterPipeline>
-{
+public class GLFilterPipelineKeyListener extends GLKeyListener<GLFilterPipeline> {
 
 	private GLFilterPipeline glFilterPipeline;
 
@@ -27,37 +25,45 @@ public class GLFilterPipelineKeyListener
 	 *            Instance of the filterpipeline that should handle the keyboard
 	 *            events.
 	 */
-	public GLFilterPipelineKeyListener(GLFilterPipeline glFilterPipeline)
-	{
+	public GLFilterPipelineKeyListener(GLFilterPipeline glFilterPipeline) {
 		this.glFilterPipeline = glFilterPipeline;
 	}
-	
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.keyboard.GLKeyListener#handleKeyPressedEvent(org.eclipse.swt.events.KeyEvent)
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.caleydo.core.view.opengl.keyboard.GLKeyListener#handleKeyPressedEvent
+	 * (org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
-	protected void handleKeyPressedEvent(KeyEvent event)
-	{
-		if( event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1 )
+	protected void handleKeyPressedEvent(KeyEvent event) {
+		if (event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1)
 			glFilterPipeline.setControlPressed(true);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.keyboard.GLKeyListener#handleKeyReleasedEvent(org.eclipse.swt.events.KeyEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.caleydo.core.view.opengl.keyboard.GLKeyListener#handleKeyReleasedEvent
+	 * (org.eclipse.swt.events.KeyEvent)
 	 */
 	@Override
-	protected void handleKeyReleasedEvent(KeyEvent event)
-	{
-		if( event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1 )
+	protected void handleKeyReleasedEvent(KeyEvent event) {
+		if (event.keyCode == SWT.CONTROL || event.keyCode == SWT.MOD1)
 			glFilterPipeline.setControlPressed(false);
 	}
 
-	/* (non-Javadoc)
-	 * @see org.caleydo.core.manager.event.AEventListener#handleEvent(org.caleydo.core.manager.event.AEvent)
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * org.caleydo.core.manager.event.AEventListener#handleEvent(org.caleydo
+	 * .core.manager.event.AEvent)
 	 */
 	@Override
-	public void handleEvent(AEvent event)
-	{
+	public void handleEvent(AEvent event) {
 		// TODO Auto-generated method stub
 
 	}

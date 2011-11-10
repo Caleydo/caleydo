@@ -1,10 +1,8 @@
 package org.caleydo.util.r.filter;
 
 import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.filter.RecordMetaFilter;
 import org.caleydo.core.data.filter.event.RemoveRecordFilterEvent;
@@ -45,6 +43,7 @@ public class FilterRepresentationPValue extends
 	private float pValue = -1;
 	private float pValueMax = -1;
 
+	@Override
 	public boolean create() {
 
 		if (!super.create())
@@ -182,8 +181,9 @@ public class FilterRepresentationPValue extends
 		RecordVirtualArray recordVA = dataContainer1.getRecordPerspective()
 				.getVirtualArray();
 
-		double[] tTestResult = dataContainer1.getContainerStatistics().tTest().getOneSidedTTestResult();//((FilterRepresentationPValue) subFilter.getFilterRep())
-	
+		double[] tTestResult = dataContainer1.getContainerStatistics().tTest()
+				.getOneSidedTTestResult();// ((FilterRepresentationPValue)
+											// subFilter.getFilterRep())
 
 		for (int recordIndex = 0; recordIndex < recordVA.size(); recordIndex++) {
 

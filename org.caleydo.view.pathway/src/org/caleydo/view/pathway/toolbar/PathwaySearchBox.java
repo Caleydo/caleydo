@@ -126,7 +126,7 @@ public class PathwaySearchBox extends ControlContribution implements IToolBarIte
 	@Override
 	protected int computeWidth(Control control) {
 
-			return TOOLBAR_WIDTH;
+		return TOOLBAR_WIDTH;
 	}
 
 	public PathwayToolBarMediator getPathwayToolBarMediator() {

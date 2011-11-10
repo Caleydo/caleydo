@@ -10,7 +10,7 @@ public class DeleteGroupsItem extends AContextMenuItem {
 	public DeleteGroupsItem(Set<Integer> setGroupsToDelete, String dataDomainID) {
 
 		setLabel("Delete");
-		
+
 		DeleteGroupsEvent event = new DeleteGroupsEvent(setGroupsToDelete);
 		event.setSender(this);
 		event.setDataDomainID(dataDomainID);

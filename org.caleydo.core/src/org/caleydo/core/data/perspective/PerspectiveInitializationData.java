@@ -99,7 +99,7 @@ public class PerspectiveInitializationData {
 	public VirtualArray<?, ?, ?> getVirtualArray() {
 		return virtualArray;
 	}
-	
+
 	public List<Integer> getIndices() {
 		return indices;
 	}

@@ -101,8 +101,7 @@ public class Plane {
 		if (denom == 0)
 			return false;
 		intPt.setT((c - normal.dot(rayStart)) / denom);
-		intPt.setIntersectionPoint(rayStart.plus(rayDirection.times(intPt
-				.getT())));
+		intPt.setIntersectionPoint(rayStart.plus(rayDirection.times(intPt.getT())));
 		return true;
 	}
 

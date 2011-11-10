@@ -71,16 +71,14 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 		Composite infoComposite = new Composite(parentComposite, SWT.NULL);
 		infoComposite.setLayout(new GridLayout(1, false));
 		infoComposite.setLayoutData(gridData);
-		
+
 		if (dataDomain == null) {
 			Label label = new Label(infoComposite, SWT.NONE);
 			label.setText("No data set active");
-		}
-		else{
+		} else {
 			Label label = new Label(infoComposite, SWT.NONE);
-			label.setText("Name: "
-					+ dataDomain.getLabel());
-			
+			label.setText("Name: " + dataDomain.getLabel());
+
 			label = new Label(infoComposite, SWT.NONE);
 			label.setText(dataDomain.getRecordDenomination(true, true) + ": "
 					+ dataDomain.getTable().getMetaData().depth());
@@ -140,7 +138,8 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 			histogramView.createPartControl(composite);
 			// Usually the canvas is registered to the GL2 animator in the
 			// PartListener.
-			// Because the GL2 histogram is no usual RCP view we have to do it on
+			// Because the GL2 histogram is no usual RCP view we have to do it
+			// on
 			// our own
 			GeneralManager.get().getViewManager()
 					.registerGLCanvasToAnimator(histogramView.getGLCanvas());
@@ -175,11 +174,15 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 			return;
 
 		this.dataDomain = dataDomain;
-		
-		((ASerializedTopLevelDataView)serializedView).setDataDomainID(dataDomain.getDataDomainID());
-		((ASerializedTopLevelDataView)serializedView).setRecordPerspectiveID(dataDomain.getTable().getDefaultRecordPerspective().getID());
-		((ASerializedTopLevelDataView)serializedView).setDimensionPerspectiveID(dataDomain.getTable().getDefaultDimensionPerspective().getID());
-		
+
+		((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
+				.getDataDomainID());
+		((ASerializedTopLevelDataView) serializedView).setRecordPerspectiveID(dataDomain
+				.getTable().getDefaultRecordPerspective().getID());
+		((ASerializedTopLevelDataView) serializedView)
+				.setDimensionPerspectiveID(dataDomain.getTable()
+						.getDefaultDimensionPerspective().getID());
+
 		parentComposite.dispose();
 		createPartControl(parent);
 	}

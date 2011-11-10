@@ -13,8 +13,7 @@ import org.caleydo.view.datagraph.GLDataGraph;
 
 public class CustomLayoutEdgeLineRenderer extends AEdgeLineRenderer {
 
-	public CustomLayoutEdgeLineRenderer(Edge edge, GLDataGraph view,
-			String label) {
+	public CustomLayoutEdgeLineRenderer(Edge edge, GLDataGraph view, String label) {
 		super(edge, view, label);
 	}
 
@@ -31,8 +30,7 @@ public class CustomLayoutEdgeLineRenderer extends AEdgeLineRenderer {
 			gl.glPushMatrix();
 			gl.glTranslatef(0, 0, -0.1f);
 			gl.glLineWidth(2);
-			connectionBandRenderer
-					.renderInterpolatedCurve(gl, routedEdgePoints);
+			connectionBandRenderer.renderInterpolatedCurve(gl, routedEdgePoints);
 			// connectionBandRenderer.renderComplexCurve(gl, routedEdgePoints);
 			gl.glPopMatrix();
 		}
@@ -43,8 +41,8 @@ public class CustomLayoutEdgeLineRenderer extends AEdgeLineRenderer {
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, -0.1f);
 		gl.glLineWidth(2);
-		List<Vec3f> curvePoints = connectionBandRenderer.calcInterpolatedCurve(
-				gl, edgePoints);
+		List<Vec3f> curvePoints = connectionBandRenderer.calcInterpolatedCurve(gl,
+				edgePoints);
 
 		Vec3f startPoint = curvePoints.get(0);
 		Vec3f endPoint = curvePoints.get(curvePoints.size() - 1);

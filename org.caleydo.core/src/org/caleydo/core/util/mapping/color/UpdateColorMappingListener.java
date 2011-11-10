@@ -11,7 +11,6 @@ import org.caleydo.core.event.AEventListener;
 public class UpdateColorMappingListener
 	extends AEventListener<IColorMappingUpdateListener> {
 
-	
 	@Override
 	public void handleEvent(AEvent event) {
 		if (event instanceof UpdateColorMappingEvent) {

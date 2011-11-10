@@ -21,6 +21,7 @@ public class RecordFilter
 		super(perspectiveID);
 	}
 
+	@Override
 	public void updateFilterManager() {
 
 		if (!isRegistered()) {

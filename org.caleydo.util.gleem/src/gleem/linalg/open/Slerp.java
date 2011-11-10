@@ -32,8 +32,8 @@ public class Slerp {
 				transformDestination.getScale(), delta);
 
 		// Return the interpolated quaternion
-		quatResult = slerp(transformOrigin.getRotation(), transformDestination
-				.getRotation(), delta);
+		quatResult = slerp(transformOrigin.getRotation(),
+				transformDestination.getRotation(), delta);
 
 		Transform resultTransform = new Transform();
 		resultTransform.setTranslation(translationResult);
@@ -65,8 +65,7 @@ public class Slerp {
 		if (!bIgnoreZRotation)
 			fZRot = axis.z();
 
-		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(),
-				fZRot);
+		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), fZRot);
 	}
 
 	// /**
@@ -81,9 +80,9 @@ public class Slerp {
 	// * the amount to interpolate between the two quaternions.
 	// */
 	// protected Rotf slerp(Rotf q1, Rotf q2, float t) {
-	//     
+	//
 	// Rotf quatResult = new Rotf();
-	//    	
+	//
 	// // Create a local quaternion to store the interpolated quaternion
 	// if (q1.getX() == q2.getX() && q1.getY() == q2.getY() && q1.getZ() ==
 	// q2.getZ() && q1.getAngle() == q2.getAngle()) {
@@ -128,7 +127,7 @@ public class Slerp {
 	// quatResult.setY((scale0 * q1.getY()) + (scale1 * q2.getY()));
 	// quatResult.setZ((scale0 * q1.getZ()) + (scale1 * q2.getZ()));
 	// quatResult.setAngle((scale0 * q1.getAngle()) + (scale1 * q2.getAngle()));
-	//        
+	//
 	// // Return the interpolated quaternion
 	// return quatResult;
 	// }
@@ -160,14 +159,12 @@ public class Slerp {
 			return quatResult;
 		}
 
-		float result = vecQ1Axis.x() * vecQ2Axis.x() + vecQ1Axis.y()
-				* vecQ2Axis.y() + vecQ1Axis.z() * vecQ2Axis.z() + fQ1Angle
-				* fQ2Angle;
+		float result = vecQ1Axis.x() * vecQ2Axis.x() + vecQ1Axis.y() * vecQ2Axis.y()
+				+ vecQ1Axis.z() * vecQ2Axis.z() + fQ1Angle * fQ2Angle;
 
 		if (result < 0.0f) {
 			// Negate the second quaternion and the result of the dot product
-			q2.set(new Vec3f(-vecQ2Axis.x(), -vecQ2Axis.y(), -vecQ2Axis.z()),
-					-fQ2Angle);
+			q2.set(new Vec3f(-vecQ2Axis.x(), -vecQ2Axis.y(), -vecQ2Axis.z()), -fQ2Angle);
 			fQ2Angle = q2.get(vecQ2Axis);
 			result = -result;
 		}
@@ -192,9 +189,8 @@ public class Slerp {
 		// Calculate the x, y, z and w values for the quaternion by using a
 		// special
 		// form of linear interpolation for quaternions.
-		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1
-				* vecQ2Axis.x(), scale0 * vecQ1Axis.y() + scale1
-				* vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1
+		quatResult.set(new Vec3f(scale0 * vecQ1Axis.x() + scale1 * vecQ2Axis.x(), scale0
+				* vecQ1Axis.y() + scale1 * vecQ2Axis.y(), scale0 * vecQ1Axis.z() + scale1
 				* vecQ2Axis.z()), scale0 * fQ1Angle + scale1 * fQ2Angle);
 
 		// Return the interpolated quaternion
@@ -216,15 +212,9 @@ public class Slerp {
 	public Vec3f interpolate(Vec3f beginVec, Vec3f finalVec, float changeAmnt) {
 
 		Vec3f result = new Vec3f();
-		result
-				.setX((1 - changeAmnt) * beginVec.x() + changeAmnt
-						* finalVec.x());
-		result
-				.setY((1 - changeAmnt) * beginVec.y() + changeAmnt
-						* finalVec.y());
-		result
-				.setZ((1 - changeAmnt) * beginVec.z() + changeAmnt
-						* finalVec.z());
+		result.setX((1 - changeAmnt) * beginVec.x() + changeAmnt * finalVec.x());
+		result.setY((1 - changeAmnt) * beginVec.y() + changeAmnt * finalVec.y());
+		result.setZ((1 - changeAmnt) * beginVec.z() + changeAmnt * finalVec.z());
 
 		return result;
 	}

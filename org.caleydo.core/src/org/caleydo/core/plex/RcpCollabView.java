@@ -12,10 +12,10 @@ public class RcpCollabView
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		
+
 		view = new CollabView(parentComposite);
 
-		((ASWTView)view).draw();
+		((ASWTView) view).draw();
 	}
 
 	@Override

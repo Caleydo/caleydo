@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 public class TissueDataDomain extends ADataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.tissue";
-	
+
 	/**
 	 * Counter used for determining the extension that together with the type
 	 * builds the data domain ID.
@@ -28,26 +28,25 @@ public class TissueDataDomain extends ADataDomain {
 	 * Constructor.
 	 */
 	public TissueDataDomain() {
-		
-		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE + DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
-		
+
+		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
+				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+
 		icon = EIconTextures.DATA_DOMAIN_TISSUE;
 
 		// possibleIDCategories.put(EIDCategory.GENE, null);
 	}
-	
-
 
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

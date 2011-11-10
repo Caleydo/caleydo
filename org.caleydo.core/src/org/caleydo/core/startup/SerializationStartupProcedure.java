@@ -32,7 +32,7 @@ public class SerializationStartupProcedure
 	@Override
 	public void initPreWorkbenchOpen() {
 		super.initPreWorkbenchOpen();
-		
+
 		if (loadSampleProject) {
 			loader.loadProjectFromZIP(SAMPLE_PROJECT_LOCATION);
 			loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
@@ -61,7 +61,7 @@ public class SerializationStartupProcedure
 
 		// FIXME: remove when TCGA data sets can store the pathway data domain
 		appInitData.setLoadPathways(true);
-		
+
 		if (loadSampleProject) {
 			serializationDataList = loader.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
 		}
@@ -91,7 +91,7 @@ public class SerializationStartupProcedure
 
 				LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 				loadDataParameters.setDataDomain(tDataDomain);
-				
+
 				DataTableUtils.createColumns(loadDataParameters);
 
 				DataTable table = DataTableUtils.createData(tDataDomain, false, false);

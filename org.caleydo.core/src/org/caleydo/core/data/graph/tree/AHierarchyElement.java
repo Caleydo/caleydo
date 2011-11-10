@@ -33,7 +33,7 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	 * the methods provided by AHierarchyElement will not work.
 	 */
 	protected Node node;
-	
+
 	/**
 	 * Specifies the level of the hierarchy of the current element. To be clear: If the root node is on level
 	 * 0, its children are on level 1 and so on.

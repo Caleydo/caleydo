@@ -44,7 +44,7 @@ public class RTest {
 			// REXP x;
 			// re.eval("data(iris)",false);
 			// System.out.println(x=re.eval("iris"));
-			//		
+			//
 			// // generic vectors are RVector to accomodate names
 			// RVector v = x.asVector();
 			// if (v.getNames()!=null) {
@@ -75,7 +75,7 @@ public class RTest {
 			// System.out.print(bi[i]==0?"F ":(bi[i]==1?"T ":"NA ")); i++; }
 			// System.out.println("");
 			// }
-			//			
+			//
 			// // push a boolean array
 			// boolean by[] = { true, false, false };
 			// re.assign("bool", by);

@@ -51,8 +51,8 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		viewSwitchingButtons.add(tagCloudButton);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -100,8 +100,8 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
 
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		layoutTemplate.setToolBarElements(toolBarElements);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
@@ -136,8 +136,8 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(tagCloudButton);
 
-		ArrayList<ElementLayout> toolBarElements = createToolBarElements(
-				layoutTemplate, viewSwitchingButtons);
+		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
+				viewSwitchingButtons);
 		layoutTemplate.setToolBarElements(toolBarElements);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
@@ -157,24 +157,21 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void setBrickViews(GLBrick brick, GL2 gl,
-			GLMouseListener glMouseListener, ABrickLayoutTemplate brickLayout) {
+	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+			ABrickLayoutTemplate brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl,
-				glMouseListener);
-		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(
-				parCoords);
+		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
+		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
 		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
 				parCoordsLayoutRenderer);
 
 		TagCloudCreator tagCloudCreator = new TagCloudCreator();
-		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl,
-				glMouseListener);
+		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer tagCloudLayoutRenderer = new ViewLayoutRenderer(tagCloud);
 		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);
 		containedViewRenderers.put(EContainedViewType.TAGCLOUD_VIEW,

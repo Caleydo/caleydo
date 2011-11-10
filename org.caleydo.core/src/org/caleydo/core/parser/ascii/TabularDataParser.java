@@ -348,7 +348,7 @@ public class TabularDataParser
 
 	@Override
 	public boolean loadData() {
-	boolean isParsingOK = super.loadData();
+		boolean isParsingOK = super.loadData();
 		setArraysToDimensions();
 		return isParsingOK;
 	}

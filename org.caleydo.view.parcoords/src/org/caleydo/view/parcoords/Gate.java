@@ -117,8 +117,8 @@ public class Gate extends AGate {
 		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop,
 				GATE_Z);
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.GATE_TIP_SELECTION, gateID));
+		gl.glPushName(pickingManager.getPickingID(viewID, PickingType.GATE_TIP_SELECTION,
+				gateID));
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner,
 				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
@@ -283,8 +283,8 @@ public class Gate extends AGate {
 	@Override
 	public void setBottom(float bottom) {
 		this.bottom = bottom;
-		lowerValue = (float) table
-				.getRawForNormalized(bottom / renderStyle.getAxisHeight());
+		lowerValue = (float) table.getRawForNormalized(bottom
+				/ renderStyle.getAxisHeight());
 
 		double setMin = table.getMetaData().getMinAs(ExternalDataRepresentation.NORMAL);
 

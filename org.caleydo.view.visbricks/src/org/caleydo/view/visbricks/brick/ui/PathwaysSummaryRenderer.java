@@ -8,15 +8,15 @@ import org.caleydo.core.view.opengl.picking.PickingType;
  * Renderer for a line of text for pathway description.
  * 
  * @author Partl
- *
+ * 
  */
 public class PathwaysSummaryRenderer extends LabelRenderer {
 
-	public PathwaysSummaryRenderer(AGLView view, String caption,
-			PickingType pickingType, int id) {
+	public PathwaysSummaryRenderer(AGLView view, String caption, PickingType pickingType,
+			int id) {
 		super(view, caption, pickingType, id);
 	}
-	
+
 	@Override
 	public int getMinHeightPixels() {
 		return 20;

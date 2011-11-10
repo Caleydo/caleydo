@@ -7,8 +7,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class BipartiteInsideLayerRoutingStrategy implements
-		IEdgeRoutingStrategy {
+public class BipartiteInsideLayerRoutingStrategy implements IEdgeRoutingStrategy {
 
 	protected static final int BEND_POINT_STEP_PIXELS_PER_SLOT = 20;
 
@@ -17,8 +16,8 @@ public class BipartiteInsideLayerRoutingStrategy implements
 	private IDataGraphNode node2;
 	private PixelGLConverter pixelGLConverter;
 
-	public BipartiteInsideLayerRoutingStrategy(
-			BipartiteGraphLayout graphLayout, PixelGLConverter pixelGLConverter) {
+	public BipartiteInsideLayerRoutingStrategy(BipartiteGraphLayout graphLayout,
+			PixelGLConverter pixelGLConverter) {
 		this.graphLayout = graphLayout;
 		this.pixelGLConverter = pixelGLConverter;
 	}
@@ -67,8 +66,7 @@ public class BipartiteInsideLayerRoutingStrategy implements
 		this.node2 = node2;
 	}
 
-	public int calcEdgeBendPointYOffsetPixels(IDataGraphNode node1,
-			IDataGraphNode node2) {
+	public int calcEdgeBendPointYOffsetPixels(IDataGraphNode node1, IDataGraphNode node2) {
 		int slotDistance = graphLayout.getSlotDistance(node1, node2);
 
 		return (BEND_POINT_STEP_PIXELS_PER_SLOT * slotDistance);

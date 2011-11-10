@@ -19,8 +19,6 @@ public class PathwayDataContainer extends DataContainer {
 
 	private PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
-	
-	
 
 	public PathwayDataContainer(ATableBasedDataDomain dataDomain,
 			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,

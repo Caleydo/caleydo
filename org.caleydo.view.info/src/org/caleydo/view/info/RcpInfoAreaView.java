@@ -62,7 +62,7 @@ public class RcpInfoAreaView extends CaleydoRCPViewPart implements
 		infoArea.setDataDomain((ATableBasedDataDomain) dataDomain);
 		infoArea.registerEventListeners();
 		infoArea.createControl(parentComposite);
-		
+
 		parent.layout();
 	}
 

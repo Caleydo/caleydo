@@ -126,7 +126,7 @@ public abstract class ATableBasedView
 		if (this.dataDomain == dataDomain)
 			return;
 
-		this.dataDomain =  dataDomain;
+		this.dataDomain = dataDomain;
 
 		setDisplayListDirty();
 	}
@@ -147,6 +147,7 @@ public abstract class ATableBasedView
 	 * @param dataContainer
 	 *            setter, see {@link #dataContainer}
 	 */
+	@Override
 	public void setDataContainer(DataContainer dataContainer) {
 		this.dataContainer = dataContainer;
 	}
@@ -303,8 +304,7 @@ public abstract class ATableBasedView
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
-						if(dataContainer == null)
-						{
+						if (dataContainer == null) {
 							Logger.log(new Status(Status.ERROR, this.toString(), "dataContainer was null"));
 							return;
 						}
@@ -486,7 +486,7 @@ public abstract class ATableBasedView
 	public DimensionSelectionManager getDimensionSelectionManager() {
 		return dimensionSelectionManager;
 	}
-	
+
 	@Override
 	public List<DataContainer> getDataContainers() {
 		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();

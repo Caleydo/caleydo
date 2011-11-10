@@ -26,10 +26,11 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-		
+
 		registerDataDomains();
-		
-		ToolBarContentFactory.get().addToolBarContent(GLBucket.VIEW_TYPE, false, new RemoteRenderingToolBarContent());
+
+		ToolBarContentFactory.get().addToolBarContent(GLBucket.VIEW_TYPE, false,
+				new RemoteRenderingToolBarContent());
 	}
 
 	/*

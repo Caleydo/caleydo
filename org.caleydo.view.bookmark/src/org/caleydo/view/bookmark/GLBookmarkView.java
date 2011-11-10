@@ -15,7 +15,6 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
@@ -218,8 +217,6 @@ public class GLBookmarkView extends ATableBasedView {
 		gl.glEndList();
 	}
 
-	
-
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
@@ -318,7 +315,6 @@ public class GLBookmarkView extends ATableBasedView {
 	PickingIDManager getBookmarkPickingIDManager() {
 		return pickingIDManager;
 	}
-
 
 	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {

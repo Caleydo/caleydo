@@ -40,11 +40,11 @@ public class SelectionTypeEvent
 	public boolean isCurrent() {
 		return isCurrent;
 	}
-	
+
 	public void setCurrent(boolean isCurrent) {
 		this.isCurrent = isCurrent;
 	}
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		if (selectionType == null)

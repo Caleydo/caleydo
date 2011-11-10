@@ -30,7 +30,7 @@ public class GeneMenuItemContainer extends AContextMenuItemContainer {
 
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
-		
+
 		Set<Integer> davids = ((GeneticDataDomain) dataDomain).getGeneIDMappingManager()
 				.getIDAsSet(idType, pathwayDataDomain.getDavidIDType(), id);
 		if (davids == null)

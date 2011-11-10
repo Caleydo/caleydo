@@ -22,7 +22,8 @@ public class GeneralPreferencePage
 
 	private RadioGroupFieldEditor dataFilterLevelFE;
 	private IntegerFieldEditor numRandomSamplesFE;
-//	private RadioGroupFieldEditor performanceLevelFE;
+
+	// private RadioGroupFieldEditor performanceLevelFE;
 
 	public GeneralPreferencePage() {
 		super(GRID);

@@ -13,7 +13,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 @XmlRootElement
 @XmlType
 public class SerializedDendogramHorizontalView extends ASerializedTopLevelDataView {
-	
+
 	/**
 	 * Default constructor with default initialization
 	 */

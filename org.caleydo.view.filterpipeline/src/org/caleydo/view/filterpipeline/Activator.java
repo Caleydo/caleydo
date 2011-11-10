@@ -28,13 +28,9 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		registerDataDomains();
-		
-		ToolBarContentFactory.get().addToolBarContent
-		(
-			GLFilterPipeline.VIEW_TYPE,
-			false,
-			new FilterPipelineToolBarContent()
-		);
+
+		ToolBarContentFactory.get().addToolBarContent(GLFilterPipeline.VIEW_TYPE, false,
+				new FilterPipelineToolBarContent());
 	}
 
 	/*

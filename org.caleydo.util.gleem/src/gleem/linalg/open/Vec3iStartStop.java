@@ -42,8 +42,8 @@ public final class Vec3iStartStop extends Vec3i {
 		return this.get(STOP_INDEX);
 	}
 
-	public final void setStartStopSourceId(final int iStartIndex,
-			final int iStopIndex, final int iSourceId) {
+	public final void setStartStopSourceId(final int iStartIndex, final int iStopIndex,
+			final int iSourceId) {
 		this.set(START_INDEX, iStartIndex);
 		this.set(STOP_INDEX, iStopIndex);
 		this.set(SOURCE_INDEX, iSourceId);

@@ -6,8 +6,8 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 
 /**
- * Listener for virtual array update events. This listener gets the payload from a
- * {@link VADeltaEvent} and calls a related {@link IVirtaualArrayUpdateHandler}.
+ * Listener for virtual array update events. This listener gets the payload from a {@link VADeltaEvent} and
+ * calls a related {@link IVirtaualArrayUpdateHandler}.
  * 
  * @author Werner Puff
  */

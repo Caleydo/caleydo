@@ -45,7 +45,7 @@ public class LayoutManager {
 		totalWidth = viewFrustum.getRight() - viewFrustum.getLeft();
 		totalHeight = viewFrustum.getTop() - viewFrustum.getBottom();
 
-//		template.getBaseLayoutElement().destroy();
+		// template.getBaseLayoutElement().destroy();
 
 		template.setStaticLayouts();
 		template.calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth, totalHeight);

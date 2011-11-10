@@ -39,8 +39,7 @@ public class GLDistributionMiniView
 
 	private IBorderRenderStyle borderStyle;
 
-	public GLDistributionMiniView(GLMouseListener glMouseListener, final int viewID,
-		final int iDistributionID) {
+	public GLDistributionMiniView(GLMouseListener glMouseListener, final int viewID, final int iDistributionID) {
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 16), false);
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.setSmoothing(false);

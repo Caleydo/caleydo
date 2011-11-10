@@ -173,10 +173,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 					setDistance(
 							nodei,
 							nodej,
-							Math.min(
-									getDistance(nodei, nodej),
-									getDistance(nodei, nodek)
-											+ getDistance(nodek, nodej)));
+							Math.min(getDistance(nodei, nodej), getDistance(nodei, nodek)
+									+ getDistance(nodek, nodej)));
 				}
 			}
 		}
@@ -416,8 +414,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 		running = true;
 
-		L = scalingFactor
-				* Math.max(10, Math.min(area.getWidth(), area.getHeight()))
+		L = scalingFactor * Math.max(10, Math.min(area.getWidth(), area.getHeight()))
 				/ diameter;
 
 		// find biggest delta
@@ -457,8 +454,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 				substractForceInfluence(nodeMax);
 
-				pos.setLocation(pos.getX() + delta.getX(),
-						pos.getY() + delta.getY());
+				pos.setLocation(pos.getX() + delta.getX(), pos.getY() + delta.getY());
 
 				addForceInfluence(nodeMax);
 
@@ -480,11 +476,11 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (forceMax <= 1) {
 			running = false;
 		}
-		
-		for(IDataGraphNode node : nodesToLayout) {
+
+		for (IDataGraphNode node : nodesToLayout) {
 			node.setUpsideDown(false);
 		}
-		
+
 		updateNodePositions();
 	}
 
@@ -500,25 +496,19 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 				continue;
 
 			double nodePositionX = nodePosition.getX();
-			if (nodePositionX + node.getWidthPixels() / 2.0f > layoutingArea
-					.getMaxX()) {
-				nodePositionX = layoutingArea.getMaxX() - node.getWidthPixels()
-						/ 2.0f;
+			if (nodePositionX + node.getWidthPixels() / 2.0f > layoutingArea.getMaxX()) {
+				nodePositionX = layoutingArea.getMaxX() - node.getWidthPixels() / 2.0f;
 			} else if (nodePositionX - node.getWidthPixels() / 2.0f < layoutingArea
 					.getMinX()) {
-				nodePositionX = layoutingArea.getMinX() + node.getWidthPixels()
-						/ 2.0f;
+				nodePositionX = layoutingArea.getMinX() + node.getWidthPixels() / 2.0f;
 			}
 
 			double nodePositionY = getNodePosition(node).getY();
-			if (nodePositionY + node.getHeightPixels() / 2.0f > layoutingArea
-					.getMaxY()) {
-				nodePositionY = layoutingArea.getMaxY()
-						- node.getHeightPixels() / 2.0f;
+			if (nodePositionY + node.getHeightPixels() / 2.0f > layoutingArea.getMaxY()) {
+				nodePositionY = layoutingArea.getMaxY() - node.getHeightPixels() / 2.0f;
 			} else if (nodePositionY - node.getHeightPixels() / 2.0f < layoutingArea
 					.getMinY()) {
-				nodePositionY = layoutingArea.getMinY()
-						+ node.getHeightPixels() / 2.0f;
+				nodePositionY = layoutingArea.getMinY() + node.getHeightPixels() / 2.0f;
 			}
 
 			setNodePosition(node, new Point2D.Float((float) nodePositionX,
@@ -549,15 +539,14 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		Point2D point;
 		double arc = 0;
 		double arcStep = 2 * Math.PI / graph.getNumberOfNodes();
-		double radius = Math.min(layoutingArea.getWidth(),
-				layoutingArea.getHeight()) / 2.5;
+		double radius = Math.min(layoutingArea.getWidth(), layoutingArea.getHeight()) / 2.5;
 		double centerX = layoutingArea.getWidth() / 2.0;
 		double centerY = layoutingArea.getHeight() / 2.0;
 
 		for (Object node : graph.getNodes()) {
 			if (!isPositionAvailable(node)) {
-				point = new Point2D.Double(centerX + radius * Math.sin(arc),
-						centerY + radius * Math.cos(arc));
+				point = new Point2D.Double(centerX + radius * Math.sin(arc), centerY
+						+ radius * Math.cos(arc));
 
 				nodePositions.put(node, point);
 				centeredPositions.put(node, point);
@@ -607,8 +596,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 				subtractForce = calculateForceInfluence(node, influencer);
 
-				force.setLocation(force.getX() - subtractForce.getX(),
-						force.getY() - subtractForce.getY());
+				force.setLocation(force.getX() - subtractForce.getX(), force.getY()
+						- subtractForce.getY());
 			}
 		}
 	}
@@ -621,8 +610,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 				addDelta = calculateForceInfluence(node, influencer);
 
-				force.setLocation(force.getX() + addDelta.getX(), force.getY()
-						+ addDelta.getY());
+				force.setLocation(force.getX() + addDelta.getX(),
+						force.getY() + addDelta.getY());
 			}
 		}
 	}
@@ -630,9 +619,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 	protected void centering() {
 		if (nodesToLayout.size() == 1) {
 			for (Object node : nodesToLayout) {
-				centeredPositions.put(node,
-						new Point2D.Double(layoutingArea.getCenterX(),
-								layoutingArea.getCenterY()));
+				centeredPositions.put(node, new Point2D.Double(
+						layoutingArea.getCenterX(), layoutingArea.getCenterY()));
 			}
 
 			return;
@@ -655,10 +643,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		}
 
 		// update scaling
-		double fx = maxX == minX ? 1 : (layoutingArea.getWidth())
-				/ (maxX - minX);
-		double fy = maxY == minY ? 1 : (layoutingArea.getHeight())
-				/ (maxY - minY);
+		double fx = maxX == minX ? 1 : (layoutingArea.getWidth()) / (maxX - minX);
+		double fy = maxY == minY ? 1 : (layoutingArea.getHeight()) / (maxY - minY);
 
 		double offsetX = layoutingArea.getMinX();
 		double offsetY = layoutingArea.getMinY();
@@ -677,9 +663,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		for (Object node : nodesToLayout) {
 			point = getNodePosition(node, false);
 
-			centeredPositions.put(node, new Point2D.Double(
-					(point.getX() - minX) * fx + offsetX, (point.getY() - minY)
-							* fy + offsetY));
+			centeredPositions.put(node, new Point2D.Double((point.getX() - minX) * fx
+					+ offsetX, (point.getY() - minY) * fy + offsetY));
 		}
 	}
 
@@ -717,6 +702,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		}
 	}
 
+	@Override
 	public void clearNodePositions() {
 		if (centeredPositions != null)
 			centeredPositions.clear();

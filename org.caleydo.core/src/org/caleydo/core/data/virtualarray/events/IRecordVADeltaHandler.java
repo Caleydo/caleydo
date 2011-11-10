@@ -8,7 +8,6 @@ import org.caleydo.core.event.IListenerOwner;
  * Handler interface for listeners for {@link RecordVADeltaEvent} and {@link ReplaceRecordPerspectiveEvent}.
  * 
  * @author Alexander Lex
- *
  */
 public interface IRecordVADeltaHandler
 	extends IListenerOwner {
@@ -25,10 +24,10 @@ public interface IRecordVADeltaHandler
 	public void handleRecordVADelta(RecordVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link ReplaceRecordPerspectiveListener} when a {@link ReplacePerspectiveEvent} was
-	 * received.
-	 * 
+	 * Handler method to be called by the {@link ReplaceRecordPerspectiveListener} when a
+	 * {@link ReplacePerspectiveEvent} was received.
 	 */
-	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,  PerspectiveInitializationData data);
+	public void replaceRecordPerspective(String dataDomainID, String recordPerspectiveID,
+		PerspectiveInitializationData data);
 
 }

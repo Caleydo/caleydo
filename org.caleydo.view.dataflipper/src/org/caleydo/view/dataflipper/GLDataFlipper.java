@@ -11,7 +11,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.AssociationManager;
 import org.caleydo.core.data.datadomain.DataDomainGraph;
@@ -1183,9 +1183,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	private void triggerAnalyticalInterface(String dataDomainType, String interfaceType) {
 
 		if (interfaceType.equals("org.caleydo.analytical.clustering")) {
-			ArrayList<DataTable> sets = new ArrayList<DataTable>();
-			sets.add(((ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-					dataDomainType)).getTable());
+			ArrayList<DataContainer> sets = new ArrayList<DataContainer>();
+			sets.addAll(((ATableBasedDataDomain) DataDomainManager.get()
+					.getDataDomainByID(dataDomainType)).getAllDataContainers());
 
 			ClusterSetEvent event = new ClusterSetEvent(sets);
 			event.setSender(this);
@@ -1627,14 +1627,14 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		if (dataDomainType.equals("org.caleydo.datadomain.genetic")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID(dataDomainType)).getTable().getDefaultDimensionPerspective().getVirtualArray()
-					.size();
+					.getDataDomainByID(dataDomainType)).getTable()
+					.getDefaultDimensionPerspective().getVirtualArray().size();
 			if (numberOfPatients > 40)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.tissue")) {
 			int numberOfPatients = ((ATableBasedDataDomain) DataDomainManager.get()
-					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable().getDefaultDimensionPerspective().getVirtualArray()
-					.size();
+					.getDataDomainByID("org.caleydo.datadomain.genetic")).getTable()
+					.getDefaultDimensionPerspective().getVirtualArray().size();
 			if (numberOfPatients > 20)
 				return false;
 		} else if (dataDomainType.equals("org.caleydo.datadomain.pathway")) {
@@ -2166,6 +2166,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 	}
 
+	@Override
 	public void loadDependentPathways(java.util.Set<PathwayGraph> newPathwayGraphs) {
 		metaViewAnimation = 0;
 

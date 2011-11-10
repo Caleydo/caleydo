@@ -35,7 +35,6 @@ import org.caleydo.core.event.view.tablebased.NewRecordGroupInfoEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -1756,14 +1755,13 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		}
 	}
 
-	
-//	public void handleRedrawView() {
-//		tree = null;
-//		// setInitialPositionOfCut();
-//		resetAllTreeSelections();
-//		bRedrawDendrogram = true;
-//		setDisplayListDirty();
-//	}
+	// public void handleRedrawView() {
+	// tree = null;
+	// // setInitialPositionOfCut();
+	// resetAllTreeSelections();
+	// bRedrawDendrogram = true;
+	// setDisplayListDirty();
+	// }
 
 	/**
 	 * Toggles the coloring scheme of the dendrogram view. Either normal
@@ -1788,6 +1786,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		rootNode = null;
 	}
 
+	@Override
 	public boolean isDataView() {
 		return false;
 	}

@@ -11,6 +11,6 @@ public class SeparatorMenuItem
 	extends AContextMenuItem {
 
 	public SeparatorMenuItem() {
-		
+
 	}
 }

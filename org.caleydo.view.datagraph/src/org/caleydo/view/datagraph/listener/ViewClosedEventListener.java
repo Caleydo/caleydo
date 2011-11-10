@@ -9,8 +9,8 @@ public class ViewClosedEventListener extends AEventListener<GLDataGraph> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof ViewClosedEvent) {
-			ViewClosedEvent viewClosedEvent = (ViewClosedEvent)event;
+		if (event instanceof ViewClosedEvent) {
+			ViewClosedEvent viewClosedEvent = (ViewClosedEvent) event;
 			handler.removeView(viewClosedEvent.getView());
 		}
 	}

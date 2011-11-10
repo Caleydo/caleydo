@@ -65,8 +65,8 @@ public class NominalGate extends AGate {
 	 *            Unique ID of the view.
 	 */
 	@Override
-	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
-			CaleydoTextRenderer textRenderer, int viewID) {
+	public void draw(GL2 gl, PickingManager pickingManager,
+			TextureManager textureManager, CaleydoTextRenderer textRenderer, int viewID) {
 
 		// top = (float) table.getNormalizedForRaw(upperValue) *
 		// renderStyle.getAxisHeight();
@@ -106,8 +106,8 @@ public class NominalGate extends AGate {
 		Vec3f upperLeftCorner = new Vec3f(currentPosition - GATE_WIDTH, unscaledTop,
 				GATE_Z);
 
-		gl.glPushName(pickingManager.getPickingID(viewID,
-				PickingType.GATE_TIP_SELECTION, gateID));
+		gl.glPushName(pickingManager.getPickingID(viewID, PickingType.GATE_TIP_SELECTION,
+				gateID));
 
 		textureManager.renderTexture(gl, EIconTextures.GATE_TOP, lowerLeftCorner,
 				lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);

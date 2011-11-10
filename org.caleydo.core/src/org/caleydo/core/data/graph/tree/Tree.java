@@ -115,8 +115,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 
 	private void init(int expectedSize) {
 		graph = new DefaultDirectedGraph<NodeType, DefaultEdge>(DefaultEdge.class);
-		hashNodes = new HashMap<Integer, NodeType>(expectedSize*2);
-		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>((int)(expectedSize*1.5f));
+		hashNodes = new HashMap<Integer, NodeType>(expectedSize * 2);
+		hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>((int) (expectedSize * 1.5f));
 	}
 
 	public void setHashMap(HashMap<Integer, NodeType> hashNodes) {
@@ -284,7 +284,7 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	public NodeType getNodeByNumber(int iClusterNr) {
 		return hashNodes.get(iClusterNr);
 	}
-	
+
 	public int getNumberOfNodes() {
 		return hashNodes.size();
 	}

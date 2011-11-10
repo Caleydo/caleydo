@@ -8,14 +8,11 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.AGLView.EBusyState;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -157,8 +154,6 @@ public class GLTemplate extends ATableBasedView {
 	public void handleRedrawView() {
 		setDisplayListDirty();
 	}
-
-
 
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)

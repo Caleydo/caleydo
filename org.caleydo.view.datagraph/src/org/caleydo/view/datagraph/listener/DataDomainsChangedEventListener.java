@@ -9,8 +9,8 @@ public class DataDomainsChangedEventListener extends AEventListener<GLDataGraph>
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof DataDomainsChangedEvent) {
-			DataDomainsChangedEvent dataDomainsChangedEvent = (DataDomainsChangedEvent)event;
+		if (event instanceof DataDomainsChangedEvent) {
+			DataDomainsChangedEvent dataDomainsChangedEvent = (DataDomainsChangedEvent) event;
 			handler.updateView(dataDomainsChangedEvent.getView());
 		}
 	}

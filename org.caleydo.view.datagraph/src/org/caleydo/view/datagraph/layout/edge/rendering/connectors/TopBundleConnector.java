@@ -22,12 +22,11 @@ public class TopBundleConnector extends ABundleConnector {
 
 	public TopBundleConnector(IDataGraphNode node,
 
-	PixelGLConverter pixelGLConverter,
-			ConnectionBandRenderer connectionBandRenderer,
-			List<DataContainer> commonDataContainers, int minBandWidth,
-			int maxBandWidth, int maxDataAmount) {
-		super(node, pixelGLConverter, connectionBandRenderer,
-				commonDataContainers, minBandWidth, maxBandWidth, maxDataAmount);
+	PixelGLConverter pixelGLConverter, ConnectionBandRenderer connectionBandRenderer,
+			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
+			int maxDataAmount) {
+		super(node, pixelGLConverter, connectionBandRenderer, commonDataContainers,
+				minBandWidth, maxBandWidth, maxDataAmount);
 
 		calcBundlingPoint();
 	}
@@ -38,8 +37,7 @@ public class TopBundleConnector extends ABundleConnector {
 		for (DataContainer dataContainer : commonDataContainers) {
 			Pair<Point2D, Point2D> anchorPoints = node
 					.getTopDataContainerAnchorPoints(dataContainer);
-			summedX += anchorPoints.getFirst().getX()
-					+ anchorPoints.getSecond().getX();
+			summedX += anchorPoints.getFirst().getX() + anchorPoints.getSecond().getX();
 		}
 
 		bundlingPoint = new Point2D.Float(summedX
@@ -54,13 +52,12 @@ public class TopBundleConnector extends ABundleConnector {
 
 	@Override
 	public Point2D getBandHelperPoint() {
-		return new Point2D.Float((float) bundlingPoint.getX(), (float) node
-				.getPosition().getY());
+		return new Point2D.Float((float) bundlingPoint.getX(), (float) node.getPosition()
+				.getY());
 	}
 
 	@Override
-	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
-			Color color) {
+	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1, Color color) {
 
 		// Point2D bandAnchorPoint1 = null;
 		// Point2D bandAnchorPoint2 = null;
@@ -73,10 +70,10 @@ public class TopBundleConnector extends ABundleConnector {
 			bandAnchorPoint2 = temp;
 		}
 
-		float vecBandEndX = (float) (bandAnchorPoint2.getX() - bandAnchorPoint1
-				.getX()) / bandWidth;
-		float vecBandEndY = (float) (bandAnchorPoint2.getY() - bandAnchorPoint1
-				.getY()) / bandWidth;
+		float vecBandEndX = (float) (bandAnchorPoint2.getX() - bandAnchorPoint1.getX())
+				/ bandWidth;
+		float vecBandEndY = (float) (bandAnchorPoint2.getY() - bandAnchorPoint1.getY())
+				/ bandWidth;
 
 		float vecNormalX = vecBandEndY;
 		float vecNormalY = -vecBandEndX;
@@ -90,22 +87,19 @@ public class TopBundleConnector extends ABundleConnector {
 			rightBandBundleConnecionPoint = bandAnchorPoint1;
 			leftBandBundleConnecionPoint = new Point2D.Float(
 					(float) bandAnchorPoint1.getX()
-							- pixelGLConverter
-									.getGLWidthForPixelWidth(bandWidth),
+							- pixelGLConverter.getGLWidthForPixelWidth(bandWidth),
 					(float) bandAnchorPoint1.getY());
 			rightBundleConnectionPointOffsetAnchor = rightBandBundleConnecionPoint;
 			float maxY = (float) bandAnchorPoint2.getY() + 0.1f;
 			float minY = (float) leftBandBundleConnecionPoint.getY();
 			leftBundleConnectionPointOffsetAnchor = calcPointOnLineWithFixedX(
 					bandAnchorPoint2, vecNormalX, vecNormalY,
-					(float) leftBandBundleConnecionPoint.getX(), minY, maxY,
-					minY, maxY);
+					(float) leftBandBundleConnecionPoint.getX(), minY, maxY, minY, maxY);
 
 		} else {
 			rightBandBundleConnecionPoint = new Point2D.Float(
 					(float) bandAnchorPoint2.getX()
-							+ pixelGLConverter
-									.getGLWidthForPixelWidth(bandWidth),
+							+ pixelGLConverter.getGLWidthForPixelWidth(bandWidth),
 					(float) bandAnchorPoint2.getY());
 			leftBandBundleConnecionPoint = bandAnchorPoint2;
 
@@ -114,22 +108,20 @@ public class TopBundleConnector extends ABundleConnector {
 			float minY = (float) rightBandBundleConnecionPoint.getY();
 			rightBundleConnectionPointOffsetAnchor = calcPointOnLineWithFixedX(
 					bandAnchorPoint1, vecNormalX, vecNormalY,
-					(float) rightBandBundleConnecionPoint.getX(), minY, maxY,
-					minY, maxY);
+					(float) rightBandBundleConnecionPoint.getX(), minY, maxY, minY, maxY);
 		}
 
 		List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 
-		anchorPoints.add(new Pair<Point2D, Point2D>(bandAnchorPoint1,
-				bandAnchorPoint2));
+		anchorPoints.add(new Pair<Point2D, Point2D>(bandAnchorPoint1, bandAnchorPoint2));
 		anchorPoints.add(new Pair<Point2D, Point2D>(
 				rightBundleConnectionPointOffsetAnchor,
 				leftBundleConnectionPointOffsetAnchor));
-		anchorPoints.add(new Pair<Point2D, Point2D>(
-				rightBandBundleConnecionPoint, leftBandBundleConnecionPoint));
+		anchorPoints.add(new Pair<Point2D, Point2D>(rightBandBundleConnecionPoint,
+				leftBandBundleConnecionPoint));
 
-		connectionBandRenderer.renderComplexBand(gl, anchorPoints, false,
-				color.getRGB(), (highlightBand) ? 1 : 0.5f);
+		connectionBandRenderer.renderComplexBand(gl, anchorPoints, false, color.getRGB(),
+				(highlightBand) ? 1 : 0.5f);
 
 		Point2D prevBandAnchorPoint = leftBandBundleConnecionPoint;
 
@@ -137,21 +129,19 @@ public class TopBundleConnector extends ABundleConnector {
 				commonDataContainers.size());
 		for (DataContainer dataContainer : commonDataContainers) {
 			sortedDataContainers.add(new Pair<Double, DataContainer>(node
-					.getTopDataContainerAnchorPoints(dataContainer).getFirst()
-					.getX(), dataContainer));
+					.getTopDataContainerAnchorPoints(dataContainer).getFirst().getX(),
+					dataContainer));
 		}
 
 		Collections.sort(sortedDataContainers);
 
 		for (int i = 0; i < sortedDataContainers.size(); i++) {
-			DataContainer dataContainer = sortedDataContainers.get(i)
-					.getSecond();
+			DataContainer dataContainer = sortedDataContainers.get(i).getSecond();
 			anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 			Pair<Point2D, Point2D> dimensionGroupAnchorPoints = node
 					.getTopDataContainerAnchorPoints(dataContainer);
 			Pair<Point2D, Point2D> dimensionGroupAnchorOffsetPoints = new Pair<Point2D, Point2D>();
-			Pair<Point2D, Point2D> nodeTopAnchorPoints = node
-					.getTopAnchorPoints();
+			Pair<Point2D, Point2D> nodeTopAnchorPoints = node.getTopAnchorPoints();
 			dimensionGroupAnchorOffsetPoints.setFirst(new Point2D.Float(
 					(float) dimensionGroupAnchorPoints.getFirst().getX(),
 					(float) nodeTopAnchorPoints.getFirst().getY() + 0.1f));
@@ -173,18 +163,17 @@ public class TopBundleConnector extends ABundleConnector {
 			} else {
 				nextBandAnchorPoint = new Point2D.Float(
 						(float) prevBandAnchorPoint.getX()
-								+ pixelGLConverter
-										.getGLWidthForPixelWidth(width),
+								+ pixelGLConverter.getGLWidthForPixelWidth(width),
 						(float) prevBandAnchorPoint.getY());
 			}
 
 			Point2D bandOffsetPoint1 = new Point2D.Float(
-					(float) prevBandAnchorPoint.getX(),
-					(float) nodeTopAnchorPoints.getFirst().getY() + 0.17f);
+					(float) prevBandAnchorPoint.getX(), (float) nodeTopAnchorPoints
+							.getFirst().getY() + 0.17f);
 
 			Point2D bandOffsetPoint2 = new Point2D.Float(
-					(float) nextBandAnchorPoint.getX(),
-					(float) nodeTopAnchorPoints.getSecond().getY() + 0.17f);
+					(float) nextBandAnchorPoint.getX(), (float) nodeTopAnchorPoints
+							.getSecond().getY() + 0.17f);
 
 			anchorPoints.add(dimensionGroupAnchorPoints);
 			anchorPoints.add(dimensionGroupAnchorOffsetPoints);

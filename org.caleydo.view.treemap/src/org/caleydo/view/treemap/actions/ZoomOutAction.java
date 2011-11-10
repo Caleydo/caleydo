@@ -10,23 +10,23 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for zoom out function.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class ZoomOutAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Zoom Out";
 	public static final String ICON = "resources/icons/view/general/undo.png";
-	
+
 	public ZoomOutAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 	}
-	
+
 	@Override
 	public void run() {
 		super.run();
@@ -34,6 +34,5 @@ public class ZoomOutAction extends AToolBarAction implements IToolBarItem {
 		GeneralManager.get().getEventPublisher().triggerEvent(new ZoomOutEvent());
 		setChecked(false);
 	};
-
 
 }

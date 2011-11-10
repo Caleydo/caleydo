@@ -7,7 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
 public class GLDataGraphKeyListener extends GLKeyListener<GLDataGraph> {
-	
+
 	private boolean isCtrlDown;
 
 	@Override
@@ -29,7 +29,7 @@ public class GLDataGraphKeyListener extends GLKeyListener<GLDataGraph> {
 		if (event.stateMask == SWT.CTRL)
 			isCtrlDown = false;
 	}
-	
+
 	public boolean isCtrlDown() {
 		return isCtrlDown;
 	}

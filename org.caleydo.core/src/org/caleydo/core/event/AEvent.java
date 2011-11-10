@@ -88,7 +88,7 @@ public abstract class AEvent {
 	 * @return
 	 */
 	public String getDataDomainID() {
-		
+
 		return dataDomainID;
 	}
 

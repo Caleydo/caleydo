@@ -91,10 +91,10 @@ public class DisplayLoopExecution
 		}
 	}
 
-//	@Override
-//	public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
-//		// nothing to do as there is no related drawing object
-//	}
+	// @Override
+	// public void displayChanged(GLAutoDrawable arg0, boolean arg1, boolean arg2) {
+	// // nothing to do as there is no related drawing object
+	// }
 
 	@Override
 	public void reshape(GLAutoDrawable arg0, int arg1, int arg2, int arg3, int arg4) {
@@ -151,7 +151,7 @@ public class DisplayLoopExecution
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

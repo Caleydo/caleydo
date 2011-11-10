@@ -73,8 +73,8 @@ public class DataTypeSet {
 		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
 		dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 
-		//FIXME dynamically crate data configuration from data set information
-		
+		// FIXME dynamically crate data configuration from data set information
+
 		dataConfiguration.setRecordIDCategory("SAMPLE");
 		dataConfiguration.setPrimaryRecordMappingType("SAMPLE");
 		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");

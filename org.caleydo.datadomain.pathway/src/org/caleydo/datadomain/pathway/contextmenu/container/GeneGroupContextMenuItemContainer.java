@@ -12,9 +12,10 @@ public class GeneGroupContextMenuItemContainer extends AContextMenuItemContainer
 
 	public void setData(IDType idType, ArrayList<Integer> genes) {
 
-//		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Genes", idType, genes,
-//				dataDomain.getDataDomainID());
-//		addContextMenuItem(menuItem);
+		// AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Genes",
+		// idType, genes,
+		// dataDomain.getDataDomainID());
+		// addContextMenuItem(menuItem);
 
 		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);

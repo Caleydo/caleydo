@@ -69,8 +69,8 @@ public interface IGroupwareManager
 	public void setNetworkManager(NetworkManager networkManager);
 
 	/**
-	 * On clients it returns the {@link SerializationData} as retrieved from the server to startup a client
-	 * in the same manner as the server.
+	 * On clients it returns the {@link SerializationData} as retrieved from the server to startup a client in
+	 * the same manner as the server.
 	 * 
 	 * @return initialization parameters for clients to start
 	 */

@@ -67,8 +67,8 @@ public class ApplicationWorkbenchAdvisor
 		GeneralManager.get().getViewManager().getDisplayLoopExecution().stopMultipleExecution(autoSaver);
 		autoSaver = null;
 
-		new ProjectSaver().saveRecentProject();	
-		
+		new ProjectSaver().saveRecentProject();
+
 		return true;
 	}
 }

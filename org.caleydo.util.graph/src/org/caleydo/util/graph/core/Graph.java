@@ -60,8 +60,8 @@ public class Graph extends AGraph {
 	public void clearGraph() {
 
 		/** items .. */
-		Iterator<IGraphItem> iter = items.getAllGraphComponent(
-				EGraphItemKind.NODE).iterator();
+		Iterator<IGraphItem> iter = items.getAllGraphComponent(EGraphItemKind.NODE)
+				.iterator();
 
 		while (iter.hasNext()) {
 			iter.next().removeGraph(this, null);
@@ -74,8 +74,7 @@ public class Graph extends AGraph {
 		}
 
 		/** graphs .. */
-		Iterator<IGraph> iterGraph = graphs.getAllGraphComponent(null)
-				.iterator();
+		Iterator<IGraph> iterGraph = graphs.getAllGraphComponent(null).iterator();
 
 		while (iterGraph.hasNext()) {
 			iterGraph.next().removeGraph(this, null);
@@ -98,15 +97,14 @@ public class Graph extends AGraph {
 	public void removeAllByKind(EGraphItemKind kind) {
 
 		switch (kind) {
-			case EDGE :
-				break;
+		case EDGE:
+			break;
 
-			case NODE :
-				break;
+		case NODE:
+			break;
 
-			default :
-				throw new GraphRuntimeException("unsupported type= "
-						+ kind.toString());
+		default:
+			throw new GraphRuntimeException("unsupported type= " + kind.toString());
 		}
 
 		items.getAllGraphComponent(kind).clear();

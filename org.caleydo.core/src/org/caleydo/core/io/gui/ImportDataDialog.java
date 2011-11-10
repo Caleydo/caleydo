@@ -133,47 +133,46 @@ public class ImportDataDialog
 
 	@Override
 	protected void okPressed() {
-		
+
 		// We have to call the init again in order to reinitialize the mappings
 		if (buttonSwapRowsWithColumns.getSelection()) {
-			
+
 			// Unregister old IDTypes before creating the new ones
-//			IDType.unregisterType(dataDomain.getDimensionIDType());
-//			IDType.unregisterType(dataDomain.getHumanReadableDimensionIDType());
-//			IDType.unregisterType(dataDomain.getRecordIDType());
-//			IDType.unregisterType(dataDomain.getHumanReadableRecordIDType());
-			
-//			dataDomain.createDefaultConfigurationWithSamplesAsRows();
+			// IDType.unregisterType(dataDomain.getDimensionIDType());
+			// IDType.unregisterType(dataDomain.getHumanReadableDimensionIDType());
+			// IDType.unregisterType(dataDomain.getRecordIDType());
+			// IDType.unregisterType(dataDomain.getHumanReadableRecordIDType());
+
+			// dataDomain.createDefaultConfigurationWithSamplesAsRows();
 			dataDomain.init();
 		}
-		
+
 		fillLoadDataParameters();
-		
+
 		boolean success = readDimensionDefinition();
 		if (success) {
 			success = DataTableUtils.createColumns(loadDataParameters);
 		}
-		
+
 		DataTable table = DataTableUtils.createData(dataDomain, true, true);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
-		
+
 		// Open default start view for the newly created data domain
 		try {
-			
+
 			String secondaryID = UUID.randomUUID().toString();
 			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
 			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
 			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
-			
+
 			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
 				PlatformUI
 					.getWorkbench()
 					.getActiveWorkbenchWindow()
 					.getActivePage()
-					.showView(dataDomain.getDefaultStartViewType(), secondaryID,
-						IWorkbenchPage.VIEW_ACTIVATE);
-				
+					.showView(dataDomain.getDefaultStartViewType(), secondaryID, IWorkbenchPage.VIEW_ACTIVATE);
+
 			}
 		}
 		catch (PartInitException e) {
@@ -193,9 +192,9 @@ public class ImportDataDialog
 	}
 
 	private void createGUI(Composite parent) {
-	
+
 		idMappingManager = dataDomain.getRecordIDMappingManager();
-		
+
 		int numGridCols = 5;
 
 		loadDataParameters.setDataDomain(dataDomain);
@@ -593,7 +592,7 @@ public class ImportDataDialog
 		buttonUncertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
 		buttonUncertaintyDataProvided.setText("Uncertainty data");
 		buttonUncertaintyDataProvided.setEnabled(true);
-		
+
 		buttonSwapRowsWithColumns = new Button(dataPropertiesGroup, SWT.CHECK);
 		buttonSwapRowsWithColumns.setText("Swap rows and columns");
 		buttonSwapRowsWithColumns.setEnabled(true);

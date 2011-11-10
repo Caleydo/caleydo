@@ -18,8 +18,6 @@ import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.SWTException;
 import org.eclipse.swt.browser.Browser;
-import org.eclipse.swt.browser.ProgressEvent;
-import org.eclipse.swt.browser.ProgressListener;
 import org.eclipse.swt.events.DisposeEvent;
 import org.eclipse.swt.events.DisposeListener;
 import org.eclipse.swt.graphics.GC;
@@ -86,9 +84,9 @@ public class HTMLBrowser extends ASWTView {
 	 */
 	public HTMLBrowser(int viewID, Composite parentComposite) {
 		super(viewID, parentComposite);
-		
+
 		parentComposite.addDisposeListener(new DisposeListener() {
-			
+
 			@Override
 			public void widgetDisposed(DisposeEvent e) {
 				unregisterEventListeners();
@@ -98,7 +96,7 @@ public class HTMLBrowser extends ASWTView {
 
 	@Override
 	public void draw() {
-		
+
 		Composite browserBarComposite = new Composite(parentComposite, SWT.NONE);
 		browserBarComposite.setLayout(new GridLayout(3, false));
 
@@ -195,7 +193,7 @@ public class HTMLBrowser extends ASWTView {
 
 		data = new GridData();
 		browser.setLayoutData(new GridData(GridData.FILL, GridData.FILL, true, true));
-		
+
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load " + url));
 
 		try {

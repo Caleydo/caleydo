@@ -10,7 +10,6 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenDataGraphHandler extends AbstractHandler implements IHandler {
 
-	
 	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
@@ -22,6 +21,5 @@ public class OpenDataGraphHandler extends AbstractHandler implements IHandler {
 
 		return null;
 	}
-
 
 }

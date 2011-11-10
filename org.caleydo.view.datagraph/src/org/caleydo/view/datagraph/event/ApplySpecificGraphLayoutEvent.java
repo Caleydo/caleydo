@@ -16,8 +16,7 @@ public class ApplySpecificGraphLayoutEvent extends AEvent {
 		return graphLayoutClass;
 	}
 
-	public void setGraphLayoutClass(
-			Class<? extends AGraphLayout> graphLayoutClass) {
+	public void setGraphLayoutClass(Class<? extends AGraphLayout> graphLayoutClass) {
 		this.graphLayoutClass = graphLayoutClass;
 	}
 

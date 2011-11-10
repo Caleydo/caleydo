@@ -117,6 +117,7 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 
 		tree.setMenu(contextMenu);
 		tree.addListener(SWT.MouseDoubleClick, new Listener() {
+			@Override
 			public void handleEvent(Event e) {
 
 				Object filter = tree.getSelection()[0].getData();

@@ -6,7 +6,6 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
-import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -277,7 +276,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				.getVirtualArray();
 		DimensionVirtualArray dimensionVA = heatMap.getDataContainer()
 				.getDimensionPerspective().getVirtualArray();
-		
+
 		for (int dimensionCount = 0; dimensionCount < numberOfDimensions; dimensionCount++) {
 			val = 0;
 

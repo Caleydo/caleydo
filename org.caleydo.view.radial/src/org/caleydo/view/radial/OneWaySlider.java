@@ -119,8 +119,9 @@ public class OneWaySlider extends AGLGUIElement {
 	 * @param iSliderBodyID
 	 *            Picking ID for the slider body.
 	 */
-	public void draw(GL2 gl, PickingManager pickingManager, TextureManager textureManager,
-			int viewID, int iSliderID, int iSliderButtonID, int iSliderBodyID) {
+	public void draw(GL2 gl, PickingManager pickingManager,
+			TextureManager textureManager, int viewID, int iSliderID,
+			int iSliderButtonID, int iSliderBodyID) {
 
 		gl.glPushMatrix();
 

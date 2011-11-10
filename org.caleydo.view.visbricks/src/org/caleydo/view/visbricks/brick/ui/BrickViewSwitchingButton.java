@@ -11,8 +11,7 @@ import org.caleydo.view.visbricks.brick.layout.IViewTypeChangeListener;
  * @author Christian Partl
  * 
  */
-public class BrickViewSwitchingButton extends Button implements
-		IViewTypeChangeListener {
+public class BrickViewSwitchingButton extends Button implements IViewTypeChangeListener {
 
 	private EContainedViewType viewType;
 

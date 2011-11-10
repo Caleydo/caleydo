@@ -10,6 +10,7 @@ import org.eclipse.ui.handlers.HandlerUtil;
 
 public class OpenFilterPipelineHandler extends AbstractHandler implements IHandler {
 
+	@Override
 	public Object execute(ExecutionEvent event) throws ExecutionException {
 		try {
 

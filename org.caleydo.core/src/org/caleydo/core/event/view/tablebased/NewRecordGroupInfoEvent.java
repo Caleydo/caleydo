@@ -20,7 +20,6 @@ public class NewRecordGroupInfoEvent
 	private RecordGroupList groupList = null;
 	private boolean bDeleteTree = false;
 
-
 	public NewRecordGroupInfoEvent() {
 	}
 

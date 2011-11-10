@@ -109,7 +109,7 @@ public enum EDefaultColorSchemes {
 	public String getColorSchemeDescription() {
 		return colorSchemeDescription;
 	}
-	
+
 	/**
 	 * @return the colorMarkerPoints, see {@link #colorMarkerPoints}
 	 */
@@ -117,7 +117,6 @@ public enum EDefaultColorSchemes {
 		return colorMarkerPoints;
 	}
 
-	
 	ColorMapper getDefaultColorMapper() {
 		ColorMapper colorMapper = new ColorMapper(colorMarkerPoints);
 		colorMapper.setColorSchemeName(colorSchemeName);

@@ -91,7 +91,7 @@ public class RCPViewManager
 	public void removeRCPView(String secondaryID) {
 		rcpSecondaryID2ViewInitializationData.remove(secondaryID);
 	}
-	
+
 	public RCPViewInitializationData getRCPViewInitializationData(String secondaryID) {
 		return rcpSecondaryID2ViewInitializationData.get(secondaryID);
 	}

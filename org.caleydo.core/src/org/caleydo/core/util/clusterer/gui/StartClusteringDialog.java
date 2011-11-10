@@ -39,7 +39,7 @@ public class StartClusteringDialog
 	 */
 	public void setRecordPerspective(RecordPerspective recordPerspective) {
 		this.recordPerspective = recordPerspective;
-	
+
 	}
 
 	/**
@@ -48,7 +48,7 @@ public class StartClusteringDialog
 	 */
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
-	
+
 	}
 
 	@Override

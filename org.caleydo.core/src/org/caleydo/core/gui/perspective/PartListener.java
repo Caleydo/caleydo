@@ -31,14 +31,14 @@ public class PartListener
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
-//		IWorkbenchPart activePart = partRef.getPart(false);
-//
-//		if (!(activePart instanceof ARcpGLViewPart))
-//			return;
-//
-//		ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
-//
-//		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glView.getGLCanvas());
+		// IWorkbenchPart activePart = partRef.getPart(false);
+		//
+		// if (!(activePart instanceof ARcpGLViewPart))
+		// return;
+		//
+		// ARcpGLViewPart glView = (ARcpGLViewPart) activePart;
+		//
+		// GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glView.getGLCanvas());
 	}
 
 	@Override
@@ -81,12 +81,12 @@ public class PartListener
 		if (!(activePart instanceof ARcpGLViewPart)) {
 			return;
 		}
-		
+
 		ARcpGLViewPart glViewPart = (ARcpGLViewPart) activePart;
 
 		// GeneralManager.get().getViewGLCanvasManager()
 		// .unregisterGLCanvasFromAnimator(glViewPart.getGLCanvas());
-		
+
 		glViewPart.getGLView().setVisible(false);
 	}
 
@@ -128,8 +128,7 @@ public class PartListener
 				if (caleydoRCPViewPart.isSupportView()) {
 					if (caleydoRCPViewPart instanceof IDataDomainBasedView) {
 						((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
-						
-						
+
 					}
 					else if (caleydoRCPViewPart.getView() instanceof IDataDomainBasedView) {
 						((IDataDomainBasedView) (caleydoRCPViewPart.getView())).setDataDomain(dataDomain);

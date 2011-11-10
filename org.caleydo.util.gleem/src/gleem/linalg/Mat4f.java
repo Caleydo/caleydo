@@ -33,8 +33,8 @@ public class Mat4f {
 	/**
 	 * Values for unity matrix. Patch by Michael Kalkusch.
 	 */
-	private static final float fArrayUnityMatrix[] = {1, 0, 0, 0, 0, 1, 0, 0,
-			0, 0, 1, 0, 0, 0, 0, 1};
+	private static final float fArrayUnityMatrix[] = { 1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1,
+			0, 0, 0, 0, 1 };
 
 	/**
 	 * Unity matrix. Patch by Michael Kalkusch.
@@ -300,11 +300,10 @@ public class Mat4f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + ", "
-				+ get(0, 3) + endl + " " + get(1, 0) + ", " + get(1, 1) + ", "
-				+ get(1, 2) + ", " + get(1, 3) + endl + " " + get(2, 0) + ", "
-				+ get(2, 1) + ", " + get(2, 2) + ", " + get(2, 3) + endl + " "
-				+ get(3, 0) + ", " + get(3, 1) + ", " + get(3, 2) + ", "
-				+ get(3, 3) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + ", " + get(0, 3)
+				+ endl + " " + get(1, 0) + ", " + get(1, 1) + ", " + get(1, 2) + ", "
+				+ get(1, 3) + endl + " " + get(2, 0) + ", " + get(2, 1) + ", "
+				+ get(2, 2) + ", " + get(2, 3) + endl + " " + get(3, 0) + ", "
+				+ get(3, 1) + ", " + get(3, 2) + ", " + get(3, 3) + ")";
 	}
 }

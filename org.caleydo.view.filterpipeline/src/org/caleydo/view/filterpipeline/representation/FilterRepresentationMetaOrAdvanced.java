@@ -103,7 +103,7 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 		}
 
 		gl.glPopName();
-		
+
 		// reset height
 		heightRight = getHeightRight();
 
@@ -121,42 +121,33 @@ public class FilterRepresentationMetaOrAdvanced extends FilterRepresentationMeta
 			// Steps of output of total meta filter
 			int outputSteps = 0;
 
-			gl.glDisable(GL2.GL_DEPTH_TEST);			
+			gl.glDisable(GL2.GL_DEPTH_TEST);
 			gl.glLineWidth(1);
 
-			for( Intersection intersection : intersections )
-			{
-				float filterBottom = vPos.y() + vSize.y() * (outputSteps/100.f);				
-				float height = vSize.y() * (intersection.numElements/100.f);
-				
-				renderOutputBand
-				(
-					gl,
-					new float[]{filterRight, filterBottom, Z_POS_BODY},
-				    new float[]{filterRight, filterBottom + height, Z_POS_BODY},
-				    new float[]{filterRight + 0.058f * vSize.x(), filterBottom + height, Z_POS_BODY},
-				    new float[]{filterRight + 0.058f * vSize.x(), filterBottom, Z_POS_BODY},
-				    new float[]{0.8f,0.8f,0.8f,.5f},
-				    new float[]{0f,0f,0f,1f}
-				);
+			for (Intersection intersection : intersections) {
+				float filterBottom = vPos.y() + vSize.y() * (outputSteps / 100.f);
+				float height = vSize.y() * (intersection.numElements / 100.f);
 
-				for( int filterId : intersection.filterIds )
-				{
-					float subFilterBottom =
-						subFiltersBottom
-						+ filterId * offsetY
-						+ scaleY * vSize.y() * (currentSteps[filterId]/100.f);
-					
-					renderOutputBand
-					(
-						gl,
-						new float[]{subFilterRight, subFilterBottom, Z_POS_BODY},
-					    new float[]{subFilterRight, subFilterBottom + scaleY * height, Z_POS_BODY},
-					    new float[]{filterRight, filterBottom + height, Z_POS_BODY},
-					    new float[]{filterRight, filterBottom, Z_POS_BODY},
-					    renderStyle.getColorSubfilterOutput(filterId),
-					    renderStyle.getColorSubfilterOutputBorder(filterId)
-					);
+				renderOutputBand(gl,
+						new float[] { filterRight, filterBottom, Z_POS_BODY },
+						new float[] { filterRight, filterBottom + height, Z_POS_BODY },
+						new float[] { filterRight + 0.058f * vSize.x(),
+								filterBottom + height, Z_POS_BODY }, new float[] {
+								filterRight + 0.058f * vSize.x(), filterBottom,
+								Z_POS_BODY }, new float[] { 0.8f, 0.8f, 0.8f, .5f },
+						new float[] { 0f, 0f, 0f, 1f });
+
+				for (int filterId : intersection.filterIds) {
+					float subFilterBottom = subFiltersBottom + filterId * offsetY
+							+ scaleY * vSize.y() * (currentSteps[filterId] / 100.f);
+
+					renderOutputBand(gl, new float[] { subFilterRight, subFilterBottom,
+							Z_POS_BODY }, new float[] { subFilterRight,
+							subFilterBottom + scaleY * height, Z_POS_BODY }, new float[] {
+							filterRight, filterBottom + height, Z_POS_BODY },
+							new float[] { filterRight, filterBottom, Z_POS_BODY },
+							renderStyle.getColorSubfilterOutput(filterId),
+							renderStyle.getColorSubfilterOutputBorder(filterId));
 
 					currentSteps[filterId] += intersection.numElements;
 				}

@@ -21,7 +21,6 @@ import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.radial.ChangeColorModeEvent;
 import org.caleydo.core.event.view.radial.DetailOutsideEvent;
@@ -32,16 +31,13 @@ import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -982,33 +978,36 @@ public class GLRadialHierarchy extends ATableBasedView {
 		setDisplayListDirty();
 	}
 
-//	@Override
-//	public void handleUpdateView() {
-//		// Tree<ClusterNode> tree = table.getClusteredTreeGenes();
-//		Tree<ClusterNode> tree = dataContainer.getDimensionPerspective().getTree();
-//		if (tree != null) {
-//
-//			// if (pdRealRootElement == null) {
-//			if (dataEventManager != null)
-//				dataEventManager.unregisterEventListeners();
-//			ArrayList<EPDDrawingStrategyType> alColorModes = new ArrayList<EPDDrawingStrategyType>();
-//			alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
-//			alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
-//			// initHierarchy(tree, EIDType.CLUSTER_NUMBER,
-//			// new GeneClusterDataEventManager(this), alColorModes);
-//			initHierarchy(tree, dataContainer.getDimensionPerspective().getTreeRoot(),
-//					new ExperimentClusterDataEventManager(this), alColorModes);
-//			// }
-//
-//		} else {
-//			hashPartialDiscs.clear();
-//			navigationHistory.reset();
-//			pdCurrentRootElement = null;
-//			pdCurrentSelectedElement = null;
-//			pdRealRootElement = null;
-//		}
-//		setDisplayListDirty();
-//	}
+	// @Override
+	// public void handleUpdateView() {
+	// // Tree<ClusterNode> tree = table.getClusteredTreeGenes();
+	// Tree<ClusterNode> tree =
+	// dataContainer.getDimensionPerspective().getTree();
+	// if (tree != null) {
+	//
+	// // if (pdRealRootElement == null) {
+	// if (dataEventManager != null)
+	// dataEventManager.unregisterEventListeners();
+	// ArrayList<EPDDrawingStrategyType> alColorModes = new
+	// ArrayList<EPDDrawingStrategyType>();
+	// alColorModes.add(EPDDrawingStrategyType.EXPRESSION_COLOR);
+	// alColorModes.add(EPDDrawingStrategyType.RAINBOW_COLOR);
+	// // initHierarchy(tree, EIDType.CLUSTER_NUMBER,
+	// // new GeneClusterDataEventManager(this), alColorModes);
+	// initHierarchy(tree,
+	// dataContainer.getDimensionPerspective().getTreeRoot(),
+	// new ExperimentClusterDataEventManager(this), alColorModes);
+	// // }
+	//
+	// } else {
+	// hashPartialDiscs.clear();
+	// navigationHistory.reset();
+	// pdCurrentRootElement = null;
+	// pdCurrentSelectedElement = null;
+	// pdRealRootElement = null;
+	// }
+	// setDisplayListDirty();
+	// }
 
 	/**
 	 * Handles the alternative partial disc selection triggered by pressing a
@@ -1083,6 +1082,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 		return hashPartialDiscs.values();
 	}
 
+	@Override
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}

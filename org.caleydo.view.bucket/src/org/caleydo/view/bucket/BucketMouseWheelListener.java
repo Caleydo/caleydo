@@ -118,8 +118,8 @@ public class BucketMouseWheelListener extends MouseAdapter implements MouseWheel
 			GeneralManager.get().getViewManager().getPickingManager()
 					.enablePicking(false);
 		}
-		GeneralManager.get().getViewManager()
-				.getConnectedElementRepresentationManager().clearTransformedConnections();
+		GeneralManager.get().getViewManager().getConnectedElementRepresentationManager()
+				.clearTransformedConnections();
 
 	}
 
@@ -178,8 +178,7 @@ public class BucketMouseWheelListener extends MouseAdapter implements MouseWheel
 					.getConnectedElementRepresentationManager()
 					.clearTransformedConnections();
 			// Turn on picking after zoom action is done
-			GeneralManager.get().getViewManager().getPickingManager()
-					.enablePicking(true);
+			GeneralManager.get().getViewManager().getPickingManager().enablePicking(true);
 		}
 	}
 

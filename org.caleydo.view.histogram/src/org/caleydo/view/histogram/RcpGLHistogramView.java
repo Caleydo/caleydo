@@ -71,7 +71,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		createGLCanvas();
 
 		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
-//		((GLHistogram) view).setRenderColorBars(false);
+		// ((GLHistogram) view).setRenderColorBars(false);
 		initializeViewWithData();
 		initialize();
 
@@ -87,13 +87,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		alToolbar = new ArrayList<IAction>();
 	}
 
-
-
-
-
 	@Override
 	public void registerEventListeners() {
-
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
@@ -190,7 +185,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	@Override
 	public void handleRedrawView() {
-		
+
 	}
 
 	@Override
@@ -201,6 +196,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	@Override
 	public void handleClearSelections() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

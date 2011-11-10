@@ -20,8 +20,7 @@ public class StartDeskothequeServerListener
 		IGroupwareManager groupwareManager = GroupwareUtils.createDeskothequeManager();
 		GeneralManager.get().setGroupwareManager(groupwareManager);
 		groupwareManager.startServer();
-		GeneralManager.get().getViewManager().getDisplayLoopExecution()
-			.executeMultiple(groupwareManager);
+		GeneralManager.get().getViewManager().getDisplayLoopExecution().executeMultiple(groupwareManager);
 	}
 
 }

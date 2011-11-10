@@ -14,7 +14,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * Layout for central brick that is displayed in the arch.
  * 
  * @author Partl
- *
+ * 
  */
 public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
@@ -78,8 +78,8 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			viewLayout = new ElementLayout("compactViewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
 			// viewLayout.setDebug(true);
-			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1,
-					1, 1, 1 }));
+			viewLayout
+					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 		viewLayout.setRenderer(viewRenderer);
 

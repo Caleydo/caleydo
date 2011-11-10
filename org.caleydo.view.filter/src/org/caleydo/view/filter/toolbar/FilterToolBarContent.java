@@ -36,7 +36,7 @@ public class FilterToolBarContent extends AToolBarContent {
 
 		// ADD YOUR TOOLBAR CONTENT HERE
 		actionList.add(new UseRandomSamplingAction());
-		
+
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
 

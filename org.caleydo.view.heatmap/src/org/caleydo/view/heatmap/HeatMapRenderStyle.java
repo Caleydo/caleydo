@@ -1,10 +1,6 @@
 package org.caleydo.view.heatmap;
 
-import java.util.HashMap;
-
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.hierarchical.GLHierarchicalHeatMap;

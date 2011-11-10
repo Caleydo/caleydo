@@ -10,10 +10,11 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
- * Renderer for the band between a normal brick (overview) and the detailed brick.
+ * Renderer for the band between a normal brick (overview) and the detailed
+ * brick.
  * 
  * @author Partl
- *
+ * 
  */
 public class OverviewDetailBandRenderer extends LayoutRenderer {
 
@@ -39,16 +40,14 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 		Column groupColumn = dimensionGroup.getGroupColumn();
 
 		float leftX = leftLayout.getTranslateX() + leftLayout.getSizeScaledX();
-		float leftTopY = leftLayout.getTranslateY()
-				+ leftLayout.getSizeScaledY();
+		float leftTopY = leftLayout.getTranslateY() + leftLayout.getSizeScaledY();
 		float leftBottomY = leftLayout.getTranslateY();
 
 		float[] leftTopPos = new float[] { leftX, leftTopY };
 		float[] leftBottomPos = new float[] { leftX, leftBottomY };
 
 		float rightX = rightLayout.getTranslateX();
-		float rightTopY = rightLayout.getTranslateY()
-				+ rightLayout.getSizeScaledY();
+		float rightTopY = rightLayout.getTranslateY() + rightLayout.getSizeScaledY();
 		float rightBottomY = rightLayout.getTranslateY();
 
 		float[] rightTopPos = new float[] { rightX, rightTopY };
@@ -59,47 +58,41 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 		float middleAnchorX = 0;
 		float[] middleAnchorTopPos = null;
 		float[] middleAnchorBottomPos = null;
-		
-		gl.glTranslatef(-elementLayout.getTranslateX(),
-				-elementLayout.getTranslateY(), 0);
+
+		gl.glTranslatef(-elementLayout.getTranslateX(), -elementLayout.getTranslateY(), 0);
 
 		float[] bandColor = new float[] { 0.4f, 0.4f, 0.4f };
 
 		bandRenderer.init(gl);
 
 		if (isOverviewLeft) {
-			middleAnchorX = groupColumn.getTranslateX()
-					+ groupColumn.getSizeScaledX();
+			middleAnchorX = groupColumn.getTranslateX() + groupColumn.getSizeScaledX();
 			middleAnchorTopPos = new float[] { middleAnchorX, leftTopY };
-			middleAnchorBottomPos = new float[] { middleAnchorX,
-					leftBottomY };
-			
-			bandRenderer.renderSingleBand(gl, middleAnchorTopPos,
-					middleAnchorBottomPos, rightTopPos, rightBottomPos, false,
-					offsetX, 0, false, bandColor, 1f);
+			middleAnchorBottomPos = new float[] { middleAnchorX, leftBottomY };
+
+			bandRenderer.renderSingleBand(gl, middleAnchorTopPos, middleAnchorBottomPos,
+					rightTopPos, rightBottomPos, false, offsetX, 0, false, bandColor, 1f);
 
 			bandRenderer.renderStraightBand(gl, leftTopPos, leftBottomPos,
-					middleAnchorTopPos, middleAnchorBottomPos, false, 0, 0,
-					false, bandColor, 1f);
+					middleAnchorTopPos, middleAnchorBottomPos, false, 0, 0, false,
+					bandColor, 1f);
 		} else {
 			middleAnchorX = groupColumn.getTranslateX();
 			if (middleAnchorX > rightX - offsetX) {
 				middleAnchorX = rightX - offsetX;
 			}
-			
+
 			middleAnchorTopPos = new float[] { middleAnchorX, rightTopY };
-			middleAnchorBottomPos = new float[] { middleAnchorX,
-					rightBottomY };
-			
+			middleAnchorBottomPos = new float[] { middleAnchorX, rightBottomY };
+
 			bandRenderer.renderSingleBand(gl, leftTopPos, leftBottomPos,
-					middleAnchorTopPos, middleAnchorBottomPos, false, offsetX,
-					0, false, bandColor, 1f);
+					middleAnchorTopPos, middleAnchorBottomPos, false, offsetX, 0, false,
+					bandColor, 1f);
 
 			bandRenderer.renderStraightBand(gl, middleAnchorTopPos,
-					middleAnchorBottomPos, rightTopPos, rightBottomPos, false,
-					0, 0, false, bandColor, 1f);
+					middleAnchorBottomPos, rightTopPos, rightBottomPos, false, 0, 0,
+					false, bandColor, 1f);
 		}
-
 
 		// gl.glBegin(GL2.GL_QUADS);
 		//
@@ -109,8 +102,7 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 		// gl.glVertex3f(leftX, leftTopY, 2);
 		//
 		// gl.glEnd();
-		gl.glTranslatef(elementLayout.getTranslateX(),
-				elementLayout.getTranslateY(), 0);
+		gl.glTranslatef(elementLayout.getTranslateX(), elementLayout.getTranslateY(), 0);
 
 	}
 }

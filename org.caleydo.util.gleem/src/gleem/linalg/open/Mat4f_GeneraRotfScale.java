@@ -26,8 +26,7 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 	public Mat4f_GeneraRotfScale(final Mat4f_GeneraRotfScale copy) {
 		this();
 
-		setAllAndUpdate(copy.getCenterOfRotation(), copy.getScale(), copy
-				.getRotation());
+		setAllAndUpdate(copy.getCenterOfRotation(), copy.getScale(), copy.getRotation());
 	}
 
 	/**
@@ -35,8 +34,7 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 	 * @param scale
 	 * @param rotation
 	 */
-	public Mat4f_GeneraRotfScale(Vec3f centerOfRotation, Vec3f scale,
-			Rotf rotation) {
+	public Mat4f_GeneraRotfScale(Vec3f centerOfRotation, Vec3f scale, Rotf rotation) {
 		this();
 
 		setAllAndUpdate(centerOfRotation, scale, rotation);
@@ -104,8 +102,8 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 		Mat4f S = new Mat4f(Mat4f.MAT4F_UNITY);
 
 		T.setTranslation(centerOfRotation);
-		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation
-				.y(), -centerOfRotation.z()));
+		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation.y(),
+				-centerOfRotation.z()));
 
 		if (bNoRotation) {
 			R.makeIdent();
@@ -134,8 +132,8 @@ public class Mat4f_GeneraRotfScale extends Mat4f_GeneralRotf {
 	 * @param rotation
 	 *            the rotation to set
 	 */
-	public final void setAllAndUpdate(final Vec3f centerOfRotation,
-			final Vec3f scale, final Rotf rotation) {
+	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Vec3f scale,
+			final Rotf rotation) {
 
 		this.rotation.set(rotation);
 		this.centerOfRotation.set(centerOfRotation);

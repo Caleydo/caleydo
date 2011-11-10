@@ -128,8 +128,6 @@ public class PDDrawingStrategyRainbow extends APDDrawingStrategyChildIndicator {
 			fMidAngle += 360;
 		}
 
-		
-
 		float fArRGB[] = colorMapper.getColor(fMidAngle / 360.0f);
 
 		return new float[] { fArRGB[0], fArRGB[1], fArRGB[2], fTransparency };

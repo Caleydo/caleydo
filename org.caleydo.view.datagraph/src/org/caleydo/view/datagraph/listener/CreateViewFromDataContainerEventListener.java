@@ -5,8 +5,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 
-public class CreateViewFromDataContainerEventListener extends
-		AEventListener<GLDataGraph> {
+public class CreateViewFromDataContainerEventListener extends AEventListener<GLDataGraph> {
 
 	@Override
 	public void handleEvent(AEvent event) {
@@ -14,8 +13,7 @@ public class CreateViewFromDataContainerEventListener extends
 		if (event instanceof CreateViewFromDataContainerEvent) {
 
 			CreateViewFromDataContainerEvent e = (CreateViewFromDataContainerEvent) event;
-			handler.createView(e.getViewType(), e.getDataDomain(),
-					e.getDataContainer());
+			handler.createView(e.getViewType(), e.getDataDomain(), e.getDataContainer());
 
 		}
 

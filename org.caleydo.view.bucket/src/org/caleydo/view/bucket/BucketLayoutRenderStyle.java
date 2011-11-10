@@ -370,7 +370,7 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 		}
 
 		float fX = -2f * fXScaling;
-		
+
 		if (bIsZoomedIn)
 			fZ = 0.1f;
 		else
@@ -378,14 +378,13 @@ public class BucketLayoutRenderStyle extends ARemoteViewLayoutRenderStyle {
 
 		int iRemoteLevelElementIndex = 0;
 		for (RemoteLevelElement element : poolLevel.getAllElements()) {
-			
+
 			// Handle right side of bucket pool
-			if (iRemoteLevelElementIndex == poolLevel.getCapacity() / 2)
-			{
+			if (iRemoteLevelElementIndex == poolLevel.getCapacity() / 2) {
 				fYAdd = fYTop;
 				fX = -fX - 0.715f;
 			}
-			
+
 			if (element.getID() == iSelectedRemoteLevelElementID) {
 				fSelectedScaling = 1.8f;
 				fYAdd -= 0.3f * fSelectedScaling;

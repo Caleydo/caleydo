@@ -40,14 +40,14 @@ public class ColorManager {
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(252f / 255f, 205f / 255f, 229f / 255f),
 			false));
-//		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(217f / 255f, 217f / 255f, 217f / 255f),
-//			false));
+		// dataDomainColorList.add(new Pair<Color, Boolean>(new Color(217f / 255f, 217f / 255f, 217f / 255f),
+		// false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(188f / 255f, 128f / 255f, 189f / 255f),
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(204f / 255f, 235f / 255f, 197f / 255f),
 			false));
 		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 237f / 255f, 111f / 255f), false));
-//		dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 1f, 179f / 255f), false));
+		// dataDomainColorList.add(new Pair<Color, Boolean>(new Color(1f, 1f, 179f / 255f), false));
 		// 141, 211, 199;
 		// 255, 255, 179;
 		// 190, 186, 218;

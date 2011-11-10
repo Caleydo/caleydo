@@ -65,8 +65,8 @@ public class TreeClusterer
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
 
 	// Hash maps needed for determine cluster names. The name of a cluster has to be unique.
-//	HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
-//	HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
+	// HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
+	// HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
 
 	@Override
 	public void setClusterState(ClusterConfiguration clusterState) {
@@ -402,7 +402,6 @@ public class TreeClusterer
 
 		ClosestPair pair = null;
 
-
 		float[][] distmatrix;
 
 		try {
@@ -622,8 +621,6 @@ public class TreeClusterer
 		for (int j = 0; j < iNrSamples; j++)
 			clusterid[j] = j;
 
-		
-
 		int j;
 
 		ClosestPair pair = null;
@@ -742,20 +739,20 @@ public class TreeClusterer
 			nodeName = dataDomain.getDimensionLabel(dimensionVA.get(index));
 		}
 
-//		// check if current node name was already used. If yes we add signs to make it unique.
-//		if (hashedNodeNames.containsKey(nodeName)) {
-//			int iNr = 1;
-//			if (duplicatedNodes.containsKey(nodeName)) {
-//				iNr = duplicatedNodes.get(nodeName);
-//				duplicatedNodes.put(nodeName, ++iNr);
-//			}
-//			else
-//				duplicatedNodes.put(nodeName, iNr);
-//
-//			nodeName = nodeName + "__" + iNr;
-//		}
-//		else
-//			hashedNodeNames.put(nodeName, 1);
+		// // check if current node name was already used. If yes we add signs to make it unique.
+		// if (hashedNodeNames.containsKey(nodeName)) {
+		// int iNr = 1;
+		// if (duplicatedNodes.containsKey(nodeName)) {
+		// iNr = duplicatedNodes.get(nodeName);
+		// duplicatedNodes.put(nodeName, ++iNr);
+		// }
+		// else
+		// duplicatedNodes.put(nodeName, iNr);
+		//
+		// nodeName = nodeName + "__" + iNr;
+		// }
+		// else
+		// hashedNodeNames.put(nodeName, 1);
 
 		return nodeName;
 	}

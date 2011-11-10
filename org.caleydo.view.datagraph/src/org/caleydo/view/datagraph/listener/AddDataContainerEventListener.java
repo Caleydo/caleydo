@@ -11,9 +11,9 @@ public class AddDataContainerEventListener extends AEventListener<GLDataGraph> {
 	public void handleEvent(AEvent event) {
 		if (event instanceof AddDataContainerEvent) {
 			AddDataContainerEvent e = (AddDataContainerEvent) event;
-			handler.createDataContainer(e.getDataDomain(),
-					e.getRecordPerspectiveID(), e.getDimensionPerspectiveID(),
-					e.isCreateDimensionPerspective(), e.getDimensionVA(), e.getGroup());
+			handler.createDataContainer(e.getDataDomain(), e.getRecordPerspectiveID(),
+					e.getDimensionPerspectiveID(), e.isCreateDimensionPerspective(),
+					e.getDimensionVA(), e.getGroup());
 		}
 
 	}

@@ -32,8 +32,7 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 		topDimensionGroupPositions = new HashMap<Integer, Pair<Point2D, Point2D>>();
 	}
 
-	public abstract void setDataContainers(
-			List<DataContainer> dataContainers);
+	public abstract void setDataContainers(List<DataContainer> dataContainers);
 
 	public Pair<Point2D, Point2D> getBottomAnchorPointsOfDataContainer(
 			DataContainer dataContainer) {

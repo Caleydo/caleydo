@@ -23,7 +23,7 @@ public class SerializedHierarchicalTreeMapView extends ASerializedTopLevelDataVi
 	public SerializedHierarchicalTreeMapView(String dataDomainType) {
 		super(dataDomainType);
 	}
-	
+
 	@Override
 	public String getViewType() {
 		return GLHierarchicalTreeMap.VIEW_TYPE;

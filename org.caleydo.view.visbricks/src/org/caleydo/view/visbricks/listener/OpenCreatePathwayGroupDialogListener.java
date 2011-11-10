@@ -11,8 +11,7 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
  * @author Partl
  * 
  */
-public class OpenCreatePathwayGroupDialogListener extends
-		AEventListener<GLBrick> {
+public class OpenCreatePathwayGroupDialogListener extends AEventListener<GLBrick> {
 
 	@Override
 	public void handleEvent(AEvent event) {

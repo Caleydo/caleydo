@@ -115,12 +115,11 @@ public class BSphere {
 			}
 		}
 		// Compute the average -- this is the new center
-		center.add(minIntPt.getIntersectionPoint(), maxIntPt
-				.getIntersectionPoint());
+		center.add(minIntPt.getIntersectionPoint(), maxIntPt.getIntersectionPoint());
 		center.scale(0.5f);
 		// Compute half the length -- this is the radius
-		setRadius(0.5f * minIntPt.getIntersectionPoint().minus(
-				maxIntPt.getIntersectionPoint()).length());
+		setRadius(0.5f * minIntPt.getIntersectionPoint()
+				.minus(maxIntPt.getIntersectionPoint()).length());
 	}
 
 	/**
@@ -128,8 +127,8 @@ public class BSphere {
 	 * one or both of intPt0 and intPt1. Returns number of intersections which
 	 * occurred.
 	 */
-	int intersectRay(Vec3f rayStart, Vec3f rayDirection,
-			IntersectionPoint intPt0, IntersectionPoint intPt1) {
+	int intersectRay(Vec3f rayStart, Vec3f rayDirection, IntersectionPoint intPt0,
+			IntersectionPoint intPt1) {
 		// Solve quadratic equation
 		float a = rayDirection.lengthSquared();
 		if (a == 0.0)

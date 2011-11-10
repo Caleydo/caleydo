@@ -43,7 +43,7 @@ public class SaveProjectAction
 
 		if (fileName == null)
 			return;
-		
+
 		ProjectSaver save = new ProjectSaver();
 		save.save(fileName);
 	}

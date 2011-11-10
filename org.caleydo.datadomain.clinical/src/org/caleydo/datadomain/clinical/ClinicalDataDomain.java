@@ -5,7 +5,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -41,7 +40,6 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
 		icon = EIconTextures.DATA_DOMAIN_CLINICAL;
 	}
-
 
 	@Override
 	public void setTable(DataTable set) {
@@ -89,10 +87,10 @@ public class ClinicalDataDomain extends ATableBasedDataDomain {
 	@Override
 	public void createDefaultConfiguration() {
 		// FIXME create default config
-		
+
 		recordIDCategory = IDCategory.getIDCategory("EXPERIMENT");
 		dimensionIDCategory = IDCategory.getIDCategory("EXPERIMENT_DATA");
-		
+
 		throw new IllegalStateException();
 	}
 

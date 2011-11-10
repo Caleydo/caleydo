@@ -36,6 +36,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		this.detailHeatMap = detailHeatMap;
 	}
 
+	@Override
 	public void render(GL2 gl) {
 
 		// gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);

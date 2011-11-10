@@ -85,11 +85,10 @@ public class StartupProcessor {
 					appInitData.addStartView(view, dataDomain);
 				}
 			}
-			
+
 			changeWorkspaceLocation();
 			GeneralManager.get().getSWTGUIManager();
 
-			
 			if (startupProcedure == null) {
 				Shell shell = new Shell();
 				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
@@ -98,9 +97,9 @@ public class StartupProcessor {
 					shutdown();
 				}
 			}
-		
+
 			startupProcedure.initPreWorkbenchOpen();
-			initRCPWorkbench(); 
+			initRCPWorkbench();
 		}
 	}
 
@@ -112,16 +111,16 @@ public class StartupProcessor {
 
 		final Location instanceLoc = Platform.getInstanceLocation();
 
-		String workspacePath = "file://"+GeneralManager.CALEYDO_HOME_PATH;
+		String workspacePath = "file://" + GeneralManager.CALEYDO_HOME_PATH;
 		try {
 			URL workspaceURL = new URL(workspacePath);
 			instanceLoc.set(workspaceURL, false);
 		}
 		catch (Exception e) {
-			throw new IllegalStateException("Cannot set workspace location at "+workspacePath);
+			throw new IllegalStateException("Cannot set workspace location at " + workspacePath);
 		}
 	}
-	
+
 	/**
 	 * Static method for initializing the Caleydo core. Called when initializing the workbench because XML
 	 * startup the progress bar is needed
@@ -131,7 +130,7 @@ public class StartupProcessor {
 		startupProcedure.init(appInitData);
 		startupProcedure.execute();
 
-//		ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
+		// ColorMappingManager.get().initiFromPreferenceStore(ColorMappingType.GENE_EXPRESSION);
 	}
 
 	private void initRCPWorkbench() {
@@ -140,10 +139,10 @@ public class StartupProcessor {
 			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
-					
+
 			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 		}
-		finally {	
+		finally {
 			shutdown();
 		}
 	}

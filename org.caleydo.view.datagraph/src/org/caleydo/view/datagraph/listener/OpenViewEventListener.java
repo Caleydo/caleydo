@@ -9,8 +9,8 @@ public class OpenViewEventListener extends AEventListener<GLDataGraph> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof OpenViewEvent) {
-			OpenViewEvent openViewEvent = (OpenViewEvent)event;
+		if (event instanceof OpenViewEvent) {
+			OpenViewEvent openViewEvent = (OpenViewEvent) event;
 			handler.openView(openViewEvent.getView());
 		}
 	}

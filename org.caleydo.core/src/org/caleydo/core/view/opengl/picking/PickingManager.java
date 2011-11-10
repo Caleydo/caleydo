@@ -338,15 +338,15 @@ public class PickingManager {
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), true);
-			 pickPoint = glMouseListener.getPickedPoint();
-			 ePickingMode = PickingMode.MOUSE_OVER;
+			pickPoint = glMouseListener.getPickedPoint();
+			ePickingMode = PickingMode.MOUSE_OVER;
 		}
 		else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
 			&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
-//			pickPoint = glMouseListener.getPickedPoint();
-//			 hashViewIDToLastMouseMovedTimeStamp.put(viewID,
+			// pickPoint = glMouseListener.getPickedPoint();
+			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
-//			ePickingMode = PickingMode.MOUSE_OVER;
+			// ePickingMode = PickingMode.MOUSE_OVER;
 		}
 
 		if (pickPoint == null)

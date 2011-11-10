@@ -25,11 +25,11 @@ public abstract class AEdgeLineRenderer extends AEdgeRenderer {
 	}
 
 	@Override
-	public void renderEdge(GL2 gl,
-			ConnectionBandRenderer connectionBandRenderer, boolean highlight) {
+	public void renderEdge(GL2 gl, ConnectionBandRenderer connectionBandRenderer,
+			boolean highlight) {
 		gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
-//		gl.glLineWidth(2);
+		// gl.glLineWidth(2);
 		gl.glEnable(GL2.GL_LINE_STIPPLE);
 		gl.glLineStipple(1, (short) 127);
 
@@ -45,8 +45,7 @@ public abstract class AEdgeLineRenderer extends AEdgeRenderer {
 		edgeRoutingStrategy.setNodes(node1, node2);
 		edgeRoutingStrategy.createEdge(edgePoints);
 
-		render(gl, edgePoints, connectionBandRenderer, position1, position2,
-				highlight);
+		render(gl, edgePoints, connectionBandRenderer, position1, position2, highlight);
 		gl.glPopAttrib();
 
 	}

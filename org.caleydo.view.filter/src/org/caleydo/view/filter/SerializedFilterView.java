@@ -4,7 +4,6 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
-import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Serialized filter view view.

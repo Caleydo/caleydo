@@ -9,8 +9,7 @@ import org.caleydo.view.filter.RcpFilterView;
  * 
  * @author Marc Streit
  */
-public class FilterUpdateListener
-	extends AEventListener<RcpFilterView> {
+public class FilterUpdateListener extends AEventListener<RcpFilterView> {
 
 	@Override
 	public void handleEvent(AEvent event) {

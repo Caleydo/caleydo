@@ -595,7 +595,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						for (Integer groupID : selectedGroups) {
 							selectedNodes.add(hashGroups.get(groupID).getClusterNode());
 						}
-						
+
 						ArrayList<DataContainer> dataContainers = makeDataContainers(selectedNodes);
 
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
@@ -603,7 +603,6 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
 
-			
 						contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 
 						bContextMenueItemsAvailable = true;
@@ -612,8 +611,6 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();
-
-							
 
 							if (dataContainers.size() == 2) {
 
@@ -714,7 +711,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			DataContainer dataContainer1 = dataDomain.getDataContainer(dataContainer
 					.getRecordPerspective().getID(), subDimensionPerspective1.getID());
 			dataContainers.add(dataContainer1);
-			
+
 		}
 		return dataContainers;
 

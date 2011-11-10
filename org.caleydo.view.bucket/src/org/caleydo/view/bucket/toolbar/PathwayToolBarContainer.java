@@ -34,10 +34,11 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		PathwaySearchBox pathwaySearchBox = new PathwaySearchBox("");
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
 		elements.add(pathwaySearchBox);
-		
-//		TextureAction textureAction = new TextureAction(pathwayToolBarMediator);
-//		textureAction.setTexturesEnabled(targetViewData.isPathwayTexturesEnabled());
-//		elements.add(textureAction);
+
+		// TextureAction textureAction = new
+		// TextureAction(pathwayToolBarMediator);
+		// textureAction.setTexturesEnabled(targetViewData.isPathwayTexturesEnabled());
+		// elements.add(textureAction);
 
 		GeneMappingAction geneMappingAction = new GeneMappingAction(
 				pathwayToolBarMediator);

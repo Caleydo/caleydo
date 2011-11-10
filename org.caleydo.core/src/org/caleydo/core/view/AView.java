@@ -30,7 +30,7 @@ public abstract class AView
 	protected GeneralManager generalManager;
 
 	protected EventPublisher eventPublisher;
-	
+
 	protected Composite parentComposite;
 
 	/**
@@ -74,12 +74,11 @@ public abstract class AView
 	public String getViewType() {
 		return viewType;
 	}
-	
+
 	public Set<IDataDomain> getDataDomains() {
 		return null;
 	}
 
-	
 	/**
 	 * Determines whether the view displays concrete data of a data set or not.
 	 * 
@@ -88,7 +87,7 @@ public abstract class AView
 	public boolean isDataView() {
 		return false;
 	}
-	
+
 	public Composite getParentComposite() {
 		return parentComposite;
 	}

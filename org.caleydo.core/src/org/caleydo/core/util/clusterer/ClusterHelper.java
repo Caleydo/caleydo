@@ -73,20 +73,20 @@ public class ClusterHelper {
 		return (float) Math.sqrt(standardDeviation / iCnt);
 	}
 
-//	public static void calculateClusterAverages(DimensionPerspective dimensionData,
-//		RecordPerspective recordPerspective, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
-//
-//		DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
-//		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
-//		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
-//			calculateClusterAveragesRecursive(recordPerspective.getTree(), recordPerspective.getTree().getRoot(),
-//				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
-//		}
-//		else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
-//			calculateClusterAveragesRecursive(dimensionData.getTree(), dimensionData.getTree().getRoot(),
-//				eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
-//		}
-//	}
+	// public static void calculateClusterAverages(DimensionPerspective dimensionData,
+	// RecordPerspective recordPerspective, ClustererType eClustererType, ATableBasedDataDomain dataDomain) {
+	//
+	// DimensionVirtualArray dimensionVA = dimensionData.getVirtualArray();
+	// RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+	// if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+	// calculateClusterAveragesRecursive(recordPerspective.getTree(), recordPerspective.getTree().getRoot(),
+	// eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
+	// }
+	// else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
+	// calculateClusterAveragesRecursive(dimensionData.getTree(), dimensionData.getTree().getRoot(),
+	// eClustererType, dataDomain.getTable(), dimensionVA, recordVA);
+	// }
+	// }
 
 	public static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
 		ClustererType clustererType, DataTable table, DimensionVirtualArray dimensionVA,
@@ -179,7 +179,7 @@ public class ClusterHelper {
 		if (node.isLeaf()) {
 			float uncertainty = 0;
 			// FIXME
-//				(float) table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
+			// (float) table.getStatisticsResult().getAggregatedUncertainty()[node.getLeafID()];
 			result.setFirst(uncertainty);
 			result.setSecond(1);
 			node.setUncertainty(uncertainty);

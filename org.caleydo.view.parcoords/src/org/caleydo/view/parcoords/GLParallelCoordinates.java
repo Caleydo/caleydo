@@ -63,7 +63,6 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -1670,8 +1669,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		} else {
 
 			x = viewFrustum.getLeft() + renderStyle.getXSpacing();
-			y = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED,
-					id, dimensionVA.get(0));
+			y = dataDomain.getTable().getFloat(DataRepresentation.NORMALIZED, id,
+					dimensionVA.get(0));
 
 			// // get the value on the leftmost axis
 			// fYValue =
@@ -1838,10 +1837,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		for (Integer iCurrent : recordVA) {
 
-			vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED,
-					iCurrent, leftAxisIndex) * renderStyle.getAxisHeight());
-			vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED,
-					iCurrent, rightAxisIndex) * renderStyle.getAxisHeight());
+			vecLeftPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iCurrent,
+					leftAxisIndex) * renderStyle.getAxisHeight());
+			vecRightPoint.setY(table.getFloat(DataRepresentation.NORMALIZED, iCurrent,
+					rightAxisIndex) * renderStyle.getAxisHeight());
 
 			vecLeftPoint.setX(axisSpacings.get(iPosition));
 			vecRightPoint.setX(axisSpacings.get(iPosition + 1));
@@ -2069,152 +2068,154 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		return new ArrayList<AGLView>();
 	}
 
-
 	@Override
 	public int getMinPixelHeight() {
 		// TODO: Calculate depending on content
 		return 100;
 	}
 
-//	private float[] generateVertexBuffer() {
-//		int numberOfVertices = table.getMetaData().depth() * table.getMetaData().size()
-//				* 2;
-//
-//		float vertices[] = new float[numberOfVertices];
-//		int vertexCounter = 0;
-//
-//		for (int index = 0; index < table.getMetaData().depth(); index++) {
-//			int dimensionCounter = 0;
-//			for (Integer dimensionID : dimensionVA) {
-//				float xValue = 0.2f * dimensionCounter++;
-//
-//				float yValue = table.getFloat(DataRepresentation.NORMALIZED, dimensionID,
-//						index);
-//				vertices[vertexCounter++] = xValue;
-//				vertices[vertexCounter++] = yValue;
-//			}
-//		}
-//
-//		return vertices;
-//	}
-//
-//	private void displayVBO(GL2 gl) {
-//		// GLHelperFunctions.drawPointAt(gl, 0.5f, 0.5f, 0f);
-//
-//		gl.glColor3f(0, 0, 1);
-//		// int[] indices = { 0, 1, 1, 2, 2, 3, 3};
-//		int size = 100000;
-//		int[] indices = new int[size];
-//		for (int count = 0; count < size - 1;) {
-//			if (count - 1 >= 0) {
-//				indices[count] = indices[count - 1];
-//				indices[count + 1] = count;
-//			} else {
-//				indices[count] = 0;
-//				indices[count + 1] = 1;
-//			}
-//			count += 2;
-//
-//		}
-//		IntBuffer indexBuffer = Buffers.newDirectIntBuffer(indices);
-//		indexBuffer.rewind();
-//
-//		if (vertexBufferIndices[0] == -1) {
-//			// float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
-//			// 2, 5, 6};
-//
-//			float vertices[] = generateVertexBuffer();
-//
-//			FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertices);
-//
-//			vertexBuffer.rewind();
-//
-//			if (!gl.isFunctionAvailable("glGenBuffers")
-//					|| !gl.isFunctionAvailable("glBindBuffer")
-//					|| !gl.isFunctionAvailable("glBufferData")
-//					|| !gl.isFunctionAvailable("glDeleteBuffers")) {
-//				throw new IllegalStateException("Vertex Buffer Objects not supported");
-//			}
-//			gl.glGenBuffers(1, vertexBufferIndices, 0);
-//			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-//			gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length * Buffers.SIZEOF_FLOAT,
-//					vertexBuffer, GL2.GL_DYNAMIC_DRAW);
-//			gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-//			// ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER,
-//			// GL2.GL_WRITE_ONLY);
-//			// FloatBuffer floatBuffer =
-//			// bytebuffer.order(ByteOrder.nativeOrder())
-//			// .asFloatBuffer();
-//
-//			// for (float vertex : vertices) {
-//			// floatBuffer.put(vertex);
-//			// }
-//			gl.glUnmapBuffer(GL.GL_ARRAY_BUFFER);
-//
-//		}
-//
-//		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
-//		gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-//		// gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
-//		gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
-//		gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
-//		gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT, indexBuffer);
-//		gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
-//		gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-//		// gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
-//		// gl.glDisable(GL2.GL_COLOR_MATERIAL);
-//
-//		// glcanvas.swapBuffers();
-//
-//		// FloatBuffer colorBuffer = BufferUtil.newFloatBuffer(colors.length);
-//		// colorBuffer.put(colors);
-//		// colorBuffer.rewind();
-//
-//		// gl.glLineWidth(4);
-//		// gl.glColor3f(0, 1, 1);
-//		//
-//		// // gl.glGenBuffersARB(vertices.length, )
-//		// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-//		//
-//		// // gl.glColorPointer(3, GL2.GL_FLOAT, 0, colorBuffer);
-//		// gl.glDrawElements(GL2.GL_LINE_STRIP, indices.length,
-//		// GL2.GL_UNSIGNED_INT,
-//		// indexBuffer);
-//		// gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
-//		// gl.glFlush();
-//
-//		// int vertices[] = new int[] { 1, 1, 3, 2, 5, 1, 3, 5, 5, 1, 1,
-//		// 5 };
-//		// float colors[] = new float[] { 1.0f, 0.2f, 0.2f, 0.2f, 0.2f, 1.0f,
-//		// 0.8f, 1.0f,
-//		// 0.2f, 0.75f, 0.75f, 0.75f, 0.35f, 0.35f, 0.35f, 0.5f, 0.5f, 0.5f };
-//		// IntBuffer tmpVerticesBuf = BufferUtil.newIntBuffer(vertices.length);
-//		// FloatBuffer tmpColorsBuf = BufferUtil.newFloatBuffer(colors.length);
-//		// for (int i = 0; i < vertices.length; i++)
-//		// tmpVerticesBuf.put(vertices[i]);
-//		// for (int j = 0; j < colors.length; j++)
-//		// tmpColorsBuf.put(colors[j]);
-//		// tmpVerticesBuf.rewind();
-//		// tmpColorsBuf.rewind();
-//		// //
-//		// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
-//		// gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
-//		// //
-//		// gl.glVertexPointer(2, GL2.GL_INT, 0, tmpVerticesBuf);
-//		// gl.glColorPointer(3, GL2.GL_FLOAT, 0, tmpColorsBuf);
-//		// // this.verticesBuf = tmpVerticesBuf;
-//		// // this.colorsBuf = tmpColorsBuf;
-//		//
-//		// int indices[] = new int[] { 0, 1, 3, 4 };
-//		// IntBuffer indicesBuf = BufferUtil.newIntBuffer(indices.length);
-//		// for (int i = 0; i < indices.length; i++)
-//		// indicesBuf.put(indices[i]);
-//		// indicesBuf.rewind();
-//		// gl.glDrawElements(GL2.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
-//		// indicesBuf);
-//		//
-//		// gl.glFlush();
-//	}
+	// private float[] generateVertexBuffer() {
+	// int numberOfVertices = table.getMetaData().depth() *
+	// table.getMetaData().size()
+	// * 2;
+	//
+	// float vertices[] = new float[numberOfVertices];
+	// int vertexCounter = 0;
+	//
+	// for (int index = 0; index < table.getMetaData().depth(); index++) {
+	// int dimensionCounter = 0;
+	// for (Integer dimensionID : dimensionVA) {
+	// float xValue = 0.2f * dimensionCounter++;
+	//
+	// float yValue = table.getFloat(DataRepresentation.NORMALIZED, dimensionID,
+	// index);
+	// vertices[vertexCounter++] = xValue;
+	// vertices[vertexCounter++] = yValue;
+	// }
+	// }
+	//
+	// return vertices;
+	// }
+	//
+	// private void displayVBO(GL2 gl) {
+	// // GLHelperFunctions.drawPointAt(gl, 0.5f, 0.5f, 0f);
+	//
+	// gl.glColor3f(0, 0, 1);
+	// // int[] indices = { 0, 1, 1, 2, 2, 3, 3};
+	// int size = 100000;
+	// int[] indices = new int[size];
+	// for (int count = 0; count < size - 1;) {
+	// if (count - 1 >= 0) {
+	// indices[count] = indices[count - 1];
+	// indices[count + 1] = count;
+	// } else {
+	// indices[count] = 0;
+	// indices[count + 1] = 1;
+	// }
+	// count += 2;
+	//
+	// }
+	// IntBuffer indexBuffer = Buffers.newDirectIntBuffer(indices);
+	// indexBuffer.rewind();
+	//
+	// if (vertexBufferIndices[0] == -1) {
+	// // float vertices[] = new float[] { 0.0f, 0.0f, 0.5f, 0.5f, 2, 1, 4,
+	// // 2, 5, 6};
+	//
+	// float vertices[] = generateVertexBuffer();
+	//
+	// FloatBuffer vertexBuffer = Buffers.newDirectFloatBuffer(vertices);
+	//
+	// vertexBuffer.rewind();
+	//
+	// if (!gl.isFunctionAvailable("glGenBuffers")
+	// || !gl.isFunctionAvailable("glBindBuffer")
+	// || !gl.isFunctionAvailable("glBufferData")
+	// || !gl.isFunctionAvailable("glDeleteBuffers")) {
+	// throw new IllegalStateException("Vertex Buffer Objects not supported");
+	// }
+	// gl.glGenBuffers(1, vertexBufferIndices, 0);
+	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
+	// gl.glBufferData(GL.GL_ARRAY_BUFFER, vertices.length *
+	// Buffers.SIZEOF_FLOAT,
+	// vertexBuffer, GL2.GL_DYNAMIC_DRAW);
+	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
+	// // ByteBuffer bytebuffer = gl.glMapBuffer(GL.GL_ARRAY_BUFFER,
+	// // GL2.GL_WRITE_ONLY);
+	// // FloatBuffer floatBuffer =
+	// // bytebuffer.order(ByteOrder.nativeOrder())
+	// // .asFloatBuffer();
+	//
+	// // for (float vertex : vertices) {
+	// // floatBuffer.put(vertex);
+	// // }
+	// gl.glUnmapBuffer(GL.GL_ARRAY_BUFFER);
+	//
+	// }
+	//
+	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, vertexBufferIndices[0]);
+	// gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+	// // gl.glEnableClientState( GL2.GL_COLOR_ARRAY )
+	// gl.glVertexPointer(2, GL2.GL_FLOAT, 0, 0);
+	// gl.glDrawArrays(GL.GL_LINE_STRIP, 0, vertexBufferIndices[0]);
+	// gl.glDrawElements(GL2.GL_LINES, indices.length, GL2.GL_UNSIGNED_INT,
+	// indexBuffer);
+	// gl.glBindBuffer(GL.GL_ARRAY_BUFFER, 0);
+	// gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+	// // gl.glDisableClientState(GL2.GL_COLOR_ARRAY);
+	// // gl.glDisable(GL2.GL_COLOR_MATERIAL);
+	//
+	// // glcanvas.swapBuffers();
+	//
+	// // FloatBuffer colorBuffer = BufferUtil.newFloatBuffer(colors.length);
+	// // colorBuffer.put(colors);
+	// // colorBuffer.rewind();
+	//
+	// // gl.glLineWidth(4);
+	// // gl.glColor3f(0, 1, 1);
+	// //
+	// // // gl.glGenBuffersARB(vertices.length, )
+	// // gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+	// //
+	// // // gl.glColorPointer(3, GL2.GL_FLOAT, 0, colorBuffer);
+	// // gl.glDrawElements(GL2.GL_LINE_STRIP, indices.length,
+	// // GL2.GL_UNSIGNED_INT,
+	// // indexBuffer);
+	// // gl.glDisableClientState(GL2.GL_VERTEX_ARRAY);
+	// // gl.glFlush();
+	//
+	// // int vertices[] = new int[] { 1, 1, 3, 2, 5, 1, 3, 5, 5, 1, 1,
+	// // 5 };
+	// // float colors[] = new float[] { 1.0f, 0.2f, 0.2f, 0.2f, 0.2f, 1.0f,
+	// // 0.8f, 1.0f,
+	// // 0.2f, 0.75f, 0.75f, 0.75f, 0.35f, 0.35f, 0.35f, 0.5f, 0.5f, 0.5f };
+	// // IntBuffer tmpVerticesBuf = BufferUtil.newIntBuffer(vertices.length);
+	// // FloatBuffer tmpColorsBuf = BufferUtil.newFloatBuffer(colors.length);
+	// // for (int i = 0; i < vertices.length; i++)
+	// // tmpVerticesBuf.put(vertices[i]);
+	// // for (int j = 0; j < colors.length; j++)
+	// // tmpColorsBuf.put(colors[j]);
+	// // tmpVerticesBuf.rewind();
+	// // tmpColorsBuf.rewind();
+	// // //
+	// // gl.glEnableClientState(GL2.GL_VERTEX_ARRAY);
+	// // gl.glEnableClientState(GL2.GL_COLOR_ARRAY);
+	// // //
+	// // gl.glVertexPointer(2, GL2.GL_INT, 0, tmpVerticesBuf);
+	// // gl.glColorPointer(3, GL2.GL_FLOAT, 0, tmpColorsBuf);
+	// // // this.verticesBuf = tmpVerticesBuf;
+	// // // this.colorsBuf = tmpColorsBuf;
+	// //
+	// // int indices[] = new int[] { 0, 1, 3, 4 };
+	// // IntBuffer indicesBuf = BufferUtil.newIntBuffer(indices.length);
+	// // for (int i = 0; i < indices.length; i++)
+	// // indicesBuf.put(indices[i]);
+	// // indicesBuf.rewind();
+	// // gl.glDrawElements(GL2.GL_LINE_STRIP, 4, GL2.GL_UNSIGNED_INT,
+	// // indicesBuf);
+	// //
+	// // gl.glFlush();
+	// }
 
 	@Override
 	public int getMinPixelHeight(DetailLevel detailLevel) {

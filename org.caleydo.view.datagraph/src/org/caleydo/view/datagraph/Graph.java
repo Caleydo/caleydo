@@ -123,8 +123,8 @@ public class Graph {
 
 		if (nodeEdges != null) {
 			for (Edge edge : nodeEdges) {
-				IDataGraphNode neighbor = edge.getNode1() == node ? edge
-						.getNode2() : edge.getNode1();
+				IDataGraphNode neighbor = edge.getNode1() == node ? edge.getNode2()
+						: edge.getNode1();
 				Set<Edge> neighborEdges = nodeConnections.get(neighbor);
 				if (neighborEdges != null) {
 					neighborEdges.remove(edge);

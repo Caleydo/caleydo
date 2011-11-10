@@ -58,12 +58,14 @@ public class TagRenderer extends LayoutRenderer {
 			break;
 		}
 
-		if (!tagCloud.getDataContainer().getRecordPerspective().getVirtualArray().contains(recordID))
+		if (!tagCloud.getDataContainer().getRecordPerspective().getVirtualArray()
+				.contains(recordID))
 			return;
 		text = tagCloud.getDataDomain().getTable().getRawAsString(dimensionID, recordID);
 
 	}
 
+	@Override
 	public void render(GL2 gl) {
 
 		float sideSpacing = 0.1f;

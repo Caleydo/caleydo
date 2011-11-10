@@ -17,21 +17,21 @@ public class RcpGLDataFlipperView extends ARcpGLViewPart {
 		super();
 
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedDataFlipperView.class);
+			viewContext = JAXBContext.newInstance(SerializedDataFlipperView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
-		
+
 		// iAlContainedViewIDs = new ArrayList<Integer>();
 	}
 
 	@Override
 	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
-		
+
 		createGLCanvas();
-		view = new GLDataFlipper(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLDataFlipper(glCanvas, parentComposite,
+				serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
 		createPartControlGL();

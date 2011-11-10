@@ -74,8 +74,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		int count = 0;
 		for (DimensionGroup dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getDataContainer().getRecordPerspective()
-					.getID();
+			currentID = dimensionGroup.getDataContainer().getRecordPerspective().getID();
 			if (currentID.equals(perspectiveID) && isLeft) {
 				neighborPerspectiveID = previousID;
 				if (neighborPerspectiveID != null)
@@ -133,7 +132,8 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 			gl.glVertex3f(0, yOffset, 0);
 			gl.glVertex3f(x, yOffset, 0);
 			if (brick.getRecordGroupSelectionManager().checkStatus(
-					SelectionType.SELECTION, brick.getDataContainer().getRecordGroup().getID()))
+					SelectionType.SELECTION,
+					brick.getDataContainer().getRecordGroup().getID()))
 				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 			else
 

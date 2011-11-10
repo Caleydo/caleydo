@@ -13,11 +13,8 @@ import org.caleydo.util.graph.item.IGraphDataHandler;
  * @see org.caleydo.util.graph.IGraph
  * @author Michael Kalkusch
  */
-public interface IGraphItem
-		extends
-			IGraphDataHandler,
-			IGraphItemHierarchy,
-			IGraphComponent {
+public interface IGraphItem extends IGraphDataHandler, IGraphItemHierarchy,
+		IGraphComponent {
 
 	/* ---------------- */
 

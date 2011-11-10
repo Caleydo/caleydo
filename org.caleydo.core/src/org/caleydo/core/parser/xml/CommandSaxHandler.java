@@ -66,7 +66,7 @@ public class CommandSaxHandler
 
 		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE5.getXmlKey(),
 			CommandType.TAG_ATTRIBUTE5.getDefault(), ParameterHandlerType.STRING);
-		
+
 		phAttributes.setValueBySaxAttributes(attrs, CommandType.TAG_ATTRIBUTE6.getXmlKey(),
 			CommandType.TAG_ATTRIBUTE6.getDefault(), ParameterHandlerType.STRING);
 

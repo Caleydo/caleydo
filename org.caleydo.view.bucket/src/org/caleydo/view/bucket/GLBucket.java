@@ -452,7 +452,7 @@ public class GLBucket extends AGLView implements
 			glConnectionLineRenderer.setActiveViewID(activeViewID); // FIXME:
 			// added
 			// FIXME: causes crash when added
-			//glConnectionLineRenderer.render(gl);
+			// glConnectionLineRenderer.render(gl);
 		}
 	}
 
@@ -2474,13 +2474,13 @@ public class GLBucket extends AGLView implements
 					.get().getDataDomainByID(
 							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
-		
+
 		if (glView instanceof ATableBasedView) {
 			ATableBasedView tableBasedView = (ATableBasedView) glView;
 			tableBasedView.setDataContainer(dataContainer);
 			tableBasedView.initialize();
 		}
-		
+
 		if (glView instanceof GLPathway) {
 			GLPathway glPathway = (GLPathway) glView;
 			glPathway.setPathway(((SerializedPathwayView) serView).getPathwayID());

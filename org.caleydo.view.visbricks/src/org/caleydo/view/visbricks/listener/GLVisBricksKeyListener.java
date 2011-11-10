@@ -7,7 +7,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
 public class GLVisBricksKeyListener extends GLKeyListener<GLVisBricks> {
-	
+
 	private boolean isCtrlDown;
 
 	@Override
@@ -29,7 +29,7 @@ public class GLVisBricksKeyListener extends GLKeyListener<GLVisBricks> {
 		if (event.stateMask == SWT.CTRL)
 			isCtrlDown = false;
 	}
-	
+
 	public boolean isCtrlDown() {
 		return isCtrlDown;
 	}

@@ -68,7 +68,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 	private SelectionUpdateListener selectionUpdateListener;
 	private RecordVAUpdateListener recordVAUpdateListener;
-	
+
 	private RecordPerspective recordPerspective;
 
 	private IDType primaryIDType;
@@ -122,7 +122,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 					+ experimentIndex % 24 + ".jpg");
 
 			SerializedTextureView tissue = new SerializedTextureView();
-			//tissue.setDataDomainID("org.caleydo.view.texture");
+			// tissue.setDataDomainID("org.caleydo.view.texture");
 			tissue.setTexturePath(mapExperimentToTexturePath.get(experimentIndex));
 
 			tissue.setExperimentIndex(experimentIndex);
@@ -247,7 +247,6 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 		spawnLevel.getElementByPositionIndex(0).setTransform(transform);
 	}
 
-
 	// /**
 	// * This method generates only valid associations for Asslaber dataset!
 	// */
@@ -351,7 +350,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	protected void removeSelection(int iElementID) {
 
 		experiementSelectionManager.remove(iElementID);
-		RecordVADelta vaDelta = new RecordVADelta(recordPerspective.getID(), primaryIDType);
+		RecordVADelta vaDelta = new RecordVADelta(recordPerspective.getID(),
+				primaryIDType);
 		vaDelta.add(VADeltaItem.removeElement(iElementID));
 
 		RecordVADeltaEvent virtualArrayUpdateEvent = new RecordVADeltaEvent();

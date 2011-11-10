@@ -32,8 +32,8 @@ public abstract class Filter<DeltaType extends VirtualArrayDelta<?>> {
 	/**
 	 * Constructor which should be used only for de-serialization
 	 */
-//	public Filter() {
-//	}
+	// public Filter() {
+	// }
 
 	/**
 	 * 

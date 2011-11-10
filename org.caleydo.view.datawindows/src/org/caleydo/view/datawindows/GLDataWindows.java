@@ -164,7 +164,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	@Override
 	public void initLocal(GL2 gl) {
 
-	
 		init(gl);
 
 	}
@@ -196,7 +195,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 			isDisplayListDirty = false;
 
 		}
-	
+
 		display(gl);
 
 		pickingManager.handlePicking(this, gl);
@@ -360,7 +359,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		gl.glPopName();
 	}
 
-
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
@@ -468,8 +466,6 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		// TODO Auto-generated method stub
 
 	}
-
-	
 
 	@Override
 	public void init(GL2 gl) {

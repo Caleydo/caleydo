@@ -27,7 +27,7 @@ public enum EIconTextures {
 	GATE_BODY("resources/icons/view/tablebased/parcoords/gate_body.png"),
 
 	REMOVE("resources/icons/general/remove.png"),
-	
+
 	FILTER_PIPELINE_MENU_ITEM("resources/icons/view/filterpipeline/item_background.png"),
 	FILTER_PIPELINE_EDIT("resources/icons/view/filterpipeline/edit.png"),
 	FILTER_PIPELINE_DELETE("resources/icons/view/filterpipeline/delete.png"),
@@ -77,7 +77,7 @@ public enum EIconTextures {
 	NAVIGATION_MASK_CURVE("resources/navigation/mask_curve.png"),
 	NAVIGATION_MASK_CURVE_NEG("resources/navigation/mask_curve_neg.png"),
 	NAVIGATION_MASK_CURVE_LIGHT("resources/navigation/mask_curve_light.png"),
-	NAVIGATION_MASK_CURVE_NEG_LIGHT("resources/navigation/mask_curve_neg_light.png"),	
+	NAVIGATION_MASK_CURVE_NEG_LIGHT("resources/navigation/mask_curve_neg_light.png"),
 	NAVIGATION_MASK_CURVE_WHITE("resources/navigation/mask_curve_white.png"),
 	NAVIGATION_MASK_CURVE_NEG_WHITE("resources/navigation/mask_curve_neg_white.png"),
 
@@ -135,13 +135,13 @@ public enum EIconTextures {
 
 	GROUPER_COLLAPSE_PLUS("resources/icons/general/plus.png"),
 	GROUPER_COLLAPSE_MINUS("resources/icons/general/minus.png"),
-	
+
 	CLUSTER_ICON("resources/icons/view/tablebased/clustering.png"),
-	
-//	MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
-	
+
+	// MOVE_ICON("resources/icons/view/histogram/move_icon.png"),
+
 	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png"),
-	
+
 	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png"),
 	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),
 	PIN("resources/icons/general/pin.png");

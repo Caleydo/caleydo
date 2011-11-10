@@ -224,17 +224,15 @@ public class ProxyPreferencePage
 			prefStore.setValue(PreferenceConstants.PROXY_SERVER, txtProxyServer.getText());
 			prefStore.setValue(PreferenceConstants.PROXY_PORT, txtProxyPort.getText());
 
-			System.setProperty("network.proxy_host",
-				prefStore.getString(PreferenceConstants.PROXY_SERVER));
-			System.setProperty("network.proxy_port",
-				prefStore.getString(PreferenceConstants.PROXY_PORT));
+			System.setProperty("network.proxy_host", prefStore.getString(PreferenceConstants.PROXY_SERVER));
+			System.setProperty("network.proxy_port", prefStore.getString(PreferenceConstants.PROXY_PORT));
 		}
 		else {
 			System.setProperty("network.proxy_host", "");
 			System.setProperty("network.proxy_port", "");
 		}
 	}
-	
+
 	@Override
 	public boolean performOk() {
 		applySettings();

@@ -89,8 +89,8 @@ public class GeneticGUIStartupProcedure
 			"org.caleydo.datadomain.genetic"));
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.parcoords",
 			"org.caleydo.datadomain.genetic"));
-//		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser",
-//			"org.caleydo.datadomain.genetic"));
+		// startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.browser",
+		// "org.caleydo.datadomain.genetic"));
 
 		if (appInitData.isLoadPathways()) {
 			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",

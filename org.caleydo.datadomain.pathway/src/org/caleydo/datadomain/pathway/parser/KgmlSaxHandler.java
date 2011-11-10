@@ -226,11 +226,11 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 				}
 
 				try {
-					IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager.get()
+					IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager
+							.get()
 							.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
 							.getGeneIDMappingManager();
-					iDavidId = 	genomeIdManager.getID(
-							IDType.getIDType("ENTREZ_GENE_ID"),
+					iDavidId = genomeIdManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
 							IDType.getIDType("DAVID"),
 							Integer.valueOf(sTmpVertexName.substring(4)));
 				} catch (Exception e) {

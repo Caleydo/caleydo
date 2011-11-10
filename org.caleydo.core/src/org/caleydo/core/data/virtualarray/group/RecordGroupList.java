@@ -8,6 +8,7 @@ import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 @XmlType
 public class RecordGroupList
 	extends GroupList<RecordGroupList, RecordVirtualArray, RecordVADelta> {
+	@Override
 	public RecordGroupList createInstance() {
 		return new RecordGroupList();
 	}

@@ -9,7 +9,6 @@ public class ReplaceRecordPerspectiveEvent
 		// nothing to initialize here
 	}
 
-
 	protected ReplaceRecordPerspectiveEvent(String dataDomainID, String perspectiveID,
 		PerspectiveInitializationData data) {
 		super(dataDomainID, perspectiveID, data);

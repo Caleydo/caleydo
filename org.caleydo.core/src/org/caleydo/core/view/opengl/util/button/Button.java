@@ -3,11 +3,10 @@ package org.caleydo.core.view.opengl.util.button;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Class representing a button. It holds several properties of a button to be
- * displayed. The rendering should be done by a {@link ButtonRenderer}.
+ * Class representing a button. It holds several properties of a button to be displayed. The rendering should
+ * be done by a {@link ButtonRenderer}.
  * 
  * @author Christian Partl
- * 
  */
 public class Button {
 
@@ -25,8 +24,7 @@ public class Button {
 	 * @param iconTexture
 	 *            Texture for the button.
 	 */
-	public Button(String pickingType, int buttonID,
-			EIconTextures iconTexture) {
+	public Button(String pickingType, int buttonID, EIconTextures iconTexture) {
 		isSelected = false;
 		setVisible(true);
 		this.buttonID = buttonID;

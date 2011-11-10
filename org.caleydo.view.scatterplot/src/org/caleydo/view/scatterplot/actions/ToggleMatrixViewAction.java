@@ -9,7 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ToggleMatrixViewAction extends AToolBarAction implements IToolBarItem {
-	
+
 	public static final String TEXT = "Switch between Matrix View/ Main View (m)";
 	public static final String ICON = "resources/icons/view/tablebased/parcoords/reset_axis_spacing.png";
 

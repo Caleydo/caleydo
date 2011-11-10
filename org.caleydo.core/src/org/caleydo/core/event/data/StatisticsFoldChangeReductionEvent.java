@@ -62,16 +62,17 @@ public class StatisticsFoldChangeReductionEvent
 	public void setDataContainer2(DataContainer dataContainer2) {
 		this.dataContainer2 = dataContainer2;
 	}
-	
+
 	/**
 	 * @return the betweenRecords, see {@link #betweenRecords}
 	 */
 	public boolean isBetweenRecords() {
 		return betweenRecords;
 	}
-	
+
 	/**
-	 * @param betweenRecords setter, see {@link #betweenRecords}
+	 * @param betweenRecords
+	 *            setter, see {@link #betweenRecords}
 	 */
 	public void setBetweenRecords(boolean betweenRecords) {
 		this.betweenRecords = betweenRecords;

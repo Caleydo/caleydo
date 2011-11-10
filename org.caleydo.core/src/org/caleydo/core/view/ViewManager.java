@@ -80,7 +80,7 @@ public class ViewManager
 	 */
 	public ViewManager() {
 		registerEventListeners();
-		
+
 		// Swing is currently only used for context menu
 		try {
 			UIManager.setLookAndFeel("javax.swing.plaf.metal.MetalLookAndFeel");
@@ -179,11 +179,11 @@ public class ViewManager
 		if (hashView2RCP.containsKey(view))
 			hashView2RCP.remove(view);
 	}
-	
+
 	public ARcpGLViewPart getViewPartFromView(IView view) {
 		return hashView2RCP.get(view);
 	}
-	
+
 	public IView getViewFromViewPart(ARcpGLViewPart viewPart) {
 		return hashRCP2View.get(viewPart);
 	}

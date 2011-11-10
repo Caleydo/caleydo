@@ -27,7 +27,7 @@ public class GLCoordinateUtils {
 	 */
 	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL2 gl,
 		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY, final float fZValue) {
-		
+
 		float[] fArWorldCoordinatePosition = new float[3];
 
 		double mvmatrix[] = new double[16];

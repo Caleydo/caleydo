@@ -18,7 +18,10 @@ public class RecordSpacing {
 
 	private boolean useFishEye = false;
 
-	/** yDistances of heat map elements are initialized during the first rendering step of the heat map */
+	/**
+	 * yDistances of heat map elements are initialized during the first
+	 * rendering step of the heat map
+	 */
 	private ArrayList<Float> yDistances;
 	private GLHeatMap heatMap;
 
@@ -29,7 +32,7 @@ public class RecordSpacing {
 
 	public void calculateRecordSpacing(int recordElements, int dimensionElements,
 			float x, float y, float minSelectedFieldHeight) {
-		
+
 		fieldWidth = x / dimensionElements;
 
 		if (y / recordElements > minSelectedFieldHeight
@@ -43,7 +46,8 @@ public class RecordSpacing {
 			// spacingCalculator = new SelectedLargerSpacingCalculator(heatMap,
 			// y,
 			// contentElements);
-			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, recordElements, minSelectedFieldHeight);
+			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, recordElements,
+					minSelectedFieldHeight);
 
 		}
 		spacingCalculator.calculateFieldHeights();

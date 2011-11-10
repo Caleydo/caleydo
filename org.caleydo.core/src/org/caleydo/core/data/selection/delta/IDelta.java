@@ -29,7 +29,6 @@ public interface IDelta<T extends IDeltaItem>
 	 */
 	public IDType getIDType();
 
-	
 	/**
 	 * Returns the number of elements in the selection delta
 	 * 

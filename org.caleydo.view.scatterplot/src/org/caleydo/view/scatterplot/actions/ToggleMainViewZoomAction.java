@@ -9,7 +9,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ToggleMainViewZoomAction extends AToolBarAction implements IToolBarItem {
-	
+
 	public static final String TEXT = "Toggle Main View Zoom Mode (z)";
 	public static final String ICON = "resources/icons/view/tablebased/parcoords/bookmark.png";
 

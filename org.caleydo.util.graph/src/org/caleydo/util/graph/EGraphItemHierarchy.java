@@ -34,8 +34,7 @@ public enum EGraphItemHierarchy {
 	 */
 	public static final List<EGraphItemHierarchy> getActiveItems() {
 
-		List<EGraphItemHierarchy> resultList = new ArrayList<EGraphItemHierarchy>(
-				4);
+		List<EGraphItemHierarchy> resultList = new ArrayList<EGraphItemHierarchy>(4);
 		resultList.add(EGraphItemHierarchy.GRAPH_PARENT);
 		resultList.add(EGraphItemHierarchy.GRAPH_NEIGHBOUR);
 		resultList.add(EGraphItemHierarchy.GRAPH_CHILDREN);

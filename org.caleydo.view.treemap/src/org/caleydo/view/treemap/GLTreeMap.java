@@ -19,7 +19,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.event.view.treemap.LevelHighlightingEvent;
 import org.caleydo.core.event.view.treemap.ToggleColoringModeEvent;
@@ -28,7 +27,6 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -153,6 +151,7 @@ public class GLTreeMap extends ATableBasedView {
 		init(gl);
 	}
 
+	@Override
 	public void initData() {
 		if (dataDomain == null)
 			return;

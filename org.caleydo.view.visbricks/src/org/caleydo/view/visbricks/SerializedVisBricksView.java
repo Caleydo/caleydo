@@ -19,7 +19,7 @@ public class SerializedVisBricksView extends ASerializedTopLevelDataView {
 	 */
 	public SerializedVisBricksView() {
 	}
-	
+
 	public SerializedVisBricksView(String dataDomainType) {
 		super(dataDomainType);
 	}

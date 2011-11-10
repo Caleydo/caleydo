@@ -26,7 +26,7 @@ public class ColumnManager
 				throw new IllegalStateException("Failed due to unhandled type [" + type.toString() + "]");
 		}
 	}
-	
+
 	public AColumn createDimension(final ManagedObjectType type, int dimensionID) {
 		switch (type) {
 			case COLUMN_NUMERICAL:

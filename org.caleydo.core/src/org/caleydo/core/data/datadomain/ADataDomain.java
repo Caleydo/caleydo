@@ -26,11 +26,10 @@ public abstract class ADataDomain
 	implements IDataDomain {
 
 	protected String dataDomainType;
-	
+
 	@XmlTransient
 	protected Set<IDCategory> idCategories = new HashSet<IDCategory>();
 
-	
 	/**
 	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
 	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
@@ -44,7 +43,7 @@ public abstract class ADataDomain
 	protected LoadDataParameters loadDataParameters;
 
 	protected Color color;
-	
+
 	/** determines which view will be opened after a datadomain is created */
 	protected String defaultStartViewType;
 
@@ -111,27 +110,27 @@ public abstract class ADataDomain
 		return dataDomainID;
 	}
 
-//	@Override
-//	@XmlTransient
-//	public List<ADimensionGroupData> getDimensionGroups() {
-//		return dimensionGroups;
-//	}
+	// @Override
+	// @XmlTransient
+	// public List<ADimensionGroupData> getDimensionGroups() {
+	// return dimensionGroups;
+	// }
 
-//	@Override
-//	public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
-//		this.dimensionGroups = dimensionGroups;
-//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-//		event.setSender(this);
-//		GeneralManager.get().getEventPublisher().triggerEvent(event);
-//	}
-//
-//	@Override
-//	public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-//		dimensionGroups.add(dimensionGroup);
-//		DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
-//		event.setSender(this);
-//		GeneralManager.get().getEventPublisher().triggerEvent(event);
-//	}
+	// @Override
+	// public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups) {
+	// this.dimensionGroups = dimensionGroups;
+	// DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+	// event.setSender(this);
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
+	//
+	// @Override
+	// public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
+	// dimensionGroups.add(dimensionGroup);
+	// DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+	// event.setSender(this);
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
 
 	@Override
 	public Color getColor() {
@@ -158,12 +157,12 @@ public abstract class ADataDomain
 	public String getDefaultStartViewType() {
 		return defaultStartViewType;
 	}
-	
+
 	@Override
 	public Set<IDCategory> getIDCategories() {
 		return idCategories;
 	}
-	
+
 	@Override
 	public void addIDCategory(IDCategory category) {
 		idCategories.add(category);

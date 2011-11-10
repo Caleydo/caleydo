@@ -10,7 +10,7 @@ import org.xml.sax.EntityResolver;
  * @author Michael Kalkusch
  */
 public interface IXmlParserHandler
-	extends ContentHandler, EntityResolver  {
+	extends ContentHandler, EntityResolver {
 	/**
 	 * Initilization of handler. Called once by Manager before using the handler.
 	 * 

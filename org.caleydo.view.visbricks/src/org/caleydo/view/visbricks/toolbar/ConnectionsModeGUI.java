@@ -49,7 +49,7 @@ public class ConnectionsModeGUI extends ControlContribution implements IToolBarI
 					slider.setEnabled(false);
 				else
 					slider.setEnabled(true);
-				
+
 				GeneralManager
 						.get()
 						.getEventPublisher()

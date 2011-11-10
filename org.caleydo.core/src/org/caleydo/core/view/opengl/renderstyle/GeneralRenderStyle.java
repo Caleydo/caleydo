@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 public class GeneralRenderStyle {
 
 	public static final int TEXT_MIN_SIZE = 50;
-	
+
 	public static final float VERY_SMALL_FONT_SCALING_FACTOR = 0.002f;
 
 	public static final float SMALL_FONT_SCALING_FACTOR = 0.003f;
@@ -104,11 +104,11 @@ public class GeneralRenderStyle {
 		}
 		return fScaling;
 	}
-	
+
 	public float getXScaling() {
 		return viewFrustum.getWidth();
 	}
-	
+
 	public float getYScaling() {
 		return viewFrustum.getHeight();
 	}

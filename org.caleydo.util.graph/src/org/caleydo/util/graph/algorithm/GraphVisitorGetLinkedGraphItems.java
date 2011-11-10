@@ -11,9 +11,8 @@ import org.caleydo.util.graph.IGraphItem;
  * 
  * @author Michael Kalkusch
  */
-public class GraphVisitorGetLinkedGraphItems extends AGraphVisitorSearch
-		implements
-			IGraphVisitorSearch {
+public class GraphVisitorGetLinkedGraphItems extends AGraphVisitorSearch implements
+		IGraphVisitorSearch {
 
 	/**
 	 * 
@@ -24,16 +23,15 @@ public class GraphVisitorGetLinkedGraphItems extends AGraphVisitorSearch
 	}
 
 	protected List<IGraphItem> getSearchResultFromGraphItem(IGraphItem item) {
-		List<IGraphItem> buffer = item
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
+		List<IGraphItem> buffer = item.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
 
 		List<IGraphItem> resultBuffer = null;
 
 		Iterator<IGraphItem> iter = buffer.iterator();
 
 		while (iter.hasNext()) {
-			List<IGraphItem> listAllChildren_fromParent = iter.next()
-					.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+			List<IGraphItem> listAllChildren_fromParent = iter.next().getAllItemsByProp(
+					EGraphItemProperty.ALIAS_CHILD);
 
 			if (!listAllChildren_fromParent.isEmpty()) {
 				if (resultBuffer == null) {

@@ -7,8 +7,9 @@ import org.caleydo.view.treemap.GLTreeMap;
 
 /**
  * Listener for toggling coloring mode.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class ToggleColoringModeListener extends AEventListener<GLTreeMap> {

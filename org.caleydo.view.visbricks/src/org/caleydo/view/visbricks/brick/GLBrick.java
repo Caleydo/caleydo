@@ -225,7 +225,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 								.getDimensionPerspective()));
 
 				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
-				
+
 				// FIXME this assumption that records are genes is wrong!
 				for (Integer gene : dataContainer.getRecordPerspective()
 						.getVirtualArray()) {

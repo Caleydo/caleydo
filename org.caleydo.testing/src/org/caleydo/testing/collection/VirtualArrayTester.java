@@ -17,6 +17,7 @@ public class VirtualArrayTester extends TestCase {
 	RecordVirtualArray virtualArray;
 	int size = 25000;
 
+	@Override
 	protected void setUp() throws Exception {
 		super.setUp();
 		virtualArray = new RecordVirtualArray(IDType.registerType("Test",
@@ -25,6 +26,7 @@ public class VirtualArrayTester extends TestCase {
 			virtualArray.append(count);
 	}
 
+	@Override
 	protected void tearDown() throws Exception {
 		super.tearDown();
 	}

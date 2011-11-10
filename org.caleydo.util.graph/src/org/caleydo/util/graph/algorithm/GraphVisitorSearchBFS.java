@@ -15,9 +15,8 @@ import org.caleydo.util.graph.IGraphItem;
  * 
  * @author Michael Kalkusch
  */
-public class GraphVisitorSearchBFS extends AGraphVisitorSearch
-		implements
-			IGraphVisitorSearch {
+public class GraphVisitorSearchBFS extends AGraphVisitorSearch implements
+		IGraphVisitorSearch {
 
 	protected EGraphItemProperty prop;
 
@@ -84,8 +83,7 @@ public class GraphVisitorSearchBFS extends AGraphVisitorSearch
 
 		/** general case: */
 
-		List<IGraphItem> currentSourceList = new ArrayList<IGraphItem>(
-				resultList);
+		List<IGraphItem> currentSourceList = new ArrayList<IGraphItem>(resultList);
 
 		/** insert elements with adjacency ==1 */
 		depthSortedList.set(0, currentSourceList);
@@ -96,8 +94,8 @@ public class GraphVisitorSearchBFS extends AGraphVisitorSearch
 
 			Iterator<IGraphItem> iter = currentSourceList.iterator();
 			while (iter.hasNext()) {
-				Iterator<IGraphItem> iterInner = iter.next().getAllItemsByProp(
-						prop).iterator();
+				Iterator<IGraphItem> iterInner = iter.next().getAllItemsByProp(prop)
+						.iterator();
 
 				while (iterInner.hasNext()) {
 					IGraphItem item = iterInner.next();
@@ -118,7 +116,7 @@ public class GraphVisitorSearchBFS extends AGraphVisitorSearch
 			currentSourceList = currentLevel;
 
 		} // for ( int iCurrentDepthIndex=1; iCurrentDepthIndex<
-		// this.iSearchDepth; iCurrentDepthIndex++) {
+			// this.iSearchDepth; iCurrentDepthIndex++) {
 
 		return resultList;
 	}
@@ -128,16 +126,15 @@ public class GraphVisitorSearchBFS extends AGraphVisitorSearch
 	 * 
 	 * @return deep copy of the search result list
 	 */
+	@Override
 	public final List<List<IGraphItem>> getSearchResultDepthOrdered() {
 
 		/* depthSortedList.size() != iSearchDepth */
-		List<List<IGraphItem>> resultList = createDepthSortedList(depthSortedList
-				.size());
+		List<List<IGraphItem>> resultList = createDepthSortedList(depthSortedList.size());
 
 		for (int iIndex = 0; iIndex < depthSortedList.size(); iIndex++) {
 			/* raw data */
-			List<IGraphItem> currentRawDataDepthList = depthSortedList
-					.get(iIndex);
+			List<IGraphItem> currentRawDataDepthList = depthSortedList.get(iIndex);
 			Iterator<IGraphItem> iterRawDataInnerLoop = currentRawDataDepthList
 					.iterator();
 

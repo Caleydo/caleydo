@@ -9,10 +9,9 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * @author Thomas Geymayer
- *
+ * 
  */
-public interface IRenderable
-{
+public interface IRenderable {
 	/**
 	 * Render this object to the given OpenGL2 context
 	 * 

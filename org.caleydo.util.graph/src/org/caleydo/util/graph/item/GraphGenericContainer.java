@@ -21,8 +21,7 @@ import org.caleydo.util.graph.IGraphComponent;
  * @author Michael Kalkusch
  */
 public class GraphGenericContainer<GraphComponent extends IGraphComponent, GraphEnum>
-		implements
-			Serializable {
+		implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	/**
@@ -76,8 +75,7 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * but it will be checked if the element is already added. In this case an
 	 * assertion will be triggered.
 	 */
-	public void addGraphComponentChecked(GraphComponent item,
-			final GraphEnum key) {
+	public void addGraphComponentChecked(GraphComponent item, final GraphEnum key) {
 
 		/* add to hierarchy... */
 		ArrayList<GraphComponent> arrayBuffer = type2ArrayList.get(key);
@@ -121,8 +119,7 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @see org.caleydo.util.graph.item.GraphItem#containsItem(org.caleydo.util.graph.IGraphItem,
 	 *      org.caleydo.util.graph.EGraphItemProperty)
 	 */
-	public boolean containsGraphComponent(final GraphComponent item,
-			final GraphEnum key) {
+	public boolean containsGraphComponent(final GraphComponent item, final GraphEnum key) {
 
 		try {
 			return type2ArrayList.get(key).contains(item);
@@ -144,8 +141,7 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 *      org.caleydo.util.graph.EGraphItemProperty)
 	 */
 	public boolean containsGraphComponentAtAll(final GraphComponent item) {
-		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values()
-				.iterator();
+		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values().iterator();
 
 		while (iter.hasNext()) {
 			if (iter.next().contains(item))
@@ -228,11 +224,10 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 */
 	public void disposeItem() {
 		/** fill result array .. */
-		Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList
-				.values().iterator();
+		Iterator<ArrayList<GraphComponent>> bufferArrayListIter = type2ArrayList.values()
+				.iterator();
 		while (bufferArrayListIter.hasNext()) {
-			Iterator<GraphComponent> innerIter = bufferArrayListIter.next()
-					.iterator();
+			Iterator<GraphComponent> innerIter = bufferArrayListIter.next().iterator();
 
 			while (innerIter.hasNext()) {
 				((IGraphComponent) innerIter).disposeItem();
@@ -246,8 +241,7 @@ public class GraphGenericContainer<GraphComponent extends IGraphComponent, Graph
 	 * @return TRUE if at least one item is stored
 	 */
 	public boolean isEmpty() {
-		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values()
-				.iterator();
+		Iterator<ArrayList<GraphComponent>> iter = type2ArrayList.values().iterator();
 
 		while (iter.hasNext()) {
 			if (!iter.next().isEmpty())

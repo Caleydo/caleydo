@@ -16,7 +16,7 @@ public class AggregateGroupItem extends AContextMenuItem {
 	public AggregateGroupItem(Set<Integer> groups, String dataDomainID) {
 
 		setLabel("Aggregate Group");
-	
+
 		AggregateGroupEvent event = new AggregateGroupEvent(groups);
 		event.setSender(this);
 		event.setDataDomainID(dataDomainID);

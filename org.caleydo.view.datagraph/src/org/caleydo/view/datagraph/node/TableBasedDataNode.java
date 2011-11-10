@@ -77,8 +77,8 @@ public class TableBasedDataNode extends ADataNode {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
 			if (getDataContainers().size() > 0) {
-				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] {
-						1, 1, 1, 1 }));
+				bodyRow.addBackgroundRenderer(new ColorRenderer(
+						new float[] { 1, 1, 1, 1 }));
 			}
 		}
 	}
@@ -86,8 +86,8 @@ public class TableBasedDataNode extends ADataNode {
 	private class DetailState extends ALayoutState {
 
 		public DetailState() {
-			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain,
-					view, TableBasedDataNode.this, dragAndDropController);
+			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain, view,
+					TableBasedDataNode.this, dragAndDropController);
 
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_90;
 		}
@@ -101,14 +101,13 @@ public class TableBasedDataNode extends ADataNode {
 		public void apply() {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
-			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
-					1, 1 }));
+			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 	}
 
-	public TableBasedDataNode(AGraphLayout graphLayout,
-			GLDataGraph view, DragAndDropController dragAndDropController,
-			Integer id, IDataDomain dataDomain) {
+	public TableBasedDataNode(AGraphLayout graphLayout, GLDataGraph view,
+			DragAndDropController dragAndDropController, Integer id,
+			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
@@ -138,11 +137,9 @@ public class TableBasedDataNode extends ADataNode {
 
 			@Override
 			public void rightClicked(Pick pick) {
-				view.getContextMenuCreator()
-						.addContextMenuItem(
-								new CreateViewItem("Parallel Coordinates",
-										"org.caleydo.view.parcoords",
-										dataDomain, null));
+				view.getContextMenuCreator().addContextMenuItem(
+						new CreateViewItem("Parallel Coordinates",
+								"org.caleydo.view.parcoords", dataDomain, null));
 			}
 
 		}, PickingType.DATA_GRAPH_NODE.name(), id);
@@ -153,8 +150,7 @@ public class TableBasedDataNode extends ADataNode {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(),
-				getID());
+		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();
@@ -166,8 +162,8 @@ public class TableBasedDataNode extends ADataNode {
 
 		Row titleRow = new Row("titleRow");
 
-		ElementLayout captionLayout = createDefaultCaptionLayout(
-				dataDomain.getLabel(), getID());
+		ElementLayout captionLayout = createDefaultCaptionLayout(dataDomain.getLabel(),
+				getID());
 
 		titleRow.append(captionLayout);
 		titleRow.setYDynamic(true);
@@ -179,20 +175,18 @@ public class TableBasedDataNode extends ADataNode {
 		toggleDataContainerButtonLayout.setPixelGLConverter(pixelGLConverter);
 		toggleDataContainerButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toggleDataContainerButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-		toggleDataContainerButton = new Button(
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
+		toggleDataContainerButton = new Button(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 		// FIXME: set button invisible if there are not more than 1 perspectives
 		if (dataDomain.getRecordPerspectiveIDs().size() <= 1
 				&& dataDomain.getDimensionPerspectiveIDs().size() <= 1) {
 			toggleDataContainerButton.setVisible(false);
 		}
-		toggleDataContainerButtonRenderer = new ButtonRenderer(
-				toggleDataContainerButton, view, view.getTextureManager());
+		toggleDataContainerButtonRenderer = new ButtonRenderer(toggleDataContainerButton,
+				view, view.getTextureManager());
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
-		toggleDataContainerButtonLayout
-				.setRenderer(toggleDataContainerButtonRenderer);
+		toggleDataContainerButtonLayout.setRenderer(toggleDataContainerButtonRenderer);
 		titleRow.append(spacingLayoutX);
 		titleRow.append(toggleDataContainerButtonLayout);
 
@@ -227,15 +221,14 @@ public class TableBasedDataNode extends ADataNode {
 
 	@Override
 	public void destroy() {
-		view.removeSingleIDPickingListeners(
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		view.removeSingleIDPickingListeners(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
 		dataContainerRenderer.destroy();
 	}
 
 	@Override
 	public void update() {
-		
+
 		retrieveDataContainers();
 		if (dataDomain.getRecordPerspectiveIDs().size() > 1
 				|| dataDomain.getDimensionPerspectiveIDs().size() > 1) {
@@ -249,24 +242,22 @@ public class TableBasedDataNode extends ADataNode {
 	protected ADataContainerRenderer getDataContainerRenderer() {
 		return dataContainerRenderer;
 	}
-	
+
 	protected void retrieveDataContainers() {
-		Collection<DataContainer> containerCollection = dataDomain
-				.getAllDataContainers();
+		Collection<DataContainer> containerCollection = dataDomain.getAllDataContainers();
 		if (containerCollection == null) {
 			dataContainers = new ArrayList<DataContainer>();
 			return;
 		}
 		List<Pair<String, DataContainer>> sortedDataContainers = new ArrayList<Pair<String, DataContainer>>();
 		for (DataContainer container : containerCollection) {
-			sortedDataContainers.add(new Pair<String, DataContainer>(container
-					.getLabel(), container));
+			sortedDataContainers.add(new Pair<String, DataContainer>(
+					container.getLabel(), container));
 		}
 
 		Collections.sort(sortedDataContainers);
 
-		dataContainers = new ArrayList<DataContainer>(
-				sortedDataContainers.size());
+		dataContainers = new ArrayList<DataContainer>(sortedDataContainers.size());
 
 		for (Pair<String, DataContainer> pair : sortedDataContainers) {
 			dataContainers.add(pair.getSecond());
@@ -275,10 +266,10 @@ public class TableBasedDataNode extends ADataNode {
 
 	@Override
 	public List<DataContainer> getDataContainers() {
-		
-		if(dataContainers == null)
+
+		if (dataContainers == null)
 			retrieveDataContainers();
-		
+
 		return dataContainers;
 
 		// List<ADimensionGroupData> groups = new

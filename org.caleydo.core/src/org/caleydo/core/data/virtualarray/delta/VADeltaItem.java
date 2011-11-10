@@ -27,7 +27,7 @@ public class VADeltaItem
 	}
 
 	/**
-	 * Static factory for a new delta item that appends an element to the end of a virtual array 
+	 * Static factory for a new delta item that appends an element to the end of a virtual array
 	 * 
 	 * @param elementID
 	 *            the new element
@@ -103,7 +103,7 @@ public class VADeltaItem
 		return newItem;
 	}
 
-   /**
+	/**
 	 * Static Factory for new delta item that moves the element at the specified src index to the specified
 	 * target index. See {@link IVirtualArray#move(int, int)} for further details.
 	 * 
@@ -219,7 +219,7 @@ public class VADeltaItem
 	@Override
 	public void setID(Integer elementID) {
 		this.elementID = elementID;
-	}	
+	}
 
 	@Override
 	public VADeltaItem clone() {

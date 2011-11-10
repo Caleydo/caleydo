@@ -34,7 +34,8 @@ public class SerializedDataFlipperView extends ASerializedView {
 	public void init() {
 		initialContainedViews = new ArrayList<ASerializedView>();
 
-		// ((DataTableBasedDataDomain) DataDomainManager.getInstance().getDataDomain(
+		// ((DataTableBasedDataDomain)
+		// DataDomainManager.getInstance().getDataDomain(
 		// "org.caleydo.datadomain.clinical")).updateSetInViews();
 
 		// SerializedParallelCoordinatesView parCoords = new
@@ -75,9 +76,10 @@ public class SerializedDataFlipperView extends ASerializedView {
 	public String getViewType() {
 		return GLDataFlipper.VIEW_TYPE;
 	}
-	
+
 	@Override
 	public ViewFrustum getViewFrustum() {
-		return new ViewFrustum(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f, 100);
+		return new ViewFrustum(CameraProjectionMode.PERSPECTIVE, -1f, 1f, -1f, 1f, 1.9f,
+				100);
 	}
 }

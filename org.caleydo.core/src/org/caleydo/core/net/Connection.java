@@ -270,26 +270,28 @@ public class Connection {
 		SerializationData initData = new SerializationData();
 
 		// FIXME this should work for more than one use case now
-//		ATableBasedDataDomain useCase =
-//			(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
-//		DataTable set = useCase.getTable();
-//
-//		initData.setDataDomain(useCase);
-//		initData.setTableFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
-//		initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
-//		initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
-//
-//		HashMap<String, ContentVirtualArray> recordVAMap = new HashMap<String, ContentVirtualArray>();
-//		for (String type : table.getRegisteredRecordVATypes()) {
-//			recordVAMap.put(type, useCase.getRecordVA(type));
-//		}
-//		initData.setRecordVAMap(recordVAMap);
-//
-//		HashMap<String, DimensionVirtualArray> dimensionVAMap = new HashMap<String, DimensionVirtualArray>();
-//		for (String type : table.getRegisteredDimensionVATypes()) {
-//			dimensionVAMap.put(type, useCase.getDimensionVA(type));
-//		}
-//		initData.setDimensionVAMap(dimensionVAMap);
+		// ATableBasedDataDomain useCase =
+		// (ATableBasedDataDomain)
+		// DataDomainManager.get().getDataDomainByID("org.caleydo.datadomain.genetic");
+		// DataTable set = useCase.getTable();
+		//
+		// initData.setDataDomain(useCase);
+		// initData.setTableFileContent(DataTableUtils.loadSetFile(useCase.getLoadDataParameters()));
+		// initData.setGeneClusterTree(DataTableUtils.getGeneClusterXml(set));
+		// initData.setExperimentClusterTree(DataTableUtils.getExperimentClusterXml(set));
+		//
+		// HashMap<String, ContentVirtualArray> recordVAMap = new HashMap<String, ContentVirtualArray>();
+		// for (String type : table.getRegisteredRecordVATypes()) {
+		// recordVAMap.put(type, useCase.getRecordVA(type));
+		// }
+		// initData.setRecordVAMap(recordVAMap);
+		//
+		// HashMap<String, DimensionVirtualArray> dimensionVAMap = new HashMap<String,
+		// DimensionVirtualArray>();
+		// for (String type : table.getRegisteredDimensionVATypes()) {
+		// dimensionVAMap.put(type, useCase.getDimensionVA(type));
+		// }
+		// initData.setDimensionVAMap(dimensionVAMap);
 
 		NetworkUtils utils = networkManager.getNetworkUtils();
 		utils.writeHandshake(initData, outputStream);

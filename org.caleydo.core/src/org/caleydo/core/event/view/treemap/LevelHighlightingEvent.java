@@ -7,16 +7,17 @@ import org.caleydo.core.event.AEvent;
 
 /**
  * Event for hierarchy level highlighting.
+ * 
  * @author Michael Lafer
- *
  */
 
 @XmlRootElement
 @XmlType
-public class LevelHighlightingEvent extends AEvent {
+public class LevelHighlightingEvent
+	extends AEvent {
 
 	int hierarchyLevel;
-	
+
 	public int getHierarchyLevel() {
 		return hierarchyLevel;
 	}

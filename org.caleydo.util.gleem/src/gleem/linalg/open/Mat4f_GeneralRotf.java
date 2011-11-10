@@ -92,8 +92,7 @@ public class Mat4f_GeneralRotf {
 	 * @param rotation
 	 *            the rotation to set
 	 */
-	public final void setAllAndUpdate(final Vec3f centerOfRotation,
-			final Rotf rotation) {
+	public final void setAllAndUpdate(final Vec3f centerOfRotation, final Rotf rotation) {
 
 		this.rotation.set(rotation);
 		this.centerOfRotation.set(centerOfRotation);
@@ -135,7 +134,7 @@ public class Mat4f_GeneralRotf {
 	// * @param matrix the matrix to set
 	// */
 	// public final void setMatrix(Mat4f matrix) {
-	//	
+	//
 	// this.matrix = new Mat4f(matrix);
 	// }
 
@@ -212,8 +211,8 @@ public class Mat4f_GeneralRotf {
 		Mat4f R = new Mat4f();
 
 		T.setTranslation(centerOfRotation);
-		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation
-				.y(), -centerOfRotation.z()));
+		T_inv.setTranslation(new Vec3f(-centerOfRotation.x(), -centerOfRotation.y(),
+				-centerOfRotation.z()));
 
 		if (bNoRotation) {
 			R.makeIdent();

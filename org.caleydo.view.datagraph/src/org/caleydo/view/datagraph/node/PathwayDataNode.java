@@ -22,9 +22,9 @@ public class PathwayDataNode extends ADataNode {
 	private ADataContainerRenderer dataContainerRenderer;
 	private PathwayDataDomain dataDomain;
 
-	public PathwayDataNode(AGraphLayout graphLayout,
-			GLDataGraph view, DragAndDropController dragAndDropController,
-			Integer id, IDataDomain dataDomain) {
+	public PathwayDataNode(AGraphLayout graphLayout, GLDataGraph view,
+			DragAndDropController dragAndDropController, Integer id,
+			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
 		dataContainerRenderer = new DataContainerListRenderer(this, view,
@@ -36,8 +36,7 @@ public class PathwayDataNode extends ADataNode {
 	public ElementLayout setupLayout() {
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(),
-				getID());
+		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
@@ -48,16 +47,15 @@ public class PathwayDataNode extends ADataNode {
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
 
-		ElementLayout captionLayout = createDefaultCaptionLayout(
-				dataDomain.getLabel(), getID());
+		ElementLayout captionLayout = createDefaultCaptionLayout(dataDomain.getLabel(),
+				getID());
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
 
 		if (getDataContainers().size() > 0) {
-			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
-					1, 1 }));
+			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 
 		bodyColumn = new Column("bodyColumn");
@@ -103,10 +101,10 @@ public class PathwayDataNode extends ADataNode {
 
 	@Override
 	public List<DataContainer> getDataContainers() {
-		
+
 		// FIXME: not clear what we want here
 		return new ArrayList<DataContainer>();
-	
+
 		// return new ArrayList<DataContainer>(dataDomain.get);
 	}
 

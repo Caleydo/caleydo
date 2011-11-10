@@ -6,7 +6,6 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 
 /**
- * 
  * @author Alexander Lex
  */
 public abstract class NewFilterListener<FilterType extends Filter<?>, FilterManagerType extends FilterManager<?, ?, FilterType, ?>>

@@ -42,15 +42,15 @@ public class AutoSaver
 			@Override
 			public void run() {
 				if ((new Date()).getTime() > lastSaveTimeStamp.getTime() + DEFAULT_INTERVAL) {
-// FIXME re-enable
-//					Date start = new Date();
-//					ProjectSaver projectSaver = new ProjectSaver();
-//					projectSaver.saveRecentProject();
-//					Date stop = new Date();
-//					Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
-//						+ (stop.getTime() - start.getTime()) + " ms"));
-//
-//					lastSaveTimeStamp = new Date();
+					// FIXME re-enable
+					// Date start = new Date();
+					// ProjectSaver projectSaver = new ProjectSaver();
+					// projectSaver.saveRecentProject();
+					// Date stop = new Date();
+					// Logger.log(new Status(IStatus.INFO, this.toString(), "AutoSaver: auto save took "
+					// + (stop.getTime() - start.getTime()) + " ms"));
+					//
+					// lastSaveTimeStamp = new Date();
 				}
 			}
 		});

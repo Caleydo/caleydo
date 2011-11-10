@@ -66,11 +66,10 @@ public class CollabView
 
 	/**
 	 * Constructor.
-	 * 
 	 */
 	public CollabView(Composite parentComposite) {
-		super(GeneralManager.get().getIDCreator()
-			.createID(ManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER), parentComposite);
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
+			parentComposite);
 	}
 
 	@Override
@@ -80,7 +79,7 @@ public class CollabView
 		if (groupwareManager != null) {
 			networkManager = groupwareManager.getNetworkManager();
 		}
-		
+
 		if (baseComposite != null) {
 			baseComposite.dispose();
 		}

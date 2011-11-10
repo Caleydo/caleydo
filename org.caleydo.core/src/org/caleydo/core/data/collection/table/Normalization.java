@@ -22,9 +22,9 @@ public class Normalization {
 	}
 
 	/**
-	 * Calculates log10 on all dimensions in the table. Take care that the set contains only numerical dimensions,
-	 * since nominal dimensions will cause a runtime exception. If you have mixed data you have to call log10 on
-	 * all the dimensions that support it manually.
+	 * Calculates log10 on all dimensions in the table. Take care that the set contains only numerical
+	 * dimensions, since nominal dimensions will cause a runtime exception. If you have mixed data you have to
+	 * call log10 on all the dimensions that support it manually.
 	 */
 	void log10() {
 		for (AColumn dimension : table.hashColumns.values()) {
@@ -39,9 +39,9 @@ public class Normalization {
 	}
 
 	/**
-	 * Calculates log2 on all dimensions in the table. Take care that the set contains only numerical dimensions,
-	 * since nominal dimensions will cause a runtime exception. If you have mixed data you have to call log2 on
-	 * all the dimensions that support it manually.
+	 * Calculates log2 on all dimensions in the table. Take care that the set contains only numerical
+	 * dimensions, since nominal dimensions will cause a runtime exception. If you have mixed data you have to
+	 * call log2 on all the dimensions that support it manually.
 	 */
 	void log2() {
 
@@ -57,9 +57,9 @@ public class Normalization {
 	}
 
 	/**
-	 * Normalize all dimensions in the set, based solely on the values within each dimension. Operates with the
-	 * raw data as basis by default, however when a logarithmized representation is in the dimension this is
-	 * used.
+	 * Normalize all dimensions in the set, based solely on the values within each dimension. Operates with
+	 * the raw data as basis by default, however when a logarithmized representation is in the dimension this
+	 * is used.
 	 */
 	void normalizeLocally() {
 		table.isTableHomogeneous = false;
@@ -69,10 +69,10 @@ public class Normalization {
 	}
 
 	/**
-	 * Normalize all dimensions in the set, based on values of all dimensions. For a numerical dimension, this would
-	 * mean, that global minima and maxima are retrieved instead of local ones (as is done with normalize())
-	 * Operates with the raw data as basis by default, however when a logarithmized representation is in the
-	 * dimension this is used. Make sure that all dimensions are logarithmized.
+	 * Normalize all dimensions in the set, based on values of all dimensions. For a numerical dimension, this
+	 * would mean, that global minima and maxima are retrieved instead of local ones (as is done with
+	 * normalize()) Operates with the raw data as basis by default, however when a logarithmized
+	 * representation is in the dimension this is used. Make sure that all dimensions are logarithmized.
 	 */
 	void normalizeGlobally() {
 

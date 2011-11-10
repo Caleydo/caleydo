@@ -40,11 +40,11 @@ public class RcpGLVisBricksView extends ARcpGLViewPart {
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView)serializedView).getDataDomainID());
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
-		}	
+		}
 		view.initialize();
 		createPartControlGL();
 	}

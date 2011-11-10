@@ -25,7 +25,7 @@ public class LoadPathwaysByGeneItem extends AContextMenuItem {
 	 */
 	public LoadPathwaysByGeneItem() {
 		super();
-		//setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
+		// setIconTexture(EIconTextures.CM_LOAD_DEPENDING_PATHWAYS);
 		setLabel("Load depending Pathways");
 	}
 
@@ -37,7 +37,7 @@ public class LoadPathwaysByGeneItem extends AContextMenuItem {
 	 *            the david ID
 	 */
 	public void setDavidID(IDType idType, int david, String dataDomainID) {
-		
+
 		LoadPathwaysByGeneEvent loadPathwaysByGeneEvent = new LoadPathwaysByGeneEvent();
 		loadPathwaysByGeneEvent.setSender(this);
 		loadPathwaysByGeneEvent.setGeneID(david);

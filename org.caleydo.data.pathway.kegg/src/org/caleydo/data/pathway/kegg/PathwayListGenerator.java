@@ -71,21 +71,17 @@ public class PathwayListGenerator {
 			} else if (sOutput.contains("/")) {
 				sPathDelimiter = "/";
 			} else
-				throw new IllegalStateException(
-						"Problem with detecting path separator.");
+				throw new IllegalStateException("Problem with detecting path separator.");
 
-			sOutput = sOutput.substring(
-					sOutput.lastIndexOf(sPathDelimiter) + 1, sOutput.length());
+			sOutput = sOutput.substring(sOutput.lastIndexOf(sPathDelimiter) + 1,
+					sOutput.length());
 
 			String sImagePath = "";
 			if (tmpFile.toString().contains(".xml")) {
 				sImagePath = sInputImagePath
-						+ tmpFile.toString()
-								.substring(
-										tmpFile.toString().lastIndexOf(
-												sPathDelimiter) + 1,
-										tmpFile.toString().length() - 4)
-						+ ".png";
+						+ tmpFile.toString().substring(
+								tmpFile.toString().lastIndexOf(sPathDelimiter) + 1,
+								tmpFile.toString().length() - 4) + ".png";
 			}
 			// find out image path of biocarta pathway - necessary because xml
 			// path != image path
@@ -96,17 +92,13 @@ public class PathwayListGenerator {
 				String sLine = "";
 				try {
 					while ((sLine = brFile.readLine()) != null) {
-						if (sLine
-								.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) {
+						if (sLine.contains("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) {
 							sImagePath = sLine
 									.substring(
-											sLine
-													.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
-											sLine
-													.indexOf(
-															".gif",
-															sLine
-																	.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
+											sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/") + 42,
+											sLine.indexOf(
+													".gif",
+													sLine.indexOf("http://cgap.nci.nih.gov/BIOCARTA/Pathways/")) + 4);
 
 							sImagePath = sInputImagePath + sImagePath;
 
@@ -114,9 +106,8 @@ public class PathwayListGenerator {
 						}
 					}
 				} catch (IOException e) {
-					throw new IllegalStateException(
-							"Cannot open pathway list file at "
-									+ tmpFile.toString());
+					throw new IllegalStateException("Cannot open pathway list file at "
+							+ tmpFile.toString());
 				}
 
 			}
@@ -126,8 +117,7 @@ public class PathwayListGenerator {
 
 			if (iWidth != -1 && iHeight != -1) {
 				outputWriter.append(sOutput + " ");
-				outputWriter.append(img.getIconWidth() + " "
-						+ img.getIconHeight());
+				outputWriter.append(img.getIconWidth() + " " + img.getIconHeight());
 				outputWriter.append("\n");
 			}
 

@@ -3,9 +3,11 @@ package org.caleydo.view.treemap.layout.algorithm;
 import org.caleydo.view.treemap.layout.ATreeMapNode;
 
 /**
- * Simple and fast layout algorithm which doesn't cares about ration of displayed nodes.
+ * Simple and fast layout algorithm which doesn't cares about ration of
+ * displayed nodes.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
@@ -21,8 +23,7 @@ public class SimpleLayoutAlgorithm implements ILayoutAlgorithm {
 	@SuppressWarnings("unused")
 	private static final boolean VERTICAL_ALIGNMENT = false;
 
-	private void paintHelp(ATreeMapNode root, float xOffset, float yOffset, float xMax,
-			float yMax, boolean alignment) {
+	private void paintHelp(ATreeMapNode root, float xOffset, float yOffset, float xMax, float yMax, boolean alignment) {
 		root.setMinX(xOffset);
 		root.setMinY(yOffset);
 		root.setMaxX(xMax);

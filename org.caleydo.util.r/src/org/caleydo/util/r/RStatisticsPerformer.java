@@ -108,6 +108,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	}
 
 	// TODO: never called!
+	@Override
 	public void unregisterEventListeners() {
 
 		if (statisticsPValueReductionListener != null) {
@@ -170,6 +171,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	 * as: num/denom if num>denom, and as -denom/num otherwise.
 	 * </p>
 	 */
+	@Override
 	public void foldChange(DataContainer container1, DataContainer container2,
 			boolean betweenRecords) {
 
@@ -345,6 +347,7 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 	/**
 	 * FIXME this uses only the first two!
 	 */
+	@Override
 	public void twoSidedTTest(ArrayList<DataContainer> dataContainers) {
 
 		// Perform t-test between all neighboring sets (A<->B<->C)
@@ -355,9 +358,11 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 
 		DataContainer dataContainer1 = dataContainers.get(0);
 		DataContainer dataContainer2 = dataContainers.get(1);
-		
-		if(!dataContainer1.getRecordPerspective().equals(dataContainer2.getRecordPerspective()))
-			throw new IllegalStateException("data containers have to share record prespective");
+
+		if (!dataContainer1.getRecordPerspective().equals(
+				dataContainer2.getRecordPerspective()))
+			throw new IllegalStateException(
+					"data containers have to share record prespective");
 
 		DataTable table = dataContainer1.getDataDomain().getTable();
 
@@ -397,12 +402,13 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 			// System.out.println(pValue.asDouble());
 		}
 
-		dataContainer1.getContainerStatistics().tTest().setTwoSiddedTTestResult(dataContainer2,
-				pValueVector);
-		dataContainer2.getContainerStatistics().tTest().setTwoSiddedTTestResult(dataContainer1,
-				pValueVector);
+		dataContainer1.getContainerStatistics().tTest()
+				.setTwoSiddedTTestResult(dataContainer2, pValueVector);
+		dataContainer2.getContainerStatistics().tTest()
+				.setTwoSiddedTTestResult(dataContainer1, pValueVector);
 
-		RecordFilter contentFilter = new RecordFilter(dataContainer1.getRecordPerspective().getID());
+		RecordFilter contentFilter = new RecordFilter(dataContainer1
+				.getRecordPerspective().getID());
 		contentFilter.setDataDomain(dataContainer1.getDataDomain());
 		contentFilter.setLabel("Two sided t-test of " + dataContainer1.getLabel()
 				+ " and " + dataContainer2.getLabel());

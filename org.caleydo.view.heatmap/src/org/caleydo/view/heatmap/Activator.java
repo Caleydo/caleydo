@@ -39,8 +39,8 @@ public class Activator extends Plugin {
 				new HeatMapToolBarContent());
 		ToolBarContentFactory.get().addToolBarContent(GLHierarchicalHeatMap.VIEW_TYPE,
 				true, new HierarchicalHeatMapToolBarContent());
-		ToolBarContentFactory.get().addToolBarContent(GLUncertaintyHeatMap.VIEW_TYPE, true,
-				new UncertaintyHeatMapToolBarContent());
+		ToolBarContentFactory.get().addToolBarContent(GLUncertaintyHeatMap.VIEW_TYPE,
+				true, new UncertaintyHeatMapToolBarContent());
 	}
 
 	/*

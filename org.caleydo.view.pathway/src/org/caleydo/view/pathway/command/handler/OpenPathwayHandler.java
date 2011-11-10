@@ -23,8 +23,8 @@ public class OpenPathwayHandler extends AbstractHandler implements IHandler {
 			HandlerUtil
 					.getActiveWorkbenchWindow(event)
 					.getActivePage()
-					.showView(GLPathway.VIEW_TYPE,
-							Integer.toString(SECONDARY_ID++), IWorkbenchPage.VIEW_ACTIVATE);
+					.showView(GLPathway.VIEW_TYPE, Integer.toString(SECONDARY_ID++),
+							IWorkbenchPage.VIEW_ACTIVATE);
 		} catch (PartInitException e) {
 			e.printStackTrace();
 		}

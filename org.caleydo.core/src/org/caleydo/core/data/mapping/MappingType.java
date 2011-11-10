@@ -15,7 +15,7 @@ public class MappingType
 	extends DefaultWeightedEdge {
 
 	private static final long serialVersionUID = 1L;
-	
+
 	private IDType fromIDType;
 	private IDType toIDType;
 

@@ -50,8 +50,8 @@ public class CmdDataCreateTable
 
 		fillDataTables(createdObject);
 
-		Logger.log(new Status(IStatus.INFO, this.toString(), "New DataTable "
-			+ createdObject.getID() + " created."));
+		Logger.log(new Status(IStatus.INFO, this.toString(), "New DataTable " + createdObject.getID()
+			+ " created."));
 
 		dataDomain.setTable(createdObject);
 	}

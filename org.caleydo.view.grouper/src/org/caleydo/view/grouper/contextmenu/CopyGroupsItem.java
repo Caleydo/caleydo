@@ -10,7 +10,7 @@ public class CopyGroupsItem extends AContextMenuItem {
 	public CopyGroupsItem(Set<Integer> setGroupsToCopy, String dataDomainID) {
 
 		setLabel("Copy");
-		
+
 		CopyGroupsEvent event = new CopyGroupsEvent(setGroupsToCopy);
 		event.setSender(this);
 		event.setDataDomainID(dataDomainID);

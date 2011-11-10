@@ -75,10 +75,9 @@ public class WideScreenToolBarRenderer
 		toolBarManager2.add(new ClearSelectionsAction());
 		toolBarManager2.add(new StartClusteringAction());
 		// FIXME: removed because we need new concept for restoring data
-//		toolBarManager2.add(new RestoreOriginalDataAction());
-		
-		toolBarManager2.add(new SwitchDataRepresentationAction());
+		// toolBarManager2.add(new RestoreOriginalDataAction());
 
+		toolBarManager2.add(new SwitchDataRepresentationAction());
 
 		toolBarManager.update(true);
 

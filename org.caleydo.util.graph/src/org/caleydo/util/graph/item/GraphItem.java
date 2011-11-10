@@ -93,8 +93,8 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 	}
 
 	@Override
-	public final void addItemDoubleLinked(IGraphItem item,
-			EGraphItemProperty prop) throws GraphRuntimeException {
+	public final void addItemDoubleLinked(IGraphItem item, EGraphItemProperty prop)
+			throws GraphRuntimeException {
 		try {
 			/**
 			 * assign prop.getInvertProperty() to test if prop has an inverse
@@ -109,8 +109,8 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 			item.addItem(this, prop_inverted);
 
 		} catch (GraphRuntimeException ge) {
-			throw new GraphRuntimeException(
-					"Exception during addItemDoubleLinked(); " + ge.toString());
+			throw new GraphRuntimeException("Exception during addItemDoubleLinked(); "
+					+ ge.toString());
 		}
 
 	}
@@ -151,8 +151,7 @@ public class GraphItem extends AGraphDataHandler implements IGraphItem {
 			/** need to update all references! */
 			assert false : "not implemented yet!";
 
-			throw new GraphRuntimeException(
-					"setGraphKind() not implemented yet!");
+			throw new GraphRuntimeException("setGraphKind() not implemented yet!");
 		}
 	}
 

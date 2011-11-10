@@ -1,6 +1,5 @@
 package org.caleydo.core.gui.preferences;
 
-
 /**
  * Constant definitions for plug-in preferences
  */
@@ -54,9 +53,9 @@ public class PreferenceConstants {
 	public static final String DATA_FILTER_LEVEL = "dataFilterLevel";
 
 	public static final String PERFORMANCE_LEVEL = "performanceLevel";
-	
+
 	// TreeMapView
 	public static final String TREEMAP_MAX_DEPTH = "treemapMaxDepth";
 	public static final String TREEMAP_LAYOUT_ALGORITHM = "treemapLayoutAlgorithm";
-	public static final String TREEMAP_DRAW_CLUSTER_FRAME= "treemapDrawClusterFrame";
+	public static final String TREEMAP_DRAW_CLUSTER_FRAME = "treemapDrawClusterFrame";
 }

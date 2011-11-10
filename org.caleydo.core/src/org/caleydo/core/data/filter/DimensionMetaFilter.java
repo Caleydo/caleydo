@@ -14,7 +14,7 @@ public class DimensionMetaFilter
 	// public DimensionMetaFilter() {
 	//
 	// }
-	
+
 	public DimensionMetaFilter(String perspectiveID) {
 		super(perspectiveID);
 	}

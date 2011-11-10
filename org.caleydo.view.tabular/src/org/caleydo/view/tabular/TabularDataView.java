@@ -388,7 +388,6 @@ public class TabularDataView extends ASWTView implements
 		// nothing to do here
 	}
 
-	
 	@Override
 	public void handleClearSelections() {
 		clearAllSelections();

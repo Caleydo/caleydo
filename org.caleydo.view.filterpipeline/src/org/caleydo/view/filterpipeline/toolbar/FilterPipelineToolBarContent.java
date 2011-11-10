@@ -28,16 +28,13 @@ public class FilterPipelineToolBarContent extends AToolBarContent {
 	@Override
 	protected List<ToolBarContainer> getToolBarContent() {
 		ActionToolBarContainer container = new ActionToolBarContainer();
-		
+
 		container.setImagePath(IMAGE_PATH);
 		container.setTitle(VIEW_TITLE);
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		actionList.add
-		(
-			new SelectFilterTypeWidget(getTargetViewData().getViewID())
-		);
+		actionList.add(new SelectFilterTypeWidget(getTargetViewData().getViewID()));
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);

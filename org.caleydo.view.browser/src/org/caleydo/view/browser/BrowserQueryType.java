@@ -45,25 +45,25 @@ public enum BrowserQueryType {
 				{
 					add("GENE_SYMBOL");
 				}
-			}), 
-//			Ensembl_HomoSapiens(
-//			"Ensembl (homo sapiens)",
-//			"http://www.ensembl.org/Homo_sapiens/Search/Results?species=Homo_sapiens;idx=;q=",
-//			new ArrayList<String>() {
-//				{
-//					add("GENE_SYMBOL");
-//					add("REFSEQ_MRNA");
-//				}
-//			}), Ensembl_MusMusculus(
-//			"Ensembl (mus musculus)",
-//			"http://www.ensembl.org/Mus_musculus/Search/Results?species=Mus_musculus;idx=;q=",
-//			new ArrayList<String>() {
-//				{
-//					add("GENE_SYMBOL");
-//					add("REFSEQ_MRNA");
-//				}
-//			}), 
-			BioCarta_HomoSapiens("BioCarta (homo sapiens)",
+			}),
+	// Ensembl_HomoSapiens(
+	// "Ensembl (homo sapiens)",
+	// "http://www.ensembl.org/Homo_sapiens/Search/Results?species=Homo_sapiens;idx=;q=",
+	// new ArrayList<String>() {
+	// {
+	// add("GENE_SYMBOL");
+	// add("REFSEQ_MRNA");
+	// }
+	// }), Ensembl_MusMusculus(
+	// "Ensembl (mus musculus)",
+	// "http://www.ensembl.org/Mus_musculus/Search/Results?species=Mus_musculus;idx=;q=",
+	// new ArrayList<String>() {
+	// {
+	// add("GENE_SYMBOL");
+	// add("REFSEQ_MRNA");
+	// }
+	// }),
+	BioCarta_HomoSapiens("BioCarta (homo sapiens)",
 			"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=",
 			new ArrayList<String>() {
 				{

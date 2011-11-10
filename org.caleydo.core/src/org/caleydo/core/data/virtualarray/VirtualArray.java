@@ -29,7 +29,9 @@ import org.eclipse.core.runtime.Status;
  * collections themselves are immutable, or are shared between multiple clients (i.e. views) using different
  * VirtualArrays on them.
  * </p>
- * <p>FIXME: Groups and group interactions are somewhat undefined </p>
+ * <p>
+ * FIXME: Groups and group interactions are somewhat undefined
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -111,6 +113,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Returns an Iterator<Integer> of type VAIterator, which allows to iterate over the virtual array
 	 */
+	@Override
 	public VAIterator iterator() {
 		return new VAIterator(this);
 	}
@@ -469,6 +472,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		return true;
 	}
 
+	@Override
 	@SuppressWarnings("unchecked")
 	public ConcreteType clone() {
 		ConcreteType va;

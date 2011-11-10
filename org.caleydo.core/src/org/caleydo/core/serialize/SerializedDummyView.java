@@ -3,7 +3,6 @@ package org.caleydo.core.serialize;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-
 /**
  * This class is a serialized form reduced to hold only the view-id. It should only be used until all views
  * have their own serialized form class.

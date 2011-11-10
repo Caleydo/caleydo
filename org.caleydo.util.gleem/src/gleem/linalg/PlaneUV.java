@@ -42,8 +42,8 @@ public class PlaneUV {
 	 * U axis to (1, 0, 0) and V axis to (0, 0, -1).
 	 */
 	public PlaneUV() {
-		setEverything(new Vec3f(0, 1, 0), new Vec3f(0, 0, 0),
-				new Vec3f(1, 0, 0), new Vec3f(0, 0, -1));
+		setEverything(new Vec3f(0, 1, 0), new Vec3f(0, 0, 0), new Vec3f(1, 0, 0),
+				new Vec3f(0, 0, -1));
 	}
 
 	/**
@@ -171,8 +171,7 @@ public class PlaneUV {
 		return true;
 	}
 
-	private void setEverything(Vec3f normal, Vec3f origin, Vec3f uAxis,
-			Vec3f vAxis) {
+	private void setEverything(Vec3f normal, Vec3f origin, Vec3f uAxis, Vec3f vAxis) {
 		this.normal.set(normal);
 		this.origin.set(origin);
 		this.uAxis.set(uAxis);

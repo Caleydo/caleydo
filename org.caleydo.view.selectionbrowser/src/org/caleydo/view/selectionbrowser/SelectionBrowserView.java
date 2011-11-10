@@ -234,6 +234,7 @@ public class SelectionBrowserView extends ASWTView implements
 
 		selectionTree.addListener(SWT.Selection, new Listener() {
 
+			@Override
 			public void handleEvent(Event event) {
 
 				SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
@@ -365,7 +366,6 @@ public class SelectionBrowserView extends ASWTView implements
 	public void handleRedrawView() {
 		// nothing to do here
 	}
-
 
 	@Override
 	public void handleClearSelections() {

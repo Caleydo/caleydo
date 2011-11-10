@@ -60,7 +60,7 @@ public class ResourceLoader {
 		} else {
 			image = new Image(display, sFileName);
 		}
-		
+
 		return image;
 	}
 

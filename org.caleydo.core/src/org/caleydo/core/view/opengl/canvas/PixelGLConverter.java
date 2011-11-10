@@ -18,8 +18,8 @@ public class PixelGLConverter {
 	GLCanvas canvas;
 
 	/**
-	 * The constructor requires a ViewFrustum and a GLCanvas. Notice, that both have to be from the
-	 * same top level, locally rendered view - i.e., viewFrustums of embedded views don't work.
+	 * The constructor requires a ViewFrustum and a GLCanvas. Notice, that both have to be from the same top
+	 * level, locally rendered view - i.e., viewFrustums of embedded views don't work.
 	 * 
 	 * @param viewFrustum
 	 * @param canvas
@@ -50,19 +50,19 @@ public class PixelGLConverter {
 		float height = totalHeightGL / totalHeightPixel.floatValue() * pixelHeight;
 		return height;
 	}
-	
+
 	public float getGLHeightForGLWidth(float glWidth) {
 		int pixelWidth = getPixelWidthForGLWidth(glWidth);
-		
+
 		return getGLHeightForPixelHeight(pixelWidth);
 	}
 
-	
 	public float getGLWidthForGLHeight(float glHeight) {
 		int pixelHeight = getPixelHeightForGLHeight(glHeight);
-		
+
 		return getGLWidthForPixelWidth(pixelHeight);
 	}
+
 	public int getPixelWidthForGLWidth(float glWidth) {
 		float totalWidthGL = viewFrustum.getWidth();
 		Double totalWidthPixel = canvas.getBounds().getWidth();
@@ -74,7 +74,6 @@ public class PixelGLConverter {
 		return (int) width;
 	}
 
-
 	public int getPixelHeightForGLHeight(float glHeight) {
 		float totalHeightGL = viewFrustum.getHeight();
 		Double totalHeightPixel = canvas.getBounds().getHeight();
@@ -85,30 +84,30 @@ public class PixelGLConverter {
 		float height = totalHeightPixel.floatValue() / totalHeightGL * glHeight;
 		return (int) height;
 	}
-	
+
 	public float getGLHeightForCurrentGLTransform(GL2 gl) {
 		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
-		
+
 		gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, buffer);
-		
+
 		return buffer.get(13);
 	}
-	
+
 	public float getGLWidthForCurrentGLTransform(GL2 gl) {
 		FloatBuffer buffer = FloatBuffer.wrap(new float[16]);
-		
+
 		gl.glGetFloatv(GL2.GL_MODELVIEW_MATRIX, buffer);
-		
+
 		return buffer.get(12);
 	}
-	
+
 	public int getPixelHeightForCurrentGLTransform(GL2 gl) {
-	
+
 		return getPixelHeightForGLHeight(getGLHeightForCurrentGLTransform(gl));
 	}
-	
+
 	public int getPixelWidthForCurrentGLTransform(GL2 gl) {
-		
+
 		return getPixelWidthForGLWidth(getGLWidthForCurrentGLTransform(gl));
 	}
 }

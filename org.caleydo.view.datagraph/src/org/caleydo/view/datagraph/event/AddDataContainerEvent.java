@@ -16,7 +16,8 @@ public class AddDataContainerEvent extends AEvent {
 
 	public AddDataContainerEvent(ATableBasedDataDomain dataDomain,
 			String recordPerspectiveID, String dimensionPerspectiveID,
-			boolean createDimensionPerspective, DimensionVirtualArray dimensionVA, Group group) {
+			boolean createDimensionPerspective, DimensionVirtualArray dimensionVA,
+			Group group) {
 		this.setDataDomain(dataDomain);
 		this.setRecordPerspectiveID(recordPerspectiveID);
 		this.setDimensionPerspectiveID(dimensionPerspectiveID);

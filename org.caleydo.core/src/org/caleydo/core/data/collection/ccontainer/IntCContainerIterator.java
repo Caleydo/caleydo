@@ -32,7 +32,7 @@ public class IntCContainerIterator
 	 * @param intCContainer
 	 * @param uniqueID
 	 */
-	public IntCContainerIterator(IntCContainer intCContainer, VirtualArray<?,?,?> virtualArray) {
+	public IntCContainerIterator(IntCContainer intCContainer, VirtualArray<?, ?, ?> virtualArray) {
 		this(intCContainer);
 		this.virtualArray = virtualArray;
 		this.vaIterator = virtualArray.iterator();

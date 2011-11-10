@@ -35,9 +35,10 @@ public class PathwayToolBarContainer extends ToolBarContainer {
 		pathwaySearchBox.setPathwayToolBarMediator(pathwayToolBarMediator);
 		elements.add(pathwaySearchBox);
 
-		AGLView view = GeneralManager.get().getViewManager().getGLView(targetViewData.getViewID());
+		AGLView view = GeneralManager.get().getViewManager()
+				.getGLView(targetViewData.getViewID());
 		elements.add(new TakeSnapshotAction(view.getParentComposite()));
-		
+
 		return elements;
 	}
 

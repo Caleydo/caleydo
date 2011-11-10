@@ -45,23 +45,21 @@ public enum EGraphItemProperty {
 	 *             if this==NONE or an unsupported type is used this exception
 	 *             is thrown
 	 */
-	public final EGraphItemProperty getInvertProperty()
-			throws GraphRuntimeException {
+	public final EGraphItemProperty getInvertProperty() throws GraphRuntimeException {
 
 		switch (this) {
-			case ALIAS_CHILD :
-				return EGraphItemProperty.ALIAS_PARENT;
-			case ALIAS_PARENT :
-				return EGraphItemProperty.ALIAS_CHILD;
-			case INCOMING :
-				return EGraphItemProperty.OUTGOING;
-			case OUTGOING :
-				return EGraphItemProperty.INCOMING;
+		case ALIAS_CHILD:
+			return EGraphItemProperty.ALIAS_PARENT;
+		case ALIAS_PARENT:
+			return EGraphItemProperty.ALIAS_CHILD;
+		case INCOMING:
+			return EGraphItemProperty.OUTGOING;
+		case OUTGOING:
+			return EGraphItemProperty.INCOMING;
 
-			default :
-				throw new GraphRuntimeException(
-						"getInvertProperty() can not handle type=["
-								+ this.toString() + "]");
+		default:
+			throw new GraphRuntimeException("getInvertProperty() can not handle type=["
+					+ this.toString() + "]");
 		}
 	}
 
@@ -75,8 +73,7 @@ public enum EGraphItemProperty {
 	 */
 	public static final List<EGraphItemProperty> getActiveItems() {
 
-		List<EGraphItemProperty> resultList = new ArrayList<EGraphItemProperty>(
-				3);
+		List<EGraphItemProperty> resultList = new ArrayList<EGraphItemProperty>(3);
 		resultList.add(EGraphItemProperty.INCOMING);
 		resultList.add(EGraphItemProperty.OUTGOING);
 		resultList.add(EGraphItemProperty.ALIAS_PARENT);

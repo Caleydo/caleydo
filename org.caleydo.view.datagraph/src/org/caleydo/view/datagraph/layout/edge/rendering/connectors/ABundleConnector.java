@@ -15,24 +15,22 @@ public abstract class ABundleConnector extends ANodeConnector {
 	protected int bandWidth;
 	protected Map<DataContainer, Integer> bandWidthMap = new HashMap<DataContainer, Integer>();
 
-	public ABundleConnector(IDataGraphNode node,
-			PixelGLConverter pixelGLconverter,
+	public ABundleConnector(IDataGraphNode node, PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<DataContainer> commonDataContainers, int minBandWidth,
-			int maxBandWidth, int maxDataAmount) {
+			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
+			int maxDataAmount) {
 		super(node, pixelGLconverter, connectionBandRenderer);
 
 		this.commonDataContainers = commonDataContainers;
 		calcBandWidths(minBandWidth, maxBandWidth, maxDataAmount);
 	}
 
-	protected void calcBandWidths(int minBandWidth, int maxBandWidth,
-			int maxDataAmount) {
+	protected void calcBandWidths(int minBandWidth, int maxBandWidth, int maxDataAmount) {
 		bandWidth = 0;
 
 		for (DataContainer dataContainer : commonDataContainers) {
-			int width = calcDimensionGroupBandWidthPixels(dataContainer,
-					minBandWidth, maxBandWidth, maxDataAmount);
+			int width = calcDimensionGroupBandWidthPixels(dataContainer, minBandWidth,
+					maxBandWidth, maxDataAmount);
 			bandWidth += width;
 			bandWidthMap.put(dataContainer, width);
 		}
@@ -56,9 +54,8 @@ public abstract class ABundleConnector extends ANodeConnector {
 		}
 	}
 
-	protected int calcDimensionGroupBandWidthPixels(
-			DataContainer dataContainer, int minBandWidth, int maxBandWidth,
-			int maxDataAmount) {
+	protected int calcDimensionGroupBandWidthPixels(DataContainer dataContainer,
+			int minBandWidth, int maxBandWidth, int maxDataAmount) {
 		// TODO: implement properly
 
 		return minBandWidth;

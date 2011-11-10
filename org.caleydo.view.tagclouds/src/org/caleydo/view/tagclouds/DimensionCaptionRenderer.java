@@ -16,6 +16,7 @@ public class DimensionCaptionRenderer extends LayoutRenderer {
 		this.text = text;
 	}
 
+	@Override
 	public void render(GL2 gl) {
 
 		float sideSpacing = 0.1f;

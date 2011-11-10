@@ -8,7 +8,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * This event is triggered when a view is unregistered at the {@link ViewManager}.
  * 
  * @author Partl
- *
  */
 public class ViewClosedEvent
 	extends AEvent {

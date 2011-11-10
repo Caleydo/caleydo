@@ -6,8 +6,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
-import javax.xml.bind.annotation.XmlTransient;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.dimension.AColumn;
@@ -15,7 +13,6 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.collection.dimension.RawDataType;
-import org.caleydo.core.data.collection.table.statistics.StatisticsResult;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.dimension.ColumnManager;
 import org.caleydo.core.data.graph.tree.ClusterTree;

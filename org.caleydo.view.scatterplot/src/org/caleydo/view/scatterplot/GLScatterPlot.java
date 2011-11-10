@@ -31,11 +31,9 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-import javax.xml.crypto.Data;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.datadomain.EDataFilterLevel;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;
@@ -1412,12 +1410,10 @@ public class GLScatterPlot extends ATableBasedView {
 							DataTable table = dataDomain.getTable();
 
 							xnormalized = table
-									.getFloat(DataRepresentation.NORMALIZED,
-											recordIndex,
+									.getFloat(DataRepresentation.NORMALIZED, recordIndex,
 											dimensionVA.get(current_SELECTED_X_AXIS));
 							ynormalized = table
-									.getFloat(DataRepresentation.NORMALIZED,
-											recordIndex,
+									.getFloat(DataRepresentation.NORMALIZED, recordIndex,
 											dimensionVA.get(current_SELECTED_Y_AXIS));
 
 							ix = (int) Math.floor(xnormalized
@@ -2161,10 +2157,10 @@ public class GLScatterPlot extends ATableBasedView {
 				throw new IllegalStateException("No such element in virtual array");
 			}
 
-			xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-					recordIndex, dimensionVA.get(iSelectedAxisIndexX));
-			ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-					recordIndex, dimensionVA.get(iSelectedAxisIndexY));
+			xnormalized = table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+					dimensionVA.get(iSelectedAxisIndexX));
+			ynormalized = table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+					dimensionVA.get(iSelectedAxisIndexY));
 
 			x = transformOnXZoom(xnormalized) * XScale;
 			y = transformOnYZoom(ynormalized) * YScale;
@@ -2182,10 +2178,10 @@ public class GLScatterPlot extends ATableBasedView {
 					recordIndex, 1.0f); // scale
 
 			if (bRender2Axis) {
-				xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-						recordIndex, dimensionVA.get(iSelectedAxisIndexX2));
-				ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-						recordIndex, dimensionVA.get(iSelectedAxisIndexY2));
+				xnormalized = table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+						dimensionVA.get(iSelectedAxisIndexX2));
+				ynormalized = table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+						dimensionVA.get(iSelectedAxisIndexY2));
 
 				x_2 = transformOnXZoom(xnormalized) * XScale;
 				y_2 = transformOnYZoom(ynormalized) * YScale;
@@ -2239,10 +2235,10 @@ public class GLScatterPlot extends ATableBasedView {
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
-		float xnormalized = table.getFloat(DataRepresentation.NORMALIZED,
-				recordIndex, dimensionVA.get(iSelectedAxisIndexX));
-		float ynormalized = table.getFloat(DataRepresentation.NORMALIZED,
-				recordIndex, dimensionVA.get(iSelectedAxisIndexY));
+		float xnormalized = table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+				dimensionVA.get(iSelectedAxisIndexX));
+		float ynormalized = table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
+				dimensionVA.get(iSelectedAxisIndexY));
 
 		float x = transformOnXZoom(xnormalized) * XScale;
 		float y = transformOnYZoom(ynormalized) * YScale;
@@ -2319,11 +2315,11 @@ public class GLScatterPlot extends ATableBasedView {
 
 		sLabel = recordLabel
 				+ "("
-				+ +table.getFloat(DataRepresentation.RAW,
-						recordIndex, dimensionVA.get(iSelectedAxisIndexX))
+				+ +table.getFloat(DataRepresentation.RAW, recordIndex,
+						dimensionVA.get(iSelectedAxisIndexX))
 				+ " / "
-				+ table.getFloat(DataRepresentation.RAW,
-						recordIndex, dimensionVA.get(iSelectedAxisIndexY)) + ")";
+				+ table.getFloat(DataRepresentation.RAW, recordIndex,
+						dimensionVA.get(iSelectedAxisIndexY)) + ")";
 
 		float fScaling = renderStyle.getSmallFontScalingFactor();
 		if (isRenderedRemote())
@@ -3206,7 +3202,6 @@ public class GLScatterPlot extends ATableBasedView {
 		return serializedForm;
 	}
 
-
 	@Override
 	public void handleRedrawView() {
 		if (bUseColor) {
@@ -3240,7 +3235,8 @@ public class GLScatterPlot extends ATableBasedView {
 		SelectedElementRep elementRep;
 		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
 
-		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray().indicesOf(iDimensionIndex)) {
+		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
+				.indicesOf(iDimensionIndex)) {
 			if (recordIndex == -1) {
 				throw new IllegalStateException("No such element in virtual array");
 

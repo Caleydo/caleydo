@@ -6,8 +6,9 @@ import org.caleydo.view.treemap.GLHierarchicalTreeMap;
 
 /**
  * Listener for zoom in function.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class ZoomInListener extends AEventListener<GLHierarchicalTreeMap> {

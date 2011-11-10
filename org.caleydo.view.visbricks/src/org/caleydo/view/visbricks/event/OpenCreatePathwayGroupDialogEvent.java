@@ -26,10 +26,8 @@ public class OpenCreatePathwayGroupDialogEvent extends AEvent {
 	 *            specifying the pathways in the dialog.
 	 * @param dimensionPerspective
 	 */
-	public OpenCreatePathwayGroupDialogEvent(
-			ATableBasedDataDomain sourceDataDomain,
-			RecordVirtualArray sourceRecordVA,
-			DimensionPerspective dimensionPerspective) {
+	public OpenCreatePathwayGroupDialogEvent(ATableBasedDataDomain sourceDataDomain,
+			RecordVirtualArray sourceRecordVA, DimensionPerspective dimensionPerspective) {
 
 		this.setSourceDataDomain(sourceDataDomain);
 		this.setSourceRecordVA(sourceRecordVA);

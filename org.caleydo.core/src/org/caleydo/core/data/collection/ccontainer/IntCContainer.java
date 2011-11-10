@@ -2,7 +2,6 @@ package org.caleydo.core.data.collection.ccontainer;
 
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
-
 /**
  * CContainer implementation for int A container for ints. Initialized with an int array. The length can not
  * be modified after initialization. Optimized to hold a large amount of data.
@@ -81,7 +80,7 @@ public class IntCContainer
 	 *            the virtual array
 	 * @return the iterator
 	 */
-	public IntCContainerIterator iterator(VirtualArray<?,?,?> virtualArray) {
+	public IntCContainerIterator iterator(VirtualArray<?, ?, ?> virtualArray) {
 		return new IntCContainerIterator(this, virtualArray);
 	}
 

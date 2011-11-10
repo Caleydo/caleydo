@@ -7,14 +7,14 @@ import org.caleydo.core.event.AEvent;
 
 /**
  * Event for zoom in.
+ * 
  * @author Michael Lafer
- *
  */
 
 @XmlRootElement
 @XmlType
-public class ZoomInEvent 
-extends AEvent {
+public class ZoomInEvent
+	extends AEvent {
 
 	@Override
 	public boolean checkIntegrity() {

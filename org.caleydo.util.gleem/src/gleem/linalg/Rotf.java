@@ -75,10 +75,8 @@ public class Rotf {
 	 * whether difference between all components is less than epsilon.
 	 */
 	public boolean withinEpsilon(Rotf arg, float epsilon) {
-		return Math.abs(q0 - arg.q0) < epsilon
-				&& Math.abs(q1 - arg.q1) < epsilon
-				&& Math.abs(q2 - arg.q2) < epsilon
-				&& Math.abs(q3 - arg.q3) < epsilon;
+		return Math.abs(q0 - arg.q0) < epsilon && Math.abs(q1 - arg.q1) < epsilon
+				&& Math.abs(q2 - arg.q2) < epsilon && Math.abs(q3 - arg.q3) < epsilon;
 	}
 
 	/**
@@ -265,8 +263,7 @@ public class Rotf {
 			}
 			j = (i + 1) % 3;
 			k = (j + 1) % 3;
-			s = (float) Math.sqrt(mat.get(i, i)
-					- (mat.get(j, j) + mat.get(k, k)) + 1.0f);
+			s = (float) Math.sqrt(mat.get(i, i) - (mat.get(j, j) + mat.get(k, k)) + 1.0f);
 			setQ(i + 1, s * 0.5f);
 			s = 0.5f / s;
 			q0 = (mat.get(k, j) - mat.get(j, k)) * s;
@@ -303,20 +300,20 @@ public class Rotf {
 
 	private void setQ(int i, float val) {
 		switch (i) {
-			case 0 :
-				q0 = val;
-				break;
-			case 1 :
-				q1 = val;
-				break;
-			case 2 :
-				q2 = val;
-				break;
-			case 3 :
-				q3 = val;
-				break;
-			default :
-				throw new IndexOutOfBoundsException();
+		case 0:
+			q0 = val;
+			break;
+		case 1:
+			q1 = val;
+			break;
+		case 2:
+			q2 = val;
+			break;
+		case 3:
+			q3 = val;
+			break;
+		default:
+			throw new IndexOutOfBoundsException();
 		}
 	}
 }

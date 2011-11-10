@@ -125,6 +125,7 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 		containerLayout.append(heading.getLayout());
 	}
 
+	@Override
 	public ElementLayout getLayout() {
 		return containerLayout;
 	};

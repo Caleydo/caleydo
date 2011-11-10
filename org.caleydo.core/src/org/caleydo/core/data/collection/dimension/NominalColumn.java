@@ -9,12 +9,12 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * The NominalDimension is an extension of the ADimension interface. It is meant for data which has no discrete
- * numerical values, such as nominal or ordinal data. Example cases are illness classifications, ratings such
- * as good, OK, bad etc. Normalization converts the entities into evenly spaced numerical values between 0 and
- * 1. One can provide a list of possible values, which is useful, if a list does not contain all possible
- * values, but you want to have the others represented anyway. If no such list is provided it is generated
- * from the available values.
+ * The NominalDimension is an extension of the ADimension interface. It is meant for data which has no
+ * discrete numerical values, such as nominal or ordinal data. Example cases are illness classifications,
+ * ratings such as good, OK, bad etc. Normalization converts the entities into evenly spaced numerical values
+ * between 0 and 1. One can provide a list of possible values, which is useful, if a list does not contain all
+ * possible values, but you want to have the others represented anyway. If no such list is provided it is
+ * generated from the available values.
  * 
  * @author Alexander Lex
  */
@@ -28,7 +28,7 @@ public class NominalColumn<T>
 	public NominalColumn() {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.COLUMN_NOMINAL));
 	}
-	
+
 	/**
 	 * Constructor that takes a dimension ID. This is needed for de-serialization.
 	 * 
@@ -36,7 +36,7 @@ public class NominalColumn<T>
 	 */
 	public NominalColumn(int dimensionID) {
 		super(dimensionID);
-	}	
+	}
 
 	/**
 	 * Set the raw data Currently supported: String

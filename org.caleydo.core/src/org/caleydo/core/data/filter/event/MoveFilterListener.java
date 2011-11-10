@@ -17,11 +17,7 @@ public abstract class MoveFilterListener<FilterType extends Filter<?>>
 	public void handleEvent(AEvent event) {
 		if (event instanceof MoveFilterEvent<?>) {
 			MoveFilterEvent<?> moveFilterEvent = (MoveFilterEvent<?>) event;
-			handler.handleMoveFilter
-			(
-				moveFilterEvent.getFilter(),
-				moveFilterEvent.getOffset()
-			);
+			handler.handleMoveFilter(moveFilterEvent.getFilter(), moveFilterEvent.getOffset());
 		}
 	}
 }

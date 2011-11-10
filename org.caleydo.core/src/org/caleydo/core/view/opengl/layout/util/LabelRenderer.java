@@ -39,13 +39,12 @@ public class LabelRenderer
 		this.isPickable = true;
 	}
 
-	
 	public LabelRenderer(AGLView view, String text) {
 		this.view = view;
 		this.text = text;
 		this.isPickable = false;
 	}
-	
+
 	@Override
 	public void render(GL2 gl) {
 

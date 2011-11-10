@@ -10,24 +10,21 @@ import org.caleydo.view.filterpipeline.GLFilterPipeline;
 
 /**
  * @author Thomas Geymayer
- *
+ * 
  */
-public class SetFilterTypeListener
-	extends AEventListener<GLFilterPipeline>
-{
+public class SetFilterTypeListener extends AEventListener<GLFilterPipeline> {
 
 	@Override
-	public void handleEvent(AEvent rawEvent)
-	{
-		if( !(rawEvent instanceof SetFilterTypeEvent) )
-			return;
-		
-		SetFilterTypeEvent event = ((SetFilterTypeEvent)rawEvent);
-		
-		if( handler.getID() != event.getTargetViewId() )
+	public void handleEvent(AEvent rawEvent) {
+		if (!(rawEvent instanceof SetFilterTypeEvent))
 			return;
 
-		handler.handleSetFilterTypeEvent( event.getType() );
+		SetFilterTypeEvent event = ((SetFilterTypeEvent) rawEvent);
+
+		if (handler.getID() != event.getTargetViewId())
+			return;
+
+		handler.handleSetFilterTypeEvent(event.getType());
 	}
 
 }

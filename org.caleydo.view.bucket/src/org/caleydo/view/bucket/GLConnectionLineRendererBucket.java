@@ -30,8 +30,7 @@ import org.caleydo.core.view.vislink.SelectedElementRepList;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLConnectionLineRendererBucket
-	extends AGLConnectionLineRenderer {
+public class GLConnectionLineRendererBucket extends AGLConnectionLineRenderer {
 
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
@@ -42,7 +41,8 @@ public class GLConnectionLineRendererBucket
 	 * @param focusLevel
 	 * @param stackLevel
 	 */
-	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel, final RemoteLevel stackLevel) {
+	public GLConnectionLineRendererBucket(final RemoteLevel focusLevel,
+			final RemoteLevel stackLevel) {
 
 		super();
 
@@ -55,26 +55,28 @@ public class GLConnectionLineRendererBucket
 		ViewManager viewGLCanvasManager = GeneralManager.get().getViewManager();
 
 		for (Entry<IDType, ConnectionMap> typeConnections : connectedElementRepManager
-			.getTransformedConnectionsByType().entrySet()) {
+				.getTransformedConnectionsByType().entrySet()) {
 			ArrayList<ArrayList<Vec3f>> alPointLists = null;
 
 			IDType idType = typeConnections.getKey();
-			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList =
-				hashIDTypeToViewToPointLists.get(idType);
+			HashMap<Integer, ArrayList<ArrayList<Vec3f>>> viewToPointList = hashIDTypeToViewToPointLists
+					.get(idType);
 
 			if (viewToPointList == null) {
 				viewToPointList = new HashMap<Integer, ArrayList<ArrayList<Vec3f>>>();
 				hashIDTypeToViewToPointLists.put(idType, viewToPointList);
 			}
 
-			for (Entry<Integer, SelectedElementRepList> connections : typeConnections.getValue().entrySet()) {
+			for (Entry<Integer, SelectedElementRepList> connections : typeConnections
+					.getValue().entrySet()) {
 				for (SelectedElementRep selectedElementRep : connections.getValue()) {
 
 					if (selectedElementRep.getIDType() != idType)
 						throw new IllegalStateException(
-							"Current ID Type does not match the selected elemen rep's");
+								"Current ID Type does not match the selected elemen rep's");
 
-					AGLView glView = viewGLCanvasManager.getGLView(selectedElementRep.getSourceViewID());
+					AGLView glView = viewGLCanvasManager.getGLView(selectedElementRep
+							.getSourceViewID());
 
 					if (glView == null) {
 						// TODO: investigate! view must not be null here.
@@ -83,7 +85,8 @@ public class GLConnectionLineRendererBucket
 						continue;
 					}
 
-					RemoteLevelElement remoteLevelElement = glView.getRemoteLevelElement();
+					RemoteLevelElement remoteLevelElement = glView
+							.getRemoteLevelElement();
 					if (remoteLevelElement == null) {
 						// ignore views that are not rendered remote
 						continue;
@@ -94,7 +97,8 @@ public class GLConnectionLineRendererBucket
 					if (activeLevel == stackLevel || activeLevel == focusLevel) {
 						int viewID = selectedElementRep.getSourceViewID();
 
-						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(viewID);
+						alPointLists = hashIDTypeToViewToPointLists.get(idType).get(
+								viewID);
 						if (alPointLists == null) {
 							alPointLists = new ArrayList<ArrayList<Vec3f>>();
 							viewToPointList.put(viewID, alPointLists);
@@ -116,38 +120,43 @@ public class GLConnectionLineRendererBucket
 		HashMap<Integer, Vec3f> hashViewToCenterPoint = new HashMap<Integer, Vec3f>();
 
 		for (Integer iKey : keySet) {
-			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists.get(idType)
-				.get(iKey)));
+			hashViewToCenterPoint.put(iKey, calculateCenter(hashIDTypeToViewToPointLists
+					.get(idType).get(iKey)));
 		}
 
 		Vec3f vecCenter = calculateCenter(hashViewToCenterPoint.values());
 
-		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(4);
+		ArrayList<VisLinkAnimationStage> connectionLinesAllViews = new ArrayList<VisLinkAnimationStage>(
+				4);
 
 		VisLinkAnimationStage connectionLinesActiveView = new VisLinkAnimationStage();
 		VisLinkAnimationStage bundlingToCenterLinesActiveView = new VisLinkAnimationStage();
-		VisLinkAnimationStage bundlingToCenterLinesOtherViews = new VisLinkAnimationStage(true);
+		VisLinkAnimationStage bundlingToCenterLinesOtherViews = new VisLinkAnimationStage(
+				true);
 		VisLinkAnimationStage connectionLinesOtherViews = new VisLinkAnimationStage(true);
 
 		for (Integer iKey : keySet) {
-			Vec3f vecViewBundlingPoint = calculateBundlingPoint(hashViewToCenterPoint.get(iKey), vecCenter);
+			Vec3f vecViewBundlingPoint = calculateBundlingPoint(
+					hashViewToCenterPoint.get(iKey), vecCenter);
 			ArrayList<Vec3f> pointsToDepthSort = new ArrayList<Vec3f>();
 
-			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(idType).get(iKey)) {
+			for (ArrayList<Vec3f> alCurrentPoints : hashIDTypeToViewToPointLists.get(
+					idType).get(iKey)) {
 				if (alCurrentPoints.size() > 1) {
 					renderPlanes(gl, vecViewBundlingPoint, alCurrentPoints);
-				}
-				else
+				} else
 					pointsToDepthSort.add(alCurrentPoints.get(0));
 			}
 
 			for (Vec3f currentPoint : depthSort(pointsToDepthSort)) {
 				if (activeViewID != -1 && iKey == activeViewID)
-					connectionLinesActiveView.addLine(createControlPoints(vecViewBundlingPoint, currentPoint,
-						hashViewToCenterPoint.get(iKey)));
+					connectionLinesActiveView.addLine(createControlPoints(
+							vecViewBundlingPoint, currentPoint,
+							hashViewToCenterPoint.get(iKey)));
 				else
-					connectionLinesOtherViews.addLine(createControlPoints(vecViewBundlingPoint, currentPoint,
-						hashViewToCenterPoint.get(iKey)));
+					connectionLinesOtherViews.addLine(createControlPoints(
+							vecViewBundlingPoint, currentPoint,
+							hashViewToCenterPoint.get(iKey)));
 			}
 
 			ArrayList<Vec3f> bundlingToCenter = new ArrayList<Vec3f>(2);
@@ -155,8 +164,7 @@ public class GLConnectionLineRendererBucket
 			bundlingToCenter.add(vecCenter);
 			if (activeViewID != -1 && iKey == activeViewID) {
 				bundlingToCenterLinesActiveView.addLine(bundlingToCenter);
-			}
-			else {
+			} else {
 				bundlingToCenterLinesOtherViews.addLine(bundlingToCenter);
 			}
 
@@ -172,7 +180,7 @@ public class GLConnectionLineRendererBucket
 	}
 
 	private ArrayList<Vec3f> createControlPoints(Vec3f vecSrcPoint, Vec3f vecDstPoint,
-		Vec3f vecViewCenterPoint) {
+			Vec3f vecViewCenterPoint) {
 		ArrayList<Vec3f> controlPoints = new ArrayList<Vec3f>(3);
 		controlPoints.add(vecDstPoint);
 		controlPoints.add(calculateBundlingPoint(vecSrcPoint, vecViewCenterPoint));
@@ -195,7 +203,8 @@ public class GLConnectionLineRendererBucket
 		return vecViewBundlingPoint;
 	}
 
-	private void renderPlanes(final GL2 gl, final Vec3f vecPoint, final ArrayList<Vec3f> alPoints) {
+	private void renderPlanes(final GL2 gl, final Vec3f vecPoint,
+			final ArrayList<Vec3f> alPoints) {
 
 		gl.glColor4f(0.3f, 0.3f, 0.3f, 1f);// 0.6f);
 		gl.glLineWidth(2 + 4);
@@ -311,7 +320,8 @@ public class GLConnectionLineRendererBucket
 	// gl.glEnd();
 	// }
 
-	// private void renderLine(final GL2 gl, final Vec3f vecSrcPoint, final Vec3f
+	// private void renderLine(final GL2 gl, final Vec3f vecSrcPoint, final
+	// Vec3f
 	// vecDestPoint,
 	// final int iNumberOfLines, Vec3f vecViewCenterPoint)
 	// {

@@ -84,6 +84,7 @@ public abstract class AFilterRepresentation<DeltaType extends VirtualArrayDelta<
 				Button cancelButton = new Button(composite, SWT.PUSH);
 				cancelButton.setText("Cancel");
 				Listener listener = new Listener() {
+					@Override
 					public void handleEvent(Event event) {
 						if (event.widget == deleteButton)
 							triggerRemoveFilterEvent();

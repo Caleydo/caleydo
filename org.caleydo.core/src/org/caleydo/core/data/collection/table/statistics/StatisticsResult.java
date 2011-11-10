@@ -1,14 +1,5 @@
 package org.caleydo.core.data.collection.table.statistics;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.HashMap;
-
-import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
-import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.util.conversion.ConversionTools;
-
 @Deprecated
 public class StatisticsResult {
 

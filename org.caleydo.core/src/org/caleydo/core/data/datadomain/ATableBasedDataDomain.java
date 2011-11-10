@@ -196,7 +196,7 @@ public abstract class ATableBasedDataDomain
 					IDType.unregisterType(recordGroupIDType);
 				}
 				createDefaultConfigurationWithColumnsAsRecords();
-				
+
 			}
 			else
 				createDefaultConfiguration();

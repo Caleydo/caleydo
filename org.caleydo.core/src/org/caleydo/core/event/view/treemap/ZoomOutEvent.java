@@ -7,8 +7,8 @@ import org.caleydo.core.event.AEvent;
 
 /**
  * Event for zoom out.
+ * 
  * @author Michael Lafer
- *
  */
 
 @XmlRootElement

@@ -17,12 +17,10 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class LeftSideConnector extends ASideConnector {
 
-	public LeftSideConnector(IDataGraphNode node,
-			PixelGLConverter pixelGLconverter,
-			ConnectionBandRenderer connectionBandRenderer,
-			ViewFrustum viewFrustum, IDataGraphNode otherNode) {
-		super(node, pixelGLconverter, connectionBandRenderer, viewFrustum,
-				otherNode);
+	public LeftSideConnector(IDataGraphNode node, PixelGLConverter pixelGLconverter,
+			ConnectionBandRenderer connectionBandRenderer, ViewFrustum viewFrustum,
+			IDataGraphNode otherNode) {
+		super(node, pixelGLconverter, connectionBandRenderer, viewFrustum, otherNode);
 
 		calcBandConnectionPoint();
 	}
@@ -37,12 +35,11 @@ public class LeftSideConnector extends ASideConnector {
 		nodeAnchorPoints = node.getLeftAnchorPoints();
 		float ratioY = deltaY / viewFrustum.getHeight();
 
-		float edgeAnchorY = (float) otherNodePosition.getY() + ratioY
-				* node.getHeight() / 2.0f;
-		float edgeAnchorX = (float) (nodeAnchorPoints.getFirst().getX() - Math
-				.min(0.2f * spacingX,
-						pixelGLConverter
-								.getGLWidthForPixelWidth(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
+		float edgeAnchorY = (float) otherNodePosition.getY() + ratioY * node.getHeight()
+				/ 2.0f;
+		float edgeAnchorX = (float) (nodeAnchorPoints.getFirst().getX() - Math.min(
+				0.2f * spacingX, pixelGLConverter
+						.getGLWidthForPixelWidth(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
 		bandConnectionPoint = new Point2D.Float(edgeAnchorX, edgeAnchorY);
 	}
 
@@ -53,38 +50,34 @@ public class LeftSideConnector extends ASideConnector {
 	}
 
 	@Override
-	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1,
-			Color color) {
+	public void render(GL2 gl, List<Vec3f> bandPoints, boolean isEnd1, Color color) {
 
-		float nodeEdgeAnchorSpacing = (float) Math.abs(bandConnectionPoint
-				.getX() - (float) nodeAnchorPoints.getFirst().getX());
+		float nodeEdgeAnchorSpacing = (float) Math.abs(bandConnectionPoint.getX()
+				- (float) nodeAnchorPoints.getFirst().getX());
 
 		Pair<Point2D, Point2D> nodeOffsetAnchorPoints = new Pair<Point2D, Point2D>();
-		nodeOffsetAnchorPoints.setFirst(new Point2D.Float(
-				(float) nodeAnchorPoints.getFirst().getX() - 0.3f
-						* nodeEdgeAnchorSpacing, (float) nodeAnchorPoints
-						.getFirst().getY()));
-		nodeOffsetAnchorPoints.setSecond(new Point2D.Float(
-				(float) nodeAnchorPoints.getSecond().getX() - 0.3f
-						* nodeEdgeAnchorSpacing, (float) nodeAnchorPoints
-						.getSecond().getY()));
+		nodeOffsetAnchorPoints.setFirst(new Point2D.Float((float) nodeAnchorPoints
+				.getFirst().getX() - 0.3f * nodeEdgeAnchorSpacing,
+				(float) nodeAnchorPoints.getFirst().getY()));
+		nodeOffsetAnchorPoints.setSecond(new Point2D.Float((float) nodeAnchorPoints
+				.getSecond().getX() - 0.3f * nodeEdgeAnchorSpacing,
+				(float) nodeAnchorPoints.getSecond().getY()));
 
 		calcBandDependentParameters(isEnd1, bandPoints);
 
 		Pair<Point2D, Point2D> bandAnchorPoints = new Pair<Point2D, Point2D>(
 				bandAnchorPoint2, bandAnchorPoint1);
 
-		Point2D bandOffsetAnchorPoint1 = calcPointOnLineWithFixedX(
-				bandAnchorPoint1, vecXPoint1, vecYPoint1,
+		Point2D bandOffsetAnchorPoint1 = calcPointOnLineWithFixedX(bandAnchorPoint1,
+				vecXPoint1, vecYPoint1,
 				(float) nodeOffsetAnchorPoints.getSecond().getX(),
 				(float) nodeOffsetAnchorPoints.getSecond().getY(),
 				(float) nodeOffsetAnchorPoints.getFirst().getY(),
 				(float) nodeOffsetAnchorPoints.getSecond().getY(),
 				(float) nodeOffsetAnchorPoints.getSecond().getY());
 
-		Point2D bandOffsetAnchorPoint2 = calcPointOnLineWithFixedX(
-				bandAnchorPoint2, vecXPoint2, vecYPoint2,
-				(float) nodeOffsetAnchorPoints.getFirst().getX(),
+		Point2D bandOffsetAnchorPoint2 = calcPointOnLineWithFixedX(bandAnchorPoint2,
+				vecXPoint2, vecYPoint2, (float) nodeOffsetAnchorPoints.getFirst().getX(),
 				(float) nodeOffsetAnchorPoints.getSecond().getY(),
 				(float) nodeOffsetAnchorPoints.getFirst().getY(),
 				(float) nodeOffsetAnchorPoints.getFirst().getY(),
@@ -99,8 +92,8 @@ public class LeftSideConnector extends ASideConnector {
 		bandConnectionPoints.add(bandOffsetAnchorPoints);
 		bandConnectionPoints.add(bandAnchorPoints);
 
-		connectionBandRenderer.renderComplexBand(gl, bandConnectionPoints,
-				false, color.getRGB(), (highlightBand) ? 1 : 0.5f);
+		connectionBandRenderer.renderComplexBand(gl, bandConnectionPoints, false,
+				color.getRGB(), (highlightBand) ? 1 : 0.5f);
 
 	}
 

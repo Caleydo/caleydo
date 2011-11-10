@@ -16,7 +16,6 @@ import org.caleydo.core.manager.GeneralManager;
  */
 public class RelationAnalyzer {
 
-
 	private EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 
 	private HashMap<String, SimilarityMap> hashSimilarityMaps;
@@ -26,7 +25,6 @@ public class RelationAnalyzer {
 
 	}
 
-	
 	public synchronized void updateRelations(String perspectiveID, RecordVirtualArray recordVA) {
 
 		// if this thing does not exist yet, we create it here, else we replace the pre-existing one

@@ -5,10 +5,11 @@ import javax.media.opengl.glu.GLU;
 import javax.media.opengl.glu.GLUtessellatorCallback;
 
 /*
- * Tessellator callback implemenation with all the callback routines. YOu
- * could use GLUtesselatorCallBackAdapter instead. But
+ * Tessellator callback implemenation with all the callback routines. YOu could use
+ * GLUtesselatorCallBackAdapter instead. But
  */
-public class TesselationCallback implements GLUtessellatorCallback {
+public class TesselationCallback
+	implements GLUtessellatorCallback {
 	private GL2 gl;
 	private GLU glu;
 
@@ -45,14 +46,13 @@ public class TesselationCallback implements GLUtessellatorCallback {
 	}
 
 	/*
-	 * combineCallback is used to create a new vertex when edges intersect.
-	 * coordinate location is trivial to calculate, but weight[4] may be used to
-	 * average color, normal, or texture coordinate data. In this program, color
-	 * is weighted.
+	 * combineCallback is used to create a new vertex when edges intersect. coordinate location is trivial to
+	 * calculate, but weight[4] may be used to average color, normal, or texture coordinate data. In this
+	 * program, color is weighted.
 	 */
 	@Override
 	public void combine(double[] coords, Object[] data, //
-			float[] weight, Object[] outData) {
+		float[] weight, Object[] outData) {
 		double[] vertex = new double[6];
 		// int i;
 
@@ -73,7 +73,7 @@ public class TesselationCallback implements GLUtessellatorCallback {
 
 	@Override
 	public void combineData(double[] coords, Object[] data, //
-			float[] weight, Object[] outData, Object polygonData) {
+		float[] weight, Object[] outData, Object polygonData) {
 	}
 
 	@Override

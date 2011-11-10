@@ -9,9 +9,8 @@ import org.caleydo.view.datagraph.layout.ForceDirectedGraphLayout;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ApplySpringBasedLayoutAction extends AToolBarAction implements
-		IToolBarItem {
-	
+public class ApplySpringBasedLayoutAction extends AToolBarAction implements IToolBarItem {
+
 	public static final String TEXT = "Apply Spring-Based Layout";
 	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";
 

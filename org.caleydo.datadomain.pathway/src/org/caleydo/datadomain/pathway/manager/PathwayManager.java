@@ -101,30 +101,28 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 	public PathwayDatabase createPathwayDatabase(final PathwayDatabaseType type,
 			final String XMLPath, final String imagePath, final String imageMapPath) {
-		
+
 		// Check if requested pathway database is already loaded (e.g. using
 		// caching)
 		if (hashPathwayDatabase.containsKey(type))
 			return hashPathwayDatabase.get(type);
 
-		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath,
-				imagePath, imagePath);
+		PathwayDatabase pathwayDatabase = new PathwayDatabase(type, XMLPath, imagePath,
+				imagePath);
 
 		hashPathwayDatabase.put(type, pathwayDatabase);
 
 		Logger.log(new Status(IStatus.INFO, this.toString(),
 				"Setting pathway loading path: database-type:[" + type + "] "
-						+ "xml-path:[" + pathwayDatabase.getXMLPath()
-						+ "] image-path:[" + pathwayDatabase.getImagePath()
-						+ "] image-map-path:[" + pathwayDatabase.getImageMapPath()
-						+ "]"));
-		
+						+ "xml-path:[" + pathwayDatabase.getXMLPath() + "] image-path:["
+						+ pathwayDatabase.getImagePath() + "] image-map-path:["
+						+ pathwayDatabase.getImageMapPath() + "]"));
+
 		return pathwayDatabase;
 	}
 
-	public PathwayGraph createPathway(final PathwayDatabaseType type,
-			final String sName, final String sTitle, final String sImageLink,
-			final String sExternalLink) {
+	public PathwayGraph createPathway(final PathwayDatabaseType type, final String sName,
+			final String sTitle, final String sImageLink, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink,
 				sExternalLink);
 
@@ -283,7 +281,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	public PathwayParserManager getXmlParserManager() {
 		return xmlParserManager;
 	}
-	
+
 	public void loadPathwaysByType(PathwayDatabase pathwayDatabase) {
 
 		// // Try reading list of files directly from local hard dist

@@ -158,7 +158,7 @@ public class Mat2f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + endl + get(1, 0) + ", "
-				+ get(1, 1) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + endl + get(1, 0) + ", " + get(1, 1)
+				+ ")";
 	}
 }

@@ -6,11 +6,8 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -33,7 +30,6 @@ public class CategoryView extends ATableBasedView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
 
-	
 	float renderWidth;
 
 	/**
@@ -78,8 +74,6 @@ public class CategoryView extends ATableBasedView {
 		super.initData();
 
 	}
-
-
 
 	@Override
 	public void displayLocal(GL2 gl) {
@@ -129,8 +123,6 @@ public class CategoryView extends ATableBasedView {
 
 		}
 	}
-
-	
 
 	@Override
 	public void registerEventListeners() {

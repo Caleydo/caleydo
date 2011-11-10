@@ -68,7 +68,6 @@ public abstract class VirtualArrayDelta<ConcreteType extends VirtualArrayDelta<C
 		return idType;
 	}
 
-
 	@Override
 	public void add(VADeltaItem item) {
 		deltaItems.add(item);

@@ -8,13 +8,7 @@ import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ADataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
@@ -58,8 +52,6 @@ public abstract class ARcpGLViewPart
 		minSizeComposite.setExpandHorizontal(true);
 		minSizeComposite.setExpandVertical(true);
 	}
-
-	
 
 	public void createPartControlGL() {
 

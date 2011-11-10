@@ -20,25 +20,18 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author <INSERT_YOUR_NAME>
  */
-public class RcpGLFilterPipelineView
-	extends ARcpGLViewPart
-	implements IListenerOwner
-{
+public class RcpGLFilterPipelineView extends ARcpGLViewPart implements IListenerOwner {
 	public static final String VIEW_TYPE = "org.caleydo.view.filterpipeline";
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLFilterPipelineView()
-	{
+	public RcpGLFilterPipelineView() {
 		super();
 
-		try
-		{
+		try {
 			viewContext = JAXBContext.newInstance(SerializedFilterPipelineView.class);
-		}
-		catch (JAXBException ex)
-		{
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 
@@ -48,63 +41,56 @@ public class RcpGLFilterPipelineView
 	}
 
 	@Override
-	public void createPartControl(Composite parent)
-	{
+	public void createPartControl(Composite parent) {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		
-		view = new GLFilterPipeline(glCanvas, parentComposite, serializedView.getViewFrustum());
+
+		view = new GLFilterPipeline(glCanvas, parentComposite,
+				serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView)serializedView).getDataDomainID());
+					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked")
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
-		}	
+		}
 		view.initialize();
 
 		createPartControlGL();
 	}
 
 	@Override
-	public void createDefaultSerializedView()
-	{
+	public void createDefaultSerializedView() {
 		serializedView = new SerializedFilterPipelineView();
 		determineDataConfiguration(serializedView);
 	}
 
 	@Override
-	public String getViewGUIID()
-	{
+	public String getViewGUIID() {
 		return GLFilterPipeline.VIEW_TYPE;
 	}
 
 	@Override
 	public void queueEvent(final AEventListener<? extends IListenerOwner> listener,
-			final AEvent event)
-	{
-		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable()
-		{
+			final AEvent event) {
+		PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
 			@Override
-			public void run()
-			{
+			public void run() {
 				listener.handleEvent(event);
 			}
 		});
 	}
 
 	@Override
-	public void registerEventListeners()
-	{
-		
+	public void registerEventListeners() {
+
 	}
 
 	@Override
-	public void unregisterEventListeners()
-	{
-		
+	public void unregisterEventListeners() {
+
 	}
 
 }

@@ -46,8 +46,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 				int dimensionGroupID = pick.getID();
 
 				for (DimensionGroupRenderer comparisonGroupRepresentation : dimensionGroupRenderers) {
-					if (comparisonGroupRepresentation.getDataContainer()
-							.getID() == dimensionGroupID) {
+					if (comparisonGroupRepresentation.getDataContainer().getID() == dimensionGroupID) {
 						draggedComparisonGroupRepresentation = comparisonGroupRepresentation;
 						break;
 					}
@@ -59,10 +58,8 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 						.setSelectionType(SelectionType.SELECTION);
 
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick
-						.getPickedPoint());
-				dragAndDropController
-						.addDraggable(draggedComparisonGroupRepresentation);
+				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.addDraggable(draggedComparisonGroupRepresentation);
 				view.setDisplayListDirty();
 
 			}
@@ -100,14 +97,12 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
-		float dimensionGroupWidth = (x - pixelGLConverter
-				.getGLWidthForPixelWidth(2 * SIDE_SPACING_PIXELS
-						+ (node.getDataContainers().size() - 1)
-						* SPACING_PIXELS))
+		float dimensionGroupWidth = (x - pixelGLConverter.getGLWidthForPixelWidth(2
+				* SIDE_SPACING_PIXELS + (node.getDataContainers().size() - 1)
+				* SPACING_PIXELS))
 				/ (float) node.getDataContainers().size();
 
-		float currentPosX = pixelGLConverter
-				.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
+		float currentPosX = pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
 		// float currentPosX = (x / 2.0f)
 		// - pixelGLConverter
 		// .getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
@@ -138,17 +133,15 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 			gl.glPopName();
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
-			Point2D bottomPosition2 = new Point2D.Float(currentPosX
-					+ dimensionGroupWidth, 0);
+			Point2D bottomPosition2 = new Point2D.Float(
+					currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
-			Point2D topPosition2 = new Point2D.Float(currentPosX
-					+ dimensionGroupWidth, y);
-			bottomDimensionGroupPositions.put(dimensionGroupRenderer
-					.getDataContainer().getID(), new Pair<Point2D, Point2D>(
-					bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(dimensionGroupRenderer
-					.getDataContainer().getID(), new Pair<Point2D, Point2D>(
-					topPosition1, topPosition2));
+			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
+			bottomDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer()
+					.getID(),
+					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
+			topDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer()
+					.getID(), new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
 		}
@@ -180,10 +173,9 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		for (DataContainer dataContainer : node.getDataContainers()) {
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					dataContainer.getLabel(), pixelGLConverter
-							.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
-					pixelGLConverter
-							.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
+					dataContainer.getLabel(),
+					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
+					pixelGLConverter.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
 			if (textWidth > maxTextWidth)
 				maxTextWidth = textWidth;
 		}
@@ -194,8 +186,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void destroy() {
-		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
-				+ node.getID());
+		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE + node.getID());
 	}
 
 	@Override

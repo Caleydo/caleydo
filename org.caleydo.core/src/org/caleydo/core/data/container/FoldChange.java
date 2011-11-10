@@ -5,7 +5,6 @@ package org.caleydo.core.data.container;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;
@@ -18,7 +17,8 @@ public class FoldChange {
 	HashMap<DataContainer, Pair<double[], FoldChangeSettings>> containerToFoldChangeResult =
 		new HashMap<DataContainer, Pair<double[], FoldChangeSettings>>();
 
-	HashMap<DataContainer, double[]> containerToFoldChangeUncertainty = new HashMap<DataContainer, double[]>();;
+	HashMap<DataContainer, double[]> containerToFoldChangeUncertainty =
+		new HashMap<DataContainer, double[]>();;
 
 	public void setResult(DataContainer container, double[] resultVector) {
 
@@ -43,9 +43,9 @@ public class FoldChange {
 		if (foldChangeSettings.getEvaluator() == FoldChangeEvaluator.BOTH)
 			calculateAbsolute = true;
 
-		containerToFoldChangeUncertainty.put(container, ConversionTools.normalize(
-			containerToFoldChangeResult.get(container).getFirst(), foldChangeSettings.getRatioUncertainty(),
-			foldChangeSettings.getRatio(), calculateAbsolute));
+		containerToFoldChangeUncertainty.put(container, ConversionTools.normalize(containerToFoldChangeResult
+			.get(container).getFirst(), foldChangeSettings.getRatioUncertainty(), foldChangeSettings
+			.getRatio(), calculateAbsolute));
 	}
 
 	public double[] getFoldChangeUncertainty(DataContainer dataContainer) {

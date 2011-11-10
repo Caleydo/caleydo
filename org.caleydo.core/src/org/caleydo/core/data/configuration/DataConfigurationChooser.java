@@ -64,7 +64,8 @@ public class DataConfigurationChooser {
 				}
 			}
 		}
-		if ((chosenDataDomain == null || recordPerspectiveID == null || dimensionPerspectiveID == null) && letUserChoose) {
+		if ((chosenDataDomain == null || recordPerspectiveID == null || dimensionPerspectiveID == null)
+			&& letUserChoose) {
 
 			Shell shell = new Shell(SWT.APPLICATION_MODAL);
 			ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(shell, viewName);

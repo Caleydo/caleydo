@@ -11,10 +11,10 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous range,
- * equivalent to the set of real numbers. In terms of scales it can be interpreted as a data structure for an
- * absolute scale. As a consequence raw data for a numerical set can only be of a number format, such as int
- * or float
+ * INumericalDimension is a specialization of IDimension. It is meant for numerical data of a continuous
+ * range, equivalent to the set of real numbers. In terms of scales it can be interpreted as a data structure
+ * for an absolute scale. As a consequence raw data for a numerical set can only be of a number format, such
+ * as int or float
  * 
  * @author Alexander Lex
  */
@@ -36,7 +36,7 @@ public class NumericalColumn
 	 */
 	public NumericalColumn(int dimensionID) {
 		super(dimensionID);
-	}	
+	}
 
 	@Override
 	public void normalize() {

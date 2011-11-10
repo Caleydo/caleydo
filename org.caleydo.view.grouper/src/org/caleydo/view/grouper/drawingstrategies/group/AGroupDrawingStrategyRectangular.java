@@ -227,8 +227,8 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 		endGUIElement(gl);
 	}
 
-	protected void drawBackgroudRectangle(GL2 gl, GroupRepresentation groupRepresentation,
-			Vec3f vecPosition) {
+	protected void drawBackgroudRectangle(GL2 gl,
+			GroupRepresentation groupRepresentation, Vec3f vecPosition) {
 
 		float fHeight = groupRepresentation.getHeight();
 		float fWidth = groupRepresentation.getWidth();

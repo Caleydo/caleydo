@@ -9,17 +9,17 @@ import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
  * Listener for the event {@link AddGroupsToVisBricksEvent}.
  * 
  * @author Partl
- *
+ * 
  */
 public class AddGroupsToVisBricksListener extends AEventListener<GLVisBricks> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof AddGroupsToVisBricksEvent) {
-			AddGroupsToVisBricksEvent addGroupsToVisBricksEvent = (AddGroupsToVisBricksEvent)event;
+		if (event instanceof AddGroupsToVisBricksEvent) {
+			AddGroupsToVisBricksEvent addGroupsToVisBricksEvent = (AddGroupsToVisBricksEvent) event;
 			handler.addDimensionGroups(addGroupsToVisBricksEvent.getDataContainers());
 		}
-		
+
 	}
 
 }

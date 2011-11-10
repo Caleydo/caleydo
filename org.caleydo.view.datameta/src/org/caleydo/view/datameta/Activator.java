@@ -24,7 +24,7 @@ public class Activator extends Plugin {
 	public void start(BundleContext context) throws Exception {
 		super.start(context);
 		plugin = this;
-	
+
 		registerDataDomains();
 	}
 
@@ -55,7 +55,10 @@ public class Activator extends Plugin {
 		dataDomainTypes.add("org.caleydo.datadomain.genetic");
 		dataDomainTypes.add("org.caleydo.datadomain.generic");
 
-		DataDomainManager.get().getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes, RcpDataMetaView.VIEW_TYPE);
+		DataDomainManager
+				.get()
+				.getAssociationManager()
+				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
+						RcpDataMetaView.VIEW_TYPE);
 	}
 }

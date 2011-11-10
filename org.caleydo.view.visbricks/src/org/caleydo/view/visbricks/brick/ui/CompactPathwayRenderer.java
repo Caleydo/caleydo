@@ -30,9 +30,8 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 	private EIconTextures texture;
 	private int id;
 
-	public CompactPathwayRenderer(AGLView view, String caption,
-			PickingType pickingType, int id, TextureManager textureManager,
-			EIconTextures texture) {
+	public CompactPathwayRenderer(AGLView view, String caption, PickingType pickingType,
+			int id, TextureManager textureManager, EIconTextures texture) {
 		this.view = view;
 		this.caption = caption;
 		this.pickingType = pickingType;
@@ -44,16 +43,13 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		int pickingID = view.getPickingManager().getPickingID(view.getID(),
-				pickingType, id);
+		int pickingID = view.getPickingManager().getPickingID(view.getID(), pickingType,
+				id);
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-		float iconHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(ICON_SIZE_PIXELS);
-		float iconWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(ICON_SIZE_PIXELS);
-		float spacingWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(SPACING_PIXELS);
+		float iconHeight = pixelGLConverter.getGLHeightForPixelHeight(ICON_SIZE_PIXELS);
+		float iconWidth = pixelGLConverter.getGLWidthForPixelWidth(ICON_SIZE_PIXELS);
+		float spacingWidth = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 1, 0);
@@ -69,20 +65,18 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 		Vec3f upperRightCorner = new Vec3f(iconWidth, iconHeight, 0);
 		Vec3f upperLeftCorner = new Vec3f(0, iconHeight, 0);
 
-		textureManager
-				.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner,
-						upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+		textureManager.renderTexture(gl, texture, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
 		gl.glPopName();
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
-		float ySpacing = view.getPixelGLConverter()
-				.getGLHeightForPixelHeight(1);
+		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, caption, iconWidth + spacingWidth,
-				ySpacing, 0, x - (iconWidth + spacingWidth), y - 2 * ySpacing);
+		textRenderer.renderTextInBounds(gl, caption, iconWidth + spacingWidth, ySpacing,
+				0, x - (iconWidth + spacingWidth), y - 2 * ySpacing);
 
 	}
 

@@ -71,7 +71,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 			headingSpacing.setAbsoluteSizeY(0f);
 		else
 			headingSpacing.setAbsoluteSizeY(0.3f);
-		
+
 		mainColumn.append(headingSpacing);
 
 	}

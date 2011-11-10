@@ -9,8 +9,7 @@ import org.caleydo.view.filterpipeline.GLFilterPipeline;
  * 
  * @author Marc Streit
  */
-public class FilterUpdateListener
-	extends AEventListener<GLFilterPipeline> {
+public class FilterUpdateListener extends AEventListener<GLFilterPipeline> {
 
 	@Override
 	public void handleEvent(AEvent event) {

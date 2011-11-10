@@ -11,11 +11,11 @@ import org.caleydo.view.pathway.GLPathway;
  * 
  * @author Alexander Lex
  */
-public class SwitchDataRepresentationListener
-	extends AEventListener<GLPathway> {
+public class SwitchDataRepresentationListener extends AEventListener<GLPathway> {
 
 	/**
-	 * Handles {@link SwitchDataRepresentationEvent}s calling the related handler
+	 * Handles {@link SwitchDataRepresentationEvent}s calling the related
+	 * handler
 	 * 
 	 */
 	@Override

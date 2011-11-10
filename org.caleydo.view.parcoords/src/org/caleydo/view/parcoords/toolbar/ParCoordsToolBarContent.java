@@ -54,7 +54,8 @@ public class ParCoordsToolBarContent extends AToolBarContent {
 			actionList.add(new PropagateSelectionsAction());
 		}
 
-		AGLView view = GeneralManager.get().getViewManager().getGLView(targetViewData.getViewID());
+		AGLView view = GeneralManager.get().getViewManager()
+				.getGLView(targetViewData.getViewID());
 		actionList.add(new TakeSnapshotAction(view.getParentComposite()));
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

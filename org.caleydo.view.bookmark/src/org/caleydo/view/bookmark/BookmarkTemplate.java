@@ -7,7 +7,7 @@ public class BookmarkTemplate extends LayoutTemplate {
 	@Override
 	public void setStaticLayouts() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

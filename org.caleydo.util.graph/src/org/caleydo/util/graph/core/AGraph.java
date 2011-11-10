@@ -41,8 +41,7 @@ public abstract class AGraph implements IGraph {
 	 * 
 	 */
 	protected AGraph(final int id) {
-		hashGraphProperties = new HashMap<EGraphProperty, Boolean>(
-				iInitialSizeProperties);
+		hashGraphProperties = new HashMap<EGraphProperty, Boolean>(iInitialSizeProperties);
 
 		this.iGraphId = id;
 	}
@@ -57,8 +56,8 @@ public abstract class AGraph implements IGraph {
 		return hashGraphProperties.containsKey(test);
 	}
 
-	public final void setGraphProperty(final EGraphProperty prop,
-			final boolean value) {
+	@Override
+	public final void setGraphProperty(final EGraphProperty prop, final boolean value) {
 		if (value) {
 			hashGraphProperties.put(prop, new Boolean(value));
 			return;
@@ -82,6 +81,7 @@ public abstract class AGraph implements IGraph {
 	 * 
 	 * @see org.caleydo.util.graph.IGraphComponent#disposeItem()
 	 */
+	@Override
 	public final void disposeItem() {
 		/**
 		 * Graph does not dispose other objects; only IGraphItem need to dispose

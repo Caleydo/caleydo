@@ -5,7 +5,6 @@ import org.caleydo.core.event.AEvent;
 
 /**
  * @author Alexander Lex
- *
  */
 public class FilterEvent<FilterType extends Filter<?>>
 	extends AEvent {

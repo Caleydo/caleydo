@@ -9,11 +9,11 @@ public class NewViewEventListener extends AEventListener<GLDataGraph> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof NewViewEvent) {
-			NewViewEvent newViewEvent = (NewViewEvent)event;
+		if (event instanceof NewViewEvent) {
+			NewViewEvent newViewEvent = (NewViewEvent) event;
 			handler.addView(newViewEvent.getView());
 		}
-		
+
 	}
 
 }

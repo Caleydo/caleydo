@@ -53,7 +53,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 		recordCaptionLayout.setAbsoluteSizeX(0.6f);
 		recordCaptionLayout.setRenderer(recordCaptionRenderer);
 		mainRow.append(recordCaptionLayout);
-		
+
 		mainColumn.append(mainRow);
 
 		ElementLayout ySpacing = new ElementLayout();

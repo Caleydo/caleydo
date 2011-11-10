@@ -62,7 +62,7 @@ public class IDType {
 	/**
 	 * Register a new IDType. Checks whether whether the columnType is legal. If the typeName is already
 	 * registered, a check is conducted whether the registered and the new one match, and if they do, the
-	 * previously registered type is returned. Else an exception is thrown. 
+	 * previously registered type is returned. Else an exception is thrown.
 	 * 
 	 * @param typeName
 	 *            see {@link #typeName}

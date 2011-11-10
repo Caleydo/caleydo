@@ -218,15 +218,13 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 				histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getDataContainer(), brick.getDataDomain()
-						.getTable(), true);
+				brick.getDataContainer(), brick.getDataDomain().getTable(), true);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
 				overviewHeatMapRenderer);
 
 		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
-				brick.getDataContainer(), brick.getDataDomain()
-						.getTable(), false);
+				brick.getDataContainer(), brick.getDataDomain().getTable(), false);
 
 		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
 				compactOverviewHeatMapRenderer);

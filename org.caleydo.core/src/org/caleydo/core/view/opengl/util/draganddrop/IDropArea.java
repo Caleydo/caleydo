@@ -9,6 +9,6 @@ public interface IDropArea {
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 		float mouseCoordinateY);
 
-	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX, float mouseCoordinateY,
-		DragAndDropController dragAndDropController);
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+		float mouseCoordinateY, DragAndDropController dragAndDropController);
 }

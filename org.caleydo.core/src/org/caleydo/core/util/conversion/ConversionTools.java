@@ -132,7 +132,7 @@ public class ConversionTools {
 	 */
 	public static double[] normalize(double[] inputData, final double min, final double max,
 		boolean calculateAbsolute) {
-		
+
 		if (min > max)
 			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max + ")");
 
@@ -146,9 +146,9 @@ public class ConversionTools {
 
 				if (calculateAbsolute)
 					targetData[iCount] = (Math.abs(inputData[iCount]) - min) / (max - min);
-				else					
+				else
 					targetData[iCount] = (inputData[iCount] - min) / (max - min);
-				
+
 				if (targetData[iCount] > 1) {
 					targetData[iCount] = 1;
 				}
@@ -177,7 +177,7 @@ public class ConversionTools {
 
 		return normalize(inputData, min, max, false);
 	}
-	
+
 	/**
 	 * Convert a String sInput into an array of integers. The Int array size is asigns dynamically depending
 	 * on the size of provided integer values inside the string sInput. If number of integer values in sInput

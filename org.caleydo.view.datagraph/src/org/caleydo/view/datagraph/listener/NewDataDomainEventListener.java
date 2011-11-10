@@ -9,8 +9,8 @@ public class NewDataDomainEventListener extends AEventListener<GLDataGraph> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof NewDataDomainEvent) {
-			NewDataDomainEvent newDataDomainEvent = (NewDataDomainEvent)event;
+		if (event instanceof NewDataDomainEvent) {
+			NewDataDomainEvent newDataDomainEvent = (NewDataDomainEvent) event;
 			handler.addDataDomain(newDataDomainEvent.getDataDomain());
 		}
 	}

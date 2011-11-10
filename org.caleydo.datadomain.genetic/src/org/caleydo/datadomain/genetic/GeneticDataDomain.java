@@ -194,7 +194,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// // FIXME make this a filter?
 	// table.setRecordVA(DataTable.RECORD, recordVA);
 	// }
-	
+
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();

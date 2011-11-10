@@ -6,7 +6,6 @@ import javax.xml.bind.annotation.XmlType;
  * Class representing a color using RGBA values.
  * 
  * @author Partl
- *
  */
 @XmlType
 public class Color {
@@ -14,9 +13,9 @@ public class Color {
 	public float g;
 	public float b;
 	public float a;
-	
+
 	public Color() {
-		
+
 	}
 
 	public Color(float r, float g, float b, float a) {

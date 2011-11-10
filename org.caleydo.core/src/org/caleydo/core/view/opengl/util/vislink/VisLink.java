@@ -1194,7 +1194,8 @@ public class VisLink {
 	// int[] txtnumber = new int[1];
 	// gl.glGenTextures(1, txtnumber, 0); // Create 1 Texture
 	// gl.glBindTexture(GL2.GL_TEXTURE_2D, txtnumber[0]); // Bind The Texture
-	// gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, GL2.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0, GL2.GL_LUMINANCE,
+	// gl.glTexImage2D(GL2.GL_TEXTURE_2D, 0, GL2.GL_LUMINANCE, TEXTURE_SIZE, TEXTURE_SIZE, 0,
+	// GL2.GL_LUMINANCE,
 	// GL2.GL_UNSIGNED_BYTE, data); // Build Texture Using Information In data
 	// gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MIN_FILTER, GL2.GL_LINEAR);
 	// gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_MAG_FILTER, GL2.GL_LINEAR);

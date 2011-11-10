@@ -28,8 +28,8 @@ public class ClearSelectionsAction
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		// Was needed for matchmaker that created the selection types dynamically
-//		RemoveManagedSelectionTypesEvent resetSelectionTypesEvent = new RemoveManagedSelectionTypesEvent();
-//		resetSelectionTypesEvent.setSender(this);
-//		GeneralManager.get().getEventPublisher().triggerEvent(resetSelectionTypesEvent);
+		// RemoveManagedSelectionTypesEvent resetSelectionTypesEvent = new RemoveManagedSelectionTypesEvent();
+		// resetSelectionTypesEvent.setSender(this);
+		// GeneralManager.get().getEventPublisher().triggerEvent(resetSelectionTypesEvent);
 	};
 }

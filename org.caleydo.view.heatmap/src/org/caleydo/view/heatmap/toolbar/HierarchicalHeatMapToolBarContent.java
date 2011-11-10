@@ -38,7 +38,8 @@ public class HierarchicalHeatMapToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		AGLView view = GeneralManager.get().getViewManager().getGLView(targetViewData.getViewID());
+		AGLView view = GeneralManager.get().getViewManager()
+				.getGLView(targetViewData.getViewID());
 		actionList.add(new TakeSnapshotAction(view.getParentComposite()));
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

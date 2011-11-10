@@ -6,7 +6,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
 public class ToggleLayoutAction extends AToolBarAction {
-	
+
 	public static final String TEXT = "Toggle between Bucket and Jukebox layout";
 	public static final String ICON = "resources/icons/view/remote/toggle.png";
 

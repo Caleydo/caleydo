@@ -58,27 +58,24 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 	protected RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public DetailBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, GLVisBricks visBricks,
-			IBrickConfigurer configurer) {
+	public DetailBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+			GLVisBricks visBricks, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
-		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-				visBricks, true);
-		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-				visBricks, false);
+		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
+				true);
+		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
+				false);
 		toolBar = new Row();
 		footerBar = new Row();
-		lockResizingButton = new Button(
-				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		viewSwitchingModeButton = new Button(
 				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
-		viewSwitchingModeButton.setSelected(dimensionGroup
-				.isGlobalViewSwitching());
+		viewSwitchingModeButton.setSelected(dimensionGroup.isGlobalViewSwitching());
 
 		configurer.configure(this);
 		registerPickingListeners();
@@ -115,8 +112,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		leftRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		leftRelationIndicatorLayout
-				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		baseRow.append(leftRelationIndicatorLayout);
 
@@ -126,9 +122,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
-					pixelGLConverter, HANDLE_SIZE_PIXELS, brick
-							.getTextureManager(),
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
+					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
 					HandleRenderer.ALL_RESIZE_HANDLES));
 		}
 
@@ -144,8 +139,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("viewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1,
-					1, 1, 1 }));
+			viewLayout
+					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
 			viewLayout.setZoomer(zoomer);
 		}
@@ -174,10 +169,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
 		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
-		rightRelationIndicatorLayout
-				.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-		rightRelationIndicatorLayout
-				.setRenderer(rightRelationIndicatorRenderer);
+		rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
 
 	}
@@ -221,13 +214,12 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// ratioSpacingLayoutX.setRatioSizeX(1);
 		// ratioSpacingLayoutX.setRatioSizeY(0);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout(
-				"lockResizingButton");
+		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
 		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(
-				lockResizingButton, brick, brick.getTextureManager()));
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
+				brick, brick.getTextureManager()));
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"viewSwitchtingButtonLayout");
@@ -280,22 +272,17 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.setSizeFixed(isResizingLocked);
 				lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID);
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
-		brick.addSingleIDPickingListener(
-				new APickingListener() {
+		brick.addSingleIDPickingListener(new APickingListener() {
 
-					@Override
-					public void clicked(Pick pick) {
-						boolean isGlobalViewSwitching = !viewSwitchingModeButton
-								.isSelected();
-						dimensionGroup
-								.setGlobalViewSwitching(isGlobalViewSwitching);
-						viewSwitchingModeButton
-								.setSelected(isGlobalViewSwitching);
-					}
-				}, PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+			@Override
+			public void clicked(Pick pick) {
+				boolean isGlobalViewSwitching = !viewSwitchingModeButton.isSelected();
+				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
+				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
+			}
+		}, PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addSingleIDPickingListener(new APickingListener() {
@@ -309,16 +296,16 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getMinHeightPixels() {
-		return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
-				+ TOOLBAR_HEIGHT_PIXELS + viewRenderer.getMinHeightPixels();
+		return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS + TOOLBAR_HEIGHT_PIXELS
+				+ viewRenderer.getMinHeightPixels();
 		// return dimensionGroup.getDetailBrickHeightPixels();
 	}
 
 	@Override
 	public int getMinWidthPixels() {
 		int toolBarWidth = calcSumPixelWidth(toolBar.getElements());
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
-				.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
+				: 0;
 
 		int guiElementsWidth = Math.max(toolBarWidth, footerBarWidth) + 2
 				* SPACING_PIXELS;
@@ -368,8 +355,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	@Override
 	public int getDefaultWidthPixels() {
-		return dimensionGroup.getDetailBrickWidthPixels(dimensionGroup
-				.isLeftmost());
+		return dimensionGroup.getDetailBrickWidthPixels(dimensionGroup.isLeftmost());
 	}
 
 	/**
@@ -405,15 +391,14 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutTemplate {
 	public void destroy() {
 		super.destroy();
 		brick.removeSingleIDPickingListeners(
-				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID);
+				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 		brick.removeSingleIDPickingListeners(
 				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
-		brick.removeSingleIDPickingListeners(
-				PickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID);
+		brick.removeSingleIDPickingListeners(PickingType.BRICK_CLOSE_BUTTON.name(),
+				CLOSE_BUTTON_ID);
 	}
 
 }

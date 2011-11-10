@@ -15,8 +15,8 @@ public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 
 	private int numberOfOccurences = 0;
 
-	private String dataDomainID; 
-	
+	private String dataDomainID;
+
 	/**
 	 * Constructor. Creates the events associated with the item.
 	 */
@@ -26,10 +26,12 @@ public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 	}
 
 	/**
-	 * Constructor. Creates the events associated with the item and the number of occurrences.
+	 * Constructor. Creates the events associated with the item and the number
+	 * of occurrences.
 	 */
-	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID, int numberOfOccurences) {
-		
+	public LoadPathwaysByPathwayItem(PathwayGraph pathway, String dataDomainID,
+			int numberOfOccurences) {
+
 		this.numberOfOccurences = numberOfOccurences;
 		this.dataDomainID = dataDomainID;
 		setPathway(pathway);
@@ -43,10 +45,10 @@ public class LoadPathwaysByPathwayItem extends AContextMenuItem {
 		else
 			setLabel("(" + numberOfOccurences + ") " + pathwayName);
 
-//		if (pathway.getType() == EPathwayDatabaseType.KEGG)
-//			setIconTexture(EIconTextures.CM_KEGG);
-//		else if (pathway.getType() == EPathwayDatabaseType.BIOCARTA)
-//			setIconTexture(EIconTextures.CM_BIOCARTA);
+		// if (pathway.getType() == EPathwayDatabaseType.KEGG)
+		// setIconTexture(EIconTextures.CM_KEGG);
+		// else if (pathway.getType() == EPathwayDatabaseType.BIOCARTA)
+		// setIconTexture(EIconTextures.CM_BIOCARTA);
 
 		LoadPathwayEvent loadPathwayEvent = new LoadPathwayEvent();
 		loadPathwayEvent.setSender(this);

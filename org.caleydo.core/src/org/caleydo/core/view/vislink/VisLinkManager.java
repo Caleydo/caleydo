@@ -330,8 +330,6 @@ public class VisLinkManager
 
 	}
 
-	
-
 	public String getAppName() {
 		return appName;
 	}

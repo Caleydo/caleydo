@@ -49,7 +49,7 @@ public class ProjectLoader {
 	 */
 	public void loadProjectFromZIP(String fileName) {
 		FileOperations.deleteDirectory(TEMP_PROJECT_ZIP_FOLDER);
-//		FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH);
+		// FileOperations.deleteDirectory(GeneralManager.CALEYDO_HOME_PATH);
 
 		ZipUtils zipUtils = new ZipUtils();
 		zipUtils.unzipToDirectory(fileName, TEMP_PROJECT_ZIP_FOLDER);
@@ -138,7 +138,6 @@ public class ProjectLoader {
 			// DataDomainManager
 			DataDomainManager.get().register(dataDomain);
 			// DataDomainManager usually takes care of that, we need to do it manually for serialization
-			
 
 			Thread thread = new Thread(dataDomain, dataDomain.getDataDomainID());
 			thread.start();
@@ -162,7 +161,7 @@ public class ProjectLoader {
 					RecordPerspective recordPerspective =
 						(RecordPerspective) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
 							.getResource(extendedDirName + recordPerspectiveID + ".xml"));
-					recordPerspective.setDataDomain((ATableBasedDataDomain)dataDomain);
+					recordPerspective.setDataDomain((ATableBasedDataDomain) dataDomain);
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					recordPerspectives.put(recordPerspectiveID, recordPerspective);
 
@@ -226,9 +225,10 @@ public class ProjectLoader {
 
 	public void loadWorkbenchData(String dirName) {
 		try {
-			// clear old workbench file 
-			FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER + ProjectSaver.WORKBENCH_MEMENTO_FILE);
-			
+			// clear old workbench file
+			FileOperations.deleteDirectory(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
+				+ ProjectSaver.WORKBENCH_MEMENTO_FILE);
+
 			File workbenchFile = new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE);
 
 			if (!workbenchFile.exists()) {
@@ -238,8 +238,7 @@ public class ProjectLoader {
 			}
 
 			FileOperations.copyFolder(new File(dirName + ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(
-				ProjectSaver.WORKBENCH_MEMENTO_FOLDER
-					+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
+				ProjectSaver.WORKBENCH_MEMENTO_FOLDER + ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		}
 		catch (IOException e) {
 			// throw new IllegalStateException("Could not load workbench data from " + dirName, e);

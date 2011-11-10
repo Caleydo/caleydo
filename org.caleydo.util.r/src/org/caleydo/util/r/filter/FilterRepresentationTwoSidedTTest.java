@@ -2,8 +2,6 @@ package org.caleydo.util.r.filter;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.collection.Histogram;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.RecordFilter;
@@ -36,6 +34,7 @@ public class FilterRepresentationTwoSidedTTest extends
 
 	private float pValue = 1f;
 
+	@Override
 	public boolean create() {
 
 		if (!super.create())

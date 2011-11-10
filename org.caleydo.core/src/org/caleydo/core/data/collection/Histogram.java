@@ -109,7 +109,7 @@ public class Histogram
 	public float getMax() {
 		return max;
 	}
-	
+
 	public float getMin() {
 		return min;
 	}

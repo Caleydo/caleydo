@@ -7,10 +7,10 @@ import org.caleydo.view.treemap.GLTreeMap;
 
 /**
  * Listener for hierarchy level highlighting.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
-
 
 public class LevelHighlightingListener extends AEventListener<GLTreeMap> {
 

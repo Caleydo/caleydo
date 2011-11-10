@@ -5,7 +5,6 @@ import org.caleydo.core.event.IListenerOwner;
 
 public interface INewDimensionGroupInfoHandler
 	extends IListenerOwner {
-	public void handleNewDimensionGroupInfo(String eVAType, DimensionGroupList groupList,
-		boolean bDeleteTree);
+	public void handleNewDimensionGroupInfo(String eVAType, DimensionGroupList groupList, boolean bDeleteTree);
 
 }

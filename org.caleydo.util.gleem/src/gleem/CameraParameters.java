@@ -44,10 +44,9 @@ public class CameraParameters {
 	public CameraParameters() {
 	}
 
-	public CameraParameters(Vec3f position, Vec3f forwardDirection,
-			Vec3f upDirection, Rotf orientation, Mat4f modelviewMatrix,
-			Mat4f projectionMatrix, float vertFOV, float imagePlaneAspectRatio,
-			int xSize, int ySize) {
+	public CameraParameters(Vec3f position, Vec3f forwardDirection, Vec3f upDirection,
+			Rotf orientation, Mat4f modelviewMatrix, Mat4f projectionMatrix,
+			float vertFOV, float imagePlaneAspectRatio, int xSize, int ySize) {
 		setPosition(position);
 		setForwardDirection(forwardDirection);
 		setUpDirection(upDirection);

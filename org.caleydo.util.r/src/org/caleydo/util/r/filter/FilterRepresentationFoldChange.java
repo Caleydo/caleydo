@@ -50,6 +50,7 @@ public class FilterRepresentationFoldChange extends
 
 	private Histogram histogram;
 
+	@Override
 	public boolean create() {
 
 		if (!super.create())
@@ -224,10 +225,13 @@ public class FilterRepresentationFoldChange extends
 				RcpGLHistogramView histogramView = new RcpGLHistogramView();
 				histogramView.setDataDomain(dataDomain);
 				histogramView.setDataContainer(dataContainer1);
-				SerializedHistogramView serializedHistogramView = new SerializedHistogramView(dataDomain.getDataDomainID());
-				serializedHistogramView.setDimensionPerspectiveID(dataContainer1.getDimensionPerspective().getID());
-				serializedHistogramView.setRecordPerspectiveID(dataContainer1.getRecordPerspective().getID());
-				
+				SerializedHistogramView serializedHistogramView = new SerializedHistogramView(
+						dataDomain.getDataDomainID());
+				serializedHistogramView.setDimensionPerspectiveID(dataContainer1
+						.getDimensionPerspective().getID());
+				serializedHistogramView.setRecordPerspectiveID(dataContainer1
+						.getRecordPerspective().getID());
+
 				histogramView.setExternalSerializedView(serializedHistogramView);
 				histogramView.createPartControl(histoComposite);
 				((GLHistogram) (histogramView.getGLView())).setHistogram(histogram);
@@ -248,12 +252,13 @@ public class FilterRepresentationFoldChange extends
 	}
 
 	/**
-	 * @param dataDomain setter, see {@link #dataDomain}
+	 * @param dataDomain
+	 *            setter, see {@link #dataDomain}
 	 */
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-	
+
 	public void setHistogram(Histogram histogram) {
 		this.histogram = histogram;
 	}

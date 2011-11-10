@@ -95,7 +95,8 @@ public class OverviewRenderer extends LayoutRenderer {
 				clusterLayoutList.add(clusterLayout);
 
 				clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,
-						clusterContainer.getRecordPerspective().getVirtualArray(), clusterIndex);
+						clusterContainer.getRecordPerspective().getVirtualArray(),
+						clusterIndex);
 				clusterLayout.setRenderer(clusterRenderer);
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);

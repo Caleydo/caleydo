@@ -32,11 +32,11 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 	private int textHeightPixels;
 
-	public DimensionGroupRenderer(DataContainer dataContainer,
-			AGLView view, DragAndDropController dragAndDropController,
-			IDataGraphNode node, float[] color) {
-		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f,
-				color[2] - 0.2f, 1f }, 2);
+	public DimensionGroupRenderer(DataContainer dataContainer, AGLView view,
+			DragAndDropController dragAndDropController, IDataGraphNode node,
+			float[] color) {
+		super(color,
+				new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2);
 		this.setDataContainer(dataContainer);
 		this.view = view;
 		this.node = node;
@@ -104,16 +104,16 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 
 		if (renderDimensionGroupLabel) {
 			gl.glPushMatrix();
-			
-			if(isUpsideDown) {
+
+			if (isUpsideDown) {
 				float textPositionX = pixelGLConverter
 						.getGLHeightForPixelHeight(textHeightPixels - 2)
 						+ (x - pixelGLConverter
-								.getGLHeightForPixelHeight(textHeightPixels - 2))
-						/ 2.0f;
+								.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
 
-				gl.glTranslatef(textPositionX, pixelGLConverter
-						.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS), 0.1f);
+				gl.glTranslatef(textPositionX,
+						pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+						0.1f);
 				gl.glRotatef(90, 0, 0, 1);
 			} else {
 				float textPositionX = (x - pixelGLConverter
@@ -127,18 +127,9 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 				gl.glRotatef(-90, 0, 0, 1);
 			}
 
-			textRenderer
-					.renderTextInBounds(
-							gl,
-							dataContainer.getLabel(),
-							0,
-							0,
-							0,
-							y
-									- pixelGLConverter
-											.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-							pixelGLConverter
-									.getGLHeightForPixelHeight(textHeightPixels));
+			textRenderer.renderTextInBounds(gl, dataContainer.getLabel(), 0, 0, 0, y
+					- pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+					pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
 			gl.glPopMatrix();
 		}
 
@@ -153,28 +144,25 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 	}
 
 	@Override
-	public void setDraggingStartPoint(float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
-		draggingPosition = node.getBottomDataContainerAnchorPoints(
-				dataContainer).getFirst();
+		draggingPosition = node.getBottomDataContainerAnchorPoints(dataContainer)
+				.getFirst();
 
 	}
 
 	@Override
-	public void handleDragging(GL2 gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDragging(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		gl.glColor4f(color[0], color[1], color[2], 0.5f);
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f((float) draggingPosition.getX(),
-				(float) draggingPosition.getY(), 0);
+		gl.glVertex3f((float) draggingPosition.getX(), (float) draggingPosition.getY(), 0);
 		gl.glVertex3f((float) draggingPosition.getX() + x,
 				(float) draggingPosition.getY(), 0);
 		gl.glVertex3f((float) draggingPosition.getX() + x,
 				(float) draggingPosition.getY() + y, 0);
-		gl.glVertex3f((float) draggingPosition.getX(),
-				(float) draggingPosition.getY() + y, 0);
+		gl.glVertex3f((float) draggingPosition.getX(), (float) draggingPosition.getY()
+				+ y, 0);
 		gl.glEnd();
 
 		if ((prevDraggingMouseX >= mouseCoordinateX - 0.01 && prevDraggingMouseX <= mouseCoordinateX + 0.01)
@@ -195,8 +183,7 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		draggingPosition.setLocation(0, 0);
 	}
 

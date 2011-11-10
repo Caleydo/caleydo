@@ -10,31 +10,30 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for switching labels on/off.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class ToggleLabelAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Toggle Labels";
 	public static final String ICON = "resources/icons/view/hyperbolic/tree_switch_lin.png";
-	
+
 	public ToggleLabelAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(true);
 	}
-	
+
 	@Override
 	public void run() {
 		super.run();
-		//System.out.println("label: "+isChecked());
-		ToggleLabelEvent event=new ToggleLabelEvent();
+		// System.out.println("label: "+isChecked());
+		ToggleLabelEvent event = new ToggleLabelEvent();
 		event.setDrawLabel(isChecked());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	};
-
 
 }

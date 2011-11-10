@@ -31,7 +31,6 @@ public class OtherClusterersTab {
 		alphabetical = new Button(composite, SWT.RADIO);
 		alphabetical.setText("Alphabetical");
 
-
 		other = new Button(composite, SWT.RADIO);
 		other.setText("Other");
 

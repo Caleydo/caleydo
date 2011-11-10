@@ -6,30 +6,31 @@ import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 
 /**
- * Model for a treemap, provides some basic functionalitiy and abstract methods mapping attributes.
+ * Model for a treemap, provides some basic functionalitiy and abstract methods
+ * mapping attributes.
+ * 
  * @author Michael Lafer
  */
 
 public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 
 	private float minX, minY, maxX, maxY;
-	
-	public int selectionLevel=0;
-	
 
+	public int selectionLevel = 0;
 
 	public ATreeMapNode() {
-		node=this;
+		node = this;
 	};
-	
-	public ATreeMapNode(Tree<ATreeMapNode> tree){
-		node=this;
-		this.tree=tree;
+
+	public ATreeMapNode(Tree<ATreeMapNode> tree) {
+		node = this;
+		this.tree = tree;
 	}
 
 	/**
 	 * Returns accumulated size for non-leave nodes.
 	 */
+	@Override
 	public float getSize() {
 		List<ATreeMapNode> list = getChildren();
 		if (list == null || list.size() == 0)
@@ -40,15 +41,17 @@ public abstract class ATreeMapNode extends AHierarchyElement<ATreeMapNode> {
 		}
 		return size;
 	}
-	
+
+	@Override
 	public abstract Integer getID();
 
 	public abstract float[] getColorAttribute();
 
 	public abstract float getSizeAttribute();
 
+	@Override
 	public abstract String getLabel();
-	
+
 	public float getMinX() {
 		return minX;
 	}

@@ -24,6 +24,7 @@ public class DimensionFilter
 		super(perspectiveID);
 	}
 
+	@Override
 	public void updateFilterManager() {
 
 		if (!isRegistered) {

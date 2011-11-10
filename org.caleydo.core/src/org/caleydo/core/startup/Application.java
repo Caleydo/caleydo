@@ -14,7 +14,7 @@ public class Application
 	implements IApplication {
 
 	/** initialization data received from a Caleydo-server-application during startup */
-//	public static DataInitializationData initData = null;
+	// public static DataInitializationData initData = null;
 
 	// TODO: server address for plex-client mode, should be obtained from deskotheque instead from command
 	// line param

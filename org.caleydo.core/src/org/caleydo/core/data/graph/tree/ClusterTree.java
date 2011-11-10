@@ -12,19 +12,20 @@ public class ClusterTree
 		super();
 	}
 
-	/** 
-	 * Constructor 
+	/**
+	 * Constructor
+	 * 
 	 * @param leaveIDType
 	 */
 	public ClusterTree(IDType leaveIDType, int expectedSize) {
 		super(leaveIDType, expectedSize);
 	}
 
-//	public void createSubDataTables(DataTable table) {
-//		getRoot().createSubDataTables(table);
-//		NewSubDataTablesEvent event = new NewSubDataTablesEvent();
-//		event.setDataDomainID(table.getDataDomain().getDataDomainID());
-//		GeneralManager.get().getEventPublisher().triggerEvent(event);
-//	}
+	// public void createSubDataTables(DataTable table) {
+	// getRoot().createSubDataTables(table);
+	// NewSubDataTablesEvent event = new NewSubDataTablesEvent();
+	// event.setDataDomainID(table.getDataDomain().getDataDomainID());
+	// GeneralManager.get().getEventPublisher().triggerEvent(event);
+	// }
 
 }

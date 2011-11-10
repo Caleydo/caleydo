@@ -600,8 +600,8 @@ public class AffinityClusterer
 	}
 
 	@Override
-	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain, ClusterConfiguration clusterState,
-		int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
+		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
 
 		this.dataDomain = dataDomain;
 

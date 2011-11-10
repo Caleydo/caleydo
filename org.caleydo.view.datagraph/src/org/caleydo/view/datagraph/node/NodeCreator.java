@@ -20,8 +20,7 @@ public class NodeCreator {
 	private Map<Class<? extends AGLView>, Class<? extends ViewNode>> viewNodeClasses = new HashMap<Class<? extends AGLView>, Class<? extends ViewNode>>();
 
 	public NodeCreator() {
-		dataNodeClasses.put(ATableBasedDataDomain.class,
-				TableBasedDataNode.class);
+		dataNodeClasses.put(ATableBasedDataDomain.class, TableBasedDataNode.class);
 		dataNodeClasses.put(PathwayDataDomain.class, PathwayDataNode.class);
 
 		viewNodeClasses.put(AGLView.class, ViewNode.class);
@@ -29,11 +28,9 @@ public class NodeCreator {
 	}
 
 	public ADataNode createDataNode(AGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, int id,
-			IDataDomain dataDomain) {
+			DragAndDropController dragAndDropController, int id, IDataDomain dataDomain) {
 
-		Class<? extends ADataNode> nodeClass = dataNodeClasses.get(dataDomain
-				.getClass());
+		Class<? extends ADataNode> nodeClass = dataNodeClasses.get(dataDomain.getClass());
 
 		if (nodeClass == null) {
 			for (Class<? extends IDataDomain> c : dataNodeClasses.keySet()) {
@@ -47,10 +44,9 @@ public class NodeCreator {
 		if (nodeClass != null) {
 			try {
 				ADataNode node = nodeClass.getConstructor(AGraphLayout.class,
-						view.getClass(), dragAndDropController.getClass(),
-						Integer.class, IDataDomain.class).newInstance(
-						graphLayout, view, dragAndDropController, id,
-						dataDomain);
+						view.getClass(), dragAndDropController.getClass(), Integer.class,
+						IDataDomain.class).newInstance(graphLayout, view,
+						dragAndDropController, id, dataDomain);
 				node.init();
 
 				return node;
@@ -64,11 +60,10 @@ public class NodeCreator {
 	}
 
 	public ViewNode createViewNode(AGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, int id,
-			AGLView representedView) {
+			DragAndDropController dragAndDropController, int id, AGLView representedView) {
 
-		Class<? extends ViewNode> nodeClass = viewNodeClasses
-				.get(representedView.getClass());
+		Class<? extends ViewNode> nodeClass = viewNodeClasses.get(representedView
+				.getClass());
 
 		if (nodeClass == null) {
 			for (Class<? extends AGLView> c : viewNodeClasses.keySet()) {
@@ -82,9 +77,9 @@ public class NodeCreator {
 		if (nodeClass != null) {
 			try {
 				ViewNode node = nodeClass.getConstructor(AGraphLayout.class,
-						view.getClass(), dragAndDropController.getClass(),
-						Integer.class, AGLView.class).newInstance(graphLayout,
-						view, dragAndDropController, id, representedView);
+						view.getClass(), dragAndDropController.getClass(), Integer.class,
+						AGLView.class).newInstance(graphLayout, view,
+						dragAndDropController, id, representedView);
 				node.init();
 
 				return node;

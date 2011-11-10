@@ -22,8 +22,6 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.startup.StartupProcessor;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -139,7 +137,7 @@ public abstract class CaleydoRCPViewPart
 	protected void determineDataConfiguration(ASerializedView serializedView) {
 		determineDataConfiguration(serializedView, true);
 	}
-	
+
 	/**
 	 * Determines and sets the dataDomain based on the following rules:
 	 * <ul>
@@ -173,8 +171,9 @@ public abstract class CaleydoRCPViewPart
 				serializedTopLevelDataView.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager
 					.get().getDataDomainByID(dataDomainID)).getTable().getDefaultRecordPerspective().getID());
 
-				serializedTopLevelDataView.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager
-					.get().getDataDomainByID(dataDomainID)).getTable().getDefaultDimensionPerspective().getID());
+				serializedTopLevelDataView
+					.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
+						.getDataDomainByID(dataDomainID)).getTable().getDefaultDimensionPerspective().getID());
 			}
 		}
 
@@ -191,7 +190,7 @@ public abstract class CaleydoRCPViewPart
 			// for some views its ok if initially no data is set
 			if (config.getDataDomain() == null)
 				return;
-			
+
 			serializedTopLevelDataView.setDataDomainID(config.getDataDomain().getDataDomainID());
 			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective().getID());
 			serializedTopLevelDataView.setDimensionPerspectiveID(config.getDimensionPerspective().getID());

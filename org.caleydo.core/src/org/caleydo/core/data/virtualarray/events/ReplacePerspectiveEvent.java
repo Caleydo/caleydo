@@ -34,7 +34,8 @@ public abstract class ReplacePerspectiveEvent
 	 * @param perspectiveID
 	 * @param virtualArray
 	 */
-	protected ReplacePerspectiveEvent(String dataDomainID, String perspectiveID, PerspectiveInitializationData data) {
+	protected ReplacePerspectiveEvent(String dataDomainID, String perspectiveID,
+		PerspectiveInitializationData data) {
 		this.dataDomainID = dataDomainID;
 		this.perspectiveID = perspectiveID;
 		this.data = data;

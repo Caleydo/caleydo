@@ -894,6 +894,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		return true;
 	}
 
+	@Override
 	public void switchDataRepresentation() {
 		gLPathwayContentCreator.switchDataRepresentation();
 		setDisplayListDirty();

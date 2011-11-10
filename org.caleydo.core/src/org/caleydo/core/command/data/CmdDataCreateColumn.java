@@ -15,11 +15,11 @@ import org.caleydo.core.data.id.ManagedObjectType;
  */
 public class CmdDataCreateColumn
 	extends ACmdCreational<AColumn> {
-	
+
 	private ManagedObjectType dimensionType;
 
 	private int dimensionID = -1;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -30,13 +30,13 @@ public class CmdDataCreateColumn
 	@Override
 	public void doCommand() {
 		ColumnManager dimensionManager = generalManager.getColumnManager();
-		
+
 		if (dimensionID == -1)
 			createdObject = dimensionManager.createDimension(dimensionType);
 		else
 			createdObject = dimensionManager.createDimension(dimensionType, dimensionID);
-		
-		//generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
+
+		// generalManager.getIDCreator().mapInternalToExternalID(createdObject.getID(), externalID);
 
 		// generalManager.getLogger().log(new Status(Status.INFO, GeneralManager.PLUGIN_ID,
 		// "Created Dimension with ID: " + createdObject.getID()));
@@ -50,7 +50,7 @@ public class CmdDataCreateColumn
 		this.dimensionType = dimensionType;
 		this.dimensionID = dimensionID;
 	}
-	
+
 	public void setAttributes(ManagedObjectType dimensionType) {
 		this.dimensionType = dimensionType;
 	}

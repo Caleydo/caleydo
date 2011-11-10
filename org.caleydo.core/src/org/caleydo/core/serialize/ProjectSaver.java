@@ -66,8 +66,8 @@ public class ProjectSaver {
 	public static final String RECENT_PROJECT_FOLDER_TMP = GeneralManager.CALEYDO_HOME_PATH
 		+ "recent_project_tmp" + File.separator;
 
-	public static final String WORKBENCH_MEMENTO_FOLDER = GeneralManager.CALEYDO_HOME_PATH + ".metadata" + File.separator
-		+ ".plugins" + File.separator + "org.eclipse.ui.workbench" + File.separator;
+	public static final String WORKBENCH_MEMENTO_FOLDER = GeneralManager.CALEYDO_HOME_PATH + ".metadata"
+		+ File.separator + ".plugins" + File.separator + "org.eclipse.ui.workbench" + File.separator;
 
 	public static final String WORKBENCH_MEMENTO_FILE = "workbench.xml";
 

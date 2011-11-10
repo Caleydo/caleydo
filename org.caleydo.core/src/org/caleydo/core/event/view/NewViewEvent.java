@@ -8,13 +8,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * This Event is triggered when a new view is registered at the {@link ViewManager}.
  * 
  * @author Partl
- *
  */
 public class NewViewEvent
 	extends AEvent {
-	
+
 	private AGLView view;
-	
+
 	public NewViewEvent(AGLView view) {
 		this.setView(view);
 	}

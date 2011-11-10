@@ -640,6 +640,7 @@ public class GLHeatMap extends ATableBasedView {
 		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
 	}
 
+	@Override
 	public PickingManager getPickingManager() {
 		return pickingManager;
 	}

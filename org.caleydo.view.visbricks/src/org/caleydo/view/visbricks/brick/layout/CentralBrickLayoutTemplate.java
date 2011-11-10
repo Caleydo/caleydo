@@ -83,6 +83,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	}
 
+	@Override
 	public void setLockResizing(boolean lockResizing) {
 		lockResizingButton.setSelected(lockResizing);
 	}
@@ -92,7 +93,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		guiElementsHeight = 0;
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(1, 0, 0, 0.5f);
-//		baseRow.setDebug(true);
+		// baseRow.setDebug(true);
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		setBaseElementLayout(baseRow);
@@ -125,7 +126,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("viewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-//			viewLayout.setDebug(true);
+			// viewLayout.setDebug(true);
 			viewLayout
 					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
@@ -164,8 +165,8 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 			baseColumn.append(spacingLayoutY);
 			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
 		}
-//		if (!dimensionGroup.isProportionalMode())
-			baseColumn.append(viewLayout);
+		// if (!dimensionGroup.isProportionalMode())
+		baseColumn.append(viewLayout);
 		if (showToolBar) {
 			baseColumn.append(spacingLayoutY);
 			baseColumn.append(toolBar);

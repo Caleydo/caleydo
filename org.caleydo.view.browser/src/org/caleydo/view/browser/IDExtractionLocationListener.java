@@ -55,9 +55,8 @@ public class IDExtractionLocationListener extends LocationAdapter {
 			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId
 					.length());
 
-			Integer iDavidId = idManager.getID(
-					IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
-					Integer.valueOf(sExtractedID));
+			Integer iDavidId = idManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
+					IDType.getIDType("DAVID"), Integer.valueOf(sExtractedID));
 
 			if (iDavidId == null || iDavidId == -1)
 				return;

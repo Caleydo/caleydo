@@ -24,8 +24,8 @@ public interface IDimensionChangeHandler
 	public void handleDimensionVADelta(DimensionVADelta vaDelta, String info);
 
 	/**
-	 * Handler method to be called by the {@link ReplaceRecordPerspectiveListener} when a {@link ReplacePerspectiveEvent} was
-	 * received.
+	 * Handler method to be called by the {@link ReplaceRecordPerspectiveListener} when a
+	 * {@link ReplacePerspectiveEvent} was received.
 	 */
 	public void replaceDimensionPerspective(String dataDomainID, String perspectiveID,
 		PerspectiveInitializationData data);

@@ -51,18 +51,17 @@ public class ViewNodeBackGroundRenderer extends LayoutRenderer {
 
 		Vec3f lowerLeftCorner = new Vec3f(posX, posY, 0);
 		Vec3f lowerRightCorner = new Vec3f(posX + textureSize, posY, 0);
-		Vec3f upperRightCorner = new Vec3f(posX + textureSize, posY
-				+ textureSize, 0);
+		Vec3f upperRightCorner = new Vec3f(posX + textureSize, posY + textureSize, 0);
 		Vec3f upperLeftCorner = new Vec3f(posX, posY + textureSize, 0);
 
 		if (isImagePathAbsolute) {
-			textureManager.renderTextureFromExtPath(gl, imagePath,
-					lowerLeftCorner, lowerRightCorner, upperRightCorner,
-					upperLeftCorner, color[0], color[1], color[2], 0.5f);
+			textureManager.renderTextureFromExtPath(gl, imagePath, lowerLeftCorner,
+					lowerRightCorner, upperRightCorner, upperLeftCorner, color[0],
+					color[1], color[2], 0.5f);
 		} else {
 			textureManager.renderTexture(gl, imagePath, lowerLeftCorner,
-					lowerRightCorner, upperRightCorner, upperLeftCorner,
-					color[0], color[1], color[2], 0.5f);
+					lowerRightCorner, upperRightCorner, upperLeftCorner, color[0],
+					color[1], color[2], 0.5f);
 		}
 
 	}

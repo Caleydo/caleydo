@@ -29,8 +29,8 @@ public class NetworkUtils {
 	public NetworkUtils() {
 		try {
 			handshakeJAXBContext =
-				JAXBContext.newInstance(ClientHandshake.class, ServerHandshake.class,
-					SerializationData.class);
+				JAXBContext
+					.newInstance(ClientHandshake.class, ServerHandshake.class, SerializationData.class);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext for client/server handshake messages");

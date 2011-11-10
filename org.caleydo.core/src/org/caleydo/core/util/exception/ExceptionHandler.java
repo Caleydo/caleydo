@@ -52,8 +52,7 @@ public class ExceptionHandler {
 			@Override
 			public void run() {
 				MessageBox messageBox =
-					new MessageBox(glEventListener.getParentComposite().getShell(),
-						SWT.OK);
+					new MessageBox(glEventListener.getParentComposite().getShell(), SWT.OK);
 				messageBox.setText("Error in view");
 				messageBox.setMessage("An unexpected error occured in view "
 					+ glEventListener.getLabel()
@@ -67,7 +66,8 @@ public class ExceptionHandler {
 			@Override
 			public void run() {
 				IViewPart viewToClose =
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().findView(glEventListener.getViewType());
+					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.findView(glEventListener.getViewType());
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().hideView(viewToClose);
 
 			}

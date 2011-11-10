@@ -16,7 +16,6 @@ public class SwitchDataRepresentationListener
 
 	/**
 	 * Handles {@link SwitchDataRepresentationEvent}s calling the related handler
-	 * 
 	 */
 	@Override
 	public void handleEvent(AEvent event) {

@@ -132,6 +132,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		init(gl);
 	}
 
+	@Override
 	public void initData() {
 		bDisplayData = dataContainer.getRecordPerspective().getTree() != null;
 		for (GLTreeMap view : thumbnailTreemapViews)
@@ -143,6 +144,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 
 		// Register keyboard listener to GL2 canvas
 		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
 			public void run() {
 				glParentView.getParentComposite().addKeyListener(glKeyListener);
 			}
@@ -283,6 +285,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	/**
 	 * Displays a symbol when no data is available. Code from GLRadialHierarchy.
 	 */
+	@Override
 	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
 		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize / 2;
@@ -381,6 +384,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		}
 	}
 
+	@Override
 	public void setDisplayListDirty() {
 		super.setDisplayListDirty();
 		if (bDisplayData) {

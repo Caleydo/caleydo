@@ -60,7 +60,7 @@ public interface IDataGraphNode extends IDraggable {
 	public boolean isCustomPosition();
 
 	public void setCustomPosition(boolean isCustomPosition);
-	
+
 	public void setGraphLayout(AGraphLayout graphLayout);
 
 }

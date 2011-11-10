@@ -23,6 +23,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
  */
 public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 
+	@Override
 	public BufferedReader getResource(String sFileName) {
 		BufferedReader file;
 
@@ -40,6 +41,7 @@ public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 		return file;
 	}
 
+	@Override
 	public InputSource getInputSource(String sFileName) {
 		InputSource inputSource;
 
@@ -67,6 +69,7 @@ public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 		return file;
 	}
 
+	@Override
 	public Texture getTexture(String sFileName) {
 		Texture texture;
 

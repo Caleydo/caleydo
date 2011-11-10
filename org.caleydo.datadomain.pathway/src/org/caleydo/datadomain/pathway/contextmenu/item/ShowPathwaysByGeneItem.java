@@ -27,14 +27,14 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 public class ShowPathwaysByGeneItem extends AContextMenuItem {
 
 	private PathwayDataDomain dataDomain;
-	
+
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
 	public ShowPathwaysByGeneItem(PathwayDataDomain dataDomain) {
 		super();
 		this.dataDomain = dataDomain;
-		//setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
+		// setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
 		setLabel("Load Pathways");
 	}
 

@@ -1,9 +1,9 @@
 package org.caleydo.core.data.datadomain;
 
 /**
- * The level of data filtering. Determines whether all information contained in a dimension (meaning put in the
- * virtual array), or only information with some contextual information, such as mapping or occurence in other
- * data structures should be loaded.
+ * The level of data filtering. Determines whether all information contained in a dimension (meaning put in
+ * the virtual array), or only information with some contextual information, such as mapping or occurence in
+ * other data structures should be loaded.
  * 
  * @author Alexander Lex
  */

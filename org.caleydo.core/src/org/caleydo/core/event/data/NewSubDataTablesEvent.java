@@ -9,7 +9,7 @@ import org.caleydo.core.event.AEvent;
  */
 public class NewSubDataTablesEvent
 	extends AEvent {
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		return true;

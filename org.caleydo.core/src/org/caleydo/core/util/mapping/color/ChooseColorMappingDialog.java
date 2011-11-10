@@ -26,7 +26,7 @@ public class ChooseColorMappingDialog
 	private ColorMapper colorMapper;
 
 	private ATableBasedDataDomain dataDomain;
-	
+
 	private Group colorSchemeGroup;
 
 	public ChooseColorMappingDialog(Shell parent, ATableBasedDataDomain dataDomain) {
@@ -43,7 +43,7 @@ public class ChooseColorMappingDialog
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-	
+
 		colorSchemeGroup = new Group(parent, SWT.NONE);
 		colorSchemeGroup.setLayout(new GridLayout(2, false));
 		colorSchemeGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -57,29 +57,30 @@ public class ChooseColorMappingDialog
 				@Override
 				public void widgetSelected(SelectionEvent e) {
 					colorMapper = ColorMapper.createDefaultMapper(colorScheme);
-					
+
 					dataDomain.setColorMapper(colorMapper);
-					
+
 					EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
-					
+
 					RedrawViewEvent redrawEvent = new RedrawViewEvent();
 					redrawEvent.setDataDomainID(dataDomain.getDataDomainID());
 					eventPublisher.triggerEvent(redrawEvent);
-					
+
 					UpdateColorMappingEvent event = new UpdateColorMappingEvent();
 					event.setDataDomainID(dataDomain.getDataDomainID());
-					//event.setSender(this);
+					// event.setSender(this);
 					eventPublisher.triggerEvent(event);
 				}
 			});
-			
-			CLabel colorMappingPreview = new CLabel(colorSchemeGroup, SWT.SHADOW_IN|SWT.RADIO);
+
+			CLabel colorMappingPreview = new CLabel(colorSchemeGroup, SWT.SHADOW_IN | SWT.RADIO);
 			GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
 			gridData.minimumWidth = 250;
 			colorMappingPreview.setLayoutData(gridData);
-			ColorMapper.createColorMappingPreview(ColorMapper.createDefaultMapper(colorScheme), colorMappingPreview);
+			ColorMapper.createColorMappingPreview(ColorMapper.createDefaultMapper(colorScheme),
+				colorMappingPreview);
 		}
-		
+
 		return parent;
 	}
 

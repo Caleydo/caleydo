@@ -38,7 +38,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
-		
+
 		label = "Pathway Browser";
 
 		viewType = VIEW_TYPE;

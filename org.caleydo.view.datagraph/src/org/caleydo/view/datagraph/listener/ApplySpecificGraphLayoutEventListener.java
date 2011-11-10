@@ -5,8 +5,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.event.ApplySpecificGraphLayoutEvent;
 
-public class ApplySpecificGraphLayoutEventListener extends
-		AEventListener<GLDataGraph> {
+public class ApplySpecificGraphLayoutEventListener extends AEventListener<GLDataGraph> {
 
 	@Override
 	public void handleEvent(AEvent event) {

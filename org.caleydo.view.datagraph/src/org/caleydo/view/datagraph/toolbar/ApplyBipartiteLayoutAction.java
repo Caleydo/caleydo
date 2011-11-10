@@ -9,8 +9,7 @@ import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
-public class ApplyBipartiteLayoutAction extends AToolBarAction implements
-		IToolBarItem {
+public class ApplyBipartiteLayoutAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Apply Bipartite Layout";
 	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";
@@ -18,8 +17,8 @@ public class ApplyBipartiteLayoutAction extends AToolBarAction implements
 	public ApplyBipartiteLayoutAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader()
-				.getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 	}
 

@@ -30,7 +30,7 @@ import org.caleydo.core.manager.GeneralManager;
 public abstract class AColumn
 	extends AUniqueObject
 	implements ICollection {
-	
+
 	protected EnumMap<DataRepresentation, ICContainer> hashCContainers;
 
 	protected String label;
@@ -118,7 +118,6 @@ public abstract class AColumn
 		hashCContainers.put(DataRepresentation.UNCERTAINTY_RAW, container);
 	}
 
-
 	public boolean containsDataRepresentation(DataRepresentation dataRepresentation) {
 		return hashCContainers.containsKey(dataRepresentation);
 	}
@@ -135,7 +134,7 @@ public abstract class AColumn
 	 */
 	public float getFloat(DataRepresentation dimensionKind, int iIndex) {
 		if (!hashCContainers.containsKey(dimensionKind))
-			throw new IllegalArgumentException("Requested dimension kind " + dimensionKind +" not produced");
+			throw new IllegalArgumentException("Requested dimension kind " + dimensionKind + " not produced");
 		if (!(hashCContainers.get(dimensionKind) instanceof FloatCContainer))
 			throw new IllegalArgumentException("Requested dimension kind is not of type float");
 
@@ -159,8 +158,8 @@ public abstract class AColumn
 	}
 
 	/**
-	 * Returns an int value from a dimension of which the kind has to be specified Use iterator when you want to
-	 * iterate over the whole field, it has better performance
+	 * Returns an int value from a dimension of which the kind has to be specified Use iterator when you want
+	 * to iterate over the whole field, it has better performance
 	 * 
 	 * @param dimensionKind
 	 *            Specify which kind of dimension (eg: raw, normalized, log)

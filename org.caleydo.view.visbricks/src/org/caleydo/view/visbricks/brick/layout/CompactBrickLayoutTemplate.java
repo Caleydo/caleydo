@@ -102,9 +102,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		footerBar = createFooterBar();
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
-					pixelGLConverter, 10, brick.getTextureManager(),
-					HandleRenderer.MOVE_VERTICALLY_HANDLE));
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10,
+					brick.getTextureManager(), HandleRenderer.MOVE_VERTICALLY_HANDLE));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
@@ -126,13 +125,12 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 			viewLayout = new ElementLayout("compactViewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
 			// viewLayout.setDebug(true);
-			viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1,
-					1, 1, 1 }));
+			viewLayout
+					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		ElementLayout expandButtonLayout = new ElementLayout(
-				"expandButtonLayout");
+		ElementLayout expandButtonLayout = new ElementLayout("expandButtonLayout");
 		expandButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
 		expandButtonLayout.setPixelGLConverter(pixelGLConverter);
@@ -212,19 +210,17 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		if (viewRenderer == null)
 			return guiElementsHeight + BUTTON_HEIGHT_PIXELS;
 		return guiElementsHeight
-				+ Math.max(viewRenderer.getMinHeightPixels(),
-						BUTTON_HEIGHT_PIXELS);
+				+ Math.max(viewRenderer.getMinHeightPixels(), BUTTON_HEIGHT_PIXELS);
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
-				.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
+				: 0;
 		footerBarWidth += 2 * SPACING_PIXELS;
 
 		if (viewRenderer == null)
-			return Math.max(footerBarWidth, (2 * SPACING_PIXELS)
-					+ BUTTON_WIDTH_PIXELS);
+			return Math.max(footerBarWidth, (2 * SPACING_PIXELS) + BUTTON_WIDTH_PIXELS);
 		return Math.max(footerBarWidth,
 				(3 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels()
 						+ BUTTON_WIDTH_PIXELS);
@@ -284,8 +280,8 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	@Override
 	public void destroy() {
 		super.destroy();
-		brick.removeSingleIDPickingListeners(
-				PickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
+		brick.removeSingleIDPickingListeners(PickingType.BRICK_EXPAND_BUTTON.name(),
+				EXPAND_BUTTON_ID);
 	}
 
 	// @Override

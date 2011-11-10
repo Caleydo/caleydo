@@ -31,8 +31,8 @@ class DimensionBookmarkContainer extends ABookmarkContainer<DimensionSelectionMa
 			} else
 				throw new IllegalStateException("Can not handle strings for experiments");
 
-			DimensionBookmark bookmark = new DimensionBookmark(manager, this, internalIDType,
-					id, manager.getMinSizeTextRenderer());
+			DimensionBookmark bookmark = new DimensionBookmark(manager, this,
+					internalIDType, id, manager.getMinSizeTextRenderer());
 			if (bookmarkItems.add(bookmark))
 				containerLayout.append(bookmark.getLayout());
 			// selectionManager.add(id);

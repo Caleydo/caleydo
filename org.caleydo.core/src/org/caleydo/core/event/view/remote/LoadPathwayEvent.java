@@ -36,7 +36,7 @@ public class LoadPathwayEvent
 	public void setPathwayID(int pathwayID) {
 		this.pathwayID = pathwayID;
 	}
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		if (pathwayID == -1)

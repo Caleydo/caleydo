@@ -163,7 +163,8 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 			((RemoveRecordFilterEvent) filterEvent).setFilter((RecordFilter) filter);
 		} else if (filter instanceof DimensionFilter) {
 			filterEvent = new RemoveDimensionFilterEvent();
-			((RemoveDimensionFilterEvent) filterEvent).setFilter((DimensionFilter) filter);
+			((RemoveDimensionFilterEvent) filterEvent)
+					.setFilter((DimensionFilter) filter);
 		} else {
 			System.err.println(getClass() + "::triggerRemove(): Unimplemented...");
 		}

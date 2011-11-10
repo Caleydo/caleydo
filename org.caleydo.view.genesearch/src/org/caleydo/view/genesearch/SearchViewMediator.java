@@ -45,7 +45,7 @@ public class SearchViewMediator {
 	public void selectGeneSystemWide(ATableBasedDataDomain dataDomain, int davidID) {
 
 		IDType recordIDType = dataDomain.getPrimaryRecordMappingType();
-		
+
 		// First the current selections need to be cleared
 		ClearSelectionsEvent clearSelectionsEvent = new ClearSelectionsEvent();
 		clearSelectionsEvent.setSender(this);
@@ -56,12 +56,12 @@ public class SearchViewMediator {
 		selectionUpdateEvent.setSender(this);
 		selectionUpdateEvent.setDataDomainID(dataDomain.getDataDomainID());
 		SelectionDelta delta = new SelectionDelta(recordIDType);
-//		Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
-//				.getIDAsSet(IDType.getIDType("DAVID"), recordIDType, davidID);
+		// Set<Integer> setExpIndex = GeneralManager.get().getIDMappingManager()
+		// .getIDAsSet(IDType.getIDType("DAVID"), recordIDType, davidID);
 
-//		for (Integer expressionIndex : setExpIndex) {
-			delta.addSelection(davidID, SelectionType.SELECTION);
-//		}
+		// for (Integer expressionIndex : setExpIndex) {
+		delta.addSelection(davidID, SelectionType.SELECTION);
+		// }
 
 		selectionUpdateEvent.setSelectionDelta((SelectionDelta) delta);
 		eventPublisher.triggerEvent(selectionUpdateEvent);

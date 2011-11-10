@@ -11,6 +11,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  * @author Werner Puff
  * @deprecated This class should be extended from ASerializedView
  */
+@Deprecated
 @XmlRootElement
 @XmlType
 public class SerializedHTMLBrowserView extends ASerializedTopLevelDataView {

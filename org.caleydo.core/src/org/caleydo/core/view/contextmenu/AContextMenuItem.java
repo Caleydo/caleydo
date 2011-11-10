@@ -40,30 +40,31 @@ public abstract class AContextMenuItem {
 		if (!subMenuItems.isEmpty()) {
 
 			final JMenu submenu = new JMenu();
-			
+
 			for (AContextMenuItem subMenuItem : subMenuItems) {
 				subMenuItem.create(submenu);
 			}
-			
+
 			submenu.setText(label);
 			parent.add(submenu);
 		}
 		else {
 			menuItem = new JMenuItem();
 			menuItem.setText(label);
-			
+
 			ActionListener menuListener = new ActionListener() {
+				@Override
 				public void actionPerformed(ActionEvent event) {
 					triggerEvent();
 				}
 			};
 
 			menuItem.addActionListener(menuListener);
-			
+
 			if (this instanceof SeparatorMenuItem)
-				((JPopupMenu)parent).addSeparator();
+				((JPopupMenu) parent).addSeparator();
 			else
-				parent.add(menuItem);				
+				parent.add(menuItem);
 		}
 	}
 

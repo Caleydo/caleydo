@@ -40,7 +40,7 @@ public class GenomePerspective
 			layout.createPlaceholderFolder("right", IPageLayout.RIGHT, 1 - 2 * fRatio, "main");
 		rightLayout.addPlaceholder("org.caleydo.view.bookmark");
 		rightLayout.addPlaceholder("org.caleydo.view.grouper");
-		
+
 		IPlaceholderFolderLayout bottomLayout =
 			layout.createPlaceholderFolder("bottom", IPageLayout.BOTTOM, 0.8f, "main");
 		bottomLayout.addPlaceholder("org.caleydo.view.filter");

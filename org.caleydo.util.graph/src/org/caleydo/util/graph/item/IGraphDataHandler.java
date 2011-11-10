@@ -10,7 +10,7 @@ import java.util.Collection;
 public interface IGraphDataHandler {
 
 	// public String getIdentifier();
-	//	
+	//
 	// public void setIdentifier( String identifier );
 
 	/**

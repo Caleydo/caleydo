@@ -54,8 +54,8 @@ public class CaleydoProjectWizard
 
 			PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
 
-//			ProjectMode previousProjectMode =
-//				ProjectMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
+			// ProjectMode previousProjectMode =
+			// ProjectMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
 
@@ -125,7 +125,7 @@ public class CaleydoProjectWizard
 			else {
 				throw new IllegalStateException("Not implemented!");
 			}
-			
+
 			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, projectMode.name());
 
 			try {

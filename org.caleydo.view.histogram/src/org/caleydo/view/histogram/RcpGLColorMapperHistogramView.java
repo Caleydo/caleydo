@@ -23,6 +23,7 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
 	private ArrayList<CLabel> labels;
 
+	@Override
 	public void redrawView() {
 
 		colorMappingPreview = new CLabel(histoComposite, SWT.SHADOW_IN);

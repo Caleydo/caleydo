@@ -27,8 +27,6 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 
 	public static final String VIEW_TITLE = "Treemap";
 
-
-
 	@Override
 	public Class<?> getViewClass() {
 		return GLHierarchicalTreeMap.class;
@@ -43,10 +41,9 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		
 		actionList.add(new LevelHighlightingAction());
 		actionList.add(new ToggleColoringModeAction());
-		actionList.add(new ToggleLabelAction());		
+		actionList.add(new ToggleLabelAction());
 		actionList.add(new ZoomInAction());
 		actionList.add(new ZoomOutAction());
 
@@ -55,7 +52,5 @@ public class HierarchicalTreeMapToolBarContent extends AToolBarContent {
 
 		return list;
 	}
-
-
 
 }

@@ -9,7 +9,7 @@ public class FoldChangeSettings {
 	}
 
 	double ratio = -1;
-	
+
 	double ratioUncertainty = -1;
 
 	FoldChangeEvaluator evaluator;
@@ -27,7 +27,7 @@ public class FoldChangeSettings {
 	public double getRatio() {
 		return ratio;
 	}
-	
+
 	public double getRatioUncertainty() {
 		return ratioUncertainty;
 	}

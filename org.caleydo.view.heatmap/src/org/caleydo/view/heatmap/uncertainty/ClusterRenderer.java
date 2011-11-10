@@ -191,8 +191,9 @@ public class ClusterRenderer extends LayoutRenderer {
 		int pixelHeight = pixelGLConverter.getPixelWidthForGLWidth(scaledY);
 
 		for (int pixel = 0; pixel < pixelHeight; pixel++) {
-//			visualUncertainty.add(renderer.getVisualUncertaintyForLine(pixel, width,
-//					pixelHeight));
+			// visualUncertainty.add(renderer.getVisualUncertaintyForLine(pixel,
+			// width,
+			// pixelHeight));
 		}
 
 		return visualUncertainty;

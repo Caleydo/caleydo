@@ -443,7 +443,7 @@ public abstract class AGLView
 	public final synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
 	}
-	
+
 	/**
 	 * This method should be called every display cycle when it is save to change the state of the object. It
 	 * processes all the previously submitted events.
@@ -578,7 +578,8 @@ public abstract class AGLView
 							handlePickingEvents(type, ePickingMode, externalID, tempPick);
 						}
 						catch (Exception e) {
-							Logger.log(new Status(Status.ERROR, this.toString(), "Caught exception when picking",  e));
+							Logger.log(new Status(Status.ERROR, this.toString(),
+								"Caught exception when picking", e));
 						}
 					}
 					catch (IllegalArgumentException e) {
@@ -997,7 +998,6 @@ public abstract class AGLView
 		generalManager.getViewManager().unregisterGLView(this);
 		unregisterEventListeners();
 	}
-
 
 	// @Override
 	// public synchronized Pair<AEventListener<? extends IListenerOwner>, AEvent> getEvent() {

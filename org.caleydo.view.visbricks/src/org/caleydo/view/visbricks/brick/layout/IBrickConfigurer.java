@@ -32,7 +32,7 @@ public interface IBrickConfigurer {
 	 * @param layoutTemplate
 	 */
 	public void configure(CompactBrickLayoutTemplate layoutTemplate);
-	
+
 	/**
 	 * Configures the specified layoutTemplate.
 	 * 
@@ -46,14 +46,13 @@ public interface IBrickConfigurer {
 	 * @param layoutTemplate
 	 */
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate);
-	
+
 	/**
 	 * Configures the specified layoutTemplate.
 	 * 
 	 * @param layoutTemplate
 	 */
 	public void configure(DetailBrickLayoutTemplate layoutTemplate);
-	
 
 	/**
 	 * Sets the views and {@link AContainedViewRenderer}s in the brick that are
@@ -64,7 +63,7 @@ public interface IBrickConfigurer {
 	 * @param glMouseListener
 	 * @param brickLayout
 	 */
-	public void setBrickViews(GLBrick brick, GL2 gl,
-			GLMouseListener glMouseListener, ABrickLayoutTemplate brickLayout);
+	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+			ABrickLayoutTemplate brickLayout);
 
 }

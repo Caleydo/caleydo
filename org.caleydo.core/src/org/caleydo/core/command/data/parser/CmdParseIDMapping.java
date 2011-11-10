@@ -1,6 +1,5 @@
 package org.caleydo.core.command.data.parser;
 
-import java.util.Map;
 import java.util.StringTokenizer;
 
 import org.caleydo.core.command.CommandType;
@@ -75,7 +74,6 @@ public class CmdParseIDMapping
 	private boolean isMultiMap;
 
 	private AStringConverter stringConverter;
-
 
 	public CmdParseIDMapping() {
 		super(CommandType.PARSE_ID_MAPPING);

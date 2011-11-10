@@ -102,7 +102,7 @@ public final class ParameterHandler {
 
 		}
 	}
-	
+
 	public final void setValueBySaxAttributes(final Attributes attrs, final String key,
 		final String sDefaultValue, final ParameterHandlerType type) {
 

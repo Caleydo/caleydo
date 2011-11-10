@@ -9,8 +9,8 @@ public class DimensionGroupsChangedEventListener extends AEventListener<GLDataGr
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof DimensionGroupsChangedEvent) {
-			DimensionGroupsChangedEvent dimensionGroupsChangedEvent = (DimensionGroupsChangedEvent)event;
+		if (event instanceof DimensionGroupsChangedEvent) {
+			DimensionGroupsChangedEvent dimensionGroupsChangedEvent = (DimensionGroupsChangedEvent) event;
 			handler.updateDataDomain(dimensionGroupsChangedEvent.getDataDomain());
 		}
 	}

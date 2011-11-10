@@ -18,10 +18,9 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 	 */
 	public RcpGLTemplateView() {
 		super();
-		
+
 		try {
-			viewContext = JAXBContext
-					.newInstance(SerializedTemplateView.class);
+			viewContext = JAXBContext.newInstance(SerializedTemplateView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}

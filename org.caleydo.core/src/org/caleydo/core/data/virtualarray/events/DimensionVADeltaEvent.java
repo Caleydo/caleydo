@@ -6,8 +6,8 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 
 /**
- * Event to signal that a dimension VA should be updated using a delta. See {@link VADeltaEvent} for
- * details. EventType.VA_UPDATE
+ * Event to signal that a dimension VA should be updated using a delta. See {@link VADeltaEvent} for details.
+ * EventType.VA_UPDATE
  * 
  * @author Alexander Lex
  */

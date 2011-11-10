@@ -12,7 +12,6 @@ import javax.media.opengl.glu.GLUtessellator;
 
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
 public class ConnectionBandRenderer {

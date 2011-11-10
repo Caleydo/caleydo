@@ -44,7 +44,6 @@ public class SelectionDeltaItem
 		connectionIDs = new ArrayList<Integer>();
 	}
 
-
 	/**
 	 * Set a connection ID which is meant to be persistent over conversion steps
 	 * 
@@ -68,8 +67,6 @@ public class SelectionDeltaItem
 	public SelectionType getSelectionType() {
 		return selectionType;
 	}
-
-
 
 	/**
 	 * Returns the connection ID of the element.

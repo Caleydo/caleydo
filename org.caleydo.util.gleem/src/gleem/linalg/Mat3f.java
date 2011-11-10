@@ -98,9 +98,9 @@ public class Mat3f {
 
 	/** Return the determinant. Computed across the zeroth row. */
 	public float determinant() {
-		return get(0, 0) * (get(1, 1) * get(2, 2) - get(2, 1) * get(1, 2))
-				+ get(0, 1) * (get(2, 0) * get(1, 2) - get(1, 0) * get(2, 2))
-				+ get(0, 2) * (get(1, 0) * get(2, 1) - get(2, 0) * get(1, 1));
+		return get(0, 0) * (get(1, 1) * get(2, 2) - get(2, 1) * get(1, 2)) + get(0, 1)
+				* (get(2, 0) * get(1, 2) - get(1, 0) * get(2, 2)) + get(0, 2)
+				* (get(1, 0) * get(2, 1) - get(2, 0) * get(1, 1));
 	}
 
 	/**
@@ -139,8 +139,7 @@ public class Mat3f {
 	 * vectors.
 	 */
 	public void xformVec(Vec3f src, Vec3f dest) {
-		dest.set(get(0, 0) * src.x() + get(0, 1) * src.y() + get(0, 2)
-				* src.z(),
+		dest.set(get(0, 0) * src.x() + get(0, 1) * src.y() + get(0, 2) * src.z(),
 
 		get(1, 0) * src.x() + get(1, 1) * src.y() + get(1, 2) * src.z(),
 
@@ -180,8 +179,8 @@ public class Mat3f {
 	@Override
 	public String toString() {
 		String endl = System.getProperty("line.separator");
-		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + endl
-				+ get(1, 0) + ", " + get(1, 1) + ", " + get(1, 2) + endl
-				+ get(2, 0) + ", " + get(2, 1) + ", " + get(2, 2) + ")";
+		return "(" + get(0, 0) + ", " + get(0, 1) + ", " + get(0, 2) + endl + get(1, 0)
+				+ ", " + get(1, 1) + ", " + get(1, 2) + endl + get(2, 0) + ", "
+				+ get(2, 1) + ", " + get(2, 2) + ")";
 	}
 }

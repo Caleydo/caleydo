@@ -1,7 +1,6 @@
 package org.caleydo.view.heatmap.uncertainty;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 import javax.management.InvalidAttributeValueException;
@@ -16,10 +15,7 @@ import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
-import org.caleydo.core.data.virtualarray.EVAOperation;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -408,6 +404,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		return renderStyle;
 	}
 
+	@Override
 	public RecordSelectionManager getRecordSelectionManager() {
 		return recordSelectionManager;
 
@@ -434,8 +431,9 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		multiLevelUncertainty.add(convertedSNR);
 
-//		Collection<double[]> statisticsUncertainties = dataContainer.getContainerStatistics().foldChange().getAllFoldChangeResults().values();
-//		multiLevelUncertainty.addAll(statisticsUncertainties);
+		// Collection<double[]> statisticsUncertainties =
+		// dataContainer.getContainerStatistics().foldChange().getAllFoldChangeResults().values();
+		// multiLevelUncertainty.addAll(statisticsUncertainties);
 
 		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
 			for (double[] uncertaintyLevel : multiLevelUncertainty) {
@@ -446,7 +444,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			}
 		}
 
-//		table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
+		// table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
 	}
 
 	public float getMaxUncertainty(int recordID) {

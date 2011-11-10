@@ -5,9 +5,9 @@ import org.caleydo.core.event.AEvent;
 
 public class NewDataDomainEvent
 	extends AEvent {
-	
+
 	private IDataDomain dataDomain;
-	
+
 	public NewDataDomainEvent(IDataDomain dataDomain) {
 		this.setDataDomain(dataDomain);
 	}

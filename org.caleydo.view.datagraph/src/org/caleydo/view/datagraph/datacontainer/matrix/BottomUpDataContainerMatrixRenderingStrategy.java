@@ -19,11 +19,11 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 		ADataContainerMatrixRenderingStrategy {
 
 	@Override
-	public void render(GL2 gl, List<CellContainer> rows,
-			List<CellContainer> columns, Map<String, ColorRenderer> cells,
+	public void render(GL2 gl, List<CellContainer> rows, List<CellContainer> columns,
+			Map<String, ColorRenderer> cells,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
-			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
-			float x, float y, IDataGraphNode node, AGLView view) {
+			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x,
+			float y, IDataGraphNode node, AGLView view) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -32,10 +32,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 		float captionRowHeight = calcMaxTextWidth(columns, view);
 
 		float currentPositionX = (x / 2.0f)
-				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
-						rows, columns, view) / 2);
-		float rowHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
+				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(rows,
+						columns, view) / 2);
+		float rowHeight = pixelGLConverter.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
 		float captionSpacingY = pixelGLConverter
 				.getGLHeightForPixelHeight(CAPTION_SPACING_PIXELS);
 
@@ -43,12 +42,11 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 				.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
 		float currentPositionY = captionRowHeight + captionSpacingY;
-		float textHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
+		float textHeight = pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
 		for (CellContainer row : rows) {
-			float textPositionY = currentPositionY + (rowHeight - textHeight)
-					/ 2.0f + pixelGLConverter.getGLHeightForPixelHeight(2);
+			float textPositionY = currentPositionY + (rowHeight - textHeight) / 2.0f
+					+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
 			if (row.parentContainer == null) {
 
@@ -92,11 +90,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 
 		}
 
-		float columnWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(COLUMN_WIDTH_PIXELS);
+		float columnWidth = pixelGLConverter.getGLWidthForPixelWidth(COLUMN_WIDTH_PIXELS);
 		currentPositionX += captionColumnWidth
-				+ pixelGLConverter
-						.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
+				+ pixelGLConverter.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
 		for (int i = 0; i < columns.size(); i++) {
 			CellContainer column = columns.get(i);
@@ -113,10 +109,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			if (column.parentContainer == null) {
 
 				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, captionRowHeight
+				gl.glVertex3f(currentPositionX, captionRowHeight + captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, captionRowHeight
 						+ captionSpacingY, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth,
-						captionRowHeight + captionSpacingY, 0);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0);
 				gl.glVertex3f(currentPositionX, 0, 0);
 				gl.glEnd();
@@ -127,18 +122,16 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 				gl.glColor3f(0.8f, 0.8f, 0.8f);
 
 				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, captionRowHeight
+				gl.glVertex3f(currentPositionX, captionRowHeight + captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, captionRowHeight
 						+ captionSpacingY, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth,
-						captionRowHeight + captionSpacingY, 0);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0);
 				gl.glVertex3f(currentPositionX, 0, 0);
 
 				gl.glColor3f(0.7f, 0.7f, 0.7f);
 
 				gl.glVertex3f(currentPositionX, childIndent, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth,
-						childIndent, 0);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, childIndent, 0);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0);
 				gl.glVertex3f(currentPositionX, 0, 0);
 
@@ -155,25 +148,24 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			float textPositionX = currentPositionX + textHeight
 					+ (currentColumnWidth - textHeight) / 2.0f
 					- pixelGLConverter.getGLHeightForPixelHeight(2);
-			
-//			float textPositionX = pixelGLConverter
-//					.getGLHeightForPixelHeight(textHeightPixels - 2)
-//					+ (x - pixelGLConverter
-//							.getGLHeightForPixelHeight(textHeightPixels - 2))
-//					/ 2.0f;
-//
-//			gl.glTranslatef(textPositionX, pixelGLConverter
-//					.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS), 0.1f);
-//			gl.glRotatef(90, 0, 0, 1);
+
+			// float textPositionX = pixelGLConverter
+			// .getGLHeightForPixelHeight(textHeightPixels - 2)
+			// + (x - pixelGLConverter
+			// .getGLHeightForPixelHeight(textHeightPixels - 2))
+			// / 2.0f;
+			//
+			// gl.glTranslatef(textPositionX, pixelGLConverter
+			// .getGLHeightForPixelHeight(TEXT_SPACING_PIXELS), 0.1f);
+			// gl.glRotatef(90, 0, 0, 1);
 
 			gl.glPushMatrix();
 			gl.glTranslatef(textPositionX, childIndent + captionSpacingY, 0);
 			gl.glRotatef(90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
-			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
-					captionRowHeight - childIndent - 2 * captionSpacingY,
-					textHeight);
+			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0, captionRowHeight
+					- childIndent - 2 * captionSpacingY, textHeight);
 			gl.glPopMatrix();
 
 			gl.glColor3f(0, 0, 0);
@@ -200,8 +192,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 				float cellSpacingY = pixelGLConverter
 						.getGLHeightForPixelHeight(CELL_SPACING_PIXELS);
 
-				float emptyCellPositionX = currentPositionX
-						+ currentColumnWidth - columnWidth;
+				float emptyCellPositionX = currentPositionX + currentColumnWidth
+						- columnWidth;
 
 				// boolean dimensionGroupExists = false;
 
@@ -215,37 +207,27 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 							view.getID(),
 							ADataContainerRenderer.DIMENSION_GROUP_PICKING_TYPE
 									+ node.getID(),
-							((DimensionGroupRenderer) cell)
-									.getDataContainer().getID());
+							((DimensionGroupRenderer) cell).getDataContainer().getID());
 
-					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX,
-							row.position + cellSpacingY, 0);
+					gl.glTranslatef(currentDimGroupPositionX + cellSpacingX, row.position
+							+ cellSpacingY, 0);
 
-					Point2D topPosition1 = new Point2D.Float(
-							currentDimGroupPositionX + cellSpacingX,
-							row.position + rowHeight - cellSpacingY);
-					Point2D topPosition2 = new Point2D.Float(
-							(float) topPosition1.getX()
-									+ pixelGLConverter
-											.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+					Point2D topPosition1 = new Point2D.Float(currentDimGroupPositionX
+							+ cellSpacingX, row.position + rowHeight - cellSpacingY);
+					Point2D topPosition2 = new Point2D.Float((float) topPosition1.getX()
+							+ pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
 							(float) topPosition1.getY());
 					Point2D bottomPosition1 = new Point2D.Float(
-							(float) topPosition1.getX(), row.position
-									+ cellSpacingY);
+							(float) topPosition1.getX(), row.position + cellSpacingY);
 					Point2D bottomPosition2 = new Point2D.Float(
-							(float) topPosition2.getX(),
-							(float) bottomPosition1.getY());
+							(float) topPosition2.getX(), (float) bottomPosition1.getY());
 
-					bottomDimensionGroupPositions.put(
-							((DimensionGroupRenderer) cell)
-									.getDataContainer().getID(),
-							new Pair<Point2D, Point2D>(bottomPosition1,
-									bottomPosition2));
-					topDimensionGroupPositions.put(
-							((DimensionGroupRenderer) cell)
-									.getDataContainer().getID(),
-							new Pair<Point2D, Point2D>(topPosition1,
-									topPosition2));
+					bottomDimensionGroupPositions.put(((DimensionGroupRenderer) cell)
+							.getDataContainer().getID(), new Pair<Point2D, Point2D>(
+							bottomPosition1, bottomPosition2));
+					topDimensionGroupPositions.put(((DimensionGroupRenderer) cell)
+							.getDataContainer().getID(), new Pair<Point2D, Point2D>(
+							topPosition1, topPosition2));
 
 					currentDimGroupPositionX += columnWidth;
 				} else {
@@ -253,16 +235,14 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 					pickingID = view.getPickingManager().getPickingID(
 							view.getID(),
 							DataContainerMatrixRenderer.EMPTY_CELL_PICKING_TYPE
-									+ node.getID(),
-							((EmptyCellRenderer) cell).getID());
+									+ node.getID(), ((EmptyCellRenderer) cell).getID());
 
-					gl.glTranslatef(emptyCellPositionX + cellSpacingX,
-							row.position + cellSpacingY, 0);
+					gl.glTranslatef(emptyCellPositionX + cellSpacingX, row.position
+							+ cellSpacingY, 0);
 				}
-				cell.setLimits(pixelGLConverter
-						.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
-						pixelGLConverter
-								.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
+				cell.setLimits(
+						pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
+						pixelGLConverter.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
 				cell.render(gl);
 				gl.glPopName();

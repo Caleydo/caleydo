@@ -22,7 +22,7 @@ public abstract class AEventListener<T extends IListenerOwner> {
 
 	/** related handling object, usually a view or manager-type class */
 	protected T handler = null;
-	
+
 	/** the dataDomainID string that decides whether a listener listens for events for this data domain */
 	protected String dataDomainID = null;
 	/**

@@ -3,12 +3,9 @@ package org.caleydo.core.data.collection.table;
 import javax.naming.OperationNotSupportedException;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
-import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
-import org.caleydo.core.data.container.ContainerStatistics;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 /**
  * This class encapsulates all metadata related operations for DataTables. Examples are size, depth and

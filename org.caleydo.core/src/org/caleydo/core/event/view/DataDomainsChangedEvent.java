@@ -9,12 +9,12 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * @author Partl
  * @deprecated this is no longer supported - new datadomains open new views
  */
-@Deprecated 
+@Deprecated
 public class DataDomainsChangedEvent
 	extends AEvent {
-	
-private AGLView view;
-	
+
+	private AGLView view;
+
 	public DataDomainsChangedEvent(AGLView view) {
 		this.setView(view);
 	}

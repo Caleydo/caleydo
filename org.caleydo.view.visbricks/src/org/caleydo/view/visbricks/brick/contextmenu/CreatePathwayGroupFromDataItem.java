@@ -16,8 +16,7 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
 public class CreatePathwayGroupFromDataItem extends AContextMenuItem {
 
 	public CreatePathwayGroupFromDataItem(ATableBasedDataDomain dataDomain,
-			RecordVirtualArray recordVA,
-			DimensionPerspective dimensionPerspective) {
+			RecordVirtualArray recordVA, DimensionPerspective dimensionPerspective) {
 		setLabel("Create Pathway Group From Data");
 
 		OpenCreatePathwayGroupDialogEvent event = new OpenCreatePathwayGroupDialogEvent(

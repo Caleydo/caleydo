@@ -43,10 +43,12 @@ public class GeneticIDMappingHelper {
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 		if (idType == IDType.getIDType("DAVID"))
-			pathwayVertexGraphItem = PathwayItemManager.get().getPathwayVertexGraphItemByDavidId(id);
-		else 
-			throw new IllegalStateException("Only David IDs can be resolved to pathways lists");
-		
+			pathwayVertexGraphItem = PathwayItemManager.get()
+					.getPathwayVertexGraphItemByDavidId(id);
+		else
+			throw new IllegalStateException(
+					"Only David IDs can be resolved to pathways lists");
+
 		if (pathwayVertexGraphItem == null)
 			return null;
 

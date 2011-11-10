@@ -2,7 +2,6 @@ package org.caleydo.core.gui.toolbar;
 
 import java.util.List;
 
-
 /**
  * Render job for toolbar contents, usually used with eclipse's Display.asyncRun()
  * 

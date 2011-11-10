@@ -18,7 +18,7 @@ public abstract class ASWTView
 		super(viewID, parentComposite);
 		GeneralManager.get().getViewManager().registerItem(this);
 	}
-	
+
 	public abstract void draw();
 
 	@Override
@@ -31,6 +31,7 @@ public abstract class ASWTView
 			}
 		});
 	}
+
 	@Override
 	public void registerEventListeners() {
 		// TODO Auto-generated method stub

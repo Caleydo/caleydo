@@ -29,7 +29,7 @@ public class LoadDataParameters {
 	 * will be returned
 	 */
 	private String label;
-	
+
 	/** The data domain associated with the loading process */
 	@XmlTransient
 	private ATableBasedDataDomain dataDomain;
@@ -86,7 +86,7 @@ public class LoadDataParameters {
 	/** determine whether a dimension is shown as column or row */
 	@XmlElement
 	boolean isColumnDimension;
-	
+
 	/**
 	 * Determines whether a table in the DataTable is considered homogeneous or not. Homogeneous means, that
 	 * the same maximum and minimum are used for normalization.
@@ -143,7 +143,6 @@ public class LoadDataParameters {
 		return fileName;
 	}
 
-
 	/**
 	 * @param label
 	 *            setter, see {@link #label}
@@ -159,7 +158,7 @@ public class LoadDataParameters {
 	public String getLabel() {
 		return label;
 	}
-	
+
 	/**
 	 * @param fileName
 	 *            setter, see {@link #fileName}
@@ -367,7 +366,7 @@ public class LoadDataParameters {
 	public AStringConverter getColumnHeaderStringConverter() {
 		return columnHeaderStringConverter;
 	}
-	
+
 	/**
 	 * @param isColumnDimension
 	 *            setter, see {@link #isColumnDimension}
@@ -375,7 +374,7 @@ public class LoadDataParameters {
 	public void setColumnDimension(boolean isColumnDimension) {
 		this.isColumnDimension = isColumnDimension;
 	}
-	
+
 	/**
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */

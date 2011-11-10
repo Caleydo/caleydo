@@ -24,8 +24,8 @@ public class SerializedHyperbolicView extends ASerializedView {
 
 	@Override
 	public ViewFrustum getViewFrustum() {
-		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 8, 0,
-				8, -20, 20);
+		ViewFrustum viewFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+				8, 0, 8, -20, 20);
 		return viewFrustum;
 	}
 
@@ -33,7 +33,7 @@ public class SerializedHyperbolicView extends ASerializedView {
 	public String getViewType() {
 		return GLHyperbolic.VIEW_TYPE;
 	}
-	
+
 	@Override
 	public String getViewClassType() {
 		return GLHyperbolic.class.getName();

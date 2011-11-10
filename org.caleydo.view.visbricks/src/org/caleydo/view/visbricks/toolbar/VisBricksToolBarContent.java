@@ -34,7 +34,8 @@ public class VisBricksToolBarContent extends AToolBarContent {
 		List<IToolBarItem> actionList = new ArrayList<IToolBarItem>();
 		container.setToolBarItems(actionList);
 
-		IToolBarItem trendHighlightModeAction = new ConnectionsModeGUI("Trend Highlight Mode");
+		IToolBarItem trendHighlightModeAction = new ConnectionsModeGUI(
+				"Trend Highlight Mode");
 		actionList.add(trendHighlightModeAction);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();

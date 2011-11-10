@@ -77,6 +77,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	// this.selectedNodes = selectedNodes;
 	// }
 
+	@Override
 	public boolean checkIntegrity() {
 		if (subDataContainers == null && (dataDomainID == null || dataContainer == null))
 			return false;

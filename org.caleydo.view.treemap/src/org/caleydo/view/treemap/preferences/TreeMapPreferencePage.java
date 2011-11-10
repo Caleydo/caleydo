@@ -23,19 +23,17 @@ import org.eclipse.ui.IWorkbenchPreferencePage;
  * @author Oliver Pimas
  * @author Alexander Lex
  */
-public class TreeMapPreferencePage
-	extends FieldEditorPreferencePage
-	implements IWorkbenchPreferencePage {
+public class TreeMapPreferencePage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 
 	private Combo layoutAlgorithmCB;
 	private Button frameButton;
 	private Spinner maxDepthSp;
 	private Button maxDepthButton;
-	
+
 	private PreferenceStore preferenceStore;
 
-	private static final String LAYOUT_ALGORITHM_DISPLAYNAME[] = {"Simple Layout Algorithm", "Squarified Treemap Layout Algorithm"};
-	
+	private static final String LAYOUT_ALGORITHM_DISPLAYNAME[] = { "Simple Layout Algorithm", "Squarified Treemap Layout Algorithm" };
+
 	public TreeMapPreferencePage() {
 		super(GRID);
 		preferenceStore = GeneralManager.get().getPreferenceStore();
@@ -44,7 +42,8 @@ public class TreeMapPreferencePage
 	}
 
 	/**
-	 * Creates the gui components which are initialized with default values or from the pref store.
+	 * Creates the gui components which are initialized with default values or
+	 * from the pref store.
 	 */
 	@Override
 	public void createFieldEditors() {
@@ -52,48 +51,47 @@ public class TreeMapPreferencePage
 		Composite baseComposite = new Composite(getFieldEditorParent(), SWT.NULL);
 		baseComposite.setLayout(new GridLayout(1, false));
 
-		Label l= new Label(baseComposite, SWT.SHADOW_NONE);
+		Label l = new Label(baseComposite, SWT.SHADOW_NONE);
 		l.setText("The Algorithm used to layout the Treemap");
 		layoutAlgorithmCB = new Combo(baseComposite, SWT.READ_ONLY);
-		
+
 		layoutAlgorithmCB.setItems(LAYOUT_ALGORITHM_DISPLAYNAME);
 		int selectedLayout = preferenceStore.getInt(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM);
 		layoutAlgorithmCB.setText(LAYOUT_ALGORITHM_DISPLAYNAME[selectedLayout]);
 
 		frameButton = new Button(baseComposite, SWT.CHECK);
-		boolean frameSelection=preferenceStore.getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME);
+		boolean frameSelection = preferenceStore.getBoolean(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME);
 		frameButton.setSelection(frameSelection);
 		frameButton.setText("Draw frame for Clusters");
-		
-		int maxDepth=preferenceStore.getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
-		maxDepthButton= new Button(baseComposite, SWT.CHECK);
-		maxDepthButton.setSelection(maxDepth>0);
+
+		int maxDepth = preferenceStore.getInt(PreferenceConstants.TREEMAP_MAX_DEPTH);
+		maxDepthButton = new Button(baseComposite, SWT.CHECK);
+		maxDepthButton.setSelection(maxDepth > 0);
 		maxDepthButton.setText("Enable node abstraction");
 		maxDepthButton.addSelectionListener(new SelectionListener() {
-			
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 				maxDepthSp.setEnabled(maxDepthButton.getSelection());
-				
+
 			}
-			
+
 			@Override
 			public void widgetDefaultSelected(SelectionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 			}
 		});
-		
-		maxDepthSp= new Spinner(baseComposite, SWT.BORDER);
-		maxDepthSp.setEnabled(maxDepth>0);
+
+		maxDepthSp = new Spinner(baseComposite, SWT.BORDER);
+		maxDepthSp.setEnabled(maxDepth > 0);
 		maxDepthSp.setDigits(0);
 		maxDepthSp.setMaximum(999);
 		maxDepthSp.setMinimum(1);
 		maxDepthSp.setIncrement(1);
 		maxDepthSp.setSelection(maxDepth);
-		
 
-		baseComposite.pack();	
+		baseComposite.pack();
 	}
 
 	@Override
@@ -105,14 +103,13 @@ public class TreeMapPreferencePage
 	public boolean performOk() {
 		boolean bReturn = super.performOk();
 
-
 		int selectedLayout = layoutAlgorithmCB.getSelectionIndex();
 		preferenceStore.setValue(PreferenceConstants.TREEMAP_LAYOUT_ALGORITHM, selectedLayout);
-		
+
 		preferenceStore.setValue(PreferenceConstants.TREEMAP_DRAW_CLUSTER_FRAME, frameButton.getSelection());
-		
+
 		preferenceStore.setValue(PreferenceConstants.TREEMAP_MAX_DEPTH, maxDepthSp.getSelection());
-		
+
 		return bReturn;
 	}
 

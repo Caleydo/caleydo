@@ -17,31 +17,31 @@ public class ConnectionsModeEvent
 
 	private boolean connectionsOn;
 	private boolean connectionsHighlightDynamic;
-	
+
 	/**
 	 * Determines the focus highlight dynamically in a range between 0 and 1
 	 */
 	private float connectionsFocusFactor;
-	
+
 	public ConnectionsModeEvent(boolean connectionsOn, boolean connectionsHighlighDynamic, float focusFactor) {
 		this.connectionsOn = connectionsOn;
 		this.connectionsHighlightDynamic = connectionsHighlighDynamic;
 		this.connectionsFocusFactor = focusFactor;
 	}
-	
+
 	@Override
 	public boolean checkIntegrity() {
 		return true;
 	}
-	
+
 	public boolean isConnectionsHighlightDynamic() {
 		return connectionsHighlightDynamic;
 	}
-	
+
 	public boolean isConnectionsOn() {
 		return connectionsOn;
 	}
-	
+
 	public float getFocusFactor() {
 		return connectionsFocusFactor;
 	}

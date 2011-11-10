@@ -10,23 +10,23 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for toggling coloring mode.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class ToggleColoringModeAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Toggle ColorMode Average/Selected";
 	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
-	
+
 	public ToggleColoringModeAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 	}
-	
+
 	@Override
 	public void run() {
 		super.run();
@@ -34,6 +34,5 @@ public class ToggleColoringModeAction extends AToolBarAction implements IToolBar
 		event.setCalculateColor(isChecked());
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	};
-
 
 }

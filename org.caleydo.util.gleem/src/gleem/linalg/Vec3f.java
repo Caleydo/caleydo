@@ -135,31 +135,31 @@ public class Vec3f {
 	/** Sets the ith component, 0 <= i < 3 */
 	public void set(int i, float val) {
 		switch (i) {
-			case 0 :
-				x = val;
-				break;
-			case 1 :
-				y = val;
-				break;
-			case 2 :
-				z = val;
-				break;
-			default :
-				throw new IndexOutOfBoundsException();
+		case 0:
+			x = val;
+			break;
+		case 1:
+			y = val;
+			break;
+		case 2:
+			z = val;
+			break;
+		default:
+			throw new IndexOutOfBoundsException();
 		}
 	}
 
 	/** Gets the ith component, 0 <= i < 3 */
 	public float get(int i) {
 		switch (i) {
-			case 0 :
-				return x;
-			case 1 :
-				return y;
-			case 2 :
-				return z;
-			default :
-				throw new IndexOutOfBoundsException();
+		case 0:
+			return x;
+		case 1:
+			return y;
+		case 2:
+			return z;
+		default:
+			throw new IndexOutOfBoundsException();
 		}
 	}
 

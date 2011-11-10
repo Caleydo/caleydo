@@ -505,7 +505,7 @@ public class IDMappingManager {
 		}
 		catch (IllegalArgumentException e) {
 			Logger.log(new Status(IStatus.INFO, toString(), "No mapping found between " + source + " and "
-			 + destination + " for: " + sourceID));
+				+ destination + " for: " + sourceID));
 			return null;
 		}
 		Object currentID = sourceID;

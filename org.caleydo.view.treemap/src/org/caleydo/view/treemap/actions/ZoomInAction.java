@@ -10,23 +10,23 @@ import org.eclipse.ui.PlatformUI;
 
 /**
  * Action for zoom in function.
+ * 
  * @author Michael Lafer
- *
+ * 
  */
 
 public class ZoomInAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Zoom";
 	public static final String ICON = "resources/icons/general/search.png";
-	
+
 	public ZoomInAction() {
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
-				PlatformUI.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI.getWorkbench().getDisplay(), ICON)));
 		setChecked(false);
 	}
-	
+
 	@Override
 	public void run() {
 		super.run();
@@ -36,4 +36,3 @@ public class ZoomInAction extends AToolBarAction implements IToolBarItem {
 	};
 
 }
-
