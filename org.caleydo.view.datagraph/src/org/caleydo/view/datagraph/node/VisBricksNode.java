@@ -59,8 +59,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 		bodyColumn.clear();
 
-		ElementLayout dataContainerLayout = new ElementLayout(
-				"datContainerList");
+		ElementLayout dataContainerLayout = new ElementLayout("datContainerList");
 
 		dataContainerListRenderer = new DataContainerListRenderer(this, view,
 				dragAndDropController, getDataContainers());
@@ -94,9 +93,8 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY,
-			DragAndDropController dragAndDropController) {
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof DimensionGroupRenderer) {
@@ -108,9 +106,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
 			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-					dataContainers.get(0).getDataDomain().getDataDomainID(),
 					dataContainers.get(0));
-			// event.setDimensionGroupData(dimensionGroupData);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
@@ -123,8 +119,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
-		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(),
-				id);
+		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(), id);
 	}
 
 	@Override

@@ -11,7 +11,6 @@ public class CreateGroupListener extends AEventListener<GLGrouper> {
 	 * 
 	 */
 	public CreateGroupListener() {
-		System.out.println("waaa");
 	}
 
 	@Override

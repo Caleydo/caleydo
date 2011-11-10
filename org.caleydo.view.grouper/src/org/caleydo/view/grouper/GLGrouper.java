@@ -15,7 +15,6 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
@@ -40,6 +39,8 @@ import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.contextmenu.item.StatisticsFoldChangeReductionItem;
+import org.caleydo.core.view.contextmenu.item.StatisticsPValueReductionItem;
+import org.caleydo.core.view.contextmenu.item.StatisticsTwoSidedTTestReductionItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -594,20 +595,15 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 						for (Integer groupID : selectedGroups) {
 							selectedNodes.add(hashGroups.get(groupID).getClusterNode());
 						}
+						
+						ArrayList<DataContainer> dataContainers = makeDataContainers(selectedNodes);
 
 						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
-								dataDomain, dataContainer, selectedNodes);
+								dataDomain, dataContainer, dataContainers);
 
 						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
 
-						// if (orderedComposites.size() >= 2) {
-						//
-						// CompareGroupsItem compareGroupsItem = new
-						// CompareGroupsItem(
-						// selectedTables);
-						// contextMenuCreator.addContextMenuItem(compareGroupsItem);
-						// }
-
+			
 						contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 
 						bContextMenueItemsAvailable = true;
@@ -617,56 +613,29 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 							// Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer();
 
-							// Do not allow p-value stats for multiple groups or
-							// leaf meta sets
-							// FIXME re-enable
-							// if (!isLeafContained && orderedComposites.size()
-							// < 2) {
-							// StatisticsPValueReductionItem pValueReductionItem
-							// = new StatisticsPValueReductionItem(
-							// selectedTables);
-							// contextMenuCreator
-							// .addContextMenuItem(pValueReductionItem);
-							// }
-							//
-							if (orderedComposites.size() == 2) {
-								DimensionPerspective subDimensionPerspective1 = selectedNodes
-										.get(0).getSubPerspective(
-												DimensionPerspective.class, dataDomain);
+							
 
-								dataDomain.getTable().registerDimensionPerspective(
-										subDimensionPerspective1);
-								DataContainer dataContainer1 = dataDomain
-										.getDataContainer(dataContainer
-												.getRecordPerspective().getID(),
-												subDimensionPerspective1.getID());
-
-								DimensionPerspective subDimensionPerspective2 = selectedNodes
-										.get(1).getSubPerspective(
-												DimensionPerspective.class, dataDomain);
-								dataDomain.getTable().registerDimensionPerspective(
-										subDimensionPerspective2);
-								DataContainer dataContainer2 = dataDomain
-										.getDataContainer(dataContainer
-												.getRecordPerspective().getID(),
-												subDimensionPerspective2.getID());
+							if (dataContainers.size() == 2) {
 
 								StatisticsFoldChangeReductionEvent event = new StatisticsFoldChangeReductionEvent(
-										dataContainer1, dataContainer2, false);
+										dataContainers.get(0), dataContainers.get(1),
+										false);
 
 								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
 										event);
 								contextMenuCreator
 										.addContextMenuItem(foldChangeReductionItem);
 							}
-							//
-							// StatisticsTwoSidedTTestReductionItem
-							// twoSidedTTestReductionItem = new
-							// StatisticsTwoSidedTTestReductionItem(
-							// selectedTables);
-							// contextMenuCreator
-							// .addContextMenuItem(twoSidedTTestReductionItem);
-							// }
+
+							StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
+									dataContainers);
+							contextMenuCreator.addContextMenuItem(pValueReductionItem);
+
+							StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
+									dataContainers);
+							contextMenuCreator
+									.addContextMenuItem(twoSidedTTestReductionItem);
+
 						}
 
 					}
@@ -730,6 +699,25 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 			}
 			break;
 		}
+	}
+
+	private ArrayList<DataContainer> makeDataContainers(
+			ArrayList<ClusterNode> selectedNodes) {
+		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+		for (ClusterNode node : selectedNodes) {
+			if (node.isLeaf())
+				continue;
+			DimensionPerspective subDimensionPerspective1 = node.getSubPerspective(
+					DimensionPerspective.class, dataDomain);
+
+			dataDomain.getTable().registerDimensionPerspective(subDimensionPerspective1);
+			DataContainer dataContainer1 = dataDomain.getDataContainer(dataContainer
+					.getRecordPerspective().getID(), subDimensionPerspective1.getID());
+			dataContainers.add(dataContainer1);
+			
+		}
+		return dataContainers;
+
 	}
 
 	/**

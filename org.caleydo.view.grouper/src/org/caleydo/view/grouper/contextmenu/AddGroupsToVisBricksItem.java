@@ -11,13 +11,11 @@ import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 public class AddGroupsToVisBricksItem extends AContextMenuItem {
 
 	public AddGroupsToVisBricksItem(ATableBasedDataDomain dataDomain,
-			DataContainer dataContainer,
-			ArrayList<ClusterNode> selectedNodes) {
+			DataContainer dataContainer, ArrayList<DataContainer> dataContainers) {
 
 		setLabel("Show Groups In VisBricks");
 
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-				dataDomain.getDataDomainID(), dataContainer, selectedNodes);
+		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainers);
 		event.setSender(this);
 
 		registerEvent(event);

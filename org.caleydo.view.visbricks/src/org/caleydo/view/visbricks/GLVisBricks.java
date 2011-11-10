@@ -1677,7 +1677,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				DataContainer dataContainer = dataDomain.getDataContainer(
 						chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
 				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-						dataDomain.getDataDomainID(), dataContainer);
+						dataContainer);
 				event.setDataDomainID(dataDomain.getDataDomainID());
 				eventPublisher.triggerEvent(event);
 			}
