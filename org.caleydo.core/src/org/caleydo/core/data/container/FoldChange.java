@@ -18,7 +18,7 @@ public class FoldChange {
 	HashMap<DataContainer, Pair<double[], FoldChangeSettings>> containerToFoldChangeResult =
 		new HashMap<DataContainer, Pair<double[], FoldChangeSettings>>();
 
-	HashMap<DataContainer, double[]> setToFoldChangeUncertainty = new HashMap<DataContainer, double[]>();;
+	HashMap<DataContainer, double[]> containerToFoldChangeUncertainty = new HashMap<DataContainer, double[]>();;
 
 	public void setResult(DataContainer container, double[] resultVector) {
 
@@ -43,14 +43,14 @@ public class FoldChange {
 		if (foldChangeSettings.getEvaluator() == FoldChangeEvaluator.BOTH)
 			calculateAbsolute = true;
 
-		setToFoldChangeUncertainty.put(container, ConversionTools.normalize(
+		containerToFoldChangeUncertainty.put(container, ConversionTools.normalize(
 			containerToFoldChangeResult.get(container).getFirst(), foldChangeSettings.getRatioUncertainty(),
 			foldChangeSettings.getRatio(), calculateAbsolute));
 	}
 
-	public double[] getFoldChangeUncertainty(DataTable set) {
+	public double[] getFoldChangeUncertainty(DataContainer dataContainer) {
 
-		return setToFoldChangeUncertainty.get(set);
+		return containerToFoldChangeUncertainty.get(dataContainer);
 	}
 
 }

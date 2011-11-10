@@ -5,8 +5,10 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -62,7 +64,8 @@ public class OverviewRenderer extends LayoutRenderer {
 		// overviewLayout.clear();
 		clusterLayoutList.clear();
 
-		RecordVirtualArray recordVA = uncertaintyHeatMap.getDataContainer().getRecordPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = uncertaintyHeatMap.getDataContainer()
+				.getRecordPerspective().getVirtualArray();
 		RecordGroupList clusterList = recordVA.getGroupList();
 
 		int counter = 0;
@@ -83,8 +86,8 @@ public class OverviewRenderer extends LayoutRenderer {
 				// creatinng Texture for each cluster
 
 				// creating Layout for each cluster
-				RecordVirtualArray clusterVA = this.getClusterVA(clusterIndex);
-				float ratio = (float) clusterVA.size()
+				DataContainer clusterContainer = this.getClusterContainer(clusterIndex);
+				float ratio = (float) clusterContainer.getNrRecords()
 						/ ((float) recordVA.getIndexList().size());
 
 				Row clusterLayout = new Row("clusterLayout_" + counter);
@@ -92,7 +95,7 @@ public class OverviewRenderer extends LayoutRenderer {
 				clusterLayoutList.add(clusterLayout);
 
 				clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,
-						clusterVA, clusterIndex);
+						clusterContainer.getRecordPerspective().getVirtualArray(), clusterIndex);
 				clusterLayout.setRenderer(clusterRenderer);
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);
@@ -116,7 +119,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 				// Initially the first cluster gets selected
 				if (clusterIndex == 0 && detailHeatMap != null) {
-					detailHeatMap.setRecordVA(clusterVA);
+					detailHeatMap.setDataContainer(clusterContainer);
 					detailHeatMap.setDisplayListDirty();
 				}
 			}
@@ -135,19 +138,32 @@ public class OverviewRenderer extends LayoutRenderer {
 		overviewLayout.updateSubLayout();
 	}
 
-	public RecordVirtualArray getClusterVA(int clusterIndex) {
-		RecordVirtualArray recordVA = uncertaintyHeatMap.getRecordVA();
-		RecordGroupList clusterList = recordVA.getGroupList();
-		if (clusterList == null) {
-			return recordVA;
+	public DataContainer getClusterContainer(int clusterIndex) {
+		DataContainer sourceContainer = uncertaintyHeatMap.getDataContainer();
+		if (sourceContainer.getRecordPerspective().getVirtualArray().getGroupList()
+				.size() == 1) {
+			return sourceContainer;
 		}
-		Group group = clusterList.getGroups().get(clusterIndex);
 
-		ArrayList<Integer> clusterGenes = uncertaintyHeatMap.getRecordVA()
-				.getIDsOfGroup(group.getGroupID());
-		RecordVirtualArray clusterVA = new RecordVirtualArray("Custom", clusterGenes);
+		DataContainer clusterContainer = new DataContainer();
+		clusterContainer.setDataDomain(sourceContainer.getDataDomain());
+		clusterContainer.setDimensionPerspective(sourceContainer
+				.getDimensionPerspective());
 
-		return clusterVA;
+		ArrayList<Integer> embeddedRecords = sourceContainer.getRecordPerspective()
+				.getVirtualArray().getIDsOfGroup(clusterIndex);
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		data.setData(embeddedRecords);
+
+		RecordPerspective clusterRecordPerspective = new RecordPerspective(
+				sourceContainer.getDataDomain());
+
+		clusterRecordPerspective.init(data);
+
+		clusterContainer.setRecordPerspective(clusterRecordPerspective);
+
+		return clusterContainer;
 	}
 
 	public void setSelectedGroup(int selectedGroup) {
@@ -192,6 +208,6 @@ public class OverviewRenderer extends LayoutRenderer {
 
 	@Override
 	public void render(GL2 gl) {
-	
+
 	}
 }

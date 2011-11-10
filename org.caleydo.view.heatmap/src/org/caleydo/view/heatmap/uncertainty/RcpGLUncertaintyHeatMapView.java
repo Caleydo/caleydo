@@ -33,17 +33,8 @@ public class RcpGLUncertaintyHeatMapView extends ARcpGLViewPart {
 
 		view = new GLUncertaintyHeatMap(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
+		initializeViewWithData();
 		view.initFromSerializableRepresentation(serializedView);
-
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-
-		view.initialize();
 		createPartControlGL();
 	}
 

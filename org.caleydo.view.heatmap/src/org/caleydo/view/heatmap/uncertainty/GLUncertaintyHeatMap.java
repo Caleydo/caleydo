@@ -307,12 +307,27 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				if (groupList == null)
 					break;
 
-				ArrayList<Integer> clusterElements = dataContainer.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList
-						.get(externalID).getGroupID());
-				detailHeatMap.
-				RecordVirtualArray clusterVA = new RecordVirtualArray(
-						recordPerspectiveID, clusterElements);
-				detailHeatMap.setRecordVA(clusterVA);
+				ArrayList<Integer> embeddedRecords = dataContainer.getRecordPerspective()
+						.getVirtualArray().getIDsOfGroup(externalID);
+
+				PerspectiveInitializationData data = new PerspectiveInitializationData();
+
+				// RecordVirtualArray recordVA =
+				// dataContainer.getRecordPerspective()
+				// .getVirtualArray();
+
+				data.setData(embeddedRecords);
+				detailHeatMap.getDataContainer().getRecordPerspective().init(data);
+				detailHeatMap.handleRecordVAUpdate(detailHeatMap.getDataContainer()
+						.getRecordPerspective().getID());
+
+				// ArrayList<Integer> clusterElements =
+				// dataContainer.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList
+				// .get(externalID);
+				// detailHeatMap.setDataContainer(dataContainer)
+				// RecordVirtualArray clusterVA = new RecordVirtualArray(
+				// recordPerspectiveID, clusterElements);
+				// detailHeatMap.setRecordVA(clusterVA);
 
 				setDisplayListDirty();
 				break;
@@ -357,10 +372,6 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
 
 	}
-
-
-
-	
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
@@ -423,9 +434,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		multiLevelUncertainty.add(convertedSNR);
 
-		Collection<double[]> statisticsUncertainties = table.getStatisticsResult()
-				.getAllFoldChangeUncertainties();
-		multiLevelUncertainty.addAll(statisticsUncertainties);
+//		Collection<double[]> statisticsUncertainties = dataContainer.getContainerStatistics().foldChange().getAllFoldChangeResults().values();
+//		multiLevelUncertainty.addAll(statisticsUncertainties);
 
 		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
 			for (double[] uncertaintyLevel : multiLevelUncertainty) {
@@ -436,7 +446,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 			}
 		}
 
-		table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
+//		table.getStatisticsResult().setAggregatedUncertainty(aggregatedUncertainty);
 	}
 
 	public float getMaxUncertainty(int recordID) {
