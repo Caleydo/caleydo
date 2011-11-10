@@ -3,6 +3,9 @@
  */
 package org.caleydo.core.parser.ascii;
 
+import javax.xml.bind.annotation.XmlType;
+
+
 /**
  * Base class for converting ID Mapping strings. StringConverters are very special to one specific data file
  * or IDType and should be created in a place where the speciality is appropriate (e.g. GeneticDataDomain
@@ -10,6 +13,7 @@ package org.caleydo.core.parser.ascii;
  * 
  * @author Alexander Lex
  */
+@XmlType
 public abstract class AStringConverter {
 
 	public abstract String convert(String string);

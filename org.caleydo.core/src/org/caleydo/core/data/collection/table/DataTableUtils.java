@@ -198,6 +198,8 @@ public class DataTableUtils {
 					columnLabel = columnLabelIterator.next();
 					if (columnHeaderStringConverter != null)
 						columnLabel = columnHeaderStringConverter.convert(columnLabel);
+					else
+						System.out.println("Weird");
 
 					NumericalColumn column = (NumericalColumn) cmdCreateColumn.getCreatedObject();
 					column.setLabel(columnLabel);

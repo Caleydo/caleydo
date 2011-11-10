@@ -15,15 +15,15 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlType
 @XmlRootElement
-public class DataTypeSetCollection {
+public class DataSetMetaInfoCollection {
 
-	ArrayList<DataTypeSet> dataTypeSetCollection = new ArrayList<DataTypeSet>();
+	ArrayList<DataSetMetaInfo> dataTypeSetCollection = new ArrayList<DataSetMetaInfo>();
 
-	public ArrayList<DataTypeSet> getDataTypeSetCollection() {
+	public ArrayList<DataSetMetaInfo> getDataTypeSetCollection() {
 		return dataTypeSetCollection;
 	}
 
-	public void setDataTypeSetCollection(ArrayList<DataTypeSet> dataTypeSetCollection) {
+	public void setDataTypeSetCollection(ArrayList<DataSetMetaInfo> dataTypeSetCollection) {
 		this.dataTypeSetCollection = dataTypeSetCollection;
 	}
 }

@@ -3,11 +3,14 @@
  */
 package org.caleydo.data.importer.tcga.startup;
 
+import javax.xml.bind.annotation.XmlRootElement;
+
 import org.caleydo.core.parser.ascii.AStringConverter;
 
 /**
  * @author alexsb
  */
+@XmlRootElement
 public class TCGAIDStringConverter
 	extends AStringConverter {
 

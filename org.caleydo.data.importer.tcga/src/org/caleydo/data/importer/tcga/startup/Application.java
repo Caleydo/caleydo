@@ -19,7 +19,6 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -37,8 +36,10 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -82,12 +83,12 @@ public class Application
 
 		GeneralManager.get().init();
 		createJAXBContext();
-		DataTypeSetCollection dataTypeSetCollection = deserialzeDataTypeSets();
+		DataSetMetaInfoCollection dataTypeSetCollection = deserialzeDataSetMetaInfo();
 
 		boolean isColumnDimension = false;
 
 		// Iteratur over data type sets and trigger processing
-		for (DataTypeSet dataTypeSet : dataTypeSetCollection.getDataTypeSetCollection())
+		for (DataSetMetaInfo dataTypeSet : dataTypeSetCollection.getDataTypeSetCollection())
 			loadSources(dataTypeSet, isColumnDimension);
 
 		calculateVAIntersections();
@@ -103,13 +104,7 @@ public class Application
 		ArrayList<ATableBasedDataDomain> dataDomains =
 			DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
 		for (ATableBasedDataDomain dataDomain : dataDomains) {
-			// if (loopCount == 1) {
-			// loopCount++;
-			// continue;
-			// }
 			vasToIntersect.add(dataDomain.getTable().getDefaultRecordPerspective().getVirtualArray());
-			// loopCount++;
-
 		}
 		List<RecordVirtualArray> intersectedVAs = VAUtils.createIntersectingVAs(vasToIntersect);
 
@@ -129,89 +124,45 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(DataTypeSet dataTypeSet, boolean isColumnDimension)
+	private void loadSources(DataSetMetaInfo metaInfo, boolean isColumnDimension)
 		throws FileNotFoundException, IOException {
 
-		convertGctFile(dataTypeSet.getName(), dataTypeSet.getDataPath(), dataTypeSet.getDataDomainType(),
-			ColorMapper.createDefaultMapper(EDefaultColorSchemes.valueOf(dataTypeSet.getColorScheme())),
-			dataTypeSet.getDataDomainConfiguration(), isColumnDimension);
-		loadClusterInfo(dataTypeSet.getGroupingPath());
+		loadData(metaInfo);
+		loadClusterInfo(metaInfo.getGroupingPath());
 
-		PerspectiveInitializationData clusterResult = runClusteringOnRows();
-		createSampleOfGenes(clusterResult);
+//		if (metaInfo.isRunClusteringOnRows()) {
+			PerspectiveInitializationData clusterResult = runClusteringOnRows();
+//			if (metaInfo.isCreateGeneSamples())
+				createSampleOfGenes(clusterResult);
+//		}
+
 	}
 
-	protected void convertGctFile(String label, String fileName, String dataDomainType,
-		ColorMapper colorMapper, DataDomainConfiguration configuration, boolean isColumnDimension)
-		throws FileNotFoundException, IOException {
-		String delimiter = "\t";
+	protected void loadData(DataSetMetaInfo dataSetMetaInfo) throws FileNotFoundException, IOException {
 
-		// open file to read second line to determine number of rows and columns
-		BufferedReader reader = new BufferedReader(new FileReader(fileName));
-
-		// skip header ("#1.2")
-		// TODO: check if file is indeed a gct file
-		reader.readLine();
-
-		// read dimensions of data matrix
-		String dimensionString = reader.readLine();
-
-		// TODO: check if there are two numeric columns
-		String[] dimensions = dimensionString.split(delimiter);
-
-		int columns = new Integer(dimensions[1]);
-
-		// read column headers
-		String headerString = reader.readLine();
-
-		// TODO: check if there are as many column headers as there are columns (+ 2)
-		String[] headers = headerString.split(delimiter);
-
-		LoadDataParameters loadDataParameters = new LoadDataParameters();
-		loadDataParameters.setLabel(label);
-		loadDataParameters.setFileName(fileName);
-		loadDataParameters.setDelimiter(delimiter);
-		loadDataParameters.setStartParseFileAtLine(3);
-
-		// loadDataParameters.setMinDefined(true);
-		// loadDataParameters.setMin(min);
-		// loadDataParameters.setMaxDefined(true);
-		// loadDataParameters.setMax(max);
-
+		LoadDataParameters loadDataParameters = dataSetMetaInfo.getLoadDataParameters();
+		loadDataParameters.setColumnHeaderStringConverter(new TCGAIDStringConverter());
 		dataDomain =
-			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(dataDomainType, configuration);
-
-		dataDomain.setColorMapper(colorMapper);
+			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
+				dataSetMetaInfo.getDataDomainType(), dataSetMetaInfo.getDataDomainConfiguration());
 
 		loadDataParameters.setDataDomain(dataDomain);
-		loadDataParameters.setMathFilterMode("Normal");
-		loadDataParameters.setIsDataHomogeneous(true);
-		loadDataParameters.setColumnDimension(isColumnDimension);
+		dataDomain.setColorMapper(ColorMapper.createDefaultMapper(EDefaultColorSchemes
+			.valueOf(dataSetMetaInfo.getColorScheme())));
 
 		dataDomain.init();
 		loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
-		Thread thread = new Thread(dataDomain, dataDomainType);
+		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
 		thread.start();
 
 		// construct input pattern string based on number of columns in file
-		StringBuffer buffer = new StringBuffer("SKIP;SKIP;");
-
-		// list to store column labels
-		List<String> columnLabels = new ArrayList<String>();
-
-		for (int i = 0; i < columns; ++i) {
-			buffer.append("FLOAT;");
-			columnLabels.add(headers[i + 2]);
-		}
-
-		loadDataParameters.setInputPattern(buffer.toString());
-		loadDataParameters.setColumnHeaderStringConverter(new TCGAIDStringConverter());
-		loadDataParameters.setColumnLabels(columnLabels);
-
 		DataTableUtils.createColumns(loadDataParameters);
 
+		boolean createDefaultRecordPerspective = false;
+		if (dataSetMetaInfo.getGroupingPath() == null)
+			createDefaultRecordPerspective = true;
 		// the place the matrix is stored:
-		DataTable table = DataTableUtils.createData(dataDomain, true, false);
+		DataTable table = DataTableUtils.createData(dataDomain, true, createDefaultRecordPerspective);
 		if (table == null)
 			throw new IllegalStateException("Problem while creating table!");
 	}
@@ -220,6 +171,10 @@ public class Application
 
 		String delimiter = "\t";
 
+		if (clusterFile == null) {
+			Logger.log(new Status(Status.INFO, this.toString(), "No Cluster Information specified"));
+			return;
+		}
 		// open file to read second line to determine number of rows and columns
 		BufferedReader reader = new BufferedReader(new FileReader(clusterFile));
 
@@ -353,8 +308,8 @@ public class Application
 	private void createJAXBContext() {
 		try {
 			Class<?>[] serializableClasses = new Class<?>[2];
-			serializableClasses[0] = DataTypeSet.class;
-			serializableClasses[1] = DataTypeSetCollection.class;
+			serializableClasses[0] = DataSetMetaInfo.class;
+			serializableClasses[1] = DataSetMetaInfoCollection.class;
 			context = JAXBContext.newInstance(serializableClasses);
 		}
 		catch (JAXBException ex) {
@@ -362,14 +317,14 @@ public class Application
 		}
 	}
 
-	private DataTypeSetCollection deserialzeDataTypeSets() {
+	private DataSetMetaInfoCollection deserialzeDataSetMetaInfo() {
 
-		DataTypeSetCollection dataTypeSetCollection = null;
+		DataSetMetaInfoCollection dataTypeSetCollection = null;
 		try {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
 			dataTypeSetCollection =
-				(DataTypeSetCollection) unmarshaller.unmarshal(new File(inputDataTypeSetCollectionFile));
+				(DataSetMetaInfoCollection) unmarshaller.unmarshal(new File(inputDataTypeSetCollectionFile));
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
