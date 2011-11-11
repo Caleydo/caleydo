@@ -339,7 +339,6 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		else if (data.getIndices() != null && data.getClusterSizes() != null) {
 			createVA(data.getIndices());
 			createGroupListAndDefaultTreeFromClusterSizes(data);
-
 		}
 		// Case 4: we have a tree and nothing else, with either the default root or a specific node as root
 		else if (data.getTree() != null && data.getIndices() == null) {
@@ -349,10 +348,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		else if (data.getVirtualArray() != null) {
 			virtualArray = (VA) data.getVirtualArray();
 			virtualArray.setIdType(idType);
-			// FIXME we need to create a tree with groups here
-			createDefaultTreeAndGroupList();
+			createDefaultTreeFromGroupList();
 		}
-
 		else {
 			throw new IllegalStateException("Cannot initialize from " + data
 				+ " either redundant or to little information.");
@@ -428,8 +425,31 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			}
 			from = to;
 		}
-
 		virtualArray.setGroupList(groupList);
+	}
+
+	private void createDefaultTreeFromGroupList() {
+		isTreeDefaultTree = true;
+		tree = new ClusterTree(idType, virtualArray.size());
+		int clusterNr = 0;
+		ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true, -1);
+		tree.setRootNode(root);
+		ClusterNode node;
+		int from = 0;
+		int to = 0;
+		for (Group group : virtualArray.getGroupList()) {
+			node = new ClusterNode(tree, "Group: " + group.getGroupID(), clusterNr++, false, -1);
+			tree.addChild(root, node);
+			from = group.getStartIndex();
+			to += group.getEndIndex();
+			ClusterNode leaf;
+			for (int vaIndex = from; vaIndex < to; vaIndex++) {
+				Integer id = virtualArray.get(vaIndex);
+				leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, false, id);
+				tree.addChild(node, leaf);
+			}
+
+		}
 	}
 
 	/**

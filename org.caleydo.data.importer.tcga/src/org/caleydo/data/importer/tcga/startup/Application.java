@@ -116,7 +116,6 @@ public class Application
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
 			dataDomains.get(i).getTable().registerRecordPerspecive(intersectedPerspective);
-
 		}
 	}
 
@@ -130,11 +129,11 @@ public class Application
 		loadData(metaInfo);
 		loadClusterInfo(metaInfo.getGroupingPath());
 
-//		if (metaInfo.isRunClusteringOnRows()) {
-			PerspectiveInitializationData clusterResult = runClusteringOnRows();
-//			if (metaInfo.isCreateGeneSamples())
-				createSampleOfGenes(clusterResult);
-//		}
+		// if (metaInfo.isRunClusteringOnRows()) {
+		PerspectiveInitializationData clusterResult = runClusteringOnRows();
+		// if (metaInfo.isCreateGeneSamples())
+		createSampleOfGenes(clusterResult);
+		// }
 
 	}
 
@@ -195,7 +194,6 @@ public class Application
 				break;
 			String[] columns = line.split(delimiter);
 
-			// this is specific to the two files used
 			TCGAIDStringConverter stringConverter = new TCGAIDStringConverter();
 			String originalID = stringConverter.convert(columns[0]);
 			// String originalID = columns[0];
@@ -307,9 +305,10 @@ public class Application
 
 	private void createJAXBContext() {
 		try {
-			Class<?>[] serializableClasses = new Class<?>[2];
+			Class<?>[] serializableClasses = new Class<?>[3];
 			serializableClasses[0] = DataSetMetaInfo.class;
 			serializableClasses[1] = DataSetMetaInfoCollection.class;
+			serializableClasses[2] = TCGAIDStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
 		}
 		catch (JAXBException ex) {

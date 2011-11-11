@@ -53,9 +53,10 @@ public class TCGATestDataXMLGenerator {
 
 		JAXBContext context = null;
 		try {
-			Class<?>[] serializableClasses = new Class<?>[2];
+			Class<?>[] serializableClasses = new Class<?>[3];
 			serializableClasses[0] = DataSetMetaInfo.class;
 			serializableClasses[1] = DataSetMetaInfoCollection.class;
+			serializableClasses[2] = TCGAIDStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
 
 			Marshaller marshaller;

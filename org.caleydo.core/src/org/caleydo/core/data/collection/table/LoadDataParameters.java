@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -364,7 +363,6 @@ public class LoadDataParameters {
 	/**
 	 * @return the columnHeaderStringConverter, see {@link #columnHeaderStringConverter}
 	 */
-	@XmlTransient
 	public AStringConverter getColumnHeaderStringConverter() {
 		return columnHeaderStringConverter;
 	}

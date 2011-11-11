@@ -86,10 +86,17 @@ public class PerspectiveInitializationData {
 		this.tree = tree;
 		this.rootNode = rootNode;
 	}
-
+	
+	/**
+	 * Initialize with an existing virtual array. The virtual array must have 
+	 * @param virtualArray
+	 */
 	public void setData(VirtualArray<?, ?, ?> virtualArray) {
 		if (virtualArray == null)
 			throw new IllegalArgumentException("VA was null");
+		if (virtualArray.getGroupList() == null) {
+			throw new IllegalStateException("Group List of virtual array was null");
+		}
 		this.virtualArray = virtualArray;
 	}
 
