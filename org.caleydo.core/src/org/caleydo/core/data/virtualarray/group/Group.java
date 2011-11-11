@@ -21,7 +21,7 @@ public class Group
 	/** The virtual array index of the first element of the group */
 	private int startIndex = 0;
 
-	/** The id of the group, also the index of the group in the group list */
+	/** The id of the group, also the index of the group in the group list. For a unique ID of the group use {@link #getID()} */
 	private Integer groupID = -1;
 
 	/** Flag specifying whether this group is considered collapsed (i.e. the elements are not shown) */
@@ -104,13 +104,15 @@ public class Group
 	}
 
 	/**
-	 * Returns the groupID of this group, which is equivalent to the index of this group in the
-	 * {@link GroupList}. For a unique ID of the group see the {@link #getID()} method.
+	 * @return the groupID, see {@link #groupID}
 	 */
-	public int getGroupID() {
+	public Integer getGroupID() {
 		return groupID;
 	}
 
+	/**
+	 * @param groupID setter, see {@link #groupID}
+	 */
 	public void setGroupID(Integer groupID) {
 		this.groupID = groupID;
 	}

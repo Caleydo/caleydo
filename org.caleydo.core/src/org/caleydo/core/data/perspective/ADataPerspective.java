@@ -396,8 +396,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id, false, id));
 		}
 		GroupType groupList = createGroupList();
-		Group group = new Group(virtualArray.size(), 0);
-		groupList.add(0, group);
+		Group group = new Group(virtualArray.size(), 0, root);
+		groupList.append(group);
 		virtualArray.setGroupList(groupList);
 
 	}
@@ -414,7 +414,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		int from = 0;
 		int to = 0;
 		for (Integer clusterSize : data.getClusterSizes()) {
-			node = new ClusterNode(tree, "Group: " + clusterNr, clusterNr++, true, -1);
+			node = new ClusterNode(tree, "Group: " + clusterNr, clusterNr++, false, -1);
 			Group temp = new Group(clusterSize, data.getSampleElements().get(groupCounter), node);
 			tree.addChild(root, node);
 			groupList.append(temp);
@@ -423,7 +423,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			ClusterNode leaf;
 			for (int vaIndex = from; vaIndex < to; vaIndex++) {
 				Integer id = virtualArray.get(vaIndex);
-				leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, true, id);
+				leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, false, id);
 				tree.addChild(node, leaf);
 			}
 			from = to;

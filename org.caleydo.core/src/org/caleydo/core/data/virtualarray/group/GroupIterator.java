@@ -7,11 +7,11 @@ import java.util.ListIterator;
  * 
  * @author Bernhard Schlegl
  */
-public class GroupIterator
+public class GroupIterator<GroupType extends GroupList<?, ?, ?>>
 	implements ListIterator<Group> {
 
 	int iCount = -1;
-	GroupList groupList;
+	GroupType groupList;
 	boolean bLastMoveOperationWasPrevious = false;
 
 	/**
@@ -20,7 +20,7 @@ public class GroupIterator
 	 * @param groupList
 	 *            the group list on which the iterator is executed
 	 */
-	public GroupIterator(GroupList groupList) {
+	public GroupIterator(GroupType groupList) {
 		this.groupList = groupList;
 	}
 

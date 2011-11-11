@@ -145,7 +145,8 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 * Returns an Iterator<Group> of type GroupIterator, which allows to iterate over the group list
 	 */
 	@Override
-	public GroupIterator iterator() {
+	@SuppressWarnings({ "unchecked", "rawtypes" })
+		public GroupIterator<ConcreteType> iterator() {
 		return new GroupIterator(this);
 	}
 
