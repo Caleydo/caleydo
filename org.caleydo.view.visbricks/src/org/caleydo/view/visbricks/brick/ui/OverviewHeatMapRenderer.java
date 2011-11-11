@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.AverageRecord;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
@@ -40,33 +41,47 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		colorMapper = table.getDataDomain().getColorMapper();
 		this.showStandardDeviation = showStandardDeviation;
 
-		float[] expressionValues = new float[dataContainer.getNrRecords()];
+		// float[] expressionValues = new float[dataContainer.getNrRecords()];
 		heatMapValuesMean = new ArrayList<Float>();
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		for (int dimensionID : dataContainer.getDimensionPerspective().getVirtualArray()) {
+		ArrayList<AverageRecord> averageRecords = dataContainer.getContainerStatistics()
+				.getAverageRecords();
 
-			int index = 0;
-			for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()) {
-				expressionValues[index] = table.getFloat(DataRepresentation.NORMALIZED,
-						recordIndex, dimensionID);
-				index++;
-			}
+		for (AverageRecord averageRecord : averageRecords) {
+			heatMapValuesMean.add((float) averageRecord.getArithmeticMean());
+			heatMapValuesMeanMinusStdDev.add((float) averageRecord.getArithmeticMean()
+					- (float) averageRecord.getStandardDeviation());
+			heatMapValuesMeanPlusStdDev.add((float) averageRecord.getArithmeticMean()
+					+ (float) averageRecord.getStandardDeviation());
 
-			float arithmeticMean = ClusterHelper.arithmeticMean(expressionValues);
-
-			if (showStandardDeviation) {
-				float standardDeviation = ClusterHelper.standardDeviation(
-						expressionValues, arithmeticMean);
-
-				heatMapValuesMean.add(arithmeticMean);
-				heatMapValuesMeanMinusStdDev.add(arithmeticMean - standardDeviation);
-				heatMapValuesMeanPlusStdDev.add(arithmeticMean + standardDeviation);
-			} else {
-				heatMapValuesMean.add(arithmeticMean);
-			}
 		}
+
+		// for (int dimensionID :
+		// dataContainer.getDimensionPerspective().getVirtualArray()) {
+		//
+		// int index = 0;
+		// for (int recordIndex :
+		// dataContainer.getRecordPerspective().getVirtualArray()) {
+		// expressionValues[index] =
+		// table.getFloat(DataRepresentation.NORMALIZED,
+		// recordIndex, dimensionID);
+		// index++;
+		// }
+		//
+		// float arithmeticMean =
+		// if (showStandardDeviation) {
+		// float standardDeviation = ClusterHelper.standardDeviation(
+		// expressionValues, arithmeticMean);
+		//
+		// heatMapValuesMean.add(arithmeticMean);
+		// heatMapValuesMeanMinusStdDev.add(arithmeticMean - standardDeviation);
+		// heatMapValuesMeanPlusStdDev.add(arithmeticMean + standardDeviation);
+		// } else {
+		// heatMapValuesMean.add(arithmeticMean);
+		// }
+		// }
 
 	}
 
@@ -76,6 +91,10 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		if (heatMapValuesMean.size() <= 0)
 			return;
 
+		boolean renderTriangles = true;
+		if (heatMapValuesMean.size() > 15)
+			renderTriangles = false;
+
 		float heatMapElementWidth = x / (float) heatMapValuesMean.size();
 
 		if (showStandardDeviation) {
@@ -83,10 +102,14 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 			float meanHeatMapElementHeight = y / 2.0f;
 			float stdDevHeatMapElementHeight = y / 4.0f;
 
-			gl.glBegin(GL2.GL_TRIANGLES);
-
 			float currentPositionX = 0;
 			float currentPositionY = 0;
+
+			if (renderTriangles)
+				gl.glBegin(GL2.GL_TRIANGLES);
+			else
+				gl.glBegin(GL2.GL_QUADS);
+
 			for (Float currentValue : heatMapValuesMeanMinusStdDev) {
 				if (currentValue > 1)
 					currentValue = 1f;
@@ -99,8 +122,17 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 						+ stdDevHeatMapElementHeight, 0);
 				gl.glVertex3f(currentPositionX + heatMapElementWidth, currentPositionY
 						+ stdDevHeatMapElementHeight, 0);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
-						currentPositionY, 0);
+				if (renderTriangles) {
+					gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
+							currentPositionY, 0);
+				} else {
+					gl.glVertex3f(currentPositionX + heatMapElementWidth,
+							currentPositionY, 0);
+					gl.glVertex3f(currentPositionX, currentPositionY, 0);
+
+				}
+				// gl.glVertex3f(currentPositionX, currentPositionY
+				// + stdDevHeatMapElementHeight, 0);
 				currentPositionX += heatMapElementWidth;
 			}
 
@@ -129,7 +161,10 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 			gl.glEnd();
 
-			gl.glBegin(GL2.GL_TRIANGLES);
+			if (renderTriangles)
+				gl.glBegin(GL2.GL_TRIANGLES);
+			else
+				gl.glBegin(GL2.GL_QUADS);
 
 			currentPositionX = 0;
 			currentPositionY += meanHeatMapElementHeight;
@@ -141,8 +176,15 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 
 				float[] mappingColor = colorMapper.getColor(currentValue);
 				gl.glColor3f(mappingColor[0], mappingColor[1], mappingColor[2]);
-				gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
-						currentPositionY + stdDevHeatMapElementHeight, 0);
+				if (renderTriangles) {
+					gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
+							currentPositionY + stdDevHeatMapElementHeight, 0);
+				} else {
+					gl.glVertex3f(currentPositionX,
+							currentPositionY + stdDevHeatMapElementHeight, 0);
+					gl.glVertex3f(currentPositionX + heatMapElementWidth,
+							currentPositionY + stdDevHeatMapElementHeight, 0);
+				}
 				gl.glVertex3f(currentPositionX + heatMapElementWidth, currentPositionY, 0);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0);
 				currentPositionX += heatMapElementWidth;

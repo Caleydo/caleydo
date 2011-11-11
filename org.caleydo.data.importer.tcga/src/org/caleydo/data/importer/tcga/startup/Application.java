@@ -112,7 +112,7 @@ public class Application
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(intersectedVAs.get(i));
 			RecordPerspective intersectedPerspective = new RecordPerspective(dataDomains.get(i));
-			intersectedPerspective.setLabel("Intersected");
+			intersectedPerspective.setLabel("Intersected 4 Clusters");
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
 			dataDomains.get(i).getTable().registerRecordPerspecive(intersectedPerspective);

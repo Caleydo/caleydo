@@ -42,24 +42,26 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	@Override
 	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
 
-		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+		
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
 				EContainedViewType.HISTOGRAM_VIEW);
+		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
+				EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
-		viewSwitchingButtons.add(parCoordsButton);
 		viewSwitchingButtons.add(histogramButton);
 		viewSwitchingButtons.add(overviewHeatMapButton);
-
+		viewSwitchingButtons.add(parCoordsButton);
+		
+		
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
 				viewSwitchingButtons);
@@ -75,7 +77,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.HISTOGRAM_VIEW);
 
 		layoutTemplate.showFooterBar(true);
 		layoutTemplate.showToolBar(true);
@@ -136,7 +138,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP);
+		layoutTemplate.setDefaultViewType(EContainedViewType.HEATMAP_VIEW);
 
 		layoutTemplate.showFooterBar(true);
 
