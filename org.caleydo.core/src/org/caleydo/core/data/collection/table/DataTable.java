@@ -372,7 +372,7 @@ public class DataTable
 	 * 
 	 * @param recordPerspective
 	 */
-	public void registerRecordPerspecive(RecordPerspective recordPerspective) {
+	public void registerRecordPerspective(RecordPerspective recordPerspective) {
 		if (recordPerspective.getID() == null)
 			throw new IllegalStateException("Record perspective not correctly initiaklized: "
 				+ recordPerspective);

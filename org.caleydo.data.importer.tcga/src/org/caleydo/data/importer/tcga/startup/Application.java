@@ -115,7 +115,7 @@ public class Application
 			intersectedPerspective.setLabel("Intersected 4 Clusters");
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
-			dataDomains.get(i).getTable().registerRecordPerspecive(intersectedPerspective);
+			dataDomains.get(i).getTable().registerRecordPerspective(intersectedPerspective);
 		}
 	}
 
@@ -245,7 +245,7 @@ public class Application
 			data.setData(sortedIDs, clusterSizes, sampleElements);
 
 			recordPerspective.init(data);
-			dataDomain.getTable().registerRecordPerspecive(recordPerspective);
+			dataDomain.getTable().registerRecordPerspective(recordPerspective);
 		}
 	}
 

@@ -385,11 +385,25 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			return recordIDMappingManager;
 	}
 
+	/**
+	 * Returns the idType for the content in the data table, which is either the
+	 * recordIDType or the dimensionIDType depending on the result of
+	 * {@link #isColumnDimension()}
+	 * 
+	 * @return
+	 */
 	public IDType getGeneIDType() {
 		if (loadDataParameters.isColumnDimension())
 			return getRecordIDType();
 		else
 			return getDimensionIDType();
+	}
+
+	public IDType getHumanReadableGeneIDType() {
+		if (loadDataParameters.isColumnDimension())
+			return getHumanReadableRecordIDType();
+		else
+			return getHumanReadableDimensionIDType();
 	}
 
 }

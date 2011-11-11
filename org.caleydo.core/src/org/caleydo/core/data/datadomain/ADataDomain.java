@@ -107,7 +107,7 @@ public abstract class ADataDomain
 
 	@Override
 	public String toString() {
-		return dataDomainID;
+		return getLabel();
 	}
 
 	// @Override
@@ -146,7 +146,8 @@ public abstract class ADataDomain
 	 * @return the label, see {@link #label}
 	 */
 	public String getLabel() {
-		if (loadDataParameters.getLabel() == null)
+
+		if (loadDataParameters == null || loadDataParameters.getLabel() == null)
 			return dataDomainID;
 		return loadDataParameters.getLabel();
 	}

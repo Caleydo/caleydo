@@ -175,7 +175,7 @@ public abstract class ATableBasedDataDomain
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */
 	public boolean isColumnDimension() {
-		return isColumnDimension;
+		return loadDataParameters.isColumnDimension();
 	}
 
 	/**
@@ -382,15 +382,14 @@ public abstract class ATableBasedDataDomain
 		return dimensionIDType;
 	}
 
+	
 	/**
-	 * Returns
-	 * 
-	 * @return
+	 * @return the primaryRecordMappingType, see {@link #primaryRecordMappingType}
 	 */
 	public IDType getPrimaryRecordMappingType() {
 		return primaryRecordMappingType;
 	}
-
+	
 	public IDType getPrimaryDimensionMappingType() {
 		return dimensionIDType;
 	}

@@ -154,7 +154,7 @@ public class TCGATestDataXMLGenerator {
 		copyNumberData.setDataDomainType("org.caleydo.datadomain.genetic");
 		copyNumberData.setDataPath(COPY_NUMBER);
 		// methylationData.setGroupingPath(METHYLATION_GROUPING);
-		copyNumberData.setColorScheme(EDefaultColorSchemes.GREEN_BLACK_RED.name());
+		copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING.name());
 
 		DataDomainConfiguration copyNumberConfiguration = new DataDomainConfiguration();
 		copyNumberConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");

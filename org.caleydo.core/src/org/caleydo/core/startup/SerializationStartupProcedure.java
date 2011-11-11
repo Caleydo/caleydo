@@ -97,7 +97,7 @@ public class SerializationStartupProcedure
 				DataTable table = DataTableUtils.createData(tDataDomain, false, false);
 
 				for (RecordPerspective perspective : dataSerializationData.getRecordPerspectiveMap().values()) {
-					table.registerRecordPerspecive(perspective);
+					table.registerRecordPerspective(perspective);
 				}
 				for (DimensionPerspective perspective : dataSerializationData.getDimensionPerspectiveMap()
 					.values()) {

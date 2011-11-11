@@ -56,7 +56,15 @@ public enum EDefaultColorSchemes {
 		"2-class Sequential Blue-Green color scheme from colorbrewer.org. Color-blind friendly. May cause issues with printing and bad LCDs",
 		new int[] { 215, 25, 28 },
 		new int[] { 253, 255, 191 },
-		new int[] { 43, 131, 186 });
+		new int[] { 43, 131, 186 }),
+	RED_YELLOW_BLUE_DIVERGING(
+		"Blue-Red-Yellow",
+		"5-class Red-Yellow-Blue diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users",
+		new int[] { 215, 25, 28 },
+		new int[] { 253, 174, 97 },
+		new int[] { 255, 255, 191 },
+		new int[] { 171, 217, 233 },
+		new int[] { 44, 123, 182 }), ;
 
 	private ArrayList<ColorMarkerPoint> colorMarkerPoints;
 	/** The name of the color scheme, human readable, to, e.g., be displayed in choosing dialogs. */
