@@ -107,7 +107,7 @@ public class ClusterRenderer extends LayoutRenderer {
 
 		clusterLayout.append(clusterHeatMapLayout);
 
-		textureRenderer.init(uncertaintyHeatMap.getRenderingRepresentation());
+		textureRenderer.init();
 		textureRenderer.setGroupIndex(clusterIndex);
 
 		visUncBarTextureRenderer.init(uncertaintyHeatMap, table, clusterVA, dimensionVA,

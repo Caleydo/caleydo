@@ -32,7 +32,6 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -44,6 +43,7 @@ import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContaine
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
+import org.caleydo.view.heatmap.heatmap.template.TextureHeatMapTemplate;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -60,18 +60,11 @@ public class GLHeatMap extends ATableBasedView {
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden",
 			new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
 
-	HeatMapRenderStyle renderStyle;
-
-	boolean bUseDetailLevel = true;
-
-	private boolean sendClearSelectionsEvent = false;
-
-	int iCurrentMouseOverElement = -1;
-
-	int numSentClearSelectionEvents = 0;
+	private HeatMapRenderStyle renderStyle;
 
 	private LayoutManager templateRenderer;
-	private AHeatMapTemplate template;
+	private AHeatMapTemplate detailedRenderingTemplate;
+	private TextureHeatMapTemplate textureTemplate;
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 	/** try to show captions, if spacing allows it */
@@ -115,12 +108,15 @@ public class GLHeatMap extends ATableBasedView {
 
 		textRenderer = new CaleydoTextRenderer(24);
 
-		templateRenderer = new LayoutManager(this.viewFrustum);
-		if (template == null)
-			template = new DefaultTemplate(this);
+		textureTemplate = new TextureHeatMapTemplate(this);
 
-		templateRenderer.setTemplate(template);
+		templateRenderer = new LayoutManager(this.viewFrustum);
+		if (detailedRenderingTemplate == null)
+			detailedRenderingTemplate = new DefaultTemplate(this);
+
+		templateRenderer.setTemplate(detailedRenderingTemplate);
 		templateRenderer.updateLayout();
+
 	}
 
 	@Override
@@ -166,18 +162,21 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public void setDetailLevel(DetailLevel detailLevel) {
-		if (bUseDetailLevel) {
-			super.setDetailLevel(detailLevel);
-			if (detailLevel == DetailLevel.HIGH)
-				showCaptions = true;
-			else if (detailLevel == DetailLevel.MEDIUM)
-				showCaptions = true;
-			else
-				showCaptions = false;
 
-			template.setStaticLayouts();
-
+		if (detailLevel.equals(this.detailLevel))
+			return;
+		super.setDetailLevel(detailLevel);
+		if (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM) {
+			templateRenderer.setTemplate(detailedRenderingTemplate);
+			detailedRenderingTemplate.setStaticLayouts();
+			showCaptions = true;
 		}
+
+		else {
+			templateRenderer.setTemplate(textureTemplate);
+			showCaptions = false;
+		}
+
 	}
 
 	@Override
@@ -211,7 +210,7 @@ public class GLHeatMap extends ATableBasedView {
 		}
 
 		gl.glCallList(displayListIndex);
-		numSentClearSelectionEvents = 0;
+		// numSentClearSelectionEvents = 0;
 
 		if (!lazyMode)
 			checkForHits(gl);
@@ -248,7 +247,7 @@ public class GLHeatMap extends ATableBasedView {
 
 		switch (pickingType) {
 		case HEAT_MAP_RECORD_SELECTION:
-			iCurrentMouseOverElement = pickingID;
+			// iCurrentMouseOverElement = pickingID;
 			switch (pickingMode) {
 
 			case CLICKED:
@@ -273,11 +272,10 @@ public class GLHeatMap extends ATableBasedView {
 							.addContextMenuItemContainer(contexMenuItemContainer);
 					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 				} else {
-					AContextMenuItem menuItem = new BookmarkMenuItem(
-							"Bookmark "+dataDomain.getHumanReadableRecordIDType()+": "
-									+ dataDomain.getRecordLabel(recordIDType,
-											pickingID), recordIDType, pickingID,
-							dataDomain.getDataDomainID());
+					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+							+ dataDomain.getHumanReadableRecordIDType() + ": "
+							+ dataDomain.getRecordLabel(recordIDType, pickingID),
+							recordIDType, pickingID, dataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 				}
 
@@ -308,18 +306,16 @@ public class GLHeatMap extends ATableBasedView {
 
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(dimensionIDType,
-							pickingID);
+					contexMenuItemContainer.setData(dimensionIDType, pickingID);
 					contextMenuCreator
 							.addContextMenuItemContainer(contexMenuItemContainer);
 					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 				} else {
-					
-					AContextMenuItem menuItem = new BookmarkMenuItem(
-							"Bookmark "+dataDomain.getHumanReadableRecordIDType()+": "
-									+ dataDomain.getDimensionLabel(dimensionIDType,
-											pickingID), dimensionIDType, pickingID,
-							dataDomain.getDataDomainID());
+
+					AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark "
+							+ dataDomain.getHumanReadableRecordIDType() + ": "
+							+ dataDomain.getDimensionLabel(dimensionIDType, pickingID),
+							dimensionIDType, pickingID, dataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 				}
 
@@ -355,7 +351,7 @@ public class GLHeatMap extends ATableBasedView {
 					showCaptions = true;
 				}
 
-			template.setStaticLayouts();
+			detailedRenderingTemplate.setStaticLayouts();
 			setDisplayListDirty();
 			break;
 		}
@@ -464,7 +460,6 @@ public class GLHeatMap extends ATableBasedView {
 
 		RecordVirtualArray recordVirtualArray = dataContainer.getRecordPerspective()
 				.getVirtualArray();
-		;
 		if (recordVirtualArray == null)
 			throw new IllegalStateException(
 					"Virtual Array is required for enterPressed Operation");
@@ -510,27 +505,28 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
 			throws InvalidAttributeValueException {
-		SelectedElementRep elementRep;
-		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
-
-		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
-				.indicesOf(id)) {
-			if (recordIndex == -1) {
-				continue;
-			}
-
-			float xValue = renderStyle.getXCenter();
-
-			float yValue = 0;
-
-			yValue = getYCoordinateByContentIndex(recordIndex);
-			yValue = viewFrustum.getHeight() - yValue;
-			elementRep = new SelectedElementRep(recordIDType, uniqueID, xValue, yValue, 0);
-
-			alElementReps.add(elementRep);
-		}
-
-		return alElementReps;
+//		SelectedElementRep elementRep;
+//		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
+//
+//		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
+//				.indicesOf(id)) {
+//			if (recordIndex == -1) {
+//				continue;
+//			}
+//
+//			float xValue = renderStyle.getXCenter();
+//
+//			float yValue = 0;
+//
+//			yValue = getYCoordinateByContentIndex(recordIndex);
+//			yValue = viewFrustum.getHeight() - yValue;
+//			elementRep = new SelectedElementRep(recordIDType, uniqueID, xValue, yValue, 0);
+//
+//			alElementReps.add(elementRep);
+//		}
+//
+//		return alElementReps;
+		return null;
 	}
 
 	/**
@@ -548,7 +544,7 @@ public class GLHeatMap extends ATableBasedView {
 			if (recordSelectionManager.checkStatus(SELECTION_HIDDEN, recordID))
 				return null;
 		}
-		return template.getYCoordinateByContentIndex(recordIndex);
+		return detailedRenderingTemplate.getYCoordinateByContentIndex(recordIndex);
 
 	}
 
@@ -559,7 +555,7 @@ public class GLHeatMap extends ATableBasedView {
 	 * @return
 	 */
 	public Float getXCoordinateByDimensionIndex(int dimensionIndex) {
-		return template.getXCoordinateByDimensionIndex(dimensionIndex);
+		return detailedRenderingTemplate.getXCoordinateByDimensionIndex(dimensionIndex);
 	}
 
 	@Override
@@ -621,30 +617,8 @@ public class GLHeatMap extends ATableBasedView {
 		super.destroy();
 	}
 
-	// public void useFishEye(boolean useFishEye) {
-	// renderStyle.setUseFishEye(useFishEye);
-	// }
-
-	// public void setRecordVA(RecordVirtualArray recordVA) {
-	// this.recordVA = recordVA;
-	// setDisplayListDirty();
-	// }
-
-	public boolean isSendClearSelectionsEvent() {
-		return sendClearSelectionsEvent;
-	}
-
-	public void setSendClearSelectionsEvent(boolean sendClearSelectionsEvent) {
-		this.sendClearSelectionsEvent = sendClearSelectionsEvent;
-	}
-
-	@Override
-	public PickingManager getPickingManager() {
-		return pickingManager;
-	}
-
 	public void setRenderTemplate(AHeatMapTemplate template) {
-		this.template = template;
+		this.detailedRenderingTemplate = template;
 	}
 
 	/**
@@ -694,7 +668,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-		template.setActive(isActive);
+		detailedRenderingTemplate.setActive(isActive);
 		setDisplayListDirty();
 	}
 
@@ -723,11 +697,11 @@ public class GLHeatMap extends ATableBasedView {
 	 * @return the height of the element
 	 */
 	public float getFieldHeight(int recordID) {
-		return template.getElementHeight(recordID);
+		return detailedRenderingTemplate.getElementHeight(recordID);
 	}
 
 	public float getFieldWidth(int dimensionID) {
-		return template.getElementWidth(dimensionID);
+		return detailedRenderingTemplate.getElementWidth(dimensionID);
 	}
 
 	/**
@@ -742,7 +716,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	public void recalculateLayout() {
 		processEvents();
-		template.setStaticLayouts();
+		detailedRenderingTemplate.setStaticLayouts();
 	}
 
 	@Override
@@ -774,7 +748,7 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	public AHeatMapTemplate getTemplate() {
-		return template;
+		return detailedRenderingTemplate;
 	}
 
 	@Override

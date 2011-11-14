@@ -1182,8 +1182,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1,
 										0, 1, -1, 1));
 
-				// dimensionGroup.setDataDomain(dataDomain);
-				// dimensionGroup.setTable(set);
 				if (data instanceof PathwayDimensionGroupData) {
 					dimensionGroup.setBrickConfigurer(new PathwayDataConfigurer());
 					dimensionGroup
@@ -1196,7 +1194,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 				dimensionGroup.setDataDomain(data.getDataDomain());
 				dimensionGroup.setDataContainer(data);
 				dimensionGroup.setRemoteRenderingGLView(this);
-				dimensionGroup.setVisBricks(this);
 				dimensionGroup.setVisBricksView(this);
 				dimensionGroup.initialize();
 

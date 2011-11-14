@@ -22,7 +22,8 @@ public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 		for (GLBrick brick : segmentBricks) {
 			insertBrick(brick, bricks);
 		}
-		insertBrick(summaryBrick, bricks);
+		if (summaryBrick != null)
+			insertBrick(summaryBrick, bricks);
 
 		return bricks;
 	}

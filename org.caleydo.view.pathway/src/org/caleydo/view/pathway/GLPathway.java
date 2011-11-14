@@ -223,11 +223,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void display(final GL2 gl) {
 		checkForHits(gl);
+		if (pathway != null) {
+			// TODO: also put this in global DL
+			renderPathway(gl, pathway);
 
-		// TODO: also put this in global DL
-		renderPathway(gl, pathway);
-
-		gl.glCallList(displayListIndex);
+			gl.glCallList(displayListIndex);
+		}
 	}
 
 	protected void initPathwayData(final GL2 gl) {
@@ -891,6 +892,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	@Override
 	public int getMinPixelWidth() {
+		if (pathway == null)
+			return 70;
 		float aspectRatio = (float) pathway.getWidth() / (float) pathway.getHeight();
 		return (int) (60.0f * aspectRatio);
 	}

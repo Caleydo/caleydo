@@ -66,8 +66,7 @@ public abstract class AHeatMapTemplate extends LayoutTemplate {
 	public void initRendererData() {
 
 		if (renderAsTexture) {
-			((HeatMapTextureRenderer) heatMapRenderer).init(heatMap
-					.getRenderingRepresentation());
+			((HeatMapTextureRenderer) heatMapRenderer).init();
 		}
 	}
 

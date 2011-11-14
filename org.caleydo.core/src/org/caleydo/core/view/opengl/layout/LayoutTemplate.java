@@ -30,7 +30,7 @@ public class LayoutTemplate {
 
 	/**
 	 * <p>
-	 * Sets the static layouts that can be specified in a sub-class.
+	 * Sets the static layouts that may be specified in a sub-class.
 	 * </p>
 	 * <p>
 	 * For static layouts (for example for a particular view) the layouting should be done in a sub-class of

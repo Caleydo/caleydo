@@ -74,8 +74,6 @@ public class DimensionGroup extends ATableBasedView implements
 	public final static int MIN_DETAIL_GAP_PIXEL = 10;
 	public final static float DETAIL_GAP_PORTION = 0.05f;
 
-	private GLVisBricks glVisBricksView;
-
 	private Column groupColumn;
 	protected Row detailRow;
 
@@ -168,10 +166,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 		initGroupColumn();
 		detailRow.append(groupColumn);
-	}
-
-	public void setVisBricks(GLVisBricks visBricks) {
-		this.visBricks = visBricks;
 	}
 
 	/**
@@ -281,8 +275,7 @@ public class DimensionGroup extends ATableBasedView implements
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
 			ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
-					segmentBrick, glVisBricksView, this,
-					segmentBrick.getBrickConfigurer());
+					segmentBrick, visBricks, this, segmentBrick.getBrickConfigurer());
 
 			segmentBrick.setBrickLayoutTemplate(layoutTemplate,
 					layoutTemplate.getDefaultViewType());
@@ -292,6 +285,8 @@ public class DimensionGroup extends ATableBasedView implements
 
 			segmentBricks.add(segmentBrick);
 		}
+
+		// if (false) {
 
 		ArrayList<GLBrick> sortedBricks = brickSortingStrategy.getSortedBricks(
 				segmentBricks, centerBrick);
@@ -311,6 +306,19 @@ public class DimensionGroup extends ATableBasedView implements
 				topCol.append(brick.getLayout());
 			}
 		}
+		// }
+		// else {
+		// ArrayList<GLBrick> sortedBricks =
+		// brickSortingStrategy.getSortedBricks(
+		// segmentBricks, null);
+		//
+		// for (GLBrick brick : sortedBricks) {
+		//
+		// bottomBricks.add(brick);
+		// bottomCol.append(brick.getLayout());
+		//
+		// }
+		// }
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 		brickSpacingLayout.setPixelGLConverter(pixelGLConverter);
@@ -554,8 +562,8 @@ public class DimensionGroup extends ATableBasedView implements
 
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
-			glVisBricksView.updateLayout();
-			glVisBricksView.updateConnectionLinesBetweenDimensionGroups();
+			visBricks.updateLayout();
+			visBricks.updateConnectionLinesBetweenDimensionGroups();
 		}
 		handleVerticalMoveDragging(gl);
 		checkForHits(gl);
@@ -701,7 +709,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * 
 	 */
 	public void setVisBricksView(GLVisBricks glVisBricksView) {
-		this.glVisBricksView = glVisBricksView;
+		this.visBricks = glVisBricksView;
 	}
 
 	/**
@@ -710,7 +718,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * 
 	 */
 	public GLVisBricks getVisBricksView() {
-		return glVisBricksView;
+		return visBricks;
 	}
 
 	// public DataTable getTable() {
@@ -935,7 +943,7 @@ public class DimensionGroup extends ATableBasedView implements
 		detailBrickLayout.setPixelSizeY(getDetailBrickHeightPixels());
 
 		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick,
-				this, glVisBricksView, detailBrick.getBrickConfigurer()), brick
+				this, visBricks, detailBrick.getBrickConfigurer()), brick
 				.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
