@@ -224,51 +224,62 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 								.getVirtualArray(), dimensionGroup.getDataContainer()
 								.getDimensionPerspective()));
 
-				HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
-
-				// FIXME this assumption that records are genes is wrong!
-				for (Integer gene : dataContainer.getRecordPerspective()
-						.getVirtualArray()) {
-					Set<Integer> davids = dataDomain.getRecordIDMappingManager()
-							.getIDAsSet(dataDomain.getRecordIDType(),
-									dataDomain.getPrimaryRecordMappingType(), gene);
-					if (davids == null || davids.size() == 0)
-						continue;
-					for (Integer david : davids) {
-						PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
-								.get().getDataDomainByType(
-										PathwayDataDomain.DATA_DOMAIN_TYPE);
-						Set<PathwayGraph> pathwayGraphs = pathwayDataDomain
-								.getMappingHelper().getPathwayGraphsByGeneID(
-										pathwayDataDomain.getDavidIDType(), david);
-
-						// int iPathwayCount = 0;
-						if (pathwayGraphs != null) {
-							// iPathwayCount = pathwayGraphs.size();
-
-							for (PathwayGraph pathwayGraph : pathwayGraphs) {
-
-								if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
-									hashPathwaysToOccurences.put(pathwayGraph, 1);
-								else {
-									int occurences = hashPathwaysToOccurences
-											.get(pathwayGraph);
-									occurences++;
-									hashPathwaysToOccurences
-											.put(pathwayGraph, occurences);
-								}
-
-							}
-						}
-					}
-				}
-
-				final ArrayList<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
-
-				for (PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {
-					if (hashPathwaysToOccurences.get(pathway) >= 2)
-						pathways.add(pathway);
-				}
+				// HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new
+				// HashMap<PathwayGraph, Integer>();
+				//
+				// Set<Integer> davids = null;
+				//
+				// if (dataDomain.isColumnDimension()) {
+				// for (Integer gene : dataContainer.getRecordPerspective()
+				// .getVirtualArray()) {
+				// davids = dataDomain.getRecordIDMappingManager().getIDAsSet(
+				// dataDomain.getRecordIDType(),
+				// dataDomain.getPrimaryRecordMappingType(), gene);
+				// }
+				// } else {
+				// for (Integer gene : dataContainer.getRecordPerspective()
+				// .getVirtualArray()) {
+				// davids =
+				// dataDomain.getDimensionIDMappingManager().getIDAsSet(
+				// dataDomain.getDimensionIDType(),
+				// dataDomain.getPrimaryDimensionMappingType(), gene);
+				// }
+				// }
+				//
+				// for (Integer david : davids) {
+				// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain)
+				// DataDomainManager
+				// .get()
+				// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+				// Set<PathwayGraph> pathwayGraphs = pathwayDataDomain
+				// .getMappingHelper().getPathwayGraphsByGeneID(
+				// pathwayDataDomain.getDavidIDType(), david);
+				//
+				// if (pathwayGraphs != null) {
+				//
+				// for (PathwayGraph pathwayGraph : pathwayGraphs) {
+				//
+				// if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
+				// hashPathwaysToOccurences.put(pathwayGraph, 1);
+				// else {
+				// int occurences = hashPathwaysToOccurences
+				// .get(pathwayGraph);
+				// occurences++;
+				// hashPathwaysToOccurences.put(pathwayGraph, occurences);
+				// }
+				//
+				// }
+				// }
+				// }
+				//
+				// final ArrayList<PathwayGraph> pathways = new
+				// ArrayList<PathwayGraph>();
+				//
+				// for (PathwayGraph pathway :
+				// hashPathwaysToOccurences.keySet()) {
+				// if (hashPathwaysToOccurences.get(pathway) >= 2)
+				// pathways.add(pathway);
+				// }
 
 			}
 
@@ -1084,16 +1095,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				if (dialog.open() == Status.OK) {
 					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
 					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
-					// FIXME: DataDomainByType may be not appropriate
-					// IDataDomain pathwayDataDomain = DataDomainManager.get()
-					// .getDataDomainByType("org.caleydo.datadomain.pathway");
+
+//					IDataDomain pathwayDataDomain = DataDomainManager.get()
+//							.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
 							.getPathwayDimensionGroupData();
 
-					IDataDomain pathwayDataDomain = dialog.getPathwayDataDomain();
-					// FIXME this is probably not registered
 					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
-
 					dataContainers.add(pathwayDimensionGroupData);
 					event.setDataContainers(dataContainers);
 					event.setSender(this);

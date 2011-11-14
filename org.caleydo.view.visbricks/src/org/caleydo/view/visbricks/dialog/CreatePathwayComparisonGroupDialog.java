@@ -228,9 +228,8 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 			}
 		}
 
-		// FIXME: DataDomainByType is not appropriate
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType("org.caleydo.datadomain.pathway");
+				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
 		if (!pathways.isEmpty()) {
 			pathwayDimensionGroupData = new PathwayDimensionGroupData(sourceDataDomain,
 					pathwayDataDomain, recordPerspective, dimensionPerspective, pathways,
@@ -250,14 +249,6 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 	public void setSourceDataDomain(ATableBasedDataDomain sourceDataDomain) {
 		this.sourceDataDomain = sourceDataDomain;
-	}
-
-	public void setPathwayDataDomain(PathwayDataDomain pathwayDataDomain) {
-		this.pathwayDataDomain = pathwayDataDomain;
-	}
-
-	public PathwayDataDomain getPathwayDataDomain() {
-		return pathwayDataDomain;
 	}
 
 	public void setSourceVA(RecordVirtualArray sourceVA) {

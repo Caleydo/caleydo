@@ -214,7 +214,5 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
-
 	}
-
 }
