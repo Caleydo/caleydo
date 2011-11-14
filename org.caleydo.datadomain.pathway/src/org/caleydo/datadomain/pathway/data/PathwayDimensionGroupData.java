@@ -138,7 +138,6 @@ public class PathwayDimensionGroupData extends DataContainer {
 						pathwayDataDomain, pathwayRecordPerspective,
 						dimensionPerspective, pathway);
 				
-				// FIXME ALEX: is this correct?
 				pathwayDataContainer.setRecordGroup(dimensionPerspective.getVirtualArray().getGroupList().get(0));
 			} else {
 				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(
@@ -148,28 +147,13 @@ public class PathwayDimensionGroupData extends DataContainer {
 				pathwayDataContainer = new PathwayDataContainer(dataDomain,
 						pathwayDataDomain, recordPerspective,
 						pathwayDimensionPerspective, pathway);
-				
-				// FIXME ALEX: is this correct?
+
 				pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray().getGroupList().get(0));
 
 			}
 			
 			recordSubDataContainers.add(pathwayDataContainer);
 		}
-
-		// if (dataDomain.isColumnDimension()) {
-		// recordPerspective = new RecordPerspective(dataDomain);
-		// PerspectiveInitializationData data = new
-		// PerspectiveInitializationData();
-		// data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
-		// recordPerspective.init(data);
-		// } else {
-		// dimensionPerspective = new DimensionPerspective(dataDomain);
-		// PerspectiveInitializationData data = new
-		// PerspectiveInitializationData();
-		// data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
-		// dimensionPerspective.init(data);
-		// }
 	}
 
 	// @Override

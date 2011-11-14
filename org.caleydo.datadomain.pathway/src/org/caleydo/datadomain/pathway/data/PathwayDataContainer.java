@@ -25,9 +25,7 @@ public class PathwayDataContainer extends DataContainer {
 			DimensionPerspective dimensionPerspective, PathwayGraph pathway) {
 		super(dataDomain, recordPerspective, dimensionPerspective);
 		this.pathwayDataDomain = pathwayDataDomain;
-
 		this.pathway = pathway;
-
 	}
 
 	@Override
