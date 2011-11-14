@@ -365,12 +365,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// brickLayout.setShowHandles(false);
 		// templateRenderer.updateLayout();
 		// }
-
-		templateRenderer.render(gl);
-
+		
 		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK,
 				getID()));
-		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.0f);
+		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+		gl.glTranslatef(0, 0, 0.1f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0.0f);
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, 0.0f);
@@ -380,7 +379,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		gl.glEnd();
 		gl.glPopName();
 
+		templateRenderer.render(gl);
+
+		
+
 		gl.glCallList(baseDisplayListIndex);
+		
+		
 
 		// textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
 
