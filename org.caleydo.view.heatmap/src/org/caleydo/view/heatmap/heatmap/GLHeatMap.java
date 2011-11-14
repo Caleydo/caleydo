@@ -266,19 +266,17 @@ public class GLHeatMap extends ATableBasedView {
 				if (dataDomain instanceof GeneticDataDomain
 						&& dataDomain.getLoadDataParameters().isColumnDimension()) {
 
-					GeneticDataDomain geneticDataDomain = (GeneticDataDomain) dataDomain;
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(geneticDataDomain.getGeneIDType(),
-							pickingID);
+					contexMenuItemContainer.setData(recordIDType, pickingID);
 					contextMenuCreator
 							.addContextMenuItemContainer(contexMenuItemContainer);
 					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 				} else {
 					AContextMenuItem menuItem = new BookmarkMenuItem(
-							"Bookmark Experiment: "
-									+ dataDomain.getDimensionLabel(dimensionIDType,
-											pickingID), dimensionIDType, pickingID,
+							"Bookmark "+dataDomain.getHumanReadableRecordIDType()+": "
+									+ dataDomain.getRecordLabel(recordIDType,
+											pickingID), recordIDType, pickingID,
 							dataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 				}
@@ -308,17 +306,17 @@ public class GLHeatMap extends ATableBasedView {
 				if (dataDomain instanceof GeneticDataDomain
 						&& !dataDomain.getLoadDataParameters().isColumnDimension()) {
 
-					GeneticDataDomain geneticDataDomain = (GeneticDataDomain) dataDomain;
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);
-					contexMenuItemContainer.setData(geneticDataDomain.getGeneIDType(),
+					contexMenuItemContainer.setData(dimensionIDType,
 							pickingID);
 					contextMenuCreator
 							.addContextMenuItemContainer(contexMenuItemContainer);
 					contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 				} else {
+					
 					AContextMenuItem menuItem = new BookmarkMenuItem(
-							"Bookmark Experiment: "
+							"Bookmark "+dataDomain.getHumanReadableRecordIDType()+": "
 									+ dataDomain.getDimensionLabel(dimensionIDType,
 											pickingID), dimensionIDType, pickingID,
 							dataDomain.getDataDomainID());

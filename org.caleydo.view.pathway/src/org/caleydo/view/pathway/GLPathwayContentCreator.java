@@ -378,7 +378,7 @@ public class GLPathwayContentCreator {
 
 	protected void fillNodeDisplayListFrame(final GL2 gl, final float fNodeWidth,
 			final float fNodeHeight) {
-		gl.glLineWidth(3);
+		gl.glLineWidth(7);
 
 		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);

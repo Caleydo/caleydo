@@ -23,8 +23,18 @@ public class GeneMenuItemContainer extends AContextMenuItemContainer {
 
 	public void setData(IDType idType, int id) {
 
-		AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Gene: "
-				+ dataDomain.getRecordLabel(idType, id), idType, id,
+		String label = "";
+		if (dataDomain.isColumnDimension()) {
+			label = "Bookmark " + dataDomain.getHumanReadableRecordIDType() + ": "
+					+ dataDomain.getRecordLabel(idType, id);
+		}
+		else
+		{
+			label = "Bookmark " + dataDomain.getHumanReadableDimensionIDType() + ": "
+					+ dataDomain.getDimensionLabel(idType, id);
+		}
+
+		AContextMenuItem menuItem = new BookmarkMenuItem(label, idType, id,
 				dataDomain.getDataDomainID());
 		addContextMenuItem(menuItem);
 
