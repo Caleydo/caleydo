@@ -23,13 +23,6 @@ public class PathwayCreator implements IRemoteViewCreator {
 	public AGLView createRemoteView(GLBrick remoteRenderingView, GL2 gl,
 			GLMouseListener glMouseListener) {
 
-		//Collection<PathwayGraph> pathways = PathwayManager.get().getAllItems();
-
-//		remoteRenderingView.GET
-//		DataContainer pathwayDataContainer = remoteRenderingView.getDataContainer();
-		
-
-		
 		GLPathway pathwayView = (GLPathway) GeneralManager
 				.get()
 				.getViewManager()
@@ -40,15 +33,13 @@ public class PathwayCreator implements IRemoteViewCreator {
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 
-//		pathwayView.setPathway(remoteRenderingView.);
 		pathwayView.setRemoteRenderingGLView(remoteRenderingView);
 		pathwayView.setDataDomain(remoteRenderingView.getDataDomain());
 		pathwayView.setDataContainer(remoteRenderingView.getDataContainer());
-//		pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
+		// pathwayView.setRenderTemplate(new BrickHeatMapTemplate(heatMap));
 		pathwayView.initialize();
 		pathwayView.initRemote(gl, remoteRenderingView, glMouseListener);
 
 		return pathwayView;
 	}
-
 }

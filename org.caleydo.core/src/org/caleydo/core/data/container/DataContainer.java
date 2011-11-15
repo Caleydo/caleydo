@@ -224,7 +224,7 @@ public class DataContainer {
 	 * 
 	 * @return a new list of new {@link DataContainer}s
 	 */
-	public List<DataContainer> createRecordSubDataContainers() {
+	public List<DataContainer> getRecordSubDataContainers() {
 
 		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
 

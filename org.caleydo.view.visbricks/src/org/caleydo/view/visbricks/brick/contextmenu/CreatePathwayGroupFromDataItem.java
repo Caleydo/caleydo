@@ -10,13 +10,14 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
  * Context menu item for opening a dialog used to create a pathway dimension
  * group.
  * 
- * @author Partl
+ * @author Christian Partl
  * 
  */
 public class CreatePathwayGroupFromDataItem extends AContextMenuItem {
 
 	public CreatePathwayGroupFromDataItem(ATableBasedDataDomain dataDomain,
 			RecordVirtualArray recordVA, DimensionPerspective dimensionPerspective) {
+
 		setLabel("Create Pathway Group From Data");
 
 		OpenCreatePathwayGroupDialogEvent event = new OpenCreatePathwayGroupDialogEvent(

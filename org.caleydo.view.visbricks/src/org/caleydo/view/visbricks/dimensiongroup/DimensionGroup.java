@@ -255,7 +255,7 @@ public class DimensionGroup extends ATableBasedView implements
 		destroyOldBricks();
 
 		List<DataContainer> brickDataContainers = dataContainer
-				.createRecordSubDataContainers();
+				.getRecordSubDataContainers();
 
 		if (brickDataContainers == null || brickDataContainers.size() <= 0)
 			return;

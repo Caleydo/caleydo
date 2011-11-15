@@ -267,7 +267,7 @@ public class PathwayDimensionGroupData extends DataContainer {
 	}
 
 	@Override
-	public List<DataContainer> createRecordSubDataContainers() {
+	public List<DataContainer> getRecordSubDataContainers() {
 		return recordSubDataContainers;
 	}
 }

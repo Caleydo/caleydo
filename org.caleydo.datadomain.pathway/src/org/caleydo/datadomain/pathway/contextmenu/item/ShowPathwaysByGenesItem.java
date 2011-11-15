@@ -48,34 +48,9 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 	public void setTableIDs(ATableBasedDataDomain dataDomain, IDType idType,
 			ArrayList<Integer> genes) {
 
-		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
-		for (Integer gene : genes) {
-			Set<Integer> davids = ((GeneticDataDomain) dataDomain)
-					.getGeneIDMappingManager().getIDAsSet(idType,
-							dataDomain.getPrimaryRecordMappingType(), gene);
-			if (davids == null || davids.size() == 0)
-				continue;
-			for (Integer david : davids) {
-				Set<PathwayGraph> pathwayGraphs = PathwayManager.get()
-						.getPathwayGraphsByGeneID(
-								dataDomain.getPrimaryRecordMappingType(), david);
-
-				if (pathwayGraphs != null) {
-
-					for (PathwayGraph pathwayGraph : pathwayGraphs) {
-
-						if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
-							hashPathwaysToOccurences.put(pathwayGraph, 1);
-						else {
-							int occurences = hashPathwaysToOccurences.get(pathwayGraph);
-							occurences++;
-							hashPathwaysToOccurences.put(pathwayGraph, occurences);
-						}
-
-					}
-				}
-			}
-		}
+		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = PathwayManager.get()
+				.getPathwayGraphsWithOccurencesByGeneIDs((GeneticDataDomain) dataDomain,
+						idType, genes);
 
 		ArrayList<Pair<Integer, PathwayGraph>> pathways = new ArrayList<Pair<Integer, PathwayGraph>>();
 		for (PathwayGraph pathway : hashPathwaysToOccurences.keySet()) {

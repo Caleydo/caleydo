@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
+import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallMultiplePathwayGroupItem;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
@@ -214,68 +215,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-						dataDomain, dataContainer.getRecordPerspective()
-								.getVirtualArray(), dimensionGroup.getDataContainer()
-								.getDimensionPerspective()));
-
-				// HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new
-				// HashMap<PathwayGraph, Integer>();
-				//
-				// Set<Integer> davids = null;
-				//
-				// if (dataDomain.isColumnDimension()) {
-				// for (Integer gene : dataContainer.getRecordPerspective()
-				// .getVirtualArray()) {
-				// davids = dataDomain.getRecordIDMappingManager().getIDAsSet(
-				// dataDomain.getRecordIDType(),
-				// dataDomain.getPrimaryRecordMappingType(), gene);
-				// }
-				// } else {
-				// for (Integer gene : dataContainer.getRecordPerspective()
-				// .getVirtualArray()) {
-				// davids =
-				// dataDomain.getDimensionIDMappingManager().getIDAsSet(
-				// dataDomain.getDimensionIDType(),
-				// dataDomain.getPrimaryDimensionMappingType(), gene);
-				// }
-				// }
-				//
-				// for (Integer david : davids) {
-				// PathwayDataDomain pathwayDataDomain = (PathwayDataDomain)
-				// DataDomainManager
-				// .get()
-				// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
-				// Set<PathwayGraph> pathwayGraphs = pathwayDataDomain
-				// .getMappingHelper().getPathwayGraphsByGeneID(
-				// pathwayDataDomain.getDavidIDType(), david);
-				//
-				// if (pathwayGraphs != null) {
-				//
-				// for (PathwayGraph pathwayGraph : pathwayGraphs) {
-				//
-				// if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
-				// hashPathwaysToOccurences.put(pathwayGraph, 1);
-				// else {
-				// int occurences = hashPathwaysToOccurences
-				// .get(pathwayGraph);
-				// occurences++;
-				// hashPathwaysToOccurences.put(pathwayGraph, occurences);
-				// }
-				//
-				// }
-				// }
-				// }
-				//
-				// final ArrayList<PathwayGraph> pathways = new
-				// ArrayList<PathwayGraph>();
-				//
-				// for (PathwayGraph pathway :
-				// hashPathwaysToOccurences.keySet()) {
-				// if (hashPathwaysToOccurences.get(pathway) >= 2)
-				// pathways.add(pathway);
-				// }
-
+//				// Check if the brick is the center brick
+//				if (dimensionGroup.getDataContainer() == dataContainer)
+//					contextMenuCreator
+//							.addContextMenuItem(new CreateSmallMultiplePathwayGroupItem(
+//									dimensionGroup.getDataContainer(), dimensionGroup
+//											.getDataContainer().getDimensionPerspective()));
+//				else
+					contextMenuCreator
+							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
+									dataDomain, dataContainer.getRecordPerspective()
+											.getVirtualArray(), dimensionGroup
+											.getDataContainer().getDimensionPerspective()));
 			}
 
 			public void showHandles() {
@@ -371,15 +322,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// brickLayout.setShowHandles(false);
 		// templateRenderer.updateLayout();
 		// }
-		
+
 		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK,
 				getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
 		gl.glBegin(GL2.GL_QUADS);
-		
+
 		float zpos = 0f;
-		
+
 		gl.glVertex3f(0, 0, zpos);
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, zpos);
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(),
@@ -390,11 +341,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		templateRenderer.render(gl);
 
-		
-
 		gl.glCallList(baseDisplayListIndex);
-		
-		
 
 		// textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
 
@@ -1077,6 +1024,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			public void run() {
 				Shell shell = new Shell();
 				// shell.setSize(500, 800);
+
 				CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
 						shell, dataContainer);
 				dialog.create();
@@ -1091,11 +1039,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
 					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
-//					IDataDomain pathwayDataDomain = DataDomainManager.get()
-//							.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
 							.getPathwayDimensionGroupData();
 
+					// IDataDomain pathwayDataDomain = DataDomainManager.get()
+					// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
 					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
 					dataContainers.add(pathwayDimensionGroupData);
 					event.setDataContainers(dataContainers);
