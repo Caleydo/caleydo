@@ -46,7 +46,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, "sdfsd",
+		headerBarElements.add(createCaptionLayout(layoutTemplate, "Pathway",
 				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
 				layoutTemplate.getDimensionGroup().getVisBricksView()));
 
@@ -80,7 +80,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, "sdfsd",
+		headerBarElements.add(createCaptionLayout(layoutTemplate, "Pathway",
 				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
 				layoutTemplate.getDimensionGroup().getVisBricksView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
@@ -182,8 +182,16 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		int numPathways = ((PathwayDimensionGroupData) brick.getDimensionGroup()
 				.getDataContainer()).getPathways().size();
+
+		String label = "";
+		if (numPathways > 1)
+			label = "Pathways: " + numPathways;
+		else
+			label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+					.getDataContainer()).getPathways().get(0).getTitle();
+
 		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
-				"Pathways: " + numPathways, PickingType.BRICK, brick.getID());
+				label, PickingType.BRICK, brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
 				pathwaysSummaryRenderer);
 
