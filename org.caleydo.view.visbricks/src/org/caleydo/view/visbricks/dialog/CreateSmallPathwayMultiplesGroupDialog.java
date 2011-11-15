@@ -1,9 +1,11 @@
 package org.caleydo.view.visbricks.dialog;
 
+import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.Locale;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -23,7 +25,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -42,6 +46,7 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 	private DimensionPerspective dimensionPerspective;
 
 	private PathwayDataDomain pathwayDataDomain;
+	private PathwayTableSorter pathwayTableSorter = new PathwayTableSorter();
 
 	private Table pathwayTable;
 
@@ -49,6 +54,45 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 
 	private ArrayList<PathwayDimensionGroupData> pathwayDimensionGroupDataList = new ArrayList<PathwayDimensionGroupData>();
 	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
+
+	private class PathwayTableSorter implements Listener {
+
+		@Override
+		public void handleEvent(Event e) {
+			sort(0, !(pathwayTable.getSortDirection() == SWT.UP));
+		}
+
+		public void sort(int columnIndex, boolean sortAscending) {
+			TableItem[] items = pathwayTable.getItems();
+			Collator collator = Collator.getInstance(Locale.getDefault());
+
+			for (int i = 1; i < items.length; i++) {
+				String value1 = items[i].getText(columnIndex);
+				for (int j = 0; j < i; j++) {
+					String value2 = items[j].getText(columnIndex);
+					if ((collator.compare(value1, value2) < 0 && sortAscending)
+							|| (collator.compare(value1, value2) > 0 && !sortAscending)) {
+						String[] values = { items[i].getText(0), items[i].getText(1) };
+						PathwayGraph pathway = (PathwayGraph) items[i].getData();
+						boolean checked = items[i].getChecked();
+						items[i].dispose();
+						TableItem item = new TableItem(pathwayTable, SWT.NONE, j);
+						item.setText(values);
+						item.setData(pathway);
+						item.setChecked(checked);
+						items = pathwayTable.getItems();
+						break;
+					}
+				}
+			}
+
+			if (sortAscending) {
+				pathwayTable.setSortDirection(SWT.UP);
+			} else {
+				pathwayTable.setSortDirection(SWT.DOWN);
+			}
+		}
+	}
 
 	public CreateSmallPathwayMultiplesGroupDialog(Shell parentShell,
 			DataContainer dataContainer, DimensionPerspective dimensionPerspective) {
@@ -146,7 +190,7 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 		pathwayTable.setHeaderVisible(true);
 		TableColumn column1 = new TableColumn(pathwayTable, SWT.CHECK);
 		column1.setText("Pathway");
-		// column1.addListener(SWT.Selection, pathwayTableSorter);
+		column1.addListener(SWT.Selection, pathwayTableSorter);
 		TableColumn column2 = new TableColumn(pathwayTable, SWT.NONE);
 		column2.setText("Database");
 		TableColumn column3 = new TableColumn(pathwayTable, SWT.NONE);
@@ -178,7 +222,7 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 			item.setData(pathway);
 		}
 
-		// pathwayTableSorter.sort(0, true);
+		pathwayTableSorter.sort(0, true);
 
 		for (TableColumn column : pathwayTable.getColumns()) {
 			column.pack();
