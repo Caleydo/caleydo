@@ -151,8 +151,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		if (dataContainer instanceof PathwayDataContainer)
 			pathway = ((PathwayDataContainer) dataContainer).getPathway();
-		
-		selectedSampleIndex = dataContainer.getDimensionPerspective().getVirtualArray().getIndexList().get(0);
 	}
 
 	public void setPathway(final int iPathwayID) {
@@ -263,7 +261,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// iPathwayID);
 				
 		//FIXME: just for TCGA poster - remove and set it properly
-		selectedSampleIndex = dataContainer.getRecordPerspective().getVirtualArray().getIndexList().get(0);
+		try {
+			selectedSampleIndex = dataContainer.getRecordPerspective().getVirtualArray().getIndexList().get(0);			
+		}catch (Exception e) {
+			// TODO: handle exception
+		}
 	}
 
 	private void renderPathway(final GL2 gl, final PathwayGraph pathway) {
