@@ -8,6 +8,8 @@ import java.util.HashMap;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -210,10 +212,21 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 				ArrayList<PathwayGraph> pathwayGraphs = new ArrayList<PathwayGraph>();
 				pathwayGraphs.add(pathway);
 
+				RecordPerspective oldRecordPerspective = dataContainer
+						.getRecordPerspective();
+				RecordPerspective newRecordPerspective = new RecordPerspective(
+						dataContainer.getDataDomain());
+
+				// FIXME check this
+				PerspectiveInitializationData data = new PerspectiveInitializationData();
+				data.setData(oldRecordPerspective.getVirtualArray());
+
+				newRecordPerspective.init(data);
+
 				pathwayDimensionGroupDataList.add(new PathwayDimensionGroupData(
-						dataContainer.getDataDomain(), pathwayDataDomain, dataContainer
-								.getRecordPerspective(), dimensionPerspective,
-						pathwayGraphs, pathway.getTitle()));
+						dataContainer.getDataDomain(), pathwayDataDomain,
+						newRecordPerspective, dimensionPerspective, pathwayGraphs,
+						pathway.getTitle()));
 			}
 
 			super.okPressed();

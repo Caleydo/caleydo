@@ -168,7 +168,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 		baseColumn.append(viewLayout);
 		baseColumn.append(spacingLayoutY);
-		baseColumn.append(toolBar);
+		
+		// FIXME removed only for TCGA video 
+//		baseColumn.append(toolBar);
 		baseColumn.append(spacingLayoutY);
 
 		ElementLayout rightRelationIndicatorLayout = new ElementLayout(

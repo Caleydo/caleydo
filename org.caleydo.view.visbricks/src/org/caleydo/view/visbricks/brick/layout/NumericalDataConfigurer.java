@@ -183,7 +183,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.HEATMAP_VIEW);
 
 		layoutTemplate.showFooterBar(true);
 

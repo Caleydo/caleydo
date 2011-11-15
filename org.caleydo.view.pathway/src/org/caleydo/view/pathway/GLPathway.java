@@ -887,7 +887,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	@Override
 	public int getMinPixelHeight() {
-		return 60;
+		return 120;
 	}
 
 	@Override
@@ -895,7 +895,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathway == null)
 			return 70;
 		float aspectRatio = (float) pathway.getWidth() / (float) pathway.getHeight();
-		return (int) (60.0f * aspectRatio);
+		return (int) (120.0f * aspectRatio);
 	}
 
 	@Override
@@ -942,5 +942,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	 */
 	public SelectionManager getGeneSelectionManager() {
 		return geneSelectionManager;
+	}
+	
+	@Override
+	public int getMinPixelWidth(DetailLevel detailLevel) {
+		return 200;
 	}
 }

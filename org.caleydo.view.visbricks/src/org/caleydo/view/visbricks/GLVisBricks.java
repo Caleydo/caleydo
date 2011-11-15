@@ -1203,8 +1203,11 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 				if (data instanceof PathwayDimensionGroupData) {
 					dimensionGroup.setBrickConfigurer(new PathwayDataConfigurer());
+//					dimensionGroup
+//							.setBrickSortingStrategy(new AlphabeticalDataLabelSortingStrategy());
 					dimensionGroup
-							.setBrickSortingStrategy(new AlphabeticalDataLabelSortingStrategy());
+					.setBrickSortingStrategy(new AverageValueSortingStrategy());
+				
 				} else {
 					dimensionGroup.setBrickConfigurer(new NumericalDataConfigurer(data));
 					dimensionGroup

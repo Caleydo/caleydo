@@ -441,7 +441,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			node = new ClusterNode(tree, "Group: " + group.getGroupID(), clusterNr++, false, -1);
 			tree.addChild(root, node);
 			from = group.getStartIndex();
-			to += group.getEndIndex();
+			to += group.getSize();
 			ClusterNode leaf;
 			for (int vaIndex = from; vaIndex < to; vaIndex++) {
 				Integer id = virtualArray.get(vaIndex);

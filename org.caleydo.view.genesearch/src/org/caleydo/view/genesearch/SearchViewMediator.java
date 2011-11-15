@@ -114,9 +114,10 @@ public class SearchViewMediator {
 					.getRecordPerspectiveIDs()) {
 				RecordPerspective recordPerspective = dataDomain.getTable()
 						.getRecordPerspective(recordPerspectiveID);
-				if (recordPerspective.getLabel().contains("sected")) {
-					binRecords(5, id, recordPerspective, dataDomain, label);
-				}
+
+				binRecords(5, id, recordPerspective, dataDomain, label);
+				break;
+
 			}
 		}
 
@@ -136,7 +137,7 @@ public class SearchViewMediator {
 					dimensionID);
 			// this works because value is normalized
 			int bin = (int) (value * nrBins);
-			if(bin == 5)
+			if (bin == 5)
 				bin = 4;
 			bins.get(bin).add(recordID);
 		}

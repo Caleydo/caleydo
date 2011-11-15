@@ -91,7 +91,7 @@ public class Application
 		for (DataSetMetaInfo dataTypeSet : dataTypeSetCollection.getDataTypeSetCollection())
 			loadSources(dataTypeSet, isColumnDimension);
 
-		calculateVAIntersections();
+//		calculateVAIntersections();
 
 		new ProjectSaver().save(outputCaleydoProjectFile, true);
 
