@@ -17,6 +17,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -150,6 +151,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		if (dataContainer instanceof PathwayDataContainer)
 			pathway = ((PathwayDataContainer) dataContainer).getPathway();
+		
+		selectedSampleIndex = dataContainer.getDimensionPerspective().getVirtualArray().getIndexList().get(0);
 	}
 
 	public void setPathway(final int iPathwayID) {
@@ -224,6 +227,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void display(final GL2 gl) {
 		checkForHits(gl);
+		
 		if (pathway != null) {
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
@@ -257,6 +261,9 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this,
 		// iPathwayID);
+				
+		//FIXME: just for TCGA poster - remove and set it properly
+		selectedSampleIndex = dataContainer.getRecordPerspective().getVirtualArray().getIndexList().get(0);
 	}
 
 	private void renderPathway(final GL2 gl, final PathwayGraph pathway) {
@@ -811,7 +818,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		connectedElementRepresentationManager.clear(dataDomain.getRecordIDType());
 		selectedSampleIndex = -1;
 		super.initData();
-
 	}
 
 	@Override
@@ -925,6 +931,9 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
 			sampleSelectionManager = dataDomain.getRecordSelectionManager();
 		}
+		
+		//selectedSampleIndex = dataContainer.getDimensionPerspective().getVirtualArray().get(0);
+		
 		super.setDataDomain(dataDomain);
 	}
 
