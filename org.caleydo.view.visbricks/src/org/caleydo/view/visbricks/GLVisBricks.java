@@ -86,8 +86,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
-	private final static int ARCH_PIXEL_HEIGHT = 30;
-	private final static float ARCH_BOTTOM_PERCENT = 0.5f;
+	private final static int ARCH_PIXEL_HEIGHT = 220;
+	private final static float ARCH_BOTTOM_PERCENT = 1f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
 	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;

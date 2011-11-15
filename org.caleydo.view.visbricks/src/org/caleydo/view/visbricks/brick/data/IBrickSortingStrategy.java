@@ -23,7 +23,6 @@ public interface IBrickSortingStrategy {
 	 * @return Sorted list of the specified Segment bricks and the summary
 	 *         brick.
 	 */
-	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks,
-			GLBrick summaryBrick);
+	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks);
 
 }

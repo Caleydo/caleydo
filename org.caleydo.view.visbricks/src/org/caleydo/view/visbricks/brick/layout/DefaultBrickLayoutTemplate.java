@@ -24,6 +24,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * Default brick layout containing a toolbar, a view and a fuelbar.
  * 
  * @author Christian Partl
+ * @author Alexander Lex
  * 
  */
 public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {

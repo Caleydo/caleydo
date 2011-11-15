@@ -33,8 +33,7 @@ public class AlphabeticalDataLabelSortingStrategy implements IBrickSortingStrate
 	}
 
 	@Override
-	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks,
-			GLBrick summaryBrick) {
+	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks) {
 
 		ArrayList<DataLabelComparable> comparables = new ArrayList<DataLabelComparable>();
 
@@ -52,8 +51,6 @@ public class AlphabeticalDataLabelSortingStrategy implements IBrickSortingStrate
 		for (DataLabelComparable comparable : comparables) {
 			bricks.add(comparable.brick);
 		}
-
-		bricks.add((int) Math.floor(bricks.size() / 2), summaryBrick);
 
 		return bricks;
 	}

@@ -77,7 +77,6 @@ public class DimensionGroup extends ATableBasedView implements
 	protected Row detailRow;
 
 	protected ArrayList<GLBrick> bottomBricks;
-	protected ArrayList<GLBrick> topBricks;
 
 	private boolean isGlobalViewSwitching = false;
 
@@ -85,7 +84,6 @@ public class DimensionGroup extends ATableBasedView implements
 	private GLBrick centerBrick;
 	private GLBrick detailBrick;
 	private Column centerLayout;
-	protected Column topCol;
 	// private ViewFrustum brickFrustum;
 	// protected DataTable set;
 
@@ -151,13 +149,6 @@ public class DimensionGroup extends ATableBasedView implements
 		centerLayout = new Column("centerLayout");
 		centerLayout.setFrameColor(1, 1, 0, 1);
 
-		topCol = new Column("dimensionGroupColumnTop");
-		topCol.setFrameColor(1, 0, 1, 1);
-		topBricks = new ArrayList<GLBrick>(20);
-		topCol.setXDynamic(true);
-		topCol.tableIDs(uniqueID, TOP_COLUMN_ID);
-		topCol.setVAlign(VAlign.CENTER);
-
 		initGroupColumn();
 		detailRow.append(groupColumn);
 	}
@@ -186,7 +177,6 @@ public class DimensionGroup extends ATableBasedView implements
 			groupColumn.clear();
 			groupColumn.append(bottomCol);
 			groupColumn.append(centerLayout);
-			groupColumn.append(topCol);
 		}
 	}
 
@@ -281,23 +271,14 @@ public class DimensionGroup extends ATableBasedView implements
 
 		// if (false) {
 
-		ArrayList<GLBrick> sortedBricks = brickSortingStrategy.getSortedBricks(
-				segmentBricks, centerBrick);
+		ArrayList<GLBrick> sortedBricks = brickSortingStrategy
+				.getSortedBricks(segmentBricks);
 
 		boolean summaryBrickPassed = false;
 
 		for (GLBrick brick : sortedBricks) {
-			if (brick == centerBrick) {
-				summaryBrickPassed = true;
-				continue;
-			}
-			if (summaryBrickPassed) {
-				bottomBricks.add(brick);
-				bottomCol.append(brick.getLayout());
-			} else {
-				topBricks.add(brick);
-				topCol.append(brick.getLayout());
-			}
+			bottomBricks.add(brick);
+			bottomCol.append(brick.getLayout());
 		}
 		// }
 		// else {
@@ -317,13 +298,6 @@ public class DimensionGroup extends ATableBasedView implements
 		brickSpacingLayout.setPixelGLConverter(pixelGLConverter);
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
-
-		for (int count = 0; count < topCol.size();) {
-
-			topCol.add(count, brickSpacingLayout);
-			count++;
-			count++;
-		}
 
 		for (int count = 0; count < bottomCol.size();) {
 
@@ -381,11 +355,6 @@ public class DimensionGroup extends ATableBasedView implements
 	 * Destroys all sub-bricks
 	 */
 	private void destroyOldBricks() {
-		for (GLBrick brick : topBricks) {
-			GeneralManager.get().getViewManager().unregisterGLView(brick);
-			brick.unregisterEventListeners();
-			brick.destroy();
-		}
 		for (GLBrick brick : bottomBricks) {
 			GeneralManager.get().getViewManager().unregisterGLView(brick);
 			brick.unregisterEventListeners();
@@ -418,8 +387,7 @@ public class DimensionGroup extends ATableBasedView implements
 		} else {
 
 			if (!(centerLayout.getSizeScaledY() > 0)) {
-				bottomCol.setRatioSizeY(0.5f);
-				topCol.setRatioSizeY(0.5f);
+				bottomCol.setRatioSizeY(1f);
 				centerLayout.setPixelGLConverter(pixelGLConverter);
 				centerLayout.setPixelSizeY(archHeight);
 			}
@@ -463,8 +431,6 @@ public class DimensionGroup extends ATableBasedView implements
 		if (!dataContainer.getRecordPerspective().getID().equals(recordPerspectiveID))
 			return;
 
-		topCol.clear();
-		topBricks.clear();
 		bottomCol.clear();
 		bottomBricks.clear();
 		createSubBricks();
@@ -643,8 +609,6 @@ public class DimensionGroup extends ATableBasedView implements
 		float change = pointCordinates[1] - previousYCoordinate;
 		previousYCoordinate = pointCordinates[1];
 
-		float newSize = topCol.getSizeScaledY() - change;
-		topCol.setAbsoluteSizeY(newSize);
 		// updateBrickSizes(topCol, topBricks, newSize);
 
 		float bottomSize = bottomCol.getSizeScaledY();
@@ -675,9 +639,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @param viewType
 	 */
 	public void switchBrickViews(EContainedViewType viewType) {
-		for (GLBrick brick : topBricks) {
-			brick.setContainedView(viewType);
-		}
+
 		for (GLBrick brick : bottomBricks) {
 			brick.setContainedView(viewType);
 		}
@@ -745,10 +707,6 @@ public class DimensionGroup extends ATableBasedView implements
 		// bricks.add(topBricks.get(i));
 		//
 		// }
-
-		for (GLBrick brick : topBricks) {
-			bricks.add(brick);
-		}
 
 		// for (GLBrick brick : bottomBricks) {
 		// bricks.add(brick);
@@ -820,20 +778,20 @@ public class DimensionGroup extends ATableBasedView implements
 			return;
 
 		System.out.println("handling layout collision");
-		if (layoutID == TOP_COLUMN_ID) {
-			boolean changeMade = false;
-			for (int count = topBricks.size() - 1; count >= 0; count--) {
-				GLBrick brick = topBricks.get(count);
-				if (toBigBy < 0)
-					break;
-				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					// toBigBy -= brick.collapse();
-					// changeMade = true;
-				}
-			}
-			if (changeMade)
-				topCol.updateSubLayout();
-		}
+		// if (layoutID == TOP_COLUMN_ID) {
+		// boolean changeMade = false;
+		// for (int count = topBricks.size() - 1; count >= 0; count--) {
+		// GLBrick brick = topBricks.get(count);
+		// if (toBigBy < 0)
+		// break;
+		// if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
+		// // toBigBy -= brick.collapse();
+		// // changeMade = true;
+		// }
+		// }
+		// if (changeMade)
+		// topCol.updateSubLayout();
+		// }
 		if (layoutID == BOTTOM_COLUMN_ID) {
 			boolean changeMade = false;
 
@@ -859,9 +817,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 		this.isGlobalViewSwitching = isGlobalViewSwitching;
-		for (GLBrick brick : topBricks) {
-			brick.setGlobalViewSwitching(isGlobalViewSwitching);
-		}
+
 		for (GLBrick brick : bottomBricks) {
 			brick.setGlobalViewSwitching(isGlobalViewSwitching);
 		}
@@ -882,9 +838,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * Called to hide the handles of all bricks of this dimension group.
 	 */
 	public void hideHandles() {
-		for (GLBrick brick : topBricks) {
-			brick.hideHandles();
-		}
+
 		centerBrick.hideHandles();
 		for (GLBrick brick : bottomBricks) {
 			brick.hideHandles();

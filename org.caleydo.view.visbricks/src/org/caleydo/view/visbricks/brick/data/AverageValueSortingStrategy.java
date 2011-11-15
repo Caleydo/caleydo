@@ -16,15 +16,11 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 public class AverageValueSortingStrategy implements IBrickSortingStrategy {
 
 	@Override
-	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks,
-			GLBrick summaryBrick) {
+	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks) {
 		ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
 		for (GLBrick brick : segmentBricks) {
 			insertBrick(brick, bricks);
 		}
-		if (summaryBrick != null)
-			insertBrick(summaryBrick, bricks);
-
 		return bricks;
 	}
 
