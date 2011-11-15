@@ -45,7 +45,7 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 
 	private Composite parent;
 
-	private PathwayDimensionGroupData pathwayDimensionGroupData;
+	private ArrayList<PathwayDimensionGroupData> pathwayDimensionGroupDataList = new ArrayList<PathwayDimensionGroupData>();
 	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
 
 	public CreateSmallPathwayMultiplesGroupDialog(Shell parentShell,
@@ -204,26 +204,24 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
 
-		// list
 		if (!pathways.isEmpty()) {
 
-			ArrayList<PathwayGraph> pathwayGraphs = new ArrayList<PathwayGraph>();
-			
-			// TODO do this for all pathway - not just the first from the pathway
-			PathwayGraph pathway = pathways.get(0);
-			pathwayGraphs.add(pathway);
+			for (PathwayGraph pathway : pathways) {
+				ArrayList<PathwayGraph> pathwayGraphs = new ArrayList<PathwayGraph>();
+				pathwayGraphs.add(pathway);
 
-			pathwayDimensionGroupData = new PathwayDimensionGroupData(
-					dataContainer.getDataDomain(), pathwayDataDomain,
-					dataContainer.getRecordPerspective(), dimensionPerspective, pathwayGraphs,
-					pathway.getTitle());
+				pathwayDimensionGroupDataList.add(new PathwayDimensionGroupData(
+						dataContainer.getDataDomain(), pathwayDataDomain, dataContainer
+								.getRecordPerspective(), dimensionPerspective,
+						pathwayGraphs, pathway.getTitle()));
+			}
 
 			super.okPressed();
 		}
 
 	}
 
-	public PathwayDimensionGroupData getPathwayDimensionGroupData() {
-		return pathwayDimensionGroupData;
+	public ArrayList<PathwayDimensionGroupData> getPathwayDimensionGroupDataList() {
+		return pathwayDimensionGroupDataList;
 	}
 }

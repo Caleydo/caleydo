@@ -809,10 +809,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 
 		if (openCreateSmallPathwayMultiplesGroupDialogListener != null) {
-			eventPublisher.removeListener(openCreateSmallPathwayMultiplesGroupDialogListener);
+			eventPublisher
+					.removeListener(openCreateSmallPathwayMultiplesGroupDialogListener);
 			openCreateSmallPathwayMultiplesGroupDialogListener = null;
 		}
-		
+
 		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 		// visBricks
 		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
@@ -1048,16 +1049,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
 					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
-					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
-							.getPathwayDimensionGroupData();
+					List<PathwayDimensionGroupData> pathwayDimensionGroupDataList = dialog
+							.getPathwayDimensionGroupDataList();
 
-					// IDataDomain pathwayDataDomain = DataDomainManager.get()
-					// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
-					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
-					dataContainers.add(pathwayDimensionGroupData);
-					event.setDataContainers(dataContainers);
-					event.setSender(this);
-					eventPublisher.triggerEvent(event);
+					for (PathwayDimensionGroupData pathwayDimensionGroupData : pathwayDimensionGroupDataList) {
+						dataContainers.add(pathwayDimensionGroupData);
+						event.setDataContainers(dataContainers);
+						event.setSender(this);
+						eventPublisher.triggerEvent(event);
+					}
 				}
 			}
 		});
