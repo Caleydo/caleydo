@@ -2,12 +2,10 @@ package org.caleydo.datadomain.pathway.listener;
 
 import java.util.Set;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;

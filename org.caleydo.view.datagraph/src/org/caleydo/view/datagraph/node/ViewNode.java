@@ -9,6 +9,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -183,8 +184,8 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	public List<DataContainer> getDataContainers() {
 
-		if (representedView instanceof ITableBasedDataDomainView) {
-			return ((ITableBasedDataDomainView) representedView).getDataContainers();
+		if (representedView instanceof IDataContainerBasedView) {
+			return ((IDataContainerBasedView) representedView).getDataContainers();
 			// DataContainer dataContainer = ((ATableBasedView) representedView)
 			// .getDataContainers();
 			// List<DataContainer> containers = new ArrayList<DataContainer>();

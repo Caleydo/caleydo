@@ -11,7 +11,6 @@ import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 

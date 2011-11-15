@@ -6,7 +6,6 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -19,8 +18,9 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -30,7 +30,6 @@ import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
-import org.caleydo.core.event.data.NewSubDataTablesEvent;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.DataDomainsChangedEvent;
@@ -38,7 +37,8 @@ import org.caleydo.core.event.view.tablebased.ConnectionsModeEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.view.ITableBasedDataDomainView;
+import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -71,7 +71,7 @@ import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
-import org.caleydo.view.visbricks.listener.NewSubDataTablesListener;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -81,8 +81,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
-		IViewCommandHandler, ISelectionUpdateHandler, ITableBasedDataDomainView {
+public class GLVisBricks extends AGLView implements IDataContainerBasedView,
+		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
@@ -93,12 +93,11 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;
 	public final static int DIMENSION_GROUP_SIDE_SPACING = 50;
 
-	private NewSubDataTablesListener subDataTablesListener;
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 
-	private ATableBasedDataDomain dataDomain;
+	// private ATableBasedDataDomain dataDomain;
 
 	private DimensionGroupManager dimensionGroupManager;
 
@@ -141,7 +140,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	private ElementLayout leftDimensionGroupSpacing;
 	private ElementLayout rightDimensionGroupSpacing;
 
-	private RecordSelectionManager contentSelectionManager;
+	/**
+	 * The id category used to map between the records of the dimension groups.
+	 * Only data with the same recordIDCategory can be connected
+	 */
+	private IDCategory recordIDCategory;
+
+	/**
+	 * The selection manager for the records, used for highlighting the visual
+	 * links
+	 */
+	private RecordSelectionManager recordSelectionManager;
 
 	private boolean connectionsOn = true;
 	private boolean connectionsHighlightDynamic = false;
@@ -206,8 +215,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		textRenderer = new CaleydoTextRenderer(24);
 		// dataDomain.createContentRelationAnalyzer();
 		// relationAnalyzer = dataDomain.getContentRelationAnalyzer();
-
-		contentSelectionManager = dataDomain.getRecordSelectionManager();
 
 		detailLevel = DetailLevel.HIGH;
 		subDataTablesUpdated();
@@ -1042,8 +1049,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedVisBricksView serializedForm = new SerializedVisBricksView(
-				dataDomain.getDataDomainID());
+		SerializedVisBricksView serializedForm = new SerializedVisBricksView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1057,9 +1063,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		subDataTablesListener = new NewSubDataTablesListener();
-		subDataTablesListener.setHandler(this);
-		eventPublisher.addListener(NewSubDataTablesEvent.class, subDataTablesListener);
 
 		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
 		addGroupsToVisBricksListener.setHandler(this);
@@ -1081,10 +1084,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (subDataTablesListener != null) {
-			eventPublisher.removeListener(subDataTablesListener);
-			subDataTablesListener = null;
-		}
+		
 
 		if (addGroupsToVisBricksListener != null) {
 			eventPublisher.removeListener(addGroupsToVisBricksListener);
@@ -1122,7 +1122,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public void clearAllSelections() {
-		contentSelectionManager.clearSelections();
+		recordSelectionManager.clearSelections();
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
@@ -1144,21 +1144,44 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	/**
+	 * <p>
 	 * Creates visible groups of bricks for the specified list of dimension
 	 * group data.
+	 * </p>
+	 * <p>
+	 * As VisBricks can only map between data sets that share a mapping between
+	 * records, the imprinting of the IDType and IDCategory for the records is
+	 * done here if there is no data set yet.
+	 * </p>
 	 * 
 	 * @param dataContainer
 	 */
 	public void addDimensionGroups(List<DataContainer> newDataContainers) {
 
+		if (newDataContainers == null || newDataContainers.size() == 0) {
+			Logger.log(new Status(Status.WARNING, this.toString(),
+					"newDataContainers in addDimensionGroups was null or empty"));
+			return;
+		}
+
+		// if this is the first data container set, we imprint VisBricks
+		if (recordIDCategory == null) {
+			ATableBasedDataDomain dataDomain = newDataContainers.get(0).getDataDomain();
+			imprintVisBricks(dataDomain);
+		}
+
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
 
-		// BrickDimensionGroupDataCreator creator = new
-		// BrickDimensionGroupDataCreator();
-
 		for (DataContainer data : newDataContainers) {
-
+			if (!data.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
+				Logger.log(new Status(
+						Status.ERROR,
+						this.toString(),
+						"Data container "
+								+ data
+								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
+			}
 			boolean dimensionGroupExists = false;
 			for (DimensionGroup dimensionGroup : dimensionGroups) {
 				if (dimensionGroup.getDataContainer().getID() == data.getID()) {
@@ -1168,10 +1191,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 			}
 
 			if (!dimensionGroupExists) {
-
-				// IBrickDimensionGroupData brickDimensionGroupData = creator
-				// .createBrickDimensionGroupData(data);
-
 				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 						.get()
 						.getViewManager()
@@ -1211,6 +1230,20 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
+	/**
+	 * Imprints VisBricks to a particular record ID Category by setting the
+	 * {@link #recordIDCategory}, and initializes the
+	 * {@link #recordSelectionManager}.
+	 * 
+	 * @param dataDomain
+	 */
+	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
+		recordIDCategory = dataDomain.getRecordIDCategory();
+		IDType mappingRecordIDType = dataDomain.getPrimaryRecordMappingType();
+		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry
+				.get().getIDMappingManager(recordIDCategory), mappingRecordIDType);
+	}
+
 	public void subDataTablesUpdated() {
 
 		// ClusterTree dimensionTree = dataDomain.getTable()
@@ -1233,132 +1266,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// initializeBricks(filteredSubDataTables);
 
 	}
-
-	// private void initializeBricks(ArrayList<DataTable> subDataTables) {
-	//
-	// ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-	// .getDimensionGroups();
-	//
-	// Iterator<DimensionGroup> dimensionGroupIterator = dimensionGroups
-	// .iterator();
-	// while (dimensionGroupIterator.hasNext()) {
-	// DimensionGroup dimensionGroup = dimensionGroupIterator.next();
-	// DataTable subDataTable = dimensionGroup.getTable();
-	// if (!subDataTables.contains(subDataTable)) {
-	// dimensionGroupIterator.remove();
-	// } else {
-	// subDataTables.remove(subDataTable);
-	// }
-	//
-	// }
-	// for (DataTable set : subDataTables) {
-	//
-	// // TODO here we need to check which subDataTables have already been
-	// // assigned to a dimensiongroup and not re-create them
-	// DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
-	// .get()
-	// .getViewGLCanvasManager()
-	// .createGLView(
-	// DimensionGroup.class,
-	// getParentGLCanvas(),
-	// new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC,
-	// 0, 1, 0, 1, -1, 1));
-	//
-	// dimensionGroup.setDataDomain(dataDomain);
-	// dimensionGroup.setTable(set);
-	// dimensionGroup.setRemoteRenderingGLView(this);
-	// dimensionGroup.setVisBricks(this);
-	// dimensionGroup.setVisBricksView(this);
-	// dimensionGroup.initialize();
-	//
-	// dimensionGroups.add(dimensionGroup);
-	//
-	// uninitializedDimensionGroups.add(dimensionGroup);
-	//
-	// }
-	//
-	// // BinGroup binGroup = (BinGroup) GeneralManager
-	// // .get()
-	// // .getViewGLCanvasManager()
-	// // .createGLView(
-	// // BinGroup.class,
-	// // getParentGLCanvas(),
-	// // new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-	// // -1, 1));
-	// // binGroup.tableIDTypes(dataDomain.getContentIDType(),
-	// // IDType.getIDType("GO_CC"));
-	// // binGroup.setDataDomain(dataDomain);
-	// //
-	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getTable(),
-	// null, null);
-	// // Set set = new Set(dataDomain);
-	// // table.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
-	// // table.setLabel("Chromosome");
-	// // // subDataTable.setContentTree(table.getContentTree());
-	// // // Tree<ClusterNode> subTree = tree.getSubTree();
-	// //
-	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
-	// // // SetUtils.setDimensions(set, dimensionIDs);
-	// //
-	// // dataDomain.addSubDataTable(set);
-	// // binGroup.setTable(set);
-	// // binGroup.setRemoteRenderingGLView(this);
-	// // binGroup.setVisBricks(this);
-	// // binGroup.setVisBricksView(this);
-	// // binGroup.initialize();
-	// //
-	// // relationAnalyzer.replaceRecordVA(table.getID(),
-	// // dataDomain.getDataDomainType(),
-	// // Set.CONTENT);
-	// //
-	// // dimensionGroups.add(binGroup);
-	// //
-	// // uninitializedDimensionGroups.add(binGroup);
-	//
-	// // -------------------------------------------------
-	// //
-	// // binGroup = (BinGroup) GeneralManager
-	// // .get()
-	// // .getViewGLCanvasManager()
-	// // .createGLView(
-	// // BinGroup.class,
-	// // getParentGLCanvas(),
-	// // new ViewFrustum(ECameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-	// // -1, 1));
-	// //
-	// // set = new Set(dataDomain);
-	// // table.setRecordVA(Set.CONTENT, dataDomain.getRecordVA(Set.CONTENT));
-	// // table.setLabel("Compartment");
-	// // binGroup.tableIDTypes(dataDomain.getContentIDType(),
-	// // IDType.getIDType("GO_CC"));
-	// // binGroup.setDataDomain(dataDomain);
-	// //
-	// // // SubDataTable subDataTable = new SubDataTable(dataDomain.getTable(),
-	// null, null);
-	// //
-	// // // subDataTable.setContentTree(table.getContentTree());
-	// // // Tree<ClusterNode> subTree = tree.getSubTree();
-	// //
-	// // // ArrayList<Integer> dimensionIDs = new ArrayList<Integer>();
-	// // // SetUtils.setDimensions(set, dimensionIDs);
-	// //
-	// // dataDomain.addSubDataTable(set);
-	// // binGroup.setTable(set);
-	// // binGroup.setRemoteRenderingGLView(this);
-	// // binGroup.setVisBricks(this);
-	// // binGroup.setVisBricksView(this);
-	// // binGroup.initialize();
-	// //
-	// // relationAnalyzer.replaceRecordVA(table.getID(),
-	// // dataDomain.getDataDomainType(),
-	// // Set.CONTENT);
-	// //
-	// // dimensionGroups.add(binGroup);
-	// //
-	// // uninitializedDimensionGroups.add(binGroup);
-	// //
-	// // dimensionGroupManager.calculateGroupDivision();
-	// }
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
@@ -1467,7 +1374,6 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		// initLayouts();
 
 		RelationsUpdatedEvent event = new RelationsUpdatedEvent();
-		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);
 	}
@@ -1539,7 +1445,7 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 	}
 
 	public RecordSelectionManager getRecordSelectionManager() {
-		return contentSelectionManager;
+		return recordSelectionManager;
 	}
 
 	public GLVisBricksKeyListener getKeyListener() {
@@ -1578,19 +1484,17 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
 
-		contentSelectionManager.clearSelections();
+		recordSelectionManager.clearSelections();
 
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
-		cse.setDataDomainID(getDataDomain().getDataDomainID());
 		cse.setSender(this);
 		eventPublisher.triggerEvent(cse);
 
-		contentSelectionManager
-				.clearSelection(contentSelectionManager.getSelectionType());
+		recordSelectionManager.clearSelection(recordSelectionManager.getSelectionType());
 
 		// Create volatile selection type
 		volatieBandSelectionType = new SelectionType("Volatile band selection type",
-				contentSelectionManager.getSelectionType().getColor(), 1, true, true, 1);
+				recordSelectionManager.getSelectionType().getColor(), 1, true, true, 1);
 
 		volatieBandSelectionType.setManaged(false);
 
@@ -1599,14 +1503,13 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
 		for (Integer recordID : hashConnectionBandIDToRecordVA.get(connectionBandID)) {
-			contentSelectionManager.addToType(contentSelectionManager.getSelectionType(),
+			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
 					recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
-		event.setDataDomainID(getDataDomain().getDataDomainID());
 		event.setSender(this);
-		SelectionDelta delta = contentSelectionManager.getDelta();
+		SelectionDelta delta = recordSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
@@ -1635,72 +1538,65 @@ public class GLVisBricks extends AGLView implements IGLRemoteRenderingView,
 		return true;
 	}
 
-	/**
-	 * Automatically create data containers if we have pre-clustered data.
-	 * Temporary solution, should not be used
-	 */
-	@Deprecated
-	private void checkForPreparedPerspectives() {
-		Set<String> recordPerspectiveIDs = dataDomain.getTable()
-				.getRecordPerspectiveIDs();
-		Set<String> dimensionPerspectiveIDs = dataDomain.getTable()
-				.getDimensionPerspectiveIDs();
-
-		String chosenDimensionPerspectiveID = null;
-		Iterator<String> dimensionPerspectiveIterator = dimensionPerspectiveIDs
-				.iterator();
-
-		while (dimensionPerspectiveIterator.hasNext()) {
-			chosenDimensionPerspectiveID = dimensionPerspectiveIterator.next();
-			DimensionPerspective currentPerspecitve = dataDomain.getTable()
-					.getDimensionPerspective(chosenDimensionPerspectiveID);
-			if (currentPerspecitve.getLabel().contains("sample"))
-				break;
-			else
-				chosenDimensionPerspectiveID = null;
-
-		}
-		if (chosenDimensionPerspectiveID == null)
-			return;
-
-		String chosenRecordPerspectiveID;
-		Iterator<String> recordPerspectiveIterator = recordPerspectiveIDs.iterator();
-
-		while (recordPerspectiveIterator.hasNext()) {
-			chosenRecordPerspectiveID = recordPerspectiveIterator.next();
-			RecordPerspective currentPerspective = dataDomain.getTable()
-					.getRecordPerspective(chosenRecordPerspectiveID);
-			if (currentPerspective.getLabel().contains("clusters")) {
-				DataContainer dataContainer = dataDomain.getDataContainer(
-						chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
-				AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-						dataContainer);
-				event.setDataDomainID(dataDomain.getDataDomainID());
-				eventPublisher.triggerEvent(event);
-			}
-		}
-	}
-
+	/** Adds the specified data container to the view */
 	@Override
 	public void setDataContainer(DataContainer dataContainer) {
-		// TODO Auto-generated method stub
+		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
+		dataContainerWrapper.add(dataContainer);
+		addDimensionGroups(dataContainerWrapper);
 
 	}
 
 	@Override
 	public List<DataContainer> getDataContainers() {
-		// TODO Auto-generated method stub
 		return dataContainers;
 	}
 
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
+	/**
+	 * Automatically create data containers if we have pre-clustered data.
+	 * Temporary solution, should not be used
+	 */
+	// @Deprecated
+	// private void checkForPreparedPerspectives() {
+	// Set<String> recordPerspectiveIDs = dataDomain.getTable()
+	// .getRecordPerspectiveIDs();
+	// Set<String> dimensionPerspectiveIDs = dataDomain.getTable()
+	// .getDimensionPerspectiveIDs();
+	//
+	// String chosenDimensionPerspectiveID = null;
+	// Iterator<String> dimensionPerspectiveIterator = dimensionPerspectiveIDs
+	// .iterator();
+	//
+	// while (dimensionPerspectiveIterator.hasNext()) {
+	// chosenDimensionPerspectiveID = dimensionPerspectiveIterator.next();
+	// DimensionPerspective currentPerspecitve = dataDomain.getTable()
+	// .getDimensionPerspective(chosenDimensionPerspectiveID);
+	// if (currentPerspecitve.getLabel().contains("sample"))
+	// break;
+	// else
+	// chosenDimensionPerspectiveID = null;
+	//
+	// }
+	// if (chosenDimensionPerspectiveID == null)
+	// return;
+	//
+	// String chosenRecordPerspectiveID;
+	// Iterator<String> recordPerspectiveIterator =
+	// recordPerspectiveIDs.iterator();
+	//
+	// while (recordPerspectiveIterator.hasNext()) {
+	// chosenRecordPerspectiveID = recordPerspectiveIterator.next();
+	// RecordPerspective currentPerspective = dataDomain.getTable()
+	// .getRecordPerspective(chosenRecordPerspectiveID);
+	// if (currentPerspective.getLabel().contains("clusters")) {
+	// DataContainer dataContainer = dataDomain.getDataContainer(
+	// chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
+	// AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+	// dataContainer);
+	// event.setDataDomainID(dataDomain.getDataDomainID());
+	// eventPublisher.triggerEvent(event);
+	// }
+	// }
+	// }
 
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
 }

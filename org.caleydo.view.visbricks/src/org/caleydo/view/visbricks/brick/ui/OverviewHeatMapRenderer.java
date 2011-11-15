@@ -4,11 +4,9 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.AverageRecord;
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 

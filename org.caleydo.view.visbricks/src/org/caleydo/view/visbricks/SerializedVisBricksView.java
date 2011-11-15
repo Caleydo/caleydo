@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Serialized VisBricks view.
@@ -12,16 +12,12 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedVisBricksView extends ASerializedTopLevelDataView {
+public class SerializedVisBricksView extends ASerializedView {
 
 	/**
 	 * Default constructor with default initialization
 	 */
 	public SerializedVisBricksView() {
-	}
-
-	public SerializedVisBricksView(String dataDomainType) {
-		super(dataDomainType);
 	}
 
 	@Override

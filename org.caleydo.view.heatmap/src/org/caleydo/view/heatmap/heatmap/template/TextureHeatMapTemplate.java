@@ -3,9 +3,7 @@
  */
 package org.caleydo.view.heatmap.heatmap.template;
 
-import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.LayoutTemplate;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;

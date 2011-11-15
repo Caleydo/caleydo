@@ -9,8 +9,6 @@ import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-import javax.swing.UIManager;
-import javax.swing.UnsupportedLookAndFeelException;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;

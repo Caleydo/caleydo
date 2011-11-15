@@ -2,17 +2,12 @@ package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
 import org.caleydo.view.pathway.GLPathway;
-import org.caleydo.view.pathway.SerializedPathwayView;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**

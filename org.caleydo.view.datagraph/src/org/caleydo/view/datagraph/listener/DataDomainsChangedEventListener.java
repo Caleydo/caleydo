@@ -5,6 +5,11 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.DataDomainsChangedEvent;
 import org.caleydo.view.datagraph.GLDataGraph;
 
+/**
+ * @deprecated see {@link DataDomainsChangedEvent}
+ *
+ */
+@Deprecated
 public class DataDomainsChangedEventListener extends AEventListener<GLDataGraph> {
 
 	@Override

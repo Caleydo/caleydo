@@ -28,6 +28,7 @@ public abstract class ASerializedTopLevelDataView
 		this.dataDomainID = dataDomainID;
 	}
 
+	/** The ID string of the data domain */
 	protected String dataDomainID;
 
 	/**
