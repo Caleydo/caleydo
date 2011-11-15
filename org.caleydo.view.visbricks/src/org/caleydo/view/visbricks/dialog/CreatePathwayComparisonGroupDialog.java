@@ -1,36 +1,31 @@
 package org.caleydo.view.visbricks.dialog;
 
-import java.text.Collator;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.jface.dialogs.TitleAreaDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -38,12 +33,15 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * Dialog where the user can specify the pathways that shall be displayed as a
- * dimension group in visbricks.
+ * dimension group in Visbricks.
  * 
- * @author Partl
+ * @author Christian Partl
+ * @author Marc Streit
  * 
  */
 public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
+
+	private DataContainer inputDataContainer;
 
 	private ATableBasedDataDomain sourceDataDomain;
 	private PathwayDataDomain pathwayDataDomain;
@@ -51,58 +49,58 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 	private DimensionPerspective dimensionPerspective;
 	private RecordPerspective recordPerspective;
 
-	private Map<String, List<PathwayGraph>> pathwayMap;
-
 	private Table pathwayTable;
 
-	private PathwayTableSorter pathwayTableSorter;
+	//private PathwayTableSorter pathwayTableSorter;
 	private Composite parent;
 
 	private PathwayDimensionGroupData pathwayDimensionGroupData;
+	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
 
-	private class PathwayTableSorter implements Listener {
+	// private class PathwayTableSorter implements Listener {
+	//
+	// @Override
+	// public void handleEvent(Event e) {
+	// sort(0, !(pathwayTable.getSortDirection() == SWT.UP));
+	// }
+	//
+	// public void sort(int columnIndex, boolean sortAscending) {
+	// TableItem[] items = pathwayTable.getItems();
+	// Collator collator = Collator.getInstance(Locale.getDefault());
+	//
+	// for (int i = 1; i < items.length; i++) {
+	// String value1 = items[i].getText(columnIndex);
+	// for (int j = 0; j < i; j++) {
+	// String value2 = items[j].getText(columnIndex);
+	// if ((collator.compare(value1, value2) < 0 && sortAscending)
+	// || (collator.compare(value1, value2) > 0 && !sortAscending)) {
+	// String[] values = { items[i].getText(0), items[i].getText(1) };
+	// PathwayGraph pathway = (PathwayGraph) items[i].getData();
+	// boolean checked = items[i].getChecked();
+	// items[i].dispose();
+	// TableItem item = new TableItem(pathwayTable, SWT.NONE, j);
+	// item.setText(values);
+	// item.setData(pathway);
+	// item.setChecked(checked);
+	// items = pathwayTable.getItems();
+	// break;
+	// }
+	// }
+	// }
+	//
+	// if (sortAscending) {
+	// pathwayTable.setSortDirection(SWT.UP);
+	// } else {
+	// pathwayTable.setSortDirection(SWT.DOWN);
+	// }
+	// }
+	// }
 
-		@Override
-		public void handleEvent(Event e) {
-			sort(0, !(pathwayTable.getSortDirection() == SWT.UP));
-		}
-
-		public void sort(int columnIndex, boolean sortAscending) {
-			TableItem[] items = pathwayTable.getItems();
-			Collator collator = Collator.getInstance(Locale.getDefault());
-
-			for (int i = 1; i < items.length; i++) {
-				String value1 = items[i].getText(columnIndex);
-				for (int j = 0; j < i; j++) {
-					String value2 = items[j].getText(columnIndex);
-					if ((collator.compare(value1, value2) < 0 && sortAscending)
-							|| (collator.compare(value1, value2) > 0 && !sortAscending)) {
-						String[] values = { items[i].getText(0), items[i].getText(1) };
-						PathwayGraph pathway = (PathwayGraph) items[i].getData();
-						boolean checked = items[i].getChecked();
-						items[i].dispose();
-						TableItem item = new TableItem(pathwayTable, SWT.NONE, j);
-						item.setText(values);
-						item.setData(pathway);
-						item.setChecked(checked);
-						items = pathwayTable.getItems();
-						break;
-					}
-				}
-			}
-
-			if (sortAscending) {
-				pathwayTable.setSortDirection(SWT.UP);
-			} else {
-				pathwayTable.setSortDirection(SWT.DOWN);
-			}
-		}
-	}
-
-	public CreatePathwayComparisonGroupDialog(Shell parentShell) {
+	public CreatePathwayComparisonGroupDialog(Shell parentShell,
+			DataContainer dataContainer) {
 		super(parentShell);
-		pathwayMap = new HashMap<String, List<PathwayGraph>>();
-		pathwayTableSorter = new PathwayTableSorter();
+		// pathwayTableSorter = new PathwayTableSorter();
+		inputDataContainer = dataContainer;
 	}
 
 	@Override
@@ -129,40 +127,59 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		descriptionLabel.setText("Select the pathways for the group.");
 		descriptionLabel.setLayoutData(data);
 
-		Collection<PathwayGraph> pathways = PathwayManager.get().getAllItems();
+		VirtualArray<?, ?, ?> va = null;
+		if (inputDataContainer.getDataDomain().isColumnDimension())
+			va = inputDataContainer.getRecordPerspective().getVirtualArray();
+		else
+			va = inputDataContainer.getDimensionPerspective().getVirtualArray();
 
-		for (PathwayGraph pathway : pathways) {
+		pathwayGraphsWithOccurrences = PathwayManager.get()
+				.getPathwayGraphsWithOccurencesByGeneIDs(
+						(GeneticDataDomain) inputDataContainer.getDataDomain(),
+						va.getIdType(), va.getIndexList());
 
-			List<PathwayGraph> dbPathways = pathwayMap.get(pathway.getType().getName());
-			if (dbPathways == null) {
-				dbPathways = new ArrayList<PathwayGraph>();
+		// Create a list that contains pathways sorted by gene occurences
+		ArrayList<Pair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<Pair<Integer, PathwayGraph>>();
+		for (PathwayGraph pathway : pathwayGraphsWithOccurrences.keySet()) {
+			sortedPathwayList.add(new Pair<Integer, PathwayGraph>(
+					pathwayGraphsWithOccurrences.get(pathway), pathway));
+		}
+		Collections.sort(sortedPathwayList);
+
+		Collection<PathwayGraph> dbPathways = new ArrayList<PathwayGraph>();
+
+		for (int count = sortedPathwayList.size() - 1; count >= 0; count--) {
+			Pair<Integer, PathwayGraph> pair = sortedPathwayList.get(count);
+			if (pair.getFirst() > 1) {
+
+				PathwayGraph pathway = pair.getSecond();
+				dbPathways.add(pathway);
 			}
-			dbPathways.add(pathway);
-			pathwayMap.put(pathway.getType().getName(), dbPathways);
 		}
 
-		final Combo databaseCombo = new Combo(parent, SWT.DROP_DOWN);
-		List<String> databaseNames = new ArrayList<String>(pathwayMap.keySet());
-		if (!databaseNames.isEmpty()) {
-			Collections.sort(databaseNames);
-			for (String dbName : databaseNames) {
-				databaseCombo.add(dbName);
-			}
-			databaseCombo.select(databaseCombo.getItemCount() - 1);
-			databaseCombo.addSelectionListener(new SelectionListener() {
-
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					setTableContent(databaseCombo.getText());
-				}
-
-				@Override
-				public void widgetDefaultSelected(SelectionEvent e) {
-					widgetSelected(e);
-
-				}
-			});
-		}
+		// final Combo databaseCombo = new Combo(parent, SWT.DROP_DOWN);
+		// List<String> databaseNames = new
+		// ArrayList<String>(pathwayMap.keySet());
+		// if (!databaseNames.isEmpty()) {
+		// Collections.sort(databaseNames);
+		// for (String dbName : databaseNames) {
+		// databaseCombo.add(dbName);
+		// }
+		// databaseCombo.select(databaseCombo.getItemCount() - 1);
+		// databaseCombo.addSelectionListener(new SelectionListener() {
+		//
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		// setTableContent(databaseCombo.getText());
+		// }
+		//
+		// @Override
+		// public void widgetDefaultSelected(SelectionEvent e) {
+		// widgetSelected(e);
+		//
+		// }
+		// });
+		// }
 
 		data = new GridData();
 		data.grabExcessHorizontalSpace = true;
@@ -175,21 +192,24 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		pathwayTable.setHeaderVisible(true);
 		TableColumn column1 = new TableColumn(pathwayTable, SWT.CHECK);
 		column1.setText("Pathway");
-		column1.addListener(SWT.Selection, pathwayTableSorter);
+		// column1.addListener(SWT.Selection, pathwayTableSorter);
 		TableColumn column2 = new TableColumn(pathwayTable, SWT.NONE);
 		column2.setText("Database");
+		TableColumn column3 = new TableColumn(pathwayTable, SWT.NONE);
+		column3.setText("Gene Occurences");
 		pathwayTable.setLayoutData(data);
 		pathwayTable.setSortColumn(column1);
 		pathwayTable.setSortDirection(SWT.UP);
 		pathwayTable.setEnabled(true);
 
-		setTableContent(databaseCombo.getText());
+		// setTableContent(databaseCombo.getText());
+		setTableContent(dbPathways);
 
 		return parent;
 	}
 
-	private void setTableContent(String pathwayDatabase) {
-		List<PathwayGraph> pathways = pathwayMap.get(pathwayDatabase);
+	private void setTableContent(Collection<PathwayGraph> pathways) {
+		// List<PathwayGraph> pathways = pathwayMap.get(pathwayDatabase);
 
 		if (pathways == null)
 			return;
@@ -200,10 +220,11 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 			TableItem item = new TableItem(pathwayTable, SWT.NONE);
 			item.setText(0, pathway.getTitle());
 			item.setText(1, pathway.getType().getName());
+			item.setText(2, pathwayGraphsWithOccurrences.get(pathway).toString());
 			item.setData(pathway);
 		}
 
-		pathwayTableSorter.sort(0, true);
+		// pathwayTableSorter.sort(0, true);
 
 		for (TableColumn column : pathwayTable.getColumns()) {
 			column.pack();

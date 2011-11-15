@@ -13,6 +13,7 @@ import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * <p>
@@ -29,15 +30,11 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * @author Alexander Lex
  */
 public class ShowPathwaysByGenesItem extends AContextMenuItem {
-
-	private PathwayDataDomain pathwayDataDomain;
-
 	/**
 	 * Constructor which sets the default values for icon and text
 	 */
-	public ShowPathwaysByGenesItem(PathwayDataDomain pathwayDataDomain) {
+	public ShowPathwaysByGenesItem() {
 		super();
-		this.pathwayDataDomain = pathwayDataDomain;
 		// setIconTexture(EIconTextures.CM_DEPENDING_PATHWAYS);
 		setLabel("Pathways");
 	}
@@ -60,13 +57,11 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {
-				Set<PathwayGraph> pathwayGraphs = pathwayDataDomain.getMappingHelper()
+				Set<PathwayGraph> pathwayGraphs = PathwayManager.get()
 						.getPathwayGraphsByGeneID(
 								dataDomain.getPrimaryRecordMappingType(), david);
 
-				// int iPathwayCount = 0;
 				if (pathwayGraphs != null) {
-					// iPathwayCount = pathwayGraphs.size();
 
 					for (PathwayGraph pathwayGraph : pathwayGraphs) {
 

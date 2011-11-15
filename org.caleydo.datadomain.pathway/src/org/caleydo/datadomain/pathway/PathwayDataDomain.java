@@ -13,7 +13,6 @@ import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.manager.GeneticIDMappingHelper;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -31,7 +30,6 @@ public class PathwayDataDomain extends ADataDomain {
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.pathway";
 
 	IDMappingManager geneIDMappingManager;
-	GeneticIDMappingHelper mappingHelper;
 
 	IDType primaryIDType;
 
@@ -65,7 +63,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 		geneIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				IDCategory.getIDCategory("GENE"));
-		mappingHelper = new GeneticIDMappingHelper(geneIDMappingManager);
 
 		addIDCategory(IDCategory.getIDCategory("GENE"));
 
@@ -136,13 +133,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 	public IDMappingManager getGeneIDMappingManager() {
 		return geneIDMappingManager;
-	}
-
-	/**
-	 * @return the mappingHelper, see {@link #mappingHelper}
-	 */
-	public GeneticIDMappingHelper getMappingHelper() {
-		return mappingHelper;
 	}
 
 	@Override

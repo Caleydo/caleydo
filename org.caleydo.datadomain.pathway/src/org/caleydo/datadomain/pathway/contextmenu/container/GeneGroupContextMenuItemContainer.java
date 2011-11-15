@@ -22,8 +22,7 @@ public class GeneGroupContextMenuItemContainer extends AContextMenuItemContainer
 
 		if (pathwayDataDomain != null) {
 
-			ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem(
-					pathwayDataDomain);
+			ShowPathwaysByGenesItem pathwaysItem = new ShowPathwaysByGenesItem();
 			pathwaysItem.setTableIDs(dataDomain, idType, genes);
 			addContextMenuItem(pathwaysItem);
 		}

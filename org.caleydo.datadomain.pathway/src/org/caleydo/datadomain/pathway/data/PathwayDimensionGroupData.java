@@ -10,7 +10,6 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
@@ -25,6 +24,7 @@ import org.caleydo.util.graph.IGraphItem;
  * 
  * @author Christian Partl
  * @author Alexander Lex
+ * @author Marc Streit
  * 
  */
 public class PathwayDimensionGroupData extends DataContainer {
@@ -137,8 +137,6 @@ public class PathwayDimensionGroupData extends DataContainer {
 				pathwayDataContainer = new PathwayDataContainer(dataDomain,
 						pathwayDataDomain, pathwayRecordPerspective,
 						dimensionPerspective, pathway);
-				
-				pathwayDataContainer.setRecordGroup(dimensionPerspective.getVirtualArray().getGroupList().get(0));
 			} else {
 				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(
 						dataDomain);
@@ -147,10 +145,9 @@ public class PathwayDimensionGroupData extends DataContainer {
 				pathwayDataContainer = new PathwayDataContainer(dataDomain,
 						pathwayDataDomain, recordPerspective,
 						pathwayDimensionPerspective, pathway);
-
-				pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray().getGroupList().get(0));
-
 			}
+
+			pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray().getGroupList().get(0));
 			
 			recordSubDataContainers.add(pathwayDataContainer);
 		}

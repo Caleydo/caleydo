@@ -9,6 +9,7 @@ import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -19,10 +20,8 @@ public class LoadPathwaysByGeneListener extends APathwayLoaderListener {
 		if (event instanceof LoadPathwaysByGeneEvent) {
 			LoadPathwaysByGeneEvent loadEvent = (LoadPathwaysByGeneEvent) event;
 
-			PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager
-					.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
 			if (loadEvent.getIdType().getIDCategory() == IDCategory.getIDCategory("GENE")) {
-				Set<PathwayGraph> pathwayGraphs = pathwayDataDomain.getMappingHelper()
+				Set<PathwayGraph> pathwayGraphs = PathwayManager.get()
 						.getPathwayGraphsByGeneID(loadEvent.getIdType(),
 								loadEvent.getGeneID());
 				if (pathwayGraphs == null) {

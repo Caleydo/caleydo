@@ -3,22 +3,31 @@ package org.caleydo.datadomain.pathway.manager;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
 import org.caleydo.util.graph.EGraphItemHierarchy;
+import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.util.graph.IGraphItem;
 import org.caleydo.util.graph.core.Graph;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
@@ -382,5 +391,84 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 		Logger.log(new Status(IStatus.INFO, "PathwayLoaderThread", "Finished parsing "
 				+ pathwayDatabase.getName() + " pathways."));
+	}
+
+	/**
+	 * Returns all pathways where a specific gene is contained at least once.
+	 * 
+	 * @param idType
+	 * @param id
+	 * @return a Set of PathwayGraphs or null if no such mapping exists
+	 */
+	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int id) {
+
+		// set to avoid duplicate pathways
+		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
+
+		PathwayVertexGraphItem pathwayVertexGraphItem;
+		if (idType == IDType.getIDType("DAVID"))
+			pathwayVertexGraphItem = PathwayItemManager.get()
+					.getPathwayVertexGraphItemByDavidId(id);
+		else
+			throw new IllegalStateException(
+					"Only David IDs can be resolved to pathways lists");
+
+		if (pathwayVertexGraphItem == null)
+			return null;
+
+		List<IGraphItem> pathwayItems = pathwayVertexGraphItem
+				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
+
+		for (IGraphItem pathwayItem : pathwayItems) {
+			PathwayGraph pathwayGraph = (PathwayGraph) pathwayItem.getAllGraphByType(
+					EGraphItemHierarchy.GRAPH_PARENT).get(0);
+			newPathways.add(pathwayGraph);
+		}
+
+		return newPathways;
+	}
+
+	/**
+	 * Returns all pathways where a specific gene is contained at least once.
+	 * 
+	 * @param idType
+	 * @param geneIDs
+	 * @return a Set of PathwayGraphs or null if no such mapping exists
+	 */
+	public HashMap<PathwayGraph, Integer> getPathwayGraphsWithOccurencesByGeneIDs(
+			GeneticDataDomain dataDomain, IDType idType, ArrayList<Integer> geneIDs) {
+
+		IDType davidIDType = IDType.getIDType("DAVID");
+		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();
+		for (Integer gene : geneIDs) {
+
+			Set<Integer> davids = ((GeneticDataDomain) dataDomain)
+					.getGeneIDMappingManager().getIDAsSet(idType,
+							davidIDType, gene);
+			if (davids == null || davids.size() == 0)
+				continue;
+			for (Integer david : davids) {
+				Set<PathwayGraph> pathwayGraphs = PathwayManager.get()
+						.getPathwayGraphsByGeneID(
+								davidIDType, david);
+
+				if (pathwayGraphs != null) {
+
+					for (PathwayGraph pathwayGraph : pathwayGraphs) {
+
+						if (!hashPathwaysToOccurences.containsKey(pathwayGraph))
+							hashPathwaysToOccurences.put(pathwayGraph, 1);
+						else {
+							int occurences = hashPathwaysToOccurences.get(pathwayGraph);
+							occurences++;
+							hashPathwaysToOccurences.put(pathwayGraph, occurences);
+						}
+
+					}
+				}
+			}
+		}
+		
+		return hashPathwaysToOccurences;
 	}
 }

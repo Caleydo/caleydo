@@ -391,7 +391,7 @@ public abstract class ATableBasedDataDomain
 	}
 	
 	public IDType getPrimaryDimensionMappingType() {
-		return dimensionIDType;
+		return primaryDimensionMappingType;
 	}
 
 	/**

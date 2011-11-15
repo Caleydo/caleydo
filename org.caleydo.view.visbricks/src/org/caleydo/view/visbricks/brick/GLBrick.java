@@ -1083,7 +1083,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				Shell shell = new Shell();
 				// shell.setSize(500, 800);
 				CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
-						shell);
+						shell, dataContainer);
 				dialog.create();
 				dialog.setSourceDataDomain(sourceDataDomain);
 				dialog.setSourceVA(sourceRecordVA);

@@ -8,6 +8,7 @@ import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
  * <p>
@@ -45,8 +46,8 @@ public class ShowPathwaysByGeneItem extends AContextMenuItem {
 	 */
 	public void setDavidID(IDType idType, int david, String dataDomainID) {
 
-		Set<PathwayGraph> pathwayGraphs = dataDomain.getMappingHelper()
-				.getPathwayGraphsByGeneID(idType, david);
+		Set<PathwayGraph> pathwayGraphs = PathwayManager.get().getPathwayGraphsByGeneID(
+				idType, david);
 
 		int pathwayCount = 0;
 
