@@ -72,7 +72,7 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 					String value2 = items[j].getText(columnIndex);
 					if ((collator.compare(value1, value2) < 0 && sortAscending)
 							|| (collator.compare(value1, value2) > 0 && !sortAscending)) {
-						String[] values = { items[i].getText(0), items[i].getText(1) };
+						String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2) };
 						PathwayGraph pathway = (PathwayGraph) items[i].getData();
 						boolean checked = items[i].getChecked();
 						items[i].dispose();
