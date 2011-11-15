@@ -16,7 +16,6 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
 import org.caleydo.core.event.EventPublisher;
@@ -94,11 +93,6 @@ public class DimensionGroup extends ATableBasedView implements
 	private LayoutSizeCollisionListener layoutSizeCollisionListener;
 	private IBrickSortingStrategy brickSortingStrategy;
 
-	/**
-	 * True if the bricks' height should be proportional to the amount of
-	 * records in the brick
-	 */
-	private boolean isProportionalMode = true;
 	private boolean isCollapsed = false;
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
@@ -260,17 +254,16 @@ public class DimensionGroup extends ATableBasedView implements
 
 		destroyOldBricks();
 
-		List<DataContainer> segmentBrickData = dataContainer
+		List<DataContainer> brickDataContainers = dataContainer
 				.createRecordSubDataContainers();
 
-		if (segmentBrickData == null || segmentBrickData.size() <= 0)
+		if (brickDataContainers == null || brickDataContainers.size() <= 0)
 			return;
 
 		Set<GLBrick> segmentBricks = new HashSet<GLBrick>();
 
-		for (DataContainer brickData : segmentBrickData) {
-			GLBrick segmentBrick = createBrick(new ElementLayout("segmentBrick"),
-					brickData);
+		for (DataContainer brickData : brickDataContainers) {
+			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData);
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
@@ -787,13 +780,6 @@ public class DimensionGroup extends ATableBasedView implements
 	}
 
 	/**
-	 * @return the isProportionalMode, see {@link #isProportionalMode}
-	 */
-	public boolean isProportionalMode() {
-		return isProportionalMode;
-	}
-
-	/**
 	 * Returns the center brick that shows the summary of the dimension group
 	 * data.
 	 * 
@@ -801,12 +787,6 @@ public class DimensionGroup extends ATableBasedView implements
 	 */
 	public GLBrick getCenterBrick() {
 		return centerBrick;
-	}
-
-	@Override
-	public void broadcastElements(EVAOperation type) {
-		// TODO Auto-generated method stub
-
 	}
 
 	@Override

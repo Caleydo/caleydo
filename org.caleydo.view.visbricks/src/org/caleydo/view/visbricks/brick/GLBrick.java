@@ -713,7 +713,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param viewType
 	 */
 	public void setContainedView(EContainedViewType viewType) {
-
+		currentViewType = viewType;
 		LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
 
 		if (viewRenderer == null)
@@ -769,7 +769,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
-		currentViewType = viewType;
+
 	}
 
 	public TextureManager getTextureManager() {

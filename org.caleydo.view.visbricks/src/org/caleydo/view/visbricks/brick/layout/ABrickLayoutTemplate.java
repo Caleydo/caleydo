@@ -184,7 +184,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 	/**
 	 * @return Default height in pixels required by the brick with the current
-	 *         layout and view
+	 *         layout and view. 
 	 */
 	public int getDefaultHeightPixels() {
 

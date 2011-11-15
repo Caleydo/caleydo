@@ -14,6 +14,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
@@ -440,9 +441,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 				brick.getID());
 	}
 
+	/**
+	 * Returns the default height of the brick depending on the type of the
+	 * view. If the {@link EContainedViewType#isUseProportionalHeight()} is
+	 * true, a proportional height is set. Otherwise the height of the view and
+	 * the toolbars etc is added and returned.
+	 */
 	@Override
 	public int getDefaultHeightPixels() {
-		if (dimensionGroup.isProportionalMode()) {
+		if (brick.getCurrentViewType().isUseProportionalHeight()) {
 			int height = dimensionGroup.getParentGLCanvas().getHeight() - 300;
 			int brickSize = (int) ((float) height
 					/ (float) dimensionGroup.getDataContainer().getNrRecords() * brick
