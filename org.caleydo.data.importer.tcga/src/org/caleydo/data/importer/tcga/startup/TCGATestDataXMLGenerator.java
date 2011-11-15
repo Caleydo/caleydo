@@ -28,8 +28,8 @@ public class TCGATestDataXMLGenerator {
 	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
 	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
 
-	public static final String MI_RNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
-	public static final String MI_RNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
+	public static final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
+	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
 
 	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
 	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
@@ -38,7 +38,28 @@ public class TCGATestDataXMLGenerator {
 	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
-		+ System.getProperty("file.separator") + "tcga_test_data.xml";
+		+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
+
+	/*
+	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
+		+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/";
+
+	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
+	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
+
+	public static final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
+	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
+
+	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
+	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
+		+ "methylation_cnmf/cnmf.membership.txt";
+
+	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
+
+	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
+		+ System.getProperty("file.separator") + "tcga_brca_data.xml";
+	*/
+
 
 	public static void main(String[] args) {
 
@@ -46,7 +67,7 @@ public class TCGATestDataXMLGenerator {
 		dataTypeSets.add(setUpMRNAData());
 		dataTypeSets.add(setUpMiRNAData());
 		dataTypeSets.add(setUpMethylationData());
-		dataTypeSets.add(setUpCopyNubmerData());
+		dataTypeSets.add(setUpCopyNumberData());
 
 		DataSetMetaInfoCollection dataTypeSetCollection = new DataSetMetaInfoCollection();
 		dataTypeSetCollection.setDataTypeSetCollection(dataTypeSets);
@@ -104,10 +125,11 @@ public class TCGATestDataXMLGenerator {
 		DataSetMetaInfo mirnaData = new DataSetMetaInfo();
 		mirnaData.setName("miRNA data");
 		mirnaData.setDataDomainType("org.caleydo.datadomain.generic");
-		mirnaData.setDataPath(MI_RNA);
-		mirnaData.setGroupingPath(MI_RNA_GROUPING);
-		mirnaData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_BROWN.name());
-
+		mirnaData.setDataPath(MIRNA);
+		mirnaData.setGroupingPath(MIRNA_GROUPING);
+		//mirnaData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_BROWN.name());
+		mirnaData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+		
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
@@ -130,7 +152,8 @@ public class TCGATestDataXMLGenerator {
 		methylationData.setDataDomainType("org.caleydo.datadomain.generic");
 		methylationData.setDataPath(METHYLATION);
 		methylationData.setGroupingPath(METHYLATION_GROUPING);
-		methylationData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_PURPLE.name());
+		//methylationData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_PURPLE.name());
+		methylationData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
@@ -148,14 +171,15 @@ public class TCGATestDataXMLGenerator {
 		return methylationData;
 	}
 
-	private static DataSetMetaInfo setUpCopyNubmerData() {
+	private static DataSetMetaInfo setUpCopyNumberData() {
 		DataSetMetaInfo copyNumberData = new DataSetMetaInfo();
 		copyNumberData.setName("Copy number data");
 		copyNumberData.setDataDomainType("org.caleydo.datadomain.genetic");
 		copyNumberData.setDataPath(COPY_NUMBER);
 		// methylationData.setGroupingPath(METHYLATION_GROUPING);
-		copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING.name());
-
+		//copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING.name());
+		copyNumberData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+		
 		DataDomainConfiguration copyNumberConfiguration = new DataDomainConfiguration();
 		copyNumberConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 		copyNumberConfiguration.setRecordIDCategory("SAMPLE");

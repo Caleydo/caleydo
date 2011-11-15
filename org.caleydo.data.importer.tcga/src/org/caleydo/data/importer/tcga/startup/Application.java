@@ -70,7 +70,7 @@ public class Application
 		if (runConfigParameters == null || runConfigParameters.length != 2) {
 
 			inputDataTypeSetCollectionFile =
-				System.getProperty("user.home") + System.getProperty("file.separator") + "tcga_test_data.xml";
+				System.getProperty("user.home") + System.getProperty("file.separator") + "tcga_gbm_data.xml";
 
 			outputCaleydoProjectFile =
 				System.getProperty("user.home") + System.getProperty("file.separator") + "export_"
