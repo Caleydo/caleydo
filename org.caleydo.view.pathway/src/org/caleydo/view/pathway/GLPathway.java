@@ -92,6 +92,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private SelectionManager geneSelectionManager;
+	private SelectionManager sampleSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -141,14 +142,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		this.pathway = pathway;
 	}
-	
+
 	@Override
 	public void setDataContainer(DataContainer dataContainer) {
 
 		super.setDataContainer(dataContainer);
-		
+
 		if (dataContainer instanceof PathwayDataContainer)
-			pathway = ((PathwayDataContainer)dataContainer).getPathway();
+			pathway = ((PathwayDataContainer) dataContainer).getPathway();
 	}
 
 	public void setPathway(final int iPathwayID) {
@@ -360,7 +361,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 							elementRep, item.getSelectionType());
 				}
 			}
-		} else if (selectionDelta.getIDType().getIDCategory() == dimensionSelectionManager
+		} else if (selectionDelta.getIDType().getIDCategory() == sampleSelectionManager
 				.getIDType().getIDCategory()) {
 
 			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
@@ -919,8 +920,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
 				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType())) {
 			geneSelectionManager = dataDomain.getRecordSelectionManager();
+			sampleSelectionManager = dataDomain.getDimensionSelectionManager();
 		} else {
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
+			sampleSelectionManager = dataDomain.getRecordSelectionManager();
 		}
 		super.setDataDomain(dataDomain);
 	}

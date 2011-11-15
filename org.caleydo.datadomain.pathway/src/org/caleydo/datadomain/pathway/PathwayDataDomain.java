@@ -33,8 +33,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 	IDType primaryIDType;
 
-	// private PathwayDatabaseType pathwayDatabaseType;
-
 	/**
 	 * Counter used for determining the extension that together with the type
 	 * builds the data domain ID.
@@ -68,11 +66,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see org.caleydo.core.event.AEventHandler#run()
-	 */
 	@Override
 	public void run() {
 
@@ -83,8 +76,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName())) {
 
-			// pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.BIOCARTA);
-
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
 					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
 					"data/html");
@@ -93,8 +84,6 @@ public class PathwayDataDomain extends ADataDomain {
 		}
 
 		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName())) {
-
-			// pathwayDataDomain.setPathwayDatabaseType(PathwayDatabaseType.KEGG);
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
 					PathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
@@ -106,12 +95,6 @@ public class PathwayDataDomain extends ADataDomain {
 
 		super.run();
 	}
-
-	// @Override
-	// protected void initIDMappings() {
-	// // Load IDs needed in this datadomain
-	// IDMappingLoader.get().loadMappingFile(fileName);
-	// }
 
 	public IDType getPrimaryIDType() {
 		return primaryIDType;
@@ -140,35 +123,4 @@ public class PathwayDataDomain extends ADataDomain {
 		// TODO Calculate properly
 		return 0;
 	}
-
-	// public void setPathwayDatabaseType(PathwayDatabaseType
-	// pathwayDatabaseType) {
-	// //this.pathwayDatabaseType = pathwayDatabaseType;
-	// loadDataParameters.setLabel(pathwayDatabaseType.getName());
-	// }
-
-	//
-	// @Override
-	// public List<ADimensionGroupData> getDimensionGroups() {
-	// return dimensionGroups;
-	// }
-	//
-	// @Override
-	// public void setDimensionGroups(List<ADimensionGroupData> dimensionGroups)
-	// {
-	// this.dimensionGroups = dimensionGroups;
-	// DimensionGroupsChangedEvent event = new
-	// DimensionGroupsChangedEvent(this);
-	// event.setSender(this);
-	// GeneralManager.get().getEventPublisher().triggerEvent(event);
-	// }
-	//
-	// @Override
-	// public void addDimensionGroup(ADimensionGroupData dimensionGroup) {
-	// dimensionGroups.add(dimensionGroup);
-	// DimensionGroupsChangedEvent event = new
-	// DimensionGroupsChangedEvent(this);
-	// event.setSender(this);
-	// GeneralManager.get().getEventPublisher().triggerEvent(event);
-	// }
 }

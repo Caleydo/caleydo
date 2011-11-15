@@ -380,7 +380,7 @@ public class GLPathwayContentCreator {
 			final float fNodeHeight) {
 		gl.glLineWidth(7);
 
-		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glBegin(GL2.GL_POLYGON);//GL_LINE_LOOP);
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
 		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.02f);
 		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.02f);
