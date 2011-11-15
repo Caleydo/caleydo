@@ -14,6 +14,7 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectedElementRep;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -45,7 +46,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
-import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallMultiplePathwayGroupItem;
+import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallPathwayMultiplesGroupItem;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
@@ -53,10 +54,13 @@ import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dialog.CreatePathwayComparisonGroupDialog;
+import org.caleydo.view.visbricks.dialog.CreateSmallPathwayMultiplesGroupDialog;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
+import org.caleydo.view.visbricks.event.OpenCreateSmallPathwayMultiplesGroupDialogEvent;
 import org.caleydo.view.visbricks.listener.OpenCreatePathwayGroupDialogListener;
+import org.caleydo.view.visbricks.listener.OpenCreateSmallPathwayMultiplesGroupDialogListener;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -100,6 +104,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	private RelationsUpdatedListener relationsUpdateListener;
 	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
+	private OpenCreateSmallPathwayMultiplesGroupDialogListener openCreateSmallPathwayMultiplesGroupDialogListener;
 
 	private BrickState expandedBrickState;
 
@@ -215,13 +220,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void rightClicked(Pick pick) {
 
-//				// Check if the brick is the center brick
-//				if (dimensionGroup.getDataContainer() == dataContainer)
-//					contextMenuCreator
-//							.addContextMenuItem(new CreateSmallMultiplePathwayGroupItem(
-//									dimensionGroup.getDataContainer(), dimensionGroup
-//											.getDataContainer().getDimensionPerspective()));
-//				else
+				// Check if the brick is the center brick
+				if (dimensionGroup.getDataContainer() == dataContainer)
+					contextMenuCreator
+							.addContextMenuItem(new CreateSmallPathwayMultiplesGroupItem(
+									dimensionGroup.getDataContainer(), dimensionGroup
+											.getDataContainer().getDimensionPerspective()));
+				else
 					contextMenuCreator
 							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
 									dataDomain, dataContainer.getRecordPerspective()
@@ -716,7 +721,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
-
 	}
 
 	public TextureManager getTextureManager() {
@@ -779,6 +783,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		eventPublisher.addListener(OpenCreatePathwayGroupDialogEvent.class,
 				openCreatePathwayGroupDialogListener);
 
+		openCreateSmallPathwayMultiplesGroupDialogListener = new OpenCreateSmallPathwayMultiplesGroupDialogListener();
+		openCreateSmallPathwayMultiplesGroupDialogListener.setHandler(this);
+		eventPublisher.addListener(OpenCreateSmallPathwayMultiplesGroupDialogEvent.class,
+				openCreateSmallPathwayMultiplesGroupDialogListener);
+
 	}
 
 	@Override
@@ -799,6 +808,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			openCreatePathwayGroupDialogListener = null;
 		}
 
+		if (openCreateSmallPathwayMultiplesGroupDialogListener != null) {
+			eventPublisher.removeListener(openCreateSmallPathwayMultiplesGroupDialogListener);
+			openCreateSmallPathwayMultiplesGroupDialogListener = null;
+		}
+		
 		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
 		// visBricks
 		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
@@ -1014,6 +1028,39 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
 		this.brickConfigurer = brickConfigurer;
+	}
+
+	public void openCreateSmallPathwayMultiplesGroupDialog(
+			final DataContainer dimensionGroupDataContainer,
+			final DimensionPerspective dimensionPerspective) {
+		getParentComposite().getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				Shell shell = new Shell();
+				// shell.setSize(500, 800);
+
+				CreateSmallPathwayMultiplesGroupDialog dialog = new CreateSmallPathwayMultiplesGroupDialog(
+						shell, dimensionGroupDataContainer, dimensionPerspective);
+				dialog.create();
+				dialog.setBlockOnOpen(true);
+
+				if (dialog.open() == Status.OK) {
+					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
+					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+
+					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
+							.getPathwayDimensionGroupData();
+
+					// IDataDomain pathwayDataDomain = DataDomainManager.get()
+					// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
+					dataContainers.add(pathwayDimensionGroupData);
+					event.setDataContainers(dataContainers);
+					event.setSender(this);
+					eventPublisher.triggerEvent(event);
+				}
+			}
+		});
 	}
 
 	public void openCreatePathwayGroupDialog(

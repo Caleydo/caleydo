@@ -10,7 +10,7 @@ import org.caleydo.core.event.AEvent;
  * @author Marc Streit
  * 
  */
-public class OpenCreateSmallMultiplePathwayGroupDialogEvent extends AEvent {
+public class OpenCreateSmallPathwayMultiplesGroupDialogEvent extends AEvent {
 
 	/**
 	 * The base data container which contains the subgroups for which the small
@@ -29,7 +29,7 @@ public class OpenCreateSmallMultiplePathwayGroupDialogEvent extends AEvent {
 	 *            the base data container which contains the subgroups for which
 	 *            the small multiples will be created.
 	 */
-	public OpenCreateSmallMultiplePathwayGroupDialogEvent(
+	public OpenCreateSmallPathwayMultiplesGroupDialogEvent(
 			DataContainer dimensionGroupDataContainer,
 			DimensionPerspective dimensionPerspective) {
 

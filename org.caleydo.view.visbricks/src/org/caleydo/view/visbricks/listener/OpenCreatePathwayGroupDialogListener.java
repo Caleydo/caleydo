@@ -8,7 +8,7 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
 /**
  * Listener for the event {@link OpenCreatePathwayGroupDialogEvent}.
  * 
- * @author Partl
+ * @author Christian Partl
  * 
  */
 public class OpenCreatePathwayGroupDialogListener extends AEventListener<GLBrick> {

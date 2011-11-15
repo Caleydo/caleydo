@@ -6,12 +6,8 @@ import java.util.Collections;
 import java.util.HashMap;
 
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
@@ -32,82 +28,38 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 
 /**
- * Dialog where the user can specify the pathways that shall be displayed as a
- * dimension group in Visbricks.
+ * Dialog where the user can specify the pathway that shall be displayed as a
+ * dimension group with small multiples in Visbricks.
  * 
- * @author Christian Partl
  * @author Marc Streit
  * 
  */
-public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
+public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 
-	private DataContainer inputDataContainer;
-
-	private ATableBasedDataDomain sourceDataDomain;
-	private PathwayDataDomain pathwayDataDomain;
-	private RecordVirtualArray sourceVA;
+	private DataContainer dataContainer;
 	private DimensionPerspective dimensionPerspective;
-	private RecordPerspective recordPerspective;
+
+	private PathwayDataDomain pathwayDataDomain;
 
 	private Table pathwayTable;
 
-	//private PathwayTableSorter pathwayTableSorter;
 	private Composite parent;
 
 	private PathwayDimensionGroupData pathwayDimensionGroupData;
 	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
 
-	// private class PathwayTableSorter implements Listener {
-	//
-	// @Override
-	// public void handleEvent(Event e) {
-	// sort(0, !(pathwayTable.getSortDirection() == SWT.UP));
-	// }
-	//
-	// public void sort(int columnIndex, boolean sortAscending) {
-	// TableItem[] items = pathwayTable.getItems();
-	// Collator collator = Collator.getInstance(Locale.getDefault());
-	//
-	// for (int i = 1; i < items.length; i++) {
-	// String value1 = items[i].getText(columnIndex);
-	// for (int j = 0; j < i; j++) {
-	// String value2 = items[j].getText(columnIndex);
-	// if ((collator.compare(value1, value2) < 0 && sortAscending)
-	// || (collator.compare(value1, value2) > 0 && !sortAscending)) {
-	// String[] values = { items[i].getText(0), items[i].getText(1) };
-	// PathwayGraph pathway = (PathwayGraph) items[i].getData();
-	// boolean checked = items[i].getChecked();
-	// items[i].dispose();
-	// TableItem item = new TableItem(pathwayTable, SWT.NONE, j);
-	// item.setText(values);
-	// item.setData(pathway);
-	// item.setChecked(checked);
-	// items = pathwayTable.getItems();
-	// break;
-	// }
-	// }
-	// }
-	//
-	// if (sortAscending) {
-	// pathwayTable.setSortDirection(SWT.UP);
-	// } else {
-	// pathwayTable.setSortDirection(SWT.DOWN);
-	// }
-	// }
-	// }
+	public CreateSmallPathwayMultiplesGroupDialog(Shell parentShell,
+			DataContainer dataContainer, DimensionPerspective dimensionPerspective) {
 
-	public CreatePathwayComparisonGroupDialog(Shell parentShell,
-			DataContainer dataContainer) {
-		
 		super(parentShell);
-		// pathwayTableSorter = new PathwayTableSorter();
-		inputDataContainer = dataContainer;
+		this.dimensionPerspective = dimensionPerspective;
+		this.dataContainer = dataContainer;
 	}
 
 	@Override
 	public void create() {
 		super.create();
-		setTitle("Create Pathway Group");
+		setTitle("Create Small Pathway Multiples Group");
 	}
 
 	@Override
@@ -129,17 +81,16 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		descriptionLabel.setLayoutData(data);
 
 		VirtualArray<?, ?, ?> va = null;
-		if (inputDataContainer.getDataDomain().isColumnDimension())
-			va = inputDataContainer.getRecordPerspective().getVirtualArray();
-		else
-			va = inputDataContainer.getDimensionPerspective().getVirtualArray();
+		// if (dataContainer.getDataDomain().isColumnDimension())
+		va = dataContainer.getDataDomain().getTable().getDefaultDimensionPerspective()
+				.getVirtualArray();
 
 		pathwayGraphsWithOccurrences = PathwayManager.get()
 				.getPathwayGraphsWithOccurencesByGeneIDs(
-						(GeneticDataDomain) inputDataContainer.getDataDomain(),
+						(GeneticDataDomain) dataContainer.getDataDomain(),
 						va.getIdType(), va.getIndexList());
 
-		// Create a list that contains pathways sorted by gene occurences
+		// Create a list that contains pathways sorted by gene occurrences
 		ArrayList<Pair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<Pair<Integer, PathwayGraph>>();
 		for (PathwayGraph pathway : pathwayGraphsWithOccurrences.keySet()) {
 			sortedPathwayList.add(new Pair<Integer, PathwayGraph>(
@@ -252,49 +203,27 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+
+		// list
 		if (!pathways.isEmpty()) {
-			pathwayDimensionGroupData = new PathwayDimensionGroupData(sourceDataDomain,
-					pathwayDataDomain, recordPerspective, dimensionPerspective, pathways,
-					"PathwayGroup");
+
+			ArrayList<PathwayGraph> pathwayGraphs = new ArrayList<PathwayGraph>();
+			
+			// TODO do this for all pathway - not just the first from the pathway
+			PathwayGraph pathway = pathways.get(0);
+			pathwayGraphs.add(pathway);
+
+			pathwayDimensionGroupData = new PathwayDimensionGroupData(
+					dataContainer.getDataDomain(), pathwayDataDomain,
+					dataContainer.getRecordPerspective(), dimensionPerspective, pathwayGraphs,
+					pathway.getTitle());
 
 			super.okPressed();
 		}
+
 	}
 
 	public PathwayDimensionGroupData getPathwayDimensionGroupData() {
 		return pathwayDimensionGroupData;
 	}
-
-	public IDataDomain getSourceDataDomain() {
-		return sourceDataDomain;
-	}
-
-	public void setSourceDataDomain(ATableBasedDataDomain sourceDataDomain) {
-		this.sourceDataDomain = sourceDataDomain;
-	}
-
-	public void setSourceVA(RecordVirtualArray sourceVA) {
-		this.sourceVA = sourceVA;
-	}
-
-	public RecordVirtualArray getSourceVA() {
-		return sourceVA;
-	}
-
-	/**
-	 * @param dimensionPerspective
-	 *            setter, see {@link #dimensionPerspective}
-	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
-		this.dimensionPerspective = dimensionPerspective;
-	}
-
-	/**
-	 * @param recordPerspective
-	 *            setter, see {@link #recordPerspective}
-	 */
-	public void setRecordPerspective(RecordPerspective recordPerspective) {
-		this.recordPerspective = recordPerspective;
-	}
-
 }
