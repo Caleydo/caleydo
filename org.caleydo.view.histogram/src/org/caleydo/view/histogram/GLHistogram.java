@@ -13,7 +13,7 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
@@ -640,7 +640,7 @@ public class GLHistogram extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;

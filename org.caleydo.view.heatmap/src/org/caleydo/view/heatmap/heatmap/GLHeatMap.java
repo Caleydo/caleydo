@@ -11,7 +11,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -382,7 +382,7 @@ public class GLHeatMap extends ATableBasedView {
 
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
 
-		handleConnectedElementReps(selectionDelta);
+		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		// event.setDataDomainID(dataDomain.getDataDomainID());
@@ -503,30 +503,31 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
-			throws InvalidAttributeValueException {
-//		SelectedElementRep elementRep;
-//		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
-//
-//		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
-//				.indicesOf(id)) {
-//			if (recordIndex == -1) {
-//				continue;
-//			}
-//
-//			float xValue = renderStyle.getXCenter();
-//
-//			float yValue = 0;
-//
-//			yValue = getYCoordinateByContentIndex(recordIndex);
-//			yValue = viewFrustum.getHeight() - yValue;
-//			elementRep = new SelectedElementRep(recordIDType, uniqueID, xValue, yValue, 0);
-//
-//			alElementReps.add(elementRep);
-//		}
-//
-//		return alElementReps;
-		return null;
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
+		ElementConnectionInformation elementRep;
+		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(
+				4);
+
+		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
+				.indicesOf(id)) {
+			if (recordIndex == -1) {
+				continue;
+			}
+
+			float xValue = renderStyle.getXCenter();
+
+			float yValue = 0;
+
+			yValue = getYCoordinateOfRecord(recordIndex);
+			yValue = viewFrustum.getHeight() - yValue;
+			elementRep = new ElementConnectionInformation(recordIDType, uniqueID, xValue,
+					yValue, 0);
+
+			alElementReps.add(elementRep);
+		}
+
+		return alElementReps;
 	}
 
 	/**
@@ -536,8 +537,7 @@ public class GLHeatMap extends ATableBasedView {
 	 * @param recordIndex
 	 * @return
 	 */
-	public Float getYCoordinateByContentIndex(int recordIndex) {
-
+	public Float getYCoordinateOfRecord(int recordIndex) {
 		if (isHideElements()) {
 			Integer recordID = dataContainer.getRecordPerspective().getVirtualArray()
 					.get(recordIndex);

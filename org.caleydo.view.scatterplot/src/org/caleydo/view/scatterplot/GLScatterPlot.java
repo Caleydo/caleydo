@@ -36,7 +36,7 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -2439,7 +2439,7 @@ public class GLScatterPlot extends ATableBasedView {
 			}
 		}
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-		handleConnectedElementReps(selectionDelta);
+		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -2862,7 +2862,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// }
 
 		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
-		handleConnectedElementReps(selectionDelta);
+		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -2881,7 +2881,7 @@ public class GLScatterPlot extends ATableBasedView {
 				dimensionVA.get(iMouseOverAxisIndexY));
 
 		SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
-		handleConnectedElementReps(selectionDelta);
+		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -3095,7 +3095,7 @@ public class GLScatterPlot extends ATableBasedView {
 			recordSelectionManager.addToType(selectionType, recordID);
 
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-		handleConnectedElementReps(selectionDelta);
+		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setSender(this);
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -3142,7 +3142,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// AlSelectionTypes.add(SelectionType.SELECTION);
 		// addSelectionType();
 		SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-		handleConnectedElementReps(selectionDelta);
+		prepareVisualLinkingInformation(selectionDelta);
 		SelectionUpdateEvent event2 = new SelectionUpdateEvent();
 		event2.setSender(this);
 		event2.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -3190,7 +3190,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void handleConnectedElementReps(SelectionDelta selectionDelta) {
+	protected void prepareVisualLinkingInformation(SelectionDelta selectionDelta) {
 		// Not Used in this View..
 	}
 
@@ -3229,11 +3229,11 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType,
 			int iDimensionIndex) throws InvalidAttributeValueException {
 
-		SelectedElementRep elementRep;
-		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>(4);
+		ElementConnectionInformation elementRep;
+		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(4);
 
 		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
 				.indicesOf(iDimensionIndex)) {
@@ -3267,7 +3267,7 @@ public class GLScatterPlot extends ATableBasedView {
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new SelectedElementRep(recordIDType, viewID, vecPoint.x(),
+			elementRep = new ElementConnectionInformation(recordIDType, viewID, vecPoint.x(),
 					vecPoint.y() - fAnimationTranslation, 0);
 
 			alElementReps.add(elementRep);

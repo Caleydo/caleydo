@@ -7,13 +7,13 @@ import java.util.ArrayList;
 import org.caleydo.core.data.id.IDType;
 
 /**
- * Class that holds information about a selected element in a specific view.
+ * Class that holds information about the position of a selected element.
  * 
  * @author Marc Streit
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class SelectedElementRep {
+public class ElementConnectionInformation {
 
 	/** viewID of the original view that contained the selection point */
 	private int sourceViewID;
@@ -43,7 +43,7 @@ public class SelectedElementRep {
 	 * @param z
 	 *            coordinate in z direction
 	 */
-	public SelectedElementRep(IDType idType, final int sourceViewID, final float x, final float y,
+	public ElementConnectionInformation(IDType idType, final int sourceViewID, final float x, final float y,
 		final float z) {
 		this(idType, sourceViewID, sourceViewID, x, y, z);
 	}
@@ -61,7 +61,7 @@ public class SelectedElementRep {
 	 * @param y
 	 * @param z
 	 */
-	public SelectedElementRep(IDType idType, final int sourceViewID, int remoteViewID, final float x,
+	public ElementConnectionInformation(IDType idType, final int sourceViewID, int remoteViewID, final float x,
 		final float y, final float z) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;
@@ -78,7 +78,7 @@ public class SelectedElementRep {
 	 * @param points3d
 	 *            the list of connection points
 	 */
-	public SelectedElementRep(IDType idType, final int sourceViewID, final ArrayList<Vec3f> points3d) {
+	public ElementConnectionInformation(IDType idType, final int sourceViewID, final ArrayList<Vec3f> points3d) {
 		this(idType, sourceViewID, sourceViewID, points3d);
 	}
 
@@ -92,7 +92,7 @@ public class SelectedElementRep {
 	 * @param points3d
 	 *            the list of connection points
 	 */
-	public SelectedElementRep(IDType idType, final int sourceViewID, int remoteViewID,
+	public ElementConnectionInformation(IDType idType, final int sourceViewID, int remoteViewID,
 		final ArrayList<Vec3f> points3d) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;

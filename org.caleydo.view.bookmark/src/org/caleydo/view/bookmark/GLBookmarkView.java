@@ -13,7 +13,7 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
@@ -345,7 +345,7 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;

@@ -41,7 +41,7 @@ import org.caleydo.core.data.filter.event.NewRecordFilterEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -1326,7 +1326,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				// sendSelectionCommandEvent(EIDType.EXPRESSION_INDEX, command);
 
 				SelectionDelta selectionDelta = recordSelectionManager.getDelta();
-				handleConnectedElementReps(selectionDelta);
+				prepareVisualLinkingInformation(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setDataDomainID(dataDomain.getDataDomainID());
@@ -1383,7 +1383,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			SelectionDelta selectionDelta = dimensionSelectionManager.getDelta();
 			// if (dimensionSelectionManager.getIDType() ==
 			// EIDType.EXPERIMENT_INDEX) {
-			handleConnectedElementReps(selectionDelta);
+			prepareVisualLinkingInformation(selectionDelta);
 			// }
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
@@ -1643,10 +1643,10 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
 			throws InvalidAttributeValueException {
 
-		ArrayList<SelectedElementRep> alElementReps = new ArrayList<SelectedElementRep>();
+		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>();
 
 		float x = 0;
 		float y = 0;
@@ -1664,7 +1664,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			y = renderStyle.getBottomSpacing();
 			// y =table.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
-			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
+			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
 
 		} else {
 
@@ -1683,7 +1683,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			} else {
 				y = y * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
-			alElementReps.add(new SelectedElementRep(idType, uniqueID, x, y, 0.0f));
+			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
 		}
 
 		return alElementReps;

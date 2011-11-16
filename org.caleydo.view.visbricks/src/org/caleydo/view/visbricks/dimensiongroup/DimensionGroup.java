@@ -14,7 +14,7 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.RecordVAUpdateListener;
@@ -1014,7 +1014,7 @@ public class DimensionGroup extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;

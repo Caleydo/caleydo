@@ -214,7 +214,7 @@ public class ElementLayout {
 	 */
 	public void setPixelSizeX(int pixelSizeX) {
 		if (pixelGLConverter == null)
-			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is table.");
+			throw new IllegalStateException("Tried to set a pixel size, but pixelGLConverter was null.");
 		resetX();
 		this.pixelSizeX = pixelSizeX;
 	}
@@ -609,6 +609,7 @@ public class ElementLayout {
 	 * if its {@link LayoutContainer} uses priority rendering.
 	 * 
 	 * @param renderingPriority
+	 *            sets the priority of the rendering, where higher values have a higher priority
 	 */
 	public void setRenderingPriority(int renderingPriority) {
 		this.renderingPriority = renderingPriority;

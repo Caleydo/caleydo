@@ -19,7 +19,7 @@ import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.selection.ESelectionCommandType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -357,7 +357,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				// instanceof AGLViewBrowser)
 				// viewID = glRemoteRenderingView.getID();
 
-				SelectedElementRep elementRep = new SelectedElementRep(
+				ElementConnectionInformation elementRep = new ElementConnectionInformation(
 						dataDomain.getRecordIDType(), viewID, vertexRep.getXOrigin()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 								+ vecTranslation.x(),
@@ -757,7 +757,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			tmpPathwayVertexGraphItemRep = pathwayItemManager
 					.getPathwayVertexRep(vertexRepID);
 
-			SelectedElementRep elementRep = new SelectedElementRep(
+			ElementConnectionInformation elementRep = new ElementConnectionInformation(
 					dataDomain.getRecordIDType(), viewID,
 					tmpPathwayVertexGraphItemRep.getXOrigin()
 							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
@@ -945,7 +945,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;

@@ -9,7 +9,7 @@ import java.util.Map.Entry;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -69,7 +69,7 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections
 					.getValue().entrySet()) {
-				for (SelectedElementRep selectedElementRep : connections.getValue()) {
+				for (ElementConnectionInformation selectedElementRep : connections.getValue()) {
 
 					if (selectedElementRep.getIDType() != idType)
 						throw new IllegalStateException(

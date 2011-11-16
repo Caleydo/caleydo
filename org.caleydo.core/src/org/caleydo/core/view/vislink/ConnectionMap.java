@@ -2,10 +2,10 @@ package org.caleydo.core.view.vislink;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 
 /**
- * Maps connection-ids to list of {@link SelectedElementRep}s
+ * Maps connection-ids to list of {@link ElementConnectionInformation}s
  */
 public class ConnectionMap
 	extends HashMap<Integer, SelectedElementRepList> {

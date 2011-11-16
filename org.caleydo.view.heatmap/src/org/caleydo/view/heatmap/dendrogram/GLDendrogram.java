@@ -19,7 +19,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -1471,7 +1471,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 						.getNodeByNumber(externalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
-				handleConnectedElementReps(selectionDelta);
+				prepareVisualLinkingInformation(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -1556,7 +1556,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 						.getNodeByNumber(externalID).getLeafID());
 				selectionDelta = selectionManager.getDelta();
 
-				handleConnectedElementReps(selectionDelta);
+				prepareVisualLinkingInformation(selectionDelta);
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
@@ -1599,7 +1599,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType,
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType,
 			int dimensionIndex) throws InvalidAttributeValueException {
 		return null;
 	}

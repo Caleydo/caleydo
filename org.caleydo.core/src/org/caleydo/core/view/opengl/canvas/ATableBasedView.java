@@ -16,7 +16,7 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.DeltaConverter;
@@ -107,6 +107,12 @@ public abstract class ATableBasedView
 	protected DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
+	 * Flag that tells the view whether visual linking is used for it's element so it must create
+	 * {@link ElementConnectionInformation}
+	 */
+	private boolean isVisualLinkingActive = false;
+
+	/**
 	 * Constructor for dimension based views
 	 * 
 	 * @param glCanvas
@@ -185,17 +191,26 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Create 0:n {@link SelectedElementRep} for the selectionDelta
+	 * @param isVisualLinkingActive
+	 *            setter, see {@link #isVisualLinkingActive}
+	 */
+	public void setVisualLinkingActive(boolean isVisualLinkingActive) {
+		this.isVisualLinkingActive = isVisualLinkingActive;
+	}
+
+	/**
+	 * Create {@link ElementConnectionInformation}, which basically describes anchor points for visual links
+	 * for the element specified through the id
 	 * 
 	 * @param iDType
-	 *            TODO
-	 * @param selectionDelta
-	 *            the selection delta which should be represented
+	 *            the type of the id - for possible conversion
+	 * @param the
+	 *            id of the element
 	 * @throws InvalidAttributeValueException
 	 *             when the selectionDelta does not contain a valid type for this view
 	 */
-	protected abstract ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
-		throws InvalidAttributeValueException;
+	protected abstract ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+		IDType idType, int id) throws InvalidAttributeValueException;
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
@@ -209,14 +224,16 @@ public abstract class ATableBasedView
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementReps(selectionDelta);
+			if (isVisualLinkingActive)
+				prepareVisualLinkingInformation(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
 		else if (selectionDelta.getIDType() == dimensionIDType) {
 
 			dimensionSelectionManager.setDelta(selectionDelta);
-			handleConnectedElementReps(selectionDelta);
+			if (isVisualLinkingActive)
+				prepareVisualLinkingInformation(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
 		}
@@ -285,12 +302,12 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Handles the creation of {@link SelectedElementRep} according to the data in a selectionDelta
+	 * Handles the creation of {@link ElementConnectionInformation} according to the data in a selectionDelta
 	 * 
 	 * @param selectionDelta
 	 *            the selection data that should be handled
 	 */
-	protected void handleConnectedElementReps(SelectionDelta selectionDelta) {
+	protected void prepareVisualLinkingInformation(SelectionDelta selectionDelta) {
 		try {
 			int id = -1;
 
@@ -325,11 +342,12 @@ public abstract class ATableBasedView
 					if (id == -1)
 						throw new IllegalArgumentException("No internal ID in selection delta");
 
-					ArrayList<SelectedElementRep> alRep = createElementRep(idType, id);
+					ArrayList<ElementConnectionInformation> alRep =
+						createElementConnectionInformation(idType, id);
 					if (alRep == null) {
 						continue;
 					}
-					for (SelectedElementRep rep : alRep) {
+					for (ElementConnectionInformation rep : alRep) {
 						if (rep == null) {
 							continue;
 						}

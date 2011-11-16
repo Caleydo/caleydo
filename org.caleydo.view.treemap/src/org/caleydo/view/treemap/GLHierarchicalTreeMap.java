@@ -16,7 +16,7 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.view.treemap.ZoomInEvent;
 import org.caleydo.core.event.view.treemap.ZoomOutEvent;
@@ -496,7 +496,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

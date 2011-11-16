@@ -50,8 +50,8 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 			int lastElementIndex = recordVA.size() - 1;
 			int lastElementID = recordVA.get(lastElementIndex);
 			float lastElementHeight = detailHeatMap.getFieldHeight(lastElementID) / 2;
-			float height = detailHeatMap.getYCoordinateByContentIndex(lastElementIndex)
-					+ lastElementHeight - detailHeatMap.getYCoordinateByContentIndex(0);
+			float height = detailHeatMap.getYCoordinateOfRecord(lastElementIndex)
+					+ lastElementHeight - detailHeatMap.getYCoordinateOfRecord(0);
 
 			render(gl,
 					new Vec3f(0, yOverview + overviewHeatMap.getSelectedClusterHeight(),

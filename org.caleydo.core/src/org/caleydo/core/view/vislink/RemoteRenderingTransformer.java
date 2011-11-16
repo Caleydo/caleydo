@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -76,7 +76,7 @@ public class RemoteRenderingTransformer
 				}
 
 				ViewManager vm = GeneralManager.get().getViewManager();
-				for (SelectedElementRep sel : connections.getValue()) {
+				for (ElementConnectionInformation sel : connections.getValue()) {
 					AGLView view = vm.getGLView(sel.getSourceViewID());
 					RemoteLevelElement rle = view.getRemoteLevelElement();
 					if (remoteLevelElementWhiteList.contains(rle)) {
@@ -85,13 +85,13 @@ public class RemoteRenderingTransformer
 							transformedPoints.add(transform(vec, rle));
 						}
 						if (((AGLView) view.getRemoteRenderingGLView()).isRenderedRemote()) {
-							SelectedElementRep trans =
-								new SelectedElementRep(sel.getIDType(), viewID, viewID, transformedPoints);
+							ElementConnectionInformation trans =
+								new ElementConnectionInformation(sel.getIDType(), viewID, viewID, transformedPoints);
 							newSourceConnections.add(trans);
 						}
 						else {
-							SelectedElementRep trans =
-								new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
+							ElementConnectionInformation trans =
+								new ElementConnectionInformation(sel.getIDType(), sel.getSourceViewID(), viewID,
 									transformedPoints);
 							repList.add(trans);
 						}

@@ -32,6 +32,7 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 
 		Row hmRow = new Row();
+		hmRow.setPriorityRendereing(true);
 		// hmRow.grabY = true;
 		// heat map
 		heatMapLayout = new ElementLayout();
@@ -40,21 +41,25 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 		heatMapLayout.setRenderer(heatMapRenderer);
 		heatMapLayout.addForeGroundRenderer(recordSelectionRenderer);
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
+		heatMapLayout.setRenderingPriority(1);
 
 		boolean renderCaptions = false;
 		if (heatMap.isShowCaptions() || heatMap.isActive())
 			renderCaptions = true;
 		ElementLayout caption = null;
 		ElementLayout spacing = null;
+
+		hmRow.append(heatMapLayout);
+
 		if (renderCaptions) {
-			// content cage
 
 			spacing = new ElementLayout();
 			spacing.setAbsoluteSizeX(0.01f);
 
 			// content captions
 			caption = new ElementLayout();
-			caption.setRatioSizeX(0.29f);
+			caption.setPixelGLConverter(pixelGLConverter);
+			caption.setPixelSizeX(80);
 			caption.setRatioSizeY(1);
 
 			caption.setRenderer(recordCaptionRenderer);
@@ -62,8 +67,6 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 			hmRow.append(spacing);
 			hmRow.append(caption);
 		}
-
-		hmRow.append(heatMapLayout);
 
 		mainColumn.append(hmRow);
 

@@ -3,7 +3,7 @@ package org.caleydo.core.event.view.selection;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.event.AEvent;
 
 /**
@@ -19,8 +19,8 @@ public class AddSelectionEvent
 	/** Related connectionID of the selection, might be legal in different views */
 	private Integer connectionID;
 
-	/** {@link SelectedElementRep} of the selection to add */
-	private SelectedElementRep selectedElementRep;
+	/** {@link ElementConnectionInformation} of the selection to add */
+	private ElementConnectionInformation selectedElementRep;
 
 	@Override
 	public boolean checkIntegrity() {
@@ -38,11 +38,11 @@ public class AddSelectionEvent
 		this.connectionID = connectionID;
 	}
 
-	public SelectedElementRep getSelectedElementRep() {
+	public ElementConnectionInformation getSelectedElementRep() {
 		return selectedElementRep;
 	}
 
-	public void setSelectedElementRep(SelectedElementRep selectedElementRep) {
+	public void setSelectedElementRep(ElementConnectionInformation selectedElementRep) {
 		this.selectedElementRep = selectedElementRep;
 	}
 

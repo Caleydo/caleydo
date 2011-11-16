@@ -8,7 +8,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.selection.AddSelectionEvent;
@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 
 /**
  * <p>
- * Selection manager that manages selections and their {@link SelectedElementRep}.
+ * Selection manager that manages selections and their {@link ElementConnectionInformation}.
  * </p>
  * <p>
  * The manager is able to identify identical selections in different views. Selections have selection
@@ -121,7 +121,7 @@ public class ConnectedElementRepresentationManager
 
 	/**
 	 * Sends event to add a selection to a specific tree. The data type is determined by the
-	 * {@link SelectedElementRep}, the connection id has to be specified manually
+	 * {@link ElementConnectionInformation}, the connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
 	 *            the connection ID - one connection id per connection line tree
@@ -131,7 +131,7 @@ public class ConnectedElementRepresentationManager
 	 *            specify which selection type is associated with this selection. If the selectionType should
 	 *            not be rendered at the moment (due to user configuration) the call is ignored.
 	 */
-	public void addSelection(int connectionID, final SelectedElementRep selectedElementRep,
+	public void addSelection(int connectionID, final ElementConnectionInformation selectedElementRep,
 		SelectionType selectionType) {
 
 		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
@@ -164,7 +164,7 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Adds a selection to a specific tree. The data type is determined by the {@link SelectedElementRep}, the
+	 * Adds a selection to a specific tree. The data type is determined by the {@link ElementConnectionInformation}, the
 	 * connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
@@ -172,7 +172,7 @@ public class ConnectedElementRepresentationManager
 	 * @param selectedElementRep
 	 *            the selected element rep associated with the tree specified
 	 */
-	public void handleAddSelectionEvent(int connectionID, final SelectedElementRep selectedElementRep) {
+	public void handleAddSelectionEvent(int connectionID, final ElementConnectionInformation selectedElementRep) {
 		ConnectionMap tmpHash = sourceConnectionsByType.get(selectedElementRep.getIDType());
 
 		if (tmpHash == null) {
@@ -194,7 +194,7 @@ public class ConnectedElementRepresentationManager
 	 * @param iElementID
 	 * @param selectedElementRep
 	 */
-	public void removeSelection(final int iElementID, SelectedElementRep selectedElementRep) {
+	public void removeSelection(final int iElementID, ElementConnectionInformation selectedElementRep) {
 
 		if (sourceConnectionsByType.containsKey(iElementID)) {
 			sourceConnectionsByType.get(iElementID).remove(selectedElementRep);
@@ -211,7 +211,7 @@ public class ConnectedElementRepresentationManager
 	 *            specify which selection type is associated with this selection. If the selectionType should
 	 *            not be rendered at the moment (due to user configuration) the call is ignored.
 	 */
-	public void replaceSelection(final int iElementID, SelectedElementRep selectedElementRep,
+	public void replaceSelection(final int iElementID, ElementConnectionInformation selectedElementRep,
 		SelectionType selectionType) {
 		if (!isSelectionTypeRenderedWithVisuaLinks(selectionType))
 			return;
@@ -246,9 +246,9 @@ public class ConnectedElementRepresentationManager
 	 *            the id of the object to be connected
 	 * @return a list of the representations of the points
 	 */
-	public ArrayList<SelectedElementRep> getSelectedElementRepsByElementID(IDType idType, final int iElementID) {
+	public ArrayList<ElementConnectionInformation> getSelectedElementRepsByElementID(IDType idType, final int iElementID) {
 
-		ArrayList<SelectedElementRep> tempList = sourceConnectionsByType.get(idType).get(iElementID);
+		ArrayList<ElementConnectionInformation> tempList = sourceConnectionsByType.get(idType).get(iElementID);
 
 		if (tempList == null)
 			throw new IllegalArgumentException("SelectionManager: No representations for this element ID");
@@ -313,9 +313,9 @@ public class ConnectedElementRepresentationManager
 		if (hashReps == null)
 			return;
 		for (int iElementID : hashReps.keySet()) {
-			ArrayList<SelectedElementRep> alRep = hashReps.get(iElementID);
+			ArrayList<ElementConnectionInformation> alRep = hashReps.get(iElementID);
 
-			Iterator<SelectedElementRep> iterator = alRep.iterator();
+			Iterator<ElementConnectionInformation> iterator = alRep.iterator();
 			while (iterator.hasNext()) {
 				if (iterator.next().getSourceViewID() == viewID) {
 					iterator.remove();
@@ -436,7 +436,7 @@ public class ConnectedElementRepresentationManager
 
 	/**
 	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing transformed selection vertices. The
-	 * remoteViewID field of the contained {@link SelectedElementRep}s references to the view, the coordinates
+	 * remoteViewID field of the contained {@link ElementConnectionInformation}s references to the view, the coordinates
 	 * are related to.
 	 * 
 	 * @return

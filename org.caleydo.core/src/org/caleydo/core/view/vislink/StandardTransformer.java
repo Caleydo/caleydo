@@ -10,7 +10,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
@@ -103,7 +103,7 @@ public class StandardTransformer
 					canvasConnectionMap.put(connections.getKey(), points2D);
 				}
 
-				for (SelectedElementRep sel : connections.getValue()) {
+				for (ElementConnectionInformation sel : connections.getValue()) {
 					if (sel.getRemoteViewID() == viewID) {
 						for (Vec3f vec : sel.getPoints()) {
 							glu.gluProject(vec.x(), vec.y(), vec.z(), mvmatrix, 0, projmatrix, 0, viewport,
@@ -142,14 +142,14 @@ public class StandardTransformer
 					connectionMap.put(connections.getKey(), repList);
 				}
 
-				for (SelectedElementRep sel : connections.getValue()) {
+				for (ElementConnectionInformation sel : connections.getValue()) {
 					if (viewID == sel.getSourceViewID()) {
 						ArrayList<Vec3f> transformedPoints = new ArrayList<Vec3f>();
 						for (Vec3f vec : sel.getPoints()) {
 							transformedPoints.add(vec);
 						}
-						SelectedElementRep trans =
-							new SelectedElementRep(sel.getIDType(), sel.getSourceViewID(), viewID,
+						ElementConnectionInformation trans =
+							new ElementConnectionInformation(sel.getIDType(), sel.getSourceViewID(), viewID,
 								transformedPoints);
 						repList.add(trans);
 					}

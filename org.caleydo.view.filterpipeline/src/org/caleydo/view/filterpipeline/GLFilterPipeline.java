@@ -29,7 +29,7 @@ import org.caleydo.core.data.filter.event.ReEvaluateDimensionFilterListEvent;
 import org.caleydo.core.data.filter.event.ReEvaluateRecordFilterListEvent;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.selection.SelectedElementRep;
+import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -724,7 +724,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 	}
 
 	@Override
-	protected ArrayList<SelectedElementRep> createElementRep(IDType idType, int id)
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
 			throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
