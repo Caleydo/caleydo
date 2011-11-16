@@ -10,6 +10,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class ADataContainerRenderer extends LayoutRenderer {
@@ -17,13 +18,13 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 	public final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
 
 	protected IDataGraphNode node;
-	protected AGLView view;
+	protected GLDataGraph view;
 	protected DragAndDropController dragAndDropController;
 	protected Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions;
 	protected Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions;
 	protected boolean isUpsideDown = false;
 
-	public ADataContainerRenderer(IDataGraphNode node, AGLView view,
+	public ADataContainerRenderer(IDataGraphNode node, GLDataGraph view,
 			DragAndDropController dragAndDropController) {
 		this.node = node;
 		this.view = view;

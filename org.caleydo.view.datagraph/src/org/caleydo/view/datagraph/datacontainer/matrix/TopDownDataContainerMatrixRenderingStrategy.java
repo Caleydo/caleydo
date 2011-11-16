@@ -7,10 +7,10 @@ import java.util.Map;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
@@ -23,7 +23,7 @@ public class TopDownDataContainerMatrixRenderingStrategy extends
 			Map<String, ColorRenderer> cells,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x,
-			float y, IDataGraphNode node, AGLView view) {
+			float y, IDataGraphNode node, GLDataGraph view) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();

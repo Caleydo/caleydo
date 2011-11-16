@@ -9,12 +9,12 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class DataContainerListRenderer extends ADataContainerRenderer {
@@ -27,7 +27,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	private List<DimensionGroupRenderer> dimensionGroupRenderers;
 
-	public DataContainerListRenderer(IDataGraphNode node, AGLView view,
+	public DataContainerListRenderer(IDataGraphNode node, GLDataGraph view,
 			DragAndDropController dragAndDropController,
 			List<DataContainer> dataContainers) {
 		super(node, view, dragAndDropController);
