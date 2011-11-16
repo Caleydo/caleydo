@@ -2,6 +2,7 @@ package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.MinimumSizeComposite;
@@ -23,6 +24,10 @@ public class SetMinViewSizeEventListener
 			SetMinViewSizeEvent setMinViewSizeEvent = (SetMinViewSizeEvent) event;
 			if (setMinViewSizeEvent.getView() == view) {
 				handler.setMinSize(setMinViewSizeEvent.getMinWidth(), setMinViewSizeEvent.getMinHeight());
+				MinSizeAppliedEvent e = new MinSizeAppliedEvent();
+				e.setView(view);
+				e.setSender(this);
+				GeneralManager.get().getEventPublisher().triggerEvent(e);
 			}
 		}
 	}

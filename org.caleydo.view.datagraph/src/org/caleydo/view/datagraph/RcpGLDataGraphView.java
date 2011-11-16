@@ -4,6 +4,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.view.ARcpGLViewPart;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
 
 public class RcpGLDataGraphView extends ARcpGLViewPart {
@@ -29,6 +30,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 		view = new GLDataGraph(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
+		minSizeComposite.setView((AGLView)view);
 		createPartControlGL();
 	}
 

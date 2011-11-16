@@ -128,6 +128,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 		dragAndDropController.clearDraggables();
+		view.updateMinWindowSize(true);
 	}
 
 	@Override
