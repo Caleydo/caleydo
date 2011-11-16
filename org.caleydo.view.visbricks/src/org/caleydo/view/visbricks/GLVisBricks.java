@@ -60,7 +60,6 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
-import org.caleydo.view.visbricks.brick.data.AlphabeticalDataLabelSortingStrategy;
 import org.caleydo.view.visbricks.brick.data.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
@@ -92,6 +91,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;
 	public final static int DIMENSION_GROUP_SIDE_SPACING = 50;
+
+	public final static float[] ARCH_COLOR = { 0f, 0f, 0f, 0.1f };
 
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
 	private ClearSelectionsListener clearSelectionsListener;
@@ -709,14 +710,14 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		gl.glLineWidth(1);
 
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
-
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(0, 0, 0f);
-		gl.glVertex3f(0, archBottomY, 0f);
-		gl.glVertex3f(archSideThickness, archBottomY, 0f);
-		gl.glVertex3f(archSideThickness, 0, 0f);
-		gl.glEnd();
+//		gl.glColor4fv(ARCH_COLOR, 0);
+//
+//		gl.glBegin(GL2.GL_POLYGON);
+//		gl.glVertex3f(0, 0, 0f);
+//		gl.glVertex3f(0, archBottomY, 0f);
+//		gl.glVertex3f(archSideThickness, archBottomY, 0f);
+//		gl.glVertex3f(archSideThickness, 0, 0f);
+//		gl.glEnd();
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(0, archBottomY, 0));
@@ -744,9 +745,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		outputPoints.add(new Vec3f(archInnerWidth, archBottomY, 0));
 		outputPoints.addAll(outputPointsBottom);
 
-		connectionRenderer.render(gl, outputPoints);
+//		connectionRenderer.render(gl, outputPoints);
 
-		gl.glColor4f(0, 0, 0, 0.8f);
+		gl.glColor4f(ARCH_COLOR[0], ARCH_COLOR[1], ARCH_COLOR[2], ARCH_COLOR[3] * 2);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (Vec3f point : outputPointsTop)
 			gl.glVertex3f(point.x(), point.y(), point.z());
@@ -757,7 +758,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			gl.glVertex3f(point.x(), point.y(), point.z());
 		gl.glEnd();
 
-		gl.glColor4f(0, 0, 0, 0.8f);
+		gl.glColor4f(ARCH_COLOR[0], ARCH_COLOR[1], ARCH_COLOR[2], ARCH_COLOR[3] * 2);
 
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(0, archBottomY, 0f);
@@ -771,13 +772,13 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		// Right arch
 
-		gl.glColor4f(0.5f, 0.5f, 0.5f, 1f);
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
-		gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
-		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY, 0f);
-		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0f);
-		gl.glEnd();
+//		gl.glColor4fv(ARCH_COLOR, 0);
+//		gl.glBegin(GL2.GL_POLYGON);
+//		gl.glVertex3f(viewFrustum.getWidth(), 0, 0f);
+//		gl.glVertex3f(viewFrustum.getWidth(), archBottomY, 0f);
+//		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY, 0f);
+//		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0f);
+//		gl.glEnd();
 
 		inputPoints.clear();
 		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archBottomY, 0));
@@ -812,9 +813,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				0));
 		outputPoints.addAll(outputPointsBottom);
 
-		connectionRenderer.render(gl, outputPoints);
+//		connectionRenderer.render(gl, outputPoints);
 
-		gl.glColor4f(0, 0, 0, 0.8f);
+		gl.glColor4f(ARCH_COLOR[0], ARCH_COLOR[1], ARCH_COLOR[2], ARCH_COLOR[3] * 2);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (Vec3f point : outputPointsTop)
 			gl.glVertex3f(point.x(), point.y(), point.z());
@@ -1063,7 +1064,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-
 		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
 		addGroupsToVisBricksListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToVisBricksEvent.class,
@@ -1083,8 +1083,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
-
-		
 
 		if (addGroupsToVisBricksListener != null) {
 			eventPublisher.removeListener(addGroupsToVisBricksListener);
@@ -1203,11 +1201,12 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 				if (data instanceof PathwayDimensionGroupData) {
 					dimensionGroup.setBrickConfigurer(new PathwayDataConfigurer());
-//					dimensionGroup
-//							.setBrickSortingStrategy(new AlphabeticalDataLabelSortingStrategy());
+					// dimensionGroup
+					// .setBrickSortingStrategy(new
+					// AlphabeticalDataLabelSortingStrategy());
 					dimensionGroup
-					.setBrickSortingStrategy(new AverageValueSortingStrategy());
-				
+							.setBrickSortingStrategy(new AverageValueSortingStrategy());
+
 				} else {
 					dimensionGroup.setBrickConfigurer(new NumericalDataConfigurer(data));
 					dimensionGroup

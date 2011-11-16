@@ -14,6 +14,13 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 
+/**
+ * FIXME documentation
+ * 
+ * @author Marc Streit
+ * @author Alexander Lex
+ * @author Christian Partl
+ */
 public class ConnectionBandRenderer {
 
 	public final static int NUMBER_OF_SPLINE_POINTS = 30;
@@ -353,52 +360,98 @@ public class ConnectionBandRenderer {
 		GLU.gluDeleteTess(tobj);
 	}
 
+	/**
+	 * FIXME
+	 * 
+	 * @param gl
+	 * @param leftTopPos
+	 * @param leftBottomPos
+	 * @param rightTopPos
+	 * @param rightBottomPos
+	 * @param highlight
+	 * @param xOffset
+	 * @param bandID
+	 * @param color
+	 * @param opacity
+	 */
+	@Deprecated
 	public void renderStraightBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
-		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, boolean bandDetailAdaption,
-		float[] color, float opacity) {
+		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color, float opacity) {
 
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
-			return;
-
-		// gl.glPushName(pickingManager.getPickingID(viewID,
-		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
-
-		// Band border
-		gl.glLineWidth(1);
-
-		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 0.8f);
-		else
-			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
-
-		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
-		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
-		gl.glEnd();
-
-		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
-		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
-		gl.glEnd();
-
-		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 0.5f);
-		else
-			gl.glColor4f(color[0], color[1], color[2], opacity);
-
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
-		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
-		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
-		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
-		gl.glEnd();
+//		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
+//			return;
+//
+//		// gl.glPushName(pickingManager.getPickingID(viewID,
+//		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
+//
+//		// Band border
+//		gl.glLineWidth(1);
+//
+//		if (highlight)
+//			gl.glColor4f(color[0], color[1], color[2], 0.8f);
+//		else
+//			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+//
+//		gl.glBegin(GL2.GL_LINES);
+//		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
+//		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
+//		gl.glEnd();
+//
+//		gl.glBegin(GL2.GL_LINES);
+//		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
+//		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
+//		gl.glEnd();
+//
+//		if (highlight)
+//			gl.glColor4f(color[0], color[1], color[2], 0.5f);
+//		else
+//			gl.glColor4f(color[0], color[1], color[2], opacity);
+//
+//		gl.glBegin(GL2.GL_POLYGON);
+//		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
+//		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
+//		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
+//		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
+//		gl.glEnd();
 
 		// gl.glPopName();
 	}
 
+	/**
+	 * @param gl
+	 * @param leftTopPos
+	 * @param leftBottomPos
+	 * @param rightTopPos
+	 * @param rightBottomPos
+	 * @param highlight
+	 * @param xOffset
+	 * @param bandID
+	 * @param color
+	 */
 	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
-		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, boolean bandDetailAdaption,
-		float[] color, float opacity) {
+		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color) {
+		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, highlight, xOffset,
+			bandID, color, false);
+	}
+
+	/**
+	 * Same as
+	 * {@link #renderSingleBand(GL2, float[], float[], float[], float[], boolean, float, int, float[])} with
+	 * an additional option to render only the band outline
+	 * 
+	 * @param gl
+	 * @param leftTopPos
+	 * @param leftBottomPos
+	 * @param rightTopPos
+	 * @param rightBottomPos
+	 * @param highlight
+	 * @param xOffset
+	 * @param bandID
+	 * @param color
+	 */
+	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
+		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color,
+		boolean renderOnlyOutline) {
 
 		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
 			return;
@@ -422,9 +475,9 @@ public class ConnectionBandRenderer {
 		gl.glLineWidth(1);
 
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.8f);
+			gl.glColor4f(color[0], color[1], color[2], color[3]);// 0.8f);
 		else
-			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+			gl.glColor4f(color[0], color[1], color[2], color[3] * 2);
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
@@ -455,11 +508,11 @@ public class ConnectionBandRenderer {
 		gl.glEnd();
 
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], opacity);// 0.5f);
+			gl.glColor4f(color[0], color[1], color[2], color[3]);// 0.5f);
 		else
-			gl.glColor4f(color[0], color[1], color[2], opacity);
-
-		render(gl, outputPoints);
+			gl.glColor4f(color[0], color[1], color[2], color[3]);
+		if (!renderOnlyOutline)
+			render(gl, outputPoints);
 		// gl.glPopName();
 	}
 
@@ -475,7 +528,7 @@ public class ConnectionBandRenderer {
 		// gl.glPushName(pickingManager.getPickingID(viewID,
 		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
 
-		float yCorrection = 0;
+		// float yCorrection = 0;
 		float z = 0.1f;
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();

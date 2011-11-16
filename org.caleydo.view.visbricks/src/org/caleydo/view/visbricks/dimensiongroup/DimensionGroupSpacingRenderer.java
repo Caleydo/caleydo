@@ -276,6 +276,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		}
 	}
 
+	/** Renders the center parts of the arch except for the legs */
 	private void renderFlexibleArch(GL2 gl) {
 
 		if (connectionRenderer == null)
@@ -328,7 +329,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						leftCenterBrickTop, 0 }, new float[] { xStart,
 						leftCenterBrickBottom, 0 }, new float[] { 0, leftCenterBrickTop,
 						0 }, new float[] { 0, leftCenterBrickBottom, 0 }, false,
-						curveOffset, 0, false, new float[] { 0f, 0f, 0f }, 0.5f);
+						curveOffset, 0, new float[] { 0f, 0f, 0f, 0.5f }, true);
 			}
 
 		} else {
@@ -366,8 +367,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						rightCenterBrickTop, 0 }, new float[] { x,
 						rightCenterBrickBottom, 0 }, new float[] { xEnd,
 						rightCenterBrickTop, 0 }, new float[] { xEnd,
-						rightCenterBrickBottom, 0 }, false, curveOffset, 0, false,
-						new float[] { 0, 0, 0 }, 0.5f);
+						rightCenterBrickBottom, 0 }, false, curveOffset, 0, new float[] {
+						0, 0, 0 }, 0.2f);
 				// gl.glPopMatrix();
 			}
 
@@ -387,8 +388,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		connectionRenderer.renderSingleBand(gl, new float[] { 0, leftCenterBrickTop, 0 },
 				new float[] { 0, leftCenterBrickBottom, 0 }, new float[] { x,
 						rightCenterBrickTop, 0 }, new float[] { x,
-						rightCenterBrickBottom, 0 }, false, curveOffset, 0, false,
-				new float[] { 0, 0, 0 }, 0.5f);
+						rightCenterBrickBottom, 0 }, false, curveOffset, 0,
+				GLVisBricks.ARCH_COLOR, true);
 		// gl.glPopMatrix();
 	}
 
@@ -436,7 +437,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 					float ratio = hashRatioToSelectionType.get(selectionType);
 					float trendRatio = 0;
-					float[] color = new float[] { 0, 0, 0 };
+					float[] color = new float[] { 0, 0, 0, 1 };
 
 					if (selectionType == SelectionType.NORMAL
 							&& !glVisBricks.isConnectionsOn()) {
@@ -485,6 +486,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						}
 					}
 
+					// set the transparency of the band
+					color[3] = trendRatio;
+
 					if (ratio == 0)
 						continue;
 
@@ -510,7 +514,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 									x,
 									subGroupMatch.getRightAnchorYTop()
 											- rightYDiffSelection, 0.0f }, true,
-							splineFactor, 0, false, color, trendRatio);// 0.15f);
+							splineFactor, 0, color);// 0.15f);
 
 					// Render straight band connection from brick to dimension
 					// group
@@ -527,7 +531,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 										0,
 										subGroupMatch.getLeftAnchorYTop()
 												- leftYDiffSelection, 0 }, false,
-								splineFactor, 0, false, color, trendRatio);// 0.5f);
+								splineFactor, 0, color, trendRatio);// 0.5f);
 					}
 
 					// Render straight band connection from brick to dimension
@@ -550,7 +554,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 												xEnd,
 												subGroupMatch.getRightAnchorYTop()
 														- rightYDiffSelection, 0 },
-										false, splineFactor, 0, false, color, trendRatio);// 0.5f);
+										false, splineFactor, 0, color, trendRatio);// 0.5f);
 					}
 					// gl.glPopMatrix();
 				}

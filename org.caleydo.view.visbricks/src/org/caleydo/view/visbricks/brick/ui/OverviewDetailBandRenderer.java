@@ -61,7 +61,7 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 
 		gl.glTranslatef(-elementLayout.getTranslateX(), -elementLayout.getTranslateY(), 0);
 
-		float[] bandColor = new float[] { 0.4f, 0.4f, 0.4f };
+		float[] bandColor = new float[] { 0.4f, 0.4f, 0.4f, 1 };
 
 		bandRenderer.init(gl);
 
@@ -71,11 +71,12 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 			middleAnchorBottomPos = new float[] { middleAnchorX, leftBottomY };
 
 			bandRenderer.renderSingleBand(gl, middleAnchorTopPos, middleAnchorBottomPos,
-					rightTopPos, rightBottomPos, false, offsetX, 0, false, bandColor, 1f);
+					rightTopPos, rightBottomPos, false, offsetX, 0, bandColor);
 
-			bandRenderer.renderStraightBand(gl, leftTopPos, leftBottomPos,
-					middleAnchorTopPos, middleAnchorBottomPos, false, 0, 0, false,
-					bandColor, 1f);
+			bandRenderer
+					.renderStraightBand(gl, leftTopPos, leftBottomPos,
+							middleAnchorTopPos, middleAnchorBottomPos, false, 0, 0,
+							bandColor, 1f);
 		} else {
 			middleAnchorX = groupColumn.getTranslateX();
 			if (middleAnchorX > rightX - offsetX) {
@@ -86,12 +87,12 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 			middleAnchorBottomPos = new float[] { middleAnchorX, rightBottomY };
 
 			bandRenderer.renderSingleBand(gl, leftTopPos, leftBottomPos,
-					middleAnchorTopPos, middleAnchorBottomPos, false, offsetX, 0, false,
-					bandColor, 1f);
+					middleAnchorTopPos, middleAnchorBottomPos, false, offsetX, 0,
+					bandColor);
 
 			bandRenderer.renderStraightBand(gl, middleAnchorTopPos,
 					middleAnchorBottomPos, rightTopPos, rightBottomPos, false, 0, 0,
-					false, bandColor, 1f);
+					bandColor, 1f);
 		}
 
 		// gl.glBegin(GL2.GL_QUADS);
