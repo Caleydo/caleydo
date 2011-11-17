@@ -9,6 +9,7 @@ public class CellContainer {
 	protected int numSubdivisions;
 	protected float position;
 	protected boolean isVisible;
+	protected boolean isCollapsed;
 	protected List<CellContainer> childContainers = new ArrayList<CellContainer>();
 	protected CellContainer parentContainer;
 }

@@ -111,6 +111,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 
 			float childIndent = 0;
+			float parentIndent = 0;
 
 			gl.glColor3f(0.7f, 0.7f, 0.7f);
 			if (column.parentContainer == null) {
@@ -128,8 +129,10 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 						&& column.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(
 							DataContainerMatrixRenderer.COLLAPSE_BUTTON_PICKING_TYPE
-									+ node.getID(), column.id.hashCode(),
-							EIconTextures.GROUPER_COLLAPSE_PLUS);
+									+ node.getID(),
+							column.id.hashCode(),
+							column.isCollapsed ? EIconTextures.GROUPER_COLLAPSE_PLUS
+									: EIconTextures.GROUPER_COLLAPSE_MINUS);
 
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view,
@@ -140,11 +143,13 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 
 					gl.glPushMatrix();
 					gl.glTranslatef(currentPositionX + currentColumnWidth
-							/ 2.0f - captionSpacingY, 0, 0);
+							/ 2.0f - captionSpacingY,
+							pixelGLConverter.getGLHeightForPixelHeight(2), 0);
 					collapsePerspectiveButtonRenderer.render(gl);
 					gl.glPopMatrix();
-					
-					childIndent = captionSpacingY * 2;
+
+					parentIndent = captionSpacingY * 2
+							+ pixelGLConverter.getGLHeightForPixelHeight(2);
 
 				}
 			} else {
@@ -194,13 +199,14 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			// gl.glRotatef(90, 0, 0, 1);
 
 			gl.glPushMatrix();
-			gl.glTranslatef(textPositionX, childIndent + captionSpacingY, 0);
+			gl.glTranslatef(textPositionX, parentIndent + childIndent
+					+ captionSpacingY, 0);
 			gl.glRotatef(90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0,
-					captionRowHeight - childIndent - 2 * captionSpacingY,
-					textHeight);
+					captionRowHeight - parentIndent - childIndent - 2
+							* captionSpacingY, textHeight);
 			gl.glPopMatrix();
 
 			gl.glColor3f(0, 0, 0);

@@ -43,7 +43,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 	private ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
-	private List<DimensionGroupRenderer> dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
+	private Map<DimensionGroupRenderer, Pair<CellContainer, CellContainer>> dimensionGroupRenderers = new HashMap<DimensionGroupRenderer, Pair<CellContainer, CellContainer>>();
 	private Map<EmptyCellRenderer, Pair<CellContainer, CellContainer>> emptyCellRenderers = new HashMap<EmptyCellRenderer, Pair<CellContainer, CellContainer>>();
 	/**
 	 * Map containing all cells of the table identified by the concatenation of
@@ -134,7 +134,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			}
 
 			private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
-				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers
+						.keySet()) {
 					if (dimensionGroupRenderer.getDataContainer().getID() == id) {
 						return dimensionGroupRenderer;
 					}
@@ -265,9 +266,30 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						break;
 					}
 				}
-				if(container == null)
+				if (container == null)
 					return;
-				
+
+				container.isCollapsed = !container.isCollapsed;
+
+				for (CellContainer child : container.childContainers) {
+
+					boolean isAlwaysVisible = false;
+
+					for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers
+							.keySet()) {
+						Pair<CellContainer, CellContainer> rowAndColumn = dimensionGroupRenderers
+								.get(dimensionGroupRenderer);
+
+						if (child == rowAndColumn.getFirst()
+								|| child == rowAndColumn.getSecond()) {
+							isAlwaysVisible = true;
+							break;
+						}
+					}
+
+					child.isVisible = isAlwaysVisible || !container.isCollapsed;
+				}
+
 				view.setDisplayListDirty();
 
 			}
@@ -336,6 +358,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 			column.numSubdivisions = 1;
 			column.isVisible = true;
+			column.isCollapsed = false;
 			columns.add(column);
 
 			DimensionGroupList groupList = perspective.getVirtualArray()
@@ -398,7 +421,9 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						dimensionGroupRenderer
 								.setRenderDimensionGroupLabel(false);
 						cells.put(row.id + column.id, dimensionGroupRenderer);
-						dimensionGroupRenderers.add(dimensionGroupRenderer);
+						dimensionGroupRenderers.put(dimensionGroupRenderer,
+								new Pair<CellContainer, CellContainer>(row,
+										column));
 						break;
 					}
 				}
@@ -731,6 +756,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		view.removeMultiIDPickingListeners(EMPTY_CELL_PICKING_TYPE
 				+ node.getID());
 		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
+				+ node.getID());
+		view.removeMultiIDPickingListeners(COLLAPSE_BUTTON_PICKING_TYPE
 				+ node.getID());
 	}
 
