@@ -1,6 +1,8 @@
 package org.caleydo.view.datagraph.datacontainer.matrix;
 
 import java.awt.geom.Point2D;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -27,16 +29,20 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
 			float x, float y, IDataGraphNode node, GLDataGraph view) {
+		
+		List<CellContainer> reversedRows = new ArrayList<CellContainer>(rows);
+//		Collections.reverse(reversedRows);
+		
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		float captionColumnWidth = calcMaxTextWidth(rows, view);
+		float captionColumnWidth = calcMaxTextWidth(reversedRows, view);
 		float captionRowHeight = calcMaxTextWidth(columns, view);
 
 		float currentPositionX = (x / 2.0f)
 				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
-						rows, columns, view) / 2);
+						reversedRows, columns, view) / 2);
 		float rowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
 		float captionSpacingY = pixelGLConverter
@@ -49,42 +55,102 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
 
-		for (CellContainer row : rows) {
+		for (int i = 0; i < reversedRows.size(); i++) {
+
+			CellContainer row = reversedRows.get(i);
+			if (!row.isVisible) {
+				continue;
+			}
+
 			float textPositionY = currentPositionY + (rowHeight - textHeight)
 					/ 2.0f + pixelGLConverter.getGLHeightForPixelHeight(2);
-
+			float childIndent = 0;
+			float parentIndent = 0;
 			if (row.parentContainer == null) {
 
 				gl.glColor3f(0.7f, 0.7f, 0.7f);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0);
-				gl.glVertex3f(
-						currentPositionX
-								+ captionColumnWidth
-								+ pixelGLConverter
-										.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
-						currentPositionY + rowHeight, 0);
-				gl.glVertex3f(
-						currentPositionX
-								+ captionColumnWidth
-								+ pixelGLConverter
-										.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS),
-						currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + captionColumnWidth
+						+ captionSpacingX, currentPositionY + rowHeight, 0);
+				gl.glVertex3f(currentPositionX + captionColumnWidth
+						+ captionSpacingX, currentPositionY, 0);
 				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glEnd();
+
+				if (row.childContainers != null
+						&& row.childContainers.size() > 1) {
+					Button collapsePerspectiveButton = new Button(
+							DataContainerMatrixRenderer.COLLAPSE_BUTTON_PICKING_TYPE
+									+ node.getID(),
+							row.id.hashCode(),
+							row.isCollapsed ? EIconTextures.GROUPER_COLLAPSE_PLUS
+									: EIconTextures.GROUPER_COLLAPSE_MINUS);
+
+					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
+							collapsePerspectiveButton, view,
+							view.getTextureManager());
+
+					collapsePerspectiveButtonRenderer.setLimits(
+							captionSpacingX * 2, captionSpacingX * 2);
+
+					gl.glPushMatrix();
+					gl.glTranslatef(
+							currentPositionX
+									+ pixelGLConverter
+											.getGLWidthForPixelWidth(2),
+							currentPositionY + rowHeight / 2.0f
+									- captionSpacingX, 0);
+					collapsePerspectiveButtonRenderer.render(gl);
+					gl.glPopMatrix();
+
+					parentIndent = captionSpacingX * 2
+							+ pixelGLConverter.getGLHeightForPixelHeight(2);
+
+				}
+			} else {
+
+				childIndent = captionSpacingY * 2;
+
+				gl.glColor3f(0.8f, 0.8f, 0.8f);
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + captionColumnWidth
+						+ captionSpacingX, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + captionColumnWidth
+						+ captionSpacingX, currentPositionY + rowHeight, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0);
+
+				gl.glColor3f(0.7f, 0.7f, 0.7f);
+
+				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY,
+						0);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY
+						+ rowHeight, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0);
+
 				gl.glEnd();
 			}
 
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX
-					+ captionSpacingX, textPositionY, 0, captionColumnWidth - 2
-					* captionSpacingX, textHeight);
+					+ captionSpacingX + parentIndent + childIndent,
+					textPositionY, 0, captionColumnWidth - 2 * captionSpacingX,
+					textHeight);
 
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
+			if ((row.parentContainer != null) && (i != 0)
+					&& (reversedRows.get(i - 1) != row.parentContainer)) {
+				gl.glColor3f(0.5f, 0.5f, 0.5f);
+			}
 			gl.glLineWidth(1);
 			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(0, currentPositionY, 0.1f);
+			gl.glVertex3f(currentPositionX + childIndent, currentPositionY,
+					0.1f);
 			gl.glVertex3f(x, currentPositionY, 0.1f);
 			gl.glEnd();
 			gl.glPopAttrib();
@@ -175,28 +241,11 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 				gl.glVertex3f(currentPositionX, 0, 0);
 
 				gl.glEnd();
-
-				// gl.glColor3f(1,1,1);
-				// gl.glBegin(GL2.GL_LINES);
-				// gl.glVertex3f(currentPositionX, y - captionRowHeight
-				// - captionSpacingY, 1);
-				// gl.glVertex3f(currentPositionX, y - childIndent, 1);
-				// gl.glEnd();
 			}
 
 			float textPositionX = currentPositionX + textHeight
 					+ (currentColumnWidth - textHeight) / 2.0f
 					- pixelGLConverter.getGLHeightForPixelHeight(2);
-
-			// float textPositionX = pixelGLConverter
-			// .getGLHeightForPixelHeight(textHeightPixels - 2)
-			// + (x - pixelGLConverter
-			// .getGLHeightForPixelHeight(textHeightPixels - 2))
-			// / 2.0f;
-			//
-			// gl.glTranslatef(textPositionX, pixelGLConverter
-			// .getGLHeightForPixelHeight(TEXT_SPACING_PIXELS), 0.1f);
-			// gl.glRotatef(90, 0, 0, 1);
 
 			gl.glPushMatrix();
 			gl.glTranslatef(textPositionX, parentIndent + childIndent
@@ -227,7 +276,10 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 
 			float currentDimGroupPositionX = currentPositionX;
 
-			for (CellContainer row : rows) {
+			for (CellContainer row : reversedRows) {
+				if (!row.isVisible) {
+					continue;
+				}
 				float cellSpacingX = pixelGLConverter
 						.getGLWidthForPixelWidth(CELL_SPACING_PIXELS);
 				float cellSpacingY = pixelGLConverter

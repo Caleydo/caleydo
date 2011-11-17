@@ -1,6 +1,7 @@
 package org.caleydo.view.datagraph.datacontainer.matrix;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -11,10 +12,13 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
@@ -196,11 +200,37 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 				if (rowAndColumn != null) {
 
-					String recordPerspectiveID = rowAndColumn.getFirst().id;
+					CellContainer row = rowAndColumn.getFirst();
+					String recordPerspectiveID = row.id;
+					Group rowGroup = null;
+					RecordVirtualArray recordVA = null;
+					boolean createRecordPerspective = false;
+
+					if (!dataDomain.getTable().containsRecordPerspective(
+							recordPerspectiveID)) {
+						// FIXME: Check additionally if the group has a
+						// dimensionperspective
+
+						RecordPerspective perspective = dataDomain.getTable()
+								.getRecordPerspective(row.parentContainer.id);
+
+						// This works because the child containers do net get
+						// sorted in a cellcontainer
+						int groupIndex = row.parentContainer.childContainers
+								.indexOf(row);
+
+						recordVA = perspective.getVirtualArray();
+
+						RecordGroupList groupList = recordVA.getGroupList();
+						rowGroup = groupList.get(groupIndex);
+
+						createRecordPerspective = true;
+
+					}
 
 					CellContainer column = rowAndColumn.getSecond();
 					String dimensionPerspectiveID = column.id;
-					Group group = null;
+					Group columnGroup = null;
 					DimensionVirtualArray dimensionVA = null;
 					boolean createDimensionPerspective = false;
 
@@ -213,6 +243,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 								.getTable().getDimensionPerspective(
 										column.parentContainer.id);
 
+						// This works because the child containers do net get
+						// sorted in a cellcontainer
 						int groupIndex = column.parentContainer.childContainers
 								.indexOf(column);
 
@@ -220,7 +252,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 						DimensionGroupList groupList = dimensionVA
 								.getGroupList();
-						group = groupList.get(groupIndex);
+						columnGroup = groupList.get(groupIndex);
 
 						createDimensionPerspective = true;
 
@@ -228,8 +260,9 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 					AddDataContainerEvent event = new AddDataContainerEvent(
 							dataDomain, recordPerspectiveID,
+							createRecordPerspective, recordVA, rowGroup,
 							dimensionPerspectiveID, createDimensionPerspective,
-							dimensionVA, group);
+							dimensionVA, columnGroup);
 					if (useContextMenu) {
 						view.getContextMenuCreator().addContextMenuItem(
 								new AddDataContainerItem(event));
@@ -266,6 +299,16 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						break;
 					}
 				}
+
+				if (container == null) {
+					for (CellContainer cellContainer : rows) {
+						if (cellContainer.id.hashCode() == pick.getID()) {
+							container = cellContainer;
+							break;
+						}
+					}
+				}
+
 				if (container == null)
 					return;
 
@@ -274,7 +317,6 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				for (CellContainer child : container.childContainers) {
 
 					boolean isAlwaysVisible = false;
-
 					for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers
 							.keySet()) {
 						Pair<CellContainer, CellContainer> rowAndColumn = dimensionGroupRenderers
@@ -290,6 +332,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 					child.isVisible = isAlwaysVisible || !container.isCollapsed;
 				}
 
+				// graphLayout.updateNodePositions();
 				view.setDisplayListDirty();
 
 			}
@@ -318,7 +361,17 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		rows.clear();
 		columns.clear();
 
+		List<CellContainer> parentContainers = new ArrayList<CellContainer>();
+		Map<CellContainer, List<CellContainer>> childContainerLists = new HashMap<CellContainer, List<CellContainer>>();
+
 		for (String id : rowIDs) {
+
+			RecordPerspective perspective = dataDomain.getTable()
+					.getRecordPerspective(id);
+			if (perspective.isPrivate()) {
+				continue;
+			}
+
 			CellContainer row = new CellContainer();
 			row.id = id;
 
@@ -329,13 +382,56 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			// row.caption = dataDomain.getTable().getDimensionPerspective(id)
 			// .getLabel();
 			// }
-			row.caption = dataDomain.getTable().getRecordPerspective(id)
-					.getLabel();
+			row.caption = perspective.getLabel();
 
 			row.numSubdivisions = 1;
 			row.isVisible = true;
-			rows.add(row);
+			row.isCollapsed = true;
+			// rows.add(row);
+			parentContainers.add(row);
+
+			RecordGroupList groupList = perspective.getVirtualArray()
+					.getGroupList();
+
+			if (groupList != null) {
+				List<CellContainer> childList = new ArrayList<CellContainer>(
+						groupList.size());
+				for (int i = 0; i < groupList.size(); i++) {
+
+					Group group = groupList.get(i);
+					CellContainer subRow = new CellContainer();
+					subRow.caption = group.getClusterNode().getLabel();
+					subRow.id = group.getPerspectiveID() != null ? group
+							.getPerspectiveID() : row.id + i;
+					subRow.numSubdivisions = 1;
+					subRow.isVisible = false;
+
+					subRow.parentContainer = row;
+					row.childContainers.add(subRow);
+
+					childList.add(subRow);
+					// columns.add(subColumn);
+
+				}
+
+				Collections.sort(childList);
+				childContainerLists.put(row, childList);
+			}
 		}
+
+		Collections.sort(parentContainers);
+
+		for (CellContainer row : parentContainers) {
+			rows.add(row);
+			List<CellContainer> childRows = childContainerLists.get(row);
+			if (childRows != null) {
+				rows.addAll(childRows);
+			}
+		}
+
+		parentContainers.clear();
+		childContainerLists.clear();
+
 		for (String id : columnIDs) {
 
 			DimensionPerspective perspective = dataDomain.getTable()
@@ -353,18 +449,20 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			// column.caption = dataDomain.getTable().getRecordPerspective(id)
 			// .getLabel();
 			// }
-			column.caption = dataDomain.getTable().getDimensionPerspective(id)
-					.getLabel();
+			column.caption = perspective.getLabel();
 
 			column.numSubdivisions = 1;
 			column.isVisible = true;
 			column.isCollapsed = false;
-			columns.add(column);
+			parentContainers.add(column);
+			// columns.add(column);
 
 			DimensionGroupList groupList = perspective.getVirtualArray()
 					.getGroupList();
 
 			if (groupList != null) {
+				List<CellContainer> childList = new ArrayList<CellContainer>(
+						groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
@@ -378,9 +476,23 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 					subColumn.parentContainer = column;
 					column.childContainers.add(subColumn);
 
-					columns.add(subColumn);
+					childList.add(subColumn);
+					// columns.add(subColumn);
 
 				}
+
+				Collections.sort(childList);
+				childContainerLists.put(column, childList);
+			}
+		}
+
+		Collections.sort(parentContainers);
+
+		for (CellContainer column : parentContainers) {
+			columns.add(column);
+			List<CellContainer> childColumns = childContainerLists.get(column);
+			if (childColumns != null) {
+				columns.addAll(childColumns);
 			}
 		}
 
@@ -424,6 +536,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						dimensionGroupRenderers.put(dimensionGroupRenderer,
 								new Pair<CellContainer, CellContainer>(row,
 										column));
+						row.isVisible = true;
+						column.isVisible = true;
 						break;
 					}
 				}

@@ -2,6 +2,7 @@ package org.caleydo.view.datagraph.event;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.AEvent;
 
@@ -11,19 +12,26 @@ public class AddDataContainerEvent extends AEvent {
 	private String dimensionPerspectiveID;
 	private ATableBasedDataDomain dataDomain;
 	private boolean createDimensionPerspective;
-	private Group group;
+	private boolean createRecordPerspective;
+	private Group recordGroup;
+	private RecordVirtualArray recordVA;
+	private Group dimensionGroup;
 	private DimensionVirtualArray dimensionVA;
 
 	public AddDataContainerEvent(ATableBasedDataDomain dataDomain,
-			String recordPerspectiveID, String dimensionPerspectiveID,
-			boolean createDimensionPerspective, DimensionVirtualArray dimensionVA,
-			Group group) {
+			String recordPerspectiveID, boolean createRecordPerspective,
+			RecordVirtualArray recordVA, Group recordGroup,
+			String dimensionPerspectiveID, boolean createDimensionPerspective,
+			DimensionVirtualArray dimensionVA, Group dimensionGroup) {
 		this.setDataDomain(dataDomain);
 		this.setRecordPerspectiveID(recordPerspectiveID);
 		this.setDimensionPerspectiveID(dimensionPerspectiveID);
 		this.setCreateDimensionPerspective(createDimensionPerspective);
-		this.setGroup(group);
+		this.setDimensionGroup(dimensionGroup);
 		this.setDimensionVA(dimensionVA);
+		this.setCreateRecordPerspective(createRecordPerspective);
+		this.setRecordGroup(recordGroup);
+		this.setRecordVA(recordVA);
 	}
 
 	@Override
@@ -63,12 +71,12 @@ public class AddDataContainerEvent extends AEvent {
 		return createDimensionPerspective;
 	}
 
-	public void setGroup(Group group) {
-		this.group = group;
+	public void setDimensionGroup(Group group) {
+		this.dimensionGroup = group;
 	}
 
-	public Group getGroup() {
-		return group;
+	public Group getDimensionGroup() {
+		return dimensionGroup;
 	}
 
 	public void setDimensionVA(DimensionVirtualArray dimensionVA) {
@@ -77,6 +85,30 @@ public class AddDataContainerEvent extends AEvent {
 
 	public DimensionVirtualArray getDimensionVA() {
 		return dimensionVA;
+	}
+
+	public boolean isCreateRecordPerspective() {
+		return createRecordPerspective;
+	}
+
+	public void setCreateRecordPerspective(boolean createRecordPerspective) {
+		this.createRecordPerspective = createRecordPerspective;
+	}
+
+	public Group getRecordGroup() {
+		return recordGroup;
+	}
+
+	public void setRecordGroup(Group recordGroup) {
+		this.recordGroup = recordGroup;
+	}
+
+	public RecordVirtualArray getRecordVA() {
+		return recordVA;
+	}
+
+	public void setRecordVA(RecordVirtualArray recordVA) {
+		this.recordVA = recordVA;
 	}
 
 }

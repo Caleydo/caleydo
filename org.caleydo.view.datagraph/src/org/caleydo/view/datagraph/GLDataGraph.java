@@ -25,9 +25,11 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
@@ -917,14 +919,17 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public void createDataContainer(final ATableBasedDataDomain dataDomain,
 			final String recordPerspectiveID,
+			final boolean createRecordPerspective,
+			final RecordVirtualArray recordVA, final Group recordGroup,
 			final String dimensionPerspectiveID,
 			final boolean createDimensionPerspective,
-			final DimensionVirtualArray dimensionVA, final Group group) {
+			final DimensionVirtualArray dimensionVA, final Group dimensionGroup) {
 
-		final String recordPerspectiveLabel = dataDomain.getTable()
+		final String recordPerspectiveLabel = (createRecordPerspective) ? (recordGroup
+				.getClusterNode().getLabel()) : dataDomain.getTable()
 				.getRecordPerspective(recordPerspectiveID).getLabel();
 
-		final String dimensionPerspeciveLabel = (createDimensionPerspective) ? (group
+		final String dimensionPerspectiveLabel = (createDimensionPerspective) ? (dimensionGroup
 				.getClusterNode().getLabel()) : dataDomain.getTable()
 				.getDimensionPerspective(dimensionPerspectiveID).getLabel();
 
@@ -942,14 +947,13 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					}
 				};
 
-				InputDialog dialog = new InputDialog(
-						new Shell(),
-						"Create Data Container",
-						"Name",
-						dimensionPerspeciveLabel + "/" + recordPerspectiveLabel,
-						validator);
+				InputDialog dialog = new InputDialog(new Shell(),
+						"Create Data Container", "Name",
+						dimensionPerspectiveLabel + "/"
+								+ recordPerspectiveLabel, validator);
 
-				String currentdimensionPerspeciveID = dimensionPerspectiveID;
+				String currentDimensionPerspeciveID = dimensionPerspectiveID;
+				String currentRecordPerspeciveID = recordPerspectiveID;
 
 				if (dialog.open() == Window.OK) {
 					DimensionPerspective dimensionPerspective = null;
@@ -958,17 +962,20 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						dimensionPerspective = new DimensionPerspective(
 								dataDomain);
 						List<Integer> indices = dimensionVA.getSubList(
-								group.getStartIndex(), group.getEndIndex() + 1);
+								dimensionGroup.getStartIndex(),
+								dimensionGroup.getEndIndex() + 1);
 						PerspectiveInitializationData data = new PerspectiveInitializationData();
 						data.setData(indices);
 						dimensionPerspective.init(data);
-						dimensionPerspective.setLabel(dimensionPerspeciveLabel);
+						dimensionPerspective
+								.setLabel(dimensionPerspectiveLabel);
 						// TODO: Shall we really set it private?
 						dimensionPerspective.setPrivate(true);
-						group.setPerspectiveID(dimensionPerspective.getID());
+						dimensionGroup.setPerspectiveID(dimensionPerspective
+								.getID());
 						dataDomain.getTable().registerDimensionPerspective(
 								dimensionPerspective);
-						currentdimensionPerspeciveID = dimensionPerspective
+						currentDimensionPerspeciveID = dimensionPerspective
 								.getID();
 					} else {
 						dimensionPerspective = dataDomain
@@ -976,21 +983,33 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 								.getDimensionPerspective(dimensionPerspectiveID);
 					}
 
+					RecordPerspective recordPerspective = null;
+
+					if (createRecordPerspective) {
+						recordPerspective = new RecordPerspective(dataDomain);
+						List<Integer> indices = recordVA.getSubList(
+								recordGroup.getStartIndex(),
+								recordGroup.getEndIndex() + 1);
+						PerspectiveInitializationData data = new PerspectiveInitializationData();
+						data.setData(indices);
+						recordPerspective.init(data);
+						recordPerspective.setLabel(recordPerspectiveLabel);
+						// TODO: Shall we really set it private?
+						recordPerspective.setPrivate(true);
+						recordGroup.setPerspectiveID(recordPerspective.getID());
+						dataDomain.getTable().registerRecordPerspective(
+								recordPerspective);
+						currentRecordPerspeciveID = recordPerspective.getID();
+					} else {
+						recordPerspective = dataDomain.getTable()
+								.getRecordPerspective(recordPerspectiveID);
+					}
+
 					DataContainer dataContainer = dataDomain.getDataContainer(
-							recordPerspectiveID, currentdimensionPerspeciveID);
+							currentRecordPerspeciveID,
+							currentDimensionPerspeciveID);
 					dataContainer.setLabel(dialog.getValue());
 
-					// DataContainer dataContainer = new
-					// DataContainer(dataDomain,
-					// dataDomain.getTable().getRecordPerspective(
-					// recordPerspectiveID), dimensionPerspective);
-
-					// FIXME: This should only be a datacontainer in the future
-					// TableBasedDimensionGroupData data = new
-					// TableBasedDimensionGroupData(
-					// dataDomain, dataContainer);
-					// data.setLabel(dialog.getValue());
-					// dataDomain.addDimensionGroup(data);
 				}
 			}
 		});
@@ -1090,26 +1109,26 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			int height) {
 		super.reshape(drawable, x, y, width, height);
 
-//		if (!waitForMinSizeApplication && isRendered) {
-//
-//			int drawingAreaWidth = pixelGLConverter
-//					.getPixelWidthForGLWidth(viewFrustum.getWidth())
-//					- 2
-//					* BOUNDS_SPACING_PIXELS;
-//			int drawingAreaHeight = pixelGLConverter
-//					.getPixelHeightForGLHeight(viewFrustum.getHeight())
-//					- 2
-//					* BOUNDS_SPACING_PIXELS;
-//
-//			for (IDataGraphNode node : dataGraph.getNodes()) {
-//				Pair<Float, Float> relativePosition = relativeNodePositions
-//						.get(node);
-//				graphLayout.setNodePosition(node, new Point2D.Double(
-//						relativePosition.getFirst() * drawingAreaWidth,
-//						relativePosition.getSecond() * drawingAreaHeight));
-//			}
-//
-////			updateMinWindowSize(false);
-//		}
+		// if (!waitForMinSizeApplication && isRendered) {
+		//
+		// int drawingAreaWidth = pixelGLConverter
+		// .getPixelWidthForGLWidth(viewFrustum.getWidth())
+		// - 2
+		// * BOUNDS_SPACING_PIXELS;
+		// int drawingAreaHeight = pixelGLConverter
+		// .getPixelHeightForGLHeight(viewFrustum.getHeight())
+		// - 2
+		// * BOUNDS_SPACING_PIXELS;
+		//
+		// for (IDataGraphNode node : dataGraph.getNodes()) {
+		// Pair<Float, Float> relativePosition = relativeNodePositions
+		// .get(node);
+		// graphLayout.setNodePosition(node, new Point2D.Double(
+		// relativePosition.getFirst() * drawingAreaWidth,
+		// relativePosition.getSecond() * drawingAreaHeight));
+		// }
+		//
+		// // updateMinWindowSize(false);
+		// }
 	}
 }
