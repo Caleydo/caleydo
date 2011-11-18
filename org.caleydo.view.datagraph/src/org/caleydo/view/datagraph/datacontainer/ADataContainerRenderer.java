@@ -23,6 +23,7 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 	protected Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions;
 	protected Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions;
 	protected boolean isUpsideDown = false;
+	protected boolean arePickingListenersRegistered = false;
 
 	public ADataContainerRenderer(IDataGraphNode node, GLDataGraph view,
 			DragAndDropController dragAndDropController) {
@@ -45,7 +46,27 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 		return topDimensionGroupPositions.get(dataContainer.getID());
 	}
 
-	public abstract void destroy();
+	public void registerPickingListeners() {
+		if (arePickingListenersRegistered)
+			return;
+
+		createPickingListeners();
+
+		arePickingListenersRegistered = true;
+	}
+
+	protected abstract void createPickingListeners();
+
+	public void unregisterPickingListeners() {
+		removePickingListeners();
+		arePickingListenersRegistered = false;
+	}
+
+	protected abstract void removePickingListeners();
+
+	public void destroy() {
+		unregisterPickingListeners();
+	}
 
 	public abstract void setUpsideDown(boolean isUpsideDown);
 

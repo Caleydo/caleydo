@@ -45,6 +45,8 @@ public class TableBasedDataNode extends ADataNode {
 	private ButtonRenderer toggleDataContainerButtonRenderer;
 	private Button toggleDataContainerButton;
 	private ALayoutState currentState;
+	private OverviewState overviewState;
+	private DetailState detailState;
 	private ElementLayout dataContainerLayout;
 	private ADataContainerRenderer dataContainerRenderer;
 	private Row bodyRow;
@@ -55,11 +57,14 @@ public class TableBasedDataNode extends ADataNode {
 		protected int textureRotation;
 
 		public void apply() {
+			TableBasedDataNode.this.dataContainerRenderer.unregisterPickingListeners();
 			TableBasedDataNode.this.dataContainerRenderer = dataContainerRenderer;
+			dataContainerRenderer.registerPickingListeners();
 			dataContainerRenderer.setUpsideDown(isUpsideDown);
 			dataContainerLayout.setRenderer(dataContainerRenderer);
 			toggleDataContainerButtonRenderer
 					.setTextureRotation(currentState.textureRotation);
+			dataContainerRenderer.setDataContainers(getDataContainers());
 			graphLayout.updateNodePositions();
 		}
 
@@ -77,7 +82,7 @@ public class TableBasedDataNode extends ADataNode {
 
 		@Override
 		public ALayoutState getNextState() {
-			return new DetailState();
+			return detailState;
 		}
 
 		@Override
@@ -102,7 +107,7 @@ public class TableBasedDataNode extends ADataNode {
 
 		@Override
 		public ALayoutState getNextState() {
-			return new OverviewState();
+			return overviewState;
 		}
 
 		@Override
@@ -120,7 +125,9 @@ public class TableBasedDataNode extends ADataNode {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
-		currentState = new OverviewState();
+		overviewState = new OverviewState();
+		detailState = new DetailState();
+		currentState = overviewState;
 		dataContainerRenderer = currentState.dataContainerRenderer;
 
 		addPickingListeners();
@@ -131,7 +138,6 @@ public class TableBasedDataNode extends ADataNode {
 
 			@Override
 			public void clicked(Pick pick) {
-				dataContainerRenderer.destroy();
 				currentState = currentState.getNextState();
 				currentState.apply();
 
@@ -417,50 +423,6 @@ public class TableBasedDataNode extends ADataNode {
 			retrieveDataContainers();
 
 		return dataContainers;
-
-		// List<ADimensionGroupData> groups = new
-		// ArrayList<ADimensionGroupData>();
-		// FakeDimensionGroupData data = new FakeDimensionGroupData(0);
-		// data.setDimensionPerspectiveID("ColumnPerspec2");
-		// data.setRecordPerspectiveID("Row1");
-		// if (dataDomain instanceof ATableBasedDataDomain)
-		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		// groups.add(data);
-		//
-		// data = new FakeDimensionGroupData(1);
-		// data.setDimensionPerspectiveID("ColumnPerspec2");
-		// data.setRecordPerspectiveID("AnotherRow");
-		// if (dataDomain instanceof ATableBasedDataDomain)
-		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		// groups.add(data);
-		//
-		// data = new FakeDimensionGroupData(2);
-		// data.setDimensionPerspectiveID("ColumnPerspec2");
-		// data.setRecordPerspectiveID("YetAnotherRow");
-		// if (dataDomain instanceof ATableBasedDataDomain)
-		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		// groups.add(data);
-		//
-		// data = new FakeDimensionGroupData(3);
-		// data.setDimensionPerspectiveID("ColumnPerspec2");
-		// data.setRecordPerspectiveID("RowPerspec2");
-		// if (dataDomain instanceof ATableBasedDataDomain)
-		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		// groups.add(data);
-		//
-		// data = new FakeDimensionGroupData(4);
-		// data.setDimensionPerspectiveID("AnotherColumn2");
-		// data.setRecordPerspectiveID("Row1");
-		// if (dataDomain instanceof ATableBasedDataDomain)
-		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		// groups.add(data);
-		//
-		// data = new FakeDimensionGroupData(5);
-		// data.setDimensionPerspectiveID("YetAnotherColumn2");
-		// data.setRecordPerspectiveID("YetAnotherRow");
-		// if (dataDomain instanceof ATableBasedDataDomain)
-		// data.setDataDomain((ATableBasedDataDomain) dataDomain);
-		// groups.add(data);
 	}
 
 }

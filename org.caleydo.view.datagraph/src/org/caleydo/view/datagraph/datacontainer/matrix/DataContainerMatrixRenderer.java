@@ -37,14 +37,6 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 	protected final static String EMPTY_CELL_PICKING_TYPE = "org.caleydo.view.datagraph.emptycell";
 	protected final static String COLLAPSE_BUTTON_PICKING_TYPE = "org.caleydo.view.datagraph.collapsebutton";
 
-	// private static final int MAX_TEXT_WIDTH_PIXELS = 90;
-	// private static final int TEXT_HEIGHT_PIXELS = 12;
-	// private static final int COLUMN_WIDTH_PIXELS = 22;
-	// private static final int ROW_HEIGHT_PIXELS = 22;
-	// private static final int CAPTION_SPACING_PIXELS = 5;
-	// private static final int CELL_SPACING_PIXELS = 3;
-	// private static final int CELL_SIZE_PIXELS = 16;
-
 	private ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
 	private Map<DimensionGroupRenderer, Pair<CellContainer, CellContainer>> dimensionGroupRenderers = new HashMap<DimensionGroupRenderer, Pair<CellContainer, CellContainer>>();
@@ -56,19 +48,12 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 	private Map<String, ColorRenderer> cells = new HashMap<String, ColorRenderer>();
 	private List<CellContainer> rows = new ArrayList<CellContainer>();
 	private List<CellContainer> columns = new ArrayList<CellContainer>();
+	private Map<String, CellContainer> rowMap = new HashMap<String, CellContainer>();
+	private Map<String, CellContainer> columnMap = new HashMap<String, CellContainer>();
 
 	private ADataContainerMatrixRenderingStrategy renderingStrategy;
 
-	// private class CellContainer {
-	// private String id;
-	// private String caption;
-	// private int numSubdivisions;
-	// private float position;
-	// private boolean isVisible;
-	// private List<CellContainer> childContainers = new
-	// ArrayList<CellContainer>();
-	// private CellContainer parentContainer;
-	// }
+	private boolean pickingListenersRegistered = false;
 
 	public DataContainerMatrixRenderer(ATableBasedDataDomain dataDomain,
 			GLDataGraph view, IDataGraphNode node,
@@ -81,11 +66,16 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		// DataDomainManager.get().getDataDomainByType(dataDomainType);
 
 		createRowsAndColumns(node.getDataContainers());
-		createPickingListeners();
+		registerPickingListeners();
 
 	}
 
-	private void createPickingListeners() {
+	@Override
+	public void createPickingListeners() {
+
+		if (pickingListenersRegistered)
+			return;
+
 		view.addMultiIDPickingListener(new APickingListener() {
 
 			@Override
@@ -338,28 +328,20 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			}
 
 		}, COLLAPSE_BUTTON_PICKING_TYPE + node.getID());
-
 	}
 
 	private void createRowsAndColumns(List<DataContainer> dataContainers) {
-		// Set<String> rowIDs = dataDomain.isColumnDimension() ? dataDomain
-		// .getRecordPerspectiveIDs() : dataDomain
-		// .getDimensionPerspectiveIDs();
-		// Set<String> columnIDs = dataDomain.isColumnDimension() ? dataDomain
-		// .getDimensionPerspectiveIDs() : dataDomain
-		// .getRecordPerspectiveIDs();
 
 		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
 		Set<String> columnIDs = dataDomain.getDimensionPerspectiveIDs();
 
-		// String[] rowIDs = new String[] { "Row1", "RowPerspec2", "AnotherRow",
-		// "YetAnotherRow" };
-		// String[] columnIDs = new String[] { "Column1", "ColumnPerspec2",
-		// "AnotherColumn", "YetAnotherColumn", "Column2",
-		// "ColumnPerspec22", "AnotherColumn2", "YetAnotherColumn2" };
+		// FIXME: Rows and columns do not change atm, but this might happen in
+		// the future.
 
 		rows.clear();
 		columns.clear();
+		Map<String, CellContainer> newRowMap = new HashMap<String, CellContainer>();
+		Map<String, CellContainer> newColumnMap = new HashMap<String, CellContainer>();
 
 		List<CellContainer> parentContainers = new ArrayList<CellContainer>();
 		Map<CellContainer, List<CellContainer>> childContainerLists = new HashMap<CellContainer, List<CellContainer>>();
@@ -371,22 +353,18 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			if (perspective.isPrivate()) {
 				continue;
 			}
+			CellContainer row = rowMap.get(id);
+			if (row == null) {
+				row = new CellContainer();
+				row.id = id;
+				row.caption = perspective.getLabel();
+				row.numSubdivisions = 1;
+				row.isVisible = true;
+				row.isCollapsed = true;
 
-			CellContainer row = new CellContainer();
-			row.id = id;
-
-			// if (dataDomain.isColumnDimension()) {
-			// row.caption = dataDomain.getTable().getRecordPerspective(id)
-			// .getLabel();
-			// } else {
-			// row.caption = dataDomain.getTable().getDimensionPerspective(id)
-			// .getLabel();
-			// }
-			row.caption = perspective.getLabel();
-
-			row.numSubdivisions = 1;
-			row.isVisible = true;
-			row.isCollapsed = true;
+			}
+			row.childContainers.clear();
+			newRowMap.put(id, row);
 			// rows.add(row);
 			parentContainers.add(row);
 
@@ -399,15 +377,21 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
-					CellContainer subRow = new CellContainer();
-					subRow.caption = group.getClusterNode().getLabel();
-					subRow.id = group.getPerspectiveID() != null ? group
+					String subRowID = group.getPerspectiveID() != null ? group
 							.getPerspectiveID() : row.id + i;
-					subRow.numSubdivisions = 1;
-					subRow.isVisible = false;
+					CellContainer subRow = rowMap.get(subRowID);
+					if (subRow == null) {
+						subRow = new CellContainer();
+						subRow.caption = group.getClusterNode().getLabel();
+						subRow.id = subRowID;
+						subRow.numSubdivisions = 1;
+						subRow.isVisible = false;
 
-					subRow.parentContainer = row;
+						subRow.parentContainer = row;
+
+					}
 					row.childContainers.add(subRow);
+					newRowMap.put(subRowID, subRow);
 
 					childList.add(subRow);
 					// columns.add(subColumn);
@@ -440,20 +424,18 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				continue;
 			}
 
-			CellContainer column = new CellContainer();
-			column.id = id;
-			// if (dataDomain.isColumnDimension()) {
-			// column.caption = dataDomain.getTable()
-			// .getDimensionPerspective(id).getLabel();
-			// } else {
-			// column.caption = dataDomain.getTable().getRecordPerspective(id)
-			// .getLabel();
-			// }
-			column.caption = perspective.getLabel();
+			CellContainer column = columnMap.get(id);
 
-			column.numSubdivisions = 1;
-			column.isVisible = true;
-			column.isCollapsed = false;
+			if (column == null) {
+				column = new CellContainer();
+				column.id = id;
+				column.caption = perspective.getLabel();
+				column.numSubdivisions = 1;
+				column.isVisible = true;
+				column.isCollapsed = false;
+			}
+			column.childContainers.clear();
+			newColumnMap.put(id, column);
 			parentContainers.add(column);
 			// columns.add(column);
 
@@ -466,15 +448,21 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
-					CellContainer subColumn = new CellContainer();
-					subColumn.caption = group.getClusterNode().getLabel();
-					subColumn.id = group.getPerspectiveID() != null ? group
+					String subColumnID = group.getPerspectiveID() != null ? group
 							.getPerspectiveID() : column.id + i;
-					subColumn.numSubdivisions = 1;
-					subColumn.isVisible = true;
 
-					subColumn.parentContainer = column;
+					CellContainer subColumn = columnMap.get(subColumnID);
+
+					if (subColumn == null) {
+						subColumn = new CellContainer();
+						subColumn.caption = group.getClusterNode().getLabel();
+						subColumn.id = subColumnID;
+						subColumn.numSubdivisions = 1;
+						subColumn.isVisible = true;
+						subColumn.parentContainer = column;
+					}
 					column.childContainers.add(subColumn);
+					newColumnMap.put(subColumnID, subColumn);
 
 					childList.add(subColumn);
 					// columns.add(subColumn);
@@ -495,7 +483,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				columns.addAll(childColumns);
 			}
 		}
-
+		rowMap = newRowMap;
+		columnMap = newColumnMap;
 		cells.clear();
 		emptyCellRenderers.clear();
 		dimensionGroupRenderers.clear();
@@ -866,20 +855,21 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void destroy() {
+	public void setUpsideDown(boolean isUpsideDown) {
+		this.isUpsideDown = isUpsideDown;
+		renderingStrategy = (isUpsideDown) ? new BottomUpDataContainerMatrixRenderingStrategy()
+				: new TopDownDataContainerMatrixRenderingStrategy();
+	}
+
+	@Override
+	public void removePickingListeners() {
 		view.removeMultiIDPickingListeners(EMPTY_CELL_PICKING_TYPE
 				+ node.getID());
 		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
 				+ node.getID());
 		view.removeMultiIDPickingListeners(COLLAPSE_BUTTON_PICKING_TYPE
 				+ node.getID());
-	}
 
-	@Override
-	public void setUpsideDown(boolean isUpsideDown) {
-		this.isUpsideDown = isUpsideDown;
-		renderingStrategy = (isUpsideDown) ? new BottomUpDataContainerMatrixRenderingStrategy()
-				: new TopDownDataContainerMatrixRenderingStrategy();
 	}
 
 }

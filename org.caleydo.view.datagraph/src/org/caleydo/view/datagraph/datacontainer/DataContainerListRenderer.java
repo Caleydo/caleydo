@@ -34,10 +34,11 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
 		setDataContainers(dataContainers);
-		createPickingListener();
+		registerPickingListeners();
 	}
 
-	private void createPickingListener() {
+	@Override
+	public void createPickingListeners() {
 		view.addMultiIDPickingListener(new APickingListener() {
 
 			@Override
@@ -187,11 +188,6 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void destroy() {
-		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE + node.getID());
-	}
-
-	@Override
 	public void setUpsideDown(boolean isUpsideDown) {
 		this.isUpsideDown = isUpsideDown;
 
@@ -199,6 +195,12 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 			renderer.setUpsideDown(isUpsideDown);
 		}
 
+	}
+
+	@Override
+	public void removePickingListeners() {
+		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE + node.getID());
+		
 	}
 
 }
