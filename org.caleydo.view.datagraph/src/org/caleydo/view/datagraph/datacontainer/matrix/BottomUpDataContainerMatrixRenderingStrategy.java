@@ -29,10 +29,10 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
 			float x, float y, IDataGraphNode node, GLDataGraph view) {
-		
+
 		List<CellContainer> reversedRows = new ArrayList<CellContainer>(rows);
-//		Collections.reverse(reversedRows);
-		
+		// Collections.reverse(reversedRows);
+
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -138,8 +138,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX
 					+ captionSpacingX + parentIndent + childIndent,
-					textPositionY, 0, captionColumnWidth - 2 * captionSpacingX,
-					textHeight);
+					textPositionY, 0, captionColumnWidth - childIndent
+							- parentIndent - 2 * captionSpacingX, textHeight);
 
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);

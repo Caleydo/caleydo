@@ -97,16 +97,18 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
-		float dimensionGroupWidth = (x - pixelGLConverter.getGLWidthForPixelWidth(2
-				* SIDE_SPACING_PIXELS + (node.getDataContainers().size() - 1)
-				* SPACING_PIXELS))
-				/ (float) node.getDataContainers().size();
+//		float dimensionGroupWidth = (x - pixelGLConverter.getGLWidthForPixelWidth(2
+//				* SIDE_SPACING_PIXELS + (node.getDataContainers().size() - 1)
+//				* SPACING_PIXELS))
+//				/ (float) node.getDataContainers().size();
+		
+		float dimensionGroupWidth = pixelGLConverter.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 
-		float currentPosX = pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
-		// float currentPosX = (x / 2.0f)
-		// - pixelGLConverter
-		// .getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
-		// / 2 - SIDE_SPACING_PIXELS);
+//		float currentPosX = pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
+		float currentPosX = (x / 2.0f)
+				- pixelGLConverter
+						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
+								/ 2 - SIDE_SPACING_PIXELS);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS)
 				+ dimensionGroupWidth;
 

@@ -1131,4 +1131,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// // updateMinWindowSize(false);
 		// }
 	}
+	
+	public ADataNode getDataNode(IDataDomain dataDomain) {
+		return dataNodesOfDataDomains.get(dataDomain);
+	}
 }

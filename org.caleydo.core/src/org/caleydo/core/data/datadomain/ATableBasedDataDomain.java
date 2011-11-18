@@ -344,6 +344,17 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
+	 * Returns whether a {@link DataContainer} Object exists in this datadomain for the given perspectiveIDs.
+	 * 
+	 * @param recordPerspectiveID
+	 * @param dimensionPerspectiveID
+	 * @return
+	 */
+	public boolean hasDataContainer(String recordPerspectiveID, String dimensionPerspectiveID) {
+		return dataContainers.get(createKey(recordPerspectiveID, dimensionPerspectiveID)) != null;
+	}
+
+	/**
 	 * @return All {@link DataContainer}s of this datadomain.
 	 */
 	public Collection<DataContainer> getAllDataContainers() {
@@ -382,14 +393,13 @@ public abstract class ATableBasedDataDomain
 		return dimensionIDType;
 	}
 
-	
 	/**
 	 * @return the primaryRecordMappingType, see {@link #primaryRecordMappingType}
 	 */
 	public IDType getPrimaryRecordMappingType() {
 		return primaryRecordMappingType;
 	}
-	
+
 	public IDType getPrimaryDimensionMappingType() {
 		return primaryDimensionMappingType;
 	}
