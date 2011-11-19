@@ -7,6 +7,8 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
@@ -181,7 +183,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		if (recordVA.size() == 0)
 			return;
 
-		RecordSelectionManager contentSelectionManager = glVisBricks
+		RecordSelectionManager recordSelectionManager = glVisBricks
 				.getRecordSelectionManager();
 
 		glVisBricks.getHashConnectionBandIDToRecordVA().put(
@@ -190,14 +192,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		float ratio = 0;
 
 		// Iterate over all selection types
-		for (SelectionType selectionType : contentSelectionManager.getSelectionTypes()) {
+		for (SelectionType selectionType : recordSelectionManager.getSelectionTypes()) {
 
 			if (selectionType == SelectionType.MOUSE_OVER
 					|| selectionType == SelectionType.DESELECTED
 					|| selectionType == SelectionType.LEVEL_HIGHLIGHTING)
 				continue;
 
-			Set<Integer> selectedByGroupSelections = contentSelectionManager
+			Set<Integer> selectedByGroupSelections = recordSelectionManager
 					.getElements(selectionType);
 
 			if (selectedByGroupSelections == null
@@ -211,7 +213,15 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			}
 
 			int intersectionCount = 0;
-			for (int recordID : recordVA) {
+			IDMappingManager mappingManager = IDMappingManagerRegistry.get()
+					.getIDMappingManager(recordVA.getIdType().getIDCategory());
+			for (Integer recordID : recordVA) {
+				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
+					
+					recordID = mappingManager.getID(recordSelectionManager.getIDType(),
+							recordVA.getIdType(), recordID);
+					
+				}
 				if (selectedByGroupSelections.contains(recordID))
 					intersectionCount++;
 			}
@@ -359,7 +369,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			// Render straight band connection from center brick to dimension
 			// group on
 			// the RIGHT
-			if (xEnd != 0) {
+			if (xEnd != 0 && !(xEnd < x + 0.000001f && xEnd > x-0.000001f)) {
 
 				// gl.glPushMatrix();
 				// gl.glTranslatef(0, 0, 0.1f);
@@ -520,18 +530,18 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					// group
 					// on the LEFT
 					if (xStart != 0) {
-						connectionRenderer.renderStraightBand(gl, new float[] { xStart,
-								subGroupMatch.getLeftAnchorYTop(), 0 },
-								new float[] {
-										xStart,
-										subGroupMatch.getLeftAnchorYTop()
-												- leftYDiffSelection, 0 }, new float[] {
-										0, subGroupMatch.getLeftAnchorYTop(), 0 },
-								new float[] {
-										0,
-										subGroupMatch.getLeftAnchorYTop()
-												- leftYDiffSelection, 0 }, false,
-								splineFactor, 0, color, trendRatio);// 0.5f);
+//						connectionRenderer.renderStraightBand(gl, new float[] { xStart,
+//								subGroupMatch.getLeftAnchorYTop(), 0 },
+//								new float[] {
+//										xStart,
+//										subGroupMatch.getLeftAnchorYTop()
+//												- leftYDiffSelection, 0 }, new float[] {
+//										0, subGroupMatch.getLeftAnchorYTop(), 0 },
+//								new float[] {
+//										0,
+//										subGroupMatch.getLeftAnchorYTop()
+//												- leftYDiffSelection, 0 }, false,
+//								splineFactor, 0, color, trendRatio);// 0.5f);
 					}
 
 					// Render straight band connection from brick to dimension

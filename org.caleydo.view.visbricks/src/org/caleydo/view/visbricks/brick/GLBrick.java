@@ -283,8 +283,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (dimensionGroup.getCenterBrick() == this)
 			return;
 
-		for (Integer recordID : dataContainer.getRecordPerspective().getVirtualArray()) {
-			recordSelectionManager.addToType(selectedByGroupSelectionType, recordID);
+		RecordVirtualArray va = dataContainer.getRecordPerspective().getVirtualArray();
+
+		for (Integer recordID : va) {
+			recordSelectionManager.addToType(selectedByGroupSelectionType,
+					va.getIdType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -1102,8 +1105,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

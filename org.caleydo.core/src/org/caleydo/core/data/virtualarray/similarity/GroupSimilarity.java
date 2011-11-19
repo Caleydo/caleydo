@@ -122,7 +122,9 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	void calculateSimilarity() {
 
 		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
+
 			Integer id = va1.get(vaIndex);
+			Integer origianlID = id;
 			if (va1.getIdType() != va2.getIdType()) {
 				IDMappingManager idMappingManager =
 					IDMappingManagerRegistry.get().getIDMappingManager(va1.getIdType().getIDCategory());

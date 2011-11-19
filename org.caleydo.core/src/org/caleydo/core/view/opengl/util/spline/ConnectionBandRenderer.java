@@ -374,47 +374,46 @@ public class ConnectionBandRenderer {
 	 * @param color
 	 * @param opacity
 	 */
-	@Deprecated
 	public void renderStraightBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
 		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color, float opacity) {
 
-//		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
-//			return;
-//
-//		// gl.glPushName(pickingManager.getPickingID(viewID,
-//		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
-//
-//		// Band border
-//		gl.glLineWidth(1);
-//
-//		if (highlight)
-//			gl.glColor4f(color[0], color[1], color[2], 0.8f);
-//		else
-//			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
-//
-//		gl.glBegin(GL2.GL_LINES);
-//		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
-//		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
-//		gl.glEnd();
-//
-//		gl.glBegin(GL2.GL_LINES);
-//		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
-//		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
-//		gl.glEnd();
-//
-//		if (highlight)
-//			gl.glColor4f(color[0], color[1], color[2], 0.5f);
-//		else
-//			gl.glColor4f(color[0], color[1], color[2], opacity);
-//
-//		gl.glBegin(GL2.GL_POLYGON);
-//		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
-//		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
-//		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
-//		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
-//		gl.glEnd();
+		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
+			return;
 
-		// gl.glPopName();
+		// gl.glPushName(pickingManager.getPickingID(viewID,
+		// EPickingType.COMPARE_RIBBON_SELECTION, bandID));
+
+		// Band border
+		gl.glLineWidth(1);
+
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], 0.8f);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
+		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINES);
+		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
+		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
+		gl.glEnd();
+
+		if (highlight)
+			gl.glColor4f(color[0], color[1], color[2], 0.5f);
+		else
+			gl.glColor4f(color[0], color[1], color[2], opacity);
+
+		gl.glBegin(GL2.GL_POLYGON);
+		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
+		gl.glVertex3f(rightTopPos[0], rightTopPos[1], 0);
+		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
+		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
+		gl.glEnd();
+
+
 	}
 
 	/**

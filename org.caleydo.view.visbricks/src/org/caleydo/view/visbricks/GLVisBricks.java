@@ -1241,7 +1241,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 */
 	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
 		recordIDCategory = dataDomain.getRecordIDCategory();
-		IDType mappingRecordIDType = dataDomain.getPrimaryRecordMappingType();
+		IDType mappingRecordIDType = dataDomain.getRecordIDType();
 		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry
 				.get().getIDMappingManager(recordIDCategory), mappingRecordIDType);
 	}

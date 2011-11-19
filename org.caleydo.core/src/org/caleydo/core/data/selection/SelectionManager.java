@@ -54,7 +54,7 @@ public class SelectionManager
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
 
-	protected IDType iDType;
+	protected IDType idType;
 
 	protected ArrayList<SelectionType> selectionTypes;
 
@@ -74,14 +74,14 @@ public class SelectionManager
 	 * Constructor
 	 */
 	public SelectionManager(IDType idType) {
-		this.iDType = idType;
+		this.idType = idType;
 		selectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
 
 		hashSelectionTypes = new HashMap<SelectionType, HashMap<Integer, Integer>>();
 		hashConnectionToElementID = new HashMap<Integer, ArrayList<Integer>>();
 		deltaBlackList = new HashMap<SelectionType, Boolean>(2);
 
-		selectionDelta = new SelectionDelta(iDType);
+		selectionDelta = new SelectionDelta(idType);
 
 		for (SelectionType selectionType : selectionTypes) {
 			if (selectionType != SelectionType.NORMAL)
@@ -102,7 +102,7 @@ public class SelectionManager
 	 * @return
 	 */
 	public IDType getIDType() {
-		return iDType;
+		return idType;
 	}
 
 	/**
@@ -154,7 +154,7 @@ public class SelectionManager
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
 		}
 
-		selectionDelta = new SelectionDelta(iDType);
+		selectionDelta = new SelectionDelta(idType);
 	}
 
 	/**
@@ -169,7 +169,7 @@ public class SelectionManager
 			clearSelection(type);
 		}
 		bIsDeltaWritingEnabled = true;
-		selectionDelta = new SelectionDelta(iDType);
+		selectionDelta = new SelectionDelta(idType);
 	}
 
 	/**
@@ -234,54 +234,50 @@ public class SelectionManager
 	 * 
 	 * @param targetType
 	 *            the selection type the element should be added to
-	 * @param iElementID
+	 * @param id
 	 *            the id of the element
 	 */
-	public void addToType(SelectionType targetType, int iElementID) {
+	public void addToType(SelectionType targetType, int id) {
 		if (!hashSelectionTypes.containsKey(targetType))
 			throw new IllegalArgumentException("The selection type " + targetType
 				+ " is not registered with this selection manager.");
 		if (targetType == SelectionType.NORMAL)
 			return;
 		// return if already in the target type
-		if (hashSelectionTypes.get(targetType).containsKey(iElementID))
+		if (hashSelectionTypes.get(targetType).containsKey(id))
 			return;
 
 		// if (!isConnectedType(targetType))
 		// {
-		removeConnectionForElementID(iElementID);
+		removeConnectionForElementID(id);
 		// }
 
-		hashSelectionTypes.get(targetType).put(iElementID, 1);
+		hashSelectionTypes.get(targetType).put(id, 1);
 
 		if (bIsDeltaWritingEnabled && !deltaBlackList.containsKey(targetType)) {
-			selectionDelta.addSelection(iElementID, targetType);
+			selectionDelta.addSelection(id, targetType);
 		}
 
-		// for (SelectionType currentType : alSelectionTypes) {
-		// // ignore if target == current, also MOUSE_OVEr does not override SELECTION
-		// if (currentType == targetType || currentType == SelectionType.SELECTION
-		// && targetType == SelectionType.MOUSE_OVER) {
-		// continue;
-		// }
-		//
-		// if (hashSelectionTypes.get(currentType).containsKey(iElementID)) {
-		// Integer iNumTimesAdded = hashSelectionTypes.get(currentType).remove(iElementID);
-		//
-		// hashSelectionTypes.get(targetType).put(iElementID, iNumTimesAdded);
-		//
-		// // not sure whether we should add remove here if iNumTimesAdded
-		// // is > 0
-		// if (bIsDeltaWritingEnabled) {
-		// selectionDelta.addSelection(iElementID, targetType);
-		// }
-		// return;
-		// }
-		// }
-		// System.out.println("Pathways mishandle GenericSelectionManager");
-		// // TODO: investigate
-		// throw new IllegalArgumentException(
-		// "SelectionManager: element to be removed does not exist");
+	}
+
+	/**
+	 * Same as {@link #addToType(SelectionType, int)} with an additional parameter sourceIDType that is used
+	 * for conversion of IDs if necessary
+	 * 
+	 * @param targetType
+	 * @param sourceIDType
+	 * @param elementID
+	 */
+	public void addToType(SelectionType targetType, IDType sourceIDType, int id) {
+		if (sourceIDType.equals(idType)) {
+			addToType(targetType, id);
+		}
+		else {
+			Set<Integer> convertedIDs = idMappingManager.getIDAsSet(sourceIDType, idType, id);
+			if (convertedIDs != null)
+				addToType(targetType, convertedIDs);
+		}
+
 	}
 
 	/**
@@ -297,6 +293,19 @@ public class SelectionManager
 	public void addToType(SelectionType targetType, Collection<Integer> idCollection) {
 		for (int value : idCollection) {
 			addToType(targetType, value);
+		}
+	}
+
+	/**
+	 * Same as {@link #addToType(SelectionType, IDType, int)} but for a collection of ids)
+	 * 
+	 * @param targetType
+	 * @param sourceIDType
+	 * @param idCollection
+	 */
+	public void addToType(SelectionType targetType, IDType sourceIDType, Collection<Integer> idCollection) {
+		for (int value : idCollection) {
+			addToType(targetType, sourceIDType, value);
 		}
 	}
 
@@ -426,7 +435,7 @@ public class SelectionManager
 	public SelectionDelta getDelta() {
 		SelectionDelta returnDelta = selectionDelta;
 
-		selectionDelta = new SelectionDelta(iDType);
+		selectionDelta = new SelectionDelta(idType);
 
 		return returnDelta;
 	}
@@ -439,7 +448,7 @@ public class SelectionManager
 	 */
 	@Deprecated
 	public SelectionDelta getCompleteDelta() {
-		SelectionDelta tempDelta = new SelectionDelta(iDType);
+		SelectionDelta tempDelta = new SelectionDelta(idType);
 		HashMap<Integer, Integer> tempHash;
 		for (SelectionType selectionType : selectionTypes) {
 			if (selectionType == SelectionType.NORMAL || deltaBlackList.containsKey(selectionType))
@@ -458,7 +467,7 @@ public class SelectionManager
 			}
 		}
 
-		selectionDelta = new SelectionDelta(iDType);
+		selectionDelta = new SelectionDelta(idType);
 		return tempDelta;
 	}
 
@@ -484,8 +493,8 @@ public class SelectionManager
 	 */
 	public void setDelta(SelectionDelta selectionDelta) {
 		bIsDeltaWritingEnabled = false;
-		if (selectionDelta.getIDType() != iDType)
-			selectionDelta = DeltaConverter.convertDelta(idMappingManager, iDType, selectionDelta);
+		if (selectionDelta.getIDType() != idType)
+			selectionDelta = DeltaConverter.convertDelta(idMappingManager, idType, selectionDelta);
 		for (SelectionDeltaItem item : selectionDelta) {
 
 			// if (selectionDelta.getIDType() == internalIDType) {
@@ -708,7 +717,7 @@ public class SelectionManager
 
 	@Override
 	public String toString() {
-		String result = "IDType: " + iDType + " ";
+		String result = "IDType: " + idType + " ";
 		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
 			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
 		}
@@ -763,7 +772,7 @@ public class SelectionManager
 		clone.selectionTypes = (ArrayList<SelectionType>) this.selectionTypes.clone();
 
 		// the selectionDelta is reset
-		clone.selectionDelta = new SelectionDelta(iDType);
+		clone.selectionDelta = new SelectionDelta(idType);
 		// the virtual array needs to be set manually by the receiving instance
 		return clone;
 	}

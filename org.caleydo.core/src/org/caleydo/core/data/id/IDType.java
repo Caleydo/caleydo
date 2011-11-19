@@ -9,7 +9,7 @@ import org.eclipse.core.runtime.Status;
 
 public class IDType {
 
-	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();
+	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();	
 
 	/**
 	 * Type name that needs to be a unique value for every new IDType. Besides being unique, it should also be
