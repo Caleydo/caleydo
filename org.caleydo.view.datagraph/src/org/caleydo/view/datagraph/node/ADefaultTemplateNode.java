@@ -64,8 +64,10 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
 				.getBottomAnchorPointsOfDataContainer(dataContainer);
 
-		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints, SPACING_PIXELS,
-				SPACING_PIXELS);
+		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
+				SPACING_PIXELS, isUpsideDown ? (3 * SPACING_PIXELS
+						+ CAPTION_HEIGHT_PIXELS + LINE_SEPARATOR_HEIGHT_PIXELS)
+						: (SPACING_PIXELS));
 	}
 
 	@Override
@@ -78,27 +80,37 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		Pair<Point2D, Point2D> anchorPoints = getDataContainerRenderer()
 				.getTopAnchorPointsOfDataContainer(dataContainer);
 
-		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints, SPACING_PIXELS, 3
-				* SPACING_PIXELS + CAPTION_HEIGHT_PIXELS + LINE_SEPARATOR_HEIGHT_PIXELS);
+		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
+				SPACING_PIXELS, isUpsideDown ? (3 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
+						+ LINE_SEPARATOR_HEIGHT_PIXELS) : (SPACING_PIXELS));
 	}
 
 	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
-			Pair<Point2D, Point2D> anchorPoints, int spacingXPixels, int spacingYPixels) {
+			Pair<Point2D, Point2D> anchorPoints, int spacingXPixels,
+			int spacingYPixels) {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
-		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
-		float spacingX = pixelGLConverter.getGLWidthForPixelWidth(spacingXPixels);
-		float spacingY = pixelGLConverter.getGLHeightForPixelHeight(spacingYPixels);
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+		float spacingX = pixelGLConverter
+				.getGLWidthForPixelWidth(spacingXPixels);
+		float spacingY = pixelGLConverter
+				.getGLHeightForPixelHeight(spacingYPixels);
 
 		Point2D first = (Point2D) anchorPoints.getFirst().clone();
 		Point2D second = (Point2D) anchorPoints.getSecond().clone();
 
-		first.setLocation(anchorPoints.getFirst().getX() + x + spacingX - width / 2.0f,
-				anchorPoints.getFirst().getY() + y + spacingY - height / 2.0f);
-		second.setLocation(anchorPoints.getSecond().getX() + x + spacingX - width / 2.0f,
-				anchorPoints.getSecond().getY() + y + spacingY - height / 2.0f);
+		first.setLocation(anchorPoints.getFirst().getX() + x + spacingX - width
+				/ 2.0f, anchorPoints.getFirst().getY() + y + spacingY - height
+				/ 2.0f);
+		second.setLocation(anchorPoints.getSecond().getX() + x + spacingX
+				- width / 2.0f, anchorPoints.getSecond().getY() + y + spacingY
+				- height / 2.0f);
 
 		return new Pair<Point2D, Point2D>(first, second);
 	}
@@ -106,15 +118,21 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	@Override
 	public Pair<Point2D, Point2D> getTopAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
-		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
 
 		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
 
-		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height / 2.0f));
-		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y + height / 2.0f));
+		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y + height
+				/ 2.0f));
 
 		return anchorPoints;
 	}
@@ -122,15 +140,21 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	@Override
 	public Pair<Point2D, Point2D> getBottomAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
-		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
 
 		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
 
-		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y - height / 2.0f));
-		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height / 2.0f));
+		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y - height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
+				/ 2.0f));
 
 		return anchorPoints;
 	}
@@ -138,15 +162,21 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	@Override
 	public Pair<Point2D, Point2D> getLeftAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
-		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
 
 		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
 
-		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height / 2.0f));
-		anchorPoints.setSecond(new Point2D.Float(x - width / 2.0f, y - height / 2.0f));
+		anchorPoints.setFirst(new Point2D.Float(x - width / 2.0f, y + height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x - width / 2.0f, y - height
+				/ 2.0f));
 
 		return anchorPoints;
 	}
@@ -154,15 +184,21 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	@Override
 	public Pair<Point2D, Point2D> getRightAnchorPoints() {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
-		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
 
 		Pair<Point2D, Point2D> anchorPoints = new Pair<Point2D, Point2D>();
 
-		anchorPoints.setFirst(new Point2D.Float(x + width / 2.0f, y + height / 2.0f));
-		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height / 2.0f));
+		anchorPoints.setFirst(new Point2D.Float(x + width / 2.0f, y + height
+				/ 2.0f));
+		anchorPoints.setSecond(new Point2D.Float(x + width / 2.0f, y - height
+				/ 2.0f));
 
 		return anchorPoints;
 	}
@@ -170,8 +206,10 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	@Override
 	public Point2D getPosition() {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
 		return new Point2D.Float(x, y);
 	}
 
@@ -193,7 +231,8 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				+ LINE_SEPARATOR_HEIGHT_PIXELS
 				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
 						((getDataContainerRenderer() == null) ? 0
-								: getDataContainerRenderer().getMinHeightPixels()));
+								: getDataContainerRenderer()
+										.getMinHeightPixels()));
 		// return layout.getHeightPixels();
 	}
 
@@ -203,7 +242,8 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				* SPACING_PIXELS
 				+ Math.max(MIN_DATA_CONTAINER_WIDTH_PIXELS,
 						((getDataContainerRenderer() == null) ? 0
-								: getDataContainerRenderer().getMinWidthPixels()));
+								: getDataContainerRenderer()
+										.getMinWidthPixels()));
 		// return layout.getWidthPixels();
 	}
 
@@ -211,8 +251,8 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(0, 0, 1, 0);
 
-		BorderedAreaRenderer borderedAreaRenderer = new BorderedAreaRenderer(view,
-				PickingType.DATA_GRAPH_NODE, pickingID);
+		BorderedAreaRenderer borderedAreaRenderer = new BorderedAreaRenderer(
+				view, PickingType.DATA_GRAPH_NODE, pickingID);
 		borderedAreaRenderer.setColor(color);
 
 		baseRow.setRenderer(borderedAreaRenderer);
@@ -236,7 +276,8 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		return spacingLayoutX;
 	}
 
-	protected ElementLayout createDefaultCaptionLayout(String caption, int pickingID) {
+	protected ElementLayout createDefaultCaptionLayout(String caption,
+			int pickingID) {
 		ElementLayout captionLayout = new ElementLayout("caption");
 		captionLayout.setPixelGLConverter(view.getPixelGLConverter());
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
@@ -260,19 +301,25 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 	@Override
 	public void render(GL2 gl) {
 		Point2D position = graphLayout.getNodePosition(this);
-		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
-		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
-		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
-		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position
+				.getX());
+		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position
+				.getY());
+		float width = pixelGLConverter
+				.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter
+				.getGLHeightForPixelHeight(getHeightPixels());
+
 		gl.glPushMatrix();
 		gl.glTranslatef(x - width / 2.0f, y - height / 2.0f, 0f);
-
 		// layoutManager.setViewFrustum(new ViewFrustum(
 		// ECameraProjectionMode.ORTHOGRAPHIC, x - spacingWidth, x
 		// + spacingWidth, y - spacingHeight, y + spacingHeight,
 		// -1, 20));
-		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
-				0, width, 0, height, -1, 20));
+		layoutManager
+				.setViewFrustum(new ViewFrustum(
+						CameraProjectionMode.ORTHOGRAPHIC, 0, width, 0, height,
+						-1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();

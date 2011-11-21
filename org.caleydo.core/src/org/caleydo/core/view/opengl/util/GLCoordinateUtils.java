@@ -27,6 +27,8 @@ public class GLCoordinateUtils {
 	 */
 	public static float[] convertWindowCoordinatesToWorldCoordinates(final GL2 gl,
 		final int iWindowCoordinatePositionX, final int iWindowCoordinatePositionY, final float fZValue) {
+		
+		//FIXME: There is a problem, that causes some calculations not to be up to date (once a problem when dragging)
 
 		float[] fArWorldCoordinatePosition = new float[3];
 

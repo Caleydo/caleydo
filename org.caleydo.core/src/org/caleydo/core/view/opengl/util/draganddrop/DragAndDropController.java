@@ -7,6 +7,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
@@ -60,9 +61,15 @@ public class DragAndDropController {
 		if (isDragging) {
 			Point mouseWinCoords = glMouseListener.getPickedPoint();
 
-			float[] fArTargetWorldCoordinates =
-				GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
-					mouseWinCoords.y);
+			float[] fArTargetWorldCoordinates = new float[] { 0, 0 };
+
+			PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
+//			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
+//				mouseWinCoords.y);
+			fArTargetWorldCoordinates[0] = pixelGLConverter.getGLWidthForPixelWidth(mouseWinCoords.x);
+			fArTargetWorldCoordinates[1] =
+				pixelGLConverter.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()
+					- mouseWinCoords.y);
 
 			if (dropArea != null) {
 				dropArea.handleDragOver(gl, draggables, fArTargetWorldCoordinates[0],
@@ -71,9 +78,15 @@ public class DragAndDropController {
 
 			for (IDraggable draggable : draggables) {
 				if (isDraggingFirstTime) {
-					float[] fArStartDraggingWorldCoordinates =
-						GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-							startDraggingWindowCoords.x, startDraggingWindowCoords.y);
+
+					float[] fArStartDraggingWorldCoordinates = new float[] { 0, 0 };
+					// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
+					// startDraggingWindowCoords.x, startDraggingWindowCoords.y);
+					fArStartDraggingWorldCoordinates[0] =
+						pixelGLConverter.getGLWidthForPixelWidth(startDraggingWindowCoords.x);
+					fArStartDraggingWorldCoordinates[1] =
+						pixelGLConverter.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()
+							- startDraggingWindowCoords.y);
 					draggable.setDraggingStartPoint(fArStartDraggingWorldCoordinates[0],
 						fArStartDraggingWorldCoordinates[1]);
 				}

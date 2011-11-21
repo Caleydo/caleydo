@@ -1,5 +1,6 @@
 package org.caleydo.view.datagraph.datacontainer;
 
+import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.List;
@@ -57,9 +58,9 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 				draggedComparisonGroupRepresentation
 						.setSelectionType(SelectionType.SELECTION);
-
+				Point point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
 				dragAndDropController.addDraggable(draggedComparisonGroupRepresentation);
 				view.setDisplayListDirty();
 

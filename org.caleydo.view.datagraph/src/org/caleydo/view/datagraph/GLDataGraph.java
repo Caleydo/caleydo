@@ -332,6 +332,12 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		gl.glEndList();
 
+		// gl.glMatrixMode(GL2.GL_MODELVIEW);
+		// gl.glPushMatrix();
+		// gl.glTranslatef(2, 2, 2);
+		// pixelGLConverter.getGLWidthForCurrentGLTransform(gl);
+		// gl.glPopMatrix();
+
 		applyAutomaticLayout = false;
 		nodePositionsUpdated = false;
 
@@ -1131,7 +1137,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// // updateMinWindowSize(false);
 		// }
 	}
-	
+
 	public ADataNode getDataNode(IDataDomain dataDomain) {
 		return dataNodesOfDataDomains.get(dataDomain);
 	}
