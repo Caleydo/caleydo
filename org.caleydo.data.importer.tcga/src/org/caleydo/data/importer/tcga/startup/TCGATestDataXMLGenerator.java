@@ -104,7 +104,7 @@ public class TCGATestDataXMLGenerator {
 		dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 
 		dataConfiguration.setRecordIDCategory("SAMPLE");
-		dataConfiguration.setPrimaryRecordMappingType("SAMPLE");
+		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
 		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		dataConfiguration.setRecordDenominationPlural("samples");
 		dataConfiguration.setRecordDenominationSingular("sample");
@@ -132,7 +132,7 @@ public class TCGATestDataXMLGenerator {
 		
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
-		mirnaConfiguration.setPrimaryRecordMappingType("SAMPLE");
+		mirnaConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		mirnaConfiguration.setRecordDenominationPlural("samples");
 		mirnaConfiguration.setRecordDenominationSingular("sample");
@@ -158,7 +158,7 @@ public class TCGATestDataXMLGenerator {
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
-		methylationConfiguration.setPrimaryRecordMappingType("SAMPLE");
+		methylationConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
 		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		methylationConfiguration.setRecordDenominationPlural("samples");
 		methylationConfiguration.setRecordDenominationSingular("sample");
@@ -185,7 +185,7 @@ public class TCGATestDataXMLGenerator {
 		DataDomainConfiguration copyNumberConfiguration = new DataDomainConfiguration();
 		copyNumberConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 		copyNumberConfiguration.setRecordIDCategory("SAMPLE");
-		copyNumberConfiguration.setPrimaryRecordMappingType("SAMPLE");
+		copyNumberConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
 		copyNumberConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		copyNumberConfiguration.setRecordDenominationPlural("samples");
 		copyNumberConfiguration.setRecordDenominationSingular("sample");

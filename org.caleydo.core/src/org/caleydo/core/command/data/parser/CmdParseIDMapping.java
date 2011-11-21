@@ -28,7 +28,7 @@ public class CmdParseIDMapping
 
 	protected String fileName;
 
-	private String sLookupTableInfo;
+	private String lookupTableInfo;
 
 	private IDCategory idCategory;
 
@@ -39,7 +39,7 @@ public class CmdParseIDMapping
 	/**
 	 * Special cases for creating reverse map and using internal LUTs. Valid values are: LUT|LUT_2 REVERSE
 	 */
-	private String sLookupTableOptions;
+	private String lookupTableOptions;
 
 	/**
 	 * Define type of lookup table to be created.
@@ -55,21 +55,21 @@ public class CmdParseIDMapping
 	 */
 	private int stopParsingAtLine = -1;
 
-	private boolean bCreateReverseMap = false;
+	private boolean createReverseMap = false;
 
 	/**
 	 * Boolean indicates if one column of the mapping needs to be resolved. Resolving means replacing codes by
 	 * internal IDs.
 	 */
-	private boolean bResolveCodeMappingUsingCodeToId_LUT = false;
+	private boolean resolveCodeMappingUsingCodeToId_LUT = false;
 
 	/**
 	 * Variable contains the lookup table types that are needed to resolve mapping tables that contain codes
 	 * instead of internal IDs.
 	 */
-	private String sCodeResolvingLUTTypes;
+	private String codeResolvingLUTTypes;
 
-	private String sCodeResolvingLUTMappingType;
+	private String codeResolvingLUTMappingType;
 
 	private boolean isMultiMap;
 
@@ -85,7 +85,7 @@ public class CmdParseIDMapping
 		super.setParameterHandler(parameterHandler);
 
 		fileName = detail;
-		sLookupTableInfo = attrib1;
+		lookupTableInfo = attrib1;
 		delimiter = attrib2;
 
 		if (attrib3 != null) {
@@ -97,7 +97,7 @@ public class CmdParseIDMapping
 			}
 		}
 
-		sCodeResolvingLUTTypes = attrib4;
+		codeResolvingLUTTypes = attrib4;
 
 		isMultiMap = Boolean.parseBoolean(attrib5);
 
@@ -112,9 +112,9 @@ public class CmdParseIDMapping
 
 		this.startParsingAtLine = startParsingInLine;
 		this.stopParsingAtLine = stopParsingInLine;
-		this.sLookupTableInfo = sLookupTableInfo;
+		this.lookupTableInfo = sLookupTableInfo;
 		this.delimiter = delimiter;
-		this.sCodeResolvingLUTTypes = sCodeResolvingLUTTypes;
+		this.codeResolvingLUTTypes = sCodeResolvingLUTTypes;
 		this.fileName = fileName;
 		this.idCategory = idCategory;
 		extractParameters();
@@ -129,7 +129,7 @@ public class CmdParseIDMapping
 	}
 
 	private void extractParameters() {
-		StringTokenizer tokenizer = new StringTokenizer(sLookupTableInfo, ATextParser.SPACE);
+		StringTokenizer tokenizer = new StringTokenizer(lookupTableInfo, ATextParser.SPACE);
 
 		String mappingTypeString = tokenizer.nextToken();
 		fromIDType = IDType.getIDType(mappingTypeString.substring(0, mappingTypeString.indexOf("_2_")));
@@ -138,17 +138,17 @@ public class CmdParseIDMapping
 				mappingTypeString.length()));
 
 		while (tokenizer.hasMoreTokens()) {
-			sLookupTableOptions = tokenizer.nextToken();
+			lookupTableOptions = tokenizer.nextToken();
 
-			if (sLookupTableOptions.equals("REVERSE")) {
-				bCreateReverseMap = true;
+			if (lookupTableOptions.equals("REVERSE")) {
+				createReverseMap = true;
 			}
-			else if (sLookupTableOptions.equals("LUT")) {
-				tokenizer = new StringTokenizer(sCodeResolvingLUTTypes, ATextParser.SPACE);
+			else if (lookupTableOptions.equals("LUT")) {
+				tokenizer = new StringTokenizer(codeResolvingLUTTypes, ATextParser.SPACE);
 
-				sCodeResolvingLUTMappingType = tokenizer.nextToken();
+				codeResolvingLUTMappingType = tokenizer.nextToken();
 
-				bResolveCodeMappingUsingCodeToId_LUT = true;
+				resolveCodeMappingUsingCodeToId_LUT = true;
 			}
 		}
 	}
@@ -176,14 +176,14 @@ public class CmdParseIDMapping
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
 		MappingType mappingType = idMappingManager.createMap(fromIDType, toIDType, isMultiMap);
 
-		if (bResolveCodeMappingUsingCodeToId_LUT) {
+		if (resolveCodeMappingUsingCodeToId_LUT) {
 
 			IDType codeResolvedFromIDType =
-				IDType.getIDType(sCodeResolvingLUTMappingType.substring(0,
-					sCodeResolvingLUTMappingType.indexOf("_2_")));
+				IDType.getIDType(codeResolvingLUTMappingType.substring(0,
+					codeResolvingLUTMappingType.indexOf("_2_")));
 			IDType codeResolvedToIDType =
-				IDType.getIDType(sCodeResolvingLUTMappingType.substring(
-					sCodeResolvingLUTMappingType.indexOf("_2_") + 3, sCodeResolvingLUTMappingType.length()));
+				IDType.getIDType(codeResolvingLUTMappingType.substring(
+					codeResolvingLUTMappingType.indexOf("_2_") + 3, codeResolvingLUTMappingType.length()));
 
 			idMappingManager.createCodeResolvedMap(mappingType, codeResolvedFromIDType, codeResolvedToIDType);
 		}
@@ -196,7 +196,7 @@ public class CmdParseIDMapping
 			idMappingParser.loadData();
 		}
 
-		if (bCreateReverseMap) {
+		if (createReverseMap) {
 			idMappingManager.createReverseMap(mappingType);
 		}
 	}

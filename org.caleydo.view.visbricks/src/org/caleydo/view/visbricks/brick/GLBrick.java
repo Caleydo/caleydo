@@ -287,7 +287,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		for (Integer recordID : va) {
 			recordSelectionManager.addToType(selectedByGroupSelectionType,
-					va.getIdType(), recordID);
+					recordIDType.getIDCategory().getPrimaryMappingType(), recordID);//va.getIdType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();

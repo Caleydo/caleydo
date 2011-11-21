@@ -1,10 +1,18 @@
 package org.caleydo.core.startup;
 
+import java.util.Map;
+
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.serialize.DataDomainSerializationData;
@@ -78,6 +86,7 @@ public class SerializationStartupProcedure
 		}
 
 		deserializeData(serializationDataList);
+		generateSampleIntIDs();
 	}
 
 	private void deserializeData(SerializationData serializationDataList) {
@@ -105,6 +114,48 @@ public class SerializationStartupProcedure
 				}
 			}
 		}
+	}
+
+	private void generateSampleIntIDs() {
+		IDCategory sampleIDCategory = IDCategory.getIDCategory("SAMPLE");
+		IDType sampleIDType = IDType.getIDType("SAMPLE");
+		IDType sampleIntIDType = IDType.getIDType("SAMPLE_INT");
+
+		IDMappingManager idMappingManager =
+			IDMappingManagerRegistry.get().getIDMappingManager(sampleIDCategory);
+		MappingType sampleMappingType = idMappingManager.createMap(sampleIDType, sampleIntIDType, false);
+		Map<String, Integer> sampleIDMap = idMappingManager.getMap(sampleMappingType);
+
+		// Merge SAMPLE maps from each data set to one
+		int generatedSampleID = 0;
+		for (DataDomainSerializationData dataSerializationData : serializationDataList
+			.getDataDomainSerializationDataList()) {
+			ADataDomain dataDomain = dataSerializationData.getDataDomain();
+
+			if (dataDomain instanceof ATableBasedDataDomain) {
+				ATableBasedDataDomain tableDataDomain = (ATableBasedDataDomain) dataDomain;
+
+				MappingType mappingType = null;
+				if (tableDataDomain.isColumnDimension())
+					mappingType =
+						idMappingManager.getMappingType(sampleIDType + "_2_"
+							+ tableDataDomain.getDimensionIDType());
+				else
+					mappingType =
+						idMappingManager.getMappingType(sampleIDType + "_2_"
+							+ tableDataDomain.getRecordIDType());
+
+				for (Object sampleID : idMappingManager.getMap(mappingType).keySet()) {
+
+					if (sampleIDMap.containsKey(sampleID))
+						continue;
+
+					sampleIDMap.put((String) sampleID, generatedSampleID++);
+				}
+			}
+		}
+
+		idMappingManager.createReverseMap(sampleMappingType);
 	}
 
 	public void loadSampleProject(boolean loadSampleProject) {

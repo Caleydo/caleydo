@@ -10,16 +10,23 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -87,7 +94,7 @@ public class Application
 
 		boolean isColumnDimension = false;
 
-		// Iteratur over data type sets and trigger processing
+		// Iterate over data type sets and trigger processing
 		for (DataSetMetaInfo dataTypeSet : dataTypeSetCollection.getDataTypeSetCollection())
 			loadSources(dataTypeSet, isColumnDimension);
 
@@ -118,7 +125,7 @@ public class Application
 			dataDomains.get(i).getTable().registerRecordPerspective(intersectedPerspective);
 		}
 	}
-
+	
 	@Override
 	public void stop() {
 	}

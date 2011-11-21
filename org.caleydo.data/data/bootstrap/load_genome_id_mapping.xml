@@ -37,12 +37,15 @@
 		/> <Cmd type="CREATE_ID_TYPE" detail="CHROMOSOME" attrib1="GENE" attrib2="STRING" 
 		/> -->
 
-	<!-- ************************** Experiments ************************** -->
+	<!-- ************************** Samples ************************** -->
 
 	<Cmd type="CREATE_ID_CATEGORY" detail="SAMPLE" />
 
 	<Cmd type="CREATE_ID_TYPE" detail="SAMPLE" attrib1="SAMPLE"
 		attrib2="STRING" />
+
+	<Cmd type="CREATE_ID_TYPE" detail="SAMPLE_INT" attrib1="SAMPLE"
+		attrib2="INT" />
 
 	<!-- TODO this should created dynamically when creating a new tree! -->
 	<!--<Cmd type="CREATE_ID_TYPE" detail="CLUSTER_NUMBER" attrib="INT" /> -->
