@@ -5,6 +5,11 @@ import java.util.HashMap;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * FIXME documentation
+ * @author alexsb
+ *
+ */
 public class SubGroupMatch {
 
 	private int connectionBandID = -1;

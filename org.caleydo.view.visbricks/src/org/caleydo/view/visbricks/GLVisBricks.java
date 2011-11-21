@@ -1505,9 +1505,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				volatieBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		for (Integer recordID : hashConnectionBandIDToRecordVA.get(connectionBandID)) {
+		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA.get(connectionBandID); 
+		for (Integer recordID : recordVA) {
 			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
-					recordIDCategory.getPrimaryMappingType(), recordID);
+					recordVA.getIdType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();

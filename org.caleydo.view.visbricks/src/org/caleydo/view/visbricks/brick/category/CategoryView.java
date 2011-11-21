@@ -93,7 +93,6 @@ public class CategoryView extends ATableBasedView {
 
 	@Override
 	public void display(GL2 gl) {
-		System.out.println("not much");
 		if (!lazyMode)
 			checkForHits(gl);
 	}
