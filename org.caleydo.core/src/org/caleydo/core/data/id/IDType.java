@@ -7,9 +7,26 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
+/**
+ * <p>
+ * An IDType defines a semantic grouping of a set of IDs. Examples for IDTypes are global id types, such as
+ * "RefSeq", or "David" which are internationally recognized IDType for genes, or custom IDTypes, such as for
+ * example to identify the columns in a tabular data file.
+ * </p>
+ * <p>
+ * IDTypes are used to identify that events are to be applied for a component. An example would be a brushing
+ * which can only be directly applied if the IDType of the event is the same as the IDType of the receiver.
+ * </p>
+ * <p>
+ * IDTypes belong to {@link IDCategory}. The contract for an IDCategory is that all elements for the types
+ * registered with one category can be mapped to each other using the {@link IDMappingManager}.
+ * </p>
+ * 
+ * @author Alexander Lex
+ */
 public class IDType {
 
-	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();	
+	private static HashMap<String, IDType> registeredTypes = new HashMap<String, IDType>();
 
 	/**
 	 * Type name that needs to be a unique value for every new IDType. Besides being unique, it should also be

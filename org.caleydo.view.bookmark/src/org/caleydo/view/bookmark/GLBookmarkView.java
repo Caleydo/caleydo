@@ -328,8 +328,8 @@ public class GLBookmarkView extends ATableBasedView {
 		bookmarkTemplate.setBaseElementLayout(mainColumn);
 
 		RecordBookmarkContainer geneContainer = new RecordBookmarkContainer(this,
-				dataDomain.getRecordIDCategory(),
-				dataDomain.getPrimaryRecordMappingType());
+				dataDomain.getRecordIDCategory(), dataDomain.getRecordIDCategory()
+						.getPrimaryMappingType());
 		mainColumn.append(geneContainer.getLayout());
 
 		hashCategoryToBookmarkContainer.put(dataDomain.getRecordIDCategory(),
@@ -345,8 +345,8 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

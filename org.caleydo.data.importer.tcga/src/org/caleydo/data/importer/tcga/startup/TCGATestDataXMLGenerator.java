@@ -132,6 +132,7 @@ public class TCGATestDataXMLGenerator {
 		
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
+		mirnaConfiguration.setPrimaryRecordMappingType("SAMPLE");
 		mirnaConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		mirnaConfiguration.setRecordDenominationPlural("samples");
 		mirnaConfiguration.setRecordDenominationSingular("sample");
@@ -157,6 +158,7 @@ public class TCGATestDataXMLGenerator {
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
 		methylationConfiguration.setRecordIDCategory("SAMPLE");
+		methylationConfiguration.setPrimaryRecordMappingType("SAMPLE");
 		methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		methylationConfiguration.setRecordDenominationPlural("samples");
 		methylationConfiguration.setRecordDenominationSingular("sample");
@@ -183,6 +185,7 @@ public class TCGATestDataXMLGenerator {
 		DataDomainConfiguration copyNumberConfiguration = new DataDomainConfiguration();
 		copyNumberConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 		copyNumberConfiguration.setRecordIDCategory("SAMPLE");
+		copyNumberConfiguration.setPrimaryRecordMappingType("SAMPLE");
 		copyNumberConfiguration.setHumanReadableRecordIDType("SAMPLE");
 		copyNumberConfiguration.setRecordDenominationPlural("samples");
 		copyNumberConfiguration.setRecordDenominationSingular("sample");

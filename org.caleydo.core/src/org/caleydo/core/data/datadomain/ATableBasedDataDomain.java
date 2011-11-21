@@ -101,14 +101,6 @@ public abstract class ATableBasedDataDomain
 	/** Same as {@link #humanReadableRecordIDType} for dimensions */
 	protected IDType humanReadableDimensionIDType;
 
-	/**
-	 * The primary mapping type of the record. This type is not determined at run-time but something permanent
-	 * like an official gene mapping type like DAVID.
-	 */
-	protected IDType primaryRecordMappingType;
-	/** Same as {@link #primaryDimensionMappingType} for dimensions. */
-	protected IDType primaryDimensionMappingType;
-
 	protected IDCategory recordIDCategory;
 	protected IDCategory dimensionIDCategory;
 
@@ -244,15 +236,22 @@ public abstract class ATableBasedDataDomain
 				EColumnType.INT);
 		recordGroupIDType.setInternalType(true);
 
+		IDType primaryRecordMappingType;
+
 		if (configuration.primaryRecordMappingType != null)
 			primaryRecordMappingType = IDType.getIDType(configuration.primaryRecordMappingType);
 		else
 			primaryRecordMappingType = recordIDType;
 
+		recordIDCategory.setPrimaryMappingType(primaryRecordMappingType);
+
+		IDType primaryDimensionMappingType;
 		if (configuration.primaryDimensionMappingType != null)
 			primaryDimensionMappingType = IDType.getIDType(configuration.primaryDimensionMappingType);
 		else
 			primaryDimensionMappingType = dimensionIDType;
+
+		dimensionIDCategory.setPrimaryMappingType(primaryDimensionMappingType);
 
 		recordDenominationPlural = configuration.recordDenominationPlural;
 		recordDenominationSingular = configuration.recordDenominationSingular;
@@ -391,17 +390,6 @@ public abstract class ATableBasedDataDomain
 	 */
 	public IDType getDimensionIDType() {
 		return dimensionIDType;
-	}
-
-	/**
-	 * @return the primaryRecordMappingType, see {@link #primaryRecordMappingType}
-	 */
-	public IDType getPrimaryRecordMappingType() {
-		return primaryRecordMappingType;
-	}
-
-	public IDType getPrimaryDimensionMappingType() {
-		return primaryDimensionMappingType;
 	}
 
 	/**

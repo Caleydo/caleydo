@@ -14,7 +14,7 @@ class DimensionBookmarkContainer extends ABookmarkContainer<DimensionSelectionMa
 
 	DimensionBookmarkContainer(GLBookmarkView manager) {
 		super(manager, manager.getDataDomain().getDimensionIDCategory(), manager
-				.getDataDomain().getPrimaryDimensionMappingType());
+				.getDataDomain().getDimensionIDCategory().getPrimaryMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 
 		selectionManager = manager.getDataDomain().getDimensionSelectionManager();
