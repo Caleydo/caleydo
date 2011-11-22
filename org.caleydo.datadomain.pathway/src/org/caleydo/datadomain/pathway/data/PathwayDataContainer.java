@@ -8,8 +8,8 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
- * Implementation of {@link ISegmentData} for pathways. In this case each
- * segment group refers to one pathway ({@link PathwayGraph}).
+ * Specialization of {@link DataContainer} for pathways. Adds a
+ * {@link PathwayGraph} to the data container.
  * 
  * @author Christian Partl
  * @author Alexander Lex
@@ -17,9 +17,22 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  */
 public class PathwayDataContainer extends DataContainer {
 
+	/** The datadomain giving access to the pathways themselves */
+
 	private PathwayDataDomain pathwayDataDomain;
+	/** The pathway associated with this data container */
 	private PathwayGraph pathway;
 
+	/**
+	 * 
+	 * @param dataDomain
+	 *            the data domain used for the mapping of the expression values
+	 * @param pathwayDataDomain
+	 *            the datadomain holding the actual pathways
+	 * @param recordPerspective
+	 * @param dimensionPerspective
+	 * @param pathway
+	 */
 	public PathwayDataContainer(ATableBasedDataDomain dataDomain,
 			PathwayDataDomain pathwayDataDomain, RecordPerspective recordPerspective,
 			DimensionPerspective dimensionPerspective, PathwayGraph pathway) {
@@ -36,7 +49,7 @@ public class PathwayDataContainer extends DataContainer {
 	}
 
 	/**
-	 * @return The pathway of this segment group.
+	 * @return the pathway, see {@link #pathway}
 	 */
 	public PathwayGraph getPathway() {
 		return pathway;

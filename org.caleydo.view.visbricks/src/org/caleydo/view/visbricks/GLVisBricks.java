@@ -32,7 +32,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
-import org.caleydo.core.event.view.DataDomainsChangedEvent;
+import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.event.view.tablebased.ConnectionsModeEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -1228,7 +1228,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			}
 		}
 
-		DataDomainsChangedEvent event = new DataDomainsChangedEvent(this);
+		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}

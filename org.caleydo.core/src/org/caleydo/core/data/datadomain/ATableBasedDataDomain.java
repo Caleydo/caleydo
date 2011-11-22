@@ -63,6 +63,23 @@ import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
+/**
+ * <p>
+ * Primary access point to a table data set. Holds the {@link DataTable}, the {@link DataContainer} which hold
+ * the rules on how to access the DataTable and a lot of meta-information such as human-readable labels.
+ * </p>
+ * <p>
+ * Holds the information on the {@link IDCategory} and the {@link IDType}s of the rows and columns in the data
+ * set.
+ * </p>
+ * <p>
+ * {@link ATableBasedDataDomain}s are initialized using a {@link DataDomainConfiguration} object, which can be
+ * either specified or taken from a default initialization of an implementing sub-class.
+ * </p>
+ * 
+ * @author Alexander Lex
+ * @author Marc Streit
+ */
 @XmlType
 @XmlRootElement
 public abstract class ATableBasedDataDomain

@@ -72,7 +72,8 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 					String value2 = items[j].getText(columnIndex);
 					if ((collator.compare(value1, value2) < 0 && sortAscending)
 							|| (collator.compare(value1, value2) > 0 && !sortAscending)) {
-						String[] values = { items[i].getText(0), items[i].getText(1), items[i].getText(2) };
+						String[] values = { items[i].getText(0), items[i].getText(1),
+								items[i].getText(2) };
 						PathwayGraph pathway = (PathwayGraph) items[i].getData();
 						boolean checked = items[i].getChecked();
 						items[i].dispose();
@@ -267,10 +268,13 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 
 				newRecordPerspective.init(data);
 
-				pathwayDimensionGroupDataList.add(new PathwayDimensionGroupData(
+				PathwayDimensionGroupData pathwayDimensionGroup = new PathwayDimensionGroupData(
 						dataContainer.getDataDomain(), pathwayDataDomain,
 						newRecordPerspective, dimensionPerspective, pathwayGraphs,
-						pathway.getTitle()));
+						pathway.getTitle());
+				
+
+				pathwayDimensionGroupDataList.add(pathwayDimensionGroup);
 			}
 
 			super.okPressed();

@@ -22,8 +22,9 @@ import org.caleydo.util.graph.EGraphItemProperty;
 import org.caleydo.util.graph.IGraphItem;
 
 /**
- * Implementation of {@link ADimensionGroupData} for pathways. In this case a
- * dimension group consists of several pathways.
+ * Specialization of {@link DataContainer} for pathway dimension groups. A
+ * {@link PathwayDimensionGroupData} can be used to hold small-multiple pathways
+ * or multiple different pathways in the same dimension group.
  * 
  * @author Christian Partl
  * @author Alexander Lex
@@ -48,9 +49,9 @@ public class PathwayDimensionGroupData extends DataContainer {
 		this.pathways = pathways;
 		this.label = label;
 
-		//initializeData();
+		// initializeData();
 	}
-	
+
 	/**
 	 * @return All pathways of this dimension group.
 	 */
@@ -68,8 +69,6 @@ public class PathwayDimensionGroupData extends DataContainer {
 		initializeData();
 	}
 
-	
-	
 	private void initializeData() {
 
 		ArrayList<Integer> groups = new ArrayList<Integer>();
@@ -82,17 +81,19 @@ public class PathwayDimensionGroupData extends DataContainer {
 		else
 			geneIDType = dataDomain.getDimensionIDType();
 
-//		if (dataDomain.isColumnDimension()) {
-//			recordPerspective = new RecordPerspective(dataDomain);
-//			PerspectiveInitializationData data = new PerspectiveInitializationData();
-//			data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
-//			recordPerspective.init(data);
-//		} else {
-//			dimensionPerspective = new DimensionPerspective(dataDomain);
-//			PerspectiveInitializationData data = new PerspectiveInitializationData();
-//			data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
-//			dimensionPerspective.init(data);
-//		}
+		// if (dataDomain.isColumnDimension()) {
+		// recordPerspective = new RecordPerspective(dataDomain);
+		// PerspectiveInitializationData data = new
+		// PerspectiveInitializationData();
+		// data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
+		// recordPerspective.init(data);
+		// } else {
+		// dimensionPerspective = new DimensionPerspective(dataDomain);
+		// PerspectiveInitializationData data = new
+		// PerspectiveInitializationData();
+		// data.setData(allIDsInPathwayDimensionGroup, groups, sampleElements);
+		// dimensionPerspective.init(data);
+		// }
 
 		int startIndex = 0;
 		for (PathwayGraph pathway : pathways) {
@@ -152,8 +153,9 @@ public class PathwayDimensionGroupData extends DataContainer {
 						pathwayDimensionPerspective, pathway);
 			}
 
-			pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray().getGroupList().get(0));
-			
+			pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray()
+					.getGroupList().get(0));
+
 			recordSubDataContainers.add(pathwayDataContainer);
 		}
 	}
@@ -273,7 +275,7 @@ public class PathwayDimensionGroupData extends DataContainer {
 
 	@Override
 	public List<DataContainer> getRecordSubDataContainers() {
-		
+
 		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
 
 		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
@@ -286,8 +288,8 @@ public class PathwayDimensionGroupData extends DataContainer {
 
 		for (Group group : groupList) {
 
-			List<Integer> indices =
-				recordVA.getVirtualArray().subList(group.getStartIndex(), group.getEndIndex() + 1);
+			List<Integer> indices = recordVA.getVirtualArray().subList(
+					group.getStartIndex(), group.getEndIndex() + 1);
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
@@ -295,8 +297,9 @@ public class PathwayDimensionGroupData extends DataContainer {
 			recordPerspective.init(data);
 
 			// FIXME: currently only the first pathway is taken from the list
-			PathwayDataContainer subDataContainer =
-				new PathwayDataContainer(dataDomain, pathwayDataDomain, recordPerspective, dimensionPerspective, pathways.get(0));
+			PathwayDataContainer subDataContainer = new PathwayDataContainer(dataDomain,
+					pathwayDataDomain, recordPerspective, dimensionPerspective,
+					pathways.get(0));
 			subDataContainer.setRecordGroup(group);
 			recordSubDataContainers.add(subDataContainer);
 

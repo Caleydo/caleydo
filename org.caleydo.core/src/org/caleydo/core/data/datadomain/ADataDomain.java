@@ -27,6 +27,10 @@ public abstract class ADataDomain
 
 	protected String dataDomainType;
 
+	/**
+	 * All {@link IDCategory}s that are used in this data container. Used to define associations between
+	 * DataDomains
+	 */
 	@XmlTransient
 	protected Set<IDCategory> idCategories = new HashSet<IDCategory>();
 
@@ -42,9 +46,10 @@ public abstract class ADataDomain
 	/** parameters for loading the data-{@link set} */
 	protected LoadDataParameters loadDataParameters;
 
+	/** The color used to encode this data domain */
 	protected Color color;
 
-	/** determines which view will be opened after a datadomain is created */
+	/** determines which view will be opened after a DataDomain is created */
 	protected String defaultStartViewType;
 
 	/**

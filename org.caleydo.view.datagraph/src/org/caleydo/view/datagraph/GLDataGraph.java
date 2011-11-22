@@ -36,7 +36,7 @@ import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
-import org.caleydo.core.event.view.DataDomainsChangedEvent;
+import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.event.view.NewViewEvent;
 import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.manager.GeneralManager;
@@ -68,7 +68,7 @@ import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.datagraph.listener.AddDataContainerEventListener;
 import org.caleydo.view.datagraph.listener.ApplySpecificGraphLayoutEventListener;
 import org.caleydo.view.datagraph.listener.CreateViewFromDataContainerEventListener;
-import org.caleydo.view.datagraph.listener.DataDomainsChangedEventListener;
+import org.caleydo.view.datagraph.listener.DataContainersCangedListener;
 import org.caleydo.view.datagraph.listener.DimensionGroupsChangedEventListener;
 import org.caleydo.view.datagraph.listener.GLDataGraphKeyListener;
 import org.caleydo.view.datagraph.listener.MinSizeAppliedEventListener;
@@ -125,7 +125,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private NewViewEventListener newViewEventListener;
 	private NewDataDomainEventListener newDataDomainEventListener;
 	private ViewClosedEventListener viewClosedEventListener;
-	private DataDomainsChangedEventListener dataDomainsChangedEventListener;
+	private DataContainersCangedListener dataContainersChangedListener;
 	private DimensionGroupsChangedEventListener dimensionGroupsChangedEventListener;
 	private AddDataContainerEventListener addDataContainerEventListener;
 	private OpenViewEventListener openViewEventListener;
@@ -561,10 +561,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		eventPublisher.addListener(ViewClosedEvent.class,
 				viewClosedEventListener);
 
-		dataDomainsChangedEventListener = new DataDomainsChangedEventListener();
-		dataDomainsChangedEventListener.setHandler(this);
-		eventPublisher.addListener(DataDomainsChangedEvent.class,
-				dataDomainsChangedEventListener);
+		dataContainersChangedListener = new DataContainersCangedListener();
+		dataContainersChangedListener.setHandler(this);
+		eventPublisher.addListener(DataContainersChangedEvent.class,
+				dataContainersChangedListener);
 
 		dimensionGroupsChangedEventListener = new DimensionGroupsChangedEventListener();
 		dimensionGroupsChangedEventListener.setHandler(this);
@@ -615,9 +615,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			viewClosedEventListener = null;
 		}
 
-		if (dataDomainsChangedEventListener != null) {
-			eventPublisher.removeListener(dataDomainsChangedEventListener);
-			dataDomainsChangedEventListener = null;
+		if (dataContainersChangedListener != null) {
+			eventPublisher.removeListener(dataContainersChangedListener);
+			dataContainersChangedListener = null;
 		}
 
 		if (dimensionGroupsChangedEventListener != null) {
