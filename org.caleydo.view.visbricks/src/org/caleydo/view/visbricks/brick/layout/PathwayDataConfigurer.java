@@ -129,7 +129,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.showFooterBar(false);
 	}
 
-	private ElementLayout createCaptionLayout(ABrickLayoutTemplate layoutTemplate,
+	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate,
 			String caption, PickingType pickingType, int pickingID, AGLView view) {
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
@@ -146,7 +146,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		return captionLayout;
 	}
 
-	private ElementLayout createSpacingLayout(ABrickLayoutTemplate layoutTemplate,
+	private ElementLayout createSpacingLayout(ABrickLayoutConfiguration layoutTemplate,
 			boolean isHorizontalSpacing) {
 
 		ElementLayout spacingLayout = new ElementLayout("spacingLayoutX");
@@ -163,7 +163,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
-			ABrickLayoutTemplate brickLayout) {
+			ABrickLayoutConfiguration brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();

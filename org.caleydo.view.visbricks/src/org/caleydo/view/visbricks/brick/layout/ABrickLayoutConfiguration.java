@@ -21,7 +21,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Christian Partl
  * 
  */
-public abstract class ABrickLayoutTemplate extends LayoutConfiguration {
+public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 
 	protected static final int SPACING_PIXELS = 4;
 	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
@@ -36,7 +36,7 @@ public abstract class ABrickLayoutTemplate extends LayoutConfiguration {
 	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
 
-	public ABrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup) {
+	public ABrickLayoutConfiguration(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
 		this.dimensionGroup = dimensionGroup;
 		showHandles = false;
@@ -166,7 +166,7 @@ public abstract class ABrickLayoutTemplate extends LayoutConfiguration {
 	 * 
 	 * @return
 	 */
-	public abstract ABrickLayoutTemplate getCollapsedLayoutTemplate();
+	public abstract ABrickLayoutConfiguration getCollapsedLayoutTemplate();
 
 	/**
 	 * Gets the layout that represents the expanded version of the current
@@ -175,7 +175,7 @@ public abstract class ABrickLayoutTemplate extends LayoutConfiguration {
 	 * 
 	 * @return
 	 */
-	public abstract ABrickLayoutTemplate getExpandedLayoutTemplate();
+	public abstract ABrickLayoutConfiguration getExpandedLayoutTemplate();
 
 	// public abstract void configure(IBrickLayoutConfigurer configurer);
 

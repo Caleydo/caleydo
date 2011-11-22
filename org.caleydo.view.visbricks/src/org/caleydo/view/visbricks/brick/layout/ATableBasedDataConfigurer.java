@@ -154,7 +154,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	}
 
 	protected void registerViewSwitchingButtons(
-			final ABrickLayoutTemplate layoutTemplate,
+			final ABrickLayoutConfiguration layoutTemplate,
 			final ArrayList<BrickViewSwitchingButton> viewSwitchingButtons,
 			final GLBrick brick, final DimensionGroup dimensionGroup) {
 
@@ -230,7 +230,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	}
 
 	private ArrayList<ElementLayout> createSummaryFooterBarElements(
-			ABrickLayoutTemplate layoutTemplate) {
+			ABrickLayoutConfiguration layoutTemplate) {
 
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
 
@@ -270,7 +270,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	}
 
 	private ArrayList<ElementLayout> createDefaultFooterBarElements(
-			ABrickLayoutTemplate layoutTemplate) {
+			ABrickLayoutConfiguration layoutTemplate) {
 		ArrayList<ElementLayout> footerBarElements = new ArrayList<ElementLayout>();
 
 		GLBrick brick = layoutTemplate.getBrick();
@@ -286,7 +286,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	}
 
 	protected ArrayList<ElementLayout> createToolBarElements(
-			ABrickLayoutTemplate layoutTemplate,
+			ABrickLayoutConfiguration layoutTemplate,
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
 		final GLBrick brick = layoutTemplate.getBrick();

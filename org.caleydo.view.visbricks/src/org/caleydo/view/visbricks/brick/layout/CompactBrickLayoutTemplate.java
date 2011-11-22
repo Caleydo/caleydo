@@ -23,7 +23,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Christian Partl
  * 
  */
-public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
+public class CompactBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
@@ -244,12 +244,12 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 	}
 
 	@Override
-	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
+	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
 		return this;
 	}
 
 	@Override
-	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
+	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
 		return new DefaultBrickLayoutTemplate(brick, visBricks, dimensionGroup,
 				brick.getBrickConfigurer());
 	}

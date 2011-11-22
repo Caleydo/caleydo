@@ -26,7 +26,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Christian Partl
  * 
  */
-public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
+public class CentralBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
 	protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
@@ -294,13 +294,13 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	}
 
 	@Override
-	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
+	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
 		return new CompactCentralBrickLayoutTemplate(brick, dimensionGroup, visBricks,
 				brick.getBrickConfigurer());
 	}
 
 	@Override
-	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
+	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
 		return this;
 	}
 

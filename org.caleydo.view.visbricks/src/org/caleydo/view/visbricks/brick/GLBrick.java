@@ -48,7 +48,7 @@ import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallPathwayMultiplesGroupItem;
-import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
@@ -79,7 +79,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
 	private LayoutManager templateRenderer;
-	private ABrickLayoutTemplate brickLayout;
+	private ABrickLayoutConfiguration brickLayout;
 	private IBrickConfigurer brickConfigurer;
 	private ElementLayout wrappingLayout;
 
@@ -376,66 +376,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	public void displayRemote(GL2 gl) {
-
-		// float brickGLBoundingBoxStartX = wrappingLayout.getTranslateX();
-		// float brickGLBoundingBoxStartY = wrappingLayout.getTranslateY();
-		// float brickGLBoundingBoxEndX = wrappingLayout.getTranslateX()
-		// + wrappingLayout.getSizeScaledX();
-		// float brickGLBoundingBoxEndY = wrappingLayout.getTranslateY()
-		// + wrappingLayout.getSizeScaledY();
-		//
-		//
-		//
-		// PixelGLConverter pixelGLConverter = getParentGLCanvas()
-		// .getPixelGLConverter();
-		// int brickPixelBoundingBoxStartX = (int) pixelGLConverter
-		// .getPixelWidthForGLWidth(brickGLBoundingBoxStartX);
-		// int brickPixelBoundingBoxStartY = (int) pixelGLConverter
-		// .getPixelHeightForGLHeight(brickGLBoundingBoxStartY);
-		// int brickPixelBoundingBoxEndX = (int) pixelGLConverter
-		// .getPixelWidthForGLWidth(brickGLBoundingBoxEndX);
-		// int brickPixelBoundingBoxEndY = (int) pixelGLConverter
-		// .getPixelHeightForGLHeight(brickGLBoundingBoxEndY);
-		//
-		// Point mousePosition = glMouseListener.getPickedPoint();
-
-		// if ((mousePosition.x >= brickPixelBoundingBoxStartX)
-		// && (mousePosition.x <= brickPixelBoundingBoxEndX)) {
-		// contentGroupSelectionManager
-		// .clearSelection(SelectionType.SELECTION);
-		// contentGroupSelectionManager.addToType(SelectionType.SELECTION,
-		// group.getID());
-		//
-		// SelectionUpdateEvent event = new SelectionUpdateEvent();
-		// event.setDataDomainType(getDataDomain().getDataDomainType());
-		// event.setSender(this);
-		// SelectionDelta delta = contentGroupSelectionManager.getDelta();
-		// event.setSelectionDelta(delta);
-		// GeneralManager.get().getEventPublisher().triggerEvent(event);
-		//
-		// if (!brickLayout.isShowHandles()) {
-		// brickLayout.setShowHandles(true);
-		// templateRenderer.updateLayout();
-		// }
-		// }
-
 		checkForHits(gl);
 		display(gl);
-
-		// gl.glColor4f(1,0,0,0.5f);
-		// gl.glBegin(GL2.GL_QUADS);
-		// gl.glVertex3f(-brickGLBoundingBoxStartX, brickGLBoundingBoxStartY,
-		// 0);
-		// gl.glVertex3f(
-		// -brickGLBoundingBoxStartX + wrappingLayout.getSizeScaledX(),
-		// brickGLBoundingBoxStartY, 0);
-		// gl.glVertex3f(
-		// -brickGLBoundingBoxStartX + wrappingLayout.getSizeScaledX(),
-		// brickGLBoundingBoxStartY + wrappingLayout.getSizeScaledY(), 0);
-		// gl.glVertex3f(-brickGLBoundingBoxStartX, brickGLBoundingBoxStartY
-		// + wrappingLayout.getSizeScaledY(), 0);
-		// gl.glEnd();
-
+		
 	}
 
 	private void buildBaseDisplayList(GL2 gl) {
@@ -741,14 +684,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	/**
-	 * Sets the {@link ABrickLayoutTemplate} for this brick, specifying its
+	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its
 	 * appearance. If the specified view type is valid, it will be set,
 	 * otherwise the default view type will be table.
 	 * 
 	 * @param brickLayoutTemplate
 	 * @param viewType
 	 */
-	public void setBrickLayoutTemplate(ABrickLayoutTemplate brickLayoutTemplate,
+	public void setBrickLayoutTemplate(ABrickLayoutConfiguration brickLayoutTemplate,
 			EContainedViewType viewType) {
 		if (brickLayout != null)
 			brickLayout.destroy();
@@ -939,7 +882,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
 		}
 
-		ABrickLayoutTemplate layoutTemplate = brickLayout.getCollapsedLayoutTemplate();
+		ABrickLayoutConfiguration layoutTemplate = brickLayout.getCollapsedLayoutTemplate();
 		// isSizeFixed = false;
 
 		setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
@@ -962,7 +905,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// if (!isInOverviewMode)
 		// return;
 
-		ABrickLayoutTemplate layoutTemplate = brickLayout.getExpandedLayoutTemplate();
+		ABrickLayoutConfiguration layoutTemplate = brickLayout.getExpandedLayoutTemplate();
 
 		if (expandedBrickState != null) {
 			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());

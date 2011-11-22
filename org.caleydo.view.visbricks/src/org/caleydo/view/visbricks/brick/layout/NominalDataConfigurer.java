@@ -158,7 +158,7 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 
 	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
-			ABrickLayoutTemplate brickLayout) {
+			ABrickLayoutConfiguration brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();

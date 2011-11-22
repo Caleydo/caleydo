@@ -27,7 +27,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Alexander Lex
  * 
  */
-public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
+public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 4;
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
@@ -104,6 +104,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
+		
 		baseElementLayout = baseRow;
 
 		leftRelationIndicatorRenderer.updateRelations();
@@ -117,14 +118,14 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.append(leftRelationIndicatorLayout);
 
 		Column baseColumn = new Column("baseColumn");
+		baseColumn.setPriorityRendereing(true);
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, 
-					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-					HandleRenderer.ALL_RESIZE_HANDLES
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS,
+					brick.getTextureManager(), HandleRenderer.ALL_RESIZE_HANDLES
 							| HandleRenderer.MOVE_VERTICALLY_HANDLE
 							| (dimensionGroup.isLeftmost() ? (0)
 									: (HandleRenderer.EXPAND_LEFT_HANDLE))
@@ -150,7 +151,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		// toolBar = createToolBar();
+		toolBar = getToolBar();
 		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
@@ -167,7 +168,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseColumn.append(spacingLayoutY);
 
 		// FIXME removed only for TCGA video
-		// baseColumn.append(toolBar);
+		baseColumn.append(toolBar);
 		baseColumn.append(spacingLayoutY);
 
 		ElementLayout rightRelationIndicatorLayout = new ElementLayout(
@@ -184,9 +185,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	 */
 	@Override
 	public Row getToolBar() {
-		Row toolBar = new Row("ToolBarRow");
-		toolBar.setDebug(true);
-		toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
+		Row toolBar = new ToolBar("ToolBarRow");
+//		toolBar.setDebug(true);
+		// toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
+		toolBar.setPixelSizeY(0);
+		toolBar.setRenderingPriority(2);
 
 		for (ElementLayout element : toolBarElements) {
 			toolBar.append(element);
@@ -376,13 +379,13 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	// }
 
 	@Override
-	public ABrickLayoutTemplate getCollapsedLayoutTemplate() {
+	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
 		return new CompactBrickLayoutTemplate(brick, visBricks, dimensionGroup,
 				brick.getBrickConfigurer());
 	}
 
 	@Override
-	public ABrickLayoutTemplate getExpandedLayoutTemplate() {
+	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
 		return this;
 	}
 

@@ -7,7 +7,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
  * Classes implementing this interface are intended to configure the different
- * {@link ABrickLayoutTemplate}'s dependent on the kind of data that shall be
+ * {@link ABrickLayoutConfiguration}'s dependent on the kind of data that shall be
  * displayed within a brick (double dispatch). A modified version of the visitor
  * pattern is used to achieve this goal. The configurations should always
  * include setting the valid view types for the templates and setting a default
@@ -64,6 +64,6 @@ public interface IBrickConfigurer {
 	 * @param brickLayout
 	 */
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
-			ABrickLayoutTemplate brickLayout);
+			ABrickLayoutConfiguration brickLayout);
 
 }

@@ -75,12 +75,14 @@ public class ButtonRenderer
 //GLHelperFunctions.drawAxis(gl);
 		if (!button.isVisible())
 			return;
+		
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, zCoordinate);
 		pushNames(gl);
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), button.getPickingType(),
 			button.getButtonID()));
 
+		
 		Vec3f lowerLeftCorner = new Vec3f(0, 0, 0.02f);
 		Vec3f lowerRightCorner = new Vec3f(x, 0, 0.02f);
 		Vec3f upperRightCorner = new Vec3f(x, y, 0.02f);

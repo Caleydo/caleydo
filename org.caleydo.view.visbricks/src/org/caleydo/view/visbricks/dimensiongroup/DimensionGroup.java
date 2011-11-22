@@ -46,7 +46,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
-import org.caleydo.view.visbricks.brick.layout.ABrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
@@ -221,7 +221,7 @@ public class DimensionGroup extends ATableBasedView implements
 		// centerBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 		// centerBrick.setRecordVA(new Group(), recordVA);
 
-		ABrickLayoutTemplate layoutTemplate;
+		ABrickLayoutConfiguration layoutTemplate;
 
 		if (isCollapsed) {
 			layoutTemplate = new CompactCentralBrickLayoutTemplate(centerBrick, this,
@@ -257,7 +257,7 @@ public class DimensionGroup extends ATableBasedView implements
 
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
-			ABrickLayoutTemplate layoutTemplate = new DefaultBrickLayoutTemplate(
+			ABrickLayoutConfiguration layoutTemplate = new DefaultBrickLayoutTemplate(
 					segmentBrick, visBricks, this, segmentBrick.getBrickConfigurer());
 
 			segmentBrick.setBrickLayoutTemplate(layoutTemplate,
