@@ -28,7 +28,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
 			float x, float y, IDataGraphNode node, GLDataGraph view,
-			List<Pair<String, Integer>> pickingIDsToBePushed) {
+			List<Pair<String, Integer>> pickingIDsToBePushed,
+			String rowsCaption, String columnsCaption) {
 
 		List<CellContainer> reversedRows = new ArrayList<CellContainer>(rows);
 		// Collections.reverse(reversedRows);
@@ -40,10 +41,10 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 		float captionColumnWidth = calcMaxTextWidth(reversedRows, view);
 		float captionRowHeight = calcMaxTextWidth(columns, view);
 
-		float currentPositionX =0;
-//				(x / 2.0f)
-//				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
-//						reversedRows, columns, view) / 2);
+		float currentPositionX = 0;
+		// (x / 2.0f)
+		// - pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
+		// reversedRows, columns, view) / 2);
 		float rowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
 		float captionSpacingY = pixelGLConverter
@@ -55,6 +56,23 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 		float currentPositionY = captionRowHeight + captionSpacingY;
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
+
+		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.renderTextInBounds(gl, rowsCaption, currentPositionX
+				+ captionSpacingX, captionRowHeight - captionSpacingY
+				- textHeight + pixelGLConverter.getGLHeightForPixelHeight(3),
+				0, captionColumnWidth - textHeight, textHeight);
+
+		gl.glPushMatrix();
+		gl.glTranslatef(
+				currentPositionX + captionColumnWidth - captionSpacingX,
+				captionSpacingY, 0);
+		gl.glRotatef(90, 0, 0, 1);
+		// gl.glColor3f(0, 0, 0);
+		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.renderTextInBounds(gl, columnsCaption, 0, 0, 0,
+				captionRowHeight - textHeight, textHeight);
+		gl.glPopMatrix();
 
 		for (int i = 0; i < reversedRows.size(); i++) {
 
@@ -91,7 +109,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view,
 							view.getTextureManager());
-					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
+					collapsePerspectiveButtonRenderer
+							.addPickingIDs(pickingIDsToBePushed);
 
 					collapsePerspectiveButtonRenderer.setLimits(
 							captionSpacingX * 2, captionSpacingX * 2);
@@ -205,7 +224,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view,
 							view.getTextureManager());
-					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
+					collapsePerspectiveButtonRenderer
+							.addPickingIDs(pickingIDsToBePushed);
 
 					collapsePerspectiveButtonRenderer.setLimits(
 							captionSpacingY * 2, captionSpacingY * 2);

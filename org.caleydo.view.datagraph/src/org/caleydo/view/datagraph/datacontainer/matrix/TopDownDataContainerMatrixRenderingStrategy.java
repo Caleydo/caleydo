@@ -27,7 +27,8 @@ public class TopDownDataContainerMatrixRenderingStrategy extends
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
 			float x, float y, IDataGraphNode node, GLDataGraph view,
-			List<Pair<String, Integer>> pickingIDsToBePushed) {
+			List<Pair<String, Integer>> pickingIDsToBePushed,
+			String rowsCaption, String columnsCaption) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -35,9 +36,10 @@ public class TopDownDataContainerMatrixRenderingStrategy extends
 		float captionColumnWidth = calcMaxTextWidth(rows, view);
 		float captionRowHeight = calcMaxTextWidth(columns, view);
 
-		float currentPositionX = (x / 2.0f)
-				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
-						rows, columns, view) / 2);
+		float currentPositionX = 0;
+		// (x / 2.0f)
+		// - pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
+		// rows, columns, view) / 2);
 		float rowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
 		float captionSpacingY = pixelGLConverter
@@ -49,6 +51,20 @@ public class TopDownDataContainerMatrixRenderingStrategy extends
 		float currentPositionY = y - captionRowHeight - captionSpacingY;
 		float textHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS);
+
+		textRenderer.setColor(new float[] { 0, 0, 0 });
+		textRenderer.renderTextInBounds(gl, rowsCaption, currentPositionX
+				+ captionSpacingX, y - captionRowHeight + captionSpacingY, 0,
+				captionColumnWidth - textHeight, textHeight);
+
+		gl.glPushMatrix();
+		gl.glTranslatef(currentPositionX + captionColumnWidth - textHeight
+				- captionSpacingX, y - captionSpacingY, 0);
+		gl.glRotatef(-90, 0, 0, 1);
+		// gl.glColor3f(0, 0, 0);
+		textRenderer.renderTextInBounds(gl, columnsCaption, 0, 0, 0,
+				captionRowHeight - textHeight, textHeight);
+		gl.glPopMatrix();
 
 		for (int i = 0; i < rows.size(); i++) {
 

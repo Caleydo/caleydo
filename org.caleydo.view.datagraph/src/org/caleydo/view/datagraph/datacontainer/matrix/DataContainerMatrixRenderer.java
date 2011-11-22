@@ -547,9 +547,13 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 	@Override
 	public void render(GL2 gl) {
 
+		String columnsCaption = dataDomain.getDimensionDenomination(true, true);
+		String rowsCaption = dataDomain.getRecordDenomination(true, true);
+
 		renderingStrategy.render(gl, rows, columns, cells,
 				bottomDimensionGroupPositions, topDimensionGroupPositions, x,
-				y, node, view, pickingIDsToBePushed);
+				y, node, view, pickingIDsToBePushed, rowsCaption,
+				columnsCaption);
 
 		// float captionColumnWidth = calcMaxTextWidth(rows);
 		// float captionRowHeight = calcMaxTextWidth(columns);
