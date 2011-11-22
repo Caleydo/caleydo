@@ -12,9 +12,9 @@ import org.caleydo.core.view.opengl.picking.PickingType;
  */
 public class PathwaysSummaryRenderer extends LabelRenderer {
 
-	public PathwaysSummaryRenderer(AGLView view, String caption, PickingType pickingType,
-			int id) {
-		super(view, caption, pickingType, id);
+	public PathwaysSummaryRenderer(AGLView view, String caption,
+			PickingType pickingType, int id) {
+		super(view, caption, pickingType.name(), id);
 	}
 
 	@Override

@@ -371,7 +371,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			RecordGroupList groupList = perspective.getVirtualArray()
 					.getGroupList();
 
-			if (groupList != null) {
+			if (groupList != null && groupList.size() > 1) {
 				List<CellContainer> childList = new ArrayList<CellContainer>(
 						groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
@@ -432,7 +432,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				column.caption = perspective.getLabel();
 				column.numSubdivisions = 1;
 				column.isVisible = true;
-				column.isCollapsed = false;
+				column.isCollapsed = true;
 			}
 			column.childContainers.clear();
 			newColumnMap.put(id, column);
@@ -442,7 +442,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			DimensionGroupList groupList = perspective.getVirtualArray()
 					.getGroupList();
 
-			if (groupList != null) {
+			if (groupList != null && groupList.size() > 1) {
 				List<CellContainer> childList = new ArrayList<CellContainer>(
 						groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
@@ -458,7 +458,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						subColumn.caption = group.getClusterNode().getLabel();
 						subColumn.id = subColumnID;
 						subColumn.numSubdivisions = 1;
-						subColumn.isVisible = true;
+						subColumn.isVisible = false;
 						subColumn.parentContainer = column;
 					}
 					column.childContainers.add(subColumn);
@@ -549,7 +549,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 		renderingStrategy.render(gl, rows, columns, cells,
 				bottomDimensionGroupPositions, topDimensionGroupPositions, x,
-				y, node, view);
+				y, node, view, pickingIDsToBePushed);
 
 		// float captionColumnWidth = calcMaxTextWidth(rows);
 		// float captionRowHeight = calcMaxTextWidth(columns);

@@ -2,7 +2,6 @@ package org.caleydo.view.datagraph.datacontainer.matrix;
 
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -28,7 +27,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 			List<CellContainer> columns, Map<String, ColorRenderer> cells,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
-			float x, float y, IDataGraphNode node, GLDataGraph view) {
+			float x, float y, IDataGraphNode node, GLDataGraph view,
+			List<Pair<String, Integer>> pickingIDsToBePushed) {
 
 		List<CellContainer> reversedRows = new ArrayList<CellContainer>(rows);
 		// Collections.reverse(reversedRows);
@@ -40,9 +40,10 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 		float captionColumnWidth = calcMaxTextWidth(reversedRows, view);
 		float captionRowHeight = calcMaxTextWidth(columns, view);
 
-		float currentPositionX = (x / 2.0f)
-				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
-						reversedRows, columns, view) / 2);
+		float currentPositionX =0;
+//				(x / 2.0f)
+//				- pixelGLConverter.getGLWidthForPixelWidth(getMinWidthPixels(
+//						reversedRows, columns, view) / 2);
 		float rowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(ROW_HEIGHT_PIXELS);
 		float captionSpacingY = pixelGLConverter
@@ -90,6 +91,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view,
 							view.getTextureManager());
+					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
 
 					collapsePerspectiveButtonRenderer.setLimits(
 							captionSpacingX * 2, captionSpacingX * 2);
@@ -203,6 +205,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view,
 							view.getTextureManager());
+					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
 
 					collapsePerspectiveButtonRenderer.setLimits(
 							captionSpacingY * 2, captionSpacingY * 2);
@@ -347,7 +350,15 @@ public class BottomUpDataContainerMatrixRenderingStrategy extends
 						pixelGLConverter
 								.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
+				for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed) {
+					gl.glPushName(view.getPickingManager().getPickingID(
+							view.getID(), pickingIDPair.getFirst(),
+							pickingIDPair.getSecond()));
+				}
 				cell.render(gl);
+				for (int k = 0; k < pickingIDsToBePushed.size(); k++) {
+					gl.glPopName();
+				}
 				gl.glPopName();
 				gl.glPopMatrix();
 			}

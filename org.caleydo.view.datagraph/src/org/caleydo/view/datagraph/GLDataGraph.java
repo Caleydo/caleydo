@@ -270,10 +270,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		}
 		gl.glCallList(displayListIndex);
 
-		dragAndDropController.handleDragging(gl, glMouseListener);
-
 		if (!lazyMode)
 			checkForHits(gl);
+		
+		dragAndDropController.handleDragging(gl, glMouseListener);
 
 		isRendered = true;
 	}

@@ -179,7 +179,5 @@ public enum PickingType {
 	// tag cloud
 	TAG_DIMENSION_CHANGE,
 
-	ZOOM_SCROLLBAR,
-
-	DATA_GRAPH_NODE;
+	ZOOM_SCROLLBAR;
 }

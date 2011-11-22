@@ -28,7 +28,8 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 			List<CellContainer> columns, Map<String, ColorRenderer> cells,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
-			float x, float y, IDataGraphNode node, GLDataGraph view);
+			float x, float y, IDataGraphNode node, GLDataGraph view,
+			List<Pair<String, Integer>> pickingIDsToBePushed);
 
 	protected float calcMaxTextWidth(List<CellContainer> containers,
 			AGLView view) {

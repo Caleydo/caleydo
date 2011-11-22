@@ -26,7 +26,8 @@ public class TopDownDataContainerMatrixRenderingStrategy extends
 			List<CellContainer> columns, Map<String, ColorRenderer> cells,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
-			float x, float y, IDataGraphNode node, GLDataGraph view) {
+			float x, float y, IDataGraphNode node, GLDataGraph view,
+			List<Pair<String, Integer>> pickingIDsToBePushed) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -355,7 +356,15 @@ public class TopDownDataContainerMatrixRenderingStrategy extends
 						pixelGLConverter
 								.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
+				for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed) {
+					gl.glPushName(view.getPickingManager().getPickingID(
+							view.getID(), pickingIDPair.getFirst(),
+							pickingIDPair.getSecond()));
+				}
 				cell.render(gl);
+				for (int k = 0; k < pickingIDsToBePushed.size(); k++) {
+					gl.glPopName();
+				}
 				gl.glPopName();
 				gl.glPopMatrix();
 			}

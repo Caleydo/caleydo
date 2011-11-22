@@ -2,6 +2,8 @@ package org.caleydo.view.datagraph.node;
 
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
+import java.util.ArrayList;
+import java.util.List;
 
 import javax.media.opengl.GL2;
 
@@ -17,7 +19,6 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
@@ -81,8 +82,9 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 				.getTopAnchorPointsOfDataContainer(dataContainer);
 
 		return getAbsoluteDimensionGroupAnchorPoints(anchorPoints,
-				SPACING_PIXELS, isUpsideDown ? (3 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS
-						+ LINE_SEPARATOR_HEIGHT_PIXELS) : (SPACING_PIXELS));
+				SPACING_PIXELS, isUpsideDown ? (3 * SPACING_PIXELS
+						+ CAPTION_HEIGHT_PIXELS + LINE_SEPARATOR_HEIGHT_PIXELS)
+						: (SPACING_PIXELS));
 	}
 
 	protected Pair<Point2D, Point2D> getAbsoluteDimensionGroupAnchorPoints(
@@ -252,12 +254,22 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		baseRow.setFrameColor(0, 0, 1, 0);
 
 		BorderedAreaRenderer borderedAreaRenderer = new BorderedAreaRenderer(
-				view, PickingType.DATA_GRAPH_NODE, pickingID);
+				view, createNodePickingTypeList());
 		borderedAreaRenderer.setColor(color);
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		return baseRow;
+	}
+
+	protected List<Pair<String, Integer>> createNodePickingTypeList() {
+		List<Pair<String, Integer>> pickingIDs = new ArrayList<Pair<String, Integer>>(
+				2);
+		pickingIDs.add(new Pair<String, Integer>(DATA_GRAPH_NODE_PICKING_TYPE,
+				id));
+		pickingIDs.add(new Pair<String, Integer>(
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
+		return pickingIDs;
 	}
 
 	protected ElementLayout createDefaultSpacingX() {
@@ -282,8 +294,8 @@ public abstract class ADefaultTemplateNode extends ADraggableDataGraphNode {
 		captionLayout.setPixelGLConverter(view.getPixelGLConverter());
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setRatioSizeX(1);
-		captionLayout.setRenderer(new LabelRenderer(view, caption,
-				PickingType.DATA_GRAPH_NODE, pickingID));
+		captionLayout.setRenderer(new LabelRenderer(caption, view,
+				createNodePickingTypeList()));
 
 		return captionLayout;
 	}

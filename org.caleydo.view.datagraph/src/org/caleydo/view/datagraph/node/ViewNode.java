@@ -10,7 +10,6 @@ import java.util.Set;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.IDataContainerBasedView;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -19,7 +18,6 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.TextureRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.ViewNodeBackGroundRenderer;
@@ -68,13 +66,14 @@ public class ViewNode extends ADefaultTemplateNode {
 				view.openView(representedView);
 			}
 
-		}, PickingType.DATA_GRAPH_NODE.name(), id);
+		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 
 	}
 
 	private void setRepresentedViewInfo() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.ui.views");
+		IExtensionPoint point = registry
+				.getExtensionPoint("org.eclipse.ui.views");
 		IExtension[] extensions = point.getExtensions();
 		String viewID = representedView.getViewType();
 		viewName = viewID;
@@ -82,7 +81,8 @@ public class ViewNode extends ADefaultTemplateNode {
 		boolean viewNameObtained = false;
 
 		for (IExtension extension : extensions) {
-			IConfigurationElement[] elements = extension.getConfigurationElements();
+			IConfigurationElement[] elements = extension
+					.getConfigurationElements();
 			for (IConfigurationElement element : elements) {
 				if (element.getAttribute("id").equals(viewID)) {
 					viewName = element.getAttribute("name");
@@ -101,7 +101,8 @@ public class ViewNode extends ADefaultTemplateNode {
 			iconPath = null;
 		}
 		if (iconPath != null) {
-			ClassLoader classLoader = representedView.getClass().getClassLoader();
+			ClassLoader classLoader = representedView.getClass()
+					.getClassLoader();
 			URL url = classLoader.getResource(iconPath);
 			try {
 				url = FileLocator.resolve(url);
@@ -114,7 +115,8 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	@Override
 	protected ElementLayout setupLayout() {
-		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR, id);
+		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR,
+				id);
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
@@ -133,8 +135,8 @@ public class ViewNode extends ADefaultTemplateNode {
 			iconLayout.setPixelGLConverter(pixelGLConverter);
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath,
-					view.getTextureManager(), true));
+			iconLayout.setRenderer(new TextureRenderer(iconPath, view
+					.getTextureManager(), true));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -146,12 +148,14 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
-				1, 1 }, iconPath, view.getTextureManager(), true));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
+				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(),
+				true));
 
 		bodyColumn = new Column("bodyColumn");
 
-		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
+		ElementLayout bodySpacingLayoutY = new ElementLayout(
+				"compGroupOverview");
 		// if (representedView instanceof ATableBasedView) {
 		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
 		// view, dragAndDropController, new ArrayList<DataContainer>());
@@ -185,7 +189,8 @@ public class ViewNode extends ADefaultTemplateNode {
 	public List<DataContainer> getDataContainers() {
 
 		if (representedView instanceof IDataContainerBasedView) {
-			return ((IDataContainerBasedView) representedView).getDataContainers();
+			return ((IDataContainerBasedView) representedView)
+					.getDataContainers();
 			// DataContainer dataContainer = ((ATableBasedView) representedView)
 			// .getDataContainers();
 			// List<DataContainer> containers = new ArrayList<DataContainer>();
@@ -232,7 +237,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
-		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(), id);
+		view.removeSingleIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override

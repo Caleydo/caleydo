@@ -48,7 +48,8 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 				int dimensionGroupID = pick.getID();
 
 				for (DimensionGroupRenderer comparisonGroupRepresentation : dimensionGroupRenderers) {
-					if (comparisonGroupRepresentation.getDataContainer().getID() == dimensionGroupID) {
+					if (comparisonGroupRepresentation.getDataContainer()
+							.getID() == dimensionGroupID) {
 						draggedComparisonGroupRepresentation = comparisonGroupRepresentation;
 						break;
 					}
@@ -60,8 +61,10 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 						.setSelectionType(SelectionType.SELECTION);
 				Point point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
-				dragAndDropController.addDraggable(draggedComparisonGroupRepresentation);
+				dragAndDropController.setDraggingStartPosition(new Point(
+						point.x, point.y));
+				dragAndDropController
+						.addDraggable(draggedComparisonGroupRepresentation);
 				view.setDisplayListDirty();
 
 			}
@@ -99,14 +102,17 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
-//		float dimensionGroupWidth = (x - pixelGLConverter.getGLWidthForPixelWidth(2
-//				* SIDE_SPACING_PIXELS + (node.getDataContainers().size() - 1)
-//				* SPACING_PIXELS))
-//				/ (float) node.getDataContainers().size();
-		
-		float dimensionGroupWidth = pixelGLConverter.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
+		// float dimensionGroupWidth = (x -
+		// pixelGLConverter.getGLWidthForPixelWidth(2
+		// * SIDE_SPACING_PIXELS + (node.getDataContainers().size() - 1)
+		// * SPACING_PIXELS))
+		// / (float) node.getDataContainers().size();
 
-//		float currentPosX = pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
+		float dimensionGroupWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
+
+		// float currentPosX =
+		// pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
 		float currentPosX = (x / 2.0f)
 				- pixelGLConverter
 						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels()
@@ -125,7 +131,15 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 					DIMENSION_GROUP_PICKING_TYPE + node.getID(),
 					dimensionGroupRenderer.getDataContainer().getID());
 
+			
 			gl.glPushName(pickingID);
+			if (pickingIDsToBePushed != null) {
+				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed) {
+					gl.glPushName(view.getPickingManager().getPickingID(
+							view.getID(), pickingPair.getFirst(),
+							pickingPair.getSecond()));
+				}
+			}
 
 			dimensionGroupRenderer.setLimits(dimensionGroupWidth, y);
 			gl.glPushMatrix();
@@ -135,17 +149,24 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 			gl.glPopMatrix();
 
 			gl.glPopName();
+			if (pickingIDsToBePushed != null) {
+				for (int i = 0; i < pickingIDsToBePushed.size(); i++) {
+					gl.glPopName();
+				}
+			}
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
-			Point2D bottomPosition2 = new Point2D.Float(
-					currentPosX + dimensionGroupWidth, 0);
+			Point2D bottomPosition2 = new Point2D.Float(currentPosX
+					+ dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
-			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
-			bottomDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer()
-					.getID(),
-					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer()
-					.getID(), new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+			Point2D topPosition2 = new Point2D.Float(currentPosX
+					+ dimensionGroupWidth, y);
+			bottomDimensionGroupPositions.put(dimensionGroupRenderer
+					.getDataContainer().getID(), new Pair<Point2D, Point2D>(
+					bottomPosition1, bottomPosition2));
+			topDimensionGroupPositions.put(dimensionGroupRenderer
+					.getDataContainer().getID(), new Pair<Point2D, Point2D>(
+					topPosition1, topPosition2));
 
 			currentPosX += step;
 		}
@@ -177,9 +198,10 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 		for (DataContainer dataContainer : node.getDataContainers()) {
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					dataContainer.getLabel(),
-					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
-					pixelGLConverter.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
+					dataContainer.getLabel(), pixelGLConverter
+							.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
+					pixelGLConverter
+							.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
 			if (textWidth > maxTextWidth)
 				maxTextWidth = textWidth;
 		}
@@ -200,8 +222,9 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void removePickingListeners() {
-		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE + node.getID());
-		
+		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
+				+ node.getID());
+
 	}
 
 }

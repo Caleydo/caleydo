@@ -1,10 +1,11 @@
 package org.caleydo.core.view.opengl.layout.util;
 
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.picking.PickingType;
 
 /**
  * Renders a bordered area.
@@ -12,37 +13,32 @@ import org.caleydo.core.view.opengl.picking.PickingType;
  * @author Christian Partl
  */
 public class BorderedAreaRenderer
-	extends LayoutRenderer {
+	extends APickableLayoutRenderer {
 
 	public final static float[] DEFAULT_COLOR = { 0.5f, 0.5f, 0.5f, 1.0f };
 
 	private float[] color;
-	private PickingType pickingType;
-	private int id;
-	private AGLView view;
-	private boolean isPickable;
 
 	public BorderedAreaRenderer() {
+		super();
 		color = DEFAULT_COLOR;
-		isPickable = false;
 	}
 
-	public BorderedAreaRenderer(AGLView view, PickingType pickingType, int id) {
+	public BorderedAreaRenderer(AGLView view, String pickingType, int id) {
+		super(view, pickingType, id);
 		color = DEFAULT_COLOR;
-		this.pickingType = pickingType;
-		this.id = id;
-		this.view = view;
-		isPickable = true;
+	}
+
+	public BorderedAreaRenderer(AGLView view, List<Pair<String, Integer>> pickingIDs) {
+		super(view, pickingIDs);
+		color = DEFAULT_COLOR;
+
 	}
 
 	@Override
 	public void render(GL2 gl) {
 
-		if (isPickable) {
-			int pickingID = view.getPickingManager().getPickingID(view.getID(), pickingType, id);
-
-			gl.glPushName(pickingID);
-		}
+		pushNames(gl);
 		gl.glColor4f(color[0] - 0.15f, color[1] - 0.15f, color[2] - 0.15f, color[3]);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
@@ -110,9 +106,7 @@ public class BorderedAreaRenderer
 		gl.glEnd();
 
 		gl.glPopAttrib();
-		if (isPickable) {
-			gl.glPopName();
-		}
+		popNames(gl);
 	}
 
 	/**

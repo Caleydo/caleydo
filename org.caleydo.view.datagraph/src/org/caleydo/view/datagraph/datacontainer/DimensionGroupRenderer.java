@@ -163,8 +163,6 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 				- (float) draggingPosition.getX();
 		mousePositionDeltaY = mouseCoordinateY
 				- (float) draggingPosition.getY();
-		
-		System.out.println("mouseX: " + mouseCoordinateX + ", mouseY: " + mouseCoordinateY);
 
 	}
 
@@ -172,7 +170,7 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 	public void handleDragging(GL2 gl, float mouseCoordinateX,
 			float mouseCoordinateY) {
 
-		gl.glColor4f(color[0], color[1], color[2], 1.0f);
+		gl.glColor4f(color[0], color[1], color[2], 0.5f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(mouseCoordinateX - mousePositionDeltaX, mouseCoordinateY
 				- mousePositionDeltaY, 2);

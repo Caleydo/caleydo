@@ -9,7 +9,6 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataGraph;
@@ -19,6 +18,9 @@ import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 
 public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
+	protected final static String DATA_GRAPH_NODE_PICKING_TYPE = "org.caleydo.view.datagraph.node";
+	protected final static String DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE = "org.caleydo.view.datagraph.node_penetrating";
+
 	protected AGraphLayout graphLayout;
 	protected GLDataGraph view;
 	protected PixelGLConverter pixelGLConverter;
@@ -26,6 +28,7 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	protected DragAndDropController dragAndDropController;
 	protected boolean isCustomPosition = false;
 	private IPickingListener pickingListener;
+	private IPickingListener pickingListenerPenetrating;
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
 
@@ -54,6 +57,17 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 			}
 
 			@Override
+			public void dragged(Pick pick) {
+				if (!dragAndDropController.isDragging()) {
+					dragAndDropController.startDragging("NodeDrag");
+				}
+			}
+
+		};
+
+		pickingListenerPenetrating = new APickingListener() {
+
+			@Override
 			public void mouseOver(Pick pick) {
 				if (!dragAndDropController.isDragging()) {
 					view.setCurrentMouseOverNode(ADraggableDataGraphNode.this);
@@ -70,16 +84,12 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 				}
 			}
 
-			@Override
-			public void dragged(Pick pick) {
-				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging("NodeDrag");
-				}
-			}
-
 		};
+
 		view.addSingleIDPickingListener(pickingListener,
-				PickingType.DATA_GRAPH_NODE.name(), id);
+				DATA_GRAPH_NODE_PICKING_TYPE, id);
+		view.addSingleIDPickingListener(pickingListenerPenetrating,
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override
@@ -149,7 +159,9 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 	@Override
 	public void destroy() {
 		view.removeSingleIDPickingListener(pickingListener,
-				PickingType.DATA_GRAPH_NODE.name(), id);
+				DATA_GRAPH_NODE_PICKING_TYPE, id);
+		view.removeSingleIDPickingListener(pickingListenerPenetrating,
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override

@@ -7,7 +7,6 @@ import java.util.Map;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.GLDataGraph;
@@ -22,6 +21,7 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 	protected DragAndDropController dragAndDropController;
 	protected Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions;
 	protected Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions;
+	protected List<Pair<String, Integer>> pickingIDsToBePushed;
 	protected boolean isUpsideDown = false;
 	protected boolean arePickingListenersRegistered = false;
 
@@ -72,6 +72,15 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 
 	public boolean isUpsideDown() {
 		return isUpsideDown;
+	}
+
+	public List<Pair<String, Integer>> getPickingIDsToBePushed() {
+		return pickingIDsToBePushed;
+	}
+
+	public void setPickingIDsToBePushed(
+			List<Pair<String, Integer>> pickingIDsToBePushed) {
+		this.pickingIDsToBePushed = pickingIDsToBePushed;
 	}
 
 }

@@ -24,7 +24,6 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -57,7 +56,8 @@ public class TableBasedDataNode extends ADataNode {
 		protected int textureRotation;
 
 		public void apply() {
-			TableBasedDataNode.this.dataContainerRenderer.unregisterPickingListeners();
+			TableBasedDataNode.this.dataContainerRenderer
+					.unregisterPickingListeners();
 			TableBasedDataNode.this.dataContainerRenderer = dataContainerRenderer;
 			dataContainerRenderer.registerPickingListeners();
 			dataContainerRenderer.setUpsideDown(isUpsideDown);
@@ -77,6 +77,11 @@ public class TableBasedDataNode extends ADataNode {
 			dataContainerRenderer = new DataContainerListRenderer(
 					TableBasedDataNode.this, view, dragAndDropController,
 					getDataContainers());
+			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
+			pickingIDsToBePushed.add(new Pair<String, Integer>(
+					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
+
+			dataContainerRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_270;
 		}
 
@@ -101,7 +106,11 @@ public class TableBasedDataNode extends ADataNode {
 		public DetailState() {
 			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain,
 					view, TableBasedDataNode.this, dragAndDropController);
+			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
+			pickingIDsToBePushed.add(new Pair<String, Integer>(
+					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
 
+			dataContainerRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
 			textureRotation = ButtonRenderer.TEXTURE_ROTATION_90;
 		}
 
@@ -159,7 +168,7 @@ public class TableBasedDataNode extends ADataNode {
 										dataDomain, null));
 			}
 
-		}, PickingType.DATA_GRAPH_NODE.name(), id);
+		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override
@@ -197,13 +206,15 @@ public class TableBasedDataNode extends ADataNode {
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
-		// FIXME: set button invisible if there are not more than 1 perspectives
+
 		if (dataDomain.getRecordPerspectiveIDs().size() <= 1
 				&& dataDomain.getDimensionPerspectiveIDs().size() <= 1) {
 			toggleDataContainerButton.setVisible(false);
 		}
 		toggleDataContainerButtonRenderer = new ButtonRenderer(
 				toggleDataContainerButton, view, view.getTextureManager());
+		toggleDataContainerButtonRenderer.addPickingID(
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
 		toggleDataContainerButtonLayout
 				.setRenderer(toggleDataContainerButtonRenderer);
@@ -414,7 +425,6 @@ public class TableBasedDataNode extends ADataNode {
 		// dataContainers.add(pair.getSecond());
 		// }
 	}
-
 
 	@Override
 	public List<DataContainer> getDataContainers() {

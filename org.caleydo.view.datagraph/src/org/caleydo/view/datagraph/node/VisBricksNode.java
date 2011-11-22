@@ -17,7 +17,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -56,7 +55,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 				}
 
 			}
-		}, PickingType.DATA_GRAPH_NODE.name(), id);
+		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 
 	}
 
@@ -71,6 +70,12 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 		dataContainerListRenderer = new DataContainerListRenderer(this, view,
 				dragAndDropController, getDataContainers());
+
+		List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
+		pickingIDsToBePushed.add(new Pair<String, Integer>(
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
+
+		dataContainerListRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
 
 		dataContainerLayout.setRatioSizeY(1);
 		dataContainerLayout.setRenderer(dataContainerListRenderer);
@@ -168,13 +173,14 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
+			System.out.println("Drop");
 			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
 					dataContainers.get(0));
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
 
-		dragAndDropController.clearDraggables();
+		// dragAndDropController.clearDraggables();
 
 	}
 
@@ -182,8 +188,8 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
-		view.removeSingleIDPickingListeners(PickingType.DATA_GRAPH_NODE.name(),
-				id);
+		view.removeSingleIDPickingListeners(
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override

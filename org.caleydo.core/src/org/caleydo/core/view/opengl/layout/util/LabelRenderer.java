@@ -1,10 +1,11 @@
 package org.caleydo.core.view.opengl.layout.util;
 
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -13,12 +14,9 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Partl
  */
 public class LabelRenderer
-	extends LayoutRenderer {
+	extends APickableLayoutRenderer {
 
-	private AGLView view;
 	private String text;
-	private PickingType pickingType;
-	private int id;
 	private boolean isPickable;
 
 	/**
@@ -31,11 +29,9 @@ public class LabelRenderer
 	 * @param id
 	 *            ID for picking.
 	 */
-	public LabelRenderer(AGLView view, String text, PickingType pickingType, int id) {
-		this.view = view;
+	public LabelRenderer(AGLView view, String text, String pickingType, int id) {
+		super(view, pickingType, id);
 		this.text = text;
-		this.pickingType = pickingType;
-		this.id = id;
 		this.isPickable = true;
 	}
 
@@ -44,14 +40,19 @@ public class LabelRenderer
 		this.text = text;
 		this.isPickable = false;
 	}
+	
+	public LabelRenderer(String text, AGLView view, List<Pair<String, Integer>> pickingIDs) {
+		super(view, pickingIDs);
+		this.text = text;
+		this.isPickable = true;
+	}
 
 	@Override
 	public void render(GL2 gl) {
 
 		if (isPickable) {
-			int pickingID = view.getPickingManager().getPickingID(view.getID(), pickingType, id);
+			pushNames(gl);
 
-			gl.glPushName(pickingID);
 			gl.glColor4f(1, 1, 1, 0);
 			gl.glBegin(GL2.GL_POLYGON);
 			gl.glVertex3f(0, 0, 0.1f);
@@ -59,7 +60,8 @@ public class LabelRenderer
 			gl.glVertex3f(x, y, 0.1f);
 			gl.glVertex3f(0, y, 0.1f);
 			gl.glEnd();
-			gl.glPopName();
+			
+			popNames(gl);
 		}
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();

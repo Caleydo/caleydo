@@ -5,7 +5,7 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 /**
@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * @author Christian Partl
  */
 public class ButtonRenderer
-	extends LayoutRenderer {
+	extends APickableLayoutRenderer {
 
 	public static final int TEXTURE_ROTATION_0 = 0;
 	public static final int TEXTURE_ROTATION_90 = 1;
@@ -22,7 +22,7 @@ public class ButtonRenderer
 	public static final int TEXTURE_ROTATION_270 = 3;
 
 	private TextureManager textureManager;
-	private AGLView view;
+	// private AGLView view;
 	private Button button;
 	private int textureRotation;
 	private float zCoordinate = 0;
@@ -40,6 +40,7 @@ public class ButtonRenderer
 	 *            TextureManager.
 	 */
 	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager) {
+		// this.view = view;
 		this.view = view;
 		this.button = button;
 		this.textureManager = textureManager;
@@ -76,6 +77,7 @@ public class ButtonRenderer
 			return;
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, zCoordinate);
+		pushNames(gl);
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), button.getPickingType(),
 			button.getButtonID()));
 
@@ -127,6 +129,7 @@ public class ButtonRenderer
 
 		}
 
+		popNames(gl);
 		gl.glPopName();
 		gl.glPopMatrix();
 
