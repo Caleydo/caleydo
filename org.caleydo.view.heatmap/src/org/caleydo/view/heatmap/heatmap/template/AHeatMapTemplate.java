@@ -1,7 +1,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.CaptionCageRenderer;
@@ -13,7 +13,7 @@ import org.caleydo.view.heatmap.heatmap.renderer.RecordSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.RecordSpacing;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
-public abstract class AHeatMapTemplate extends LayoutTemplate {
+public abstract class AHeatMapTemplate extends LayoutConfiguration {
 
 	protected AHeatMapRenderer heatMapRenderer;
 	protected RecordCaptionRenderer recordCaptionRenderer;

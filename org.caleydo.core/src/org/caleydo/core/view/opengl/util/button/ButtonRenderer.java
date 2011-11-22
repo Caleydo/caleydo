@@ -6,6 +6,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 /**
@@ -67,12 +68,11 @@ public class ButtonRenderer
 		this.button = button;
 		this.textureManager = textureManager;
 		this.textureRotation = textureRotation;
-
 	}
 
 	@Override
 	public void render(GL2 gl) {
-
+//GLHelperFunctions.drawAxis(gl);
 		if (!button.isVisible())
 			return;
 		gl.glPushMatrix();

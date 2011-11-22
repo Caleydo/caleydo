@@ -53,7 +53,7 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
-		setBaseElementLayout(baseRow);
+		baseElementLayout = baseRow;
 
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 1);
@@ -62,7 +62,6 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setPixelSizeY(0);
 
@@ -90,7 +89,6 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// dimensionBarLayout.setRenderer(new DimensionBarRenderer(brick));
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
@@ -125,7 +123,6 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Row createHeaderBar() {
 		Row headerBar = new Row();
-		headerBar.setPixelGLConverter(pixelGLConverter);
 		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : headerBarElements) {
@@ -137,7 +134,6 @@ public class CompactCentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Row createFooterBar() {
 		Row footerBar = new Row("footerBar");
-		footerBar.setPixelGLConverter(pixelGLConverter);
 		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : footerBarElements) {

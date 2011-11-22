@@ -38,9 +38,8 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 	@Override
 	public void setStaticLayouts() {
-		pixelGLConverter = heatMap.getPixelGLConverter();
 		Column mainColumn = new Column("mainColumn");
-		setBaseElementLayout(mainColumn);
+		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 		mainColumn.setBottomUp(false);
@@ -56,7 +55,6 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 			barPlotLayout = new ElementLayout("BarPlotLayout");
 			barPlotLayout.setRenderer(barPlotRenderer);
-			barPlotLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
 			barPlotLayout.setPixelSizeX(barPlotPixelWidth);
 			// barPlotLayout.addForeGroundRenderer(contentSelectionRenderer);
 			// barPlotLayout.addForeGroundRenderer(dimensionSelectionRenderer);
@@ -79,7 +77,6 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 		int contentCaptionPixelWidth = 200;
 		ElementLayout contentCaptionLayout = new ElementLayout("contentCaption");
-		contentCaptionLayout.setPixelGLConverter(pixelGLConverter);
 		// contentCaptionLayout.setRatioSizeX(heatMapSizeX);
 		contentCaptionLayout.setPixelSizeX(contentCaptionPixelWidth);
 		contentCaptionLayout.setRenderer(recordCaptionRenderer);
@@ -102,7 +99,6 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 
 		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
 			ElementLayout leadSpacingLayout = new ElementLayout();
-			leadSpacingLayout.setPixelGLConverter(heatMap.getPixelGLConverter());
 			leadSpacingLayout.setPixelSizeX(barPlotPixelWidth);
 			dimensionCaptionRow.append(leadSpacingLayout);
 		}
@@ -110,7 +106,6 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
 		dimensionCaptionRow.append(dimensionCaptionLayout);
 
 		ElementLayout postSpacingLayout = new ElementLayout();
-		postSpacingLayout.setPixelGLConverter(pixelGLConverter);
 		postSpacingLayout.setPixelSizeX(contentCaptionPixelWidth);
 
 		dimensionCaptionRow.append(postSpacingLayout);

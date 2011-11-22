@@ -25,7 +25,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void updateSpacing(ElementLayout parameters) {
+	public void updateSpacing() {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 
@@ -41,7 +41,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 
 		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getDataContainer()
 				.getDimensionPerspective().getVirtualArray().size(),
-				parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				elementLayout.getSizeScaledX(), elementLayout.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(recordSpacing);
 

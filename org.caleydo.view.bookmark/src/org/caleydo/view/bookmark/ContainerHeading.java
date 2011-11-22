@@ -19,7 +19,6 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 	public ContainerHeading(GLBookmarkView manager) {
 		this.manager = manager;
 		layout = new ElementLayout("ContainerHeading");
-		layout.setPixelGLConverter(manager.getPixelGLConverter());
 		layout.setRatioSizeX(1);
 		layout.setPixelSizeY(20);
 		layout.setRenderer(this);

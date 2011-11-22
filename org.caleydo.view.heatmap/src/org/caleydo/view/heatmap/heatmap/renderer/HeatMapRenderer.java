@@ -20,7 +20,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void updateSpacing(ElementLayout parameters) {
+	public void updateSpacing() {
 
 		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
 
@@ -36,7 +36,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 
 		recordSpacing.calculateRecordSpacing(nrRecordElements, heatMap.getDataContainer()
 				.getDimensionPerspective().getVirtualArray().size(),
-				parameters.getSizeScaledX(), parameters.getSizeScaledY(),
+				elementLayout.getSizeScaledX(), elementLayout.getSizeScaledY(),
 				heatMapTemplate.getMinSelectedFieldHeight());
 		heatMapTemplate.setContentSpacing(recordSpacing);
 	}

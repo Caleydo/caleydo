@@ -121,8 +121,7 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();
-		baseColumn.setPixelGLConverter(pixelGLConverter);
-
+	
 		baseRow.append(spacingLayoutX);
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
@@ -132,7 +131,6 @@ public class ViewNode extends ADefaultTemplateNode {
 
 		if (iconPath != null) {
 			ElementLayout iconLayout = new ElementLayout("icon");
-			iconLayout.setPixelGLConverter(pixelGLConverter);
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setRenderer(new TextureRenderer(iconPath, view

@@ -62,7 +62,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	private HeatMapRenderStyle renderStyle;
 
-	private LayoutManager templateRenderer;
+	private LayoutManager layoutManager;
 	private AHeatMapTemplate detailedRenderingTemplate;
 	private TextureHeatMapTemplate textureTemplate;
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
@@ -110,12 +110,12 @@ public class GLHeatMap extends ATableBasedView {
 
 		textureTemplate = new TextureHeatMapTemplate(this);
 
-		templateRenderer = new LayoutManager(this.viewFrustum);
+		layoutManager = new LayoutManager(this.viewFrustum, pixelGLConverter);
 		if (detailedRenderingTemplate == null)
 			detailedRenderingTemplate = new DefaultTemplate(this);
 
-		templateRenderer.setTemplate(detailedRenderingTemplate);
-		templateRenderer.updateLayout();
+		layoutManager.setTemplate(detailedRenderingTemplate);
+		layoutManager.updateLayout();
 
 	}
 
@@ -157,7 +157,7 @@ public class GLHeatMap extends ATableBasedView {
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 	}
 
 	@Override
@@ -167,13 +167,13 @@ public class GLHeatMap extends ATableBasedView {
 			return;
 		super.setDetailLevel(detailLevel);
 		if (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM) {
-			templateRenderer.setTemplate(detailedRenderingTemplate);
+			layoutManager.setTemplate(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
 		}
 
 		else {
-			templateRenderer.setTemplate(textureTemplate);
+			layoutManager.setTemplate(textureTemplate);
 			showCaptions = false;
 		}
 
@@ -231,7 +231,7 @@ public class GLHeatMap extends ATableBasedView {
 		if (dataContainer.getNrRecords() == 0 || dataContainer.getNrDimensions() == 0) {
 			renderSymbol(gl, EIconTextures.HEAT_MAP_SYMBOL, 2);
 		} else {
-			templateRenderer.render(gl);
+			layoutManager.render(gl);
 		}
 		gl.glEndList();
 	}
@@ -668,7 +668,7 @@ public class GLHeatMap extends ATableBasedView {
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
-		detailedRenderingTemplate.setActive(isActive);
+		layoutManager.setActive(isActive);
 		setDisplayListDirty();
 	}
 
@@ -808,10 +808,10 @@ public class GLHeatMap extends ATableBasedView {
 	public void setFrustum(ViewFrustum viewFrustum) {
 		super.setFrustum(viewFrustum);
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
-		templateRenderer.setViewFrustum(viewFrustum);
+		layoutManager.setViewFrustum(viewFrustum);
 	}
 
 	public void updateLayout() {
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 	}
 }

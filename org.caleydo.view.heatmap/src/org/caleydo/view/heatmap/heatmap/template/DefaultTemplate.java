@@ -19,7 +19,7 @@ public class DefaultTemplate extends AHeatMapTemplate {
 	@Override
 	public void setStaticLayouts() {
 		Column mainColumn = new Column();
-		setBaseElementLayout(mainColumn);
+		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 

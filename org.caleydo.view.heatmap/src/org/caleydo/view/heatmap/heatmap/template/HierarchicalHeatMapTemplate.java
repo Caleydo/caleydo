@@ -23,7 +23,7 @@ public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
 	@Override
 	public void setStaticLayouts() {
 		Column mainColumn = new Column("mainColumn");
-		setBaseElementLayout(mainColumn);
+		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 		mainColumn.setBottomUp(false);

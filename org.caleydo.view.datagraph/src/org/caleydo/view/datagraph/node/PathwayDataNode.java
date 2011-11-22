@@ -34,14 +34,12 @@ public class PathwayDataNode extends ADataNode {
 
 	@Override
 	public ElementLayout setupLayout() {
-		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-
+	
 		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();
-		baseColumn.setPixelGLConverter(pixelGLConverter);
 
 		baseRow.append(spacingLayoutX);
 		baseRow.append(baseColumn);

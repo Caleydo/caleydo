@@ -74,8 +74,6 @@ public class ClusterRenderer extends LayoutRenderer {
 		clusterHeatMapLayout.setRatioSizeX(1f);
 
 		clusterVisUncBarLayout = new Column("visual uncertainty bar");
-		clusterVisUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
-				.getPixelGLConverter());
 		clusterVisUncBarLayout.setPixelSizeX(50);
 
 		textureRenderer = new HeatMapTextureRenderer(uncertaintyHeatMap);
@@ -91,8 +89,6 @@ public class ClusterRenderer extends LayoutRenderer {
 		if (uncertaintyHeatMap.isMaxUncertaintyCalculated()) {
 
 			clusterDataUncBarLayout = new Column("data uncertainty bar");
-			clusterDataUncBarLayout.setPixelGLConverter(uncertaintyHeatMap
-					.getPixelGLConverter());
 			clusterDataUncBarLayout.setPixelSizeX(50);
 
 			dataUncBarTextureRenderer = new BarplotTextureRenderer();

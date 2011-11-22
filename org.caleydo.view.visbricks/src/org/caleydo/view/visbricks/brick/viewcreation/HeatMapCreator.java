@@ -40,7 +40,6 @@ public class HeatMapCreator implements IRemoteViewCreator {
 		heatMap.setDataContainer(remoteRenderingView.getDataContainer());
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
 		BrickHeatMapTemplate template = new BrickHeatMapTemplate(heatMap);
-		template.setPixelGLConverter(heatMap.getPixelGLConverter());
 		heatMap.setRenderTemplate(template);
 		heatMap.initialize();
 		heatMap.initRemote(gl, remoteRenderingView, glMouseListener);

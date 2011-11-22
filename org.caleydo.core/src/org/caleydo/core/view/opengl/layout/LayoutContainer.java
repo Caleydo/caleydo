@@ -33,7 +33,7 @@ public abstract class LayoutContainer
 	protected boolean isBottomUp = true;
 	protected boolean isLeftToRight = true;
 
-	protected ArrayList<ElementLayout> elements = new ArrayList<ElementLayout>();;
+	protected ArrayList<ElementLayout> elements = new ArrayList<ElementLayout>();
 
 	/**
 	 * The currently available bottom distance for the layout. Use if only this sub-part of the layout is
@@ -189,6 +189,14 @@ public abstract class LayoutContainer
 		super.updateSpacings();
 		for (ElementLayout element : elements) {
 			element.updateSpacings();
+		}
+	}
+
+	@Override
+	void setLayoutManager(LayoutManager layoutManager) {
+		super.setLayoutManager(layoutManager);
+		for (ElementLayout element : elements) {
+			element.setLayoutManager(layoutManager);
 		}
 	}
 

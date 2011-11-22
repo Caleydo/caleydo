@@ -48,7 +48,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -108,9 +108,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	private LayoutManager leftLayoutManager;
 	private LayoutManager rightLayoutManager;
 
-	private LayoutTemplate centerLayout;
-	private LayoutTemplate leftLayoutTemplate;
-	private LayoutTemplate rightLayout;
+	// private LayoutConfiguration centerLayout;
+	// private LayoutConfiguration leftLayoutTemplate;
+	// private LayoutConfiguration rightLayout;
 
 	private Row centerRowLayout;
 	private Column leftColumnLayout;
@@ -240,11 +240,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	private void initLeftLayout() {
 		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
 				archSideThickness, 0, archBottomY, 0, 1);
-		leftLayoutManager = new LayoutManager(leftArchFrustum);
+		leftLayoutManager = new LayoutManager(leftArchFrustum, pixelGLConverter);
 		leftColumnLayout = new Column("leftArchColumn");
-		leftLayoutTemplate = new LayoutTemplate();
 
-		initSideLayout(leftColumnLayout, leftLayoutTemplate, leftLayoutManager, 0,
+		initSideLayout(leftColumnLayout, leftLayoutManager, 0,
 				dimensionGroupManager.getCenterGroupStartIndex());
 	}
 
@@ -252,9 +251,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
 				0, archSideThickness, 0, archBottomY, 0, 1);
 		rightColumnLayout = new Column("rightArchColumn");
-		rightLayout = new LayoutTemplate();
-		rightLayoutManager = new LayoutManager(rightArchFrustum);
-		initSideLayout(rightColumnLayout, rightLayout, rightLayoutManager,
+		rightLayoutManager = new LayoutManager(rightArchFrustum, pixelGLConverter);
+		initSideLayout(rightColumnLayout, rightLayoutManager,
 				dimensionGroupManager.getRightGroupStartIndex(), dimensionGroupManager
 						.getDimensionGroups().size());
 	}
@@ -311,8 +309,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		dimensionGroupSpacingRenderer.setLineLength(archHeight);
 
-		leftDimensionGroupSpacing.setPixelGLConverter(pixelGLConverter);
-
 		if (dimensionGroupCountInCenter > 1)
 			leftDimensionGroupSpacing.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
 		else
@@ -346,7 +342,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				rightDimensionGroupSpacing = new ElementLayout("lastDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 						connectionRenderer, group, null, this);
-				rightDimensionGroupSpacing.setPixelGLConverter(pixelGLConverter);
 
 				if (dimensionGroupCountInCenter > 1)
 					rightDimensionGroupSpacing
@@ -362,14 +357,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			dimensionGroupSpacingRenderer.setLineLength(archHeight);
 		}
 
-		centerLayout = new LayoutTemplate();
-		centerLayout.setPixelGLConverter(pixelGLConverter);
-		centerLayout.setBaseElementLayout(centerRowLayout);
-
 		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
 				0, centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
-		centerLayoutManager = new LayoutManager(centerArchFrustum);
-		centerLayoutManager.setTemplate(centerLayout);
+		centerLayoutManager = new LayoutManager(centerArchFrustum, pixelGLConverter);
+		centerLayoutManager.setBaseElementLayout(centerRowLayout);
 
 		centerLayoutManager.updateLayout();
 	}
@@ -383,14 +374,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * @param dimensinoGroupStartIndex
 	 * @param dimensinoGroupEndIndex
 	 */
-	private void initSideLayout(Column columnLayout, LayoutTemplate layoutTemplate,
-			LayoutManager layoutManager, int dimensinoGroupStartIndex,
-			int dimensinoGroupEndIndex) {
+	private void initSideLayout(Column columnLayout, LayoutManager layoutManager,
+			int dimensinoGroupStartIndex, int dimensinoGroupEndIndex) {
 
-		layoutTemplate.setPixelGLConverter(pixelGLConverter);
-		layoutTemplate.setBaseElementLayout(columnLayout);
-
-		layoutManager.setTemplate(layoutTemplate);
+		layoutManager.setBaseElementLayout(columnLayout);
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
 		// columnLayout.setDebug(true);
@@ -1505,7 +1492,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				volatieBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA.get(connectionBandID); 
+		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA
+				.get(connectionBandID);
 		for (Integer recordID : recordVA) {
 			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
 					recordVA.getIdType(), recordID);

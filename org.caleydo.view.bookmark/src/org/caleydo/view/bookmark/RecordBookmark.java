@@ -32,7 +32,6 @@ class RecordBookmark extends ABookmark {
 		layout.setRatioSizeX(1);
 
 		layout.setRenderer(this);
-		layout.setPixelGLConverter(manager.getPixelGLConverter());
 		// float height = (float) textRenderer.getBounds("Text").getHeight();
 
 		layout.setPixelSizeY(20);

@@ -25,7 +25,7 @@ import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -57,7 +57,6 @@ public class GLTagCloud extends ATableBasedView {
 	private TagCloudRenderStyle renderStyle;
 
 	private LayoutManager layoutManager;
-	private LayoutTemplate layoutTemplate;
 
 	private Column baseColumn;
 	private Row tagCloudRow;
@@ -100,10 +99,7 @@ public class GLTagCloud extends ATableBasedView {
 
 		viewType = GLTagCloud.VIEW_TYPE;
 
-		layoutManager = new LayoutManager(viewFrustum);
-		layoutTemplate = new LayoutTemplate();
-		layoutManager.setTemplate(layoutTemplate);
-
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 	}
 
 	@Override
@@ -142,7 +138,7 @@ public class GLTagCloud extends ATableBasedView {
 			initData();
 		}
 		Row baseRow = new Row("baseRow");
-		layoutTemplate.setBaseElementLayout(baseRow);
+		layoutManager.setBaseElementLayout(baseRow);
 		baseColumn = new Column("baseColumn");
 
 		DimensionVirtualArray visibleDimensionVA;
@@ -172,11 +168,9 @@ public class GLTagCloud extends ATableBasedView {
 			visibleDimensionVA = clippedDimensionVA;
 
 			Column previousDimensionColumn = new Column("previousDimensionColumn");
-			previousDimensionColumn.setPixelGLConverter(pixelGLConverter);
 			previousDimensionColumn.setPixelSizeX(15);
 
 			ElementLayout previousButtonLayout = new ElementLayout("previousButtonLayout");
-			previousButtonLayout.setPixelGLConverter(pixelGLConverter);
 			previousButtonLayout.setPixelSizeY(20);
 			// previousButtonLayout.setDebug(true);
 
@@ -188,11 +182,9 @@ public class GLTagCloud extends ATableBasedView {
 			previousButtonLayout.setRenderer(previousButtonRenderer);
 
 			Column nextDimensionColumn = new Column("nextDimensionColumn");
-			nextDimensionColumn.setPixelGLConverter(pixelGLConverter);
 			nextDimensionColumn.setPixelSizeX(15);
 
 			ElementLayout nextButtonLayout = new ElementLayout("nextButtonLayout");
-			nextButtonLayout.setPixelGLConverter(pixelGLConverter);
 			nextButtonLayout.setPixelSizeY(20);
 			// nextButtonLayout.setDebug(true);
 
@@ -221,21 +213,17 @@ public class GLTagCloud extends ATableBasedView {
 		// tagCloudRow.setDebug(true);
 
 		captionRow = new Row("captionRow");
-		captionRow.setPixelGLConverter(pixelGLConverter);
 		captionRow.setPixelSizeY(15);
 
 		selectionRow = new Row("selectionRow");
-		selectionRow.setPixelGLConverter(pixelGLConverter);
 		selectionRow.setPixelSizeY(15);
 		// selectionRow.setDebug(true);
 
 		ElementLayout spacing = new ElementLayout("spacing");
-		spacing.setPixelGLConverter(pixelGLConverter);
 		spacing.setPixelSizeY(2);
 		spacing.setRatioSizeX(0);
 
 		ElementLayout largerSpacing = new ElementLayout("spacing");
-		largerSpacing.setPixelGLConverter(pixelGLConverter);
 		largerSpacing.setPixelSizeY(7);
 		largerSpacing.setRatioSizeX(0);
 		if (detailLevel != DetailLevel.LOW) {

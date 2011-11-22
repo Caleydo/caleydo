@@ -4,7 +4,7 @@
 package org.caleydo.view.heatmap.heatmap.template;
 
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
@@ -12,7 +12,7 @@ import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
  * @author Alexander Lex
  * 
  */
-public class TextureHeatMapTemplate extends LayoutTemplate {
+public class TextureHeatMapTemplate extends LayoutConfiguration {
 
 	protected GLHeatMap heatMap;
 	protected HeatMapTextureRenderer heatMapRenderer;
@@ -27,7 +27,7 @@ public class TextureHeatMapTemplate extends LayoutTemplate {
 	@Override
 	public void setStaticLayouts() {
 		ElementLayout mainLayout = new ElementLayout();
-		setBaseElementLayout(mainLayout);
+		baseElementLayout = mainLayout;
 		mainLayout.setRatioSizeX(1);
 		mainLayout.setRatioSizeY(1);
 		mainLayout.setRenderer(heatMapRenderer);

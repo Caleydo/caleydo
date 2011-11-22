@@ -17,14 +17,13 @@ public class BucketTemplate extends AHeatMapTemplate {
 	public BucketTemplate(GLHeatMap heatMap) {
 		super(heatMap);
 		minSelectedFieldHeight = 0.5f;
-		fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * 1.8f;
-
+	
 	}
 
 	@Override
 	public void setStaticLayouts() {
 		Column mainColumn = new Column();
-		setBaseElementLayout(mainColumn);
+		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 

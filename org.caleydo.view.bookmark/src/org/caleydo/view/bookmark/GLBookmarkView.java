@@ -67,10 +67,7 @@ public class GLBookmarkView extends ATableBasedView {
 	protected ATableBasedDataDomain dataDomain;
 
 	/** The class responsible for rendering the template */
-	private LayoutManager templateRenderer;
-
-	/** The render template */
-	private BookmarkTemplate bookmarkTemplate;
+	private LayoutManager layoutManager;
 
 	class PickingIDManager {
 		/**
@@ -119,16 +116,13 @@ public class GLBookmarkView extends ATableBasedView {
 
 		pickingIDManager = new PickingIDManager();
 
-		templateRenderer = new LayoutManager(viewFrustum);
-		bookmarkTemplate = new BookmarkTemplate();
-		templateRenderer.setTemplate(bookmarkTemplate);
-
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 	}
 
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 	}
 
 	@Override
@@ -213,7 +207,7 @@ public class GLBookmarkView extends ATableBasedView {
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
-		templateRenderer.render(gl);
+		layoutManager.render(gl);
 		gl.glEndList();
 	}
 
@@ -244,7 +238,7 @@ public class GLBookmarkView extends ATableBasedView {
 					+ event.getIDType().getIDCategory());
 
 		container.handleNewBookmarkEvent(event);
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 		setDisplayListDirty();
 	}
 
@@ -257,7 +251,7 @@ public class GLBookmarkView extends ATableBasedView {
 					+ event.getIDType().getIDCategory());
 
 		container.handleRemoveBookmarkEvent(event);
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 		setDisplayListDirty();
 	}
 
@@ -265,7 +259,6 @@ public class GLBookmarkView extends ATableBasedView {
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 		textRenderer = new CaleydoTextRenderer(24);
-		bookmarkTemplate.setPixelGLConverter(pixelGLConverter);
 	}
 
 	@Override
@@ -325,7 +318,7 @@ public class GLBookmarkView extends ATableBasedView {
 		mainColumn.setYDynamic(true);
 		mainColumn.setBottomUp(false);
 		// mainColumn.setPixelGLConverter(pixelGLConverter);
-		bookmarkTemplate.setBaseElementLayout(mainColumn);
+		layoutManager.setBaseElementLayout(mainColumn);
 
 		RecordBookmarkContainer geneContainer = new RecordBookmarkContainer(this,
 				dataDomain.getRecordIDCategory(), dataDomain.getRecordIDCategory()

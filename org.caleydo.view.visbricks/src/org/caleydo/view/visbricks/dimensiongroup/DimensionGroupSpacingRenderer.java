@@ -218,12 +218,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 					.getIDMappingManager(recordVA.getIdType().getIDCategory());
 			for (Integer recordID : recordVA) {
 				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
-					IDType destIDType =  recordSelectionManager.getIDType();
-							
-					recordID = mappingManager.getID(recordVA.getIdType(),destIDType, recordID);
+					IDType destIDType = recordSelectionManager.getIDType();
+
+					recordID = mappingManager.getID(recordVA.getIdType(), destIDType,
+							recordID);
 
 				}
-	
 
 				if (recordID != null && selectedByGroupSelections.contains(recordID))
 					intersectionCount++;
@@ -525,27 +525,26 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 							splineFactor, 0, color);// 0.15f);
 
 					// Render straight band connection from brick to dimension
-					// group
-					// on the LEFT
+					// group on the LEFT. This is for the smaller bricks when
+					// the bricks are not of equal size
 					if (xStart != 0) {
-						// connectionRenderer.renderStraightBand(gl, new float[]
-						// { xStart,
-						// subGroupMatch.getLeftAnchorYTop(), 0 },
-						// new float[] {
-						// xStart,
-						// subGroupMatch.getLeftAnchorYTop()
-						// - leftYDiffSelection, 0 }, new float[] {
-						// 0, subGroupMatch.getLeftAnchorYTop(), 0 },
-						// new float[] {
-						// 0,
-						// subGroupMatch.getLeftAnchorYTop()
-						// - leftYDiffSelection, 0 }, false,
-						// splineFactor, 0, color, trendRatio);// 0.5f);
+						connectionRenderer.renderStraightBand(gl, new float[] { xStart,
+								subGroupMatch.getLeftAnchorYTop(), 0 },
+								new float[] {
+										xStart,
+										subGroupMatch.getLeftAnchorYTop()
+												- leftYDiffSelection, 0 }, new float[] {
+										0, subGroupMatch.getLeftAnchorYTop(), 0 },
+								new float[] {
+										0,
+										subGroupMatch.getLeftAnchorYTop()
+												- leftYDiffSelection, 0 }, false,
+								splineFactor, 0, color, trendRatio);// 0.5f);
 					}
 
 					// Render straight band connection from brick to dimension
-					// group
-					// on the RIGHT
+					// group on the RIGHT. This is for the smaller bricks when
+					// the bricks are not of equal size
 					if (xEnd != 0) {
 
 						connectionRenderer

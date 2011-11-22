@@ -18,14 +18,13 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 	public BrickHeatMapTemplate(GLHeatMap heatMap) {
 		super(heatMap);
 		minSelectedFieldHeight = 0.1f;
-		fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * 1.8f;
-
+	
 	}
 
 	@Override
 	public void setStaticLayouts() {
 		Column mainColumn = new Column();
-		setBaseElementLayout(mainColumn);
+		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 
@@ -58,7 +57,6 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 
 			// content captions
 			caption = new ElementLayout();
-			caption.setPixelGLConverter(pixelGLConverter);
 			caption.setPixelSizeX(80);
 			caption.setRatioSizeY(1);
 

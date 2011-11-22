@@ -295,7 +295,6 @@ public class DimensionGroup extends ATableBasedView implements
 		// }
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
-		brickSpacingLayout.setPixelGLConverter(pixelGLConverter);
 		brickSpacingLayout.setPixelSizeY(10);
 		brickSpacingLayout.setRatioSizeX(0);
 
@@ -341,7 +340,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);
 		wrappingLayout.setRenderer(brickRenderer);
-		wrappingLayout.setPixelGLConverter(pixelGLConverter);
 		if (isCollapsed) {
 			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
 		} else {
@@ -388,7 +386,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 			if (!(centerLayout.getSizeScaledY() > 0)) {
 				bottomCol.setRatioSizeY(1f);
-				centerLayout.setPixelGLConverter(pixelGLConverter);
 				centerLayout.setPixelSizeY(archHeight);
 			}
 		}
@@ -865,8 +862,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
-		detailBrickLayout.setPixelGLConverter(pixelGLConverter);
-
 		detailBrick = createBrick(detailBrickLayout, brick.getDataContainer());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
@@ -881,7 +876,6 @@ public class DimensionGroup extends ATableBasedView implements
 				.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
-		overviewDetailGapLayout.setPixelGLConverter(pixelGLConverter);
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 		overviewDetailGapLayout.setRatioSizeY(1);
 
@@ -1014,8 +1008,8 @@ public class DimensionGroup extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

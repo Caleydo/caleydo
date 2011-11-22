@@ -15,8 +15,8 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -160,7 +161,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		textRenderer = new CaleydoTextRenderer(24);
 		baseDisplayListIndex = gl.glGenLists(1);
 
-		templateRenderer = new LayoutManager(viewFrustum);
+		templateRenderer = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		if (brickLayout == null) {
 
@@ -287,7 +288,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		for (Integer recordID : va) {
 			recordSelectionManager.addToType(selectedByGroupSelectionType,
-					va.getIdType(), recordID);//va.getIdType(), recordID);
+					va.getIdType(), recordID);// va.getIdType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -350,6 +351,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		templateRenderer.render(gl);
 
 		gl.glCallList(baseDisplayListIndex);
+
+		// if (brickLayout.isShowHandles()) {
+		// Row toolBar = brickLayout.getToolBar();
+		// if (toolBar != null) {
+		// toolBar.updateSubLayout();
+		// toolBar.render(gl);
+		//
+		// }
+		// }
 
 		// textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
 
@@ -718,7 +728,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			wrappingLayout.setAbsoluteSizeY(defaultHeight);
 			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
-
+		templateRenderer.setTemplate(brickLayout);
 		templateRenderer.updateLayout();
 
 		visBricks.updateLayout();

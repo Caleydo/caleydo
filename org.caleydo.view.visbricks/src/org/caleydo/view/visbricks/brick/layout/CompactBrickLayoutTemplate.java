@@ -73,7 +73,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
-		setBaseElementLayout(baseRow);
+		baseElementLayout = baseRow;
 
 		// leftRelationIndicatorRenderer.updateRelations();
 		// rightRelationIndicatorRenderer.updateRelations();
@@ -102,12 +102,11 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		footerBar = createFooterBar();
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter, 10,
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,  10,
 					brick.getTextureManager(), HandleRenderer.MOVE_VERTICALLY_HANDLE));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setPixelSizeY(0);
 
@@ -133,7 +132,6 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ElementLayout expandButtonLayout = new ElementLayout("expandButtonLayout");
 		expandButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
-		expandButtonLayout.setPixelGLConverter(pixelGLConverter);
 		expandButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
@@ -147,8 +145,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 		viewRow.append(expandButtonLayout);
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
-		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
+			spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
 		// baseColumn.appendElement(dimensionBarLayout);
@@ -176,7 +173,6 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Row createFooterBar() {
 		Row footerBar = new Row("footerBar");
-		footerBar.setPixelGLConverter(pixelGLConverter);
 		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : footerBarElements) {

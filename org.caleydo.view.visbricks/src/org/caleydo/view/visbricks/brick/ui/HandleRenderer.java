@@ -34,7 +34,6 @@ public class HandleRenderer extends LayoutRenderer {
 	public static final int ALL_HANDLES = 0xFF;
 
 	private GLBrick brick;
-	private PixelGLConverter pixelGLConverter;
 	private int handleSize;
 	private TextureManager textureManager;
 	private int handles;
@@ -43,7 +42,6 @@ public class HandleRenderer extends LayoutRenderer {
 	 * Constructor.
 	 * 
 	 * @param view
-	 * @param pixelGLConverter
 	 * @param handleSize
 	 *            Size in pixels of the handles.
 	 * @param textureManager
@@ -51,10 +49,9 @@ public class HandleRenderer extends LayoutRenderer {
 	 *            Specifies which handles shall be used, e.g.
 	 *            MOVE_VERTICALLY_HANDLE | RESIZE_HANDLE_UPPER_LEFT
 	 */
-	public HandleRenderer(GLBrick brick, PixelGLConverter pixelGLConverter,
-			int handleSize, TextureManager textureManager, int handles) {
+	public HandleRenderer(GLBrick brick, int handleSize, TextureManager textureManager,
+			int handles) {
 		this.brick = brick;
-		this.pixelGLConverter = pixelGLConverter;
 		this.handleSize = handleSize;
 		this.textureManager = textureManager;
 		this.handles = handles;
@@ -63,8 +60,8 @@ public class HandleRenderer extends LayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
-		float glHandleHeight = pixelGLConverter.getGLHeightForPixelHeight(handleSize);
-		float glHandleWidth = pixelGLConverter.getGLWidthForPixelWidth(handleSize);
+		float glHandleHeight = getPixelGLConverter().getGLHeightForPixelHeight(handleSize);
+		float glHandleWidth = getPixelGLConverter().getGLWidthForPixelWidth(handleSize);
 
 		gl.glLineWidth(3);
 		gl.glColor3f(0.6f, 0.6f, 0.6f);

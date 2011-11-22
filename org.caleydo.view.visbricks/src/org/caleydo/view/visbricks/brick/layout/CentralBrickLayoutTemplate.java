@@ -96,7 +96,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// baseRow.setDebug(true);
 
 		baseRow.setFrameColor(0, 0, 1, 0);
-		setBaseElementLayout(baseRow);
+		baseElementLayout = baseRow;
 
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
@@ -104,13 +104,12 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick,
 					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
 					HandleRenderer.ALL_MOVE_HANDLES | HandleRenderer.ALL_RESIZE_HANDLES));
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 
@@ -120,7 +119,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
 		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
-		dimensionBarLayout.setPixelGLConverter(pixelGLConverter);
 		dimensionBarLayout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
 		if (viewLayout == null) {
@@ -139,14 +137,12 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
 		// captionRow.append(spacingLayoutX);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
-		lineSeparatorLayout.setPixelGLConverter(pixelGLConverter);
 		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
 		lineSeparatorLayout.setRatioSizeX(1);
 		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
@@ -184,7 +180,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Row createFooterBar() {
 		Row footerBar = new Row("footerBar");
-		footerBar.setPixelGLConverter(pixelGLConverter);
 		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : footerBarElements) {
@@ -196,7 +191,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Row createHeaderBar() {
 		Row headerBar = new Row();
-		headerBar.setPixelGLConverter(pixelGLConverter);
 		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : headerBarElements) {
@@ -204,14 +198,12 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 
 		headerBar.append(spacingLayoutX);
 
 		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
-		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
@@ -230,7 +222,6 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutTemplate {
 	 */
 	protected Row createToolBar() {
 		Row toolBar = new Row("ToolBarRow");
-		toolBar.setPixelGLConverter(pixelGLConverter);
 		toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : toolBarElements) {

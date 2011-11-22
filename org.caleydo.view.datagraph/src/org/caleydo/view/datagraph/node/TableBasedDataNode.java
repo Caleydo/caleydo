@@ -181,8 +181,7 @@ public class TableBasedDataNode extends ADataNode {
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();
-		baseColumn.setPixelGLConverter(pixelGLConverter);
-
+	
 		baseRow.append(spacingLayoutX);
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
@@ -199,7 +198,6 @@ public class TableBasedDataNode extends ADataNode {
 
 		ElementLayout toggleDataContainerButtonLayout = new ElementLayout(
 				"toggleDataContainerLayout");
-		toggleDataContainerButtonLayout.setPixelGLConverter(pixelGLConverter);
 		toggleDataContainerButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toggleDataContainerButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 		toggleDataContainerButton = new Button(

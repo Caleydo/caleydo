@@ -20,14 +20,13 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 	public MatchmakerDetailTemplate(GLHeatMap heatMap, boolean isLeft) {
 		super(heatMap);
 		this.isLeft = isLeft;
-		fontScaling = 0.03f / 1.2f;
 
 	}
 
 	@Override
 	public void setStaticLayouts() {
 		Column mainColumn = new Column();
-		setBaseElementLayout(mainColumn);
+		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
 
@@ -86,17 +85,17 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		}
 
 		mainColumn.append(hmRow);
-		if (isActive) {
-			ElementLayout toolBar;
-
-			toolBar = new ElementLayout();
-			toolBar.setRatioSizeX(1);
-			toolBar.setAbsoluteSizeY(0.1f);
-
-			toolBar.setRenderer(new DetailToolBar(heatMap));
-
-			mainColumn.append(toolBar);
-		}
+//		if (isActive) {
+//			ElementLayout toolBar;
+//
+//			toolBar = new ElementLayout();
+//			toolBar.setRatioSizeX(1);
+//			toolBar.setAbsoluteSizeY(0.1f);
+//
+//			toolBar.setRenderer(new DetailToolBar(heatMap));
+//
+//			mainColumn.append(toolBar);
+//		}
 
 	}
 

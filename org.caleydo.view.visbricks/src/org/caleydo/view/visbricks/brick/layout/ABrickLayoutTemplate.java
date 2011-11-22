@@ -7,7 +7,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
+import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -20,7 +21,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Christian Partl
  * 
  */
-public abstract class ABrickLayoutTemplate extends LayoutTemplate {
+public abstract class ABrickLayoutTemplate extends LayoutConfiguration {
 
 	protected static final int SPACING_PIXELS = 4;
 	protected static final int DEFAULT_GUI_ELEMENT_SIZE_PIXELS = 16;
@@ -43,12 +44,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
 		// setValidViewTypes();
-		setPixelGLConverter(brick.getPixelGLConverter());
-		// registerPickingListeners();
-	}
 
-	public PixelGLConverter getPixelGLConverter() {
-		return pixelGLConverter;
+		// registerPickingListeners();
 	}
 
 	/**
@@ -184,7 +181,7 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 
 	/**
 	 * @return Default height in pixels required by the brick with the current
-	 *         layout and view. 
+	 *         layout and view.
 	 */
 	public int getDefaultHeightPixels() {
 
@@ -221,7 +218,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 				if (Float.isNaN(glSize)) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
 				} else {
-					pixelSize = pixelGLConverter.getPixelWidthForGLWidth(glSize);
+					pixelSize = brick.getPixelGLConverter().getPixelWidthForGLWidth(
+							glSize);
 				}
 			}
 			sum += pixelSize;
@@ -239,7 +237,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 				if (glSize == Float.NaN) {
 					pixelSize = DEFAULT_GUI_ELEMENT_SIZE_PIXELS;
 				} else {
-					pixelSize = pixelGLConverter.getPixelHeightForGLHeight(glSize);
+					pixelSize = brick.getPixelGLConverter().getPixelHeightForGLHeight(
+							glSize);
 				}
 			}
 			sum += pixelSize;
@@ -255,7 +254,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeY();
 				if (glSize != Float.NaN) {
-					pixelSize = pixelGLConverter.getPixelHeightForGLHeight(glSize);
+					pixelSize = brick.getPixelGLConverter().getPixelHeightForGLHeight(
+							glSize);
 				}
 			}
 			if (max < pixelSize)
@@ -272,7 +272,8 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			if (pixelSize == Integer.MIN_VALUE) {
 				float glSize = elementLayout.getAbsoluteSizeX();
 				if (glSize != Float.NaN) {
-					pixelSize = pixelGLConverter.getPixelWidthForGLWidth(glSize);
+					pixelSize = brick.getPixelGLConverter().getPixelWidthForGLWidth(
+							glSize);
 				}
 			}
 			if (max < pixelSize)
@@ -307,6 +308,11 @@ public abstract class ABrickLayoutTemplate extends LayoutTemplate {
 			viewLayout.destroy();
 			viewLayout = null;
 		}
+	}
+
+	/** Returns the toolbar for the brick or null if the brick has no toolbar */
+	public Row getToolBar() {
+		return null;
 	}
 
 }

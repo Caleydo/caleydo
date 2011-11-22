@@ -3,6 +3,7 @@ package org.caleydo.core.view.opengl.layout;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 
 /**
@@ -36,6 +37,9 @@ public class LayoutRenderer {
 	protected boolean debugMode = true;
 
 	protected ElementLayout elementLayout;
+	protected LayoutManager layoutManger;
+
+	// protected PixelGLConverter pixelGLConverter;
 
 	/**
 	 * To be overridden in a sub-class.
@@ -57,12 +61,14 @@ public class LayoutRenderer {
 	}
 
 	/** Calculate spacing if required */
-	protected void updateSpacing(ElementLayout elementLayout) {
-		this.elementLayout = elementLayout;
+	protected void updateSpacing() {
+	
 	}
 
 	public void setElementLayout(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
+		layoutManger = elementLayout.getLayoutManager();
+		// pixelGLConverter = layoutManger.getPixelGLConverter();
 	}
 
 	/**
@@ -81,6 +87,10 @@ public class LayoutRenderer {
 	 */
 	public int getMinWidthPixels() {
 		return 0;
+	}
+
+	protected PixelGLConverter getPixelGLConverter() {
+		return layoutManger.getPixelGLConverter();
 	}
 
 }

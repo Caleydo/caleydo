@@ -104,7 +104,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		Row baseRow = new Row("baseRow");
 
 		baseRow.setFrameColor(0, 0, 1, 0);
-		setBaseElementLayout(baseRow);
+		baseElementLayout = baseRow;
 
 		leftRelationIndicatorRenderer.updateRelations();
 		rightRelationIndicatorRenderer.updateRelations();
@@ -112,7 +112,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ElementLayout leftRelationIndicatorLayout = new ElementLayout(
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
-		leftRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
 		leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		baseRow.append(leftRelationIndicatorLayout);
@@ -123,7 +122,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		if (showHandles) {
-			baseRow.addForeGroundRenderer(new HandleRenderer(brick, pixelGLConverter,
+			baseRow.addForeGroundRenderer(new HandleRenderer(brick, 
 					HANDLE_SIZE_PIXELS, brick.getTextureManager(),
 					HandleRenderer.ALL_RESIZE_HANDLES
 							| HandleRenderer.MOVE_VERTICALLY_HANDLE
@@ -134,7 +133,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 
@@ -152,11 +150,10 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		toolBar = createToolBar();
+		// toolBar = createToolBar();
 		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-		spacingLayoutY.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
@@ -168,15 +165,14 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 		baseColumn.append(viewLayout);
 		baseColumn.append(spacingLayoutY);
-		
-		// FIXME removed only for TCGA video 
-//		baseColumn.append(toolBar);
+
+		// FIXME removed only for TCGA video
+		// baseColumn.append(toolBar);
 		baseColumn.append(spacingLayoutY);
 
 		ElementLayout rightRelationIndicatorLayout = new ElementLayout(
 				"RightRelationIndicatorLayout");
 		// rightRelationIndicatorLayout.setDebug(true);
-		rightRelationIndicatorLayout.setPixelGLConverter(pixelGLConverter);
 		rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
 		baseRow.append(rightRelationIndicatorLayout);
@@ -186,10 +182,10 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 	/**
 	 * Creates the toolbar containing buttons for view switching.
 	 */
-
-	protected Row createToolBar() {
+	@Override
+	public Row getToolBar() {
 		Row toolBar = new Row("ToolBarRow");
-		toolBar.setPixelGLConverter(pixelGLConverter);
+		toolBar.setDebug(true);
 		toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : toolBarElements) {
@@ -197,7 +193,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		}
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-		spacingLayoutX.setPixelGLConverter(pixelGLConverter);
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setPixelSizeY(0);
 
@@ -225,7 +220,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		// EIconTextures.PIN), brick, brick.getTextureManager()));
 
 		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
-		lockResizingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
@@ -233,7 +227,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"viewSwitchtingButtonLayout");
-		toggleViewSwitchingButtonLayout.setPixelGLConverter(pixelGLConverter);
 		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
@@ -242,7 +235,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 		ElementLayout collapseButtonLayout = new ElementLayout("expandButtonLayout");
 		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
 		// expandButtonLayout.setDebug(true);
-		collapseButtonLayout.setPixelGLConverter(pixelGLConverter);
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
@@ -264,7 +256,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutTemplate {
 
 	protected Row createFooterBar() {
 		Row footerBar = new Row("footerBar");
-		footerBar.setPixelGLConverter(pixelGLConverter);
 		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
 		for (ElementLayout element : footerBarElements) {

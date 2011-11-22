@@ -35,20 +35,26 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * using {@link #getSizeScaledX()} and {@link #getSizeScaledY()}
  * </p>
  * <p>
- * An ElementLayout also holds the {@link LayoutRenderer}s which define its appearance. 
+ * An ElementLayout also holds the {@link LayoutRenderer}s which define its appearance.
  * </p>
  * 
  * @author Alexander Lex
  */
 public class ElementLayout {
 
+	/**
+	 * The manager for this layout, this element is, or is a sub-element of
+	 * {@link LayoutManager#baseElementLayout}
+	 */
+	protected LayoutManager layoutManager;
+
 	protected LayoutRenderer renderer;
 	protected ArrayList<LayoutRenderer> backgroundRenderers;
 	protected ArrayList<LayoutRenderer> foregroundRenderers;
 
-	/** specifies how much this element is translated in x absolutely TODO check this */
+	/** specifies how much this element is translated in x absolutely */
 	protected float translateX = 0;
-	/** specifies how much this element is translated in y absolutely TODO check this */
+	/** specifies how much this element is translated in y absolutely */
 	protected float translateY = 0;
 
 	/** use the remaining space in X, invalidates absoluteSizeX */
@@ -67,8 +73,6 @@ public class ElementLayout {
 
 	protected float sizeScaledX = 0;
 	protected float sizeScaledY = 0;
-
-	protected PixelGLConverter pixelGLConverter;
 
 	protected String layoutName;
 
@@ -112,6 +116,21 @@ public class ElementLayout {
 		this.layoutName = layoutName;
 	}
 
+	/**
+	 * @param layoutManager
+	 *            setter, see {@link #layoutManager}
+	 */
+	void setLayoutManager(LayoutManager layoutManager) {
+		this.layoutManager = layoutManager;
+	}
+
+	/**
+	 * @return the layoutManager, see {@link #layoutManager}
+	 */
+	public LayoutManager getLayoutManager() {
+		return layoutManager;
+	}
+
 	public void destroy() {
 		if (zoomer != null) {
 			zoomer.destroy();
@@ -150,10 +169,6 @@ public class ElementLayout {
 	 */
 	public LayoutRenderer getRenderer() {
 		return renderer;
-	}
-
-	public void setPixelGLConverter(PixelGLConverter pixelGLConverter) {
-		this.pixelGLConverter = pixelGLConverter;
 	}
 
 	/**
@@ -216,8 +231,6 @@ public class ElementLayout {
 	 * @param pixelSizeX
 	 */
 	public void setPixelSizeX(int pixelSizeX) {
-		if (pixelGLConverter == null)
-			throw new IllegalStateException("Tried to set a pixel size, but pixelGLConverter was null.");
 		resetX();
 		this.pixelSizeX = pixelSizeX;
 	}
@@ -230,8 +243,6 @@ public class ElementLayout {
 	 * @param pixelSizeY
 	 */
 	public void setPixelSizeY(int pixelSizeY) {
-		if (pixelGLConverter == null)
-			throw new IllegalStateException("Tried to set a pixel size, but no pixelGLConverter is table.");
 		resetY();
 		this.pixelSizeY = pixelSizeY;
 	}
@@ -463,7 +474,7 @@ public class ElementLayout {
 		this.totalHeight = totalHeight;
 
 		if (pixelSizeX != Integer.MIN_VALUE)
-			sizeScaledX = pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
+			sizeScaledX = layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(pixelSizeX);
 
 		else if (!Float.isNaN(absoluteSizeX))
 			sizeScaledX = absoluteSizeX;
@@ -471,7 +482,7 @@ public class ElementLayout {
 			sizeScaledX = ratioSizeX * totalWidth;
 
 		if (pixelSizeY != Integer.MIN_VALUE)
-			sizeScaledY = pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
+			sizeScaledY = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			sizeScaledY = absoluteSizeY;
 		else
@@ -490,12 +501,24 @@ public class ElementLayout {
 		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
 			return;
+		if (foregroundRenderers != null) {
+			for (LayoutRenderer renderer : foregroundRenderers) {
+				renderer.setElementLayout(this);
+				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+			}
+		}
+		if (backgroundRenderers != null) {
+			for (LayoutRenderer renderer : backgroundRenderers) {
+				renderer.setElementLayout(this);
+				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+			}
+		}
 		renderer.setElementLayout(this);
 		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 		if (zoomer != null)
 			zoomer.setLimits(getSizeScaledX(), getSizeScaledY());
 
-		renderer.updateSpacing(this);
+		renderer.updateSpacing();
 		if (backgroundRenderers != null) {
 			for (LayoutRenderer renderer : backgroundRenderers) {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
@@ -520,7 +543,7 @@ public class ElementLayout {
 		if (grabY)
 			return 0;
 		else if (pixelSizeY != Integer.MIN_VALUE)
-			return pixelGLConverter.getGLHeightForPixelHeight(pixelSizeY);
+			return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			return absoluteSizeY;
 		else
@@ -537,7 +560,7 @@ public class ElementLayout {
 		if (grabX)
 			return 0;
 		else if (pixelSizeX != Integer.MIN_VALUE)
-			return pixelGLConverter.getGLWidthForPixelWidth(pixelSizeX);
+			return layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(pixelSizeX);
 		else if (!Float.isNaN(absoluteSizeX))
 			return absoluteSizeX;
 		else

@@ -11,7 +11,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -34,9 +34,9 @@ public class Zoomer
 	private ScrollBar hScrollBar;
 	private ScrollBar vScrollBar;
 	private LayoutManager hScrollBarLayoutManager;
-	private LayoutTemplate hScrollBarTemplate;
+	// private LayoutConfiguration hScrollBarTemplate;
 	private LayoutManager vScrollBarLayoutManager;
-	private LayoutTemplate vScrollBarTemplate;
+	// private LayoutConfiguration vScrollBarTemplate;
 
 	private boolean wasMouseWheeled = false;
 
@@ -75,15 +75,14 @@ public class Zoomer
 
 	private void initScrollBars() {
 
-		hScrollBarLayoutManager = new LayoutManager(viewFrustum);
-		hScrollBarTemplate = new LayoutTemplate();
+		hScrollBarLayoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		// hScrollBarTemplate = new LayoutConfiguration();
 		hScrollBar =
 			new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
 
 		Column baseColumn = new Column();
 
 		ElementLayout hScrollBarLayout = new ElementLayout("horizontalScrollBar");
-		hScrollBarLayout.setPixelGLConverter(pixelGLConverter);
 		hScrollBarLayout.setPixelSizeY(10);
 		hScrollBarLayout.setRatioSizeX(1.0f);
 		hScrollBarLayout.setRenderer(new ScrollBarRenderer(hScrollBar, parentView, true,
@@ -95,19 +94,18 @@ public class Zoomer
 		baseColumn.append(hScrollBarLayout);
 		baseColumn.append(hSpacingLayout);
 
-		hScrollBarTemplate.setBaseElementLayout(baseColumn);
+		hScrollBarLayoutManager.setBaseElementLayout(baseColumn);
 
-		hScrollBarLayoutManager.setTemplate(hScrollBarTemplate);
+		// hScrollBarLayoutManager.setTemplate(hScrollBarTemplate);
 
-		vScrollBarLayoutManager = new LayoutManager(viewFrustum);
-		vScrollBarTemplate = new LayoutTemplate();
+		vScrollBarLayoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		// vScrollBarTemplate = new LayoutConfiguration();
 		vScrollBar =
 			new ScrollBar(0, 10, 5, 5, PickingType.ZOOM_SCROLLBAR, parentView.createNewScrollBarID(), this);
 
 		Row baseRow = new Row();
 
 		ElementLayout vScrollBarLayout = new ElementLayout("horizontalScrollBar");
-		vScrollBarLayout.setPixelGLConverter(pixelGLConverter);
 		vScrollBarLayout.setPixelSizeX(10);
 		vScrollBarLayout.setRatioSizeY(1.0f);
 		vScrollBarLayout.setRenderer(new ScrollBarRenderer(vScrollBar, parentView, false,
@@ -119,9 +117,9 @@ public class Zoomer
 		baseRow.append(vSpacingLayout);
 		baseRow.append(vScrollBarLayout);
 
-		vScrollBarTemplate.setBaseElementLayout(baseRow);
+		vScrollBarLayoutManager.setBaseElementLayout(baseRow);
 
-		vScrollBarLayoutManager.setTemplate(vScrollBarTemplate);
+		// vScrollBarLayoutManager.setTemplate(vScrollBarTemplate);
 	}
 
 	/**

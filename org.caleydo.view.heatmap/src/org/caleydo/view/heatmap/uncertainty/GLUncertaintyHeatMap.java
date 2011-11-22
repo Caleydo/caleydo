@@ -29,7 +29,7 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutTemplate;
+import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -77,8 +77,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	private OverviewRenderer overviewHeatMap;
 	private GLHeatMap detailHeatMap;
 
-	private LayoutManager templateRenderer;
-	private LayoutTemplate template;
+	private LayoutManager layoutManager;
 
 	private Row baseRow;
 	private Row contentRow;
@@ -112,21 +111,17 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		displayListIndex = gl.glGenLists(1);
 		colorMapper = dataDomain.getColorMapper();
-		templateRenderer = new LayoutManager(this.viewFrustum);
-		if (template == null)
-			template = new LayoutTemplate();
+		layoutManager = new LayoutManager(this.viewFrustum, pixelGLConverter);
+		
 
-		templateRenderer.setTemplate(template);
-
+	
 		baseRow = new Row("baseRow");
-		template.setBaseElementLayout(baseRow);
+		layoutManager.setBaseElementLayout(baseRow);
 
 		ElementLayout sideSpacer = new ElementLayout("sideSpacer");
-		sideSpacer.setPixelGLConverter(pixelGLConverter);
 		sideSpacer.setPixelSizeX(15);
 
 		ElementLayout topSpacer = new ElementLayout("topSpacer");
-		topSpacer.setPixelGLConverter(pixelGLConverter);
 		topSpacer.setPixelSizeY(15);
 
 		Column baseColumnn = new Column("baseColumn");
@@ -143,12 +138,10 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		overviewLayout = new Column("overviewLayout");
 		overviewLayout.setDebug(false);
-		overviewLayout.setPixelGLConverter(pixelGLConverter);
 		overviewLayout.setPixelSizeX(220);
 
 		overviewDetailConnectorLayout = new Column("overviewDetailConnectorLayout");
 		overviewDetailConnectorLayout.setDebug(false);
-		overviewDetailConnectorLayout.setPixelGLConverter(pixelGLConverter);
 		overviewDetailConnectorLayout.setPixelSizeX(60);
 
 		detailLayout = new ElementLayout("detailLayout");
@@ -169,7 +162,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				overviewHeatMap, detailHeatMap);
 		overviewDetailConnectorLayout.setRenderer(overviewDetailConnectorRenderer);
 
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 	}
 
 	@Override
@@ -197,7 +190,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
-		templateRenderer.updateLayout();
+		layoutManager.updateLayout();
 		updateVisualUncertainty = true;
 	}
 
@@ -269,7 +262,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	@Override
 	public void display(GL2 gl) {
-		templateRenderer.render(gl);
+		layoutManager.render(gl);
 		if (updateVisualUncertainty) {
 
 			// very dirty
