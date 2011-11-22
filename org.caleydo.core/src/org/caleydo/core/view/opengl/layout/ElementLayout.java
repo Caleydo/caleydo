@@ -11,9 +11,9 @@ import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
- * Size parameters for a single element. There are four ways to specify the dimensions of an element. It can
- * be specified by
- * <ul>
+ * An ElementLayout holds the size, and the position of an element in a layout. The position is specified
+ * implicitly through the nesting in parent {@link LayoutContainer}s. The size can be specified in four ways:
+ * <ol>
  * <li>specifying a ratio - where 1 takes up the whole space granted by the parent (see
  * {@link #setRatioSizeX(float)} and {@link #setRatioSizeY(float)}</li>
  * <li>specifying an absolute value in gl coordinate space (see {@link #setAbsoluteSizeY(float)} and
@@ -23,7 +23,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * layout to be set (see {@link #setPixelGLConverter(PixelGLConverter)}.</li>
  * <li>setting the element to grab the remaining available space in the container (see
  * {@link #setGrabX(boolean)} and {@link #grabY(boolean)}</li>
- * </ul>
+ * </ol>
  * <p>
  * This can be done independently for X and Y
  * </p>
@@ -33,6 +33,9 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * <p>
  * The values set are then converted to the coordinates actually used for rendering, which can be retrieved
  * using {@link #getSizeScaledX()} and {@link #getSizeScaledY()}
+ * </p>
+ * <p>
+ * An ElementLayout also holds the {@link LayoutRenderer}s which define its appearance. 
  * </p>
  * 
  * @author Alexander Lex
@@ -125,7 +128,7 @@ public class ElementLayout {
 	 * @param an
 	 *            arbitrary id to identify the layout
 	 */
-	public void tableIDs(int managingClassID, int layoutID) {
+	public void setIDs(int managingClassID, int layoutID) {
 		this.managingClassID = managingClassID;
 		this.layoutID = layoutID;
 	}
@@ -330,14 +333,14 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Get the value specifying how much this element has to be transformed in X absolutely TODO: check
+	 * Get the value specifying how much this element has to be transformed in X absolutely
 	 */
 	public float getTranslateX() {
 		return translateX;
 	}
 
 	/**
-	 * Get the value specifying how much this element has to be transformed in Y absolutely TODO: check
+	 * Get the value specifying how much this element has to be transformed in Y absolutely
 	 */
 	public float getTranslateY() {
 		return translateY;

@@ -141,7 +141,7 @@ public class DimensionGroup extends ATableBasedView implements
 		bottomCol.setFrameColor(1, 0, 1, 1);
 		bottomCol.setBottomUp(false);
 		bottomCol.setXDynamic(true);
-		bottomCol.tableIDs(uniqueID, BOTTOM_COLUMN_ID);
+		bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
 		bottomCol.setVAlign(VAlign.CENTER);
 
 		bottomBricks = new ArrayList<GLBrick>(20);
