@@ -205,29 +205,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 	spacingLayoutX.setPixelSizeY(0);
 
-	// for (int i = 0; i < viewSwitchingButtons.size(); i++) {
-	// BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
-	// ElementLayout buttonLayout = new ElementLayout();
-	// buttonLayout.setPixelGLConverter(pixelGLConverter);
-	// buttonLayout.setPixelSizeX(pixelHeight);
-	// buttonLayout.setPixelSizeY(pixelHeight);
-	// buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
-	// .getTextureManager()));
-	// toolBar.append(buttonLayout);
-	// if (i != viewSwitchingButtons.size() - 1) {
-	// toolBar.append(spacingLayoutX);
-	// }
-	// }
-
-	// ElementLayout detailModeButtonLayout = new ElementLayout(
-	// "detailModeResizingButton");
-	// detailModeButtonLayout.setPixelGLConverter(pixelGLConverter);
-	// detailModeButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-	// detailModeButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-	// detailModeButtonLayout.setRenderer(new ButtonRenderer(new Button(
-	// EPickingType.BRICK_DETAIL_MODE_BUTTON, DETAIL_MODE_BUTTON_ID,
-	// EIconTextures.PIN), brick, brick.getTextureManager()));
-
 	ElementLayout lockResizingButtonLayout = new ElementLayout(
 		"lockResizingButton");
 	lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
@@ -281,7 +258,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
     @Override
     protected void registerPickingListeners() {
 
-	brick.addSingleIDPickingListener(new APickingListener() {
+	brick.addIDPickingListener(new APickingListener() {
 
 	    @Override
 	    public void clicked(Pick pick) {
@@ -292,7 +269,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 		LOCK_RESIZING_BUTTON_ID);
 
-	brick.addSingleIDPickingListener(
+	brick.addIDPickingListener(
 		new APickingListener() {
 
 		    @Override
@@ -307,7 +284,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}, PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 		VIEW_SWITCHING_MODE_BUTTON_ID);
 
-	brick.addSingleIDPickingListener(new APickingListener() {
+	brick.addIDPickingListener(new APickingListener() {
 
 	    @Override
 	    public void clicked(Pick pick) {
@@ -316,7 +293,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	    }
 	}, PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
-	brick.addSingleIDPickingListener(new APickingListener() {
+	brick.addIDPickingListener(new APickingListener() {
 
 	    @Override
 	    public void clicked(Pick pick) {
@@ -324,7 +301,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	    }
 	}, PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
-	brick.addSingleIDPickingListener(new APickingListener() {
+	brick.addIDPickingListener(new APickingListener() {
 
 	    @Override
 	    public void clicked(Pick pick) {
@@ -436,21 +413,21 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
     @Override
     public void destroy() {
-	brick.removeSingleIDPickingListeners(
+	brick.removeAllIDPickingListeners(
 		PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 		LOCK_RESIZING_BUTTON_ID);
 
-	brick.removeSingleIDPickingListeners(
+	brick.removeAllIDPickingListeners(
 		PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 		VIEW_SWITCHING_MODE_BUTTON_ID);
 
-	brick.removeSingleIDPickingListeners(
+	brick.removeAllIDPickingListeners(
 		PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
-	brick.removeSingleIDPickingListeners(
+	brick.removeAllIDPickingListeners(
 		PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
-	brick.removeSingleIDPickingListeners(
+	brick.removeAllIDPickingListeners(
 		PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	toolBar.destroy();
 	super.destroy();

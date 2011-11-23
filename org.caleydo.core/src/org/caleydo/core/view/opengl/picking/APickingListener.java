@@ -2,7 +2,7 @@ package org.caleydo.core.view.opengl.picking;
 
 /**
  * Convenience class that can be extended instead of implementing {@link IPickingListener} if not all methods
- * need to be implemented.
+ * need to be implemented, and nothing else speaks against inheritance.
  * 
  * @author Christian Partl
  */

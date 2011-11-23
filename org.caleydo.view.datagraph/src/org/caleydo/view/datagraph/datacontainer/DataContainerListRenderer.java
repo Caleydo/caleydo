@@ -40,7 +40,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void createPickingListeners() {
-		view.addMultiIDPickingListener(new APickingListener() {
+		view.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -222,7 +222,7 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void removePickingListeners() {
-		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
+		view.removeAllTypePickingListeners(DIMENSION_GROUP_PICKING_TYPE
 				+ node.getID());
 
 	}

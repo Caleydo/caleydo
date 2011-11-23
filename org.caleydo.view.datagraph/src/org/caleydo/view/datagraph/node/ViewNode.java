@@ -53,7 +53,7 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	protected void registerPickingListeners() {
 
-		view.addSingleIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void rightClicked(Pick pick) {
@@ -235,7 +235,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
-		view.removeSingleIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
+		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override

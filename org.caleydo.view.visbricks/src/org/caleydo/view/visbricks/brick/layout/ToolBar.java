@@ -31,20 +31,6 @@ public class ToolBar extends Row {
 	super(layoutName);
 	this.brick = brick;
 	addBackgroundRenderer(new ToolBarBackgroundRenderer());
-	// brick.addSingleIDPickingListener(new APickingListener() {
-	//
-	// @Override
-	// public void clicked(Pick pick) {
-	// hide = false;
-	// }
-	// //
-	// // @Override
-	// // public void mouseOut(Pick pick) {
-	// // hide = true;
-	// // }
-	// }, PickingType.BRICK.name(), brick.getID());
-
-	System.out.println(brick.getID());
 
 	brickPickingListener = new APickingListener() {
 	    @Override
@@ -58,7 +44,7 @@ public class ToolBar extends Row {
 
 	brick.getDimensionGroup()
 		.getVisBricksView()
-		.addMultiIDPickingListener(brickPickingListener,
+		.addTypePickingListener(brickPickingListener,
 			PickingType.BRICK.name());
 
     }
@@ -66,19 +52,23 @@ public class ToolBar extends Row {
     @Override
     public void render(GL2 gl) {
 	if (!hide) {
-	    float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(
-		    DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
-	    gl.glTranslatef(0,-offset, 0);
+	    float offset = layoutManager
+		    .getPixelGLConverter()
+		    .getGLHeightForPixelHeight(
+			    DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
+	    gl.glTranslatef(0, -offset, 0);
 	    super.render(gl);
-	    gl.glTranslatef(0,offset, 0);
+	    gl.glTranslatef(0, offset, 0);
 
 	}
     }
 
     @Override
     public void destroy() {
-	brick.getDimensionGroup().getVisBricksView()
-		.removeMultiIDPickingListener(brickPickingListener);
+	brick.getDimensionGroup()
+		.getVisBricksView()
+		.removeTypePickingListener(brickPickingListener,
+			PickingType.BRICK.name());
 	super.destroy();
     }
 }

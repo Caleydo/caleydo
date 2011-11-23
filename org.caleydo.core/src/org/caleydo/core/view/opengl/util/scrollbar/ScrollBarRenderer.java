@@ -52,7 +52,7 @@ public class ScrollBarRenderer
 	}
 
 	private void createPickingListener() {
-		view.addSingleIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

@@ -253,7 +253,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	protected void registerPickingListeners() {
 
-		brick.addSingleIDPickingListener(new APickingListener() {
+		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -390,7 +390,7 @@ public class CentralBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
-		brick.removeSingleIDPickingListeners(
+		brick.removeAllIDPickingListeners(
 				PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 	}
 

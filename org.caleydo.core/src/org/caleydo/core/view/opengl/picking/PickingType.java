@@ -5,7 +5,9 @@ package org.caleydo.core.view.opengl.picking;
  * here.
  * 
  * @author Alexander Lex
+ * @deprecated replace with strings
  */
+@Deprecated
 public enum PickingType {
 	BACKGROUND,
 	BACKGROUND_HYPERBOLIC,

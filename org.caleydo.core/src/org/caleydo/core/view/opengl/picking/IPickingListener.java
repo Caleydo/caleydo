@@ -1,10 +1,16 @@
 package org.caleydo.core.view.opengl.picking;
 
 /**
- * Listener for several mouse events. The listener has to be registered at a view together with the pickingID
- * and {@link PickingType} of the drawn object that this listener should be used for.
+ * Listener for several mouse events. The listener has to be registered with a view in one of two
+ * combinations:
+ * <ol>
+ * <li>either both, a pickedObjectID (an Integer) and a pickingType (a String) - listeners are notified only
+ * when the correct combination of id and type are picked, or</li>
+ * <li>only a picking type - listeneres are notified when any object of the type are picked</li>
+ * </ol>
  * 
  * @author Christian Partl
+ * @author Alexander Lex
  */
 public interface IPickingListener {
 

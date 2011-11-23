@@ -17,6 +17,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -29,6 +30,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.exception.ExceptionHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.AView;
+import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.camera.IViewCamera;
 import org.caleydo.core.view.opengl.camera.ViewCameraBase;
@@ -75,9 +77,6 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * 
  * @author Marc Streit
  * @author Alexander Lex
- */
-/**
- * @author test
  */
 public abstract class AGLView
 	extends AView
@@ -166,8 +165,15 @@ public abstract class AGLView
 	 */
 	protected boolean lazyMode;
 
-	private HashMap<String, HashMap<Integer, Set<IPickingListener>>> singleIDPickingListeners;
-	private HashMap<String, Set<IPickingListener>> multiIDPickingListeners;
+	/**
+	 * picking listeners that are notified only for picks with a specific id / type combination. The key of
+	 * the map is the type, the key of the internal map is the pickedObjectID
+	 */
+	private HashMap<String, HashMap<Integer, Set<IPickingListener>>> idPickingListeners;
+	/**
+	 * Picking listeners that are notified for all picks of a type. The key of the map is the type.
+	 */
+	private HashMap<String, Set<IPickingListener>> typePickingListeners;
 
 	private int currentScrollBarID = 0;
 
@@ -193,8 +199,8 @@ public abstract class AGLView
 		glCanvas.addMouseMotionListener(glMouseListener);
 		glCanvas.addMouseWheelListener(glMouseListener);
 
-		singleIDPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
-		multiIDPickingListeners = new HashMap<String, Set<IPickingListener>>();
+		idPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
+		typePickingListeners = new HashMap<String, Set<IPickingListener>>();
 
 		this.viewFrustum = viewFrustum;
 		viewCamera = new ViewCameraBase(uniqueID);
@@ -562,20 +568,20 @@ public abstract class AGLView
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
 					Pick tempPick = alHits.get(iCount);
-					int externalID = tempPick.getID();
-					if (externalID == -1) {
+					int pickedObjectID = tempPick.getID();
+					if (pickedObjectID == -1) {
 						continue;
 					}
 
 					PickingMode ePickingMode = tempPick.getPickingMode();
 
-					handlePicking(pickingType, ePickingMode, externalID, tempPick);
+					handlePicking(pickingType, ePickingMode, pickedObjectID, tempPick);
 					// FIXME: This is for legacy support -> picking listeners should be used
 
 					try {
 						PickingType type = PickingType.valueOf(pickingType);
 						try {
-							handlePickingEvents(type, ePickingMode, externalID, tempPick);
+							handlePickingEvents(type, ePickingMode, pickedObjectID, tempPick);
 						}
 						catch (Exception e) {
 							Logger.log(new Status(Status.ERROR, this.toString(),
@@ -594,30 +600,30 @@ public abstract class AGLView
 			contextMenuCreator.open(this);
 	}
 
-	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
+	protected void handlePicking(String pickingType, PickingMode pickingMode, int pickedObjectID, Pick pick) {
 
-		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 
 		if (pickingListeners != null) {
 			for (IPickingListener pickingListener : pickingListeners) {
-				handlePicking(pickingListener, pickingMode, pick);
+				notifyPickingListener(pickingListener, pickingMode, pick);
 			}
 		}
 
-		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null)
 			return;
 
-		pickingListeners = map.get(pickingID);
+		pickingListeners = map.get(pickedObjectID);
 
 		if (pickingListeners != null) {
 			for (IPickingListener pickingListener : pickingListeners) {
-				handlePicking(pickingListener, pickingMode, pick);
+				notifyPickingListener(pickingListener, pickingMode, pick);
 			}
 		}
 	}
 
-	private void handlePicking(IPickingListener pickingListener, PickingMode pickingMode, Pick pick) {
+	private void notifyPickingListener(IPickingListener pickingListener, PickingMode pickingMode, Pick pick) {
 		if (pickingListener == null)
 			return;
 
@@ -644,22 +650,23 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Registers a {@link IPickingListener} for this view. When objects are picked with the specified
-	 * pickingType and ID the listener's methods are called. Note that only one instance of the same
-	 * PickingListener class can be added to a picking type plus ID.
+	 * Registers a {@link IPickingListener} for this view that is called when objects with the specified
+	 * pickingType <b>and</b> ID are picked.
 	 * 
 	 * @param pickingListener
+	 *            the picking listener that should be called on picking event
 	 * @param pickingType
-	 * @param externalID
+	 *            the picking type. Take care that the type is unique for a view.
+	 * @param pickedObjectID
+	 *            the id identifying the picked object
 	 */
-	public void addSingleIDPickingListener(IPickingListener pickingListener, String pickingType,
-		int externalID) {
-		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
+	public void addIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, Set<IPickingListener>>();
-			singleIDPickingListeners.put(pickingType, map);
+			idPickingListeners.put(pickingType, map);
 		}
-		Set<IPickingListener> pickingListeners = map.get(externalID);
+		Set<IPickingListener> pickingListeners = map.get(pickedObjectID);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
 
@@ -670,20 +677,22 @@ public abstract class AGLView
 			}
 		}
 		pickingListeners.add(pickingListener);
-		map.put(externalID, pickingListeners);
+		map.put(pickedObjectID, pickingListeners);
 
 	}
 
 	/**
-	 * Registers a {@link IPickingListener} for this view. When objects are picked with the specified
-	 * pickingType the listener's methods are called. Note that only one instance of the same PickingListener
-	 * class can be added to a picking type.
+	 * Registers a {@link IPickingListener} for this view that is call whenever an object of the specified
+	 * type was picked, independent of the object's picking id.
 	 * 
+	 * @see AGLView#addIDPickingListener(IPickingListener, String, int) for picking id dependend
 	 * @param pickingListener
+	 *            the picking listener that should be called on picking event
 	 * @param pickingType
+	 *            the picking type. Take care that the type is unique for a view.
 	 */
-	public void addMultiIDPickingListener(IPickingListener pickingListener, String pickingType) {
-		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+	public void addTypePickingListener(IPickingListener pickingListener, String pickingType) {
+		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
 
@@ -694,7 +703,7 @@ public abstract class AGLView
 			}
 		}
 		pickingListeners.add(pickingListener);
-		multiIDPickingListeners.put(pickingType, pickingListeners);
+		typePickingListeners.put(pickingType, pickingListeners);
 	}
 
 	/**
@@ -703,16 +712,15 @@ public abstract class AGLView
 	 * 
 	 * @param pickingListener
 	 * @param pickingType
-	 * @param externalID
+	 * @param pickedObjectID
 	 */
-	public void removeSingleIDPickingListener(IPickingListener pickingListener, String pickingType,
-		int externalID) {
-		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
+	public void removeIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			return;
 		}
 
-		Set<IPickingListener> pickingListeners = map.get(externalID);
+		Set<IPickingListener> pickingListeners = map.get(pickedObjectID);
 		if (pickingListeners == null) {
 			return;
 		}
@@ -720,14 +728,13 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Removes the specified {@link IPickingListener} for multiple ids that has been added with the specified
-	 * picking type.
+	 * Removes the specified {@link IPickingListener} for the specified picking type
 	 * 
 	 * @param pickingListener
 	 * @param pickingType
 	 */
-	public void removeMultiIDPickingListener(IPickingListener pickingListener, String pickingType) {
-		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+	public void removeTypePickingListener(IPickingListener pickingListener, String pickingType) {
+		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			return;
 		}
@@ -735,14 +742,19 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Removes the specified {@link IPickingListener} for single ids that has been added with any picking type
-	 * or id.
+	 * <p>
+	 * Remove the specified picking listener from wherever it is registered with this view.
+	 * </p>
+	 * <p>
+	 * Using {@link #removeIDPickingListener(IPickingListener, String, int)} or
+	 * {@link #removeAllTypePickingListeners(String)} is preferred to using this method for performance
+	 * reasons.
 	 * 
 	 * @param pickingListener
 	 */
-	public void removeSingleIDPickingListener(IPickingListener pickingListener) {
+	public void removePickingListener(IPickingListener pickingListener) {
 
-		for (HashMap<Integer, Set<IPickingListener>> map : singleIDPickingListeners.values()) {
+		for (HashMap<Integer, Set<IPickingListener>> map : idPickingListeners.values()) {
 			if (map != null) {
 				for (Set<IPickingListener> pickingListeners : map.values()) {
 					if (pickingListeners != null) {
@@ -751,17 +763,7 @@ public abstract class AGLView
 				}
 			}
 		}
-
-	}
-
-	/**
-	 * Removes the specified {@link IPickingListener} for multiple ids that has been added with any picking
-	 * type.
-	 * 
-	 * @param pickingListener
-	 */
-	public void removeMultiIDPickingListener(IPickingListener pickingListener) {
-		for (Set<IPickingListener> pickingListeners : multiIDPickingListeners.values()) {
+		for (Set<IPickingListener> pickingListeners : typePickingListeners.values()) {
 			if (pickingListeners != null) {
 				pickingListeners.remove(pickingListener);
 			}
@@ -769,30 +771,19 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Equal to calling both of the methods {@link #removeMultiIDPickingListener(IPickingListener)} and
-	 * {@link #removeSingleIDPickingListener(IPickingListener)}.
-	 * 
-	 * @param pickingListener
-	 */
-	public void removePickingListener(IPickingListener pickingListener) {
-		removeSingleIDPickingListener(pickingListener);
-		removeMultiIDPickingListener(pickingListener);
-	}
-
-	/**
-	 * Removes all single ID picking listeners for a specific picking type and ID.
+	 * Removes all ID picking listeners for a specific picking type and ID.
 	 * 
 	 * @param pickingType
-	 * @param externalID
+	 * @param pickedObjectID
 	 */
-	public void removeSingleIDPickingListeners(String pickingType, int externalID) {
+	public void removeAllIDPickingListeners(String pickingType, int pickedObjectID) {
 
-		HashMap<Integer, Set<IPickingListener>> map = singleIDPickingListeners.get(pickingType);
+		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			return;
 		}
 
-		Set<IPickingListener> pickingListeners = map.get(externalID);
+		Set<IPickingListener> pickingListeners = map.get(pickedObjectID);
 		if (pickingListeners == null) {
 			return;
 		}
@@ -800,13 +791,13 @@ public abstract class AGLView
 	}
 
 	/**
-	 * Removes all Multiple ID picking listeners for a specific picking type.
+	 * Removes all type picking listeners for a specific picking type.
 	 * 
 	 * @param pickingType
 	 */
-	public void removeMultiIDPickingListeners(String pickingType) {
+	public void removeAllTypePickingListeners(String pickingType) {
 
-		Set<IPickingListener> pickingListeners = multiIDPickingListeners.get(pickingType);
+		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			return;
 		}
@@ -826,7 +817,8 @@ public abstract class AGLView
 	 * @param pick
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
-	 * @deprecated replaced by picking listeners. No longer abstract since it's not neccessary for views to implement
+	 * @deprecated replaced by picking listeners. No longer abstract since it's not neccessary for views to
+	 *             implement
 	 */
 	@Deprecated
 	protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,

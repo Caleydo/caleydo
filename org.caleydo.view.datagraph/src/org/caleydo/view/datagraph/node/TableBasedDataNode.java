@@ -143,7 +143,7 @@ public class TableBasedDataNode extends ADataNode {
 	}
 
 	private void addPickingListeners() {
-		view.addSingleIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -157,7 +157,7 @@ public class TableBasedDataNode extends ADataNode {
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
 
 		// FIXME: Use in DataContainer and get views properly
-		view.addSingleIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void rightClicked(Pick pick) {
@@ -250,7 +250,7 @@ public class TableBasedDataNode extends ADataNode {
 
 	@Override
 	public void destroy() {
-		view.removeSingleIDPickingListeners(
+		view.removeAllIDPickingListeners(
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
 		dataContainerRenderer.destroy();

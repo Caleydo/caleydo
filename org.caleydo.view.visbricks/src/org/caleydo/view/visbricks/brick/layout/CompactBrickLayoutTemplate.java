@@ -184,7 +184,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	protected void registerPickingListeners() {
-		brick.addSingleIDPickingListener(new APickingListener() {
+		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -276,7 +276,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
-		brick.removeSingleIDPickingListeners(PickingType.BRICK_EXPAND_BUTTON.name(),
+		brick.removeAllIDPickingListeners(PickingType.BRICK_EXPAND_BUTTON.name(),
 				EXPAND_BUTTON_ID);
 	}
 

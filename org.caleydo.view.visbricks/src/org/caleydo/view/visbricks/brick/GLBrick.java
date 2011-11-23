@@ -38,7 +38,6 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -183,7 +182,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		templateRenderer.updateLayout();
 
-		addSingleIDPickingListener(new APickingListener() {
+		addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -690,7 +689,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	private void registerPickingListeners() {
-		addSingleIDPickingListener(new APickingListener() {
+		addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {

@@ -74,7 +74,7 @@ public abstract class AGLViewBrowser
 
 	protected static final int MAX_VIEWS = 14;
 
-	private int iMouseOverObjectID = -1;
+	private int mouseOverObjectID = -1;
 
 	protected RemoteLevel focusLevel;
 	protected RemoteLevel stackLevel;
@@ -326,7 +326,7 @@ public abstract class AGLViewBrowser
 
 		// Update the pool transformations according to the current mouse over
 		// object
-		initPoolLevel(iMouseOverObjectID);
+		initPoolLevel(mouseOverObjectID);
 		initFocusLevel();
 
 		// Just for layout testing during runtime
@@ -376,18 +376,18 @@ public abstract class AGLViewBrowser
 			// System.out.println("dragged: " +iDraggedObjectId);
 
 			// Prevent user from dragging element onto selection level
-			if (!RemoteElementManager.get().hasItem(iMouseOverObjectID)
+			if (!RemoteElementManager.get().hasItem(mouseOverObjectID)
 				|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(
-					iMouseOverObjectID))) {
+					mouseOverObjectID))) {
 				RemoteLevelElement mouseOverElement = null;
 
 				// Check if a drag and drop action is performed onto the pool
 				// level
-				if (iMouseOverObjectID == iPoolLevelCommonID) {
+				if (mouseOverObjectID == iPoolLevelCommonID) {
 					mouseOverElement = poolLevel.getNextFree();
 				}
-				else if (mouseOverElement == null && iMouseOverObjectID != iDraggedObjectId) {
-					mouseOverElement = RemoteElementManager.get().getItem(iMouseOverObjectID);
+				else if (mouseOverElement == null && mouseOverObjectID != iDraggedObjectId) {
+					mouseOverElement = RemoteElementManager.get().getItem(mouseOverObjectID);
 				}
 
 				if (mouseOverElement != null) {
@@ -434,7 +434,7 @@ public abstract class AGLViewBrowser
 
 	public void renderBucketWall(final GL2 gl, boolean bRenderBorder, RemoteLevelElement element) {
 		// Highlight potential view drop destination
-		if (dragAndDrop.isDragActionRunning() && element.getID() == iMouseOverObjectID) {
+		if (dragAndDrop.isDragActionRunning() && element.getID() == mouseOverObjectID) {
 			gl.glLineWidth(5);
 			gl.glColor4f(0.2f, 0.2f, 0.2f, 1);
 			gl.glBegin(GL2.GL_LINE_LOOP);
@@ -550,7 +550,7 @@ public abstract class AGLViewBrowser
 			// if (this instanceof GLTissueViewBrowser)
 			// fXShift = -0.8f;
 
-			if (element.getID() == iMouseOverObjectID) {
+			if (element.getID() == mouseOverObjectID) {
 				renderPoolSelection(gl, translation.x() + fXShift, translation.y() * scale.y() + 5.2f,
 
 				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element);
@@ -591,7 +591,7 @@ public abstract class AGLViewBrowser
 
 			textRenderer.begin3DRendering();
 
-			if (element.getID() == iMouseOverObjectID) {
+			if (element.getID() == mouseOverObjectID) {
 				textRenderer.setColor(1, 1, 1, 1);
 			}
 			else {
@@ -609,12 +609,12 @@ public abstract class AGLViewBrowser
 
 			gl.glLineWidth(4);
 
-			if (element.getID() == iMouseOverObjectID) {
+			if (element.getID() == mouseOverObjectID) {
 				gl.glTranslatef(2.2f, 0.5f, 0);
 			}
 
 			if (iNumberOfGenesMouseOver > 0) {
-				if (element.getID() == iMouseOverObjectID) {
+				if (element.getID() == mouseOverObjectID) {
 					gl.glTranslatef(-2.5f, 0, 0);
 				}
 
@@ -623,7 +623,7 @@ public abstract class AGLViewBrowser
 					fTextScalingFactor);
 				textRenderer.end3DRendering();
 
-				if (element.getID() == iMouseOverObjectID) {
+				if (element.getID() == mouseOverObjectID) {
 					gl.glTranslatef(2.5f, 0, 0);
 				}
 
@@ -641,7 +641,7 @@ public abstract class AGLViewBrowser
 					gl.glTranslatef(0, -1.8f, 0);
 				}
 
-				if (element.getID() == iMouseOverObjectID) {
+				if (element.getID() == mouseOverObjectID) {
 					gl.glTranslatef(-2.5f, 0, 0);
 				}
 
@@ -650,7 +650,7 @@ public abstract class AGLViewBrowser
 					fTextScalingFactor);
 				textRenderer.end3DRendering();
 
-				if (element.getID() == iMouseOverObjectID) {
+				if (element.getID() == mouseOverObjectID) {
 					gl.glTranslatef(2.5f, 0, 0);
 				}
 
@@ -667,7 +667,7 @@ public abstract class AGLViewBrowser
 				}
 			}
 
-			if (element.getID() == iMouseOverObjectID) {
+			if (element.getID() == mouseOverObjectID) {
 				gl.glTranslatef(-2.2f, -0.5f, 0);
 			}
 		}
@@ -1129,7 +1129,7 @@ public abstract class AGLViewBrowser
 							dragAndDrop.startDragAction(externalID);
 						}
 
-						iMouseOverObjectID = externalID;
+						mouseOverObjectID = externalID;
 
 						compactPoolLevel();
 
@@ -1188,7 +1188,7 @@ public abstract class AGLViewBrowser
 				switch (pickingMode) {
 					case MOUSE_OVER:
 					case DRAGGED:
-						iMouseOverObjectID = externalID;
+						mouseOverObjectID = externalID;
 						break;
 					case CLICKED:
 
@@ -1378,7 +1378,7 @@ public abstract class AGLViewBrowser
 
 		layoutRenderStyle.initFocusLevel();
 		layoutRenderStyle.initStackLevel();
-		layoutRenderStyle.initPoolLevel(iMouseOverObjectID);
+		layoutRenderStyle.initPoolLevel(mouseOverObjectID);
 		layoutRenderStyle.initMemoLevel();
 	}
 

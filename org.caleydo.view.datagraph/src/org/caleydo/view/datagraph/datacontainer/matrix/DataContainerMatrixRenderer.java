@@ -76,7 +76,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		if (pickingListenersRegistered)
 			return;
 
-		view.addMultiIDPickingListener(new APickingListener() {
+		view.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -139,7 +139,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
 
-		view.addMultiIDPickingListener(new APickingListener() {
+		view.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void mouseOver(Pick pick) {
@@ -276,7 +276,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 		}, EMPTY_CELL_PICKING_TYPE + node.getID());
 
-		view.addMultiIDPickingListener(new APickingListener() {
+		view.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -867,11 +867,11 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void removePickingListeners() {
-		view.removeMultiIDPickingListeners(EMPTY_CELL_PICKING_TYPE
+		view.removeAllTypePickingListeners(EMPTY_CELL_PICKING_TYPE
 				+ node.getID());
-		view.removeMultiIDPickingListeners(DIMENSION_GROUP_PICKING_TYPE
+		view.removeAllTypePickingListeners(DIMENSION_GROUP_PICKING_TYPE
 				+ node.getID());
-		view.removeMultiIDPickingListeners(COLLAPSE_BUTTON_PICKING_TYPE
+		view.removeAllTypePickingListeners(COLLAPSE_BUTTON_PICKING_TYPE
 				+ node.getID());
 
 	}

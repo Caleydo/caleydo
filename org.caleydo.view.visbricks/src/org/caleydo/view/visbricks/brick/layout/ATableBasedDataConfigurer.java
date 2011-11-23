@@ -87,7 +87,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	headerBarElements.add(clusterButtonLayout);
 	// headerBarElements.add(spacingLayoutX);
 
-	brick.addSingleIDPickingListener(new APickingListener() {
+	brick.addIDPickingListener(new APickingListener() {
 
 	    @Override
 	    public void clicked(Pick pick) {
@@ -169,7 +169,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
 
-	    brick.addSingleIDPickingListener(new APickingListener() {
+	    brick.addIDPickingListener(new APickingListener() {
 
 		@Override
 		public void clicked(Pick pick) {

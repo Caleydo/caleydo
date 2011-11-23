@@ -86,9 +86,9 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
 		};
 
-		view.addSingleIDPickingListener(pickingListener,
+		view.addIDPickingListener(pickingListener,
 				DATA_GRAPH_NODE_PICKING_TYPE, id);
-		view.addSingleIDPickingListener(pickingListenerPenetrating,
+		view.addIDPickingListener(pickingListenerPenetrating,
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
@@ -158,9 +158,9 @@ public abstract class ADraggableDataGraphNode implements IDataGraphNode {
 
 	@Override
 	public void destroy() {
-		view.removeSingleIDPickingListener(pickingListener,
+		view.removeIDPickingListener(pickingListener,
 				DATA_GRAPH_NODE_PICKING_TYPE, id);
-		view.removeSingleIDPickingListener(pickingListenerPenetrating,
+		view.removeIDPickingListener(pickingListenerPenetrating,
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 

@@ -42,7 +42,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	@Override
 	protected void registerPickingListeners() {
 
-		view.addSingleIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void dragged(Pick pick) {
@@ -188,7 +188,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
-		view.removeSingleIDPickingListeners(
+		view.removeAllIDPickingListeners(
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
