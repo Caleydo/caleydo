@@ -535,7 +535,7 @@ public class GLBucket extends AGLView implements
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		if (level == poolLevel) {
-			String sRenderText = glView.getLabel();
+			String sRenderText = glView.getViewLabel();
 
 			// Limit pathway name in length
 			int iMaxChars;
@@ -892,7 +892,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getLabel();
+		String sText = element.getGLView().getViewLabel();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -2511,7 +2511,7 @@ public class GLBucket extends AGLView implements
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) lastSelectionDelta);
-			event.setInfo(getLabel());
+			event.setInfo(getViewLabel());
 			eventPublisher.triggerEvent(event);
 		}
 	}

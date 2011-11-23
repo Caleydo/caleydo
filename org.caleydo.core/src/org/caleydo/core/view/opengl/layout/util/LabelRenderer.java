@@ -16,8 +16,9 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 public class LabelRenderer
 	extends APickableLayoutRenderer {
 
-	private String text;
 	private boolean isPickable;
+	private AGLView labelProvider;
+	private String label = "Not set";
 
 	/**
 	 * @param view
@@ -29,22 +30,29 @@ public class LabelRenderer
 	 * @param id
 	 *            ID for picking.
 	 */
-	public LabelRenderer(AGLView view, String text, String pickingType, int id) {
+	public LabelRenderer(AGLView view, AGLView labelProvider, String pickingType, int id) {
 		super(view, pickingType, id);
-		this.text = text;
+
 		this.isPickable = true;
+		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, String text) {
+	public LabelRenderer(AGLView view, AGLView labelProvider) {
 		this.view = view;
-		this.text = text;
+		this.labelProvider = labelProvider;
 		this.isPickable = false;
 	}
-	
-	public LabelRenderer(String text, AGLView view, List<Pair<String, Integer>> pickingIDs) {
+
+	public LabelRenderer( AGLView view, AGLView labelProvider, List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
-		this.text = text;
 		this.isPickable = true;
+		this.labelProvider = labelProvider;
+	}
+	
+	public LabelRenderer( AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
+		super(view, pickingIDs);
+		this.isPickable = true;
+		this.label = label;
 	}
 
 	@Override
@@ -60,7 +68,7 @@ public class LabelRenderer
 			gl.glVertex3f(x, y, 0.1f);
 			gl.glVertex3f(0, y, 0.1f);
 			gl.glEnd();
-			
+
 			popNames(gl);
 		}
 
@@ -68,8 +76,10 @@ public class LabelRenderer
 
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
+		if(labelProvider != null)
+			label = labelProvider.getLabel();
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, text, 0, ySpacing, 0.1f, x, y - 2 * ySpacing);
+		textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2 * ySpacing);
 
 	}
 }

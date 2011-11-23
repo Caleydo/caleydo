@@ -14,7 +14,7 @@ public class PathwaysSummaryRenderer extends LabelRenderer {
 
     public PathwaysSummaryRenderer(AGLView view, String caption,
 	    String pickingType, int id) {
-	super(view, caption, pickingType, id);
+	super(view, view, pickingType, id);
     }
 
     @Override

@@ -68,7 +68,7 @@ public class GLHistogram extends ATableBasedView {
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param label
+	 * @param viewLabel
 	 * @param viewFrustum
 	 */
 	public GLHistogram(GLCanvas glCanvas, Composite parentComposite,
@@ -77,7 +77,7 @@ public class GLHistogram extends ATableBasedView {
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
-		label = "Histogram";
+		viewLabel = "Histogram";
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);

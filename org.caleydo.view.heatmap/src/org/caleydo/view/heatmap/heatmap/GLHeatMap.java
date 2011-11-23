@@ -386,7 +386,7 @@ public class GLHeatMap extends ATableBasedView {
 		event.setSender(this);
 		// event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
-		event.setInfo(getLabel());
+		event.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(event);
 
 		setDisplayListDirty();

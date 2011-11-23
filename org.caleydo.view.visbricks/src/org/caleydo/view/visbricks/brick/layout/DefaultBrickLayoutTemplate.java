@@ -43,6 +43,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
     protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
     // protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+    private Row headerRow;
     protected ArrayList<ElementLayout> headerBarElements;
     protected ArrayList<ElementLayout> toolBarElements;
     protected ArrayList<ElementLayout> footerBarElements;
@@ -174,17 +175,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	baseColumn.append(viewLayout);
 	baseColumn.append(spacingLayoutY);
 
-	if(headerBarElements != null && headerBarElements.size() != 0)
-	{
-	    Row headerRow = new Row("HeaderBar");
-	    headerRow.setYDynamic(true);
-	    for(ElementLayout layout : headerBarElements)
-	    {
-		headerRow.append(layout);
-	    }
-	    baseColumn.append(headerRow);
+	headerRow = new Row("headerRow");
+	if (brick.isDefaultLabel())
+	    headerRow.setHidden(true);
+	headerRow.setYDynamic(true);
+	for (ElementLayout layout : headerBarElements) {
+	    headerRow.append(layout);
 	}
-	
+	baseColumn.append(headerRow);
+
 	baseColumn.append(spacingLayoutY);
 
 	ElementLayout rightRelationIndicatorLayout = new ElementLayout(
@@ -481,5 +480,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	return getMinHeightPixels();
 
+    }
+
+    public void setHideCaption(boolean hideCaption) {
+	headerRow.setHidden(hideCaption);
     }
 }

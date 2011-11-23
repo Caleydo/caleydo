@@ -45,10 +45,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-	headerBarElements.add(createCaptionLayout(layoutTemplate, "Pathway",
-		PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup()
-			.getID(), layoutTemplate.getDimensionGroup()
-			.getVisBricksView()));
+	headerBarElements.add(createCaptionLayout(layoutTemplate,
+		layoutTemplate.getBrick(), PickingType.DIMENSION_GROUP,
+		layoutTemplate.getDimensionGroup().getID(), layoutTemplate
+			.getDimensionGroup().getVisBricksView()));
 
 	headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -81,10 +81,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-	headerBarElements.add(createCaptionLayout(layoutTemplate, "Pathway",
-		PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup()
-			.getID(), layoutTemplate.getDimensionGroup()
-			.getVisBricksView()));
+	headerBarElements.add(createCaptionLayout(layoutTemplate,
+		layoutTemplate.getBrick(), PickingType.DIMENSION_GROUP,
+		layoutTemplate.getDimensionGroup().getID(), layoutTemplate
+			.getDimensionGroup().getVisBricksView()));
 	headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 	layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -103,8 +103,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 	toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-		.getBrick().getDataContainer().getLabel(), PickingType.BRICK,
-		layoutTemplate.getBrick().getID(), layoutTemplate.getBrick()));
+		.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+		.getID(), layoutTemplate.getBrick()));
 	toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 	layoutTemplate.setToolBarElements(toolBarElements);
@@ -122,8 +122,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 	toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-		.getBrick().getDataContainer().getLabel(), PickingType.BRICK,
-		layoutTemplate.getBrick().getID(), layoutTemplate.getBrick()));
+		.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+		.getID(), layoutTemplate.getBrick()));
 	toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 	layoutTemplate.setToolBarElements(toolBarElements);
@@ -132,7 +132,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
     }
 
     private ElementLayout createCaptionLayout(
-	    ABrickLayoutConfiguration layoutTemplate, String caption,
+	    ABrickLayoutConfiguration layoutTemplate, AGLView labelProvider,
 	    PickingType pickingType, int pickingID, AGLView view) {
 
 	ElementLayout captionLayout = new ElementLayout("caption1");
@@ -142,7 +142,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	// captionLayout.setGrabX(true);
 	captionLayout.setFrameColor(0, 0, 1, 1);
 
-	LabelRenderer captionRenderer = new LabelRenderer(view, caption,
+	LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider,
 		pickingType.name(), pickingID);
 	captionLayout.setRenderer(captionRenderer);
 
@@ -192,6 +192,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	else
 	    label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
 		    .getDataContainer()).getPathways().get(0).getTitle();
+
+	brick.setLabel(label);
 
 	LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(
 		brick, label, PickingType.BRICK.name(), brick.getID());

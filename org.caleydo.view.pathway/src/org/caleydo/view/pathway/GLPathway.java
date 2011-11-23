@@ -117,7 +117,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	 */
 	public GLPathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum);
-		label = "Pathway";
+		viewLabel = "Pathway";
 		viewType = VIEW_TYPE;
 
 		pathwayManager = PathwayManager.get();
@@ -724,7 +724,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			event.setSender(this);
 			event.setDataDomainID(dataDomain.getDataDomainID());
 			event.setSelectionDelta((SelectionDelta) selectionDelta);
-			event.setInfo(getLabel());
+			event.setInfo(getViewLabel());
 
 			eventPublisher.triggerEvent(event);
 
@@ -806,13 +806,13 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		virtualArrayDeltaEvent.setSender(this);
 		virtualArrayDeltaEvent.setDataDomainID(dataDomain.getDataDomainID());
 		virtualArrayDeltaEvent.setVirtualArrayDelta(delta);
-		virtualArrayDeltaEvent.setInfo(getLabel());
+		virtualArrayDeltaEvent.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(virtualArrayDeltaEvent);
 	}
 
 	@Override
-	public String getLabel() {
-		return label + ": " + pathway.getName();
+	public String getViewLabel() {
+		return viewLabel + ": " + pathway.getName();
 	}
 
 	@Override

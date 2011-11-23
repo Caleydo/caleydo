@@ -80,7 +80,8 @@ public abstract class LayoutContainer
 	@Override
 	public void render(GL2 gl) {
 		super.render(gl);
-
+		if (isHidden)
+			return;
 		if (isPriorityRendereing) {
 			List<Pair<Integer, ElementLayout>> sortedList = new ArrayList<Pair<Integer, ElementLayout>>();
 			for (ElementLayout element : elements) {
@@ -144,6 +145,8 @@ public abstract class LayoutContainer
 
 	@Override
 	public void updateSubLayout() {
+		if (isHidden)
+			return;
 		calculateScales(totalWidth, totalHeight);
 		updateSpacings();
 		calculateTransforms(bottom, left, top, right);
@@ -186,6 +189,8 @@ public abstract class LayoutContainer
 
 	@Override
 	protected void updateSpacings() {
+		if (isHidden)
+			return;
 		super.updateSpacings();
 		for (ElementLayout element : elements) {
 			element.updateSpacings();

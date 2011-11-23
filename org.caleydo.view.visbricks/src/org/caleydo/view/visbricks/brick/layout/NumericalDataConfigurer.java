@@ -124,7 +124,8 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	viewSwitchingButtons.add(overviewHeatMapButton);
 
 	ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
-	layoutTemplate.setHeaderBarElements(headerBarElements);
+	if (headerBarElements != null)
+	    layoutTemplate.setHeaderBarElements(headerBarElements);
 
 	ArrayList<ElementLayout> toolBarElements = createToolBarElements(
 		layoutTemplate, viewSwitchingButtons);

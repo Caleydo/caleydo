@@ -148,7 +148,7 @@ public abstract class ADataDomain
 	}
 
 	/**
-	 * @return the label, see {@link #label}
+	 * @return the label, see {@link #viewLabel}
 	 */
 	public String getLabel() {
 

@@ -2005,7 +2005,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getLabel();
+		String sText = element.getGLView().getViewLabel();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {

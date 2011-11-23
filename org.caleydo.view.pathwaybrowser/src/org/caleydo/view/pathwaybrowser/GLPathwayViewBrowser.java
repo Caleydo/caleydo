@@ -39,7 +39,7 @@ public class GLPathwayViewBrowser extends AGLViewBrowser implements
 
 		super(glCanvas, parentComposite, viewFrustum);
 
-		label = "Pathway Browser";
+		viewLabel = "Pathway Browser";
 
 		viewType = VIEW_TYPE;
 		viewSymbol = EIconTextures.PATHWAY_SYMBOL;

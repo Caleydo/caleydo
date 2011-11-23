@@ -195,7 +195,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLParallelCoordinates.VIEW_TYPE;
-		label = "Parallel Coordinates";
+		viewLabel = "Parallel Coordinates";
 		renderStyle = new PCRenderStyle(this, viewFrustum);
 		super.renderStyle = this.renderStyle;
 
@@ -1083,7 +1083,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		InfoAreaUpdateEvent event = new InfoAreaUpdateEvent();
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSender(this);
-		event.setInfo(getLabel());
+		event.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(event);
 
 		if (glMouseListener.wasMouseReleased()) {
@@ -1331,7 +1331,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				event.setSender(this);
 				event.setDataDomainID(dataDomain.getDataDomainID());
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getLabel());
+				event.setInfo(getViewLabel());
 				eventPublisher.triggerEvent(event);
 			}
 

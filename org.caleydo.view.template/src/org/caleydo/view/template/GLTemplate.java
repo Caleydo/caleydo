@@ -43,7 +43,7 @@ public class GLTemplate extends ATableBasedView {
 	 * Constructor.
 	 * 
 	 * @param glCanvas
-	 * @param label
+	 * @param viewLabel
 	 * @param viewFrustum
 	 */
 	public GLTemplate(GLCanvas glCanvas, Composite parentComposite,
@@ -53,7 +53,7 @@ public class GLTemplate extends ATableBasedView {
 
 		viewType = GLTemplate.VIEW_TYPE;
 		// TODO: RENAME
-		label = "Template";
+		viewLabel = "Template";
 	}
 
 	@Override

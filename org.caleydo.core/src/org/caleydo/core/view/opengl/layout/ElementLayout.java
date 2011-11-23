@@ -78,9 +78,16 @@ public class ElementLayout {
 
 	protected float[] frameColor = null;
 
-	private CaleydoTextRenderer textRenderer;
+	/**
+	 * Flag determining whether the element layout is hidden or not. If it is hidden, it is not rendered and
+	 * the size is not taken into account for the element and all possible sub-elements.
+	 */
+	protected boolean isHidden = false;
 
-	/** The uniqueID of the managing class. Used for notifications on collisions via event. */
+	private CaleydoTextRenderer textRenderer;
+	/**
+	 * The uniqueID of the managing class. Used for notifications on collisions via event.
+	 */
 	protected int managingClassID = -1;
 	/** An id to identify the layout. */
 	protected int layoutID = -1;
@@ -254,6 +261,8 @@ public class ElementLayout {
 	 * @return
 	 */
 	public float getSizeScaledX() {
+		if(isHidden)
+			return 0;
 		return sizeScaledX;
 	}
 
@@ -264,6 +273,8 @@ public class ElementLayout {
 	 * @return
 	 */
 	public float getSizeScaledY() {
+		if(isHidden)
+			return 0;
 		return sizeScaledY;
 	}
 
@@ -309,6 +320,8 @@ public class ElementLayout {
 	 * used for this layout. The sub-layouts are calculated from scratch.
 	 */
 	public void updateSubLayout() {
+		if(isHidden)
+			return;
 		calculateScales(totalWidth, totalHeight);
 		updateSpacings();
 	}
@@ -395,6 +408,41 @@ public class ElementLayout {
 	public void setZoomer(Zoomer zoomer) {
 		this.zoomer = zoomer;
 	}
+	
+	
+	/**
+	 * @return The rendering priority, which determines the point in time this element layout is rendered if
+	 *         its {@link LayoutContainer} uses priority rendering.
+	 */
+	public int getRenderingPriority() {
+		return renderingPriority;
+	}
+
+	/**
+	 * Sets the rendering priority and therefore determines the point in time this element layout is rendered
+	 * if its {@link LayoutContainer} uses priority rendering.
+	 * 
+	 * @param renderingPriority
+	 *            sets the priority of the rendering, where higher values have a higher priority
+	 */
+	public void setRenderingPriority(int renderingPriority) {
+		this.renderingPriority = renderingPriority;
+	}
+
+	/**
+	 * @param isHidden
+	 *            setter, see {@link #isHidden}
+	 */
+	public void setHidden(boolean isHidden) {
+		this.isHidden = isHidden;
+	}
+
+	/**
+	 * @return the isHidden, see {@link #isHidden}
+	 */
+	public boolean isHidden() {
+		return isHidden;
+	}
 
 	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
 
@@ -411,7 +459,8 @@ public class ElementLayout {
 	}
 
 	void render(GL2 gl) {
-
+		if (isHidden)
+			return;
 		gl.glTranslatef(getTranslateX(), getTranslateY(), 0);
 
 		if (debug) {
@@ -470,6 +519,8 @@ public class ElementLayout {
 	}
 
 	void calculateScales(float totalWidth, float totalHeight) {
+		if (isHidden)
+			return;
 		this.totalWidth = totalWidth;
 		this.totalHeight = totalHeight;
 
@@ -498,6 +549,8 @@ public class ElementLayout {
 	}
 
 	protected void updateSpacings() {
+		if (isHidden)
+			return;
 		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
 		if (renderer == null)
 			return;
@@ -540,6 +593,8 @@ public class ElementLayout {
 	 * @return
 	 */
 	float getUnscalableElementHeight() {
+		if (isHidden)
+			return 0;
 		if (grabY)
 			return 0;
 		else if (pixelSizeY != Integer.MIN_VALUE)
@@ -557,6 +612,8 @@ public class ElementLayout {
 	 * @return
 	 */
 	float getUnscalableElementWidth() {
+		if (isHidden)
+			return 0;
 		if (grabX)
 			return 0;
 		else if (pixelSizeX != Integer.MIN_VALUE)
@@ -622,23 +679,6 @@ public class ElementLayout {
 		return ratioSizeY;
 	}
 
-	/**
-	 * @return The rendering priority, which determines the point in time this element layout is rendered if
-	 *         its {@link LayoutContainer} uses priority rendering.
-	 */
-	public int getRenderingPriority() {
-		return renderingPriority;
-	}
 
-	/**
-	 * Sets the rendering priority and therefore determines the point in time this element layout is rendered
-	 * if its {@link LayoutContainer} uses priority rendering.
-	 * 
-	 * @param renderingPriority
-	 *            sets the priority of the rendering, where higher values have a higher priority
-	 */
-	public void setRenderingPriority(int renderingPriority) {
-		this.renderingPriority = renderingPriority;
-	}
 
 }

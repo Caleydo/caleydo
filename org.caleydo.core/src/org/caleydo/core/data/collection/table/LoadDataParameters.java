@@ -152,7 +152,7 @@ public class LoadDataParameters {
 	}
 
 	/**
-	 * @param label
+	 * @param viewLabel
 	 *            getter, see {@link #label}
 	 */
 	public String getLabel() {

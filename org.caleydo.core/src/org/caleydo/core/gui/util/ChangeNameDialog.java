@@ -1,6 +1,5 @@
-package org.caleydo.view.grouper;
+package org.caleydo.core.gui.util;
 
-import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FormAttachment;
 import org.eclipse.swt.layout.FormData;
@@ -14,20 +13,21 @@ import org.eclipse.swt.widgets.Text;
 
 /**
  * @author Alexander Lex
- * 
  */
-public class ChangeGroupNameDialog {
+public class ChangeNameDialog {
 	static boolean deleteFlag = false;
 
-	public static void run(Display display, final GroupRepresentation groupRep) {
+	private String resultingName;
 
+	public void run(Display display, final String origianlName) {
+		resultingName = origianlName;
 		// Shell shell = new Shell(display);
 		// shell.pack();
 		// shell.open();
 		final Shell dialog = new Shell(display, SWT.DIALOG_TRIM);
 		final Text text = new Text(dialog, SWT.SHADOW_IN);
 		text.setBounds(140, 40, 100, 25);
-		text.setText(groupRep.getName());
+		text.setText(origianlName);
 		final Button okButton = new Button(dialog, SWT.PUSH);
 		okButton.setText("&OK");
 		Button cancelButton = new Button(dialog, SWT.PUSH);
@@ -53,7 +53,7 @@ public class ChangeGroupNameDialog {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == okButton) {
-					groupRep.getClusterNode().setLabel(text.getText());
+					resultingName = text.getText();
 				}
 				dialog.dispose();
 
@@ -70,7 +70,12 @@ public class ChangeGroupNameDialog {
 		}
 
 	}
+	
+	/**
+	 * @return the resultingName, see {@link #resultingName}
+	 */
+	public String getResultingName() {
+		return resultingName;
+	}
 
 }
-
-

@@ -41,6 +41,8 @@ public class Row
 
 	@Override
 	public float getUnscalableElementWidth() {
+		if(isHidden)
+			return 0;
 		if (!isXDynamic)
 			return super.getUnscalableElementWidth();
 		else {
@@ -54,6 +56,8 @@ public class Row
 
 	@Override
 	public float getUnscalableElementHeight() {
+		if(isHidden)
+			return 0;
 		if (!isYDynamic)
 			return super.getUnscalableElementHeight();
 		else {
@@ -127,6 +131,8 @@ public class Row
 
 	@Override
 	void calculateScales(float totalWidth, float totalHeight) {
+		if(isHidden)
+			return;
 		super.calculateScales(totalWidth, totalHeight);
 
 		float availableWidth = getSizeScaledX();

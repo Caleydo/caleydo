@@ -67,7 +67,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 		.getDimensionGroup().getVisBricksView(),
-		dataContainer.getLabel(), PickingType.DIMENSION_GROUP.name(),
+		layoutTemplate.getBrick(), PickingType.DIMENSION_GROUP.name(),
 		layoutTemplate.getDimensionGroup().getID());
 	captionLayout.setRenderer(captionRenderer);
 
@@ -153,7 +153,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 		.getDimensionGroup().getVisBricksView(),
-		dataContainer.getLabel(), PickingType.DIMENSION_GROUP.name(),
+		layoutTemplate.getBrick(), PickingType.DIMENSION_GROUP.name(),
 		layoutTemplate.getDimensionGroup().getID());
 	captionLayout.setRenderer(captionRenderer);
 
@@ -164,13 +164,15 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
     /**
      * Create the elements which should be shown in the heading of cluster
-     * bricks
+     * bricks.
      * 
      * @param layoutTemplate
-     * @return
+     * @return Returns null if no header bar should be shown, else the elements
+     *         for the layout
      */
     protected ArrayList<ElementLayout> createHeaderBarElements(
 	    DefaultBrickLayoutTemplate layoutTemplate) {
+
 	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
 	ElementLayout captionLayout = new ElementLayout("caption1");
@@ -180,8 +182,12 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 		.getDimensionGroup().getVisBricksView(),
-		layoutTemplate.getBrick().getDataContainer().getRecordPerspective().getLabel(), PickingType.DIMENSION_GROUP.name(),
-		layoutTemplate.getDimensionGroup().getID());
+		layoutTemplate.getBrick(), PickingType.BRICK.name(),
+		layoutTemplate.getBrick().getID());
+	// .getDimensionGroup().getVisBricksView(),
+	// layoutTemplate.getBrick().getDataContainer().getRecordPerspective().getLabel(),
+	// PickingType.DIMENSION_GROUP.name(),
+	// layoutTemplate.getDimensionGroup().getID());
 	captionLayout.setRenderer(captionRenderer);
 
 	headerBarElements.add(captionLayout);

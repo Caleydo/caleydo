@@ -83,8 +83,10 @@ public abstract class AGLView
 	implements GLEventListener, IResettableView, IMouseWheelHandler {
 
 	public final static String VIEW_TYPE = "unspecified";
-	/** The human readable label identifying the view, aka the view name */
-	protected String label = "Unspecified view name";
+	/** The human readable view name used to identifying the type of the view */
+	protected String viewLabel = "Unspecified view name";
+	/** The caption of the view */
+	protected String label = "Not set";
 
 	public enum EBusyState {
 		SWITCH_OFF,
@@ -266,17 +268,17 @@ public abstract class AGLView
 
 	/**
 	 * @param label
-	 *            setter, see {@link #label}
+	 *            setter, see {@link #viewLabel}
 	 */
-	public void setLabel(String label) {
-		this.label = label;
+	public void setViewLabel(String viewLabel) {
+		this.viewLabel = viewLabel;
 	}
 
 	/**
-	 * @return the label, see {@link #label}
+	 * @return the label, see {@link #viewLabel}
 	 */
-	public String getLabel() {
-		return label;
+	public String getViewLabel() {
+		return viewLabel;
 	}
 
 	@Override
@@ -714,7 +716,8 @@ public abstract class AGLView
 	 * @param pickingType
 	 * @param pickedObjectID
 	 */
-	public void removeIDPickingListener(IPickingListener pickingListener, String pickingType, int pickedObjectID) {
+	public void removeIDPickingListener(IPickingListener pickingListener, String pickingType,
+		int pickedObjectID) {
 		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			return;
@@ -1190,5 +1193,19 @@ public abstract class AGLView
 	 */
 	public ContextMenuCreator getContextMenuCreator() {
 		return contextMenuCreator;
+	}
+
+	/** Returns the heading of the view, should be overriden in the subviews*/
+	public String getLabel() {
+		return viewLabel;
+	}
+	
+	/**
+	 * Set the heading of the view
+	 * @param label
+	 */
+	public void setLabel(String label)
+	{
+		this.label = label;
 	}
 }

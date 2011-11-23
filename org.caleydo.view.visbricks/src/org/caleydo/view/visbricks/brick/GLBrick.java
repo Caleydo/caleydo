@@ -24,6 +24,7 @@ import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.gui.util.ChangeNameDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -46,6 +47,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallPathwayMultiplesGroupItem;
+import org.caleydo.view.visbricks.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
@@ -58,12 +60,15 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.visbricks.event.OpenCreateSmallPathwayMultiplesGroupDialogEvent;
+import org.caleydo.view.visbricks.event.RenameEvent;
 import org.caleydo.view.visbricks.listener.OpenCreatePathwayGroupDialogListener;
 import org.caleydo.view.visbricks.listener.OpenCreateSmallPathwayMultiplesGroupDialogListener;
 import org.caleydo.view.visbricks.listener.RelationsUpdatedListener;
+import org.caleydo.view.visbricks.listener.RenameListener;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 /**
  * Individual Brick for VisBricks
@@ -72,906 +77,998 @@ import org.eclipse.swt.widgets.Shell;
  * 
  */
 public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
-		ILayoutedElement {
+	ILayoutedElement {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.brick";
+    public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
-	private LayoutManager templateRenderer;
-	private ABrickLayoutConfiguration brickLayout;
-	private IBrickConfigurer brickConfigurer;
-	private ElementLayout wrappingLayout;
+    private boolean isDefaultLabel = true;
 
-	private AGLView currentRemoteView;
+    private LayoutManager templateRenderer;
+    private ABrickLayoutConfiguration brickLayout;
+    private IBrickConfigurer brickConfigurer;
+    private ElementLayout wrappingLayout;
 
-	private Map<EContainedViewType, AGLView> views;
-	private Map<EContainedViewType, LayoutRenderer> containedViewRenderers;
+    private AGLView currentRemoteView;
 
-	private int baseDisplayListIndex;
-	private boolean isBaseDisplayListDirty = true;
-	private EContainedViewType currentViewType;
+    private Map<EContainedViewType, AGLView> views;
+    private Map<EContainedViewType, LayoutRenderer> containedViewRenderers;
 
-	// /**
-	// * Was the mouse over the brick area in the last frame.
-	// */
-	// private boolean wasMouseOverBrickArea = false;
+    private int baseDisplayListIndex;
+    private boolean isBaseDisplayListDirty = true;
+    private EContainedViewType currentViewType;
 
-	// private DataTable set;
-	// private GLHeatMap heatMap;
+    // /**
+    // * Was the mouse over the brick area in the last frame.
+    // */
+    // private boolean wasMouseOverBrickArea = false;
 
-	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
-	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
+    // private DataTable set;
+    // private GLHeatMap heatMap;
 
-	private RelationsUpdatedListener relationsUpdateListener;
-	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
-	private OpenCreateSmallPathwayMultiplesGroupDialogListener openCreateSmallPathwayMultiplesGroupDialogListener;
+    private RelationIndicatorRenderer leftRelationIndicatorRenderer;
+    private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	private BrickState expandedBrickState;
+    private RelationsUpdatedListener relationsUpdateListener;
+    private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
+    private OpenCreateSmallPathwayMultiplesGroupDialogListener openCreateSmallPathwayMultiplesGroupDialogListener;
+    private RenameListener renameListener;
 
-	private GLVisBricks visBricks;
-	private DimensionGroup dimensionGroup;
+    private BrickState expandedBrickState;
 
-	private SelectionManager dataContainerSelectionManager;
+    private GLVisBricks visBricks;
+    private DimensionGroup dimensionGroup;
 
-	/** The average value of the data of this brick */
-	// private double averageValue = Double.NaN;
+    private SelectionManager dataContainerSelectionManager;
 
-	private boolean isInOverviewMode = false;
+    /** The average value of the data of this brick */
+    // private double averageValue = Double.NaN;
 
-	// private boolean isDraggingActive = false;
-	private float previousXCoordinate = Float.NaN;
-	private float previousYCoordinate = Float.NaN;
-	private boolean isBrickResizeActive = false;
-	private boolean isSizeFixed = false;
-	private boolean isInitialized = false;
+    private boolean isInOverviewMode = false;
 
-	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+    // private boolean isDraggingActive = false;
+    private float previousXCoordinate = Float.NaN;
+    private float previousYCoordinate = Float.NaN;
+    private boolean isBrickResizeActive = false;
+    private boolean isSizeFixed = false;
+    private boolean isInitialized = false;
 
-		super(glCanvas, parentComposite, viewFrustum);
-		viewType = GLBrick.VIEW_TYPE;
-		label = "Brick";
+    public GLBrick(GLCanvas glCanvas, Composite parentComposite,
+	    ViewFrustum viewFrustum) {
 
-		views = new HashMap<EContainedViewType, AGLView>();
-		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
+	super(glCanvas, parentComposite, viewFrustum);
+	viewType = GLBrick.VIEW_TYPE;
+	viewLabel = "Brick";
 
-	}
+	views = new HashMap<EContainedViewType, AGLView>();
+	containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-	@Override
-	public void initialize() {
-		super.initialize();
-		dataContainerSelectionManager = new SelectionManager(
-				DataContainer.DATA_CONTAINER_IDTYPE);
-		registerPickingListeners();
-	}
+    }
 
-	@Override
-	public ASerializedView getSerializableRepresentation() {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    @Override
+    public void initialize() {
+	super.initialize();
+	dataContainerSelectionManager = new SelectionManager(
+		DataContainer.DATA_CONTAINER_IDTYPE);
+	registerPickingListeners();
+    }
 
-	@Override
-	public void init(GL2 gl) {
-		textRenderer = new CaleydoTextRenderer(24);
-		baseDisplayListIndex = gl.glGenLists(1);
+    @Override
+    public ASerializedView getSerializableRepresentation() {
+	// TODO Auto-generated method stub
+	return null;
+    }
 
-		templateRenderer = new LayoutManager(viewFrustum, pixelGLConverter);
+    @Override
+    public void init(GL2 gl) {
+	textRenderer = new CaleydoTextRenderer(24);
+	baseDisplayListIndex = gl.glGenLists(1);
 
-		if (brickLayout == null) {
+	templateRenderer = new LayoutManager(viewFrustum, pixelGLConverter);
 
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
-					brickConfigurer);
+	if (brickLayout == null) {
 
-		}
-
-		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
-
-		currentViewType = brickLayout.getDefaultViewType();
-		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
-		currentRemoteView = views.get(currentViewType);
-		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks.registerMouseWheelListener((IMouseWheelHandler) brickLayout
-					.getViewRenderer());
-		}
-
-		templateRenderer.setStaticLayoutConfiguration(brickLayout);
-		float defaultHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-				.getDefaultHeightPixels());
-		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
-				.getDefaultWidthPixels());
-		wrappingLayout.setAbsoluteSizeY(defaultHeight);
-		wrappingLayout.setAbsoluteSizeX(defaultWidth);
-		templateRenderer.updateLayout();
-
-		addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-
-				SelectionType currentSelectionType = dataContainerSelectionManager.getSelectionType();
-				dataContainerSelectionManager.clearSelection(currentSelectionType);
-
-				dataContainerSelectionManager.addToType(currentSelectionType,
-						dataContainer.getID());
-
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setDataDomainID(getDataDomain().getDataDomainID());
-				event.setSender(this);
-				SelectionDelta delta = dataContainerSelectionManager.getDelta();
-				event.setSelectionDelta(delta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-				showHandles();
-
-				selectElementsByGroup();
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-				showHandles();
-				// updateSelection();
-			}
-
-			@Override
-			public void rightClicked(Pick pick) {
-
-				// Check if the brick is the center brick
-				if (dimensionGroup.getDataContainer() == dataContainer)
-					contextMenuCreator
-							.addContextMenuItem(new CreateSmallPathwayMultiplesGroupItem(
-									dimensionGroup.getDataContainer(), dimensionGroup
-											.getDataContainer().getDimensionPerspective()));
-				else
-					contextMenuCreator
-							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-									dataDomain, dataContainer.getRecordPerspective()
-											.getVirtualArray(), dimensionGroup
-											.getDataContainer().getDimensionPerspective()));
-			}
-
-			public void showHandles() {
-				// System.out.println("picked brick");
-				if (brickLayout.isShowHandles())
-					return;
-
-				ArrayList<DimensionGroup> dimensionGroups = dimensionGroup
-						.getVisBricksView().getDimensionGroupManager()
-						.getDimensionGroups();
-
-				for (DimensionGroup dimensionGroup : dimensionGroups) {
-					dimensionGroup.hideHandles();
-				}
-				if (!brickLayout.isShowHandles()) {
-					brickLayout.setShowHandles(true);
-					templateRenderer.updateLayout();
-				}
-
-			}
-
-		}, PickingType.BRICK.name(), getID());
-
-		dimensionGroup.updateLayout();
-
-		isInitialized = true;
+	    brickLayout = new DefaultBrickLayoutTemplate(this, visBricks,
+		    dimensionGroup, brickConfigurer);
 
 	}
 
-	private void selectElementsByGroup() {
+	brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
 
-		// Select all elements in group with special type
+	currentViewType = brickLayout.getDefaultViewType();
+	brickLayout
+		.setViewRenderer(containedViewRenderers.get(currentViewType));
+	currentRemoteView = views.get(currentViewType);
+	if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+	    visBricks
+		    .registerMouseWheelListener((IMouseWheelHandler) brickLayout
+			    .getViewRenderer());
+	}
 
-		RecordSelectionManager recordSelectionManager = visBricks
-				.getRecordSelectionManager();
-		SelectionType selectedByGroupSelectionType = recordSelectionManager
-				.getSelectionType();
+	templateRenderer.setStaticLayoutConfiguration(brickLayout);
+	float defaultHeight = pixelGLConverter
+		.getGLHeightForPixelHeight(brickLayout.getDefaultHeightPixels());
+	float defaultWidth = pixelGLConverter
+		.getGLWidthForPixelWidth(brickLayout.getDefaultWidthPixels());
+	wrappingLayout.setAbsoluteSizeY(defaultHeight);
+	wrappingLayout.setAbsoluteSizeX(defaultWidth);
+	templateRenderer.updateLayout();
 
-		if (!visBricks.getKeyListener().isCtrlDown()) {
-			recordSelectionManager.clearSelection(selectedByGroupSelectionType);
+	addIDPickingListener(new APickingListener() {
 
-			// ClearSelectionsEvent cse = new ClearSelectionsEvent();
-			// cse.setDataDomainType(getDataDomain().getDataDomainType());
-			// cse.setSender(this);
-			// eventPublisher.triggerEvent(cse);
-		}
+	    @Override
+	    public void clicked(Pick pick) {
 
-		// Prevent selection for center brick as this would select all elements
-		if (dimensionGroup.getCenterBrick() == this)
-			return;
+		SelectionType currentSelectionType = dataContainerSelectionManager.getSelectionType();
+		dataContainerSelectionManager
+			.clearSelection(currentSelectionType);
 
-		RecordVirtualArray va = dataContainer.getRecordPerspective().getVirtualArray();
-
-		for (Integer recordID : va) {
-			recordSelectionManager.addToType(selectedByGroupSelectionType,
-					va.getIdType(), recordID);// va.getIdType(), recordID);
-		}
+		dataContainerSelectionManager.addToType(currentSelectionType,
+			dataContainer.getID());
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
 		event.setDataDomainID(getDataDomain().getDataDomainID());
 		event.setSender(this);
-		SelectionDelta delta = recordSelectionManager.getDelta();
+		SelectionDelta delta = dataContainerSelectionManager.getDelta();
 		event.setSelectionDelta(delta);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
-	}
 
-	@Override
-	protected void initLocal(GL2 gl) {
-		init(gl);
-
-	}
-
-	@Override
-	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
-		init(gl);
-
-	}
-
-	@Override
-	public void display(GL2 gl) {
-		if (currentRemoteView != null)
-			currentRemoteView.processEvents();
-		processEvents();
-		handleBrickResize(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
-
-		if (isBaseDisplayListDirty)
-			buildBaseDisplayList(gl);
-
-		// if (!isMouseOverBrickArea && brickLayout.isShowHandles()) {
-		// brickLayout.setShowHandles(false);
-		// templateRenderer.updateLayout();
-		// }
-
-		// if(!isMouseOverBrickArea && wasMouseOverBrickArea) {
-		// brickLayout.setShowHandles(false);
-		// templateRenderer.updateLayout();
-		// }
-
-		GLVisBricks visBricks = getDimensionGroup().getVisBricksView();
-
-		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
-				PickingType.BRICK.name(), getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK.name(),
-				getID()));
-		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		gl.glTranslatef(0, 0, 0.1f);
-		gl.glBegin(GL2.GL_QUADS);
-
-		float zpos = 0f;
-
-		gl.glVertex3f(0, 0, zpos);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, zpos);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(),
-				zpos);
-		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
-		gl.glEnd();
-		gl.glPopName();
-		gl.glPopName();
-
-		templateRenderer.render(gl);
-
-		gl.glCallList(baseDisplayListIndex);
-
-		// if (brickLayout.isShowHandles()) {
-		// Row toolBar = brickLayout.getToolBar();
-		// if (toolBar != null) {
-		// toolBar.updateSubLayout();
-		// toolBar.render(gl);
-		//
-		// }
-		// }
-
-		// textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
-
-		// isMouseOverBrickArea = false;
-	}
-
-	@Override
-	protected void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
-		checkForHits(gl);
-		display(gl);
-
-	}
-
-	@Override
-	public void displayRemote(GL2 gl) {
-		checkForHits(gl);
-		display(gl);
-		
-	}
-
-	private void buildBaseDisplayList(GL2 gl) {
-		gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
-		// templateRenderer.updateLayout();
-
-		gl.glEndList();
-		isBaseDisplayListDirty = false;
-	}
-
-	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
-
-		super.reshape(drawable, x, y, width, height);
-		if (templateRenderer != null)
-			templateRenderer.updateLayout();
-
-		if (!isSizeFixed) {
-			wrappingLayout.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
-		}
-	}
-
-
-	/** resize of a brick */
-	private void handleBrickResize(GL2 gl) {
-
-		if (!isBrickResizeActive)
-			return;
-
-		// TODO: resizing in all layouts?
-		isSizeFixed = true;
-		brickLayout.setLockResizing(true);
-
-		if (glMouseListener.wasMouseReleased()) {
-			isBrickResizeActive = false;
-			previousXCoordinate = Float.NaN;
-			previousYCoordinate = Float.NaN;
-			return;
-		}
-
-		Point currentPoint = glMouseListener.getPickedPoint();
-
-		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
-
-		if (Float.isNaN(previousXCoordinate)) {
-			previousXCoordinate = pointCordinates[0];
-			previousYCoordinate = pointCordinates[1];
-			return;
-		}
-
-		float changeX = pointCordinates[0] - previousXCoordinate;
-		float changeY = -(pointCordinates[1] - previousYCoordinate);
-
-		float width = wrappingLayout.getSizeScaledX();
-		float height = wrappingLayout.getSizeScaledY();
-		// float changePercentage = changeX / width;
-
-		float newWidth = width + changeX;
-		float newHeight = height + changeY;
-
-		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
-				.getMinWidthPixels());
-		float minHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-				.getMinHeightPixels());
-		// float minWidth = pixelGLConverter
-		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
-		if (newWidth < minWidth - 0.001f) {
-			newWidth = minWidth;
-		}
-
-		if (newHeight < minHeight - 0.001f) {
-			newHeight = minHeight;
-		}
-
-		previousXCoordinate = pointCordinates[0];
-		previousYCoordinate = pointCordinates[1];
-
-		wrappingLayout.setAbsoluteSizeX(newWidth);
-		wrappingLayout.setAbsoluteSizeY(newHeight);
-
-		// templateRenderer.updateLayout();
-		// dimensionGroup.updateLayout();
-		// groupColumn.setAbsoluteSizeX(width + changeX);
-
-		// float height = wrappingLayout.getSizeScaledY();
-		// wrappingLayout.setAbsoluteSizeY(height * (1 + changePercentage));
-
-		// centerBrick.getLayout().updateSubLayout();
-
-		visBricks.setLastResizeDirectionWasToLeft(false);
-		visBricks.updateLayout();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
-
-	}
-
-	
-
-	/**
-	 * Set the {@link GLVisBricks} view managing this brick, which is needed for
-	 * environment information.
-	 * 
-	 * @param visBricks
-	 */
-	public void setVisBricks(GLVisBricks visBricks) {
-		this.visBricks = visBricks;
-	}
-
-	/**
-	 * Set the {@link DimensionGroup} this brick belongs to.
-	 * 
-	 * @param dimensionGroup
-	 */
-	public void setDimensionGroup(DimensionGroup dimensionGroup) {
-		this.dimensionGroup = dimensionGroup;
-	}
-
-	/**
-	 * Returns the {@link DimensionGroup} this brick belongs to.
-	 * 
-	 * @return
-	 */
-	public DimensionGroup getDimensionGroup() {
-		return dimensionGroup;
-	}
-
-	
-
-	@Override
-	public List<AGLView> getRemoteRenderedViews() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
-	
-
-	@Override
-	public void setFrustum(ViewFrustum viewFrustum) {
-		super.setFrustum(viewFrustum);
-		if (templateRenderer != null)
-			templateRenderer.updateLayout();
-	}
-
-	
-	/**
-	 * Sets the type of view that should be rendered in the brick. The view type
-	 * is not set, if it is not valid for the current brick layout.
-	 * 
-	 * @param viewType
-	 */
-	public void setContainedView(EContainedViewType viewType) {
-		currentViewType = viewType;
-		LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
-
-		if (viewRenderer == null)
-			return;
-
-		if (!brickLayout.isViewTypeValid(viewType))
-			return;
-
-		currentRemoteView = views.get(viewType);
-		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-		// visBricks
-		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
-		// brickLayout
-		// .getViewRenderer());
-		// }
-		brickLayout.setViewRenderer(viewRenderer);
-
-		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-		// visBricks
-		// .registerMouseWheelListener((IMouseWheelHandler) brickLayout
-		// .getViewRenderer());
-		// }
-
-		brickLayout.viewTypeChanged(viewType);
-		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
-		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
-		float defaultHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(defaultHeightPixels);
-		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(defaultWidthPixels);
-
-		if (isSizeFixed) {
-
-			float currentHeight = wrappingLayout.getSizeScaledY();
-			float currentWidth = wrappingLayout.getSizeScaledX();
-
-			if (currentHeight < defaultHeight) {
-				// float width = (wrappingLayout.getSizeScaledX() /
-				// currentHeight)
-				// * minHeight;
-				// wrappingLayout.setAbsoluteSizeX(width);
-				wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			}
-			if (currentWidth < defaultWidth) {
-				wrappingLayout.setAbsoluteSizeX(defaultWidth);
-			}
-		} else {
-			wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			wrappingLayout.setAbsoluteSizeX(defaultWidth);
-		}
-		
-		templateRenderer.setStaticLayoutConfiguration(brickLayout);
-		templateRenderer.updateLayout();
-
-		visBricks.updateLayout();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
-
-	}
-
-	public TextureManager getTextureManager() {
-		return textureManager;
-	}
-
-	/**
-	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its
-	 * appearance. If the specified view type is valid, it will be set,
-	 * otherwise the default view type will be table.
-	 * 
-	 * @param brickLayoutTemplate
-	 * @param viewType
-	 */
-	public void setBrickLayoutTemplate(ABrickLayoutConfiguration brickLayoutTemplate,
-			EContainedViewType viewType) {
-		if (brickLayout != null)
-			brickLayout.destroy();
-		brickLayout = brickLayoutTemplate;
-		if ((brickLayout instanceof CompactBrickLayoutTemplate)
-				|| (brickLayout instanceof CompactCentralBrickLayoutTemplate))
-			isInOverviewMode = true;
+		showHandles();
+
+		selectElementsByGroup();
+	    }
+
+	    @Override
+	    public void mouseOver(Pick pick) {
+		showHandles();
+		// updateSelection();
+	    }
+
+	    @Override
+	    public void rightClicked(Pick pick) {
+
+		// Check if the brick is the center brick
+		if (dimensionGroup.getDataContainer() == dataContainer)
+		    contextMenuCreator
+			    .addContextMenuItem(new CreateSmallPathwayMultiplesGroupItem(
+				    dimensionGroup.getDataContainer(),
+				    dimensionGroup.getDataContainer()
+					    .getDimensionPerspective()));
 		else
-			isInOverviewMode = false;
+		    contextMenuCreator
+			    .addContextMenuItem(new CreatePathwayGroupFromDataItem(
+				    dataDomain, dataContainer
+					    .getRecordPerspective()
+					    .getVirtualArray(), dimensionGroup
+					    .getDataContainer()
+					    .getDimensionPerspective()));
 
-		if (templateRenderer != null) {
-			templateRenderer.setStaticLayoutConfiguration(brickLayout);
-			if (brickLayout.isViewTypeValid(viewType)) {
-				setContainedView(viewType);
-			} else {
-				setContainedView(brickLayout.getDefaultViewType());
-			}
+		contextMenuCreator.addContextMenuItem(new RenameBrickItem(
+			getID()));
+	    }
+
+	    public void showHandles() {
+		// System.out.println("picked brick");
+		if (brickLayout.isShowHandles())
+		    return;
+
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroup
+			.getVisBricksView().getDimensionGroupManager()
+			.getDimensionGroups();
+
+		for (DimensionGroup dimensionGroup : dimensionGroups) {
+		    dimensionGroup.hideHandles();
 		}
-	}
-
-	/**
-	 * @return Type of view that is currently displayed by the brick.
-	 */
-	public EContainedViewType getCurrentViewType() {
-		return currentViewType;
-	}
-
-	@Override
-	public void registerEventListeners() {
-
-		relationsUpdateListener = new RelationsUpdatedListener();
-		relationsUpdateListener.setHandler(this);
-
-		relationsUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(RelationsUpdatedEvent.class, relationsUpdateListener);
-
-		selectionUpdateListener = new SelectionUpdateListener();
-		selectionUpdateListener.setHandler(this);
-
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
-
-		openCreatePathwayGroupDialogListener = new OpenCreatePathwayGroupDialogListener();
-		openCreatePathwayGroupDialogListener.setHandler(this);
-		eventPublisher.addListener(OpenCreatePathwayGroupDialogEvent.class,
-				openCreatePathwayGroupDialogListener);
-
-		openCreateSmallPathwayMultiplesGroupDialogListener = new OpenCreateSmallPathwayMultiplesGroupDialogListener();
-		openCreateSmallPathwayMultiplesGroupDialogListener.setHandler(this);
-		eventPublisher.addListener(OpenCreateSmallPathwayMultiplesGroupDialogEvent.class,
-				openCreateSmallPathwayMultiplesGroupDialogListener);
-
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-
-		if (relationsUpdateListener != null) {
-			eventPublisher.removeListener(relationsUpdateListener);
-			relationsUpdateListener = null;
+		if (!brickLayout.isShowHandles()) {
+		    brickLayout.setShowHandles(true);
+		    templateRenderer.updateLayout();
 		}
 
-		if (selectionUpdateListener != null) {
-			eventPublisher.removeListener(selectionUpdateListener);
-			selectionUpdateListener = null;
+	    }
+
+	}, PickingType.BRICK.name(), getID());
+
+	dimensionGroup.updateLayout();
+
+	isInitialized = true;
+
+    }
+
+    /**
+     * Triggers a dialog to rename the specified group.
+     * 
+     * @param groupID
+     *            ID of the group that shall be renamed.
+     */
+    public void rename(int id) {
+
+	if (id != getID())
+	    return;
+
+	PlatformUI.getWorkbench().getDisplay().asyncExec(new Runnable() {
+
+	    @Override
+	    public void run() {
+		ChangeNameDialog dialog = new ChangeNameDialog();
+		dialog.run(PlatformUI.getWorkbench().getDisplay(),
+			getViewLabel());
+		// groupRep.getClusterNode().getSubDataTable()
+		// .setLabel(groupRep.getClusterNode().getLabel());
+		label = dialog.getResultingName();
+		dataContainer.setLabel(label);
+		if (isDefaultLabel) {
+
+//		    dimensionGroup.updateLayout();
+		    isDefaultLabel = false;
+		    setDisplayListDirty();
+		    System.out.println(getLabel());
+
+		    if (brickLayout instanceof DefaultBrickLayoutTemplate)
+			((DefaultBrickLayoutTemplate) brickLayout)
+				.setHideCaption(false);
 		}
+		setDisplayListDirty();
 
-		if (openCreatePathwayGroupDialogListener != null) {
-			eventPublisher.removeListener(openCreatePathwayGroupDialogListener);
-			openCreatePathwayGroupDialogListener = null;
-		}
+	    }
+	});
 
-		if (openCreateSmallPathwayMultiplesGroupDialogListener != null) {
-			eventPublisher
-					.removeListener(openCreateSmallPathwayMultiplesGroupDialogListener);
-			openCreateSmallPathwayMultiplesGroupDialogListener = null;
-		}
+	
+	// groupRep.getClusterNode().getSubDataTable().setLabel(groupRep.getClusterNode().getNodeName());
+    }
 
-		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-		// visBricks
-		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
-		// brickLayout
-		// .getViewRenderer());
-		// }
+    /**
+     * @return the label, see {@link #label}
+     */
+    public String getLabel() {
+	return dataContainer.getLabel();
+    }
+
+    private void selectElementsByGroup() {
+
+	// Select all elements in group with special type
+
+	RecordSelectionManager recordSelectionManager = visBricks
+		.getRecordSelectionManager();
+	SelectionType selectedByGroupSelectionType = recordSelectionManager
+		.getSelectionType();
+
+	if (!visBricks.getKeyListener().isCtrlDown()) {
+	    recordSelectionManager.clearSelection(selectedByGroupSelectionType);
+
+	    // ClearSelectionsEvent cse = new ClearSelectionsEvent();
+	    // cse.setDataDomainType(getDataDomain().getDataDomainType());
+	    // cse.setSender(this);
+	    // eventPublisher.triggerEvent(cse);
 	}
 
-	private void registerPickingListeners() {
-		addIDPickingListener(new APickingListener() {
+	// Prevent selection for center brick as this would select all elements
+	if (dimensionGroup.getCenterBrick() == this)
+	    return;
 
-			@Override
-			public void clicked(Pick pick) {
-				isBrickResizeActive = true;
+	RecordVirtualArray va = dataContainer.getRecordPerspective()
+		.getVirtualArray();
 
-			}
-		}, PickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+	for (Integer recordID : va) {
+	    recordSelectionManager.addToType(selectedByGroupSelectionType,
+		    va.getIdType(), recordID);// va.getIdType(), recordID);
 	}
 
-	/**
-	 * Only to be called via a {@link RelationsUpdatedListener} upon a
-	 * {@link RelationsUpdatedEvent}.
-	 * 
-	 * TODO: add parameters to check whether this brick needs to be updated
-	 */
-	public void relationsUpdated() {
-		if (rightRelationIndicatorRenderer != null
-				&& leftRelationIndicatorRenderer != null) {
-			rightRelationIndicatorRenderer.updateRelations();
-			leftRelationIndicatorRenderer.updateRelations();
-		}
+	SelectionUpdateEvent event = new SelectionUpdateEvent();
+	event.setDataDomainID(getDataDomain().getDataDomainID());
+	event.setSender(this);
+	SelectionDelta delta = recordSelectionManager.getDelta();
+	event.setSelectionDelta(delta);
+	GeneralManager.get().getEventPublisher().triggerEvent(event);
+    }
+
+    @Override
+    protected void initLocal(GL2 gl) {
+	init(gl);
+
+    }
+
+    @Override
+    public void initRemote(GL2 gl, AGLView glParentView,
+	    GLMouseListener glMouseListener) {
+	init(gl);
+
+    }
+
+    @Override
+    public void display(GL2 gl) {
+	if (currentRemoteView != null)
+	    currentRemoteView.processEvents();
+	processEvents();
+	handleBrickResize(gl);
+	// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
+
+	if (isBaseDisplayListDirty)
+	    buildBaseDisplayList(gl);
+
+	// if (!isMouseOverBrickArea && brickLayout.isShowHandles()) {
+	// brickLayout.setShowHandles(false);
+	// templateRenderer.updateLayout();
+	// }
+
+	// if(!isMouseOverBrickArea && wasMouseOverBrickArea) {
+	// brickLayout.setShowHandles(false);
+	// templateRenderer.updateLayout();
+	// }
+
+	GLVisBricks visBricks = getDimensionGroup().getVisBricksView();
+
+	gl.glPushName(visBricks.getPickingManager().getPickingID(
+		visBricks.getID(), PickingType.BRICK.name(), getID()));
+	gl.glPushName(getPickingManager().getPickingID(getID(),
+		PickingType.BRICK.name(), getID()));
+	gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
+	gl.glTranslatef(0, 0, 0.1f);
+	gl.glBegin(GL2.GL_QUADS);
+
+	float zpos = 0f;
+
+	gl.glVertex3f(0, 0, zpos);
+	gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, zpos);
+	gl.glVertex3f(wrappingLayout.getSizeScaledX(),
+		wrappingLayout.getSizeScaledY(), zpos);
+	gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
+	gl.glEnd();
+	gl.glPopName();
+	gl.glPopName();
+
+	templateRenderer.render(gl);
+
+	gl.glCallList(baseDisplayListIndex);
+
+	// if (brickLayout.isShowHandles()) {
+	// Row toolBar = brickLayout.getToolBar();
+	// if (toolBar != null) {
+	// toolBar.updateSubLayout();
+	// toolBar.render(gl);
+	//
+	// }
+	// }
+
+	// textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
+
+	// isMouseOverBrickArea = false;
+    }
+
+    @Override
+    protected void displayLocal(GL2 gl) {
+	pickingManager.handlePicking(this, gl);
+	checkForHits(gl);
+	display(gl);
+
+    }
+
+    @Override
+    public void displayRemote(GL2 gl) {
+	checkForHits(gl);
+	display(gl);
+
+    }
+
+    private void buildBaseDisplayList(GL2 gl) {
+	gl.glNewList(baseDisplayListIndex, GL2.GL_COMPILE);
+	// templateRenderer.updateLayout();
+
+	gl.glEndList();
+	isBaseDisplayListDirty = false;
+    }
+
+    @Override
+    public void reshape(GLAutoDrawable drawable, int x, int y, int width,
+	    int height) {
+
+	super.reshape(drawable, x, y, width, height);
+	if (templateRenderer != null)
+	    templateRenderer.updateLayout();
+
+	if (!isSizeFixed) {
+	    wrappingLayout
+		    .setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
+	    wrappingLayout
+		    .setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
+	}
+    }
+
+    /** resize of a brick */
+    private void handleBrickResize(GL2 gl) {
+
+	if (!isBrickResizeActive)
+	    return;
+
+	// TODO: resizing in all layouts?
+	isSizeFixed = true;
+	brickLayout.setLockResizing(true);
+
+	if (glMouseListener.wasMouseReleased()) {
+	    isBrickResizeActive = false;
+	    previousXCoordinate = Float.NaN;
+	    previousYCoordinate = Float.NaN;
+	    return;
 	}
 
-	@Override
-	public String toString() {
-		return "Brick: " + dataContainer;// + table.getLabel();
+	Point currentPoint = glMouseListener.getPickedPoint();
 
+	float[] pointCordinates = GLCoordinateUtils
+		.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+			currentPoint.y);
+
+	if (Float.isNaN(previousXCoordinate)) {
+	    previousXCoordinate = pointCordinates[0];
+	    previousYCoordinate = pointCordinates[1];
+	    return;
 	}
 
-	/**
-	 * Set the layout that this view is embedded in
-	 * 
-	 * @param wrappingLayout
-	 */
-	public void setLayout(ElementLayout wrappingLayout) {
-		this.wrappingLayout = wrappingLayout;
+	float changeX = pointCordinates[0] - previousXCoordinate;
+	float changeY = -(pointCordinates[1] - previousYCoordinate);
+
+	float width = wrappingLayout.getSizeScaledX();
+	float height = wrappingLayout.getSizeScaledY();
+	// float changePercentage = changeX / width;
+
+	float newWidth = width + changeX;
+	float newHeight = height + changeY;
+
+	float minWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
+		.getMinWidthPixels());
+	float minHeight = pixelGLConverter
+		.getGLHeightForPixelHeight(brickLayout.getMinHeightPixels());
+	// float minWidth = pixelGLConverter
+	// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
+	if (newWidth < minWidth - 0.001f) {
+	    newWidth = minWidth;
 	}
 
-	/**
-	 * Returns the layout that this view is wrapped in, which is created by the
-	 * same instance that creates the view.
-	 * 
-	 * @return
-	 */
-	@Override
-	public ElementLayout getLayout() {
-		return wrappingLayout;
+	if (newHeight < minHeight - 0.001f) {
+	    newHeight = minHeight;
 	}
 
-	/**
-	 * Returns the selection manager responsible for managing selections of
-	 * groups.
-	 * 
-	 * @return
-	 */
-	public SelectionManager getRecordGroupSelectionManager() {
-		return dataContainerSelectionManager;
+	previousXCoordinate = pointCordinates[0];
+	previousYCoordinate = pointCordinates[1];
+
+	wrappingLayout.setAbsoluteSizeX(newWidth);
+	wrappingLayout.setAbsoluteSizeY(newHeight);
+
+	// templateRenderer.updateLayout();
+	// dimensionGroup.updateLayout();
+	// groupColumn.setAbsoluteSizeX(width + changeX);
+
+	// float height = wrappingLayout.getSizeScaledY();
+	// wrappingLayout.setAbsoluteSizeY(height * (1 + changePercentage));
+
+	// centerBrick.getLayout().updateSubLayout();
+
+	visBricks.setLastResizeDirectionWasToLeft(false);
+	visBricks.updateLayout();
+	visBricks.updateConnectionLinesBetweenDimensionGroups();
+
+    }
+
+    /**
+     * Set the {@link GLVisBricks} view managing this brick, which is needed for
+     * environment information.
+     * 
+     * @param visBricks
+     */
+    public void setVisBricks(GLVisBricks visBricks) {
+	this.visBricks = visBricks;
+    }
+
+    /**
+     * Set the {@link DimensionGroup} this brick belongs to.
+     * 
+     * @param dimensionGroup
+     */
+    public void setDimensionGroup(DimensionGroup dimensionGroup) {
+	this.dimensionGroup = dimensionGroup;
+    }
+
+    /**
+     * Returns the {@link DimensionGroup} this brick belongs to.
+     * 
+     * @return
+     */
+    public DimensionGroup getDimensionGroup() {
+	return dimensionGroup;
+    }
+
+    @Override
+    public List<AGLView> getRemoteRenderedViews() {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    @Override
+    public void setFrustum(ViewFrustum viewFrustum) {
+	super.setFrustum(viewFrustum);
+	if (templateRenderer != null)
+	    templateRenderer.updateLayout();
+    }
+
+    /**
+     * Sets the type of view that should be rendered in the brick. The view type
+     * is not set, if it is not valid for the current brick layout.
+     * 
+     * @param viewType
+     */
+    public void setContainedView(EContainedViewType viewType) {
+	currentViewType = viewType;
+	LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
+
+	if (viewRenderer == null)
+	    return;
+
+	if (!brickLayout.isViewTypeValid(viewType))
+	    return;
+
+	currentRemoteView = views.get(viewType);
+	// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+	// visBricks
+	// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
+	// brickLayout
+	// .getViewRenderer());
+	// }
+	brickLayout.setViewRenderer(viewRenderer);
+
+	// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+	// visBricks
+	// .registerMouseWheelListener((IMouseWheelHandler) brickLayout
+	// .getViewRenderer());
+	// }
+
+	brickLayout.viewTypeChanged(viewType);
+	int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
+	int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
+	float defaultHeight = pixelGLConverter
+		.getGLHeightForPixelHeight(defaultHeightPixels);
+	float defaultWidth = pixelGLConverter
+		.getGLWidthForPixelWidth(defaultWidthPixels);
+
+	if (isSizeFixed) {
+
+	    float currentHeight = wrappingLayout.getSizeScaledY();
+	    float currentWidth = wrappingLayout.getSizeScaledX();
+
+	    if (currentHeight < defaultHeight) {
+		// float width = (wrappingLayout.getSizeScaledX() /
+		// currentHeight)
+		// * minHeight;
+		// wrappingLayout.setAbsoluteSizeX(width);
+		wrappingLayout.setAbsoluteSizeY(defaultHeight);
+	    }
+	    if (currentWidth < defaultWidth) {
+		wrappingLayout.setAbsoluteSizeX(defaultWidth);
+	    }
+	} else {
+	    wrappingLayout.setAbsoluteSizeY(defaultHeight);
+	    wrappingLayout.setAbsoluteSizeX(defaultWidth);
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == dataContainerSelectionManager.getIDType()) {
-			dataContainerSelectionManager.setDelta(selectionDelta);
+	templateRenderer.setStaticLayoutConfiguration(brickLayout);
+	templateRenderer.updateLayout();
 
-			if (dataContainerSelectionManager
-					.checkStatus(dataContainerSelectionManager.getSelectionType(),
-							dataContainer.getID())) {
-				brickLayout.setShowHandles(true);
-				brickLayout.setSelected(true);
-				visBricks.updateConnectionLinesBetweenDimensionGroups();
-			} else {
-				brickLayout.setSelected(false);
-				brickLayout.setShowHandles(false);
-			}
-			// }
-			templateRenderer.updateLayout();
-		}
+	visBricks.updateLayout();
+	visBricks.updateConnectionLinesBetweenDimensionGroups();
+
+    }
+
+    public TextureManager getTextureManager() {
+	return textureManager;
+    }
+
+    /**
+     * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its
+     * appearance. If the specified view type is valid, it will be set,
+     * otherwise the default view type will be table.
+     * 
+     * @param brickLayoutTemplate
+     * @param viewType
+     */
+    public void setBrickLayoutTemplate(
+	    ABrickLayoutConfiguration brickLayoutTemplate,
+	    EContainedViewType viewType) {
+	if (brickLayout != null)
+	    brickLayout.destroy();
+	brickLayout = brickLayoutTemplate;
+	if ((brickLayout instanceof CompactBrickLayoutTemplate)
+		|| (brickLayout instanceof CompactCentralBrickLayoutTemplate))
+	    isInOverviewMode = true;
+	else
+	    isInOverviewMode = false;
+
+	if (templateRenderer != null) {
+	    templateRenderer.setStaticLayoutConfiguration(brickLayout);
+	    if (brickLayout.isViewTypeValid(viewType)) {
+		setContainedView(viewType);
+	    } else {
+		setContainedView(brickLayout.getDefaultViewType());
+	    }
+	}
+    }
+
+    /**
+     * @return Type of view that is currently displayed by the brick.
+     */
+    public EContainedViewType getCurrentViewType() {
+	return currentViewType;
+    }
+
+    @Override
+    public void registerEventListeners() {
+
+	relationsUpdateListener = new RelationsUpdatedListener();
+	relationsUpdateListener.setHandler(this);
+
+	relationsUpdateListener.setExclusiveDataDomainID(dataDomain
+		.getDataDomainID());
+	eventPublisher.addListener(RelationsUpdatedEvent.class,
+		relationsUpdateListener);
+
+	selectionUpdateListener = new SelectionUpdateListener();
+	selectionUpdateListener.setHandler(this);
+
+	selectionUpdateListener.setExclusiveDataDomainID(dataDomain
+		.getDataDomainID());
+	eventPublisher.addListener(SelectionUpdateEvent.class,
+		selectionUpdateListener);
+
+	openCreatePathwayGroupDialogListener = new OpenCreatePathwayGroupDialogListener();
+	openCreatePathwayGroupDialogListener.setHandler(this);
+	eventPublisher.addListener(OpenCreatePathwayGroupDialogEvent.class,
+		openCreatePathwayGroupDialogListener);
+
+	openCreateSmallPathwayMultiplesGroupDialogListener = new OpenCreateSmallPathwayMultiplesGroupDialogListener();
+	openCreateSmallPathwayMultiplesGroupDialogListener.setHandler(this);
+	eventPublisher.addListener(
+		OpenCreateSmallPathwayMultiplesGroupDialogEvent.class,
+		openCreateSmallPathwayMultiplesGroupDialogListener);
+
+	renameListener = new RenameListener();
+	renameListener.setHandler(this);
+	eventPublisher.addListener(RenameEvent.class, renameListener);
+
+    }
+
+    @Override
+    public void unregisterEventListeners() {
+
+	if (relationsUpdateListener != null) {
+	    eventPublisher.removeListener(relationsUpdateListener);
+	    relationsUpdateListener = null;
 	}
 
-	/**
-	 * @return true, if the brick us currently selected, false otherwise
-	 */
-	public boolean isActive() {
-		return dataContainerSelectionManager.checkStatus(SelectionType.SELECTION,
-				dataContainer.getID());
+	if (selectionUpdateListener != null) {
+	    eventPublisher.removeListener(selectionUpdateListener);
+	    selectionUpdateListener = null;
 	}
 
-	/**
-	 * Sets this brick collapsed
-	 * 
-	 * @return how much this has affected the height of the brick.
-	 */
-	public float collapse() {
-		// if (isInOverviewMode)
-		// return 0;
+	if (openCreatePathwayGroupDialogListener != null) {
+	    eventPublisher.removeListener(openCreatePathwayGroupDialogListener);
+	    openCreatePathwayGroupDialogListener = null;
+	}
 
-		if (!isInOverviewMode && isInitialized) {
-			expandedBrickState = new BrickState(currentViewType,
-					wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
-		}
+	if (openCreateSmallPathwayMultiplesGroupDialogListener != null) {
+	    eventPublisher
+		    .removeListener(openCreateSmallPathwayMultiplesGroupDialogListener);
+	    openCreateSmallPathwayMultiplesGroupDialogListener = null;
+	}
 
-		ABrickLayoutConfiguration layoutTemplate = brickLayout.getCollapsedLayoutTemplate();
-		// isSizeFixed = false;
+	if (renameListener != null) {
+	    eventPublisher.removeListener(renameListener);
+	    renameListener = null;
+	}
 
-		setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
+	// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
+	// visBricks
+	// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
+	// brickLayout
+	// .getViewRenderer());
+	// }
+    }
 
-		float minHeight = pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-				.getMinHeightPixels());
-		float minWidth = pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-				.getMinWidthPixels());
-		float currentSize = wrappingLayout.getSizeScaledY();
-		wrappingLayout.setAbsoluteSizeY(minHeight);
-		wrappingLayout.setAbsoluteSizeX(minWidth);
+    private void registerPickingListeners() {
+	addIDPickingListener(new APickingListener() {
 
-		visBricks.updateLayout();
+	    @Override
+	    public void clicked(Pick pick) {
+		isBrickResizeActive = true;
+
+	    }
+	}, PickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+    }
+
+    /**
+     * Only to be called via a {@link RelationsUpdatedListener} upon a
+     * {@link RelationsUpdatedEvent}.
+     * 
+     * TODO: add parameters to check whether this brick needs to be updated
+     */
+    public void relationsUpdated() {
+	if (rightRelationIndicatorRenderer != null
+		&& leftRelationIndicatorRenderer != null) {
+	    rightRelationIndicatorRenderer.updateRelations();
+	    leftRelationIndicatorRenderer.updateRelations();
+	}
+    }
+
+    @Override
+    public String toString() {
+	return "Brick: " + dataContainer;// + table.getLabel();
+
+    }
+
+    /**
+     * Set the layout that this view is embedded in
+     * 
+     * @param wrappingLayout
+     */
+    public void setLayout(ElementLayout wrappingLayout) {
+	this.wrappingLayout = wrappingLayout;
+    }
+
+    /**
+     * Returns the layout that this view is wrapped in, which is created by the
+     * same instance that creates the view.
+     * 
+     * @return
+     */
+    @Override
+    public ElementLayout getLayout() {
+	return wrappingLayout;
+    }
+
+    /**
+     * Returns the selection manager responsible for managing selections of
+     * groups.
+     * 
+     * @return
+     */
+    public SelectionManager getRecordGroupSelectionManager() {
+	return dataContainerSelectionManager;
+    }
+
+    @Override
+    public void handleSelectionUpdate(SelectionDelta selectionDelta,
+	    boolean scrollToSelection, String info) {
+	if (selectionDelta.getIDType() == dataContainerSelectionManager
+		.getIDType()) {
+	    dataContainerSelectionManager.setDelta(selectionDelta);
+
+	    if (dataContainerSelectionManager.checkStatus(
+		    dataContainerSelectionManager.getSelectionType(),
+		    dataContainer.getID())) {
+		brickLayout.setShowHandles(true);
+		brickLayout.setSelected(true);
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
-
-		return currentSize - minHeight;
-	}
-
-	public void expand() {
-		// if (!isInOverviewMode)
-		// return;
-
-		ABrickLayoutConfiguration layoutTemplate = brickLayout.getExpandedLayoutTemplate();
-
-		if (expandedBrickState != null) {
-			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
-			wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
-			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
-		} else {
-			setBrickLayoutTemplate(layoutTemplate, currentViewType);
-			float defaultHeight = pixelGLConverter
-					.getGLHeightForPixelHeight(layoutTemplate.getDefaultHeightPixels());
-			float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(layoutTemplate
-					.getDefaultWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			wrappingLayout.setAbsoluteSizeX(defaultWidth);
-		}
-		isInOverviewMode = false;
-		isSizeFixed = true;
-		brickLayout.setLockResizing(true);
-
-		visBricks.updateLayout();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
-	}
-
-	public boolean isInOverviewMode() {
-		return isInOverviewMode;
-	}
-
-	/**
-	 * Sets, whether view switching by this brick should affect other bricks in
-	 * the dimension group.
-	 * 
-	 * @param isGlobalViewSwitching
-	 */
-	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
-		brickLayout.setGlobalViewSwitching(isGlobalViewSwitching);
-	}
-
-	public void setCurrentRemoteView(AGLView currentRemoteView) {
-		this.currentRemoteView = currentRemoteView;
-	}
-
-	public void setViews(Map<EContainedViewType, AGLView> views) {
-		this.views = views;
-	}
-
-	public void setContainedViewRenderers(
-			Map<EContainedViewType, LayoutRenderer> containedViewRenderers) {
-		this.containedViewRenderers = containedViewRenderers;
-	}
-
-	public void setCurrentViewType(EContainedViewType currentViewType) {
-		this.currentViewType = currentViewType;
-	}
-
-	public boolean isSizeFixed() {
-		return isSizeFixed;
-	}
-
-	public void setSizeFixed(boolean isSizeFixed) {
-		this.isSizeFixed = isSizeFixed;
-	}
-
-	/**
-	 * Hides the handles of the brick.
-	 */
-	public void hideHandles() {
+	    } else {
+		brickLayout.setSelected(false);
 		brickLayout.setShowHandles(false);
-		templateRenderer.updateLayout();
+	    }
+	    // }
+	    templateRenderer.updateLayout();
+	}
+    }
+
+    /**
+     * @return true, if the brick us currently selected, false otherwise
+     */
+    public boolean isActive() {
+	return dataContainerSelectionManager.checkStatus(
+		SelectionType.SELECTION, dataContainer.getID());
+    }
+
+    /**
+     * Sets this brick collapsed
+     * 
+     * @return how much this has affected the height of the brick.
+     */
+    public float collapse() {
+	// if (isInOverviewMode)
+	// return 0;
+
+	if (!isInOverviewMode && isInitialized) {
+	    expandedBrickState = new BrickState(currentViewType,
+		    wrappingLayout.getSizeScaledY(),
+		    wrappingLayout.getSizeScaledX());
 	}
 
-	public ElementLayout getWrappingLayout() {
-		return wrappingLayout;
+	ABrickLayoutConfiguration layoutTemplate = brickLayout
+		.getCollapsedLayoutTemplate();
+	// isSizeFixed = false;
+
+	setBrickLayoutTemplate(layoutTemplate,
+		layoutTemplate.getDefaultViewType());
+
+	float minHeight = pixelGLConverter
+		.getGLHeightForPixelHeight(layoutTemplate.getMinHeightPixels());
+	float minWidth = pixelGLConverter
+		.getGLHeightForPixelHeight(layoutTemplate.getMinWidthPixels());
+	float currentSize = wrappingLayout.getSizeScaledY();
+	wrappingLayout.setAbsoluteSizeY(minHeight);
+	wrappingLayout.setAbsoluteSizeX(minWidth);
+
+	visBricks.updateLayout();
+	visBricks.updateConnectionLinesBetweenDimensionGroups();
+
+	return currentSize - minHeight;
+    }
+
+    public void expand() {
+	// if (!isInOverviewMode)
+	// return;
+
+	ABrickLayoutConfiguration layoutTemplate = brickLayout
+		.getExpandedLayoutTemplate();
+
+	if (expandedBrickState != null) {
+	    setBrickLayoutTemplate(layoutTemplate,
+		    expandedBrickState.getViewType());
+	    wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
+	    wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
+	} else {
+	    setBrickLayoutTemplate(layoutTemplate, currentViewType);
+	    float defaultHeight = pixelGLConverter
+		    .getGLHeightForPixelHeight(layoutTemplate
+			    .getDefaultHeightPixels());
+	    float defaultWidth = pixelGLConverter
+		    .getGLWidthForPixelWidth(layoutTemplate
+			    .getDefaultWidthPixels());
+	    wrappingLayout.setAbsoluteSizeY(defaultHeight);
+	    wrappingLayout.setAbsoluteSizeX(defaultWidth);
 	}
+	isInOverviewMode = false;
+	isSizeFixed = true;
+	brickLayout.setLockResizing(true);
 
-	public IBrickConfigurer getBrickConfigurer() {
-		return brickConfigurer;
-	}
+	visBricks.updateLayout();
+	visBricks.updateConnectionLinesBetweenDimensionGroups();
+    }
 
-	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
-		this.brickConfigurer = brickConfigurer;
-	}
+    public boolean isInOverviewMode() {
+	return isInOverviewMode;
+    }
 
-	public void openCreateSmallPathwayMultiplesGroupDialog(
-			final DataContainer dimensionGroupDataContainer,
-			final DimensionPerspective dimensionPerspective) {
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				// shell.setSize(500, 800);
+    /**
+     * Sets, whether view switching by this brick should affect other bricks in
+     * the dimension group.
+     * 
+     * @param isGlobalViewSwitching
+     */
+    public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
+	brickLayout.setGlobalViewSwitching(isGlobalViewSwitching);
+    }
 
-				CreateSmallPathwayMultiplesGroupDialog dialog = new CreateSmallPathwayMultiplesGroupDialog(
-						shell, dimensionGroupDataContainer, dimensionPerspective);
-				dialog.create();
-				dialog.setBlockOnOpen(true);
+    public void setCurrentRemoteView(AGLView currentRemoteView) {
+	this.currentRemoteView = currentRemoteView;
+    }
 
-				if (dialog.open() == Status.OK) {
-					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+    public void setViews(Map<EContainedViewType, AGLView> views) {
+	this.views = views;
+    }
 
-					List<PathwayDimensionGroupData> pathwayDimensionGroupDataList = dialog
-							.getPathwayDimensionGroupDataList();
+    public void setContainedViewRenderers(
+	    Map<EContainedViewType, LayoutRenderer> containedViewRenderers) {
+	this.containedViewRenderers = containedViewRenderers;
+    }
 
-					for (PathwayDimensionGroupData pathwayDimensionGroupData : pathwayDimensionGroupDataList) {
-						dataContainers.add(pathwayDimensionGroupData);
-						event.setDataContainers(dataContainers);
-						event.setSender(this);
-						eventPublisher.triggerEvent(event);
-					}
-				}
-			}
-		});
-	}
+    public void setCurrentViewType(EContainedViewType currentViewType) {
+	this.currentViewType = currentViewType;
+    }
 
-	public void openCreatePathwayGroupDialog(
-			final ATableBasedDataDomain sourceDataDomain,
-			final RecordVirtualArray sourceRecordVA) {
-		getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				Shell shell = new Shell();
-				// shell.setSize(500, 800);
+    public boolean isSizeFixed() {
+	return isSizeFixed;
+    }
 
-				CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
-						shell, dataContainer);
-				dialog.create();
-				dialog.setSourceDataDomain(sourceDataDomain);
-				dialog.setSourceVA(sourceRecordVA);
-				dialog.setDimensionPerspective(dataContainer.getDimensionPerspective());
-				dialog.setRecordPerspective(dataContainer.getRecordPerspective());
+    public void setSizeFixed(boolean isSizeFixed) {
+	this.isSizeFixed = isSizeFixed;
+    }
 
-				dialog.setBlockOnOpen(true);
+    /**
+     * Hides the handles of the brick.
+     */
+    public void hideHandles() {
+	brickLayout.setShowHandles(false);
+	templateRenderer.updateLayout();
+    }
 
-				if (dialog.open() == Status.OK) {
-					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+    public ElementLayout getWrappingLayout() {
+	return wrappingLayout;
+    }
 
-					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
-							.getPathwayDimensionGroupData();
+    public IBrickConfigurer getBrickConfigurer() {
+	return brickConfigurer;
+    }
 
-					// IDataDomain pathwayDataDomain = DataDomainManager.get()
-					// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
-					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
-					dataContainers.add(pathwayDimensionGroupData);
-					event.setDataContainers(dataContainers);
-					event.setSender(this);
-					eventPublisher.triggerEvent(event);
-				}
-			}
-		});
-	}
+    public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
+	this.brickConfigurer = brickConfigurer;
+    }
 
-	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-			IDType idType, int id) throws InvalidAttributeValueException {
-		// TODO Auto-generated method stub
-		return null;
-	}
+    public void openCreateSmallPathwayMultiplesGroupDialog(
+	    final DataContainer dimensionGroupDataContainer,
+	    final DimensionPerspective dimensionPerspective) {
+	getParentComposite().getDisplay().asyncExec(new Runnable() {
+	    @Override
+	    public void run() {
+		Shell shell = new Shell();
+		// shell.setSize(500, 800);
 
+		CreateSmallPathwayMultiplesGroupDialog dialog = new CreateSmallPathwayMultiplesGroupDialog(
+			shell, dimensionGroupDataContainer,
+			dimensionPerspective);
+		dialog.create();
+		dialog.setBlockOnOpen(true);
+
+		if (dialog.open() == Status.OK) {
+		    AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
+		    ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+
+		    List<PathwayDimensionGroupData> pathwayDimensionGroupDataList = dialog
+			    .getPathwayDimensionGroupDataList();
+
+		    for (PathwayDimensionGroupData pathwayDimensionGroupData : pathwayDimensionGroupDataList) {
+			dataContainers.add(pathwayDimensionGroupData);
+			event.setDataContainers(dataContainers);
+			event.setSender(this);
+			eventPublisher.triggerEvent(event);
+		    }
+		}
+	    }
+	});
+    }
+
+    public void openCreatePathwayGroupDialog(
+	    final ATableBasedDataDomain sourceDataDomain,
+	    final RecordVirtualArray sourceRecordVA) {
+	getParentComposite().getDisplay().asyncExec(new Runnable() {
+	    @Override
+	    public void run() {
+		Shell shell = new Shell();
+		// shell.setSize(500, 800);
+
+		CreatePathwayComparisonGroupDialog dialog = new CreatePathwayComparisonGroupDialog(
+			shell, dataContainer);
+		dialog.create();
+		dialog.setSourceDataDomain(sourceDataDomain);
+		dialog.setSourceVA(sourceRecordVA);
+		dialog.setDimensionPerspective(dataContainer
+			.getDimensionPerspective());
+		dialog.setRecordPerspective(dataContainer
+			.getRecordPerspective());
+
+		dialog.setBlockOnOpen(true);
+
+		if (dialog.open() == Status.OK) {
+		    AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
+		    ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
+
+		    PathwayDimensionGroupData pathwayDimensionGroupData = dialog
+			    .getPathwayDimensionGroupData();
+
+		    // IDataDomain pathwayDataDomain = DataDomainManager.get()
+		    // .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+		    // pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
+		    dataContainers.add(pathwayDimensionGroupData);
+		    event.setDataContainers(dataContainers);
+		    event.setSender(this);
+		    eventPublisher.triggerEvent(event);
+		}
+	    }
+	});
+    }
+
+    @Override
+    protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+	    IDType idType, int id) throws InvalidAttributeValueException {
+	// TODO Auto-generated method stub
+	return null;
+    }
+
+    /**
+     * @return the isDefaultLabel, see {@link #isDefaultLabel}
+     */
+    public boolean isDefaultLabel() {
+	return isDefaultLabel;
+    }
 }
