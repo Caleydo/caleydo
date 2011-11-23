@@ -12,10 +12,10 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
@@ -154,6 +154,33 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 		.getDimensionGroup().getVisBricksView(),
 		dataContainer.getLabel(), PickingType.DIMENSION_GROUP.name(),
+		layoutTemplate.getDimensionGroup().getID());
+	captionLayout.setRenderer(captionRenderer);
+
+	headerBarElements.add(captionLayout);
+
+	return headerBarElements;
+    }
+
+    /**
+     * Create the elements which should be shown in the heading of cluster
+     * bricks
+     * 
+     * @param layoutTemplate
+     * @return
+     */
+    protected ArrayList<ElementLayout> createHeaderBarElements(
+	    DefaultBrickLayoutTemplate layoutTemplate) {
+	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
+
+	ElementLayout captionLayout = new ElementLayout("caption1");
+
+	captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+	captionLayout.setFrameColor(0, 0, 1, 1);
+
+	LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
+		.getDimensionGroup().getVisBricksView(),
+		layoutTemplate.getBrick().getDataContainer().getRecordPerspective().getLabel(), PickingType.DIMENSION_GROUP.name(),
 		layoutTemplate.getDimensionGroup().getID());
 	captionLayout.setRenderer(captionRenderer);
 

@@ -9,11 +9,11 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
@@ -43,6 +43,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
     protected static final int VIEW_SWITCHING_MODE_BUTTON_ID = 5;
 
     // protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+    protected ArrayList<ElementLayout> headerBarElements;
     protected ArrayList<ElementLayout> toolBarElements;
     protected ArrayList<ElementLayout> footerBarElements;
     protected Row toolBar;
@@ -173,6 +174,17 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	baseColumn.append(viewLayout);
 	baseColumn.append(spacingLayoutY);
 
+	if(headerBarElements != null && headerBarElements.size() != 0)
+	{
+	    Row headerRow = new Row("HeaderBar");
+	    headerRow.setYDynamic(true);
+	    for(ElementLayout layout : headerBarElements)
+	    {
+		headerRow.append(layout);
+	    }
+	    baseColumn.append(headerRow);
+	}
+	
 	baseColumn.append(spacingLayoutY);
 
 	ElementLayout rightRelationIndicatorLayout = new ElementLayout(
@@ -209,8 +221,9 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		"lockResizingButton");
 	lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 	lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-	lockResizingButtonLayout.setRenderer(new ButtonRenderer(
-		lockResizingButton, brick, brick.getTextureManager(), BUTTON_Z));
+	lockResizingButtonLayout
+		.setRenderer(new ButtonRenderer(lockResizingButton, brick,
+			brick.getTextureManager(), BUTTON_Z));
 
 	ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 		"viewSwitchtingButtonLayout");
@@ -409,6 +422,23 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
      */
     public void showFooterBar(boolean showFooterBar) {
 	this.showFooterBar = showFooterBar;
+    }
+
+    /**
+     * @return The elements displayed in the header bar.
+     */
+    public ArrayList<ElementLayout> getHeaderBarElements() {
+	return headerBarElements;
+    }
+
+    /**
+     * Sets the elements that should appear in the header bar. The elements will
+     * placed from left to right using the order of the specified list.
+     * 
+     * @param headerBarElements
+     */
+    public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+	this.headerBarElements = headerBarElements;
     }
 
     @Override

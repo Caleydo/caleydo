@@ -38,11 +38,11 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
@@ -537,18 +537,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 	}
 
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
-		switch (pickingType) {
-		case MOVE_VERTICALLY_HANDLE:
-			if (pickingMode == PickingMode.CLICKED) {
-				isVerticalMoveDraggingActive = true;
-			}
-			break;
-		}
-
-	}
 
 	@Override
 	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
@@ -1012,5 +1000,13 @@ public class DimensionGroup extends ATableBasedView implements
 			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
+	}
+	
+	/**
+	 * @param isVerticalMoveDraggingActive setter, see {@link #isVerticalMoveDraggingActive}
+	 */
+	public void setVerticalMoveDraggingActive(
+		boolean isVerticalMoveDraggingActive) {
+	    this.isVerticalMoveDraggingActive = isVerticalMoveDraggingActive;
 	}
 }

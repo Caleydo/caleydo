@@ -38,12 +38,12 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallPathwayMultiplesGroupItem;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
@@ -328,8 +328,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		GLVisBricks visBricks = getDimensionGroup().getVisBricksView();
 
 		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
-				PickingType.BRICK, getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK,
+				PickingType.BRICK.name(), getID()));
+		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK.name(),
 				getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);

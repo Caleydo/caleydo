@@ -6,8 +6,8 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -51,7 +51,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		GLVisBricks visBricks = brick.getDimensionGroup().getVisBricksView();
 
 		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
-				PickingType.BRICK, brick.getID()));
+				PickingType.BRICK.name(), brick.getID()));
 //		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 //				PickingType.BRICK, brick.getID()));
 		gl.glBegin(GL2.GL_QUADS);

@@ -25,12 +25,12 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 
 	private AGLView view;
 	private String caption;
-	private PickingType pickingType;
+	private String pickingType;
 	private TextureManager textureManager;
 	private EIconTextures texture;
 	private int id;
 
-	public CompactPathwayRenderer(AGLView view, String caption, PickingType pickingType,
+	public CompactPathwayRenderer(AGLView view, String caption, String pickingType,
 			int id, TextureManager textureManager, EIconTextures texture) {
 		this.view = view;
 		this.caption = caption;
