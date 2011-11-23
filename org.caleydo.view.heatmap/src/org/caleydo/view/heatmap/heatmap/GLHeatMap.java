@@ -114,7 +114,7 @@ public class GLHeatMap extends ATableBasedView {
 		if (detailedRenderingTemplate == null)
 			detailedRenderingTemplate = new DefaultTemplate(this);
 
-		layoutManager.setTemplate(detailedRenderingTemplate);
+		layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 		layoutManager.updateLayout();
 
 	}
@@ -167,13 +167,13 @@ public class GLHeatMap extends ATableBasedView {
 			return;
 		super.setDetailLevel(detailLevel);
 		if (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM) {
-			layoutManager.setTemplate(detailedRenderingTemplate);
+			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
 		}
 
 		else {
-			layoutManager.setTemplate(textureTemplate);
+			layoutManager.setStaticLayoutConfiguration(textureTemplate);
 			showCaptions = false;
 		}
 
@@ -252,7 +252,6 @@ public class GLHeatMap extends ATableBasedView {
 
 			case CLICKED:
 				selectionType = SelectionType.SELECTION;
-				setActive(true);
 				break;
 
 			case MOUSE_OVER:
@@ -666,11 +665,6 @@ public class GLHeatMap extends ATableBasedView {
 			return 0;
 	}
 
-	public void setActive(boolean isActive) {
-		this.isActive = isActive;
-		layoutManager.setActive(isActive);
-		setDisplayListDirty();
-	}
 
 	public boolean isActive() {
 		return isActive;
@@ -719,16 +713,6 @@ public class GLHeatMap extends ATableBasedView {
 		detailedRenderingTemplate.setStaticLayouts();
 	}
 
-	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
-
-		if (getZoomedElements().size() > 0)
-			this.setActive(true);
-		else
-			this.setActive(false);
-	}
 
 	public java.util.Set<Integer> getZoomedElements() {
 		java.util.Set<Integer> zoomedElements = new HashSet<Integer>(

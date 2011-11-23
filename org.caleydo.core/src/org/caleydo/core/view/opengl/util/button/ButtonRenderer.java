@@ -26,7 +26,8 @@ public class ButtonRenderer
 	// private AGLView view;
 	private Button button;
 	private int textureRotation;
-	private float zCoordinate = 0;
+	/** The z-coordinate of the button, defaults to 0.02 */
+	private float zCoordinate = 0.02f;
 
 	/**
 	 * Constructor.
@@ -46,6 +47,25 @@ public class ButtonRenderer
 		this.button = button;
 		this.textureManager = textureManager;
 		textureRotation = TEXTURE_ROTATION_0;
+	}
+
+	/**
+	 * Same as {@link #ButtonRenderer(Button, AGLView, TextureManager)} but with additional zCoordinate for
+	 * button
+	 * 
+	 * @param button
+	 * @param view
+	 * @param textureManager
+	 * @param zCoordinate
+	 */
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager, float zCoordinate) {
+		// this.view = view;
+		this.view = view;
+		this.button = button;
+		this.textureManager = textureManager;
+		this.zCoordinate = zCoordinate;
+		textureRotation = TEXTURE_ROTATION_0;
+
 	}
 
 	/**
@@ -70,23 +90,39 @@ public class ButtonRenderer
 		this.textureRotation = textureRotation;
 	}
 
+	/**
+	 * Same as {@link #ButtonRenderer(Button, AGLView, TextureManager, int)} but with additional zCoordinate
+	 * for button
+	 * 
+	 * @param button
+	 * @param view
+	 * @param textureManager
+	 * @param textureRotation
+	 * @param zCoordinate
+	 */
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager, int textureRotation,
+		float zCoordinate) {
+		this.view = view;
+		this.button = button;
+		this.textureManager = textureManager;
+		this.textureRotation = textureRotation;
+		this.zCoordinate = zCoordinate;
+	}
+
 	@Override
 	public void render(GL2 gl) {
-//GLHelperFunctions.drawAxis(gl);
+		// GLHelperFunctions.drawAxis(gl);
 		if (!button.isVisible())
 			return;
-		
-		gl.glPushMatrix();
-		gl.glTranslatef(0, 0, zCoordinate);
+
 		pushNames(gl);
 		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), button.getPickingType(),
 			button.getButtonID()));
 
-		
-		Vec3f lowerLeftCorner = new Vec3f(0, 0, 0.02f);
-		Vec3f lowerRightCorner = new Vec3f(x, 0, 0.02f);
-		Vec3f upperRightCorner = new Vec3f(x, y, 0.02f);
-		Vec3f upperLeftCorner = new Vec3f(0, y, 0.02f);
+		Vec3f lowerLeftCorner = new Vec3f(0, 0, zCoordinate);
+		Vec3f lowerRightCorner = new Vec3f(x, 0, zCoordinate);
+		Vec3f upperRightCorner = new Vec3f(x, y, zCoordinate);
+		Vec3f upperLeftCorner = new Vec3f(0, y, zCoordinate);
 
 		switch (textureRotation) {
 			case TEXTURE_ROTATION_0:
@@ -109,31 +145,30 @@ public class ButtonRenderer
 
 		if (button.isSelected()) {
 
-			gl.glColor4f(0.7f, 0.7f, 0.7f, 0.5f);
+			gl.glColor4f(0.7f, 0.7f, 0.7f, zCoordinate * 1.1f);
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glVertex3f(0, 0, 0);
-			gl.glColor4f(0.55f, 0.55f, 0.55f, 0.5f);
+			gl.glColor4f(0.55f, 0.55f, 0.55f, zCoordinate * 1.1f);
 			gl.glVertex3f(x, 0, 0);
-			gl.glColor4f(0.3f, 0.3f, 0.3f, 0.5f);
+			gl.glColor4f(0.3f, 0.3f, 0.3f, zCoordinate * 1.1f);
 			gl.glVertex3f(x, y, 0);
-			gl.glColor4f(0.55f, 0.55f, 0.55f, 0.5f);
+			gl.glColor4f(0.55f, 0.55f, 0.55f, zCoordinate * 1.1f);
 			gl.glVertex3f(0, y, 0);
 			gl.glEnd();
 
 			gl.glLineWidth(1);
 			gl.glColor3f(0.3f, 0.3f, 0.3f);
 			gl.glBegin(GL2.GL_LINE_LOOP);
-			gl.glVertex3f(0, 0, 0);
-			gl.glVertex3f(x, 0, 0);
-			gl.glVertex3f(x, y, 0);
-			gl.glVertex3f(0, y, 0);
+			gl.glVertex3f(0, 0, zCoordinate);
+			gl.glVertex3f(x, 0, zCoordinate);
+			gl.glVertex3f(x, y, zCoordinate);
+			gl.glVertex3f(0, y, zCoordinate);
 			gl.glEnd();
 
 		}
 
 		popNames(gl);
 		gl.glPopName();
-		gl.glPopMatrix();
 
 	}
 
@@ -145,10 +180,17 @@ public class ButtonRenderer
 		this.textureRotation = textureRotation;
 	}
 
-	public void setZCoordinate(float z) {
-		this.zCoordinate = z;
+	/**
+	 * @param zCoordinate
+	 *            setter, see {@link #zCoordinate}
+	 */
+	public void setZCoordinate(float zCoordinate) {
+		this.zCoordinate = zCoordinate;
 	}
 
+	/**
+	 * @return the zCoordinate, see {@link #zCoordinate}
+	 */
 	public float getZCoordinate() {
 		return zCoordinate;
 	}

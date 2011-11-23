@@ -37,12 +37,8 @@ public class LayoutManager {
 		this.pixelGLConverter = pixelGLConverter;
 	}
 
-	PixelGLConverter getPixelGLConverter() {
+	public PixelGLConverter getPixelGLConverter() {
 		return pixelGLConverter;
-	}
-
-	public ElementLayout getBaseLayoutElement() {
-		return baseElementLayout;
 	}
 
 	public void setViewFrustum(ViewFrustum viewFrustum) {
@@ -51,7 +47,12 @@ public class LayoutManager {
 		updateLayout();
 	}
 
-	public void setTemplate(LayoutConfiguration layoutConfiguration) {
+	/**
+	 * Set a static layout configuration which contains an ElementLayout which is accessible using
+	 * {@link LayoutConfiguration#getBaseElementLayout()}, which is set as the {@link #baseElementLayout} of
+	 * this {@link LayoutManager}.
+	 */
+	public void setStaticLayoutConfiguration(LayoutConfiguration layoutConfiguration) {
 		this.layoutConfiguration = layoutConfiguration;
 		layoutConfiguration.setStaticLayouts();
 		setBaseElementLayout(layoutConfiguration.getBaseElementLayout());
@@ -71,15 +72,15 @@ public class LayoutManager {
 
 		// template.getBaseLayoutElement().destroy();
 
-//		if (layoutConfiguration != null) {
-//			layoutConfiguration.setStaticLayouts();
-//			setBaseElementLayout(layoutConfiguration.getBaseElementLayout());
-//		}
+		// if (layoutConfiguration != null) {
+		// layoutConfiguration.setStaticLayouts();
+		// setBaseElementLayout(layoutConfiguration.getBaseElementLayout());
+		// }
 		// should we do this here? we could integrate this with another traversal
 		baseElementLayout.setLayoutManager(this);
 		calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth, totalHeight);
 
-		getBaseLayoutElement().updateSpacings();
+		baseElementLayout.updateSpacings();
 	}
 
 	/**
@@ -88,7 +89,7 @@ public class LayoutManager {
 	 * @param gl
 	 */
 	public void render(GL2 gl) {
-		getBaseLayoutElement().render(gl);
+		baseElementLayout.render(gl);
 	}
 
 	/**
@@ -115,11 +116,5 @@ public class LayoutManager {
 		this.baseElementLayout = baseElementLayout;
 	}
 
-	public void setActive(boolean isActive) {
-		if (this.isActive != isActive) {
-			this.isActive = isActive;
-			layoutConfiguration.setStaticLayouts();
-		}
-	}
 
 }

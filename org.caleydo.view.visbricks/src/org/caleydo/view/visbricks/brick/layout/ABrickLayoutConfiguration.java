@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.HashSet;
 
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
-import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -309,10 +307,4 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 			viewLayout = null;
 		}
 	}
-
-	/** Returns the toolbar for the brick or null if the brick has no toolbar */
-	public Row getToolBar() {
-		return null;
-	}
-
 }

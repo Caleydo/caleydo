@@ -35,7 +35,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.ILayoutedElement;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -109,15 +108,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	private BrickState expandedBrickState;
 
-	/** The id of the group in the recordVA this brick is rendering. */
-	// private int groupID = -1;
-	/** The group on which the recordVA of this brick is based on */
-	// private Group group;
-
 	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
 
-	private SelectionManager recordGroupSelectionManager;
+	private SelectionManager dataContainerSelectionManager;
 
 	/** The average value of the data of this brick */
 	// private double averageValue = Double.NaN;
@@ -145,7 +139,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	@Override
 	public void initialize() {
 		super.initialize();
-		recordGroupSelectionManager = new SelectionManager(
+		dataContainerSelectionManager = new SelectionManager(
 				DataContainer.DATA_CONTAINER_IDTYPE);
 		registerPickingListeners();
 	}
@@ -180,7 +174,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					.getViewRenderer());
 		}
 
-		templateRenderer.setTemplate(brickLayout);
+		templateRenderer.setStaticLayoutConfiguration(brickLayout);
 		float defaultHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
 				.getDefaultHeightPixels());
 		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
@@ -194,16 +188,16 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void clicked(Pick pick) {
 
-				SelectionType currentSelectionType = recordGroupSelectionManager.getSelectionType();
-				recordGroupSelectionManager.clearSelection(currentSelectionType);
+				SelectionType currentSelectionType = dataContainerSelectionManager.getSelectionType();
+				dataContainerSelectionManager.clearSelection(currentSelectionType);
 
-				recordGroupSelectionManager.addToType(currentSelectionType,
+				dataContainerSelectionManager.addToType(currentSelectionType,
 						dataContainer.getID());
 
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setDataDomainID(getDataDomain().getDataDomainID());
 				event.setSender(this);
-				SelectionDelta delta = recordGroupSelectionManager.getDelta();
+				SelectionDelta delta = dataContainerSelectionManager.getDelta();
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 
@@ -332,6 +326,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// templateRenderer.updateLayout();
 		// }
 
+		GLVisBricks visBricks = getDimensionGroup().getVisBricksView();
+
+		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
+				PickingType.BRICK, getID()));
 		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK,
 				getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
@@ -346,6 +344,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
+		gl.glPopName();
 		gl.glPopName();
 
 		templateRenderer.render(gl);
@@ -402,11 +401,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 	}
 
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int pickingID, Pick pick) {
-
-	}
 
 	/** resize of a brick */
 	private void handleBrickResize(GL2 gl) {
@@ -482,35 +476,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	}
 
-	// /**
-	// * Set the recordVA this brick should render plus the groupID that is
-	// * associated with this recordVA.
-	// *
-	// * @param groupID
-	// * @param recordVA
-	// */
-	// public void setRecordVA(Group group, RecordVirtualArray recordVA) {
-	// this.group = group;
-	// if (group != null)
-	// this.groupID = group.getGroupID();
-	// this.recordVA = recordVA;
-	// }
-
-	// @Override
-	// public void setDataContainer(DataContainer dataContainer) {
-	// super.setDataContainer(dataContainer);
-	//
-	// }
-
-	// /**
-	// * Set the group of this brick.
-	// *
-	// * @param group
-	// */
-	// public void setGroup(Group group) {
-	// this.group = group;
-	// this.groupID = group.getGroupID();
-	// }
+	
 
 	/**
 	 * Set the {@link GLVisBricks} view managing this brick, which is needed for
@@ -540,24 +506,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		return dimensionGroup;
 	}
 
-	/**
-	 * Returns the group ID of the data this brick is currently rendering
-	 * 
-	 * @return
-	 */
-	// public int getGroupID() {
-	// return groupID;
-	// }
-
-	/**
-	 * Returns the group on which the recordVA of this brick is based on.
-	 * 
-	 * @return
-	 */
-	// public Group getGroup() {
-	// return return group;
-	//
-	// }
+	
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
@@ -565,43 +514,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		return null;
 	}
 
-	// private void calculateAverageValueForBrick() {
-	// averageValue = 0;
-	// int count = 0;
-	// if (recordVA == null)
-	// throw new IllegalStateException("recordVA was null");
-	// for (Integer contenID : recordVA) {
-	// DimensionData dimensionData = table.getDimensionData(Set.STORAGE);
-	// if (dimensionData == null) {
-	// averageValue = 0;
-	// return;
-	// }
-	//
-	// DimensionVirtualArray dimensionVA = dimensionData.getDimensionVA();
-	//
-	// if (dimensionVA == null) {
-	// averageValue = 0;
-	// return;
-	// }
-	// for (Integer dimensionID : dimensionVA) {
-	// float value =
-	// table.get(dimensionID).getFloat(EDataRepresentation.NORMALIZED,
-	// contenID);
-	// if (!Float.isNaN(value)) {
-	// averageValue += value;
-	// count++;
-	// }
-	// }
-	// }
-	// averageValue /= count;
-	//
-	// }
-
-	// public double getAverageValue() {
-	// if (Double.isNaN(averageValue))
-	// calculateAverageValueForBrick();
-	// return averageValue;
-	// }
+	
 
 	@Override
 	public void setFrustum(ViewFrustum viewFrustum) {
@@ -610,10 +523,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			templateRenderer.updateLayout();
 	}
 
-	// public DataTable getTable() {
-	// return set;
-	// }
-
+	
 	/**
 	 * Sets the type of view that should be rendered in the brick. The view type
 	 * is not set, if it is not valid for the current brick layout.
@@ -671,7 +581,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			wrappingLayout.setAbsoluteSizeY(defaultHeight);
 			wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
-		templateRenderer.setTemplate(brickLayout);
+		
+		templateRenderer.setStaticLayoutConfiguration(brickLayout);
 		templateRenderer.updateLayout();
 
 		visBricks.updateLayout();
@@ -703,7 +614,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			isInOverviewMode = false;
 
 		if (templateRenderer != null) {
-			templateRenderer.setTemplate(brickLayout);
+			templateRenderer.setStaticLayoutConfiguration(brickLayout);
 			if (brickLayout.isViewTypeValid(viewType)) {
 				setContainedView(viewType);
 			} else {
@@ -836,17 +747,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @return
 	 */
 	public SelectionManager getRecordGroupSelectionManager() {
-		return recordGroupSelectionManager;
+		return dataContainerSelectionManager;
 	}
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
-		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
-			recordGroupSelectionManager.setDelta(selectionDelta);
+		if (selectionDelta.getIDType() == dataContainerSelectionManager.getIDType()) {
+			dataContainerSelectionManager.setDelta(selectionDelta);
 
-			if (recordGroupSelectionManager
-					.checkStatus(recordGroupSelectionManager.getSelectionType(),
+			if (dataContainerSelectionManager
+					.checkStatus(dataContainerSelectionManager.getSelectionType(),
 							dataContainer.getID())) {
 				brickLayout.setShowHandles(true);
 				brickLayout.setSelected(true);
@@ -864,7 +775,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @return true, if the brick us currently selected, false otherwise
 	 */
 	public boolean isActive() {
-		return recordGroupSelectionManager.checkStatus(SelectionType.SELECTION,
+		return dataContainerSelectionManager.checkStatus(SelectionType.SELECTION,
 				dataContainer.getID());
 	}
 

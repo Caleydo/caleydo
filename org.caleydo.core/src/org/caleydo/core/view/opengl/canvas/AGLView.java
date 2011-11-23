@@ -689,7 +689,7 @@ public abstract class AGLView
 
 		}
 		for (IPickingListener listener : pickingListeners) {
-			if (listener.getClass() == pickingListener.getClass()) {
+			if (listener == pickingListener) {
 				return;
 			}
 		}
@@ -826,10 +826,12 @@ public abstract class AGLView
 	 * @param pick
 	 *            the pick object which can be useful to retrieve for example the mouse position when the pick
 	 *            occurred
+	 * @deprecated replaced by picking listeners. No longer abstract since it's not neccessary for views to implement
 	 */
 	@Deprecated
-	abstract protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
-		final int pickingID, final Pick pick);
+	protected void handlePickingEvents(final PickingType pickingType, final PickingMode pickingMode,
+		final int pickingID, final Pick pick) {
+	}
 
 	public final IViewCamera getViewCamera() {
 		return viewCamera;
