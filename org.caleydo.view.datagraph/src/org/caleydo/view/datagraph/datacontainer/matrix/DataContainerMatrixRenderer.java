@@ -1,6 +1,7 @@
 package org.caleydo.view.datagraph.datacontainer.matrix;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -13,7 +14,6 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
@@ -28,6 +28,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.contextmenu.AddDataContainerItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
+import org.caleydo.view.datagraph.datacontainer.DataContainerPickingListener;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
@@ -76,68 +77,75 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		if (pickingListenersRegistered)
 			return;
 
-		view.addTypePickingListener(new APickingListener() {
+		// view.addTypePickingListener(new APickingListener() {
+		//
+		// @Override
+		// public void clicked(Pick pick) {
+		// DimensionGroupRenderer dimensionGroupRenderer =
+		// getDimensionGroupRenderer(pick
+		// .getID());
+		// if (dimensionGroupRenderer == null)
+		// return;
+		//
+		// dimensionGroupRenderer
+		// .setSelectionType(SelectionType.SELECTION);
+		//
+		// dragAndDropController.clearDraggables();
+		// dragAndDropController.setDraggingStartPosition(pick
+		// .getPickedPoint());
+		// dragAndDropController.addDraggable(dimensionGroupRenderer);
+		// view.setDisplayListDirty();
+		//
+		// }
+		//
+		// @Override
+		// public void mouseOver(Pick pick) {
+		// DimensionGroupRenderer dimensionGroupRenderer =
+		// getDimensionGroupRenderer(pick
+		// .getID());
+		// if (dimensionGroupRenderer == null)
+		// return;
+		//
+		// dimensionGroupRenderer.setColor(dimensionGroupRenderer
+		// .getBorderColor());
+		// view.setDisplayListDirty();
+		// }
+		//
+		// @Override
+		// public void mouseOut(Pick pick) {
+		// DimensionGroupRenderer dimensionGroupRenderer =
+		// getDimensionGroupRenderer(pick
+		// .getID());
+		// if (dimensionGroupRenderer == null)
+		// return;
+		//
+		// dimensionGroupRenderer
+		// .setColor(dataDomain.getColor().getRGBA());
+		// view.setDisplayListDirty();
+		// }
+		//
+		// @Override
+		// public void dragged(Pick pick) {
+		// if (!dragAndDropController.isDragging()) {
+		// dragAndDropController.startDragging("DimensionGroupDrag");
+		// }
+		// }
+		//
+		// private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
+		// for (DimensionGroupRenderer dimensionGroupRenderer :
+		// dimensionGroupRenderers
+		// .keySet()) {
+		// if (dimensionGroupRenderer.getDataContainer().getID() == id) {
+		// return dimensionGroupRenderer;
+		// }
+		// }
+		// return null;
+		// }
+		//
+		// }, DIMENSION_GROUP_PICKING_TYPE + node.getID());
 
-			@Override
-			public void clicked(Pick pick) {
-				DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
-						.getID());
-				if (dimensionGroupRenderer == null)
-					return;
-
-				dimensionGroupRenderer
-						.setSelectionType(SelectionType.SELECTION);
-
-				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick
-						.getPickedPoint());
-				dragAndDropController.addDraggable(dimensionGroupRenderer);
-				view.setDisplayListDirty();
-
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-				DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
-						.getID());
-				if (dimensionGroupRenderer == null)
-					return;
-
-				dimensionGroupRenderer.setColor(dimensionGroupRenderer
-						.getBorderColor());
-				view.setDisplayListDirty();
-			}
-
-			@Override
-			public void mouseOut(Pick pick) {
-				DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick
-						.getID());
-				if (dimensionGroupRenderer == null)
-					return;
-
-				dimensionGroupRenderer
-						.setColor(dataDomain.getColor().getRGBA());
-				view.setDisplayListDirty();
-			}
-
-			@Override
-			public void dragged(Pick pick) {
-				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging("DimensionGroupDrag");
-				}
-			}
-
-			private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
-				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers
-						.keySet()) {
-					if (dimensionGroupRenderer.getDataContainer().getID() == id) {
-						return dimensionGroupRenderer;
-					}
-				}
-				return null;
-			}
-
-		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
+		view.addTypePickingListener(new DataContainerPickingListener(view,
+				dragAndDropController, this), DIMENSION_GROUP_PICKING_TYPE + node.getID());
 
 		view.addTypePickingListener(new APickingListener() {
 
@@ -874,6 +882,11 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		view.removeAllTypePickingListeners(COLLAPSE_BUTTON_PICKING_TYPE
 				+ node.getID());
 
+	}
+
+	@Override
+	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers() {
+		return dimensionGroupRenderers.keySet();
 	}
 
 }

@@ -1,6 +1,7 @@
 package org.caleydo.view.datagraph.datacontainer;
 
 import java.awt.geom.Point2D;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -82,5 +83,7 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 			List<Pair<String, Integer>> pickingIDsToBePushed) {
 		this.pickingIDsToBePushed = pickingIDsToBePushed;
 	}
+
+	protected abstract Collection<DimensionGroupRenderer> getDimensionGroupRenderers();
 
 }

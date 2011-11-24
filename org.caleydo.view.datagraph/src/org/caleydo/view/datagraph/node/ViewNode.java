@@ -85,7 +85,8 @@ public class ViewNode extends ADefaultTemplateNode {
 					.getConfigurationElements();
 			for (IConfigurationElement element : elements) {
 				if (element.getAttribute("id").equals(viewID)) {
-					viewName = element.getAttribute("name");
+					viewName = representedView.getViewLabel();
+//							element.getAttribute("name");
 					iconPath = element.getAttribute("icon");
 					viewNameObtained = true;
 					break;

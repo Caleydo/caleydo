@@ -107,4 +107,11 @@
           name="DendrogramVerticalViewCreator"
           class="org.caleydo.view.heatmap.creator.ViewCreatorDendrogramVertical" />
    </extension>
+      <extension
+            point="org.caleydo.view.ViewCategory">
+         <ViewCategory
+               isDataView="true"
+               viewID="org.caleydo.view.heatmap.hierarchical">
+         </ViewCategory>
+      </extension>
 </plugin>

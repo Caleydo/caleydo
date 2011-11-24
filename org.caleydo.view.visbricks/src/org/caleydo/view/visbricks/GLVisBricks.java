@@ -194,6 +194,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	super(glCanvas, parentComposite, viewFrustum);
 
 	viewType = GLVisBricks.VIEW_TYPE;
+	viewLabel = "VisBricks";
 
 	connectionRenderer = new ConnectionBandRenderer();
 

@@ -29,7 +29,6 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.matrix.DataContainerMatrixRenderer;
@@ -155,20 +154,6 @@ public class TableBasedDataNode extends ADataNode {
 
 		}, TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
 				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
-
-		// FIXME: Use in DataContainer and get views properly
-		view.addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void rightClicked(Pick pick) {
-				view.getContextMenuCreator()
-						.addContextMenuItem(
-								new CreateViewItem("Parallel Coordinates",
-										"org.caleydo.view.parcoords",
-										dataDomain, null));
-			}
-
-		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override

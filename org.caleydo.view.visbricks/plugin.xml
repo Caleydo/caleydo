@@ -52,4 +52,11 @@
           name="VisBricksViewCreator"
           class="org.caleydo.view.visbricks.creator.ViewCreator" />
    </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="false"
+            viewID="org.caleydo.view.visbricks">
+      </ViewCategory>
+   </extension>
 </plugin>

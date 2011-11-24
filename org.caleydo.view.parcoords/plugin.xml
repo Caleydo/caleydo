@@ -44,4 +44,11 @@
           name="ParCoordsViewCreator"
           class="org.caleydo.view.parcoords.creator.ViewCreator" />
    </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="true"
+            viewID="org.caleydo.view.parcoords">
+      </ViewCategory>
+   </extension>
 </plugin>

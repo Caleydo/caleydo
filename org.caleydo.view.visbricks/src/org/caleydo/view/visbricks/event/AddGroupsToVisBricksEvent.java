@@ -1,6 +1,7 @@
 package org.caleydo.view.visbricks.event;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.graph.tree.ClusterNode;
@@ -29,7 +30,8 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	// private ArrayList<ClusterNode> selectedNodes;
 	// private boolean createFromNodes = true;
 
-	ArrayList<DataContainer> subDataContainers = null;
+	List<DataContainer> subDataContainers = null;
+	private GLVisBricks receiver;
 
 	public AddGroupsToVisBricksEvent() {
 		// createFromNodes = false;
@@ -41,7 +43,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	 * 
 	 * @param subDataContainers
 	 */
-	public AddGroupsToVisBricksEvent(ArrayList<DataContainer> subDataContainers) {
+	public AddGroupsToVisBricksEvent(List<DataContainer> subDataContainers) {
 		this.subDataContainers = subDataContainers;
 		// createFromNodes = false;
 	}
@@ -91,7 +93,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		this.subDataContainers = dataContainers;
 	}
 
-	public ArrayList<DataContainer> getDataContainers() {
+	public List<DataContainer> getDataContainers() {
 
 		// case 1: pre-existing dimension group data list
 		if (subDataContainers != null)
@@ -127,6 +129,14 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		// }
 		// return subDataContainers;
 		// }
+	}
+
+	public GLVisBricks getReceiver() {
+		return receiver;
+	}
+
+	public void setReceiver(GLVisBricks receiver) {
+		this.receiver = receiver;
 	}
 
 }

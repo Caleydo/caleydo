@@ -272,7 +272,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		if (!lazyMode)
 			checkForHits(gl);
-		
+
 		dragAndDropController.handleDragging(gl, glMouseListener);
 
 		isRendered = true;
@@ -1036,7 +1036,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	public void createView(final String viewType, final IDataDomain dataDomain,
-			DataContainer dataContainer) {
+			final DataContainer dataContainer) {
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1048,6 +1048,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
 					rcpViewInitData.setDataDomainID(dataDomain
 							.getDataDomainID());
+					rcpViewInitData.setDataContainer(dataContainer);
 					RCPViewManager.get().addRCPView(secondaryID,
 							rcpViewInitData);
 
@@ -1140,5 +1141,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public ADataNode getDataNode(IDataDomain dataDomain) {
 		return dataNodesOfDataDomains.get(dataDomain);
+	}
+
+	public Set<ViewNode> getViewNodes() {
+		return viewNodes;
 	}
 }

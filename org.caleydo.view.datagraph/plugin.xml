@@ -17,6 +17,9 @@
             id="org.caleydo.view.datagraph"
             name="DataGraph"
             restorable="true">
+         <description>
+            description body text
+         </description>
       </view>
    </extension>
    <extension
@@ -42,6 +45,13 @@
           id="org.caleydo.view.ViewCreator"
           name="DataGraphViewCreator"
           class="org.caleydo.view.datagraph.creator.ViewCreator" />
+   </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="false"
+            viewID="org.caleydo.view.datagraph">
+      </ViewCategory>
    </extension>
 
 </plugin>

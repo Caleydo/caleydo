@@ -25,6 +25,7 @@ import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
+import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
 public class VisBricksNode extends ViewNode implements IDropArea {
@@ -176,6 +177,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 			System.out.println("Drop");
 			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
 					dataContainers.get(0));
+			event.setReceiver((GLVisBricks) representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}
@@ -196,7 +198,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	public void update() {
 		retrieveDataContainers();
 		dataContainerListRenderer.setDataContainers(getDataContainers());
-
+		view.setDisplayListDirty();
 	}
 
 }

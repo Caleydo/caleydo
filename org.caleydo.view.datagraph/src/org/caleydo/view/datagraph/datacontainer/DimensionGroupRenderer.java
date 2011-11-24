@@ -67,18 +67,18 @@ public class DimensionGroupRenderer extends ColorRenderer implements IDraggable 
 		super.render(gl);
 		gl.glPopMatrix();
 
-		if (selectionType != null && selectionType != SelectionType.NORMAL) {
-			gl.glColor4fv(selectionType.getColor(), 0);
-			gl.glPushAttrib(GL2.GL_LINE_BIT);
-			gl.glLineWidth(3);
-			gl.glBegin(GL2.GL_LINE_LOOP);
-			gl.glVertex3f(0, 0, 0.1f);
-			gl.glVertex3f(x, 0, 0.1f);
-			gl.glVertex3f(x, y, 0.1f);
-			gl.glVertex3f(0, y, 0.1f);
-			gl.glEnd();
-			gl.glPopAttrib();
-		}
+//		if (selectionType != null && selectionType != SelectionType.NORMAL) {
+//			gl.glColor4fv(selectionType.getColor(), 0);
+//			gl.glPushAttrib(GL2.GL_LINE_BIT);
+//			gl.glLineWidth(3);
+//			gl.glBegin(GL2.GL_LINE_LOOP);
+//			gl.glVertex3f(0, 0, 0.1f);
+//			gl.glVertex3f(x, 0, 0.1f);
+//			gl.glVertex3f(x, y, 0.1f);
+//			gl.glVertex3f(0, y, 0.1f);
+//			gl.glEnd();
+//			gl.glPopAttrib();
+//		}
 
 		// gl.glPushAttrib(GL2.GL_LINE_BIT);
 		// gl.glLineWidth(2);

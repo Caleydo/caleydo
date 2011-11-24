@@ -1,18 +1,15 @@
 package org.caleydo.view.datagraph.datacontainer;
 
-import java.awt.Point;
 import java.awt.geom.Point2D;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.GLDataGraph;
@@ -40,47 +37,161 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void createPickingListeners() {
-		view.addTypePickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
-				int dimensionGroupID = pick.getID();
-
-				for (DimensionGroupRenderer comparisonGroupRepresentation : dimensionGroupRenderers) {
-					if (comparisonGroupRepresentation.getDataContainer()
-							.getID() == dimensionGroupID) {
-						draggedComparisonGroupRepresentation = comparisonGroupRepresentation;
-						break;
-					}
-				}
-				if (draggedComparisonGroupRepresentation == null)
-					return;
-
-				draggedComparisonGroupRepresentation
-						.setSelectionType(SelectionType.SELECTION);
-				Point point = pick.getPickedPoint();
-				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(new Point(
-						point.x, point.y));
-				dragAndDropController
-						.addDraggable(draggedComparisonGroupRepresentation);
-				view.setDisplayListDirty();
-
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-			}
-
-			@Override
-			public void dragged(Pick pick) {
-				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging("DimensionGroupDrag");
-				}
-			}
-
-		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
+//		view.addTypePickingListener(new APickingListener() {
+//
+//			@Override
+//			public void clicked(Pick pick) {
+//				DimensionGroupRenderer draggedComparisonGroupRepresentation = null;
+//				int dimensionGroupID = pick.getID();
+//
+//				for (DimensionGroupRenderer comparisonGroupRepresentation : dimensionGroupRenderers) {
+//					if (comparisonGroupRepresentation.getDataContainer()
+//							.getID() == dimensionGroupID) {
+//						draggedComparisonGroupRepresentation = comparisonGroupRepresentation;
+//						break;
+//					}
+//				}
+//				if (draggedComparisonGroupRepresentation == null)
+//					return;
+//
+//				draggedComparisonGroupRepresentation
+//						.setSelectionType(SelectionType.SELECTION);
+//				Point point = pick.getPickedPoint();
+//				dragAndDropController.clearDraggables();
+//				dragAndDropController.setDraggingStartPosition(new Point(
+//						point.x, point.y));
+//				dragAndDropController
+//						.addDraggable(draggedComparisonGroupRepresentation);
+//				view.setDisplayListDirty();
+//
+//			}
+//
+//			@Override
+//			public void mouseOver(Pick pick) {
+//			}
+//
+//			@Override
+//			public void dragged(Pick pick) {
+//				if (!dragAndDropController.isDragging()) {
+//					dragAndDropController.startDragging("DimensionGroupDrag");
+//				}
+//			}
+//
+//			@Override
+//			public void rightClicked(Pick pick) {
+//
+//				int dimensionGroupID = pick.getID();
+//				DataContainer dataContainer = null;
+//
+//				for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+//					if (dimensionGroupRenderer.getDataContainer().getID() == dimensionGroupID) {
+//						dataContainer = dimensionGroupRenderer
+//								.getDataContainer();
+//						break;
+//					}
+//				}
+//				if (dataContainer == null)
+//					return;
+//
+//				IExtensionRegistry registry = Platform.getExtensionRegistry();
+//
+//				List<Pair<String, String>> viewTypes = new ArrayList<Pair<String, String>>();
+//
+//				IConfigurationElement[] viewElements = registry
+//						.getConfigurationElementsFor("org.eclipse.ui.views");
+//
+//				IConfigurationElement[] categoryElements = registry
+//						.getConfigurationElementsFor("org.caleydo.view.ViewCategory");
+//
+//				for (IConfigurationElement element : viewElements) {
+//					try {
+//						String bundleID = element.getAttribute("id");
+//						if (bundleID.startsWith("org.caleydo.view.")) {
+//
+//							for (IConfigurationElement category : categoryElements) {
+//
+//								if (category.getAttribute("viewID").equals(
+//										bundleID)
+//										&& new Boolean(category
+//												.getAttribute("isDataView"))) {
+//
+//									int indexOfLastDot = -1;
+//									for (int i = 0; i < 4; i++) {
+//										indexOfLastDot = bundleID.indexOf('.',
+//												indexOfLastDot + 1);
+//									}
+//
+//									bundleID = (indexOfLastDot == -1) ? (bundleID)
+//											: (bundleID.substring(0,
+//													indexOfLastDot));
+//
+//									Bundle bundle = Platform
+//											.getBundle(bundleID);
+//									if (bundle != null) {
+//										bundle.start();
+//										viewTypes.add(new Pair<String, String>(
+//												element.getAttribute("name"),
+//												element.getAttribute("id")));
+//									}
+//								}
+//							}
+//						}
+//					} catch (BundleException e) {
+//						e.printStackTrace();
+//					}
+//				}
+//
+//				Set<String> validViewIDs = DataDomainManager
+//						.get()
+//						.getAssociationManager()
+//						.getViewTypesForDataDomain(
+//								dataContainer.getDataDomain()
+//										.getDataDomainType());
+//
+//				List<Pair<String, String>> finalViewTypes = new ArrayList<Pair<String, String>>();
+//
+//				for (String viewID : validViewIDs) {
+//					for (Pair<String, String> viewType : viewTypes) {
+//						if (viewID.equals(viewType.getSecond())) {
+//							finalViewTypes.add(viewType);
+//						}
+//					}
+//				}
+//
+//				Collections.sort(finalViewTypes);
+//
+//				List<CreateViewItem> createViewItems = new ArrayList<CreateViewItem>();
+//
+//				for (Pair<String, String> viewType : viewTypes) {
+//					createViewItems.add(new CreateViewItem(viewType.getFirst(),
+//							viewType.getSecond(),
+//							dataContainer.getDataDomain(), dataContainer));
+//				}
+//
+//				if (createViewItems.size() > 0) {
+//					view.getContextMenuCreator().addContextMenuItem(
+//							new ShowDataContainerInViewsItem(createViewItems));
+//				}
+//
+//				Set<ViewNode> viewNodes = view.getViewNodes();
+//
+//				if (viewNodes != null) {
+//					for (ViewNode node : viewNodes) {
+//						if (node.getRepresentedView() instanceof GLVisBricks) {
+//							view.getContextMenuCreator().addContextMenuItem(
+//									new AddGroupToVisBricksItem(
+//											(GLVisBricks) node
+//													.getRepresentedView(),
+//											dataContainer));
+//						}
+//					}
+//				}
+//			}
+//
+//		}, DIMENSION_GROUP_PICKING_TYPE + node.getID());
+		
+		view.addTypePickingListener(new DataContainerPickingListener(view,
+				dragAndDropController, this), DIMENSION_GROUP_PICKING_TYPE + node.getID());
 	}
 
 	@Override
@@ -131,7 +242,6 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 					DIMENSION_GROUP_PICKING_TYPE + node.getID(),
 					dimensionGroupRenderer.getDataContainer().getID());
 
-			
 			gl.glPushName(pickingID);
 			if (pickingIDsToBePushed != null) {
 				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed) {
@@ -225,6 +335,11 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 		view.removeAllTypePickingListeners(DIMENSION_GROUP_PICKING_TYPE
 				+ node.getID());
 
+	}
+
+	@Override
+	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers() {
+		return dimensionGroupRenderers;
 	}
 
 }

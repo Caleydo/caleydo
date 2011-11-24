@@ -265,6 +265,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLHierarchicalHeatMap.VIEW_TYPE;
+		viewLabel = "Hierarchical Heat Map";
 
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);

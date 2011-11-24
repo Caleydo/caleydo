@@ -166,14 +166,28 @@ public abstract class CaleydoRCPViewPart
 				RCPViewManager.get().getRCPViewInitializationData(this.getViewSite().getSecondaryId());
 			if (rcpViewInitData != null) {
 				dataDomainID = rcpViewInitData.getDataDomainID();
+
+				DataContainer dataContainer = rcpViewInitData.getDataContainer();
 				serializedTopLevelDataView.setDataDomainID(dataDomainID);
+				if (dataContainer != null) {
+					serializedTopLevelDataView.setRecordPerspectiveID(dataContainer.getRecordPerspective()
+						.getID());
 
-				serializedTopLevelDataView.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager
-					.get().getDataDomainByID(dataDomainID)).getTable().getDefaultRecordPerspective().getID());
+					serializedTopLevelDataView.setDimensionPerspectiveID(dataContainer
+						.getDimensionPerspective().getID());
+				}
+				else {
 
-				serializedTopLevelDataView
-					.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
-						.getDataDomainByID(dataDomainID)).getTable().getDefaultDimensionPerspective().getID());
+					serializedTopLevelDataView
+						.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
+							.getDataDomainByID(dataDomainID)).getTable().getDefaultRecordPerspective()
+							.getID());
+
+					serializedTopLevelDataView
+						.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
+							.getDataDomainByID(dataDomainID)).getTable().getDefaultDimensionPerspective()
+							.getID());
+				}
 			}
 		}
 
