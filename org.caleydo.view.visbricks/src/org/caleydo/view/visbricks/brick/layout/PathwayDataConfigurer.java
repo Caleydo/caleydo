@@ -31,204 +31,195 @@ import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
  */
 public class PathwayDataConfigurer implements IBrickConfigurer {
 
-    protected static final int CAPTION_HEIGHT_PIXELS = 16;
-    protected static final int SPACING_PIXELS = 4;
+	protected static final int CAPTION_HEIGHT_PIXELS = 16;
+	protected static final int SPACING_PIXELS = 4;
 
-    @Override
-    public void configure(CentralBrickLayoutTemplate layoutTemplate) {
+	@Override
+	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
 
-	HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-	validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY);
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY);
 
-	layoutTemplate.setValidViewTypes(validViewTypes);
-	layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY);
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY);
 
-	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
+		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-	headerBarElements.add(createCaptionLayout(layoutTemplate,
-		layoutTemplate.getBrick(), PickingType.DIMENSION_GROUP,
-		layoutTemplate.getDimensionGroup().getID(), layoutTemplate
-			.getDimensionGroup().getVisBricksView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
 
-	headerBarElements.add(createSpacingLayout(layoutTemplate, true));
+		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
-	layoutTemplate.setHeaderBarElements(headerBarElements);
+		layoutTemplate.setHeaderBarElements(headerBarElements);
 
-	layoutTemplate.showFooterBar(false);
-	layoutTemplate.showToolBar(false);
+		layoutTemplate.showFooterBar(false);
+		layoutTemplate.showToolBar(false);
 
-    }
-
-    @Override
-    public void configure(CompactBrickLayoutTemplate layoutTemplate) {
-	HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-	validViewTypes.add(EContainedViewType.PATHWAY_COMPACT);
-
-	layoutTemplate.setValidViewTypes(validViewTypes);
-	layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_COMPACT);
-
-	layoutTemplate.showFooterBar(false);
-    }
-
-    @Override
-    public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
-	HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-	validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
-
-	layoutTemplate.setValidViewTypes(validViewTypes);
-	layoutTemplate
-		.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
-
-	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
-
-	headerBarElements.add(createCaptionLayout(layoutTemplate,
-		layoutTemplate.getBrick(), PickingType.DIMENSION_GROUP,
-		layoutTemplate.getDimensionGroup().getID(), layoutTemplate
-			.getDimensionGroup().getVisBricksView()));
-	headerBarElements.add(createSpacingLayout(layoutTemplate, true));
-
-	layoutTemplate.setHeaderBarElements(headerBarElements);
-
-	layoutTemplate.showFooterBar(false);
-    }
-
-    @Override
-    public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
-	HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-	validViewTypes.add(EContainedViewType.PATHWAY_VIEW);
-
-	layoutTemplate.setValidViewTypes(validViewTypes);
-	layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
-
-	ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
-
-	toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-		.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
-		.getID(), layoutTemplate.getBrick()));
-	toolBarElements.add(createSpacingLayout(layoutTemplate, true));
-
-	layoutTemplate.setToolBarElements(toolBarElements);
-
-	layoutTemplate.showFooterBar(false);
-    }
-
-    @Override
-    public void configure(DetailBrickLayoutTemplate layoutTemplate) {
-	HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-	validViewTypes.add(EContainedViewType.PATHWAY_VIEW);
-
-	layoutTemplate.setValidViewTypes(validViewTypes);
-	layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
-	ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
-
-	toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
-		.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
-		.getID(), layoutTemplate.getBrick()));
-	toolBarElements.add(createSpacingLayout(layoutTemplate, true));
-
-	layoutTemplate.setToolBarElements(toolBarElements);
-
-	layoutTemplate.showFooterBar(false);
-    }
-
-    private ElementLayout createCaptionLayout(
-	    ABrickLayoutConfiguration layoutTemplate, AGLView labelProvider,
-	    PickingType pickingType, int pickingID, AGLView view) {
-
-	ElementLayout captionLayout = new ElementLayout("caption1");
-
-	// captionLayout.setDebug(true);
-	captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-	// captionLayout.setGrabX(true);
-	captionLayout.setFrameColor(0, 0, 1, 1);
-
-	LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider,
-		pickingType.name(), pickingID);
-	captionLayout.setRenderer(captionRenderer);
-
-	return captionLayout;
-    }
-
-    private ElementLayout createSpacingLayout(
-	    ABrickLayoutConfiguration layoutTemplate,
-	    boolean isHorizontalSpacing) {
-
-	ElementLayout spacingLayout = new ElementLayout("spacingLayoutX");
-	if (isHorizontalSpacing) {
-	    spacingLayout.setPixelSizeX(SPACING_PIXELS);
-	    spacingLayout.setRatioSizeY(0);
-	} else {
-	    spacingLayout.setPixelSizeY(SPACING_PIXELS);
-	    spacingLayout.setRatioSizeX(0);
 	}
 
-	return spacingLayout;
-    }
+	@Override
+	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PATHWAY_COMPACT);
 
-    @Override
-    public void setBrickViews(GLBrick brick, GL2 gl,
-	    GLMouseListener glMouseListener,
-	    ABrickLayoutConfiguration brickLayout) {
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_COMPACT);
 
-	HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
-	HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
+		layoutTemplate.showFooterBar(false);
+	}
 
-	PathwayCreator pathwayCreator = new PathwayCreator();
-	AGLView pathway = pathwayCreator.createRemoteView(brick, gl,
-		glMouseListener);
+	@Override
+	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
 
-	LayoutRenderer pathwayRenderer = new ViewLayoutRenderer(pathway);
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
 
-	views.put(EContainedViewType.PATHWAY_VIEW, pathway);
-	containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW,
-		pathwayRenderer);
+		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-	int numPathways = ((PathwayDimensionGroupData) brick
-		.getDimensionGroup().getDataContainer()).getPathways().size();
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
+		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
-	String label = "";
-	if (numPathways > 1)
-	    label = "Pathways: " + numPathways;
-	else
-	    label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-		    .getDataContainer()).getPathways().get(0).getTitle();
+		layoutTemplate.setHeaderBarElements(headerBarElements);
 
-	brick.setLabel(label);
+		layoutTemplate.showFooterBar(false);
+	}
 
-	LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(
-		brick, label, PickingType.BRICK.name(), brick.getID());
-	containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
-		pathwaysSummaryRenderer);
+	@Override
+	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PATHWAY_VIEW);
 
-	LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(
-		brick, "PWs: " + numPathways, PickingType.BRICK.name(),
-		brick.getID());
-	containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
-		pathwaysSummaryCompactRenderer);
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
 
-	if (brick.getDataContainer() instanceof PathwayDataContainer) {
-	    PathwayDataContainer brickData = (PathwayDataContainer) brick
-		    .getDataContainer();
-	    if (brickData.getPathway() != null) {
-		PathwayDatabaseType dataBaseType = brickData.getPathway()
-			.getType();
-		EIconTextures texture;
-		if (dataBaseType == PathwayDatabaseType.KEGG) {
-		    texture = EIconTextures.CM_KEGG;
+		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
+
+		toolBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+						.getID(), layoutTemplate.getBrick()));
+		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+
+		layoutTemplate.setToolBarElements(toolBarElements);
+
+		layoutTemplate.showFooterBar(false);
+	}
+
+	@Override
+	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PATHWAY_VIEW);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
+		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
+
+		toolBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+						.getID(), layoutTemplate.getBrick()));
+		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
+
+		layoutTemplate.setToolBarElements(toolBarElements);
+
+		layoutTemplate.showFooterBar(false);
+	}
+
+	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate,
+			AGLView labelProvider, PickingType pickingType, int pickingID, AGLView view) {
+
+		ElementLayout captionLayout = new ElementLayout("caption1");
+
+		// captionLayout.setDebug(true);
+		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+		// captionLayout.setGrabX(true);
+		captionLayout.setFrameColor(0, 0, 1, 1);
+
+		LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider,
+				pickingType.name(), pickingID);
+		captionLayout.setRenderer(captionRenderer);
+
+		return captionLayout;
+	}
+
+	private ElementLayout createSpacingLayout(ABrickLayoutConfiguration layoutTemplate,
+			boolean isHorizontalSpacing) {
+
+		ElementLayout spacingLayout = new ElementLayout("spacingLayoutX");
+		if (isHorizontalSpacing) {
+			spacingLayout.setPixelSizeX(SPACING_PIXELS);
+			spacingLayout.setRatioSizeY(0);
 		} else {
-		    texture = EIconTextures.CM_BIOCARTA;
+			spacingLayout.setPixelSizeY(SPACING_PIXELS);
+			spacingLayout.setRatioSizeX(0);
 		}
-		LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(
-			brick, brick.getDataContainer().getLabel(),
-			PickingType.BRICK.name(), brick.getID(),
-			brick.getTextureManager(), texture);
 
-		containedViewRenderers.put(EContainedViewType.PATHWAY_COMPACT,
-			compactPathwayRenderer);
-	    }
+		return spacingLayout;
 	}
 
-	brick.setViews(views);
-	brick.setContainedViewRenderers(containedViewRenderers);
-    }
+	@Override
+	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
+			ABrickLayoutConfiguration brickLayout) {
+
+		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
+		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
+
+		PathwayCreator pathwayCreator = new PathwayCreator();
+		AGLView pathway = pathwayCreator.createRemoteView(brick, gl, glMouseListener);
+
+		LayoutRenderer pathwayRenderer = new ViewLayoutRenderer(pathway);
+
+		views.put(EContainedViewType.PATHWAY_VIEW, pathway);
+		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW, pathwayRenderer);
+
+		int numPathways = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+				.getDataContainer()).getPathways().size();
+
+		String label = "";
+		if (numPathways > 1)
+			label = "Pathways: " + numPathways;
+		else
+			label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+					.getDataContainer()).getPathways().get(0).getTitle();
+
+		brick.setLabel(label);
+
+		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
+				label, PickingType.BRICK.name(), brick.getID());
+		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
+				pathwaysSummaryRenderer);
+
+		LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(
+				brick, "PWs: " + numPathways, PickingType.BRICK.name(), brick.getID());
+		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
+				pathwaysSummaryCompactRenderer);
+
+		if (brick.getDataContainer() instanceof PathwayDataContainer) {
+			PathwayDataContainer brickData = (PathwayDataContainer) brick
+					.getDataContainer();
+			if (brickData.getPathway() != null) {
+				PathwayDatabaseType dataBaseType = brickData.getPathway().getType();
+				EIconTextures texture;
+				if (dataBaseType == PathwayDatabaseType.KEGG) {
+					texture = EIconTextures.CM_KEGG;
+				} else {
+					texture = EIconTextures.CM_BIOCARTA;
+				}
+				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick,
+						brick.getDataContainer().getLabel(), PickingType.BRICK.name(),
+						brick.getID(), brick.getTextureManager(), texture);
+
+				containedViewRenderers.put(EContainedViewType.PATHWAY_COMPACT,
+						compactPathwayRenderer);
+			}
+		}
+
+		brick.setViews(views);
+		brick.setContainedViewRenderers(containedViewRenderers);
+	}
 }

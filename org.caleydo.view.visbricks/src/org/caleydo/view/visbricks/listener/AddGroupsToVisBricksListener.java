@@ -22,7 +22,5 @@ public class AddGroupsToVisBricksListener extends AEventListener<GLVisBricks> {
 						.getDataContainers());
 			}
 		}
-
 	}
-
 }
