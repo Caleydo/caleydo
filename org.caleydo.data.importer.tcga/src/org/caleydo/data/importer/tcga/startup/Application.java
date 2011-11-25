@@ -56,9 +56,6 @@ import org.eclipse.equinox.app.IApplicationContext;
 public class Application
 	implements IApplication {
 
-	public static final String CHECKED_IN_DATA = "data/genome/microarray/tcga/cnmf.normalized.gct";
-	public static final String CHECKED_IN_DATA_GROUPING = "data/genome/microarray/tcga/cnmf.membership.txt";
-
 	private ATableBasedDataDomain dataDomain;
 
 	private boolean useQuickClustering = true;
@@ -90,12 +87,12 @@ public class Application
 
 		GeneralManager.get().init();
 		createJAXBContext();
-		DataSetMetaInfoCollection dataTypeSetCollection = deserialzeDataSetMetaInfo();
+		DataSetMetaInfoCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
 		boolean isColumnDimension = false;
 
 		// Iterate over data type sets and trigger processing
-		for (DataSetMetaInfo dataTypeSet : dataTypeSetCollection.getDataTypeSetCollection())
+		for (DataSetMetaInfo dataTypeSet : dataSetMetInfoCollection.getDataTypeSetCollection())
 			loadSources(dataTypeSet, isColumnDimension);
 
 //		calculateVAIntersections();

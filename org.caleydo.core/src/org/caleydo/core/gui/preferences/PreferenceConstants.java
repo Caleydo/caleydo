@@ -1,5 +1,7 @@
 package org.caleydo.core.gui.preferences;
 
+import org.caleydo.core.startup.gui.ChooseProjectTypePage.EProjectLoadType;
+
 /**
  * Constant definitions for plug-in preferences
  */
@@ -21,6 +23,11 @@ public class PreferenceConstants {
 	// public static final String LAST_CHOSEN_USE_CASE_MODE = "lastChosenUseCaseMode";
 	/** The application mode chosen during the last time. A value of EApplicationMode */
 	public static final String LAST_CHOSEN_PROJECT_MODE = "lastChosenApplicationMode";
+	
+	/** How was the last project loaded? From "previous project" or manually. See {@link EProjectLoadType} */ 
+	public static final String LAST_CHOSEN_PROJECT_LOAD_TYPE = "lastChosenProjectLoadType";
+	/** The file path to the last loaded project */
+	public static final String LAST_MANUALLY_CHOSEN_PROJECT = "lastManuallyChosenProject";
 
 	// TODO: make it specific for each pathway database + organism combination
 	public static final String LAST_PATHWAY_UPDATE = "lastPathwayDataUpdate";

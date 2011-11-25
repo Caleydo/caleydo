@@ -65,12 +65,19 @@ public class CaleydoProjectWizard
 				SerializationStartupProcedure startupProcedure =
 					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
 						ApplicationMode.SERIALIZATION);
-				if (page.getProjectLoadType().equals(EProjectLoadType.RECENT)) {
+				EProjectLoadType projectLoadType = page.getProjectLoadType();
+
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE, projectLoadType.name());
+
+				if (projectLoadType.equals(EProjectLoadType.RECENT)) {
 					startupProcedure.setLoadRecentProject(true);
 				}
 				else {
 					startupProcedure.setLoadRecentProject(false);
+					String projectFileName = page.getProjectFileName();
 					startupProcedure.setProjectLocation(page.getProjectFileName());
+					prefStore.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, projectFileName);
+
 				}
 			}
 			else if (projectMode == ProjectMode.SAMPLE_PROJECT) {

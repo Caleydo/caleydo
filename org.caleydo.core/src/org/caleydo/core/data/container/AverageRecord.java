@@ -7,7 +7,10 @@ package org.caleydo.core.data.container;
  * @author Alexander Lex
  */
 public class AverageRecord {
+	
+	/** The average value (mean) of the record */ 
 	double arithmeticMean;
+	/** The standard deviation from the {@link #arithmeticMean} */
 	double standardDeviation;
 
 	/**

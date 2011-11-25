@@ -524,8 +524,12 @@ public class ChooseProjectTypePage
 		chooseProjectFile.setEnabled(false);
 		chooseProjectFile.setText("Choose File");
 
+		String lastProjectFileName =
+			GeneralManager.get().getPreferenceStore()
+				.getString(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT);
 		projectFileName = new Text(composite, SWT.BORDER);
 		projectFileName.setEnabled(false);
+		projectFileName.setText(lastProjectFileName);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectFileName.setLayoutData(gd);
 		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
@@ -533,20 +537,31 @@ public class ChooseProjectTypePage
 		String lastModifiedDate = "";
 		String text = "Open project from last session";
 		File recentProjectFile = new File(ProjectSaver.RECENT_PROJECT_FOLDER + ProjectSaver.DATA_DOMAIN_FILE);
-		if (recentProjectFile.exists()) {
-			Date date = new Date(recentProjectFile.lastModified());
-			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
-			lastModifiedDate = dataformat.format(date);
-			recentProject.setSelection(true);
-			projectLoadType = EProjectLoadType.RECENT;
+
+		try {
+			projectLoadType =
+				EProjectLoadType.valueOf(GeneralManager.get().getPreferenceStore()
+					.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE));
 		}
-		else {
+		catch (Exception e) {
+			// this happens when no preference value exists jet (legal situation) or when the value could not
+			// be matched to the enum
+		}
+		if ((projectLoadType != null && projectLoadType.equals(EProjectLoadType.SPECIFIED))
+			|| !recentProjectFile.exists()) {
 			recentProject.setEnabled(false);
 			loadProject.setSelection(true);
 
 			projectLoadType = EProjectLoadType.SPECIFIED;
 			projectFileName.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
+		}
+		else {
+			Date date = new Date(recentProjectFile.lastModified());
+			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+			lastModifiedDate = dataformat.format(date);
+			recentProject.setSelection(true);
+			projectLoadType = EProjectLoadType.RECENT;
 		}
 
 		if (!lastModifiedDate.equals("")) {

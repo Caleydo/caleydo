@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.view.visbricks.brick.layout;
 
 import javax.media.opengl.GL2;
