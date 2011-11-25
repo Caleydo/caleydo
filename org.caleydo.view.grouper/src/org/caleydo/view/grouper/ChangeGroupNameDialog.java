@@ -53,7 +53,7 @@ public class ChangeGroupNameDialog {
 			@Override
 			public void handleEvent(Event event) {
 				if (event.widget == okButton) {
-					groupRep.getClusterNode().setLabel(text.getText());
+					groupRep.getClusterNode().setLabel(text.getText(), false);
 				}
 				dialog.dispose();
 

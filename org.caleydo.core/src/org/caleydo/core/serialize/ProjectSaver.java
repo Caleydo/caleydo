@@ -277,7 +277,7 @@ public class ProjectSaver {
 
 		String fileName = dir + perspectiveID + ".xml";
 		marshaller.marshal(perspective, new File(fileName));
-		if (!perspective.isTreeDefaultTree() && perspective.getTree() != null) {
+		if (perspective.getTree() != null) {
 			TreePorter treePorter = new TreePorter();
 			Tree<ClusterNode> tree = perspective.getTree();
 			treePorter.exportTree(dir + perspectiveID + "_tree.xml", tree);

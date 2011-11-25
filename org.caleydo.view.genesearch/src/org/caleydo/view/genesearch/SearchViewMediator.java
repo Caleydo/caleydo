@@ -101,7 +101,7 @@ public class SearchViewMediator {
 		}
 		String label = idMappingManager.getID(davidIDType,
 				dataDomain.getHumanReadableGeneIDType(), davidID);
-		perspective.setLabel(label);
+		perspective.setLabel(label, false);
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 
@@ -158,7 +158,7 @@ public class SearchViewMediator {
 
 		RecordPerspective binnedPerspective = new RecordPerspective(dataDomain);
 		binnedPerspective.init(data);
-		binnedPerspective.setLabel(label);
+		binnedPerspective.setLabel(label, false);
 		table.registerRecordPerspective(binnedPerspective);
 	}
 }

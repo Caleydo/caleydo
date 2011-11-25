@@ -36,6 +36,8 @@ public class TCGATestDataXMLGenerator {
 		+ "methylation_cnmf/cnmf.membership.txt";
 
 	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
+	
+	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER + "ground_truth/2011_exp_assignments.txt";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 		+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
@@ -114,9 +116,11 @@ public class TCGATestDataXMLGenerator {
 		dataConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
 		dataConfiguration.setDimensionDenominationPlural("genes");
 		dataConfiguration.setDimensionDenominationSingular("gene");
-
+		
 		mrnaData.setDataDomainConfiguration(dataConfiguration);
 
+		mrnaData.setExternalGroupingPath(GROUND_TRUTH_GROUPING);
+		
 		doGCTSpecificStuff(mrnaData);
 		return mrnaData;
 	}

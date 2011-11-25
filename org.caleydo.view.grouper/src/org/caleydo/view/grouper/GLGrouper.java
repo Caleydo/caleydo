@@ -969,7 +969,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 		String groupName = determineNodeLabel(alOrderedTopLevelComposites);
 		if (groupName != "")
-			newGroup.getClusterNode().setLabel(groupName);
+			newGroup.getClusterNode().setLabel(groupName, true);
 
 		ICompositeGraphic commonParent = findCommonParent(alOrderedTopLevelComposites);
 

@@ -20,6 +20,9 @@ public class DataSetMetaInfo {
 	private String dataPath;
 	/** could be empty */
 	private String groupingPath;
+
+	/** A second grouping, might be empty */
+	private String externalGroupingPath;
 	private String name;
 	/** could be empty */
 	private String colorScheme;
@@ -27,7 +30,7 @@ public class DataSetMetaInfo {
 	private DataDomainConfiguration dataDomainConfiguration;
 
 	private LoadDataParameters loadDataParameters;
-	
+
 	private boolean runClusteringOnRows = false;
 	private boolean createGeneSamples = false;
 
@@ -45,6 +48,20 @@ public class DataSetMetaInfo {
 
 	public void setGroupingPath(String groupingPath) {
 		this.groupingPath = groupingPath;
+	}
+	
+	/**
+	 * @param externalGroupingPath setter, see {@link #externalGroupingPath}
+	 */
+	public void setExternalGroupingPath(String externalGroupingPath) {
+		this.externalGroupingPath = externalGroupingPath;
+	}
+	
+	/**
+	 * @return the externalGroupingPath, see {@link #externalGroupingPath}
+	 */
+	public String getExternalGroupingPath() {
+		return externalGroupingPath;
 	}
 
 	public String getName() {
@@ -107,27 +124,30 @@ public class DataSetMetaInfo {
 	public LoadDataParameters getLoadDataParameters() {
 		return loadDataParameters;
 	}
-	
+
 	/**
-	 * @param runClusteringOnRows setter, see {@link #runClusteringOnRows}
+	 * @param runClusteringOnRows
+	 *            setter, see {@link #runClusteringOnRows}
 	 */
 	public void setRunClusteringOnRows(boolean runClusteringOnRows) {
 		this.runClusteringOnRows = runClusteringOnRows;
 	}
+
 	/**
 	 * @return the runClusteringOnRows, see {@link #runClusteringOnRows}
 	 */
 	public boolean isRunClusteringOnRows() {
 		return runClusteringOnRows;
 	}
-	
+
 	/**
-	 * @param createGeneSamples setter, see {@link #createGeneSamples}
+	 * @param createGeneSamples
+	 *            setter, see {@link #createGeneSamples}
 	 */
 	public void setCreateGeneSamples(boolean createGeneSamples) {
 		this.createGeneSamples = createGeneSamples;
 	}
-	
+
 	/**
 	 * @return the createGeneSamples, see {@link #createGeneSamples}
 	 */

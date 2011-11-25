@@ -165,12 +165,10 @@ public class ProjectLoader {
 					recordPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getRecordIDType());
 					recordPerspectives.put(recordPerspectiveID, recordPerspective);
 
-					if (!recordPerspective.isTreeDefaultTree()) {
-						ClusterTree tree =
-							loadTree(extendedDirName + recordPerspectiveID + "_tree.xml",
-								((ATableBasedDataDomain) dataDomain).getRecordIDType());
-						recordPerspective.setTree(tree);
-					}
+					ClusterTree tree =
+						loadTree(extendedDirName + recordPerspectiveID + "_tree.xml",
+							((ATableBasedDataDomain) dataDomain).getRecordIDType());
+					recordPerspective.setTree(tree);
 
 				}
 
@@ -190,12 +188,10 @@ public class ProjectLoader {
 					dimensionPerspective.setIDType(((ATableBasedDataDomain) dataDomain).getDimensionIDType());
 					dimensionPerspectives.put(dimensionPerspectiveID, dimensionPerspective);
 
-					if (!dimensionPerspective.isTreeDefaultTree()) {
-						ClusterTree tree =
-							loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
-								((ATableBasedDataDomain) dataDomain).getDimensionIDType());
-						dimensionPerspective.setTree(tree);
-					}
+					ClusterTree tree =
+						loadTree(extendedDirName + dimensionPerspectiveID + "_tree.xml",
+							((ATableBasedDataDomain) dataDomain).getDimensionIDType());
+					dimensionPerspective.setTree(tree);
 
 				}
 

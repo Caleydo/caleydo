@@ -45,10 +45,6 @@ public class ClusterNode
 
 	private ADataPerspective<?, ?, ?, ?> perspective;
 
-	/** A data perspective containing all sub-elements of this node */
-	// @XmlTransient
-	// private ADataPerspective<?, ?, ?, ?> dataPerspective = null;
-
 	public ClusterNode() {
 	}
 
@@ -78,18 +74,6 @@ public class ClusterNode
 
 	}
 
-	/**
-	 * Creates a meta-set for this node
-	 * 
-	 * @param set
-	 */
-	// public void fillDataPerspective(ADataPerspective<?, ?, ?, ?> dataPerspective) {
-	// PerspectiveInitializationData perspectiveInitializationData = new PerspectiveInitializationData();
-	// perspectiveInitializationData.setData((ClusterTree) tree, this);
-	// dataPerspective.init(perspectiveInitializationData);
-	// this.dataPerspective = dataPerspective;
-	// }
-
 	@SuppressWarnings("unchecked")
 	public <PerspectiveType extends ADataPerspective<?, ?, ?, ?>> PerspectiveType getSubPerspective(
 		Class<PerspectiveType> concreteClass, ATableBasedDataDomain dataDomain) {
@@ -98,14 +82,12 @@ public class ClusterNode
 		try {
 			perspective = concreteClass.newInstance();
 		}
-		catch (InstantiationException e) {
-			// TODO Auto-generated catch block
+		catch (Exception e) {
+
 			e.printStackTrace();
+			throw new IllegalStateException("Could not instantiate class");
 		}
-		catch (IllegalAccessException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+
 		perspective.setDataDomain(dataDomain);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData((ClusterTree) getTree(), this);
@@ -113,55 +95,10 @@ public class ClusterNode
 		return (PerspectiveType) perspective;
 	}
 
-	/**
-	 * Returns a metaset if this node or any of its sub-nodes contain the SubDataTable specified by the ID
-	 * 
-	 * @param tableID
-	 * @return
-	 */
-	// public DataTable getSubDataTableFromSubTree(int tableID) {
-	//
-	// if (subDataTable.getID() == tableID)
-	// return subDataTable;
-	// else if (!this.hasChildren())
-	// return null;
-	// else {
-	// for (ClusterNode child : getChildren()) {
-	// DataTable tempSet = child.getSubDataTableFromSubTree(tableID);
-	// if (tempSet != null)
-	// return tempSet;
-	// }
-	// return null;
-	// }
-	// }
-
-	// public ArrayList<DataTable> getAllSubDataTablesFromSubTree() {
-	//
-	// ArrayList<DataTable> allSubDataTables = new ArrayList<DataTable>();
-	//
-	// allSubDataTables.add(subDataTable);
-	//
-	// if (this.hasChildren()) {
-	// for (ClusterNode child : getChildren()) {
-	// allSubDataTables.addAll(child.getAllSubDataTablesFromSubTree());
-	// }
-	// }
-	//
-	// return allSubDataTables;
-	// }
-
 	@Override
 	public String toString() {
 		return label;
 	}
-
-	// public void setNrElements(int iNrElements) {
-	// this.iNrElements = iNrElements;
-	// }
-	//
-	// public int getNrElements() {
-	// return iNrElements;
-	// }
 
 	public void setPos(Vec3f vPos) {
 		this.vPos = vPos;
@@ -233,26 +170,6 @@ public class ClusterNode
 
 		return id;
 	}
-
-	// @Override
-	// public float getSize() {
-	// return iNrElements;
-	// }
-
-	// public void setRepresentativeElement(float[] fArRepresentativeElement) {
-	// this.fArRepresentativeElement = fArRepresentativeElement;
-	// }
-	//
-	// public float[] getRepresentativeElement() {
-	// return fArRepresentativeElement;
-	// }
-
-	// public void sortByGeneExpression()
-	// {
-	// ArrayList<ClusterNode> children = getChildren();
-	//
-	//
-	// }
 
 	@Override
 	public int compareTo(ClusterNode node) {

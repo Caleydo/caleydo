@@ -812,6 +812,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (!nodeAdded) {
 			dataNode = nodeCreator.createDataNode(graphLayout, this,
 					dragAndDropController, lastNodeID++, dataDomain);
+			if(dataNode == null)
+			    return;
 			dataGraph.addNode(dataNode);
 			dataNodes.add(dataNode);
 			dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
@@ -840,6 +842,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						.createDataNode(graphLayout, this,
 								dragAndDropController, lastNodeID++,
 								neighborDataDomain);
+				if(node == null)
+				    return;
 				dataGraph.addNode(node);
 				dataNodes.add(node);
 				dataNodesOfDataDomains.put(node.getDataDomain(), node);
@@ -923,6 +927,18 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	//
 	// }
 
+	/**
+	 * FIXME: DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * @param dataDomain
+	 * @param recordPerspectiveID
+	 * @param createRecordPerspective
+	 * @param recordVA
+	 * @param recordGroup
+	 * @param dimensionPerspectiveID
+	 * @param createDimensionPerspective
+	 * @param dimensionVA
+	 * @param dimensionGroup
+	 */
 	public void createDataContainer(final ATableBasedDataDomain dataDomain,
 			final String recordPerspectiveID,
 			final boolean createRecordPerspective,
@@ -955,8 +971,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 				InputDialog dialog = new InputDialog(new Shell(),
 						"Create Data Container", "Name",
-						dimensionPerspectiveLabel + "/"
-								+ recordPerspectiveLabel, validator);
+						recordPerspectiveLabel + "/"
+								+ dimensionPerspectiveLabel, validator);
 
 				String currentDimensionPerspeciveID = dimensionPerspectiveID;
 				String currentRecordPerspeciveID = recordPerspectiveID;
@@ -974,7 +990,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						data.setData(indices);
 						dimensionPerspective.init(data);
 						dimensionPerspective
-								.setLabel(dimensionPerspectiveLabel);
+								.setLabel(dimensionPerspectiveLabel, true);
 						// TODO: Shall we really set it private?
 						dimensionPerspective.setPrivate(true);
 						dimensionGroup.setPerspectiveID(dimensionPerspective
@@ -999,7 +1015,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						PerspectiveInitializationData data = new PerspectiveInitializationData();
 						data.setData(indices);
 						recordPerspective.init(data);
-						recordPerspective.setLabel(recordPerspectiveLabel);
+						recordPerspective.setLabel(recordPerspectiveLabel, true);
 						// TODO: Shall we really set it private?
 						recordPerspective.setPrivate(true);
 						recordGroup.setPerspectiveID(recordPerspective.getID());
@@ -1014,7 +1030,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					DataContainer dataContainer = dataDomain.getDataContainer(
 							currentRecordPerspeciveID,
 							currentDimensionPerspeciveID);
-					dataContainer.setLabel(dialog.getValue());
+					dataContainer.setLabel(dialog.getValue(), false);
 
 				}
 			}

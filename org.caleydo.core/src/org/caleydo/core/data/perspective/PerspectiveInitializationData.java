@@ -8,17 +8,22 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 
 public class PerspectiveInitializationData {
 	/**
-	 * Indices of elements that represent a cluster (cluster centers). Used for initialization to create a
-	 * sample element for every group.
+	 * Indices of elements that represent a group/cluster (cluster centers). Used for initialization to create
+	 * a sample element for every group.
 	 */
 	private List<Integer> indices;
 
 	private List<Integer> sampleElements;
 	/**
-	 * The sizes of the clusters in a list sorted so that combined with the {@link VirtualArray} the clusters
+	 * The sizes of the group in a list sorted so that combined with the {@link VirtualArray} the clusters
 	 * are uniquely identified. Used for initialization.
 	 */
-	private List<Integer> clusterSizes;
+	private List<Integer> groupSizes;
+
+	/**
+	 * The names of the cluster. May be null
+	 */
+	private List<String> groupNames;
 
 	/**
 	 * The tree that shows relation between the elements in the {@link VirtualArray}. Always needs to be in
@@ -47,17 +52,37 @@ public class PerspectiveInitializationData {
 	 * Initialize with index list, grouping and sample elements
 	 * 
 	 * @param indices
-	 * @param clusterSizes
+	 * @param groupSizes
 	 * @param sampleElements
 	 */
-	public void setData(List<Integer> indices, List<Integer> clusterSizes, List<Integer> sampleElements) {
-		if (indices == null || clusterSizes == null || sampleElements == null)
+	public void setData(List<Integer> indices, List<Integer> groupSizes, List<Integer> sampleElements) {
+		if (indices == null || groupSizes == null || sampleElements == null)
 			throw new IllegalArgumentException("An argument was null. Indices: " + indices
-				+ " clusterSizes: " + clusterSizes + " sampleElements: " + sampleElements);
+				+ " clusterSizes: " + groupSizes + " sampleElements: " + sampleElements);
 
 		this.indices = indices;
-		this.clusterSizes = clusterSizes;
+		this.groupSizes = groupSizes;
 		this.sampleElements = sampleElements;
+	}
+
+	/**
+	 * Same as {@link #setData(List, List, List)} but with additional clusterNames
+	 * 
+	 * @param indices
+	 * @param groupSizes
+	 * @param sampleElements
+	 * @param groupNames
+	 */
+	public void setData(List<Integer> indices, List<Integer> groupSizes, List<Integer> sampleElements,
+		List<String> groupNames) {
+		if (indices == null || groupSizes == null || sampleElements == null)
+			throw new IllegalArgumentException("An argument was null. Indices: " + indices + " groupSizes: "
+				+ groupSizes + " sampleElements: " + sampleElements);
+
+		this.indices = indices;
+		this.groupSizes = groupSizes;
+		this.sampleElements = sampleElements;
+		this.groupNames = groupNames;
 	}
 
 	/**
@@ -86,9 +111,10 @@ public class PerspectiveInitializationData {
 		this.tree = tree;
 		this.rootNode = rootNode;
 	}
-	
+
 	/**
-	 * Initialize with an existing virtual array. The virtual array must have 
+	 * Initialize with an existing virtual array. The virtual array must have
+	 * 
 	 * @param virtualArray
 	 */
 	public void setData(VirtualArray<?, ?, ?> virtualArray) {
@@ -107,14 +133,30 @@ public class PerspectiveInitializationData {
 		return virtualArray;
 	}
 
+	/**
+	 * @return the indices, see {@link #indices}
+	 */
 	public List<Integer> getIndices() {
 		return indices;
 	}
 
-	public List<Integer> getClusterSizes() {
-		return clusterSizes;
+	/**
+	 * @return the groupSizes, see {@link #groupSizes}
+	 */
+	public List<Integer> getGroupSizes() {
+		return groupSizes;
 	}
 
+	/**
+	 * @return the groupNames, see {@link #groupNames}
+	 */
+	public List<String> getGroupNames() {
+		return groupNames;
+	}
+
+	/**
+	 * @return the sampleElements, see {@link #sampleElements}
+	 */
 	public List<Integer> getSampleElements() {
 		return sampleElements;
 	}

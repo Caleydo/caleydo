@@ -9,6 +9,7 @@ import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.filter.FilterManager;
@@ -59,7 +60,15 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	protected String perspectiveID;
 
 	/** A human-readable description of the perspective */
+	@XmlElement
 	private String label;
+
+	/**
+	 * Flag telling whether the set label is a default (true) and thereby should probably not be displayed or
+	 * whether the label is worth displaying
+	 */
+	@XmlElement
+	private boolean isDefaultLabel = true;
 
 	/**
 	 * Flag determining whether this perspective is private to a certain view. That means that other views
@@ -69,8 +78,9 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	protected boolean isPrivate;
 
 	/**
-	 * Flag determining whether this perspective is the default perspective that for instance will be
-	 * displayed by the support views.
+	 * Flag determining whether this perspective is the default perspective . A default perspective is defined
+	 * for every {@link DataTable}. It should reflect "the whole dataset". This is used for instance by the
+	 * support views.
 	 */
 	@XmlElement
 	protected boolean isDefault;
@@ -105,12 +115,6 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlTransient
 	protected FilterManagerType filterManager;
 
-	// @XmlTransient
-	// private ArrayList<Integer> sampleElements;
-
-	// @XmlTransient
-	// private ArrayList<Integer> clusterSizes;
-
 	@XmlTransient
 	private ClusterTree tree;
 
@@ -133,8 +137,11 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 * @param label
 	 *            setter, see {@link #label}
 	 */
-	public void setLabel(String label) {
+	public void setLabel(String label, boolean isDefaultLabel) {
+		if (label == null)
+			throw new IllegalArgumentException("Label was null");
 		this.label = label;
+		this.isDefaultLabel = isDefaultLabel;
 	}
 
 	/**
@@ -144,6 +151,13 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		if (label == null || label.isEmpty())
 			return perspectiveID;
 		return label;
+	}
+
+	/**
+	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
+	 */
+	public boolean isDefaultLabel() {
+		return isDefaultLabel;
 	}
 
 	/**
@@ -331,12 +345,12 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			createVA(null);
 		}
 		// Case 2: we only have a virtual array
-		else if (data.getIndices() != null && data.getClusterSizes() == null && data.getTree() == null) {
+		else if (data.getIndices() != null && data.getGroupSizes() == null && data.getTree() == null) {
 			createVA(data.getIndices());
 			createDefaultTreeAndGroupList();
 		}
 		// Case 3: we have a virtual array and grouping
-		else if (data.getIndices() != null && data.getClusterSizes() != null) {
+		else if (data.getIndices() != null && data.getGroupSizes() != null) {
 			createVA(data.getIndices());
 			createGroupListAndDefaultTreeFromClusterSizes(data);
 		}
@@ -410,13 +424,26 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 		ClusterNode node;
 		int from = 0;
 		int to = 0;
-		for (Integer clusterSize : data.getClusterSizes()) {
-			node = new ClusterNode(tree, "Group: " + clusterNr, clusterNr++, false, -1);
-			Group temp = new Group(clusterSize, data.getSampleElements().get(groupCounter), node);
+		List<Integer> groupSizes = data.getGroupSizes();
+		List<String> groupNames = data.getGroupNames();
+		for (int groupCount = 0; groupCount < groupSizes.size(); groupCount++) {
+			Integer groupSize = groupSizes.get(groupCount);
+			String groupName;
+			boolean isDefaultLabel = true;
+			if (groupNames != null) {
+				groupName = groupNames.get(groupCount);
+				isDefaultLabel = false;
+			}
+			else
+				groupName = "Group: " + groupCount;
+
+			node = new ClusterNode(tree, groupName, clusterNr++, false, -1);
+			node.setDefaultLabel(isDefaultLabel);
+			Group tempGroup = new Group(groupSize, data.getSampleElements().get(groupCounter), node);
 			tree.addChild(root, node);
-			groupList.append(temp);
+			groupList.append(tempGroup);
 			groupCounter++;
-			to += clusterSize;
+			to += groupSize;
 			ClusterNode leaf;
 			for (int vaIndex = from; vaIndex < to; vaIndex++) {
 				Integer id = virtualArray.get(vaIndex);

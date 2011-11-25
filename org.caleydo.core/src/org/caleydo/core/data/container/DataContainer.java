@@ -6,6 +6,8 @@ package org.caleydo.core.data.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.annotation.XmlElement;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -40,7 +42,7 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
  * perspectives that define the DataContainer. The dataDomain registers the dataContainer for those
  * perspective and provides other instances which need a DataContainer for the same combination of
  * perspectives with the same instance of the DataContainer, thereby avoiding double-calculation of derived
- * meta-data (which can be both, computatonally and storage-wise expensive)
+ * meta-data (which can be both, computationally and storage-wise expensive)
  * </p>
  * 
  * @author Alexander Lex
@@ -59,8 +61,16 @@ public class DataContainer {
 	/** Same as {@link #recordPerspective} for dimensions */
 	protected DimensionPerspective dimensionPerspective;
 
-	/** A human-readable label for the {@link DataContainer} */
+	/** A human-readable label */
+	@XmlElement
 	protected String label;
+
+	/**
+	 * Flag telling whether the set label is a default (true) and thereby should probably not be displayed or
+	 * whether the label is worth displaying
+	 */
+	@XmlElement
+	private boolean isDefaultLabel = true;
 
 	public static IDCategory DATA_CONTAINER = IDCategory.registerCategory("DATA_CONTAINER");
 	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners", DATA_CONTAINER,
@@ -195,11 +205,19 @@ public class DataContainer {
 	}
 
 	/**
+	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
+	 */
+	public boolean isDefaultLabel() {
+		return isDefaultLabel;
+	}
+
+	/**
 	 * @param label
 	 *            setter, see {@link #label}
 	 */
-	public void setLabel(String label) {
+	public void setLabel(String label, boolean isDefaultLabel) {
 		this.label = label;
+		this.isDefaultLabel = isDefaultLabel;
 	}
 
 	/**
@@ -242,7 +260,7 @@ public class DataContainer {
 				recordVA.getVirtualArray().subList(group.getStartIndex(), group.getEndIndex() + 1);
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.setLabel(group.getGroupID().toString());
+			recordPerspective.setLabel(group.getClusterNode().getLabel(), group.getClusterNode().isDefaultLabel());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			recordPerspective.init(data);
@@ -250,6 +268,7 @@ public class DataContainer {
 			DataContainer subDataContainer =
 				new DataContainer(dataDomain, recordPerspective, dimensionPerspective);
 			subDataContainer.setRecordGroup(group);
+			subDataContainer.setLabel(recordPerspective.getLabel(), recordPerspective.isDefaultLabel());
 			recordSubDataContainers.add(subDataContainer);
 
 		}

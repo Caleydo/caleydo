@@ -10,23 +10,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
-import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -36,6 +29,7 @@ import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.parser.ascii.ExternalGroupingParser;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
@@ -95,7 +89,7 @@ public class Application
 		for (DataSetMetaInfo dataTypeSet : dataSetMetInfoCollection.getDataTypeSetCollection())
 			loadSources(dataTypeSet, isColumnDimension);
 
-//		calculateVAIntersections();
+		// calculateVAIntersections();
 
 		new ProjectSaver().save(outputCaleydoProjectFile, true);
 
@@ -116,13 +110,13 @@ public class Application
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(intersectedVAs.get(i));
 			RecordPerspective intersectedPerspective = new RecordPerspective(dataDomains.get(i));
-			intersectedPerspective.setLabel("Intersected 4 Clusters");
+			intersectedPerspective.setLabel("Intersected 4 Clusters", false);
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
 			dataDomains.get(i).getTable().registerRecordPerspective(intersectedPerspective);
 		}
 	}
-	
+
 	@Override
 	public void stop() {
 	}
@@ -132,6 +126,7 @@ public class Application
 
 		loadData(metaInfo);
 		loadClusterInfo(metaInfo.getGroupingPath());
+		loadExternalClusterInfo(metaInfo.getExternalGroupingPath());
 
 		// if (metaInfo.isRunClusteringOnRows()) {
 		PerspectiveInitializationData clusterResult = runClusteringOnRows();
@@ -230,7 +225,7 @@ public class Application
 		for (HashMap<String, ArrayList<Integer>> groupList : listOfGroupLists) {
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.setLabel(groupList.size() + " clusters");
+			recordPerspective.setLabel(groupList.size() + " clusters", false);
 			if (groupList.size() == 4)
 				recordPerspective.setDefault(true);
 			ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
@@ -250,6 +245,25 @@ public class Application
 
 			recordPerspective.init(data);
 			dataDomain.getTable().registerRecordPerspective(recordPerspective);
+		}
+	}
+
+	private void loadExternalClusterInfo(String externalGroupingPath) {
+		if (externalGroupingPath == null)
+			return;
+
+		ExternalGroupingParser parser = new ExternalGroupingParser();
+		ArrayList<Integer> groupingColumns = new ArrayList<Integer>(1);
+		groupingColumns.add(2);
+		ArrayList<PerspectiveInitializationData> perspectiveDatas =
+			parser.loadExternalGrouping(externalGroupingPath, groupingColumns, new TCGAIDStringConverter(),
+				dataDomain.getHumanReadableRecordIDType(), dataDomain.getRecordIDType());
+
+		for (PerspectiveInitializationData data : perspectiveDatas) {
+			RecordPerspective groundTruthPerspective = new RecordPerspective(dataDomain);
+			groundTruthPerspective.init(data);
+			groundTruthPerspective.setLabel("Ground Truth", false);
+			dataDomain.getTable().registerRecordPerspective(groundTruthPerspective);
 		}
 	}
 
@@ -282,7 +296,7 @@ public class Application
 
 		dimensionPerspective.init(result.getDimensionResult());
 		dimensionPerspective.setLabel("All genes clustered, size: "
-			+ dimensionPerspective.getVirtualArray().size());
+			+ dimensionPerspective.getVirtualArray().size(), false);
 
 		return result.getDimensionResult();
 	}
@@ -303,7 +317,7 @@ public class Application
 		sampledDimensionPerspective.setVADelta(delta);
 
 		sampledDimensionPerspective.setLabel("Clustered, sampled genes, size: "
-			+ sampledDimensionPerspective.getVirtualArray().size());
+			+ sampledDimensionPerspective.getVirtualArray().size(), false);
 		dataDomain.getTable().registerDimensionPerspective(sampledDimensionPerspective);
 	}
 

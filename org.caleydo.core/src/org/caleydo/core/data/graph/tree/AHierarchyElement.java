@@ -42,7 +42,14 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 
 	protected int numberOfLeaves = -1;
 
+	@XmlElement
 	protected String label;
+
+	/**
+	 * Flag telling whether the set label is a default (true) and thereby should probably not be displayed or
+	 * whether the label is worth displaying
+	 */
+	private boolean isDefaultLabel = true;
 
 	/** if this node is a leaf, this id is >= 0 */
 	private int leafID = -1;
@@ -103,12 +110,33 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 		return id;
 	}
 
-	public void setLabel(String label) {
+	/**
+	 * Sets the {@link #label} and the state of {@link #isDefaultLabel()}
+	 * 
+	 * @param label
+	 * @param isDefaultLabel
+	 */
+	public void setLabel(String label, boolean isDefaultLabel) {
 		this.label = label;
+		this.isDefaultLabel = isDefaultLabel;
 	}
 
+	/**
+	 * @param isDefaultLabel setter, see {@link #isDefaultLabel}
+	 */
+	public void setDefaultLabel(boolean isDefaultLabel) {
+		this.isDefaultLabel = isDefaultLabel;
+	}
+	
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
+	 */
+	public boolean isDefaultLabel() {
+		return isDefaultLabel;
 	}
 
 	/**
