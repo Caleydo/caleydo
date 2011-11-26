@@ -83,6 +83,9 @@ public class LoadDataParameters {
 	/** String converter for the column headers */
 	private AStringConverter columnHeaderStringConverter;
 
+	/** String converter for the first ids in the first Column */
+	private AStringConverter rowIDStringConverter;
+
 	/** determine whether a dimension is shown as column or row */
 	@XmlElement
 	boolean isColumnDimension;
@@ -373,6 +376,21 @@ public class LoadDataParameters {
 	 */
 	public void setColumnDimension(boolean isColumnDimension) {
 		this.isColumnDimension = isColumnDimension;
+	}
+
+	/**
+	 * @return the rowIDStringConverter, see {@link #rowIDStringConverter}
+	 */
+	public AStringConverter getRowIDStringConverter() {
+		return rowIDStringConverter;
+	}
+
+	/**
+	 * @param rowIDStringConverter
+	 *            setter, see {@link #rowIDStringConverter}
+	 */
+	public void setRowIDStringConverter(AStringConverter rowIDStringConverter) {
+		this.rowIDStringConverter = rowIDStringConverter;
 	}
 
 	/**

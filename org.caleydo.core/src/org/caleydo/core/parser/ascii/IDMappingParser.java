@@ -107,26 +107,26 @@ public class IDMappingParser
 								token = stringConverter.convert(token);
 							}
 
+							// TODO check that we don't need this!
 							// Check for integer values that must be ignored
 							// - in that case no RefSeq is available or the
 							// cell is empty
-							try {
-								Float.valueOf(token);
-								if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
-									idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
-										currentLine - parsingStartLine);
-								}
-								else if (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED")) {
-									idMappingManager.getMap(mappingType).put(token,
-										currentLine - parsingStartLine);
-								}
-							}
-							catch (NumberFormatException e) {
-								// System.out.println(buffer + " " +
-								// (lineInFile - parsingStartLine));
-								idMappingManager.getMap(mappingType).put(token,
-									currentLine - parsingStartLine);
-							}
+							// try {
+							// Float.valueOf(token);
+							// if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
+							// idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
+							// currentLine - parsingStartLine);
+							// }
+							// else if (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED")) {
+							// idMappingManager.getMap(mappingType).put(token,
+							// currentLine - parsingStartLine);
+							// }
+							// }
+							// catch (NumberFormatException e) {
+							// System.out.println(buffer + " " +
+							// (lineInFile - parsingStartLine));
+							idMappingManager.getMap(mappingType).put(token, currentLine - parsingStartLine);
+							// }
 
 							break;
 						}

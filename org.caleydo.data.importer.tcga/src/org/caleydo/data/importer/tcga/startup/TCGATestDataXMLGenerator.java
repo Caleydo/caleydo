@@ -36,43 +36,40 @@ public class TCGATestDataXMLGenerator {
 		+ "methylation_cnmf/cnmf.membership.txt";
 
 	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
-	
-	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER + "ground_truth/2011_exp_assignments.txt";
+
+	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER
+		+ "ground_truth/2011_exp_assignments.txt";
+
+	public static final String CLINICAL = DROPBOX_GBM_FOLDER + "clinical/clinical_patient_public_GBM.txt";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 		+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
 
 	/*
-	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
-		+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/";
-
-	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
-	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
-
-	public static final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
-	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
-
-	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
-	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
-		+ "methylation_cnmf/cnmf.membership.txt";
-
-	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
-
-	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
-		+ System.getProperty("file.separator") + "tcga_brca_data.xml";
-	*/
-
+	 * public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home") +
+	 * System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/";
+	 * public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct"; public
+	 * static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt"; public static
+	 * final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct"; public static final String
+	 * MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt"; public static final String
+	 * METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct"; public static final String
+	 * METHYLATION_GROUPING = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.membership.txt"; public static final
+	 * String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt"; public static
+	 * final String OUTPUT_FILE_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
+	 * + "tcga_brca_data.xml";
+	 */
 
 	public static void main(String[] args) {
 
-		ArrayList<DataSetMetaInfo> dataTypeSets = new ArrayList<DataSetMetaInfo>();
-		dataTypeSets.add(setUpMRNAData());
-		dataTypeSets.add(setUpMiRNAData());
-		dataTypeSets.add(setUpMethylationData());
-		dataTypeSets.add(setUpCopyNumberData());
+		ArrayList<DataSetMetaInfo> dataSetMetaInfoList = new ArrayList<DataSetMetaInfo>();
+		dataSetMetaInfoList.add(setUpMRNAData());
+		dataSetMetaInfoList.add(setUpMiRNAData());
+		dataSetMetaInfoList.add(setUpMethylationData());
+		dataSetMetaInfoList.add(setUpCopyNumberData());
+		dataSetMetaInfoList.add(setUpClinicalData());
 
 		DataSetMetaInfoCollection dataTypeSetCollection = new DataSetMetaInfoCollection();
-		dataTypeSetCollection.setDataTypeSetCollection(dataTypeSets);
+		dataTypeSetCollection.setDataTypeSetCollection(dataSetMetaInfoList);
 
 		JAXBContext context = null;
 		try {
@@ -86,8 +83,8 @@ public class TCGATestDataXMLGenerator {
 			marshaller = context.createMarshaller();
 			marshaller.marshal(dataTypeSetCollection, new File(OUTPUT_FILE_PATH));
 
-			System.out.println("Created configuration for " + dataTypeSets.size() + " datasets: "
-				+ dataTypeSets);
+			System.out.println("Created configuration for " + dataSetMetaInfoList.size() + " datasets: "
+				+ dataSetMetaInfoList);
 		}
 		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
@@ -116,11 +113,11 @@ public class TCGATestDataXMLGenerator {
 		dataConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
 		dataConfiguration.setDimensionDenominationPlural("genes");
 		dataConfiguration.setDimensionDenominationSingular("gene");
-		
+
 		mrnaData.setDataDomainConfiguration(dataConfiguration);
 
 		mrnaData.setExternalGroupingPath(GROUND_TRUTH_GROUPING);
-		
+
 		doGCTSpecificStuff(mrnaData);
 		return mrnaData;
 	}
@@ -131,9 +128,9 @@ public class TCGATestDataXMLGenerator {
 		mirnaData.setDataDomainType("org.caleydo.datadomain.generic");
 		mirnaData.setDataPath(MIRNA);
 		mirnaData.setGroupingPath(MIRNA_GROUPING);
-		//mirnaData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_BROWN.name());
+		// mirnaData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_BROWN.name());
 		mirnaData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
-		
+
 		DataDomainConfiguration mirnaConfiguration = new DataDomainConfiguration();
 		mirnaConfiguration.setRecordIDCategory("SAMPLE");
 		mirnaConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
@@ -157,7 +154,7 @@ public class TCGATestDataXMLGenerator {
 		methylationData.setDataDomainType("org.caleydo.datadomain.generic");
 		methylationData.setDataPath(METHYLATION);
 		methylationData.setGroupingPath(METHYLATION_GROUPING);
-		//methylationData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_PURPLE.name());
+		// methylationData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_PURPLE.name());
 		methylationData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
 
 		DataDomainConfiguration methylationConfiguration = new DataDomainConfiguration();
@@ -183,9 +180,9 @@ public class TCGATestDataXMLGenerator {
 		copyNumberData.setDataDomainType("org.caleydo.datadomain.genetic");
 		copyNumberData.setDataPath(COPY_NUMBER);
 		// methylationData.setGroupingPath(METHYLATION_GROUPING);
-		//copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING.name());
+		// copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING.name());
 		copyNumberData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
-		
+
 		DataDomainConfiguration copyNumberConfiguration = new DataDomainConfiguration();
 		copyNumberConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
 		copyNumberConfiguration.setRecordIDCategory("SAMPLE");
@@ -207,6 +204,72 @@ public class TCGATestDataXMLGenerator {
 		doCopyNumberSpecificStuff(copyNumberData);
 
 		return copyNumberData;
+	}
+
+	private static DataSetMetaInfo setUpClinicalData() {
+		DataSetMetaInfo clinicalData = new DataSetMetaInfo();
+		clinicalData.setName("Survival data");
+		clinicalData.setDataDomainType("org.caleydo.datadomain.generic");
+		clinicalData.setDataPath(CLINICAL);
+		clinicalData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+
+		DataDomainConfiguration clinicalConfiguration = new DataDomainConfiguration();
+		clinicalConfiguration.setRecordIDCategory("SAMPLE");
+		clinicalConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
+		clinicalConfiguration.setHumanReadableRecordIDType("SAMPLE");
+		clinicalConfiguration.setRecordDenominationPlural("samples");
+		clinicalConfiguration.setRecordDenominationSingular("sample");
+
+		clinicalConfiguration.setDimensionIDCategory("SURVIVAL");
+		clinicalConfiguration.setHumanReadableDimensionIDType("Survival");
+		clinicalConfiguration.setDimensionDenominationPlural("Survival");
+		clinicalConfiguration.setDimensionDenominationSingular("Survival");
+
+		clinicalData.setDataDomainConfiguration(clinicalConfiguration);
+
+		String delimiter = "\t";
+
+		LoadDataParameters loadDataParameters = new LoadDataParameters();
+		loadDataParameters.setLabel(clinicalData.getName());
+		loadDataParameters.setFileName(clinicalData.getDataPath());
+		loadDataParameters.setDelimiter(delimiter);
+
+		loadDataParameters.setMathFilterMode("Normal");
+		loadDataParameters.setIsDataHomogeneous(true);
+		loadDataParameters.setColumnDimension(true);
+
+		try {
+			loadDataParameters.setStartParseFileAtLine(1);
+
+			// open file to read second line to determine number of rows and columns
+			BufferedReader reader = new BufferedReader(new FileReader(clinicalData.getDataPath()));
+
+			// read dimensions of data matrix
+			String dimensionString = reader.readLine();
+
+			// TODO: check if there are two numeric columns
+			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+
+			StringBuffer inputPattern =
+				new StringBuffer("SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT;");
+
+			// list to store column labels
+			List<String> columnLabels = new ArrayList<String>();
+			columnLabels.add("Survival");
+
+			loadDataParameters.setInputPattern(inputPattern.toString());
+			loadDataParameters.setRowIDStringConverter(new TCGAIDStringConverter());
+			loadDataParameters.setColumnLabels(columnLabels);
+			clinicalData.setLoadDataParameters(loadDataParameters);
+
+		}
+		catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+
+		// doCopyNumberSpecificStuff(clinicalConfiguration);
+
+		return clinicalData;
 	}
 
 	private static LoadDataParameters setUpLoadDataParameters(DataSetMetaInfo dataSetMetaInfo) {

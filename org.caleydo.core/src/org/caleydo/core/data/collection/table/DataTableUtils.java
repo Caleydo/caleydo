@@ -289,6 +289,8 @@ public class DataTableUtils {
 		cmdParseIDMapping.setAttributes(loadDataParameters.getFileName(),
 			loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
 			loadDataParameters.getDelimiter(), "", rowIDType.getIDCategory());
+		if (stringConverter == null)
+			stringConverter = loadDataParameters.getRowIDStringConverter();
 		cmdParseIDMapping.setStringConverter(stringConverter);
 
 		cmdParseIDMapping.doCommand();

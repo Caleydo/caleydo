@@ -210,13 +210,9 @@ public class TabularDataParser
 							catch (NumberFormatException nfe) {
 
 								String sErrorMessage =
-									"Unable to parse the data file. \""
-										+ tempToken
-										+ "\" at ["
-										+ (columnIndex + 2)
-										+ ", "
-										+ (lineInFile - parsingStartLine)
-										+ "] cannot be converted to a number. Please change the data selection and try again.";
+									"Could not parse a number. \"" + tempToken + "\" at ["
+										+ (columnIndex + 2) + ", " + (lineInFile - parsingStartLine)
+										+ "]. Assigning NaN";
 								// MessageDialog.openError(new Shell(), "Error during parsing",
 								// sErrorMessage);
 

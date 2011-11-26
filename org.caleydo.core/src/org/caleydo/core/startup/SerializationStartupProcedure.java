@@ -134,17 +134,24 @@ public class SerializationStartupProcedure
 
 			if (dataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tableDataDomain = (ATableBasedDataDomain) dataDomain;
+				if (tableDataDomain.getRecordIDCategory() != sampleIDCategory)
+					continue;
 
 				MappingType mappingType = null;
-				if (tableDataDomain.isColumnDimension())
-					mappingType =
-						idMappingManager.getMappingType(sampleIDType + "_2_"
-							+ tableDataDomain.getDimensionIDType());
-				else
-					mappingType =
-						idMappingManager.getMappingType(sampleIDType + "_2_"
-							+ tableDataDomain.getRecordIDType());
+				// if (tableDataDomain.isColumnDimension())
+				// mappingType =
+				// idMappingManager.getMappingType(sampleIDType + "_2_"
+				// + tableDataDomain.getDimensionIDType());
+				// else
+				// FIXME marc look into this please!
+				mappingType =
+					idMappingManager.getMappingType(sampleIDType + "_2_" + tableDataDomain.getRecordIDType());
 
+				if (mappingType == null) {
+					Logger.log(new Status(Status.ERROR, this.toString(), "Could not create mappingType for: "
+						+ sampleIDType + " - " + tableDataDomain.getRecordIDType()));
+					continue;
+				}
 				for (Object sampleID : idMappingManager.getMap(mappingType).keySet()) {
 
 					if (sampleIDMap.containsKey(sampleID))

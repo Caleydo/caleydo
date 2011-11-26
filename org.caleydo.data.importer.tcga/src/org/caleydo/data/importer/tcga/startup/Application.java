@@ -83,11 +83,9 @@ public class Application
 		createJAXBContext();
 		DataSetMetaInfoCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
-		boolean isColumnDimension = false;
-
 		// Iterate over data type sets and trigger processing
 		for (DataSetMetaInfo dataTypeSet : dataSetMetInfoCollection.getDataTypeSetCollection())
-			loadSources(dataTypeSet, isColumnDimension);
+			loadSources(dataTypeSet);
 
 		// calculateVAIntersections();
 
@@ -121,7 +119,7 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(DataSetMetaInfo metaInfo, boolean isColumnDimension)
+	private void loadSources(DataSetMetaInfo metaInfo)
 		throws FileNotFoundException, IOException {
 
 		loadData(metaInfo);
@@ -129,9 +127,11 @@ public class Application
 		loadExternalClusterInfo(metaInfo.getExternalGroupingPath());
 
 		// if (metaInfo.isRunClusteringOnRows()) {
-		PerspectiveInitializationData clusterResult = runClusteringOnRows();
-		// if (metaInfo.isCreateGeneSamples())
-		createSampleOfGenes(clusterResult);
+		if (!metaInfo.getLoadDataParameters().isColumnDimension()) {
+			PerspectiveInitializationData clusterResult = runClusteringOnRows();
+			// if (metaInfo.isCreateGeneSamples())
+			createSampleOfGenes(clusterResult);
+		}
 		// }
 
 	}
@@ -302,6 +302,8 @@ public class Application
 	}
 
 	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {
+		if (clusterResult.getIndices().size() < 50)
+			return;
 		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(dataDomain);
 
 		sampledDimensionPerspective.init(clusterResult);
