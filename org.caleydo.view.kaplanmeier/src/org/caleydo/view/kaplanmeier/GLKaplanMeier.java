@@ -1,13 +1,17 @@
 package org.caleydo.view.kaplanmeier;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -22,11 +26,10 @@ import org.eclipse.swt.widgets.Composite;
 
 /**
  * <p>
- * Sample GL2 view.
+ * Kaplan Meier GL2 view.
  * </p>
  * <p>
- * This Template is derived from {@link ATableBasedView}, but if the view does
- * not use a table, changing that to {@link AGLView} is necessary.
+ * TODO
  * </p>
  * 
  * @author Marc Streit
@@ -51,8 +54,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLKaplanMeier.VIEW_TYPE;
-		// TODO: RENAME
-		viewLabel = "Template";
+		viewLabel = "Kaplan Meier";
 	}
 
 	@Override
@@ -104,18 +106,61 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public void display(GL2 gl) {
 
-		// TODO: IMPLEMENT GL2 STUFF
-
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(0, 1, 0);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(0, 1, 0);
-		gl.glVertex3f(1, 1, 0);
-		gl.glVertex3f(1, 0, 0);
-		gl.glEnd();
-		gl.glPopName();
+		renderKaplanMeierCurve(gl);
 
 		checkForHits(gl);
+	}
+
+	private void renderKaplanMeierCurve(final GL2 gl) {
+
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
+				.getVirtualArray();
+
+		ArrayList<Float> dataVector = new ArrayList<Float>();
+
+		for (int index = 0; index < recordVA.size(); index++) {
+			dataVector.add(dataContainer
+					.getDataDomain()
+					.getTable()
+					.getFloat(DataRepresentation.NORMALIZED, recordVA.get(index),
+							dimensionVA.get(0)));
+		}
+		Float[] sortedDataVector = new Float[dataVector.size()];
+		dataVector.toArray(sortedDataVector);
+		Arrays.sort(sortedDataVector, 0, sortedDataVector.length - 1);
+		dataVector.clear();
+
+		// move sorted data back to array list so that we can use it as a stack
+		for (int index = 0; index < recordVA.size(); index++) {
+			dataVector.add(sortedDataVector[index]);
+		}
+
+		float TIME_BINS = sortedDataVector.length;
+		float timeBinStepSize = 1 / TIME_BINS;
+		float currentTimeBin = 0;
+
+		int remainingItemCount = sortedDataVector.length;
+		float ySingleSampleSize = viewFrustum.getHeight() / sortedDataVector.length;
+
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glColor3f(0, 1, 0);
+		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
+		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
+
+			while (dataVector.get(0) <= currentTimeBin) {
+				dataVector.remove(0);
+				remainingItemCount--;
+			}
+
+			float y = (float) remainingItemCount * ySingleSampleSize;
+			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), y, 0);
+			currentTimeBin += timeBinStepSize;
+			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), y, 0);
+		}
+
+		gl.glEnd();
 	}
 
 	@Override
@@ -155,8 +200,8 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}
