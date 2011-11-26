@@ -34,7 +34,7 @@ public class HandleRenderer extends LayoutRenderer {
     public static final int ALL_EXPAND_HANDLES = 0xC0;
     public static final int ALL_HANDLES = 0xFF;
     
-    private static final float BUTTON_Z = 2f;
+    private static final float BUTTON_Z = 5f;
 
     private GLBrick brick;
     private int handleSize;

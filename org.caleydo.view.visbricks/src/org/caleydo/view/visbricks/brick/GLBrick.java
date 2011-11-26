@@ -51,7 +51,7 @@ import org.caleydo.view.visbricks.brick.contextmenu.CreateSmallPathwayMultiplesG
 import org.caleydo.view.visbricks.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
@@ -669,7 +669,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	    brickLayout.destroy();
 	brickLayout = brickLayoutTemplate;
 	if ((brickLayout instanceof CompactBrickLayoutTemplate)
-		|| (brickLayout instanceof CompactCentralBrickLayoutTemplate))
+		|| (brickLayout instanceof CompactHeaderBrickLayoutTemplate))
 	    isInOverviewMode = true;
 	else
 	    isInOverviewMode = false;

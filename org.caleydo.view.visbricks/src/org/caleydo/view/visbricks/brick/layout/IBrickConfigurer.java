@@ -24,7 +24,7 @@ public interface IBrickConfigurer {
 	 * 
 	 * @param layoutTemplate
 	 */
-	public void configure(CentralBrickLayoutTemplate layoutTemplate);
+	public void configure(HeaderBrickLayoutTemplate layoutTemplate);
 
 	/**
 	 * Configures the specified layoutTemplate.
@@ -38,7 +38,7 @@ public interface IBrickConfigurer {
 	 * 
 	 * @param layoutTemplate
 	 */
-	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate);
+	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate);
 
 	/**
 	 * Configures the specified layoutTemplate.

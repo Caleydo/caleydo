@@ -36,7 +36,7 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
+	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
@@ -182,7 +182,7 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
+	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
 

@@ -47,8 +47,8 @@ import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
-import org.caleydo.view.visbricks.brick.layout.CentralBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.CompactCentralBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
@@ -73,17 +73,52 @@ public class DimensionGroup extends ATableBasedView implements
     public final static int MIN_DETAIL_GAP_PIXEL = 10;
     public final static float DETAIL_GAP_PORTION = 0.05f;
 
-    private Column groupColumn;
-    protected Row detailRow;
+    
+    /**
+     * The brick at the top that shows information about and provides tools for
+     * interaction with the whole dimension group
+     */
+    private GLBrick headerBrick;
+    
+    /** The bricks that show the grouping data */
+    private ArrayList<GLBrick> clusterBricks;
+    
+    /**
+     * The large detail replicate brick
+     */
+    private GLBrick detailBrick;
+    
+    
+    /**
+     * The main layout that contains all other layouts. In detail mode, it
+     * contains the detail brick and the group Column, else it contains only the
+     * group column
+     */
+    private Row mainRow;
 
-    protected ArrayList<GLBrick> bottomBricks;
+    /**
+     * Contains the dimension group including the header brick and the cluster
+     * bricks. A child of {@link #mainRow}.
+     */
+    private Column mainColumn;
 
+    /** The layout for the header brick. Child of {@link #mainColumn} */
+    private Column headerBrickLayout;
+
+    /** The column containing the cluster bricks, a child of {@link #mainColumn} */
+    protected Column clusterBrickColumn;
+
+
+
+    /** The layout for the detail brick. Child of {@link #mainRow} */
+    private Column detailBrickLayout;
+
+    /**
+     * Flag telling whether all cluster bricks are synchronized when switching
+     * views (true), or if every cluster brick may show whatever view it likes.
+     */
     private boolean isGlobalViewSwitching = false;
 
-    protected Column bottomCol;
-    private GLBrick centerBrick;
-    private GLBrick detailBrick;
-    private Column centerLayout;
     // private ViewFrustum brickFrustum;
     // protected DataTable set;
 
@@ -92,6 +127,11 @@ public class DimensionGroup extends ATableBasedView implements
     private LayoutSizeCollisionListener layoutSizeCollisionListener;
     private IBrickSortingStrategy brickSortingStrategy;
 
+    /**
+     * Flag telling whether the DimensionGroup is collapsed (the cluster bricks
+     * are hidden) or not. Collapsed is used for storing the DimensionGroup in
+     * the context area
+     */
     private boolean isCollapsed = false;
 
     private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
@@ -112,7 +152,6 @@ public class DimensionGroup extends ATableBasedView implements
     private boolean isDetailBrickShown = false;
     private boolean expandLeft = false;
 
-    private Column detailBrickLayout;
     private ElementLayout overviewDetailGapLayout;
 
     public static int BOTTOM_COLUMN_ID = 0;
@@ -126,32 +165,30 @@ public class DimensionGroup extends ATableBasedView implements
 
 	viewType = VIEW_TYPE;
 
-	detailRow = new Row("detailRow");
-	detailRow.setRenderingPriority(1);
-	detailRow.setXDynamic(true);
-	detailRow.setFrameColor(1, 0, 1, 1);
-	detailRow.sethAlign(HAlign.CENTER);
-	// detailRow.setDebug(true);
+	mainRow = new Row("mainRow");
+	mainRow.setRenderingPriority(1);
+	mainRow.setXDynamic(true);
+	mainRow.setFrameColor(1, 0, 1, 1);
+	mainRow.sethAlign(HAlign.CENTER);
 
-	groupColumn = new Column("dimensionGroup");
-	groupColumn.setXDynamic(true);
-	groupColumn.setVAlign(VAlign.CENTER);
-	// groupColumn.setDebug(true);
+	mainColumn = new Column("mainColumn");
+	mainColumn.setXDynamic(true);
+	mainColumn.setVAlign(VAlign.CENTER);
+	
+	clusterBrickColumn = new Column("clusterBrickColumn");
+	clusterBrickColumn.setFrameColor(1, 0, 1, 1);
+	clusterBrickColumn.setBottomUp(false);
+	clusterBrickColumn.setXDynamic(true);
+	clusterBrickColumn.setIDs(uniqueID, BOTTOM_COLUMN_ID);
+	clusterBrickColumn.setVAlign(VAlign.CENTER);
 
-	bottomCol = new Column("dimensionGroupColumnBottom");
-	bottomCol.setFrameColor(1, 0, 1, 1);
-	bottomCol.setBottomUp(false);
-	bottomCol.setXDynamic(true);
-	bottomCol.setIDs(uniqueID, BOTTOM_COLUMN_ID);
-	bottomCol.setVAlign(VAlign.CENTER);
+	clusterBricks = new ArrayList<GLBrick>(20);
 
-	bottomBricks = new ArrayList<GLBrick>(20);
+	headerBrickLayout = new Column("headerBrickLayout");
+	headerBrickLayout.setFrameColor(1, 1, 0, 1);
 
-	centerLayout = new Column("centerLayout");
-	centerLayout.setFrameColor(1, 1, 0, 1);
-
-	initGroupColumn();
-	detailRow.append(groupColumn);
+	initMainColumn();
+	mainRow.append(mainColumn);
     }
 
     /**
@@ -171,14 +208,18 @@ public class DimensionGroup extends ATableBasedView implements
 	this.brickSortingStrategy = brickSortingStrategy;
     }
 
-    private void initGroupColumn() {
+    /**
+     * Initializes the main column with either only the headerBrick, when the
+     * dimensionGroup is collapsed, or the headerBrick and the clusterBricks.
+     */
+    private void initMainColumn() {
 	if (isCollapsed) {
-	    groupColumn.clear();
-	    groupColumn.append(centerLayout);
+	    mainColumn.clear();
+	    mainColumn.append(headerBrickLayout);
 	} else {
-	    groupColumn.clear();
-	    groupColumn.append(bottomCol);
-	    groupColumn.append(centerLayout);
+	    mainColumn.clear();
+	    mainColumn.append(clusterBrickColumn);
+	    mainColumn.append(headerBrickLayout);
 	}
     }
 
@@ -192,15 +233,15 @@ public class DimensionGroup extends ATableBasedView implements
 	// CompactBrickLayoutTemplate(centerBrick,
 	// glVisBricksView, this));
 
-	if (centerBrick == null || uninitializedBricks.contains(centerBrick))
+	if (headerBrick == null || uninitializedBricks.contains(headerBrick))
 	    return;
 
 	if (isCollapsed) {
-	    centerBrick.collapse();
+	    headerBrick.collapse();
 	} else {
-	    centerBrick.expand();
+	    headerBrick.expand();
 	}
-	initGroupColumn();
+	initMainColumn();
 	// groupColumn.updateSubLayout();
     }
 
@@ -212,38 +253,35 @@ public class DimensionGroup extends ATableBasedView implements
 
 	// minPixelWidth = PIXEL_PER_DIMENSION * table.size();
 	// if (minPixelWidth < MIN_BRICK_WIDTH_PIXEL)
-	minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
-	minWidth = pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
+	// minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
+	// minWidth = pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
 
-	groupColumn
+	mainColumn
 		.addBackgroundRenderer(new DimensionGroupBackgroundColorRenderer(
 			dataContainer.getDataDomain().getColor().getRGBA()));
 
-	centerBrick = createBrick(centerLayout, dataContainer);
-	// centerBrick.setBrickData(dimensionGroupData.getSummaryBrickData());
-	// centerBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
-	// centerBrick.setRecordVA(new Group(), recordVA);
+	headerBrick = createBrick(headerBrickLayout, dataContainer);
 
 	ABrickLayoutConfiguration layoutTemplate;
 
 	if (isCollapsed) {
-	    layoutTemplate = new CompactCentralBrickLayoutTemplate(centerBrick,
-		    this, visBricks, centerBrick.getBrickConfigurer());
+	    layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick,
+		    this, visBricks, headerBrick.getBrickConfigurer());
 	} else {
-	    layoutTemplate = new CentralBrickLayoutTemplate(centerBrick, this,
-		    visBricks, centerBrick.getBrickConfigurer());
+	    layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this,
+		    visBricks, headerBrick.getBrickConfigurer());
 	}
-	centerBrick.setBrickLayoutTemplate(layoutTemplate,
+	headerBrick.setBrickLayoutTemplate(layoutTemplate,
 		layoutTemplate.getDefaultViewType());
 
-	createSubBricks();
+	creatClusterBricks();
     }
 
     /**
      * Creates all bricks except for the center brick based on the groupList in
      * the recordVA
      */
-    protected void createSubBricks() {
+    protected void creatClusterBricks() {
 
 	destroyOldBricks();
 
@@ -267,46 +305,29 @@ public class DimensionGroup extends ATableBasedView implements
 
 	    segmentBrick.setBrickLayoutTemplate(layoutTemplate,
 		    layoutTemplate.getDefaultViewType());
-	    // FIXME temp solution
-	    // segmentBrick.getLayout().setPixelGLConverter(pixelGLConverter);
-	    // segmentBrick.getLayout().setPixelSizeY(80);
 
 	    segmentBricks.add(segmentBrick);
 	}
 
-	// if (false) {
-
 	ArrayList<GLBrick> sortedBricks = brickSortingStrategy
 		.getSortedBricks(segmentBricks);
 
-	boolean summaryBrickPassed = false;
-
 	for (GLBrick brick : sortedBricks) {
-	    bottomBricks.add(brick);
-	    bottomCol.append(brick.getLayout());
+	    System.out.println("Average Value: "
+		    + brick.getDataContainer().getContainerStatistics()
+			    .getAverageValue());
+	    clusterBricks.add(brick);
+	    clusterBrickColumn.append(brick.getLayout());
 	}
-	// }
-	// else {
-	// ArrayList<GLBrick> sortedBricks =
-	// brickSortingStrategy.getSortedBricks(
-	// segmentBricks, null);
-	//
-	// for (GLBrick brick : sortedBricks) {
-	//
-	// bottomBricks.add(brick);
-	// bottomCol.append(brick.getLayout());
-	//
-	// }
-	// }
 
 	ElementLayout brickSpacingLayout = new ElementLayout(
 		"brickSpacingLayout");
 	brickSpacingLayout.setPixelSizeY(10);
 	brickSpacingLayout.setRatioSizeX(0);
 
-	for (int count = 0; count < bottomCol.size();) {
+	for (int count = 0; count < clusterBrickColumn.size();) {
 
-	    bottomCol.add(count, brickSpacingLayout);
+	    clusterBrickColumn.add(count, brickSpacingLayout);
 	    count++;
 	    count++;
 	}
@@ -360,7 +381,7 @@ public class DimensionGroup extends ATableBasedView implements
      * Destroys all sub-bricks
      */
     private void destroyOldBricks() {
-	for (GLBrick brick : bottomBricks) {
+	for (GLBrick brick : clusterBricks) {
 	    GeneralManager.get().getViewManager().unregisterGLView(brick);
 	    brick.unregisterEventListeners();
 	    brick.destroy();
@@ -388,12 +409,12 @@ public class DimensionGroup extends ATableBasedView implements
     public void setArchHeight(int archHeight) {
 
 	if (isCollapsed) {
-	    centerLayout.setRatioSizeY(1);
+	    headerBrickLayout.setRatioSizeY(1);
 	} else {
 
-	    if (!(centerLayout.getSizeScaledY() > 0)) {
-		bottomCol.setRatioSizeY(1f);
-		centerLayout.setPixelSizeY(archHeight);
+	    if (!(headerBrickLayout.getSizeScaledY() > 0)) {
+		clusterBrickColumn.setRatioSizeY(1f);
+		headerBrickLayout.setPixelSizeY(archHeight);
 	    }
 	}
 
@@ -438,10 +459,10 @@ public class DimensionGroup extends ATableBasedView implements
 		.equals(recordPerspectiveID))
 	    return;
 
-	bottomCol.clear();
-	bottomBricks.clear();
-	createSubBricks();
-	detailRow.updateSubLayout();
+	clusterBrickColumn.clear();
+	clusterBricks.clear();
+	creatClusterBricks();
+	mainRow.updateSubLayout();
 	// groupColumn.updateSubLayout();
 	visBricks.updateConnectionLinesBetweenDimensionGroups();
 
@@ -478,21 +499,21 @@ public class DimensionGroup extends ATableBasedView implements
 
 	if (showDetailBrick) {
 
-	    detailRow.clear();
+	    mainRow.clear();
 	    if (expandLeft) {
-		detailRow.append(detailBrickLayout);
-		detailRow.append(overviewDetailGapLayout);
-		detailRow.append(groupColumn);
+		mainRow.append(detailBrickLayout);
+		mainRow.append(overviewDetailGapLayout);
+		mainRow.append(mainColumn);
 		visBricks.switchToDetailModeRight(this);
 
 	    } else {
-		detailRow.append(groupColumn);
-		detailRow.append(overviewDetailGapLayout);
-		detailRow.append(detailBrickLayout);
+		mainRow.append(mainColumn);
+		mainRow.append(overviewDetailGapLayout);
+		mainRow.append(detailBrickLayout);
 		visBricks.switchToDetailModeLeft(this);
 	    }
 
-	    detailRow.updateSubLayout();
+	    mainRow.updateSubLayout();
 	    // visBricks.setLastResizeDirectionWasToLeft(false);
 	    visBricks.updateLayout();
 	    visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -501,8 +522,8 @@ public class DimensionGroup extends ATableBasedView implements
 	}
 
 	if (hideDetailBrick || (isCollapsed && detailBrick != null)) {
-	    detailRow.clear();
-	    detailRow.append(groupColumn);
+	    mainRow.clear();
+	    mainRow.append(mainColumn);
 	    if (detailBrick != null) {
 		GeneralManager.get().getViewManager()
 			.unregisterGLView(detailBrick);
@@ -522,7 +543,7 @@ public class DimensionGroup extends ATableBasedView implements
 
 	    hideDetailBrick = false;
 
-	    detailRow.updateSubLayout();
+	    mainRow.updateSubLayout();
 	    // visBricks.setLastResizeDirectionWasToLeft(false);
 	    visBricks.updateLayout();
 	    visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -609,14 +630,14 @@ public class DimensionGroup extends ATableBasedView implements
 
 	// updateBrickSizes(topCol, topBricks, newSize);
 
-	float bottomSize = bottomCol.getSizeScaledY();
-	bottomCol.setAbsoluteSizeY(bottomSize + change);
-	float centerSize = centerLayout.getSizeScaledY();
+	float bottomSize = clusterBrickColumn.getSizeScaledY();
+	clusterBrickColumn.setAbsoluteSizeY(bottomSize + change);
+	float centerSize = headerBrickLayout.getSizeScaledY();
 
-	centerLayout.setAbsoluteSizeY(centerSize);
+	headerBrickLayout.setAbsoluteSizeY(centerSize);
 
-	centerLayout.updateSubLayout();
-	detailRow.updateSubLayout();
+	headerBrickLayout.updateSubLayout();
+	mainRow.updateSubLayout();
 	// groupColumn.updateSubLayout();
 	visBricks.updateConnectionLinesBetweenDimensionGroups();
 
@@ -626,7 +647,7 @@ public class DimensionGroup extends ATableBasedView implements
      * Updates the layout of this dimensionGroup
      */
     public void updateLayout() {
-	detailRow.updateSubLayout();
+	mainRow.updateSubLayout();
 	// groupColumn.updateSubLayout();
 	visBricks.updateConnectionLinesBetweenDimensionGroups();
     }
@@ -638,14 +659,14 @@ public class DimensionGroup extends ATableBasedView implements
      */
     public void switchBrickViews(EContainedViewType viewType) {
 
-	for (GLBrick brick : bottomBricks) {
+	for (GLBrick brick : clusterBricks) {
 	    brick.setContainedView(viewType);
 	}
 	if (detailBrick != null) {
 	    detailBrick.setContainedView(viewType);
 	}
 	// centerBrick.setRemoteView(viewType);
-	detailRow.updateSubLayout();
+	mainRow.updateSubLayout();
 	// groupColumn.updateSubLayout();
     }
 
@@ -696,8 +717,8 @@ public class DimensionGroup extends ATableBasedView implements
     public List<GLBrick> getBricks() {
 	ArrayList<GLBrick> bricks = new ArrayList<GLBrick>();
 
-	for (int i = bottomBricks.size() - 1; i >= 0; i--) {
-	    bricks.add(bottomBricks.get(i));
+	for (int i = clusterBricks.size() - 1; i >= 0; i--) {
+	    bricks.add(clusterBricks.get(i));
 
 	}
 
@@ -742,18 +763,17 @@ public class DimensionGroup extends ATableBasedView implements
      * @return
      */
     public GLBrick getCenterBrick() {
-	return centerBrick;
+	return headerBrick;
     }
 
     @Override
     public int getNumberOfSelections(SelectionType SelectionType) {
-	// TODO Auto-generated method stub
 	return 0;
     }
 
     @Override
     public Row getLayout() {
-	return detailRow;
+	return mainRow;
     }
 
     // @Override
@@ -794,8 +814,8 @@ public class DimensionGroup extends ATableBasedView implements
 	if (layoutID == BOTTOM_COLUMN_ID) {
 	    boolean changeMade = false;
 
-	    for (int count = bottomBricks.size() - 1; count >= 0; count--) {
-		GLBrick brick = bottomBricks.get(count);
+	    for (int count = clusterBricks.size() - 1; count >= 0; count--) {
+		GLBrick brick = clusterBricks.get(count);
 		if (toBigBy < 0)
 		    break;
 		if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
@@ -804,7 +824,7 @@ public class DimensionGroup extends ATableBasedView implements
 		}
 	    }
 	    if (changeMade)
-		bottomCol.updateSubLayout();
+		clusterBrickColumn.updateSubLayout();
 	}
     }
 
@@ -817,7 +837,7 @@ public class DimensionGroup extends ATableBasedView implements
     public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 	this.isGlobalViewSwitching = isGlobalViewSwitching;
 
-	for (GLBrick brick : bottomBricks) {
+	for (GLBrick brick : clusterBricks) {
 	    brick.setGlobalViewSwitching(isGlobalViewSwitching);
 	}
 	if (detailBrick != null) {
@@ -1025,7 +1045,7 @@ public class DimensionGroup extends ATableBasedView implements
     }
 
     public int getGroupColumnWidthPixels() {
-	return pixelGLConverter.getPixelWidthForGLWidth(groupColumn
+	return pixelGLConverter.getPixelWidthForGLWidth(mainColumn
 		.getSizeScaledX());
     }
 
@@ -1033,7 +1053,7 @@ public class DimensionGroup extends ATableBasedView implements
      * @return Column of bricks.
      */
     public Column getGroupColumn() {
-	return groupColumn;
+	return mainColumn;
     }
 
     @Override

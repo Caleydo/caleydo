@@ -40,7 +40,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
+	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
@@ -198,7 +198,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-		if (!(brickLayout instanceof CentralBrickLayoutTemplate)) {
+		if (!(brickLayout instanceof HeaderBrickLayoutTemplate)) {
 			HeatMapCreator heatMapCreator = new HeatMapCreator();
 			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl, glMouseListener);
 			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
@@ -239,7 +239,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	}
 
 	@Override
-	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
+	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 

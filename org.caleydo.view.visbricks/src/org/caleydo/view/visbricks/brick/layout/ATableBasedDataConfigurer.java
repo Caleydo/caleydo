@@ -50,7 +50,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
     }
 
     protected ArrayList<ElementLayout> createHeaderBarElements(
-	    CentralBrickLayoutTemplate layoutTemplate) {
+	    HeaderBrickLayoutTemplate layoutTemplate) {
 
 	final GLBrick brick = layoutTemplate.getBrick();
 
@@ -142,7 +142,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
     }
 
     protected ArrayList<ElementLayout> createHeaderBarElements(
-	    CompactCentralBrickLayoutTemplate layoutTemplate) {
+	    CompactHeaderBrickLayoutTemplate layoutTemplate) {
 
 	ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -211,7 +211,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		    }
 		    button.setSelected(true);
 
-		    if (!(layoutTemplate instanceof CentralBrickLayoutTemplate)
+		    if (!(layoutTemplate instanceof HeaderBrickLayoutTemplate)
 			    && dimensionGroup.isGlobalViewSwitching()) {
 			dimensionGroup.switchBrickViews(button.getViewType());
 		    } else {
@@ -226,7 +226,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
     }
 
     protected ArrayList<ElementLayout> createToolBarElements(
-	    CentralBrickLayoutTemplate layoutTemplate,
+	    HeaderBrickLayoutTemplate layoutTemplate,
 	    ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
 	final GLBrick brick = layoutTemplate.getBrick();
@@ -261,13 +261,13 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
     }
 
     protected ArrayList<ElementLayout> createFooterBarElements(
-	    CentralBrickLayoutTemplate layoutTemplate) {
+	    HeaderBrickLayoutTemplate layoutTemplate) {
 	return createSummaryFooterBarElements(layoutTemplate);
 
     }
 
     protected ArrayList<ElementLayout> createFooterBarElements(
-	    CompactCentralBrickLayoutTemplate layoutTemplate) {
+	    CompactHeaderBrickLayoutTemplate layoutTemplate) {
 	return createSummaryFooterBarElements(layoutTemplate);
 
     }

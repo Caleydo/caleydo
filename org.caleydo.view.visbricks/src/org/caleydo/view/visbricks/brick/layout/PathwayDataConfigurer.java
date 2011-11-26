@@ -35,7 +35,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	protected static final int SPACING_PIXELS = 4;
 
 	@Override
-	public void configure(CentralBrickLayoutTemplate layoutTemplate) {
+	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY);
@@ -71,7 +71,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	}
 
 	@Override
-	public void configure(CompactCentralBrickLayoutTemplate layoutTemplate) {
+	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
 
