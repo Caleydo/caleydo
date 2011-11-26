@@ -101,8 +101,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
     private ClearSelectionsListener clearSelectionsListener;
     private ConnectionsModeListener trendHighlightModeListener;
 
-    // private ATableBasedDataDomain dataDomain;
-
     private DimensionGroupManager dimensionGroupManager;
 
     private ConnectionBandRenderer connectionRenderer;
@@ -110,10 +108,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
     private LayoutManager centerLayoutManager;
     private LayoutManager leftLayoutManager;
     private LayoutManager rightLayoutManager;
-
-    // private LayoutConfiguration centerLayout;
-    // private LayoutConfiguration leftLayoutTemplate;
-    // private LayoutConfiguration rightLayout;
 
     private Row centerRowLayout;
     private Column leftColumnLayout;
@@ -219,14 +213,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	displayListIndex = gl.glGenLists(1);
 
 	textRenderer = new CaleydoTextRenderer(24);
-	// dataDomain.createContentRelationAnalyzer();
-	// relationAnalyzer = dataDomain.getContentRelationAnalyzer();
 
 	detailLevel = DetailLevel.HIGH;
-	subDataTablesUpdated();
 	connectionRenderer.init(gl);
-
-	// checkForPreparedPerspectives();
 
     }
 
@@ -506,9 +495,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
 	    group.processEvents();
 	}
-	// brick.display(gl);
 
-	// if (!lazyMode)
 	pickingManager.handlePicking(this, gl);
 
 	display(gl);
@@ -642,30 +629,11 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
     public void switchToDetailModeLeft(DimensionGroup leftDimGr) {
 
 	int leftIndex = dimensionGroupManager.indexOfDimensionGroup(leftDimGr);
-	// int rightIndex =
-	// dimensionGroupManager.indexOfDimensionGroup(rightDimGr);
 
-	// int centerGroupStartIndex =
-	// dimensionGroupManager.getCenterGroupStartIndex();
-	// int rightGroupStartIndex =
-	// dimensionGroupManager.getRightGroupStartIndex();
-
-	// for(int index = leftIndex-centerGroupStartIndex; index <= leftIndex;
-	// index++)
-	// {
-	// centerRowLayout.remove(0);
-	// centerRowLayout.remove(0);
-	// }
 	dimensionGroupManager.setCenterGroupStartIndex(leftIndex);
 	dimensionGroupManager.setRightGroupStartIndex(leftIndex + 2);
 
 	isLeftDetailShown = true;
-	// leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
-	// centerRowLayout.getElements().get(2).setGrabX(true);
-	//
-	// ((DimensionGroupSpacingRenderer)
-	// leftDimensionGroupSpacing.getRenderer())
-	// .setLeftDimGroup(null);
 
 	initLeftLayout();
 	initCenterLayout();
@@ -674,30 +642,12 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
     public void switchToDetailModeRight(DimensionGroup rightDimGr) {
 
-	// int leftIndex =
-	// dimensionGroupManager.indexOfDimensionGroup(leftDimGr);
 	int rightIndex = dimensionGroupManager
 		.indexOfDimensionGroup(rightDimGr);
 
-	// int centerGroupStartIndex = dimensionGroupManager
-	// .getCenterGroupStartIndex();
-	// int rightGroupStartIndex = dimensionGroupManager
-	// .getRightGroupStartIndex();
-
-	// for(int index = leftIndex-centerGroupStartIndex; index <= leftIndex;
-	// index++)
-	// {
-	// centerRowLayout.remove(0);
-	// centerRowLayout.remove(0);
-	// }
 	dimensionGroupManager.setCenterGroupStartIndex(rightIndex - 1);
 	dimensionGroupManager.setRightGroupStartIndex(rightIndex + 1);
-	// leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
-	// centerRowLayout.getElements().get(2).setGrabX(true);
-	//
-	// ((DimensionGroupSpacingRenderer)
-	// leftDimensionGroupSpacing.getRenderer())
-	// .setLeftDimGroup(null);
+
 	isRightDetailShown = true;
 
 	initLeftLayout();
@@ -866,7 +816,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
     }
 
     /**
-     * Handles the up-down dragging of the whole dimension group
+     * Handles the left-right dragging of the whole dimension group. Does
+     * collision handling and moves dimension groups to the sides if necessary.
      * 
      * @param gl
      */
@@ -1264,29 +1215,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			recordIDCategory), mappingRecordIDType);
     }
 
-    public void subDataTablesUpdated() {
-
-	// ClusterTree dimensionTree = dataDomain.getTable()
-	// .getDimensionData(dimensionVAType).getDimensionTree();
-	// if (dimensionTree == null)
-	// return;
-	//
-	// ArrayList<DataTable> allSubDataTables = dimensionTree.getRoot()
-	// .getAllSubDataTablesFromSubTree();
-	//
-	// ArrayList<DataTable> filteredSubDataTables = new
-	// ArrayList<DataTable>(
-	// allSubDataTables.size() / 2);
-	//
-	// for (DataTable subDataTable : allSubDataTables) {
-	// if (subDataTable.size() > 1
-	// && subDataTable.size() != dataDomain.getTable().size())
-	// filteredSubDataTables.add(subDataTable);
-	// }
-	// initializeBricks(filteredSubDataTables);
-
-    }
-
     @Override
     public void reshape(GLAutoDrawable drawable, int x, int y, int width,
 	    int height) {
@@ -1393,12 +1321,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	initLayouts();
-	// FIXME: check why the second layout is needed here. otherwise the
-	// moved views appear upside down
-	// initLayouts();
 
 	RelationsUpdatedEvent event = new RelationsUpdatedEvent();
-//	event.setSender(this);
+	event.setSender(this);
 	eventPublisher.triggerEvent(event);
     }
 
@@ -1583,52 +1508,5 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
     public List<DataContainer> getDataContainers() {
 	return dataContainers;
     }
-
-    /**
-     * Automatically create data containers if we have pre-clustered data.
-     * Temporary solution, should not be used
-     */
-    // @Deprecated
-    // private void checkForPreparedPerspectives() {
-    // Set<String> recordPerspectiveIDs = dataDomain.getTable()
-    // .getRecordPerspectiveIDs();
-    // Set<String> dimensionPerspectiveIDs = dataDomain.getTable()
-    // .getDimensionPerspectiveIDs();
-    //
-    // String chosenDimensionPerspectiveID = null;
-    // Iterator<String> dimensionPerspectiveIterator = dimensionPerspectiveIDs
-    // .iterator();
-    //
-    // while (dimensionPerspectiveIterator.hasNext()) {
-    // chosenDimensionPerspectiveID = dimensionPerspectiveIterator.next();
-    // DimensionPerspective currentPerspecitve = dataDomain.getTable()
-    // .getDimensionPerspective(chosenDimensionPerspectiveID);
-    // if (currentPerspecitve.getLabel().contains("sample"))
-    // break;
-    // else
-    // chosenDimensionPerspectiveID = null;
-    //
-    // }
-    // if (chosenDimensionPerspectiveID == null)
-    // return;
-    //
-    // String chosenRecordPerspectiveID;
-    // Iterator<String> recordPerspectiveIterator =
-    // recordPerspectiveIDs.iterator();
-    //
-    // while (recordPerspectiveIterator.hasNext()) {
-    // chosenRecordPerspectiveID = recordPerspectiveIterator.next();
-    // RecordPerspective currentPerspective = dataDomain.getTable()
-    // .getRecordPerspective(chosenRecordPerspectiveID);
-    // if (currentPerspective.getLabel().contains("clusters")) {
-    // DataContainer dataContainer = dataDomain.getDataContainer(
-    // chosenRecordPerspectiveID, chosenDimensionPerspectiveID);
-    // AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-    // dataContainer);
-    // event.setDataDomainID(dataDomain.getDataDomainID());
-    // eventPublisher.triggerEvent(event);
-    // }
-    // }
-    // }
 
 }
