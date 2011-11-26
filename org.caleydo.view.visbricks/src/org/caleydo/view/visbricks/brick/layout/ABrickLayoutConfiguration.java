@@ -27,7 +27,6 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
 	protected ElementLayout viewLayout;
-	protected boolean showHandles;
 	protected DimensionGroup dimensionGroup;
 	protected HashSet<EContainedViewType> validViewTypes;
 	protected EContainedViewType defaultViewType;
@@ -37,7 +36,6 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	public ABrickLayoutConfiguration(GLBrick brick, DimensionGroup dimensionGroup) {
 		this.brick = brick;
 		this.dimensionGroup = dimensionGroup;
-		showHandles = false;
 		validViewTypes = new HashSet<EContainedViewType>();
 		viewTypeChangeListeners = new ArrayList<IViewTypeChangeListener>();
 		borderedAreaRenderer = new BorderedAreaRenderer();
@@ -64,21 +62,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		return viewRenderer;
 	}
 
-	/**
-	 * @return True, if handles are shown.
-	 */
-	public boolean isShowHandles() {
-		return showHandles;
-	}
 
-	/**
-	 * Sets whether handles shall be shown.
-	 * 
-	 * @param showHandles
-	 */
-	public void setShowHandles(boolean showHandles) {
-		this.showHandles = showHandles;
-	}
 
 	/**
 	 * Registers PickingListeners. Should be called after the layout has been

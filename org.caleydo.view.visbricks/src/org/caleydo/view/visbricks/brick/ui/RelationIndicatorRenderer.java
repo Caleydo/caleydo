@@ -66,6 +66,9 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	 * TODO: add parameters to check whether an update is actually necessary.
 	 */
 	public synchronized void updateRelations() {
+	    neighborBrickOrder = null;
+	    neighborPerspectiveID = null;
+	    similarities = null;
 		ArrayList<DimensionGroup> dimensionGroups = visBricks.getDimensionGroupManager()
 				.getDimensionGroups();
 

@@ -10,6 +10,8 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.ToolBarBackgroundRenderer;
 
 /**
+ * Dynamically appearing tool-bar for bricks
+ * 
  * @author Alexander Lex
  * 
  */
@@ -31,14 +33,22 @@ public class ToolBar extends Row {
 
 	brickPickingListener = new APickingListener() {
 	    @Override
-	    public void clicked(Pick pick) {
+	    public void mouseOver(Pick pick) {
 		if (pick.getID() == brick.getID())
 		    hide = false;
 		else
 		    hide = true;
 	    }
+	    
+	    @Override
+	    public void mouseOut(Pick pick) {
+		if (pick.getID() == brick.getID())
+		    hide = true;
+	    }
 	};
+	
 
+	
 	brick.getDimensionGroup()
 		.getVisBricksView()
 		.addTypePickingListener(brickPickingListener,

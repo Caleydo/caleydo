@@ -104,7 +104,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
     // private DataTable set;
     // private GLHeatMap heatMap;
 
+    /** Renders indication of group relations to the neighboring dimension group. May be null for certain brick types */
     private RelationIndicatorRenderer leftRelationIndicatorRenderer;
+    /** same as {@link #leftRelationIndicatorRenderer} for the right side */
     private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
     private RelationsUpdatedListener relationsUpdateListener;
@@ -211,14 +213,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		event.setSelectionDelta(delta);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-		showHandles();
+		// showHandles();
 
 		selectElementsByGroup();
 	    }
 
 	    @Override
 	    public void mouseOver(Pick pick) {
-		showHandles();
+		// showHandles();
 		// updateSelection();
 	    }
 
@@ -249,24 +251,24 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			getID()));
 	    }
 
-	    public void showHandles() {
-		// System.out.println("picked brick");
-		if (brickLayout.isShowHandles())
-		    return;
-
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroup
-			.getVisBricksView().getDimensionGroupManager()
-			.getDimensionGroups();
-
-		for (DimensionGroup dimensionGroup : dimensionGroups) {
-		    dimensionGroup.hideHandles();
-		}
-		if (!brickLayout.isShowHandles()) {
-		    brickLayout.setShowHandles(true);
-		    templateRenderer.updateLayout();
-		}
-
-	    }
+	    // public void showHandles() {
+	    // // System.out.println("picked brick");
+	    // if (brickLayout.isShowHandles())
+	    // return;
+	    //
+	    // ArrayList<DimensionGroup> dimensionGroups = dimensionGroup
+	    // .getVisBricksView().getDimensionGroupManager()
+	    // .getDimensionGroups();
+	    //
+	    // for (DimensionGroup dimensionGroup : dimensionGroups) {
+	    // dimensionGroup.hideHandles();
+	    // }
+	    // if (!brickLayout.isShowHandles()) {
+	    // brickLayout.setShowHandles(true);
+	    // templateRenderer.updateLayout();
+	    // }
+	    //
+	    // }
 
 	}, PickingType.BRICK.name(), getID());
 
@@ -292,8 +294,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	    @Override
 	    public void run() {
 		ChangeNameDialog dialog = new ChangeNameDialog();
-		dialog.run(PlatformUI.getWorkbench().getDisplay(),
-			getLabel());
+		dialog.run(PlatformUI.getWorkbench().getDisplay(), getLabel());
 		// groupRep.getClusterNode().getSubDataTable()
 		// .setLabel(groupRep.getClusterNode().getLabel());
 		label = dialog.getResultingName();
@@ -695,17 +696,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	relationsUpdateListener = new RelationsUpdatedListener();
 	relationsUpdateListener.setHandler(this);
-
-	relationsUpdateListener.setExclusiveDataDomainID(dataDomain
-		.getDataDomainID());
 	eventPublisher.addListener(RelationsUpdatedEvent.class,
 		relationsUpdateListener);
 
 	selectionUpdateListener = new SelectionUpdateListener();
 	selectionUpdateListener.setHandler(this);
-
-	selectionUpdateListener.setExclusiveDataDomainID(dataDomain
-		.getDataDomainID());
 	eventPublisher.addListener(SelectionUpdateEvent.class,
 		selectionUpdateListener);
 
@@ -834,12 +829,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	    if (dataContainerSelectionManager.checkStatus(
 		    dataContainerSelectionManager.getSelectionType(),
 		    dataContainer.getID())) {
-		brickLayout.setShowHandles(true);
+		// brickLayout.setShowHandles(true);
 		brickLayout.setSelected(true);
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 	    } else {
 		brickLayout.setSelected(false);
-		brickLayout.setShowHandles(false);
+		// brickLayout.setShowHandles(false);
 	    }
 	    // }
 	    templateRenderer.updateLayout();
@@ -960,13 +955,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	this.isSizeFixed = isSizeFixed;
     }
 
-    /**
-     * Hides the handles of the brick.
-     */
-    public void hideHandles() {
-	brickLayout.setShowHandles(false);
-	templateRenderer.updateLayout();
-    }
 
     public ElementLayout getWrappingLayout() {
 	return wrappingLayout;
@@ -980,6 +968,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	this.brickConfigurer = brickConfigurer;
     }
 
+    /**
+     * FIXME this should not be here  but somewhere specific to genes
+     * @param sourceDataDomain
+     * @param sourceRecordVA
+     */
     public void openCreateSmallPathwayMultiplesGroupDialog(
 	    final DataContainer dimensionGroupDataContainer,
 	    final DimensionPerspective dimensionPerspective) {
@@ -1014,6 +1007,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	});
     }
 
+    /**
+     * FIXME this should not be here  but somewhere specific to genes
+     * @param sourceDataDomain
+     * @param sourceRecordVA
+     */
     public void openCreatePathwayGroupDialog(
 	    final ATableBasedDataDomain sourceDataDomain,
 	    final RecordVirtualArray sourceRecordVA) {
@@ -1066,5 +1064,21 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
      */
     public boolean isDefaultLabel() {
 	return dataContainer.isDefaultLabel();
+    }
+    
+    /**
+     * @param rightRelationIndicatorRenderer setter, see {@link #rightRelationIndicatorRenderer}
+     */
+    public void setRightRelationIndicatorRenderer(
+	    RelationIndicatorRenderer rightRelationIndicatorRenderer) {
+	this.rightRelationIndicatorRenderer = rightRelationIndicatorRenderer;
+    }
+    
+    /**
+     * @param leftRelationIndicatorRenderer setter, see {@link #leftRelationIndicatorRenderer}
+     */
+    public void setLeftRelationIndicatorRenderer(
+	    RelationIndicatorRenderer leftRelationIndicatorRenderer) {
+	this.leftRelationIndicatorRenderer = leftRelationIndicatorRenderer;
     }
 }

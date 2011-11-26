@@ -1398,7 +1398,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	// initLayouts();
 
 	RelationsUpdatedEvent event = new RelationsUpdatedEvent();
-	event.setSender(this);
+//	event.setSender(this);
 	eventPublisher.triggerEvent(event);
     }
 
