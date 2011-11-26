@@ -1,4 +1,4 @@
-package org.caleydo.view.template;
+package org.caleydo.view.kaplanmeier;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
@@ -6,22 +6,22 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**
- * Serialized <INSERT VIEW NAME> view.
+ * Serialized Kaplan Meier view.
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author Marc Streit
  */
 @XmlRootElement
 @XmlType
-public class SerializedTemplateView extends ASerializedTopLevelDataView {
+public class SerializedKaplanMeierView extends ASerializedTopLevelDataView {
 
 	/**
 	 * Default constructor with default initialization
 	 */
-	public SerializedTemplateView() {
+	public SerializedKaplanMeierView() {
 	}
 
 	@Override
 	public String getViewType() {
-		return GLTemplate.VIEW_TYPE;
+		return GLKaplanMeier.VIEW_TYPE;
 	}
 }

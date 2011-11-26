@@ -1,4 +1,4 @@
-package org.caleydo.view.template;
+package org.caleydo.view.kaplanmeier;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
@@ -7,20 +7,20 @@ import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
 /**
- * TODO: DOCUMENT ME!
+ * RCP Kaplan Meier view.
  * 
- * @author <INSERT_YOUR_NAME>
+ * @author Marc Streit
  */
-public class RcpGLTemplateView extends ARcpGLViewPart {
+public class RcpGLKaplanMeierView extends ARcpGLViewPart {
 
 	/**
 	 * Constructor.
 	 */
-	public RcpGLTemplateView() {
+	public RcpGLKaplanMeierView() {
 		super();
 
 		try {
-			viewContext = JAXBContext.newInstance(SerializedTemplateView.class);
+			viewContext = JAXBContext.newInstance(SerializedKaplanMeierView.class);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
@@ -31,7 +31,7 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLTemplate(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLKaplanMeier(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeViewWithData();
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
@@ -40,13 +40,13 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 
 	@Override
 	public void createDefaultSerializedView() {
-		serializedView = new SerializedTemplateView();
+		serializedView = new SerializedKaplanMeierView();
 		determineDataConfiguration(serializedView);
 	}
 
 	@Override
 	public String getViewGUIID() {
-		return GLTemplate.VIEW_TYPE;
+		return GLKaplanMeier.VIEW_TYPE;
 	}
 
 }
