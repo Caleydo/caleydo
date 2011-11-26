@@ -6,7 +6,7 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.HistogramCreator;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.AverageRecord;
+import org.caleydo.core.data.container.Average;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.filter.RecordFilter;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
@@ -185,9 +185,9 @@ public class RStatisticsPerformer implements IStatisticsPerformer, IListenerOwne
 					"The RecordPerspectives have to be the same");
 		}
 
-		ArrayList<AverageRecord> averageRecords1 = container1.getContainerStatistics()
+		ArrayList<Average> averageRecords1 = container1.getContainerStatistics()
 				.getAverageRecords();
-		ArrayList<AverageRecord> averageRecords2 = container2.getContainerStatistics()
+		ArrayList<Average> averageRecords2 = container2.getContainerStatistics()
 				.getAverageRecords();
 		double[] resultVec = new double[averageRecords1.size()];
 

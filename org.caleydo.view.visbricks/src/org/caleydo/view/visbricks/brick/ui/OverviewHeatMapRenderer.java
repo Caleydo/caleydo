@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.AverageRecord;
+import org.caleydo.core.data.container.Average;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -44,10 +44,10 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 		heatMapValuesMeanMinusStdDev = new ArrayList<Float>();
 		heatMapValuesMeanPlusStdDev = new ArrayList<Float>();
 
-		ArrayList<AverageRecord> averageRecords = dataContainer.getContainerStatistics()
+		ArrayList<Average> averageRecords = dataContainer.getContainerStatistics()
 				.getAverageRecords();
 
-		for (AverageRecord averageRecord : averageRecords) {
+		for (Average averageRecord : averageRecords) {
 			heatMapValuesMean.add((float) averageRecord.getArithmeticMean());
 			heatMapValuesMeanMinusStdDev.add((float) averageRecord.getArithmeticMean()
 					- (float) averageRecord.getStandardDeviation());

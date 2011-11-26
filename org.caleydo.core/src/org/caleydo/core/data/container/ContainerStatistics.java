@@ -17,7 +17,11 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
  * {@link DataContainer}, such as averages, histograms, etc.
  * </p>
  * <p>
- * Everything is calcualted lazy.
+ * Everything is calculated lazily.
+ * </p>
+ * <p>
+ * TODO: There is currently no way to mark this dirty once the perspectives in the container or the container
+ * itself changed.
  * </p>
  * 
  * @author Alexander Lex
@@ -36,7 +40,13 @@ public class ContainerStatistics {
 
 	private TTest tTest;
 
-	private ArrayList<AverageRecord> averageRecords;
+	/**
+	 * A list of averages across dimensions, one for every record in the data container. Sorted as the virtual
+	 * array.
+	 */
+	private ArrayList<Average> averageRecords;
+	/** Same as {@link #averageRecords} for dimensionse */
+	private ArrayList<Average> averageDimensions;
 
 	public ContainerStatistics(DataContainer container) {
 		this.container = container;
@@ -136,7 +146,7 @@ public class ContainerStatistics {
 	/**
 	 * @return the averageRecords, see {@link #averageRecords}
 	 */
-	public ArrayList<AverageRecord> getAverageRecords() {
+	public ArrayList<Average> getAverageRecords() {
 		if (averageRecords == null)
 			calculateAverageRecords();
 		return averageRecords;
@@ -146,14 +156,14 @@ public class ContainerStatistics {
 	 * Calculates the arithmetic mean and the standard deviation from the arithmetic mean of the records
 	 */
 	private void calculateAverageRecords() {
-		averageRecords = new ArrayList<AverageRecord>();
+		averageRecords = new ArrayList<Average>();
 
 		DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
 		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 		DataTable table = container.getDataDomain().getTable();
 
 		for (Integer recordID : recordVA) {
-			AverageRecord averageRecord = new AverageRecord();
+			Average averageRecord = new Average();
 			double sumOfValues = 0;
 			double sumDeviation = 0;
 
@@ -175,6 +185,51 @@ public class ContainerStatistics {
 			}
 			averageRecord.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);
 			averageRecords.add(averageRecord);
+		}
+	}
+
+	/**
+	 * @return the averageRecords, see {@link #averageRecords}
+	 */
+	public ArrayList<Average> getAverageDimensions() {
+		if (averageDimensions == null)
+			calculateAverageDimensions();
+		return averageDimensions;
+	}
+
+	/**
+	 * Calculates the arithmetic mean and the standard deviation from the arithmetic mean of the dimensions
+	 */
+	private void calculateAverageDimensions() {
+		averageDimensions = new ArrayList<Average>();
+
+		DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
+		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
+		DataTable table = container.getDataDomain().getTable();
+
+		for (Integer dimensionID : dimensionVA) {
+			Average averageDimension = new Average();
+			double sumOfValues = 0;
+			double sumDeviation = 0;
+
+			int nrValidValues = 0;
+			for (Integer recordID : recordVA) {
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				if (!value.isNaN()) {
+					sumOfValues += value;
+					nrValidValues++;
+				}
+			}
+			averageDimension.arithmeticMean = sumOfValues / nrValidValues;
+
+			for (Integer recordID : recordVA) {
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				if (!value.isNaN()) {
+					sumDeviation = Math.pow(-averageDimension.arithmeticMean, 2);
+				}
+			}
+			averageDimension.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);
+			averageDimensions.add(averageDimension);
 		}
 	}
 }

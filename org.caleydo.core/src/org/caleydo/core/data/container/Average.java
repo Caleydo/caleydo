@@ -4,11 +4,13 @@
 package org.caleydo.core.data.container;
 
 /**
+ * Container for average values and related information such as standard deviations
+ * 
  * @author Alexander Lex
  */
-public class AverageRecord {
-	
-	/** The average value (mean) of the record */ 
+public class Average {
+
+	/** The average value (mean) of the record */
 	double arithmeticMean;
 	/** The standard deviation from the {@link #arithmeticMean} */
 	double standardDeviation;
