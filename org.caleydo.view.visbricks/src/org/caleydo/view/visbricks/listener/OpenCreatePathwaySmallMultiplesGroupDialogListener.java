@@ -12,12 +12,15 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwaySmallMultiplesGroupDial
  * @author Marc Streit
  * 
  */
-public class OpenCreatePathwaySmallMultiplesGroupDialogListener extends
-		AEventListener<GLBrick> {
+public class OpenCreatePathwaySmallMultiplesGroupDialogListener
+	extends AEventListener<GLBrick>
+{
 
 	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof OpenCreatePathwaySmallMultiplesGroupDialogEvent) {
+	public void handleEvent(AEvent event)
+	{
+		if (event instanceof OpenCreatePathwaySmallMultiplesGroupDialogEvent)
+		{
 
 			// Only the view on which the context menu was clicked should handle
 			// the event
@@ -25,12 +28,11 @@ public class OpenCreatePathwaySmallMultiplesGroupDialogListener extends
 					.getDimensionGroupDataContainer() != handler.getDataContainer())
 				return;
 
-			OpenCreatePathwaySmallMultiplesGroupDialogEvent openCreateSmallPathwayMultiplesGroupDialogevent = (OpenCreatePathwaySmallMultiplesGroupDialogEvent) event;
-			handler.openCreateKaplanMeierSmallMultiplesGroupDialog(
-					openCreateSmallPathwayMultiplesGroupDialogevent
+			OpenCreatePathwaySmallMultiplesGroupDialogEvent openCreatePathwaySmallMultiplesGroupDialogevent = (OpenCreatePathwaySmallMultiplesGroupDialogEvent) event;
+			handler.openCreatePathwaySmallMultiplesGroupDialog(
+					openCreatePathwaySmallMultiplesGroupDialogevent
 							.getDimensionGroupDataContainer(),
-					openCreateSmallPathwayMultiplesGroupDialogevent
-							.getDimensionPerspective());
+					openCreatePathwaySmallMultiplesGroupDialogevent.getDimensionPerspective());
 		}
 	}
 }
