@@ -4,14 +4,14 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 
 /**
- * Renderer for a line of text for pathway description.
+ * Renderer for a line of text for kaplan meier summary.
  * 
- * @author Partl
+ * @author Marc Streit
  * 
  */
-public class PathwaysSummaryRenderer extends LabelRenderer {
+public class KaplanMeierSummaryRenderer extends LabelRenderer {
 
-	public PathwaysSummaryRenderer(AGLView view, String caption, String pickingType,
+	public KaplanMeierSummaryRenderer(AGLView view, String caption, String pickingType,
 			int id) {
 		super(view, view, pickingType, id);
 	}
@@ -23,7 +23,7 @@ public class PathwaysSummaryRenderer extends LabelRenderer {
 
 	@Override
 	public int getMinWidthPixels() {
-		return 140;
+		return 110;
 	}
 
 }

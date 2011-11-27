@@ -148,7 +148,12 @@ public class Application
 			.valueOf(dataSetMetaInfo.getColorScheme())));
 
 		dataDomain.init();
-		loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+		
+		if (dataDomain.isColumnDimension())
+			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
+		else
+			loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+		
 		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
 		thread.start();
 

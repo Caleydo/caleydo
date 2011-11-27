@@ -8,14 +8,18 @@ package org.caleydo.view.visbricks.brick;
  * @author Marc Streit
  * 
  */
-public enum EContainedViewType {
+public enum EContainedViewType
+{
 
 	DUMMY_VIEW(false),
 
 	CATEGORY(true),
 
-	KAPLAN_MEIER_VIEW(false), KAPLAN_MEIER_VIEW_COMPACT(false), KAPLAN_MEIER_SUMMARY(
-			false),
+	KAPLAN_MEIER_VIEW(false),
+	KAPLAN_MEIER_VIEW_COMPACT(false),
+	KAPLAN_MEIER_SUMMARY(false),
+	KAPLAN_MEIER_SUMMARY_COMPACT(false),
+	
 
 	// Numerical Views
 	HEATMAP_VIEW(true),
@@ -38,14 +42,16 @@ public enum EContainedViewType {
 	/**
 	 * 
 	 */
-	private EContainedViewType(boolean useProportionalHeight) {
+	private EContainedViewType(boolean useProportionalHeight)
+	{
 		this.useProportionalHeight = useProportionalHeight;
 	}
 
 	/**
 	 * @return the useProportionalHeight, see {@link #useProportionalHeight}
 	 */
-	public boolean isUseProportionalHeight() {
+	public boolean isUseProportionalHeight()
+	{
 		return useProportionalHeight;
 	}
 }
