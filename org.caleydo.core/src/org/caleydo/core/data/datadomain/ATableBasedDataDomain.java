@@ -954,7 +954,8 @@ public abstract class ATableBasedDataDomain
 			if (localVAID == null)
 				continue;
 			indices.add(localVAID);
-			int groupIndex = recordGroupList.getGroupOfVAIndex(foreignVAID).getGroupID();
+			int groupIndex =
+				recordGroupList.getGroupOfVAIndex(foreignRecordVA.indexOf(foreignVAID)).getGroupID();
 			groupSizes.set(groupIndex, sampleElements.get(groupIndex) + 1);
 			sampleElements.set(groupIndex, localVAID);
 

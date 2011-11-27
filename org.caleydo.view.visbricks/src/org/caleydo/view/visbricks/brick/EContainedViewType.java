@@ -10,7 +10,6 @@ package org.caleydo.view.visbricks.brick;
  */
 public enum EContainedViewType
 {
-
 	DUMMY_VIEW(false),
 
 	CATEGORY(true),
@@ -19,7 +18,6 @@ public enum EContainedViewType
 	KAPLAN_MEIER_VIEW_COMPACT(false),
 	KAPLAN_MEIER_SUMMARY(false),
 	KAPLAN_MEIER_SUMMARY_COMPACT(false),
-	
 
 	// Numerical Views
 	HEATMAP_VIEW(true),
