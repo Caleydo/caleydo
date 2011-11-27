@@ -948,6 +948,7 @@ public abstract class ATableBasedDataDomain
 
 		}
 
+		int count = 0;
 		for (Integer foreignVAID : foreignRecordVA) {
 			Integer localVAID =
 				recordIDMappingManager.getID(foreignRecordVA.getIdType(), recordIDType, foreignVAID);
@@ -956,8 +957,9 @@ public abstract class ATableBasedDataDomain
 			indices.add(localVAID);
 			int groupIndex =
 				recordGroupList.getGroupOfVAIndex(foreignRecordVA.indexOf(foreignVAID)).getGroupID();
-			groupSizes.set(groupIndex, sampleElements.get(groupIndex) + 1);
-			sampleElements.set(groupIndex, localVAID);
+			groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
+			sampleElements.set(groupIndex, count);
+			count++;
 
 		}
 

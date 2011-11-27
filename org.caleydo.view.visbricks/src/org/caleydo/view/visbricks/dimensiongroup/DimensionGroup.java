@@ -147,7 +147,7 @@ public class DimensionGroup extends ATableBasedView implements
 	private float previousYCoordinate = Float.NaN;
 
 	/** The height of the header brick in pixel */
-	private int headerBrickPixelHeight = 40;
+	private int headerBrickPixelHeight = 80;
 
 	/** the minimal width of the brick */
 	private int minPixelWidth;
@@ -199,7 +199,7 @@ public class DimensionGroup extends ATableBasedView implements
 		headerBrickLayout = new Column("headerBrickLayout");
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
-//		headerBrickLayout.setPixelSizeY(60);
+		// headerBrickLayout.setPixelSizeY(60);
 
 		initMainColumn();
 		mainRow.append(mainColumn);
@@ -273,9 +273,7 @@ public class DimensionGroup extends ATableBasedView implements
 				dataContainer.getDataDomain().getColor().getRGBA()));
 
 		headerBrick = createBrick(headerBrickLayout, dataContainer);
-		headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
-		
-
+	
 		ABrickLayoutConfiguration layoutTemplate;
 
 		if (isCollapsed) {
@@ -420,13 +418,13 @@ public class DimensionGroup extends ATableBasedView implements
 	public void setArchHeight(int archHeight) {
 
 		if (isCollapsed) {
-			headerBrickLayout.setRatioSizeY(1);
+			headerBrick.setBrickHeigthMode(EBrickHeightMode.VIEW_DEPENDENT);
+			// headerBrickLayout.setRatioSizeY(1);
 		} else {
+			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
+			// clusterBrickColumn.setRatioSizeY(1f);
+			headerBrick.setStaticBrickHeight(archHeight);
 
-			if (!(headerBrickLayout.getSizeScaledY() > 0)) {
-				clusterBrickColumn.setRatioSizeY(1f);
-				headerBrickLayout.setPixelSizeY(archHeight);
-			}
 		}
 
 	}
@@ -634,11 +632,11 @@ public class DimensionGroup extends ATableBasedView implements
 
 		float bottomSize = clusterBrickColumn.getSizeScaledY();
 		clusterBrickColumn.setAbsoluteSizeY(bottomSize + change);
-		float centerSize = headerBrickLayout.getSizeScaledY();
+//		float centerSize = headerBrickLayout.getSizeScaledY();
+//
+//		headerBrickLayout.setAbsoluteSizeY(centerSize);
 
-		headerBrickLayout.setAbsoluteSizeY(centerSize);
-
-		headerBrickLayout.updateSubLayout();
+//		headerBrickLayout.updateSubLayout();
 		mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();

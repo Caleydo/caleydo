@@ -108,6 +108,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		PROPORTIONAL;
 	}
 
+	/**
+	 * State telling how the height of the brick is determined. See
+	 * {@link EBrickHeightMode} for options.
+	 */
+	private EBrickHeightMode brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+
+	/**
+	 * The height of the brick used if the {@link #brickHeigthMode} is set to
+	 * {@link EBrickHeightMode#STATIC}
+	 */
+	private int staticBrickHeight;
+
 	public enum EBrickWidthMode {
 		/** The width of the brick is set manually */
 		STATIC,
@@ -116,22 +128,24 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	/**
+	 * State telling how the width of the brick is determined. See
+	 * {@link EBrickWidthMode} for options.
+	 */
+	private EBrickWidthMode brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
+
+	/**
+	 * The width of the brick used if the {@link #brickWidthMode} is set to
+	 * {@link EBrickWidthMode#STATIC}
+	 */
+	private int staticBrickWidth;
+
+	/**
 	 * Renders indication of group relations to the neighboring dimension group.
 	 * May be null for certain brick types
 	 */
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	/** same as {@link #leftRelationIndicatorRenderer} for the right side */
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
-	/**
-	 * State telling how the height of the brick is determined. See
-	 * {@link EBrickHeightMode} for options.
-	 */
-	private EBrickHeightMode brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
-	/**
-	 * State telling how the width of the brick is determined. See
-	 * {@link EBrickWidthMode} for options.
-	 */
-	private EBrickWidthMode brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
 
 	private OpenCreatePathwaySmallMultiplesGroupDialogListener openCreatePathwaySmallMultiplesGroupDialogListener;
 	private OpenCreateKaplanMeierSmallMultiplesGroupDialogListener openCreateKaplanMeierSmallMultiplesGroupDialogListener;
@@ -145,10 +159,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private DimensionGroup dimensionGroup;
 
 	private SelectionManager dataContainerSelectionManager;
-	// private boolean isDraggingActive = false;
-	private boolean isSizeFixed = false;
 	private boolean isInOverviewMode = false;
-	// private boolean isDraggingActive = false;
 	private float previousXCoordinate = Float.NaN;
 	private float previousYCoordinate = Float.NaN;
 	private boolean isBrickResizeActive = false;
@@ -199,12 +210,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
 
-		
-		
 		currentViewType = brickLayout.getDefaultViewType();
-		
+
 		setBrickLayoutTemplate(brickLayout, currentViewType);
-		
+
 		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentViewType);
 		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
@@ -213,8 +222,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 
 		layoutManager.setStaticLayoutConfiguration(brickLayout);
-		
-		
 
 		addIDPickingListener(new APickingListener() {
 
@@ -569,12 +576,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			brickHeigthMode = EBrickHeightMode.PROPORTIONAL;
 		switch (brickHeigthMode) {
 		case STATIC:
-			// float currentHeight = wrappingLayout.getSizeScaledY();
-			//
-			// if (currentHeight < defaultHeight) {
-			//
-			// wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			// }
+			wrappingLayout.setPixelSizeY(staticBrickHeight);
 			break;
 		case VIEW_DEPENDENT:
 			int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
@@ -591,10 +593,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		switch (brickWidthMode) {
 		case STATIC:
-			// float currentWidth = wrappingLayout.getSizeScaledX();
-			// if (currentWidth < defaultWidth) {
-			// wrappingLayout.setAbsoluteSizeX(defaultWidth);
-			// }
+			wrappingLayout.setPixelSizeX(staticBrickWidth);
 			break;
 		case VIEW_DEPENDENT:
 			int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
@@ -903,7 +902,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		this.currentViewType = currentViewType;
 	}
 
-	
 	/**
 	 * @param brickHeigthMode
 	 *            setter, see {@link #brickHeigthMode}
@@ -918,6 +916,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public EBrickHeightMode getBrickHeigthMode() {
 		return brickHeigthMode;
 	}
+	
+	/**
+	 * @param staticBrickHeight setter, see {@link #staticBrickHeight}
+	 */
+	public void setStaticBrickHeight(int staticBrickHeight) {
+		this.staticBrickHeight = staticBrickHeight;
+	}
 
 	/**
 	 * @param brickWidthMode
@@ -926,12 +931,19 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void setBrickWidthMode(EBrickWidthMode brickWidthMode) {
 		this.brickWidthMode = brickWidthMode;
 	}
-
+	
 	/**
 	 * @return the brickWidthMode, see {@link #brickWidthMode}
 	 */
 	public EBrickWidthMode getBrickWidthMode() {
 		return brickWidthMode;
+	}
+	
+	/**
+	 * @param staticBrickWidth setter, see {@link #staticBrickWidth}
+	 */
+	public void setStaticBrickWidth(int staticBrickWidth) {
+		this.staticBrickWidth = staticBrickWidth;
 	}
 
 	public ElementLayout getWrappingLayout() {

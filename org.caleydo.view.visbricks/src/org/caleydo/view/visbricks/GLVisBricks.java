@@ -87,7 +87,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
-	private final static int ARCH_PIXEL_HEIGHT = 220;
+	private final static int ARCH_PIXEL_HEIGHT = 100;
 	private final static float ARCH_BOTTOM_PERCENT = 1f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
@@ -112,7 +112,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	private Column leftColumnLayout;
 	private Column rightColumnLayout;
 
-	/** thickness of the arch at the sided */
+	/** thickness of the arch at the sides */
 	private float archSideThickness = 0;
 	private float archInnerWidth = 0;
 	private float archTopY = 0;
@@ -280,6 +280,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		// float centerLayoutWidth = viewFrustum.getWidth();
 
 		centerRowLayout = new Row("centerArchRow");
+		centerRowLayout.setDebug(true);
 		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(1, 1, 0, 1);
 		// centerRowLayout.setDebug(false);
