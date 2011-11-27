@@ -88,7 +88,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
-	private LayoutManager templateRenderer;
+	private LayoutManager layoutManager;
 	private ElementLayout wrappingLayout;
 	private AGLView currentRemoteView;
 	private Map<EContainedViewType, AGLView> views;
@@ -190,18 +190,21 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		textRenderer = new CaleydoTextRenderer(24);
 		baseDisplayListIndex = gl.glGenLists(1);
 
-		templateRenderer = new LayoutManager(viewFrustum, pixelGLConverter);
+		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		if (brickLayout == null) {
-
 			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
 					brickConfigurer);
-
 		}
 
 		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
 
+		
+		
 		currentViewType = brickLayout.getDefaultViewType();
+		
+		setBrickLayoutTemplate(brickLayout, currentViewType);
+		
 		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
 		currentRemoteView = views.get(currentViewType);
 		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
@@ -209,16 +212,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					.getViewRenderer());
 		}
 
-		templateRenderer.setStaticLayoutConfiguration(brickLayout);
-		// float defaultHeight =
-		// pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-		// .getDefaultHeightPixels());
-		// float defaultWidth =
-		// pixelGLConverter.getGLWidthForPixelWidth(brickLayout
-		// .getDefaultWidthPixels());
-		// wrappingLayout.setAbsoluteSizeY(defaultHeight);
-		// wrappingLayout.setAbsoluteSizeX(defaultWidth);
-		// templateRenderer.updateLayout();
+		layoutManager.setStaticLayoutConfiguration(brickLayout);
+		
+		
 
 		addIDPickingListener(new APickingListener() {
 
@@ -388,7 +384,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		gl.glPopName();
 		gl.glPopName();
 
-		templateRenderer.render(gl);
+		layoutManager.render(gl);
 
 		gl.glCallList(baseDisplayListIndex);
 
@@ -421,8 +417,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
-		if (templateRenderer != null)
-			templateRenderer.updateLayout();
+		if (layoutManager != null)
+			layoutManager.updateLayout();
 
 		if (brickHeigthMode == EBrickHeightMode.VIEW_DEPENDENT) {
 			wrappingLayout.setPixelSizeY(brickLayout.getDefaultHeightPixels());
@@ -543,8 +539,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	@Override
 	public void setFrustum(ViewFrustum viewFrustum) {
 		super.setFrustum(viewFrustum);
-		if (templateRenderer != null)
-			templateRenderer.updateLayout();
+		if (layoutManager != null)
+			layoutManager.updateLayout();
 	}
 
 	/**
@@ -570,7 +566,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		brickLayout.viewTypeChanged(viewType);
 
 		if (viewType.isUseProportionalHeight())
-			brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+			brickHeigthMode = EBrickHeightMode.PROPORTIONAL;
 		switch (brickHeigthMode) {
 		case STATIC:
 			// float currentHeight = wrappingLayout.getSizeScaledY();
@@ -606,8 +602,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			break;
 		}
 
-		templateRenderer.setStaticLayoutConfiguration(brickLayout);
-		templateRenderer.updateLayout();
+		layoutManager.setStaticLayoutConfiguration(brickLayout);
+		layoutManager.updateLayout();
 
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -621,7 +617,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * Sets the {@link ABrickLayoutConfiguration} for this brick, specifying its
 	 * appearance. If the specified view type is valid, it will be set,
-	 * otherwise the default view type will be table.
+	 * otherwise the default view type will be set.
 	 * 
 	 * @param brickLayoutTemplate
 	 * @param viewType
@@ -637,8 +633,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		else
 			isInOverviewMode = false;
 
-		if (templateRenderer != null) {
-			templateRenderer.setStaticLayoutConfiguration(brickLayout);
+		if (layoutManager != null) {
+			layoutManager.setStaticLayoutConfiguration(brickLayout);
 			if (brickLayout.isViewTypeValid(viewType)) {
 				setContainedView(viewType);
 			} else {
@@ -808,7 +804,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				// brickLayout.setShowHandles(false);
 			}
 			// }
-			templateRenderer.updateLayout();
+			layoutManager.updateLayout();
 		}
 	}
 
@@ -907,6 +903,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		this.currentViewType = currentViewType;
 	}
 
+	
 	/**
 	 * @param brickHeigthMode
 	 *            setter, see {@link #brickHeigthMode}

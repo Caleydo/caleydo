@@ -417,14 +417,20 @@ public class IDMappingManager {
 			path = DijkstraShortestPath.findPathBetween(mappingGraph, source, destination);
 		}
 		catch (IllegalArgumentException e) {
+			Logger.log(new Status(Status.ERROR, this.toString(), "One of the data types " + source + " and "
+				+ destination + " is not registered with this IDMappingManager."));
+
 			// data type is not in the mapping
 			return null;
 		}
 
-		Object currentID = sourceID;
-
-		if (path == null)
+		if (path == null) {
+			Logger.log(new Status(Status.ERROR, this.toString(), "No mapping path found between " + source
+				+ " and " + destination));
 			return null;
+		}
+
+		Object currentID = sourceID;
 
 		Set<Object> keys = null;
 		Collection<Object> values = new ArrayList<Object>();

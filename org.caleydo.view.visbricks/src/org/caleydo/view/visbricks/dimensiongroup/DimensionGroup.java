@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.GLBrick.EBrickHeightMode;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -145,9 +146,11 @@ public class DimensionGroup extends ATableBasedView implements
 
 	private float previousYCoordinate = Float.NaN;
 
+	/** The height of the header brick in pixel */
+	private int headerBrickPixelHeight = 40;
+
 	/** the minimal width of the brick */
 	private int minPixelWidth;
-	private float minWidth;
 
 	private boolean showDetailBrick = false;
 	private boolean hideDetailBrick = false;
@@ -196,7 +199,7 @@ public class DimensionGroup extends ATableBasedView implements
 		headerBrickLayout = new Column("headerBrickLayout");
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
-		headerBrickLayout.setPixelSizeY(60);
+//		headerBrickLayout.setPixelSizeY(60);
 
 		initMainColumn();
 		mainRow.append(mainColumn);
@@ -270,6 +273,8 @@ public class DimensionGroup extends ATableBasedView implements
 				dataContainer.getDataDomain().getColor().getRGBA()));
 
 		headerBrick = createBrick(headerBrickLayout, dataContainer);
+		headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
+		
 
 		ABrickLayoutConfiguration layoutTemplate;
 
@@ -290,7 +295,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * Creates all bricks except for the center brick based on the groupList in
 	 * the recordVA
 	 */
-	protected void creatClusterBricks() {
+	private void creatClusterBricks() {
 
 		destroyOldBricks();
 
