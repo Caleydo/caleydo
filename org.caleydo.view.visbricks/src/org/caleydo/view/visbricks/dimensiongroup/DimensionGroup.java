@@ -70,6 +70,7 @@ public class DimensionGroup extends ATableBasedView implements
 	public final static int OVERVIEW_DETAIL_GAP_PIXEL = 30;
 	public final static int MIN_DETAIL_GAP_PIXEL = 10;
 	public final static float DETAIL_GAP_PORTION = 0.05f;
+	public final static int BETWEEN_BRICKS_SPACING = 10;
 
 	/**
 	 * The brick at the top that shows information about and provides tools for
@@ -245,13 +246,15 @@ public class DimensionGroup extends ATableBasedView implements
 		// centerBrick.setBrickLayoutTemplate(new
 		// CompactBrickLayoutTemplate(centerBrick,
 		// glVisBricksView, this));
-
+		headerBrick.setStaticBrickHeight(visBricks.getArchHeight());
 		if (headerBrick == null || uninitializedBricks.contains(headerBrick))
 			return;
 
 		if (isCollapsed) {
+			headerBrick.setBrickHeigthMode(EBrickHeightMode.VIEW_DEPENDENT);
 			headerBrick.collapse();
 		} else {
+			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
 			headerBrick.expand();
 		}
 		initMainColumn();
@@ -273,7 +276,7 @@ public class DimensionGroup extends ATableBasedView implements
 				dataContainer.getDataDomain().getColor().getRGBA()));
 
 		headerBrick = createBrick(headerBrickLayout, dataContainer);
-	
+
 		ABrickLayoutConfiguration layoutTemplate;
 
 		if (isCollapsed) {
@@ -332,7 +335,7 @@ public class DimensionGroup extends ATableBasedView implements
 		}
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
-		brickSpacingLayout.setPixelSizeY(10);
+		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
 		brickSpacingLayout.setRatioSizeX(0);
 
 		for (int count = 0; count < clusterBrickColumn.size();) {
@@ -416,17 +419,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 *            the pixel height of the arch
 	 */
 	public void setArchHeight(int archHeight) {
-
-		if (isCollapsed) {
-			headerBrick.setBrickHeigthMode(EBrickHeightMode.VIEW_DEPENDENT);
-			// headerBrickLayout.setRatioSizeY(1);
-		} else {
-			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
-			// clusterBrickColumn.setRatioSizeY(1f);
-			headerBrick.setStaticBrickHeight(archHeight);
-
-		}
-
+		headerBrick.setStaticBrickHeight(archHeight);
 	}
 
 	@Override
@@ -632,11 +625,11 @@ public class DimensionGroup extends ATableBasedView implements
 
 		float bottomSize = clusterBrickColumn.getSizeScaledY();
 		clusterBrickColumn.setAbsoluteSizeY(bottomSize + change);
-//		float centerSize = headerBrickLayout.getSizeScaledY();
-//
-//		headerBrickLayout.setAbsoluteSizeY(centerSize);
+		// float centerSize = headerBrickLayout.getSizeScaledY();
+		//
+		// headerBrickLayout.setAbsoluteSizeY(centerSize);
 
-//		headerBrickLayout.updateSubLayout();
+		// headerBrickLayout.updateSubLayout();
 		mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -1072,7 +1065,8 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @return
 	 */
 	public double getProportionalHeightPerRecord() {
-		int useablePixelHeight = getParentGLCanvas().getHeight() - 300;
+		int useablePixelHeight = getParentGLCanvas().getHeight()
+				- visBricks.getArchHeight() - 5 * BETWEEN_BRICKS_SPACING;
 		double proportionalRecordHeight = useablePixelHeight
 				/ dataContainer.getNrRecords();
 		return proportionalRecordHeight;

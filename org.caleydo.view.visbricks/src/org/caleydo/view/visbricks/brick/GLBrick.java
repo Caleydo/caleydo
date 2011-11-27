@@ -916,9 +916,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public EBrickHeightMode getBrickHeigthMode() {
 		return brickHeigthMode;
 	}
-	
+
 	/**
-	 * @param staticBrickHeight setter, see {@link #staticBrickHeight}
+	 * @param staticBrickHeight
+	 *            setter, see {@link #staticBrickHeight}
 	 */
 	public void setStaticBrickHeight(int staticBrickHeight) {
 		this.staticBrickHeight = staticBrickHeight;
@@ -931,16 +932,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void setBrickWidthMode(EBrickWidthMode brickWidthMode) {
 		this.brickWidthMode = brickWidthMode;
 	}
-	
+
 	/**
 	 * @return the brickWidthMode, see {@link #brickWidthMode}
 	 */
 	public EBrickWidthMode getBrickWidthMode() {
 		return brickWidthMode;
 	}
-	
+
 	/**
-	 * @param staticBrickWidth setter, see {@link #staticBrickWidth}
+	 * @param staticBrickWidth
+	 *            setter, see {@link #staticBrickWidth}
 	 */
 	public void setStaticBrickWidth(int staticBrickWidth) {
 		this.staticBrickWidth = staticBrickWidth;
