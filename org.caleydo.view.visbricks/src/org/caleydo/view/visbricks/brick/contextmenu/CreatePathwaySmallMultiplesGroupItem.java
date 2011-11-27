@@ -14,7 +14,8 @@ import org.caleydo.view.visbricks.event.OpenCreatePathwaySmallMultiplesGroupDial
  */
 public class CreatePathwaySmallMultiplesGroupItem extends AContextMenuItem {
 
-	public CreatePathwaySmallMultiplesGroupItem(DataContainer dimensionGroupDataContainer,
+	public CreatePathwaySmallMultiplesGroupItem(
+			DataContainer dimensionGroupDataContainer,
 			DimensionPerspective dimensionPerspective) {
 
 		setLabel("Create Small Multiple Pathway Group");

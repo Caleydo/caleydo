@@ -17,7 +17,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -222,7 +221,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void display(final GL2 gl) {
 		checkForHits(gl);
-		
+
 		if (pathway != null) {
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
@@ -360,19 +359,20 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 							elementRep, item.getSelectionType());
 				}
 			}
-		} 
-//		else if (selectionDelta.getIDType().getIDCategory() == sampleSelectionManager
-//				.getIDType().getIDCategory()) {
-//
-//			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
-//				if (item.getSelectionType() == SelectionType.MOUSE_OVER
-//						&& !item.isRemove()) {
-//					selectedSampleIndex = item.getID();
-//					break;
-//				}
-//			}
-//			setDisplayListDirty();
-//		}
+		}
+		// else if (selectionDelta.getIDType().getIDCategory() ==
+		// sampleSelectionManager
+		// .getIDType().getIDCategory()) {
+		//
+		// for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
+		// if (item.getSelectionType() == SelectionType.MOUSE_OVER
+		// && !item.isRemove()) {
+		// selectedSampleIndex = item.getID();
+		// break;
+		// }
+		// }
+		// setDisplayListDirty();
+		// }
 	}
 
 	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(
@@ -921,9 +921,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		} else {
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
 		}
-		
-		//selectedSampleIndex = dataContainer.getDimensionPerspective().getVirtualArray().get(0);
-		
+
+		// selectedSampleIndex =
+		// dataContainer.getDimensionPerspective().getVirtualArray().get(0);
+
 		super.setDataDomain(dataDomain);
 	}
 
@@ -933,8 +934,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}
@@ -945,7 +946,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	public SelectionManager getGeneSelectionManager() {
 		return geneSelectionManager;
 	}
-	
+
 	@Override
 	public int getMinPixelWidth(DetailLevel detailLevel) {
 		return 200;

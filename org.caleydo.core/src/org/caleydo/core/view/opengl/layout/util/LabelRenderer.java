@@ -43,13 +43,13 @@ public class LabelRenderer
 		this.isPickable = false;
 	}
 
-	public LabelRenderer( AGLView view, AGLView labelProvider, List<Pair<String, Integer>> pickingIDs) {
+	public LabelRenderer(AGLView view, AGLView labelProvider, List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
-	
-	public LabelRenderer( AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
+
+	public LabelRenderer(AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
 		this.isPickable = true;
 		this.label = label;
@@ -76,7 +76,7 @@ public class LabelRenderer
 
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
-		if(labelProvider != null)
+		if (labelProvider != null)
 			label = labelProvider.getLabel();
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2 * ySpacing);

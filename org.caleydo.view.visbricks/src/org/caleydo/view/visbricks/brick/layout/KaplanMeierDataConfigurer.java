@@ -18,16 +18,9 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
-import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
-import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
+import org.caleydo.view.visbricks.brick.viewcreation.KaplanMeierCreator;
 
 /**
  * Configurer for bricks to display survival data.
@@ -68,10 +61,10 @@ public class KaplanMeierDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
 		layoutTemplate.showFooterBar(false);
 	}
@@ -79,10 +72,10 @@ public class KaplanMeierDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -175,23 +168,25 @@ public class KaplanMeierDataConfigurer implements IBrickConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-		PathwayCreator pathwayCreator = new PathwayCreator();
-		AGLView pathway = pathwayCreator.createRemoteView(brick, gl, glMouseListener);
+		KaplanMeierCreator pathwayCreator = new KaplanMeierCreator();
+		AGLView kaplanMeier = pathwayCreator.createRemoteView(brick, gl, glMouseListener);
 
-		LayoutRenderer pathwayRenderer = new ViewLayoutRenderer(pathway);
+		LayoutRenderer kaplanMeierRenderer = new ViewLayoutRenderer(kaplanMeier);
 
-		views.put(EContainedViewType.KAPLAN_MEIER_VIEW, pathway);
-		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_VIEW, pathwayRenderer);
+		views.put(EContainedViewType.KAPLAN_MEIER_VIEW, kaplanMeier);
+		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_VIEW,
+				kaplanMeierRenderer);
 
-//		int numPathways = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-//				.getDataContainer()).getPathways().size();
-//
+		// int numPathways = ((PathwayDimensionGroupData)
+		// brick.getDimensionGroup()
+		// .getDataContainer()).getPathways().size();
+		//
 		String label = "TODO";
-//		if (numPathways > 1)
-//			label = "Pathways: " + numPathways;
-//		else
-//			label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-//					.getDataContainer()).getPathways().get(0).getTitle();
+		// if (numPathways > 1)
+		// label = "Pathways: " + numPathways;
+		// else
+		// label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+		// .getDataContainer()).getPathways().get(0).getTitle();
 
 		brick.setLabel(label);
 

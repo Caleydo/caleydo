@@ -146,7 +146,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 */
 	@Override
 	@SuppressWarnings({ "unchecked", "rawtypes" })
-		public GroupIterator<ConcreteType> iterator() {
+	public GroupIterator<ConcreteType> iterator() {
 		return new GroupIterator(this);
 	}
 

@@ -72,8 +72,7 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	private void setRepresentedViewInfo() {
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
-		IExtensionPoint point = registry
-				.getExtensionPoint("org.eclipse.ui.views");
+		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.ui.views");
 		IExtension[] extensions = point.getExtensions();
 		String viewID = representedView.getViewType();
 		viewName = viewID;
@@ -81,12 +80,11 @@ public class ViewNode extends ADefaultTemplateNode {
 		boolean viewNameObtained = false;
 
 		for (IExtension extension : extensions) {
-			IConfigurationElement[] elements = extension
-					.getConfigurationElements();
+			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for (IConfigurationElement element : elements) {
 				if (element.getAttribute("id").equals(viewID)) {
 					viewName = representedView.getViewLabel();
-//							element.getAttribute("name");
+					// element.getAttribute("name");
 					iconPath = element.getAttribute("icon");
 					viewNameObtained = true;
 					break;
@@ -102,8 +100,7 @@ public class ViewNode extends ADefaultTemplateNode {
 			iconPath = null;
 		}
 		if (iconPath != null) {
-			ClassLoader classLoader = representedView.getClass()
-					.getClassLoader();
+			ClassLoader classLoader = representedView.getClass().getClassLoader();
 			URL url = classLoader.getResource(iconPath);
 			try {
 				url = FileLocator.resolve(url);
@@ -116,13 +113,12 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	@Override
 	protected ElementLayout setupLayout() {
-		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR,
-				id);
+		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR, id);
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();
-	
+
 		baseRow.append(spacingLayoutX);
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
@@ -134,8 +130,8 @@ public class ViewNode extends ADefaultTemplateNode {
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath, view
-					.getTextureManager(), true));
+			iconLayout.setRenderer(new TextureRenderer(iconPath,
+					view.getTextureManager(), true));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -147,14 +143,12 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
-				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(),
-				true));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
+				1, 1 }, iconPath, view.getTextureManager(), true));
 
 		bodyColumn = new Column("bodyColumn");
 
-		ElementLayout bodySpacingLayoutY = new ElementLayout(
-				"compGroupOverview");
+		ElementLayout bodySpacingLayoutY = new ElementLayout("compGroupOverview");
 		// if (representedView instanceof ATableBasedView) {
 		// overviewDataContainerRenderer = new DataContainerListRenderer(this,
 		// view, dragAndDropController, new ArrayList<DataContainer>());
@@ -188,8 +182,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	public List<DataContainer> getDataContainers() {
 
 		if (representedView instanceof IDataContainerBasedView) {
-			return ((IDataContainerBasedView) representedView)
-					.getDataContainers();
+			return ((IDataContainerBasedView) representedView).getDataContainers();
 			// DataContainer dataContainer = ((ATableBasedView) representedView)
 			// .getDataContainers();
 			// List<DataContainer> containers = new ArrayList<DataContainer>();

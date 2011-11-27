@@ -151,8 +151,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 			@Override
 			public void mouseOver(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
-						.getID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -163,8 +162,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 			@Override
 			public void mouseOut(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
-						.getID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -183,15 +181,12 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 				triggerDataContainerCreation(pick.getID(), false);
 			}
 
-			private void triggerDataContainerCreation(int id,
-					boolean useContextMenu) {
+			private void triggerDataContainerCreation(int id, boolean useContextMenu) {
 				Pair<CellContainer, CellContainer> rowAndColumn = null;
 
-				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers
-						.keySet()) {
+				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
 					if (emptyCellRenderer.getID() == id) {
-						rowAndColumn = emptyCellRenderers
-								.get(emptyCellRenderer);
+						rowAndColumn = emptyCellRenderers.get(emptyCellRenderer);
 						break;
 					}
 				}
@@ -214,8 +209,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 						// This works because the child containers do net get
 						// sorted in a cellcontainer
-						int groupIndex = row.parentContainer.childContainers
-								.indexOf(row);
+						int groupIndex = row.parentContainer.childContainers.indexOf(row);
 
 						recordVA = perspective.getVirtualArray();
 
@@ -237,9 +231,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
-						DimensionPerspective perspective = dataDomain
-								.getTable().getDimensionPerspective(
-										column.parentContainer.id);
+						DimensionPerspective perspective = dataDomain.getTable()
+								.getDimensionPerspective(column.parentContainer.id);
 
 						// This works because the child containers do net get
 						// sorted in a cellcontainer
@@ -248,33 +241,29 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 						dimensionVA = perspective.getVirtualArray();
 
-						DimensionGroupList groupList = dimensionVA
-								.getGroupList();
+						DimensionGroupList groupList = dimensionVA.getGroupList();
 						columnGroup = groupList.get(groupIndex);
 
 						createDimensionPerspective = true;
 
 					}
 
-					AddDataContainerEvent event = new AddDataContainerEvent(
-							dataDomain, recordPerspectiveID,
-							createRecordPerspective, recordVA, rowGroup,
-							dimensionPerspectiveID, createDimensionPerspective,
+					AddDataContainerEvent event = new AddDataContainerEvent(dataDomain,
+							recordPerspectiveID, createRecordPerspective, recordVA,
+							rowGroup, dimensionPerspectiveID, createDimensionPerspective,
 							dimensionVA, columnGroup);
 					if (useContextMenu) {
 						view.getContextMenuCreator().addContextMenuItem(
 								new AddDataContainerItem(event));
 					} else {
 						event.setSender(this);
-						GeneralManager.get().getEventPublisher()
-								.triggerEvent(event);
+						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
 				}
 			}
 
 			private EmptyCellRenderer getEmptyCellRenderer(int id) {
-				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers
-						.keySet()) {
+				for (EmptyCellRenderer emptyCellRenderer : emptyCellRenderers.keySet()) {
 					if (emptyCellRenderer.getID() == id) {
 						return emptyCellRenderer;
 					}
@@ -376,8 +365,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			// rows.add(row);
 			parentContainers.add(row);
 
-			RecordGroupList groupList = perspective.getVirtualArray()
-					.getGroupList();
+			RecordGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
 				List<CellContainer> childList = new ArrayList<CellContainer>(
@@ -447,8 +435,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 			parentContainers.add(column);
 			// columns.add(column);
 
-			DimensionGroupList groupList = perspective.getVirtualArray()
-					.getGroupList();
+			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
 				List<CellContainer> childList = new ArrayList<CellContainer>(
@@ -525,14 +512,12 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 						}
 						dimensionGroupExists = true;
 						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-								dataContainer, view, dragAndDropController,
-								node, dataDomain.getColor().getRGBA());
-						dimensionGroupRenderer
-								.setRenderDimensionGroupLabel(false);
+								dataContainer, view, dragAndDropController, node,
+								dataDomain.getColor().getRGBA());
+						dimensionGroupRenderer.setRenderDimensionGroupLabel(false);
 						cells.put(row.id + column.id, dimensionGroupRenderer);
 						dimensionGroupRenderers.put(dimensionGroupRenderer,
-								new Pair<CellContainer, CellContainer>(row,
-										column));
+								new Pair<CellContainer, CellContainer>(row, column));
 						row.isVisible = true;
 						column.isVisible = true;
 						break;
@@ -542,10 +527,8 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(
 							emptyCellId++);
 					cells.put(row.id + column.id, emptyCellRenderer);
-					emptyCellRenderers
-							.put(emptyCellRenderer,
-									new Pair<CellContainer, CellContainer>(row,
-											column));
+					emptyCellRenderers.put(emptyCellRenderer,
+							new Pair<CellContainer, CellContainer>(row, column));
 				}
 			}
 			column.numSubdivisions = numSubdivisions;
@@ -558,10 +541,9 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		String columnsCaption = dataDomain.getDimensionDenomination(true, true);
 		String rowsCaption = dataDomain.getRecordDenomination(true, true);
 
-		renderingStrategy.render(gl, rows, columns, cells,
-				bottomDimensionGroupPositions, topDimensionGroupPositions, x,
-				y, node, view, pickingIDsToBePushed, rowsCaption,
-				columnsCaption);
+		renderingStrategy.render(gl, rows, columns, cells, bottomDimensionGroupPositions,
+				topDimensionGroupPositions, x, y, node, view, pickingIDsToBePushed,
+				rowsCaption, columnsCaption);
 
 		// float captionColumnWidth = calcMaxTextWidth(rows);
 		// float captionRowHeight = calcMaxTextWidth(columns);
@@ -875,12 +857,9 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 	@Override
 	public void removePickingListeners() {
-		view.removeAllTypePickingListeners(EMPTY_CELL_PICKING_TYPE
-				+ node.getID());
-		view.removeAllTypePickingListeners(DIMENSION_GROUP_PICKING_TYPE
-				+ node.getID());
-		view.removeAllTypePickingListeners(COLLAPSE_BUTTON_PICKING_TYPE
-				+ node.getID());
+		view.removeAllTypePickingListeners(EMPTY_CELL_PICKING_TYPE + node.getID());
+		view.removeAllTypePickingListeners(DIMENSION_GROUP_PICKING_TYPE + node.getID());
+		view.removeAllTypePickingListeners(COLLAPSE_BUTTON_PICKING_TYPE + node.getID());
 
 	}
 

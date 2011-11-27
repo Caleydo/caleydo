@@ -17,8 +17,7 @@ public class AddGroupToVisBricksItem extends AContextMenuItem {
 		List<DataContainer> dataContainers = new ArrayList<DataContainer>();
 		dataContainers.add(dataContainer);
 
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-				dataContainers);
+		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainers);
 		event.setReceiver(view);
 		event.setSender(this);
 		registerEvent(event);

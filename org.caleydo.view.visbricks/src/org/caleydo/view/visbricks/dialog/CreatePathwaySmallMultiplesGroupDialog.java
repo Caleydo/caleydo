@@ -100,7 +100,7 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 
 		super(parentShell);
 		this.dimensionPerspective = dimensionPerspective;
-		this.dataContainer = dataContainer;	
+		this.dataContainer = dataContainer;
 	}
 
 	@Override
@@ -272,7 +272,6 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 						dataContainer.getDataDomain(), pathwayDataDomain,
 						newRecordPerspective, dimensionPerspective, pathwayGraphs,
 						pathway.getTitle());
-				
 
 				pathwayDimensionGroupDataList.add(pathwayDimensionGroup);
 			}

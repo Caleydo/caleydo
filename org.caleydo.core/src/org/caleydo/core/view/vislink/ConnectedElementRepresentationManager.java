@@ -164,15 +164,16 @@ public class ConnectedElementRepresentationManager
 	}
 
 	/**
-	 * Adds a selection to a specific tree. The data type is determined by the {@link ElementConnectionInformation}, the
-	 * connection id has to be specified manually
+	 * Adds a selection to a specific tree. The data type is determined by the
+	 * {@link ElementConnectionInformation}, the connection id has to be specified manually
 	 * 
 	 * @param iConnectionID
 	 *            the connection ID - one connection id per connection line tree
 	 * @param selectedElementRep
 	 *            the selected element rep associated with the tree specified
 	 */
-	public void handleAddSelectionEvent(int connectionID, final ElementConnectionInformation selectedElementRep) {
+	public void handleAddSelectionEvent(int connectionID,
+		final ElementConnectionInformation selectedElementRep) {
 		ConnectionMap tmpHash = sourceConnectionsByType.get(selectedElementRep.getIDType());
 
 		if (tmpHash == null) {
@@ -246,9 +247,11 @@ public class ConnectedElementRepresentationManager
 	 *            the id of the object to be connected
 	 * @return a list of the representations of the points
 	 */
-	public ArrayList<ElementConnectionInformation> getSelectedElementRepsByElementID(IDType idType, final int iElementID) {
+	public ArrayList<ElementConnectionInformation> getSelectedElementRepsByElementID(IDType idType,
+		final int iElementID) {
 
-		ArrayList<ElementConnectionInformation> tempList = sourceConnectionsByType.get(idType).get(iElementID);
+		ArrayList<ElementConnectionInformation> tempList =
+			sourceConnectionsByType.get(idType).get(iElementID);
 
 		if (tempList == null)
 			throw new IllegalArgumentException("SelectionManager: No representations for this element ID");
@@ -436,8 +439,8 @@ public class ConnectedElementRepresentationManager
 
 	/**
 	 * Gets all {@link ConnectionMap}s by {@link EIDType} containing transformed selection vertices. The
-	 * remoteViewID field of the contained {@link ElementConnectionInformation}s references to the view, the coordinates
-	 * are related to.
+	 * remoteViewID field of the contained {@link ElementConnectionInformation}s references to the view, the
+	 * coordinates are related to.
 	 * 
 	 * @return
 	 */

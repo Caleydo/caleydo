@@ -119,8 +119,7 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(DataSetMetaInfo metaInfo)
-		throws FileNotFoundException, IOException {
+	private void loadSources(DataSetMetaInfo metaInfo) throws FileNotFoundException, IOException {
 
 		loadData(metaInfo);
 		loadClusterInfo(metaInfo.getGroupingPath());

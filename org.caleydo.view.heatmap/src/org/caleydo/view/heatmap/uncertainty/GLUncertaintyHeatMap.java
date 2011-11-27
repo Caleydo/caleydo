@@ -13,8 +13,8 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
@@ -29,7 +29,6 @@ import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -112,9 +111,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		displayListIndex = gl.glGenLists(1);
 		colorMapper = dataDomain.getColorMapper();
 		layoutManager = new LayoutManager(this.viewFrustum, pixelGLConverter);
-		
 
-	
 		baseRow = new Row("baseRow");
 		layoutManager.setBaseElementLayout(baseRow);
 
@@ -383,8 +380,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
 		return null;
 	}

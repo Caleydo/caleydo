@@ -4405,8 +4405,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType,
-			int iDimensionIndex) {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int iDimensionIndex) {
 
 		return null;
 	}

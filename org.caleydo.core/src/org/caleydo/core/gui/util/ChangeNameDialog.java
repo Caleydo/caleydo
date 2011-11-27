@@ -70,7 +70,7 @@ public class ChangeNameDialog {
 		}
 
 	}
-	
+
 	/**
 	 * @return the resultingName, see {@link #resultingName}
 	 */

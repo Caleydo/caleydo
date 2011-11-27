@@ -17,65 +17,58 @@ import org.caleydo.view.visbricks.brick.ui.ToolBarBackgroundRenderer;
  */
 public class ToolBar extends Row {
 
-    /** The brick for which this toolbar is rendered */
-    private GLBrick brick;
-    /** Flag indicating whether the toolbar should be hidden or is visible */
-    private boolean hide = true;
-    private APickingListener brickPickingListener;
+	/** The brick for which this toolbar is rendered */
+	private GLBrick brick;
+	/** Flag indicating whether the toolbar should be hidden or is visible */
+	private boolean hide = true;
+	private APickingListener brickPickingListener;
 
-    /**
+	/**
 	 * 
 	 */
-    public ToolBar(String layoutName, final GLBrick brick) {
-	super(layoutName);
-	this.brick = brick;
-	addBackgroundRenderer(new ToolBarBackgroundRenderer());
+	public ToolBar(String layoutName, final GLBrick brick) {
+		super(layoutName);
+		this.brick = brick;
+		addBackgroundRenderer(new ToolBarBackgroundRenderer());
 
-	brickPickingListener = new APickingListener() {
-	    @Override
-	    public void mouseOver(Pick pick) {
-		if (pick.getID() == brick.getID())
-		    hide = false;
-		else
-		    hide = true;
-	    }
-	    
-	    @Override
-	    public void mouseOut(Pick pick) {
-		if (pick.getID() == brick.getID())
-		    hide = true;
-	    }
-	};
-	
+		brickPickingListener = new APickingListener() {
+			@Override
+			public void mouseOver(Pick pick) {
+				if (pick.getID() == brick.getID())
+					hide = false;
+				else
+					hide = true;
+			}
 
-	
-	brick.getDimensionGroup()
-		.getVisBricksView()
-		.addTypePickingListener(brickPickingListener,
-			PickingType.BRICK.name());
+			@Override
+			public void mouseOut(Pick pick) {
+				if (pick.getID() == brick.getID())
+					hide = true;
+			}
+		};
 
-    }
-
-    @Override
-    public void render(GL2 gl) {
-	if (!hide) {
-	    float offset = layoutManager
-		    .getPixelGLConverter()
-		    .getGLHeightForPixelHeight(
-			    DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
-	    gl.glTranslatef(0, -offset, 0);
-	    super.render(gl);
-	    gl.glTranslatef(0, offset, 0);
+		brick.getDimensionGroup().getVisBricksView()
+				.addTypePickingListener(brickPickingListener, PickingType.BRICK.name());
 
 	}
-    }
 
-    @Override
-    public void destroy() {
-	brick.getDimensionGroup()
-		.getVisBricksView()
-		.removeTypePickingListener(brickPickingListener,
-			PickingType.BRICK.name());
-	super.destroy();
-    }
+	@Override
+	public void render(GL2 gl) {
+		if (!hide) {
+			float offset = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(
+					DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
+			gl.glTranslatef(0, -offset, 0);
+			super.render(gl);
+			gl.glTranslatef(0, offset, 0);
+
+		}
+	}
+
+	@Override
+	public void destroy() {
+		brick.getDimensionGroup()
+				.getVisBricksView()
+				.removeTypePickingListener(brickPickingListener, PickingType.BRICK.name());
+		super.destroy();
+	}
 }

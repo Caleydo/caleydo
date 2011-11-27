@@ -50,7 +50,8 @@ public class Tree<NodeType extends AHierarchyElement<NodeType>> {
 	 * independent tree.
 	 * 
 	 * @param leaveIDType
-	 * @param expectedSize An estimate for the expected size - good estimates improve performance
+	 * @param expectedSize
+	 *            An estimate for the expected size - good estimates improve performance
 	 */
 	public Tree(IDType leaveIDType, int expectedSize) {
 		init(expectedSize);

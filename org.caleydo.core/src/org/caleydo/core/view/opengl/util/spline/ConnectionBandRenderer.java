@@ -413,7 +413,6 @@ public class ConnectionBandRenderer {
 		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
 		gl.glEnd();
 
-
 	}
 
 	/**

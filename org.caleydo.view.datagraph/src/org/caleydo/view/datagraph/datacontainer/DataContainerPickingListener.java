@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -39,7 +38,7 @@ public class DataContainerPickingListener extends APickingListener {
 		this.dragAndDropController = dragAndDropController;
 		this.dataContainerRenderer = dataContainerRenderer;
 	}
-	
+
 	private DimensionGroupRenderer getDimensionGroupRenderer(int id) {
 
 		Collection<DimensionGroupRenderer> dimensionGroupRenderers = dataContainerRenderer
@@ -60,13 +59,12 @@ public class DataContainerPickingListener extends APickingListener {
 		DimensionGroupRenderer draggedComparisonGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
 		if (draggedComparisonGroupRenderer == null)
 			return;
-//
-//		draggedComparisonGroupRenderer
-//				.setSelectionType(SelectionType.SELECTION);
+		//
+		// draggedComparisonGroupRenderer
+		// .setSelectionType(SelectionType.SELECTION);
 		Point point = pick.getPickedPoint();
 		dragAndDropController.clearDraggables();
-		dragAndDropController.setDraggingStartPosition(new Point(point.x,
-				point.y));
+		dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
 		dragAndDropController.addDraggable(draggedComparisonGroupRenderer);
 		view.setDisplayListDirty();
 
@@ -79,8 +77,7 @@ public class DataContainerPickingListener extends APickingListener {
 		if (dimensionGroupRenderer == null)
 			return;
 
-		dimensionGroupRenderer
-				.setColor(dimensionGroupRenderer.getBorderColor());
+		dimensionGroupRenderer.setColor(dimensionGroupRenderer.getBorderColor());
 		view.setDisplayListDirty();
 	}
 
@@ -91,8 +88,8 @@ public class DataContainerPickingListener extends APickingListener {
 		if (dimensionGroupRenderer == null)
 			return;
 
-		dimensionGroupRenderer.setColor(dimensionGroupRenderer
-				.getDataContainer().getDataDomain().getColor().getRGBA());
+		dimensionGroupRenderer.setColor(dimensionGroupRenderer.getDataContainer()
+				.getDataDomain().getColor().getRGBA());
 		view.setDisplayListDirty();
 	}
 
@@ -141,24 +138,24 @@ public class DataContainerPickingListener extends APickingListener {
 					for (IConfigurationElement category : categoryElements) {
 
 						if (category.getAttribute("viewID").equals(bundleID)
-								&& new Boolean(
-										category.getAttribute("isDataView"))) {
+								&& new Boolean(category.getAttribute("isDataView"))) {
 
 							int indexOfLastDot = -1;
 							for (int i = 0; i < 4; i++) {
-								indexOfLastDot = bundleID.indexOf('.',
-										indexOfLastDot + 1);
+								indexOfLastDot = bundleID
+										.indexOf('.', indexOfLastDot + 1);
 							}
 
-							bundleID = (indexOfLastDot == -1) ? (bundleID)
-									: (bundleID.substring(0, indexOfLastDot));
+							bundleID = (indexOfLastDot == -1) ? (bundleID) : (bundleID
+									.substring(0, indexOfLastDot));
 
 							Bundle bundle = Platform.getBundle(bundleID);
 							if (bundle != null) {
 								bundle.start();
-								viewTypes.add(new Pair<String, String>(element
-										.getAttribute("name"), element
-										.getAttribute("id")));
+								viewTypes
+										.add(new Pair<String, String>(element
+												.getAttribute("name"), element
+												.getAttribute("id")));
 							}
 						}
 					}
@@ -189,9 +186,8 @@ public class DataContainerPickingListener extends APickingListener {
 		List<CreateViewItem> createViewItems = new ArrayList<CreateViewItem>();
 
 		for (Pair<String, String> viewType : viewTypes) {
-			createViewItems.add(new CreateViewItem(viewType.getFirst(),
-					viewType.getSecond(), dataContainer.getDataDomain(),
-					dataContainer));
+			createViewItems.add(new CreateViewItem(viewType.getFirst(), viewType
+					.getSecond(), dataContainer.getDataDomain(), dataContainer));
 		}
 
 		if (createViewItems.size() > 0) {

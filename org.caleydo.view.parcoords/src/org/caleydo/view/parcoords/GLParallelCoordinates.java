@@ -1643,8 +1643,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType, int id)
-			throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int id) throws InvalidAttributeValueException {
 
 		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>();
 
@@ -1664,7 +1664,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			y = renderStyle.getBottomSpacing();
 			// y =table.get(dimensionVA.get(dimensionVA.size() - 1)).getFloat(
 			// EDataRepresentation.NORMALIZED, iAxisID);
-			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
+			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y,
+					0.0f));
 
 		} else {
 
@@ -1683,7 +1684,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			} else {
 				y = y * renderStyle.getAxisHeight() + renderStyle.getBottomSpacing();
 			}
-			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y, 0.0f));
+			alElementReps.add(new ElementConnectionInformation(idType, uniqueID, x, y,
+					0.0f));
 		}
 
 		return alElementReps;

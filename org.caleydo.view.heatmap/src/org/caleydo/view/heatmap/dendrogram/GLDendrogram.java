@@ -1599,8 +1599,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType,
-			int dimensionIndex) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int dimensionIndex) throws InvalidAttributeValueException {
 		return null;
 	}
 

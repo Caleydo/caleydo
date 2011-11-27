@@ -13,7 +13,8 @@ import org.caleydo.view.visbricks.event.OpenCreateKaplanMeierSmallMultiplesGroup
  */
 public class CreateKaplanMeierSmallMultiplesGroupItem extends AContextMenuItem {
 
-	public CreateKaplanMeierSmallMultiplesGroupItem(DataContainer dimensionGroupDataContainer,
+	public CreateKaplanMeierSmallMultiplesGroupItem(
+			DataContainer dimensionGroupDataContainer,
 			DimensionPerspective dimensionPerspective) {
 
 		setLabel("Create Small Multiple Clinical Data Group");

@@ -10,7 +10,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -331,7 +330,7 @@ public class GLPathwayContentCreator {
 		fNodeHeight *= scaleFactor;
 
 		gl.glBegin(GL2.GL_LINE_LOOP);
-		//gl.glBegin(GL2.GL_POLYGON);
+		// gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, 0.02f);
 		gl.glVertex3f(fNodeWidth, fNodeHeight, 0.02f);
 		gl.glVertex3f(fNodeWidth, -fNodeHeight, 0.02f);
@@ -775,12 +774,13 @@ public class GLPathwayContentCreator {
 							.getContainerStatistics().getAverageRecords()
 							.get(expressionIndex).getArithmeticMean();
 				else {
-				
-					
-					int index = glPathwayView.getDataContainer().getDimensionPerspective().getVirtualArray().indexOf(expressionIndex);
+
+					int index = glPathwayView.getDataContainer()
+							.getDimensionPerspective().getVirtualArray()
+							.indexOf(expressionIndex);
 					expression = (float) glPathwayView.getDataContainer()
-							.getContainerStatistics().getAverageDimensions()
-							.get(index).getArithmeticMean();
+							.getContainerStatistics().getAverageDimensions().get(index)
+							.getArithmeticMean();
 				}
 				return colorMapper.getColor(expression);
 

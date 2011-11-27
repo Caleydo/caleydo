@@ -69,7 +69,8 @@ public class GLConnectionLineRendererDataFlipper extends AGLConnectionLineRender
 
 			for (Entry<Integer, SelectedElementRepList> connections : typeConnections
 					.getValue().entrySet()) {
-				for (ElementConnectionInformation selectedElementRep : connections.getValue()) {
+				for (ElementConnectionInformation selectedElementRep : connections
+						.getValue()) {
 
 					if (selectedElementRep.getIDType() != idType)
 						throw new IllegalStateException(

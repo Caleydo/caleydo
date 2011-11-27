@@ -17,22 +17,23 @@ import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
  */
 public class ToolBarBackgroundRenderer extends LayoutRenderer {
 
-    public void render(GL2 gl) {
+	@Override
+	public void render(GL2 gl) {
 
-	float height = getPixelGLConverter().getGLHeightForPixelHeight(
-		DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
-	float spacing = getPixelGLConverter().getGLHeightForPixelHeight(2);
+		float height = getPixelGLConverter().getGLHeightForPixelHeight(
+				DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
+		float spacing = getPixelGLConverter().getGLHeightForPixelHeight(2);
 
-	gl.glColor3fv(BrickColors.BRICK_COLOR, 0);
-	gl.glBegin(GL2.GL_QUADS);
+		gl.glColor3fv(BrickColors.BRICK_COLOR, 0);
+		gl.glBegin(GL2.GL_QUADS);
 
-	gl.glVertex3f(0, -spacing, 0.11f);
-	gl.glVertex3f(x, -spacing, 0.11f);
-	gl.glVertex3f(x, height, 0.11f);
-	gl.glVertex3f(0, height, 0.11f);
+		gl.glVertex3f(0, -spacing, 0.11f);
+		gl.glVertex3f(x, -spacing, 0.11f);
+		gl.glVertex3f(x, height, 0.11f);
+		gl.glVertex3f(0, height, 0.11f);
 
-	gl.glEnd();
+		gl.glEnd();
 
-    }
+	}
 
 }

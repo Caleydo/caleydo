@@ -86,13 +86,14 @@ public class RemoteRenderingTransformer
 						}
 						if (((AGLView) view.getRemoteRenderingGLView()).isRenderedRemote()) {
 							ElementConnectionInformation trans =
-								new ElementConnectionInformation(sel.getIDType(), viewID, viewID, transformedPoints);
+								new ElementConnectionInformation(sel.getIDType(), viewID, viewID,
+									transformedPoints);
 							newSourceConnections.add(trans);
 						}
 						else {
 							ElementConnectionInformation trans =
-								new ElementConnectionInformation(sel.getIDType(), sel.getSourceViewID(), viewID,
-									transformedPoints);
+								new ElementConnectionInformation(sel.getIDType(), sel.getSourceViewID(),
+									viewID, transformedPoints);
 							repList.add(trans);
 						}
 					}

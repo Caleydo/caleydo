@@ -16,13 +16,13 @@ import org.caleydo.view.visbricks.event.RenameEvent;
  */
 public class RenameListener extends AEventListener<GLBrick> {
 
-    @Override
-    public void handleEvent(AEvent event) {
-	if (event instanceof RenameEvent) {
-	    RenameEvent renameEvent = (RenameEvent) event;
-	    handler.rename(renameEvent.getID());
-	}
+	@Override
+	public void handleEvent(AEvent event) {
+		if (event instanceof RenameEvent) {
+			RenameEvent renameEvent = (RenameEvent) event;
+			handler.rename(renameEvent.getID());
+		}
 
-    }
+	}
 
 }

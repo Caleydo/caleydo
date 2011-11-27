@@ -25,7 +25,7 @@ public enum EDefaultColorSchemes {
 		"Blue-White-Red",
 		"3-class Red-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 		new int[] { 5, 113, 176 },
-		//new int[] { 247, 247, 247 },
+		// new int[] { 247, 247, 247 },
 		new int[] { 240, 240, 240 },
 		new int[] { 202, 0, 32 }),
 	GREEN_WHITE_BROWN(

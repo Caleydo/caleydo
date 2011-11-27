@@ -11,7 +11,7 @@ public class RCPViewInitializationData {
 
 	/** The ID of the data domain that will be initially shown in the view */
 	private String dataDomainID;
-	
+
 	private DataContainer dataContainer;
 
 	/**

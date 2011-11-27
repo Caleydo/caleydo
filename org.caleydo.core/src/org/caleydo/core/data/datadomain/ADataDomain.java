@@ -150,6 +150,7 @@ public abstract class ADataDomain
 	/**
 	 * @return the label, see {@link #viewLabel}
 	 */
+	@Override
 	public String getLabel() {
 
 		if (loadDataParameters == null || loadDataParameters.getLabel() == null)

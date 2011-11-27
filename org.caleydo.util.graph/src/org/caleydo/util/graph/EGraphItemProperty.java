@@ -23,7 +23,9 @@ public enum EGraphItemProperty {
 
 	INCOMING(), OUTGOING(),
 	// HIERARCHY(),
-	ALIAS_PARENT(), ALIAS_CHILD(), NONE();
+	ALIAS_PARENT(),
+	ALIAS_CHILD(),
+	NONE();
 
 	/**
 	 * Constructor; no values necessary yet.

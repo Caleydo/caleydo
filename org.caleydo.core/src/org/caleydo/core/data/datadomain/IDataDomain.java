@@ -92,6 +92,6 @@ public interface IDataDomain {
 	 * @param category
 	 */
 	public void addIDCategory(IDCategory category);
-	
+
 	public String getLabel();
 }

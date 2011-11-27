@@ -178,8 +178,8 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 					gl.glVertex3f(currentPositionX + heatMapElementWidth / 2.0f,
 							currentPositionY + stdDevHeatMapElementHeight, 0);
 				} else {
-					gl.glVertex3f(currentPositionX,
-							currentPositionY + stdDevHeatMapElementHeight, 0);
+					gl.glVertex3f(currentPositionX, currentPositionY
+							+ stdDevHeatMapElementHeight, 0);
 					gl.glVertex3f(currentPositionX + heatMapElementWidth,
 							currentPositionY + stdDevHeatMapElementHeight, 0);
 				}

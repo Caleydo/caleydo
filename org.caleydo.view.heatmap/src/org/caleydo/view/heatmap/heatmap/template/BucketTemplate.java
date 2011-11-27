@@ -3,7 +3,6 @@ package org.caleydo.view.heatmap.heatmap.template;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 
 /**
@@ -17,7 +16,7 @@ public class BucketTemplate extends AHeatMapTemplate {
 	public BucketTemplate(GLHeatMap heatMap) {
 		super(heatMap);
 		minSelectedFieldHeight = 0.5f;
-	
+
 	}
 
 	@Override

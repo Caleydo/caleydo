@@ -728,7 +728,8 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				searchViewMediator.createPerspecive(dataDomain, (Integer) tableItem.getData());
+				searchViewMediator.createPerspecive(dataDomain,
+						(Integer) tableItem.getData());
 
 				// Switch to browser view
 				try {

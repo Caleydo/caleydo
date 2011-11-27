@@ -6,7 +6,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.util.APickableLayoutRenderer;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
 /**

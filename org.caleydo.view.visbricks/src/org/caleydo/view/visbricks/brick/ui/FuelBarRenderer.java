@@ -47,13 +47,13 @@ public class FuelBarRenderer extends LayoutRenderer {
 		int currentNumElements = recordVA.size();
 
 		float fuelWidth = (float) x / totalNumElements * currentNumElements;
-		
+
 		GLVisBricks visBricks = brick.getDimensionGroup().getVisBricksView();
 
 		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
 				PickingType.BRICK.name(), brick.getID()));
-//		gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-//				PickingType.BRICK, brick.getID()));
+		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+		// PickingType.BRICK, brick.getID()));
 		gl.glBegin(GL2.GL_QUADS);
 
 		// if (selectionManager.checkStatus(SelectionType.SELECTION,
@@ -82,9 +82,8 @@ public class FuelBarRenderer extends LayoutRenderer {
 		gl.glVertex3f(fuelWidth, y, 0);
 		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
-//		gl.glPopName();
+		// gl.glPopName();
 		gl.glPopName();
-		
 
 	}
 }

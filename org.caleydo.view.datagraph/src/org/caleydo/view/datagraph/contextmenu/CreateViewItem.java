@@ -7,8 +7,8 @@ import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 
 public class CreateViewItem extends AContextMenuItem {
 
-	public CreateViewItem(String viewName, String viewType,
-			IDataDomain dataDomain, DataContainer dataContainer) {
+	public CreateViewItem(String viewName, String viewType, IDataDomain dataDomain,
+			DataContainer dataContainer) {
 
 		setLabel(viewName);
 

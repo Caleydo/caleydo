@@ -31,7 +31,8 @@ public class RcpGLKaplanMeierView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLKaplanMeier(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLKaplanMeier(glCanvas, parentComposite,
+				serializedView.getViewFrustum());
 		initializeViewWithData();
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();

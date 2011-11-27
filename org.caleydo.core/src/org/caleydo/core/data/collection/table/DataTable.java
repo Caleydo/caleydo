@@ -141,17 +141,6 @@ public class DataTable
 		return dataDomain;
 	}
 
-	/**
-	 * Get the dimension associated with the ID provided. Returns null if no such dimension is registered.
-	 * 
-	 * @param dimensionID
-	 *            a unique dimension ID
-	 * @return
-	 */
-	// public ADimension get(Integer dimensionID) {
-	// return hashDimensions.get(dimensionID);
-	// }
-
 	public float getFloat(DataRepresentation dataRepresentation, Integer recordID, Integer dimensionID) {
 		if (isColumnDimension)
 			return hashColumns.get(dimensionID).getFloat(dataRepresentation, recordID);

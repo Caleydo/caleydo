@@ -34,9 +34,8 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	protected int guiElementsHeight = 0;
 
-	public CompactHeaderBrickLayoutTemplate(GLBrick brick,
-			DimensionGroup dimensionGroup, GLVisBricks visBricks,
-			IBrickConfigurer configurer) {
+	public CompactHeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+			GLVisBricks visBricks, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;
 		headerBarElements = new ArrayList<ElementLayout>();

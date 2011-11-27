@@ -122,12 +122,13 @@ public abstract class AHierarchyElement<Node extends AHierarchyElement<Node>>
 	}
 
 	/**
-	 * @param isDefaultLabel setter, see {@link #isDefaultLabel}
+	 * @param isDefaultLabel
+	 *            setter, see {@link #isDefaultLabel}
 	 */
 	public void setDefaultLabel(boolean isDefaultLabel) {
 		this.isDefaultLabel = isDefaultLabel;
 	}
-	
+
 	public String getLabel() {
 		return label;
 	}

@@ -522,8 +522,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		if (groupList != null)
 			hasGrouping = true;
 
-		return "ID: " + getID() + ", size: " + virtualArrayList.size() + ", Nr. ouf Groups: " + groupList.size();
-				
+		return "ID: " + getID() + ", size: " + virtualArrayList.size() + ", Nr. ouf Groups: "
+			+ groupList.size();
+
 	}
 
 	/**

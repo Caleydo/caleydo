@@ -27,13 +27,12 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 	public abstract void render(GL2 gl, List<CellContainer> rows,
 			List<CellContainer> columns, Map<String, ColorRenderer> cells,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
-			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions,
-			float x, float y, IDataGraphNode node, GLDataGraph view,
-			List<Pair<String, Integer>> pickingIDsToBePushed,
-			String rowsCaption, String columnsCaption);
+			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x,
+			float y, IDataGraphNode node, GLDataGraph view,
+			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
+			String columnsCaption);
 
-	protected float calcMaxTextWidth(List<CellContainer> containers,
-			AGLView view) {
+	protected float calcMaxTextWidth(List<CellContainer> containers, AGLView view) {
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -41,11 +40,9 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 		float maxTextWidth = Float.MIN_VALUE;
 
 		for (CellContainer container : containers) {
-			float textWidth = textRenderer.getRequiredTextWidthWithMax(
-					container.id, pixelGLConverter
-							.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
-					pixelGLConverter
-							.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
+			float textWidth = textRenderer.getRequiredTextWidthWithMax(container.id,
+					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
+					pixelGLConverter.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
 			if (textWidth > maxTextWidth)
 				maxTextWidth = textWidth;
 		}
@@ -53,13 +50,13 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 		return maxTextWidth;
 	}
 
-	public int getMinWidthPixels(List<CellContainer> rows,
-			List<CellContainer> columns, AGLView view) {
+	public int getMinWidthPixels(List<CellContainer> rows, List<CellContainer> columns,
+			AGLView view) {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		int captionWidth = pixelGLConverter
-				.getPixelWidthForGLWidth(calcMaxTextWidth(rows, view));
+		int captionWidth = pixelGLConverter.getPixelWidthForGLWidth(calcMaxTextWidth(
+				rows, view));
 
 		int sumColumnWidth = 0;
 
@@ -73,13 +70,13 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 
 	}
 
-	public int getMinHeightPixels(List<CellContainer> rows,
-			List<CellContainer> columns, AGLView view) {
+	public int getMinHeightPixels(List<CellContainer> rows, List<CellContainer> columns,
+			AGLView view) {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		int captionWidth = pixelGLConverter
-				.getPixelHeightForGLHeight(calcMaxTextWidth(columns, view));
+		int captionWidth = pixelGLConverter.getPixelHeightForGLHeight(calcMaxTextWidth(
+				columns, view));
 
 		int sumRowHeight = 0;
 

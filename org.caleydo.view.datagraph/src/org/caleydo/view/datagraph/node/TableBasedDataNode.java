@@ -55,8 +55,7 @@ public class TableBasedDataNode extends ADataNode {
 		protected int textureRotation;
 
 		public void apply() {
-			TableBasedDataNode.this.dataContainerRenderer
-					.unregisterPickingListeners();
+			TableBasedDataNode.this.dataContainerRenderer.unregisterPickingListeners();
 			TableBasedDataNode.this.dataContainerRenderer = dataContainerRenderer;
 			dataContainerRenderer.registerPickingListeners();
 			dataContainerRenderer.setUpsideDown(isUpsideDown);
@@ -94,8 +93,8 @@ public class TableBasedDataNode extends ADataNode {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
 			if (getDataContainers().size() > 0) {
-				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] {
-						1, 1, 1, 1 }));
+				bodyRow.addBackgroundRenderer(new ColorRenderer(
+						new float[] { 1, 1, 1, 1 }));
 			}
 		}
 	}
@@ -103,8 +102,8 @@ public class TableBasedDataNode extends ADataNode {
 	private class DetailState extends ALayoutState {
 
 		public DetailState() {
-			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain,
-					view, TableBasedDataNode.this, dragAndDropController);
+			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain, view,
+					TableBasedDataNode.this, dragAndDropController);
 			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 			pickingIDsToBePushed.add(new Pair<String, Integer>(
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
@@ -122,8 +121,7 @@ public class TableBasedDataNode extends ADataNode {
 		public void apply() {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
-			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1,
-					1, 1 }));
+			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 	}
 
@@ -161,20 +159,19 @@ public class TableBasedDataNode extends ADataNode {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(),
-				getID());
+		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
 
 		baseColumn = new Column();
-	
+
 		baseRow.append(spacingLayoutX);
 		baseRow.append(baseColumn);
 		baseRow.append(spacingLayoutX);
 
 		Row titleRow = new Row("titleRow");
 
-		ElementLayout captionLayout = createDefaultCaptionLayout(
-				dataDomain.getLabel(), getID());
+		ElementLayout captionLayout = createDefaultCaptionLayout(dataDomain.getLabel(),
+				getID());
 
 		titleRow.append(captionLayout);
 		titleRow.setYDynamic(true);
@@ -185,22 +182,20 @@ public class TableBasedDataNode extends ADataNode {
 				"toggleDataContainerLayout");
 		toggleDataContainerButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		toggleDataContainerButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
-		toggleDataContainerButton = new Button(
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
+		toggleDataContainerButton = new Button(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
 		if (dataDomain.getRecordPerspectiveIDs().size() <= 1
 				&& dataDomain.getDimensionPerspectiveIDs().size() <= 1) {
 			toggleDataContainerButton.setVisible(false);
 		}
-		toggleDataContainerButtonRenderer = new ButtonRenderer(
-				toggleDataContainerButton, view, view.getTextureManager());
+		toggleDataContainerButtonRenderer = new ButtonRenderer(toggleDataContainerButton,
+				view, view.getTextureManager());
 		toggleDataContainerButtonRenderer.addPickingID(
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
-		toggleDataContainerButtonLayout
-				.setRenderer(toggleDataContainerButtonRenderer);
+		toggleDataContainerButtonLayout.setRenderer(toggleDataContainerButtonRenderer);
 		titleRow.append(spacingLayoutX);
 		titleRow.append(toggleDataContainerButtonLayout);
 
@@ -235,9 +230,8 @@ public class TableBasedDataNode extends ADataNode {
 
 	@Override
 	public void destroy() {
-		view.removeAllIDPickingListeners(
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		view.removeAllIDPickingListeners(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
+				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
 		dataContainerRenderer.destroy();
 	}
 
@@ -259,8 +253,7 @@ public class TableBasedDataNode extends ADataNode {
 	}
 
 	protected void retrieveDataContainers() {
-		Collection<DataContainer> containerCollection = dataDomain
-				.getAllDataContainers();
+		Collection<DataContainer> containerCollection = dataDomain.getAllDataContainers();
 		if (containerCollection == null) {
 			dataContainers = new ArrayList<DataContainer>();
 			return;
@@ -278,18 +271,17 @@ public class TableBasedDataNode extends ADataNode {
 		Map<RecordPerspective, List<Pair<String, RecordPerspective>>> childRecordPerspectiveLists = new HashMap<RecordPerspective, List<Pair<String, RecordPerspective>>>();
 
 		for (String perspectiveID : recordPerspectiveIDs) {
-			RecordPerspective perspective = dataDomain.getTable()
-					.getRecordPerspective(perspectiveID);
+			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(
+					perspectiveID);
 
 			if (perspective.isPrivate()) {
 				continue;
 			}
 
-			parentRecordPerspectives.add(new Pair<String, RecordPerspective>(
-					perspective.getLabel(), perspective));
+			parentRecordPerspectives.add(new Pair<String, RecordPerspective>(perspective
+					.getLabel(), perspective));
 
-			RecordGroupList groupList = perspective.getVirtualArray()
-					.getGroupList();
+			RecordGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null) {
 				List<Pair<String, RecordPerspective>> childList = new ArrayList<Pair<String, RecordPerspective>>(
@@ -299,9 +291,8 @@ public class TableBasedDataNode extends ADataNode {
 					Group group = groupList.get(i);
 					if (group.getPerspectiveID() != null) {
 
-						RecordPerspective childPerspective = dataDomain
-								.getTable().getRecordPerspective(
-										group.getPerspectiveID());
+						RecordPerspective childPerspective = dataDomain.getTable()
+								.getRecordPerspective(group.getPerspectiveID());
 						childList.add(new Pair<String, RecordPerspective>(
 								childPerspective.getLabel(), childPerspective));
 					}
@@ -330,8 +321,7 @@ public class TableBasedDataNode extends ADataNode {
 			}
 		}
 
-		Set<String> dimensionPerspectiveIDs = dataDomain
-				.getDimensionPerspectiveIDs();
+		Set<String> dimensionPerspectiveIDs = dataDomain.getDimensionPerspectiveIDs();
 
 		List<Pair<String, DimensionPerspective>> parentDimensionPerspectives = new ArrayList<Pair<String, DimensionPerspective>>();
 		Map<DimensionPerspective, List<Pair<String, DimensionPerspective>>> childDimensionPerspectiveLists = new HashMap<DimensionPerspective, List<Pair<String, DimensionPerspective>>>();
@@ -344,12 +334,10 @@ public class TableBasedDataNode extends ADataNode {
 				continue;
 			}
 
-			parentDimensionPerspectives
-					.add(new Pair<String, DimensionPerspective>(perspective
-							.getLabel(), perspective));
+			parentDimensionPerspectives.add(new Pair<String, DimensionPerspective>(
+					perspective.getLabel(), perspective));
 
-			DimensionGroupList groupList = perspective.getVirtualArray()
-					.getGroupList();
+			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null) {
 				List<Pair<String, DimensionPerspective>> childList = new ArrayList<Pair<String, DimensionPerspective>>(
@@ -359,9 +347,8 @@ public class TableBasedDataNode extends ADataNode {
 					Group group = groupList.get(i);
 					if (group.getPerspectiveID() != null) {
 
-						DimensionPerspective childPerspective = dataDomain
-								.getTable().getDimensionPerspective(
-										group.getPerspectiveID());
+						DimensionPerspective childPerspective = dataDomain.getTable()
+								.getDimensionPerspective(group.getPerspectiveID());
 						childList.add(new Pair<String, DimensionPerspective>(
 								childPerspective.getLabel(), childPerspective));
 					}
@@ -390,16 +377,14 @@ public class TableBasedDataNode extends ADataNode {
 			}
 		}
 
-		dataContainers = new ArrayList<DataContainer>(
-				containerCollection.size());
+		dataContainers = new ArrayList<DataContainer>(containerCollection.size());
 
 		for (DimensionPerspective dimensionPerspective : sortedDimensionPerspectives) {
 			for (RecordPerspective recordPerspective : sortedRecordPerspectives) {
 				if (dataDomain.hasDataContainer(recordPerspective.getID(),
 						dimensionPerspective.getID())) {
 					dataContainers.add(dataDomain.getDataContainer(
-							recordPerspective.getID(),
-							dimensionPerspective.getID()));
+							recordPerspective.getID(), dimensionPerspective.getID()));
 				}
 			}
 		}

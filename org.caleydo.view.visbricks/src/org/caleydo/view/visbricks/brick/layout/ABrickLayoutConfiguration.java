@@ -62,8 +62,6 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		return viewRenderer;
 	}
 
-
-
 	/**
 	 * Registers PickingListeners. Should be called after the layout has been
 	 * configured by a {@link IBrickConfigurer}.

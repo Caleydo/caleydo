@@ -1195,17 +1195,17 @@ public abstract class AGLView
 		return contextMenuCreator;
 	}
 
-	/** Returns the heading of the view, should be overriden in the subviews*/
+	/** Returns the heading of the view, should be overriden in the subviews */
 	public String getLabel() {
 		return viewLabel;
 	}
-	
+
 	/**
 	 * Set the heading of the view
+	 * 
 	 * @param label
 	 */
-	public void setLabel(String label)
-	{
+	public void setLabel(String label) {
 		this.label = label;
 	}
 }

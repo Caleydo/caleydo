@@ -665,7 +665,6 @@ public class GLHeatMap extends ATableBasedView {
 			return 0;
 	}
 
-
 	public boolean isActive() {
 		return isActive;
 	}
@@ -712,7 +711,6 @@ public class GLHeatMap extends ATableBasedView {
 		processEvents();
 		detailedRenderingTemplate.setStaticLayouts();
 	}
-
 
 	public java.util.Set<Integer> getZoomedElements() {
 		java.util.Set<Integer> zoomedElements = new HashSet<Integer>(

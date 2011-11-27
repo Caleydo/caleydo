@@ -20,7 +20,8 @@ class RecordBookmarkContainer extends ABookmarkContainer<RecordSelectionManager>
 	private IDType idType;
 
 	RecordBookmarkContainer(GLBookmarkView manager, IDCategory category, IDType idType) {
-		super(manager, category, manager.getDataDomain().getRecordIDCategory().getPrimaryMappingType());
+		super(manager, category, manager.getDataDomain().getRecordIDCategory()
+				.getPrimaryMappingType());
 		bookmarkItems = new UniqueList<ABookmark>();
 		this.idType = idType;
 		this.category = category;

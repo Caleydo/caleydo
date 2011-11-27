@@ -9,7 +9,6 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 
 public class DragAndDropController {
 
@@ -64,8 +63,8 @@ public class DragAndDropController {
 			float[] fArTargetWorldCoordinates = new float[] { 0, 0 };
 
 			PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-//			GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
-//				mouseWinCoords.y);
+			// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
+			// mouseWinCoords.y);
 			fArTargetWorldCoordinates[0] = pixelGLConverter.getGLWidthForPixelWidth(mouseWinCoords.x);
 			fArTargetWorldCoordinates[1] =
 				pixelGLConverter.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()

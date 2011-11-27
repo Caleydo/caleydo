@@ -79,8 +79,7 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 		return pickingIDsToBePushed;
 	}
 
-	public void setPickingIDsToBePushed(
-			List<Pair<String, Integer>> pickingIDsToBePushed) {
+	public void setPickingIDsToBePushed(List<Pair<String, Integer>> pickingIDsToBePushed) {
 		this.pickingIDsToBePushed = pickingIDsToBePushed;
 	}
 

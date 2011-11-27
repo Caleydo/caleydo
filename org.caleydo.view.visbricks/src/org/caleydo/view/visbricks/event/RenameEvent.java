@@ -14,38 +14,38 @@ import org.caleydo.core.event.AEvent;
  */
 public class RenameEvent extends AEvent {
 
-    private Integer id;
+	private Integer id;
 
-    /**
+	/**
      * 
      */
-    public RenameEvent() {
-    }
+	public RenameEvent() {
+	}
 
-    public RenameEvent(Integer id) {
-	this.id = id;
-    }
+	public RenameEvent(Integer id) {
+		this.id = id;
+	}
 
-    /**
-     * @param id
-     *            setter, see {@link #id}
-     */
-    public void setID(Integer id) {
-	this.id = id;
-    }
+	/**
+	 * @param id
+	 *            setter, see {@link #id}
+	 */
+	public void setID(Integer id) {
+		this.id = id;
+	}
 
-    /**
-     * @return the id, see {@link #id}
-     */
-    public Integer getID() {
-	return id;
-    }
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public Integer getID() {
+		return id;
+	}
 
-    @Override
-    public boolean checkIntegrity() {
-	if(id == null)
-	    return false;
-	return true;
-    }
+	@Override
+	public boolean checkIntegrity() {
+		if (id == null)
+			return false;
+		return true;
+	}
 
 }

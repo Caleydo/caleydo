@@ -45,7 +45,7 @@ public class ContainerStatistics {
 	 * array.
 	 */
 	private ArrayList<Average> averageRecords;
-	
+
 	/** Same as {@link #averageRecords} for dimensions */
 	private ArrayList<Average> averageDimensions;
 

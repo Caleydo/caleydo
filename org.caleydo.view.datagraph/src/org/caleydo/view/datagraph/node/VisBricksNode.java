@@ -66,8 +66,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 		bodyColumn.clear();
 
-		ElementLayout dataContainerLayout = new ElementLayout(
-				"datContainerList");
+		ElementLayout dataContainerLayout = new ElementLayout("datContainerList");
 
 		dataContainerListRenderer = new DataContainerListRenderer(this, view,
 				dragAndDropController, getDataContainers());
@@ -135,8 +134,8 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 		List<Pair<String, IDataDomain>> sortedDataDomains = new ArrayList<Pair<String, IDataDomain>>();
 
 		for (IDataDomain dataDomain : dataDomains) {
-			sortedDataDomains.add(new Pair<String, IDataDomain>(dataDomain
-					.getLabel(), dataDomain));
+			sortedDataDomains.add(new Pair<String, IDataDomain>(dataDomain.getLabel(),
+					dataDomain));
 		}
 
 		Collections.sort(sortedDataDomains);
@@ -161,9 +160,8 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	public void handleDrop(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY,
-			DragAndDropController dragAndDropController) {
+	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof DimensionGroupRenderer) {
@@ -190,8 +188,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
-		view.removeAllIDPickingListeners(
-				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override

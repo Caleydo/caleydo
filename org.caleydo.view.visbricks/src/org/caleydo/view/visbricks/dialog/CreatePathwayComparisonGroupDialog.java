@@ -51,7 +51,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 	private Table pathwayTable;
 
-	//private PathwayTableSorter pathwayTableSorter;
+	// private PathwayTableSorter pathwayTableSorter;
 	private Composite parent;
 
 	private PathwayDimensionGroupData pathwayDimensionGroupData;
@@ -98,7 +98,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 
 	public CreatePathwayComparisonGroupDialog(Shell parentShell,
 			DataContainer dataContainer) {
-		
+
 		super(parentShell);
 		// pathwayTableSorter = new PathwayTableSorter();
 		inputDataContainer = dataContainer;

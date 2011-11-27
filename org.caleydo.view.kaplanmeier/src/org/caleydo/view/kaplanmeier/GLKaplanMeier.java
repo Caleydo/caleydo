@@ -137,7 +137,7 @@ public class GLKaplanMeier extends ATableBasedView {
 			dataVector.add(sortedDataVector[index]);
 		}
 
-		float TIME_BINS = (float)dataContainer.getDataDomain().getTable()
+		float TIME_BINS = (float) dataContainer.getDataDomain().getTable()
 				.getRawForNormalized(1);
 		float timeBinStepSize = 1 / TIME_BINS;
 		float currentTimeBin = 0;

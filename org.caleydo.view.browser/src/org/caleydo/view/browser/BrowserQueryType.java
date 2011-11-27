@@ -13,13 +13,15 @@ import java.util.ArrayList;
  */
 @SuppressWarnings("serial")
 public enum BrowserQueryType {
-	PROCESS_STRING_WITHOUT_CHANGE("", "", null), PubMed("PubMed",
+	PROCESS_STRING_WITHOUT_CHANGE("", "", null), PubMed(
+			"PubMed",
 			"http://www.ncbi.nlm.nih.gov/sites/entrez?db=pubmed&cmd=search&term=",
 			new ArrayList<String>() {
 				{
 					add("GENE_SYMBOL");
 				}
-			}), EntrezGene("Entrez",
+			}), EntrezGene(
+			"Entrez",
 			"http://www.ncbi.nlm.nih.gov/sites/entrez?db=gene&cmd=search&term=",
 			new ArrayList<String>() {
 				{
@@ -27,19 +29,24 @@ public enum BrowserQueryType {
 					add("GENE_SYMBOL");
 					add("REFSEQ_MRNA");
 				}
-			}), KEGG_HomoSapiens("KEGG (homo sapiens)",
-			"http://www.genome.jp/dbget-bin/www_bget?hsa+", new ArrayList<String>() {
+			}), KEGG_HomoSapiens(
+			"KEGG (homo sapiens)",
+			"http://www.genome.jp/dbget-bin/www_bget?hsa+",
+			new ArrayList<String>() {
 				{
 					add("ENTREZ_GENE_ID");
 					add("GENE_SYMBOL");
 				}
-			}), KEGG_MusMusculus("KEGG (mus musculus)",
-			"http://www.genome.jp/dbget-bin/www_bget?mmu+", new ArrayList<String>() {
+			}), KEGG_MusMusculus(
+			"KEGG (mus musculus)",
+			"http://www.genome.jp/dbget-bin/www_bget?mmu+",
+			new ArrayList<String>() {
 				{
 					add("ENTREZ_GENE_ID");
 					add("GENE_SYMBOL");
 				}
-			}), GeneCards("GeneCards",
+			}), GeneCards(
+			"GeneCards",
 			"http://www.genecards.org/cgi-bin/carddisp.pl?gene=",
 			new ArrayList<String>() {
 				{
@@ -63,13 +70,15 @@ public enum BrowserQueryType {
 	// add("REFSEQ_MRNA");
 	// }
 	// }),
-	BioCarta_HomoSapiens("BioCarta (homo sapiens)",
+	BioCarta_HomoSapiens(
+			"BioCarta (homo sapiens)",
 			"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Hs&BCID=",
 			new ArrayList<String>() {
 				{
 					add("BIOCARTA_GENE_ID");
 				}
-			}), BioCarta_MusMusculus("BioCarta (mus musculus)",
+			}), BioCarta_MusMusculus(
+			"BioCarta (mus musculus)",
 			"http://cgap.nci.nih.gov/Genes/GeneInfo?ORG=Mm&BCID=",
 			new ArrayList<String>() {
 				{

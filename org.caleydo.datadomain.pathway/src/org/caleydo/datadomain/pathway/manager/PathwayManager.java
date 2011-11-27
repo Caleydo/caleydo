@@ -443,14 +443,12 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		for (Integer gene : geneIDs) {
 
 			Set<Integer> davids = ((GeneticDataDomain) dataDomain)
-					.getGeneIDMappingManager().getIDAsSet(idType,
-							davidIDType, gene);
+					.getGeneIDMappingManager().getIDAsSet(idType, davidIDType, gene);
 			if (davids == null || davids.size() == 0)
 				continue;
 			for (Integer david : davids) {
 				Set<PathwayGraph> pathwayGraphs = PathwayManager.get()
-						.getPathwayGraphsByGeneID(
-								davidIDType, david);
+						.getPathwayGraphsByGeneID(davidIDType, david);
 
 				if (pathwayGraphs != null) {
 
@@ -468,7 +466,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 				}
 			}
 		}
-		
+
 		return hashPathwaysToOccurences;
 	}
 }

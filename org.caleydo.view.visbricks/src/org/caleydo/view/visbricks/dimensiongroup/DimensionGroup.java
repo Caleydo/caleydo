@@ -196,6 +196,7 @@ public class DimensionGroup extends ATableBasedView implements
 		headerBrickLayout = new Column("headerBrickLayout");
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
+		headerBrickLayout.setPixelSizeY(60);
 
 		initMainColumn();
 		mainRow.append(mainColumn);
@@ -758,7 +759,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * 
 	 * @return
 	 */
-	public GLBrick getCenterBrick() {
+	public GLBrick getHeaderBrick() {
 		return headerBrick;
 	}
 
@@ -788,14 +789,29 @@ public class DimensionGroup extends ATableBasedView implements
 
 	@Override
 	public void handleLayoutSizeCollision(int managingClassID, int layoutID, float toBigBy) {
-		if (managingClassID != uniqueID)
-			return;
-
-		System.out.println("handling layout collision");
-		// if (layoutID == TOP_COLUMN_ID) {
+		// if (managingClassID != uniqueID)
+		// return;
+		//
+		// System.out.println("handling layout collision");
+		// // if (layoutID == TOP_COLUMN_ID) {
+		// // boolean changeMade = false;
+		// // for (int count = topBricks.size() - 1; count >= 0; count--) {
+		// // GLBrick brick = topBricks.get(count);
+		// // if (toBigBy < 0)
+		// // break;
+		// // if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
+		// // // toBigBy -= brick.collapse();
+		// // // changeMade = true;
+		// // }
+		// // }
+		// // if (changeMade)
+		// // topCol.updateSubLayout();
+		// // }
+		// if (layoutID == BOTTOM_COLUMN_ID) {
 		// boolean changeMade = false;
-		// for (int count = topBricks.size() - 1; count >= 0; count--) {
-		// GLBrick brick = topBricks.get(count);
+		//
+		// for (int count = clusterBricks.size() - 1; count >= 0; count--) {
+		// GLBrick brick = clusterBricks.get(count);
 		// if (toBigBy < 0)
 		// break;
 		// if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
@@ -804,23 +820,8 @@ public class DimensionGroup extends ATableBasedView implements
 		// }
 		// }
 		// if (changeMade)
-		// topCol.updateSubLayout();
+		// clusterBrickColumn.updateSubLayout();
 		// }
-		if (layoutID == BOTTOM_COLUMN_ID) {
-			boolean changeMade = false;
-
-			for (int count = clusterBricks.size() - 1; count >= 0; count--) {
-				GLBrick brick = clusterBricks.get(count);
-				if (toBigBy < 0)
-					break;
-				if (!brick.isInOverviewMode() && !brick.isSizeFixed()) {
-					// toBigBy -= brick.collapse();
-					// changeMade = true;
-				}
-			}
-			if (changeMade)
-				clusterBrickColumn.updateSubLayout();
-		}
 	}
 
 	/**
@@ -1058,5 +1059,19 @@ public class DimensionGroup extends ATableBasedView implements
 	 */
 	public void setVerticalMoveDraggingActive(boolean isVerticalMoveDraggingActive) {
 		this.isVerticalMoveDraggingActive = isVerticalMoveDraggingActive;
+	}
+
+	/**
+	 * Returns the proportional height a record should have in this dimension
+	 * group as pixels. Can be in sub-pixel space and therefore returns a
+	 * double.
+	 * 
+	 * @return
+	 */
+	public double getProportionalHeightPerRecord() {
+		int useablePixelHeight = getParentGLCanvas().getHeight() - 300;
+		double proportionalRecordHeight = useablePixelHeight
+				/ dataContainer.getNrRecords();
+		return proportionalRecordHeight;
 	}
 }

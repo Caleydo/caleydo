@@ -5,7 +5,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.renderer.DetailToolBar;
 
 /**
  * Render LayoutTemplate for the detail view of the Matchmaker.
@@ -85,17 +84,17 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		}
 
 		mainColumn.append(hmRow);
-//		if (isActive) {
-//			ElementLayout toolBar;
-//
-//			toolBar = new ElementLayout();
-//			toolBar.setRatioSizeX(1);
-//			toolBar.setAbsoluteSizeY(0.1f);
-//
-//			toolBar.setRenderer(new DetailToolBar(heatMap));
-//
-//			mainColumn.append(toolBar);
-//		}
+		// if (isActive) {
+		// ElementLayout toolBar;
+		//
+		// toolBar = new ElementLayout();
+		// toolBar.setRatioSizeX(1);
+		// toolBar.setAbsoluteSizeY(0.1f);
+		//
+		// toolBar.setRenderer(new DetailToolBar(heatMap));
+		//
+		// mainColumn.append(toolBar);
+		// }
 
 	}
 

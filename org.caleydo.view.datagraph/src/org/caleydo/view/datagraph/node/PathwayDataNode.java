@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -34,7 +33,7 @@ public class PathwayDataNode extends ADataNode {
 
 	@Override
 	public ElementLayout setupLayout() {
-	
+
 		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();

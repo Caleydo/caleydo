@@ -89,12 +89,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
 	private LayoutManager templateRenderer;
-	private ABrickLayoutConfiguration brickLayout;
-	private IBrickConfigurer brickConfigurer;
 	private ElementLayout wrappingLayout;
-
 	private AGLView currentRemoteView;
-
 	private Map<EContainedViewType, AGLView> views;
 	private Map<EContainedViewType, LayoutRenderer> containedViewRenderers;
 
@@ -102,13 +98,22 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private boolean isBaseDisplayListDirty = true;
 	private EContainedViewType currentViewType;
 
-	// /**
-	// * Was the mouse over the brick area in the last frame.
-	// */
-	// private boolean wasMouseOverBrickArea = false;
+	/** Enum listing the options of how the height of a brick is set */
+	public enum EBrickHeightMode {
+		/** The height of the brick is set manually */
+		STATIC,
+		/** The height of the brick is determined by the view rendered */
+		VIEW_DEPENDENT,
+		/** The height of the brick is determined by how many records it shows */
+		PROPORTIONAL;
+	}
 
-	// private DataTable set;
-	// private GLHeatMap heatMap;
+	public enum EBrickWidthMode {
+		/** The width of the brick is set manually */
+		STATIC,
+		/** The width of the brick is determined by the view rendered */
+		VIEW_DEPENDENT;
+	}
 
 	/**
 	 * Renders indication of group relations to the neighboring dimension group.
@@ -117,33 +122,43 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	/** same as {@link #leftRelationIndicatorRenderer} for the right side */
 	private RelationIndicatorRenderer rightRelationIndicatorRenderer;
+	/**
+	 * State telling how the height of the brick is determined. See
+	 * {@link EBrickHeightMode} for options.
+	 */
+	private EBrickHeightMode brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+	/**
+	 * State telling how the width of the brick is determined. See
+	 * {@link EBrickWidthMode} for options.
+	 */
+	private EBrickWidthMode brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
 
-	private RelationsUpdatedListener relationsUpdateListener;
-
-	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
 	private OpenCreatePathwaySmallMultiplesGroupDialogListener openCreatePathwaySmallMultiplesGroupDialogListener;
 	private OpenCreateKaplanMeierSmallMultiplesGroupDialogListener openCreateKaplanMeierSmallMultiplesGroupDialogListener;
 
+	private RelationsUpdatedListener relationsUpdateListener;
+	private OpenCreatePathwayGroupDialogListener openCreatePathwayGroupDialogListener;
 	private RenameListener renameListener;
 
 	private BrickState expandedBrickState;
 
-	private GLVisBricks visBricks;
 	private DimensionGroup dimensionGroup;
 
 	private SelectionManager dataContainerSelectionManager;
-
-	/** The average value of the data of this brick */
-	// private double averageValue = Double.NaN;
-
+	// private boolean isDraggingActive = false;
+	private boolean isSizeFixed = false;
 	private boolean isInOverviewMode = false;
-
 	// private boolean isDraggingActive = false;
 	private float previousXCoordinate = Float.NaN;
 	private float previousYCoordinate = Float.NaN;
 	private boolean isBrickResizeActive = false;
-	private boolean isSizeFixed = false;
+
 	private boolean isInitialized = false;
+
+	private GLVisBricks visBricks;
+
+	private ABrickLayoutConfiguration brickLayout;
+	private IBrickConfigurer brickConfigurer;
 
 	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
@@ -195,13 +210,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 
 		templateRenderer.setStaticLayoutConfiguration(brickLayout);
-		float defaultHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-				.getDefaultHeightPixels());
-		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
-				.getDefaultWidthPixels());
-		wrappingLayout.setAbsoluteSizeY(defaultHeight);
-		wrappingLayout.setAbsoluteSizeX(defaultWidth);
-		templateRenderer.updateLayout();
+		// float defaultHeight =
+		// pixelGLConverter.getGLHeightForPixelHeight(brickLayout
+		// .getDefaultHeightPixels());
+		// float defaultWidth =
+		// pixelGLConverter.getGLWidthForPixelWidth(brickLayout
+		// .getDefaultWidthPixels());
+		// wrappingLayout.setAbsoluteSizeY(defaultHeight);
+		// wrappingLayout.setAbsoluteSizeX(defaultWidth);
+		// templateRenderer.updateLayout();
 
 		addIDPickingListener(new APickingListener() {
 
@@ -221,15 +238,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				event.setSelectionDelta(delta);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 
-				// showHandles();
-
 				selectElementsByGroup();
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-				// showHandles();
-				// updateSelection();
 			}
 
 			@Override
@@ -260,27 +269,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 			}
 
-			// public void showHandles() {
-			// // System.out.println("picked brick");
-			// if (brickLayout.isShowHandles())
-			// return;
-			//
-			// ArrayList<DimensionGroup> dimensionGroups = dimensionGroup
-			// .getVisBricksView().getDimensionGroupManager()
-			// .getDimensionGroups();
-			//
-			// for (DimensionGroup dimensionGroup : dimensionGroups) {
-			// dimensionGroup.hideHandles();
-			// }
-			// if (!brickLayout.isShowHandles()) {
-			// brickLayout.setShowHandles(true);
-			// templateRenderer.updateLayout();
-			// }
-			//
-			// }
-
 		}, PickingType.BRICK.name(), getID());
-
 		dimensionGroup.updateLayout();
 
 		isInitialized = true;
@@ -304,8 +293,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			public void run() {
 				ChangeNameDialog dialog = new ChangeNameDialog();
 				dialog.run(PlatformUI.getWorkbench().getDisplay(), getLabel());
-				// groupRep.getClusterNode().getSubDataTable()
-				// .setLabel(groupRep.getClusterNode().getLabel());
 				label = dialog.getResultingName();
 				dataContainer.setLabel(label, false);
 				setDisplayListDirty();
@@ -316,12 +303,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			}
 		});
 
-		// groupRep.getClusterNode().getSubDataTable().setLabel(groupRep.getClusterNode().getNodeName());
 	}
 
 	/**
 	 * @return the label, see {@link #label}
 	 */
+	@Override
 	public String getLabel() {
 		return dataContainer.getLabel();
 	}
@@ -338,14 +325,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (!visBricks.getKeyListener().isCtrlDown()) {
 			recordSelectionManager.clearSelection(selectedByGroupSelectionType);
 
-			// ClearSelectionsEvent cse = new ClearSelectionsEvent();
-			// cse.setDataDomainType(getDataDomain().getDataDomainType());
-			// cse.setSender(this);
-			// eventPublisher.triggerEvent(cse);
 		}
 
 		// Prevent selection for center brick as this would select all elements
-		if (dimensionGroup.getCenterBrick() == this)
+		if (dimensionGroup.getHeaderBrick() == this)
 			return;
 
 		RecordVirtualArray va = dataContainer.getRecordPerspective().getVirtualArray();
@@ -381,23 +364,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			currentRemoteView.processEvents();
 		processEvents();
 		handleBrickResize(gl);
-		// GLHelperFunctions.drawViewFrustum(gl, viewFrustum);
 
 		if (isBaseDisplayListDirty)
 			buildBaseDisplayList(gl);
 
-		// if (!isMouseOverBrickArea && brickLayout.isShowHandles()) {
-		// brickLayout.setShowHandles(false);
-		// templateRenderer.updateLayout();
-		// }
-
-		// if(!isMouseOverBrickArea && wasMouseOverBrickArea) {
-		// brickLayout.setShowHandles(false);
-		// templateRenderer.updateLayout();
-		// }
-
 		GLVisBricks visBricks = getDimensionGroup().getVisBricksView();
-
 		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
 				PickingType.BRICK.name(), getID()));
 		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK.name(),
@@ -421,18 +392,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		gl.glCallList(baseDisplayListIndex);
 
-		// if (brickLayout.isShowHandles()) {
-		// Row toolBar = brickLayout.getToolBar();
-		// if (toolBar != null) {
-		// toolBar.updateSubLayout();
-		// toolBar.render(gl);
-		//
-		// }
-		// }
-
-		// textRenderer.renderText(gl, ""+groupID, 0.5f, 0, 0);
-
-		// isMouseOverBrickArea = false;
 	}
 
 	@Override
@@ -465,9 +424,11 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (templateRenderer != null)
 			templateRenderer.updateLayout();
 
-		if (!isSizeFixed) {
-			wrappingLayout.setAbsoluteSizeX(brickLayout.getDefaultWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(brickLayout.getDefaultWidthPixels());
+		if (brickHeigthMode == EBrickHeightMode.VIEW_DEPENDENT) {
+			wrappingLayout.setPixelSizeY(brickLayout.getDefaultHeightPixels());
+		}
+		if (brickWidthMode == EBrickWidthMode.VIEW_DEPENDENT) {
+			wrappingLayout.setPixelSizeX(brickLayout.getDefaultWidthPixels());
 		}
 	}
 
@@ -477,8 +438,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (!isBrickResizeActive)
 			return;
 
-		// TODO: resizing in all layouts?
-		isSizeFixed = true;
+		brickHeigthMode = EBrickHeightMode.STATIC;
+		brickWidthMode = EBrickWidthMode.STATIC;
 		brickLayout.setLockResizing(true);
 
 		if (glMouseListener.wasMouseReleased()) {
@@ -603,45 +564,46 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			return;
 
 		currentRemoteView = views.get(viewType);
-		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-		// visBricks
-		// .unregisterRemoteViewMouseWheelListener((IMouseWheelHandler)
-		// brickLayout
-		// .getViewRenderer());
-		// }
+
 		brickLayout.setViewRenderer(viewRenderer);
 
-		// if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-		// visBricks
-		// .registerMouseWheelListener((IMouseWheelHandler) brickLayout
-		// .getViewRenderer());
-		// }
-
 		brickLayout.viewTypeChanged(viewType);
-		int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
-		int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
-		float defaultHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(defaultHeightPixels);
-		float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(defaultWidthPixels);
 
-		if (isSizeFixed) {
+		if (viewType.isUseProportionalHeight())
+			brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+		switch (brickHeigthMode) {
+		case STATIC:
+			// float currentHeight = wrappingLayout.getSizeScaledY();
+			//
+			// if (currentHeight < defaultHeight) {
+			//
+			// wrappingLayout.setAbsoluteSizeY(defaultHeight);
+			// }
+			break;
+		case VIEW_DEPENDENT:
+			int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
+			wrappingLayout.setPixelSizeY(defaultHeightPixels);
+			break;
 
-			float currentHeight = wrappingLayout.getSizeScaledY();
-			float currentWidth = wrappingLayout.getSizeScaledX();
+		case PROPORTIONAL:
+			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
+					* dataContainer.getNrRecords();
+			wrappingLayout.setPixelSizeY((int) proportionalHeight);
+			break;
 
-			if (currentHeight < defaultHeight) {
-				// float width = (wrappingLayout.getSizeScaledX() /
-				// currentHeight)
-				// * minHeight;
-				// wrappingLayout.setAbsoluteSizeX(width);
-				wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			}
-			if (currentWidth < defaultWidth) {
-				wrappingLayout.setAbsoluteSizeX(defaultWidth);
-			}
-		} else {
-			wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			wrappingLayout.setAbsoluteSizeX(defaultWidth);
+		}
+
+		switch (brickWidthMode) {
+		case STATIC:
+			// float currentWidth = wrappingLayout.getSizeScaledX();
+			// if (currentWidth < defaultWidth) {
+			// wrappingLayout.setAbsoluteSizeX(defaultWidth);
+			// }
+			break;
+		case VIEW_DEPENDENT:
+			int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
+			wrappingLayout.setPixelSizeX(defaultWidthPixels);
+			break;
 		}
 
 		templateRenderer.setStaticLayoutConfiguration(brickLayout);
@@ -713,21 +675,23 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		eventPublisher.addListener(OpenCreatePathwaySmallMultiplesGroupDialogEvent.class,
 				openCreatePathwaySmallMultiplesGroupDialogListener);
 
+		renameListener = new RenameListener();
+		renameListener.setHandler(this);
+		eventPublisher.addListener(RenameEvent.class, renameListener);
+
 		openCreateKaplanMeierSmallMultiplesGroupDialogListener = new OpenCreateKaplanMeierSmallMultiplesGroupDialogListener();
 		openCreateKaplanMeierSmallMultiplesGroupDialogListener.setHandler(this);
 		eventPublisher.addListener(
 				OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent.class,
 				openCreateKaplanMeierSmallMultiplesGroupDialogListener);
 
-		renameListener = new RenameListener();
-		renameListener.setHandler(this);
-		eventPublisher.addListener(RenameEvent.class, renameListener);
-
 	}
 
 	@Override
 	public void unregisterEventListeners() {
-
+		renameListener = new RenameListener();
+		renameListener.setHandler(this);
+		eventPublisher.addListener(RenameEvent.class, renameListener);
 		if (relationsUpdateListener != null) {
 			eventPublisher.removeListener(relationsUpdateListener);
 			relationsUpdateListener = null;
@@ -742,17 +706,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			eventPublisher.removeListener(openCreatePathwayGroupDialogListener);
 			openCreatePathwayGroupDialogListener = null;
 		}
-
 		if (openCreatePathwaySmallMultiplesGroupDialogListener != null) {
 			eventPublisher
 					.removeListener(openCreatePathwaySmallMultiplesGroupDialogListener);
 			openCreatePathwaySmallMultiplesGroupDialogListener = null;
-		}
-
-		if (openCreateKaplanMeierSmallMultiplesGroupDialogListener != null) {
-			eventPublisher
-					.removeListener(openCreateKaplanMeierSmallMultiplesGroupDialogListener);
-			openCreateKaplanMeierSmallMultiplesGroupDialogListener = null;
 		}
 
 		if (renameListener != null) {
@@ -766,15 +723,20 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		// brickLayout
 		// .getViewRenderer());
 		// }
+
+		if (openCreateKaplanMeierSmallMultiplesGroupDialogListener != null) {
+			eventPublisher
+					.removeListener(openCreateKaplanMeierSmallMultiplesGroupDialogListener);
+			openCreateKaplanMeierSmallMultiplesGroupDialogListener = null;
+		}
+
 	}
 
 	private void registerPickingListeners() {
 		addIDPickingListener(new APickingListener() {
-
 			@Override
 			public void clicked(Pick pick) {
 				isBrickResizeActive = true;
-
 			}
 		}, PickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
 	}
@@ -895,27 +857,25 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void expand() {
 		// if (!isInOverviewMode)
 		// return;
-
 		ABrickLayoutConfiguration layoutTemplate = brickLayout
 				.getExpandedLayoutTemplate();
-
 		if (expandedBrickState != null) {
 			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
-			wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
-			wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
+			// wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
+			// wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
 		} else {
 			setBrickLayoutTemplate(layoutTemplate, currentViewType);
-			float defaultHeight = pixelGLConverter
-					.getGLHeightForPixelHeight(layoutTemplate.getDefaultHeightPixels());
-			float defaultWidth = pixelGLConverter.getGLWidthForPixelWidth(layoutTemplate
-					.getDefaultWidthPixels());
-			wrappingLayout.setAbsoluteSizeY(defaultHeight);
-			wrappingLayout.setAbsoluteSizeX(defaultWidth);
+			// float defaultHeight = pixelGLConverter
+			// .getGLHeightForPixelHeight(layoutTemplate.getDefaultHeightPixels());
+			// float defaultWidth =
+			// pixelGLConverter.getGLWidthForPixelWidth(layoutTemplate
+			// .getDefaultWidthPixels());
+			// wrappingLayout.setAbsoluteSizeY(defaultHeight);
+			// wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
 		isInOverviewMode = false;
-		isSizeFixed = true;
 		brickLayout.setLockResizing(true);
-
+		// dimensionGroup.updateLayout();
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 	}
@@ -934,10 +894,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		brickLayout.setGlobalViewSwitching(isGlobalViewSwitching);
 	}
 
-	public void setCurrentRemoteView(AGLView currentRemoteView) {
-		this.currentRemoteView = currentRemoteView;
-	}
-
 	public void setViews(Map<EContainedViewType, AGLView> views) {
 		this.views = views;
 	}
@@ -951,12 +907,34 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		this.currentViewType = currentViewType;
 	}
 
-	public boolean isSizeFixed() {
-		return isSizeFixed;
+	/**
+	 * @param brickHeigthMode
+	 *            setter, see {@link #brickHeigthMode}
+	 */
+	public void setBrickHeigthMode(EBrickHeightMode brickHeigthMode) {
+		this.brickHeigthMode = brickHeigthMode;
 	}
 
-	public void setSizeFixed(boolean isSizeFixed) {
-		this.isSizeFixed = isSizeFixed;
+	/**
+	 * @return the brickHeigthMode, see {@link #brickHeigthMode}
+	 */
+	public EBrickHeightMode getBrickHeigthMode() {
+		return brickHeigthMode;
+	}
+
+	/**
+	 * @param brickWidthMode
+	 *            setter, see {@link #brickWidthMode}
+	 */
+	public void setBrickWidthMode(EBrickWidthMode brickWidthMode) {
+		this.brickWidthMode = brickWidthMode;
+	}
+
+	/**
+	 * @return the brickWidthMode, see {@link #brickWidthMode}
+	 */
+	public EBrickWidthMode getBrickWidthMode() {
+		return brickWidthMode;
 	}
 
 	public ElementLayout getWrappingLayout() {
@@ -1022,10 +1000,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			final DimensionPerspective dimensionPerspective) {
 
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
-
 			@Override
 			public void run() {
-
 				Shell shell = new Shell();
 				CreateKaplanMeierSmallMultiplesGroupDialog dialog = new CreateKaplanMeierSmallMultiplesGroupDialog(
 						shell, dimensionGroupDataContainer, dimensionPerspective);
@@ -1038,7 +1014,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 					List<DataContainer> kaplanMeierDimensionGroupDataList = dialog
 							.getKaplanMeierDimensionGroupDataList();
-
 					for (DataContainer kaplanMeierDimensionGroupData : kaplanMeierDimensionGroupDataList) {
 						dataContainers.add(kaplanMeierDimensionGroupData);
 						event.setDataContainers(dataContainers);

@@ -155,11 +155,6 @@ public enum PickingType {
 	FILTERPIPE_SUB_FILTER,
 	FILTERPIPE_START_ARROW,
 
-
-
-
-
-
 	// tag cloud
 	TAG_DIMENSION_CHANGE,
 

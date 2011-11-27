@@ -261,7 +261,7 @@ public class ElementLayout {
 	 * @return
 	 */
 	public float getSizeScaledX() {
-		if(isHidden)
+		if (isHidden)
 			return 0;
 		return sizeScaledX;
 	}
@@ -273,7 +273,7 @@ public class ElementLayout {
 	 * @return
 	 */
 	public float getSizeScaledY() {
-		if(isHidden)
+		if (isHidden)
 			return 0;
 		return sizeScaledY;
 	}
@@ -320,7 +320,7 @@ public class ElementLayout {
 	 * used for this layout. The sub-layouts are calculated from scratch.
 	 */
 	public void updateSubLayout() {
-		if(isHidden)
+		if (isHidden)
 			return;
 		calculateScales(totalWidth, totalHeight);
 		updateSpacings();
@@ -408,8 +408,7 @@ public class ElementLayout {
 	public void setZoomer(Zoomer zoomer) {
 		this.zoomer = zoomer;
 	}
-	
-	
+
 	/**
 	 * @return The rendering priority, which determines the point in time this element layout is rendered if
 	 *         its {@link LayoutContainer} uses priority rendering.
@@ -678,7 +677,5 @@ public class ElementLayout {
 	public float getRatioSizeY() {
 		return ratioSizeY;
 	}
-
-
 
 }

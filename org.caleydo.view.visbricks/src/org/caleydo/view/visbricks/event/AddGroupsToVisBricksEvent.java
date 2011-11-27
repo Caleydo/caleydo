@@ -3,7 +3,6 @@ package org.caleydo.view.visbricks.event;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.event.AEvent;
@@ -39,7 +38,8 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 
 	/**
 	 * Optional member for determining a specialized data configurer that will
-	 * be used in visbricks. If not specified, visbricks will use the {@link NumericalDataConfigurer}.
+	 * be used in visbricks. If not specified, visbricks will use the
+	 * {@link NumericalDataConfigurer}.
 	 */
 	private IBrickConfigurer dataConfigurer;
 

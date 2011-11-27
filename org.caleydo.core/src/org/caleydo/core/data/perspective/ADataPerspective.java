@@ -215,6 +215,13 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	}
 
 	/**
+	 * @return the idType, see {@link #idType}
+	 */
+	public IDType getIdType() {
+		return idType;
+	}
+
+	/**
 	 * Creates a new virtual array for this perspective and resets all other associated parameters
 	 * (clusterSizes, contentTree, etc.)
 	 * 

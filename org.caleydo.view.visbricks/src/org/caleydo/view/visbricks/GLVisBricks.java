@@ -61,7 +61,6 @@ import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.brick.data.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
-import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
@@ -933,6 +932,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		}, PickingType.BRICK_CONNECTION_BAND.name());
 
 		addTypePickingListener(new APickingListener() {
+			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 				dragAndDropController.addDraggable((DimensionGroup) generalManager
@@ -954,6 +954,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		}, PickingType.DIMENSION_GROUP.name());
 
 		addTypePickingListener(new APickingListener() {
+			@Override
 			public void dragged(Pick pick) {
 
 				dragAndDropController.setDropArea(dimensionGroupManager
@@ -963,6 +964,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		}, PickingType.DIMENSION_GROUP_SPACER.name());
 
 		addTypePickingListener(new APickingListener() {
+			@Override
 			public void clicked(Pick pick) {
 				isHorizontalMoveDraggingActive = true;
 				movedDimensionGroup = pick.getID();

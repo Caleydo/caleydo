@@ -62,7 +62,7 @@ public class LayoutRenderer {
 
 	/** Calculate spacing if required */
 	protected void updateSpacing() {
-	
+
 	}
 
 	public void setElementLayout(ElementLayout elementLayout) {

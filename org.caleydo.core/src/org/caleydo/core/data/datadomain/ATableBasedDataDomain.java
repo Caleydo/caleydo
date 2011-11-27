@@ -1,5 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
@@ -50,6 +51,7 @@ import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveList
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
 import org.caleydo.core.event.data.StartClusteringEvent;
@@ -908,5 +910,62 @@ public abstract class ATableBasedDataDomain
 			eventPublisher.removeListener(aggregateGroupListener);
 			aggregateGroupListener = null;
 		}
+	}
+
+	/**
+	 * <p>
+	 * Converts a {@link RecordPerspective} with an IDType that is not the {@link #recordIDType} to a new
+	 * RecordPerspective with the recordIDType.
+	 * </p>
+	 * <p>
+	 * Grouping, and naming is preserved, sample elements and trees are not.
+	 * </p>
+	 */
+	public RecordPerspective convertForeignRecordPerspective(RecordPerspective foreignPerspective) {
+
+		if (foreignPerspective.getIdType().getIDCategory() != recordIDCategory) {
+			throw new IllegalArgumentException("Can not convert from " + foreignPerspective.getIdType()
+				+ " to " + recordIDType);
+		}
+		if (foreignPerspective.getIdType() == recordIDType)
+			return foreignPerspective;
+
+		RecordVirtualArray foreignRecordVA = foreignPerspective.getVirtualArray();
+
+		RecordGroupList recordGroupList = foreignRecordVA.getGroupList();
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+		ArrayList<Integer> indices = new ArrayList<Integer>(foreignRecordVA.size());
+		ArrayList<Integer> groupSizes = new ArrayList<Integer>(recordGroupList.size());
+		ArrayList<Integer> sampleElements = new ArrayList<Integer>(recordGroupList.size());
+		ArrayList<String> groupNames = new ArrayList<String>(recordGroupList.size());
+
+		for (Group foreignGroup : recordGroupList) {
+			// initialize number of groups with 0
+			groupSizes.add(0);
+			sampleElements.add(0);
+			groupNames.add(foreignGroup.getClusterNode().getLabel());
+
+		}
+
+		for (Integer foreignVAID : foreignRecordVA) {
+			Integer localVAID =
+				recordIDMappingManager.getID(foreignRecordVA.getIdType(), recordIDType, foreignVAID);
+			if (localVAID == null)
+				continue;
+			indices.add(localVAID);
+			int groupIndex = recordGroupList.getGroupOfVAIndex(foreignVAID).getGroupID();
+			groupSizes.set(groupIndex, sampleElements.get(groupIndex) + 1);
+			sampleElements.set(groupIndex, localVAID);
+
+		}
+
+		data.setData(indices, groupSizes, sampleElements, groupNames);
+
+		RecordPerspective localRecordPerspective = new RecordPerspective(this);
+		localRecordPerspective.setIDType(recordIDType);
+		localRecordPerspective.init(data);
+		return localRecordPerspective;
+
 	}
 }

@@ -15,8 +15,8 @@ public class PerspectiveInitializationData {
 
 	private List<Integer> sampleElements;
 	/**
-	 * The sizes of the group in a list sorted so that combined with the {@link VirtualArray} the clusters
-	 * are uniquely identified. Used for initialization.
+	 * The sizes of the group in a list sorted so that combined with the {@link VirtualArray} the clusters are
+	 * uniquely identified. Used for initialization.
 	 */
 	private List<Integer> groupSizes;
 

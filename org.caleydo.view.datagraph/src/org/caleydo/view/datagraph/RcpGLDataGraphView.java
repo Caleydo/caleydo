@@ -30,7 +30,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 		view = new GLDataGraph(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
-		minSizeComposite.setView((AGLView)view);
+		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
 	}
 

@@ -49,14 +49,15 @@ public class DataSetMetaInfo {
 	public void setGroupingPath(String groupingPath) {
 		this.groupingPath = groupingPath;
 	}
-	
+
 	/**
-	 * @param externalGroupingPath setter, see {@link #externalGroupingPath}
+	 * @param externalGroupingPath
+	 *            setter, see {@link #externalGroupingPath}
 	 */
 	public void setExternalGroupingPath(String externalGroupingPath) {
 		this.externalGroupingPath = externalGroupingPath;
 	}
-	
+
 	/**
 	 * @return the externalGroupingPath, see {@link #externalGroupingPath}
 	 */

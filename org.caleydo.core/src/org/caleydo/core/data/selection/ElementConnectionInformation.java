@@ -61,8 +61,8 @@ public class ElementConnectionInformation {
 	 * @param y
 	 * @param z
 	 */
-	public ElementConnectionInformation(IDType idType, final int sourceViewID, int remoteViewID, final float x,
-		final float y, final float z) {
+	public ElementConnectionInformation(IDType idType, final int sourceViewID, int remoteViewID,
+		final float x, final float y, final float z) {
 		this.idType = idType;
 		this.sourceViewID = sourceViewID;
 		this.remoteViewID = remoteViewID;

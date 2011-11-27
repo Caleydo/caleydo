@@ -8,7 +8,6 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;

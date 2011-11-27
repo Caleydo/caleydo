@@ -15,8 +15,8 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
+import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -425,8 +425,8 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 
 		ArrayList<Vec3f> points = new ArrayList<Vec3f>();
 		points.add(new Vec3f(1f, 1f, 0));
-		ElementConnectionInformation rep = new ElementConnectionInformation(primaryIDType, sourceViewID,
-				points);
+		ElementConnectionInformation rep = new ElementConnectionInformation(
+				primaryIDType, sourceViewID, points);
 
 		ArrayList<Integer> connectionIDs = item.getConnectionIDs();
 		;

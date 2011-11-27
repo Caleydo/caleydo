@@ -13,16 +13,19 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 /**
  * Creator for a remote rendered {@link GLKaplanMeier}.
  * 
- * @author Marc Streit
+ * @author Alexander Lex
  * 
  */
 public class KaplanMeierCreator implements IRemoteViewCreator {
+
+	public KaplanMeierCreator() {
+	}
 
 	@Override
 	public AGLView createRemoteView(GLBrick remoteRenderingView, GL2 gl,
 			GLMouseListener glMouseListener) {
 
-		GLKaplanMeier view = (GLKaplanMeier) GeneralManager
+		GLKaplanMeier kaplanMeier = (GLKaplanMeier) GeneralManager
 				.get()
 				.getViewManager()
 				.createGLView(
@@ -32,12 +35,13 @@ public class KaplanMeierCreator implements IRemoteViewCreator {
 						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 								-1, 1));
 
-		view.setRemoteRenderingGLView(remoteRenderingView);
-		view.setDataDomain(remoteRenderingView.getDataDomain());
-		view.setDataContainer(remoteRenderingView.getDataContainer());
-		view.initialize();
-		view.initRemote(gl, remoteRenderingView, glMouseListener);
+		kaplanMeier.setRemoteRenderingGLView(remoteRenderingView);
+		kaplanMeier.setDataContainer(remoteRenderingView.getDataContainer());
+		kaplanMeier.setDataDomain(remoteRenderingView.getDataDomain());
 
-		return view;
+		kaplanMeier.initialize();
+		kaplanMeier.initRemote(gl, remoteRenderingView, glMouseListener);
+
+		return kaplanMeier;
 	}
 }

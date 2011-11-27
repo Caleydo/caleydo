@@ -5,12 +5,12 @@ import org.caleydo.view.visbricks.event.RenameEvent;
 
 public class RenameBrickItem extends AContextMenuItem {
 
-    public RenameBrickItem(Integer brickID) {
+	public RenameBrickItem(Integer brickID) {
 
-	setLabel("Set Name/ Rename");
+		setLabel("Set Name/ Rename");
 
-	RenameEvent event = new RenameEvent(brickID);
-	event.setSender(this);
-	registerEvent(event);
-    }
+		RenameEvent event = new RenameEvent(brickID);
+		event.setSender(this);
+		registerEvent(event);
+	}
 }

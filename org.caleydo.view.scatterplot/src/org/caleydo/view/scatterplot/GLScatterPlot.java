@@ -3229,11 +3229,12 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(IDType idType,
-			int iDimensionIndex) throws InvalidAttributeValueException {
+	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
+			IDType idType, int iDimensionIndex) throws InvalidAttributeValueException {
 
 		ElementConnectionInformation elementRep;
-		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(4);
+		ArrayList<ElementConnectionInformation> alElementReps = new ArrayList<ElementConnectionInformation>(
+				4);
 
 		for (int recordIndex : dataContainer.getRecordPerspective().getVirtualArray()
 				.indicesOf(iDimensionIndex)) {
@@ -3267,8 +3268,8 @@ public class GLScatterPlot extends ATableBasedView {
 			Rotf myRotf = new Rotf(new Vec3f(0, 0, 1), -(float) Math.PI / 2);
 			Vec3f vecPoint = myRotf.rotateVector(new Vec3f(fXValue, fYValue, 0));
 			vecPoint.setY(vecPoint.y() + vecTranslation.y());
-			elementRep = new ElementConnectionInformation(recordIDType, viewID, vecPoint.x(),
-					vecPoint.y() - fAnimationTranslation, 0);
+			elementRep = new ElementConnectionInformation(recordIDType, viewID,
+					vecPoint.x(), vecPoint.y() - fAnimationTranslation, 0);
 
 			alElementReps.add(elementRep);
 		}

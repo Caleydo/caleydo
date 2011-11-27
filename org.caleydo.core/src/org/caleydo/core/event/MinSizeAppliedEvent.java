@@ -12,7 +12,6 @@ public class MinSizeAppliedEvent
 	extends AEvent {
 
 	private AGLView view;
-	
 
 	@Override
 	public boolean checkIntegrity() {

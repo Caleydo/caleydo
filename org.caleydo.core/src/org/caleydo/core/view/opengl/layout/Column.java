@@ -42,7 +42,7 @@ public class Column
 
 	@Override
 	public float getUnscalableElementHeight() {
-		if(isHidden)
+		if (isHidden)
 			return 0;
 		if (!isYDynamic)
 			return super.getUnscalableElementHeight();
@@ -57,7 +57,7 @@ public class Column
 
 	@Override
 	public float getUnscalableElementWidth() {
-		if(isHidden)
+		if (isHidden)
 			return 0;
 		if (!isXDynamic)
 			return super.getUnscalableElementWidth();
@@ -94,7 +94,7 @@ public class Column
 
 	@Override
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
-		if(isHidden)
+		if (isHidden)
 			return;
 		super.calculateTransforms(bottom, left, top, right);
 
@@ -144,7 +144,7 @@ public class Column
 
 	@Override
 	void calculateScales(float totalWidth, float totalHeight) {
-		if(isHidden)
+		if (isHidden)
 			return;
 		super.calculateScales(totalWidth, totalHeight);
 

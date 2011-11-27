@@ -12,7 +12,6 @@ import org.caleydo.core.data.container.DataContainer;
  * Interface for views that manage (multiple) data containers
  * 
  * @author Alexander Lex
- *
  */
 public interface IDataContainerBasedView {
 	/**

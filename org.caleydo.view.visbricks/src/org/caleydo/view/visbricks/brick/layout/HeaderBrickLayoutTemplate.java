@@ -28,376 +28,349 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  */
 public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
-    protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
-    protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
-    protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
-    protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
-    protected static final int BUTTON_HEIGHT_PIXELS = 16;
-    protected static final int BUTTON_WIDTH_PIXELS = 16;
-    protected static final int HANDLE_SIZE_PIXELS = 8;
+	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
+	protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
+	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
+	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
+	protected static final int BUTTON_HEIGHT_PIXELS = 16;
+	protected static final int BUTTON_WIDTH_PIXELS = 16;
+	protected static final int HANDLE_SIZE_PIXELS = 8;
 
-    protected static final int CLUSTER_BUTTON_ID = 0;
-    protected static final int LOCK_RESIZING_BUTTON_ID = 1;
+	protected static final int CLUSTER_BUTTON_ID = 0;
+	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
 
-    // protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
-    protected ArrayList<ElementLayout> headerBarElements;
-    protected ArrayList<ElementLayout> toolBarElements;
-    protected ArrayList<ElementLayout> footerBarElements;
+	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
+	protected ArrayList<ElementLayout> headerBarElements;
+	protected ArrayList<ElementLayout> toolBarElements;
+	protected ArrayList<ElementLayout> footerBarElements;
 
-    protected GLVisBricks visBricks;
+	protected GLVisBricks visBricks;
 
-    // protected Button heatMapButton;
-    // protected Button parCoordsButton;
-    // protected Button histogramButton;
-    // protected Button overviewHeatMapButton;
+	// protected Button heatMapButton;
+	// protected Button parCoordsButton;
+	// protected Button histogramButton;
+	// protected Button overviewHeatMapButton;
 
-    protected Button clusterButton;
-    protected Button lockResizingButton;
-    protected boolean showToolBar;
-    protected boolean showFooterBar;
+	protected Button clusterButton;
+	protected Button lockResizingButton;
+	protected boolean showToolBar;
+	protected boolean showFooterBar;
 
-    protected int guiElementsHeight = 0;
-    protected Row headerBar;
-    protected Row toolBar;
-    protected Row footerBar;
+	protected int guiElementsHeight = 0;
+	protected Row headerBar;
+	protected Row toolBar;
+	protected Row footerBar;
 
-    public HeaderBrickLayoutTemplate(GLBrick brick,
-	    DimensionGroup dimensionGroup, GLVisBricks visBricks,
-	    IBrickConfigurer configurer) {
-	super(brick, dimensionGroup);
-	// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
-	this.visBricks = visBricks;
-	clusterButton = new Button(
-		PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
-		CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
+	public HeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+			GLVisBricks visBricks, IBrickConfigurer configurer) {
+		super(brick, dimensionGroup);
+		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
+		this.visBricks = visBricks;
+		clusterButton = new Button(PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
+				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
-	lockResizingButton = new Button(
-		PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-		LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
-	headerBarElements = new ArrayList<ElementLayout>();
-	footerBarElements = new ArrayList<ElementLayout>();
-	toolBarElements = new ArrayList<ElementLayout>();
-	headerBar = new Row();
-	toolBar = new Row();
-	footerBar = new Row();
-	configurer.configure(this);
-	registerPickingListeners();
-	viewTypeChanged(getDefaultViewType());
+		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
+		headerBarElements = new ArrayList<ElementLayout>();
+		footerBarElements = new ArrayList<ElementLayout>();
+		toolBarElements = new ArrayList<ElementLayout>();
+		headerBar = new Row();
+		toolBar = new Row();
+		footerBar = new Row();
+		configurer.configure(this);
+		registerPickingListeners();
+		viewTypeChanged(getDefaultViewType());
 
-    }
-
-    @Override
-    public void setLockResizing(boolean lockResizing) {
-	lockResizingButton.setSelected(lockResizing);
-    }
-
-    @Override
-    public void setStaticLayouts() {
-	guiElementsHeight = 0;
-	Row baseRow = new Row("baseRow");
-	baseRow.setFrameColor(1, 0, 0, 0.5f);
-	// baseRow.setDebug(true);
-
-	baseRow.setFrameColor(0, 0, 1, 0);
-	baseElementLayout = baseRow;
-
-	Column baseColumn = new Column("baseColumn");
-	baseColumn.setFrameColor(0, 1, 0, 0);
-
-	baseRow.setRenderer(borderedAreaRenderer);
-
-	baseRow.addForeGroundRenderer(new HandleRenderer(brick,
-		HANDLE_SIZE_PIXELS, brick.getTextureManager(),
-		HandleRenderer.ALL_MOVE_HANDLES
-			| HandleRenderer.ALL_RESIZE_HANDLES));
-
-	ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-	spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
-	spacingLayoutX.setRatioSizeY(0);
-
-	baseRow.append(spacingLayoutX);
-	baseRow.append(baseColumn);
-	baseRow.append(spacingLayoutX);
-
-	ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
-	dimensionBarLayout.setFrameColor(1, 0, 1, 0);
-	dimensionBarLayout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
-
-	if (viewLayout == null) {
-	    viewLayout = new ElementLayout("viewLayout");
-	    viewLayout.setFrameColor(1, 0, 0, 1);
-	    // viewLayout.setDebug(true);
-	    viewLayout.addBackgroundRenderer(new ColorRenderer(new float[] { 1,
-		    1, 1, 1 }));
-	    Zoomer zoomer = new Zoomer(visBricks, viewLayout);
-	    viewLayout.setZoomer(zoomer);
-	}
-	viewLayout.setRenderer(viewRenderer);
-
-	headerBar = createHeaderBar();
-	toolBar = createToolBar();
-	footerBar = createFooterBar();
-
-	ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-	spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
-	spacingLayoutY.setPixelSizeX(0);
-
-	// captionRow.append(spacingLayoutX);
-
-	ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
-	lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
-	lineSeparatorLayout.setRatioSizeX(1);
-	lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
-
-	// ElementLayout dimensionBarLaylout = new
-	// ElementLayout("dimensionBar");
-	// dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
-	// dimensionBarLaylout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
-	// dimensionBarLaylout.setRatioSizeX(1);
-	// dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
-
-	baseColumn.append(spacingLayoutY);
-	guiElementsHeight += SPACING_PIXELS;
-	if (showFooterBar) {
-	    baseColumn.append(footerBar);
-	    baseColumn.append(spacingLayoutY);
-	    guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
-	}
-	// if (!dimensionGroup.isProportionalMode())
-	baseColumn.append(viewLayout);
-	if (showToolBar) {
-	    baseColumn.append(spacingLayoutY);
-	    baseColumn.append(toolBar);
-	    baseColumn.append(spacingLayoutY);
-	    baseColumn.append(lineSeparatorLayout);
-	    guiElementsHeight += (2 * SPACING_PIXELS) + TOOLBAR_HEIGHT_PIXELS
-		    + LINE_SEPARATOR_HEIGHT_PIXELS;
-	}
-	baseColumn.append(spacingLayoutY);
-	baseColumn.append(headerBar);
-	baseColumn.append(spacingLayoutY);
-	guiElementsHeight += (2 * SPACING_PIXELS) + HEADER_BAR_HEIGHT_PIXELS;
-
-    }
-
-    protected Row createFooterBar() {
-	Row footerBar = new Row("footerBar");
-	footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
-
-	for (ElementLayout element : footerBarElements) {
-	    footerBar.append(element);
 	}
 
-	return footerBar;
-    }
-
-    protected Row createHeaderBar() {
-	Row headerBar = new Row();
-	headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
-
-	for (ElementLayout element : headerBarElements) {
-	    headerBar.append(element);
+	@Override
+	public void setLockResizing(boolean lockResizing) {
+		lockResizingButton.setSelected(lockResizing);
 	}
 
-	ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-	spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
-	spacingLayoutX.setRatioSizeY(0);
+	@Override
+	public void setStaticLayouts() {
+		guiElementsHeight = 0;
+		Row baseRow = new Row("baseRow");
+		baseRow.setFrameColor(1, 0, 0, 0.5f);
+		// baseRow.setDebug(true);
 
-	headerBar.append(spacingLayoutX);
+		baseRow.setFrameColor(0, 0, 1, 0);
+		baseElementLayout = baseRow;
 
-	ElementLayout lockResizingButtonLayout = new ElementLayout(
-		"lockResizingButton");
-	lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-	lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-	lockResizingButtonLayout.setRenderer(new ButtonRenderer(
-		lockResizingButton, brick, brick.getTextureManager()));
+		Column baseColumn = new Column("baseColumn");
+		baseColumn.setFrameColor(0, 1, 0, 0);
 
-	headerBar.append(lockResizingButtonLayout);
+		baseRow.setRenderer(borderedAreaRenderer);
 
-	return headerBar;
-    }
+		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick
+				.getTextureManager(), HandleRenderer.ALL_MOVE_HANDLES
+				| HandleRenderer.ALL_RESIZE_HANDLES));
 
-    /**
-     * Creates the toolbar containing buttons for view switching.
-     * 
-     * @param pixelHeight
-     * @return
-     */
-    protected Row createToolBar() {
-	Row toolBar = new Row("ToolBarRow");
-	toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
+		spacingLayoutX.setRatioSizeY(0);
 
-	for (ElementLayout element : toolBarElements) {
-	    toolBar.append(element);
+		baseRow.append(spacingLayoutX);
+		baseRow.append(baseColumn);
+		baseRow.append(spacingLayoutX);
+
+		ElementLayout dimensionBarLayout = new ElementLayout("dimensionBar");
+		dimensionBarLayout.setFrameColor(1, 0, 1, 0);
+		dimensionBarLayout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
+
+		if (viewLayout == null) {
+			viewLayout = new ElementLayout("viewLayout");
+			viewLayout.setFrameColor(1, 0, 0, 1);
+			// viewLayout.setDebug(true);
+			viewLayout
+					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
+			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
+			viewLayout.setZoomer(zoomer);
+		}
+		viewLayout.setRenderer(viewRenderer);
+
+		headerBar = createHeaderBar();
+		toolBar = createToolBar();
+		footerBar = createFooterBar();
+
+		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
+		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
+		spacingLayoutY.setPixelSizeX(0);
+
+		// captionRow.append(spacingLayoutX);
+
+		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
+		lineSeparatorLayout.setPixelSizeY(LINE_SEPARATOR_HEIGHT_PIXELS);
+		lineSeparatorLayout.setRatioSizeX(1);
+		lineSeparatorLayout.setRenderer(new LineSeparatorRenderer(false));
+
+		// ElementLayout dimensionBarLaylout = new
+		// ElementLayout("dimensionBar");
+		// dimensionBarLaylout.setPixelGLConverter(pixelGLConverter);
+		// dimensionBarLaylout.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
+		// dimensionBarLaylout.setRatioSizeX(1);
+		// dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick));
+
+		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += SPACING_PIXELS;
+		if (showFooterBar) {
+			baseColumn.append(footerBar);
+			baseColumn.append(spacingLayoutY);
+			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
+		}
+		// if (!dimensionGroup.isProportionalMode())
+		baseColumn.append(viewLayout);
+		if (showToolBar) {
+			baseColumn.append(spacingLayoutY);
+			baseColumn.append(toolBar);
+			baseColumn.append(spacingLayoutY);
+			baseColumn.append(lineSeparatorLayout);
+			guiElementsHeight += (2 * SPACING_PIXELS) + TOOLBAR_HEIGHT_PIXELS
+					+ LINE_SEPARATOR_HEIGHT_PIXELS;
+		}
+		baseColumn.append(spacingLayoutY);
+		baseColumn.append(headerBar);
+		baseColumn.append(spacingLayoutY);
+		guiElementsHeight += (2 * SPACING_PIXELS) + HEADER_BAR_HEIGHT_PIXELS;
+
 	}
 
-	// ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
-	// spacingLayoutX.setPixelGLConverter(pixelGLConverter);
-	// spacingLayoutX.setPixelSizeX(4);
-	// spacingLayoutX.setPixelSizeY(0);
-	//
-	// for (int i = 0; i < viewSwitchingButtons.size(); i++) {
-	// BrickViewSwitchingButton button = viewSwitchingButtons.get(i);
-	// ElementLayout buttonLayout = new ElementLayout();
-	// buttonLayout.setPixelGLConverter(pixelGLConverter);
-	// buttonLayout.setPixelSizeX(pixelHeight);
-	// buttonLayout.setPixelSizeY(pixelHeight);
-	// buttonLayout.setRenderer(new ButtonRenderer(button, brick, brick
-	// .getTextureManager()));
-	// toolBar.append(buttonLayout);
-	// if (i != viewSwitchingButtons.size() - 1) {
-	// toolBar.append(spacingLayoutX);
-	// }
-	// }
+	protected Row createFooterBar() {
+		Row footerBar = new Row("footerBar");
+		footerBar.setPixelSizeY(FOOTER_BAR_HEIGHT_PIXELS);
 
-	return toolBar;
-    }
+		for (ElementLayout element : footerBarElements) {
+			footerBar.append(element);
+		}
 
-    @Override
-    protected void registerPickingListeners() {
+		return footerBar;
+	}
 
-	brick.addIDPickingListener(new APickingListener() {
+	protected Row createHeaderBar() {
+		Row headerBar = new Row();
+		headerBar.setPixelSizeY(HEADER_BAR_HEIGHT_PIXELS);
 
-	    @Override
-	    public void clicked(Pick pick) {
-		boolean isResizingLocked = !lockResizingButton.isSelected();
-		brick.setSizeFixed(isResizingLocked);
-		lockResizingButton.setSelected(isResizingLocked);
-	    }
+		for (ElementLayout element : headerBarElements) {
+			headerBar.append(element);
+		}
 
-	}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-		LOCK_RESIZING_BUTTON_ID);
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
+		spacingLayoutX.setRatioSizeY(0);
 
-    }
+		headerBar.append(spacingLayoutX);
 
-    @Override
-    public int getMinHeightPixels() {
-	if (viewRenderer == null)
-	    return 20;
+		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
+		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
+				brick, brick.getTextureManager()));
 
-	return guiElementsHeight + viewRenderer.getMinHeightPixels();
-    }
+		headerBar.append(lockResizingButtonLayout);
 
-    @Override
-    public int getMinWidthPixels() {
-	int headerBarWidth = calcSumPixelWidth(headerBar.getElements());
-	int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar
-		.getElements()) : 0;
-	int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar
-		.getElements()) : 0;
+		return headerBar;
+	}
 
-	int minGuiElementWidth = Math.max(headerBarWidth,
-		Math.max(toolBarWidth, footerBarWidth))
-		+ 2 * SPACING_PIXELS;
-	if (viewRenderer == null)
-	    return minGuiElementWidth;
+	/**
+	 * Creates the toolbar containing buttons for view switching.
+	 * 
+	 * @param pixelHeight
+	 * @return
+	 */
+	protected Row createToolBar() {
+		Row toolBar = new Row("ToolBarRow");
+		toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
 
-	return Math.max(minGuiElementWidth,
-		(2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
-	// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
-	// .getMinWidth());
-    }
+		for (ElementLayout element : toolBarElements) {
+			toolBar.append(element);
+		}
 
-    @Override
-    public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-	return new CompactHeaderBrickLayoutTemplate(brick, dimensionGroup,
-		visBricks, brick.getBrickConfigurer());
-    }
+		return toolBar;
+	}
 
-    @Override
-    public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-	return this;
-    }
+	@Override
+	protected void registerPickingListeners() {
 
-    /**
-     * @return The elements displayed in the header bar.
-     */
-    public ArrayList<ElementLayout> getHeaderBarElements() {
-	return headerBarElements;
-    }
+		brick.addIDPickingListener(new APickingListener() {
 
-    /**
-     * Sets the elements that should appear in the header bar. The elements will
-     * placed from left to right using the order of the specified list.
-     * 
-     * @param headerBarElements
-     */
-    public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
-	this.headerBarElements = headerBarElements;
-    }
+			@Override
+			public void clicked(Pick pick) {
+				// boolean isResizingLocked = !lockResizingButton.isSelected();
+				// brick.setSizeFixed(isResizingLocked);
+				// lockResizingButton.setSelected(isResizingLocked);
+			}
 
-    /**
-     * @return The elements displayed in the tool bar.
-     */
-    public ArrayList<ElementLayout> getToolBarElements() {
-	return toolBarElements;
-    }
+		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
-    /**
-     * Sets the elements that should appear in the tool bar. The elements will
-     * placed from left to right using the order of the specified list.
-     * 
-     * @param toolBarElements
-     */
-    public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
-	this.toolBarElements = toolBarElements;
-    }
+	}
 
-    /**
-     * @return The elements displayed in the footer bar.
-     */
-    public ArrayList<ElementLayout> getFooterBarElements() {
-	return footerBarElements;
-    }
+	@Override
+	public int getMinHeightPixels() {
+		if (viewRenderer == null)
+			return 20;
 
-    /**
-     * Sets the elements that should appear in the footer bar. The elements will
-     * placed from left to right using the order of the specified list.
-     * 
-     * @param footerBarElements
-     */
-    public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
-	this.footerBarElements = footerBarElements;
-    }
+		return guiElementsHeight + viewRenderer.getMinHeightPixels();
+	}
 
-    /**
-     * @return True, if the toolbar is shown, false otherwise.
-     */
-    public boolean isShowToolBar() {
-	return showToolBar;
-    }
+	@Override
+	public int getMinWidthPixels() {
+		int headerBarWidth = calcSumPixelWidth(headerBar.getElements());
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
+		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
+				: 0;
 
-    /**
-     * Specifies whether the toolbar shall be shown.
-     * 
-     * @param showToolBar
-     */
-    public void showToolBar(boolean showToolBar) {
-	this.showToolBar = showToolBar;
-    }
+		int minGuiElementWidth = Math.max(headerBarWidth,
+				Math.max(toolBarWidth, footerBarWidth))
+				+ 2 * SPACING_PIXELS;
+		if (viewRenderer == null)
+			return minGuiElementWidth;
 
-    /**
-     * @return True, if the footer bar is shown, false otherwise.
-     */
-    public boolean isShowFooterBar() {
-	return showFooterBar;
-    }
+		return Math.max(minGuiElementWidth,
+				(2 * SPACING_PIXELS) + viewRenderer.getMinWidthPixels());
+		// return pixelGLConverter.getPixelWidthForGLWidth(dimensionGroup
+		// .getMinWidth());
+	}
 
-    /**
-     * Specifies whether the footer bar shall be shown.
-     * 
-     * @param showFooterBar
-     */
-    public void showFooterBar(boolean showFooterBar) {
-	this.showFooterBar = showFooterBar;
-    }
+	@Override
+	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
+		return new CompactHeaderBrickLayoutTemplate(brick, dimensionGroup, visBricks,
+				brick.getBrickConfigurer());
+	}
 
-    @Override
-    public void destroy() {
-	super.destroy();
-	brick.removeAllIDPickingListeners(
-		PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-		LOCK_RESIZING_BUTTON_ID);
-    }
+	@Override
+	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
+		return this;
+	}
+
+	/**
+	 * @return The elements displayed in the header bar.
+	 */
+	public ArrayList<ElementLayout> getHeaderBarElements() {
+		return headerBarElements;
+	}
+
+	/**
+	 * Sets the elements that should appear in the header bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param headerBarElements
+	 */
+	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
+		this.headerBarElements = headerBarElements;
+	}
+
+	/**
+	 * @return The elements displayed in the tool bar.
+	 */
+	public ArrayList<ElementLayout> getToolBarElements() {
+		return toolBarElements;
+	}
+
+	/**
+	 * Sets the elements that should appear in the tool bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param toolBarElements
+	 */
+	public void setToolBarElements(ArrayList<ElementLayout> toolBarElements) {
+		this.toolBarElements = toolBarElements;
+	}
+
+	/**
+	 * @return The elements displayed in the footer bar.
+	 */
+	public ArrayList<ElementLayout> getFooterBarElements() {
+		return footerBarElements;
+	}
+
+	/**
+	 * Sets the elements that should appear in the footer bar. The elements will
+	 * placed from left to right using the order of the specified list.
+	 * 
+	 * @param footerBarElements
+	 */
+	public void setFooterBarElements(ArrayList<ElementLayout> footerBarElements) {
+		this.footerBarElements = footerBarElements;
+	}
+
+	/**
+	 * @return True, if the toolbar is shown, false otherwise.
+	 */
+	public boolean isShowToolBar() {
+		return showToolBar;
+	}
+
+	/**
+	 * Specifies whether the toolbar shall be shown.
+	 * 
+	 * @param showToolBar
+	 */
+	public void showToolBar(boolean showToolBar) {
+		this.showToolBar = showToolBar;
+	}
+
+	/**
+	 * @return True, if the footer bar is shown, false otherwise.
+	 */
+	public boolean isShowFooterBar() {
+		return showFooterBar;
+	}
+
+	/**
+	 * Specifies whether the footer bar shall be shown.
+	 * 
+	 * @param showFooterBar
+	 */
+	public void showFooterBar(boolean showFooterBar) {
+		this.showFooterBar = showFooterBar;
+	}
+
+	@Override
+	public void destroy() {
+		super.destroy();
+		brick.removeAllIDPickingListeners(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+				LOCK_RESIZING_BUTTON_ID);
+	}
 
 }

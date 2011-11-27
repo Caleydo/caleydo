@@ -166,8 +166,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dataNodesOfDataDomains = new HashMap<IDataDomain, ADataNode>();
 		nodeCreator = new NodeCreator();
 
-		DataDomainGraph dataDomainGraph = DataDomainManager.get()
-				.getDataDomainGraph();
+		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
 			addDataDomain(dataDomain);
@@ -183,8 +182,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		// allowedViewTypes.add("org.caleydo.view.tabular");
 		// allowedViewTypes.add("org.caleydo.view.bucket");
 
-		Collection<AGLView> views = GeneralManager.get().getViewManager()
-				.getAllGLViews();
+		Collection<AGLView> views = GeneralManager.get().getViewManager().getAllGLViews();
 
 		for (AGLView view : views) {
 			addView(view);
@@ -262,8 +260,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	@Override
 	public void display(GL2 gl) {
 
-		if (isDisplayListDirty
-				&& !(!isMinSizeApplied && waitForMinSizeApplication)) {
+		if (isDisplayListDirty && !(!isMinSizeApplied && waitForMinSizeApplication)) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 			waitForMinSizeApplication = false;
@@ -289,14 +286,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		int drawingAreaWidth = pixelGLConverter
-				.getPixelWidthForGLWidth(viewFrustum.getWidth())
-				- 2
-				* BOUNDS_SPACING_PIXELS;
-		int drawingAreaHeight = pixelGLConverter
-				.getPixelHeightForGLHeight(viewFrustum.getHeight())
-				- 2
-				* BOUNDS_SPACING_PIXELS;
+		int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
+				.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
+		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS;
 		if (applyAutomaticLayout) {
 			for (IDataGraphNode node : dataGraph.getNodes()) {
 				node.setCustomPosition(false);
@@ -309,8 +302,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			// graphLayout.setGraph(dataGraph);
 			Rectangle2D rect = new Rectangle();
 
-			rect.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS,
-					drawingAreaWidth, drawingAreaHeight);
+			rect.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS, drawingAreaWidth,
+					drawingAreaHeight);
 			graphLayout.clearNodePositions();
 			graphLayout.layout(rect);
 			updateMinWindowSize(true);
@@ -324,8 +317,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 			float relativePosX = (float) position.getX() / drawingAreaWidth;
 			float relativePosY = (float) position.getY() / drawingAreaHeight;
-			relativeNodePositions.put(node, new Pair<Float, Float>(
-					relativePosX, relativePosY));
+			relativeNodePositions.put(node, new Pair<Float, Float>(relativePosX,
+					relativePosY));
 		}
 
 		renderEdges(gl);
@@ -371,8 +364,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		int minWidth = maxX - minX + 2 * BOUNDS_SPACING_PIXELS;
 		int minHeight = maxY - minY + 2 * BOUNDS_SPACING_PIXELS;
 
-		if (minWidth > minViewWidthPixels + 2
-				|| minWidth < minViewWidthPixels - 2
+		if (minWidth > minViewWidthPixels + 2 || minWidth < minViewWidthPixels - 2
 				|| minHeight > minViewHeightPixels + 2
 				|| minHeight < minViewHeightPixels - 2) {
 
@@ -382,8 +374,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			this.waitForMinSizeApplication = waitForMinSizeApplication;
 			isMinSizeApplied = false;
 
-			EventPublisher eventPublisher = GeneralManager.get()
-					.getEventPublisher();
+			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
 			event.setView(this);
@@ -426,8 +417,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				|| edge.getNode2() == currentMouseOverNode) {
 			highlight = true;
 		}
-		edge.getEdgeRenderer()
-				.renderEdge(gl, connectionBandRenderer, highlight);
+		edge.getEdgeRenderer().renderEdge(gl, connectionBandRenderer, highlight);
 	}
 
 	// private void renderLabeledCurve(GL2 gl, List<Point2D> edgePoints,
@@ -516,8 +506,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType,
-			PickingMode pickingMode, int externalID, Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
@@ -558,8 +548,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		viewClosedEventListener = new ViewClosedEventListener();
 		viewClosedEventListener.setHandler(this);
-		eventPublisher.addListener(ViewClosedEvent.class,
-				viewClosedEventListener);
+		eventPublisher.addListener(ViewClosedEvent.class, viewClosedEventListener);
 
 		dataContainersChangedListener = new DataContainersCangedListener();
 		dataContainersChangedListener.setHandler(this);
@@ -573,8 +562,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		newDataDomainEventListener = new NewDataDomainEventListener();
 		newDataDomainEventListener.setHandler(this);
-		eventPublisher.addListener(NewDataDomainEvent.class,
-				newDataDomainEventListener);
+		eventPublisher.addListener(NewDataDomainEvent.class, newDataDomainEventListener);
 
 		addDataContainerEventListener = new AddDataContainerEventListener();
 		addDataContainerEventListener.setHandler(this);
@@ -597,8 +585,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		minSizeAppliedEventListener = new MinSizeAppliedEventListener();
 		minSizeAppliedEventListener.setHandler(this);
-		eventPublisher.addListener(MinSizeAppliedEvent.class,
-				minSizeAppliedEventListener);
+		eventPublisher
+				.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
 	}
 
 	@Override
@@ -641,14 +629,12 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		}
 
 		if (createViewFromDataContainerEventListener != null) {
-			eventPublisher
-					.removeListener(createViewFromDataContainerEventListener);
+			eventPublisher.removeListener(createViewFromDataContainerEventListener);
 			createViewFromDataContainerEventListener = null;
 		}
 
 		if (applySpecificGraphLayoutEventListener != null) {
-			eventPublisher
-					.removeListener(applySpecificGraphLayoutEventListener);
+			eventPublisher.removeListener(applySpecificGraphLayoutEventListener);
 			applySpecificGraphLayoutEventListener = null;
 		}
 
@@ -677,8 +663,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			isMinSizeApplied = false;
 			waitForMinSizeApplication = true;
 
-			EventPublisher eventPublisher = GeneralManager.get()
-					.getEventPublisher();
+			EventPublisher eventPublisher = GeneralManager.get().getEventPublisher();
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
 			event.setMinViewSize(minViewWidthPixels, minViewHeightPixels);
 			event.setView(this);
@@ -697,8 +682,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 			if (dataDomains != null && !dataDomains.isEmpty()) {
 				node.setDataDomains(dataDomains);
 				for (IDataDomain dataDomain : dataDomains) {
-					Set<ViewNode> viewNodes = viewNodesOfDataDomains
-							.get(dataDomain);
+					Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
 					if (viewNodes == null) {
 						viewNodes = new HashSet<ViewNode>();
 					}
@@ -736,8 +720,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		if (dataDomains != null) {
 			for (IDataDomain dataDomain : dataDomains) {
-				Set<ViewNode> viewNodes = viewNodesOfDataDomains
-						.get(dataDomain);
+				Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
 				if (viewNodes != null) {
 					viewNodes.remove(viewNode);
 				}
@@ -771,8 +754,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (dataDomains != null && !dataDomains.isEmpty()) {
 			viewNode.setDataDomains(dataDomains);
 			for (IDataDomain dataDomain : dataDomains) {
-				Set<ViewNode> viewNodes = viewNodesOfDataDomains
-						.get(dataDomain);
+				Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
 				if (viewNodes == null) {
 					viewNodes = new HashSet<ViewNode>();
 				}
@@ -812,18 +794,16 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (!nodeAdded) {
 			dataNode = nodeCreator.createDataNode(graphLayout, this,
 					dragAndDropController, lastNodeID++, dataDomain);
-			if(dataNode == null)
-			    return;
+			if (dataNode == null)
+				return;
 			dataGraph.addNode(dataNode);
 			dataNodes.add(dataNode);
 			dataNodesOfDataDomains.put(dataNode.getDataDomain(), dataNode);
 		}
 
-		DataDomainGraph dataDomainGraph = DataDomainManager.get()
-				.getDataDomainGraph();
+		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
-		Set<IDataDomain> neighbors = dataDomainGraph
-				.getNeighboursOf(dataDomain);
+		Set<IDataDomain> neighbors = dataDomainGraph.getNeighboursOf(dataDomain);
 
 		for (IDataDomain neighborDataDomain : neighbors) {
 			nodeAdded = false;
@@ -838,12 +818,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				}
 			}
 			if (!nodeAdded) {
-				ADataNode node = nodeCreator
-						.createDataNode(graphLayout, this,
-								dragAndDropController, lastNodeID++,
-								neighborDataDomain);
-				if(node == null)
-				    return;
+				ADataNode node = nodeCreator.createDataNode(graphLayout, this,
+						dragAndDropController, lastNodeID++, neighborDataDomain);
+				if (node == null)
+					return;
 				dataGraph.addNode(node);
 				dataNodes.add(node);
 				dataNodesOfDataDomains.put(node.getDataDomain(), node);
@@ -868,16 +846,14 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	public String getEdgeLabel(ADataNode node1, ADataNode node2) {
 
-		DataDomainGraph dataDomainGraph = DataDomainManager.get()
-				.getDataDomainGraph();
+		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
-		Set<org.caleydo.core.data.datadomain.Edge> edges = dataDomainGraph
-				.getEdges(node1.getDataDomain(), node2.getDataDomain());
+		Set<org.caleydo.core.data.datadomain.Edge> edges = dataDomainGraph.getEdges(
+				node1.getDataDomain(), node2.getDataDomain());
 
 		StringBuffer stringBuffer = new StringBuffer();
 
-		Iterator<org.caleydo.core.data.datadomain.Edge> iterator = edges
-				.iterator();
+		Iterator<org.caleydo.core.data.datadomain.Edge> iterator = edges.iterator();
 		while (iterator.hasNext()) {
 			org.caleydo.core.data.datadomain.Edge e = iterator.next();
 			IDCategory category = e.getIdCategory();
@@ -928,7 +904,10 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	// }
 
 	/**
-	 * FIXME: DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * FIXME:
+	 * DOKU!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	 * !!!!!!!!!!!
+	 * 
 	 * @param dataDomain
 	 * @param recordPerspectiveID
 	 * @param createRecordPerspective
@@ -940,8 +919,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	 * @param dimensionGroup
 	 */
 	public void createDataContainer(final ATableBasedDataDomain dataDomain,
-			final String recordPerspectiveID,
-			final boolean createRecordPerspective,
+			final String recordPerspectiveID, final boolean createRecordPerspective,
 			final RecordVirtualArray recordVA, final Group recordGroup,
 			final String dimensionPerspectiveID,
 			final boolean createDimensionPerspective,
@@ -970,8 +948,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				};
 
 				InputDialog dialog = new InputDialog(new Shell(),
-						"Create Data Container", "Name",
-						recordPerspectiveLabel + "/"
+						"Create Data Container", "Name", recordPerspectiveLabel + "/"
 								+ dimensionPerspectiveLabel, validator);
 
 				String currentDimensionPerspeciveID = dimensionPerspectiveID;
@@ -981,27 +958,22 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 					DimensionPerspective dimensionPerspective = null;
 
 					if (createDimensionPerspective) {
-						dimensionPerspective = new DimensionPerspective(
-								dataDomain);
+						dimensionPerspective = new DimensionPerspective(dataDomain);
 						List<Integer> indices = dimensionVA.getSubList(
 								dimensionGroup.getStartIndex(),
 								dimensionGroup.getEndIndex() + 1);
 						PerspectiveInitializationData data = new PerspectiveInitializationData();
 						data.setData(indices);
 						dimensionPerspective.init(data);
-						dimensionPerspective
-								.setLabel(dimensionPerspectiveLabel, true);
+						dimensionPerspective.setLabel(dimensionPerspectiveLabel, true);
 						// TODO: Shall we really set it private?
 						dimensionPerspective.setPrivate(true);
-						dimensionGroup.setPerspectiveID(dimensionPerspective
-								.getID());
+						dimensionGroup.setPerspectiveID(dimensionPerspective.getID());
 						dataDomain.getTable().registerDimensionPerspective(
 								dimensionPerspective);
-						currentDimensionPerspeciveID = dimensionPerspective
-								.getID();
+						currentDimensionPerspeciveID = dimensionPerspective.getID();
 					} else {
-						dimensionPerspective = dataDomain
-								.getTable()
+						dimensionPerspective = dataDomain.getTable()
 								.getDimensionPerspective(dimensionPerspectiveID);
 					}
 
@@ -1019,17 +991,16 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 						// TODO: Shall we really set it private?
 						recordPerspective.setPrivate(true);
 						recordGroup.setPerspectiveID(recordPerspective.getID());
-						dataDomain.getTable().registerRecordPerspective(
-								recordPerspective);
+						dataDomain.getTable()
+								.registerRecordPerspective(recordPerspective);
 						currentRecordPerspeciveID = recordPerspective.getID();
 					} else {
-						recordPerspective = dataDomain.getTable()
-								.getRecordPerspective(recordPerspectiveID);
+						recordPerspective = dataDomain.getTable().getRecordPerspective(
+								recordPerspectiveID);
 					}
 
 					DataContainer dataContainer = dataDomain.getDataContainer(
-							currentRecordPerspeciveID,
-							currentDimensionPerspeciveID);
+							currentRecordPerspeciveID, currentDimensionPerspeciveID);
 					dataContainer.setLabel(dialog.getValue(), false);
 
 				}
@@ -1044,8 +1015,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-						.getActivePage().activate(viewPart);
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.activate(viewPart);
 			}
 		});
 
@@ -1062,11 +1033,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 					String secondaryID = UUID.randomUUID().toString();
 					RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
-					rcpViewInitData.setDataDomainID(dataDomain
-							.getDataDomainID());
+					rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
 					rcpViewInitData.setDataContainer(dataContainer);
-					RCPViewManager.get().addRCPView(secondaryID,
-							rcpViewInitData);
+					RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
 
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
 						PlatformUI
@@ -1096,8 +1065,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public void applyGraphLayout(Class<? extends AGraphLayout> graphLayoutClass) {
 
 		try {
-			graphLayout = graphLayoutClass.getConstructor(GLDataGraph.class,
-					Graph.class).newInstance(this, dataGraph);
+			graphLayout = graphLayoutClass.getConstructor(GLDataGraph.class, Graph.class)
+					.newInstance(this, dataGraph);
 
 			for (IDataGraphNode node : dataGraph.getNodes()) {
 				node.setGraphLayout(graphLayout);
@@ -1128,8 +1097,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width,
-			int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
 		// if (!waitForMinSizeApplication && isRendered) {

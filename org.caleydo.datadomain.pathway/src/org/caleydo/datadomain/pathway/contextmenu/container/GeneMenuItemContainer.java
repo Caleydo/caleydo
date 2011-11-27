@@ -27,9 +27,7 @@ public class GeneMenuItemContainer extends AContextMenuItemContainer {
 		if (dataDomain.isColumnDimension()) {
 			label = "Bookmark " + dataDomain.getHumanReadableRecordIDType() + ": "
 					+ dataDomain.getRecordLabel(idType, id);
-		}
-		else
-		{
+		} else {
 			label = "Bookmark " + dataDomain.getHumanReadableDimensionIDType() + ": "
 					+ dataDomain.getDimensionLabel(idType, id);
 		}

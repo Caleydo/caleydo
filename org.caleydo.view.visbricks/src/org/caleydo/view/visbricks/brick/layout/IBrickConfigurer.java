@@ -7,12 +7,12 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
  * Classes implementing this interface are intended to configure the different
- * {@link ABrickLayoutConfiguration}'s dependent on the kind of data that shall be
- * displayed within a brick (double dispatch). A modified version of the visitor
- * pattern is used to achieve this goal. The configurations should always
- * include setting the valid view types for the templates and setting a default
- * view type. The classes are also supposed to set the appropriate views for the
- * brick.
+ * {@link ABrickLayoutConfiguration}'s dependent on the kind of data that shall
+ * be displayed within a brick (double dispatch). A modified version of the
+ * visitor pattern is used to achieve this goal. The configurations should
+ * always include setting the valid view types for the templates and setting a
+ * default view type. The classes are also supposed to set the appropriate views
+ * for the brick.
  * 
  * @author Christian Partl
  * 

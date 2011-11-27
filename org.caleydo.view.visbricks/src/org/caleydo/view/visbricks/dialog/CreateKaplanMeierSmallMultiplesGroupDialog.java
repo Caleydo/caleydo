@@ -136,11 +136,15 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog extends TitleAreaDialog 
 			if (item.getChecked()) {
 				ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) item.getData();
 
-				RecordPerspective recordPerspective = dataContainer
+				RecordPerspective foreignRecordPerspective = dataContainer
 						.getRecordPerspective();
 
-				DataContainer kaplanMeierDimensionGroup = new DataContainer(
-						dataDomain, recordPerspective, dataDomain.getTable().getDefaultDimensionPerspective());
+				RecordPerspective convertedRecordPerspective = dataDomain
+						.convertForeignRecordPerspective(foreignRecordPerspective);
+
+				DataContainer kaplanMeierDimensionGroup = new DataContainer(dataDomain,
+						convertedRecordPerspective, dataDomain.getTable()
+								.getDefaultDimensionPerspective());
 
 				kaplanMeierDimensionGroupDataList.add(kaplanMeierDimensionGroup);
 			}

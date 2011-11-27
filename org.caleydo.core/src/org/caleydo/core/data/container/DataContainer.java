@@ -260,7 +260,8 @@ public class DataContainer {
 				recordVA.getVirtualArray().subList(group.getStartIndex(), group.getEndIndex() + 1);
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.setLabel(group.getClusterNode().getLabel(), group.getClusterNode().isDefaultLabel());
+			recordPerspective.setLabel(group.getClusterNode().getLabel(), group.getClusterNode()
+				.isDefaultLabel());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			recordPerspective.init(data);
