@@ -3,30 +3,30 @@ package org.caleydo.view.visbricks.listener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.event.OpenCreateSmallPathwayMultiplesGroupDialogEvent;
+import org.caleydo.view.visbricks.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
 
 /**
  * Listener for the event
- * {@link OpenCreateSmallPathwayMultiplesGroupDialogEvent}.
+ * {@link OpenCreatePathwaySmallMultiplesGroupDialogEvent}.
  * 
  * @author Marc Streit
  * 
  */
-public class OpenCreateSmallPathwayMultiplesGroupDialogListener extends
+public class OpenCreatePathwaySmallMultiplesGroupDialogListener extends
 		AEventListener<GLBrick> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof OpenCreateSmallPathwayMultiplesGroupDialogEvent) {
+		if (event instanceof OpenCreatePathwaySmallMultiplesGroupDialogEvent) {
 
 			// Only the view on which the context menu was clicked should handle
 			// the event
-			if (((OpenCreateSmallPathwayMultiplesGroupDialogEvent) event)
+			if (((OpenCreatePathwaySmallMultiplesGroupDialogEvent) event)
 					.getDimensionGroupDataContainer() != handler.getDataContainer())
 				return;
 
-			OpenCreateSmallPathwayMultiplesGroupDialogEvent openCreateSmallPathwayMultiplesGroupDialogevent = (OpenCreateSmallPathwayMultiplesGroupDialogEvent) event;
-			handler.openCreateSmallPathwayMultiplesGroupDialog(
+			OpenCreatePathwaySmallMultiplesGroupDialogEvent openCreateSmallPathwayMultiplesGroupDialogevent = (OpenCreatePathwaySmallMultiplesGroupDialogEvent) event;
+			handler.openCreateKaplanMeierSmallMultiplesGroupDialog(
 					openCreateSmallPathwayMultiplesGroupDialogevent
 							.getDimensionGroupDataContainer(),
 					openCreateSmallPathwayMultiplesGroupDialogevent

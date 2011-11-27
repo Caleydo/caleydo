@@ -3,10 +3,13 @@ package org.caleydo.view.visbricks.event;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
+import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
 
 /**
  * <p>
@@ -30,8 +33,15 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 	// private ArrayList<ClusterNode> selectedNodes;
 	// private boolean createFromNodes = true;
 
-	List<DataContainer> subDataContainers = null;
+	private List<DataContainer> subDataContainers = null;
+
 	private GLVisBricks receiver;
+
+	/**
+	 * Optional member for determining a specialized data configurer that will
+	 * be used in visbricks. If not specified, visbricks will use the {@link NumericalDataConfigurer}.
+	 */
+	private IBrickConfigurer dataConfigurer;
 
 	public AddGroupsToVisBricksEvent() {
 		// createFromNodes = false;
@@ -139,4 +149,18 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		this.receiver = receiver;
 	}
 
+	/**
+	 * @param dataConfigurer
+	 *            setter, see {@link #dataConfigurer}
+	 */
+	public void setDataConfigurer(IBrickConfigurer dataConfigurer) {
+		this.dataConfigurer = dataConfigurer;
+	}
+
+	/**
+	 * @return the dataConfigurer, see {@link #dataConfigurer}
+	 */
+	public IBrickConfigurer getDataConfigurer() {
+		return dataConfigurer;
+	}
 }

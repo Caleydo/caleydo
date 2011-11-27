@@ -5,12 +5,12 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Event for opening the dialog for creating small multiple pathway groups
+ * Event for opening the dialog for creating small multiple kaplan meier groups
  * 
  * @author Marc Streit
  * 
  */
-public class OpenCreateSmallPathwayMultiplesGroupDialogEvent extends AEvent {
+public class OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent extends AEvent {
 
 	/**
 	 * The base data container which contains the subgroups for which the small
@@ -29,7 +29,7 @@ public class OpenCreateSmallPathwayMultiplesGroupDialogEvent extends AEvent {
 	 *            the base data container which contains the subgroups for which
 	 *            the small multiples will be created.
 	 */
-	public OpenCreateSmallPathwayMultiplesGroupDialogEvent(
+	public OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent(
 			DataContainer dimensionGroupDataContainer,
 			DimensionPerspective dimensionPerspective) {
 

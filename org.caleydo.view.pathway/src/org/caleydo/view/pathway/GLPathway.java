@@ -93,7 +93,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private SelectionManager geneSelectionManager;
-	private SelectionManager sampleSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -105,8 +104,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	private Vec3f vecScaling;
 	private Vec3f vecTranslation;
-
-	int selectedSampleIndex = -1;
 
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
@@ -259,13 +256,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		// gLPathwayContentCreator.buildPathwayDisplayList(gl, this,
 		// iPathwayID);
-				
-		//FIXME: just for TCGA poster - remove and set it properly
-		try {
-			selectedSampleIndex = dataContainer.getRecordPerspective().getVirtualArray().getIndexList().get(0);			
-		}catch (Exception e) {
-			// TODO: handle exception
-		}
 	}
 
 	private void renderPathway(final GL2 gl, final PathwayGraph pathway) {
@@ -370,18 +360,19 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 							elementRep, item.getSelectionType());
 				}
 			}
-		} else if (selectionDelta.getIDType().getIDCategory() == sampleSelectionManager
-				.getIDType().getIDCategory()) {
-
-			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
-				if (item.getSelectionType() == SelectionType.MOUSE_OVER
-						&& !item.isRemove()) {
-					selectedSampleIndex = item.getID();
-					break;
-				}
-			}
-			setDisplayListDirty();
-		}
+		} 
+//		else if (selectionDelta.getIDType().getIDCategory() == sampleSelectionManager
+//				.getIDType().getIDCategory()) {
+//
+//			for (SelectionDeltaItem item : selectionDelta.getAllItems()) {
+//				if (item.getSelectionType() == SelectionType.MOUSE_OVER
+//						&& !item.isRemove()) {
+//					selectedSampleIndex = item.getID();
+//					break;
+//				}
+//			}
+//			setDisplayListDirty();
+//		}
 	}
 
 	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(
@@ -818,7 +809,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void initData() {
 		connectedElementRepresentationManager.clear(dataDomain.getRecordIDType());
-		selectedSampleIndex = -1;
 		super.initData();
 	}
 
@@ -928,10 +918,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
 				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType())) {
 			geneSelectionManager = dataDomain.getRecordSelectionManager();
-			sampleSelectionManager = dataDomain.getDimensionSelectionManager();
 		} else {
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
-			sampleSelectionManager = dataDomain.getRecordSelectionManager();
 		}
 		
 		//selectedSampleIndex = dataContainer.getDimensionPerspective().getVirtualArray().get(0);

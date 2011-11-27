@@ -7,8 +7,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
 
-import javax.net.ssl.SSLEngineResult.Status;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -42,7 +40,7 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Marc Streit
  * 
  */
-public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
+public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 
 	private DataContainer dataContainer;
 	private DimensionPerspective dimensionPerspective;
@@ -97,7 +95,7 @@ public class CreateSmallPathwayMultiplesGroupDialog extends TitleAreaDialog {
 		}
 	}
 
-	public CreateSmallPathwayMultiplesGroupDialog(Shell parentShell,
+	public CreatePathwaySmallMultiplesGroupDialog(Shell parentShell,
 			DataContainer dataContainer, DimensionPerspective dimensionPerspective) {
 
 		super(parentShell);

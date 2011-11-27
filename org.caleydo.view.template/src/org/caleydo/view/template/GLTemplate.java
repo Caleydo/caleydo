@@ -114,7 +114,6 @@ public class GLTemplate extends ATableBasedView {
 		gl.glVertex3f(1, 1, 0);
 		gl.glVertex3f(1, 0, 0);
 		gl.glEnd();
-		gl.glPopName();
 
 		checkForHits(gl);
 	}

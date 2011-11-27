@@ -14,22 +14,28 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
-import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
+import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
 
 /**
- * Configurer for bricks to display pathway data.
+ * Configurer for bricks to display survival data.
  * 
- * @author Partl
+ * @author Marc Streit
  * 
  */
-public class PathwayDataConfigurer implements IBrickConfigurer {
+public class KaplanMeierDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 4;
@@ -38,10 +44,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_SUMMARY);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -62,10 +68,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PATHWAY_VIEW_COMPACT);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW_COMPACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
 
 		layoutTemplate.showFooterBar(false);
 	}
@@ -73,10 +79,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMACT);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -94,10 +100,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PATHWAY_VIEW);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW);
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
@@ -114,10 +120,10 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PATHWAY_VIEW);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW);
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
 		toolBarElements.add(createCaptionLayout(layoutTemplate,
@@ -174,18 +180,18 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		LayoutRenderer pathwayRenderer = new ViewLayoutRenderer(pathway);
 
-		views.put(EContainedViewType.PATHWAY_VIEW, pathway);
-		containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW, pathwayRenderer);
+		views.put(EContainedViewType.KAPLAN_MEIER_VIEW, pathway);
+		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_VIEW, pathwayRenderer);
 
-		int numPathways = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-				.getDataContainer()).getPathways().size();
-
-		String label = "";
-		if (numPathways > 1)
-			label = "Pathways: " + numPathways;
-		else
-			label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-					.getDataContainer()).getPathways().get(0).getTitle();
+//		int numPathways = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+//				.getDataContainer()).getPathways().size();
+//
+		String label = "TODO";
+//		if (numPathways > 1)
+//			label = "Pathways: " + numPathways;
+//		else
+//			label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
+//					.getDataContainer()).getPathways().get(0).getTitle();
 
 		brick.setLabel(label);
 
@@ -195,7 +201,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 				pathwaysSummaryRenderer);
 
 		LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(
-				brick, "PWs: " + numPathways, PickingType.BRICK.name(), brick.getID());
+				brick, "TODO", PickingType.BRICK.name(), brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
 

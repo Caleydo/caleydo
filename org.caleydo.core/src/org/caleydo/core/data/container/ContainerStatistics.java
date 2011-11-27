@@ -45,7 +45,8 @@ public class ContainerStatistics {
 	 * array.
 	 */
 	private ArrayList<Average> averageRecords;
-	/** Same as {@link #averageRecords} for dimensionse */
+	
+	/** Same as {@link #averageRecords} for dimensions */
 	private ArrayList<Average> averageDimensions;
 
 	public ContainerStatistics(DataContainer container) {
@@ -64,7 +65,7 @@ public class ContainerStatistics {
 	private void calculateAverageValue() {
 		averageValue = 0;
 		int count = 0;
-		for (Integer contenID : container.getRecordPerspective().getVirtualArray()) {
+		for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
 
 			DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
 
@@ -75,7 +76,7 @@ public class ContainerStatistics {
 			for (Integer dimensionID : dimensionVA) {
 				float value =
 					container.getDataDomain().getTable()
-						.getFloat(DataRepresentation.NORMALIZED, contenID, dimensionID);
+						.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
 					count++;

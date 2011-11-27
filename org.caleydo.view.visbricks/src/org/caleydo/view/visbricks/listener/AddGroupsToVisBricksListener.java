@@ -19,7 +19,7 @@ public class AddGroupsToVisBricksListener extends AEventListener<GLVisBricks> {
 			AddGroupsToVisBricksEvent addGroupsToVisBricksEvent = (AddGroupsToVisBricksEvent) event;
 			if (addGroupsToVisBricksEvent.getReceiver() == handler) {
 				handler.addDimensionGroups(addGroupsToVisBricksEvent
-						.getDataContainers());
+						.getDataContainers(), addGroupsToVisBricksEvent.getDataConfigurer());
 			}
 		}
 	}
