@@ -33,10 +33,13 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 				int code1 = box.outcode(point1);
 				int code2 = box.outcode(point2);
 
-				boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes.get(point1) == node);
-				boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes.get(point2) == node);
+				boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
+						.get(point1) == node);
+				boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
+						.get(point2) == node);
 
-				if (((code1 & code2) != 0) || (code1 == 0 && !isPoint1OnBoundingBox)
+				if (((code1 & code2) != 0)
+						|| (code1 == 0 && !isPoint1OnBoundingBox)
 						|| (code2 == 0 && !isPoint2OnBoundingBox)
 						|| (isPoint1OnBoundingBox && isPoint2OnBoundingBox)) {
 					continue;
@@ -65,10 +68,14 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 					// box.getMaxY() + 0.001);
 					// corners[3] = new Point2D.Double(box.getMinX() - 0.001,
 					// box.getMaxY() + 0.001);
-					corners[0] = new Point2D.Double(box.getMinX(), box.getMinY());
-					corners[1] = new Point2D.Double(box.getMaxX(), box.getMinY());
-					corners[2] = new Point2D.Double(box.getMaxX(), box.getMaxY());
-					corners[3] = new Point2D.Double(box.getMinX(), box.getMaxY());
+					corners[0] = new Point2D.Double(box.getMinX(),
+							box.getMinY());
+					corners[1] = new Point2D.Double(box.getMaxX(),
+							box.getMinY());
+					corners[2] = new Point2D.Double(box.getMaxX(),
+							box.getMaxY());
+					corners[3] = new Point2D.Double(box.getMinX(),
+							box.getMaxY());
 
 					double minDistance = Double.MAX_VALUE;
 					Point2D bendPoint = null;
@@ -148,8 +155,10 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 					int code1 = box.outcode(point1);
 					int code2 = box.outcode(point2);
 
-					boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes.get(point1) == node);
-					boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes.get(point2) == node);
+					boolean isPoint1OnBoundingBox = (pointsOnBoundingBoxes
+							.get(point1) == node);
+					boolean isPoint2OnBoundingBox = (pointsOnBoundingBoxes
+							.get(point2) == node);
 
 					if ((code1 & code2) != 0) {
 						continue;
@@ -193,6 +202,23 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 				}
 			}
 		}
+
+		if (edgePoints.size() > 2) {
+			for (int i = 0; i < edgePoints.size() - 1; i++) {
+				Point2D point1 = edgePoints.get(i);
+				Point2D point2 = edgePoints.get(i + 1);
+
+				if (point1.distance(point2) < 0.3) {
+					if (i != edgePoints.size() - 2) {
+						edgePoints.remove(i + 1);
+						i--;
+					} else {
+						edgePoints.remove(i);
+					}
+					
+				}
+			}
+		}
 	}
 
 	private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
@@ -201,7 +227,8 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 		double k = 0;
 
 		if (point1.getX() != point2.getX()) {
-			k = (point2.getY() - point1.getY()) / (point2.getX() - point1.getX());
+			k = (point2.getY() - point1.getY())
+					/ (point2.getX() - point1.getX());
 		}
 
 		if ((code1 & Rectangle2D.OUT_LEFT) != 0) {

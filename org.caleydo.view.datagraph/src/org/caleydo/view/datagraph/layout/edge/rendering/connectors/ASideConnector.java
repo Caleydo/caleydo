@@ -15,9 +15,6 @@ public abstract class ASideConnector extends ANodeConnector {
 
 	protected final static int MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS = 20;
 
-	protected ViewFrustum viewFrustum;
-	protected IDataGraphNode otherNode;
-	protected Point2D bandConnectionPoint;
 	protected Pair<Point2D, Point2D> nodeAnchorPoints;
 
 	float vecXPoint1 = 0;
@@ -25,27 +22,29 @@ public abstract class ASideConnector extends ANodeConnector {
 	float vecXPoint2 = 0;
 	float vecYPoint2 = 0;
 
-	public ASideConnector(IDataGraphNode node, PixelGLConverter pixelGLconverter,
-			ConnectionBandRenderer connectionBandRenderer, ViewFrustum viewFrustum,
-			IDataGraphNode otherNode) {
-		super(node, pixelGLconverter, connectionBandRenderer);
+	public ASideConnector(IDataGraphNode node,
+			PixelGLConverter pixelGLconverter,
+			ConnectionBandRenderer connectionBandRenderer,
+			ViewFrustum viewFrustum, IDataGraphNode otherNode) {
+		super(node, pixelGLconverter, connectionBandRenderer, otherNode,
+				viewFrustum);
 		this.viewFrustum = viewFrustum;
 		this.otherNode = otherNode;
 
 	}
 
-	@Override
-	public Point2D getBandConnectionPoint() {
-		return bandConnectionPoint;
-	}
+	
 
-	protected void calcBandDependentParameters(boolean isEnd1, List<Vec3f> bandPoints) {
+	protected void calcBandDependentParameters(boolean isEnd1,
+			List<Vec3f> bandPoints) {
 		calcBandAnchorPoints(isEnd1, bandPoints);
 
 		if (isEnd1) {
 
-			vecXPoint1 = (float) bandAnchorPoint1.getX() - bandPoints.get(1).x();
-			vecYPoint1 = (float) bandAnchorPoint1.getY() - bandPoints.get(1).y();
+			vecXPoint1 = (float) bandAnchorPoint1.getX()
+					- bandPoints.get(1).x();
+			vecYPoint1 = (float) bandAnchorPoint1.getY()
+					- bandPoints.get(1).y();
 
 			vecXPoint2 = (float) bandAnchorPoint2.getX()
 					- bandPoints.get(bandPoints.size() - 2).x();

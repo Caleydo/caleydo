@@ -46,8 +46,8 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 	}
 
 	@Override
-	public void renderEdge(GL2 gl, ConnectionBandRenderer connectionBandRenderer,
-			boolean highlight) {
+	public void renderEdge(GL2 gl,
+			ConnectionBandRenderer connectionBandRenderer, boolean highlight) {
 		maxDataAmount = view.getMaxDataAmount();
 
 		List<DataContainer> commonDataContainersNode1 = new ArrayList<DataContainer>();
@@ -128,9 +128,9 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 
 		Pair<ANodeConnector, ANodeConnector> nodeConnectors = new Pair<ANodeConnector, ANodeConnector>();
 
-		determineNodeConnectors(nodeConnectors, leftNode, rightNode, bottomNode, topNode,
-				commonDataContainersNode1, commonDataContainersNode2,
-				connectionBandRenderer);
+		determineNodeConnectors(nodeConnectors, leftNode, rightNode,
+				bottomNode, topNode, commonDataContainersNode1,
+				commonDataContainersNode2, connectionBandRenderer);
 
 		ANodeConnector connector1 = nodeConnectors.getFirst();
 		ANodeConnector connector2 = nodeConnectors.getSecond();
@@ -157,8 +157,8 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		edgePoints.add(0, connector1.getBandHelperPoint());
 		edgePoints.add(connector2.getBandHelperPoint());
 
-		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(gl,
-				edgePoints, bandWidth, pixelGLConverter);
+		List<Vec3f> bandPoints = connectionBandRenderer.calcInterpolatedBand(
+				gl, edgePoints, bandWidth, pixelGLConverter);
 		renderBand(gl, connectionBandRenderer, bandPoints, bandColor, highlight);
 
 		connector1.render(gl, bandPoints, true, bandColor);
@@ -167,8 +167,9 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 	}
 
 	protected abstract void determineNodeConnectors(
-			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDataGraphNode leftNode,
-			IDataGraphNode rightNode, IDataGraphNode bottomNode, IDataGraphNode topNode,
+			Pair<ANodeConnector, ANodeConnector> nodeConnectors,
+			IDataGraphNode leftNode, IDataGraphNode rightNode,
+			IDataGraphNode bottomNode, IDataGraphNode topNode,
 			List<DataContainer> commonDataContainersNode1,
 			List<DataContainer> commonDataContainersNode2,
 			ConnectionBandRenderer connectionBandRenderer);
@@ -189,13 +190,15 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 				ANodeConnector currentConnector = null;
 
 				if (node1.isUpsideDown()) {
-					currentConnector = new TopBundleConnector(node1, pixelGLConverter,
-							connectionBandRenderer, commonDataContainersNode1,
-							minBandWidth, maxBandWidth, maxDataAmount);
+					currentConnector = new TopBundleConnector(node1,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode1, minBandWidth,
+							maxBandWidth, maxDataAmount, node2, viewFrustum);
 				} else {
-					currentConnector = new BottomBundleConnector(node1, pixelGLConverter,
-							connectionBandRenderer, commonDataContainersNode1,
-							minBandWidth, maxBandWidth, maxDataAmount);
+					currentConnector = new BottomBundleConnector(node1,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode1, minBandWidth,
+							maxBandWidth, maxDataAmount, node2, viewFrustum);
 				}
 
 				if (connector1.getNode() == node1) {
@@ -210,13 +213,15 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 				ANodeConnector currentConnector = null;
 
 				if (node2.isUpsideDown()) {
-					currentConnector = new TopBundleConnector(node2, pixelGLConverter,
-							connectionBandRenderer, commonDataContainersNode2,
-							minBandWidth, maxBandWidth, maxDataAmount);
+					currentConnector = new TopBundleConnector(node2,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode2, minBandWidth,
+							maxBandWidth, maxDataAmount, node1, viewFrustum);
 				} else {
-					currentConnector = new BottomBundleConnector(node2, pixelGLConverter,
-							connectionBandRenderer, commonDataContainersNode2,
-							minBandWidth, maxBandWidth, maxDataAmount);
+					currentConnector = new BottomBundleConnector(node2,
+							pixelGLConverter, connectionBandRenderer,
+							commonDataContainersNode2, minBandWidth,
+							maxBandWidth, maxDataAmount, node1, viewFrustum);
 				}
 
 				if (connector1.getNode() == node2) {
@@ -241,7 +246,8 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		return bandWidth;
 	}
 
-	protected void renderBand(GL2 gl, ConnectionBandRenderer connectionBandRenderer,
+	protected void renderBand(GL2 gl,
+			ConnectionBandRenderer connectionBandRenderer,
 			List<Vec3f> bandPoints, Color color, boolean highlightBand) {
 
 		gl.glColor4f(color.getRGB()[0], color.getRGB()[1], color.getRGB()[2],
@@ -250,15 +256,15 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		gl.glColor4fv(color.getRGBA(), 0);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < bandPoints.size() / 2; i++) {
-			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(), bandPoints.get(i)
-					.z());
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
+					bandPoints.get(i).z());
 		}
 		gl.glEnd();
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = bandPoints.size() / 2; i < bandPoints.size(); i++) {
-			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(), bandPoints.get(i)
-					.z());
+			gl.glVertex3f(bandPoints.get(i).x(), bandPoints.get(i).y(),
+					bandPoints.get(i).z());
 		}
 		gl.glEnd();
 
