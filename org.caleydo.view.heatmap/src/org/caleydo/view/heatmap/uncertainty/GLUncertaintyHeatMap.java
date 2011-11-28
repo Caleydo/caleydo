@@ -293,7 +293,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				if (groupList == null)
 					break;
 
-				ArrayList<Integer> embeddedRecords = dataContainer.getRecordPerspective()
+				List<Integer> embeddedRecords = dataContainer.getRecordPerspective()
 						.getVirtualArray().getIDsOfGroup(externalID);
 
 				PerspectiveInitializationData data = new PerspectiveInitializationData();

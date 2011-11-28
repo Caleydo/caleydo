@@ -1,6 +1,6 @@
 package org.caleydo.datadomain.pathway.contextmenu.container;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
@@ -10,7 +10,7 @@ import org.caleydo.datadomain.pathway.contextmenu.item.ShowPathwaysByGenesItem;
 
 public class GeneGroupContextMenuItemContainer extends AContextMenuItemContainer {
 
-	public void setData(IDType idType, ArrayList<Integer> genes) {
+	public void setData(IDType idType, List<Integer> genes) {
 
 		// AContextMenuItem menuItem = new BookmarkMenuItem("Bookmark Genes",
 		// idType, genes,

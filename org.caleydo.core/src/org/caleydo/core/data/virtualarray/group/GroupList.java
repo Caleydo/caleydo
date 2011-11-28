@@ -59,7 +59,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	 *            the index to the collection
 	 */
 	public void append(Group newElement) {
-		newElement.setGroupID(groups.size());
+		newElement.setGroupIndex(groups.size());
 		groups.add(newElement);
 	}
 
@@ -120,12 +120,12 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 	/**
 	 * Returns the group with the specified ID (also the index in the group list)
 	 * 
-	 * @param groupID
+	 * @param groupIndex
 	 *            the id of the group the index
 	 * @return the group with the id, at that index
 	 */
-	public Group get(int groupID) {
-		return groups.get(groupID);
+	public Group get(int groupIndex) {
+		return groups.get(groupIndex);
 	}
 
 	/**
@@ -624,7 +624,7 @@ public abstract class GroupList<ConcreteType extends GroupList<ConcreteType, VA,
 		int index = 0;
 		for (Group group : groups) {
 			group.setStartIndex(length);
-			group.setGroupID(index++);
+			group.setGroupIndex(index++);
 			length += group.getSize();
 		}
 	}

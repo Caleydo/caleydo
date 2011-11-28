@@ -436,7 +436,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * @return a Set of PathwayGraphs or null if no such mapping exists
 	 */
 	public HashMap<PathwayGraph, Integer> getPathwayGraphsWithOccurencesByGeneIDs(
-			GeneticDataDomain dataDomain, IDType idType, ArrayList<Integer> geneIDs) {
+			GeneticDataDomain dataDomain, IDType idType, List<Integer> geneIDs) {
 
 		IDType davidIDType = IDType.getIDType("DAVID");
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = new HashMap<PathwayGraph, Integer>();

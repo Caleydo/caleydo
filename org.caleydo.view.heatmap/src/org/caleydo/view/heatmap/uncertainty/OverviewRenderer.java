@@ -150,7 +150,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		clusterContainer.setDimensionPerspective(sourceContainer
 				.getDimensionPerspective());
 
-		ArrayList<Integer> embeddedRecords = sourceContainer.getRecordPerspective()
+		List<Integer> embeddedRecords = sourceContainer.getRecordPerspective()
 				.getVirtualArray().getIDsOfGroup(clusterIndex);
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();

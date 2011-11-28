@@ -97,14 +97,14 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 			GroupMatch groupMatch = new GroupMatch(leftBrick);
 			hashGroupID2GroupMatches.put(leftBrick.getDataContainer().getRecordGroup()
-					.getGroupID(), groupMatch);
+					.getGroupIndex(), groupMatch);
 
 			ElementLayout leftBrickElementLayout = leftBrick.getLayout();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getDataContainer()
 							.getRecordPerspective().getID(), leftBrick.getDataContainer()
-							.getRecordGroup().getGroupID());
+							.getRecordGroup().getGroupIndex());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
 			float leftSimilarityOffsetY = 0;
@@ -114,15 +114,15 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
 						glVisBricks.getNextConnectionBandID(), rightBrick);
 				groupMatch.addSubGroupMatch(rightBrick.getDataContainer()
-						.getRecordGroup().getGroupID(), subGroupMatch);
+						.getRecordGroup().getGroupIndex(), subGroupMatch);
 
 				calculateSubMatchSelections(
 						subGroupMatch,
 						leftGroupSimilarity.getSimilarityVAs(rightBrick
-								.getDataContainer().getRecordGroup().getGroupID()));
+								.getDataContainer().getRecordGroup().getGroupIndex()));
 
 				float leftSimilarityRatioY = leftSimilarities[rightBrick
-						.getDataContainer().getRecordGroup().getGroupID()];
+						.getDataContainer().getRecordGroup().getGroupIndex()];
 				leftSimilarityOffsetY += leftSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioLeft(leftSimilarityRatioY);
@@ -144,7 +144,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(rightDimGroup.getDataContainer()
 							.getRecordPerspective().getID(), rightBrick
-							.getDataContainer().getRecordGroup().getGroupID());
+							.getDataContainer().getRecordGroup().getGroupIndex());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();
 
@@ -153,12 +153,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			for (GLBrick leftBrick : leftBricks) {
 
 				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick
-						.getDataContainer().getRecordGroup().getGroupID());
+						.getDataContainer().getRecordGroup().getGroupIndex());
 				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
-						.getDataContainer().getRecordGroup().getGroupID());
+						.getDataContainer().getRecordGroup().getGroupIndex());
 
 				float rightSimilarityRatioY = rightSimilarities[leftBrick
-						.getDataContainer().getRecordGroup().getGroupID()];
+						.getDataContainer().getRecordGroup().getGroupIndex()];
 				rightSimilarityOffsetY += rightSimilarityRatioY;
 
 				subGroupMatch.setSimilarityRatioRight(rightSimilarityRatioY);

@@ -32,7 +32,7 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	/** Get the id of the group for which the similarities are contained */
 
 	public int getGroupID() {
-		return group.getGroupID();
+		return group.getGroupIndex();
 	}
 
 	/**
@@ -138,10 +138,10 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 			}
 
 			for (Group group2 : groups2) {
-				scores[group2.getGroupID()] += 1;
+				scores[group2.getGroupIndex()] += 1;
 
 				if (createSimilarityVAs) {
-					similarityVAs.get(group2.getGroupID()).append(id);
+					similarityVAs.get(group2.getGroupIndex()).append(id);
 				}
 			}
 		}

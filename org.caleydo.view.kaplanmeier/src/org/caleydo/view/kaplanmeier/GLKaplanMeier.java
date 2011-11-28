@@ -2,9 +2,12 @@ package org.caleydo.view.kaplanmeier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
@@ -115,14 +118,14 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
 				.getVirtualArray();
-		
+
 		for (Group group : recordVA.getGroupList()) {
-			ArrayList<Integer> recordIDs = recordVA.getIDsOfGroup(group.getID());
+			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 			renderSingleKaplanMeierCurve(gl, recordIDs);
 		}
 	}
-	
-	private void renderSingleKaplanMeierCurve(GL2 gl, ArrayList<Integer> recordIDs) {
+
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs) {
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
 

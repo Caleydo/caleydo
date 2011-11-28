@@ -53,7 +53,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		this.relationAnalyzer = visBricks.getRelationAnalyzer();
 		perspectiveID = brick.getDimensionGroup().getDataContainer()
 				.getRecordPerspective().getID();
-		groupID = brick.getDataContainer().getRecordGroup().getGroupID();
+		groupID = brick.getDataContainer().getRecordGroup().getGroupIndex();
 		this.visBricks = visBricks;
 		this.isLeft = isLeft;
 	}
@@ -127,7 +127,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		float yOffset = 0;
 		for (GLBrick brick : neighborBrickOrder) {
 
-			int foreignGroupID = brick.getDataContainer().getRecordGroup().getGroupID();
+			int foreignGroupID = brick.getDataContainer().getRecordGroup().getGroupIndex();
 			float similarity = similarities[foreignGroupID];
 			float height = similarity * y;
 			gl.glBegin(GL2.GL_POLYGON);

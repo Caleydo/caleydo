@@ -12,8 +12,7 @@ import org.caleydo.core.manager.GeneralManager;
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class Group
-	extends AUniqueObject {
+public class Group extends AUniqueObject {
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -22,12 +21,15 @@ public class Group
 	private int startIndex = 0;
 
 	/**
-	 * The id of the group, also the index of the group in the group list. For a unique ID of the group use
-	 * {@link #getID()}
+	 * The index of the group in the group list. For a unique ID of the group
+	 * use {@link #getID()}
 	 */
-	private Integer groupID = -1;
+	private Integer groupIndex = -1;
 
-	/** Flag specifying whether this group is considered collapsed (i.e. the elements are not shown) */
+	/**
+	 * Flag specifying whether this group is considered collapsed (i.e. the
+	 * elements are not shown)
+	 */
 	private boolean isCollapsed = false;
 
 	/** index of the representative element in the VA */
@@ -36,13 +38,14 @@ public class Group
 	private SelectionType selectionType = SelectionType.NORMAL;
 
 	/**
-	 * In case of groups determined in dendrogram view the corresponding node in the tree must be stored for
-	 * use in HHM
+	 * In case of groups determined in dendrogram view the corresponding node in
+	 * the tree must be stored for use in HHM
 	 */
 	private ClusterNode clusterNode;
 
 	/**
-	 * In some cases a perspective is created for a group, this is the corresponding ID.
+	 * In some cases a perspective is created for a group, this is the
+	 * corresponding ID.
 	 */
 	private String perspectiveID = null;
 
@@ -50,8 +53,6 @@ public class Group
 	 * array with mean expression values --> representative element
 	 */
 	private float[] meanValuesRepresentativeElement;
-
-	private int visibleNrGenes = 0;
 
 	/**
 	 * Default Constructor
@@ -73,8 +74,8 @@ public class Group
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
-	 *            the index of an element considered to be representative of this group (i.e. the most typical
-	 *            element)
+	 *            the index of an element considered to be representative of
+	 *            this group (i.e. the most typical element)
 	 */
 	public Group(int size, int representativeElementIndex) {
 		this.setSize(size);
@@ -87,10 +88,11 @@ public class Group
 	 * @param size
 	 *            the size of the group
 	 * @param representativeElementIndex
-	 *            the index of an element considered to be representative of this group (i.e. the most typical
-	 *            element)
+	 *            the index of an element considered to be representative of
+	 *            this group (i.e. the most typical element)
 	 * @param clusterNode
-	 *            a cluster node from which the pre-order of the leaves is this group
+	 *            a cluster node from which the pre-order of the leaves is this
+	 *            group
 	 */
 	public Group(int size, int representativeElementIndex, ClusterNode clusterNode) {
 		this.setSize(size);
@@ -107,18 +109,18 @@ public class Group
 	}
 
 	/**
-	 * @return the groupID, see {@link #groupID}
+	 * @return the groupIndex, see {@link #groupIndex}
 	 */
-	public Integer getGroupID() {
-		return groupID;
+	public Integer getGroupIndex() {
+		return groupIndex;
 	}
 
 	/**
-	 * @param groupID
-	 *            setter, see {@link #groupID}
+	 * @param groupIndex
+	 *            setter, see {@link #groupIndex}
 	 */
-	public void setGroupID(Integer groupID) {
-		this.groupID = groupID;
+	public void setGroupIndex(Integer groupIndex) {
+		this.groupIndex = groupIndex;
 	}
 
 	public int getStartIndex() {
@@ -159,8 +161,8 @@ public class Group
 	}
 
 	public void togglSelectionType() {
-		this.selectionType =
-			(selectionType == SelectionType.SELECTION) ? SelectionType.NORMAL : SelectionType.SELECTION;
+		this.selectionType = (selectionType == SelectionType.SELECTION) ? SelectionType.NORMAL
+				: SelectionType.SELECTION;
 	}
 
 	public void setClusterNode(ClusterNode clusterNode) {
@@ -181,7 +183,7 @@ public class Group
 
 	@Override
 	public String toString() {
-		return "Group: " + groupID + ", size: " + size;
+		return "Group: " + groupIndex + ", size: " + size;
 	}
 
 	public void setPerspectiveID(String perspectiveID) {

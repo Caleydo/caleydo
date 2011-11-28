@@ -3,6 +3,7 @@ package org.caleydo.datadomain.pathway.contextmenu.item;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
@@ -45,7 +46,7 @@ public class ShowPathwaysByGenesItem extends AContextMenuItem {
 	 *            the int code associated with a refseq
 	 */
 	public void setTableIDs(ATableBasedDataDomain dataDomain, IDType idType,
-			ArrayList<Integer> genes) {
+			List<Integer> genes) {
 
 		HashMap<PathwayGraph, Integer> hashPathwaysToOccurences = PathwayManager.get()
 				.getPathwayGraphsWithOccurencesByGeneIDs((GeneticDataDomain) dataDomain,
