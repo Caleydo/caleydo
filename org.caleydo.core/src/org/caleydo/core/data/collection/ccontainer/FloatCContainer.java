@@ -89,7 +89,7 @@ public class FloatCContainer
 
 	@Override
 	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax) {
-		if (fMin >= fMax)
+		if (dMin >= dMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
 		return new FloatCContainer(ConversionTools.normalize(fArContainer, (float) dMin, (float) dMax));

@@ -208,7 +208,7 @@ public class TCGATestDataXMLGenerator {
 
 	private static DataSetMetaInfo setUpClinicalData() {
 		DataSetMetaInfo clinicalData = new DataSetMetaInfo();
-		clinicalData.setName("Survival data");
+		clinicalData.setName("Clinical data");
 		clinicalData.setDataDomainType("org.caleydo.datadomain.generic");
 		clinicalData.setDataPath(CLINICAL);
 		clinicalData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
@@ -220,10 +220,10 @@ public class TCGATestDataXMLGenerator {
 		clinicalConfiguration.setRecordDenominationPlural("samples");
 		clinicalConfiguration.setRecordDenominationSingular("sample");
 
-		clinicalConfiguration.setDimensionIDCategory("SURVIVAL");
-		clinicalConfiguration.setHumanReadableDimensionIDType("Survival");
-		clinicalConfiguration.setDimensionDenominationPlural("Survival");
-		clinicalConfiguration.setDimensionDenominationSingular("Survival");
+		clinicalConfiguration.setDimensionIDCategory("CLINICAL");
+		clinicalConfiguration.setHumanReadableDimensionIDType("Clinical");
+		clinicalConfiguration.setDimensionDenominationPlural("Clinical");
+		clinicalConfiguration.setDimensionDenominationSingular("Clinical");
 
 		clinicalData.setDataDomainConfiguration(clinicalConfiguration);
 
@@ -245,17 +245,21 @@ public class TCGATestDataXMLGenerator {
 			BufferedReader reader = new BufferedReader(new FileReader(clinicalData.getDataPath()));
 
 			// read dimensions of data matrix
-			String dimensionString = reader.readLine();
+			//String dimensionString = reader.readLine();
 
 			// TODO: check if there are two numeric columns
-			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			//String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
 
 			StringBuffer inputPattern =
-				new StringBuffer("SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;ABORT;");
+				new StringBuffer("SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;SKIP;FLOAT;FLOAT;FLOAT;FLOAT;ABORT;");
 
 			// list to store column labels
 			List<String> columnLabels = new ArrayList<String>();
-			columnLabels.add("Survival");
+			columnLabels.add("Days to birth");
+			columnLabels.add("Days to death");
+			columnLabels.add("Days to last followup");
+			columnLabels.add("Days to tumor progression");
+			columnLabels.add("Days to tumor recurrence");
 
 			loadDataParameters.setInputPattern(inputPattern.toString());
 			loadDataParameters.setRowIDStringConverter(new TCGAIDStringConverter());

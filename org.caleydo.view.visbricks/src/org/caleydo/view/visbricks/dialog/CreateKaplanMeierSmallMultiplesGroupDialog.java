@@ -72,20 +72,19 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 
 		VirtualArray<?, ?, ?> va = null;
 		// if (dataContainer.getDataDomain().isColumnDimension())
-		va = dataContainer.getDataDomain().getTable()
-				.getDefaultDimensionPerspective().getVirtualArray();
+		va = dataContainer.getDataDomain().getTable().getDefaultDimensionPerspective()
+				.getVirtualArray();
 
 		data = new GridData();
 		data.grabExcessHorizontalSpace = true;
 		data.grabExcessVerticalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
-		possibleKaplanMeierDataTable = new Table(parent, SWT.CHECK | SWT.BORDER
-				| SWT.V_SCROLL | SWT.H_SCROLL);
+		possibleKaplanMeierDataTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
+				| SWT.H_SCROLL);
 
 		possibleKaplanMeierDataTable.setHeaderVisible(true);
-		TableColumn column1 = new TableColumn(possibleKaplanMeierDataTable,
-				SWT.CHECK);
+		TableColumn column1 = new TableColumn(possibleKaplanMeierDataTable, SWT.CHECK);
 		column1.setText("Data vector");
 
 		possibleKaplanMeierDataTable.setLayoutData(data);
@@ -106,27 +105,22 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 				continue;
 
 			ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
-			if (!(tableBasedDataDomain.getRecordIDCategory() == dataContainer
-					.getDataDomain().getRecordIDType().getIDCategory()))
+			if (!(tableBasedDataDomain.getRecordIDCategory() == dataContainer.getDataDomain()
+					.getRecordIDType().getIDCategory()))
 				continue;
 
-			if (tableBasedDataDomain.getTable()
-					.getDefaultDimensionPerspective().getVirtualArray().size() > 10)
+			if (tableBasedDataDomain.getTable().getDefaultDimensionPerspective()
+					.getVirtualArray().size() > 10)
 				continue;
 
 			for (Integer dimID : tableBasedDataDomain.getTable()
 					.getDefaultDimensionPerspective().getVirtualArray()) {
-				String dimLabel = tableBasedDataDomain
-						.getDimensionIDMappingManager().getID(
-								tableBasedDataDomain.getTable()
-										.getDefaultDimensionPerspective()
-										.getIdType(),
-								tableBasedDataDomain
-										.getHumanReadableDimensionIDType(),
-								dimID);
+				String dimLabel = tableBasedDataDomain.getDimensionIDMappingManager().getID(
+						tableBasedDataDomain.getTable().getDefaultDimensionPerspective()
+								.getIdType(),
+						tableBasedDataDomain.getHumanReadableDimensionIDType(), dimID);
 
-				TableItem item = new TableItem(possibleKaplanMeierDataTable,
-						SWT.NONE);
+				TableItem item = new TableItem(possibleKaplanMeierDataTable, SWT.NONE);
 				item.setText(0, dimLabel);
 
 				DimensionPerspective singleDimensionPerspective = new DimensionPerspective(
@@ -174,12 +168,10 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 				DimensionPerspective singleDimensionPerspective = (DimensionPerspective) item
 						.getData();
 
-				DataContainer kaplanMeierDimensionGroup = new DataContainer(
-						dataDomain, convertedRecordPerspective,
-						singleDimensionPerspective);
+				DataContainer kaplanMeierDimensionGroup = new DataContainer(dataDomain,
+						convertedRecordPerspective, singleDimensionPerspective);
 
-				kaplanMeierDimensionGroupDataList
-						.add(kaplanMeierDimensionGroup);
+				kaplanMeierDimensionGroupDataList.add(kaplanMeierDimensionGroup);
 			}
 		}
 

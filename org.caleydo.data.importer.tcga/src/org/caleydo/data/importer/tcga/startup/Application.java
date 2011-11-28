@@ -138,7 +138,6 @@ public class Application
 	protected void loadData(DataSetMetaInfo dataSetMetaInfo) throws FileNotFoundException, IOException {
 
 		LoadDataParameters loadDataParameters = dataSetMetaInfo.getLoadDataParameters();
-		loadDataParameters.setColumnHeaderStringConverter(new TCGAIDStringConverter());
 		dataDomain =
 			(ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
 				dataSetMetaInfo.getDataDomainType(), dataSetMetaInfo.getDataDomainConfiguration());

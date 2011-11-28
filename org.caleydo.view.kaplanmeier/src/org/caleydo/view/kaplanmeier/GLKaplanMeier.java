@@ -150,7 +150,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
 		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
 
-			while (dataVector.get(0) <= currentTimeBin) {
+			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
 				dataVector.remove(0);
 				remainingItemCount--;
 			}
