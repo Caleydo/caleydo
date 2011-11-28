@@ -1015,7 +1015,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			public void run() {
 				Shell shell = new Shell();
 				CreateKaplanMeierSmallMultiplesGroupDialog dialog = new CreateKaplanMeierSmallMultiplesGroupDialog(
-						shell, dimensionGroupDataContainer, dimensionPerspective);
+						shell, dimensionGroupDataContainer);
 				dialog.create();
 				dialog.setBlockOnOpen(true);
 

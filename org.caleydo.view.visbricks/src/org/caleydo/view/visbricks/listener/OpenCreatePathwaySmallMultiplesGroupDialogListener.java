@@ -21,7 +21,6 @@ public class OpenCreatePathwaySmallMultiplesGroupDialogListener
 	{
 		if (event instanceof OpenCreatePathwaySmallMultiplesGroupDialogEvent)
 		{
-
 			// Only the view on which the context menu was clicked should handle
 			// the event
 			if (((OpenCreatePathwaySmallMultiplesGroupDialogEvent) event)
