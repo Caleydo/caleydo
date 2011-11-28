@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.xml.bind.annotation.XmlElementWrapper;
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -43,8 +43,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	@XmlTransient
 	protected IDType idType;
 
+	@XmlElement
 	ArrayList<Integer> virtualArrayList;
-	boolean useHashBacking = true;
 	IDMap idMap;
 
 	GroupType groupList = null;
@@ -408,9 +408,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	/**
-	 * Returns the group list. If no group list exits null will be returned.
+	 * Returns the group list or null if no group list exits
 	 * 
-	 * @param
 	 * @return the group list
 	 */
 	public GroupType getGroupList() {
@@ -435,12 +434,13 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	/**
-	 * Returns an ArrayList with all VAIDs of one group. The group is identified
-	 * through its groupIndex
+	 * Returns a List of all VAIDs of one group. The returned list is backed by
+	 * this list, so non-structural changes in the returned list are reflected
+	 * in this list, and vice-versa.
 	 * 
 	 * @param groupIndex
-	 *            the groupIndex which can be retrieved using
-	 *            {@link Group#getGroupIndex()}
+	 *            the index of the group in the groupList. Can be retrieved
+	 *            using {@link Group#getGroupIndex()}
 	 * @return ArrayList<Integer> containing all IDs that belong to this group,
 	 *         or null if no groupList is available
 	 */
@@ -455,15 +455,9 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		}
 		Group group = groupList.get(groupIndex);
 
-		List<Integer> vaIDs = new ArrayList<Integer>();
+		List<Integer> vaIDs = virtualArrayList.subList(group.getStartIndex(),
+				group.getStartIndex() + group.getSize());
 
-		vaIDs = virtualArrayList.subList(group.getStartIndex(), group.getStartIndex()
-				+ group.getSize());
-		// for (int i = group.getStartIndex(); i < group.getStartIndex() +
-		// group.getSize(); i++) {
-		// vaIDs.add(get(i));
-		// }
-		//
 		return vaIDs;
 	}
 
@@ -510,27 +504,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		this.uniqueID = iUniqueID;
 	}
 
-	/** TODO: remove this, this violates encapsulation */
-	@XmlElementWrapper
-	@Deprecated
-	public ArrayList<Integer> getVirtualArray() {
-		return virtualArrayList;
-	}
-
-	/** TODO: remove this, this violates encapsulation */
-	@Deprecated
-	public void setVirtualArray(ArrayList<Integer> virtualArray) {
-		this.virtualArrayList = virtualArray;
-		idMap.virtualArrayList = virtualArray;
-		idMap.setDirty();
-	}
-
 	@Override
 	public String toString() {
-
-		boolean hasGrouping = false;
-		if (groupList != null)
-			hasGrouping = true;
 
 		return "ID: " + getID() + ", size: " + virtualArrayList.size()
 				+ ", Nr. ouf Groups: " + groupList.size();
@@ -554,10 +529,5 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			sampleElementIndex += node.getNrLeaves();
 		}
 		return groupList;
-
-	}
-
-	public List<Integer> getSubList(int fromIndex, int toIndex) {
-		return virtualArrayList.subList(fromIndex, toIndex);
 	}
 }

@@ -959,9 +959,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 					if (createDimensionPerspective) {
 						dimensionPerspective = new DimensionPerspective(dataDomain);
-						List<Integer> indices = dimensionVA.getSubList(
-								dimensionGroup.getStartIndex(),
-								dimensionGroup.getEndIndex() + 1);
+						List<Integer> indices = dimensionVA.getIDsOfGroup(dimensionGroup
+								.getGroupIndex());
 						PerspectiveInitializationData data = new PerspectiveInitializationData();
 						data.setData(indices);
 						dimensionPerspective.init(data);
@@ -981,9 +980,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 					if (createRecordPerspective) {
 						recordPerspective = new RecordPerspective(dataDomain);
-						List<Integer> indices = recordVA.getSubList(
-								recordGroup.getStartIndex(),
-								recordGroup.getEndIndex() + 1);
+						List<Integer> indices = recordVA.getIDsOfGroup(recordGroup
+								.getGroupIndex());
 						PerspectiveInitializationData data = new PerspectiveInitializationData();
 						data.setData(indices);
 						recordPerspective.init(data);

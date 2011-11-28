@@ -288,9 +288,7 @@ public class PathwayDimensionGroupData extends DataContainer {
 
 		for (Group group : groupList) {
 
-			List<Integer> indices = recordVA.getVirtualArray().subList(
-					group.getStartIndex(), group.getEndIndex() + 1);
-
+			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
