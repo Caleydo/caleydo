@@ -36,7 +36,7 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 
-		SerializationManager.get().registerSerializableType(GeneticDataDomain.class);
+		SerializationManager.get().registerSerializableTypes(GeneticDataDomain.class);
 	}
 
 	/*

@@ -120,6 +120,17 @@ public class SearchViewMediator {
 
 			}
 		}
+		if (dataDomain.getLabel().contains("Mutation")) {
+			for (String recordPerspectiveID : dataDomain.getTable()
+					.getRecordPerspectiveIDs()) {
+				RecordPerspective recordPerspective = dataDomain.getTable()
+						.getRecordPerspective(recordPerspectiveID);
+
+				binRecords(2, id, recordPerspective, dataDomain, label);
+				break;
+
+			}
+		}
 
 	}
 
@@ -137,8 +148,8 @@ public class SearchViewMediator {
 					dimensionID);
 			// this works because value is normalized
 			int bin = (int) (value * nrBins);
-			if (bin == 5)
-				bin = 4;
+			if (bin == nrBins)
+				bin = nrBins-1;
 			bins.get(bin).add(recordID);
 		}
 

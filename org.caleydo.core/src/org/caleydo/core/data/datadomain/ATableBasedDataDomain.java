@@ -53,7 +53,7 @@ import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListene
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
@@ -353,7 +353,7 @@ public abstract class ATableBasedDataDomain
 			container = new DataContainer(this, recordPerspective, dimensionPerspective);
 
 			dataContainers.put(createKey(recordPerspectiveID, dimensionPerspectiveID), container);
-			DimensionGroupsChangedEvent event = new DimensionGroupsChangedEvent(this);
+			DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}

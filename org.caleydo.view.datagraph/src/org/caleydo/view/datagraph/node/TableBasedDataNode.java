@@ -186,8 +186,8 @@ public class TableBasedDataNode extends ADataNode {
 				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID,
 				EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 
-		if (dataDomain.getRecordPerspectiveIDs().size() <= 1
-				&& dataDomain.getDimensionPerspectiveIDs().size() <= 1) {
+		if (dataDomain.getRecordPerspectiveIDs().size() < 1
+				&& dataDomain.getDimensionPerspectiveIDs().size() < 1) {
 			toggleDataContainerButton.setVisible(false);
 		}
 		toggleDataContainerButtonRenderer = new ButtonRenderer(toggleDataContainerButton,

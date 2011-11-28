@@ -34,7 +34,7 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
 import org.caleydo.core.event.SetMinViewSizeEvent;
-import org.caleydo.core.event.data.DimensionGroupsChangedEvent;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.event.view.NewViewEvent;
@@ -557,7 +557,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		dimensionGroupsChangedEventListener = new DimensionGroupsChangedEventListener();
 		dimensionGroupsChangedEventListener.setHandler(this);
-		eventPublisher.addListener(DimensionGroupsChangedEvent.class,
+		eventPublisher.addListener(DataDomainUpdateEvent.class,
 				dimensionGroupsChangedEventListener);
 
 		newDataDomainEventListener = new NewDataDomainEventListener();

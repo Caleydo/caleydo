@@ -42,8 +42,7 @@ public class SerializationManager {
 			serializableTypes.add(BasicInformation.class);
 
 			createNewProjectContext();
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -53,8 +52,7 @@ public class SerializationManager {
 			Class<?>[] projectClasses = new Class<?>[serializableTypes.size()];
 			serializableTypes.toArray(projectClasses);
 			projectContext = JAXBContext.newInstance(projectClasses);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -87,8 +85,10 @@ public class SerializationManager {
 		return projectContext;
 	}
 
-	public void registerSerializableType(Class<?> serializableClass) {
-		serializableTypes.add(serializableClass);
+	public void registerSerializableTypes(Class<?>... serializableClasses) {
+		for (Class<?> serializableClass : serializableClasses) {
+			serializableTypes.add(serializableClass);
+		}
 		createNewProjectContext();
 	}
 
@@ -100,7 +100,8 @@ public class SerializationManager {
 	public static Collection<Class<? extends AEvent>> getSerializeableEventTypes() {
 		Collection<Class<? extends AEvent>> eventTypes = new ArrayList<Class<? extends AEvent>>();
 
-		// FIXME: check if the list of individual events needs to be provided here
+		// FIXME: check if the list of individual events needs to be provided
+		// here
 		eventTypes.add(AEvent.class);
 
 		return eventTypes;

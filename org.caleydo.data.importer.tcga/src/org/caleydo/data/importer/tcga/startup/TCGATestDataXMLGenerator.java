@@ -15,7 +15,8 @@ import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
 /**
- * Generator class that writes the loading information of a series of TCGA data sets to an XML file.
+ * Generator class that writes the loading information of a series of TCGA data
+ * sets to an XML file.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -23,46 +24,64 @@ import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 public class TCGATestDataXMLGenerator {
 
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
-		+ System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
+			+ System.getProperty("file.separator")
+			+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
 
-	public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct";
-	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
+	public static final String MRNA = DROPBOX_GBM_FOLDER
+			+ "mrna_cnmf/outputprefix.expclu.gct";
+	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER
+			+ "mrna_cnmf/cnmf.membership.txt";
 
-	public static final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct";
-	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt";
+	public static final String MIRNA = DROPBOX_GBM_FOLDER
+			+ "mir_cnmf/cnmf.normalized.gct";
+	public static final String MIRNA_GROUPING = DROPBOX_GBM_FOLDER
+			+ "mir_cnmf/cnmf.membership.txt";
 
-	public static final String METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct";
+	public static final String METHYLATION = DROPBOX_GBM_FOLDER
+			+ "methylation_cnmf/cnmf.normalized.gct";
 	public static final String METHYLATION_GROUPING = DROPBOX_GBM_FOLDER
-		+ "methylation_cnmf/cnmf.membership.txt";
+			+ "methylation_cnmf/cnmf.membership.txt";
 
-	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt";
+	public static final String COPY_NUMBER = DROPBOX_GBM_FOLDER
+			+ "copy_number/all_thresholded_by_genes.txt";
 
 	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER
-		+ "ground_truth/2011_exp_assignments.txt";
+			+ "ground_truth/2011_exp_assignments.txt";
 
-	public static final String CLINICAL = DROPBOX_GBM_FOLDER + "clinical/clinical_patient_public_GBM.txt";
+	public static final String CLINICAL = DROPBOX_GBM_FOLDER
+			+ "clinical/clinical_patient_public_GBM.txt";
+
+	public static final String MUTATION = DROPBOX_GBM_FOLDER
+			+ "mutation/mut_patient_centric_table_public_transposed_01.txt";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
-		+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
+			+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
 
 	/*
-	 * public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home") +
-	 * System.getProperty("file.separator") + "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/";
-	 * public static final String MRNA = DROPBOX_GBM_FOLDER + "mrna_cnmf/outputprefix.expclu.gct"; public
-	 * static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt"; public static
-	 * final String MIRNA = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.normalized.gct"; public static final String
-	 * MIRNA_GROUPING = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt"; public static final String
-	 * METHYLATION = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.normalized.gct"; public static final String
-	 * METHYLATION_GROUPING = DROPBOX_GBM_FOLDER + "methylation_cnmf/cnmf.membership.txt"; public static final
-	 * String COPY_NUMBER = DROPBOX_GBM_FOLDER + "copy_number/all_thresholded_by_genes.txt"; public static
-	 * final String OUTPUT_FILE_PATH = System.getProperty("user.home") + System.getProperty("file.separator")
-	 * + "tcga_brca_data.xml";
+	 * public static final String DROPBOX_GBM_FOLDER =
+	 * System.getProperty("user.home") + System.getProperty("file.separator") +
+	 * "Dropbox/TCGA GDAC/Omics Integration/testdata/20111026/brca/"; public
+	 * static final String MRNA = DROPBOX_GBM_FOLDER +
+	 * "mrna_cnmf/outputprefix.expclu.gct"; public static final String
+	 * MRNA_GROUPING = DROPBOX_GBM_FOLDER + "mrna_cnmf/cnmf.membership.txt";
+	 * public static final String MIRNA = DROPBOX_GBM_FOLDER +
+	 * "mir_cnmf/cnmf.normalized.gct"; public static final String MIRNA_GROUPING
+	 * = DROPBOX_GBM_FOLDER + "mir_cnmf/cnmf.membership.txt"; public static
+	 * final String METHYLATION = DROPBOX_GBM_FOLDER +
+	 * "methylation_cnmf/cnmf.normalized.gct"; public static final String
+	 * METHYLATION_GROUPING = DROPBOX_GBM_FOLDER +
+	 * "methylation_cnmf/cnmf.membership.txt"; public static final String
+	 * COPY_NUMBER = DROPBOX_GBM_FOLDER +
+	 * "copy_number/all_thresholded_by_genes.txt"; public static final String
+	 * OUTPUT_FILE_PATH = System.getProperty("user.home") +
+	 * System.getProperty("file.separator") + "tcga_brca_data.xml";
 	 */
 
 	public static void main(String[] args) {
 
 		ArrayList<DataSetMetaInfo> dataSetMetaInfoList = new ArrayList<DataSetMetaInfo>();
 		dataSetMetaInfoList.add(setUpMRNAData());
+		dataSetMetaInfoList.add(setUpMutationData());
 		dataSetMetaInfoList.add(setUpMiRNAData());
 		dataSetMetaInfoList.add(setUpMethylationData());
 		dataSetMetaInfoList.add(setUpCopyNumberData());
@@ -73,20 +92,20 @@ public class TCGATestDataXMLGenerator {
 
 		JAXBContext context = null;
 		try {
-			Class<?>[] serializableClasses = new Class<?>[3];
+			Class<?>[] serializableClasses = new Class<?>[4];
 			serializableClasses[0] = DataSetMetaInfo.class;
 			serializableClasses[1] = DataSetMetaInfoCollection.class;
 			serializableClasses[2] = TCGAIDStringConverter.class;
+			serializableClasses[3] = DashToPointStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
 
 			Marshaller marshaller;
 			marshaller = context.createMarshaller();
 			marshaller.marshal(dataTypeSetCollection, new File(OUTPUT_FILE_PATH));
 
-			System.out.println("Created configuration for " + dataSetMetaInfoList.size() + " datasets: "
-				+ dataSetMetaInfoList);
-		}
-		catch (JAXBException ex) {
+			System.out.println("Created configuration for " + dataSetMetaInfoList.size()
+					+ " datasets: " + dataSetMetaInfoList);
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -241,17 +260,20 @@ public class TCGATestDataXMLGenerator {
 		try {
 			loadDataParameters.setStartParseFileAtLine(1);
 
-			// open file to read second line to determine number of rows and columns
-			BufferedReader reader = new BufferedReader(new FileReader(clinicalData.getDataPath()));
+			// open file to read second line to determine number of rows and
+			// columns
+			BufferedReader reader = new BufferedReader(new FileReader(
+					clinicalData.getDataPath()));
 
 			// read dimensions of data matrix
-			//String dimensionString = reader.readLine();
+			// String dimensionString = reader.readLine();
 
 			// TODO: check if there are two numeric columns
-			//String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			// String[] dimensions =
+			// dimensionString.split(loadDataParameters.getDelimiter());
 
-			StringBuffer inputPattern =
-				new StringBuffer("SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;SKIP;FLOAT;FLOAT;FLOAT;FLOAT;ABORT;");
+			StringBuffer inputPattern = new StringBuffer(
+					"SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;SKIP;FLOAT;FLOAT;FLOAT;FLOAT;ABORT;");
 
 			// list to store column labels
 			List<String> columnLabels = new ArrayList<String>();
@@ -266,8 +288,7 @@ public class TCGATestDataXMLGenerator {
 			loadDataParameters.setColumnLabels(columnLabels);
 			clinicalData.setLoadDataParameters(loadDataParameters);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 
@@ -276,7 +297,82 @@ public class TCGATestDataXMLGenerator {
 		return clinicalData;
 	}
 
-	private static LoadDataParameters setUpLoadDataParameters(DataSetMetaInfo dataSetMetaInfo) {
+	private static DataSetMetaInfo setUpMutationData() {
+		DataSetMetaInfo mutationDataMetaInfo = new DataSetMetaInfo();
+		mutationDataMetaInfo.setName("Mutation Status");
+		mutationDataMetaInfo.setDataDomainType("org.caleydo.datadomain.genetic");
+		mutationDataMetaInfo.setDataPath(MUTATION);
+		mutationDataMetaInfo.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+
+		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
+		dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
+
+		dataConfiguration.setRecordIDCategory("SAMPLE");
+		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
+		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
+		dataConfiguration.setRecordDenominationPlural("samples");
+		dataConfiguration.setRecordDenominationSingular("sample");
+
+		dataConfiguration.setDimensionIDCategory("GENE");
+		dataConfiguration.setPrimaryDimensionMappingType("DAVID");
+		dataConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
+		dataConfiguration.setDimensionDenominationPlural("genes");
+		dataConfiguration.setDimensionDenominationSingular("gene");
+
+		mutationDataMetaInfo.setDataDomainConfiguration(dataConfiguration);
+
+		try {
+			LoadDataParameters loadDataParameters = setUpLoadDataParameters(mutationDataMetaInfo);
+
+			loadDataParameters.setStartParseFileAtLine(3);
+
+			// open file to read second line to determine number of rows and
+			// columns
+			BufferedReader reader;
+
+			reader = new BufferedReader(
+					new FileReader(mutationDataMetaInfo.getDataPath()));
+
+			// read dimensions of data matrix
+			String dimensionString = reader.readLine();
+
+			// TODO: check if there are two numeric columns
+			String[] dimensionHeadings = dimensionString.split(loadDataParameters
+					.getDelimiter());
+
+			int columns = new Integer(dimensionHeadings.length);
+
+			// loadDataParameters.setMinDefined(true);
+			// loadDataParameters.setMin(min);
+			// loadDataParameters.setMaxDefined(true);
+			// loadDataParameters.setMax(max);
+
+			StringBuffer inputPattern = new StringBuffer("SKIP;");
+
+			// list to store column labels
+			List<String> columnLabels = new ArrayList<String>();
+
+			for (int i = 0; i < columns - 1; ++i) {
+				inputPattern.append("FLOAT;");
+				columnLabels.add(dimensionHeadings[i + 1]);
+			}
+
+			loadDataParameters.setInputPattern(inputPattern.toString());
+			loadDataParameters
+					.setColumnHeaderStringConverter(new DashToPointStringConverter());
+			loadDataParameters.setColumnLabels(columnLabels);
+
+			mutationDataMetaInfo.setLoadDataParameters(loadDataParameters);
+
+		} catch (Exception e) {
+			throw new IllegalStateException(e);
+		}
+
+		return mutationDataMetaInfo;
+	}
+
+	private static LoadDataParameters setUpLoadDataParameters(
+			DataSetMetaInfo dataSetMetaInfo) {
 
 		String delimiter = "\t";
 
@@ -302,7 +398,8 @@ public class TCGATestDataXMLGenerator {
 
 			loadDataParameters.setStartParseFileAtLine(3);
 
-			// open file to read second line to determine number of rows and columns
+			// open file to read second line to determine number of rows and
+			// columns
 			BufferedReader reader;
 
 			reader = new BufferedReader(new FileReader(dataSetMetaInfo.getDataPath()));
@@ -312,14 +409,16 @@ public class TCGATestDataXMLGenerator {
 			String dimensionString = reader.readLine();
 
 			// TODO: check if there are two numeric columns
-			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			String[] dimensions = dimensionString
+					.split(loadDataParameters.getDelimiter());
 
 			int columns = new Integer(dimensions[1]);
 
 			// read column headers
 			String headerString = reader.readLine();
 
-			// TODO: check if there are as many column headers as there are columns (+ 2)
+			// TODO: check if there are as many column headers as there are
+			// columns (+ 2)
 			String[] headers = headerString.split(loadDataParameters.getDelimiter());
 
 			// loadDataParameters.setMinDefined(true);
@@ -338,13 +437,13 @@ public class TCGATestDataXMLGenerator {
 			}
 
 			loadDataParameters.setInputPattern(inputPattern.toString());
-			loadDataParameters.setColumnHeaderStringConverter(new TCGAIDStringConverter());
+			loadDataParameters
+					.setColumnHeaderStringConverter(new TCGAIDStringConverter());
 			loadDataParameters.setColumnLabels(columnLabels);
 
 			dataSetMetaInfo.setLoadDataParameters(loadDataParameters);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}
@@ -355,22 +454,27 @@ public class TCGATestDataXMLGenerator {
 
 			loadDataParameters.setStartParseFileAtLine(1);
 
-			// open file to read second line to determine number of rows and columns
-			BufferedReader reader = new BufferedReader(new FileReader(dataSetMetaInfo.getDataPath()));
+			// open file to read second line to determine number of rows and
+			// columns
+			BufferedReader reader = new BufferedReader(new FileReader(
+					dataSetMetaInfo.getDataPath()));
 
 			// read dimensions of data matrix
 			String dimensionString = reader.readLine();
 
 			// TODO: check if there are two numeric columns
-			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			String[] dimensions = dimensionString
+					.split(loadDataParameters.getDelimiter());
 
 			int columns = dimensions.length - 3;// new Integer(dimensions[1]);
 
 			// read column headers
 			// String headerString = reader.readLine();
 
-			// TODO: check if there are as many column headers as there are columns (+ 2)
-			// String[] headers = headerString.split(loadDataParameters.getDelimiter());
+			// TODO: check if there are as many column headers as there are
+			// columns (+ 2)
+			// String[] headers =
+			// headerString.split(loadDataParameters.getDelimiter());
 
 			// loadDataParameters.setMinDefined(true);
 			// loadDataParameters.setMin(min);
@@ -388,12 +492,12 @@ public class TCGATestDataXMLGenerator {
 			}
 
 			loadDataParameters.setInputPattern(inputPattern.toString());
-			loadDataParameters.setColumnHeaderStringConverter(new TCGAIDStringConverter());
+			loadDataParameters
+					.setColumnHeaderStringConverter(new TCGAIDStringConverter());
 			loadDataParameters.setColumnLabels(columnLabels);
 			dataSetMetaInfo.setLoadDataParameters(loadDataParameters);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 	}

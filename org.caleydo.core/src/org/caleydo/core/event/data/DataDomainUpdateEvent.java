@@ -8,12 +8,12 @@ import org.caleydo.core.event.AEvent;
  * 
  * @author Partl
  */
-public class DimensionGroupsChangedEvent
+public class DataDomainUpdateEvent
 	extends AEvent {
 
 	private IDataDomain dataDomain;
 
-	public DimensionGroupsChangedEvent(IDataDomain dataDomain) {
+	public DataDomainUpdateEvent(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

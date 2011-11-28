@@ -32,7 +32,7 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 
-		SerializationManager.get().registerSerializableType(ClinicalDataDomain.class);
+		SerializationManager.get().registerSerializableTypes(ClinicalDataDomain.class);
 	}
 
 	/*

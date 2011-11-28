@@ -23,6 +23,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -373,6 +374,10 @@ public class DataTable
 					"The default record perspective is already set. It is not possible to have multiple defaults.");
 			defaultRecordPerspective = recordPerspective;
 		}
+		
+		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	/**
@@ -417,6 +422,9 @@ public class DataTable
 					"The default dimension perspective is already set. It is not possible to have multiple defaults.");
 			defaultDimensionPerspective = dimensionPerspective;
 		}
+		DataDomainUpdateEvent event = new DataDomainUpdateEvent(dataDomain);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 
 	/**
