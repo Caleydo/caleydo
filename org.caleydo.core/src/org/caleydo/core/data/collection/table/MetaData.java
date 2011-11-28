@@ -8,14 +8,15 @@ import org.caleydo.core.data.collection.dimension.NominalColumn;
 import org.caleydo.core.data.collection.dimension.NumericalColumn;
 
 /**
- * This class encapsulates all metadata related operations for DataTables. Examples are size, depth and
- * histograms.
+ * This class encapsulates all metadata related operations for DataTables.
+ * Examples are size, depth and histograms.
  * 
  * @author Alexander Lex
  */
 public class MetaData {
 
 	private DataTable table;
+	protected int nrColumns = 0;
 	protected int depth = 0;
 
 	private boolean bArtificialMin = false;
@@ -34,28 +35,45 @@ public class MetaData {
 	 * @return
 	 */
 	public int size() {
-		return table.hashColumns.size();
+		if (table.isColumnDimension)
+			return getNrRows();
+		else
+			return getNrColumns();
 	}
 
 	/**
-	 * Get the depth of the set, which is the length of the dimensions (i.e. the number of content elements)
+	 * Get the depth of the set, which is the number of records, the length of
+	 * the dimensions
 	 * 
 	 * @return the number of elements in the dimensions contained in the list
 	 */
 	public int depth() {
-		if (depth == 0) {
+		if (table.isColumnDimension)
+			return getNrColumns();
+		else
+			return getNrRows();
+	}
+
+	/** Get the number of columns in the table */
+	private int getNrColumns() {
+		if (nrColumns == 0) {
 			for (AColumn dimension : table.hashColumns.values()) {
-				if (depth == 0)
-					depth = dimension.size();
+				if (nrColumns == 0)
+					nrColumns = dimension.size();
 				else {
-					if (depth != dimension.size())
+					if (nrColumns != dimension.size())
 						throw new IllegalArgumentException(
-							"All dimensions in a set must be of the same length");
+								"All dimensions in a set must be of the same length");
 				}
 
 			}
 		}
-		return depth;
+		return nrColumns;
+	}
+
+	/** Get the number of rows in the table */
+	private int getNrRows() {
+		return table.hashColumns.size();
 	}
 
 	/**
@@ -87,8 +105,9 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial minimum for the datatable. All elements smaller than that are clipped to this value
-	 * in the representation. This only affects the normalization, does not alter the raw data
+	 * Set an artificial minimum for the datatable. All elements smaller than
+	 * that are clipped to this value in the representation. This only affects
+	 * the normalization, does not alter the raw data
 	 */
 	void setMin(double dMin) {
 		bArtificialMin = true;
@@ -96,8 +115,9 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial maximum for the datatable. All elements smaller than that are clipped to this value
-	 * in the representation. This only affects the normalization, does not alter the raw data
+	 * Set an artificial maximum for the datatable. All elements smaller than
+	 * that are clipped to this value in the representation. This only affects
+	 * the normalization, does not alter the raw data
 	 */
 	void setMax(double dMax) {
 		bArtificialMax = true;
@@ -111,7 +131,8 @@ public class MetaData {
 	 *            Data representation the minimum value shall be returned in.
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
-	 * @return The absolute minimum value in the set in the specified data representation.
+	 * @return The absolute minimum value in the set in the specified data
+	 *         representation.
 	 */
 	public double getMinAs(ExternalDataRepresentation dataRepresentation) {
 		if (min == Double.MAX_VALUE) {
@@ -131,7 +152,8 @@ public class MetaData {
 	 *            Data representation the maximum value shall be returned in.
 	 * @throws OperationNotSupportedException
 	 *             when executed on nominal data
-	 * @return The absolute maximum value in the set in the specified data representation.
+	 * @return The absolute maximum value in the set in the specified data
+	 *         representation.
 	 */
 	public double getMaxAs(ExternalDataRepresentation dataRepresentation) {
 		if (max == Double.MIN_VALUE) {
@@ -151,24 +173,28 @@ public class MetaData {
 	 *            Raw value that shall be converted
 	 * @param dataRepresentation
 	 *            Data representation the raw value shall be converted to.
-	 * @return Value in the specified data representation converted from the raw value.
+	 * @return Value in the specified data representation converted from the raw
+	 *         value.
 	 */
-	private double getDataRepFromRaw(double dRaw, ExternalDataRepresentation dataRepresentation) {
+	private double getDataRepFromRaw(double dRaw,
+			ExternalDataRepresentation dataRepresentation) {
 		switch (dataRepresentation) {
-			case NORMAL:
-				return dRaw;
-			case LOG2:
-				return Math.log(dRaw) / Math.log(2);
-			case LOG10:
-				return Math.log10(dRaw);
-			default:
-				throw new IllegalStateException("Conversion to data rep not implemented for data rep"
-					+ dataRepresentation);
+		case NORMAL:
+			return dRaw;
+		case LOG2:
+			return Math.log(dRaw) / Math.log(2);
+		case LOG10:
+			return Math.log10(dRaw);
+		default:
+			throw new IllegalStateException(
+					"Conversion to data rep not implemented for data rep"
+							+ dataRepresentation);
 		}
 	}
 
 	/**
-	 * Converts the specified value into raw using the current external data representation.
+	 * Converts the specified value into raw using the current external data
+	 * representation.
 	 * 
 	 * @param dNumber
 	 *            Value in the current external data representation.
@@ -176,15 +202,16 @@ public class MetaData {
 	 */
 	private double getRawFromExternalDataRep(double dNumber) {
 		switch (table.externalDataRep) {
-			case NORMAL:
-				return dNumber;
-			case LOG2:
-				return Math.pow(2, dNumber);
-			case LOG10:
-				return Math.pow(10, dNumber);
-			default:
-				throw new IllegalStateException("Conversion to raw not implemented for data rep"
-					+ table.externalDataRep);
+		case NORMAL:
+			return dNumber;
+		case LOG2:
+			return Math.pow(2, dNumber);
+		case LOG10:
+			return Math.pow(10, dNumber);
+		default:
+			throw new IllegalStateException(
+					"Conversion to raw not implemented for data rep"
+							+ table.externalDataRep);
 		}
 	}
 
@@ -203,10 +230,9 @@ public class MetaData {
 					max = dTemp;
 				}
 			}
-		}
-		else if (table.hashColumns.get(0) instanceof NominalColumn<?>)
-			throw new UnsupportedOperationException("No minimum or maximum can be calculated "
-				+ "on nominal data");
+		} else if (table.hashColumns.get(0) instanceof NominalColumn<?>)
+			throw new UnsupportedOperationException(
+					"No minimum or maximum can be calculated " + "on nominal data");
 	}
 
 }

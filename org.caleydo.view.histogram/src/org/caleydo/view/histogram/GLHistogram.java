@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.swt.widgets.Composite;
 
 import com.jogamp.opengl.util.awt.TextRenderer;
@@ -58,7 +59,7 @@ public class GLHistogram extends ATableBasedView {
 	private float fColorPointPositionOffset = 0.0f;
 	private int iColorMappingPointMoved = -1;
 
-	private TextRenderer textRenderer;
+	private static float[] SPREAD_LINE_COLOR = { 0.5f, 0.5f, 0.5f };
 
 	float fRenderWidth;
 
@@ -80,7 +81,7 @@ public class GLHistogram extends ATableBasedView {
 		viewLabel = "Histogram";
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
-		textRenderer = new TextRenderer(new Font("Arial", Font.PLAIN, 18), true, true);
+		textRenderer = new CaleydoTextRenderer(18);
 		// registerEventListeners();
 
 		detailLevel = DetailLevel.HIGH;
@@ -278,7 +279,7 @@ public class GLHistogram extends ATableBasedView {
 				gl.glPopName();
 
 				// the left spread line
-				gl.glColor3f(0, 0, 1);
+				gl.glColor3fv(SPREAD_LINE_COLOR, 0);
 				gl.glPushName(iLeftSpreadPickingID);
 				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(sideSpacing + (markerPoint.getMappingValue() - fLeftSpread)
@@ -332,7 +333,7 @@ public class GLHistogram extends ATableBasedView {
 				gl.glPopName();
 
 				// the right spread line
-				gl.glColor3f(0, 0, 1);
+				gl.glColor3fv(SPREAD_LINE_COLOR, 0);
 				gl.glPushName(iRightSpreadPickingID);
 				gl.glBegin(GL2.GL_LINES);
 				gl.glVertex3f(sideSpacing

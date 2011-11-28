@@ -103,13 +103,13 @@ public enum EDefaultColorSchemes {
 		for (int[] color : colors) {
 			point = new ColorMarkerPoint(nextMappingVlaue, color);
 
-			// no spread for first and last element to the right resp. to the
-			// left
-			if (colorCount != 0) {
-				point.setLeftSpread(spread);
-			}
-			if (colorCount != colors.length - 1) {
+			// set spread only for first and last
+			if (colorCount == 0) {
 				point.setRightSpread(spread);
+			}
+			if (colorCount == colors.length - 1) {
+				point.setLeftSpread(spread);
+
 			}
 			colorMarkerPoints.add(point);
 			nextMappingVlaue += mappingValueDistance;

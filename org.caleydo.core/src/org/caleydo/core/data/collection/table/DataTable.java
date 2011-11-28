@@ -88,7 +88,7 @@ public class DataTable
 	/** everything related to normalization of the data is held in or accessible through this object */
 	private Normalization normalization;
 
-	private boolean isColumnDimension = false;
+	boolean isColumnDimension = false;
 
 	/**
 	 * Constructor for the table. Creates and initializes members and registers the set whit the set manager.
@@ -288,7 +288,7 @@ public class DataTable
 	 * @return Returns a new list of all record ids in the order they were initialized
 	 */
 	public List<Integer> getRowIDList() {
-		ArrayList<Integer> list = new ArrayList<Integer>(metaData.depth);
+		ArrayList<Integer> list = new ArrayList<Integer>(metaData.nrColumns);
 		for (int count = 0; count < metaData.depth(); count++) {
 			list.add(count);
 		}

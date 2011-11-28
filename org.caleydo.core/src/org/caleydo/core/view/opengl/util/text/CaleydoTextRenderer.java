@@ -11,14 +11,13 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
- * Wrapper for TextRenderer that provides methods to draw text with a specified minimum size (no matter what's
- * the current size of the view).
+ * Wrapper for TextRenderer that provides methods to draw text with a specified
+ * minimum size (no matter what's the current size of the view).
  * 
  * @author Christian Partl
  * @author Alexander Lex
  */
-public class CaleydoTextRenderer
-	extends TextRenderer {
+public class CaleydoTextRenderer extends TextRenderer {
 
 	static private final String REFERENCE_TEXT = "Reference Text";
 	float fontScaling = GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR;
@@ -38,13 +37,14 @@ public class CaleydoTextRenderer
 	}
 
 	public CaleydoTextRenderer(int size) {
-		super(new Font("Arial", Font.PLAIN, size), true, true, new DefaultRenderDelegate(), true);
+		super(new Font("Arial", Font.PLAIN, size), true, true,
+				new DefaultRenderDelegate(), true);
 		referenceBounds = super.getBounds(REFERENCE_TEXT);
 	}
 
 	/**
-	 * Convenience method to render text with a specified minimum size without having to call begin3DRendering
-	 * and end3DRendering.
+	 * Convenience method to render text with a specified minimum size without
+	 * having to call begin3DRendering and end3DRendering.
 	 * 
 	 * @param gl
 	 *            GL2 context.
@@ -59,10 +59,11 @@ public class CaleydoTextRenderer
 	 * @param scaling
 	 *            Factor the text is scaled with.
 	 * @param minSize
-	 *            Minimum size of the text. Note that the minimum size is scaled with the specified scaling
-	 *            vector.
+	 *            Minimum size of the text. Note that the minimum size is scaled
+	 *            with the specified scaling vector.
 	 */
-	public void renderText(GL2 gl, String text, float x, float y, float z, float scaling, int minSize) {
+	public void renderText(GL2 gl, String text, float x, float y, float z, float scaling,
+			int minSize) {
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
@@ -73,9 +74,10 @@ public class CaleydoTextRenderer
 	}
 
 	/**
-	 * Renders text with a specified minimum size. Use this only if you want to render several instances at a
-	 * time. If you have only one string, use
-	 * {@link #renderText(GL2, String, float, float, float, float, int)} instead.
+	 * Renders text with a specified minimum size. Use this only if you want to
+	 * render several instances at a time. If you have only one string, use
+	 * {@link #renderText(GL2, String, float, float, float, float, int)}
+	 * instead.
 	 * 
 	 * @param gl
 	 *            GL2 context.
@@ -90,10 +92,11 @@ public class CaleydoTextRenderer
 	 * @param scaling
 	 *            Factor the text is scaled with.
 	 * @param minSize
-	 *            Minimum size of the text. Note that the minimum size is scaled with the specified scaling
-	 *            vector.
+	 *            Minimum size of the text. Note that the minimum size is scaled
+	 *            with the specified scaling vector.
 	 */
-	public void draw3D(GL2 gl, String text, float x, float y, float z, float scaling, int minSize) {
+	public void draw3D(GL2 gl, String text, float x, float y, float z, float scaling,
+			int minSize) {
 
 		scaling = calculateScaling(gl, scaling, minSize);
 
@@ -101,7 +104,8 @@ public class CaleydoTextRenderer
 	}
 
 	/**
-	 * Gets scaled bounds of the specified text according to the specified parameters.
+	 * Gets scaled bounds of the specified text according to the specified
+	 * parameters.
 	 * 
 	 * @param gl
 	 *            GL2 context.
@@ -110,8 +114,8 @@ public class CaleydoTextRenderer
 	 * @param scaling
 	 *            Scaling of the text.
 	 * @param minSize
-	 *            Minimum size of the text. Note that the bound's size is therefore dependent on the size of
-	 *            the current viewport.
+	 *            Minimum size of the text. Note that the bound's size is
+	 *            therefore dependent on the size of the current viewport.
 	 * @return Scaled bounds of the specified text.
 	 */
 	public Rectangle2D getScaledBounds(GL2 gl, String text, float scaling, int minSize) {
@@ -119,13 +123,15 @@ public class CaleydoTextRenderer
 		scaling = calculateScaling(gl, scaling, minSize);
 
 		Rectangle2D rect = super.getBounds(text);
-		rect.setRect(rect.getX(), rect.getY(), rect.getWidth() * scaling, rect.getHeight() * scaling);
+		rect.setRect(rect.getX(), rect.getY(), rect.getWidth() * scaling,
+				rect.getHeight() * scaling);
 
 		return rect;
 	}
 
 	/**
-	 * Calculates the scaling factor taking the minimum text size into consideration.
+	 * Calculates the scaling factor taking the minimum text size into
+	 * consideration.
 	 * 
 	 * @param gl
 	 *            GL2 context.
@@ -153,8 +159,9 @@ public class CaleydoTextRenderer
 	}
 
 	/**
-	 * Render the text at the position specified (lower left corner) within the bounding box The height is
-	 * scaled to fit, the string is truncated to fit the width
+	 * Render the text at the position specified (lower left corner) within the
+	 * bounding box The height is scaled to fit, the string is truncated to fit
+	 * the width
 	 * 
 	 * @param gl
 	 * @param text
@@ -168,14 +175,15 @@ public class CaleydoTextRenderer
 	 * @param height
 	 *            height of the bounding box
 	 */
-	public void renderTextInBounds(GL2 gl, String text, float xPosition, float yPosition, float zPositon,
-		float width, float height) {
+	public void renderTextInBounds(GL2 gl, String text, float xPosition, float yPosition,
+			float zPositon, float width, float height) {
 
-		Rectangle2D bounds = super.getBounds(text);
+		// we use the height of a standard string so we don't have varying
+		// height	 
+		double scaling = height / super.getBounds("Sgfy").getHeight();;
 
-		double scaling = height / bounds.getHeight();
-
-		double requiredWidth = bounds.getWidth() * scaling;
+		Rectangle2D boundsForWidth = super.getBounds(text);
+		double requiredWidth = boundsForWidth.getWidth() * scaling;
 		if (requiredWidth > width + 0.001) {
 			double truncateFactor = width / requiredWidth;
 			int length = (int) (text.length() * truncateFactor);
@@ -206,8 +214,8 @@ public class CaleydoTextRenderer
 	}
 
 	/**
-	 * Same as {@link #getRequiredTextWidth(String, float)}, but returns the specified maximum width if the
-	 * required text width exceeds this maximum.
+	 * Same as {@link #getRequiredTextWidth(String, float)}, but returns the
+	 * specified maximum width if the required text width exceeds this maximum.
 	 * 
 	 * @param text
 	 * @param height
