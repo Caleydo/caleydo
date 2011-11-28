@@ -218,4 +218,13 @@ public class GLKaplanMeier extends ATableBasedView {
 		return null;
 	}
 
+	@Override
+	public int getMinPixelHeight() {
+		return 100;
+	}
+
+	@Override
+	public int getMinPixelWidth() {
+		return 100;
+	}
 }
