@@ -15,7 +15,7 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class ADataContainerRenderer extends LayoutRenderer {
 
-	public final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
+//	public final static String DIMENSION_GROUP_PICKING_TYPE = "org.caleydo.view.datagraph.dimensiongroup";
 
 	protected IDataGraphNode node;
 	protected GLDataGraph view;

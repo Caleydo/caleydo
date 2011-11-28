@@ -3,18 +3,18 @@ package org.caleydo.view.datagraph.datacontainer.matrix;
 import java.awt.geom.Point2D;
 import java.util.List;
 import java.util.Map;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public abstract class ADataContainerMatrixRenderingStrategy {
+public abstract class ADataContainerMatrixRenderingStrategy
+{
 
 	protected static final int MAX_TEXT_WIDTH_PIXELS = 90;
 	protected static final int TEXT_HEIGHT_PIXELS = 12;
@@ -23,23 +23,30 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 	protected static final int CAPTION_SPACING_PIXELS = 5;
 	protected static final int CELL_SPACING_PIXELS = 3;
 	protected static final int CELL_SIZE_PIXELS = 16;
+	
+	protected DataContainerMatrixRenderer matrixRenderer;
+	
+	public ADataContainerMatrixRenderingStrategy(DataContainerMatrixRenderer matrixRenderer) {
+		this.matrixRenderer = matrixRenderer;
+	}
 
-	public abstract void render(GL2 gl, List<CellContainer> rows,
-			List<CellContainer> columns, Map<String, ColorRenderer> cells,
+	public abstract void render(GL2 gl,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
-			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x,
-			float y, IDataGraphNode node, GLDataGraph view,
+			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x, float y,
+			IDataGraphNode node, GLDataGraph view,
 			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
 			String columnsCaption);
 
-	protected float calcMaxTextWidth(List<CellContainer> containers, AGLView view) {
+	protected float calcMaxTextWidth(List<CellContainer> containers, AGLView view)
+	{
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		float maxTextWidth = Float.MIN_VALUE;
 
-		for (CellContainer container : containers) {
+		for (CellContainer container : containers)
+		{
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(container.id,
 					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
 					pixelGLConverter.getGLWidthForPixelWidth(MAX_TEXT_WIDTH_PIXELS));
@@ -51,17 +58,20 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 	}
 
 	public int getMinWidthPixels(List<CellContainer> rows, List<CellContainer> columns,
-			AGLView view) {
+			AGLView view)
+	{
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
-		int captionWidth = pixelGLConverter.getPixelWidthForGLWidth(calcMaxTextWidth(
-				rows, view));
+		int captionWidth = pixelGLConverter.getPixelWidthForGLWidth(calcMaxTextWidth(rows,
+				view));
 
 		int sumColumnWidth = 0;
 
-		for (CellContainer column : columns) {
-			if (column.isVisible) {
+		for (CellContainer column : columns)
+		{
+			if (column.isVisible)
+			{
 				sumColumnWidth += column.numSubdivisions * COLUMN_WIDTH_PIXELS;
 			}
 		}
@@ -71,7 +81,8 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 	}
 
 	public int getMinHeightPixels(List<CellContainer> rows, List<CellContainer> columns,
-			AGLView view) {
+			AGLView view)
+	{
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
@@ -80,13 +91,21 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 
 		int sumRowHeight = 0;
 
-		for (CellContainer row : rows) {
-			if (row.isVisible) {
+		for (CellContainer row : rows)
+		{
+			if (row.isVisible)
+			{
 				sumRowHeight += row.numSubdivisions * COLUMN_WIDTH_PIXELS;
 			}
 		}
 
 		return captionWidth + sumRowHeight + CAPTION_SPACING_PIXELS;
 
+	}
+	
+	public float[] getPerspectiveColor()
+	{
+		// TODO Auto-generated method stub
+		return matrixRenderer.dataDomain.getColor().getRGBA();
 	}
 }

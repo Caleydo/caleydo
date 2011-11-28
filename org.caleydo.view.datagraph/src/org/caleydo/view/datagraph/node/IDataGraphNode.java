@@ -62,5 +62,7 @@ public interface IDataGraphNode extends IDraggable {
 	public void setCustomPosition(boolean isCustomPosition);
 
 	public void setGraphLayout(AGraphLayout graphLayout);
+	
+	public Point2D getAbsolutPositionOfRelativeDataContainerRendererCoordinates(Point2D coordinates);
 
 }

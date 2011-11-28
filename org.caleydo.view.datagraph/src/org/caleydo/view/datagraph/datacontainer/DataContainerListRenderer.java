@@ -4,18 +4,19 @@ import java.awt.geom.Point2D;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.PickingType;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public class DataContainerListRenderer extends ADataContainerRenderer {
+public class DataContainerListRenderer
+	extends ADataContainerRenderer
+{
 
 	private final static int SPACING_PIXELS = 4;
 	private final static int MIN_COMP_GROUP_WIDTH_PIXELS = 16;
@@ -26,8 +27,8 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	private List<DimensionGroupRenderer> dimensionGroupRenderers;
 
 	public DataContainerListRenderer(IDataGraphNode node, GLDataGraph view,
-			DragAndDropController dragAndDropController,
-			List<DataContainer> dataContainers) {
+			DragAndDropController dragAndDropController, List<DataContainer> dataContainers)
+	{
 		super(node, view, dragAndDropController);
 
 		dimensionGroupRenderers = new ArrayList<DimensionGroupRenderer>();
@@ -36,7 +37,8 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void createPickingListeners() {
+	public void createPickingListeners()
+	{
 		// view.addTypePickingListener(new APickingListener() {
 		//
 		// @Override
@@ -197,25 +199,31 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 		// }, DIMENSION_GROUP_PICKING_TYPE + node.getID());
 
 		view.addTypePickingListener(new DataContainerPickingListener(view,
-				dragAndDropController, this), DIMENSION_GROUP_PICKING_TYPE + node.getID());
+				dragAndDropController, this), PickingType.DATA_CONTAINER.name()
+				+ node.getID());
 	}
 
 	@Override
-	public void setDataContainers(List<DataContainer> dataContainers) {
+	public void setDataContainers(List<DataContainer> dataContainers)
+	{
 		dimensionGroupRenderers.clear();
-		for (DataContainer dataContainer : dataContainers) {
+		for (DataContainer dataContainer : dataContainers)
+		{
 			float[] color = dataContainer.getDataDomain().getColor().getRGBA();
 
 			DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-					dataContainer, view, dragAndDropController, node, color);
+					dataContainer, view, node, color);
 			dimensionGroupRenderer.setTextHeightPixels(TEXT_HEIGHT_PIXELS);
-			dimensionGroupRenderer.setUpsideDown(isUpsideDown);
+			dimensionGroupRenderer
+					.setTextRotation(isUpsideDown ? DimensionGroupRenderer.TEXT_ROTATION_90
+							: DimensionGroupRenderer.TEXT_ROTATION_270);
 			dimensionGroupRenderers.add(dimensionGroupRenderer);
 		}
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void render(GL2 gl)
+	{
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
@@ -231,26 +239,28 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 		// float currentPosX =
 		// pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
 		float currentPosX = (x / 2.0f)
-				- pixelGLConverter
-						.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2
-								- SIDE_SPACING_PIXELS);
+				- pixelGLConverter.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2
+						- SIDE_SPACING_PIXELS);
 		float step = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS)
 				+ dimensionGroupWidth;
 
 		bottomDimensionGroupPositions.clear();
 		topDimensionGroupPositions.clear();
 
-		for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers) {
+		for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers)
+		{
 			// float currentDimGroupWidth = pixelGLConverter
 			// .getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
-					DIMENSION_GROUP_PICKING_TYPE + node.getID(),
+					PickingType.DATA_CONTAINER.name() + node.getID(),
 					dimensionGroupRenderer.getDataContainer().getID());
 
 			gl.glPushName(pickingID);
-			if (pickingIDsToBePushed != null) {
-				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed) {
+			if (pickingIDsToBePushed != null)
+			{
+				for (Pair<String, Integer> pickingPair : pickingIDsToBePushed)
+				{
 					gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 							pickingPair.getFirst(), pickingPair.getSecond()));
 				}
@@ -264,22 +274,22 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 			gl.glPopMatrix();
 
 			gl.glPopName();
-			if (pickingIDsToBePushed != null) {
-				for (int i = 0; i < pickingIDsToBePushed.size(); i++) {
+			if (pickingIDsToBePushed != null)
+			{
+				for (int i = 0; i < pickingIDsToBePushed.size(); i++)
+				{
 					gl.glPopName();
 				}
 			}
 
 			Point2D bottomPosition1 = new Point2D.Float(currentPosX, 0);
-			Point2D bottomPosition2 = new Point2D.Float(
-					currentPosX + dimensionGroupWidth, 0);
+			Point2D bottomPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, 0);
 			Point2D topPosition1 = new Point2D.Float(currentPosX, y);
 			Point2D topPosition2 = new Point2D.Float(currentPosX + dimensionGroupWidth, y);
 			bottomDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer()
-					.getID(),
-					new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
-			topDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer()
-					.getID(), new Pair<Point2D, Point2D>(topPosition1, topPosition2));
+					.getID(), new Pair<Point2D, Point2D>(bottomPosition1, bottomPosition2));
+			topDimensionGroupPositions.put(dimensionGroupRenderer.getDataContainer().getID(),
+					new Pair<Point2D, Point2D>(topPosition1, topPosition2));
 
 			currentPosX += step;
 		}
@@ -287,29 +297,34 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public int getMinWidthPixels() {
+	public int getMinWidthPixels()
+	{
 		return getDimensionGroupsWidthPixels();
 	}
 
 	@Override
-	public int getMinHeightPixels() {
+	public int getMinHeightPixels()
+	{
 		return getMaxDimensionGroupLabelHeight();
 	}
 
-	private int getDimensionGroupsWidthPixels() {
+	private int getDimensionGroupsWidthPixels()
+	{
 		return (node.getDataContainers().size() * MIN_COMP_GROUP_WIDTH_PIXELS)
 				+ ((node.getDataContainers().size() - 1) * SPACING_PIXELS) + 2
 				* SIDE_SPACING_PIXELS;
 	}
 
-	private int getMaxDimensionGroupLabelHeight() {
+	private int getMaxDimensionGroupLabelHeight()
+	{
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		float maxTextWidth = Float.MIN_VALUE;
 
-		for (DataContainer dataContainer : node.getDataContainers()) {
+		for (DataContainer dataContainer : node.getDataContainers())
+		{
 			float textWidth = textRenderer.getRequiredTextWidthWithMax(
 					dataContainer.getLabel(),
 					pixelGLConverter.getGLHeightForPixelHeight(TEXT_HEIGHT_PIXELS),
@@ -323,23 +338,29 @@ public class DataContainerListRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void setUpsideDown(boolean isUpsideDown) {
+	public void setUpsideDown(boolean isUpsideDown)
+	{
 		this.isUpsideDown = isUpsideDown;
 
-		for (DimensionGroupRenderer renderer : dimensionGroupRenderers) {
-			renderer.setUpsideDown(isUpsideDown);
+		for (DimensionGroupRenderer renderer : dimensionGroupRenderers)
+		{
+			renderer.setTextRotation(isUpsideDown ? DimensionGroupRenderer.TEXT_ROTATION_90
+					: DimensionGroupRenderer.TEXT_ROTATION_270);
 		}
 
 	}
 
 	@Override
-	public void removePickingListeners() {
-		view.removeAllTypePickingListeners(DIMENSION_GROUP_PICKING_TYPE + node.getID());
+	public void removePickingListeners()
+	{
+		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name()
+				+ node.getID());
 
 	}
 
 	@Override
-	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers() {
+	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers()
+	{
 		return dimensionGroupRenderers;
 	}
 
