@@ -3,9 +3,7 @@ package org.caleydo.view.visbricks.brick.layout;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -28,7 +26,8 @@ import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
  * @author Partl
  * 
  */
-public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
+public class NumericalDataConfigurer
+	extends ATableBasedDataConfigurer {
 
 	protected static final int HEATMAP_BUTTON_ID = 1;
 	protected static final int PARCOORDS_BUTTON_ID = 2;
@@ -43,13 +42,11 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
-				EContainedViewType.HISTOGRAM_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), HISTOGRAM_BUTTON_ID,
+				EIconTextures.HISTOGRAM_ICON, EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
@@ -100,17 +97,14 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
-				EContainedViewType.HEATMAP_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), HEATMAP_BUTTON_ID,
+				EIconTextures.HEAT_MAP_ICON, EContainedViewType.HEATMAP_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
-				EContainedViewType.HISTOGRAM_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), HISTOGRAM_BUTTON_ID,
+				EIconTextures.HISTOGRAM_ICON, EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
@@ -149,17 +143,14 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
-				EContainedViewType.HEATMAP_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), HEATMAP_BUTTON_ID,
+				EIconTextures.HEAT_MAP_ICON, EContainedViewType.HEATMAP_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
-				EContainedViewType.HISTOGRAM_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), HISTOGRAM_BUTTON_ID,
+				EIconTextures.HISTOGRAM_ICON, EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
@@ -203,23 +194,20 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl, glMouseListener);
 			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
 			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
-			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
-					heatMapLayoutRenderer);
+			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW, heatMapLayoutRenderer);
 		}
 
 		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-				parCoordsLayoutRenderer);
+		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW, parCoordsLayoutRenderer);
 
 		HistogramCreator histogramCreator = new HistogramCreator();
 		AGLView histogram = histogramCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
 		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
-		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
-				histogramLayoutRenderer);
+		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW, histogramLayoutRenderer);
 
 		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
 				brick.getDataContainer(), brick.getDataDomain().getTable(), true);

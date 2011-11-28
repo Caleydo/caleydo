@@ -34,10 +34,10 @@ public class KaplanMeierDataConfigurer
 	{
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_SUMMARY);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 

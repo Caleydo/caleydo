@@ -2,16 +2,15 @@ package org.caleydo.view.kaplanmeier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -75,13 +74,14 @@ public class GLKaplanMeier extends ATableBasedView {
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
 
-		// Register keyboard listener to GL2 canvas
-		glParentView.getParentComposite().getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				glParentView.getParentComposite().addKeyListener(glKeyListener);
-			}
-		});
+		// // Register keyboard listener to GL2 canvas
+		// glParentView.getParentComposite().getDisplay().asyncExec(new
+		// Runnable() {
+		// @Override
+		// public void run() {
+		// glParentView.getParentComposite().addKeyListener(glKeyListener);
+		// }
+		// });
 
 		this.glMouseListener = glMouseListener;
 
@@ -115,16 +115,24 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
 				.getVirtualArray();
+		
+		for (Group group : recordVA.getGroupList()) {
+			ArrayList<Integer> recordIDs = recordVA.getIDsOfGroup(group.getID());
+			renderSingleKaplanMeierCurve(gl, recordIDs);
+		}
+	}
+	
+	private void renderSingleKaplanMeierCurve(GL2 gl, ArrayList<Integer> recordIDs) {
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
 
-		for (int index = 0; index < recordVA.size(); index++) {
+		for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
 			dataVector.add(dataContainer
 					.getDataDomain()
 					.getTable()
-					.getFloat(DataRepresentation.NORMALIZED, recordVA.get(index),
+					.getFloat(DataRepresentation.NORMALIZED, recordIDs.get(recordID),
 							dimensionVA.get(0)));
 		}
 		Float[] sortedDataVector = new Float[dataVector.size()];
@@ -133,7 +141,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		dataVector.clear();
 
 		// move sorted data back to array list so that we can use it as a stack
-		for (int index = 0; index < recordVA.size(); index++) {
+		for (int index = 0; index < recordIDs.size(); index++) {
 			dataVector.add(sortedDataVector[index]);
 		}
 
