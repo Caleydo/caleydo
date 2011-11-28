@@ -636,87 +636,89 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 	private void createContextMenuItemsForDataDomain(Menu menu,
 			final TableItem tableItem, final GeneticDataDomain dataDomain) {
 
-		MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
-		openInBrowserMenuItem.setText("Open in browser");
-		openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
-				geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
-		openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
-
-				// Switch to browser view
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView("org.caleydo.view.browser");
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
-				}
-			};
-		});
-
-		MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
-		loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
-		loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
-				geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
-
-		loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
-			};
-		});
-
-		MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
-		loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
-		loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
-				geneTable.getDisplay(),
-				"resources/icons/view/tablebased/heatmap/heatmap.png"));
-
-		loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
-
-				// Switch to browser view
-				try {
-					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView("org.caleydo.view.heatmap.hierarchical");
-				} catch (PartInitException e1) {
-					e1.printStackTrace();
-				}
-			};
-		});
-
-		MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu, SWT.PUSH);
-		loadGeneInParallelCoordinatesMenuItem
-				.setText("Show gene in parallel coordinates");
-		loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
-				.getImage(geneTable.getDisplay(),
-						"resources/icons/view/tablebased/parcoords/parcoords.png"));
-
-		loadGeneInParallelCoordinatesMenuItem
-				.addSelectionListener(new SelectionAdapter() {
-					@Override
-					public void widgetSelected(SelectionEvent e) {
-
-						searchViewMediator.selectGeneSystemWide((Integer) tableItem
-								.getData());
-
-						// Switch to browser view
-						try {
-							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-									.getActivePage()
-									.showView("org.caleydo.view.parcoords");
-						} catch (PartInitException e1) {
-							e1.printStackTrace();
-						}
-					};
-				});
-
+		
+//		
+//		MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
+//		openInBrowserMenuItem.setText("Open in browser");
+//		openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
+//				geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
+//		openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//
+//				searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+//
+//				// Switch to browser view
+//				try {
+//					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//							.showView("org.caleydo.view.browser");
+//				} catch (PartInitException e1) {
+//					e1.printStackTrace();
+//				}
+//			};
+//		});
+//
+//		MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
+//		loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
+//		loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
+//				geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+//
+//		loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//
+//				searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
+//			};
+//		});
+//
+//		MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
+//		loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
+//		loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
+//				geneTable.getDisplay(),
+//				"resources/icons/view/tablebased/heatmap/heatmap.png"));
+//
+//		loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//
+//				searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
+//
+//				// Switch to browser view
+//				try {
+//					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//							.showView("org.caleydo.view.heatmap.hierarchical");
+//				} catch (PartInitException e1) {
+//					e1.printStackTrace();
+//				}
+//			};
+//		});
+//
+//		MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu, SWT.PUSH);
+//		loadGeneInParallelCoordinatesMenuItem
+//				.setText("Show gene in parallel coordinates");
+//		loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
+//				.getImage(geneTable.getDisplay(),
+//						"resources/icons/view/tablebased/parcoords/parcoords.png"));
+//
+//		loadGeneInParallelCoordinatesMenuItem
+//				.addSelectionListener(new SelectionAdapter() {
+//					@Override
+//					public void widgetSelected(SelectionEvent e) {
+//
+//						searchViewMediator.selectGeneSystemWide((Integer) tableItem
+//								.getData());
+//
+//						// Switch to browser view
+//						try {
+//							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+//									.getActivePage()
+//									.showView("org.caleydo.view.parcoords");
+//						} catch (PartInitException e1) {
+//							e1.printStackTrace();
+//						}
+//					};
+//				});
+//
 		MenuItem makeCategoryOfGene = new MenuItem(menu, SWT.PUSH);
 		makeCategoryOfGene.setText("Make Category");
 		// loadGeneInHeatMapMenuItem.setImage(generalManager

@@ -302,7 +302,7 @@ public class TCGATestDataXMLGenerator {
 		mutationDataMetaInfo.setName("Mutation Status");
 		mutationDataMetaInfo.setDataDomainType("org.caleydo.datadomain.genetic");
 		mutationDataMetaInfo.setDataPath(MUTATION);
-		mutationDataMetaInfo.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+		mutationDataMetaInfo.setColorScheme(EDefaultColorSchemes.WHITE_RED.name());
 
 		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
 		dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");

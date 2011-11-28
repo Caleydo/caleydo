@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.ADataPerspective;
@@ -108,14 +109,22 @@ public class SearchViewMediator {
 		data.setData(ids);
 		perspective.init(data);
 
+		RecordPerspective binnedPerspective = null;
+
 		// FIXME TCGA Specific hack! Move to some place sane
 		if (dataDomain.getLabel().contains("Copy")) {
 			for (String recordPerspectiveID : dataDomain.getTable()
 					.getRecordPerspectiveIDs()) {
 				RecordPerspective recordPerspective = dataDomain.getTable()
 						.getRecordPerspective(recordPerspectiveID);
-
-				binRecords(5, id, recordPerspective, dataDomain, label);
+				ArrayList<String> groupLabels = new ArrayList<String>();
+				groupLabels.add("Heterozygous del.");
+				groupLabels.add("Homozygous del.");
+				groupLabels.add("Normal");
+				groupLabels.add("Amplification 1");
+				groupLabels.add("Amplification 2");
+				binnedPerspective = binRecords(5, id, recordPerspective, dataDomain,
+						label, groupLabels);
 				break;
 
 			}
@@ -125,18 +134,27 @@ public class SearchViewMediator {
 					.getRecordPerspectiveIDs()) {
 				RecordPerspective recordPerspective = dataDomain.getTable()
 						.getRecordPerspective(recordPerspectiveID);
-
-				binRecords(2, id, recordPerspective, dataDomain, label);
+				ArrayList<String> groupLabels = new ArrayList<String>();
+				groupLabels.add("Not Mutated");
+				groupLabels.add("Mutated");				
+				binnedPerspective = binRecords(2, id, recordPerspective, dataDomain,
+						label, groupLabels);
 				break;
 
 			}
 		}
 
+		if (binnedPerspective != null) {
+			DataContainer dataContainer = dataDomain.getDataContainer(
+					binnedPerspective.getID(), perspective.getID());
+			dataContainer.setLabel(label, false);
+		}
+
 	}
 
-	private void binRecords(int nrBins, Integer dimensionID,
+	private RecordPerspective binRecords(int nrBins, Integer dimensionID,
 			RecordPerspective recordPerspective, GeneticDataDomain dataDomain,
-			String label) {
+			String label, ArrayList<String> groupLabels) {
 		ArrayList<ArrayList<Integer>> bins = new ArrayList<ArrayList<Integer>>(nrBins);
 		for (int count = 0; count < nrBins; count++) {
 			bins.add(new ArrayList<Integer>());
@@ -149,7 +167,7 @@ public class SearchViewMediator {
 			// this works because value is normalized
 			int bin = (int) (value * nrBins);
 			if (bin == nrBins)
-				bin = nrBins-1;
+				bin = nrBins - 1;
 			bins.get(bin).add(recordID);
 		}
 
@@ -165,11 +183,13 @@ public class SearchViewMediator {
 		}
 
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(binnedIDList, clusterSizes, sampleElements);
+		data.setData(binnedIDList, clusterSizes, sampleElements, groupLabels);
 
 		RecordPerspective binnedPerspective = new RecordPerspective(dataDomain);
 		binnedPerspective.init(data);
 		binnedPerspective.setLabel(label, false);
 		table.registerRecordPerspective(binnedPerspective);
+
+		return binnedPerspective;
 	}
 }

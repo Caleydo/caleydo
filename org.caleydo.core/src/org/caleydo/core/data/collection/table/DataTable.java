@@ -366,6 +366,8 @@ public class DataTable
 		if (recordPerspective.getID() == null)
 			throw new IllegalStateException("Record perspective not correctly initiaklized: "
 				+ recordPerspective);
+		if(!recordPerspective.getIdType().equals(dataDomain.getRecordIDType()))
+			throw new IllegalStateException("Invalid reocrd id type for this datadomain: " + recordPerspective.getIdType());
 		hashRecordPerspectives.put(recordPerspective.getID(), recordPerspective);
 
 		if (recordPerspective.isDefault()) {
