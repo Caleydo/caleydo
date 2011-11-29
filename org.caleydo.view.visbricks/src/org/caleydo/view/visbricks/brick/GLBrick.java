@@ -172,14 +172,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	private IBrickConfigurer brickConfigurer;
 
 	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
-
 		super(glCanvas, parentComposite, viewFrustum);
 		viewType = GLBrick.VIEW_TYPE;
 		viewLabel = "Brick";
 
 		views = new HashMap<EContainedViewType, AGLView>();
 		containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
-
+		System.out.println(getID());
 	}
 
 	@Override
@@ -365,6 +364,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void display(GL2 gl) {
 		if (currentRemoteView != null)
 			currentRemoteView.processEvents();
+		checkForHits(gl);
 		processEvents();
 		handleBrickResize(gl);
 
@@ -399,16 +399,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);
-		checkForHits(gl);
+		pickingManager.handlePicking(this, gl);		
 		display(gl);
-
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
-		checkForHits(gl);
-		display(gl);
+			display(gl);
 
 	}
 
@@ -618,14 +615,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * appearance. If the specified view type is valid, it will be set,
 	 * otherwise the default view type will be set.
 	 * 
-	 * @param brickLayoutTemplate
+	 * @param newBrickLayout
 	 * @param viewType
 	 */
-	public void setBrickLayoutTemplate(ABrickLayoutConfiguration brickLayoutTemplate,
+	public void setBrickLayoutTemplate(ABrickLayoutConfiguration newBrickLayout,
 			EContainedViewType viewType) {
-		if (brickLayout != null)
+		if (brickLayout != null && brickLayout != newBrickLayout)
 			brickLayout.destroy();
-		brickLayout = brickLayoutTemplate;
+		brickLayout = newBrickLayout;
 		if ((brickLayout instanceof CompactBrickLayoutTemplate)
 				|| (brickLayout instanceof CompactHeaderBrickLayoutTemplate))
 			isInOverviewMode = true;

@@ -674,7 +674,7 @@ public abstract class AGLView
 
 		}
 		for (IPickingListener listener : pickingListeners) {
-			if (listener.getClass() == pickingListener.getClass()) {
+			if (listener == pickingListener) {
 				return;
 			}
 		}

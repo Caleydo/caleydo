@@ -258,7 +258,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	protected void registerPickingListeners() {
-
+		System.out.println("Register " + brick.getID());
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -427,6 +427,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public void destroy() {
+		System.out.println("Destroy " + brick.getID());
 		brick.removeAllIDPickingListeners(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 
@@ -442,7 +443,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		brick.removeAllIDPickingListeners(PickingType.EXPAND_LEFT_HANDLE.name(),
 				brick.getID());
-		toolBar.destroy();
+//		toolBar.destroy();
 		super.destroy();
 	}
 
