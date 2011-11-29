@@ -289,7 +289,7 @@ public class DataTable
 	 */
 	public List<Integer> getRowIDList() {
 		ArrayList<Integer> list = new ArrayList<Integer>(metaData.nrColumns);
-		for (int count = 0; count < metaData.depth(); count++) {
+		for (int count = 0; count < metaData.getNrRows(); count++) {
 			list.add(count);
 		}
 		return list;

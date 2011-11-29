@@ -12,7 +12,7 @@ import org.caleydo.core.util.conversion.ConversionTools;
 public class FloatCContainer
 	implements INumericalCContainer {
 
-	private float[] fArContainer;
+	private float[] container;
 
 	private float fMin = Float.NaN;
 
@@ -26,12 +26,12 @@ public class FloatCContainer
 	 */
 	public FloatCContainer(final float[] fArContainer) {
 
-		this.fArContainer = fArContainer;
+		this.container = fArContainer;
 	}
 
 	@Override
 	public int size() {
-		return fArContainer.length;
+		return container.length;
 	}
 
 	/**
@@ -39,13 +39,13 @@ public class FloatCContainer
 	 * 
 	 * @throws IndexOutOfBoundsException
 	 *             if index out of range
-	 * @param iIndex
+	 * @param index
 	 *            index of element to return
 	 * @return the element at the specified position in this list
 	 */
-	public float get(final int iIndex) {
+	public float get(final int index) {
 
-		return fArContainer[iIndex];
+		return container[index];
 	}
 
 	/**
@@ -84,7 +84,7 @@ public class FloatCContainer
 
 	@Override
 	public FloatCContainer normalize() {
-		return new FloatCContainer(ConversionTools.normalize(fArContainer, (int) getMin(), (int) getMax()));
+		return new FloatCContainer(ConversionTools.normalize(container, (int) getMin(), (int) getMax()));
 	}
 
 	@Override
@@ -92,7 +92,7 @@ public class FloatCContainer
 		if (dMin >= dMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
-		return new FloatCContainer(ConversionTools.normalize(fArContainer, (float) dMin, (float) dMax));
+		return new FloatCContainer(ConversionTools.normalize(container, (float) dMin, (float) dMax));
 
 	}
 
@@ -115,11 +115,11 @@ public class FloatCContainer
 
 	@Override
 	public FloatCContainer log(int iBase) {
-		float[] fArTarget = new float[fArContainer.length];
+		float[] fArTarget = new float[container.length];
 
 		float fTmp;
-		for (int index = 0; index < fArContainer.length; index++) {
-			fTmp = fArContainer[index];
+		for (int index = 0; index < container.length; index++) {
+			fTmp = container[index];
 
 			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
 
@@ -137,7 +137,7 @@ public class FloatCContainer
 	private void calculateMinMax() {
 		fMin = Float.MAX_VALUE;
 		fMax = Float.MIN_VALUE;
-		for (float fCurrent : fArContainer) {
+		for (float fCurrent : container) {
 			if (Float.isNaN(fCurrent)) {
 				continue;
 			}
@@ -156,7 +156,7 @@ public class FloatCContainer
 	@Override
 	public String toString() {
 		String string = "[";
-		for (float value : fArContainer)
+		for (float value : container)
 			string += value + ", ";
 		return string;
 	}

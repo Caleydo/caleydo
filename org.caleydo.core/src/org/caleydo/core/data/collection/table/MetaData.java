@@ -55,7 +55,7 @@ public class MetaData {
 	}
 
 	/** Get the number of columns in the table */
-	private int getNrColumns() {
+	int getNrColumns() {
 		if (nrColumns == 0) {
 			for (AColumn dimension : table.hashColumns.values()) {
 				if (nrColumns == 0)
@@ -72,8 +72,8 @@ public class MetaData {
 	}
 
 	/** Get the number of rows in the table */
-	private int getNrRows() {
-		return table.hashColumns.size();
+	int getNrRows() {
+		return table.hashColumns.values().iterator().next().size();
 	}
 
 	/**
@@ -115,7 +115,7 @@ public class MetaData {
 	}
 
 	/**
-	 * Set an artificial maximum for the datatable. All elements smaller than
+	 * Set an artificial maximum for the DataTable. All elements smaller than
 	 * that are clipped to this value in the representation. This only affects
 	 * the normalization, does not alter the raw data
 	 */
