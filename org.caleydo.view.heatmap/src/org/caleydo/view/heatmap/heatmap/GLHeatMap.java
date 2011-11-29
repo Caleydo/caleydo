@@ -734,56 +734,13 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
-	public int getMinPixelHeight() {
-		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
-				.getVirtualArray();
-		// TODO: Calculate depending on content
-		// int pixelHeight = 10;
-		// if (recordVA.size() > 1) {
-		//
-		// pixelHeight += (int) ((double) recordVA.size() / Math
-		// .log(recordVA.size()));
-		// }
-
-		// RecordVirtualArray setRecordVA =
-		// table.getRecordData(recordPerspectiveID).getVA();
-		int numBricks = 1;
-		if (recordVA.getGroupList() != null) {
-			numBricks += recordVA.getGroupList().size();
-		}
-
-		int windowHeight = parentGLCanvas.getHeight();
-		int pixelHeight = (int) (((float) (windowHeight - numBricks * 80) / (float) recordVA
-				.size()) * recordVA.size());
-		return Math.max(16, pixelHeight);
-	}
-
-	@Override
 	public int getMinPixelHeight(DetailLevel detailLevel) {
-		switch (detailLevel) {
-		case HIGH:
-			return getMinPixelHeight();
-		case MEDIUM:
-			return getMinPixelHeight();
-		case LOW:
-			return getMinPixelHeight();
-		default:
-			return 50;
-		}
+		return getPixelPerElement(true, detailLevel, 5, 10);
 	}
 
 	@Override
 	public int getMinPixelWidth(DetailLevel detailLevel) {
-		switch (detailLevel) {
-		// case HIGH:
-		// return Math.max(150, 16 * table.getMetaData().size());
-		// case MEDIUM:
-		// return Math.max(150, 16 * table.getMetaData().size());
-		// case LOW:
-		// return Math.max(150, 16 * table.getMetaData().size());
-		default:
-			return 100;
-		}
+		return getPixelPerElement(false, detailLevel, 5, 10);
 	}
 
 	@Override

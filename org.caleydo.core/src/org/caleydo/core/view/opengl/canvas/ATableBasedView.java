@@ -27,6 +27,9 @@ import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;
 import org.caleydo.core.data.virtualarray.events.IDimensionVAUpdateHandler;
@@ -57,10 +60,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public abstract class ATableBasedView
-	extends AGLView
-	implements ITableBasedDataDomainView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
-	IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
+public abstract class ATableBasedView extends AGLView implements
+		ITableBasedDataDomainView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
+		IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	protected ATableBasedDataDomain dataDomain;
 
@@ -69,15 +71,16 @@ public abstract class ATableBasedView
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * This manager is responsible for the content in the dimensions (the indices). The
-	 * contentSelectionManager is initialized when the useCase is set ({@link #setDataDomain(IDataDomain)}).
+	 * This manager is responsible for the content in the dimensions (the
+	 * indices). The contentSelectionManager is initialized when the useCase is
+	 * set ({@link #setDataDomain(IDataDomain)}).
 	 */
 	protected RecordSelectionManager recordSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the dimensions in the table. The
-	 * dimensionSelectionManager is initialized when the useCase is set ( {@link #setDataDomain(IDataDomain)}
-	 * ).
+	 * This manager is responsible for the management of the dimensions in the
+	 * table. The dimensionSelectionManager is initialized when the useCase is
+	 * set ( {@link #setDataDomain(IDataDomain)} ).
 	 */
 	protected DimensionSelectionManager dimensionSelectionManager;
 
@@ -107,8 +110,8 @@ public abstract class ATableBasedView
 	protected DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	/**
-	 * Flag that tells the view whether visual linking is used for it's element so it must create
-	 * {@link ElementConnectionInformation}
+	 * Flag that tells the view whether visual linking is used for it's element
+	 * so it must create {@link ElementConnectionInformation}
 	 */
 	private boolean isVisualLinkingActive = false;
 
@@ -119,11 +122,12 @@ public abstract class ATableBasedView
 	 * @param label
 	 * @param viewFrustum
 	 */
-	protected ATableBasedView(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
+	protected ATableBasedView(GLCanvas glCanvas, Composite parentComposite,
+			final ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum);
 
-		connectedElementRepresentationManager =
-			generalManager.getViewManager().getConnectedElementRepresentationManager();
+		connectedElementRepresentationManager = generalManager.getViewManager()
+				.getConnectedElementRepresentationManager();
 	}
 
 	@Override
@@ -184,8 +188,8 @@ public abstract class ATableBasedView
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
 		if (serialzedView instanceof ASerializedTopLevelDataView) {
 			ASerializedTopLevelDataView topSerializedView = (ASerializedTopLevelDataView) serialzedView;
-			dataContainer =
-				dataDomain.getDataContainer(topSerializedView.getRecordPerspectiveID(),
+			dataContainer = dataDomain.getDataContainer(
+					topSerializedView.getRecordPerspectiveID(),
 					topSerializedView.getDimensionPerspectiveID());
 		}
 	}
@@ -199,27 +203,30 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Create {@link ElementConnectionInformation}, which basically describes anchor points for visual links
-	 * for the element specified through the id
+	 * Create {@link ElementConnectionInformation}, which basically describes
+	 * anchor points for visual links for the element specified through the id
 	 * 
 	 * @param iDType
 	 *            the type of the id - for possible conversion
 	 * @param the
 	 *            id of the element
 	 * @throws InvalidAttributeValueException
-	 *             when the selectionDelta does not contain a valid type for this view
+	 *             when the selectionDelta does not contain a valid type for
+	 *             this view
 	 */
 	protected abstract ArrayList<ElementConnectionInformation> createElementConnectionInformation(
-		IDType idType, int id) throws InvalidAttributeValueException;
+			IDType idType, int id) throws InvalidAttributeValueException;
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
 
-		if (selectionDelta.getIDType().getIDCategory().equals(recordIDType.getIDCategory())) {
+		if (selectionDelta.getIDType().getIDCategory()
+				.equals(recordIDType.getIDCategory())) {
 			// Check for type that can be handled
 			if (selectionDelta.getIDType() != recordIDType) {
-				selectionDelta =
-					DeltaConverter.convertDelta(dataDomain.getRecordIDMappingManager(), recordIDType,
+				selectionDelta = DeltaConverter.convertDelta(
+						dataDomain.getRecordIDMappingManager(), recordIDType,
 						selectionDelta);
 			}
 
@@ -228,8 +235,7 @@ public abstract class ATableBasedView
 				prepareVisualLinkingInformation(selectionDelta);
 			reactOnExternalSelection(selectionDelta, scrollToSelection);
 			setDisplayListDirty();
-		}
-		else if (selectionDelta.getIDType() == dimensionIDType) {
+		} else if (selectionDelta.getIDType() == dimensionIDType) {
 
 			dimensionSelectionManager.setDelta(selectionDelta);
 			if (isVisualLinkingActive)
@@ -258,15 +264,17 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Is called any time a update is triggered externally. Should be implemented by inheriting views.
+	 * Is called any time a update is triggered externally. Should be
+	 * implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection(SelectionDelta selectionDelta, boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta selectionDelta,
+			boolean scrollToSelection) {
 
 	}
 
 	/**
-	 * Is called any time a virtual array is changed. Can be implemented by inheriting views if some action is
-	 * necessary
+	 * Is called any time a virtual array is changed. Can be implemented by
+	 * inheriting views if some action is necessary
 	 * 
 	 * @param delta
 	 */
@@ -291,7 +299,8 @@ public abstract class ATableBasedView
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 		if (idCategory == dataDomain.getRecordIDCategory())
 			recordSelectionManager.executeSelectionCommand(selectionCommand);
 		else if (idCategory == dataDomain.getDimensionIDCategory())
@@ -302,7 +311,8 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Handles the creation of {@link ElementConnectionInformation} according to the data in a selectionDelta
+	 * Handles the creation of {@link ElementConnectionInformation} according to
+	 * the data in a selectionDelta
 	 * 
 	 * @param selectionDelta
 	 *            the selection data that should be handled
@@ -315,35 +325,39 @@ public abstract class ATableBasedView
 
 			if (selectionDelta.size() > 0) {
 				for (SelectionDeltaItem item : selectionDelta) {
-					if (!connectedElementRepresentationManager.isSelectionTypeRenderedWithVisuaLinks(item
-						.getSelectionType()) || item.isRemove())
+					if (!connectedElementRepresentationManager
+							.isSelectionTypeRenderedWithVisuaLinks(item
+									.getSelectionType())
+							|| item.isRemove())
 						continue;
 					if (selectionDelta.getIDType() == recordIDType) {
 						id = item.getID();
 						idType = recordIDType;
 						if (dataContainer == null) {
-							Logger.log(new Status(Status.ERROR, this.toString(), "dataContainer was null"));
+							Logger.log(new Status(Status.ERROR, this.toString(),
+									"dataContainer was null"));
 							return;
 						}
-						if (!dataContainer.getRecordPerspective().getVirtualArray().contains(id))
+						if (!dataContainer.getRecordPerspective().getVirtualArray()
+								.contains(id))
 							return;
 
-					}
-					else if (selectionDelta.getIDType() == dimensionIDType) {
+					} else if (selectionDelta.getIDType() == dimensionIDType) {
 						id = item.getID();
 						idType = dimensionIDType;
-						if (!dataContainer.getDimensionPerspective().getVirtualArray().contains(id))
+						if (!dataContainer.getDimensionPerspective().getVirtualArray()
+								.contains(id))
 							return;
-					}
-					else
-						throw new InvalidAttributeValueException("Can not handle data type: "
-							+ selectionDelta.getIDType());
+					} else
+						throw new InvalidAttributeValueException(
+								"Can not handle data type: " + selectionDelta.getIDType());
 
 					if (id == -1)
-						throw new IllegalArgumentException("No internal ID in selection delta");
+						throw new IllegalArgumentException(
+								"No internal ID in selection delta");
 
-					ArrayList<ElementConnectionInformation> alRep =
-						createElementConnectionInformation(idType, id);
+					ArrayList<ElementConnectionInformation> alRep = createElementConnectionInformation(
+							idType, id);
 					if (alRep == null) {
 						continue;
 					}
@@ -353,16 +367,15 @@ public abstract class ATableBasedView
 						}
 
 						for (Integer iConnectionID : item.getConnectionIDs()) {
-							connectedElementRepresentationManager.addSelection(iConnectionID, rep,
-								item.getSelectionType());
+							connectedElementRepresentationManager.addSelection(
+									iConnectionID, rep, item.getSelectionType());
 						}
 					}
 				}
 			}
-		}
-		catch (InvalidAttributeValueException e) {
+		} catch (InvalidAttributeValueException e) {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
-				"Can not handle data type of update in selectionDelta", e));
+					"Can not handle data type of update in selectionDelta", e));
 		}
 	}
 
@@ -379,7 +392,8 @@ public abstract class ATableBasedView
 	}
 
 	/**
-	 * Set the number of samples which are shown in the view. The distribution is purely random
+	 * Set the number of samples which are shown in the view. The distribution
+	 * is purely random
 	 * 
 	 * @param numberOfRandomElements
 	 *            the number
@@ -415,7 +429,8 @@ public abstract class ATableBasedView
 		dimensionVAUpdateListener = new DimensionVAUpdateListener();
 		dimensionVAUpdateListener.setHandler(this);
 		dimensionVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
-		eventPublisher.addListener(DimensionVAUpdateEvent.class, dimensionVAUpdateListener);
+		eventPublisher.addListener(DimensionVAUpdateEvent.class,
+				dimensionVAUpdateListener);
 
 		selectionCommandListener = new SelectionCommandListener();
 		selectionCommandListener.setHandler(this);
@@ -433,7 +448,8 @@ public abstract class ATableBasedView
 
 		switchDataRepresentationListener = new SwitchDataRepresentationListener();
 		switchDataRepresentationListener.setHandler(this);
-		eventPublisher.addListener(SwitchDataRepresentationEvent.class, switchDataRepresentationListener);
+		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
+				switchDataRepresentationListener);
 
 	}
 
@@ -486,8 +502,7 @@ public abstract class ATableBasedView
 			if (!dataDomain.getTable().containsFoldChangeRepresentation())
 				dataDomain.getTable().createFoldChangeRepresentation();
 			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
-		}
-		else
+		} else
 			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 		setDisplayListDirty();
@@ -511,4 +526,45 @@ public abstract class ATableBasedView
 		dataContainers.add(dataContainer);
 		return dataContainers;
 	}
+
+	/**
+	 * Calculates how many pixels are required per element for a given detail
+	 * level.
+	 * 
+	 * @param forRecord
+	 *            flag telling whether this is for the records (true) or for
+	 *            dimensions (false)
+	 * @param detailLevel
+	 *            the detail level for which this should be calcualted
+	 * @param pixelPerElementMedium
+	 *            the number of pixels this view requires in medium mode for a
+	 *            single element
+	 * @param pixelPerElementHigh
+	 *            same as previous for high mode
+	 * @return the number of pixels for the detail level
+	 */
+	protected int getPixelPerElement(boolean forRecord, DetailLevel detailLevel,
+			int pixelPerElementMedium, int pixelPerElementHigh) {
+		int pixelPerElement = 0;
+		switch (detailLevel) {
+		case HIGH:
+			pixelPerElement = pixelPerElementMedium;
+			break;
+		case MEDIUM:
+			pixelPerElement = pixelPerElementHigh;
+			break;
+		case LOW:
+		default:
+			return 100;
+		}
+		VirtualArray<?, ?, ?> va;
+		if (forRecord)
+			va = dataContainer.getRecordPerspective().getVirtualArray();
+		else
+			va = dataContainer.getDimensionPerspective().getVirtualArray();
+
+		int pixelHeight = va.size() * pixelPerElement;
+		return pixelHeight;
+	}
+
 }

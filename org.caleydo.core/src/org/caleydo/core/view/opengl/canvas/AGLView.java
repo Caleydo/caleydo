@@ -529,7 +529,6 @@ public abstract class AGLView
 	}
 
 	private void updateDetailMode() {
-
 		DetailLevel newDetailLevel;
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
 		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());

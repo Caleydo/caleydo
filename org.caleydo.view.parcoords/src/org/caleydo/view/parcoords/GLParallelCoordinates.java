@@ -509,7 +509,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		gl.glColor4fv(renderState.color, 0);
 		gl.glLineWidth(renderState.lineWidth);
-		if (!(detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM))
+		if (detailLevel == DetailLevel.LOW)
 			renderCaption = false;
 
 		float previousX = 0;
@@ -597,7 +597,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 * @param iNumberAxis
 	 */
 	private void renderCoordinateSystem(GL2 gl) {
-
+		if (detailLevel.equals(DetailLevel.LOW))
+			return;
 		textRenderer.setColor(0, 0, 0, 1);
 
 		int numberOfAxis = dataContainer.getNrDimensions();
@@ -2223,9 +2224,9 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	public int getMinPixelHeight(DetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
-			return 100;
+			return 400;
 		case MEDIUM:
-			return 80;
+			return 200;
 		case LOW:
 			return 50;
 		default:
@@ -2235,17 +2236,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public int getMinPixelWidth(DetailLevel detailLevel) {
-		switch (detailLevel) {
-		case HIGH:
-			return 100;
-		case MEDIUM:
-			return 80;
-		case LOW:
-			return 80;
-			// return Math.max(150, 30 * dimensionVA.size());
-		default:
-			return 80;
-		}
+		return getPixelPerElement(false, detailLevel, 5, 10);
 	}
 
 	@Override
@@ -2253,6 +2244,26 @@ public class GLParallelCoordinates extends ATableBasedView implements
 		java.util.Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 		dataDomains.add(dataDomain);
 		return dataDomains;
+	}
+
+	@Override
+	public void setDetailLevel(DetailLevel detailLevel) {
+		super.setDetailLevel(detailLevel);
+		switch (detailLevel) {
+		case LOW:
+			numberOfRandomElements = 50;
+			break;
+		case MEDIUM:
+			numberOfRandomElements = 100;
+			break;
+		case HIGH:
+			numberOfRandomElements = generalManager.getPreferenceStore().getInt(
+					PreferenceConstants.PC_NUM_RANDOM_SAMPLING_POINT);
+			break;
+
+		default:
+			break;
+		}
 	}
 
 }

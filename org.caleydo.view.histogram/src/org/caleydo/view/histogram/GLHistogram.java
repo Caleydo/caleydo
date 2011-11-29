@@ -81,7 +81,7 @@ public class GLHistogram extends ATableBasedView {
 		viewLabel = "Histogram";
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
-		textRenderer = new CaleydoTextRenderer(18);
+		
 		// registerEventListeners();
 
 		detailLevel = DetailLevel.HIGH;
@@ -94,6 +94,7 @@ public class GLHistogram extends ATableBasedView {
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
+		textRenderer = new CaleydoTextRenderer(18);
 
 	}
 

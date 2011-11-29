@@ -47,17 +47,16 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	public static final float LABEL_Z = 0.004f;
 	public static final float TEXT_ON_LABEL_Z = LABEL_Z + 0.0001f;
 
-	public static final float[] Y_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
+	public static final float[] X_AXIS_COLOR = { 0.5f, 0.5f, 0.5f, 1.0f };
+	public static final float X_AXIS_LINE_WIDTH = 3.0f;
+
+	public static final float[] Y_AXIS_COLOR = X_AXIS_COLOR;
 
 	public static final float Y_AXIS_LINE_WIDTH = 1.0f;
 
 	public static final float Y_AXIS_SELECTED_LINE_WIDTH = 4.0f;
 
 	public static final float Y_AXIS_MOUSE_OVER_LINE_WIDTH = 4.0f;
-
-	public static final float[] X_AXIS_COLOR = { 0.0f, 0.0f, 1.0f, 1.0f };
-
-	public static final float X_AXIS_LINE_WIDTH = 3.0f;
 
 	public static final float[] CANVAS_COLOR = { 1.0f, 1.0f, 1.0f, 1.0f };
 
@@ -128,9 +127,11 @@ public class PCRenderStyle extends GeneralRenderStyle {
 		this.pcs = pcs;
 	}
 
-	private float getPolylineOcclusionPrevAlpha(int iNumberOfRenderedLines) {
+	private float getPolylineOcclusionPrevAlpha(int numberOfRenderedLines) {
 
-		fOcclusionPrevAlpha = (float) (6 / Math.sqrt(iNumberOfRenderedLines));
+		fOcclusionPrevAlpha = (float) (6 / Math.sqrt(numberOfRenderedLines));
+		if (pcs != null && pcs.getDetailLevel() == DetailLevel.LOW)
+			fOcclusionPrevAlpha /= 5;
 
 		return fOcclusionPrevAlpha;
 	}

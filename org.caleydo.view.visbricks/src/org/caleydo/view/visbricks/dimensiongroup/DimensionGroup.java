@@ -43,6 +43,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.GLBrick.EBrickHeightMode;
+import org.caleydo.view.visbricks.brick.GLBrick.EBrickWidthMode;
 import org.caleydo.view.visbricks.brick.data.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -881,9 +882,11 @@ public class DimensionGroup extends ATableBasedView implements
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
 		// detailBrick.setRecordVA(brick.getGroup(), brick.getRecordVA());
 
+		detailBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
+		detailBrick.setBrickWidthMode(EBrickWidthMode.STATIC);
 		int detailBrickWidth = getDetailBrickWidthPixels(!expandLeft);
-		detailBrickLayout.setPixelSizeX(detailBrickWidth);
-		detailBrickLayout.setPixelSizeY(getDetailBrickHeightPixels());
+		detailBrick.setStaticBrickWidth(detailBrickWidth);
+		detailBrick.setStaticBrickHeight(getDetailBrickHeightPixels());
 
 		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick,
 				this, visBricks, detailBrick.getBrickConfigurer()), brick

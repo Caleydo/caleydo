@@ -44,7 +44,7 @@ public class SelectionType {
 	/** flag that determines whether connection lines should be drawn to this selection type or not */
 	private boolean isConnected = false;
 	/** line rendering views should use this width for this selection type */
-	private int lineWidth = 1;
+	private float lineWidth = 0.3f;
 	/**
 	 * a priority determining which selection type should be rendered on top in case of multi-selections. The
 	 * valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
@@ -58,17 +58,17 @@ public class SelectionType {
 	 */
 	private boolean isManaged = false;
 
-	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 1,
+	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 0.3f,
 		true, false, 0);
 	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver",
-		new int[] { 116, 169, 207 }, 3, true, true, 0.99f);
-	public static final SelectionType SELECTION = new SelectionType("Selected", new int[] { 5, 112, 176 }, 3,
+		new int[] { 116, 169, 207 }, 1, true, true, 0.99f);
+	public static final SelectionType SELECTION = new SelectionType("Selected", new int[] { 5, 112, 176 }, 1,
 		true, false, 1f);
 	public static final SelectionType DESELECTED = new SelectionType("Deselected",
 		new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
 
 	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting", new int[] {
-			255, 255, 0 }, 3, true, false, 1f);
+			255, 255, 0 }, 1, true, false, 1f);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
@@ -102,7 +102,7 @@ public class SelectionType {
 	 *            multiply it by the priority, e.g.,
 	 *            <code>float z = SELECTION_Z * selectionType.getPriority();</code>
 	 */
-	public SelectionType(String type, float[] color, int lineWidth, boolean isVisible, boolean isConnected,
+	public SelectionType(String type, float[] color, float lineWidth, boolean isVisible, boolean isConnected,
 		float priority) {
 		this.type = type;
 		setColor(color);
@@ -213,14 +213,14 @@ public class SelectionType {
 	 * @param lineWidth
 	 *            the the width of lines that should be used for this selection type in line rendering views
 	 */
-	public void setLineWidth(int lineWidth) {
+	public void setLineWidth(float lineWidth) {
 		this.lineWidth = lineWidth;
 	}
 
 	/**
 	 * @return the the width of lines that should be used for this selection type in line rendering views
 	 */
-	public int getLineWidth() {
+	public float getLineWidth() {
 		return lineWidth;
 	}
 

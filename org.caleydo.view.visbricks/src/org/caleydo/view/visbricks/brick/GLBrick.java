@@ -112,7 +112,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * State telling how the height of the brick is determined. See
 	 * {@link EBrickHeightMode} for options.
 	 */
-	private EBrickHeightMode brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+	private EBrickHeightMode brickHeigthMode = null;
 
 	/**
 	 * The height of the brick used if the {@link #brickHeigthMode} is set to
@@ -131,7 +131,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * State telling how the width of the brick is determined. See
 	 * {@link EBrickWidthMode} for options.
 	 */
-	private EBrickWidthMode brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
+	private EBrickWidthMode brickWidthMode = null;
 
 	/**
 	 * The width of the brick used if the {@link #brickWidthMode} is set to
@@ -399,13 +399,13 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	protected void displayLocal(GL2 gl) {
-		pickingManager.handlePicking(this, gl);		
+		pickingManager.handlePicking(this, gl);
 		display(gl);
 	}
 
 	@Override
 	public void displayRemote(GL2 gl) {
-			display(gl);
+		display(gl);
 
 	}
 
@@ -548,12 +548,21 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	/**
+	 * <p>
 	 * Sets the type of view that should be rendered in the brick. The view type
 	 * is not set, if it is not valid for the current brick layout.
+	 * </p>
+	 * <p>
+	 * </p>
+	 * 
 	 * 
 	 * @param viewType
 	 */
 	public void setContainedView(EContainedViewType viewType) {
+		if (brickHeigthMode != null && brickHeigthMode != EBrickHeightMode.STATIC)
+			brickHeigthMode = null;
+		if (brickWidthMode != null && brickWidthMode != EBrickWidthMode.STATIC)
+			brickWidthMode = null;
 		currentViewType = viewType;
 		LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
 
@@ -569,8 +578,15 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		brickLayout.viewTypeChanged(viewType);
 
-		if (viewType.isUseProportionalHeight())
-			brickHeigthMode = EBrickHeightMode.PROPORTIONAL;
+		// if no height mode was set we use proportioanl if available, else
+		// view-dependent
+		if (brickHeigthMode == null) {
+			if (viewType.isUseProportionalHeight())
+				brickHeigthMode = EBrickHeightMode.PROPORTIONAL;
+			else
+				brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+		}
+
 		switch (brickHeigthMode) {
 		case STATIC:
 			wrappingLayout.setPixelSizeY(staticBrickHeight);
@@ -579,7 +595,6 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
 			wrappingLayout.setPixelSizeY(defaultHeightPixels);
 			break;
-
 		case PROPORTIONAL:
 			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
 					* dataContainer.getNrRecords();
@@ -588,6 +603,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		}
 
+		if (brickWidthMode == null)
+			brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
 		switch (brickWidthMode) {
 		case STATIC:
 			wrappingLayout.setPixelSizeX(staticBrickWidth);
