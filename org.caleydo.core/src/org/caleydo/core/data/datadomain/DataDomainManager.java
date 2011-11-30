@@ -174,8 +174,8 @@ public class DataDomainManager {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
 
-		Color color = ColorManager.get().getFirstMarkedColorOfList(ColorManager.DATA_DOMAIN_COLORS, false);
-		ColorManager.get().markColor(ColorManager.DATA_DOMAIN_COLORS, color, true);
+		Color color = ColorManager.get().getFirstMarkedColorOfList(ColorManager.QUALITATIVE_COLORS, false);
+		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
 		dataDomain.setColor(color);
 
 		dataDomainGraph.addDataDomain(dataDomain);
@@ -200,7 +200,7 @@ public class DataDomainManager {
 		}
 
 		Color color = dataDomain.getColor();
-		ColorManager.get().markColor(ColorManager.DATA_DOMAIN_COLORS, color, false);
+		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, false);
 
 		dataDomainGraph.removeDataDomain(dataDomain);
 	}

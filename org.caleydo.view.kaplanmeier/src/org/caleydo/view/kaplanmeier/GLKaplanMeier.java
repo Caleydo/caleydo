@@ -13,6 +13,8 @@ import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.Color;
+import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -77,15 +79,6 @@ public class GLKaplanMeier
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
 
-		// // Register keyboard listener to GL2 canvas
-		// glParentView.getParentComposite().getDisplay().asyncExec(new
-		// Runnable() {
-		// @Override
-		// public void run() {
-		// glParentView.getParentComposite().addKeyListener(glKeyListener);
-		// }
-		// });
-
 		this.glMouseListener = glMouseListener;
 
 		init(gl);
@@ -98,7 +91,6 @@ public class GLKaplanMeier
 		if (busyState != EBusyState.OFF) {
 			renderBusyMode(gl);
 		}
-
 	}
 
 	@Override
@@ -121,13 +113,25 @@ public class GLKaplanMeier
 		// do not fill curve if multiple curves are rendered in this plot
 		fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
 
+		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
 		for (Group group : recordVA.getGroupList()) {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
-			renderSingleKaplanMeierCurve(gl, recordIDs);
+
+			int colorIndex = 0;
+			if (dataContainer.getRecordGroup() != null)
+				colorIndex = dataContainer.getRecordGroup().getGroupIndex();
+			else
+				colorIndex = group.getGroupIndex();
+
+			// We only have 10 colors in the diverging color map
+			colorIndex = colorIndex % 10;
+
+			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex));
 		}
 	}
 
-	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs) {
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color) {
+
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
 
@@ -148,21 +152,28 @@ public class GLKaplanMeier
 		// move sorted data back to array list so that we can use it as a stack
 		for (int index = 0; index < recordIDs.size(); index++) {
 			dataVector.add(sortedDataVector[index]);
-		}		
+		}
 
 		gl.glLineWidth(1);
 		if (fillCurve) {
+			
+			// We cannot use transparency here because of artefacts. Hence, we need
+			// to brighten the color by multiplying it with a factor
+			gl.glColor3f(color.r * 1.3f, color.g * 1.3f, color.b * 1.3f);
 			drawFilledCurve(gl, dataVector);
 
 			dataVector.clear();
-			// move sorted data back to array list so that we can use it as a stack
+			// move sorted data back to array list so that we can use it as a
+			// stack
 			for (int index = 0; index < recordIDs.size(); index++) {
 				dataVector.add(sortedDataVector[index]);
 			}
-			
+
+			gl.glColor3fv(color.getRGB(), 0);
 			drawCurve(gl, dataVector);
 		}
 		else {
+			gl.glColor3fv(color.getRGB(), 0);
 			drawCurve(gl, dataVector);
 		}
 	}
@@ -177,10 +188,6 @@ public class GLKaplanMeier
 
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = viewFrustum.getHeight() / dataVector.size();
-
-		gl.glColor3f(0.8f, 1, 0.8f);
-
-		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
 
 		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
 
@@ -198,7 +205,7 @@ public class GLKaplanMeier
 			gl.glVertex3f(0, y, 0);
 			gl.glEnd();
 		}
-	
+
 	}
 
 	private void drawCurve(GL2 gl, ArrayList<Float> dataVector) {
@@ -212,7 +219,6 @@ public class GLKaplanMeier
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = viewFrustum.getHeight() / dataVector.size();
 
-		gl.glColor3f(0f, 1, 0f);
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
 
