@@ -594,6 +594,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (detailLevel == DetailLevel.VERY_LOW) {
 			return;
 		}
+		
+		// FIXME: we do not handle picking events in pathways for visbricks release
+		if (true)
+			return;
 
 		switch (pickingType) {
 		case PATHWAY_ELEMENT_SELECTION:
