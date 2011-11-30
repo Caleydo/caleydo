@@ -488,14 +488,14 @@ public class DimensionGroup
 				mainRow.append(detailBrickLayout);
 				mainRow.append(overviewDetailGapLayout);
 				mainRow.append(mainColumn);
-				visBricks.switchToDetailModeRight(this);
+				visBricks.switchToDetailModeLeft(this);
 
 			}
 			else {
 				mainRow.append(mainColumn);
 				mainRow.append(overviewDetailGapLayout);
 				mainRow.append(detailBrickLayout);
-				visBricks.switchToDetailModeLeft(this);
+				visBricks.switchToDetailModeRight(this);
 			}
 
 			mainRow.updateSubLayout();
@@ -519,10 +519,10 @@ public class DimensionGroup
 			isDetailBrickShown = false;
 
 			if (hideDetailBrick && expandLeft) {
-				visBricks.switchToOverviewModeRight();
+				visBricks.switchToOverviewModeLeft();
 			}
 			if (hideDetailBrick && !expandLeft) {
-				visBricks.switchToOverviewModeLeft();
+				visBricks.switchToOverviewModeRight();
 			}
 
 			hideDetailBrick = false;

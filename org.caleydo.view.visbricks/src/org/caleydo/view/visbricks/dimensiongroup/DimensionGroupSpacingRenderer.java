@@ -29,17 +29,31 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
+/**
+ * 
+ * Renders the connection band between the dimension groups.
+ * 
+ * FIXME: Improve documentation
+ * 
+ * @author Marc Streit
+ * @author Alexander Lex
+ * 
+ */
 public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDropArea {
+
+	public static float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };
 
 	private int ID;
 
-	private boolean renderDragAndDropSpacer = false;
+	private boolean renderDragAndDropMarker = false;
 
 	private boolean isVertical = true;
 
 	private float lineLength = 0;
 
+	/** The DimensionGroup left of the spacer */
 	private DimensionGroup leftDimGroup;
+	/** The DimensionGroup right of the spacer */
 	private DimensionGroup rightDimGroup;
 
 	private RelationAnalyzer relationAnalyzer;
@@ -263,9 +277,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	private void renderDragAndDropMarker(GL2 gl) {
 
-		// Render drag and drop marker
-		if (renderDragAndDropSpacer) {
-			gl.glColor4f(1, 0, 0, 1);
+		if (renderDragAndDropMarker) {
+			gl.glColor3fv(DRAG_AND_DROP_MARKER_COLOR, 0);
 			gl.glLineWidth(3);
 
 			gl.glBegin(GL2.GL_LINES);
@@ -278,9 +291,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			}
 			gl.glEnd();
 
-			System.out.println("spacer line");
-
-			renderDragAndDropSpacer = false;
+			renderDragAndDropMarker = false;
 		}
 	}
 
@@ -358,11 +369,10 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			rightCenterBrickTop = layout.getTranslateY() + layout.getSizeScaledY();
 
 			if (!rightDimGroup.isDetailBrickShown())
-
 				xEnd = x + rightCenterBrick.getLayout().getTranslateX()
 						- rightDimGroup.getLayout().getTranslateX();
 			else
-				xEnd = x + rightCenterBrick.getLayout().getTranslateX();
+				xEnd = rightCenterBrick.getLayout().getTranslateX();
 
 			// Render straight band connection from center brick to dimension
 			// group on
@@ -376,7 +386,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						rightCenterBrickBottom, 0 }, new float[] { xEnd,
 						rightCenterBrickTop, 0 }, new float[] { xEnd,
 						rightCenterBrickBottom, 0 }, false, curveOffset, 0, new float[] {
-						0, 0, 0 }, 0.2f);
+						1, 0, 0 }, 0.2f);
 				// gl.glPopMatrix();
 			}
 
@@ -574,7 +584,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	}
 
 	public void setRenderSpacer(boolean renderSpacer) {
-		this.renderDragAndDropSpacer = renderSpacer;
+		this.renderDragAndDropMarker = renderSpacer;
 	}
 
 	public void setVertical(boolean isVertical) {

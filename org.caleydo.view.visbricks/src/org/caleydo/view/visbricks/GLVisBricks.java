@@ -75,10 +75,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLVisBricks
-	extends AGLView
-	implements IDataContainerBasedView, IGLRemoteRenderingView, IViewCommandHandler,
-	ISelectionUpdateHandler {
+public class GLVisBricks extends AGLView implements IDataContainerBasedView,
+		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
 
 	public final static class PickingTypes {
 		public final static String DIMENSION_GROUP = "DIMENSION_GROUP";
@@ -124,7 +122,9 @@ public class GLVisBricks
 
 	boolean isLayoutDirty = false;
 
+	/** Flag telling whether a detail is shown left of its dimension group */
 	private boolean isLeftDetailShown = false;
+	/** Same as {@link #isLeftDetailShown} for right */
 	private boolean isRightDetailShown = false;
 
 	private Queue<DimensionGroup> uninitializedDimensionGroups = new LinkedList<DimensionGroup>();
@@ -180,7 +180,8 @@ public class GLVisBricks
 	 * Constructor.
 	 * 
 	 */
-	public GLVisBricks(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLVisBricks(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -239,8 +240,8 @@ public class GLVisBricks
 	}
 
 	private void initRightLayout() {
-		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
-				archSideThickness, 0, archBottomY, 0, 1);
+		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
+				0, archSideThickness, 0, archBottomY, 0, 1);
 		rightColumnLayout = new Column("rightArchColumn");
 		rightLayoutManager = new LayoutManager(rightArchFrustum, pixelGLConverter);
 		initSideLayout(rightColumnLayout, rightLayoutManager,
@@ -260,10 +261,9 @@ public class GLVisBricks
 	private void initCenterLayout() {
 
 		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
-		if (isLeftDetailShown || isRightDetailShown) {
+		if (isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
-		}
-		else {
+		} else {
 			archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 		}
 
@@ -293,11 +293,10 @@ public class GLVisBricks
 		if (dimensionGroupCountInCenter < 1) {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
-		}
-		else {
+		} else {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
-					connectionRenderer, null, dimensionGroupManager.getDimensionGroups().get(
-							dimensionGroupManager.getCenterGroupStartIndex()), this);
+					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
+							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
 		}
 
 		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -325,20 +324,21 @@ public class GLVisBricks
 			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
 				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
-						relationAnalyzer, connectionRenderer, group, dimensionGroupManager
-								.getDimensionGroups().get(dimensionGroupIndex + 1), this);
+						relationAnalyzer, connectionRenderer, group,
+						dimensionGroupManager.getDimensionGroups().get(
+								dimensionGroupIndex + 1), this);
 				dynamicDimensionGroupSpacing.setGrabX(true);
 				dynamicDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 				centerRowLayout.append(dynamicDimensionGroupSpacing);
 
-			}
-			else {
+			} else {
 				rightDimensionGroupSpacing = new ElementLayout("lastDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 						connectionRenderer, group, null, this);
 
 				if (dimensionGroupCountInCenter > 1)
-					rightDimensionGroupSpacing.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
+					rightDimensionGroupSpacing
+							.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
 				else
 					rightDimensionGroupSpacing.setGrabX(true);
 
@@ -350,8 +350,8 @@ public class GLVisBricks
 			dimensionGroupSpacingRenderer.setLineLength(archHeight);
 		}
 
-		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
-				centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
+		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
+				0, centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
 		centerLayoutManager = new LayoutManager(centerArchFrustum, pixelGLConverter);
 		centerLayoutManager.setBaseElementLayout(centerRowLayout);
 
@@ -389,11 +389,10 @@ public class GLVisBricks
 		if (dimensinoGroupStartIndex == 0) {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
-		}
-		else {
+		} else {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
-					connectionRenderer, null, dimensionGroupManager.getDimensionGroups().get(
-							dimensionGroupManager.getCenterGroupStartIndex()), this);
+					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
+							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
 		}
 
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -458,12 +457,9 @@ public class GLVisBricks
 		if (!uninitializedDimensionGroups.isEmpty()) {
 			while (uninitializedDimensionGroups.peek() != null) {
 				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
-
 			}
-
 			initLayouts();
 		}
-
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -507,7 +503,6 @@ public class GLVisBricks
 		}
 
 		if (resizeNecessary) {
-
 			int size = centerRowLayout.size();
 			if (size >= 3) {
 				if (lastResizeDirectionWasToLeft) {
@@ -522,15 +517,14 @@ public class GLVisBricks
 					leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
 
 					leftDimensionGroupSpacing.setAbsoluteSizeX(width);
-					((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing.getRenderer())
-							.setLeftDimGroup(null);
+					((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
+							.getRenderer()).setLeftDimGroup(null);
 					initLeftLayout();
 
 					// if (size == 3)
 					// leftDimensionGroupSpacing.setGrabX(true);
 
-				}
-				else {
+				} else {
 					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
 							.getRightGroupStartIndex() - 1);
 
@@ -546,8 +540,8 @@ public class GLVisBricks
 							centerRowLayout.size() - 1);
 					// rightDimensionGroupSpacing.setAbsoluteSizeX(width);
 					rightDimensionGroupSpacing.setGrabX(true);
-					((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing.getRenderer())
-							.setRightDimGroup(null);
+					((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
+							.getRenderer()).setRightDimGroup(null);
 					initRightLayout();
 
 					// if (size == 3)
@@ -570,11 +564,11 @@ public class GLVisBricks
 			dimensionGroup.display(gl);
 		}
 
-		if (!isLeftDetailShown && !isRightDetailShown) {
+		if (!isRightDetailShown && !isLeftDetailShown) {
 			renderArch(gl);
 		}
 
-		if (!isLeftDetailShown && !isRightDetailShown) {
+		if (!isRightDetailShown && !isLeftDetailShown) {
 			leftLayoutManager.render(gl);
 		}
 
@@ -582,8 +576,9 @@ public class GLVisBricks
 		centerLayoutManager.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
 
-		if (!isLeftDetailShown && !isRightDetailShown) {
-			float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT) * viewFrustum.getWidth();
+		if (!isRightDetailShown && !isLeftDetailShown) {
+			float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT)
+					* viewFrustum.getWidth();
 			gl.glTranslatef(rightArchStand, 0, 0);
 			rightLayoutManager.render(gl);
 			gl.glTranslatef(-rightArchStand, 0, 0);
@@ -596,27 +591,26 @@ public class GLVisBricks
 		dragAndDropController.handleDragging(gl, glMouseListener);
 	}
 
-	public void switchToDetailModeLeft(DimensionGroup leftDimGr) {
+	/**
+	 * Switches to detail mode where the detail brick is on the right side of
+	 * the specified dimension group
+	 */
+	public void switchToDetailModeRight(DimensionGroup dimensionGroup) {
 
-		int leftIndex = dimensionGroupManager.indexOfDimensionGroup(leftDimGr);
+		int dimensionGroupIndex = dimensionGroupManager
+				.indexOfDimensionGroup(dimensionGroup);
+		// false only if this is the rightmost DimensionGroup. If true we move
+		// anything beyond the next dimension group out
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
+			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 2);
 
-		dimensionGroupManager.setCenterGroupStartIndex(leftIndex);
-		dimensionGroupManager.setRightGroupStartIndex(leftIndex + 2);
+		}
+		// false only if this is the leftmost DimensionGroup. If true we move
+		// anything further left out
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex()) {
+			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex);
 
-		isLeftDetailShown = true;
-
-		initLeftLayout();
-		initCenterLayout();
-		initRightLayout();
-	}
-
-	public void switchToDetailModeRight(DimensionGroup rightDimGr) {
-
-		int rightIndex = dimensionGroupManager.indexOfDimensionGroup(rightDimGr);
-
-		dimensionGroupManager.setCenterGroupStartIndex(rightIndex - 1);
-		dimensionGroupManager.setRightGroupStartIndex(rightIndex + 1);
-
+		}
 		isRightDetailShown = true;
 
 		initLeftLayout();
@@ -624,15 +618,46 @@ public class GLVisBricks
 		initRightLayout();
 	}
 
-	public void switchToOverviewModeLeft() {
-		isLeftDetailShown = false;
+	/**
+	 * Switches to detail mode where the detail brick is on the left side of the
+	 * specified dimension group
+	 */
+	public void switchToDetailModeLeft(DimensionGroup dimensionGroup) {
+
+		int dimensionGroupIndex = dimensionGroupManager
+				.indexOfDimensionGroup(dimensionGroup);
+
+		// false only if this is the left-most dimension group. If true we move
+		// out everything right of this dimension group
+		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
+			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
+		}
+		// false only if this is the right-most dimension group
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex()) {
+			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
+		}
+		isLeftDetailShown = true;
+
 		initLeftLayout();
 		initCenterLayout();
 		initRightLayout();
 	}
 
+	/**
+	 * Hide the detail brick which is shown right of its parent dimension group
+	 */
 	public void switchToOverviewModeRight() {
 		isRightDetailShown = false;
+		initLeftLayout();
+		initCenterLayout();
+		initRightLayout();
+	}
+
+	/**
+	 * Hide the detail brich which is shown left of its parent dimension group
+	 */
+	public void switchToOverviewModeLeft() {
+		isLeftDetailShown = false;
 		initLeftLayout();
 		initCenterLayout();
 		initRightLayout();
@@ -726,17 +751,20 @@ public class GLVisBricks
 		inputPoints.clear();
 		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archBottomY, 0));
 		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archTopY, 0));
-		inputPoints
-				.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth * 0.9f, archTopY, 0));
+		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth * 0.9f,
+				archTopY, 0));
 
 		curve = new NURBSCurve(inputPoints, 10);
 		outputPointsTop.clear();
 		outputPointsTop = curve.getCurvePoints();
-		outputPointsTop.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0));
+		outputPointsTop.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY,
+				0));
 
 		inputPoints.clear();
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness, archBottomY, 0));
+		inputPoints
+				.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
+		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness,
+				archBottomY, 0));
 		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness,
 				archBottomY * 0.8f, 0));
 
@@ -749,7 +777,8 @@ public class GLVisBricks
 		outputPoints.clear();
 
 		outputPoints.addAll(outputPointsTop);
-		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
+		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
+				0));
 		outputPoints.addAll(outputPointsBottom);
 
 		// connectionRenderer.render(gl, outputPoints);
@@ -771,7 +800,8 @@ public class GLVisBricks
 		gl.glEnd();
 
 		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY * 0.8f, 0.01f);
+		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY * 0.8f,
+				0.01f);
 		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0.1f);
 		gl.glEnd();
 	}
@@ -794,7 +824,8 @@ public class GLVisBricks
 		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
 
 		if (Float.isNaN(previousXCoordinate)) {
 			previousXCoordinate = pointCordinates[0];
@@ -838,8 +869,7 @@ public class GLVisBricks
 				if (count < centerRowLayout.size() - 1) {
 					layout.setGrabX(false);
 					layout.setAbsoluteSizeX(layout.getSizeScaledX());
-				}
-				else
+				} else
 					layout.setGrabX(true);
 			}
 			count++;
@@ -856,8 +886,7 @@ public class GLVisBricks
 		if (change > 0) {
 			if (rightSizeX - change > minWidth) {
 				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
-			}
-			else {
+			} else {
 				rightSpacing.setAbsoluteSizeX(minWidth);
 				float savedSize = rightSizeX - minWidth;
 				float remainingChange = change - savedSize;
@@ -869,10 +898,10 @@ public class GLVisBricks
 					rightIndex += 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
 					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() - remainingChange);
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
+								- remainingChange);
 						remainingChange = -1;
-					}
-					else {
+					} else {
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange -= savedSize;
 						if (rightIndex == centerRowLayout.size() - 1)
@@ -883,13 +912,11 @@ public class GLVisBricks
 				}
 			}
 			leftSpacing.setAbsoluteSizeX(leftSizeX + change);
-		}
-		else {
+		} else {
 
 			if (leftSizeX + change > minWidth) {
 				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
-			}
-			else {
+			} else {
 				leftSpacing.setAbsoluteSizeX(minWidth);
 				float savedSize = leftSizeX - minWidth;
 				float remainingChange = change + savedSize;
@@ -901,10 +928,10 @@ public class GLVisBricks
 					leftIndex -= 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(leftIndex);
 					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() + remainingChange);
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
+								+ remainingChange);
 						remainingChange = 1;
-					}
-					else {
+					} else {
 						savedSize = spacing.getSizeScaledX() + minWidth;
 						remainingChange += savedSize;
 						if (leftIndex == 0)
@@ -999,7 +1026,8 @@ public class GLVisBricks
 
 		trendHighlightModeListener = new ConnectionsModeListener();
 		trendHighlightModeListener.setHandler(this);
-		eventPublisher.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
+		eventPublisher
+				.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
 
 	}
 
@@ -1076,8 +1104,9 @@ public class GLVisBricks
 	 * </p>
 	 * 
 	 * @param newDataContainers
-	 * @param brickConfigurer The brick configurer can be specificed externally
-	 *            (e.g., pathways, kaplan meier). If null, the
+	 * @param brickConfigurer
+	 *            The brick configurer can be specificed externally (e.g.,
+	 *            pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
 	public void addDimensionGroups(List<DataContainer> newDataContainers,
@@ -1095,7 +1124,8 @@ public class GLVisBricks
 			imprintVisBricks(dataDomain);
 		}
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager.getDimensionGroups();
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
+				.getDimensionGroups();
 
 		for (DataContainer data : newDataContainers) {
 			if (!data.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
@@ -1122,8 +1152,8 @@ public class GLVisBricks
 								DimensionGroup.class,
 								getParentGLCanvas(),
 								parentComposite,
-								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-										-1, 1));
+								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1,
+										0, 1, -1, 1));
 
 				/**
 				 * If no brick configurer was specified in the
@@ -1164,8 +1194,8 @@ public class GLVisBricks
 	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
 		recordIDCategory = dataDomain.getRecordIDCategory();
 		IDType mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
-		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry.get()
-				.getIDMappingManager(recordIDCategory), mappingRecordIDType);
+		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry
+				.get().getIDMappingManager(recordIDCategory), mappingRecordIDType);
 	}
 
 	@Override
@@ -1192,7 +1222,8 @@ public class GLVisBricks
 
 		boolean insertComplete = false;
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager.getDimensionGroups();
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
+				.getDimensionGroups();
 		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
 			if (spacer == leftLayout.getRenderer()) {
 
@@ -1202,8 +1233,7 @@ public class GLVisBricks
 				dimensionGroups.remove(movedDimGroup);
 				if (referenceDimGroup == null) {
 					dimensionGroups.add(0, movedDimGroup);
-				}
-				else {
+				} else {
 					dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup),
 							movedDimGroup);
 				}
@@ -1223,9 +1253,9 @@ public class GLVisBricks
 					dimensionGroups.remove(movedDimGroup);
 					if (referenceDimGroup == null) {
 						dimensionGroups.add(dimensionGroups.size(), movedDimGroup);
-					}
-					else {
-						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup) + 1,
+					} else {
+						dimensionGroups.add(
+								dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
 					}
 
@@ -1241,21 +1271,24 @@ public class GLVisBricks
 
 					if (dimensionGroups.indexOf(movedDimGroup) < dimensionGroupManager
 							.getCenterGroupStartIndex())
-						dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
-								.getCenterGroupStartIndex() - 1);
+						dimensionGroupManager
+								.setCenterGroupStartIndex(dimensionGroupManager
+										.getCenterGroupStartIndex() - 1);
 					else if (dimensionGroups.indexOf(movedDimGroup) >= dimensionGroupManager
 							.getRightGroupStartIndex())
-						dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
-								.getRightGroupStartIndex() + 1);
+						dimensionGroupManager
+								.setRightGroupStartIndex(dimensionGroupManager
+										.getRightGroupStartIndex() + 1);
 
 					dimensionGroups.remove(movedDimGroup);
 					if (referenceDimGroup == null) {
-						dimensionGroups.add(dimensionGroupManager.getCenterGroupStartIndex(),
+						dimensionGroups.add(
+								dimensionGroupManager.getCenterGroupStartIndex(),
 								movedDimGroup);
-					}
-					else {
+					} else {
 
-						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup) + 1,
+						dimensionGroups.add(
+								dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
 
 					}
@@ -1277,17 +1310,20 @@ public class GLVisBricks
 		// Clear previous spacer highlights
 		for (ElementLayout element : centerRowLayout.getElements()) {
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : leftColumnLayout.getElements()) {
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : rightColumnLayout.getElements()) {
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer())
+						.setRenderSpacer(false);
 		}
 	}
 
@@ -1394,7 +1430,8 @@ public class GLVisBricks
 				volatieBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA.get(connectionBandID);
+		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA
+				.get(connectionBandID);
 		for (Integer recordID : recordVA) {
 			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
 					recordVA.getIdType(), recordID);
