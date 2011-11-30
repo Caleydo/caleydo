@@ -105,7 +105,25 @@ public abstract class ADataContainerMatrixRenderingStrategy
 	
 	public float[] getPerspectiveColor()
 	{
-		// TODO Auto-generated method stub
-		return matrixRenderer.dataDomain.getColor().getRGBA();
+		return new float[] { 0.7f, 0.7f, 0.7f, 1f };
+//		return matrixRenderer.dataDomain.getColor().getRGBA();
+	}
+	
+	protected void pushPickingIDs(GL2 gl, AGLView view,
+			List<Pair<String, Integer>> pickingIDsToBePushed)
+	{
+		for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed)
+		{
+			gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+					pickingIDPair.getFirst(), pickingIDPair.getSecond()));
+		}
+	}
+
+	protected void popPickingIDs(GL2 gl, List<Pair<String, Integer>> pickingIDsToBePushed)
+	{
+		for (int k = 0; k < pickingIDsToBePushed.size(); k++)
+		{
+			gl.glPopName();
+		}
 	}
 }

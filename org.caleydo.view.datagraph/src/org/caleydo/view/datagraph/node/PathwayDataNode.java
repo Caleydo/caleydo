@@ -2,7 +2,6 @@ package org.caleydo.view.datagraph.node;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -16,14 +15,16 @@ import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
-public class PathwayDataNode extends ADataNode {
+public class PathwayDataNode
+	extends ADataNode
+{
 
 	private ADataContainerRenderer dataContainerRenderer;
 	private PathwayDataDomain dataDomain;
 
 	public PathwayDataNode(AGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, Integer id,
-			IDataDomain dataDomain) {
+			DragAndDropController dragAndDropController, Integer id, IDataDomain dataDomain)
+	{
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
 		dataContainerRenderer = new DataContainerListRenderer(this, view,
@@ -32,7 +33,8 @@ public class PathwayDataNode extends ADataNode {
 	}
 
 	@Override
-	public ElementLayout setupLayout() {
+	public ElementLayout setupLayout()
+	{
 
 		Row baseRow = createDefaultBaseRow(dataDomain.getColor().getRGBA(), getID());
 
@@ -51,7 +53,8 @@ public class PathwayDataNode extends ADataNode {
 
 		Row bodyRow = new Row("bodyRow");
 
-		if (getDataContainers().size() > 0) {
+		if (getDataContainers().size() > 0)
+		{
 			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
 
@@ -82,27 +85,42 @@ public class PathwayDataNode extends ADataNode {
 	}
 
 	@Override
-	public void update() {
+	public void update()
+	{
 		dataContainerRenderer.setDataContainers(getDataContainers());
 	}
 
 	@Override
-	public void destroy() {
+	public void destroy()
+	{
 		dataContainerRenderer.destroy();
 	}
 
 	@Override
-	protected ADataContainerRenderer getDataContainerRenderer() {
+	protected ADataContainerRenderer getDataContainerRenderer()
+	{
 		return dataContainerRenderer;
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<DataContainer> getDataContainers()
+	{
 
 		// FIXME: not clear what we want here
 		return new ArrayList<DataContainer>();
 
 		// return new ArrayList<DataContainer>(dataDomain.get);
+	}
+
+	@Override
+	protected int getMinTitleBarWidthPixels()
+	{
+
+		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(dataDomain.getLabel(),
+				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
+				MIN_TITLE_BAR_WIDTH_PIXELS);
+
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth);
 	}
 
 }

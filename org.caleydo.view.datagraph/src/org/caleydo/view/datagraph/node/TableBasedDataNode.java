@@ -468,4 +468,16 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		// }
 
 	}
+	
+	@Override
+	protected int getMinTitleBarWidthPixels()
+	{
+		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
+				dataDomain.getLabel(),
+				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
+				MIN_TITLE_BAR_WIDTH_PIXELS);
+
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
+				+ SPACING_PIXELS;
+	}
 }

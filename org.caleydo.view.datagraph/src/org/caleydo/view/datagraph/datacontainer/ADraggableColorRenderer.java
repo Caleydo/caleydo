@@ -33,7 +33,7 @@ public abstract class ADraggableColorRenderer
 //		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		gl.glPushMatrix();
-		gl.glTranslatef(0, 0, 0.1f);
+		gl.glTranslatef(0, 0, 0);
 		super.render(gl);
 		gl.glPopMatrix();
 

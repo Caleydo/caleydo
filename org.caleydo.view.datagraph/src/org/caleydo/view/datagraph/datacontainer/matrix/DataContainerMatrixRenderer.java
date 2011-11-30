@@ -263,6 +263,7 @@ public class DataContainerMatrixRenderer
 				}
 
 				// graphLayout.updateNodePositions();
+				view.getGraphLayout().updateNodePositions();
 				view.setDisplayListDirty();
 
 			}
@@ -288,6 +289,28 @@ public class DataContainerMatrixRenderer
 			}
 			
 			@Override
+			public void dragged(Pick pick) {
+				if (!dragAndDropController.isDragging()) {
+					dragAndDropController.startDragging("PerspectiveDrag");
+				}
+			}
+			
+			private PerspectiveRenderer getPerspectiveRenderer(int id) {
+				CellContainer container = getCellContainerWithHashID(id);
+
+				if (container == null)
+					return null;
+				
+				return perspectiveRenderers.get(container.id);
+				
+			}
+			
+		}, PickingType.PERSPECTIVE.name() + node.getID());
+		
+		view.addTypePickingListener(new APickingListener()
+		{
+		
+			@Override
 			public void mouseOver(Pick pick) {
 				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getID());
 						if (perspectiveRenderer == null)
@@ -308,12 +331,6 @@ public class DataContainerMatrixRenderer
 				view.setDisplayListDirty();
 			}
 			
-			@Override
-			public void dragged(Pick pick) {
-				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging("PerspectiveDrag");
-				}
-			}
 			
 			private PerspectiveRenderer getPerspectiveRenderer(int id) {
 				CellContainer container = getCellContainerWithHashID(id);
@@ -325,7 +342,7 @@ public class DataContainerMatrixRenderer
 				
 			}
 			
-		}, PickingType.PERSPECTIVE.name() + node.getID());
+		}, PickingType.PERSPECTIVE_PENETRATING.name() + node.getID());
 
 	}
 
@@ -608,6 +625,7 @@ public class DataContainerMatrixRenderer
 		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name() + node.getID());
 		view.removeAllTypePickingListeners(PickingType.COLLAPSE_BUTTON.name() + node.getID());
 		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE.name() + node.getID());
+		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE_PENETRATING.name() + node.getID());
 
 	}
 

@@ -29,7 +29,8 @@ public abstract class ADefaultTemplateNode
 	protected final static int CAPTION_HEIGHT_PIXELS = 16;
 	protected final static int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected final static int MIN_DATA_CONTAINER_HEIGHT_PIXELS = 32;
-	protected final static int MIN_DATA_CONTAINER_WIDTH_PIXELS = 180;
+	protected final static int MIN_TITLE_BAR_WIDTH_PIXELS = 100;
+	protected final static int BOUNDING_BOX_SPACING_PIXELS = 40;
 
 	protected LayoutManager layoutManager;
 	protected boolean isUpsideDown = false;
@@ -237,7 +238,7 @@ public abstract class ADefaultTemplateNode
 	{
 		return 2
 				* SPACING_PIXELS
-				+ Math.max(MIN_DATA_CONTAINER_WIDTH_PIXELS,
+				+ Math.max(getMinTitleBarWidthPixels(),
 						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
 								.getMinWidthPixels()));
 		// return layout.getWidthPixels();
@@ -325,17 +326,31 @@ public abstract class ADefaultTemplateNode
 		gl.glPopMatrix();
 		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
 
+//		Rectangle2D boundingBox = getBoundingBox();
+//
+//		gl.glColor3f(1, 0, 1);
+//		gl.glBegin(GL2.GL_LINE_LOOP);
+//		gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
+//		gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
+//		gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
+//		gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
+//		gl.glEnd();
+
 	}
 
 	@Override
 	public Rectangle2D getBoundingBox()
 	{
-
+		float boundingBoxSpacingX = pixelGLConverter
+				.getGLWidthForPixelWidth(BOUNDING_BOX_SPACING_PIXELS);
+		float boundingBoxSpacingY = pixelGLConverter
+				.getGLHeightForPixelHeight(BOUNDING_BOX_SPACING_PIXELS);
 		Point2D position = getPosition();
-		double x = position.getX() - getWidth() / 2 - 0.2;
-		double y = position.getY() - getHeight() / 2 - 0.2;
+		double x = position.getX() - getWidth() / 2 - boundingBoxSpacingX;
+		double y = position.getY() - getHeight() / 2 - boundingBoxSpacingY;
 
-		return new Rectangle2D.Double(x, y, getWidth() + 0.4, getHeight() + 0.4);
+		return new Rectangle2D.Double(x, y, getWidth() + 2 * boundingBoxSpacingX, getHeight()
+				+ 2 * boundingBoxSpacingY);
 	}
 
 	@Override
@@ -359,8 +374,51 @@ public abstract class ADefaultTemplateNode
 		}
 	}
 
+	public float getSpacingX(IDataGraphNode node)
+	{
+
+		IDataGraphNode leftNode = null;
+		IDataGraphNode rightNode = null;
+
+		if (getPosition().getX() < node.getPosition().getX())
+		{
+			leftNode = this;
+			rightNode = node;
+		}
+		else
+		{
+			leftNode = node;
+			rightNode = this;
+		}
+
+		return (float) ((rightNode.getPosition().getX() - rightNode.getWidth() / 2.0f) - (leftNode
+				.getPosition().getX() + leftNode.getWidth() / 2.0f));
+	}
+
+	public float getSpacingY(IDataGraphNode node)
+	{
+		IDataGraphNode topNode = null;
+		IDataGraphNode bottomNode = null;
+
+		if (getPosition().getY() < node.getPosition().getY())
+		{
+			topNode = this;
+			bottomNode = node;
+		}
+		else
+		{
+			topNode = node;
+			bottomNode = this;
+		}
+
+		return (float) ((topNode.getPosition().getY() - topNode.getHeight() / 2.0f) - (bottomNode
+				.getPosition().getY() + bottomNode.getHeight() / 2.0f));
+	}
+
 	protected abstract ElementLayout setupLayout();
 
 	protected abstract ADataContainerRenderer getDataContainerRenderer();
+
+	protected abstract int getMinTitleBarWidthPixels();
 
 }

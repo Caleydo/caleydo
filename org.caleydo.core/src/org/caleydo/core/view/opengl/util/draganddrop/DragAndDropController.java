@@ -102,6 +102,7 @@ public class DragAndDropController {
 						fArTargetWorldCoordinates[1], this);
 
 				}
+				clearDraggables();
 				draggingMode = null;
 				view.setDisplayListDirty();
 			}

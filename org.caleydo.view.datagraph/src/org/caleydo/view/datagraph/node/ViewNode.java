@@ -6,7 +6,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.IDataContainerBasedView;
@@ -31,7 +30,9 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
-public class ViewNode extends ADefaultTemplateNode {
+public class ViewNode
+	extends ADefaultTemplateNode
+{
 
 	// private DataContainerListRenderer overviewDataContainerRenderer;
 	protected AGLView representedView;
@@ -40,8 +41,8 @@ public class ViewNode extends ADefaultTemplateNode {
 	protected String iconPath;
 
 	public ViewNode(AGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, Integer id,
-			AGLView representedView) {
+			DragAndDropController dragAndDropController, Integer id, AGLView representedView)
+	{
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
@@ -51,18 +52,22 @@ public class ViewNode extends ADefaultTemplateNode {
 		setupLayout();
 	}
 
-	protected void registerPickingListeners() {
+	protected void registerPickingListeners()
+	{
 
-		view.addIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener()
+		{
 
 			@Override
-			public void rightClicked(Pick pick) {
+			public void rightClicked(Pick pick)
+			{
 				view.getContextMenuCreator().addContextMenuItem(
 						new OpenViewItem(representedView));
 			}
 
 			@Override
-			public void doubleClicked(Pick pick) {
+			public void doubleClicked(Pick pick)
+			{
 				view.openView(representedView);
 			}
 
@@ -70,7 +75,8 @@ public class ViewNode extends ADefaultTemplateNode {
 
 	}
 
-	private void setRepresentedViewInfo() {
+	private void setRepresentedViewInfo()
+	{
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 		IExtensionPoint point = registry.getExtensionPoint("org.eclipse.ui.views");
 		IExtension[] extensions = point.getExtensions();
@@ -79,10 +85,13 @@ public class ViewNode extends ADefaultTemplateNode {
 		iconPath = null;
 		boolean viewNameObtained = false;
 
-		for (IExtension extension : extensions) {
+		for (IExtension extension : extensions)
+		{
 			IConfigurationElement[] elements = extension.getConfigurationElements();
-			for (IConfigurationElement element : elements) {
-				if (element.getAttribute("id").equals(viewID)) {
+			for (IConfigurationElement element : elements)
+			{
+				if (element.getAttribute("id").equals(viewID))
+				{
 					viewName = representedView.getViewLabel();
 					// element.getAttribute("name");
 					iconPath = element.getAttribute("icon");
@@ -91,20 +100,26 @@ public class ViewNode extends ADefaultTemplateNode {
 
 				}
 			}
-			if (viewNameObtained) {
+			if (viewNameObtained)
+			{
 				break;
 			}
 		}
 
-		if (iconPath.equals("")) {
+		if (iconPath.equals(""))
+		{
 			iconPath = null;
 		}
-		if (iconPath != null) {
+		if (iconPath != null)
+		{
 			ClassLoader classLoader = representedView.getClass().getClassLoader();
 			URL url = classLoader.getResource(iconPath);
-			try {
+			try
+			{
 				url = FileLocator.resolve(url);
-			} catch (IOException e) {
+			}
+			catch (IOException e)
+			{
 				e.printStackTrace();
 			}
 			iconPath = new File(url.getFile()).getAbsolutePath();
@@ -112,7 +127,8 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	protected ElementLayout setupLayout() {
+	protected ElementLayout setupLayout()
+	{
 		Row baseRow = createDefaultBaseRow(BorderedAreaRenderer.DEFAULT_COLOR, id);
 
 		ElementLayout spacingLayoutX = createDefaultSpacingX();
@@ -126,12 +142,13 @@ public class ViewNode extends ADefaultTemplateNode {
 		Row titleRow = new Row("titleRow");
 		titleRow.setYDynamic(true);
 
-		if (iconPath != null) {
+		if (iconPath != null)
+		{
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath,
-					view.getTextureManager(), true));
+			iconLayout.setRenderer(new TextureRenderer(iconPath, view.getTextureManager(),
+					true));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -143,8 +160,8 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
-				1, 1 }, iconPath, view.getTextureManager(), true));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
+				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(), true));
 
 		bodyColumn = new Column("bodyColumn");
 
@@ -179,9 +196,11 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<DataContainer> getDataContainers()
+	{
 
-		if (representedView instanceof IDataContainerBasedView) {
+		if (representedView instanceof IDataContainerBasedView)
+		{
 			return ((IDataContainerBasedView) representedView).getDataContainers();
 			// DataContainer dataContainer = ((ATableBasedView) representedView)
 			// .getDataContainers();
@@ -197,20 +216,24 @@ public class ViewNode extends ADefaultTemplateNode {
 		// return new ArrayList<DataContainer>(groups);
 	}
 
-	public void setDataDomains(Set<IDataDomain> dataDomains) {
+	public void setDataDomains(Set<IDataDomain> dataDomains)
+	{
 		this.dataDomains = dataDomains;
 	}
 
-	public Set<IDataDomain> getDataDomains() {
+	public Set<IDataDomain> getDataDomains()
+	{
 		return dataDomains;
 	}
 
-	public AGLView getRepresentedView() {
+	public AGLView getRepresentedView()
+	{
 		return representedView;
 	}
 
 	@Override
-	public void update() {
+	public void update()
+	{
 		// if (representedView instanceof ATableBasedView) {
 		// overviewDataContainerRenderer
 		// .setDataContainers(new ArrayList<DataContainer>());
@@ -221,20 +244,35 @@ public class ViewNode extends ADefaultTemplateNode {
 	}
 
 	@Override
-	protected ADataContainerRenderer getDataContainerRenderer() {
+	protected ADataContainerRenderer getDataContainerRenderer()
+	{
 		return null;
 	}
 
 	@Override
-	public void destroy() {
+	public void destroy()
+	{
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override
-	public boolean showsDataContainers() {
+	public boolean showsDataContainers()
+	{
 		return false;
+	}
+
+	@Override
+	protected int getMinTitleBarWidthPixels()
+	{
+		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
+				representedView.getViewLabel(),
+				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
+				MIN_TITLE_BAR_WIDTH_PIXELS);
+
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
+				+ SPACING_PIXELS;
 	}
 
 }

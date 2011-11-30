@@ -1128,4 +1128,9 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	public Set<ViewNode> getViewNodes() {
 		return viewNodes;
 	}
+	
+	public AGraphLayout getGraphLayout()
+	{
+		return graphLayout;
+	}
 }

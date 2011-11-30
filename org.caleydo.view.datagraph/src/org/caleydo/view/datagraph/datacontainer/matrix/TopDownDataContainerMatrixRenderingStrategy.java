@@ -43,6 +43,10 @@ public class TopDownDataContainerMatrixRenderingStrategy
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
+		float[] perspectiveColor = getPerspectiveColor();
+		float[] groupColor = new float[] { perspectiveColor[0] + 0.1f,
+				perspectiveColor[1] + 0.1f, perspectiveColor[2] + 0.1f, 1f };
+
 		float captionColumnWidth = calcMaxTextWidth(rows, view);
 		float captionRowHeight = calcMaxTextWidth(columns, view);
 
@@ -92,15 +96,25 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			if (row.parentContainer == null)
 			{
 
-				gl.glColor3f(0.7f, 0.7f, 0.7f);
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0);
-				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX,
-						currentPositionY - rowHeight, 0);
-				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX,
-						currentPositionY, 0);
-				gl.glVertex3f(currentPositionX, currentPositionY, 0);
-				gl.glEnd();
+				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
+
+				gl.glPushMatrix();
+				gl.glTranslatef(currentPositionX, currentPositionY - rowHeight, 0.1f);
+				perspectiveRenderer.setLimits(captionColumnWidth + captionSpacingX, rowHeight);
+				Point2D absolutePosition = node
+						.getAbsolutPositionOfRelativeDataContainerRendererCoordinates(new Point2D.Float(
+								currentPositionX, currentPositionY - rowHeight));
+				perspectiveRenderer.setPosition(absolutePosition);
+				pushPickingIDs(gl, view, pickingIDsToBePushed);
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE.name() + node.getID(), row.id.hashCode()));
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), row.id.hashCode()));
+				perspectiveRenderer.render(gl);
+				popPickingIDs(gl, pickingIDsToBePushed);
+				gl.glPopName();
+				gl.glPopName();
+				gl.glPopMatrix();
 
 				if (row.childContainers != null && row.childContainers.size() > 1)
 				{
@@ -112,14 +126,17 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view, view.getTextureManager());
-
+					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
+					collapsePerspectiveButtonRenderer.addPickingID(
+							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+							row.id.hashCode());
 					collapsePerspectiveButtonRenderer.setLimits(captionSpacingX * 2,
 							captionSpacingX * 2);
 
 					gl.glPushMatrix();
 					gl.glTranslatef(
 							currentPositionX + pixelGLConverter.getGLWidthForPixelWidth(2),
-							currentPositionY - rowHeight / 2.0f - captionSpacingX, 0);
+							currentPositionY - rowHeight / 2.0f - captionSpacingX, 0.1f);
 					collapsePerspectiveButtonRenderer.render(gl);
 					gl.glPopMatrix();
 
@@ -133,22 +150,23 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 				childIndent = captionSpacingY * 2;
 
-				gl.glColor3f(0.8f, 0.8f, 0.8f);
+				gl.glColor4fv(groupColor, 0);
 
 				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX,
-						currentPositionY, 0);
+						currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX,
-						currentPositionY - rowHeight, 0);
-				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0);
+						currentPositionY - rowHeight, 0.1f);
+				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0.1f);
 
-				gl.glColor3f(0.7f, 0.7f, 0.7f);
+				gl.glColor4fv(perspectiveColor, 0);
 
-				gl.glVertex3f(currentPositionX, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + childIndent, currentPositionY - rowHeight, 0);
-				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY - rowHeight,
+						0.1f);
+				gl.glVertex3f(currentPositionX, currentPositionY - rowHeight, 0.1f);
 
 				gl.glEnd();
 			}
@@ -156,7 +174,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
 			textRenderer.renderTextInBounds(gl, row.caption, currentPositionX
-					+ captionSpacingX + parentIndent + childIndent, textPositionY, 0,
+					+ captionSpacingX + parentIndent + childIndent, textPositionY, 0.1f,
 					captionColumnWidth - childIndent - parentIndent - 2 * captionSpacingX,
 					textHeight);
 
@@ -169,8 +187,8 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			}
 			gl.glLineWidth(1);
 			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
-			gl.glVertex3f(x, currentPositionY, 0.1f);
+			gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.15f);
+			gl.glVertex3f(x, currentPositionY, 0.15f);
 			gl.glEnd();
 			gl.glPopAttrib();
 
@@ -198,17 +216,38 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			float childIndent = 0;
 			float parentIndent = 0;
 
-			gl.glColor3f(0.7f, 0.7f, 0.7f);
 			if (column.parentContainer == null)
 			{
+				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(column.id);
 
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, y - captionRowHeight - captionSpacingY, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, y - captionRowHeight
-						- captionSpacingY, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
-				gl.glVertex3f(currentPositionX, y, 0);
-				gl.glEnd();
+				gl.glPushMatrix();
+				gl.glTranslatef(currentPositionX, y - captionRowHeight - captionSpacingY, 0.1f);
+				perspectiveRenderer.setLimits(currentColumnWidth, captionRowHeight
+						+ captionSpacingY);
+				Point2D absolutePosition = node
+						.getAbsolutPositionOfRelativeDataContainerRendererCoordinates(new Point2D.Float(
+								currentPositionX, y - captionRowHeight - captionSpacingY));
+				perspectiveRenderer.setPosition(absolutePosition);
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE.name() + node.getID(), column.id.hashCode()));
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), column.id.hashCode()));
+				pushPickingIDs(gl, view, pickingIDsToBePushed);
+				perspectiveRenderer.render(gl);
+				popPickingIDs(gl, pickingIDsToBePushed);
+				gl.glPopName();
+				gl.glPopName();
+				gl.glPopMatrix();
+				// gl.glColor3f(0.7f, 0.7f, 0.7f);
+				// gl.glBegin(GL2.GL_QUADS);
+				// gl.glVertex3f(currentPositionX, y - captionRowHeight -
+				// captionSpacingY, 0);
+				// gl.glVertex3f(currentPositionX + currentColumnWidth, y -
+				// captionRowHeight
+				// - captionSpacingY, 0);
+				// gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
+				// gl.glVertex3f(currentPositionX, y, 0);
+				// gl.glEnd();
 
 				if (column.childContainers != null && column.childContainers.size() > 1)
 				{
@@ -220,6 +259,10 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view, view.getTextureManager());
+					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
+					collapsePerspectiveButtonRenderer.addPickingID(
+							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+							column.id.hashCode());
 
 					collapsePerspectiveButtonRenderer.setLimits(captionSpacingY * 2,
 							captionSpacingY * 2);
@@ -228,7 +271,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 					gl.glTranslatef(currentPositionX + currentColumnWidth / 2.0f
 							- captionSpacingY,
 							y - pixelGLConverter.getGLHeightForPixelHeight(2)
-									- captionSpacingY * 2, 0);
+									- captionSpacingY * 2, 0.1f);
 					collapsePerspectiveButtonRenderer.render(gl);
 					gl.glPopMatrix();
 
@@ -243,21 +286,21 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 				childIndent = captionSpacingY * 2;
 
-				gl.glColor3f(0.8f, 0.8f, 0.8f);
+				gl.glColor4fv(groupColor, 0);
 
 				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, y - captionRowHeight - captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX, y - captionRowHeight - captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, y - captionRowHeight
-						- captionSpacingY, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
-				gl.glVertex3f(currentPositionX, y, 0);
+						- captionSpacingY, 0.1f);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0.1f);
+				gl.glVertex3f(currentPositionX, y, 0.1f);
 
-				gl.glColor3f(0.7f, 0.7f, 0.7f);
+				gl.glColor4fv(perspectiveColor, 0);
 
-				gl.glVertex3f(currentPositionX, y - childIndent, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, y - childIndent, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0);
-				gl.glVertex3f(currentPositionX, y, 0);
+				gl.glVertex3f(currentPositionX, y - childIndent, 0.1f);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y - childIndent, 0.1f);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, y, 0.1f);
+				gl.glVertex3f(currentPositionX, y, 0.1f);
 
 				gl.glEnd();
 
@@ -277,7 +320,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			gl.glRotatef(-90, 0, 0, 1);
 			// gl.glColor3f(0, 0, 0);
 			textRenderer.setColor(new float[] { 0, 0, 0 });
-			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0, captionRowHeight
+			textRenderer.renderTextInBounds(gl, column.caption, 0, 0, 0.1f, captionRowHeight
 					- childIndent - parentIndent - 2 * captionSpacingY, textHeight);
 			gl.glPopMatrix();
 
@@ -289,8 +332,8 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			}
 			gl.glLineWidth(1);
 			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(currentPositionX, 0, 0);
-			gl.glVertex3f(currentPositionX, y - childIndent, 0);
+			gl.glVertex3f(currentPositionX, 0, 0.1f);
+			gl.glVertex3f(currentPositionX, y - childIndent, 0.1f);
 			// for (int i = 1; i < column.numSubdivisions; i++) {
 			// gl.glVertex3f(currentPositionX + i * columnWidth, 0, 0);
 			// gl.glVertex3f(currentPositionX + i * columnWidth, y

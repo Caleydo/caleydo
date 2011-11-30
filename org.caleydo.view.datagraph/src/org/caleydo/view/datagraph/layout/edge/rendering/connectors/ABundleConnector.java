@@ -14,6 +14,14 @@ import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public abstract class ABundleConnector extends ANodeConnector {
 
+	protected final static int BUNDLING_POINT_NODE_DISTANCE_Y = 30;
+	protected final static int BOUNDING_BOX_BAND_CONNECTIONPOINT_DISTANCE_Y = 20;
+	protected final static int MAX_BAND_ANCHOR_OFFSET_DISTANCE_Y_2_CP = 20;
+	protected final static int MAX_BAND_ANCHOR_OFFSET_DISTANCE_Y_4_CP = 100;
+	protected final static int MIN_BAND_ANCHOR_OFFSET_DISTANCE_Y_4_CP = 10;
+	protected final static int DATACONTAINER_OFFSET_Y = 7;
+	protected final static int DATACONTAINER_TO_BUNDLE_OFFSET_Y = 14;
+
 	protected List<DataContainer> commonDataContainers;
 	protected int bandWidthPixels;
 	protected Map<DataContainer, Integer> bandWidthMap = new HashMap<DataContainer, Integer>();

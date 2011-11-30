@@ -5,9 +5,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import javax.media.opengl.GL2;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.button.Button;
@@ -42,7 +40,6 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 		List<CellContainer> columns = matrixRenderer.columns;
 		Map<String, ColorRenderer> cells = matrixRenderer.cells;
 		Map<String, PerspectiveRenderer> perspectiveRenderers = matrixRenderer.perspectiveRenderers;
-		ATableBasedDataDomain dataDomain = matrixRenderer.dataDomain;
 
 		List<CellContainer> reversedRows = new ArrayList<CellContainer>(matrixRenderer.rows);
 		// Collections.reverse(reversedRows);
@@ -105,23 +102,6 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 			if (row.parentContainer == null)
 			{
 
-				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
-
-				gl.glPushMatrix();
-				gl.glTranslatef(currentPositionX, currentPositionY, 0);
-				perspectiveRenderer.setLimits(captionColumnWidth + captionSpacingX, rowHeight);
-				Point2D absolutePosition = node
-						.getAbsolutPositionOfRelativeDataContainerRendererCoordinates(new Point2D.Float(
-								currentPositionX, currentPositionY));
-				perspectiveRenderer.setPosition(absolutePosition);
-				// pushPickingIDs(gl, view, pickingIDsToBePushed);
-				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-						PickingType.PERSPECTIVE.name() + node.getID(), row.id.hashCode()));
-				perspectiveRenderer.render(gl);
-				// popPickingIDs(gl, pickingIDsToBePushed);
-				gl.glPopName();
-				gl.glPopMatrix();
-
 				// gl.glColor3f(0.7f, 0.7f, 0.7f);
 				// gl.glBegin(GL2.GL_QUADS);
 				// gl.glVertex3f(currentPositionX, currentPositionY + rowHeight,
@@ -135,6 +115,27 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				// gl.glVertex3f(currentPositionX, currentPositionY, 0);
 				// gl.glEnd();
 
+				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
+
+				gl.glPushMatrix();
+				gl.glTranslatef(currentPositionX, currentPositionY, 0.1f);
+				perspectiveRenderer.setLimits(captionColumnWidth + captionSpacingX, rowHeight);
+				Point2D absolutePosition = node
+						.getAbsolutPositionOfRelativeDataContainerRendererCoordinates(new Point2D.Float(
+								currentPositionX, currentPositionY));
+				perspectiveRenderer.setPosition(absolutePosition);
+				pushPickingIDs(gl, view, pickingIDsToBePushed);
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE.name() + node.getID(), row.id.hashCode()));
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+						row.id.hashCode()));
+				perspectiveRenderer.render(gl);
+				popPickingIDs(gl, pickingIDsToBePushed);
+				gl.glPopName();
+				gl.glPopName();
+				gl.glPopMatrix();
+
 				if (row.childContainers != null && row.childContainers.size() > 1)
 				{
 					Button collapsePerspectiveButton = new Button(
@@ -146,6 +147,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view, view.getTextureManager());
 					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
+					collapsePerspectiveButtonRenderer.addPickingID(
+							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+							row.id.hashCode());
 
 					collapsePerspectiveButtonRenderer.setLimits(captionSpacingX * 2,
 							captionSpacingX * 2);
@@ -169,19 +173,20 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				gl.glColor4fv(groupColor, 0);
 
 				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, currentPositionY, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX,
-						currentPositionY, 0);
+						currentPositionY, 0.1f);
 				gl.glVertex3f(currentPositionX + captionColumnWidth + captionSpacingX,
-						currentPositionY + rowHeight, 0);
-				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0);
+						currentPositionY + rowHeight, 0.1f);
+				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0.1f);
 
 				gl.glColor4fv(getPerspectiveColor(), 0);
 
-				gl.glVertex3f(currentPositionX, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0);
-				gl.glVertex3f(currentPositionX + childIndent, currentPositionY + rowHeight, 0);
-				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0);
+				gl.glVertex3f(currentPositionX, currentPositionY, 0.1f);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY, 0.1f);
+				gl.glVertex3f(currentPositionX + childIndent, currentPositionY + rowHeight,
+						0.1f);
+				gl.glVertex3f(currentPositionX, currentPositionY + rowHeight, 0.1f);
 
 				gl.glEnd();
 			}
@@ -242,7 +247,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(column.id);
 
 				gl.glPushMatrix();
-				gl.glTranslatef(currentPositionX, 0, 0);
+				gl.glTranslatef(currentPositionX, 0, 0.1f);
 				perspectiveRenderer.setLimits(currentColumnWidth, captionRowHeight
 						+ captionSpacingY);
 				Point2D absolutePosition = node
@@ -251,9 +256,13 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				perspectiveRenderer.setPosition(absolutePosition);
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.PERSPECTIVE.name() + node.getID(), column.id.hashCode()));
-				// pushPickingIDs(gl, view, pickingIDsToBePushed);
+				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+						column.id.hashCode()));
+				pushPickingIDs(gl, view, pickingIDsToBePushed);
 				perspectiveRenderer.render(gl);
-				// popPickingIDs(gl, pickingIDsToBePushed);
+				popPickingIDs(gl, pickingIDsToBePushed);
+				gl.glPopName();
 				gl.glPopName();
 				gl.glPopMatrix();
 
@@ -278,6 +287,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
 							collapsePerspectiveButton, view, view.getTextureManager());
 					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
+					collapsePerspectiveButtonRenderer.addPickingID(
+							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+							column.id.hashCode());
 
 					collapsePerspectiveButtonRenderer.setLimits(captionSpacingY * 2,
 							captionSpacingY * 2);
@@ -302,18 +314,18 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				gl.glColor4fv(groupColor, 0);
 
 				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(currentPositionX, captionRowHeight + captionSpacingY, 0);
+				gl.glVertex3f(currentPositionX, captionRowHeight + captionSpacingY, 0.1f);
 				gl.glVertex3f(currentPositionX + currentColumnWidth, captionRowHeight
-						+ captionSpacingY, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0);
-				gl.glVertex3f(currentPositionX, 0, 0);
+						+ captionSpacingY, 0.1f);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0.1f);
+				gl.glVertex3f(currentPositionX, 0, 0.1f);
 
 				gl.glColor4fv(perspectiveColor, 0);
 
-				gl.glVertex3f(currentPositionX, childIndent, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, childIndent, 0);
-				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0);
-				gl.glVertex3f(currentPositionX, 0, 0);
+				gl.glVertex3f(currentPositionX, childIndent, 0.1f);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, childIndent, 0.1f);
+				gl.glVertex3f(currentPositionX + currentColumnWidth, 0, 0.1f);
+				gl.glVertex3f(currentPositionX, 0, 0.1f);
 
 				gl.glEnd();
 			}
@@ -424,31 +436,6 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 			currentPositionX += currentColumnWidth;
 		}
-	}
-
-	protected void pushPickingIDs(GL2 gl, AGLView view,
-			List<Pair<String, Integer>> pickingIDsToBePushed)
-	{
-		for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed)
-		{
-			gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-					pickingIDPair.getFirst(), pickingIDPair.getSecond()));
-		}
-	}
-
-	protected void popPickingIDs(GL2 gl, List<Pair<String, Integer>> pickingIDsToBePushed)
-	{
-		for (int k = 0; k < pickingIDsToBePushed.size(); k++)
-		{
-			gl.glPopName();
-		}
-	}
-
-	@Override
-	public float[] getPerspectiveColor()
-	{
-		return new float[] { 0.7f, 0.7f, 0.7f, 1f };
-		// return matrixRenderer.dataDomain.getColor().getRGBA();
 	}
 
 }

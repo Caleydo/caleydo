@@ -146,7 +146,7 @@ public class CustomLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 		float spacingX = (float) ((rightNode.getPosition().getX() - rightNode.getWidth() / 2.0f) - (leftNode
 				.getPosition().getX() + leftNode.getWidth() / 2.0f));
 		float spacingY = (float) ((topNode.getPosition().getY() - topNode.getHeight() / 2.0f) - (bottomNode
-				.getPosition().getY() + topNode.getHeight() / 2.0f));
+				.getPosition().getY() + bottomNode.getHeight() / 2.0f));
 
 		ANodeConnector connector1;
 		ANodeConnector connector2;
