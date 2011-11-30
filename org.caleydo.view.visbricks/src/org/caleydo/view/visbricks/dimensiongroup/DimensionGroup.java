@@ -58,9 +58,8 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class DimensionGroup
-	extends ATableBasedView
-	implements ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
+public class DimensionGroup extends ATableBasedView implements
+		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
 
@@ -163,7 +162,8 @@ public class DimensionGroup
 
 	IBrickConfigurer brickConfigurer;
 
-	public DimensionGroup(GLCanvas canvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public DimensionGroup(GLCanvas canvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 		super(canvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
@@ -197,7 +197,7 @@ public class DimensionGroup
 		headerBrickLayout = new Column("headerBrickLayout");
 		headerBrickLayout.setXDynamic(true);
 		headerBrickLayout.setYDynamic(true);
-//		headerBrickLayout.setDebug(true);
+		// headerBrickLayout.setDebug(true);
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
 		// headerBrickLayout.setPixelSizeY(60);
@@ -207,7 +207,8 @@ public class DimensionGroup
 	}
 
 	/**
-	 * @param brickConfigurer setter, see {@link #brickConfigurer}
+	 * @param brickConfigurer
+	 *            setter, see {@link #brickConfigurer}
 	 */
 	public void setBrickConfigurer(IBrickConfigurer brickConfigurer) {
 		this.brickConfigurer = brickConfigurer;
@@ -221,8 +222,7 @@ public class DimensionGroup
 		if (isCollapsed) {
 			mainColumn.clear();
 			mainColumn.append(headerBrickLayout);
-		}
-		else {
+		} else {
 			mainColumn.clear();
 			mainColumn.append(headerBrickLayout);
 			mainColumn.append(clusterBrickWrapperColumn);
@@ -245,8 +245,7 @@ public class DimensionGroup
 		if (isCollapsed) {
 			headerBrick.setBrickHeigthMode(EBrickHeightMode.VIEW_DEPENDENT);
 			headerBrick.collapse();
-		}
-		else {
+		} else {
 			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
 			headerBrick.expand();
 		}
@@ -267,16 +266,15 @@ public class DimensionGroup
 
 		mainColumn.addBackgroundRenderer(new DimensionGroupBackgroundColorRenderer(
 				dataContainer.getDataDomain().getColor().getRGBA()));
-		
-	
+
 		ElementLayout headerBrickLayout2 = new ElementLayout();
-		
+
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
 		brickSpacingLayout.setRatioSizeX(0);
 		headerBrickLayout.append(headerBrickLayout2);
 		headerBrickLayout.append(brickSpacingLayout);
-			
+
 		headerBrick = createBrick(headerBrickLayout2, dataContainer);
 		headerBrick.setHeaderBrick(true);
 
@@ -285,13 +283,12 @@ public class DimensionGroup
 		if (isCollapsed) {
 			layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick, this,
 					visBricks, headerBrick.getBrickConfigurer());
-		}
-		else {
+		} else {
 			layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, visBricks,
 					headerBrick.getBrickConfigurer());
 		}
-		headerBrick
-				.setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
+		headerBrick.setBrickLayoutTemplate(layoutTemplate,
+				layoutTemplate.getDefaultViewType());
 
 		creatClusterBricks();
 	}
@@ -304,7 +301,8 @@ public class DimensionGroup
 
 		destroyOldBricks();
 
-		List<DataContainer> brickDataContainers = dataContainer.getRecordSubDataContainers();
+		List<DataContainer> brickDataContainers = dataContainer
+				.getRecordSubDataContainers();
 
 		if (brickDataContainers == null || brickDataContainers.size() <= 0)
 			return;
@@ -360,10 +358,13 @@ public class DimensionGroup
 	 * @return
 	 */
 	private GLBrick createBrick(ElementLayout wrappingLayout, DataContainer dataContainer) {
-		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 0, 0,
-				0, -4, 4);
-		GLBrick brick = (GLBrick) GeneralManager.get().getViewManager()
-				.createGLView(GLBrick.class, parentGLCanvas, parentComposite, brickFrustum);
+		ViewFrustum brickFrustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
+				0, 0, 0, -4, 4);
+		GLBrick brick = (GLBrick) GeneralManager
+				.get()
+				.getViewManager()
+				.createGLView(GLBrick.class, parentGLCanvas, parentComposite,
+						brickFrustum);
 
 		brick.setDataDomain(dataDomain);
 		brick.setDataContainer(dataContainer);
@@ -381,8 +382,7 @@ public class DimensionGroup
 		wrappingLayout.setRenderer(brickRenderer);
 		if (isCollapsed) {
 			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
-		}
-		else {
+		} else {
 			wrappingLayout.setPixelSizeX(minPixelWidth);
 		}
 
@@ -415,7 +415,8 @@ public class DimensionGroup
 	 * values are irrelevant.
 	 * </p>
 	 * 
-	 * @param archHeight the pixel height of the arch
+	 * @param archHeight
+	 *            the pixel height of the arch
 	 */
 	public void setArchHeight(int archHeight) {
 		headerBrick.setStaticBrickHeight(archHeight);
@@ -431,8 +432,8 @@ public class DimensionGroup
 
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
 		layoutSizeCollisionListener.setHandler(this);
-		eventPublisher
-				.addListener(LayoutSizeCollisionEvent.class, layoutSizeCollisionListener);
+		eventPublisher.addListener(LayoutSizeCollisionEvent.class,
+				layoutSizeCollisionListener);
 	}
 
 	@Override
@@ -503,8 +504,7 @@ public class DimensionGroup
 				mainRow.append(mainColumn);
 				visBricks.switchToDetailModeLeft(this);
 
-			}
-			else {
+			} else {
 				mainRow.append(mainColumn);
 				mainRow.append(overviewDetailGapLayout);
 				mainRow.append(detailBrickLayout);
@@ -610,7 +610,8 @@ public class DimensionGroup
 		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
 
 		if (Float.isNaN(previousYCoordinate)) {
 			previousYCoordinate = pointCordinates[1];
@@ -858,9 +859,11 @@ public class DimensionGroup
 	/**
 	 * Shows a detailed brick.
 	 * 
-	 * @param brick The brick for which a detailed version shall be shown.
-	 * @param expandLeft Specifies, whether the detail brick shall be expanded
-	 *            on the left or on the right.
+	 * @param brick
+	 *            The brick for which a detailed version shall be shown.
+	 * @param expandLeft
+	 *            Specifies, whether the detail brick shall be expanded on the
+	 *            left or on the right.
 	 */
 	public void showDetailedBrick(GLBrick brick, boolean expandLeft) {
 
@@ -885,18 +888,18 @@ public class DimensionGroup
 		detailBrick.setStaticBrickWidth(detailBrickWidth);
 		detailBrick.setStaticBrickHeight(getDetailBrickHeightPixels());
 
-		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick, this,
-				visBricks, detailBrick.getBrickConfigurer()), brick.getCurrentViewType());
+		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick,
+				this, visBricks, detailBrick.getBrickConfigurer()), brick
+				.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 		overviewDetailGapLayout.setRatioSizeY(1);
 
 		if (expandLeft) {
-			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(detailBrick,
-					brick, false));
-		}
-		else {
+			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(
+					detailBrick, brick, false));
+		} else {
 			overviewDetailGapLayout.setRenderer(new OverviewDetailBandRenderer(brick,
 					detailBrick, true));
 		}
@@ -914,7 +917,8 @@ public class DimensionGroup
 	}
 
 	/**
-	 * @param detailBrickWidth Pixel width of the detail brick.
+	 * @param detailBrickWidth
+	 *            Pixel width of the detail brick.
 	 */
 	public void setDetailBrickWidth(int detailBrickWidth) {
 		detailBrickLayout.setPixelSizeX(detailBrickWidth);
@@ -940,9 +944,10 @@ public class DimensionGroup
 	}
 
 	/**
-	 * @param isCurrentDimensionGroupLeft Specifies, whether the dimension group
-	 *            is on the left side. (When a detail brick is shown, only two
-	 *            dimension groups are visible)
+	 * @param isCurrentDimensionGroupLeft
+	 *            Specifies, whether the dimension group is on the left side.
+	 *            (When a detail brick is shown, only two dimension groups are
+	 *            visible)
 	 * @return Width of the detail brick
 	 */
 	public int getDetailBrickWidthPixels(boolean isCurrentDimensionGroupLeft) {
@@ -952,11 +957,12 @@ public class DimensionGroup
 		boolean otherDimensionGroupShowsDetail = false;
 		if (otherDimensionGroup != null) {
 			otherDimensionGroupShowsDetail = otherDimensionGroup.isDetailBrickShown();
-			otherDimensionGroupColumnWidth = otherDimensionGroup.getGroupColumnWidthPixels();
+			otherDimensionGroupColumnWidth = otherDimensionGroup
+					.getGroupColumnWidthPixels();
 		}
-		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL - 2
-				* GLVisBricks.DIMENSION_GROUP_SIDE_SPACING - getGroupColumnWidthPixels()
-				- otherDimensionGroupColumnWidth;
+		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL
+				- 2 * GLVisBricks.DIMENSION_GROUP_SIDE_SPACING
+				- getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
 				: detailGapWidth;
@@ -974,17 +980,21 @@ public class DimensionGroup
 	 * <p>
 	 * Returns null there is no dimension group on the specified side
 	 * 
-	 * @param isCurrentDimensionGroupLeft Specifies, whether the dimension group
-	 *            is on the left side. (When a detail brick is shown, only two
-	 *            dimension groups are visible)
+	 * @param isCurrentDimensionGroupLeft
+	 *            Specifies, whether the dimension group is on the left side.
+	 *            (When a detail brick is shown, only two dimension groups are
+	 *            visible)
 	 * @return The other dimension group that is currently visible in the detail
 	 *         mode, or null if there is no other group
 	 */
-	private DimensionGroup getOtherDetailDimensionGroup(boolean isCurrentDimensionGroupLeft) {
+	private DimensionGroup getOtherDetailDimensionGroup(
+			boolean isCurrentDimensionGroupLeft) {
 
-		DimensionGroupManager dimensionGroupManager = visBricks.getDimensionGroupManager();
+		DimensionGroupManager dimensionGroupManager = visBricks
+				.getDimensionGroupManager();
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager.getDimensionGroups();
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
+				.getDimensionGroups();
 		int dimensionGroupIndex = dimensionGroups.indexOf(this);
 
 		if (isCurrentDimensionGroupLeft) {
@@ -1008,7 +1018,8 @@ public class DimensionGroup
 	 * @return True if this dimension group is the leftmost dimension group.
 	 */
 	public boolean isLeftmost() {
-		DimensionGroupManager dimensionGroupManager = visBricks.getDimensionGroupManager();
+		DimensionGroupManager dimensionGroupManager = visBricks
+				.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfDimensionGroup(this);
 		return (index == dimensionGroupManager.getCenterGroupStartIndex());
 	}
@@ -1017,7 +1028,8 @@ public class DimensionGroup
 	 * @return True if this dimension group is the rightmost dimension group.
 	 */
 	public boolean isRightmost() {
-		DimensionGroupManager dimensionGroupManager = visBricks.getDimensionGroupManager();
+		DimensionGroupManager dimensionGroupManager = visBricks
+				.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfDimensionGroup(this);
 		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);
 	}
@@ -1041,8 +1053,8 @@ public class DimensionGroup
 	}
 
 	/**
-	 * @param isVerticalMoveDraggingActive setter, see
-	 *            {@link #isVerticalMoveDraggingActive}
+	 * @param isVerticalMoveDraggingActive
+	 *            setter, see {@link #isVerticalMoveDraggingActive}
 	 */
 	public void setVerticalMoveDraggingActive(boolean isVerticalMoveDraggingActive) {
 		this.isVerticalMoveDraggingActive = isVerticalMoveDraggingActive;
@@ -1056,9 +1068,12 @@ public class DimensionGroup
 	 * @return
 	 */
 	public double getProportionalHeightPerRecord() {
-		int useablePixelHeight = getParentGLCanvas().getHeight() - visBricks.getArchHeight()
-				- 5 * BETWEEN_BRICKS_SPACING;
-		double proportionalRecordHeight = useablePixelHeight / dataContainer.getNrRecords();
+		double useablePixelHeight = getParentGLCanvas().getHeight()
+				- visBricks.getArchHeight()
+				- (dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
+						.size() + 1) * BETWEEN_BRICKS_SPACING;
+		double proportionalRecordHeight = useablePixelHeight
+				/ dataContainer.getNrRecords();
 		return proportionalRecordHeight;
 	}
 }

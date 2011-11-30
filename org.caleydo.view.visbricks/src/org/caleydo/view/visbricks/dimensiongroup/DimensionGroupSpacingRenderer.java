@@ -192,8 +192,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						* (rightSimilarityOffsetY - rightSimilarityRatioY));
 
 			}
-
-			// break;
 		}
 	}
 
