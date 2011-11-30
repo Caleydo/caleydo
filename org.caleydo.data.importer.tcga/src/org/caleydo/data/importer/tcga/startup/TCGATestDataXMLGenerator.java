@@ -112,7 +112,7 @@ public class TCGATestDataXMLGenerator {
 
 	private static DataSetMetaInfo setUpMRNAData() {
 		DataSetMetaInfo mrnaData = new DataSetMetaInfo();
-		mrnaData.setName("mRNA data");
+		mrnaData.setName("mRNA");
 		mrnaData.setDataDomainType("org.caleydo.datadomain.genetic");
 		mrnaData.setDataPath(MRNA);
 		mrnaData.setGroupingPath(MRNA_GROUPING);
@@ -143,7 +143,7 @@ public class TCGATestDataXMLGenerator {
 
 	private static DataSetMetaInfo setUpMiRNAData() {
 		DataSetMetaInfo mirnaData = new DataSetMetaInfo();
-		mirnaData.setName("miRNA data");
+		mirnaData.setName("miRNA");
 		mirnaData.setDataDomainType("org.caleydo.datadomain.generic");
 		mirnaData.setDataPath(MIRNA);
 		mirnaData.setGroupingPath(MIRNA_GROUPING);
@@ -169,7 +169,7 @@ public class TCGATestDataXMLGenerator {
 
 	private static DataSetMetaInfo setUpMethylationData() {
 		DataSetMetaInfo methylationData = new DataSetMetaInfo();
-		methylationData.setName("Methylation data");
+		methylationData.setName("Methylation");
 		methylationData.setDataDomainType("org.caleydo.datadomain.generic");
 		methylationData.setDataPath(METHYLATION);
 		methylationData.setGroupingPath(METHYLATION_GROUPING);
@@ -195,7 +195,7 @@ public class TCGATestDataXMLGenerator {
 
 	private static DataSetMetaInfo setUpCopyNumberData() {
 		DataSetMetaInfo copyNumberData = new DataSetMetaInfo();
-		copyNumberData.setName("Copy number data");
+		copyNumberData.setName("Copy number");
 		copyNumberData.setDataDomainType("org.caleydo.datadomain.genetic");
 		copyNumberData.setDataPath(COPY_NUMBER);
 		// methylationData.setGroupingPath(METHYLATION_GROUPING);
@@ -227,7 +227,7 @@ public class TCGATestDataXMLGenerator {
 
 	private static DataSetMetaInfo setUpClinicalData() {
 		DataSetMetaInfo clinicalData = new DataSetMetaInfo();
-		clinicalData.setName("Clinical data");
+		clinicalData.setName("Clinical");
 		clinicalData.setDataDomainType("org.caleydo.datadomain.generic");
 		clinicalData.setDataPath(CLINICAL);
 		clinicalData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
