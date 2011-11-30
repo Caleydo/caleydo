@@ -3,11 +3,9 @@ package org.caleydo.core.data.virtualarray;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.AColumn;
@@ -38,7 +36,8 @@ import org.eclipse.core.runtime.Status;
  */
 @XmlType
 public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteType, VADelta, GroupType>, VADelta extends VirtualArrayDelta<?>, GroupType extends GroupList<GroupType, ConcreteType, VADelta>>
-		extends AUniqueObject implements Iterable<Integer>, IUniqueObject, Cloneable {
+	extends AUniqueObject
+	implements Iterable<Integer>, IUniqueObject, Cloneable {
 
 	@XmlTransient
 	protected IDType idType;
@@ -50,13 +49,11 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	GroupType groupList = null;
 
 	public VirtualArray() {
-		super(GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 	}
 
 	public VirtualArray(IDType idType) {
-		super(GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		setIdType(idType);
 	}
 
@@ -73,16 +70,14 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * @param initialList
 	 */
 	public VirtualArray(IDType idType, List<Integer> initialList) {
-		super(GeneralManager.get().getIDCreator()
-				.createID(ManagedObjectType.VIRTUAL_ARRAY));
+		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIRTUAL_ARRAY));
 		setIdType(idType);
 		if (initialList != null)
 			virtualArrayList.addAll(initialList);
 	}
 
 	/**
-	 * @param idType
-	 *            setter, see {@link #idType}
+	 * @param idType setter, see {@link #idType}
 	 */
 	public void setIdType(IDType idType) {
 		this.idType = idType;
@@ -127,8 +122,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Returns the element at the specified index in the virtual array
 	 * 
-	 * @param index
-	 *            the index
+	 * @param index the index
 	 * @return the element at the index
 	 */
 	public Integer get(int index) {
@@ -138,13 +132,11 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Adds an element to the end of the list.
 	 * 
-	 * @param newElementID
-	 *            the id of the new element (which corresponds to the index of
-	 *            the collection)
-	 * @exception IllegalArgumentException
-	 *                if the value of the new element is larger than allowed.
-	 *                The maximum allowed value is the length of the collection
-	 *                which is managed - 1
+	 * @param newElementID the id of the new element (which corresponds to the
+	 *            index of the collection)
+	 * @exception IllegalArgumentException if the value of the new element is
+	 *                larger than allowed. The maximum allowed value is the
+	 *                length of the collection which is managed - 1
 	 */
 	public void append(Integer newElementID) {
 		idMap.setDirty();
@@ -155,12 +147,10 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Adds an element to the end of the list, if the element is not already
 	 * contained.
 	 * 
-	 * @param newElement
-	 *            the index to the collection
-	 * @exception IllegalArgumentException
-	 *                if the value of the new element is larger than allowed.
-	 *                The maximum allowed value is the length of the collection
-	 *                which is managed - 1
+	 * @param newElement the index to the collection
+	 * @exception IllegalArgumentException if the value of the new element is
+	 *                larger than allowed. The maximum allowed value is the
+	 *                length of the collection which is managed - 1
 	 * @return true if the array was modified, else false
 	 */
 	public boolean appendUnique(Integer newElement) {
@@ -178,10 +168,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Shifts the element currently at that position (if any) and any subsequent
 	 * elements to the right (adds one to their indices).
 	 * 
-	 * @param index
-	 *            the position on which to insert the new element
-	 * @param newElement
-	 *            the id refering to the index of the collection
+	 * @param index the position on which to insert the new element
+	 * @param newElement the id refering to the index of the collection
 	 */
 	public void add(int index, Integer newElement) {
 		idMap.setDirty();
@@ -205,8 +193,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * currently at that position (if any) and any subsequent elements to the
 	 * right (adds one to their indices).
 	 * 
-	 * @param index
-	 *            the index of the element to be copied
+	 * @param index the index of the element to be copied
 	 */
 	public void copy(int index) {
 		virtualArrayList.add(index + 1, virtualArrayList.get(index));
@@ -217,10 +204,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Moves the element at the specified source index to the target index. The
 	 * element formerly at srcIndex is at targetIndex after this operation.
 	 * 
-	 * @param srcIndex
-	 *            the src index of the element
-	 * @param targetIndex
-	 *            the target index of the element
+	 * @param srcIndex the src index of the element
+	 * @param targetIndex the target index of the element
 	 */
 	public void move(int srcIndex, int targetIndex) {
 		idMap.setDirty();
@@ -232,8 +217,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Removes the element at the specified index. Shifts any subsequent
 	 * elements to the left (subtracts one from their indices).
 	 * 
-	 * @param iIndex
-	 *            the index of the element to be removed
+	 * @param iIndex the index of the element to be removed
 	 * @return the Element that was removed from the list
 	 */
 	public Integer remove(int index) {
@@ -249,8 +233,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 			Integer currentIndex = indices.get(count);
 			if (currentIndex == previousIndex || currentIndex < 0
 					|| currentIndex > previousIndex) {
-				Logger.log(new Status(Status.INFO, "org.caleydo.core",
-						"Cannot remove index: " + currentIndex + " from VA " + this));
+				Logger.log(new Status(Status.INFO, "org.caleydo.core", "Cannot remove index: "
+						+ currentIndex + " from VA " + this));
 				continue;
 			}
 			previousIndex = currentIndex;
@@ -268,8 +252,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * time.
 	 * </p>
 	 * 
-	 * @param element
-	 *            the element to be removed
+	 * @param element the element to be removed
 	 */
 	public void removeByElement(Integer element) {
 		ArrayList<Integer> indices = indicesOf(element);
@@ -307,8 +290,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
 	 * </p>
 	 * 
-	 * @param id
-	 *            element to search for
+	 * @param id element to search for
 	 * @return the index of the first occurrence of the specified element in
 	 *         this list, or -1 if this list does not contain the element
 	 */
@@ -327,8 +309,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * prior to this call, the runtime is O(n). Otherwise the runtime is O(1).
 	 * </p>
 	 * 
-	 * @param id
-	 *            element to search for
+	 * @param id element to search for
 	 * @return a list of all the indices of all occurrences of the element or an
 	 *         empty list if no such elements exist
 	 */
@@ -339,8 +320,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Checks whether element is contained in the virtual array.
 	 * 
-	 * @param id
-	 *            the id to be checked
+	 * @param id the id to be checked
 	 * @return true if element occurs at least once, else false
 	 */
 	public boolean contains(Integer id) {
@@ -351,8 +331,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * Checks the number of occurrences of an id. Returns 0 if it does not
 	 * occur.
 	 * 
-	 * @param id
-	 *            the id to be checked
+	 * @param id the id to be checked
 	 * @return the number of occurrences (0 if none)
 	 */
 	public int occurencesOf(Integer id) {
@@ -378,30 +357,30 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		ArrayList<Integer> indicesToBeRemoved = new ArrayList<Integer>();
 		for (VADeltaItem item : delta) {
 			switch (item.getType()) {
-			case ADD:
-				add(item.getIndex(), item.getID());
-				break;
-			case APPEND:
-				append(item.getID());
-				break;
-			case APPEND_UNIQUE:
-				appendUnique(item.getID());
-				break;
-			case REMOVE:
-				indicesToBeRemoved.add(item.getIndex());
-				break;
-			case REMOVE_ELEMENT:
-				indicesToBeRemoved.add(indexOf(item.getID()));
-				break;
-			case COPY:
-				copy(item.getIndex());
-				break;
-			case MOVE:
-				move(item.getIndex(), item.getTargetIndex());
-				break;
-			default:
-				throw new IllegalStateException("Unhandled EVAOperation: "
-						+ item.getType());
+				case ADD:
+					add(item.getIndex(), item.getID());
+					break;
+				case APPEND:
+					append(item.getID());
+					break;
+				case APPEND_UNIQUE:
+					appendUnique(item.getID());
+					break;
+				case REMOVE:
+					indicesToBeRemoved.add(item.getIndex());
+					break;
+				case REMOVE_ELEMENT:
+					indicesToBeRemoved.add(indexOf(item.getID()));
+					break;
+				case COPY:
+					copy(item.getIndex());
+					break;
+				case MOVE:
+					move(item.getIndex(), item.getTargetIndex());
+					break;
+				default:
+					throw new IllegalStateException("Unhandled EVAOperation: "
+							+ item.getType());
 			}
 		}
 		removeInBulk(indicesToBeRemoved);
@@ -416,6 +395,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		return groupList;
 	}
 
+	/** DOCUMENT ME! */
 	public List<Group> getGroupOf(Integer id) {
 		ArrayList<Group> resultGroups = new ArrayList<Group>(1);
 		ArrayList<Integer> indices = indicesOf(id);
@@ -438,9 +418,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	 * this list, so non-structural changes in the returned list are reflected
 	 * in this list, and vice-versa.
 	 * 
-	 * @param groupIndex
-	 *            the index of the group in the groupList. Can be retrieved
-	 *            using {@link Group#getGroupIndex()}
+	 * @param groupIndex the index of the group in the groupList. Can be
+	 *            retrieved using {@link Group#getGroupIndex()}
 	 * @return ArrayList<Integer> containing all IDs that belong to this group,
 	 *         or null if no groupList is available
 	 */
@@ -464,8 +443,7 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	/**
 	 * Sets group list in VA, used especially by affinity clusterer.
 	 * 
-	 * @param groupList
-	 *            new group list
+	 * @param groupList new group list
 	 * @return true if operation executed correctly otherwise false
 	 */
 	public boolean setGroupList(GroupType groupList) {
@@ -481,7 +459,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 		ConcreteType va;
 		try {
 			va = (ConcreteType) super.clone();
-		} catch (CloneNotSupportedException e) {
+		}
+		catch (CloneNotSupportedException e) {
 			throw new IllegalStateException("Clone not supportet: " + e.getMessage());
 		}
 		// va.iUniqueID =
@@ -507,8 +486,8 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	@Override
 	public String toString() {
 
-		return "ID: " + getID() + ", size: " + virtualArrayList.size()
-				+ ", Nr. ouf Groups: " + groupList.size();
+		return "ID: " + getID() + ", size: " + virtualArrayList.size() + ", Nr. ouf Groups: "
+				+ groupList.size();
 
 	}
 

@@ -1,9 +1,9 @@
 package org.caleydo.view.visbricks.brick.layout;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 
 /**
  * Classes implementing this interface are intended to configure the different
@@ -65,5 +65,12 @@ public interface IBrickConfigurer {
 	 */
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
 			ABrickLayoutConfiguration brickLayout);
-
+	
+	
+	/**
+	 * Returns the brick sorting strategy for this particular configurer.
+	 * 
+	 * @return the sorting strategy that needs to be applied to the dimension group.
+	 */
+	public IBrickSortingStrategy getBrickSortingStrategy();
 }

@@ -14,6 +14,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
+import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.OverviewHeatMapRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
@@ -242,5 +244,4 @@ public class NumericalDataConfigurer
 		layoutTemplate.showFooterBar(true);
 
 	}
-
 }

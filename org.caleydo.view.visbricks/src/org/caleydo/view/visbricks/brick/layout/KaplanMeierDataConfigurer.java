@@ -13,6 +13,8 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
+import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.KaplanMeierSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.KaplanMeierCreator;
 
@@ -23,15 +25,15 @@ import org.caleydo.view.visbricks.brick.viewcreation.KaplanMeierCreator;
  * 
  */
 public class KaplanMeierDataConfigurer
-	implements IBrickConfigurer
-{
+	implements IBrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 4;
 
+	private ExternallyProvidedSortingStrategy sortingStrategy;
+
 	@Override
-	public void configure(HeaderBrickLayoutTemplate layoutTemplate)
-	{
+	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW);
@@ -55,8 +57,7 @@ public class KaplanMeierDataConfigurer
 	}
 
 	@Override
-	public void configure(CompactBrickLayoutTemplate layoutTemplate)
-	{
+	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
@@ -67,8 +68,7 @@ public class KaplanMeierDataConfigurer
 	}
 
 	@Override
-	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate)
-	{
+	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
@@ -88,8 +88,7 @@ public class KaplanMeierDataConfigurer
 	}
 
 	@Override
-	public void configure(DefaultBrickLayoutTemplate layoutTemplate)
-	{
+	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW);
 
@@ -109,8 +108,7 @@ public class KaplanMeierDataConfigurer
 	}
 
 	@Override
-	public void configure(DetailBrickLayoutTemplate layoutTemplate)
-	{
+	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW);
 
@@ -129,8 +127,7 @@ public class KaplanMeierDataConfigurer
 	}
 
 	private ElementLayout createCaptionLayout(ABrickLayoutConfiguration layoutTemplate,
-			AGLView labelProvider, PickingType pickingType, int pickingID, AGLView view)
-	{
+			AGLView labelProvider, PickingType pickingType, int pickingID, AGLView view) {
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
 
@@ -147,17 +144,14 @@ public class KaplanMeierDataConfigurer
 	}
 
 	private ElementLayout createSpacingLayout(ABrickLayoutConfiguration layoutTemplate,
-			boolean isHorizontalSpacing)
-	{
+			boolean isHorizontalSpacing) {
 
 		ElementLayout spacingLayout = new ElementLayout("spacingLayoutX");
-		if (isHorizontalSpacing)
-		{
+		if (isHorizontalSpacing) {
 			spacingLayout.setPixelSizeX(SPACING_PIXELS);
 			spacingLayout.setRatioSizeY(0);
 		}
-		else
-		{
+		else {
 			spacingLayout.setPixelSizeY(SPACING_PIXELS);
 			spacingLayout.setRatioSizeX(0);
 		}
@@ -167,8 +161,7 @@ public class KaplanMeierDataConfigurer
 
 	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
-			ABrickLayoutConfiguration brickLayout)
-	{
+			ABrickLayoutConfiguration brickLayout) {
 
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
@@ -219,5 +212,18 @@ public class KaplanMeierDataConfigurer
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
+	}
+
+	@Override
+	public IBrickSortingStrategy getBrickSortingStrategy() {
+
+		return sortingStrategy;
+	}
+	
+	/**
+	 * @param sortingStrategy setter, see {@link #sortingStrategy}
+	 */
+	public void setSortingStrategy(ExternallyProvidedSortingStrategy sortingStrategy) {
+		this.sortingStrategy = sortingStrategy;
 	}
 }

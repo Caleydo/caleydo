@@ -17,6 +17,8 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
+import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
@@ -357,4 +359,10 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		return toolBarElements;
 	}
 
+
+	@Override
+	public IBrickSortingStrategy getBrickSortingStrategy() {
+
+		return new AverageValueSortingStrategy();
+	}
 }

@@ -19,6 +19,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
+import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
@@ -221,5 +223,12 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
+	}
+	
+
+	@Override
+	public IBrickSortingStrategy getBrickSortingStrategy() {
+
+		return new AverageValueSortingStrategy();
 	}
 }

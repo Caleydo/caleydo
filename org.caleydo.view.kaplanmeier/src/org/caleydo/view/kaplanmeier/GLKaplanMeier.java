@@ -277,7 +277,7 @@ public class GLKaplanMeier
 
 	@Override
 	public int getMinPixelHeight() {
-		return 100;
+		return 80;
 	}
 
 	@Override

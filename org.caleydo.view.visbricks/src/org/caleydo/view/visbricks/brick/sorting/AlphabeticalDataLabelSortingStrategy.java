@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick.data;
+package org.caleydo.view.visbricks.brick.sorting;
 
 import java.util.ArrayList;
 import java.util.Collections;
