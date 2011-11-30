@@ -1138,4 +1138,8 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	{
 		return graphLayout;
 	}
+	
+	public Collection<IDataGraphNode> getAllNodes() {
+		return dataGraph.getNodes();
+	}
 }

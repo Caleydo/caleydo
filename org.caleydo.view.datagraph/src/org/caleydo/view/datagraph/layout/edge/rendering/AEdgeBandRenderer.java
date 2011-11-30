@@ -193,12 +193,12 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 					currentConnector = new TopBundleConnector(node1,
 							pixelGLConverter, connectionBandRenderer,
 							commonDataContainersNode1, minBandWidth,
-							maxBandWidth, maxDataAmount, node2, viewFrustum);
+							maxBandWidth, maxDataAmount, node2, viewFrustum, view);
 				} else {
 					currentConnector = new BottomBundleConnector(node1,
 							pixelGLConverter, connectionBandRenderer,
 							commonDataContainersNode1, minBandWidth,
-							maxBandWidth, maxDataAmount, node2, viewFrustum);
+							maxBandWidth, maxDataAmount, node2, viewFrustum, view);
 				}
 
 				if (connector1.getNode() == node1) {
@@ -216,12 +216,12 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 					currentConnector = new TopBundleConnector(node2,
 							pixelGLConverter, connectionBandRenderer,
 							commonDataContainersNode2, minBandWidth,
-							maxBandWidth, maxDataAmount, node1, viewFrustum);
+							maxBandWidth, maxDataAmount, node1, viewFrustum, view);
 				} else {
 					currentConnector = new BottomBundleConnector(node2,
 							pixelGLConverter, connectionBandRenderer,
 							commonDataContainersNode2, minBandWidth,
-							maxBandWidth, maxDataAmount, node1, viewFrustum);
+							maxBandWidth, maxDataAmount, node1, viewFrustum, view);
 				}
 
 				if (connector1.getNode() == node2) {

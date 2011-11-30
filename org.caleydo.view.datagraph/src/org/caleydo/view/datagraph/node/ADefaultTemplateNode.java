@@ -341,15 +341,15 @@ public abstract class ADefaultTemplateNode
 		gl.glPopMatrix();
 		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
 
-		// Rectangle2D boundingBox = getBoundingBox();
-		//
-		// gl.glColor3f(1, 0, 1);
-		// gl.glBegin(GL2.GL_LINE_LOOP);
-		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
-		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
-		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
-		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
-		// gl.glEnd();
+		 Rectangle2D boundingBox = getBoundingBox();
+		
+		 gl.glColor3f(1, 0, 1);
+		 gl.glBegin(GL2.GL_LINE_LOOP);
+		 gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
+		 gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
+		 gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
+		 gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
+		 gl.glEnd();
 
 	}
 

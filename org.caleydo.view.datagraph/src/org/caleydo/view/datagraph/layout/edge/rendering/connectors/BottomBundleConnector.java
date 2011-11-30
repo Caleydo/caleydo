@@ -13,6 +13,7 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class BottomBundleConnector
@@ -22,10 +23,11 @@ public class BottomBundleConnector
 	public BottomBundleConnector(IDataGraphNode node, PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
 			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
-			int maxDataAmount, IDataGraphNode otherNode, ViewFrustum viewFrustum)
+			int maxDataAmount, IDataGraphNode otherNode, ViewFrustum viewFrustum,
+			GLDataGraph view)
 	{
 		super(node, pixelGLConverter, connectionBandRenderer, commonDataContainers,
-				minBandWidth, maxBandWidth, maxDataAmount, otherNode, viewFrustum);
+				minBandWidth, maxBandWidth, maxDataAmount, otherNode, viewFrustum, view);
 
 		calcBundlingPoint();
 		calcBandConnectionPoint();
@@ -53,6 +55,21 @@ public class BottomBundleConnector
 		float ratioX = deltaX / viewFrustum.getWidth();
 
 		float edgeAnchorX = (float) bundlingPositionX + ratioX * node.getWidth() / 2.0f;
+		float edgeAnchorXOtherNode = (float) bundlingPositionXOtherNode - ratioX
+				* otherNode.getWidth() / 2.0f;
+		float edgeAnchorY = (float) node.getBoundingBox().getMinY()
+				- pixelGLConverter
+						.getGLHeightForPixelHeight(BOUNDING_BOX_BAND_CONNECTIONPOINT_DISTANCE_Y);
+		float edgeAnchorYOtherNode = otherNode.isUpsideDown() ? ((float) otherNode
+				.getBoundingBox().getMaxY() + pixelGLConverter
+				.getGLHeightForPixelHeight(BOUNDING_BOX_BAND_CONNECTIONPOINT_DISTANCE_Y))
+				: (float) otherNode.getBoundingBox().getMinY()
+						- pixelGLConverter
+								.getGLHeightForPixelHeight(BOUNDING_BOX_BAND_CONNECTIONPOINT_DISTANCE_Y);
+
+		boolean hasEdgeNodeIntersection = doesLineIntersectWithNode(new Point2D.Float(
+				edgeAnchorX, edgeAnchorY), new Point2D.Float(edgeAnchorXOtherNode,
+				edgeAnchorYOtherNode));
 
 		float bundleDeltaX = (float) (edgeAnchorX - bundlingPoint.getX());
 
@@ -60,7 +77,7 @@ public class BottomBundleConnector
 		float deltaXLimit = commonDataContainers.size() > 1 ? pixelGLConverter
 				.getGLWidthForPixelWidth(bandWidthPixels) : pixelGLConverter
 				.getGLWidthForPixelWidth(bandWidthPixels) / 2.0f;
-		if ((Math.abs(bundleDeltaX) < deltaXLimit)
+		if (hasEdgeNodeIntersection || (Math.abs(bundleDeltaX) < deltaXLimit)
 				|| (otherNode.getPosition().getY() > node.getPosition().getY())
 				|| (!otherNode.isUpsideDown() && node.getSpacingX(otherNode) < 0))
 		{
@@ -72,11 +89,7 @@ public class BottomBundleConnector
 		// Math.min(
 		// 0.2f * spacingY, pixelGLConverter
 		// .getGLHeightForPixelHeight(MAX_NODE_EDGE_ANCHOR_DISTANCE_PIXELS)));
-		bandConnectionPoint = new Point2D.Float(
-				edgeAnchorX,
-				(float) node.getBoundingBox().getMinY()
-						- pixelGLConverter
-								.getGLHeightForPixelHeight(BOUNDING_BOX_BAND_CONNECTIONPOINT_DISTANCE_Y));
+		bandConnectionPoint = new Point2D.Float(edgeAnchorX, edgeAnchorY);
 	}
 
 	@Override
@@ -297,36 +310,37 @@ public class BottomBundleConnector
 
 		// }
 
-//		gl.glPointSize(3);
-//		gl.glColor3f(1, 0, 0);
-//		gl.glBegin(GL2.GL_POINTS);
-//		gl.glVertex3d(bandAnchorPoint1.getX(), bandAnchorPoint1.getY(), 2);
-//		gl.glVertex3d(bandAnchorPoint2.getX(), bandAnchorPoint2.getY(), 2);
-//		gl.glColor3f(0, 0, 1);
-//		gl.glVertex3d(bandConnectionPoint.getX(), bandConnectionPoint.getY(), 2);
-//		gl.glEnd();
-//		//
-//		gl.glPointSize(3);
-//		gl.glColor3f(0, 1, 0);
-//		gl.glBegin(GL2.GL_POINTS);
-//		gl.glVertex3d(leftBandConnectionPointOffsetAnchor.getX(),
-//				leftBandConnectionPointOffsetAnchor.getY(), 3);
-//
-//		gl.glVertex3d(rightBandConnectionPointOffsetAnchor.getX(),
-//				rightBandConnectionPointOffsetAnchor.getY(), 3);
-//		if (use4ControlPointsForBandBundleConnection)
-//		{
-//			gl.glVertex3d(leftBundleConnectionPointOffsetAnchor.getX(),
-//					leftBundleConnectionPointOffsetAnchor.getY(), 3);
-//			gl.glVertex3d(rightBundleConnectionPointOffsetAnchor.getX(),
-//					rightBundleConnectionPointOffsetAnchor.getY(), 3);
-//		}
-//		gl.glColor3f(0, 1, 1);
-//		gl.glVertex3d(leftDataContainerBundleConnectionPoint.getX(),
-//				leftDataContainerBundleConnectionPoint.getY(), 3);
-//		gl.glVertex3d(rightDataContainerBundleConnectionPoint.getX(),
-//				rightDataContainerBundleConnectionPoint.getY(), 3);
-//		gl.glEnd();
+		// gl.glPointSize(3);
+		// gl.glColor3f(1, 0, 0);
+		// gl.glBegin(GL2.GL_POINTS);
+		// gl.glVertex3d(bandAnchorPoint1.getX(), bandAnchorPoint1.getY(), 2);
+		// gl.glVertex3d(bandAnchorPoint2.getX(), bandAnchorPoint2.getY(), 2);
+		// gl.glColor3f(0, 0, 1);
+		// gl.glVertex3d(bandConnectionPoint.getX(), bandConnectionPoint.getY(),
+		// 2);
+		// gl.glEnd();
+		// //
+		// gl.glPointSize(3);
+		// gl.glColor3f(0, 1, 0);
+		// gl.glBegin(GL2.GL_POINTS);
+		// gl.glVertex3d(leftBandConnectionPointOffsetAnchor.getX(),
+		// leftBandConnectionPointOffsetAnchor.getY(), 3);
+		//
+		// gl.glVertex3d(rightBandConnectionPointOffsetAnchor.getX(),
+		// rightBandConnectionPointOffsetAnchor.getY(), 3);
+		// if (use4ControlPointsForBandBundleConnection)
+		// {
+		// gl.glVertex3d(leftBundleConnectionPointOffsetAnchor.getX(),
+		// leftBundleConnectionPointOffsetAnchor.getY(), 3);
+		// gl.glVertex3d(rightBundleConnectionPointOffsetAnchor.getX(),
+		// rightBundleConnectionPointOffsetAnchor.getY(), 3);
+		// }
+		// gl.glColor3f(0, 1, 1);
+		// gl.glVertex3d(leftDataContainerBundleConnectionPoint.getX(),
+		// leftDataContainerBundleConnectionPoint.getY(), 3);
+		// gl.glVertex3d(rightDataContainerBundleConnectionPoint.getX(),
+		// rightDataContainerBundleConnectionPoint.getY(), 3);
+		// gl.glEnd();
 
 		List<Pair<Point2D, Point2D>> anchorPoints = new ArrayList<Pair<Point2D, Point2D>>();
 
@@ -354,8 +368,8 @@ public class BottomBundleConnector
 					(float) rightBandBundleConnectionPoint.getX(),
 					(float) rightBandBundleConnectionPoint.getY() }, new float[] {
 					(float) leftBandBundleConnectionPoint.getX(),
-					(float) leftBandBundleConnectionPoint.getY() }, false,  0,
-					color.getRGB(), (highlightBand) ? 1 : 0.5f);
+					(float) leftBandBundleConnectionPoint.getY() }, false, 0, color.getRGB(),
+					(highlightBand) ? 1 : 0.5f);
 		}
 
 		Point2D prevBandAnchorPoint = leftDataContainerBundleConnectionPoint;

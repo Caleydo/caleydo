@@ -4,15 +4,18 @@ import java.awt.geom.Point2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GeometryUtil;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
-public abstract class ABundleConnector extends ANodeConnector {
+public abstract class ABundleConnector
+	extends ANodeConnector
+{
 
 	protected final static int BUNDLING_POINT_NODE_DISTANCE_Y = 30;
 	protected final static int BOUNDING_BOX_BAND_CONNECTIONPOINT_DISTANCE_Y = 20;
@@ -27,54 +30,59 @@ public abstract class ABundleConnector extends ANodeConnector {
 	protected Map<DataContainer, Integer> bandWidthMap = new HashMap<DataContainer, Integer>();
 	protected Point2D bundlingPoint;
 	protected boolean use4ControlPointsForBandBundleConnection;
+	protected GLDataGraph view;
 
-	public ABundleConnector(IDataGraphNode node,
-			PixelGLConverter pixelGLconverter,
+	public ABundleConnector(IDataGraphNode node, PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			List<DataContainer> commonDataContainers, int minBandWidth,
-			int maxBandWidth, int maxDataAmount, IDataGraphNode otherNode,
-			ViewFrustum viewFrustum) {
-		super(node, pixelGLconverter, connectionBandRenderer, otherNode,
-				viewFrustum);
+			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
+			int maxDataAmount, IDataGraphNode otherNode, ViewFrustum viewFrustum,
+			GLDataGraph view)
+	{
+		super(node, pixelGLconverter, connectionBandRenderer, otherNode, viewFrustum);
 
 		this.commonDataContainers = commonDataContainers;
+		this.view = view;
 		calcBandWidths(minBandWidth, maxBandWidth, maxDataAmount);
 	}
 
 	protected float calcXPositionOfBundlingPoint(IDataGraphNode node,
-			List<DataContainer> dataContainers) {
+			List<DataContainer> dataContainers)
+	{
 		float summedX = 0;
 
-		for (DataContainer dataContainer : dataContainers) {
+		for (DataContainer dataContainer : dataContainers)
+		{
 			Pair<Point2D, Point2D> anchorPoints = node
 					.getBottomDataContainerAnchorPoints(dataContainer);
-			if(anchorPoints == null)
-				return (float)node.getPosition().getX();
-			summedX += anchorPoints.getFirst().getX()
-					+ anchorPoints.getSecond().getX();
+			if (anchorPoints == null)
+				return (float) node.getPosition().getX();
+			summedX += anchorPoints.getFirst().getX() + anchorPoints.getSecond().getX();
 		}
 
 		return summedX / ((float) dataContainers.size() * 2.0f);
 	}
 
-	protected void calcBandWidths(int minBandWidth, int maxBandWidth,
-			int maxDataAmount) {
+	protected void calcBandWidths(int minBandWidth, int maxBandWidth, int maxDataAmount)
+	{
 		bandWidthPixels = 0;
 
-		for (DataContainer dataContainer : commonDataContainers) {
-			int width = calcDimensionGroupBandWidthPixels(dataContainer,
-					minBandWidth, maxBandWidth, maxDataAmount);
+		for (DataContainer dataContainer : commonDataContainers)
+		{
+			int width = calcDimensionGroupBandWidthPixels(dataContainer, minBandWidth,
+					maxBandWidth, maxDataAmount);
 			bandWidthPixels += width;
 			bandWidthMap.put(dataContainer, width);
 		}
 
-		if (bandWidthPixels > maxBandWidth) {
+		if (bandWidthPixels > maxBandWidth)
+		{
 
 			int diff = bandWidthPixels - maxBandWidth;
 
 			int newBandWidth = 0;
 
-			for (DataContainer dimensionGroupData : commonDataContainers) {
+			for (DataContainer dimensionGroupData : commonDataContainers)
+			{
 				int width = bandWidthMap.get(dimensionGroupData);
 				int newWidth = width
 						- (int) Math
@@ -87,16 +95,37 @@ public abstract class ABundleConnector extends ANodeConnector {
 		}
 	}
 
-	protected int calcDimensionGroupBandWidthPixels(
-			DataContainer dataContainer, int minBandWidth, int maxBandWidth,
-			int maxDataAmount) {
+	protected int calcDimensionGroupBandWidthPixels(DataContainer dataContainer,
+			int minBandWidth, int maxBandWidth, int maxDataAmount)
+	{
 		// TODO: implement properly
 
 		return minBandWidth;
 	}
 
-	public int getBandWidth() {
+	public int getBandWidth()
+	{
 		return bandWidthPixels;
+	}
+
+	/**
+	 * Returns whether the line specified by point1 and point2 intersects with a
+	 * bounding box of a node.
+	 * 
+	 * @param point1
+	 * @param point2
+	 * @return
+	 */
+	protected boolean doesLineIntersectWithNode(Point2D point1, Point2D point2)
+	{
+		for(IDataGraphNode node : view.getAllNodes()) {
+			
+			if(GeometryUtil.calcIntersectionPoint(point1, point2, node.getBoundingBox()) != null) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 
 }

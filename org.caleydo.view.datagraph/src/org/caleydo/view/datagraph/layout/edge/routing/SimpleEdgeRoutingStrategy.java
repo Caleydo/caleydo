@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+import org.caleydo.view.datagraph.GeometryUtil;
 import org.caleydo.view.datagraph.Graph;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
@@ -46,9 +46,9 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 				}
 
 				Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
-						: (calcIntersectionPoint(point1, point2, box, code1));
+						: (GeometryUtil.calcIntersectionPoint(point1, point2, box));
 				Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
-						: (calcIntersectionPoint(point2, point1, box, code2));
+						: (GeometryUtil.calcIntersectionPoint(point2, point1, box));
 
 				if (intersection1 != null && intersection2 != null) {
 
@@ -176,9 +176,9 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 					}
 
 					Point2D intersection1 = (isPoint1OnBoundingBox) ? (point1)
-							: (calcIntersectionPoint(point1, point2, box, code1));
+							: (GeometryUtil.calcIntersectionPoint(point1, point2, box));
 					Point2D intersection2 = (isPoint2OnBoundingBox) ? (point2)
-							: (calcIntersectionPoint(point2, point1, box, code2));
+							: (GeometryUtil.calcIntersectionPoint(point2, point1, box));
 
 					if (intersection1 == null || intersection2 == null) {
 						continue;
@@ -221,51 +221,51 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 		}
 	}
 
-	private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
-			Rectangle2D rect, int code1) {
-
-		double k = 0;
-
-		if (point1.getX() != point2.getX()) {
-			k = (point2.getY() - point1.getY())
-					/ (point2.getX() - point1.getX());
-		}
-
-		if ((code1 & Rectangle2D.OUT_LEFT) != 0) {
-			double y = point1.getY() + ((rect.getMinX() - point1.getX()) * k);
-
-			if (y <= rect.getMaxY() && y >= rect.getMinY())
-				return new Point2D.Double(rect.getMinX(), y);
-		}
-
-		if ((code1 & Rectangle2D.OUT_RIGHT) != 0) {
-			double y = point1.getY() + ((rect.getMaxX() - point1.getX()) * k);
-			if (y <= rect.getMaxY() && y >= rect.getMinY())
-				return new Point2D.Double(rect.getMaxX(), y);
-		}
-
-		if ((code1 & Rectangle2D.OUT_TOP) != 0) {
-			double x = point1.getX();
-			if (k != 0) {
-				x += (rect.getMinY() - point1.getY()) / k;
-			}
-
-			if (x <= rect.getMaxX() && x >= rect.getMinX())
-				return new Point2D.Double(x, rect.getMinY());
-		}
-
-		if ((code1 & Rectangle2D.OUT_BOTTOM) != 0) {
-			double x = point1.getX();
-			if (k != 0) {
-				x += (rect.getMaxY() - point1.getY()) / k;
-			}
-
-			if (x <= rect.getMaxX() && x >= rect.getMinX())
-				return new Point2D.Double(x, rect.getMaxY());
-		}
-
-		return null;
-	}
+//	private Point2D calcIntersectionPoint(Point2D point1, Point2D point2,
+//			Rectangle2D rect, int code1) {
+//
+//		double k = 0;
+//
+//		if (point1.getX() != point2.getX()) {
+//			k = (point2.getY() - point1.getY())
+//					/ (point2.getX() - point1.getX());
+//		}
+//
+//		if ((code1 & Rectangle2D.OUT_LEFT) != 0) {
+//			double y = point1.getY() + ((rect.getMinX() - point1.getX()) * k);
+//
+//			if (y <= rect.getMaxY() && y >= rect.getMinY())
+//				return new Point2D.Double(rect.getMinX(), y);
+//		}
+//
+//		if ((code1 & Rectangle2D.OUT_RIGHT) != 0) {
+//			double y = point1.getY() + ((rect.getMaxX() - point1.getX()) * k);
+//			if (y <= rect.getMaxY() && y >= rect.getMinY())
+//				return new Point2D.Double(rect.getMaxX(), y);
+//		}
+//
+//		if ((code1 & Rectangle2D.OUT_TOP) != 0) {
+//			double x = point1.getX();
+//			if (k != 0) {
+//				x += (rect.getMinY() - point1.getY()) / k;
+//			}
+//
+//			if (x <= rect.getMaxX() && x >= rect.getMinX())
+//				return new Point2D.Double(x, rect.getMinY());
+//		}
+//
+//		if ((code1 & Rectangle2D.OUT_BOTTOM) != 0) {
+//			double x = point1.getX();
+//			if (k != 0) {
+//				x += (rect.getMaxY() - point1.getY()) / k;
+//			}
+//
+//			if (x <= rect.getMaxX() && x >= rect.getMinX())
+//				return new Point2D.Double(x, rect.getMaxY());
+//		}
+//
+//		return null;
+//	}
 
 	@Override
 	public void setNodes(IDataGraphNode node1, IDataGraphNode node2) {
