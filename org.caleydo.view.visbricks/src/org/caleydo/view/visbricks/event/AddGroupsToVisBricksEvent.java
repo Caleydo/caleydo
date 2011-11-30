@@ -24,8 +24,7 @@ import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
  * @author Alexander Lex
  * 
  */
-public class AddGroupsToVisBricksEvent
-	extends AEvent {
+public class AddGroupsToVisBricksEvent extends AEvent {
 
 	private List<DataContainer> dataContainers;
 
@@ -38,9 +37,20 @@ public class AddGroupsToVisBricksEvent
 	 */
 	private IBrickConfigurer dataConfigurer;
 
+	public AddGroupsToVisBricksEvent() {
+	}
+
 	/**
-	 * Specify a list of pre-existing {@link ADimensionGroupData}s to be added
-	 * to VisBricks
+	 * Initialize event with a single data container
+	 */
+	public AddGroupsToVisBricksEvent(DataContainer dataContainer) {
+		dataContainers = new ArrayList<DataContainer>();
+		this.dataContainers.add(dataContainer);
+	}
+
+	/**
+	 * Add a list of data containers, creating multiple dimension groups at the
+	 * same time
 	 * 
 	 * @param dataContainers
 	 */
@@ -49,16 +59,11 @@ public class AddGroupsToVisBricksEvent
 	}
 
 	/**
-	 * Specify a record and dimension perspective, from which a new
-	 * {@link ADimensionGroupData} is created in this event.
-	 * 
-	 * @param dataDomainID
-	 * @param dimensionPerspectiveID
-	 * @param recordPerspectiveID
+	 * @param dataContainers
+	 *            setter, see {@link #dataContainers}
 	 */
-	public AddGroupsToVisBricksEvent(DataContainer dataContainer) {
-		dataContainers = new ArrayList<DataContainer>();
-		this.dataContainers.add(dataContainer);
+	public void setDataContainers(List<DataContainer> dataContainers) {
+		this.dataContainers = dataContainers;
 	}
 
 	@Override
@@ -69,6 +74,10 @@ public class AddGroupsToVisBricksEvent
 		return true;
 	}
 
+	/**
+	 * Get the data containers stored in this event. Each dataContainer should
+	 * be used to create a dimension group
+	 */
 	public List<DataContainer> getDataContainers() {
 
 		if (dataContainers != null)
@@ -87,7 +96,8 @@ public class AddGroupsToVisBricksEvent
 	}
 
 	/**
-	 * @param dataConfigurer setter, see {@link #dataConfigurer}
+	 * @param dataConfigurer
+	 *            setter, see {@link #dataConfigurer}
 	 */
 	public void setDataConfigurer(IBrickConfigurer dataConfigurer) {
 		this.dataConfigurer = dataConfigurer;

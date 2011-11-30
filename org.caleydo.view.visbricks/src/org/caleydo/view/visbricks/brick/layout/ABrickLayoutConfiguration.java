@@ -13,7 +13,7 @@ import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
 /**
- * Subclasses of this class are intended to specify the elements and their
+ * Base class are intended to specify the elements and their
  * layout for different appearances of a brick.
  * 
  * @author Christian Partl

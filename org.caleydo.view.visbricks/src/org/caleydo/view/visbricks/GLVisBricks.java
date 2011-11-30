@@ -1178,7 +1178,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 			}
 		}
-
+		
 		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);

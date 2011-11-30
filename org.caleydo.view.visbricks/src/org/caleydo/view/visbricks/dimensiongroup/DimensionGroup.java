@@ -238,10 +238,11 @@ public class DimensionGroup extends ATableBasedView implements
 		// centerBrick.setBrickLayoutTemplate(new
 		// CompactBrickLayoutTemplate(centerBrick,
 		// glVisBricksView, this));
-		headerBrick.setStaticBrickHeight(visBricks.getArchHeight());
+		
 		if (headerBrick == null || uninitializedBricks.contains(headerBrick))
 			return;
 
+		headerBrick.setStaticBrickHeight(visBricks.getArchHeight());
 		if (isCollapsed) {
 			headerBrick.setBrickHeigthMode(EBrickHeightMode.VIEW_DEPENDENT);
 			headerBrick.collapse();
@@ -419,7 +420,8 @@ public class DimensionGroup extends ATableBasedView implements
 	 *            the pixel height of the arch
 	 */
 	public void setArchHeight(int archHeight) {
-		headerBrick.setStaticBrickHeight(archHeight);
+		if (headerBrick != null)
+			headerBrick.setStaticBrickHeight(archHeight);
 	}
 
 	@Override
@@ -1071,7 +1073,8 @@ public class DimensionGroup extends ATableBasedView implements
 		double useablePixelHeight = getParentGLCanvas().getHeight()
 				- visBricks.getArchHeight()
 				- (dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
-						.size() + 1) * BETWEEN_BRICKS_SPACING - DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS;
+						.size() + 1) * BETWEEN_BRICKS_SPACING
+				- DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS;
 		double proportionalRecordHeight = useablePixelHeight
 				/ dataContainer.getNrRecords();
 		return proportionalRecordHeight;

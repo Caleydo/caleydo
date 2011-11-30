@@ -953,7 +953,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 				};
 
 				InputDialog dialog = new InputDialog(new Shell(),
-						"Create Data Container", "Name", dataDomain.getLabel() + " " + recordPerspectiveLabel + "/"
+						"Create Data Container", "Name", dataDomain.getLabel() + " - " + recordPerspectiveLabel + "/"
 								+ dimensionPerspectiveLabel, validator);
 
 				String currentDimensionPerspeciveID = dimensionPerspectiveID;
