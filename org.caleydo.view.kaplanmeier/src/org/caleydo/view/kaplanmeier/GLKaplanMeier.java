@@ -150,7 +150,7 @@ public class GLKaplanMeier
 			dataVector.add(sortedDataVector[index]);
 		}		
 
-		gl.glLineWidth(2);
+		gl.glLineWidth(1);
 		if (fillCurve) {
 			drawFilledCurve(gl, dataVector);
 
@@ -179,7 +179,7 @@ public class GLKaplanMeier
 		float ySingleSampleSize = viewFrustum.getHeight() / dataVector.size();
 
 		gl.glColor3f(0.8f, 1, 0.8f);
-		gl.glBegin(GL2.GL_LINE_STRIP);
+
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
 
 		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
@@ -198,6 +198,7 @@ public class GLKaplanMeier
 			gl.glVertex3f(0, y, 0);
 			gl.glEnd();
 		}
+	
 	}
 
 	private void drawCurve(GL2 gl, ArrayList<Float> dataVector) {
