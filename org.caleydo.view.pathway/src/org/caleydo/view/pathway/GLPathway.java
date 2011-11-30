@@ -1,16 +1,13 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -53,6 +50,7 @@ import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
+import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;

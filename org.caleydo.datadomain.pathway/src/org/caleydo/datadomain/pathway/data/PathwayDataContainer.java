@@ -1,9 +1,15 @@
 package org.caleydo.datadomain.pathway.data;
 
+import java.util.ArrayList;
+import java.util.List;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
@@ -60,5 +66,36 @@ public class PathwayDataContainer extends DataContainer {
 	 */
 	public PathwayDataDomain getPathwayDataDomain() {
 		return pathwayDataDomain;
+	}
+	
+	@Override
+	public List<DataContainer> getRecordSubDataContainers() {
+
+		List<DataContainer> recordSubDataContainers = new ArrayList<DataContainer>();
+
+		RecordVirtualArray recordVA = recordPerspective.getVirtualArray();
+
+		if (recordVA.getGroupList() == null)
+			return null;
+
+		RecordGroupList groupList = recordVA.getGroupList();
+		groupList.updateGroupInfo();
+
+		for (Group group : groupList) {
+
+			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
+			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(indices);
+			recordPerspective.init(data);
+
+			PathwayDataContainer subDataContainer = new PathwayDataContainer(dataDomain,
+					pathwayDataDomain, recordPerspective, dimensionPerspective,
+					pathway);
+			subDataContainer.setRecordGroup(group);
+			recordSubDataContainers.add(subDataContainer);
+		}
+
+		return recordSubDataContainers;
 	}
 }

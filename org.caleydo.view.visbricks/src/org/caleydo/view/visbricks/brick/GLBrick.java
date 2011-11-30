@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
@@ -354,7 +355,6 @@ public class GLBrick
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener) {
 		init(gl);
-
 	}
 
 	@Override
@@ -983,15 +983,14 @@ public class GLBrick
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == Status.OK) {
-					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
-					List<PathwayDimensionGroupData> pathwayDimensionGroupDataList = dialog
-							.getPathwayDimensionGroupDataList();
+					List<PathwayDataContainer> pathwayDataContainers = dialog
+							.getPathwayDataContainer();
 
-					for (PathwayDimensionGroupData pathwayDimensionGroupData : pathwayDimensionGroupDataList) {
-						dataContainers.add(pathwayDimensionGroupData);
-						event.setDataContainers(dataContainers);
+					for (PathwayDataContainer pathwayDataContainer : pathwayDataContainers) {
+
+						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+								pathwayDataContainer);
 						event.setDataConfigurer(new PathwayDataConfigurer());
 						event.setSender(this);
 						event.setReceiver(visBricks);
@@ -1022,20 +1021,21 @@ public class GLBrick
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == Status.OK) {
-					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
 					List<DataContainer> kaplanMeierDimensionGroupDataList = dialog
 							.getKaplanMeierDimensionGroupDataList();
 
 					for (DataContainer kaplanMeierDimensionGroupData : kaplanMeierDimensionGroupDataList) {
-						dataContainers.add(kaplanMeierDimensionGroupData);
-						event.setDataContainers(dataContainers);
+
+						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+								kaplanMeierDimensionGroupData);
 
 						KaplanMeierDataConfigurer dataConfigurer = new KaplanMeierDataConfigurer();
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 						sortingStrategy.setExternalBricks(dimensionGroup.getBricks());
-						sortingStrategy.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
+						sortingStrategy
+								.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
+										.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
 						event.setDataConfigurer(dataConfigurer);
 						event.setSender(this);
@@ -1072,17 +1072,12 @@ public class GLBrick
 				dialog.setBlockOnOpen(true);
 
 				if (dialog.open() == Status.OK) {
-					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent();
-					ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
 							.getPathwayDimensionGroupData();
 
-					// IDataDomain pathwayDataDomain = DataDomainManager.get()
-					// .getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
-					// pathwayDataDomain.addDimensionGroup(pathwayDimensionGroupData);
-					dataContainers.add(pathwayDimensionGroupData);
-					event.setDataContainers(dataContainers);
+					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+							pathwayDimensionGroupData);
 					event.setSender(visBricks);
 					eventPublisher.triggerEvent(event);
 				}

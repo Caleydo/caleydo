@@ -6,7 +6,6 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Locale;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -16,6 +15,7 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -40,7 +40,8 @@ import org.eclipse.swt.widgets.TableItem;
  * @author Marc Streit
  * 
  */
-public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
+public class CreatePathwaySmallMultiplesGroupDialog
+	extends TitleAreaDialog {
 
 	private DataContainer dataContainer;
 	private DimensionPerspective dimensionPerspective;
@@ -52,10 +53,11 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 
 	private Composite parent;
 
-	private ArrayList<PathwayDimensionGroupData> pathwayDimensionGroupDataList = new ArrayList<PathwayDimensionGroupData>();
+	private ArrayList<PathwayDataContainer> pathwayDataContainer = new ArrayList<PathwayDataContainer>();
 	private HashMap<PathwayGraph, Integer> pathwayGraphsWithOccurrences;
 
-	private class PathwayTableSorter implements Listener {
+	private class PathwayTableSorter
+		implements Listener {
 
 		@Override
 		public void handleEvent(Event e) {
@@ -89,7 +91,8 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 
 			if (sortAscending) {
 				pathwayTable.setSortDirection(SWT.UP);
-			} else {
+			}
+			else {
 				pathwayTable.setSortDirection(SWT.DOWN);
 			}
 		}
@@ -134,14 +137,14 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 
 		pathwayGraphsWithOccurrences = PathwayManager.get()
 				.getPathwayGraphsWithOccurencesByGeneIDs(
-						(GeneticDataDomain) dataContainer.getDataDomain(),
-						va.getIdType(), va.getIndexList());
+						(GeneticDataDomain) dataContainer.getDataDomain(), va.getIdType(),
+						va.getIndexList());
 
 		// Create a list that contains pathways sorted by gene occurrences
 		ArrayList<Pair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<Pair<Integer, PathwayGraph>>();
 		for (PathwayGraph pathway : pathwayGraphsWithOccurrences.keySet()) {
-			sortedPathwayList.add(new Pair<Integer, PathwayGraph>(
-					pathwayGraphsWithOccurrences.get(pathway), pathway));
+			sortedPathwayList.add(new Pair<Integer, PathwayGraph>(pathwayGraphsWithOccurrences
+					.get(pathway), pathway));
 		}
 		Collections.sort(sortedPathwayList);
 
@@ -185,8 +188,7 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 		data.grabExcessVerticalSpace = true;
 		data.horizontalAlignment = GridData.FILL;
 		data.verticalAlignment = GridData.FILL;
-		pathwayTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL
-				| SWT.H_SCROLL);
+		pathwayTable = new Table(parent, SWT.CHECK | SWT.BORDER | SWT.V_SCROLL | SWT.H_SCROLL);
 
 		pathwayTable.setHeaderVisible(true);
 		TableColumn column1 = new TableColumn(pathwayTable, SWT.CHECK);
@@ -248,32 +250,27 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 			}
 		}
 
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE);
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				PathwayDataDomain.DATA_DOMAIN_TYPE);
 
 		if (!pathways.isEmpty()) {
 
 			for (PathwayGraph pathway : pathways) {
-				ArrayList<PathwayGraph> pathwayGraphs = new ArrayList<PathwayGraph>();
-				pathwayGraphs.add(pathway);
 
-				RecordPerspective oldRecordPerspective = dataContainer
-						.getRecordPerspective();
+				RecordPerspective oldRecordPerspective = dataContainer.getRecordPerspective();
 				RecordPerspective newRecordPerspective = new RecordPerspective(
 						dataContainer.getDataDomain());
 
-				// FIXME check this
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				data.setData(oldRecordPerspective.getVirtualArray());
 
 				newRecordPerspective.init(data);
 
-				PathwayDimensionGroupData pathwayDimensionGroup = new PathwayDimensionGroupData(
+				PathwayDataContainer pathwayDimensionGroup = new PathwayDataContainer(
 						dataContainer.getDataDomain(), pathwayDataDomain,
-						newRecordPerspective, dimensionPerspective, pathwayGraphs,
-						pathway.getTitle());
+						newRecordPerspective, dimensionPerspective, pathway);
 
-				pathwayDimensionGroupDataList.add(pathwayDimensionGroup);
+				pathwayDataContainer.add(pathwayDimensionGroup);
 			}
 
 			super.okPressed();
@@ -281,7 +278,10 @@ public class CreatePathwaySmallMultiplesGroupDialog extends TitleAreaDialog {
 
 	}
 
-	public ArrayList<PathwayDimensionGroupData> getPathwayDimensionGroupDataList() {
-		return pathwayDimensionGroupDataList;
+	/**
+	 * @return the pathwayDataContainer, see {@link #pathwayDataContainer}
+	 */
+	public ArrayList<PathwayDataContainer> getPathwayDataContainer() {
+		return pathwayDataContainer;
 	}
 }
