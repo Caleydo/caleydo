@@ -1071,7 +1071,7 @@ public class DimensionGroup extends ATableBasedView implements
 		double useablePixelHeight = getParentGLCanvas().getHeight()
 				- visBricks.getArchHeight()
 				- (dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
-						.size() + 1) * BETWEEN_BRICKS_SPACING;
+						.size() + 1) * BETWEEN_BRICKS_SPACING - DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS;
 		double proportionalRecordHeight = useablePixelHeight
 				/ dataContainer.getNrRecords();
 		return proportionalRecordHeight;
