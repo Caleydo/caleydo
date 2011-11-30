@@ -62,6 +62,7 @@ import org.caleydo.view.datagraph.event.AddDataContainerEvent;
 import org.caleydo.view.datagraph.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 import org.caleydo.view.datagraph.event.OpenViewEvent;
+import org.caleydo.view.datagraph.event.ShowDataConnectionsEvent;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
@@ -75,6 +76,7 @@ import org.caleydo.view.datagraph.listener.MinSizeAppliedEventListener;
 import org.caleydo.view.datagraph.listener.NewDataDomainEventListener;
 import org.caleydo.view.datagraph.listener.NewViewEventListener;
 import org.caleydo.view.datagraph.listener.OpenViewEventListener;
+import org.caleydo.view.datagraph.listener.ShowDataConnectionsEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
@@ -132,6 +134,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private CreateViewFromDataContainerEventListener createViewFromDataContainerEventListener;
 	private ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener;
 	private MinSizeAppliedEventListener minSizeAppliedEventListener;
+	private ShowDataConnectionsEventListener showDataConnectionsEventListener;
 
 	private IDataGraphNode currentMouseOverNode;
 
@@ -143,6 +146,7 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	private boolean isMinSizeApplied = false;
 	private boolean waitForMinSizeApplication = false;
 	private boolean isRendered = false;
+	private boolean showDataConnections = true;
 
 	/**
 	 * Constructor.
@@ -592,6 +596,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		minSizeAppliedEventListener.setHandler(this);
 		eventPublisher
 				.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
+		
+		showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
+		showDataConnectionsEventListener.setHandler(this);
+		eventPublisher
+				.addListener(ShowDataConnectionsEvent.class, showDataConnectionsEventListener);
 	}
 
 	@Override
@@ -646,6 +655,11 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		if (minSizeAppliedEventListener != null) {
 			eventPublisher.removeListener(minSizeAppliedEventListener);
 			minSizeAppliedEventListener = null;
+		}
+		
+		if (showDataConnectionsEventListener != null) {
+			eventPublisher.removeListener(showDataConnectionsEventListener);
+			showDataConnectionsEventListener = null;
 		}
 	}
 
@@ -1141,5 +1155,14 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 	
 	public Collection<IDataGraphNode> getAllNodes() {
 		return dataGraph.getNodes();
+	}
+	
+	public void showDataConnections(boolean showDataConnections) {
+		this.showDataConnections = showDataConnections;
+		setDisplayListDirty();
+	}
+	
+	public boolean isShowDataConnections() {
+		return showDataConnections;
 	}
 }

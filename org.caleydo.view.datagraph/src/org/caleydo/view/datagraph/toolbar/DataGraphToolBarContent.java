@@ -8,6 +8,7 @@ import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.visbricks.toolbar.ConnectionsModeGUI;
 
 public class DataGraphToolBarContent extends AToolBarContent {
 
@@ -29,7 +30,10 @@ public class DataGraphToolBarContent extends AToolBarContent {
 
 		IToolBarItem applySpringBasedLayoutAction = new ApplySpringBasedLayoutAction();
 		IToolBarItem applyBipartiteLayoutAction = new ApplyBipartiteLayoutAction();
-
+		IToolBarItem toolBarWidgets = new ToolBarWidgets(
+				"Graph Layout");
+		
+		actionList.add(toolBarWidgets);
 		actionList.add(applySpringBasedLayoutAction);
 		actionList.add(applyBipartiteLayoutAction);
 

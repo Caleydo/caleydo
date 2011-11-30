@@ -28,6 +28,9 @@ public abstract class AEdgeLineRenderer
 	public void renderEdge(GL2 gl, ConnectionBandRenderer connectionBandRenderer,
 			boolean highlight)
 	{
+
+		if (!view.isShowDataConnections() && !highlight)
+			return;
 		gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
 		if (highlight)
 		{
