@@ -67,7 +67,9 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			toggleDataContainerButtonRenderer
 					.setTextureRotation(currentState.textureRotation);
 			dataContainerRenderer.setDataContainers(getDataContainers());
+			recalculateNodeSize();
 			graphLayout.updateNodePositions();
+			
 		}
 
 		public abstract ALayoutState getNextState();
@@ -150,7 +152,9 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			public void clicked(Pick pick) {
 				currentState = currentState.getNextState();
 				currentState.apply();
-
+//				recalculateNodeSize();
+//				graphLayout.updateNodePositions();
+				
 				view.setDisplayListDirty();
 			}
 
@@ -242,6 +246,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		setUpsideDown(isUpsideDown);
 
 		currentState.apply();
+//		recalculateNodeSize();
+		graphLayout.updateNodePositions();
 
 		return baseRow;
 	}
@@ -472,10 +478,9 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	@Override
 	protected int getMinTitleBarWidthPixels()
 	{
-		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
+		float textWidth = view.getTextRenderer().getRequiredTextWidth(
 				dataDomain.getLabel(),
-				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
-				MIN_TITLE_BAR_WIDTH_PIXELS);
+				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS));
 
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
 				+ SPACING_PIXELS;

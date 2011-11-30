@@ -3,15 +3,15 @@ package org.caleydo.view.datagraph.node;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
-public interface IDataGraphNode extends IDraggable {
+public interface IDataGraphNode
+	extends IDraggable
+{
 
 	public List<DataContainer> getDataContainers();
 
@@ -30,8 +30,7 @@ public interface IDataGraphNode extends IDraggable {
 	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
 			DataContainer dataContainer);
 
-	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(
-			DataContainer dataContainer);
+	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(DataContainer dataContainer);
 
 	public Pair<Point2D, Point2D> getTopAnchorPoints();
 
@@ -62,11 +61,18 @@ public interface IDataGraphNode extends IDraggable {
 	public void setCustomPosition(boolean isCustomPosition);
 
 	public void setGraphLayout(AGraphLayout graphLayout);
-	
-	public Point2D getAbsolutPositionOfRelativeDataContainerRendererCoordinates(Point2D coordinates);
-	
+
+	public Point2D getAbsolutPositionOfRelativeDataContainerRendererCoordinates(
+			Point2D coordinates);
+
 	public float getSpacingX(IDataGraphNode node);
-	
+
 	public float getSpacingY(IDataGraphNode node);
+
+	/**
+	 * This method should be called whenever there are changes to a node that
+	 * affect its size;
+	 */
+	public void recalculateNodeSize();
 
 }

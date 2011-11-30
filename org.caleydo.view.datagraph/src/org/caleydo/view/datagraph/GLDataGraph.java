@@ -166,6 +166,25 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 		dataNodesOfDataDomains = new HashMap<IDataDomain, ADataNode>();
 		nodeCreator = new NodeCreator();
 
+		
+
+	}
+
+	@Override
+	public void init(GL2 gl) {
+
+		displayListIndex = gl.glGenLists(1);
+
+		// Register keyboard listener to GL2 canvas
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				parentComposite.addKeyListener(glKeyListener);
+			}
+		});
+
+		textRenderer = new CaleydoTextRenderer(24);
+		
 		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
 		for (IDataDomain dataDomain : dataDomainGraph.getDataDomains()) {
@@ -186,34 +205,6 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 		for (AGLView view : views) {
 			addView(view);
-		}
-
-	}
-
-	@Override
-	public void init(GL2 gl) {
-
-		displayListIndex = gl.glGenLists(1);
-
-		// Register keyboard listener to GL2 canvas
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				parentComposite.addKeyListener(glKeyListener);
-			}
-		});
-
-		textRenderer = new CaleydoTextRenderer(24);
-
-		maxNodeWidthPixels = Integer.MIN_VALUE;
-		maxNodeHeightPixels = Integer.MIN_VALUE;
-
-		for (IDataGraphNode node : dataGraph.getNodes()) {
-			if (node.getHeightPixels() > maxNodeHeightPixels)
-				maxNodeHeightPixels = node.getHeightPixels();
-
-			if (node.getWidthPixels() > maxNodeWidthPixels)
-				maxNodeWidthPixels = node.getWidthPixels();
 		}
 
 		applyAutomaticLayout = true;
@@ -259,6 +250,20 @@ public class GLDataGraph extends AGLView implements IViewCommandHandler {
 
 	@Override
 	public void display(GL2 gl) {
+		
+		if(!isRendered) {
+			maxNodeWidthPixels = Integer.MIN_VALUE;
+			maxNodeHeightPixels = Integer.MIN_VALUE;
+
+			for (IDataGraphNode node : dataGraph.getNodes()) {
+				node.recalculateNodeSize();
+				if (node.getHeightPixels() > maxNodeHeightPixels)
+					maxNodeHeightPixels = node.getHeightPixels();
+
+				if (node.getWidthPixels() > maxNodeWidthPixels)
+					maxNodeWidthPixels = node.getWidthPixels();
+			}
+		}
 
 		if (isDisplayListDirty && !(!isMinSizeApplied && waitForMinSizeApplication)) {
 			buildDisplayList(gl, displayListIndex);

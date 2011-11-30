@@ -263,9 +263,10 @@ public class DataContainerMatrixRenderer
 				}
 
 				// graphLayout.updateNodePositions();
+				node.recalculateNodeSize();
 				view.getGraphLayout().updateNodePositions();
 				view.setDisplayListDirty();
-
+				
 			}
 
 		}, PickingType.COLLAPSE_BUTTON.name() + node.getID());

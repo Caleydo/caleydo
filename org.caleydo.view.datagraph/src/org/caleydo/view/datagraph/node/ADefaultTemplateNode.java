@@ -17,6 +17,7 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
@@ -36,6 +37,8 @@ public abstract class ADefaultTemplateNode
 	protected boolean isUpsideDown = false;
 	protected Column baseColumn;
 	protected Column bodyColumn;
+	protected int heightPixels = -1;
+	protected int widthPixels = -1;
 
 	public ADefaultTemplateNode(AGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, int id)
@@ -223,24 +226,36 @@ public abstract class ADefaultTemplateNode
 	@Override
 	public int getHeightPixels()
 	{
-		return 4
-				* SPACING_PIXELS
-				+ CAPTION_HEIGHT_PIXELS
-				+ LINE_SEPARATOR_HEIGHT_PIXELS
-				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
-						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
-								.getMinHeightPixels()));
+		
+//		heightPixels = 4
+//				* SPACING_PIXELS
+//				+ CAPTION_HEIGHT_PIXELS
+//				+ LINE_SEPARATOR_HEIGHT_PIXELS
+//				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
+//						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
+//								.getMinHeightPixels()));
+
+		
+		if (heightPixels < 0)
+			recalculateNodeSize();
+
+		return heightPixels;
 		// return layout.getHeightPixels();
 	}
 
 	@Override
 	public int getWidthPixels()
 	{
-		return 2
-				* SPACING_PIXELS
-				+ Math.max(getMinTitleBarWidthPixels(),
-						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
-								.getMinWidthPixels()));
+		
+//		widthPixels = 2
+//				* SPACING_PIXELS
+//				+ Math.max(getMinTitleBarWidthPixels(),
+//						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
+//								.getMinWidthPixels()));
+		if (widthPixels < 0)
+			recalculateNodeSize();
+
+		return widthPixels;
 		// return layout.getWidthPixels();
 	}
 
@@ -326,15 +341,15 @@ public abstract class ADefaultTemplateNode
 		gl.glPopMatrix();
 		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
 
-//		Rectangle2D boundingBox = getBoundingBox();
-//
-//		gl.glColor3f(1, 0, 1);
-//		gl.glBegin(GL2.GL_LINE_LOOP);
-//		gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
-//		gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
-//		gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
-//		gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
-//		gl.glEnd();
+		// Rectangle2D boundingBox = getBoundingBox();
+		//
+		// gl.glColor3f(1, 0, 1);
+		// gl.glBegin(GL2.GL_LINE_LOOP);
+		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
+		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
+		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
+		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
+		// gl.glEnd();
 
 	}
 
@@ -346,11 +361,13 @@ public abstract class ADefaultTemplateNode
 		float boundingBoxSpacingY = pixelGLConverter
 				.getGLHeightForPixelHeight(BOUNDING_BOX_SPACING_PIXELS);
 		Point2D position = getPosition();
-		double x = position.getX() - getWidth() / 2 - boundingBoxSpacingX;
-		double y = position.getY() - getHeight() / 2 - boundingBoxSpacingY;
+		float width = getWidth();
+		float height = getHeight();
+		double x = position.getX() - width / 2 - boundingBoxSpacingX;
+		double y = position.getY() - height / 2 - boundingBoxSpacingY;
 
-		return new Rectangle2D.Double(x, y, getWidth() + 2 * boundingBoxSpacingX, getHeight()
-				+ 2 * boundingBoxSpacingY);
+		return new Rectangle2D.Double(x, y, width + 2 * boundingBoxSpacingX, height + 2
+				* boundingBoxSpacingY);
 	}
 
 	@Override
@@ -413,6 +430,23 @@ public abstract class ADefaultTemplateNode
 
 		return (float) ((topNode.getPosition().getY() - topNode.getHeight() / 2.0f) - (bottomNode
 				.getPosition().getY() + bottomNode.getHeight() / 2.0f));
+	}
+
+	public void recalculateNodeSize()
+	{
+		heightPixels = 4
+				* SPACING_PIXELS
+				+ CAPTION_HEIGHT_PIXELS
+				+ LINE_SEPARATOR_HEIGHT_PIXELS
+				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
+						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
+								.getMinHeightPixels()));
+
+		widthPixels = 2
+				* SPACING_PIXELS
+				+ Math.max(getMinTitleBarWidthPixels(),
+						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
+								.getMinWidthPixels()));
 	}
 
 	protected abstract ElementLayout setupLayout();

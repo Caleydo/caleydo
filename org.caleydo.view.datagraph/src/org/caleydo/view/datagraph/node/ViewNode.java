@@ -241,6 +241,7 @@ public class ViewNode
 		// overviewDataContainerRenderer
 		// .setDataContainers(getDataContainers());
 		// }
+		recalculateNodeSize();
 	}
 
 	@Override

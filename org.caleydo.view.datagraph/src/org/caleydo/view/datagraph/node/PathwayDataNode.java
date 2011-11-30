@@ -88,6 +88,7 @@ public class PathwayDataNode
 	public void update()
 	{
 		dataContainerRenderer.setDataContainers(getDataContainers());
+		recalculateNodeSize();
 	}
 
 	@Override

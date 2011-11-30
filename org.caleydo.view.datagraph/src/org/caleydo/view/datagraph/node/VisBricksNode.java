@@ -195,6 +195,7 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	public void update() {
 		retrieveDataContainers();
 		dataContainerListRenderer.setDataContainers(getDataContainers());
+		recalculateNodeSize();
 		view.setDisplayListDirty();
 	}
 

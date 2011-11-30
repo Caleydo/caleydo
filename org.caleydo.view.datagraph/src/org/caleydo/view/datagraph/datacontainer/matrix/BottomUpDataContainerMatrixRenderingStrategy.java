@@ -102,18 +102,6 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 			if (row.parentContainer == null)
 			{
 
-				// gl.glColor3f(0.7f, 0.7f, 0.7f);
-				// gl.glBegin(GL2.GL_QUADS);
-				// gl.glVertex3f(currentPositionX, currentPositionY + rowHeight,
-				// 0);
-				// gl.glVertex3f(currentPositionX + captionColumnWidth +
-				// captionSpacingX,
-				// currentPositionY + rowHeight, 0);
-				// gl.glVertex3f(currentPositionX + captionColumnWidth +
-				// captionSpacingX,
-				// currentPositionY, 0);
-				// gl.glVertex3f(currentPositionX, currentPositionY, 0);
-				// gl.glEnd();
 
 				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
 
