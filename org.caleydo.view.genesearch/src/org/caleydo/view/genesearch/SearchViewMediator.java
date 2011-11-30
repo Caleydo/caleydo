@@ -118,11 +118,11 @@ public class SearchViewMediator {
 				RecordPerspective recordPerspective = dataDomain.getTable()
 						.getRecordPerspective(recordPerspectiveID);
 				ArrayList<String> groupLabels = new ArrayList<String>();
-				groupLabels.add("Heterozygous del.");
+				groupLabels.add("Heterozygous deletion");
 				groupLabels.add("Homozygous del.");
 				groupLabels.add("Normal");
-				groupLabels.add("Amplification 1");
-				groupLabels.add("Amplification 2");
+				groupLabels.add("Low level amplification");
+				groupLabels.add("High level amplification");
 				binnedPerspective = binRecords(5, id, recordPerspective, dataDomain,
 						label, groupLabels);
 				break;

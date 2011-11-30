@@ -613,9 +613,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 						// Do not create context menu for genes that have to
 						// expression value
 
-						MenuItem dataDomainHeader = new MenuItem(menu, SWT.CASCADE);
-						dataDomainHeader.setText(geneticDataDomains.get(dataDomainCount)
-								.getLabel());
+					
 						if (tableItem.getText(dataDomainCount).equalsIgnoreCase("FOUND")) {
 							createContextMenuItemsForDataDomain(menu, tableItem,
 									geneticDataDomains.get(dataDomainCount));
@@ -720,7 +718,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 //				});
 //
 		MenuItem makeCategoryOfGene = new MenuItem(menu, SWT.PUSH);
-		makeCategoryOfGene.setText("Make Category");
+		makeCategoryOfGene.setText("Create categorization of "+ dataDomain.getLabel());
 		// loadGeneInHeatMapMenuItem.setImage(generalManager
 		// .getResourceLoader()
 		// .getImage(geneTable.getDisplay(),dat
