@@ -186,41 +186,21 @@ public class HandleRenderer extends LayoutRenderer {
 					brick.getDimensionGroup().getVisBricksView().getID(),
 					PickingType.MOVE_HORIZONTALLY_HANDLE.name(),
 					brick.getDimensionGroup().getID()));
-			//
-			// Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth * 2.0f, y / 2.0f
-			// - glHandleHeight, 0);
-			// Vec3f lowerRightCorner = new Vec3f(-glHandleWidth * 2.0f,
-			// 2.0f + glHandleHeight, 0);
-			// Vec3f upperRightCorner = new Vec3f(0, y / 2.0f + glHandleHeight,
-			// 0);
-			// Vec3f upperLeftCorner = new Vec3f(0, y / 2.0f - glHandleHeight,
-			// 0);
-			//
-			// textureManager
-			// .renderTexture(gl, EIconTextures.MOVE_ICON, lowerLeftCorner,
-			// lowerRightCorner, upperRightCorner, upperLeftCorner, 1,
-			// 1, 1, 1);
-			// gl.glBegin(GL2.GL_QUADS);
-			// gl.glVertex3f(x / 2f - glHandleWidth, y, 1);
-			// gl.glVertex3f(x / 2f + glHandleWidth, y, 1);
-			// gl.glVertex3f(x / 2f + glHandleWidth, y + 2 * glHandleHeight, 1);
-			// gl.glVertex3f(x / 2f - glHandleWidth, y + 2 * glHandleHeight, 1);
-			// gl.glEnd();
-
-			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, -glHandleHeight,
+			
+			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y ,
 					BUTTON_Z);
-			Vec3f lowerRightCorner = new Vec3f(x / 2f, -glHandleHeight, BUTTON_Z);
-			Vec3f upperLeftCorner = new Vec3f(x / 2f, 0, BUTTON_Z);
-			Vec3f upperRightCorner = new Vec3f(x / 2f - glHandleWidth, 0, BUTTON_Z);
+			Vec3f lowerRightCorner = new Vec3f(x / 2f, y, BUTTON_Z);
+			Vec3f upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight, BUTTON_Z);
+			Vec3f upperRightCorner = new Vec3f(x / 2f - glHandleWidth, y + glHandleHeight, BUTTON_Z);
 
 			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
 					lowerRightCorner, upperLeftCorner, upperRightCorner, lowerLeftCorner,
 					1, 1, 1, 1);
 
-			lowerLeftCorner = new Vec3f(x / 2f + glHandleWidth, -glHandleHeight, BUTTON_Z);
-			lowerRightCorner = new Vec3f(x / 2f, -glHandleHeight, 1);
-			upperLeftCorner = new Vec3f(x / 2f, 0, BUTTON_Z);
-			upperRightCorner = new Vec3f(x / 2f + glHandleWidth, 0, BUTTON_Z);
+			lowerLeftCorner = new Vec3f(x / 2f + glHandleWidth, y, BUTTON_Z);
+			lowerRightCorner = new Vec3f(x / 2f,y, 1);
+			upperLeftCorner = new Vec3f(x / 2f, y + glHandleHeight, BUTTON_Z);
+			upperRightCorner = new Vec3f(x / 2f + glHandleWidth, y + glHandleHeight, BUTTON_Z);
 			textureManager.renderTexture(gl, EIconTextures.NAVIGATION_BACKGROUND,
 					upperLeftCorner, lowerRightCorner, lowerLeftCorner, upperRightCorner,
 					1, 1, 1, 1);

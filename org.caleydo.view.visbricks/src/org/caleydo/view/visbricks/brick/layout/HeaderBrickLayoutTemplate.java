@@ -2,6 +2,12 @@ package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
 
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.event.data.StartClusteringEvent;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -18,6 +24,7 @@ import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Brick layout for central brick in {@link DimensionGroup} containing a caption
@@ -29,7 +36,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
-	protected static final int HEADER_BAR_HEIGHT_PIXELS = 16;
+	protected static final int HEADER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
@@ -74,8 +81,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		toolBarElements = new ArrayList<ElementLayout>();
-		headerBar = new Row();
-		toolBar = new Row();
 		footerBar = new Row();
 		configurer.configure(this);
 		registerPickingListeners();
@@ -101,11 +106,26 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
+		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
+		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
+		spacingLayoutY.setPixelSizeX(0);
+
+		headerBar = createHeaderBar();
+		toolBar = createToolBar();
+
+		if (showToolBar) {
+
+			baseColumn.append(toolBar);
+			// baseColumn.append(lineSeparatorLayout);
+			// guiElementsHeight += (2 * SPACING_PIXELS)
+			// + LINE_SEPARATOR_HEIGHT_PIXELS;
+		}
+
 		baseRow.setRenderer(borderedAreaRenderer);
 
 		baseRow.addForeGroundRenderer(new HandleRenderer(brick, HANDLE_SIZE_PIXELS, brick
-				.getTextureManager(), HandleRenderer.ALL_MOVE_HANDLES
-				| HandleRenderer.ALL_RESIZE_HANDLES));
+				.getTextureManager(), HandleRenderer.MOVE_HORIZONTALLY_HANDLE
+				| HandleRenderer.ALL_RESIZE_HANDLES | HandleRenderer.ALL_EXPAND_HANDLES));
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
@@ -130,14 +150,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		headerBar = createHeaderBar();
-		toolBar = createToolBar();
-		footerBar = createFooterBar();
-
-		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
-		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
-		spacingLayoutY.setPixelSizeX(0);
-
 		// captionRow.append(spacingLayoutX);
 
 		ElementLayout lineSeparatorLayout = new ElementLayout("lineSeparator");
@@ -155,20 +167,14 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		baseColumn.append(spacingLayoutY);
 		guiElementsHeight += SPACING_PIXELS;
 		if (showFooterBar) {
+			footerBar = createFooterBar();
 			baseColumn.append(footerBar);
 			baseColumn.append(spacingLayoutY);
 			guiElementsHeight += SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
 		}
 		// if (!dimensionGroup.isProportionalMode())
 		baseColumn.append(viewLayout);
-		if (showToolBar) {
-			baseColumn.append(spacingLayoutY);
-			baseColumn.append(toolBar);
-			baseColumn.append(spacingLayoutY);
-			baseColumn.append(lineSeparatorLayout);
-			guiElementsHeight += (2 * SPACING_PIXELS) + TOOLBAR_HEIGHT_PIXELS
-					+ LINE_SEPARATOR_HEIGHT_PIXELS;
-		}
+
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(headerBar);
 		baseColumn.append(spacingLayoutY);
@@ -199,16 +205,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setRatioSizeY(0);
 
-		headerBar.append(spacingLayoutX);
-
-		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
-		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
-				brick, brick.getTextureManager()));
-
-		headerBar.append(lockResizingButtonLayout);
-
 		return headerBar;
 	}
 
@@ -219,12 +215,84 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @return
 	 */
 	protected Row createToolBar() {
-		Row toolBar = new Row("ToolBarRow");
-		toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
+		Row toolBar = new ToolBar("ToolBarRow", brick);
+		// toolBar.setDebug(true);
+		toolBar.setPixelSizeY(0);
+
+		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
+		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
+		spacingLayoutX.setRatioSizeY(0);
+		toolBar.append(spacingLayoutX);
 
 		for (ElementLayout element : toolBarElements) {
 			toolBar.append(element);
 		}
+
+		toolBar.append(spacingLayoutX);
+		toolBar.append(spacingLayoutX);
+
+		Button clusterButton = new Button(
+				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
+				EIconTextures.CLUSTER_ICON);
+		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
+		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick, brick
+				.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
+
+		toolBar.append(clusterButtonLayout);
+		toolBar.append(spacingLayoutX);
+
+		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
+		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
+				brick, brick.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
+
+		toolBar.append(lockResizingButtonLayout);
+		// headerBarElements.add(spacingLayoutX);
+
+		brick.addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				System.out.println("cluster");
+
+				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						StartClusteringDialog dialog = new StartClusteringDialog(
+								new Shell(), brick.getDataDomain());
+						DataContainer data = brick.getDimensionGroup().getDataContainer();
+						dialog.setDimensionPerspective(data.getDimensionPerspective());
+						dialog.setRecordPerspective(data.getRecordPerspective());
+						dialog.open();
+						ClusterConfiguration clusterState = dialog.getClusterState();
+						if (clusterState == null)
+							return;
+
+						// here we create the new record perspective
+						// which is
+						// intended to be used once the clustering is
+						// complete
+						RecordPerspective newRecordPerspective = new RecordPerspective(
+								data.getDataDomain());
+						// we temporarily set the old va to the new
+						// perspective,
+						// to avoid empty bricks
+						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
+								.getVirtualArray());
+						data.setRecordPerspective(newRecordPerspective);
+						clusterState.setTargetRecordPerspective(newRecordPerspective);
+
+						StartClusteringEvent event = new StartClusteringEvent(
+								clusterState);
+						event.setDataDomainID(brick.getDataDomain().getDataDomainID());
+						GeneralManager.get().getEventPublisher().triggerEvent(event);
+					}
+				});
+			}
+		}, PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
 
 		return toolBar;
 	}
@@ -242,7 +310,21 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			}
 
 		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+		brick.addIDPickingListener(new APickingListener() {
 
+			@Override
+			public void clicked(Pick pick) {
+				dimensionGroup.showDetailedBrick(brick, false);
+			}
+		}, PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		
+		brick.addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				dimensionGroup.showDetailedBrick(brick, true);
+			}
+		}, PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override

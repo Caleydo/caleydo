@@ -35,7 +35,7 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int FUELBAR_HEIGHT_PIXELS = 4;
-	protected static final int CAPTION_HEIGHT_PIXELS = 16;
+	protected static final int CAPTION_HEIGHT_PIXELS = 14;
 	protected static final int DIMENSION_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
@@ -75,60 +75,6 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		headerBarElements.add(captionLayout);
 		headerBarElements.add(spacingLayoutX);
-
-		Button clusterButton = new Button(
-				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
-				EIconTextures.CLUSTER_ICON);
-		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
-		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick, brick
-				.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
-
-		headerBarElements.add(clusterButtonLayout);
-		// headerBarElements.add(spacingLayoutX);
-
-		brick.addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-				System.out.println("cluster");
-
-				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
-					@Override
-					public void run() {
-						StartClusteringDialog dialog = new StartClusteringDialog(
-								new Shell(), brick.getDataDomain());
-						DataContainer data = brick.getDimensionGroup().getDataContainer();
-						dialog.setDimensionPerspective(data.getDimensionPerspective());
-						dialog.setRecordPerspective(data.getRecordPerspective());
-						dialog.open();
-						ClusterConfiguration clusterState = dialog.getClusterState();
-						if (clusterState == null)
-							return;
-
-						// here we create the new record perspective
-						// which is
-						// intended to be used once the clustering is
-						// complete
-						RecordPerspective newRecordPerspective = new RecordPerspective(
-								data.getDataDomain());
-						// we temporarily set the old va to the new
-						// perspective,
-						// to avoid empty bricks
-						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
-								.getVirtualArray());
-						data.setRecordPerspective(newRecordPerspective);
-						clusterState.setTargetRecordPerspective(newRecordPerspective);
-
-						StartClusteringEvent event = new StartClusteringEvent(
-								clusterState);
-						event.setDataDomainID(brick.getDataDomain().getDataDomainID());
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
-					}
-				});
-			}
-		}, PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
 
 		return headerBarElements;
 	}
@@ -241,9 +187,6 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 				toolBarElements.add(spacingLayoutX);
 			}
 		}
-
-		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
-
 		registerViewSwitchingButtons(layoutTemplate, viewSwitchingButtons, brick,
 				dimensionGroup);
 
@@ -272,11 +215,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		ElementLayout dimensionBarLaylout = new ElementLayout("dimensionBar");
 		dimensionBarLaylout.setPixelSizeY(DIMENSION_BAR_HEIGHT_PIXELS);
 		dimensionBarLaylout.setRatioSizeX(1);
-		// FIXME this is wrong! The first one is the wrong va!
-		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick
-				.getDimensionGroup().getDataContainer().getDimensionPerspective()
-				.getVirtualArray(), brick.getDataContainer().getDimensionPerspective()
-				.getVirtualArray()));
+		dimensionBarLaylout.setRenderer(new DimensionBarRenderer(brick.getDataDomain()
+				.getTable().getDefaultDimensionPerspective().getVirtualArray(), brick
+				.getDataContainer().getDimensionPerspective().getVirtualArray()));
 
 		footerBarElements.add(dimensionBarLaylout);
 
@@ -358,7 +299,6 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		return toolBarElements;
 	}
-
 
 	@Override
 	public IBrickSortingStrategy getBrickSortingStrategy() {

@@ -54,6 +54,8 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected boolean showFooterBar;
 
+	private boolean isHeaderBrick = true;
+
 	protected GLVisBricks visBricks;
 	protected RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
@@ -64,10 +66,14 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		this.visBricks = visBricks;
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
-		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
-				true);
-		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
-				false);
+		// check if this is the header brick
+		if (brick.getDataContainer().getRecordGroup() != null) {
+			isHeaderBrick = false;
+			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+					visBricks, true);
+			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
+					visBricks, false);
+		}
 		toolBar = new Row();
 		footerBar = new Row();
 		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
@@ -104,16 +110,18 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		baseElementLayout = baseRow;
-		leftRelationIndicatorRenderer.updateRelations();
-		rightRelationIndicatorRenderer.updateRelations();
+		if (!isHeaderBrick) {
+			leftRelationIndicatorRenderer.updateRelations();
 
-		ElementLayout leftRelationIndicatorLayout = new ElementLayout(
-				"RightRelationIndicatorLayout");
-		// rightRelationIndicatorLayout.setDebug(true);
-		leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-		leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
-		baseRow.append(leftRelationIndicatorLayout);
+			rightRelationIndicatorRenderer.updateRelations();
 
+			ElementLayout leftRelationIndicatorLayout = new ElementLayout(
+					"RightRelationIndicatorLayout");
+			// rightRelationIndicatorLayout.setDebug(true);
+			leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+			leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
+			baseRow.append(leftRelationIndicatorLayout);
+		}
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 0);
 
@@ -157,14 +165,15 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(toolBar);
 		baseColumn.append(spacingLayoutY);
+		if (!isHeaderBrick) {
 
-		ElementLayout rightRelationIndicatorLayout = new ElementLayout(
-				"RightRelationIndicatorLayout");
-		// rightRelationIndicatorLayout.setDebug(true);
-		rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-		rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
-		baseRow.append(rightRelationIndicatorLayout);
-
+			ElementLayout rightRelationIndicatorLayout = new ElementLayout(
+					"RightRelationIndicatorLayout");
+			// rightRelationIndicatorLayout.setDebug(true);
+			rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+			rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
+			baseRow.append(rightRelationIndicatorLayout);
+		}
 	}
 
 	/**

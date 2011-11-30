@@ -76,7 +76,7 @@ public class NumericalDataConfigurer
 		layoutTemplate.setValidViewTypes(validViewTypes);
 		layoutTemplate.setDefaultViewType(EContainedViewType.HISTOGRAM_VIEW);
 
-		layoutTemplate.showFooterBar(true);
+		layoutTemplate.showFooterBar(false);
 		layoutTemplate.showToolBar(true);
 
 	}

@@ -195,6 +195,9 @@ public class DimensionGroup
 		clusterBricks = new ArrayList<GLBrick>(20);
 
 		headerBrickLayout = new Column("headerBrickLayout");
+		headerBrickLayout.setXDynamic(true);
+		headerBrickLayout.setYDynamic(true);
+//		headerBrickLayout.setDebug(true);
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
 		// headerBrickLayout.setPixelSizeY(60);
@@ -264,8 +267,17 @@ public class DimensionGroup
 
 		mainColumn.addBackgroundRenderer(new DimensionGroupBackgroundColorRenderer(
 				dataContainer.getDataDomain().getColor().getRGBA()));
-
-		headerBrick = createBrick(headerBrickLayout, dataContainer);
+		
+	
+		ElementLayout headerBrickLayout2 = new ElementLayout();
+		
+		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
+		brickSpacingLayout.setRatioSizeX(0);
+		headerBrickLayout.append(headerBrickLayout2);
+		headerBrickLayout.append(brickSpacingLayout);
+			
+		headerBrick = createBrick(headerBrickLayout2, dataContainer);
 
 		ABrickLayoutConfiguration layoutTemplate;
 

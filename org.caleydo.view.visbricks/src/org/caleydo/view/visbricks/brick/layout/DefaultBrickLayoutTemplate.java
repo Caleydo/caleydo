@@ -68,8 +68,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		this.visBricks = visBricks;
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
-		toolBar = new Row();
-		footerBar = new Row();
 		leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
 				true);
 		rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick, visBricks,
@@ -180,7 +178,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 		baseColumn.append(headerRow);
 
-		baseColumn.append(spacingLayoutY);
+//		baseColumn.append(spacingLayoutY);
 
 		ElementLayout rightRelationIndicatorLayout = new ElementLayout(
 				"RightRelationIndicatorLayout");
