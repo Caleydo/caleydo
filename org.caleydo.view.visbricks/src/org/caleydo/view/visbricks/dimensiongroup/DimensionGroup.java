@@ -201,7 +201,7 @@ public class DimensionGroup extends ATableBasedView implements
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
 		// headerBrickLayout.setPixelSizeY(60);
-
+isCollapsed = true;
 		initMainColumn();
 		mainRow.append(mainColumn);
 	}
