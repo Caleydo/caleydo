@@ -54,8 +54,6 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected boolean showFooterBar;
 
-	private boolean isHeaderBrick = true;
-
 	protected GLVisBricks visBricks;
 	protected RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
@@ -67,8 +65,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		// check if this is the header brick
-		if (brick.getDataContainer().getRecordGroup() != null) {
-			isHeaderBrick = false;
+		if (!brick.isHeaderBrick()) {
 			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 					visBricks, true);
 			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
@@ -110,7 +107,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		baseElementLayout = baseRow;
-		if (!isHeaderBrick) {
+		if (!brick.isHeaderBrick()) {
 			leftRelationIndicatorRenderer.updateRelations();
 
 			rightRelationIndicatorRenderer.updateRelations();
@@ -165,7 +162,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		baseColumn.append(spacingLayoutY);
 		baseColumn.append(toolBar);
 		baseColumn.append(spacingLayoutY);
-		if (!isHeaderBrick) {
+		if (!brick.isHeaderBrick()) {
 
 			ElementLayout rightRelationIndicatorLayout = new ElementLayout(
 					"RightRelationIndicatorLayout");

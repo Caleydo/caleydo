@@ -109,7 +109,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			return;
 
 		for (GLBrick leftBrick : leftBricks) {
-
+			if (leftBrick.isHeaderBrick())
+				continue;
 			GroupMatch groupMatch = new GroupMatch(leftBrick);
 			hashGroupID2GroupMatches.put(leftBrick.getDataContainer().getRecordGroup()
 					.getGroupIndex(), groupMatch);
@@ -125,7 +126,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			float leftSimilarityOffsetY = 0;
 
 			for (GLBrick rightBrick : rightBricks) {
-
+				if (rightBrick.isHeaderBrick())
+					continue;
 				SubGroupMatch subGroupMatch = new SubGroupMatch(
 						glVisBricks.getNextConnectionBandID(), rightBrick);
 				groupMatch.addSubGroupMatch(rightBrick.getDataContainer()
@@ -153,7 +155,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		}
 
 		for (GLBrick rightBrick : rightBricks) {
-
+			if (rightBrick.isHeaderBrick())
+				continue;
 			ElementLayout rightBrickElementLayout = rightBrick.getLayout();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
@@ -166,7 +169,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			float rightSimilarityOffsetY = 0;
 
 			for (GLBrick leftBrick : leftBricks) {
-
+				if (leftBrick.isHeaderBrick())
+					continue;
 				GroupMatch groupMatch = hashGroupID2GroupMatches.get(leftBrick
 						.getDataContainer().getRecordGroup().getGroupIndex());
 				SubGroupMatch subGroupMatch = groupMatch.getSubGroupMatch(rightBrick
@@ -311,7 +315,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		float rightCenterBrickTop = 0;
 		float rightCenterBrickBottom = 0;
 
-		/** A offset determining when the bend starts */ 
+		/** A offset determining when the bend starts */
 		float curveOffset = x * 0.2f;
 
 		float xStart = 0;
@@ -417,7 +421,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		if (relationAnalyzer == null || leftDimGroup == null || rightDimGroup == null)
 			return;
 
-		/** A offset determining when the bend starts */ 
+		/** A offset determining when the bend starts */
 		float curveOffset = 0.1f * x;
 
 		gl.glLineWidth(1);

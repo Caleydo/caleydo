@@ -278,6 +278,7 @@ public class DimensionGroup
 		headerBrickLayout.append(brickSpacingLayout);
 			
 		headerBrick = createBrick(headerBrickLayout2, dataContainer);
+		headerBrick.setHeaderBrick(true);
 
 		ABrickLayoutConfiguration layoutTemplate;
 
@@ -873,6 +874,7 @@ public class DimensionGroup
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 
 		detailBrick = createBrick(detailBrickLayout, brick.getDataContainer());
+		detailBrick.setHeaderBrick(brick.isHeaderBrick());
 		// detailBrick.setBrickData(brick.getBrickData());
 		// detailBrick.setBrickConfigurer(brick.getBrickConfigurer());
 		// detailBrick.setRecordVA(brick.getGroup(), brick.getRecordVA());
