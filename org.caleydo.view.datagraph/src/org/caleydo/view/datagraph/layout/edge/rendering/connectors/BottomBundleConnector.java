@@ -354,7 +354,7 @@ public class BottomBundleConnector
 					(float) rightBandBundleConnectionPoint.getX(),
 					(float) rightBandBundleConnectionPoint.getY() }, new float[] {
 					(float) leftBandBundleConnectionPoint.getX(),
-					(float) leftBandBundleConnectionPoint.getY() }, false, 0, 0,
+					(float) leftBandBundleConnectionPoint.getY() }, false,  0,
 					color.getRGB(), (highlightBand) ? 1 : 0.5f);
 		}
 

@@ -21,6 +21,7 @@ import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
@@ -310,12 +311,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		float rightCenterBrickTop = 0;
 		float rightCenterBrickBottom = 0;
 
+		/** A offset determining when the bend starts */ 
 		float curveOffset = x * 0.2f;
 
 		float xStart = 0;
 		float xEnd;
 
-		// handle situation in center arch where to group is contained
+		// handle situation where no group is contained in center arch
 		if (leftDimGroup == null && rightDimGroup == null && glVisBricks != null) {
 
 			leftCenterBrickBottom = glVisBricks.getArchBottomY();
@@ -343,12 +345,11 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			// group on
 			// the LEFT
 			if (xStart != 0) {
-
-				connectionRenderer.renderSingleBand(gl, new float[] { xStart,
+				connectionRenderer.renderStraightBand(gl, new float[] { xStart,
 						leftCenterBrickTop, 0 }, new float[] { xStart,
 						leftCenterBrickBottom, 0 }, new float[] { 0, leftCenterBrickTop,
-						0 }, new float[] { 0, leftCenterBrickBottom, 0 }, false,
-						curveOffset, 0, new float[] { 0f, 0f, 0f, 0.5f }, true);
+						0 }, new float[] { 0, leftCenterBrickBottom, 0 }, false, 0,
+						GLVisBricks.ARCH_COLOR, GLVisBricks.ARCH_COLOR[3], true);
 			}
 
 		} else {
@@ -385,8 +386,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						rightCenterBrickTop, 0 }, new float[] { x,
 						rightCenterBrickBottom, 0 }, new float[] { xEnd,
 						rightCenterBrickTop, 0 }, new float[] { xEnd,
-						rightCenterBrickBottom, 0 }, false, curveOffset, 0, new float[] {
-						1, 0, 0 }, 0.2f);
+						rightCenterBrickBottom, 0 }, false, 0, GLVisBricks.ARCH_COLOR,
+						GLVisBricks.ARCH_COLOR[3], true);
 				// gl.glPopMatrix();
 			}
 
@@ -416,7 +417,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		if (relationAnalyzer == null || leftDimGroup == null || rightDimGroup == null)
 			return;
 
-		float splineFactor = 0.1f * x;
+		/** A offset determining when the bend starts */ 
+		float curveOffset = 0.1f * x;
 
 		gl.glLineWidth(1);
 		for (GroupMatch groupMatch : hashGroupID2GroupMatches.values()) {
@@ -532,7 +534,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 									x,
 									subGroupMatch.getRightAnchorYTop()
 											- rightYDiffSelection, 0.0f }, true,
-							splineFactor, 0, color);// 0.15f);
+							curveOffset, 0, color);// 0.15f);
 
 					// Render straight band connection from brick to dimension
 					// group on the LEFT. This is for the smaller bricks when
@@ -548,8 +550,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 								new float[] {
 										0,
 										subGroupMatch.getLeftAnchorYTop()
-												- leftYDiffSelection, 0 }, false,
-								splineFactor, 0, color, trendRatio);// 0.5f);
+												- leftYDiffSelection, 0 }, false, 0,
+								color, trendRatio);// 0.5f);
 					}
 
 					// Render straight band connection from brick to dimension
@@ -572,7 +574,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 												xEnd,
 												subGroupMatch.getRightAnchorYTop()
 														- rightYDiffSelection, 0 },
-										false, splineFactor, 0, color, trendRatio);// 0.5f);
+										false, 0, color, trendRatio);// 0.5f);
 					}
 					// gl.glPopMatrix();
 				}

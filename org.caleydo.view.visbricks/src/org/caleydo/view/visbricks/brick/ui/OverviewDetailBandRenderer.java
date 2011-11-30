@@ -73,10 +73,8 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 			bandRenderer.renderSingleBand(gl, middleAnchorTopPos, middleAnchorBottomPos,
 					rightTopPos, rightBottomPos, false, offsetX, 0, bandColor);
 
-			bandRenderer
-					.renderStraightBand(gl, leftTopPos, leftBottomPos,
-							middleAnchorTopPos, middleAnchorBottomPos, false, 0, 0,
-							bandColor, 1f);
+			bandRenderer.renderStraightBand(gl, leftTopPos, leftBottomPos,
+					middleAnchorTopPos, middleAnchorBottomPos, false, 0, bandColor, 1f);
 		} else {
 			middleAnchorX = groupColumn.getTranslateX();
 			if (middleAnchorX > rightX - offsetX) {
@@ -91,7 +89,7 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 					bandColor);
 
 			bandRenderer.renderStraightBand(gl, middleAnchorTopPos,
-					middleAnchorBottomPos, rightTopPos, rightBottomPos, false, 0, 0,
+					middleAnchorBottomPos, rightTopPos, rightBottomPos, false, 0,
 					bandColor, 1f);
 		}
 

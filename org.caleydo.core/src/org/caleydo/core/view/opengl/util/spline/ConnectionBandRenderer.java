@@ -25,6 +25,11 @@ public class ConnectionBandRenderer {
 
 	public final static int NUMBER_OF_SPLINE_POINTS = 30;
 
+	/** The factor the opacity should be increased if the band is highlighted */
+	public final static int OPACITY_INCREASE_FACTOR_HIGHLIGH = 2;
+	/** The factor the opacity of the outline should be increased compared to the solid band */
+	public final static int OPACITY_INCREASE_FACTOR_OUTLINE = 2;
+
 	private GLU glu;
 	// private int displayListID;
 
@@ -52,9 +57,10 @@ public class ConnectionBandRenderer {
 		TesselationCallback tessCallback = new TesselationCallback(gl, glu);
 
 		double star[][] = new double[][] {// [5][6]; 6x5 in java
-			{ 2.50, 5.00, 0.0, 1.0, 0.0, 1.0 }, { 3.250, 2.000, 0.0, 1.0, 1.0, 0.0 },
-					{ 4.000, 5.00, 0.0, 0.0, 1.0, 1.0 }, { 2.500, 1.500, 0.0, 1.0, 0.0, 0.0 },
-					{ 4.000, 1.500, 0.0, 0.0, 1.0, 0.0 } };
+		{ 2.50, 5.00, 0.0, 1.0, 0.0, 1.0 }, { 3.250, 2.000, 0.0, 1.0, 1.0, 0.0 },
+				{ 4.000, 5.00, 0.0, 0.0, 1.0, 1.0 },
+				{ 2.500, 1.500, 0.0, 1.0, 0.0, 0.0 },
+				{ 4.000, 1.500, 0.0, 0.0, 1.0, 0.0 } };
 
 		GLUtessellator tobj = GLU.gluNewTess();
 
@@ -67,8 +73,8 @@ public class ConnectionBandRenderer {
 		/* smooth shaded, self-intersecting star */
 		gl.glShadeModel(GL2.GL_SMOOTH);
 		GLU.gluTessProperty(tobj, //
-			GLU.GLU_TESS_WINDING_RULE, //
-			GLU.GLU_TESS_WINDING_POSITIVE);
+				GLU.GLU_TESS_WINDING_RULE, //
+				GLU.GLU_TESS_WINDING_POSITIVE);
 		GLU.gluTessBeginPolygon(tobj, null);
 		GLU.gluTessBeginContour(tobj);
 		GLU.gluTessVertex(tobj, star[0], 0, star[0]);
@@ -86,9 +92,10 @@ public class ConnectionBandRenderer {
 	 * 
 	 * @param gl
 	 * @param linePoints
-	 *            Points that shall be interpolated with a curve. Note that the list must at least contain 4
-	 *            points and the first and the last point of the list are not interpolated but used to direct
-	 *            the curve at their ends.
+	 *            Points that shall be interpolated with a curve. Note that the
+	 *            list must at least contain 4 points and the first and the last
+	 *            point of the list are not interpolated but used to direct the
+	 *            curve at their ends.
 	 */
 	public void renderInterpolatedCurve(GL2 gl, List<Point2D> linePoints) {
 
@@ -105,17 +112,18 @@ public class ConnectionBandRenderer {
 	 * 
 	 * @param gl
 	 * @param linePoints
-	 *            Points that shall be interpolated with a curve. Note that the list must at least contain 4
-	 *            points and the first and the last point of the list are not interpolated but used to direct
-	 *            the curve at their ends.
+	 *            Points that shall be interpolated with a curve. Note that the
+	 *            list must at least contain 4 points and the first and the last
+	 *            point of the list are not interpolated but used to direct the
+	 *            curve at their ends.
 	 * @return Interpolated curve points.
 	 */
 	public List<Vec3f> calcInterpolatedCurve(GL2 gl, List<Point2D> linePoints) {
 
 		List<Vec3f> curvePoints = new ArrayList<Vec3f>();
 		for (int i = 0; i < linePoints.size() - 3; i++) {
-			curvePoints.addAll(computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1),
-				linePoints.get(i + 2), linePoints.get(i + 3)));
+			curvePoints.addAll(computeInterpolatedSpline(linePoints.get(i),
+					linePoints.get(i + 1), linePoints.get(i + 2), linePoints.get(i + 3)));
 		}
 
 		return curvePoints;
@@ -126,19 +134,19 @@ public class ConnectionBandRenderer {
 	 * 
 	 * @param gl
 	 * @param linePoints
-	 *            Points that shall be interpolated with a curved band. Note that the list must at least
-	 *            contain 4 points and the first and the last point of the list are not interpolated but used
-	 *            to direct the curved band at their ends.
+	 *            Points that shall be interpolated with a curved band. Note
+	 *            that the list must at least contain 4 points and the first and
+	 *            the last point of the list are not interpolated but used to
+	 *            direct the curved band at their ends.
 	 * @param pixelWidth
 	 *            Width of the band in pixels.
 	 * @param PixelGLConverter
 	 */
 	public void renderInterpolatedBand(GL2 gl, List<Point2D> linePoints, int pixelWidth,
-		PixelGLConverter pixelGLConverter) {
+			PixelGLConverter pixelGLConverter) {
 		for (int i = 0; i < linePoints.size() - 3; i++) {
-			List<Vec3f> curvePoints =
-				computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1), linePoints.get(i + 2),
-					linePoints.get(i + 3));
+			List<Vec3f> curvePoints = computeInterpolatedSpline(linePoints.get(i),
+					linePoints.get(i + 1), linePoints.get(i + 2), linePoints.get(i + 3));
 			renderBandWithWidth(gl, curvePoints, pixelWidth, pixelGLConverter);
 		}
 	}
@@ -148,25 +156,26 @@ public class ConnectionBandRenderer {
 	 * 
 	 * @param gl
 	 * @param linePoints
-	 *            Points that shall be interpolated with a curved band. Note that the list must at least
-	 *            contain 4 points and the first and the last point of the list are not interpolated but used
-	 *            to direct the curved band at their ends.
+	 *            Points that shall be interpolated with a curved band. Note
+	 *            that the list must at least contain 4 points and the first and
+	 *            the last point of the list are not interpolated but used to
+	 *            direct the curved band at their ends.
 	 * @param pixelWidth
 	 *            Width of the band in pixels.
 	 * @param PixelGLConverter
-	 * @return List of points on the band. The first and the last point are the anchors of one side of the
-	 *         band, the two points in the middle of the list are the anchors of the other one.
+	 * @return List of points on the band. The first and the last point are the
+	 *         anchors of one side of the band, the two points in the middle of
+	 *         the list are the anchors of the other one.
 	 */
-	public List<Vec3f> calcInterpolatedBand(GL2 gl, List<Point2D> linePoints, int pixelWidth,
-		PixelGLConverter pixelGLConverter) {
+	public List<Vec3f> calcInterpolatedBand(GL2 gl, List<Point2D> linePoints,
+			int pixelWidth, PixelGLConverter pixelGLConverter) {
 
 		List<Vec3f> bandPoints = new ArrayList<Vec3f>();
 		for (int i = 0; i < linePoints.size() - 3; i++) {
-			List<Vec3f> curvePoints =
-				computeInterpolatedSpline(linePoints.get(i), linePoints.get(i + 1), linePoints.get(i + 2),
-					linePoints.get(i + 3));
+			List<Vec3f> curvePoints = computeInterpolatedSpline(linePoints.get(i),
+					linePoints.get(i + 1), linePoints.get(i + 2), linePoints.get(i + 3));
 			bandPoints.addAll(bandPoints.size() / 2,
-				calcBandWithWidth(curvePoints, pixelWidth, pixelGLConverter));
+					calcBandWithWidth(curvePoints, pixelWidth, pixelGLConverter));
 		}
 
 		return bandPoints;
@@ -183,7 +192,7 @@ public class ConnectionBandRenderer {
 	 * @param pixelGLConverter
 	 */
 	public void renderBandWithWidth(GL2 gl, List<Vec3f> linePoints, int pixelWidth,
-		PixelGLConverter pixelGLConverter) {
+			PixelGLConverter pixelGLConverter) {
 
 		render(gl, calcBandWithWidth(linePoints, pixelWidth, pixelGLConverter));
 	}
@@ -197,16 +206,18 @@ public class ConnectionBandRenderer {
 	 * @param pixelWidth
 	 *            Width of the band in pixels.
 	 * @param pixelGLConverter
-	 * @return List of points on the band. The first and the last point are the anchors of one side of the
-	 *         band, the two points in the middle of the list are the anchors of the other one.
+	 * @return List of points on the band. The first and the last point are the
+	 *         anchors of one side of the band, the two points in the middle of
+	 *         the list are the anchors of the other one.
 	 */
 	public List<Vec3f> calcBandWithWidth(List<Vec3f> linePoints, int pixelWidth,
-		PixelGLConverter pixelGLConverter) {
+			PixelGLConverter pixelGLConverter) {
 
 		if (linePoints.size() < 2)
 			return null;
 
-		float xRelativeGLBandWidth = pixelGLConverter.getGLWidthForPixelWidth(pixelWidth / 2);
+		float xRelativeGLBandWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(pixelWidth / 2);
 
 		ArrayList<Vec3f> bandPoints1 = new ArrayList<Vec3f>();
 		ArrayList<Vec3f> bandPoints2 = new ArrayList<Vec3f>();
@@ -215,11 +226,11 @@ public class ConnectionBandRenderer {
 
 		for (int i = 1; i < linePoints.size(); i++) {
 			Vec3f currentLinePoint = linePoints.get(i);
-			if (prevLinePoint.x() == currentLinePoint.x() && prevLinePoint.y() == currentLinePoint.y()) {
+			if (prevLinePoint.x() == currentLinePoint.x()
+					&& prevLinePoint.y() == currentLinePoint.y()) {
 				linePoints.remove(i);
 				i--;
-			}
-			else {
+			} else {
 				prevLinePoint = currentLinePoint;
 			}
 		}
@@ -230,48 +241,46 @@ public class ConnectionBandRenderer {
 			Vec3f currentLinePoint = linePoints.get(i);
 
 			if (i == 0) {
-				tangentVec =
-					new Vec3f(linePoints.get(i + 1).x() - currentLinePoint.x(), linePoints.get(i + 1).y()
-						- currentLinePoint.y(), linePoints.get(i + 1).z());
-			}
-			else if (i == linePoints.size() - 1) {
-				tangentVec =
-					new Vec3f(currentLinePoint.x() - linePoints.get(i - 1).x(), currentLinePoint.y()
-						- linePoints.get(i - 1).y(), currentLinePoint.z());
-			}
-			else {
+				tangentVec = new Vec3f(linePoints.get(i + 1).x() - currentLinePoint.x(),
+						linePoints.get(i + 1).y() - currentLinePoint.y(), linePoints.get(
+								i + 1).z());
+			} else if (i == linePoints.size() - 1) {
+				tangentVec = new Vec3f(currentLinePoint.x() - linePoints.get(i - 1).x(),
+						currentLinePoint.y() - linePoints.get(i - 1).y(),
+						currentLinePoint.z());
+			} else {
 
-				tangentVec =
-					new Vec3f(linePoints.get(i + 1).x() - linePoints.get(i - 1).x(), linePoints.get(i + 1)
-						.y() - linePoints.get(i - 1).y(), linePoints.get(i + 1).z());
+				tangentVec = new Vec3f(linePoints.get(i + 1).x()
+						- linePoints.get(i - 1).x(), linePoints.get(i + 1).y()
+						- linePoints.get(i - 1).y(), linePoints.get(i + 1).z());
 			}
 
 			// float convTangentVecX = pixelGLConverter
 			// .getGLWidthForGLHeight(tangentVec.y());
-			float xRelativeTangentVecY = pixelGLConverter.getGLWidthForGLHeight(Math.abs(tangentVec.y()));
+			float xRelativeTangentVecY = pixelGLConverter.getGLWidthForGLHeight(Math
+					.abs(tangentVec.y()));
 			if (tangentVec.y() < 0)
 				xRelativeTangentVecY = -xRelativeTangentVecY;
 
-			Vec3f xRelativeOrdinalVec = new Vec3f(xRelativeTangentVecY, -tangentVec.x(), tangentVec.z());
+			Vec3f xRelativeOrdinalVec = new Vec3f(xRelativeTangentVecY, -tangentVec.x(),
+					tangentVec.z());
 
 			xRelativeOrdinalVec.normalize();
 
 			xRelativeOrdinalVec.setX(xRelativeOrdinalVec.x() * xRelativeGLBandWidth);
 			xRelativeOrdinalVec.setY(xRelativeOrdinalVec.y() * xRelativeGLBandWidth);
 
-			float yRelativeOrdinalVecY =
-				pixelGLConverter.getGLHeightForGLWidth(Math.abs(xRelativeOrdinalVec.y()));
+			float yRelativeOrdinalVecY = pixelGLConverter.getGLHeightForGLWidth(Math
+					.abs(xRelativeOrdinalVec.y()));
 
 			if (xRelativeOrdinalVec.y() < 0)
 				yRelativeOrdinalVecY = -yRelativeOrdinalVecY;
 
-			Vec3f bandPoint1 =
-				new Vec3f(currentLinePoint.x() + xRelativeOrdinalVec.x(), currentLinePoint.y()
-					+ yRelativeOrdinalVecY, currentLinePoint.z());
+			Vec3f bandPoint1 = new Vec3f(currentLinePoint.x() + xRelativeOrdinalVec.x(),
+					currentLinePoint.y() + yRelativeOrdinalVecY, currentLinePoint.z());
 
-			Vec3f bandPoint2 =
-				new Vec3f(currentLinePoint.x() - xRelativeOrdinalVec.x(), currentLinePoint.y()
-					- yRelativeOrdinalVecY, currentLinePoint.z());
+			Vec3f bandPoint2 = new Vec3f(currentLinePoint.x() - xRelativeOrdinalVec.x(),
+					currentLinePoint.y() - yRelativeOrdinalVecY, currentLinePoint.z());
 
 			bandPoints1.add(bandPoint1);
 			bandPoints2.add(bandPoint2);
@@ -280,21 +289,25 @@ public class ConnectionBandRenderer {
 
 		// gl.glBegin(GL2.GL_LINE_STRIP);
 		// for (int i = 0; i < bandPoints1.size(); i++) {
-		// gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(), bandPoints1.get(i).z());
+		// gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(),
+		// bandPoints1.get(i).z());
 		//
 		// }
 		// gl.glEnd();
 		//
 		// gl.glBegin(GL2.GL_LINES);
 		// for (int i = 0; i < bandPoints1.size(); i++) {
-		// gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(), bandPoints1.get(i).z());
-		// gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(), bandPoints2.get(i).z());
+		// gl.glVertex3f(bandPoints1.get(i).x(), bandPoints1.get(i).y(),
+		// bandPoints1.get(i).z());
+		// gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(),
+		// bandPoints2.get(i).z());
 		// }
 		// gl.glEnd();
 		//
 		// gl.glBegin(GL2.GL_LINE_STRIP);
 		// for (int i = 0; i < bandPoints2.size(); i++) {
-		// gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(), bandPoints2.get(i).z());
+		// gl.glVertex3f(bandPoints2.get(i).x(), bandPoints2.get(i).y(),
+		// bandPoints2.get(i).z());
 		// }
 		// gl.glEnd();
 
@@ -305,7 +318,8 @@ public class ConnectionBandRenderer {
 		return bandPoints1;
 	}
 
-	private List<Vec3f> computeInterpolatedSpline(Point2D v0, Point2D v1, Point2D v2, Point2D v3) {
+	private List<Vec3f> computeInterpolatedSpline(Point2D v0, Point2D v1, Point2D v2,
+			Point2D v3) {
 
 		double k = 12;
 		double ctrlx1 = (-v0.getX() / k) + v1.getX() + v2.getX() / k;
@@ -327,7 +341,8 @@ public class ConnectionBandRenderer {
 		// gl.glLineWidth(1);
 		// gl.glBegin(GL2.GL_POINTS);
 		// for (int i = 0; i < outputPoints.size(); i++) {
-		// gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+		// gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(),
+		// outputPoints.get(i).z());
 		// }
 		// gl.glEnd();
 
@@ -361,7 +376,22 @@ public class ConnectionBandRenderer {
 	}
 
 	/**
-	 * FIXME
+	 * Renders a straight solid band from the specified left positions to the
+	 * right positions. Draws an outline around the top and bottom parts of the
+	 * band with twice the opacity specified
+	 */
+	public void renderStraightBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos,
+			float[] rightTopPos, float[] rightBottomPos, boolean highlight, int bandID,
+			float[] color, float opacity) {
+
+		renderStraightBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
+				highlight, bandID, color, opacity, false);
+	}
+
+	/**
+	 * Same as
+	 * {@link #renderStraightBand(GL2, float[], float[], float[], float[], boolean, float, int, float[], float)}
+	 * but with an additional option to only render the outline
 	 * 
 	 * @param gl
 	 * @param leftTopPos
@@ -369,15 +399,19 @@ public class ConnectionBandRenderer {
 	 * @param rightTopPos
 	 * @param rightBottomPos
 	 * @param highlight
-	 * @param xOffset
 	 * @param bandID
 	 * @param color
 	 * @param opacity
+	 * @param renderOnlyOutline
+	 *            if true renders only the outline of the band instead of a
+	 *            solid shading
 	 */
-	public void renderStraightBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
-		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color, float opacity) {
+	public void renderStraightBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos,
+			float[] rightTopPos, float[] rightBottomPos, boolean highlight, int bandID,
+			float[] color, float opacity, boolean renderOnlyOutline) {
 
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
+		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
+				|| rightBottomPos == null)
 			return;
 
 		// gl.glPushName(pickingManager.getPickingID(viewID,
@@ -387,9 +421,11 @@ public class ConnectionBandRenderer {
 		gl.glLineWidth(1);
 
 		if (highlight)
-			gl.glColor4f(color[0], color[1], color[2], 0.8f);
+			gl.glColor4f(color[0], color[1], color[2], opacity
+					* OPACITY_INCREASE_FACTOR_HIGHLIGH * OPACITY_INCREASE_FACTOR_OUTLINE);
 		else
-			gl.glColor4f(color[0], color[1], color[2], opacity * 2);
+			gl.glColor4f(color[0], color[1], color[2], opacity
+					* OPACITY_INCREASE_FACTOR_OUTLINE);
 
 		gl.glBegin(GL2.GL_LINES);
 		gl.glVertex3f(leftTopPos[0], leftTopPos[1], 0);
@@ -400,6 +436,9 @@ public class ConnectionBandRenderer {
 		gl.glVertex3f(rightBottomPos[0], rightBottomPos[1], 0);
 		gl.glVertex3f(leftBottomPos[0], leftBottomPos[1], 0);
 		gl.glEnd();
+
+		if (renderOnlyOutline)
+			return;
 
 		if (highlight)
 			gl.glColor4f(color[0], color[1], color[2], 0.5f);
@@ -426,16 +465,17 @@ public class ConnectionBandRenderer {
 	 * @param bandID
 	 * @param color
 	 */
-	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
-		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color) {
-		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos, highlight, xOffset,
-			bandID, color, false);
+	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos,
+			float[] rightTopPos, float[] rightBottomPos, boolean highlight,
+			float xOffset, int bandID, float[] color) {
+		renderSingleBand(gl, leftTopPos, leftBottomPos, rightTopPos, rightBottomPos,
+				highlight, xOffset, bandID, color, false);
 	}
 
 	/**
 	 * Same as
-	 * {@link #renderSingleBand(GL2, float[], float[], float[], float[], boolean, float, int, float[])} with
-	 * an additional option to render only the band outline
+	 * {@link #renderSingleBand(GL2, float[], float[], float[], float[], boolean, float, int, float[])}
+	 * with an additional option to render only the band outline
 	 * 
 	 * @param gl
 	 * @param leftTopPos
@@ -447,11 +487,12 @@ public class ConnectionBandRenderer {
 	 * @param bandID
 	 * @param color
 	 */
-	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos, float[] rightTopPos,
-		float[] rightBottomPos, boolean highlight, float xOffset, int bandID, float[] color,
-		boolean renderOnlyOutline) {
+	public void renderSingleBand(GL2 gl, float[] leftTopPos, float[] leftBottomPos,
+			float[] rightTopPos, float[] rightBottomPos, boolean highlight,
+			float xOffset, int bandID, float[] color, boolean renderOnlyOutline) {
 
-		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null || rightBottomPos == null)
+		if (leftTopPos == null || leftBottomPos == null || rightTopPos == null
+				|| rightBottomPos == null)
 			return;
 
 		// gl.glPushName(pickingManager.getPickingID(viewID,
@@ -462,8 +503,10 @@ public class ConnectionBandRenderer {
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftTopPos[0], leftTopPos[1], z));
-		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftTopPos[1] - yCorrection, z));
-		inputPoints.add(new Vec3f(rightTopPos[0] - xOffset, rightTopPos[1] + yCorrection, z));
+		inputPoints
+				.add(new Vec3f(leftTopPos[0] + xOffset, leftTopPos[1] - yCorrection, z));
+		inputPoints.add(new Vec3f(rightTopPos[0] - xOffset, rightTopPos[1] + yCorrection,
+				z));
 		inputPoints.add(new Vec3f(rightTopPos[0], rightTopPos[1], z));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -479,14 +522,17 @@ public class ConnectionBandRenderer {
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
+					.get(i).z());
 		}
 		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(leftBottomPos[0], leftBottomPos[1], z));
-		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset, leftBottomPos[1] - yCorrection, z));
-		inputPoints.add(new Vec3f(rightBottomPos[0] - xOffset, rightBottomPos[1] + yCorrection, z));
+		inputPoints.add(new Vec3f(leftTopPos[0] + xOffset,
+				leftBottomPos[1] - yCorrection, z));
+		inputPoints.add(new Vec3f(rightBottomPos[0] - xOffset, rightBottomPos[1]
+				+ yCorrection, z));
 		inputPoints.add(new Vec3f(rightBottomPos[0], rightBottomPos[1], z));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -514,13 +560,13 @@ public class ConnectionBandRenderer {
 		// gl.glPopName();
 	}
 
-	public void renderSingleBand(GL2 gl, float[] side1AnchorPos1, float[] side1AnchorPos2,
-		float[] side2AnchorPos1, float[] side2AnchorPos2, boolean highlight, float offsetSide1,
-		float offsetSide2, float[] color, float opacity, boolean isOffset1Horizontal,
-		boolean isOffset2Horizontal) {
+	public void renderSingleBand(GL2 gl, float[] side1AnchorPos1,
+			float[] side1AnchorPos2, float[] side2AnchorPos1, float[] side2AnchorPos2,
+			boolean highlight, float offsetSide1, float offsetSide2, float[] color,
+			float opacity, boolean isOffset1Horizontal, boolean isOffset2Horizontal) {
 
 		if (side1AnchorPos1 == null || side1AnchorPos2 == null || side2AnchorPos1 == null
-			|| side2AnchorPos2 == null)
+				|| side2AnchorPos2 == null)
 			return;
 
 		// gl.glPushName(pickingManager.getPickingID(viewID,
@@ -531,10 +577,12 @@ public class ConnectionBandRenderer {
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
-		inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
-			side1AnchorPos1[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
-		inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
-			side2AnchorPos1[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		inputPoints.add(new Vec3f(side1AnchorPos1[0]
+				+ ((isOffset1Horizontal) ? offsetSide1 : 0), side1AnchorPos1[1]
+				+ ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		inputPoints.add(new Vec3f(side2AnchorPos1[0]
+				+ ((isOffset2Horizontal) ? offsetSide2 : 0), side2AnchorPos1[1]
+				+ ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
 		inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1], z));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -550,16 +598,19 @@ public class ConnectionBandRenderer {
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
+					.get(i).z());
 		}
 		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
 		inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
-		inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
-			side1AnchorPos2[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
-		inputPoints.add(new Vec3f(side2AnchorPos2[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
-			side2AnchorPos2[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
+		inputPoints.add(new Vec3f(side1AnchorPos2[0]
+				+ ((isOffset1Horizontal) ? offsetSide1 : 0), side1AnchorPos2[1]
+				+ ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
+		inputPoints.add(new Vec3f(side2AnchorPos2[0]
+				+ ((isOffset2Horizontal) ? offsetSide2 : 0), side2AnchorPos2[1]
+				+ ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
 		inputPoints.add(new Vec3f(side2AnchorPos2[0], side2AnchorPos2[1], z));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
@@ -599,7 +650,8 @@ public class ConnectionBandRenderer {
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		for (Point2D anchorPoint : anchorPoints) {
-			Vec3f vec = new Vec3f((float) anchorPoint.getX(), (float) anchorPoint.getY(), z);
+			Vec3f vec = new Vec3f((float) anchorPoint.getX(), (float) anchorPoint.getY(),
+					z);
 			inputPoints.add(vec);
 			// gl.glPointSize(4);
 			// gl.glColor4f(1, 0, 0, 1);
@@ -608,12 +660,16 @@ public class ConnectionBandRenderer {
 			// gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
-		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
-		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1],
+		// z));
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal)
+		// ? offsetSide1 : 0),
 		// side1AnchorPos1[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
-		// inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal)
+		// ? offsetSide2 : 0),
 		// side2AnchorPos1[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
-		// inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1], z));
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1],
+		// z));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
@@ -623,13 +679,14 @@ public class ConnectionBandRenderer {
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
+					.get(i).z());
 		}
 		gl.glEnd();
 	}
 
-	public void renderComplexBand(GL2 gl, List<Pair<Point2D, Point2D>> anchorPoints, boolean highlight,
-		float[] color, float opacity) {
+	public void renderComplexBand(GL2 gl, List<Pair<Point2D, Point2D>> anchorPoints,
+			boolean highlight, float[] color, float opacity) {
 
 		if (anchorPoints == null || anchorPoints.size() < 2)
 			return;
@@ -642,8 +699,8 @@ public class ConnectionBandRenderer {
 
 		ArrayList<Vec3f> inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
-			Vec3f vec =
-				new Vec3f((float) anchorPair.getFirst().getX(), (float) anchorPair.getFirst().getY(), z);
+			Vec3f vec = new Vec3f((float) anchorPair.getFirst().getX(),
+					(float) anchorPair.getFirst().getY(), z);
 			inputPoints.add(vec);
 			// gl.glPointSize(4);
 			// gl.glColor4f(1, 0, 0, 1);
@@ -652,12 +709,16 @@ public class ConnectionBandRenderer {
 			// gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
-		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1], z));
-		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0], side1AnchorPos1[1],
+		// z));
+		// inputPoints.add(new Vec3f(side1AnchorPos1[0] + ((isOffset1Horizontal)
+		// ? offsetSide1 : 0),
 		// side1AnchorPos1[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
-		// inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0] + ((isOffset2Horizontal)
+		// ? offsetSide2 : 0),
 		// side2AnchorPos1[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
-		// inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1], z));
+		// inputPoints.add(new Vec3f(side2AnchorPos1[0], side2AnchorPos1[1],
+		// z));
 
 		NURBSCurve curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> outputPoints = curve.getCurvePoints();
@@ -672,14 +733,15 @@ public class ConnectionBandRenderer {
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (int i = 0; i < outputPoints.size(); i++) {
-			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints.get(i).z());
+			gl.glVertex3f(outputPoints.get(i).x(), outputPoints.get(i).y(), outputPoints
+					.get(i).z());
 		}
 		gl.glEnd();
 
 		inputPoints = new ArrayList<Vec3f>();
 		for (Pair<Point2D, Point2D> anchorPair : anchorPoints) {
-			Vec3f vec =
-				new Vec3f((float) anchorPair.getSecond().getX(), (float) anchorPair.getSecond().getY(), z);
+			Vec3f vec = new Vec3f((float) anchorPair.getSecond().getX(),
+					(float) anchorPair.getSecond().getY(), z);
 			inputPoints.add(vec);
 			// gl.glPointSize(4);
 			// gl.glColor4f(1, 0, 0, 1);
@@ -688,12 +750,16 @@ public class ConnectionBandRenderer {
 			// gl.glEnd();
 			// GLHelperFunctions.drawPointAt(gl, vec);
 		}
-		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1], z));
-		// inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal) ? offsetSide1 : 0),
+		// inputPoints.add(new Vec3f(side1AnchorPos2[0], side1AnchorPos2[1],
+		// z));
+		// inputPoints.add(new Vec3f(side1AnchorPos2[0] + ((isOffset1Horizontal)
+		// ? offsetSide1 : 0),
 		// side1AnchorPos2[1] + ((!isOffset1Horizontal) ? offsetSide1 : 0), z));
-		// inputPoints.add(new Vec3f(side2AnchorPos2[0] + ((isOffset2Horizontal) ? offsetSide2 : 0),
+		// inputPoints.add(new Vec3f(side2AnchorPos2[0] + ((isOffset2Horizontal)
+		// ? offsetSide2 : 0),
 		// side2AnchorPos2[1] + ((!isOffset2Horizontal) ? offsetSide2 : 0), z));
-		// inputPoints.add(new Vec3f(side2AnchorPos2[0], side2AnchorPos2[1], z));
+		// inputPoints.add(new Vec3f(side2AnchorPos2[0], side2AnchorPos2[1],
+		// z));
 
 		curve = new NURBSCurve(inputPoints, NUMBER_OF_SPLINE_POINTS);
 		ArrayList<Vec3f> points = curve.getCurvePoints();
