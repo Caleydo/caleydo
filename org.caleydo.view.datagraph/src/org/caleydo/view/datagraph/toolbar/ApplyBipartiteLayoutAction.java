@@ -12,7 +12,7 @@ import org.eclipse.ui.PlatformUI;
 public class ApplyBipartiteLayoutAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Apply Bipartite Layout";
-	public static final String ICON = "resources/icons/view/radial/radial_color_mapping.png";
+	public static final String ICON = "resources/icons/caleydo/caleydo16.png";
 
 	public ApplyBipartiteLayoutAction() {
 		setText(TEXT);
@@ -31,6 +31,9 @@ public class ApplyBipartiteLayoutAction extends AToolBarAction implements IToolB
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 		setChecked(false);
+		
+//		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+//				PlatformUI.getWorkbench().getDisplay(), "resources/icons/view/tablebased/heatmap/heatmap.png")));
 	};
 
 }

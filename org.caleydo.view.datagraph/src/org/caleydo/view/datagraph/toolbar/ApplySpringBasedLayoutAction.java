@@ -30,6 +30,8 @@ public class ApplySpringBasedLayoutAction extends AToolBarAction implements IToo
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 		setChecked(false);
+		
+		
 	};
 
 }

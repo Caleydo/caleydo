@@ -34,8 +34,8 @@ public class DataGraphToolBarContent extends AToolBarContent {
 				"Graph Layout");
 		
 		actionList.add(toolBarWidgets);
-		actionList.add(applySpringBasedLayoutAction);
-		actionList.add(applyBipartiteLayoutAction);
+//		actionList.add(applySpringBasedLayoutAction);
+//		actionList.add(applyBipartiteLayoutAction);
 
 		ArrayList<ToolBarContainer> list = new ArrayList<ToolBarContainer>();
 		list.add(container);
