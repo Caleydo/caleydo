@@ -564,9 +564,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			dimensionGroup.display(gl);
 		}
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			renderArch(gl);
-		}
+		
 
 		if (!isRightDetailShown && !isLeftDetailShown) {
 			leftLayoutManager.render(gl);
@@ -582,6 +580,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			gl.glTranslatef(rightArchStand, 0, 0);
 			rightLayoutManager.render(gl);
 			gl.glTranslatef(-rightArchStand, 0, 0);
+		}
+		
+		if (!isRightDetailShown && !isLeftDetailShown) {
+			renderArch(gl);
 		}
 
 		// gl.glRotatef(-angle, 1, 0, 0);
