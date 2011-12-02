@@ -290,4 +290,11 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 			viewLayout = null;
 		}
 	}
+	
+	/**
+	 * @return the viewLayout, see {@link #viewLayout}
+	 */
+	public ElementLayout getViewLayout() {
+		return viewLayout;
+	}
 }

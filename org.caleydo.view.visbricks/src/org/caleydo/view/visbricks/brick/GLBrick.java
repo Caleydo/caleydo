@@ -5,10 +5,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
@@ -45,8 +47,8 @@ import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
-import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.ClinicalDataConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.visbricks.brick.contextmenu.CreateKaplanMeierSmallMultiplesGroupItem;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
@@ -57,6 +59,7 @@ import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
+import org.caleydo.view.visbricks.brick.ui.RectangleCoordinates;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dialog.CreateKaplanMeierSmallMultiplesGroupDialog;
 import org.caleydo.view.visbricks.dialog.CreatePathwayComparisonGroupDialog;
@@ -194,7 +197,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	private GLVisBricks visBricks;
 
-	private ABrickLayoutConfiguration brickLayout;
+	private ABrickLayoutConfiguration brickLayoutConfiguration;
 	private IBrickConfigurer brickConfigurer;
 
 	public GLBrick(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
@@ -228,25 +231,28 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
-		if (brickLayout == null) {
-			brickLayout = new DefaultBrickLayoutTemplate(this, visBricks, dimensionGroup,
-					brickConfigurer);
+		if (brickLayoutConfiguration == null) {
+			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, visBricks,
+					dimensionGroup, brickConfigurer);
 		}
 
-		brickConfigurer.setBrickViews(this, gl, glMouseListener, brickLayout);
+		brickConfigurer
+				.setBrickViews(this, gl, glMouseListener, brickLayoutConfiguration);
 
-		currentViewType = brickLayout.getDefaultViewType();
+		currentViewType = brickLayoutConfiguration.getDefaultViewType();
 
-		setBrickLayoutTemplate(brickLayout, currentViewType);
+		setBrickLayoutTemplate(brickLayoutConfiguration, currentViewType);
 
-		brickLayout.setViewRenderer(containedViewRenderers.get(currentViewType));
+		brickLayoutConfiguration.setViewRenderer(containedViewRenderers
+				.get(currentViewType));
 		currentRemoteView = views.get(currentViewType);
-		if (brickLayout.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks.registerMouseWheelListener((IMouseWheelHandler) brickLayout
-					.getViewRenderer());
+		if (brickLayoutConfiguration.getViewRenderer() instanceof IMouseWheelHandler) {
+			visBricks
+					.registerMouseWheelListener((IMouseWheelHandler) brickLayoutConfiguration
+							.getViewRenderer());
 		}
 
-		layoutManager.setStaticLayoutConfiguration(brickLayout);
+		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 
 		addIDPickingListener(new APickingListener() {
 
@@ -323,8 +329,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				dataContainer.setLabel(label, false);
 				setDisplayListDirty();
 
-				if (brickLayout instanceof DefaultBrickLayoutTemplate)
-					((DefaultBrickLayoutTemplate) brickLayout).setHideCaption(false);
+				if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
+					((DefaultBrickLayoutTemplate) brickLayoutConfiguration)
+							.setHideCaption(false);
 
 			}
 		});
@@ -448,10 +455,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			layoutManager.updateLayout();
 
 		if (brickHeigthMode == EBrickHeightMode.VIEW_DEPENDENT) {
-			wrappingLayout.setPixelSizeY(brickLayout.getDefaultHeightPixels());
+			wrappingLayout.setPixelSizeY(brickLayoutConfiguration
+					.getDefaultHeightPixels());
 		}
 		if (brickWidthMode == EBrickWidthMode.VIEW_DEPENDENT) {
-			wrappingLayout.setPixelSizeX(brickLayout.getDefaultWidthPixels());
+			wrappingLayout
+					.setPixelSizeX(brickLayoutConfiguration.getDefaultWidthPixels());
 		}
 	}
 
@@ -463,7 +472,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		brickHeigthMode = EBrickHeightMode.STATIC;
 		brickWidthMode = EBrickWidthMode.STATIC;
-		brickLayout.setLockResizing(true);
+		brickLayoutConfiguration.setLockResizing(true);
 
 		if (glMouseListener.wasMouseReleased()) {
 			isBrickResizeActive = false;
@@ -494,10 +503,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		float newWidth = width + changeX;
 		float newHeight = height + changeY;
 
-		float minWidth = pixelGLConverter.getGLWidthForPixelWidth(brickLayout
-				.getMinWidthPixels());
-		float minHeight = pixelGLConverter.getGLHeightForPixelHeight(brickLayout
-				.getMinHeightPixels());
+		float minWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(brickLayoutConfiguration.getMinWidthPixels());
+		float minHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(brickLayoutConfiguration.getMinHeightPixels());
 		// float minWidth = pixelGLConverter
 		// .getGLWidthForPixelWidth(brickLayout.getMinWidthPixels());
 		if (newWidth < minWidth - 0.001f) {
@@ -582,7 +591,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param viewType
 	 */
 	public void setBrickViewTypeAndConfigureSize(EContainedViewType viewType) {
-		if (brickLayout instanceof CompactHeaderBrickLayoutTemplate) {
+		if (brickLayoutConfiguration instanceof CompactHeaderBrickLayoutTemplate) {
 			brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
 			brickWidthMode = EBrickWidthMode.CONTEXT_MODE;
 			staticBrickWidth = visBricks.getSideArchWidthPixels();
@@ -598,14 +607,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		if (viewRenderer == null)
 			return;
 
-		if (!brickLayout.isViewTypeValid(viewType))
+		if (!brickLayoutConfiguration.isViewTypeValid(viewType))
 			return;
 
 		currentRemoteView = views.get(viewType);
 
-		brickLayout.setViewRenderer(viewRenderer);
+		brickLayoutConfiguration.setViewRenderer(viewRenderer);
 
-		brickLayout.viewTypeChanged(viewType);
+		brickLayoutConfiguration.viewTypeChanged(viewType);
 
 		// if no height mode was set we use proportional if available, else
 		// view-dependent
@@ -621,12 +630,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			wrappingLayout.setPixelSizeY(staticBrickHeight);
 			break;
 		case VIEW_DEPENDENT:
-			int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
+			int defaultHeightPixels = brickLayoutConfiguration.getDefaultHeightPixels();
 			wrappingLayout.setPixelSizeY(defaultHeightPixels);
 			break;
 		case PROPORTIONAL:
 			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
-					* dataContainer.getNrRecords();
+					* dataContainer.getNrRecords()
+					+ getHeightOverheadOfProportioanlBrick();
+
 			wrappingLayout.setPixelSizeY((int) proportionalHeight);
 			break;
 
@@ -648,12 +659,12 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			wrappingLayout.setPixelSizeX(brickConfigurer.getDefaultWidth());
 			break;
 		case VIEW_DEPENDENT:
-			int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
+			int defaultWidthPixels = brickLayoutConfiguration.getDefaultWidthPixels();
 			wrappingLayout.setPixelSizeX(defaultWidthPixels);
 			break;
 		}
 
-		layoutManager.setStaticLayoutConfiguration(brickLayout);
+		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 		layoutManager.updateLayout();
 
 		visBricks.updateLayout();
@@ -675,21 +686,23 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 */
 	public void setBrickLayoutTemplate(ABrickLayoutConfiguration newBrickLayout,
 			EContainedViewType viewType) {
-		if (brickLayout != null && brickLayout != newBrickLayout)
-			brickLayout.destroy();
-		brickLayout = newBrickLayout;
-		if ((brickLayout instanceof CollapsedBrickLayoutTemplate)
-				|| (brickLayout instanceof CompactHeaderBrickLayoutTemplate))
+		if (brickLayoutConfiguration != null
+				&& brickLayoutConfiguration != newBrickLayout)
+			brickLayoutConfiguration.destroy();
+		brickLayoutConfiguration = newBrickLayout;
+		if ((brickLayoutConfiguration instanceof CollapsedBrickLayoutTemplate)
+				|| (brickLayoutConfiguration instanceof CompactHeaderBrickLayoutTemplate))
 			isInOverviewMode = true;
 		else
 			isInOverviewMode = false;
 
 		if (layoutManager != null) {
-			layoutManager.setStaticLayoutConfiguration(brickLayout);
-			if (brickLayout.isViewTypeValid(viewType)) {
+			layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
+			if (brickLayoutConfiguration.isViewTypeValid(viewType)) {
 				setBrickViewTypeAndConfigureSize(viewType);
 			} else {
-				setBrickViewTypeAndConfigureSize(brickLayout.getDefaultViewType());
+				setBrickViewTypeAndConfigureSize(brickLayoutConfiguration
+						.getDefaultViewType());
 			}
 		}
 	}
@@ -828,6 +841,19 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		return wrappingLayout;
 	}
 
+	public RectangleCoordinates getLayoutForConnections() {
+		ElementLayout brickLayout = brickLayoutConfiguration.getViewLayout();
+		RectangleCoordinates coordinates = new RectangleCoordinates();
+		coordinates.setLeft(wrappingLayout.getTranslateX());
+		coordinates.setWidth(wrappingLayout.getSizeScaledX());
+
+		coordinates.setBottom(wrappingLayout.getTranslateY()
+				+ brickLayout.getTranslateY());
+		coordinates.setHeight(brickLayout.getSizeScaledY());
+		return coordinates;
+
+	}
+
 	/**
 	 * Returns the selection manager responsible for managing selections of
 	 * groups.
@@ -848,10 +874,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					dataContainerSelectionManager.getSelectionType(),
 					dataContainer.getID())) {
 				// brickLayout.setShowHandles(true);
-				brickLayout.setSelected(true);
+				brickLayoutConfiguration.setSelected(true);
 				visBricks.updateConnectionLinesBetweenDimensionGroups();
 			} else {
-				brickLayout.setSelected(false);
+				brickLayoutConfiguration.setSelected(false);
 				// brickLayout.setShowHandles(false);
 			}
 			// }
@@ -881,7 +907,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 					wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
 		}
 
-		ABrickLayoutConfiguration layoutTemplate = brickLayout
+		ABrickLayoutConfiguration layoutTemplate = brickLayoutConfiguration
 				.getCollapsedLayoutTemplate();
 		// isSizeFixed = false;
 
@@ -905,7 +931,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public void expand() {
 		// if (!isInOverviewMode)
 		// return;
-		ABrickLayoutConfiguration layoutTemplate = brickLayout
+		ABrickLayoutConfiguration layoutTemplate = brickLayoutConfiguration
 				.getExpandedLayoutTemplate();
 		if (expandedBrickState != null) {
 			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
@@ -922,7 +948,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			// wrappingLayout.setAbsoluteSizeX(defaultWidth);
 		}
 		isInOverviewMode = false;
-		brickLayout.setLockResizing(true);
+		brickLayoutConfiguration.setLockResizing(true);
 		// dimensionGroup.updateLayout();
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -939,7 +965,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 * @param isGlobalViewSwitching
 	 */
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
-		brickLayout.setGlobalViewSwitching(isGlobalViewSwitching);
+		brickLayoutConfiguration.setGlobalViewSwitching(isGlobalViewSwitching);
 	}
 
 	public void setViews(Map<EContainedViewType, AGLView> views) {
@@ -1182,5 +1208,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	 */
 	public boolean isHeaderBrick() {
 		return isHeaderBrick;
+	}
+
+	public int getHeightOverheadOfProportioanlBrick() {
+		int proportionalHeight = 0;
+
+		// if (brickHeigthMode != null
+		// && brickHeigthMode.equals(EBrickHeightMode.PROPORTIONAL)
+		if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate) {
+			DefaultBrickLayoutTemplate layoutConfig = (DefaultBrickLayoutTemplate) brickLayoutConfiguration;
+			proportionalHeight = layoutConfig.getOverheadHeight();
+		}
+		return proportionalHeight;
 	}
 }

@@ -196,6 +196,23 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.showFooterBar(true);
 
 	}
+	
+	@Override
+	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		layoutTemplate.setHeaderBarElements(headerBarElements);
+		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
+		layoutTemplate.setFooterBarElements(footerBarElements);
+
+		layoutTemplate.showFooterBar(true);
+
+	}
 
 	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
@@ -241,22 +258,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 
 	}
 
-	@Override
-	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
-		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
-		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
-
-		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
-		layoutTemplate.setHeaderBarElements(headerBarElements);
-		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
-		layoutTemplate.setFooterBarElements(footerBarElements);
-
-		layoutTemplate.showFooterBar(true);
-
-	}
 
 	@Override
 	public boolean useDefaultWidth() {

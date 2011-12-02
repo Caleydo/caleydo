@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.ui.RectangleCoordinates;
 
 /**
  * 
@@ -115,7 +116,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			hashGroupID2GroupMatches.put(leftBrick.getDataContainer().getRecordGroup()
 					.getGroupIndex(), groupMatch);
 
-			ElementLayout leftBrickElementLayout = leftBrick.getLayout();
+			RectangleCoordinates leftBrickElementLayout = leftBrick.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getDataContainer()
@@ -144,12 +145,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 				subGroupMatch.setSimilarityRatioLeft(leftSimilarityRatioY);
 
-				subGroupMatch.setLeftAnchorYStart(leftBrickElementLayout.getTranslateY()
-						+ leftBrickElementLayout.getSizeScaledY()
+				subGroupMatch.setLeftAnchorYStart(leftBrickElementLayout.getBottom()
+						+ leftBrickElementLayout.getHeight()
 						* (leftSimilarityOffsetY));
 
-				subGroupMatch.setLeftAnchorYEnd(leftBrickElementLayout.getTranslateY()
-						+ leftBrickElementLayout.getSizeScaledY()
+				subGroupMatch.setLeftAnchorYEnd(leftBrickElementLayout.getBottom()
+						+ leftBrickElementLayout.getHeight()
 						* (leftSimilarityOffsetY - leftSimilarityRatioY));
 			}
 		}
@@ -157,7 +158,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		for (GLBrick rightBrick : rightBricks) {
 			if (rightBrick.isHeaderBrick())
 				continue;
-			ElementLayout rightBrickElementLayout = rightBrick.getLayout();
+			RectangleCoordinates rightBrickElementLayout = rightBrick.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(rightDimGroup.getDataContainer()
@@ -183,12 +184,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				subGroupMatch.setSimilarityRatioRight(rightSimilarityRatioY);
 
 				subGroupMatch.setRightAnchorYStart(rightBrickElementLayout
-						.getTranslateY()
-						+ rightBrickElementLayout.getSizeScaledY()
+						.getBottom()
+						+ rightBrickElementLayout.getHeight()
 						* (rightSimilarityOffsetY));
 
-				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getTranslateY()
-						+ rightBrickElementLayout.getSizeScaledY()
+				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getBottom()
+						+ rightBrickElementLayout.getHeight()
 						* (rightSimilarityOffsetY - rightSimilarityRatioY));
 
 			}
@@ -428,8 +429,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			GLBrick brick = groupMatch.getBrick();
 			float xStart = 0;
 			if (!leftDimGroup.isDetailBrickShown())
-				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick.getLayout()
-						.getSizeScaledX()) / 2;
+				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick.getLayoutForConnections()
+						.getWidth()) / 2;
 
 			// if (groupMatch.getBrick().isInOverviewMode())
 			// continue;

@@ -16,6 +16,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.configurer.ATableBasedDataConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
@@ -53,6 +54,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected Button viewSwitchingModeButton;
 	protected Button lockResizingButton;
+
+	protected int yOverhead = 0;
 
 	/**
 	 * Flag telling whether the footer bar should be shown or not. This should
@@ -118,22 +121,21 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			baseColumn.append(toolBar);
 		}
 
-		if (!brick.isHeaderBrick()) {
-			leftRelationIndicatorRenderer.updateRelations();
-			rightRelationIndicatorRenderer.updateRelations();
-
-			ElementLayout leftRelationIndicatorLayout = new ElementLayout(
-					"RightRelationIndicatorLayout");
-			// rightRelationIndicatorLayout.setDebug(true);
-			leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-			leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
-			baseRow.append(leftRelationIndicatorLayout);
-		} else {
-			System.out.println("Shouldn't happen");
-		}
+		// if (!brick.isHeaderBrick()) {
+		// leftRelationIndicatorRenderer.updateRelations();
+		// rightRelationIndicatorRenderer.updateRelations();
+		//
+		// ElementLayout leftRelationIndicatorLayout = new ElementLayout(
+		// "RightRelationIndicatorLayout");
+		// // rightRelationIndicatorLayout.setDebug(true);
+		// leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		// leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
+		// baseRow.append(leftRelationIndicatorLayout);
+		// } else {
+		// throw new IllegalStateException("ALLEX DEBUG");
+		// }
 		Column contentColumn = new Column("contentColumn");
 		contentColumn.setPriorityRendereing(true);
-		contentColumn.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
@@ -159,19 +161,18 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		footerBar = createFooterBar();
-
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
 		contentColumn.append(spacingLayoutY);
 		if (showFooterBar) {
+			footerBar = createFooterBar();
 			contentColumn.append(footerBar);
 			contentColumn.append(spacingLayoutY);
 		}
-		contentColumn.append(viewLayout);
-		contentColumn.append(spacingLayoutY);
+		contentColumn.append(viewLayout);	contentColumn.append(spacingLayoutY);
+	
 
 		headerRow = new Row("headerRow");
 		if (brick.isDefaultLabel())
@@ -185,15 +186,15 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 		contentColumn.append(headerRow);
 
-		// baseColumn.append(spacingLayoutY);
-		if (!brick.isHeaderBrick()) {
-			ElementLayout rightRelationIndicatorLayout = new ElementLayout(
-					"RightRelationIndicatorLayout");
-			// rightRelationIndicatorLayout.setDebug(true);
-			rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
-			rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
-			baseRow.append(rightRelationIndicatorLayout);
-		}
+		// // baseColumn.append(spacingLayoutY);
+		// if (!brick.isHeaderBrick()) {
+		// ElementLayout rightRelationIndicatorLayout = new ElementLayout(
+		// "RightRelationIndicatorLayout");
+		// // rightRelationIndicatorLayout.setDebug(true);
+		// rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
+		// rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
+		// baseRow.append(rightRelationIndicatorLayout);
+		// }
 	}
 
 	/**
@@ -315,8 +316,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public int getMinHeightPixels() {
 		if (viewRenderer == null)
-			return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS + TOOLBAR_HEIGHT_PIXELS;
-		return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS + TOOLBAR_HEIGHT_PIXELS
+			return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS;
+		return 4 * SPACING_PIXELS + FOOTER_BAR_HEIGHT_PIXELS
 				+ viewRenderer.getMinHeightPixels();
 	}
 
@@ -443,5 +444,14 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	public void setHideCaption(boolean hideCaption) {
 		headerRow.setHidden(hideCaption);
+	}
+
+	public int getOverheadHeight() {
+		int pixelHeight = SPACING_PIXELS * 2
+				+ (showFooterBar ? FOOTER_BAR_HEIGHT_PIXELS + SPACING_PIXELS : 0)
+				+ (brick.isDefaultLabel() ? 0
+						: ATableBasedDataConfigurer.CAPTION_HEIGHT_PIXELS);
+		return pixelHeight;
+
 	}
 }

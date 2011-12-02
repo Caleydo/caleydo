@@ -77,10 +77,10 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -92,7 +92,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 
-		layoutTemplate.showFooterBar(false);
+		layoutTemplate.showFooterBar(true);
 	}
 
 	@Override
@@ -204,6 +204,11 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 				brick, "TODO", PickingType.BRICK.name(), brick.getID());
 		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY,
 				kaplanMeierSummaryCompactRenderer);
+		
+		
+		// FIXME this is not really a comapct view
+		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT,
+				kaplanMeierSummaryRenderer);
 
 		// PathwayDataContainer brickData = (PathwayDataContainer) brick
 		// .getDataContainer();

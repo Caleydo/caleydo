@@ -41,7 +41,7 @@ import org.eclipse.swt.widgets.Shell;
 public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 	protected static final int FUELBAR_HEIGHT_PIXELS = 4;
-	protected static final int CAPTION_HEIGHT_PIXELS = 14;
+	public static final int CAPTION_HEIGHT_PIXELS = 14;
 	protected static final int DIMENSION_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
@@ -122,15 +122,11 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		ElementLayout captionLayout = new ElementLayout("caption1");
 
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		captionLayout.setFrameColor(0, 0, 1, 1);
-
+	
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getVisBricksView(), layoutTemplate.getBrick(),
 				PickingType.BRICK.name(), layoutTemplate.getBrick().getID());
-		// .getDimensionGroup().getVisBricksView(),
-		// layoutTemplate.getBrick().getDataContainer().getRecordPerspective().getLabel(),
-		// PickingType.DIMENSION_GROUP.name(),
-		// layoutTemplate.getDimensionGroup().getID());
+		
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
