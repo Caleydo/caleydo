@@ -42,12 +42,12 @@ import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.GLBrick.EBrickHeightMode;
 import org.caleydo.view.visbricks.brick.GLBrick.EBrickWidthMode;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
 
@@ -184,14 +184,15 @@ public class DimensionGroup
 
 		clusterBrickWrapperColumn = new Column("wrapperColumn");
 		clusterBrickWrapperColumn.setXDynamic(true);
-
+		clusterBrickWrapperColumn.setVAlign(VAlign.CENTER);
+	
 		clusterBrickColumn = new Column("clusterBrickColumn");
 		clusterBrickColumn.setFrameColor(1, 0, 1, 1);
 		clusterBrickColumn.setBottomUp(false);
 		clusterBrickColumn.setXDynamic(true);
 		clusterBrickColumn.setIDs(uniqueID, BOTTOM_COLUMN_ID);
 		clusterBrickColumn.setVAlign(VAlign.CENTER);
-
+	
 		clusterBrickWrapperColumn.append(clusterBrickColumn);
 
 		clusterBricks = new ArrayList<GLBrick>(20);
@@ -199,7 +200,6 @@ public class DimensionGroup
 		headerBrickLayout = new Column("headerBrickLayout");
 		headerBrickLayout.setXDynamic(true);
 		headerBrickLayout.setYDynamic(true);
-		// headerBrickLayout.setDebug(true);
 		headerBrickLayout.setFrameColor(1, 1, 0, 1);
 		headerBrickLayout.setRenderingPriority(10);
 		// headerBrickLayout.setPixelSizeY(60);
@@ -271,28 +271,26 @@ public class DimensionGroup
 	{
 		// create basic layouts
 
-		// minPixelWidth = PIXEL_PER_DIMENSION * table.size();
-		// if (minPixelWidth < MIN_BRICK_WIDTH_PIXEL)
-		// minPixelWidth = MIN_BRICK_WIDTH_PIXEL;
-		// minWidth = pixelGLConverter.getGLWidthForPixelWidth(minPixelWidth);
+		
 
 		mainColumn.addBackgroundRenderer(new DimensionGroupGlowRenderer(
 				dataContainer.getDataDomain().getColor().getRGBA(), this, false));
 
-		ElementLayout headerBrickLayout2 = new ElementLayout();
+		ElementLayout innerHeaderBrickLayout = new ElementLayout();
+		
 		
 //		headerBrickLayout2.setRenderingPriority(1);
 
-		headerBrickLayout2.addBackgroundRenderer(new DimensionGroupGlowRenderer(
+		innerHeaderBrickLayout.addBackgroundRenderer(new DimensionGroupGlowRenderer(
 				dataContainer.getDataDomain().getColor().getRGBA(), this, true));
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
 		brickSpacingLayout.setRatioSizeX(0);
-		headerBrickLayout.append(headerBrickLayout2);
+		headerBrickLayout.append(innerHeaderBrickLayout);
 		headerBrickLayout.append(brickSpacingLayout);
 
-		headerBrick = createBrick(headerBrickLayout2, dataContainer);
+		headerBrick = createBrick(innerHeaderBrickLayout, dataContainer);
 		headerBrick.setHeaderBrick(true);
 
 		ABrickLayoutConfiguration layoutTemplate;
@@ -401,14 +399,16 @@ public class DimensionGroup
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);
 		wrappingLayout.setRenderer(brickRenderer);
-		if (isCollapsed)
-		{
-			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
-		}
-		else
-		{
-			wrappingLayout.setPixelSizeX(minPixelWidth);
-		}
+		wrappingLayout.setPixelSizeX(0);
+		wrappingLayout.setPixelSizeY(0);
+//		if (isCollapsed)
+//		{
+//			wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
+//		}
+//		else
+//		{
+//			wrappingLayout.setPixelSizeX(minPixelWidth);
+//		}
 
 		return brick;
 	}
@@ -710,11 +710,11 @@ public class DimensionGroup
 
 		for (GLBrick brick : clusterBricks)
 		{
-			brick.setContainedView(viewType);
+			brick.setBrickViewTypeAndConfigureSize(viewType);
 		}
 		if (detailBrick != null)
 		{
-			detailBrick.setContainedView(viewType);
+			detailBrick.setBrickViewTypeAndConfigureSize(viewType);
 		}
 		// centerBrick.setRemoteView(viewType);
 		mainRow.updateSubLayout();

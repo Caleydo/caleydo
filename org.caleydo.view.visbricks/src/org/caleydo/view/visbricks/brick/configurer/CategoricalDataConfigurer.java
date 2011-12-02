@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick.layout;
+package org.caleydo.view.visbricks.brick.configurer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -16,39 +16,42 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
+import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
-import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
-import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
+import org.caleydo.view.visbricks.brick.ui.OverviewHeatMapRenderer;
+import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
+import org.caleydo.view.visbricks.brick.viewcreation.HistogramCreator;
 
 /**
- * Configurer for bricks to display nominal data.
+ * Configurer for bricks to display categroical data
  * 
  * @author Partl
  * 
  */
-public class NominalDataConfigurer extends ATableBasedDataConfigurer {
+public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 
-	protected static final int PARCOORDS_BUTTON_ID = 2;
-	protected static final int TAGCLOUD_BUTTON_ID = 3;
+	protected static final int HEATMAP_BUTTON_ID = 1;
+	protected static final int HISTOGRAM_BUTTON_ID = 3;
 
-	public NominalDataConfigurer(DataContainer dataContainer) {
+	public CategoricalDataConfigurer(DataContainer dataContainer) {
 		super(dataContainer);
 	}
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
-		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
+
+		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
-		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
+				EContainedViewType.HISTOGRAM_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
-		viewSwitchingButtons.add(parCoordsButton);
-		viewSwitchingButtons.add(tagCloudButton);
+		viewSwitchingButtons.add(histogramButton);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
@@ -59,46 +62,47 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.setToolBarElements(toolBarElements);
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
-		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
-
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
 		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.HISTOGRAM_VIEW);
 
-		layoutTemplate.showToolBar(true);
-		layoutTemplate.showFooterBar(true);
+		layoutTemplate.showFooterBar(false);
+		layoutTemplate.showToolBar(false);
+
 	}
 
 	@Override
-	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
+	public void configure(CollapsedBrickLayoutTemplate layoutTemplate) {
+
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
+
 	}
 
 	@Override
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
-		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
+		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
-		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
+				EContainedViewType.HEATMAP_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
-		viewSwitchingButtons.add(parCoordsButton);
-		viewSwitchingButtons.add(tagCloudButton);
+		viewSwitchingButtons.add(heatMapButton);
+
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		if (headerBarElements != null)
+			layoutTemplate.setHeaderBarElements(headerBarElements);
 
 		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
 				viewSwitchingButtons);
@@ -107,34 +111,26 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
-		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
-
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+		validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.HEATMAP_VIEW);
 
-		layoutTemplate.showFooterBar(true);
+		layoutTemplate.setShowToolBar(false);
+		layoutTemplate.setShowFooterBar(false);
 
 	}
 
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
-
-		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
+		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
 				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
-		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
+				EContainedViewType.HEATMAP_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
-		viewSwitchingButtons.add(parCoordsButton);
-		viewSwitchingButtons.add(tagCloudButton);
+		viewSwitchingButtons.add(heatMapButton);
 
 		ArrayList<ElementLayout> toolBarElements = createToolBarElements(layoutTemplate,
 				viewSwitchingButtons);
@@ -143,17 +139,13 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
-		// layoutTemplate.setViewSwitchingButtons(viewSwitchingButtons);
-
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+		validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.PARCOORDS_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.HEATMAP_VIEW);
 
 		layoutTemplate.showFooterBar(true);
-
 	}
 
 	@Override
@@ -163,31 +155,43 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-		ParCoordsCreator parCoordsCreator = new ParCoordsCreator();
-		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
-		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
-		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-				parCoordsLayoutRenderer);
+		if (!(brickLayout instanceof HeaderBrickLayoutTemplate)) {
+			HeatMapCreator heatMapCreator = new HeatMapCreator();
+			AGLView heatMap = heatMapCreator.createRemoteView(brick, gl, glMouseListener);
+			LayoutRenderer heatMapLayoutRenderer = new ViewLayoutRenderer(heatMap);
+			views.put(EContainedViewType.HEATMAP_VIEW, heatMap);
+			containedViewRenderers.put(EContainedViewType.HEATMAP_VIEW,
+					heatMapLayoutRenderer);
+		}
 
-		TagCloudCreator tagCloudCreator = new TagCloudCreator();
-		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl, glMouseListener);
-		LayoutRenderer tagCloudLayoutRenderer = new ViewLayoutRenderer(tagCloud);
-		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);
-		containedViewRenderers.put(EContainedViewType.TAGCLOUD_VIEW,
-				tagCloudLayoutRenderer);
+		HistogramCreator histogramCreator = new HistogramCreator();
+		AGLView histogram = histogramCreator.createRemoteView(brick, gl, glMouseListener);
+		LayoutRenderer histogramLayoutRenderer = new ViewLayoutRenderer(histogram);
+		views.put(EContainedViewType.HISTOGRAM_VIEW, histogram);
+		containedViewRenderers.put(EContainedViewType.HISTOGRAM_VIEW,
+				histogramLayoutRenderer);
+		
+		LayoutRenderer overviewHeatMapRenderer = new OverviewHeatMapRenderer(
+				brick.getDataContainer(), brick.getDataDomain().getTable(), true);
+		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP,
+				overviewHeatMapRenderer);
+		LayoutRenderer compactOverviewHeatMapRenderer = new OverviewHeatMapRenderer(
+				brick.getDataContainer(), brick.getDataDomain().getTable(), false);
+		containedViewRenderers.put(EContainedViewType.OVERVIEW_HEATMAP_COMPACT,
+				compactOverviewHeatMapRenderer);
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
+
 	}
 
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
-		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
 
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -195,6 +199,16 @@ public class NominalDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		layoutTemplate.showFooterBar(true);
+
 	}
 
+	@Override
+	public boolean useDefaultWidth() {
+		return true;
+	}
+
+	@Override
+	public int getDefaultWidth() {
+		return 50;
+	}
 }

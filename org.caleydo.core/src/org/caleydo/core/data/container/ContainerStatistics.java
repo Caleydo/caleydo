@@ -13,15 +13,16 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 
 /**
  * <p>
- * {@link ContainerStatistics} provides access and calculates derivable meta-data for the data specified by a
- * {@link DataContainer}, such as averages, histograms, etc.
+ * {@link ContainerStatistics} provides access and calculates derivable
+ * meta-data for the data specified by a {@link DataContainer}, such as
+ * averages, histograms, etc.
  * </p>
  * <p>
  * Everything is calculated lazily.
  * </p>
  * <p>
- * TODO: There is currently no way to mark this dirty once the perspectives in the container or the container
- * itself changed.
+ * TODO: There is currently no way to mark this dirty once the perspectives in
+ * the container or the container itself changed.
  * </p>
  * 
  * @author Alexander Lex
@@ -41,8 +42,14 @@ public class ContainerStatistics {
 	private TTest tTest;
 
 	/**
-	 * A list of averages across dimensions, one for every record in the data container. Sorted as the virtual
-	 * array.
+	 * Optionally it is possible to specify the number of bins for the histogram
+	 * manually. This should only be done if there really is a reason for it.
+	 */
+	private int numberOfBucketsForHistogram = Integer.MIN_VALUE;
+
+	/**
+	 * A list of averages across dimensions, one for every record in the data
+	 * container. Sorted as the virtual array.
 	 */
 	private ArrayList<Average> averageRecords;
 
@@ -67,15 +74,15 @@ public class ContainerStatistics {
 		int count = 0;
 		for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
 
-			DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
+			DimensionVirtualArray dimensionVA = container.getDimensionPerspective()
+					.getVirtualArray();
 
 			if (dimensionVA == null) {
 				averageValue = 0;
 				return;
 			}
 			for (Integer dimensionID : dimensionVA) {
-				float value =
-					container.getDataDomain().getTable()
+				float value = container.getDataDomain().getTable()
 						.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
 				if (!Float.isNaN(value)) {
 					averageValue += value;
@@ -84,6 +91,16 @@ public class ContainerStatistics {
 			}
 		}
 		averageValue /= count;
+	}
+
+	/**
+	 * This is optional! Read more: {@link #numberOfBucketsForHistogram}
+	 * 
+	 * @param numberOfBucketsForHistogram
+	 *            setter, see {@link #numberOfBucketsForHistogram}
+	 */
+	public void setNumberOfBucketsForHistogram(int numberOfBucketsForHistogram) {
+		this.numberOfBucketsForHistogram = numberOfBucketsForHistogram;
 	}
 
 	public Histogram getHistogram() {
@@ -95,25 +112,36 @@ public class ContainerStatistics {
 	private void calculateHistogram() {
 		if (!container.getDataDomain().getTable().isDataHomogeneous()) {
 			throw new UnsupportedOperationException(
-				"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
+					"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
 
-		int numberOfBuckets = (int) Math.sqrt(container.getRecordPerspective().getVirtualArray().size());
+		int numberOfBuckets;
+
+		if (numberOfBucketsForHistogram != Integer.MIN_VALUE)
+			numberOfBuckets = numberOfBucketsForHistogram;
+		else
+			numberOfBuckets = (int) Math.sqrt(container.getRecordPerspective()
+					.getVirtualArray().size());
 		histogram = new Histogram(numberOfBuckets);
 		for (int iCount = 0; iCount < numberOfBuckets; iCount++) {
 			histogram.add(0);
 		}
 
 		// FloatCContainerIterator iterator =
-		// ((FloatCContainer) hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
+		// ((FloatCContainer)
+		// hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
 		for (Integer dimensionID : container.getDimensionPerspective().getVirtualArray()) {
 			{
-				for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
-					float value =
-						container.getDataDomain().getTable()
-							.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				for (Integer recordID : container.getRecordPerspective()
+						.getVirtualArray()) {
+					float value = container
+							.getDataDomain()
+							.getTable()
+							.getFloat(DataRepresentation.NORMALIZED, recordID,
+									dimensionID);
 
-					// this works because the values in the container are already noramlized
+					// this works because the values in the container are
+					// already noramlized
 					int iIndex = (int) (value * numberOfBuckets);
 					if (iIndex == numberOfBuckets)
 						iIndex--;
@@ -154,12 +182,14 @@ public class ContainerStatistics {
 	}
 
 	/**
-	 * Calculates the arithmetic mean and the standard deviation from the arithmetic mean of the records
+	 * Calculates the arithmetic mean and the standard deviation from the
+	 * arithmetic mean of the records
 	 */
 	private void calculateAverageRecords() {
 		averageRecords = new ArrayList<Average>();
 
-		DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = container.getDimensionPerspective()
+				.getVirtualArray();
 		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 		DataTable table = container.getDataDomain().getTable();
 
@@ -170,7 +200,8 @@ public class ContainerStatistics {
 
 			int nrValidValues = 0;
 			for (Integer dimensionID : dimensionVA) {
-				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID,
+						dimensionID);
 				if (!value.isNaN()) {
 					sumOfValues += value;
 					nrValidValues++;
@@ -179,7 +210,8 @@ public class ContainerStatistics {
 			averageRecord.arithmeticMean = sumOfValues / nrValidValues;
 
 			for (Integer dimensionID : dimensionVA) {
-				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID,
+						dimensionID);
 				if (!value.isNaN()) {
 					sumDeviation = Math.pow(-averageRecord.arithmeticMean, 2);
 				}
@@ -199,12 +231,14 @@ public class ContainerStatistics {
 	}
 
 	/**
-	 * Calculates the arithmetic mean and the standard deviation from the arithmetic mean of the dimensions
+	 * Calculates the arithmetic mean and the standard deviation from the
+	 * arithmetic mean of the dimensions
 	 */
 	private void calculateAverageDimensions() {
 		averageDimensions = new ArrayList<Average>();
 
-		DimensionVirtualArray dimensionVA = container.getDimensionPerspective().getVirtualArray();
+		DimensionVirtualArray dimensionVA = container.getDimensionPerspective()
+				.getVirtualArray();
 		RecordVirtualArray recordVA = container.getRecordPerspective().getVirtualArray();
 		DataTable table = container.getDataDomain().getTable();
 
@@ -215,7 +249,8 @@ public class ContainerStatistics {
 
 			int nrValidValues = 0;
 			for (Integer recordID : recordVA) {
-				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID,
+						dimensionID);
 				if (!value.isNaN()) {
 					sumOfValues += value;
 					nrValidValues++;
@@ -224,7 +259,8 @@ public class ContainerStatistics {
 			averageDimension.arithmeticMean = sumOfValues / nrValidValues;
 
 			for (Integer recordID : recordVA) {
-				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
+				Float value = table.getFloat(DataRepresentation.NORMALIZED, recordID,
+						dimensionID);
 				if (!value.isNaN()) {
 					sumDeviation = Math.pow(-averageDimension.arithmeticMean, 2);
 				}

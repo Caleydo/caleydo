@@ -12,46 +12,47 @@ import java.util.ArrayList;
  * The color schemes defined here are with the exception of the traditional
  * Green-Black-Red scheme all taken from www.colorbrewer.org.
  * </p>
+ * <p>
+ * A flag marks whether the colors should be discrete or interpolated (f
+ * </p>
  * 
  * @author Alexander Lex
  */
+
 public enum EDefaultColorSchemes {
+	
+
 	GREEN_BLACK_RED(
 			"Green-Black-Red",
 			"Traditional 3-class bioinformatics heat map colors. Not color-blind friendly!",
 			new int[] { 0, 255, 0 },
 			new int[] { 0, 0, 0 },
 			new int[] { 255, 0, 0 }),
-	WHITE_RED(
-			"White-Red",
-			"2-class White-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
-			// new int[] { 247, 247, 247 },
-			new int[] { 240, 240, 240 },
-			new int[] { 202, 0, 32 }),
+
 	BLUE_WHITE_RED(
 			"Blue-White-Red",
 			"3-class Red-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			new int[] { 5, 113, 176 },
 			// new int[] { 247, 247, 247 },
-			new int[] { 240, 240, 240 },
+			ColorMapper.NEUTRAL_GREY,
 			new int[] { 202, 0, 32 }),
 	GREEN_WHITE_BROWN(
 			"Green-White-Brown",
 			"3-class Brown-Blue-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
 			new int[] { 1, 133, 113 },
-			new int[] { 245, 245, 245 },
+			ColorMapper.NEUTRAL_GREY,
 			new int[] { 166, 97, 26 }),
 	GREEN_WHITE_PURPLE(
 			"Green-White-Purple",
 			"3-class Purple-Green diverging color scheme from colorbrewer.org. Color-blind and print friendly. May cause issues with bad LCDs",
 			new int[] { 0, 136, 55 },
-			new int[] { 247, 247, 247 },
+			ColorMapper.NEUTRAL_GREY,
 			new int[] { 123, 50, 148 }),
 	GREY_WHITE_RED(
 			"Grey-White-Red",
 			"3-class Red-Grey diverging color scheme from colorbrewer.org. Print friendly. May cause issues with color-blind users and bad LCDs",
 			new int[] { 64, 64, 64 },
-			new int[] { 255, 255, 255 },
+			ColorMapper.NEUTRAL_GREY,
 			new int[] { 202, 0, 32 }),
 	BLUE_RED_YELLOW(
 			"Blue-Red-Yellow",
@@ -72,7 +73,16 @@ public enum EDefaultColorSchemes {
 			new int[] { 253, 174, 97 },
 			new int[] { 255, 255, 191 },
 			new int[] { 171, 217, 233 },
-			new int[] { 44, 123, 182 }), ;
+			new int[] { 44, 123, 182 }),
+
+	// -------- DISCRETE COLOR SCHEMES ---------
+	WHITE_RED(
+			"White-Red",
+			"2-class White-Blue diverging color scheme from colorbrewer.org. Color-blind and print friendly.",
+			true,
+			// new int[] { 247, 247, 247 },
+			ColorMapper.NEUTRAL_GREY,
+			new int[] { 202, 0, 32 }),	;
 
 	private ArrayList<ColorMarkerPoint> colorMarkerPoints;
 	/**
@@ -87,8 +97,22 @@ public enum EDefaultColorSchemes {
 	 */
 	private String colorSchemeDescription;
 
+	/**
+	 * 
+	 */
+
 	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription,
 			int[]... colors) {
+		initialize(colorSchemeName, colorShemeDescription, false, colors);
+	}
+
+	private EDefaultColorSchemes(String colorSchemeName, String colorShemeDescription,
+			boolean isDescrete, int[]... colors) {
+		initialize(colorSchemeName, colorShemeDescription, isDescrete, colors);
+	}
+
+	private void initialize(String colorSchemeName, String colorShemeDescription,
+			boolean isDescrete, int[][] colors) {
 		this.colorSchemeName = colorSchemeName;
 		this.colorSchemeDescription = colorShemeDescription;
 		if (colors.length < 2)
@@ -99,12 +123,15 @@ public enum EDefaultColorSchemes {
 		ColorMarkerPoint point;
 		double mappingValueDistance = 1d / (colors.length - 1);
 		float nextMappingVlaue = 0;
+
 		float spread = 0.05f;
+		if (isDescrete)
+			spread = 1.0f / colors.length;
 		for (int[] color : colors) {
 			point = new ColorMarkerPoint(nextMappingVlaue, color);
 
 			// set spread only for first and last
-			if (colorCount == 0) {
+			if (colorCount == 0 || (isDescrete && colorCount != colors.length - 1)) {
 				point.setRightSpread(spread);
 			}
 			if (colorCount == colors.length - 1) {

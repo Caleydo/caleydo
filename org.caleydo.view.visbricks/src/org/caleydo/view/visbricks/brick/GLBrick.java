@@ -45,17 +45,17 @@ import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.ClinicalDataConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.visbricks.brick.contextmenu.CreateKaplanMeierSmallMultiplesGroupItem;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.visbricks.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
 import org.caleydo.view.visbricks.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
-import org.caleydo.view.visbricks.brick.layout.CompactBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
-import org.caleydo.view.visbricks.brick.layout.KaplanMeierDataConfigurer;
-import org.caleydo.view.visbricks.brick.layout.PathwayDataConfigurer;
 import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dialog.CreateKaplanMeierSmallMultiplesGroupDialog;
@@ -83,9 +83,8 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  * 
  */
-public class GLBrick
-	extends ATableBasedView
-	implements IGLRemoteRenderingView, ILayoutedElement {
+public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
+		ILayoutedElement {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.brick";
 
@@ -140,6 +139,16 @@ public class GLBrick
 	public enum EBrickWidthMode {
 		/** The width of the brick is set manually */
 		STATIC,
+		/**
+		 * The width of the brick is determined by the width of the sides of the
+		 * arch
+		 */
+		CONTEXT_MODE,
+		/**
+		 * The width of the brick should be taken from
+		 * {@link IBrickConfigurer#getDefaultWidth()}
+		 */
+		DATA_TYPE_DEFAULT,
 		/** The width of the brick is determined by the view rendered */
 		VIEW_DEPENDENT;
 	}
@@ -269,18 +278,19 @@ public class GLBrick
 						contextMenuCreator
 								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
 										dimensionGroup.getDataContainer(), dimensionGroup
-												.getDataContainer().getDimensionPerspective()));
+												.getDataContainer()
+												.getDimensionPerspective()));
 					}
 					contextMenuCreator
 							.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(
 									dimensionGroup.getDataContainer(), dimensionGroup
 											.getDataContainer().getDimensionPerspective()));
-				}
-				else
-					contextMenuCreator.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-							dataDomain,
-							dataContainer.getRecordPerspective().getVirtualArray(),
-							dimensionGroup.getDataContainer().getDimensionPerspective()));
+				} else
+					contextMenuCreator
+							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
+									dataDomain, dataContainer.getRecordPerspective()
+											.getVirtualArray(), dimensionGroup
+											.getDataContainer().getDimensionPerspective()));
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 			}
@@ -295,7 +305,8 @@ public class GLBrick
 	/**
 	 * Triggers a dialog to rename the specified group.
 	 * 
-	 * @param groupID ID of the group that shall be renamed.
+	 * @param groupID
+	 *            ID of the group that shall be renamed.
 	 */
 	public void rename(int id) {
 
@@ -332,8 +343,10 @@ public class GLBrick
 
 		// Select all elements in group with special type
 
-		RecordSelectionManager recordSelectionManager = visBricks.getRecordSelectionManager();
-		SelectionType selectedByGroupSelectionType = recordSelectionManager.getSelectionType();
+		RecordSelectionManager recordSelectionManager = visBricks
+				.getRecordSelectionManager();
+		SelectionType selectedByGroupSelectionType = recordSelectionManager
+				.getSelectionType();
 
 		if (!visBricks.getKeyListener().isCtrlDown()) {
 			recordSelectionManager.clearSelection(selectedByGroupSelectionType);
@@ -347,8 +360,8 @@ public class GLBrick
 		RecordVirtualArray va = dataContainer.getRecordPerspective().getVirtualArray();
 
 		for (Integer recordID : va) {
-			recordSelectionManager.addToType(selectedByGroupSelectionType, va.getIdType(),
-					recordID);// va.getIdType(), recordID);
+			recordSelectionManager.addToType(selectedByGroupSelectionType,
+					va.getIdType(), recordID);// va.getIdType(), recordID);
 		}
 
 		SelectionUpdateEvent event = new SelectionUpdateEvent();
@@ -394,7 +407,8 @@ public class GLBrick
 
 		gl.glVertex3f(0, 0, zpos);
 		gl.glVertex3f(wrappingLayout.getSizeScaledX(), 0, zpos);
-		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(), zpos);
+		gl.glVertex3f(wrappingLayout.getSizeScaledX(), wrappingLayout.getSizeScaledY(),
+				zpos);
 		gl.glVertex3f(0, wrappingLayout.getSizeScaledY(), zpos);
 		gl.glEnd();
 		gl.glPopName();
@@ -461,7 +475,8 @@ public class GLBrick
 		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
+						currentPoint.y);
 
 		if (Float.isNaN(previousXCoordinate)) {
 			previousXCoordinate = pointCordinates[0];
@@ -566,11 +581,17 @@ public class GLBrick
 	 * 
 	 * @param viewType
 	 */
-	public void setContainedView(EContainedViewType viewType) {
-		if (brickHeigthMode != null && brickHeigthMode != EBrickHeightMode.STATIC)
-			brickHeigthMode = null;
-		if (brickWidthMode != null && brickWidthMode != EBrickWidthMode.STATIC)
-			brickWidthMode = null;
+	public void setBrickViewTypeAndConfigureSize(EContainedViewType viewType) {
+		if (brickLayout instanceof CompactHeaderBrickLayoutTemplate) {
+			brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
+			brickWidthMode = EBrickWidthMode.CONTEXT_MODE;
+			staticBrickWidth = visBricks.getSideArchWidthPixels();
+		} else {
+			if (brickHeigthMode != null && brickHeigthMode != EBrickHeightMode.STATIC)
+				brickHeigthMode = null;
+			if (brickWidthMode != null && brickWidthMode != EBrickWidthMode.STATIC)
+				brickWidthMode = null;
+		}
 		currentViewType = viewType;
 		LayoutRenderer viewRenderer = containedViewRenderers.get(viewType);
 
@@ -586,7 +607,7 @@ public class GLBrick
 
 		brickLayout.viewTypeChanged(viewType);
 
-		// if no height mode was set we use proportioanl if available, else
+		// if no height mode was set we use proportional if available, else
 		// view-dependent
 		if (brickHeigthMode == null) {
 			if (viewType.isUseProportionalHeight())
@@ -596,31 +617,40 @@ public class GLBrick
 		}
 
 		switch (brickHeigthMode) {
-			case STATIC:
-				wrappingLayout.setPixelSizeY(staticBrickHeight);
-				break;
-			case VIEW_DEPENDENT:
-				int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
-				wrappingLayout.setPixelSizeY(defaultHeightPixels);
-				break;
-			case PROPORTIONAL:
-				double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
-						* dataContainer.getNrRecords();
-				wrappingLayout.setPixelSizeY((int) proportionalHeight);
-				break;
+		case STATIC:
+			wrappingLayout.setPixelSizeY(staticBrickHeight);
+			break;
+		case VIEW_DEPENDENT:
+			int defaultHeightPixels = brickLayout.getDefaultHeightPixels();
+			wrappingLayout.setPixelSizeY(defaultHeightPixels);
+			break;
+		case PROPORTIONAL:
+			double proportionalHeight = dimensionGroup.getProportionalHeightPerRecord()
+					* dataContainer.getNrRecords();
+			wrappingLayout.setPixelSizeY((int) proportionalHeight);
+			break;
 
 		}
 
-		if (brickWidthMode == null)
-			brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
+		if (brickWidthMode == null) {
+			if (brickConfigurer.useDefaultWidth())
+				brickWidthMode = EBrickWidthMode.DATA_TYPE_DEFAULT;
+			else
+				brickWidthMode = EBrickWidthMode.VIEW_DEPENDENT;
+
+		}
 		switch (brickWidthMode) {
-			case STATIC:
-				wrappingLayout.setPixelSizeX(staticBrickWidth);
-				break;
-			case VIEW_DEPENDENT:
-				int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
-				wrappingLayout.setPixelSizeX(defaultWidthPixels);
-				break;
+		case CONTEXT_MODE:
+		case STATIC:
+			wrappingLayout.setPixelSizeX(staticBrickWidth);
+			break;
+		case DATA_TYPE_DEFAULT:
+			wrappingLayout.setPixelSizeX(brickConfigurer.getDefaultWidth());
+			break;
+		case VIEW_DEPENDENT:
+			int defaultWidthPixels = brickLayout.getDefaultWidthPixels();
+			wrappingLayout.setPixelSizeX(defaultWidthPixels);
+			break;
 		}
 
 		layoutManager.setStaticLayoutConfiguration(brickLayout);
@@ -648,7 +678,7 @@ public class GLBrick
 		if (brickLayout != null && brickLayout != newBrickLayout)
 			brickLayout.destroy();
 		brickLayout = newBrickLayout;
-		if ((brickLayout instanceof CompactBrickLayoutTemplate)
+		if ((brickLayout instanceof CollapsedBrickLayoutTemplate)
 				|| (brickLayout instanceof CompactHeaderBrickLayoutTemplate))
 			isInOverviewMode = true;
 		else
@@ -657,10 +687,9 @@ public class GLBrick
 		if (layoutManager != null) {
 			layoutManager.setStaticLayoutConfiguration(brickLayout);
 			if (brickLayout.isViewTypeValid(viewType)) {
-				setContainedView(viewType);
-			}
-			else {
-				setContainedView(brickLayout.getDefaultViewType());
+				setBrickViewTypeAndConfigureSize(viewType);
+			} else {
+				setBrickViewTypeAndConfigureSize(brickLayout.getDefaultViewType());
 			}
 		}
 	}
@@ -699,7 +728,8 @@ public class GLBrick
 
 		openCreateKaplanMeierSmallMultiplesGroupDialogListener = new OpenCreateKaplanMeierSmallMultiplesGroupDialogListener();
 		openCreateKaplanMeierSmallMultiplesGroupDialogListener.setHandler(this);
-		eventPublisher.addListener(OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent.class,
+		eventPublisher.addListener(
+				OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent.class,
 				openCreateKaplanMeierSmallMultiplesGroupDialogListener);
 
 	}
@@ -724,7 +754,8 @@ public class GLBrick
 			openCreatePathwayGroupDialogListener = null;
 		}
 		if (openCreatePathwaySmallMultiplesGroupDialogListener != null) {
-			eventPublisher.removeListener(openCreatePathwaySmallMultiplesGroupDialogListener);
+			eventPublisher
+					.removeListener(openCreatePathwaySmallMultiplesGroupDialogListener);
 			openCreatePathwaySmallMultiplesGroupDialogListener = null;
 		}
 
@@ -764,7 +795,8 @@ public class GLBrick
 	 * TODO: add parameters to check whether this brick needs to be updated
 	 */
 	public void relationsUpdated() {
-		if (rightRelationIndicatorRenderer != null && leftRelationIndicatorRenderer != null) {
+		if (rightRelationIndicatorRenderer != null
+				&& leftRelationIndicatorRenderer != null) {
 			rightRelationIndicatorRenderer.updateRelations();
 			leftRelationIndicatorRenderer.updateRelations();
 		}
@@ -813,12 +845,12 @@ public class GLBrick
 			dataContainerSelectionManager.setDelta(selectionDelta);
 
 			if (dataContainerSelectionManager.checkStatus(
-					dataContainerSelectionManager.getSelectionType(), dataContainer.getID())) {
+					dataContainerSelectionManager.getSelectionType(),
+					dataContainer.getID())) {
 				// brickLayout.setShowHandles(true);
 				brickLayout.setSelected(true);
 				visBricks.updateConnectionLinesBetweenDimensionGroups();
-			}
-			else {
+			} else {
 				brickLayout.setSelected(false);
 				// brickLayout.setShowHandles(false);
 			}
@@ -840,7 +872,7 @@ public class GLBrick
 	 * 
 	 * @return how much this has affected the height of the brick.
 	 */
-	public float collapse() {
+	public void collapse() {
 		// if (isInOverviewMode)
 		// return 0;
 
@@ -849,35 +881,37 @@ public class GLBrick
 					wrappingLayout.getSizeScaledY(), wrappingLayout.getSizeScaledX());
 		}
 
-		ABrickLayoutConfiguration layoutTemplate = brickLayout.getCollapsedLayoutTemplate();
+		ABrickLayoutConfiguration layoutTemplate = brickLayout
+				.getCollapsedLayoutTemplate();
 		// isSizeFixed = false;
 
 		setBrickLayoutTemplate(layoutTemplate, layoutTemplate.getDefaultViewType());
 
-		float minHeight = pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-				.getMinHeightPixels());
-		float minWidth = pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
-				.getMinWidthPixels());
-		float currentSize = wrappingLayout.getSizeScaledY();
-		wrappingLayout.setAbsoluteSizeY(minHeight);
-		wrappingLayout.setAbsoluteSizeX(minWidth);
+		// float minHeight =
+		// pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
+		// .getMinHeightPixels());
+		// float minWidth =
+		// pixelGLConverter.getGLHeightForPixelHeight(layoutTemplate
+		// .getMinWidthPixels());
+		// float currentSize = wrappingLayout.getSizeScaledY();
+		// wrappingLayout.setAbsoluteSizeY(minHeight);
+		// wrappingLayout.setAbsoluteSizeX(minWidth);
 
 		visBricks.updateLayout();
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
-		return currentSize - minHeight;
 	}
 
 	public void expand() {
 		// if (!isInOverviewMode)
 		// return;
-		ABrickLayoutConfiguration layoutTemplate = brickLayout.getExpandedLayoutTemplate();
+		ABrickLayoutConfiguration layoutTemplate = brickLayout
+				.getExpandedLayoutTemplate();
 		if (expandedBrickState != null) {
 			setBrickLayoutTemplate(layoutTemplate, expandedBrickState.getViewType());
 			// wrappingLayout.setAbsoluteSizeX(expandedBrickState.getWidth());
 			// wrappingLayout.setAbsoluteSizeY(expandedBrickState.getHeight());
-		}
-		else {
+		} else {
 			setBrickLayoutTemplate(layoutTemplate, currentViewType);
 			// float defaultHeight = pixelGLConverter
 			// .getGLHeightForPixelHeight(layoutTemplate.getDefaultHeightPixels());
@@ -922,7 +956,8 @@ public class GLBrick
 	}
 
 	/**
-	 * @param brickHeigthMode setter, see {@link #brickHeigthMode}
+	 * @param brickHeigthMode
+	 *            setter, see {@link #brickHeigthMode}
 	 */
 	public void setBrickHeigthMode(EBrickHeightMode brickHeigthMode) {
 		this.brickHeigthMode = brickHeigthMode;
@@ -936,14 +971,16 @@ public class GLBrick
 	}
 
 	/**
-	 * @param staticBrickHeight setter, see {@link #staticBrickHeight}
+	 * @param staticBrickHeight
+	 *            setter, see {@link #staticBrickHeight}
 	 */
 	public void setStaticBrickHeight(int staticBrickHeight) {
 		this.staticBrickHeight = staticBrickHeight;
 	}
 
 	/**
-	 * @param brickWidthMode setter, see {@link #brickWidthMode}
+	 * @param brickWidthMode
+	 *            setter, see {@link #brickWidthMode}
 	 */
 	public void setBrickWidthMode(EBrickWidthMode brickWidthMode) {
 		this.brickWidthMode = brickWidthMode;
@@ -957,7 +994,8 @@ public class GLBrick
 	}
 
 	/**
-	 * @param staticBrickWidth setter, see {@link #staticBrickWidth}
+	 * @param staticBrickWidth
+	 *            setter, see {@link #staticBrickWidth}
 	 */
 	public void setStaticBrickWidth(int staticBrickWidth) {
 		this.staticBrickWidth = staticBrickWidth;
@@ -1043,7 +1081,7 @@ public class GLBrick
 						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
 								kaplanMeierDimensionGroupData);
 
-						KaplanMeierDataConfigurer dataConfigurer = new KaplanMeierDataConfigurer();
+						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 						sortingStrategy.setExternalBricks(dimensionGroup.getBricks());
 						sortingStrategy
@@ -1066,7 +1104,8 @@ public class GLBrick
 	 * @param sourceDataDomain
 	 * @param sourceRecordVA
 	 */
-	public void openCreatePathwayGroupDialog(final ATableBasedDataDomain sourceDataDomain,
+	public void openCreatePathwayGroupDialog(
+			final ATableBasedDataDomain sourceDataDomain,
 			final RecordVirtualArray sourceRecordVA) {
 		getParentComposite().getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -1113,8 +1152,8 @@ public class GLBrick
 	}
 
 	/**
-	 * @param rightRelationIndicatorRenderer setter, see
-	 *            {@link #rightRelationIndicatorRenderer}
+	 * @param rightRelationIndicatorRenderer
+	 *            setter, see {@link #rightRelationIndicatorRenderer}
 	 */
 	public void setRightRelationIndicatorRenderer(
 			RelationIndicatorRenderer rightRelationIndicatorRenderer) {
@@ -1122,8 +1161,8 @@ public class GLBrick
 	}
 
 	/**
-	 * @param leftRelationIndicatorRenderer setter, see
-	 *            {@link #leftRelationIndicatorRenderer}
+	 * @param leftRelationIndicatorRenderer
+	 *            setter, see {@link #leftRelationIndicatorRenderer}
 	 */
 	public void setLeftRelationIndicatorRenderer(
 			RelationIndicatorRenderer leftRelationIndicatorRenderer) {
@@ -1131,7 +1170,8 @@ public class GLBrick
 	}
 
 	/**
-	 * @param isHeaderBrick setter, see {@link #isHeaderBrick}
+	 * @param isHeaderBrick
+	 *            setter, see {@link #isHeaderBrick}
 	 */
 	public void setHeaderBrick(boolean isHeaderBrick) {
 		this.isHeaderBrick = isHeaderBrick;

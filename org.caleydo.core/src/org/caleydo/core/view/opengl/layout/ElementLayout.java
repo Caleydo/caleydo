@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * An ElementLayout holds the size, and the position of an element in a layout. The position is specified
- * implicitly through the nesting in parent {@link LayoutContainer}s. The size can be specified in four ways:
+ * implicitly through the nesting in parent {@link ALayoutContainer}s. The size can be specified in four ways:
  * <ol>
  * <li>specifying a ratio - where 1 takes up the whole space granted by the parent (see
  * {@link #setRatioSizeX(float)} and {@link #setRatioSizeY(float)}</li>
@@ -108,7 +108,7 @@ public class ElementLayout {
 	protected Zoomer zoomer;
 
 	/**
-	 * Determines the point in time this element layout is rendered if its {@link LayoutContainer} uses
+	 * Determines the point in time this element layout is rendered if its {@link ALayoutContainer} uses
 	 * priority rendering.
 	 */
 	protected int renderingPriority = 0;
@@ -411,7 +411,7 @@ public class ElementLayout {
 
 	/**
 	 * @return The rendering priority, which determines the point in time this element layout is rendered if
-	 *         its {@link LayoutContainer} uses priority rendering.
+	 *         its {@link ALayoutContainer} uses priority rendering.
 	 */
 	public int getRenderingPriority() {
 		return renderingPriority;
@@ -419,7 +419,7 @@ public class ElementLayout {
 
 	/**
 	 * Sets the rendering priority and therefore determines the point in time this element layout is rendered
-	 * if its {@link LayoutContainer} uses priority rendering.
+	 * if its {@link ALayoutContainer} uses priority rendering.
 	 * 
 	 * @param renderingPriority
 	 *            sets the priority of the rendering, where higher values have a higher priority
@@ -472,7 +472,7 @@ public class ElementLayout {
 				color = frameColor;
 			}
 			gl.glColor4fv(color, 0);
-			if (this instanceof LayoutContainer) {
+			if (this instanceof ALayoutContainer) {
 
 				gl.glLineWidth(6);
 				yPositionDebugText = getSizeScaledY() / 2;

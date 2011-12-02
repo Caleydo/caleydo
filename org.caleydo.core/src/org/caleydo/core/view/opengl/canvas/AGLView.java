@@ -544,7 +544,6 @@ public abstract class AGLView
 			newDetailLevel = DetailLevel.LOW;
 		}
 		setDetailLevel(newDetailLevel);
-
 	}
 
 	/**

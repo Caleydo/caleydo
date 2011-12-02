@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick.layout;
+package org.caleydo.view.visbricks.brick.configurer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -13,19 +13,25 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
+import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.KaplanMeierSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.KaplanMeierCreator;
 
 /**
- * Configurer for bricks to display survival data.
+ * Configurer for bricks that display numerical clinical data, such as disease
+ * free survivial etc.
  * 
  * @author Marc Streit
  * 
  */
-public class KaplanMeierDataConfigurer
-	implements IBrickConfigurer {
+public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 4;
@@ -43,9 +49,10 @@ public class KaplanMeierDataConfigurer
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
-				layoutTemplate.getDimensionGroup().getVisBricksView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -57,7 +64,7 @@ public class KaplanMeierDataConfigurer
 	}
 
 	@Override
-	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
+	public void configure(CollapsedBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_VIEW_COMPACT);
 
@@ -77,9 +84,10 @@ public class KaplanMeierDataConfigurer
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
-				layoutTemplate.getDimensionGroup().getVisBricksView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -97,14 +105,14 @@ public class KaplanMeierDataConfigurer
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.BRICK, layoutTemplate.getBrick().getID(),
-				layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+						.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
 
-		layoutTemplate.showFooterBar(false);
+		layoutTemplate.setShowFooterBar(false);
 	}
 
 	@Override
@@ -116,9 +124,9 @@ public class KaplanMeierDataConfigurer
 		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_VIEW);
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.BRICK, layoutTemplate.getBrick().getID(),
-				layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+						.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -150,8 +158,7 @@ public class KaplanMeierDataConfigurer
 		if (isHorizontalSpacing) {
 			spacingLayout.setPixelSizeX(SPACING_PIXELS);
 			spacingLayout.setRatioSizeY(0);
-		}
-		else {
+		} else {
 			spacingLayout.setPixelSizeY(SPACING_PIXELS);
 			spacingLayout.setRatioSizeX(0);
 		}
@@ -172,7 +179,8 @@ public class KaplanMeierDataConfigurer
 		LayoutRenderer kaplanMeierRenderer = new ViewLayoutRenderer(kaplanMeier);
 
 		views.put(EContainedViewType.KAPLAN_MEIER_VIEW, kaplanMeier);
-		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_VIEW, kaplanMeierRenderer);
+		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_VIEW,
+				kaplanMeierRenderer);
 
 		// int numPathways = ((PathwayDimensionGroupData)
 		// brick.getDimensionGroup()
@@ -219,11 +227,22 @@ public class KaplanMeierDataConfigurer
 
 		return sortingStrategy;
 	}
-	
+
 	/**
-	 * @param sortingStrategy setter, see {@link #sortingStrategy}
+	 * @param sortingStrategy
+	 *            setter, see {@link #sortingStrategy}
 	 */
 	public void setSortingStrategy(ExternallyProvidedSortingStrategy sortingStrategy) {
 		this.sortingStrategy = sortingStrategy;
+	}
+	
+	@Override
+	public boolean useDefaultWidth() {
+		return true;
+	}
+	
+	@Override
+	public int getDefaultWidth() {
+		return 100;
 	}
 }

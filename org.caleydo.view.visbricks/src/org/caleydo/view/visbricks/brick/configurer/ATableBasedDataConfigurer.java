@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick.layout;
+package org.caleydo.view.visbricks.brick.configurer;
 
 import java.util.ArrayList;
 
@@ -17,6 +17,12 @@ import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
+import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
@@ -152,7 +158,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 							&& dimensionGroup.isGlobalViewSwitching()) {
 						dimensionGroup.switchBrickViews(button.getViewType());
 					} else {
-						brick.setContainedView(button.getViewType());
+						brick.setBrickViewTypeAndConfigureSize(button.getViewType());
 					}
 					dimensionGroup.updateLayout();
 				}
@@ -238,7 +244,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	}
 
 	protected ArrayList<ElementLayout> createFooterBarElements(
-			CompactBrickLayoutTemplate layoutTemplate) {
+			CollapsedBrickLayoutTemplate layoutTemplate) {
 
 		return createDefaultFooterBarElements(layoutTemplate);
 	}

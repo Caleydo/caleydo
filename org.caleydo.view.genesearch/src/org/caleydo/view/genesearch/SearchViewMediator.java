@@ -112,6 +112,8 @@ public class SearchViewMediator {
 		RecordPerspective binnedPerspective = null;
 
 		// FIXME TCGA Specific hack! Move to some place sane
+		int numberOfBins = 1;
+
 		if (dataDomain.getLabel().contains("Copy")) {
 			for (String recordPerspectiveID : dataDomain.getTable()
 					.getRecordPerspectiveIDs()) {
@@ -123,8 +125,9 @@ public class SearchViewMediator {
 				groupLabels.add("Normal");
 				groupLabels.add("Low level amplification");
 				groupLabels.add("High level amplification");
-				binnedPerspective = binRecords(5, id, recordPerspective, dataDomain,
-						label, groupLabels);
+				numberOfBins = 5;
+				binnedPerspective = binRecords(numberOfBins, id, recordPerspective,
+						dataDomain, label, groupLabels);
 				break;
 
 			}
@@ -136,9 +139,10 @@ public class SearchViewMediator {
 						.getRecordPerspective(recordPerspectiveID);
 				ArrayList<String> groupLabels = new ArrayList<String>();
 				groupLabels.add("Not Mutated");
-				groupLabels.add("Mutated");				
-				binnedPerspective = binRecords(2, id, recordPerspective, dataDomain,
-						label, groupLabels);
+				groupLabels.add("Mutated");
+				numberOfBins = 2;
+				binnedPerspective = binRecords(numberOfBins, id, recordPerspective,
+						dataDomain, label, groupLabels);
 				break;
 
 			}
@@ -148,6 +152,8 @@ public class SearchViewMediator {
 			DataContainer dataContainer = dataDomain.getDataContainer(
 					binnedPerspective.getID(), perspective.getID());
 			dataContainer.setLabel(label, false);
+			dataContainer.getContainerStatistics().setNumberOfBucketsForHistogram(
+					numberOfBins);
 		}
 
 	}

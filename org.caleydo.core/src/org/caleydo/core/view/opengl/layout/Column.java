@@ -12,7 +12,7 @@ import org.caleydo.core.view.opengl.layout.event.LayoutSizeCollisionEvent;
  * @author Alexander Lex
  */
 public class Column
-	extends LayoutContainer {
+	extends ALayoutContainer {
 
 	public enum VAlign {
 		LEFT,
@@ -120,8 +120,8 @@ public class Column
 
 			if (isBottomUp) {
 
-				if (element instanceof LayoutContainer) {
-					((LayoutContainer) element).calculateTransforms(bottom, xTranslate,
+				if (element instanceof ALayoutContainer) {
+					((ALayoutContainer) element).calculateTransforms(bottom, xTranslate,
 						bottom + element.getSizeScaledY(), right);
 				}
 
@@ -131,8 +131,8 @@ public class Column
 			}
 			else {
 				bottom = top - element.getSizeScaledY();
-				if (element instanceof LayoutContainer) {
-					((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
+				if (element instanceof ALayoutContainer) {
+					((ALayoutContainer) element).calculateTransforms(bottom, left, top, right);
 				}
 
 				top -= element.getSizeScaledY();
@@ -200,7 +200,7 @@ public class Column
 				continue;
 			}
 			// check if this is a dynamic column in x and no sub-element has a dynamic size of 1
-			if (isXDynamic && !(element instanceof LayoutContainer) && !element.isWidthStatic()
+			if (isXDynamic && !(element instanceof ALayoutContainer) && !element.isWidthStatic()
 				&& element.ratioSizeX == 1)
 				throw new IllegalStateException("Specified column " + this
 					+ " as dynamic in x, but the sub-element " + element

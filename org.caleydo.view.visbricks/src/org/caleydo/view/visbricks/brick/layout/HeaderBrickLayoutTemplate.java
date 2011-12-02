@@ -22,6 +22,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.eclipse.swt.widgets.Shell;
@@ -73,11 +74,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		this.visBricks = visBricks;
-		clusterButton = new Button(PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
-				CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
 
-		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
-				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		toolBarElements = new ArrayList<ElementLayout>();
@@ -90,7 +87,8 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public void setLockResizing(boolean lockResizing) {
-		lockResizingButton.setSelected(lockResizing);
+		if (lockResizingButton != null)
+			lockResizingButton.setSelected(lockResizing);
 	}
 
 	@Override
@@ -228,8 +226,10 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			toolBar.append(element);
 		}
 
-		toolBar.append(spacingLayoutX);
-		toolBar.append(spacingLayoutX);
+		ElementLayout greedyXLayout = new ElementLayout("greedy");
+		greedyXLayout.setGrabX(true);
+		greedyXLayout.setRatioSizeY(0);
+		toolBar.append(greedyXLayout);
 
 		Button clusterButton = new Button(
 				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
@@ -243,13 +243,16 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		toolBar.append(clusterButtonLayout);
 		toolBar.append(spacingLayoutX);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
-		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
-				brick, brick.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
-
-		toolBar.append(lockResizingButtonLayout);
+		// ElementLayout lockResizingButtonLayout = new
+		// ElementLayout("lockResizingButton");
+		// lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		// lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		// lockResizingButtonLayout.setRenderer(new
+		// ButtonRenderer(lockResizingButton,
+		// brick, brick.getTextureManager(),
+		// DefaultBrickLayoutTemplate.BUTTON_Z));
+		//
+		// toolBar.append(lockResizingButtonLayout);
 		// headerBarElements.add(spacingLayoutX);
 
 		brick.addIDPickingListener(new APickingListener() {
@@ -317,7 +320,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				dimensionGroup.showDetailedBrick(brick, false);
 			}
 		}, PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
-		
+
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override

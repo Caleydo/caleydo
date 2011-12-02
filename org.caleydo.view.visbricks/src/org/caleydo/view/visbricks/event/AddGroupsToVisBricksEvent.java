@@ -5,8 +5,8 @@ import java.util.List;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
-import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;
 
 /**
  * <p>

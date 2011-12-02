@@ -6,6 +6,7 @@ package org.caleydo.view.visbricks.brick.ui;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.view.visbricks.brick.layout.BrickColors;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 
@@ -27,10 +28,10 @@ public class ToolBarBackgroundRenderer extends LayoutRenderer {
 		gl.glColor3fv(BrickColors.BRICK_COLOR, 0);
 		gl.glBegin(GL2.GL_QUADS);
 
-		gl.glVertex3f(0, -spacing, 0.11f);
-		gl.glVertex3f(x, -spacing, 0.11f);
-		gl.glVertex3f(x, height, 0.11f);
-		gl.glVertex3f(0, height, 0.11f);
+		gl.glVertex3f(0, -spacing, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);
+		gl.glVertex3f(x, -spacing, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);
+		gl.glVertex3f(x, height, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);
+		gl.glVertex3f(0, height, DefaultBrickLayoutTemplate.BUTTON_Z - 0.02f);
 
 		gl.glEnd();
 

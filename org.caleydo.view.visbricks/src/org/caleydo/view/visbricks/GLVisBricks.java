@@ -55,8 +55,9 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
-import org.caleydo.view.visbricks.brick.layout.IBrickConfigurer;
-import org.caleydo.view.visbricks.brick.layout.NumericalDataConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.CategoricalDataConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;
 import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
@@ -386,7 +387,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
 
 		// Handle special case where arch stand contains no groups
-		if (dimensinoGroupStartIndex == 0) {
+		if (dimensinoGroupStartIndex == 0 || dimensinoGroupStartIndex == dimensinoGroupEndIndex) {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
 		} else {
@@ -564,8 +565,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			dimensionGroup.display(gl);
 		}
 
-		
-
 		if (!isRightDetailShown && !isLeftDetailShown) {
 			leftLayoutManager.render(gl);
 		}
@@ -581,7 +580,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			rightLayoutManager.render(gl);
 			gl.glTranslatef(-rightArchStand, 0, 0);
 		}
-		
+
 		if (!isRightDetailShown && !isLeftDetailShown) {
 			renderArch(gl);
 		}
@@ -1129,18 +1128,18 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
 				.getDimensionGroups();
 
-		for (DataContainer data : newDataContainers) {
-			if (!data.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
+		for (DataContainer dataContainer : newDataContainers) {
+			if (!dataContainer.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
 				Logger.log(new Status(
 						Status.ERROR,
 						this.toString(),
 						"Data container "
-								+ data
+								+ dataContainer
 								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
 			}
 			boolean dimensionGroupExists = false;
 			for (DimensionGroup dimensionGroup : dimensionGroups) {
-				if (dimensionGroup.getDataContainer().getID() == data.getID()) {
+				if (dimensionGroup.getDataContainer().getID() == dataContainer.getID()) {
 					dimensionGroupExists = true;
 					break;
 				}
@@ -1162,25 +1161,32 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				 * {@link AddGroupsToVisBricksEvent}, then the numerical
 				 * configurer is created by default
 				 **/
-				if (brickConfigurer == null)
-					brickConfigurer = new NumericalDataConfigurer(data);
+				if (brickConfigurer == null) {
+					// FIXME this is a hack to make dataContainers that have
+					// only one dimension categorical data
+					if (dataContainer.getNrDimensions() == 1) {
+						brickConfigurer = new CategoricalDataConfigurer(dataContainer);
+					} else {
+						brickConfigurer = new NumericalDataConfigurer(dataContainer);
+					}
+				}
 
 				dimensionGroup.setBrickConfigurer(brickConfigurer);
-				dimensionGroup.setDataDomain(data.getDataDomain());
-				dimensionGroup.setDataContainer(data);
+				dimensionGroup.setDataDomain(dataContainer.getDataDomain());
+				dimensionGroup.setDataContainer(dataContainer);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricksView(this);
 				dimensionGroup.initialize();
 
 				dimensionGroups.add(dimensionGroup);
-				dataContainers.add(data);
+				dataContainers.add(dataContainer);
 
 				uninitializedDimensionGroups.add(dimensionGroup);
-				dataDomains.add(data.getDataDomain());
+				dataDomains.add(dataContainer.getDataDomain());
 
 			}
 		}
-		
+
 		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);

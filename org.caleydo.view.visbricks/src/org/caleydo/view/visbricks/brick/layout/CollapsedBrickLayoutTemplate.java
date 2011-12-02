@@ -14,6 +14,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 
@@ -23,7 +24,7 @@ import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
  * @author Christian Partl
  * 
  */
-public class CompactBrickLayoutTemplate extends ABrickLayoutConfiguration {
+public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int BUTTON_HEIGHT_PIXELS = 16;
 	protected static final int BUTTON_WIDTH_PIXELS = 16;
@@ -43,7 +44,7 @@ public class CompactBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	// private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public CompactBrickLayoutTemplate(GLBrick brick, GLVisBricks visBricks,
+	public CollapsedBrickLayoutTemplate(GLBrick brick, GLVisBricks visBricks,
 			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.visBricks = visBricks;

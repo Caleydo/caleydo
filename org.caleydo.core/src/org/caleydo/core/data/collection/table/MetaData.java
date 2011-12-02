@@ -36,9 +36,10 @@ public class MetaData {
 	 */
 	public int size() {
 		if (table.isColumnDimension)
-			return getNrRows();
-		else
 			return getNrColumns();
+		else
+			return getNrRows();
+			
 	}
 
 	/**
@@ -49,26 +50,27 @@ public class MetaData {
 	 */
 	public int depth() {
 		if (table.isColumnDimension)
-			return getNrColumns();
-		else
 			return getNrRows();
+		else
+			return getNrColumns();
 	}
 
 	/** Get the number of columns in the table */
 	int getNrColumns() {
-		if (nrColumns == 0) {
-			for (AColumn dimension : table.hashColumns.values()) {
-				if (nrColumns == 0)
-					nrColumns = dimension.size();
-				else {
-					if (nrColumns != dimension.size())
-						throw new IllegalArgumentException(
-								"All dimensions in a set must be of the same length");
-				}
-
-			}
-		}
-		return nrColumns;
+		return table.hashColumns.size();
+//		if (nrColumns == 0) {
+//			for (AColumn dimension : table.hashColumns.values()) {
+//				if (nrColumns == 0)
+//					nrColumns = dimension.size();
+//				else {
+//					if (nrColumns != dimension.size())
+//						throw new IllegalArgumentException(
+//								"All dimensions in a set must be of the same length");
+//				}
+//
+//			}
+//		}
+//		return nrColumns;
 	}
 
 	/** Get the number of rows in the table */

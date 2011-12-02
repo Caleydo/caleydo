@@ -18,13 +18,16 @@ import org.eclipse.ui.PlatformUI;
  */
 @XmlType
 public class ColorMapper {
+	public static int[] NEUTRAL_GREY = {220, 220, 220};
+	public static float[] NOT_A_NUMBER_COLOR = { 0.3f, 0.3f, 0.3f };
+	
 
 	private ArrayList<float[]> colorList;
 	private ArrayList<ColorMarkerPoint> markerPoints;
 
 	// ColorMappingType colorMappingType;
 
-	private float[] notANumberColor = { 0.3f, 0.3f, 0.3f };
+
 	private String colorSchemeName = "Unspecified";
 	private String colorSchemeDescription = "No description given";
 
@@ -164,7 +167,7 @@ public class ColorMapper {
 	 */
 	public float[] getColor(float fValue) {
 		if (Float.isNaN(fValue))
-			return notANumberColor;
+			return NOT_A_NUMBER_COLOR;
 
 		if (fValue > 1 || fValue < 0)
 			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1");
@@ -229,11 +232,11 @@ public class ColorMapper {
 	}
 
 	public float[] getNotANumberColor() {
-		return notANumberColor;
+		return NOT_A_NUMBER_COLOR;
 	}
 
 	public void setNotANumberColor(float[] notANumberColor) {
-		this.notANumberColor = notANumberColor;
+		ColorMapper.NOT_A_NUMBER_COLOR = notANumberColor;
 	}
 
 	public void setMarkerPoints(ArrayList<ColorMarkerPoint> markerPoints) {

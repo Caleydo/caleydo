@@ -16,6 +16,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.ui.HandleRenderer;
 import org.caleydo.view.visbricks.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
@@ -33,7 +34,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected static final int TOOLBAR_HEIGHT_PIXELS = 16;
 	public static final int BUTTON_HEIGHT_PIXELS = 16;
 	public static final int BUTTON_WIDTH_PIXELS = 16;
-	public static final float BUTTON_Z = 0.12f;
+	public static final float BUTTON_Z = 0.22f;
 	protected static final int RELATION_INDICATOR_WIDTH_PIXELS = 3;
 	protected static final int HANDLE_SIZE_PIXELS = 8;
 
@@ -47,15 +48,20 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected ArrayList<ElementLayout> headerBarElements;
 	protected ArrayList<ElementLayout> toolBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
-	protected Row toolBar;
+	protected ToolBar toolBar;
 	protected Row footerBar;
 
-	// protected Button heatMapButton;
-	// protected Button parCoordsButton;
-	// protected Button histogramButton;
-	// protected Button overviewHeatMapButton;
 	protected Button viewSwitchingModeButton;
 	protected Button lockResizingButton;
+
+	/**
+	 * Flag telling whether the footer bar should be shown or not. This should
+	 * not be used for dynamically hiding the bar, but as a static flag set by a
+	 * {@link IBrickConfigurer}
+	 */
+	protected boolean showToolBar = true;
+
+	/** Same as {@link #showToolBar} for footer bar */
 	protected boolean showFooterBar;
 
 	protected GLVisBricks visBricks;
@@ -68,6 +74,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		this.visBricks = visBricks;
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
+
 		if (!brick.isHeaderBrick()) {
 			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
 					visBricks, true);
@@ -76,10 +83,13 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			brick.setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
 			brick.setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
+		} else {
+			System.out.println("Shouldn't happen");
 		}
 
 		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
+
 		viewSwitchingModeButton = new Button(
 				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
@@ -95,23 +105,19 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		lockResizingButton.setSelected(lockResizing);
 	}
 
-	// public void setLeftRelationIndicatorRenderer(
-	// RelationIndicatorRenderer leftRelationIndicatorRenderer) {
-	// this.leftRelationIndicatorRenderer = leftRelationIndicatorRenderer;
-	// }
-	//
-	// public void setRightRelationIndicatorRenderer(
-	// RelationIndicatorRenderer rightRelationIndicatorRenderer) {
-	// this.rightRelationIndicatorRenderer = rightRelationIndicatorRenderer;
-	// }
-
 	@Override
 	public void setStaticLayouts() {
+		Column baseColumn = new Column("baseCol");
+		baseColumn.setBottomUp(false);
+		baseElementLayout = baseColumn;
 		Row baseRow = new Row("baseRow");
 
-		baseRow.setFrameColor(0, 0, 1, 0);
+		baseColumn.append(baseRow);
+		if (showToolBar) {
+			toolBar = createToolBar();
+			baseColumn.append(toolBar);
+		}
 
-		baseElementLayout = baseRow;
 		if (!brick.isHeaderBrick()) {
 			leftRelationIndicatorRenderer.updateRelations();
 			rightRelationIndicatorRenderer.updateRelations();
@@ -122,10 +128,12 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 			leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 			baseRow.append(leftRelationIndicatorLayout);
+		} else {
+			System.out.println("Shouldn't happen");
 		}
-		Column baseColumn = new Column("baseColumn");
-		baseColumn.setPriorityRendereing(true);
-		baseColumn.setFrameColor(0, 1, 0, 0);
+		Column contentColumn = new Column("contentColumn");
+		contentColumn.setPriorityRendereing(true);
+		contentColumn.setFrameColor(0, 1, 0, 0);
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
@@ -138,7 +146,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		spacingLayoutX.setRatioSizeY(0);
 
 		baseRow.append(spacingLayoutX);
-		baseRow.append(baseColumn);
+		baseRow.append(contentColumn);
 		baseRow.append(spacingLayoutX);
 
 		if (viewLayout == null) {
@@ -151,22 +159,19 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		}
 		viewLayout.setRenderer(viewRenderer);
 
-		toolBar = createToolBar();
 		footerBar = createFooterBar();
 
 		ElementLayout spacingLayoutY = new ElementLayout("spacingLayoutY");
 		spacingLayoutY.setPixelSizeY(SPACING_PIXELS);
 		spacingLayoutY.setPixelSizeX(0);
 
-		// baseColumn.appendElement(dimensionBarLayout);
-		baseColumn.append(toolBar);
-		baseColumn.append(spacingLayoutY);
+		contentColumn.append(spacingLayoutY);
 		if (showFooterBar) {
-			baseColumn.append(footerBar);
-			baseColumn.append(spacingLayoutY);
+			contentColumn.append(footerBar);
+			contentColumn.append(spacingLayoutY);
 		}
-		baseColumn.append(viewLayout);
-		baseColumn.append(spacingLayoutY);
+		contentColumn.append(viewLayout);
+		contentColumn.append(spacingLayoutY);
 
 		headerRow = new Row("headerRow");
 		if (brick.isDefaultLabel())
@@ -178,7 +183,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				headerRow.append(layout);
 			}
 		}
-		baseColumn.append(headerRow);
+		contentColumn.append(headerRow);
 
 		// baseColumn.append(spacingLayoutY);
 		if (!brick.isHeaderBrick()) {
@@ -195,26 +200,19 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * Creates the toolbar containing buttons for view switching.
 	 */
 
-	protected Row createToolBar() {
-		Row toolBar = new ToolBar("ToolBarRow", brick);
-		// toolBar.setDebug(true);
-		// toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
-		toolBar.setPixelSizeY(0);
-		toolBar.setRenderingPriority(2);
-
-		for (ElementLayout element : toolBarElements) {
-			toolBar.append(element);
-		}
+	protected ToolBar createToolBar() {
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");
 		spacingLayoutX.setPixelSizeX(SPACING_PIXELS);
 		spacingLayoutX.setPixelSizeY(0);
 
-		ElementLayout lockResizingButtonLayout = new ElementLayout("lockResizingButton");
-		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
-				brick, brick.getTextureManager(), BUTTON_Z));
+		// ElementLayout lockResizingButtonLayout = new
+		// ElementLayout("lockResizingButton");
+		// lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		// lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		// lockResizingButtonLayout.setRenderer(new
+		// ButtonRenderer(lockResizingButton,
+		// brick, brick.getTextureManager(), BUTTON_Z));
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"viewSwitchtingButtonLayout");
@@ -233,10 +231,16 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90, BUTTON_Z));
 
-		// toolBar.append(ratioSpacingLayoutX);
-		// toolBar.append(detailModeButtonLayout);
-		// toolBar.append(spacingLayoutX);
-		toolBar.append(lockResizingButtonLayout);
+		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
+		// toolBar.setDebug(true);
+		// toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
+		toolBar.setPixelSizeY(0);
+		toolBar.setRenderingPriority(2);
+
+		for (ElementLayout element : toolBarElements) {
+			toolBar.append(element);
+		}
+		// toolBar.append(lockResizingButtonLayout);
 		toolBar.append(spacingLayoutX);
 		toolBar.append(toggleViewSwitchingButtonLayout);
 		toolBar.append(spacingLayoutX);
@@ -318,7 +322,8 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public int getMinWidthPixels() {
-		int toolBarWidth = calcSumPixelWidth(toolBar.getElements());
+
+		int toolBarWidth = showToolBar ? calcSumPixelWidth(toolBar.getElements()) : 0;
 		int footerBarWidth = showFooterBar ? calcSumPixelWidth(footerBar.getElements())
 				: 0;
 
@@ -332,51 +337,28 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		// .getMinWidth());
 	}
 
-	// @Override
-	// protected void setValidViewTypes() {
-	// validViewTypes.add(EContainedViewType.HISTOGRAM_VIEW);
-	// validViewTypes.add(EContainedViewType.HEATMAP_VIEW);
-	// validViewTypes.add(EContainedViewType.PARCOORDS_VIEW);
-	// validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP);
-	// }
-
-	// @Override
-	// public EContainedViewType getDefaultViewType() {
-	// return EContainedViewType.HEATMAP_VIEW;
-	// }
-
-	// @Override
-	// public void viewTypeChanged(EContainedViewType viewType) {
-	//
-	// for (BrickViewSwitchingButton button : viewSwitchingButtons) {
-	// if (viewType == button.getViewType()) {
-	// button.setSelected(true);
-	// } else {
-	// button.setSelected(false);
-	// }
-	// }
-	//
-	// }
-
 	@Override
 	public void setGlobalViewSwitching(boolean isGlobalViewSwitching) {
 		viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 	}
 
-	// public void setViewSwitchingButtons(
-	// ArrayList<BrickViewSwitchingButton> buttons) {
-	// viewSwitchingButtons = buttons;
-	// }
-
 	@Override
 	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-		return new CompactBrickLayoutTemplate(brick, visBricks, dimensionGroup,
+		return new CollapsedBrickLayoutTemplate(brick, visBricks, dimensionGroup,
 				brick.getBrickConfigurer());
 	}
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
 		return this;
+	}
+
+	/**
+	 * @param showToolBar
+	 *            setter, see {@link #showToolBar}
+	 */
+	public void setShowToolBar(boolean showToolBar) {
+		this.showToolBar = showToolBar;
 	}
 
 	/**
@@ -400,11 +382,10 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	}
 
 	/**
-	 * Sets whether the footer bar shall be displayed.
-	 * 
 	 * @param showFooterBar
+	 *            setter, see {@link #showFooterBar}
 	 */
-	public void showFooterBar(boolean showFooterBar) {
+	public void setShowFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
 	}
 

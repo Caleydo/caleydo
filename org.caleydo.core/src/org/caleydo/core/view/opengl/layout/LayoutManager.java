@@ -103,8 +103,8 @@ public class LayoutManager {
 		baseElementLayout.setTranslateX(left);
 		baseElementLayout.setTranslateY(bottom);
 		baseElementLayout.calculateScales(totalWidth, totalHeight);
-		if (baseElementLayout instanceof LayoutContainer)
-			((LayoutContainer) baseElementLayout).calculateTransforms(bottom, left, totalHeight, totalWidth);
+		if (baseElementLayout instanceof ALayoutContainer)
+			((ALayoutContainer) baseElementLayout).calculateTransforms(bottom, left, totalHeight, totalWidth);
 	}
 
 	/**

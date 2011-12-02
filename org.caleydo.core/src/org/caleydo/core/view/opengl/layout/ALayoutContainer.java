@@ -14,7 +14,7 @@ import org.caleydo.core.util.collection.Pair;
  * 
  * @author Alexander Lex
  */
-public abstract class LayoutContainer
+public abstract class ALayoutContainer
 	extends ElementLayout
 	implements Iterable<ElementLayout> {
 
@@ -61,7 +61,7 @@ public abstract class LayoutContainer
 	 */
 	protected boolean isPriorityRendereing = false;
 
-	public LayoutContainer() {
+	public ALayoutContainer() {
 		super();
 	}
 
@@ -73,7 +73,7 @@ public abstract class LayoutContainer
 		}
 	}
 
-	public LayoutContainer(String layoutName) {
+	public ALayoutContainer(String layoutName) {
 		super(layoutName);
 	}
 

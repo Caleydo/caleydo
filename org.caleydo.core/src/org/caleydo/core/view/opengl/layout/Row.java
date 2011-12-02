@@ -9,7 +9,7 @@ import java.util.ArrayList;
  * @author Alexander Lex
  */
 public class Row
-	extends LayoutContainer {
+	extends ALayoutContainer {
 
 	public enum HAlign {
 		TOP,
@@ -114,8 +114,8 @@ public class Row
 					break;
 			}
 
-			if (element instanceof LayoutContainer) {
-				((LayoutContainer) element).calculateTransforms(bottom, left, top, right);
+			if (element instanceof ALayoutContainer) {
+				((ALayoutContainer) element).calculateTransforms(bottom, left, top, right);
 			}
 
 			if (isLeftToRight) {

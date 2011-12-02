@@ -1,4 +1,4 @@
-package org.caleydo.view.visbricks.brick.layout;
+package org.caleydo.view.visbricks.brick.configurer;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -17,6 +17,12 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
+import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
@@ -29,8 +35,7 @@ import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
  * @author Partl
  * 
  */
-public class PathwayDataConfigurer
-	implements IBrickConfigurer {
+public class PathwayDataConfigurer implements IBrickConfigurer {
 
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int SPACING_PIXELS = 4;
@@ -46,9 +51,10 @@ public class PathwayDataConfigurer
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
-				layoutTemplate.getDimensionGroup().getVisBricksView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -59,7 +65,7 @@ public class PathwayDataConfigurer
 	}
 
 	@Override
-	public void configure(CompactBrickLayoutTemplate layoutTemplate) {
+	public void configure(CollapsedBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.PATHWAY_VIEW_COMPACT);
 
@@ -79,9 +85,10 @@ public class PathwayDataConfigurer
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
-		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP, layoutTemplate.getDimensionGroup().getID(),
-				layoutTemplate.getDimensionGroup().getVisBricksView()));
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -99,14 +106,14 @@ public class PathwayDataConfigurer
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.BRICK, layoutTemplate.getBrick().getID(),
-				layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+						.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
 
-		layoutTemplate.showFooterBar(false);
+		layoutTemplate.setShowFooterBar(false);
 	}
 
 	@Override
@@ -118,9 +125,9 @@ public class PathwayDataConfigurer
 		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAY_VIEW);
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
-		toolBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate.getBrick(),
-				PickingType.BRICK, layoutTemplate.getBrick().getID(),
-				layoutTemplate.getBrick()));
+		toolBarElements.add(createCaptionLayout(layoutTemplate,
+				layoutTemplate.getBrick(), PickingType.BRICK, layoutTemplate.getBrick()
+						.getID(), layoutTemplate.getBrick()));
 		toolBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setToolBarElements(toolBarElements);
@@ -152,8 +159,7 @@ public class PathwayDataConfigurer
 		if (isHorizontalSpacing) {
 			spacingLayout.setPixelSizeX(SPACING_PIXELS);
 			spacingLayout.setRatioSizeY(0);
-		}
-		else {
+		} else {
 			spacingLayout.setPixelSizeY(SPACING_PIXELS);
 			spacingLayout.setRatioSizeX(0);
 		}
@@ -195,25 +201,25 @@ public class PathwayDataConfigurer
 
 		brick.setLabel(label);
 
-		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick, label,
-				PickingType.BRICK.name(), brick.getID());
+		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
+				label, PickingType.BRICK.name(), brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY,
 				pathwaysSummaryRenderer);
 
-		LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(brick,
-				label, PickingType.BRICK.name(), brick.getID());
+		LayoutRenderer pathwaysSummaryCompactRenderer = new PathwaysSummaryRenderer(
+				brick, label, PickingType.BRICK.name(), brick.getID());
 		containedViewRenderers.put(EContainedViewType.PATHWAYS_SUMMARY_COMPACT,
 				pathwaysSummaryCompactRenderer);
 
 		if (brick.getDataContainer() instanceof PathwayDataContainer) {
-			PathwayDataContainer brickData = (PathwayDataContainer) brick.getDataContainer();
+			PathwayDataContainer brickData = (PathwayDataContainer) brick
+					.getDataContainer();
 			if (brickData.getPathway() != null) {
 				PathwayDatabaseType dataBaseType = brickData.getPathway().getType();
 				EIconTextures texture;
 				if (dataBaseType == PathwayDatabaseType.KEGG) {
 					texture = EIconTextures.CM_KEGG;
-				}
-				else {
+				} else {
 					texture = EIconTextures.CM_BIOCARTA;
 				}
 				LayoutRenderer compactPathwayRenderer = new CompactPathwayRenderer(brick,
@@ -233,5 +239,15 @@ public class PathwayDataConfigurer
 	public IBrickSortingStrategy getBrickSortingStrategy() {
 
 		return new AverageValueSortingStrategy();
+	}
+
+	@Override
+	public boolean useDefaultWidth() {
+		return false;
+	}
+
+	@Override
+	public int getDefaultWidth() {
+		return 0;
 	}
 }
