@@ -254,54 +254,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 
-		addIDPickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
-
-				SelectionType currentSelectionType = dataContainerSelectionManager.getSelectionType();
-				dataContainerSelectionManager.clearSelection(currentSelectionType);
-
-				dataContainerSelectionManager.addToType(currentSelectionType,
-						dataContainer.getID());
-
-				SelectionUpdateEvent event = new SelectionUpdateEvent();
-				event.setDataDomainID(getDataDomain().getDataDomainID());
-				event.setSender(this);
-				SelectionDelta delta = dataContainerSelectionManager.getDelta();
-				event.setSelectionDelta(delta);
-				GeneralManager.get().getEventPublisher().triggerEvent(event);
-
-				selectElementsByGroup();
-			}
-
-			@Override
-			public void rightClicked(Pick pick) {
-
-				if (dimensionGroup.getDataContainer() == dataContainer) {
-
-					if (dataDomain instanceof GeneticDataDomain) {
-						contextMenuCreator
-								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
-										dimensionGroup.getDataContainer(), dimensionGroup
-												.getDataContainer()
-												.getDimensionPerspective()));
-					}
-					contextMenuCreator
-							.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(
-									dimensionGroup.getDataContainer(), dimensionGroup
-											.getDataContainer().getDimensionPerspective()));
-				} else
-					contextMenuCreator
-							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
-									dataDomain, dataContainer.getRecordPerspective()
-											.getVirtualArray(), dimensionGroup
-											.getDataContainer().getDimensionPerspective()));
-
-				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
-			}
-
-		}, PickingType.BRICK.name(), getID());
+		
 		dimensionGroup.updateLayout();
 
 		isInitialized = true;
@@ -793,6 +746,57 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	private void registerPickingListeners() {
+		addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+
+				SelectionType currentSelectionType = dataContainerSelectionManager.getSelectionType();
+				dataContainerSelectionManager.clearSelection(currentSelectionType);
+
+				dataContainerSelectionManager.addToType(currentSelectionType,
+						dataContainer.getID());
+
+				SelectionUpdateEvent event = new SelectionUpdateEvent();
+				event.setDataDomainID(getDataDomain().getDataDomainID());
+				event.setSender(this);
+				SelectionDelta delta = dataContainerSelectionManager.getDelta();
+				event.setSelectionDelta(delta);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
+
+				selectElementsByGroup();
+			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+
+				if (dimensionGroup.getDataContainer() == dataContainer) {
+
+					if (dataDomain instanceof GeneticDataDomain) {
+						contextMenuCreator
+								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
+										dimensionGroup.getDataContainer(), dimensionGroup
+												.getDataContainer()
+												.getDimensionPerspective()));
+					}
+					contextMenuCreator
+							.addContextMenuItem(new CreateKaplanMeierSmallMultiplesGroupItem(
+									dimensionGroup.getDataContainer(), dimensionGroup
+											.getDataContainer().getDimensionPerspective()));
+				} else
+					contextMenuCreator
+							.addContextMenuItem(new CreatePathwayGroupFromDataItem(
+									dataDomain, dataContainer.getRecordPerspective()
+											.getVirtualArray(), dimensionGroup
+											.getDataContainer().getDimensionPerspective()));
+
+				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
+			}
+
+		}, PickingType.BRICK.name(), getID());
+		
+		
+		
 		addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {

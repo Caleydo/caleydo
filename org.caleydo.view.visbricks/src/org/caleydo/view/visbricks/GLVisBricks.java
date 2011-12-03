@@ -1,6 +1,7 @@
 package org.caleydo.view.visbricks;
 
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -9,9 +10,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -54,11 +57,9 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
-import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.visbricks.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;
-import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
@@ -79,17 +80,13 @@ import org.eclipse.swt.widgets.Composite;
 public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
 
-	public final static class PickingTypes {
-		public final static String DIMENSION_GROUP = "DIMENSION_GROUP";
-	}
-
 	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
 	private final static int ARCH_PIXEL_HEIGHT = 150;
 	private final static float ARCH_BOTTOM_PERCENT = 1f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
-	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 30;
+	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 20;
 	public final static int DIMENSION_GROUP_SIDE_SPACING = 50;
 
 	public final static float[] ARCH_COLOR = { 0f, 0f, 0f, 0.1f };
@@ -165,10 +162,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	private float previousXCoordinate = Float.NaN;
 
-	/** Needed for selecting the elments when a connection band is picked **/
+	/** Needed for selecting the elements when a connection band is picked **/
 	private HashMap<Integer, RecordVirtualArray> hashConnectionBandIDToRecordVA = new HashMap<Integer, RecordVirtualArray>();
 
-	private SelectionType volatieBandSelectionType;
+	private SelectionType volatileBandSelectionType;
 
 	private int connectionBandIDCounter = 0;
 
@@ -204,6 +201,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
+		
+//		SelectionType selectionType = new 
+		
 		registerPickingListeners();
 	}
 
@@ -387,7 +387,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
 
 		// Handle special case where arch stand contains no groups
-		if (dimensinoGroupStartIndex == 0 || dimensinoGroupStartIndex == dimensinoGroupEndIndex) {
+		if (dimensinoGroupStartIndex == 0
+				|| dimensinoGroupStartIndex == dimensinoGroupEndIndex) {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
 		} else {
@@ -484,6 +485,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	@Override
 	public void display(GL2 gl) {
+		
+		
 		handleHorizontalMoveDragging(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
@@ -608,7 +611,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		}
 		// false only if this is the leftmost DimensionGroup. If true we move
 		// anything further left out
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex()) {
+		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
 			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex);
 
 		}
@@ -634,7 +637,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
 		}
 		// false only if this is the right-most dimension group
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex()) {
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex()-1) {
 			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
 		}
 		isLeftDetailShown = true;
@@ -1129,7 +1132,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				.getDimensionGroups();
 
 		for (DataContainer dataContainer : newDataContainers) {
-			if (!dataContainer.getDataDomain().getRecordIDCategory().equals(recordIDCategory)) {
+			if (!dataContainer.getDataDomain().getRecordIDCategory()
+					.equals(recordIDCategory)) {
 				Logger.log(new Status(
 						Status.ERROR,
 						this.toString(),
@@ -1419,7 +1423,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	private void selectElementsByConnectionBandID(int connectionBandID) {
-
 		recordSelectionManager.clearSelections();
 
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
@@ -1429,13 +1432,13 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		recordSelectionManager.clearSelection(recordSelectionManager.getSelectionType());
 
 		// Create volatile selection type
-		volatieBandSelectionType = new SelectionType("Volatile band selection type",
+		volatileBandSelectionType = new SelectionType("Volatile band selection type",
 				recordSelectionManager.getSelectionType().getColor(), 1, true, true, 1);
 
-		volatieBandSelectionType.setManaged(false);
+		volatileBandSelectionType.setManaged(false);
 
 		SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
-				volatieBandSelectionType);
+				volatileBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
 		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA

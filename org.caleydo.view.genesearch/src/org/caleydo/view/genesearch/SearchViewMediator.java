@@ -120,8 +120,8 @@ public class SearchViewMediator {
 				RecordPerspective recordPerspective = dataDomain.getTable()
 						.getRecordPerspective(recordPerspectiveID);
 				ArrayList<String> groupLabels = new ArrayList<String>();
+				groupLabels.add("Homozygous deletion");
 				groupLabels.add("Heterozygous deletion");
-				groupLabels.add("Homozygous del.");
 				groupLabels.add("Normal");
 				groupLabels.add("Low level amplification");
 				groupLabels.add("High level amplification");

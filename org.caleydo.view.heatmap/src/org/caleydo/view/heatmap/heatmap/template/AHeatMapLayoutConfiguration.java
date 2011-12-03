@@ -13,7 +13,7 @@ import org.caleydo.view.heatmap.heatmap.renderer.RecordSelectionRenderer;
 import org.caleydo.view.heatmap.heatmap.renderer.spacing.RecordSpacing;
 import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
 
-public abstract class AHeatMapTemplate extends LayoutConfiguration {
+public abstract class AHeatMapLayoutConfiguration extends LayoutConfiguration {
 
 	protected AHeatMapRenderer heatMapRenderer;
 	protected RecordCaptionRenderer recordCaptionRenderer;
@@ -27,7 +27,7 @@ public abstract class AHeatMapTemplate extends LayoutConfiguration {
 	protected ElementLayout heatMapLayout;
 	protected ElementLayout barPlotLayout;
 
-	public float minSelectedFieldHeight = 0.1f;
+	public int minSelectedFieldHeight = 16;
 	// private float xOverheadToHeatMap;
 	// private float yOverheadToHeatMap;
 
@@ -35,11 +35,11 @@ public abstract class AHeatMapTemplate extends LayoutConfiguration {
 
 	private boolean renderAsTexture;
 
-	public AHeatMapTemplate(GLHeatMap heatMap) {
+	public AHeatMapLayoutConfiguration(GLHeatMap heatMap) {
 		this(heatMap, false);
 	}
 
-	public AHeatMapTemplate(GLHeatMap heatMap, boolean renderAsTexture) {
+	public AHeatMapLayoutConfiguration(GLHeatMap heatMap, boolean renderAsTexture) {
 
 		this.heatMap = heatMap;
 		recordSpacing = new RecordSpacing(heatMap);
@@ -84,29 +84,22 @@ public abstract class AHeatMapTemplate extends LayoutConfiguration {
 	}
 
 	public float getElementHeight(int recordID) {
-		// int recordIndex = heatMap.getRecordVA().indexOf(recordID);
-		// if (recordIndex < 0)
-		// return 0;
 		return recordSpacing.getFieldHeight(recordID);
-		// if (heatMap.getContentSelectionManager().checkStatus(
-		// SelectionType.MOUSE_OVER, recordID)
-		// || heatMap.getContentSelectionManager().checkStatus(
-		// SelectionType.SELECTION, recordID))
-		//
-		// return contentSpacing.getSelectedFieldHeight();
-		//
-		// return contentSpacing.getNormalFieldHeight();
 	}
 
 	public float getElementWidth(int dimensionID) {
 		return recordSpacing.getFieldWidth();
 	}
 
-	public float getMinSelectedFieldHeight() {
+	public int getMinSelectedFieldHeight() {
 		return minSelectedFieldHeight;
 	}
 
 	public void setContentSpacing(RecordSpacing contentSpacing) {
 		this.recordSpacing = contentSpacing;
+	}
+
+	public void updateSpacing() {
+		heatMapRenderer.updateSpacing();
 	}
 }

@@ -7,7 +7,7 @@ public abstract class ASpacingCalculator {
 	protected GLHeatMap heatMap;
 	protected float y;
 	protected float recordElements;
-	protected float minSelectedFieldHeight;
+	protected int minSelectedFieldHeight;
 
 	public ASpacingCalculator(GLHeatMap heatMap, float y, float recordElements) {
 		this.heatMap = heatMap;
@@ -19,7 +19,7 @@ public abstract class ASpacingCalculator {
 
 	public abstract float getFieldHeight(int recordID);
 
-	public void setMinSelectedFieldHeight(float minSelectedFieldHeight) {
+	public void setMinSelectedFieldHeight(int minSelectedFieldHeight) {
 		this.minSelectedFieldHeight = minSelectedFieldHeight;
 	}
 

@@ -12,7 +12,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author Alexander Lex
  * 
  */
-public class HierarchicalHeatMapTemplate extends AHeatMapTemplate {
+public class HierarchicalHeatMapTemplate extends AHeatMapLayoutConfiguration {
 
 	public HierarchicalHeatMapTemplate(GLHeatMap heatMap) {
 		super(heatMap);

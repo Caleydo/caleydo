@@ -12,12 +12,11 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author Alexander Lex
  * 
  */
-public class BrickHeatMapTemplate extends AHeatMapTemplate {
+public class BrickHeatMapLayoutConfiguration extends AHeatMapLayoutConfiguration {
 
-	public BrickHeatMapTemplate(GLHeatMap heatMap) {
+	public BrickHeatMapLayoutConfiguration(GLHeatMap heatMap) {
 		super(heatMap);
-		minSelectedFieldHeight = 0.1f;
-
+		
 	}
 
 	@Override
@@ -26,8 +25,6 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
-
-		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 
 		Row hmRow = new Row();
 		hmRow.setPriorityRendereing(true);
@@ -41,15 +38,15 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 		heatMapLayout.addForeGroundRenderer(dimensionSelectionRenderer);
 		heatMapLayout.setRenderingPriority(1);
 
-		boolean renderCaptions = false;
-		if (heatMap.isShowCaptions() || heatMap.isActive())
-			renderCaptions = true;
+//		boolean renderCaptions = false;
+//		if (heatMap.isShowCaptions() || heatMap.isActive())
+//			renderCaptions = true;
 		ElementLayout caption = null;
 		ElementLayout spacing = null;
 
 		hmRow.append(heatMapLayout);
 
-		if (renderCaptions) {
+//		if (renderCaptions) {
 
 			spacing = new ElementLayout();
 			spacing.setAbsoluteSizeX(0.01f);
@@ -63,7 +60,7 @@ public class BrickHeatMapTemplate extends AHeatMapTemplate {
 
 			hmRow.append(spacing);
 			hmRow.append(caption);
-		}
+//		}
 
 		mainColumn.append(hmRow);
 

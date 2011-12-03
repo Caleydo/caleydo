@@ -12,7 +12,7 @@ import org.caleydo.view.heatmap.heatmap.renderer.texture.HeatMapTextureRenderer;
  * @author Alexander Lex
  * 
  */
-public class TextureHeatMapTemplate extends LayoutConfiguration {
+public class TextureHeatLayoutConfiguration extends LayoutConfiguration {
 
 	protected GLHeatMap heatMap;
 	protected HeatMapTextureRenderer heatMapRenderer;
@@ -20,7 +20,7 @@ public class TextureHeatMapTemplate extends LayoutConfiguration {
 	/**
 	 * 
 	 */
-	public TextureHeatMapTemplate(GLHeatMap heatMap) {
+	public TextureHeatLayoutConfiguration(GLHeatMap heatMap) {
 		heatMapRenderer = new HeatMapTextureRenderer(heatMap);
 	}
 

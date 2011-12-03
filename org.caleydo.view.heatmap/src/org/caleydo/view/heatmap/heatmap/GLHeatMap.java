@@ -41,9 +41,9 @@ import org.caleydo.core.view.vislink.StandardTransformer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;
-import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
+import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.template.DefaultTemplate;
-import org.caleydo.view.heatmap.heatmap.template.TextureHeatMapTemplate;
+import org.caleydo.view.heatmap.heatmap.template.TextureHeatLayoutConfiguration;
 import org.caleydo.view.heatmap.listener.GLHeatMapKeyListener;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
@@ -63,8 +63,8 @@ public class GLHeatMap extends ATableBasedView {
 	private HeatMapRenderStyle renderStyle;
 
 	private LayoutManager layoutManager;
-	private AHeatMapTemplate detailedRenderingTemplate;
-	private TextureHeatMapTemplate textureTemplate;
+	private AHeatMapLayoutConfiguration detailedRenderingTemplate;
+	private TextureHeatLayoutConfiguration textureTemplate;
 	/** hide elements with the state {@link #SELECTION_HIDDEN} if this is true */
 	private boolean hideElements = true;
 	/** try to show captions, if spacing allows it */
@@ -108,7 +108,7 @@ public class GLHeatMap extends ATableBasedView {
 
 		textRenderer = new CaleydoTextRenderer(24);
 
-		textureTemplate = new TextureHeatMapTemplate(this);
+		textureTemplate = new TextureHeatLayoutConfiguration(this);
 
 		layoutManager = new LayoutManager(this.viewFrustum, pixelGLConverter);
 		if (detailedRenderingTemplate == null)
@@ -162,7 +162,6 @@ public class GLHeatMap extends ATableBasedView {
 
 	@Override
 	public void setDetailLevel(DetailLevel detailLevel) {
-
 		if (detailLevel.equals(this.detailLevel))
 			return;
 		super.setDetailLevel(detailLevel);
@@ -388,7 +387,7 @@ public class GLHeatMap extends ATableBasedView {
 		event.setSelectionDelta(selectionDelta);
 		event.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(event);
-
+		detailedRenderingTemplate.updateSpacing();
 		setDisplayListDirty();
 	}
 
@@ -558,6 +557,16 @@ public class GLHeatMap extends ATableBasedView {
 	}
 
 	@Override
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+		if (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM) {
+			detailedRenderingTemplate.updateSpacing();
+		}
+
+	}
+
+	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 		super.handleRecordVAUpdate(recordPerspectiveID);
 		// if (table.getID() != dataTableID)
@@ -616,7 +625,7 @@ public class GLHeatMap extends ATableBasedView {
 		super.destroy();
 	}
 
-	public void setRenderTemplate(AHeatMapTemplate template) {
+	public void setRenderTemplate(AHeatMapLayoutConfiguration template) {
 		this.detailedRenderingTemplate = template;
 	}
 
@@ -715,8 +724,9 @@ public class GLHeatMap extends ATableBasedView {
 	public java.util.Set<Integer> getZoomedElements() {
 		java.util.Set<Integer> zoomedElements = new HashSet<Integer>(
 				recordSelectionManager.getElements(SelectionType.SELECTION));
-		// zoomedElements.addAll(contentSelectionManager
-		// .getElements(SelectionType.MOUSE_OVER));
+
+		if (zoomedElements.size() > 5)
+			return new HashSet<Integer>(1);
 		Iterator<Integer> elementIterator = zoomedElements.iterator();
 		while (elementIterator.hasNext()) {
 			int recordID = elementIterator.next();
@@ -729,18 +739,18 @@ public class GLHeatMap extends ATableBasedView {
 		return zoomedElements;
 	}
 
-	public AHeatMapTemplate getTemplate() {
+	public AHeatMapLayoutConfiguration getTemplate() {
 		return detailedRenderingTemplate;
 	}
 
 	@Override
 	public int getMinPixelHeight(DetailLevel detailLevel) {
-		return getPixelPerElement(true, detailLevel, 5, 10);
+		return getPixelPerElement(true, detailLevel, 3, 5);
 	}
 
 	@Override
 	public int getMinPixelWidth(DetailLevel detailLevel) {
-		return getPixelPerElement(false, detailLevel, 5, 10);
+		return getPixelPerElement(false, detailLevel, 3, 5);
 	}
 
 	@Override

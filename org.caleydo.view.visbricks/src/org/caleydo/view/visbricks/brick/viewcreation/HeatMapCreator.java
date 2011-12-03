@@ -8,7 +8,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapTemplate;
+import org.caleydo.view.heatmap.heatmap.template.BrickHeatMapLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**
@@ -39,7 +39,7 @@ public class HeatMapCreator implements IRemoteViewCreator {
 		heatMap.setRemoteRenderingGLView(remoteRenderingView);
 		heatMap.setDataContainer(remoteRenderingView.getDataContainer());
 		heatMap.setDataDomain(remoteRenderingView.getDataDomain());
-		BrickHeatMapTemplate template = new BrickHeatMapTemplate(heatMap);
+		BrickHeatMapLayoutConfiguration template = new BrickHeatMapLayoutConfiguration(heatMap);
 		heatMap.setRenderTemplate(template);
 		heatMap.initialize();
 		heatMap.initRemote(gl, remoteRenderingView, glMouseListener);

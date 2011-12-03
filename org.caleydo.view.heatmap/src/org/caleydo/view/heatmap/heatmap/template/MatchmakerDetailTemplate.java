@@ -12,7 +12,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author Alexander Lex
  * 
  */
-public class MatchmakerDetailTemplate extends AHeatMapTemplate {
+public class MatchmakerDetailTemplate extends AHeatMapLayoutConfiguration {
 
 	private boolean isLeft = true;
 
@@ -28,8 +28,6 @@ public class MatchmakerDetailTemplate extends AHeatMapTemplate {
 		baseElementLayout = mainColumn;
 		mainColumn.setRatioSizeX(1);
 		mainColumn.setRatioSizeY(1);
-
-		minSelectedFieldHeight = HeatMapRenderStyle.MIN_SELECTED_FIELD_HEIGHT;
 
 		Row hmRow = new Row();
 		// hmRow.grabY = true;

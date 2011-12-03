@@ -12,18 +12,19 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 	int spread = 3;
 
 	public FishEyeSpacingCalculator(GLHeatMap heatMap, float y, float contentElements,
-			float minSelectedFieldHeight) {
+			int minSelectedFieldHeight) {
 		super(heatMap, y, contentElements);
 		setMinSelectedFieldHeight(minSelectedFieldHeight);
 	}
 
 	@Override
 	public void calculateFieldHeights() {
-
-		spread = (int) (y / (minSelectedFieldHeight * 3));
+		float glMinSelectedFieldHeight = heatMap.getPixelGLConverter()
+				.getGLHeightForPixelHeight(minSelectedFieldHeight);
+		spread = (int) (y / (glMinSelectedFieldHeight * 3));
 
 		Set<Integer> zoomedElements = heatMap.getZoomedElements();
-		float baseSize = (y - (zoomedElements.size() * minSelectedFieldHeight));
+		float baseSize = (y - (zoomedElements.size() * glMinSelectedFieldHeight));
 
 		RecordVirtualArray recordVA = heatMap.getDataContainer().getRecordPerspective()
 				.getVirtualArray();
@@ -60,17 +61,17 @@ public class FishEyeSpacingCalculator extends ASpacingCalculator {
 		float nrRemainingElements = recordElements - zoomedElements.size()
 				- level1Elements;
 
-		finalSize = (2 * baseSize - level1Elements * minSelectedFieldHeight)
+		finalSize = (2 * baseSize - level1Elements * glMinSelectedFieldHeight)
 				/ (level1Elements + 2 * nrRemainingElements);
 
-		level1Size = (finalSize + minSelectedFieldHeight) / 2;
+		level1Size = (finalSize + glMinSelectedFieldHeight) / 2;
 
 	}
 
 	@Override
 	public float getFieldHeight(int recordID) {
 		if (heatMap.getZoomedElements().contains(recordID))
-			return minSelectedFieldHeight;
+			return heatMap.getPixelGLConverter().getGLHeightForPixelHeight(minSelectedFieldHeight);
 		else {
 			RecordVirtualArray recordVA = heatMap.getDataContainer()
 					.getRecordPerspective().getVirtualArray();

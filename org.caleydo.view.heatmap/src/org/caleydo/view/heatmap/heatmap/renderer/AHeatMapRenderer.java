@@ -24,4 +24,8 @@ public abstract class AHeatMapRenderer extends LayoutRenderer {
 	public void setRecordSpacing(RecordSpacing contentSpacing) {
 		this.recordSpacing = contentSpacing;
 	}
+
+	@Override
+	public void updateSpacing() {
+	}
 }

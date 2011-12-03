@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
+import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
 
 public class HeatMapRenderer extends AHeatMapRenderer {
 
@@ -21,7 +21,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	@Override
 	public void updateSpacing() {
 
-		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
+		AHeatMapLayoutConfiguration heatMapTemplate = heatMap.getTemplate();
 
 		int nrRecordElements = heatMap.getDataContainer().getRecordPerspective()
 				.getVirtualArray().size();

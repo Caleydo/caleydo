@@ -10,7 +10,7 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author LayoutTemplate rendering a standalone heat map
  * 
  */
-public class DefaultTemplate extends AHeatMapTemplate {
+public class DefaultTemplate extends AHeatMapLayoutConfiguration {
 
 	public DefaultTemplate(GLHeatMap heatMap) {
 		super(heatMap);

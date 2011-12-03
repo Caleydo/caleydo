@@ -17,12 +17,9 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 
 	public static final float SELECTION_Z = 0.005f;
 
-	public static final float MIN_SELECTED_FIELD_HEIGHT = 0.1f;
 	public static final float MIN_FIELD_HEIGHT_FOR_CAPTION = 0.05f;
 
-	private static final float SELECTED_FIELD_HEIGHT_PERCENTAGE = 0.1f;
-	private static final float MAXIMUM_SELECTED_AREA_PERCENTAGE = 0.8f;
-	public static final int LABEL_TEXT_MIN_SIZE = 50;
+		public static final int LABEL_TEXT_MIN_SIZE = 50;
 
 	public static final float[] BACKGROUND_COLOR = { 0.8f, 0.8f, 0.8f, 1 };
 	public static final float[] DRAGGING_CURSOR_COLOR = { 0.2f, 0.2f, 0.2f, 1 };
@@ -31,15 +28,15 @@ public class HeatMapRenderStyle extends GeneralRenderStyle {
 	public static final float BUTTON_Z = 0.01f;
 	public static final float BACKGROUND_Z = -0.1f;
 
-	private float selectedFieldHeight = 5.0f;
-
-	private float normalFieldHeight = 0f;
-
-	private float fieldWidth = 0f;
-
-	private int iLevels = 1;
-
-	private int iNotSelectedLevel = 1000;
+//	private float selectedFieldHeight = 5.0f;
+//
+//	private float normalFieldHeight = 0f;
+//
+//	private float fieldWidth = 0f;
+//
+//	private int iLevels = 1;
+//
+//	private int iNotSelectedLevel = 1000;
 
 	private float fWidthLevel1 = 0.2f;
 	private float fWidthLevel2 = 0.0f;

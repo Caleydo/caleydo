@@ -30,15 +30,34 @@ public class RecordSpacing {
 		yDistances = new ArrayList<Float>();
 	}
 
-	public void calculateRecordSpacing(int recordElements, int dimensionElements,
-			float x, float y, float minSelectedFieldHeight) {
+	/**
+	 * Calculates the spacing for the records in the heat map. Determines
+	 * automatically whether a fish-eye should be used so that selected elements
+	 * can be increased in size.
+	 * 
+	 * @param nrRecordElements
+	 *            the number of records
+	 * @param nrDimensionElements
+	 *            the number of dimensions
+	 * @param width
+	 *            the available width
+	 * @param height
+	 *            the available height
+	 * @param minSelectedFieldHeight
+	 *            how many pixels a selected value should have.
+	 */
+	public void calculateRecordSpacing(int nrRecordElements, int nrDimensionElements,
+			float width, float height, int minSelectedFieldHeight) {
 
-		fieldWidth = x / dimensionElements;
+		fieldWidth = width / nrDimensionElements;
+		float glSelectedFieldHeight = heatMap.getPixelGLConverter()
+				.getGLHeightForPixelHeight(minSelectedFieldHeight);
 
-		if (y / recordElements > minSelectedFieldHeight
+		if (height / nrRecordElements > glSelectedFieldHeight
 				|| heatMap.getZoomedElements().size() == 0) {
 
-			spacingCalculator = new NormalSpacingCalculator(heatMap, y, recordElements);
+			spacingCalculator = new NormalSpacingCalculator(heatMap, height,
+					nrRecordElements);
 			useFishEye = false;
 
 		} else {
@@ -46,8 +65,8 @@ public class RecordSpacing {
 			// spacingCalculator = new SelectedLargerSpacingCalculator(heatMap,
 			// y,
 			// contentElements);
-			spacingCalculator = new FishEyeSpacingCalculator(heatMap, y, recordElements,
-					minSelectedFieldHeight);
+			spacingCalculator = new FishEyeSpacingCalculator(heatMap, height,
+					nrRecordElements, minSelectedFieldHeight);
 
 		}
 		spacingCalculator.calculateFieldHeights();

@@ -14,7 +14,7 @@ import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
  * @author Alexander Lex
  * 
  */
-public class UncertaintyDetailHeatMapTemplate extends AHeatMapTemplate {
+public class UncertaintyDetailHeatMapTemplate extends AHeatMapLayoutConfiguration {
 
 	protected GLUncertaintyHeatMap uncertaintyHeatMap;
 

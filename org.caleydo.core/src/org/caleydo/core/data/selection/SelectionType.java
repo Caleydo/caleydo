@@ -4,29 +4,33 @@ import java.util.ArrayList;
 
 /**
  * <p>
- * A SelectionType is an object associated with a particular set of elements. The members of the set typically
- * are determined by user selection.
+ * A SelectionType is an object associated with a particular set of elements.
+ * The members of the set typically are determined by user selection.
  * </p>
  * <p>
- * There are two types of Selection types: the default types ({@link #NORMAL}, {@link #MOUSE_OVER},
- * {@link #SELECTION} and {@link #DESELECTED}) as well as user-defined types.
+ * There are two types of Selection types: the default types ({@link #NORMAL},
+ * {@link #MOUSE_OVER}, {@link #SELECTION} and {@link #DESELECTED}) as well as
+ * user-defined types.
  * </p>
  * <p>
- * A Selection has the following properties, all of which have default values, so it is only necessary to
- * define those values that are of interest:
+ * A Selection has the following properties, all of which have default values,
+ * so it is only necessary to define those values that are of interest:
  * </p>
  * <ul>
- * <li><b>{@link #color}</b> either as and int[] or as a float[]. No matter which one is used the other is
- * calculated.</li>
- * <li><b>visibility</b> determines whether elements of this type should be visible</li>
+ * <li><b>{@link #color}</b> either as and int[] or as a float[]. No matter
+ * which one is used the other is calculated.</li>
+ * <li><b>visibility</b> determines whether elements of this type should be
+ * visible</li>
  * <li><b></b></li>
- * <li><b>connectivity</b> determines whether an element should be connected via connection lines or not</li>
- * <li><b>line width</b> provides the line width that should be used when line based visualizations are
- * rendered</li>
- * <li><b>priority</b> the priority is used to determine the Z value. The priority has to be between 0 and 1.
- * Elements of higher priority are rendered further on top.</li>
- * <li><b>is managed</b> selections can be managed via the RCP Selection Browser view. If a selection should
- * be managed this way is determined by this flag.</li>
+ * <li><b>connectivity</b> determines whether an element should be connected via
+ * connection lines or not</li>
+ * <li><b>line width</b> provides the line width that should be used when line
+ * based visualizations are rendered</li>
+ * <li><b>priority</b> the priority is used to determine the Z value. The
+ * priority has to be between 0 and 1. Elements of higher priority are rendered
+ * further on top.</li>
+ * <li><b>is managed</b> selections can be managed via the RCP Selection Browser
+ * view. If a selection should be managed this way is determined by this flag.</li>
  * </ul>
  * 
  * @author Alexander Lex
@@ -39,36 +43,44 @@ public class SelectionType {
 	private float[] color = new float[] { 0, 0, 0, 1 };
 	/** the color equivalent to float color in int space (0-255) */
 	private int[] intColor = new int[] { 0, 0, 0 };
-	/** flag that determines whether an element of this selection type should be visible or not */
+	/**
+	 * flag that determines whether an element of this selection type should be
+	 * visible or not
+	 */
 	private boolean isVisible = true;
-	/** flag that determines whether connection lines should be drawn to this selection type or not */
+	/**
+	 * flag that determines whether connection lines should be drawn to this
+	 * selection type or not
+	 */
 	private boolean isConnected = false;
 	/** line rendering views should use this width for this selection type */
 	private float lineWidth = 0.3f;
 	/**
-	 * a priority determining which selection type should be rendered on top in case of multi-selections. The
-	 * valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
+	 * a priority determining which selection type should be rendered on top in
+	 * case of multi-selections. The valid range is 0-1 where {@link #NORMAL}
+	 * has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
 	 */
 	private float priority = 0.1f;
 
 	/**
-	 * flag that determines whether a particular selection type should be managed by the
-	 * {@link RcpSelectionBrowserView}. only managed types will appear in the selection browser view. default
-	 * is false. can be changed on demand via the setter method.
+	 * flag that determines whether a particular selection type should be
+	 * managed by the {@link RcpSelectionBrowserView}. only managed types will
+	 * appear in the selection browser view. default is false. can be changed on
+	 * demand via the setter method.
 	 */
 	private boolean isManaged = false;
 
-	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] { 0, 0, 0, 1 }, 0.3f,
-		true, false, 0);
+	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] {
+			0, 0, 0, 1 }, 0.3f, true, false, 0);
 	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver",
-		new int[] { 116, 169, 207 }, 1, true, true, 0.99f);
-	public static final SelectionType SELECTION = new SelectionType("Selected", new int[] { 5, 112, 176 }, 1,
-		true, false, 1f);
+			new int[] { 116, 169, 207 }, 1, true, true, 0.99f);
+	public static final SelectionType SELECTION = new SelectionType("Selected",
+			new int[] { 5, 112, 176 }, 1, true, false, 1f);
 	public static final SelectionType DESELECTED = new SelectionType("Deselected",
-		new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
+			new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
 
-	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType("LevelHighlighting", new int[] {
-			255, 255, 0 }, 1, true, false, 1f);
+	public static final SelectionType LEVEL_HIGHLIGHTING = new SelectionType(
+			"LevelHighlighting", new int[] { 255, 255, 0 }, 1, true, false, 1f);
 
 	private static ArrayList<SelectionType> defaultTypes = new ArrayList<SelectionType>();
 
@@ -86,24 +98,29 @@ public class SelectionType {
 	 * @param color
 	 *            the color the selection type should be rendered in
 	 * @param lineWidth
-	 *            the width of lines that should be used for this selection type in line rendering views
+	 *            the width of lines that should be used for this selection type
+	 *            in line rendering views
 	 * @param isVisible
-	 *            flag that determines whether an element of this selection type should be visible or not
+	 *            flag that determines whether an element of this selection type
+	 *            should be visible or not
 	 * @param isConnected
-	 *            flag that determines whether connection lines should be drawn to this selection type or not
+	 *            flag that determines whether connection lines should be drawn
+	 *            to this selection type or not
 	 * @param priority
 	 *            <p>
-	 *            a priority determining which selection type should be rendered on top in case of
-	 *            multi-selections. The valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1
-	 *            and {@link #SELECTION} 0.99.
+	 *            a priority determining which selection type should be rendered
+	 *            on top in case of multi-selections. The valid range is 0-1
+	 *            where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and
+	 *            {@link #SELECTION} 0.99.
 	 *            </p>
 	 *            <p>
-	 *            The best way to apply this to actual render hight is to specify a render height constant and
-	 *            multiply it by the priority, e.g.,
+	 *            The best way to apply this to actual render hight is to
+	 *            specify a render height constant and multiply it by the
+	 *            priority, e.g.,
 	 *            <code>float z = SELECTION_Z * selectionType.getPriority();</code>
 	 */
-	public SelectionType(String type, float[] color, float lineWidth, boolean isVisible, boolean isConnected,
-		float priority) {
+	public SelectionType(String type, float[] color, float lineWidth, boolean isVisible,
+			boolean isConnected, float priority) {
 		this.type = type;
 		setColor(color);
 		setIntColor(convertFloatColor(color));
@@ -116,27 +133,34 @@ public class SelectionType {
 
 	/**
 	 * Convenience constructor for batch initialization, same as
-	 * {@link #SelectionType(String, float[], boolean, boolean, float)} except for that the color space is
-	 * defined in integers (0-255) instead of floats and contains only 3 values. The float color space is
-	 * calculated automatically and the transparency is assumed to be 1. It is possible to use
+	 * {@link #SelectionType(String, float[], boolean, boolean, float)} except
+	 * for that the color space is defined in integers (0-255) instead of floats
+	 * and contains only 3 values. The float color space is calculated
+	 * automatically and the transparency is assumed to be 1. It is possible to
+	 * use
 	 * 
 	 * @param type
 	 *            a name for the selection type, human readable
 	 * @param color
-	 *            the color the selection type should be rendered in in integers (0-255)
+	 *            the color the selection type should be rendered in in integers
+	 *            (0-255)
 	 * @param lineWidth
-	 *            the width of lines that should be used for this selection type in line rendering views
+	 *            the width of lines that should be used for this selection type
+	 *            in line rendering views
 	 * @param isVisible
-	 *            flag that determines whether an element of this selection type should be visible or not
+	 *            flag that determines whether an element of this selection type
+	 *            should be visible or not
 	 * @param isConnected
-	 *            flag that determines whether connection lines should be drawn to this selection type or not
+	 *            flag that determines whether connection lines should be drawn
+	 *            to this selection type or not
 	 * @param priority
-	 *            a priority determining which selection type should be rendered on top in case of
-	 *            multi-selections. The valid range is 0-1 where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1
-	 *            and {@link #SELECTION} 0.99
+	 *            a priority determining which selection type should be rendered
+	 *            on top in case of multi-selections. The valid range is 0-1
+	 *            where {@link #NORMAL} has 0, {@link #MOUSE_OVER} 1 and
+	 *            {@link #SELECTION} 0.99
 	 */
-	public SelectionType(String type, int[] intColor, int lineWidth, boolean isVisible, boolean isConnected,
-		float priority) {
+	public SelectionType(String type, int[] intColor, int lineWidth, boolean isVisible,
+			boolean isConnected, float priority) {
 		this.type = type;
 		setIntColor(intColor);
 		setColor(convertIntColor(intColor));
@@ -183,8 +207,8 @@ public class SelectionType {
 	 */
 	public void setColor(float[] color) {
 		if (color.length != 4)
-			throw new IllegalArgumentException("Color has to contain exactly 4 float values, but was: "
-				+ color);
+			throw new IllegalArgumentException(
+					"Color has to contain exactly 4 float values, but was: " + color);
 		this.color = color;
 	}
 
@@ -198,27 +222,30 @@ public class SelectionType {
 	}
 
 	/**
-	 * Sets the int color for this selection type (0-255). Does not automatically calculate the float values;
+	 * Sets the int color for this selection type (0-255). Does not
+	 * automatically calculate the float values;
 	 * 
 	 * @param intColor
 	 */
 	public void setIntColor(int[] intColor) {
 		if (intColor.length != 3)
-			throw new IllegalArgumentException("intColor has to contain exactly 3 int values, but was: "
-				+ intColor);
+			throw new IllegalArgumentException(
+					"intColor has to contain exactly 3 int values, but was: " + intColor);
 		this.intColor = intColor;
 	}
 
 	/**
 	 * @param lineWidth
-	 *            the the width of lines that should be used for this selection type in line rendering views
+	 *            the the width of lines that should be used for this selection
+	 *            type in line rendering views
 	 */
 	public void setLineWidth(float lineWidth) {
 		this.lineWidth = lineWidth;
 	}
 
 	/**
-	 * @return the the width of lines that should be used for this selection type in line rendering views
+	 * @return the the width of lines that should be used for this selection
+	 *         type in line rendering views
 	 */
 	public float getLineWidth() {
 		return lineWidth;
@@ -246,7 +273,8 @@ public class SelectionType {
 	}
 
 	/**
-	 * Tells you whether a selection type should be connected with Visual Links or not
+	 * Tells you whether a selection type should be connected with Visual Links
+	 * or not
 	 * 
 	 * @return true if the selection type should be connected, else false
 	 * @see #isConnected
@@ -267,8 +295,9 @@ public class SelectionType {
 	}
 
 	/**
-	 * Returns the priority of the SelectionType, which tells you on which level it should be rendered in case
-	 * of multiple selections. For conventions see {@link #priority}
+	 * Returns the priority of the SelectionType, which tells you on which level
+	 * it should be rendered in case of multiple selections. For conventions see
+	 * {@link #priority}
 	 * 
 	 * @return the priority, between 1 and 0
 	 */
@@ -277,8 +306,9 @@ public class SelectionType {
 	}
 
 	/**
-	 * Returns the priority of the SelectionType, which tells you on which level it should be rendered in case
-	 * of multiple selections. For conventions see {@link #priority}
+	 * Returns the priority of the SelectionType, which tells you on which level
+	 * it should be rendered in case of multiple selections. For conventions see
+	 * {@link #priority}
 	 * 
 	 * @return the priority, between 1 and 0
 	 */
@@ -290,7 +320,7 @@ public class SelectionType {
 	private void checkPiority(float priority) {
 		if (priority > 1 || priority < 0)
 			throw new IllegalArgumentException(
-				"Argument value not valid, must be in the range between 0 and 1");
+					"Argument value not valid, must be in the range between 0 and 1");
 	}
 
 	@Override
@@ -323,7 +353,7 @@ public class SelectionType {
 	 */
 	public static boolean isDefaultType(SelectionType selectionType) {
 		if (NORMAL.equals(selectionType) || MOUSE_OVER.equals(selectionType)
-			|| SELECTION.equals(selectionType) || DESELECTED.equals(selectionType))
+				|| SELECTION.equals(selectionType) || DESELECTED.equals(selectionType))
 			return true;
 
 		return false;
@@ -346,10 +376,17 @@ public class SelectionType {
 		return color;
 	}
 
+	/**
+	 * @param isManaged
+	 *            setter, see {@link #isManaged}
+	 */
 	public void setManaged(boolean isManaged) {
 		this.isManaged = isManaged;
 	}
 
+	/**
+	 * @return the isManaged, see {@link #isManaged}
+	 */
 	public boolean isManaged() {
 		return isManaged;
 	}

@@ -22,34 +22,40 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * Manages selections generically by storing them in hash maps. The manager can handle an arbitrary number of
- * selection types, which have to be defined in {@link SelectionType} A normal type, by default NORMAL in the
- * aforementioned enum is considered to be the base type, where all elements are initially added to.
+ * Manages selections generically by storing them in hash maps. The manager can
+ * handle an arbitrary number of selection types, which have to be defined in
+ * {@link SelectionType} A normal type, by default NORMAL in the aforementioned
+ * enum is considered to be the base type, where all elements are initially
+ * added to.
  * </p>
  * <p>
- * The selection manager always keeps a {@link SelectionDelta}, which can be used to communicate changes in
- * the selection to other views. This is reset every time you call it's getter.
+ * The selection manager always keeps a {@link SelectionDelta}, which can be
+ * used to communicate changes in the selection to other views. This is reset
+ * every time you call it's getter.
  * </p>
  * <p>
  * Consequently it can also merge external deltas into its own selection.
  * </p>
  * <p>
- * When a selection delta is merged into the manager that contains values that are not specified in the list
- * of allowed values, the selections are ignored
+ * When a selection delta is merged into the manager that contains values that
+ * are not specified in the list of allowed values, the selections are ignored
  * </p>
  * <p>
- * When using the manager on data that is also managed by a {@link IVirtualArray} set the currently active
- * virtual array so that the tow are kept synchronous.
+ * When using the manager on data that is also managed by a
+ * {@link IVirtualArray} set the currently active virtual array so that the tow
+ * are kept synchronous.
  * </p>
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class SelectionManager
-	implements IListenerOwner, Cloneable {
+public class SelectionManager implements IListenerOwner, Cloneable {
 
 	protected HashMap<SelectionType, HashMap<Integer, Integer>> hashSelectionTypes;
-	/** Selection types that should not be included in deltas have to be listed in this structure */
+	/**
+	 * Selection types that should not be included in deltas have to be listed
+	 * in this structure
+	 */
 	private HashMap<SelectionType, Boolean> deltaBlackList;
 
 	private HashMap<Integer, ArrayList<Integer>> hashConnectionToElementID;
@@ -58,7 +64,10 @@ public class SelectionManager
 
 	protected ArrayList<SelectionType> selectionTypes;
 
-	/** The current type that is used for selections. By default this is the standard SELECTION type. */
+	/**
+	 * The current type that is used for selections. By default this is the
+	 * standard SELECTION type.
+	 */
 	protected SelectionType selectionType = SelectionType.SELECTION;
 
 	private SelectionDelta selectionDelta;
@@ -106,7 +115,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Removes a particular element from the selection manager, no matter what the type
+	 * Removes a particular element from the selection manager, no matter what
+	 * the type
 	 * 
 	 * @param elementID
 	 *            the element to be removed
@@ -120,8 +130,7 @@ public class SelectionManager
 				if (iNumTimesAdded == 0) {
 					hashSelectionTypes.get(selectionType).remove(elementID);
 
-				}
-				else {
+				} else {
 					hashSelectionTypes.get(selectionType).put(elementID, iNumTimesAdded);
 				}
 			}
@@ -145,8 +154,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Removes all elements and sets the element counter to 0 Removes all elements in selectionDelta. Clears
-	 * the virtual array.
+	 * Removes all elements and sets the element counter to 0 Removes all
+	 * elements in selectionDelta. Clears the virtual array.
 	 */
 	public void resetSelectionManager() {
 		hashSelectionTypes.clear();
@@ -173,8 +182,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Clear one specific selection type. The elements contained in that type are added to the "normal" type.
-	 * This is also reflected in the delta
+	 * Clear one specific selection type. The elements contained in that type
+	 * are added to the "normal" type. This is also reflected in the delta
 	 * 
 	 * @param sSelectionType
 	 *            the selection type to be cleared
@@ -182,10 +191,11 @@ public class SelectionManager
 	public void clearSelection(SelectionType selectionType) {
 		if (selectionType == SelectionType.NORMAL)
 			throw new IllegalArgumentException(
-				"SelectionManager: cannot reset selections of normal selection");
+					"SelectionManager: cannot reset selections of normal selection");
 
 		// TODO the first condition should not be necessary, investigate
-		if (hashSelectionTypes.get(selectionType) == null || hashSelectionTypes.get(selectionType).isEmpty())
+		if (hashSelectionTypes.get(selectionType) == null
+				|| hashSelectionTypes.get(selectionType).isEmpty())
 			return;
 
 		for (int iSelectionID : hashSelectionTypes.get(selectionType).keySet()) {
@@ -201,8 +211,9 @@ public class SelectionManager
 	 * Returns all elements that are in a specific selection type
 	 * 
 	 * @param sSelectionType
-	 * @return the elements in the type. Null if the type does not exist yet or if no elements are contained
-	 *         for this type. Note that no normal types are contained at any time.
+	 * @return the elements in the type. Null if the type does not exist yet or
+	 *         if no elements are contained for this type. Note that no normal
+	 *         types are contained at any time.
 	 */
 	public Set<Integer> getElements(SelectionType selectionType) {
 		if (hashSelectionTypes.containsKey(selectionType))
@@ -212,8 +223,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Returns all elements contained in the selection manager. These are only the elements that are not of
-	 * {@link SelectionType#NORMAL}.
+	 * Returns all elements contained in the selection manager. These are only
+	 * the elements that are not of {@link SelectionType#NORMAL}.
 	 * 
 	 * @return
 	 */
@@ -228,9 +239,10 @@ public class SelectionManager
 	}
 
 	/**
-	 * Add a element to a particular selection type. The element must exist in the selection manager. If the
-	 * element is already in the target type nothing is done. If it is in another type the element is removed
-	 * from the other type and moved to the target type
+	 * Add a element to a particular selection type. The element must exist in
+	 * the selection manager. If the element is already in the target type
+	 * nothing is done. If it is in another type the element is removed from the
+	 * other type and moved to the target type
 	 * 
 	 * @param targetType
 	 *            the selection type the element should be added to
@@ -238,9 +250,11 @@ public class SelectionManager
 	 *            the id of the element
 	 */
 	public void addToType(SelectionType targetType, int id) {
-		if (!hashSelectionTypes.containsKey(targetType))
-			throw new IllegalArgumentException("The selection type " + targetType
-				+ " is not registered with this selection manager.");
+		if (!hashSelectionTypes.containsKey(targetType)) {
+			addSelectionType(targetType);
+		}
+		// throw new IllegalArgumentException("The selection type " + targetType
+		// + " is not registered with this selection manager.");
 		if (targetType == SelectionType.NORMAL)
 			return;
 		// return if already in the target type
@@ -261,8 +275,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Same as {@link #addToType(SelectionType, int)} with an additional parameter sourceIDType that is used
-	 * for conversion of IDs if necessary
+	 * Same as {@link #addToType(SelectionType, int)} with an additional
+	 * parameter sourceIDType that is used for conversion of IDs if necessary
 	 * 
 	 * @param targetType
 	 * @param sourceIDType
@@ -271,9 +285,9 @@ public class SelectionManager
 	public void addToType(SelectionType targetType, IDType sourceIDType, int id) {
 		if (sourceIDType.equals(idType)) {
 			addToType(targetType, id);
-		}
-		else {
-			Set<Integer> convertedIDs = idMappingManager.getIDAsSet(sourceIDType, idType, id);
+		} else {
+			Set<Integer> convertedIDs = idMappingManager.getIDAsSet(sourceIDType, idType,
+					id);
 			if (convertedIDs != null)
 				addToType(targetType, convertedIDs);
 		}
@@ -297,21 +311,24 @@ public class SelectionManager
 	}
 
 	/**
-	 * Same as {@link #addToType(SelectionType, IDType, int)} but for a collection of ids)
+	 * Same as {@link #addToType(SelectionType, IDType, int)} but for a
+	 * collection of ids)
 	 * 
 	 * @param targetType
 	 * @param sourceIDType
 	 * @param idCollection
 	 */
-	public void addToType(SelectionType targetType, IDType sourceIDType, Collection<Integer> idCollection) {
+	public void addToType(SelectionType targetType, IDType sourceIDType,
+			Collection<Integer> idCollection) {
 		for (int value : idCollection) {
 			addToType(targetType, sourceIDType, value);
 		}
 	}
 
 	/**
-	 * Removes a element form a particular selection type and puts it into the normal type. Can not be called
-	 * on the normal type. Nothing happens if the element is not contained in the type
+	 * Removes a element form a particular selection type and puts it into the
+	 * normal type. Can not be called on the normal type. Nothing happens if the
+	 * element is not contained in the type
 	 * 
 	 * @param selectionType
 	 * @param elementID
@@ -319,9 +336,13 @@ public class SelectionManager
 	 *             if called with the normal type, REMOVE or ADD
 	 */
 	public void removeFromType(SelectionType selectionType, int elementID) {
+		if(!hashSelectionTypes.containsKey(selectionType))
+		{
+			addSelectionType(selectionType);
+		}
 		if (selectionType == SelectionType.NORMAL)
 			throw new IllegalArgumentException(
-				"SelectionManager: cannot remove from normal or remove selection");
+					"SelectionManager: cannot remove from normal or remove selection");
 
 		if (hashSelectionTypes.get(selectionType).containsKey(elementID)) {
 			hashSelectionTypes.get(selectionType).remove(elementID);
@@ -393,7 +414,8 @@ public class SelectionManager
 	 *            the suspected selection type
 	 * @param elementID
 	 *            the id of the element
-	 * @return true if the type contains the element, else false, also false when called with REMOVE
+	 * @return true if the type contains the element, else false, also false
+	 *         when called with REMOVE
 	 */
 	public boolean checkStatus(SelectionType selectionType, int elementID) {
 
@@ -426,9 +448,10 @@ public class SelectionManager
 	}
 
 	/**
-	 * Returns the accumulated selection delta since the last getDelta and clears the internal selectionDelta.
-	 * If there is a mapping specified, the returned selection id is of the external type and the internal id
-	 * of the interal.
+	 * Returns the accumulated selection delta since the last getDelta and
+	 * clears the internal selectionDelta. If there is a mapping specified, the
+	 * returned selection id is of the external type and the internal id of the
+	 * interal.
 	 * 
 	 * @return the SelectionDelta
 	 */
@@ -441,17 +464,20 @@ public class SelectionManager
 	}
 
 	/**
-	 * Provides a selection delta that contains all elements in the view, with the appropriate external and
-	 * internal selection IDs. Clears the selection delta
+	 * Provides a selection delta that contains all elements in the view, with
+	 * the appropriate external and internal selection IDs. Clears the selection
+	 * delta
 	 * 
-	 * @return the SelectionDelta containing all entries in the selection manager
+	 * @return the SelectionDelta containing all entries in the selection
+	 *         manager
 	 */
 	@Deprecated
 	public SelectionDelta getCompleteDelta() {
 		SelectionDelta tempDelta = new SelectionDelta(idType);
 		HashMap<Integer, Integer> tempHash;
 		for (SelectionType selectionType : selectionTypes) {
-			if (selectionType == SelectionType.NORMAL || deltaBlackList.containsKey(selectionType))
+			if (selectionType == SelectionType.NORMAL
+					|| deltaBlackList.containsKey(selectionType))
 				continue;
 			tempHash = hashSelectionTypes.get(selectionType);
 			for (Integer selectionID : tempHash.keySet()) {
@@ -473,28 +499,32 @@ public class SelectionManager
 
 	/**
 	 * <p>
-	 * Merge an external selection delta into the local selection, and return a possibly converted selection
+	 * Merge an external selection delta into the local selection, and return a
+	 * possibly converted selection
 	 * </p>
 	 * <p>
 	 * This method takes into account data mapping, when mapping types are set
 	 * </p>
 	 * <p>
-	 * When an element in the selectionDelta is not contained in the selection manager it is added and then
-	 * moved to the appropriate type
+	 * When an element in the selectionDelta is not contained in the selection
+	 * manager it is added and then moved to the appropriate type
 	 * </p>
 	 * <p>
-	 * If a virtual array is set, the virtual array is also modified if necessary. This is the case when new
-	 * element which are not contained in the virtual array are added or when elements are removed.
+	 * If a virtual array is set, the virtual array is also modified if
+	 * necessary. This is the case when new element which are not contained in
+	 * the virtual array are added or when elements are removed.
 	 * </p>
 	 * 
 	 * @param selectionDelta
 	 *            the selection delta
-	 * @return a SelectionDelta that contains the internal ID of the manager as its primary ID
+	 * @return a SelectionDelta that contains the internal ID of the manager as
+	 *         its primary ID
 	 */
 	public void setDelta(SelectionDelta selectionDelta) {
 		bIsDeltaWritingEnabled = false;
 		if (selectionDelta.getIDType() != idType)
-			selectionDelta = DeltaConverter.convertDelta(idMappingManager, idType, selectionDelta);
+			selectionDelta = DeltaConverter.convertDelta(idMappingManager, idType,
+					selectionDelta);
 		for (SelectionDeltaItem item : selectionDelta) {
 
 			// if (selectionDelta.getIDType() == internalIDType) {
@@ -502,8 +532,8 @@ public class SelectionManager
 			selectionID = item.getID();
 
 			if (selectionID == -1) {
-				Logger
-					.log(new Status(IStatus.WARNING, this.toString(), "No internal id for " + item.getID()));
+				Logger.log(new Status(IStatus.WARNING, this.toString(),
+						"No internal id for " + item.getID()));
 
 				continue;
 			}
@@ -516,8 +546,7 @@ public class SelectionManager
 						addConnectionID(iConnectionID, selectionID);
 					}
 				}
-			}
-			else {
+			} else {
 				removeFromType(item.getSelectionType(), selectionID);
 			}
 		}
@@ -527,8 +556,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Executes certain commands, as specified in a {@link SelectionCommand}. Typical examples are to clear a
-	 * particular selection.
+	 * Executes certain commands, as specified in a {@link SelectionCommand}.
+	 * Typical examples are to clear a particular selection.
 	 * 
 	 * @param selectionCommand
 	 *            a selection command
@@ -539,20 +568,21 @@ public class SelectionManager
 
 		ESelectionCommandType commandType = selectionCommand.getSelectionCommandType();
 		switch (commandType) {
-			case CLEAR:
-				clearSelection(selectionCommand.getSelectionType());
-				break;
-			case CLEAR_ALL:
-				clearSelections();
-				break;
-			case RESET:
-				resetSelectionManager();
-				break;
+		case CLEAR:
+			clearSelection(selectionCommand.getSelectionType());
+			break;
+		case CLEAR_ALL:
+			clearSelections();
+			break;
+		case RESET:
+			resetSelectionManager();
+			break;
 		}
 	}
 
 	/**
-	 * Adds a connection id which is used for connection line bundling to a particular selection
+	 * Adds a connection id which is used for connection line bundling to a
+	 * particular selection
 	 * 
 	 * @param iConnectionID
 	 *            the connection id used by the connection line manager
@@ -587,12 +617,14 @@ public class SelectionManager
 	 * Returns a collection of connection ID for one element.
 	 * 
 	 * @param iElementID
-	 * @return the collection ids. Collection is empty if no connection ids are found.
+	 * @return the collection ids. Collection is empty if no connection ids are
+	 *         found.
 	 */
 	public Collection<Integer> getConnectionForElementID(int iElementID) {
 		Collection<Integer> colConnectionIDs = new ArrayList<Integer>();
 		for (Integer iConnectionID : hashConnectionToElementID.keySet()) {
-			ArrayList<Integer> alElementIDs = hashConnectionToElementID.get(iConnectionID);
+			ArrayList<Integer> alElementIDs = hashConnectionToElementID
+					.get(iConnectionID);
 			for (int iCurrentID : alElementIDs) {
 				if (iCurrentID == iElementID) {
 					colConnectionIDs.add(iConnectionID);
@@ -609,8 +641,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Returns the {@link SelectionType} for a element ID or null, if element ID is not in the selection
-	 * manager
+	 * Returns the {@link SelectionType} for a element ID or null, if element ID
+	 * is not in the selection manager
 	 * 
 	 * @param elementID
 	 * @return selection type or NULL
@@ -632,8 +664,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Adds a new, custom selection type to the selection manager. Should only be called via a
-	 * {@link SelectionTypeEvent}
+	 * Adds a new, custom selection type to the selection manager. Should only
+	 * be called via a {@link SelectionTypeEvent}
 	 */
 	public void addSelectionType(SelectionType selectionType) {
 		if (!hashSelectionTypes.containsKey(selectionType)) {
@@ -643,8 +675,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Removes a custom selection type from the selection manager. Should only be called via a
-	 * {@link SelectionTypeEvent}
+	 * Removes a custom selection type from the selection manager. Should only
+	 * be called via a {@link SelectionTypeEvent}
 	 */
 	void removeSelectionType(SelectionType selectionType) {
 		hashSelectionTypes.remove(selectionType);
@@ -652,7 +684,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Removes all managed selection types. These are for example newly created selection groups.
+	 * Removes all managed selection types. These are for example newly created
+	 * selection groups.
 	 */
 	public void removeMangagedSelectionTypes() {
 
@@ -667,8 +700,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Add a type to the delta black list, which excludes all operations on the type from being written to a
-	 * delta
+	 * Add a type to the delta black list, which excludes all operations on the
+	 * type from being written to a delta
 	 * 
 	 * @param type
 	 *            the selection type which should not be written to deltas
@@ -681,7 +714,8 @@ public class SelectionManager
 	 * TODO: check whether this is thread-save enough.
 	 */
 	@Override
-	public synchronized void queueEvent(AEventListener<? extends IListenerOwner> listener, AEvent event) {
+	public synchronized void queueEvent(
+			AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		listener.handleEvent(event);
 	}
 
@@ -692,25 +726,30 @@ public class SelectionManager
 
 		addSelectionTypeListener.setHandler(this);
 		GeneralManager.get().getEventPublisher()
-			.addListener(SelectionTypeEvent.class, addSelectionTypeListener);
+				.addListener(SelectionTypeEvent.class, addSelectionTypeListener);
 
 		removeManagedSelectionTypesListener = new RemoveManagedSelectionTypesListener();
 
 		removeManagedSelectionTypesListener.setHandler(this);
-		GeneralManager.get().getEventPublisher()
-			.addListener(RemoveManagedSelectionTypesEvent.class, removeManagedSelectionTypesListener);
+		GeneralManager
+				.get()
+				.getEventPublisher()
+				.addListener(RemoveManagedSelectionTypesEvent.class,
+						removeManagedSelectionTypesListener);
 
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		if (addSelectionTypeListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(addSelectionTypeListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(addSelectionTypeListener);
 			addSelectionTypeListener = null;
 		}
 
 		if (removeManagedSelectionTypesListener != null) {
-			GeneralManager.get().getEventPublisher().removeListener(removeManagedSelectionTypesListener);
+			GeneralManager.get().getEventPublisher()
+					.removeListener(removeManagedSelectionTypesListener);
 			removeManagedSelectionTypesListener = null;
 		}
 	}
@@ -719,7 +758,8 @@ public class SelectionManager
 	public String toString() {
 		String result = "IDType: " + idType + " ";
 		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
-			result = result + "[" + selectionType + ": " + hashSelectionTypes.get(selectionType).size() + "]";
+			result = result + "[" + selectionType + ": "
+					+ hashSelectionTypes.get(selectionType).size() + "]";
 		}
 
 		return result;
@@ -727,14 +767,15 @@ public class SelectionManager
 
 	/**
 	 * <p>
-	 * Returns a semi-deep copy of the selection manager. That means that all containers have been cloned to
-	 * be modifiable without affecting the source manager, however the elements themselves such as Integers or
-	 * SelectionTypes are the same (this is necessary for SelectionTypes and should be fine for other values
-	 * since they are not changed).
+	 * Returns a semi-deep copy of the selection manager. That means that all
+	 * containers have been cloned to be modifiable without affecting the source
+	 * manager, however the elements themselves such as Integers or
+	 * SelectionTypes are the same (this is necessary for SelectionTypes and
+	 * should be fine for other values since they are not changed).
 	 * </p>
 	 * <p>
-	 * Notice that the clone does not contain a virtual array! <b>It must be explicitly set by the
-	 * receiver.</b>
+	 * Notice that the clone does not contain a virtual array! <b>It must be
+	 * explicitly set by the receiver.</b>
 	 * </p>
 	 */
 	@Override
@@ -743,30 +784,32 @@ public class SelectionManager
 		SelectionManager clone;
 		try {
 			clone = (SelectionManager) super.clone();
-		}
-		catch (CloneNotSupportedException e) {
-			throw new IllegalStateException("Cloning error for SelectionManager: " + e.getMessage());
+		} catch (CloneNotSupportedException e) {
+			throw new IllegalStateException("Cloning error for SelectionManager: "
+					+ e.getMessage());
 		}
 
 		clone.registerEventListeners();
 		// clone hashConnectionToElementID
-		clone.hashConnectionToElementID =
-			(HashMap<Integer, ArrayList<Integer>>) this.hashConnectionToElementID.clone();
+		clone.hashConnectionToElementID = (HashMap<Integer, ArrayList<Integer>>) this.hashConnectionToElementID
+				.clone();
 		for (Integer id : clone.hashConnectionToElementID.keySet()) {
 			clone.hashConnectionToElementID.put(id,
-				(ArrayList<Integer>) this.hashConnectionToElementID.get(id).clone());
+					(ArrayList<Integer>) this.hashConnectionToElementID.get(id).clone());
 		}
 
 		// clone hashSelectionTypes
-		clone.hashSelectionTypes =
-			(HashMap<SelectionType, HashMap<Integer, Integer>>) this.hashSelectionTypes.clone();
+		clone.hashSelectionTypes = (HashMap<SelectionType, HashMap<Integer, Integer>>) this.hashSelectionTypes
+				.clone();
 		for (SelectionType selectionType : clone.hashSelectionTypes.keySet()) {
-			clone.hashSelectionTypes.put(selectionType, (HashMap<Integer, Integer>) this.hashSelectionTypes
-				.get(selectionType).clone());
+			clone.hashSelectionTypes.put(selectionType,
+					(HashMap<Integer, Integer>) this.hashSelectionTypes
+							.get(selectionType).clone());
 		}
 
 		// clone deltaBlackList
-		clone.deltaBlackList = (HashMap<SelectionType, Boolean>) this.deltaBlackList.clone();
+		clone.deltaBlackList = (HashMap<SelectionType, Boolean>) this.deltaBlackList
+				.clone();
 
 		// clone selectionTypes
 		clone.selectionTypes = (ArrayList<SelectionType>) this.selectionTypes.clone();
@@ -778,7 +821,8 @@ public class SelectionManager
 	}
 
 	/**
-	 * Returns the current selection type. By default this is SelectionType.SELECTION.
+	 * Returns the current selection type. By default this is
+	 * SelectionType.SELECTION.
 	 * 
 	 * @return
 	 */
@@ -787,8 +831,9 @@ public class SelectionManager
 	}
 
 	/**
-	 * Changes the current selection type. By default the selection type is set to SelectionType.SELECTION.
-	 * Should only be called via a {@link SelectionTypeEvent}.
+	 * Changes the current selection type. By default the selection type is set
+	 * to SelectionType.SELECTION. Should only be called via a
+	 * {@link SelectionTypeEvent}.
 	 * 
 	 * @param selectionType
 	 */

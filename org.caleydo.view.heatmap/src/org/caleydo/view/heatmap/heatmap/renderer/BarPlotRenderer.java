@@ -9,7 +9,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
-import org.caleydo.view.heatmap.heatmap.template.AHeatMapTemplate;
+import org.caleydo.view.heatmap.heatmap.template.AHeatMapLayoutConfiguration;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
 
 public class BarPlotRenderer extends AHeatMapRenderer {
@@ -26,7 +26,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	@Override
 	public void updateSpacing() {
 
-		AHeatMapTemplate heatMapTemplate = heatMap.getTemplate();
+		AHeatMapLayoutConfiguration heatMapTemplate = heatMap.getTemplate();
 
 		int nrRecordElements = heatMap.getDataContainer().getRecordPerspective()
 				.getVirtualArray().size();

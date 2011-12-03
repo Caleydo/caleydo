@@ -3,7 +3,7 @@ package org.caleydo.view.selectionbrowser;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedView;
 
 /**
  * Serialized of the selection browser view.
@@ -12,7 +12,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedSelectionBrowserView extends ASerializedTopLevelDataView {
+public class SerializedSelectionBrowserView extends ASerializedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -20,9 +20,6 @@ public class SerializedSelectionBrowserView extends ASerializedTopLevelDataView 
 	public SerializedSelectionBrowserView() {
 	}
 
-	public SerializedSelectionBrowserView(String dataDomainType) {
-		super(dataDomainType);
-	}
 
 	@Override
 	public String getViewType() {

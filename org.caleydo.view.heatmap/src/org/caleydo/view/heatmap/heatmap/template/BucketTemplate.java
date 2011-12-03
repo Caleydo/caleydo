@@ -11,11 +11,10 @@ import org.caleydo.view.heatmap.heatmap.GLHeatMap;
  * @author Alexander Lex
  * 
  */
-public class BucketTemplate extends AHeatMapTemplate {
+public class BucketTemplate extends AHeatMapLayoutConfiguration {
 
 	public BucketTemplate(GLHeatMap heatMap) {
 		super(heatMap);
-		minSelectedFieldHeight = 0.5f;
 
 	}
 

@@ -6,24 +6,5 @@ package org.caleydo.core.view.opengl.canvas;
  * @author Marc Streit
  */
 public enum DetailLevel {
-
-	/**
-	 * bucket pool/memo
-	 */
-	VERY_LOW,
-
-	/**
-	 * bucket walls
-	 */
-	LOW,
-
-	/**
-	 * bucket center (but not zoomed)
-	 */
-	MEDIUM,
-
-	/**
-	 * bucket zoomed in or standalone
-	 */
-	HIGH
+	VERY_LOW, LOW, MEDIUM, HIGH
 }

@@ -477,7 +477,7 @@ public class SelectionBrowserView extends ASWTView implements
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		return new SerializedSelectionBrowserView(dataDomain.getDataDomainID());
+		return new SerializedSelectionBrowserView();
 	}
 
 	@Override
