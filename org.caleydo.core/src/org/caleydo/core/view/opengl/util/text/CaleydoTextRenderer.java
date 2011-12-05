@@ -179,16 +179,20 @@ public class CaleydoTextRenderer extends TextRenderer {
 			float zPositon, float width, float height) {
 
 		// we use the height of a standard string so we don't have varying
-		// height	 
-		double scaling = height / super.getBounds("Sgfy").getHeight();;
+		// height
+		double scaling = height / super.getBounds("Sgfy").getHeight();
 
 		Rectangle2D boundsForWidth = super.getBounds(text);
 		double requiredWidth = boundsForWidth.getWidth() * scaling;
-		if (requiredWidth > width + 0.001) {
+		if (requiredWidth > width) {
 			double truncateFactor = width / requiredWidth;
 			int length = (int) (text.length() * truncateFactor);
 			if (length >= 0)
 				text = text.substring(0, length);
+
+			Rectangle2D checkedBounds = super.getBounds(text);
+			if (width < checkedBounds.getWidth() * scaling && text.length() > 0)
+				text = text.substring(0, length - 1);
 		}
 
 		begin3DRendering();

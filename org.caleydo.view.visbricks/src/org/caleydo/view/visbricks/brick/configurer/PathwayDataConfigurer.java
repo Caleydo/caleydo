@@ -25,6 +25,7 @@ import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
+import org.caleydo.view.visbricks.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
 import org.caleydo.view.visbricks.brick.ui.PathwaysSummaryRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.PathwayCreator;
@@ -237,8 +238,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 	@Override
 	public IBrickSortingStrategy getBrickSortingStrategy() {
-
-		return new AverageValueSortingStrategy();
+		// replace with ExternallyProvidedSortingStrategy
+		return new NoSortingSortingStrategy();
 	}
 
 	@Override

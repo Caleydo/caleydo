@@ -339,12 +339,12 @@ public abstract class VirtualArray<ConcreteType extends VirtualArray<ConcreteTyp
 	}
 
 	/**
-	 * Returns the array list which contains the list of dimension indices. DO
+	 * Returns the array list which contains the list of vaIDs. DO
 	 * NOT EDIT THIS LIST
 	 * 
 	 * @return the list containing the dimension indices
 	 */
-	public ArrayList<Integer> getIndexList() {
+	public ArrayList<Integer> getIDs() {
 		return virtualArrayList;
 	}
 

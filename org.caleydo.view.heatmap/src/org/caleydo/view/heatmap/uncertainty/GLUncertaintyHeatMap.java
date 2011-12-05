@@ -221,7 +221,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		RecordPerspective detailHMRecordPerspective = new RecordPerspective(dataDomain);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
 		data.setData(dataContainer.getRecordPerspective().getVirtualArray()
-				.getIndexList());
+				.getIDs());
 		detailHMRecordPerspective.init(data);
 
 		DataContainer detailHeatMapContainer = new DataContainer(dataDomain,

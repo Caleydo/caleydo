@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks.brick.sorting;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -33,7 +33,7 @@ public class AlphabeticalDataLabelSortingStrategy implements IBrickSortingStrate
 	}
 
 	@Override
-	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks) {
+	public ArrayList<GLBrick> getSortedBricks(List<GLBrick> segmentBricks) {
 
 		ArrayList<DataLabelComparable> comparables = new ArrayList<DataLabelComparable>();
 

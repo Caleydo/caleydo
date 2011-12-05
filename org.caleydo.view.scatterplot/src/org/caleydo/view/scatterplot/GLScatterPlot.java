@@ -1222,7 +1222,7 @@ public class GLScatterPlot extends ATableBasedView {
 				.getVirtualArray();
 		DataTable table = dataDomain.getTable();
 
-		Collection<Integer> tmpSet = recordVA.getIndexList();
+		Collection<Integer> tmpSet = recordVA.getIDs();
 
 		int iNumberOfActuelelements = numberOfRandomElements;
 		int iActualPointsSkipped = 1;
@@ -2138,7 +2138,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		// recordVA = useCase.getVA(EVAType.CONTENT);
 		// Collection<Integer> selectionSet = recordVA.getIndexList();
-		Collection<Integer> tmpSet = recordVA.getIndexList();
+		Collection<Integer> tmpSet = recordVA.getIDs();
 		Collection<Integer> selectionSet = new ArrayList<Integer>();
 		for (Integer recordIndex : tmpSet) {
 			if (useRandomSampling)

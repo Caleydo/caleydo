@@ -137,7 +137,7 @@ public class CreatePathwayComparisonGroupDialog extends TitleAreaDialog {
 		pathwayGraphsWithOccurrences = PathwayManager.get()
 				.getPathwayGraphsWithOccurencesByGeneIDs(
 						(GeneticDataDomain) inputDataContainer.getDataDomain(),
-						va.getIdType(), va.getIndexList());
+						va.getIdType(), va.getIDs());
 
 		// Create a list that contains pathways sorted by gene occurences
 		ArrayList<Pair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<Pair<Integer, PathwayGraph>>();

@@ -25,6 +25,7 @@ import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
+import org.caleydo.view.visbricks.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
@@ -305,6 +306,6 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	@Override
 	public IBrickSortingStrategy getBrickSortingStrategy() {
 
-		return new AverageValueSortingStrategy();
+		return new NoSortingSortingStrategy();
 	}
 }

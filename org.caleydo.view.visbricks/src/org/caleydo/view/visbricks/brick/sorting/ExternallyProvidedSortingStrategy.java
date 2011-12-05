@@ -3,7 +3,7 @@ package org.caleydo.view.visbricks.brick.sorting;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Set;
+
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
@@ -33,7 +33,7 @@ public class ExternallyProvidedSortingStrategy
 	private HashMap<RecordPerspective, RecordPerspective> hashConvertedRecordPerspectiveToOrginalRecordPerspective = new HashMap<RecordPerspective, RecordPerspective>();
 
 	@Override
-	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks) {
+	public ArrayList<GLBrick> getSortedBricks(List<GLBrick> segmentBricks) {
 
 		GLBrick[] sortedBricks = new GLBrick[segmentBricks.size()];
 		for (GLBrick brick : segmentBricks) {

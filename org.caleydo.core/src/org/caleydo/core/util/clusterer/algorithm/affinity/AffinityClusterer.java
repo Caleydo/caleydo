@@ -560,8 +560,8 @@ public class AffinityClusterer
 		int counter = 0;
 		int idxCnt = 0;
 
-		ArrayList<Integer> alIndexListContent = recordVA.getIndexList();
-		ArrayList<Integer> alIndexListDimension = dimensionVA.getIndexList();
+		ArrayList<Integer> alIndexListContent = recordVA.getIDs();
+		ArrayList<Integer> alIndexListDimension = dimensionVA.getIDs();
 
 		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
 			for (Integer example : alExamples) {

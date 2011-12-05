@@ -88,7 +88,7 @@ public class OverviewRenderer extends LayoutRenderer {
 				// creating Layout for each cluster
 				DataContainer clusterContainer = this.getClusterContainer(clusterIndex);
 				float ratio = (float) clusterContainer.getNrRecords()
-						/ ((float) recordVA.getIndexList().size());
+						/ ((float) recordVA.getIDs().size());
 
 				Row clusterLayout = new Row("clusterLayout_" + counter);
 				clusterLayout.setRatioSizeY(ratio);

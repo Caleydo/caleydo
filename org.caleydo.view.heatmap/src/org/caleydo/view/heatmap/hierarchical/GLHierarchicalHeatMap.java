@@ -4958,10 +4958,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				groupCnt++;
 			}
 			if (experimentsToExport.size() == 0)
-				experimentsToExport = dimensionVA.getIndexList();
+				experimentsToExport = dimensionVA.getIDs();
 
 		} else
-			experimentsToExport = dimensionVA.getIndexList();
+			experimentsToExport = dimensionVA.getIDs();
 
 		openExportDialog(genesToExport, experimentsToExport);
 
@@ -4997,10 +4997,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				groupCnt++;
 			}
 			if (genesToExport.size() == 0)
-				genesToExport = recordVA.getIndexList();
+				genesToExport = recordVA.getIDs();
 
 		} else
-			genesToExport = recordVA.getIndexList();
+			genesToExport = recordVA.getIDs();
 
 		openExportDialog(genesToExport, experimentsToExport);
 

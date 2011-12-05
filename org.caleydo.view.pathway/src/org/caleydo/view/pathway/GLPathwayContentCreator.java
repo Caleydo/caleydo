@@ -265,7 +265,7 @@ public class GLPathwayContentCreator {
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 		gl.glEndList();
 	}
-	
+
 	private void buildUpscaledEnzymeNodeDisplayList(final GL2 gl) {
 
 		upscaledEnzymeNodeDisplayListId = gl.glGenLists(1);
@@ -279,7 +279,7 @@ public class GLPathwayContentCreator {
 	}
 
 	protected void buildFramedEnzymeNodeDisplayList(final GL2 gl) {
-		
+
 		framedEnzymeNodeDisplayListId = gl.glGenLists(1);
 
 		float fNodeWidth = PathwayRenderStyle.ENZYME_NODE_WIDTH;
@@ -324,8 +324,9 @@ public class GLPathwayContentCreator {
 		gl.glVertex3f(-fNodeWidth, fNodeHeight, Z_OFFSET);
 		gl.glEnd();
 	}
-	
-	private void fillUpscaledNodeDisplayList(final GL2 gl, float fNodeWidth, float fNodeHeight) {
+
+	private void fillUpscaledNodeDisplayList(final GL2 gl, float fNodeWidth,
+			float fNodeHeight) {
 
 		float scaleFactor = 3;
 		fNodeWidth *= scaleFactor;
@@ -479,7 +480,7 @@ public class GLPathwayContentCreator {
 
 			gl.glLineWidth(3);
 			if (enableGeneMapping) {
-				
+
 				tmpNodeColor = determineNodeColor(vertexRep);
 				gl.glLineWidth(4);
 
@@ -783,9 +784,10 @@ public class GLPathwayContentCreator {
 					int index = glPathwayView.getDataContainer()
 							.getDimensionPerspective().getVirtualArray()
 							.indexOf(expressionIndex);
-					expression = (float) glPathwayView.getDataContainer()
-							.getContainerStatistics().getAverageDimensions().get(index)
-							.getArithmeticMean();
+					if (index > 0)
+						expression = (float) glPathwayView.getDataContainer()
+								.getContainerStatistics().getAverageDimensions()
+								.get(index).getArithmeticMean();
 				}
 				return colorMapper.getColor(expression);
 

@@ -308,7 +308,7 @@ public class DimensionGroup extends ATableBasedView implements
 		if (brickDataContainers == null || brickDataContainers.size() <= 0)
 			return;
 
-		Set<GLBrick> segmentBricks = new HashSet<GLBrick>();
+		List<GLBrick> segmentBricks = new ArrayList<GLBrick>();
 
 		for (DataContainer brickData : brickDataContainers) {
 			GLBrick segmentBrick = createBrick(new ElementLayout("brick"), brickData);
@@ -324,7 +324,7 @@ public class DimensionGroup extends ATableBasedView implements
 			segmentBricks.add(segmentBrick);
 		}
 
-		ArrayList<GLBrick> sortedBricks = brickConfigurer.getBrickSortingStrategy()
+		List<GLBrick> sortedBricks = brickConfigurer.getBrickSortingStrategy()
 				.getSortedBricks(segmentBricks);
 
 		for (GLBrick brick : sortedBricks) {
@@ -434,7 +434,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 		recordVAUpdateListener = new RecordVAUpdateListener();
 		recordVAUpdateListener.setHandler(this);
-		recordVAUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(RecordVAUpdateEvent.class, recordVAUpdateListener);
 
 		layoutSizeCollisionListener = new LayoutSizeCollisionListener();
@@ -468,9 +467,10 @@ public class DimensionGroup extends ATableBasedView implements
 		clusterBrickColumn.clear();
 		clusterBricks.clear();
 		createClusterBricks();
-		mainRow.updateSubLayout();
+		visBricks.updateLayout();
+//		mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+//		visBricks.updateConnectionLinesBetweenDimensionGroups();
 
 		// visBricks.getRelationAnalyzer().updateRelations(
 		// dimensionGroupData.getID(),

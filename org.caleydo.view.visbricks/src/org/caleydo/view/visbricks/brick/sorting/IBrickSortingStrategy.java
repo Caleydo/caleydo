@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks.brick.sorting;
 
-import java.util.ArrayList;
-import java.util.Set;
+import java.util.List;
 
 import org.caleydo.view.visbricks.brick.GLBrick;
 
@@ -23,6 +22,6 @@ public interface IBrickSortingStrategy {
 	 * @return Sorted list of the specified Segment bricks and the summary
 	 *         brick.
 	 */
-	public ArrayList<GLBrick> getSortedBricks(Set<GLBrick> segmentBricks);
+	public List<GLBrick> getSortedBricks(List<GLBrick> segmentBricks);
 
 }

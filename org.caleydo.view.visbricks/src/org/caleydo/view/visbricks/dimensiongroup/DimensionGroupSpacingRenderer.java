@@ -1,5 +1,6 @@
 package org.caleydo.view.visbricks.dimensiongroup;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
@@ -21,11 +22,11 @@ import org.caleydo.core.data.virtualarray.similarity.VASimilarity;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.visbricks.BrickConnection;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -51,8 +52,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 	private boolean isVertical = true;
 
-	private float lineLength = 0;
-
 	/** The DimensionGroup left of the spacer */
 	private DimensionGroup leftDimGroup;
 	/** The DimensionGroup right of the spacer */
@@ -65,6 +64,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	private ConnectionBandRenderer connectionRenderer = new ConnectionBandRenderer();
 
 	private GLVisBricks glVisBricks;
+
+	/**
+	 * Stores all created connectionBandIDs so that they can be removed once
+	 * this object is destroyed
+	 */
+	ArrayList<Integer> ribbonIDs = new ArrayList<Integer>();
 
 	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
 			ConnectionBandRenderer connectionRenderer, DimensionGroup leftDimGroup,
@@ -82,6 +87,17 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	{
 		ID = GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.DIMENSION_GROUP_SPACER);
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		// remove the brick connections from visbricks
+//		HashMap<Integer, BrickConnection> brickConnections = glVisBricks
+//				.getHashConnectionBandIDToRecordVA();
+//		for (Integer ribbonID : ribbonIDs) {
+//			brickConnections.remove(ribbonID);
+//		}
 	}
 
 	public void init() {
@@ -116,7 +132,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			hashGroupID2GroupMatches.put(leftBrick.getDataContainer().getRecordGroup()
 					.getGroupIndex(), groupMatch);
 
-			RectangleCoordinates leftBrickElementLayout = leftBrick.getLayoutForConnections();
+			RectangleCoordinates leftBrickElementLayout = leftBrick
+					.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getDataContainer()
@@ -134,10 +151,20 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				groupMatch.addSubGroupMatch(rightBrick.getDataContainer()
 						.getRecordGroup().getGroupIndex(), subGroupMatch);
 
-				calculateSubMatchSelections(
-						subGroupMatch,
-						leftGroupSimilarity.getSimilarityVAs(rightBrick
-								.getDataContainer().getRecordGroup().getGroupIndex()));
+				RecordVirtualArray similarityVA = leftGroupSimilarity
+						.getSimilarityVAs(rightBrick.getDataContainer().getRecordGroup()
+								.getGroupIndex());
+
+				ribbonIDs.add(subGroupMatch.getConnectionBandID());
+				BrickConnection brickConnection = new BrickConnection();
+				brickConnection.setConnectionBandID(subGroupMatch.getConnectionBandID());
+				brickConnection.setLeftBrick(leftBrick);
+				brickConnection.setRightBrick(rightBrick);
+				brickConnection.setSharedRecordVirtualArray(similarityVA);
+				glVisBricks.getHashConnectionBandIDToRecordVA().put(
+						subGroupMatch.getConnectionBandID(), brickConnection);
+
+				calculateSubMatchSelections(subGroupMatch, similarityVA);
 
 				float leftSimilarityRatioY = leftSimilarities[rightBrick
 						.getDataContainer().getRecordGroup().getGroupIndex()];
@@ -146,8 +173,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				subGroupMatch.setSimilarityRatioLeft(leftSimilarityRatioY);
 
 				subGroupMatch.setLeftAnchorYStart(leftBrickElementLayout.getBottom()
-						+ leftBrickElementLayout.getHeight()
-						* (leftSimilarityOffsetY));
+						+ leftBrickElementLayout.getHeight() * (leftSimilarityOffsetY));
 
 				subGroupMatch.setLeftAnchorYEnd(leftBrickElementLayout.getBottom()
 						+ leftBrickElementLayout.getHeight()
@@ -158,7 +184,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		for (GLBrick rightBrick : rightBricks) {
 			if (rightBrick.isHeaderBrick())
 				continue;
-			RectangleCoordinates rightBrickElementLayout = rightBrick.getLayoutForConnections();
+			RectangleCoordinates rightBrickElementLayout = rightBrick
+					.getLayoutForConnections();
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(rightDimGroup.getDataContainer()
@@ -183,10 +210,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 				subGroupMatch.setSimilarityRatioRight(rightSimilarityRatioY);
 
-				subGroupMatch.setRightAnchorYStart(rightBrickElementLayout
-						.getBottom()
-						+ rightBrickElementLayout.getHeight()
-						* (rightSimilarityOffsetY));
+				subGroupMatch.setRightAnchorYStart(rightBrickElementLayout.getBottom()
+						+ rightBrickElementLayout.getHeight() * (rightSimilarityOffsetY));
 
 				subGroupMatch.setRightAnchorYEnd(rightBrickElementLayout.getBottom()
 						+ rightBrickElementLayout.getHeight()
@@ -204,9 +229,6 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 
 		RecordSelectionManager recordSelectionManager = glVisBricks
 				.getRecordSelectionManager();
-
-		glVisBricks.getHashConnectionBandIDToRecordVA().put(
-				subGroupMatch.getConnectionBandID(), recordVA);
 
 		float ratio = 0;
 
@@ -429,8 +451,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			GLBrick brick = groupMatch.getBrick();
 			float xStart = 0;
 			if (!leftDimGroup.isDetailBrickShown())
-				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick.getLayoutForConnections()
-						.getWidth()) / 2;
+				xStart = -(leftDimGroup.getLayout().getSizeScaledX() - brick
+						.getLayoutForConnections().getWidth()) / 2;
 
 			// if (groupMatch.getBrick().isInOverviewMode())
 			// continue;
@@ -596,9 +618,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		this.isVertical = isVertical;
 	}
 
-	public void setLineLength(float lineLength) {
-		this.lineLength = lineLength;
-	}
+	// public void setLineLength(float lineLength) {
+	// this.lineLength = lineLength;
+	// }
 
 	@Override
 	public void handleDragOver(GL2 gl, java.util.Set<IDraggable> draggables,

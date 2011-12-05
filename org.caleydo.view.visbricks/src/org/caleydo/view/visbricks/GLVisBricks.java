@@ -6,6 +6,7 @@ import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -21,6 +22,8 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.data.perspective.PerspectiveInitializationData;
+import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.SelectionTypeEvent;
@@ -29,6 +32,7 @@ import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.ClearSelectionsEvent;
@@ -60,13 +64,16 @@ import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
 import org.caleydo.view.visbricks.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;
+import org.caleydo.view.visbricks.brick.contextmenu.SplitBrickItem;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupSpacingRenderer;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.visbricks.event.SplitBrickEvent;
 import org.caleydo.view.visbricks.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks.listener.ConnectionsModeListener;
 import org.caleydo.view.visbricks.listener.GLVisBricksKeyListener;
+import org.caleydo.view.visbricks.listener.SplitBrickListener;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 
@@ -94,6 +101,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
+	private SplitBrickListener splitBrickListener;
 
 	private DimensionGroupManager dimensionGroupManager;
 
@@ -163,7 +171,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	private float previousXCoordinate = Float.NaN;
 
 	/** Needed for selecting the elements when a connection band is picked **/
-	private HashMap<Integer, RecordVirtualArray> hashConnectionBandIDToRecordVA = new HashMap<Integer, RecordVirtualArray>();
+	private HashMap<Integer, BrickConnection> hashConnectionBandIDToRecordVA = new HashMap<Integer, BrickConnection>();
 
 	private SelectionType volatileBandSelectionType;
 
@@ -201,9 +209,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
 		parentGLCanvas.addMouseWheelListener(glMouseWheelListener);
-		
-//		SelectionType selectionType = new 
-		
+
+		// SelectionType selectionType = new
+
 		registerPickingListeners();
 	}
 
@@ -301,7 +309,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		}
 
 		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
-		dimensionGroupSpacingRenderer.setLineLength(archHeight);
+		// dimensionGroupSpacingRenderer.setLineLength(archHeight);
 
 		if (dimensionGroupCountInCenter > 1)
 			leftDimensionGroupSpacing.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
@@ -348,7 +356,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			}
 			// dimensionGroupSpacing.setDebug(true);
 
-			dimensionGroupSpacingRenderer.setLineLength(archHeight);
+			// dimensionGroupSpacingRenderer.setLineLength(archHeight);
 		}
 
 		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
@@ -400,7 +408,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 
 		dimensionGroupSpacingRenderer.setVertical(false);
-		dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
+		// dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 
 		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensinoGroupEndIndex; dimensionGroupIndex++) {
 
@@ -425,7 +433,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 
 			dimensionGroupSpacingRenderer.setVertical(false);
-			dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
+			// dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 
 		}
 
@@ -485,8 +493,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	@Override
 	public void display(GL2 gl) {
-		
-		
+
 		handleHorizontalMoveDragging(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
@@ -637,7 +644,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
 		}
 		// false only if this is the right-most dimension group
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex()-1) {
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
 			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
 		}
 		isLeftDetailShown = true;
@@ -959,6 +966,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				selectedConnectionBandID = pick.getID();
 				selectElementsByConnectionBandID(selectedConnectionBandID);
 			}
+
+			@Override
+			public void rightClicked(Pick pick) {
+
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(),
+						true));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(),
+						false));
+			}
+
 		}, PickingType.BRICK_CONNECTION_BAND.name());
 
 		addTypePickingListener(new APickingListener() {
@@ -1033,6 +1050,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		eventPublisher
 				.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
 
+		splitBrickListener = new SplitBrickListener();
+		splitBrickListener.setHandler(this);
+		eventPublisher.addListener(SplitBrickEvent.class, splitBrickListener);
+
 	}
 
 	@Override
@@ -1052,6 +1073,11 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		if (trendHighlightModeListener != null) {
 			eventPublisher.removeListener(trendHighlightModeListener);
 			trendHighlightModeListener = null;
+		}
+
+		if (splitBrickListener != null) {
+			eventPublisher.removeListener(splitBrickListener);
+			splitBrickListener = null;
 		}
 	}
 
@@ -1418,7 +1444,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		return selectedConnectionBandID;
 	}
 
-	public HashMap<Integer, RecordVirtualArray> getHashConnectionBandIDToRecordVA() {
+	public HashMap<Integer, BrickConnection> getHashConnectionBandIDToRecordVA() {
 		return hashConnectionBandIDToRecordVA;
 	}
 
@@ -1442,7 +1468,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
 		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA
-				.get(connectionBandID);
+				.get(connectionBandID).getSharedRecordVirtualArray();
 		for (Integer recordID : recordVA) {
 			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
 					recordVA.getIdType(), recordID);
@@ -1455,6 +1481,107 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		updateConnectionLinesBetweenDimensionGroups();
+	}
+
+	/**
+	 * Splits a brick into two portions: those values that are in the band
+	 * identified through the connection band id and the others.
+	 */
+	public void splitBrick(Integer connectionBandID, boolean isSplitLeftBrick) {
+		BrickConnection brickConnection = hashConnectionBandIDToRecordVA
+				.get(connectionBandID);
+		RecordVirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
+
+		RecordPerspective sourcePerspective;
+		RecordVirtualArray sourceVA;
+		Integer sourceGroupIndex;
+
+		if (isSplitLeftBrick) {
+			sourcePerspective = brickConnection.getLeftBrick().getDimensionGroup()
+					.getDataContainer().getRecordPerspective();
+			sourceVA = sourcePerspective.getVirtualArray();
+			sourceGroupIndex = brickConnection.getLeftBrick().getDataContainer()
+					.getRecordGroup().getGroupIndex();
+		} else {
+			sourcePerspective = brickConnection.getRightBrick().getDimensionGroup()
+					.getDataContainer().getRecordPerspective();
+			sourceVA = sourcePerspective.getVirtualArray();
+			sourceGroupIndex = brickConnection.getRightBrick().getDataContainer()
+					.getRecordGroup().getGroupIndex();
+		}
+
+		List<Integer> remainingGroupIDs = new ArrayList<Integer>();
+
+		// this is necessary because the originalGroupIDs is backed by the
+		// original VA and changes in it also change the VA
+		for (Integer id : sourceVA.getIDsOfGroup(sourceGroupIndex)) {
+			remainingGroupIDs.add(id);
+		}
+
+		// remove the ids of the shared record va from the group which is beeing
+		// split
+		for (Integer recordID : sharedRecordVA) {
+
+			Iterator<Integer> remainingGroupIDIterator = remainingGroupIDs.iterator();
+			while (remainingGroupIDIterator.hasNext()) {
+
+				if (remainingGroupIDIterator.next() == recordID) {
+					remainingGroupIDIterator.remove();
+				}
+			}
+		}
+
+		sourceVA.getGroupList().updateGroupInfo();
+
+		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
+		List<Integer> groupSizes = new ArrayList<Integer>(
+				sourceVA.getGroupList().size() + 1);
+		List<String> groupNames = new ArrayList<String>(
+				sourceVA.getGroupList().size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(sourceVA.getGroupList()
+				.size() + 1);
+
+		// build up the data for the perspective
+		int sizeCounter = 0;
+		for (Integer groupIndex = 0; groupIndex < sourceVA.getGroupList().size(); groupIndex++) {
+			if (groupIndex == sourceGroupIndex) {
+				newIDs.addAll(sharedRecordVA.getIDs());
+				groupSizes.add(sharedRecordVA.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += sharedRecordVA.size();
+				groupNames.add( sourceVA.getGroupList().get(groupIndex).getClusterNode()
+								.getLabel()+ " Split 1");
+
+				newIDs.addAll(remainingGroupIDs);
+				groupSizes.add(remainingGroupIDs.size());
+				sampleElements.add(sizeCounter);
+				sizeCounter += remainingGroupIDs.size();
+				groupNames.add(
+						 sourceVA.getGroupList().get(groupIndex).getClusterNode()
+								.getLabel() + " Split 2");
+			} else {
+				newIDs.addAll(sourceVA.getIDsOfGroup(groupIndex));
+				groupSizes.add(sourceVA.getGroupList().get(groupIndex).getSize());
+				sampleElements.add(sizeCounter);
+				sizeCounter += sourceVA.getGroupList().get(groupIndex).getSize();
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getClusterNode()
+						.getLabel());
+			}
+
+		}
+
+		PerspectiveInitializationData data = new PerspectiveInitializationData();
+
+		data.setData(newIDs, groupSizes, sampleElements, groupNames);
+		// FIXME the rest should probably not be done here but in the data
+		// domain.
+		sourcePerspective.init(data);
+
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
+		event.setPerspectiveID(sourcePerspective.getID());
+
+		eventPublisher.triggerEvent(event);
+
 	}
 
 	public int getNextConnectionBandID() {

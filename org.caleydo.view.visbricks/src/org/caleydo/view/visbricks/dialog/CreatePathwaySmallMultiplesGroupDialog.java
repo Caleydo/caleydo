@@ -138,7 +138,7 @@ public class CreatePathwaySmallMultiplesGroupDialog
 		pathwayGraphsWithOccurrences = PathwayManager.get()
 				.getPathwayGraphsWithOccurencesByGeneIDs(
 						(GeneticDataDomain) dataContainer.getDataDomain(), va.getIdType(),
-						va.getIndexList());
+						va.getIDs());
 
 		// Create a list that contains pathways sorted by gene occurrences
 		ArrayList<Pair<Integer, PathwayGraph>> sortedPathwayList = new ArrayList<Pair<Integer, PathwayGraph>>();
