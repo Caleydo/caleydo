@@ -96,7 +96,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		guiElementsHeight = 0;
 		Row baseRow = new Row("baseRow");
 		baseRow.setFrameColor(1, 0, 0, 0.5f);
-		// baseRow.setDebug(true);
 
 		baseRow.setFrameColor(0, 0, 1, 0);
 		baseElementLayout = baseRow;
@@ -140,7 +139,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("viewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			// viewLayout.setDebug(true);
 			viewLayout
 					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
@@ -214,7 +212,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 */
 	protected Row createToolBar() {
 		Row toolBar = new ToolBar("ToolBarRow", brick);
-		// toolBar.setDebug(true);
 		toolBar.setPixelSizeY(0);
 
 		ElementLayout spacingLayoutX = new ElementLayout("spacingLayoutX");

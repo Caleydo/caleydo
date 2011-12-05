@@ -46,7 +46,6 @@ public class UncertaintyDetailHeatMapTemplate extends AHeatMapLayoutConfiguratio
 		// rendererParameters.clear();
 
 		Row mainRow = new Row("heatMapRow");
-		// mainRow.setDebug(true);
 		mainRow.setGrabY(true);
 		mainRow.setRatioSizeX(1);
 

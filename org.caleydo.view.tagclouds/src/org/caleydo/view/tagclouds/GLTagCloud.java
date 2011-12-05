@@ -171,7 +171,6 @@ public class GLTagCloud extends ATableBasedView {
 
 			ElementLayout previousButtonLayout = new ElementLayout("previousButtonLayout");
 			previousButtonLayout.setPixelSizeY(20);
-			// previousButtonLayout.setDebug(true);
 
 			previousDimensionColumn.append(previousButtonLayout);
 
@@ -185,7 +184,6 @@ public class GLTagCloud extends ATableBasedView {
 
 			ElementLayout nextButtonLayout = new ElementLayout("nextButtonLayout");
 			nextButtonLayout.setPixelSizeY(20);
-			// nextButtonLayout.setDebug(true);
 
 			ButtonRenderer nextButtonRenderer = new ButtonRenderer(nextButton, this,
 					textureManager, ButtonRenderer.TEXTURE_ROTATION_270);
@@ -205,18 +203,14 @@ public class GLTagCloud extends ATableBasedView {
 			clippedDimensionVA = null;
 		}
 
-		// baseColumn.setDebug(true);
-
 		// baseColumn.setAbsoluteSizeY(3);
 		tagCloudRow = new Row("tagCloudRow");
-		// tagCloudRow.setDebug(true);
 
 		captionRow = new Row("captionRow");
 		captionRow.setPixelSizeY(15);
 
 		selectionRow = new Row("selectionRow");
 		selectionRow.setPixelSizeY(15);
-		// selectionRow.setDebug(true);
 
 		ElementLayout spacing = new ElementLayout("spacing");
 		spacing.setPixelSizeY(2);
@@ -237,8 +231,6 @@ public class GLTagCloud extends ATableBasedView {
 		baseColumn.append(tagCloudRow);
 		baseColumn.append(spacing);
 
-		// tagCloudRow.setDebug(true);
-
 		for (Integer dimensionID : visibleDimensionVA) {
 
 			ElementLayout dimensionCaptionLayout = new ElementLayout(
@@ -248,7 +240,6 @@ public class GLTagCloud extends ATableBasedView {
 			DimensionCaptionRenderer dimensionCaptionRenderer = new DimensionCaptionRenderer(
 					textRenderer, dataDomain.getDimensionLabel(dimensionID));
 			dimensionCaptionLayout.setRenderer(dimensionCaptionRenderer);
-			// dimensionCaptionLayout.setDebug(true);
 
 			captionRow.append(dimensionCaptionLayout);
 
@@ -311,7 +302,6 @@ public class GLTagCloud extends ATableBasedView {
 
 			ElementLayout selectionTagLayout = new ElementLayout("selectionTagLayout");
 			selectionTagLayout.setGrabX(true);
-			// selectionTagLayout.setDebug(true);
 			selectionRow.setFrameColor(1, 0, 0, 1);
 			selectionRow.append(selectionTagLayout);
 			TagRenderer tagRenderer = new TagRenderer(textRenderer, this, dimensionID);

@@ -289,7 +289,6 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		}
 
 		ElementLayout ratioSpacingLayoutX = new ElementLayout("ratioSpacingLayoutX");
-		// ratioSpacingLayoutX.setDebug(true);
 		ratioSpacingLayoutX.setRatioSizeX(1);
 		ratioSpacingLayoutX.setRatioSizeY(0);
 

@@ -125,7 +125,6 @@ public class OverviewRenderer extends LayoutRenderer {
 			}
 		} else {
 			Row clusterLayout = new Row("clusterLayout");
-			clusterLayout.setDebug(false);
 			clusterLayout.setRatioSizeY(1);
 
 			clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,

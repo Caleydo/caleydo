@@ -2,10 +2,8 @@ package org.caleydo.core.view.opengl.canvas;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -27,8 +25,6 @@ import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionCommandListener;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
-import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
-import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateListener;

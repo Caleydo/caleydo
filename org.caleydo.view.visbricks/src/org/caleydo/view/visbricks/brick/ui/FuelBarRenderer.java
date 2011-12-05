@@ -24,7 +24,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 	public FuelBarRenderer(GLBrick brick) {
 		this.brick = brick;
 
-		selectionManager = brick.getRecordGroupSelectionManager();
+		selectionManager = brick.getDataContainerSelectionManager();
 	}
 
 	@Override

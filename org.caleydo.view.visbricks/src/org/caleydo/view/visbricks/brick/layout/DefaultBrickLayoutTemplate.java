@@ -127,7 +127,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		//
 		// ElementLayout leftRelationIndicatorLayout = new ElementLayout(
 		// "RightRelationIndicatorLayout");
-		// // rightRelationIndicatorLayout.setDebug(true);
+//		  rightRelationIndicatorLayout.setDebug(true);
 		// leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 		// leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 		// baseRow.append(leftRelationIndicatorLayout);
@@ -224,7 +224,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		ElementLayout collapseButtonLayout = new ElementLayout("expandButtonLayout");
 		collapseButtonLayout.setFrameColor(1, 0, 0, 1);
-		// expandButtonLayout.setDebug(true);
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
@@ -233,7 +232,6 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90, BUTTON_Z));
 
 		ToolBar toolBar = new ToolBar("ToolBarRow", brick);
-		// toolBar.setDebug(true);
 		// toolBar.setPixelSizeY(TOOLBAR_HEIGHT_PIXELS);
 		toolBar.setPixelSizeY(0);
 		toolBar.setRenderingPriority(2);

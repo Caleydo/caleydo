@@ -89,8 +89,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 1);
-		// baseColumn.setDebug(true);
-
+		
 		// ElementLayout fuelBarLayout = new ElementLayout("fuelBarLayout");
 		// fuelBarLayout.setFrameColor(0, 1, 0, 1);
 		//
@@ -115,14 +114,12 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		Row viewRow = new Row("compactViewRow");
 		viewRow.setFrameColor(0, 0, 1, 1);
-		// viewRow.setDebug(true);
 		// viewRow.setPixelGLConverter(pixelGLConverter);
 		// viewRow.setPixelSizeY(16);
 
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("compactViewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			// viewLayout.setDebug(true);
 			viewLayout
 					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}
@@ -130,7 +127,6 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		ElementLayout expandButtonLayout = new ElementLayout("expandButtonLayout");
 		expandButtonLayout.setFrameColor(1, 0, 0, 1);
-		// expandButtonLayout.setDebug(true);
 		expandButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);

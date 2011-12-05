@@ -139,9 +139,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		ElementLayout captionLayout = new ElementLayout("caption1");
 
-		// captionLayout.setDebug(true);
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-		// captionLayout.setGrabX(true);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider,

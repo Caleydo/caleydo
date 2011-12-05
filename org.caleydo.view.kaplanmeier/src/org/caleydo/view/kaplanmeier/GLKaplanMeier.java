@@ -9,6 +9,9 @@ import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -44,7 +47,7 @@ public class GLKaplanMeier
 
 	private KaplanMeierRenderStyle renderStyle;
 
-	private boolean fillCurve;
+	private SelectionManager recordGroupSelectionManager;
 
 	/**
 	 * Constructor.
@@ -59,6 +62,12 @@ public class GLKaplanMeier
 
 		viewType = GLKaplanMeier.VIEW_TYPE;
 		viewLabel = "Kaplan Meier";
+	}
+
+	@Override
+	public void initialize() {
+		super.initialize();
+		recordGroupSelectionManager = dataDomain.getRecordGroupSelectionManager().clone();
 	}
 
 	@Override
@@ -111,7 +120,7 @@ public class GLKaplanMeier
 		RecordVirtualArray recordVA = dataContainer.getRecordPerspective().getVirtualArray();
 
 		// do not fill curve if multiple curves are rendered in this plot
-		fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
+		boolean fillCurve = recordVA.getGroupList().size() > 1 ? false : true;
 
 		List<Color> colors = ColorManager.get().getColorList(ColorManager.QUALITATIVE_COLORS);
 		for (Group group : recordVA.getGroupList()) {
@@ -126,11 +135,27 @@ public class GLKaplanMeier
 			// We only have 10 colors in the diverging color map
 			colorIndex = colorIndex % 10;
 
-			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex));
+			int lineWidth = 1;
+			if (recordGroupSelectionManager.getElements(SelectionType.SELECTION).size() == 1
+					&& (Integer) recordGroupSelectionManager.getElements(
+							SelectionType.SELECTION).toArray()[0] == group.getID()) {
+				lineWidth = 2;
+				//fillCurve = true;
+			}
+			else
+				fillCurve = false;
+
+			if (detailLevel == DetailLevel.HIGH)
+				lineWidth *= 2;
+
+			gl.glLineWidth(lineWidth);
+
+			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex), fillCurve);
 		}
 	}
 
-	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color) {
+	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color,
+			boolean fillCurve) {
 
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
@@ -154,10 +179,9 @@ public class GLKaplanMeier
 			dataVector.add(sortedDataVector[index]);
 		}
 
-		gl.glLineWidth(1);
 		if (fillCurve) {
-			
-			// We cannot use transparency here because of artefacts. Hence, we need
+			// We cannot use transparency here because of artefacts. Hence, we
+			// need
 			// to brighten the color by multiplying it with a factor
 			gl.glColor3f(color.r * 1.3f, color.g * 1.3f, color.b * 1.3f);
 			drawFilledCurve(gl, dataVector);
@@ -276,6 +300,16 @@ public class GLKaplanMeier
 	}
 
 	@Override
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
+			boolean scrollToSelection, String info) {
+		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+
+		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
+			recordGroupSelectionManager.setDelta(selectionDelta);
+		}
+	}
+
+	@Override
 	protected ArrayList<ElementConnectionInformation> createElementConnectionInformation(
 			IDType idType, int id) throws InvalidAttributeValueException {
 		// TODO Auto-generated method stub
@@ -283,12 +317,32 @@ public class GLKaplanMeier
 	}
 
 	@Override
-	public int getMinPixelHeight() {
-		return 80;
+	public int getMinPixelHeight(DetailLevel detailLevel) {
+
+		switch (detailLevel) {
+			case HIGH:
+				return 400;
+			case MEDIUM:
+				return 100;
+			case LOW:
+				return 50;
+			default:
+				return 50;
+		}
 	}
 
 	@Override
-	public int getMinPixelWidth() {
-		return 100;
+	public int getMinPixelWidth(DetailLevel detailLevel) {
+
+		switch (detailLevel) {
+			case HIGH:
+				return 400;
+			case MEDIUM:
+				return 100;
+			case LOW:
+				return 50;
+			default:
+				return 50;
+		}
 	}
 }

@@ -134,15 +134,12 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		baseColumnn.append(topSpacer);
 
 		overviewLayout = new Column("overviewLayout");
-		overviewLayout.setDebug(false);
 		overviewLayout.setPixelSizeX(220);
 
 		overviewDetailConnectorLayout = new Column("overviewDetailConnectorLayout");
-		overviewDetailConnectorLayout.setDebug(false);
 		overviewDetailConnectorLayout.setPixelSizeX(60);
 
 		detailLayout = new ElementLayout("detailLayout");
-		detailLayout.setDebug(false);
 
 		contentRow.append(overviewLayout);
 		contentRow.append(overviewDetailConnectorLayout);

@@ -57,7 +57,6 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 		Column baseColumn = new Column("baseColumn");
 		baseColumn.setFrameColor(0, 1, 0, 1);
-		// baseColumn.setDebug(true);
 
 		baseRow.setRenderer(borderedAreaRenderer);
 
@@ -72,7 +71,6 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 		if (viewLayout == null) {
 			viewLayout = new ElementLayout("compactViewLayout");
 			viewLayout.setFrameColor(1, 0, 0, 1);
-			// viewLayout.setDebug(true);
 			viewLayout
 					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 		}

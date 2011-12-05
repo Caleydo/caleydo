@@ -116,7 +116,6 @@ abstract class ABookmarkContainer<SelectionManagerType extends SelectionManager>
 		this.pickingIDManager = manager.getBookmarkPickingIDManager();
 		this.containerLayout = new Column("typeBookmarkColumn");
 
-		// containerLayout.setDebug(true);
 		containerLayout.setYDynamic(true);
 		containerLayout.setRatioSizeX(1);
 		containerLayout.setBottomUp(false);

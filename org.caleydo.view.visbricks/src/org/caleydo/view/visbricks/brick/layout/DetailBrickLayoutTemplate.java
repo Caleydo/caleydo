@@ -115,7 +115,6 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			ElementLayout leftRelationIndicatorLayout = new ElementLayout(
 					"RightRelationIndicatorLayout");
-			// rightRelationIndicatorLayout.setDebug(true);
 			leftRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 			leftRelationIndicatorLayout.setRenderer(leftRelationIndicatorRenderer);
 			baseRow.append(leftRelationIndicatorLayout);
@@ -167,7 +166,6 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			ElementLayout rightRelationIndicatorLayout = new ElementLayout(
 					"RightRelationIndicatorLayout");
-			// rightRelationIndicatorLayout.setDebug(true);
 			rightRelationIndicatorLayout.setPixelSizeX(RELATION_INDICATOR_WIDTH_PIXELS);
 			rightRelationIndicatorLayout.setRenderer(rightRelationIndicatorRenderer);
 			baseRow.append(rightRelationIndicatorLayout);
@@ -226,7 +224,6 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 		ElementLayout closeButtonLayout = new ElementLayout("closeButtonLayout");
 		closeButtonLayout.setFrameColor(1, 0, 0, 1);
-		// expandButtonLayout.setDebug(true);
 		closeButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		closeButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		closeButtonLayout.setRenderer(new ButtonRenderer(new Button(

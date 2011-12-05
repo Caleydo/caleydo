@@ -294,7 +294,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		// centerRowLayout.setDebug(false);
 
 		leftDimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
-		// leftDimensionGroupSpacing.setDebug(true);
 
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
 
@@ -328,7 +327,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			group.setCollapsed(false);
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
-			// centerRowLayout.setDebug(true);
 
 			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
 				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
@@ -354,7 +352,6 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				rightDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 				centerRowLayout.append(rightDimensionGroupSpacing);
 			}
-			// dimensionGroupSpacing.setDebug(true);
 
 			// dimensionGroupSpacingRenderer.setLineLength(archHeight);
 		}
@@ -382,12 +379,9 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		layoutManager.setBaseElementLayout(columnLayout);
 
 		columnLayout.setFrameColor(1, 1, 0, 1);
-		// columnLayout.setDebug(true);
 		columnLayout.setBottomUp(true);
 
 		ElementLayout dimensionGroupSpacing = new ElementLayout("firstSideDimGrSpacing");
-
-		// dimensionGroupSpacing.setDebug(true);
 		dimensionGroupSpacing.setGrabY(true);
 
 		columnLayout.append(dimensionGroupSpacing);
@@ -416,14 +410,12 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 					dimensionGroupIndex);
 
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
-			// group.getLayout().setDebug(true);
 			group.setArchHeight(-1);
 			columnLayout.append(group.getLayout());
 
 			group.setCollapsed(true);
 
 			dimensionGroupSpacing = new ElementLayout("sideDimGrSpacing");
-			// dimensionGroupSpacing.setDebug(true);
 			dimensionGroupSpacing.setGrabY(true);
 
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null, null,
