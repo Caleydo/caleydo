@@ -286,7 +286,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
 								.getVirtualArray());
 						data.setRecordPerspective(newRecordPerspective);
-						clusterState.setTargetRecordPerspective(newRecordPerspective);
+						clusterState.setOptionalTargetRecordPerspective(newRecordPerspective);
 
 						StartClusteringEvent event = new StartClusteringEvent(
 								clusterState);

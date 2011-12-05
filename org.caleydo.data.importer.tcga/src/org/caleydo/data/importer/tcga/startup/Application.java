@@ -37,6 +37,7 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
@@ -132,9 +133,10 @@ public class Application implements IApplication {
 		loadExternalClusterInfo(metaInfo.getExternalGroupingPath());
 
 		if (metaInfo.isRunClusteringOnRows()) {
-			PerspectiveInitializationData clusterResult = runClusteringOnRows();
-			if (metaInfo.isCreateGeneSamples())
-				createSampleOfGenes(clusterResult);
+			runClusteringOnRows(true);
+			runClusteringOnRows(false);
+			// if (metaInfo.isCreateGeneSamples())
+			// createSampleOfGenes(clusterResult);
 		}
 
 	}
@@ -279,39 +281,59 @@ public class Application implements IApplication {
 		}
 	}
 
-	private PerspectiveInitializationData runClusteringOnRows() {
+	/**
+	 * Running this once with true creates a default dimension perspective with
+	 * k-means. Running this again with false creates another
+	 * dimensionPerspective using affinity propagation
+	 * 
+	 * @param useKMeansAndMakeDefaultPerspective
+	 * @return
+	 */
+	private void runClusteringOnRows(boolean useKMeansAndMakeDefaultPerspective) {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		if (useQuickClustering) {
+
+		String recordPerspectiveID = dataDomain.getTable().getDefaultRecordPerspective()
+				.getID();
+		String dimensionPerspectiveID = dataDomain.getTable()
+				.getDefaultDimensionPerspective().getID();
+
+		DimensionPerspective sourceDimensionPerspective = dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID);
+
+		if (useKMeansAndMakeDefaultPerspective) {
 			clusterConfiguration.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
 			clusterConfiguration.setkMeansNumberOfClustersForDimensions(5);
+			sourceDimensionPerspective.setLabel("K-Means", false);
 
 		} else {
-			clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-			clusterConfiguration.setAffinityPropClusterFactorGenes(9);
+			// here we create another dimensionPerspective which uses average
+			// linkage hierarchical clustering
+			clusterConfiguration.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
+			clusterConfiguration.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
+		
+			DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
+					dataDomain);
+			dataDomain.getTable()
+					.registerDimensionPerspective(targetDimensionPerspective);
+
+			targetDimensionPerspective.setLabel("Average Linkage", false);
+			clusterConfiguration
+					.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
 		}
-
-		String recordPerspectiveID = dataDomain.getTable().getRecordPerspectiveIDs()
-				.iterator().next();
-		String dimensionPerspectiveID = dataDomain.getTable()
-				.getDimensionPerspectiveIDs().iterator().next();
-
-		DimensionPerspective dimensionPerspective = dataDomain.getTable()
-				.getDimensionPerspective(dimensionPerspectiveID);
 
 		clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
 				.getRecordPerspective(recordPerspectiveID));
-		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
+		clusterConfiguration.setSourceDimensionPerspective(sourceDimensionPerspective);
 
-		ClusterManager clusterManager = new ClusterManager(dataDomain);
-		ClusterResult result = clusterManager.cluster(clusterConfiguration);
+		dataDomain.startClustering(clusterConfiguration);
 
-		dimensionPerspective.init(result.getDimensionResult());
-		dimensionPerspective.setLabel("All genes clustered, size: "
-				+ dimensionPerspective.getVirtualArray().size(), false);
-
-		return result.getDimensionResult();
+		// dimensionPerspective.init(result.getDimensionResult());
+		// dimensionPerspective.setLabel("All genes clustered, size: "
+		// + dimensionPerspective.getVirtualArray().size(), false);
+		//
+		// return result.getDimensionResult();
 	}
 
 	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {
