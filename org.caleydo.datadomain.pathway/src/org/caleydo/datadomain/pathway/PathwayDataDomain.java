@@ -1,8 +1,9 @@
 package org.caleydo.datadomain.pathway;
 
+import java.util.ArrayList;
+import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -10,9 +11,11 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.event.data.DataDomainUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -25,13 +28,20 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  */
 @XmlType
 @XmlRootElement
-public class PathwayDataDomain extends ADataDomain {
+public class PathwayDataDomain
+	extends ADataDomain
+{
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.pathway";
 
 	IDMappingManager geneIDMappingManager;
 
 	IDType primaryIDType;
+
+	/**
+	 * {@link PathwayDataContainer}s of this datadomain.
+	 */
+	private List<PathwayDataContainer> dataContainers = new ArrayList<PathwayDataContainer>();
 
 	/**
 	 * Counter used for determining the extension that together with the type
@@ -42,7 +52,8 @@ public class PathwayDataDomain extends ADataDomain {
 	/**
 	 * Constructor.
 	 */
-	public PathwayDataDomain() {
+	public PathwayDataDomain()
+	{
 
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
@@ -53,7 +64,8 @@ public class PathwayDataDomain extends ADataDomain {
 	}
 
 	@Override
-	public void init() {
+	public void init()
+	{
 
 		super.init();
 
@@ -67,23 +79,25 @@ public class PathwayDataDomain extends ADataDomain {
 	}
 
 	@Override
-	public void run() {
+	public void run()
+	{
 
 		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
 		loadDataParameters.setLabel(pathwayDataSources);
 
-		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName())) {
+		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName()))
+		{
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
-					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
-					"data/html");
+					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
 
 			PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 		}
 
-		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName())) {
+		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName()))
+		{
 
 			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
 					PathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
@@ -96,31 +110,67 @@ public class PathwayDataDomain extends ADataDomain {
 		super.run();
 	}
 
-	public IDType getPrimaryIDType() {
+	public IDType getPrimaryIDType()
+	{
 		return primaryIDType;
 	}
 
-	public IDType getDavidIDType() {
+	public IDType getDavidIDType()
+	{
 		return IDType.getIDType("DAVID");
 	}
 
 	@Override
-	public void registerEventListeners() {
+	public void registerEventListeners()
+	{
 		// TODO Auto-generated method stub
 	}
 
 	@Override
-	public void unregisterEventListeners() {
+	public void unregisterEventListeners()
+	{
 		// TODO Auto-generated method stub
 	}
 
-	public IDMappingManager getGeneIDMappingManager() {
+	public IDMappingManager getGeneIDMappingManager()
+	{
 		return geneIDMappingManager;
 	}
 
 	@Override
-	public int getDataAmount() {
+	public int getDataAmount()
+	{
 		// TODO Calculate properly
 		return 0;
+	}
+
+	/**
+	 * Adds the specified datacontainer to this datadomain.
+	 * 
+	 * @param dataContainer
+	 */
+	public void addDataContainer(PathwayDataContainer dataContainer)
+	{
+		if (dataContainer != null)
+			dataContainers.add(dataContainer);
+
+		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	public List<PathwayDataContainer> getDataContainers()
+	{
+		return dataContainers;
+	}
+
+	public void setDataContainers(List<PathwayDataContainer> dataContainers)
+	{
+		if (dataContainers != null)
+			this.dataContainers = dataContainers;
+
+		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
 }

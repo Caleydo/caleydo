@@ -5,9 +5,7 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.manager.GeneralManager;
@@ -20,6 +18,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
@@ -28,30 +27,37 @@ import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
-public class VisBricksNode extends ViewNode implements IDropArea {
+public class VisBricksNode
+	extends ViewNode
+	implements IDropArea
+{
 
 	protected DataContainerListRenderer dataContainerListRenderer;
 	protected List<DataContainer> dataContainers;
 
 	public VisBricksNode(AGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, Integer id,
-			AGLView representedView) {
+			DragAndDropController dragAndDropController, Integer id, AGLView representedView)
+	{
 		super(graphLayout, view, dragAndDropController, id, representedView);
 
 	}
 
 	@Override
-	protected void registerPickingListeners() {
+	protected void registerPickingListeners()
+	{
 
-		view.addIDPickingListener(new APickingListener() {
+		view.addIDPickingListener(new APickingListener()
+		{
 
 			@Override
-			public void dragged(Pick pick) {
+			public void dragged(Pick pick)
+			{
 
 				DragAndDropController dragAndDropController = VisBricksNode.this.dragAndDropController;
 				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode().equals(
-								"DimensionGroupDrag")) {
+						&& dragAndDropController.getDraggingMode()
+								.equals("DimensionGroupDrag"))
+				{
 					dragAndDropController.setDropArea(VisBricksNode.this);
 				}
 
@@ -61,7 +67,8 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	protected ElementLayout setupLayout() {
+	protected ElementLayout setupLayout()
+	{
 		ElementLayout baseLayout = super.setupLayout();
 
 		bodyColumn.clear();
@@ -89,26 +96,31 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	protected ADataContainerRenderer getDataContainerRenderer() {
+	protected ADataContainerRenderer getDataContainerRenderer()
+	{
 		return dataContainerListRenderer;
 	}
 
 	@Override
-	public boolean showsDataContainers() {
+	public boolean showsDataContainers()
+	{
 		return true;
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<DataContainer> getDataContainers()
+	{
 
-		if (dataContainers == null) {
+		if (dataContainers == null)
+		{
 			retrieveDataContainers();
 		}
 
@@ -119,7 +131,8 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 		// return new ArrayList<DataContainer>(groups);
 	}
 
-	protected void retrieveDataContainers() {
+	protected void retrieveDataContainers()
+	{
 		dataContainers = new ArrayList<DataContainer>();
 
 		List<DataContainer> containers = ((IDataContainerBasedView) representedView)
@@ -127,29 +140,42 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 
-		for (DataContainer container : containers) {
-			dataDomains.add(container.getDataDomain());
+		for (DataContainer container : containers)
+		{
+			if (container instanceof PathwayDataContainer)
+			{
+				dataDomains.add(((PathwayDataContainer) container).getPathwayDataDomain());
+			}
+			else
+			{
+				dataDomains.add(container.getDataDomain());
+			}
 		}
 
 		List<Pair<String, IDataDomain>> sortedDataDomains = new ArrayList<Pair<String, IDataDomain>>();
 
-		for (IDataDomain dataDomain : dataDomains) {
+		for (IDataDomain dataDomain : dataDomains)
+		{
 			sortedDataDomains.add(new Pair<String, IDataDomain>(dataDomain.getLabel(),
 					dataDomain));
 		}
 
 		Collections.sort(sortedDataDomains);
 
-		for (Pair<String, IDataDomain> dataDomainPair : sortedDataDomains) {
+		for (Pair<String, IDataDomain> dataDomainPair : sortedDataDomains)
+		{
 			ADataNode dataNode = view.getDataNode(dataDomainPair.getSecond());
 
-			if (dataNode != null) {
-				List<DataContainer> sortedNodeDataContainers = dataNode
-						.getDataContainers();
+			if (dataNode != null)
+			{
+				List<DataContainer> sortedNodeDataContainers = dataNode.getDataContainers();
 
-				for (DataContainer nodeContainer : sortedNodeDataContainers) {
-					for (DataContainer container : containers) {
-						if (nodeContainer == container) {
+				for (DataContainer nodeContainer : sortedNodeDataContainers)
+				{
+					for (DataContainer container : containers)
+					{
+						if (nodeContainer == container)
+						{
 							dataContainers.add(container);
 							break;
 						}
@@ -161,16 +187,20 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY, DragAndDropController dragAndDropController) {
+			float mouseCoordinateY, DragAndDropController dragAndDropController)
+	{
 		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
-		for (IDraggable draggable : draggables) {
-			if (draggable instanceof DimensionGroupRenderer) {
+		for (IDraggable draggable : draggables)
+		{
+			if (draggable instanceof DimensionGroupRenderer)
+			{
 				DimensionGroupRenderer dimensionGroupRenderer = (DimensionGroupRenderer) draggable;
 				dataContainers.add(dimensionGroupRenderer.getDataContainer());
 			}
 		}
 
-		if (!dataContainers.isEmpty()) {
+		if (!dataContainers.isEmpty())
+		{
 			// FIXME: this needs to be looked at again
 			System.out.println("Drop");
 			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
@@ -185,14 +215,16 @@ public class VisBricksNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	public void destroy() {
+	public void destroy()
+	{
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override
-	public void update() {
+	public void update()
+	{
 		retrieveDataContainers();
 		dataContainerListRenderer.setDataContainers(getDataContainers());
 		recalculateNodeSize();

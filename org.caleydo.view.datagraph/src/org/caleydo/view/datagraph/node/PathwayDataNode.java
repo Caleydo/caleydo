@@ -1,15 +1,18 @@
 package org.caleydo.view.datagraph.node;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
@@ -21,14 +24,13 @@ public class PathwayDataNode
 
 	private ADataContainerRenderer dataContainerRenderer;
 	private PathwayDataDomain dataDomain;
+	private Row bodyRow;
 
 	public PathwayDataNode(AGraphLayout graphLayout, GLDataGraph view,
 			DragAndDropController dragAndDropController, Integer id, IDataDomain dataDomain)
 	{
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (PathwayDataDomain) dataDomain;
-		dataContainerRenderer = new DataContainerListRenderer(this, view,
-				dragAndDropController, getDataContainers());
 
 	}
 
@@ -51,7 +53,7 @@ public class PathwayDataNode
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
-		Row bodyRow = new Row("bodyRow");
+		bodyRow = new Row("bodyRow");
 
 		if (getDataContainers().size() > 0)
 		{
@@ -59,6 +61,15 @@ public class PathwayDataNode
 		}
 
 		bodyColumn = new Column("bodyColumn");
+
+		dataContainerRenderer = new DataContainerListRenderer(this, view,
+				dragAndDropController, getDataContainers());
+
+		List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
+		pickingIDsToBePushed.add(new Pair<String, Integer>(
+				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
+
+		dataContainerRenderer.setPickingIDsToBePushed(pickingIDsToBePushed);
 
 		ElementLayout compGroupLayout = new ElementLayout("compGroupOverview");
 		compGroupLayout.setRatioSizeY(1);
@@ -89,6 +100,10 @@ public class PathwayDataNode
 	{
 		dataContainerRenderer.setDataContainers(getDataContainers());
 		recalculateNodeSize();
+		if (getDataContainers().size() > 0)
+		{
+			bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
+		}
 	}
 
 	@Override
@@ -106,9 +121,26 @@ public class PathwayDataNode
 	@Override
 	public List<DataContainer> getDataContainers()
 	{
+		List<PathwayDataContainer> containers = dataDomain.getDataContainers();
 
-		// FIXME: not clear what we want here
-		return new ArrayList<DataContainer>();
+		List<Pair<String, DataContainer>> sortedContainers = new ArrayList<Pair<String, DataContainer>>(
+				containers.size());
+
+		for (PathwayDataContainer container : containers)
+		{
+			sortedContainers.add(new Pair<String, DataContainer>(container.getLabel(),
+					container));
+		}
+
+		Collections.sort(sortedContainers);
+
+		List<DataContainer> dataContainers = new ArrayList<DataContainer>(containers.size());
+		for (Pair<String, DataContainer> containerPair : sortedContainers)
+		{
+			dataContainers.add(containerPair.getSecond());
+		}
+
+		return dataContainers;
 
 		// return new ArrayList<DataContainer>(dataDomain.get);
 	}
@@ -117,7 +149,8 @@ public class PathwayDataNode
 	protected int getMinTitleBarWidthPixels()
 	{
 
-		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(dataDomain.getLabel(),
+		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
+				dataDomain.getLabel(),
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 

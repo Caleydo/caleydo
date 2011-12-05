@@ -269,6 +269,8 @@ public class CreatePathwaySmallMultiplesGroupDialog
 				PathwayDataContainer pathwayDimensionGroup = new PathwayDataContainer(
 						dataContainer.getDataDomain(), pathwayDataDomain,
 						newRecordPerspective, dimensionPerspective, pathway);
+				
+				pathwayDataDomain.addDataContainer(pathwayDimensionGroup);
 
 				pathwayDataContainer.add(pathwayDimensionGroup);
 			}

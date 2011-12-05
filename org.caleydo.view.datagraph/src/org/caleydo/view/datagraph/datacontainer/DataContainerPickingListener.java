@@ -13,6 +13,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.contextmenu.AddGroupToVisBricksItem;
 import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
@@ -87,9 +88,18 @@ public class DataContainerPickingListener extends APickingListener {
 				.getID());
 		if (dimensionGroupRenderer == null)
 			return;
+		
+		DataContainer dataContainer = dimensionGroupRenderer.getDataContainer();
+		
+		float[] color = dataContainer.getDataDomain().getColor().getRGBA();
 
-		dimensionGroupRenderer.setColor(dimensionGroupRenderer.getDataContainer()
-				.getDataDomain().getColor().getRGBA());
+		if (dataContainer instanceof PathwayDataContainer)
+		{
+			color = ((PathwayDataContainer) dataContainer).getPathwayDataDomain()
+					.getColor().getRGBA();
+		}
+
+		dimensionGroupRenderer.setColor(color);
 		view.setDisplayListDirty();
 	}
 

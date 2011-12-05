@@ -2,6 +2,8 @@ package org.caleydo.datadomain.pathway.data;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -21,6 +23,8 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * @author Alexander Lex
  * 
  */
+@XmlType
+@XmlRootElement
 public class PathwayDataContainer extends DataContainer {
 
 	/** The datadomain giving access to the pathways themselves */
@@ -28,6 +32,10 @@ public class PathwayDataContainer extends DataContainer {
 	private PathwayDataDomain pathwayDataDomain;
 	/** The pathway associated with this data container */
 	private PathwayGraph pathway;
+	
+	public PathwayDataContainer() {
+		
+	}
 
 	/**
 	 * 

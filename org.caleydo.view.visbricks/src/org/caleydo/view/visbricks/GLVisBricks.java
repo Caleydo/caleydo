@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -11,11 +10,9 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -61,6 +58,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.vislink.NURBSCurve;
+import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.view.visbricks.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;
@@ -84,8 +82,11 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 
-public class GLVisBricks extends AGLView implements IDataContainerBasedView,
-		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
+public class GLVisBricks
+	extends AGLView
+	implements IDataContainerBasedView, IGLRemoteRenderingView, IViewCommandHandler,
+	ISelectionUpdateHandler
+{
 
 	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
 
@@ -186,8 +187,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * Constructor.
 	 * 
 	 */
-	public GLVisBricks(GLCanvas glCanvas, Composite parentComposite,
-			ViewFrustum viewFrustum) {
+	public GLVisBricks(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum)
+	{
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -216,7 +217,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	@Override
-	public void init(GL2 gl) {
+	public void init(GL2 gl)
+	{
 		displayListIndex = gl.glGenLists(1);
 
 		textRenderer = new CaleydoTextRenderer(24);
@@ -226,7 +228,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	}
 
-	private void initLayouts() {
+	private void initLayouts()
+	{
 
 		dimensionGroupManager.getDimensionGroupSpacers().clear();
 
@@ -238,7 +241,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
-	private void initLeftLayout() {
+	private void initLeftLayout()
+	{
 		ViewFrustum leftArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
 				archSideThickness, 0, archBottomY, 0, 1);
 		leftLayoutManager = new LayoutManager(leftArchFrustum, pixelGLConverter);
@@ -248,9 +252,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				dimensionGroupManager.getCenterGroupStartIndex());
 	}
 
-	private void initRightLayout() {
-		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
-				0, archSideThickness, 0, archBottomY, 0, 1);
+	private void initRightLayout()
+	{
+		ViewFrustum rightArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
+				archSideThickness, 0, archBottomY, 0, 1);
 		rightColumnLayout = new Column("rightArchColumn");
 		rightLayoutManager = new LayoutManager(rightArchFrustum, pixelGLConverter);
 		initSideLayout(rightColumnLayout, rightLayoutManager,
@@ -258,7 +263,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 						.getDimensionGroups().size());
 	}
 
-	public int getSideArchWidthPixels() {
+	public int getSideArchWidthPixels()
+	{
 		return pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth()
 				* ARCH_STAND_WIDTH_PERCENT);
 	}
@@ -267,12 +273,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * Init the layout for the center region, showing the horizontal bar of the
 	 * arch plus all sub-bricks above and below
 	 */
-	private void initCenterLayout() {
+	private void initCenterLayout()
+	{
 
 		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
-		if (isRightDetailShown || isLeftDetailShown) {
+		if (isRightDetailShown || isLeftDetailShown)
+		{
 			archInnerWidth = 0;
-		} else {
+		}
+		else
+		{
 			archInnerWidth = viewFrustum.getWidth() * (ARCH_STAND_WIDTH_PERCENT + 0.024f);
 		}
 
@@ -298,13 +308,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
 
 		// Handle special case where center contains no groups
-		if (dimensionGroupCountInCenter < 1) {
+		if (dimensionGroupCountInCenter < 1)
+		{
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
-		} else {
+		}
+		else
+		{
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
-					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
-							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
+					connectionRenderer, null, dimensionGroupManager.getDimensionGroups().get(
+							dimensionGroupManager.getCenterGroupStartIndex()), this);
 		}
 
 		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -318,7 +331,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		centerRowLayout.append(leftDimensionGroupSpacing);
 
 		for (int dimensionGroupIndex = dimensionGroupManager.getCenterGroupStartIndex(); dimensionGroupIndex < dimensionGroupManager
-				.getRightGroupStartIndex(); dimensionGroupIndex++) {
+				.getRightGroupStartIndex(); dimensionGroupIndex++)
+		{
 
 			ElementLayout dynamicDimensionGroupSpacing;
 
@@ -328,24 +342,25 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
 
-			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
+			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1)
+			{
 				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
-						relationAnalyzer, connectionRenderer, group,
-						dimensionGroupManager.getDimensionGroups().get(
-								dimensionGroupIndex + 1), this);
+						relationAnalyzer, connectionRenderer, group, dimensionGroupManager
+								.getDimensionGroups().get(dimensionGroupIndex + 1), this);
 				dynamicDimensionGroupSpacing.setGrabX(true);
 				dynamicDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 				centerRowLayout.append(dynamicDimensionGroupSpacing);
 
-			} else {
+			}
+			else
+			{
 				rightDimensionGroupSpacing = new ElementLayout("lastDimGrSpacing");
 				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 						connectionRenderer, group, null, this);
 
 				if (dimensionGroupCountInCenter > 1)
-					rightDimensionGroupSpacing
-							.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
+					rightDimensionGroupSpacing.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
 				else
 					rightDimensionGroupSpacing.setGrabX(true);
 
@@ -356,8 +371,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			// dimensionGroupSpacingRenderer.setLineLength(archHeight);
 		}
 
-		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(),
-				0, centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
+		ViewFrustum centerArchFrustum = new ViewFrustum(viewFrustum.getProjectionMode(), 0,
+				centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
 		centerLayoutManager = new LayoutManager(centerArchFrustum, pixelGLConverter);
 		centerLayoutManager.setBaseElementLayout(centerRowLayout);
 
@@ -374,7 +389,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * @param dimensinoGroupEndIndex
 	 */
 	private void initSideLayout(Column columnLayout, LayoutManager layoutManager,
-			int dimensinoGroupStartIndex, int dimensinoGroupEndIndex) {
+			int dimensinoGroupStartIndex, int dimensinoGroupEndIndex)
+	{
 
 		layoutManager.setBaseElementLayout(columnLayout);
 
@@ -390,13 +406,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		// Handle special case where arch stand contains no groups
 		if (dimensinoGroupStartIndex == 0
-				|| dimensinoGroupStartIndex == dimensinoGroupEndIndex) {
+				|| dimensinoGroupStartIndex == dimensinoGroupEndIndex)
+		{
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
-		} else {
+		}
+		else
+		{
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
-					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
-							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
+					connectionRenderer, null, dimensionGroupManager.getDimensionGroups().get(
+							dimensionGroupManager.getCenterGroupStartIndex()), this);
 		}
 
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -404,7 +423,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		dimensionGroupSpacingRenderer.setVertical(false);
 		// dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 
-		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensinoGroupEndIndex; dimensionGroupIndex++) {
+		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensinoGroupEndIndex; dimensionGroupIndex++)
+		{
 
 			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
 					dimensionGroupIndex);
@@ -434,12 +454,15 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	@Override
-	public void initLocal(GL2 gl) {
+	public void initLocal(GL2 gl)
+	{
 
 		// Register keyboard listener to GL2 canvas
-		parentComposite.getDisplay().asyncExec(new Runnable() {
+		parentComposite.getDisplay().asyncExec(new Runnable()
+		{
 			@Override
-			public void run() {
+			public void run()
+			{
 				parentComposite.addKeyListener(glKeyListener);
 			}
 		});
@@ -449,25 +472,31 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	@Override
 	public void initRemote(final GL2 gl, final AGLView glParentView,
-			final GLMouseListener glMouseListener) {
+			final GLMouseListener glMouseListener)
+	{
 
 	}
 
 	@Override
-	public void displayLocal(GL2 gl) {
+	public void displayLocal(GL2 gl)
+	{
 
-		if (!uninitializedDimensionGroups.isEmpty()) {
-			while (uninitializedDimensionGroups.peek() != null) {
+		if (!uninitializedDimensionGroups.isEmpty())
+		{
+			while (uninitializedDimensionGroups.peek() != null)
+			{
 				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
 			}
 			initLayouts();
 		}
-		if (isDisplayListDirty) {
+		if (isDisplayListDirty)
+		{
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 		}
 
-		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
+		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups())
+		{
 			group.processEvents();
 		}
 
@@ -480,35 +509,43 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	@Override
-	public void displayRemote(GL2 gl) {
+	public void displayRemote(GL2 gl)
+	{
 	}
 
 	@Override
-	public void display(GL2 gl) {
+	public void display(GL2 gl)
+	{
 
 		handleHorizontalMoveDragging(gl);
-		if (isLayoutDirty) {
+		if (isLayoutDirty)
+		{
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
 			float minWidth = pixelGLConverter
 					.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
-			for (ElementLayout layout : centerRowLayout) {
+			for (ElementLayout layout : centerRowLayout)
+			{
 				if (!(layout.getRenderer() instanceof DimensionGroupSpacingRenderer))
 					continue;
 				if (resizeNecessary)
 					break;
 
-				if (layout.getSizeScaledX() < minWidth - 0.01f) {
+				if (layout.getSizeScaledX() < minWidth - 0.01f)
+				{
 					resizeNecessary = true;
 					break;
 				}
 			}
 		}
 
-		if (resizeNecessary) {
+		if (resizeNecessary)
+		{
 			int size = centerRowLayout.size();
-			if (size >= 3) {
-				if (lastResizeDirectionWasToLeft) {
+			if (size >= 3)
+			{
+				if (lastResizeDirectionWasToLeft)
+				{
 					dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
 							.getCenterGroupStartIndex() + 1);
 
@@ -520,14 +557,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 					leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
 
 					leftDimensionGroupSpacing.setAbsoluteSizeX(width);
-					((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
-							.getRenderer()).setLeftDimGroup(null);
+					((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing.getRenderer())
+							.setLeftDimGroup(null);
 					initLeftLayout();
 
 					// if (size == 3)
 					// leftDimensionGroupSpacing.setGrabX(true);
 
-				} else {
+				}
+				else
+				{
 					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
 							.getRightGroupStartIndex() - 1);
 
@@ -543,8 +582,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 							centerRowLayout.size() - 1);
 					// rightDimensionGroupSpacing.setAbsoluteSizeX(width);
 					rightDimensionGroupSpacing.setGrabX(true);
-					((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
-							.getRenderer()).setRightDimGroup(null);
+					((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing.getRenderer())
+							.setRightDimGroup(null);
 					initRightLayout();
 
 					// if (size == 3)
@@ -563,11 +602,13 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		if (isConnectionLinesDirty)
 			performConnectionLinesUpdate();
 
-		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
+		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups())
+		{
 			dimensionGroup.display(gl);
 		}
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
+		if (!isRightDetailShown && !isLeftDetailShown)
+		{
 			leftLayoutManager.render(gl);
 		}
 
@@ -575,15 +616,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		centerLayoutManager.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
-			float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT)
-					* viewFrustum.getWidth();
+		if (!isRightDetailShown && !isLeftDetailShown)
+		{
+			float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT) * viewFrustum.getWidth();
 			gl.glTranslatef(rightArchStand, 0, 0);
 			rightLayoutManager.render(gl);
 			gl.glTranslatef(-rightArchStand, 0, 0);
 		}
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
+		if (!isRightDetailShown && !isLeftDetailShown)
+		{
 			renderArch(gl);
 		}
 
@@ -598,19 +640,21 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * Switches to detail mode where the detail brick is on the right side of
 	 * the specified dimension group
 	 */
-	public void switchToDetailModeRight(DimensionGroup dimensionGroup) {
+	public void switchToDetailModeRight(DimensionGroup dimensionGroup)
+	{
 
-		int dimensionGroupIndex = dimensionGroupManager
-				.indexOfDimensionGroup(dimensionGroup);
+		int dimensionGroupIndex = dimensionGroupManager.indexOfDimensionGroup(dimensionGroup);
 		// false only if this is the rightmost DimensionGroup. If true we move
 		// anything beyond the next dimension group out
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1)
+		{
 			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 2);
 
 		}
 		// false only if this is the leftmost DimensionGroup. If true we move
 		// anything further left out
-		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
+		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex())
+		{
 			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex);
 
 		}
@@ -625,18 +669,20 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * Switches to detail mode where the detail brick is on the left side of the
 	 * specified dimension group
 	 */
-	public void switchToDetailModeLeft(DimensionGroup dimensionGroup) {
+	public void switchToDetailModeLeft(DimensionGroup dimensionGroup)
+	{
 
-		int dimensionGroupIndex = dimensionGroupManager
-				.indexOfDimensionGroup(dimensionGroup);
+		int dimensionGroupIndex = dimensionGroupManager.indexOfDimensionGroup(dimensionGroup);
 
 		// false only if this is the left-most dimension group. If true we move
 		// out everything right of this dimension group
-		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
+		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex())
+		{
 			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
 		}
 		// false only if this is the right-most dimension group
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
+		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1)
+		{
 			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
 		}
 		isLeftDetailShown = true;
@@ -649,7 +695,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	/**
 	 * Hide the detail brick which is shown right of its parent dimension group
 	 */
-	public void switchToOverviewModeRight() {
+	public void switchToOverviewModeRight()
+	{
 		isRightDetailShown = false;
 		initLeftLayout();
 		initCenterLayout();
@@ -659,14 +706,16 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	/**
 	 * Hide the detail brich which is shown left of its parent dimension group
 	 */
-	public void switchToOverviewModeLeft() {
+	public void switchToOverviewModeLeft()
+	{
 		isLeftDetailShown = false;
 		initLeftLayout();
 		initCenterLayout();
 		initRightLayout();
 	}
 
-	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex)
+	{
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		renderArch(gl);
@@ -674,7 +723,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		gl.glEndList();
 	}
 
-	private void renderArch(GL2 gl) {
+	private void renderArch(GL2 gl)
+	{
 
 		// Left arch
 
@@ -754,20 +804,17 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		inputPoints.clear();
 		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archBottomY, 0));
 		inputPoints.add(new Vec3f(viewFrustum.getWidth(), archTopY, 0));
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth * 0.9f,
-				archTopY, 0));
+		inputPoints
+				.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth * 0.9f, archTopY, 0));
 
 		curve = new NURBSCurve(inputPoints, 10);
 		outputPointsTop.clear();
 		outputPointsTop = curve.getCurvePoints();
-		outputPointsTop.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY,
-				0));
+		outputPointsTop.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archTopY, 0));
 
 		inputPoints.clear();
-		inputPoints
-				.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
-		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness,
-				archBottomY, 0));
+		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
+		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness, archBottomY, 0));
 		inputPoints.add(new Vec3f(viewFrustum.getWidth() - archSideThickness,
 				archBottomY * 0.8f, 0));
 
@@ -780,8 +827,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		outputPoints.clear();
 
 		outputPoints.addAll(outputPointsTop);
-		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY,
-				0));
+		outputPoints.add(new Vec3f(viewFrustum.getWidth() - archInnerWidth, archBottomY, 0));
 		outputPoints.addAll(outputPointsBottom);
 
 		// connectionRenderer.render(gl, outputPoints);
@@ -803,8 +849,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		gl.glEnd();
 
 		gl.glBegin(GL2.GL_LINES);
-		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY * 0.8f,
-				0.01f);
+		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, archBottomY * 0.8f, 0.01f);
 		gl.glVertex3f(viewFrustum.getWidth() - archSideThickness, 0, 0.1f);
 		gl.glEnd();
 	}
@@ -815,10 +860,12 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * 
 	 * @param gl
 	 */
-	private void handleHorizontalMoveDragging(GL2 gl) {
+	private void handleHorizontalMoveDragging(GL2 gl)
+	{
 		if (!isHorizontalMoveDraggingActive)
 			return;
-		if (glMouseListener.wasMouseReleased()) {
+		if (glMouseListener.wasMouseReleased())
+		{
 			isHorizontalMoveDraggingActive = false;
 			previousXCoordinate = Float.NaN;
 			return;
@@ -827,10 +874,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		Point currentPoint = glMouseListener.getPickedPoint();
 
 		float[] pointCordinates = GLCoordinateUtils
-				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x,
-						currentPoint.y);
+				.convertWindowCoordinatesToWorldCoordinates(gl, currentPoint.x, currentPoint.y);
 
-		if (Float.isNaN(previousXCoordinate)) {
+		if (Float.isNaN(previousXCoordinate))
+		{
 			previousXCoordinate = pointCordinates[0];
 			return;
 		}
@@ -852,27 +899,35 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		DimensionGroupSpacingRenderer spacingRenderer;
 		int count = 0;
-		for (ElementLayout layout : centerRowLayout) {
-			if (layout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
+		for (ElementLayout layout : centerRowLayout)
+		{
+			if (layout.getRenderer() instanceof DimensionGroupSpacingRenderer)
+			{
 				spacingRenderer = (DimensionGroupSpacingRenderer) layout.getRenderer();
-				if (spacingRenderer.getRightDimGroup() != null) {
-					if (spacingRenderer.getRightDimGroup().getID() == movedDimensionGroup) {
+				if (spacingRenderer.getRightDimGroup() != null)
+				{
+					if (spacingRenderer.getRightDimGroup().getID() == movedDimensionGroup)
+					{
 						leftSpacing = layout;
 						leftIndex = count;
 
 					}
 				}
-				if (spacingRenderer.getLeftDimGroup() != null) {
-					if (spacingRenderer.getLeftDimGroup().getID() == movedDimensionGroup) {
+				if (spacingRenderer.getLeftDimGroup() != null)
+				{
+					if (spacingRenderer.getLeftDimGroup().getID() == movedDimensionGroup)
+					{
 						rightSpacing = layout;
 						rightIndex = count;
 
 					}
 				}
-				if (count < centerRowLayout.size() - 1) {
+				if (count < centerRowLayout.size() - 1)
+				{
 					layout.setGrabX(false);
 					layout.setAbsoluteSizeX(layout.getSizeScaledX());
-				} else
+				}
+				else
 					layout.setGrabX(true);
 			}
 			count++;
@@ -886,25 +941,32 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		float minWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
 
-		if (change > 0) {
-			if (rightSizeX - change > minWidth) {
+		if (change > 0)
+		{
+			if (rightSizeX - change > minWidth)
+			{
 				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
-			} else {
+			}
+			else
+			{
 				rightSpacing.setAbsoluteSizeX(minWidth);
 				float savedSize = rightSizeX - minWidth;
 				float remainingChange = change - savedSize;
 
-				while (remainingChange > 0) {
+				while (remainingChange > 0)
+				{
 					if (centerRowLayout.size() < rightIndex + 2)
 						break;
 
 					rightIndex += 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
-					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
-								- remainingChange);
+					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f)
+					{
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() - remainingChange);
 						remainingChange = -1;
-					} else {
+					}
+					else
+					{
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange -= savedSize;
 						if (rightIndex == centerRowLayout.size() - 1)
@@ -915,26 +977,34 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				}
 			}
 			leftSpacing.setAbsoluteSizeX(leftSizeX + change);
-		} else {
+		}
+		else
+		{
 
-			if (leftSizeX + change > minWidth) {
+			if (leftSizeX + change > minWidth)
+			{
 				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
-			} else {
+			}
+			else
+			{
 				leftSpacing.setAbsoluteSizeX(minWidth);
 				float savedSize = leftSizeX - minWidth;
 				float remainingChange = change + savedSize;
 
-				while (remainingChange < 0) {
+				while (remainingChange < 0)
+				{
 					if (leftIndex < 2)
 						break;
 
 					leftIndex -= 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(leftIndex);
-					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
-						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
-								+ remainingChange);
+					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f)
+					{
+						spacing.setAbsoluteSizeX(spacing.getSizeScaledX() + remainingChange);
 						remainingChange = 1;
-					} else {
+					}
+					else
+					{
 						savedSize = spacing.getSizeScaledX() + minWidth;
 						remainingChange += savedSize;
 						if (leftIndex == 0)
@@ -950,29 +1020,33 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		updateLayout();
 	}
 
-	protected void registerPickingListeners() {
+	protected void registerPickingListeners()
+	{
 
-		addTypePickingListener(new APickingListener() {
+		addTypePickingListener(new APickingListener()
+		{
 			@Override
-			public void clicked(Pick pick) {
+			public void clicked(Pick pick)
+			{
 				selectedConnectionBandID = pick.getID();
 				selectElementsByConnectionBandID(selectedConnectionBandID);
 			}
 
 			@Override
-			public void rightClicked(Pick pick) {
+			public void rightClicked(Pick pick)
+			{
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(),
-						true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(),
-						false));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(), true));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(), false));
 			}
 
 		}, PickingType.BRICK_CONNECTION_BAND.name());
 
-		addTypePickingListener(new APickingListener() {
+		addTypePickingListener(new APickingListener()
+		{
 			@Override
-			public void clicked(Pick pick) {
+			public void clicked(Pick pick)
+			{
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 				dragAndDropController.addDraggable((DimensionGroup) generalManager
 						.getViewManager().getGLView(pick.getID()));
@@ -980,8 +1054,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			}
 
 			@Override
-			public void dragged(Pick pick) {
-				if (dragAndDropController.hasDraggables()) {
+			public void dragged(Pick pick)
+			{
+				if (dragAndDropController.hasDraggables())
+				{
 					if (glMouseListener.wasRightMouseButtonPressed())
 						dragAndDropController.clearDraggables();
 					else if (!dragAndDropController.isDragging())
@@ -992,9 +1068,11 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		}, PickingType.DIMENSION_GROUP.name());
 
-		addTypePickingListener(new APickingListener() {
+		addTypePickingListener(new APickingListener()
+		{
 			@Override
-			public void dragged(Pick pick) {
+			public void dragged(Pick pick)
+			{
 
 				dragAndDropController.setDropArea(dimensionGroupManager
 						.getDimensionGroupSpacers().get(pick.getID()));
@@ -1002,9 +1080,11 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		}, PickingType.DIMENSION_GROUP_SPACER.name());
 
-		addTypePickingListener(new APickingListener() {
+		addTypePickingListener(new APickingListener()
+		{
 			@Override
-			public void clicked(Pick pick) {
+			public void clicked(Pick pick)
+			{
 				isHorizontalMoveDraggingActive = true;
 				movedDimensionGroup = pick.getID();
 			};
@@ -1013,19 +1093,22 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	@Override
-	public ASerializedView getSerializableRepresentation() {
+	public ASerializedView getSerializableRepresentation()
+	{
 		SerializedVisBricksView serializedForm = new SerializedVisBricksView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
 
 	@Override
-	public String toString() {
+	public String toString()
+	{
 		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
 	}
 
 	@Override
-	public void registerEventListeners() {
+	public void registerEventListeners()
+	{
 		super.registerEventListeners();
 
 		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
@@ -1039,8 +1122,7 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		trendHighlightModeListener = new ConnectionsModeListener();
 		trendHighlightModeListener.setHandler(this);
-		eventPublisher
-				.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
+		eventPublisher.addListener(ConnectionsModeEvent.class, trendHighlightModeListener);
 
 		splitBrickListener = new SplitBrickListener();
 		splitBrickListener.setHandler(this);
@@ -1049,25 +1131,30 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	@Override
-	public void unregisterEventListeners() {
+	public void unregisterEventListeners()
+	{
 		super.unregisterEventListeners();
 
-		if (addGroupsToVisBricksListener != null) {
+		if (addGroupsToVisBricksListener != null)
+		{
 			eventPublisher.removeListener(addGroupsToVisBricksListener);
 			addGroupsToVisBricksListener = null;
 		}
 
-		if (clearSelectionsListener != null) {
+		if (clearSelectionsListener != null)
+		{
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
 
-		if (trendHighlightModeListener != null) {
+		if (trendHighlightModeListener != null)
+		{
 			eventPublisher.removeListener(trendHighlightModeListener);
 			trendHighlightModeListener = null;
 		}
 
-		if (splitBrickListener != null) {
+		if (splitBrickListener != null)
+		{
 			eventPublisher.removeListener(splitBrickListener);
 			splitBrickListener = null;
 		}
@@ -1075,42 +1162,49 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+			boolean scrollToSelection, String info)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleRedrawView() {
+	public void handleRedrawView()
+	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void handleClearSelections() {
+	public void handleClearSelections()
+	{
 		clearAllSelections();
 
 	}
 
-	public void clearAllSelections() {
+	public void clearAllSelections()
+	{
 		recordSelectionManager.clearSelections();
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	@Override
-	public void broadcastElements(EVAOperation type) {
+	public void broadcastElements(EVAOperation type)
+	{
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public int getNumberOfSelections(SelectionType SelectionType) {
+	public int getNumberOfSelections(SelectionType SelectionType)
+	{
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
 	@Override
-	public List<AGLView> getRemoteRenderedViews() {
+	public List<AGLView> getRemoteRenderedViews()
+	{
 		return null;
 	}
 
@@ -1126,32 +1220,34 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * </p>
 	 * 
 	 * @param newDataContainers
-	 * @param brickConfigurer
-	 *            The brick configurer can be specificed externally (e.g.,
-	 *            pathways, kaplan meier). If null, the
+	 * @param brickConfigurer The brick configurer can be specificed externally
+	 *            (e.g., pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
 	public void addDimensionGroups(List<DataContainer> newDataContainers,
-			IBrickConfigurer brickConfigurer) {
+			IBrickConfigurer brickConfigurer)
+	{
 
-		if (newDataContainers == null || newDataContainers.size() == 0) {
+		if (newDataContainers == null || newDataContainers.size() == 0)
+		{
 			Logger.log(new Status(Status.WARNING, this.toString(),
 					"newDataContainers in addDimensionGroups was null or empty"));
 			return;
 		}
 
 		// if this is the first data container set, we imprint VisBricks
-		if (recordIDCategory == null) {
+		if (recordIDCategory == null)
+		{
 			ATableBasedDataDomain dataDomain = newDataContainers.get(0).getDataDomain();
 			imprintVisBricks(dataDomain);
 		}
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-				.getDimensionGroups();
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager.getDimensionGroups();
 
-		for (DataContainer dataContainer : newDataContainers) {
-			if (!dataContainer.getDataDomain().getRecordIDCategory()
-					.equals(recordIDCategory)) {
+		for (DataContainer dataContainer : newDataContainers)
+		{
+			if (!dataContainer.getDataDomain().getRecordIDCategory().equals(recordIDCategory))
+			{
 				Logger.log(new Status(
 						Status.ERROR,
 						this.toString(),
@@ -1160,14 +1256,17 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
 			}
 			boolean dimensionGroupExists = false;
-			for (DimensionGroup dimensionGroup : dimensionGroups) {
-				if (dimensionGroup.getDataContainer().getID() == dataContainer.getID()) {
+			for (DimensionGroup dimensionGroup : dimensionGroups)
+			{
+				if (dimensionGroup.getDataContainer().getID() == dataContainer.getID())
+				{
 					dimensionGroupExists = true;
 					break;
 				}
 			}
 
-			if (!dimensionGroupExists) {
+			if (!dimensionGroupExists)
+			{
 				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
 						.get()
 						.getViewManager()
@@ -1175,20 +1274,24 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 								DimensionGroup.class,
 								getParentGLCanvas(),
 								parentComposite,
-								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1,
-										0, 1, -1, 1));
+								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+										-1, 1));
 
 				/**
 				 * If no brick configurer was specified in the
 				 * {@link AddGroupsToVisBricksEvent}, then the numerical
 				 * configurer is created by default
 				 **/
-				if (brickConfigurer == null) {
+				if (brickConfigurer == null)
+				{
 					// FIXME this is a hack to make dataContainers that have
 					// only one dimension categorical data
-					if (dataContainer.getNrDimensions() == 1) {
+					if (dataContainer.getNrDimensions() == 1)
+					{
 						brickConfigurer = new CategoricalDataConfigurer(dataContainer);
-					} else {
+					}
+					else
+					{
 						brickConfigurer = new NumericalDataConfigurer(dataContainer);
 					}
 				}
@@ -1204,7 +1307,15 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				dataContainers.add(dataContainer);
 
 				uninitializedDimensionGroups.add(dimensionGroup);
-				dataDomains.add(dataContainer.getDataDomain());
+				if (dataContainer instanceof PathwayDataContainer)
+				{
+					dataDomains.add(((PathwayDataContainer) dataContainer)
+							.getPathwayDataDomain());
+				}
+				else
+				{
+					dataDomains.add(dataContainer.getDataDomain());
+				}
 
 			}
 		}
@@ -1221,15 +1332,17 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * 
 	 * @param dataDomain
 	 */
-	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
+	private void imprintVisBricks(ATableBasedDataDomain dataDomain)
+	{
 		recordIDCategory = dataDomain.getRecordIDCategory();
 		IDType mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
-		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry
-				.get().getIDMappingManager(recordIDCategory), mappingRecordIDType);
+		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry.get()
+				.getIDMappingManager(recordIDCategory), mappingRecordIDType);
 	}
 
 	@Override
-	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height)
+	{
 
 		super.reshape(drawable, x, y, width, height);
 
@@ -1238,12 +1351,14 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	}
 
 	@Override
-	public void setDisplayListDirty() {
+	public void setDisplayListDirty()
+	{
 		super.setDisplayListDirty();
 	}
 
 	public void moveDimensionGroup(DimensionGroupSpacingRenderer spacer,
-			DimensionGroup movedDimGroup, DimensionGroup referenceDimGroup) {
+			DimensionGroup movedDimGroup, DimensionGroup referenceDimGroup)
+	{
 		movedDimGroup.getLayout().reset();
 		clearDimensionGroupSpacerHighlight();
 
@@ -1252,18 +1367,22 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		boolean insertComplete = false;
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-				.getDimensionGroups();
-		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
-			if (spacer == leftLayout.getRenderer()) {
+		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager.getDimensionGroups();
+		for (ElementLayout leftLayout : leftColumnLayout.getElements())
+		{
+			if (spacer == leftLayout.getRenderer())
+			{
 
 				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
 						.getCenterGroupStartIndex() + 1);
 
 				dimensionGroups.remove(movedDimGroup);
-				if (referenceDimGroup == null) {
+				if (referenceDimGroup == null)
+				{
 					dimensionGroups.add(0, movedDimGroup);
-				} else {
+				}
+				else
+				{
 					dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup),
 							movedDimGroup);
 				}
@@ -1273,19 +1392,24 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			}
 		}
 
-		if (!insertComplete) {
-			for (ElementLayout rightLayout : rightColumnLayout.getElements()) {
-				if (spacer == rightLayout.getRenderer()) {
+		if (!insertComplete)
+		{
+			for (ElementLayout rightLayout : rightColumnLayout.getElements())
+			{
+				if (spacer == rightLayout.getRenderer())
+				{
 
 					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
 							.getRightGroupStartIndex() - 1);
 
 					dimensionGroups.remove(movedDimGroup);
-					if (referenceDimGroup == null) {
+					if (referenceDimGroup == null)
+					{
 						dimensionGroups.add(dimensionGroups.size(), movedDimGroup);
-					} else {
-						dimensionGroups.add(
-								dimensionGroups.indexOf(referenceDimGroup) + 1,
+					}
+					else
+					{
+						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
 					}
 
@@ -1295,30 +1419,32 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 			}
 		}
 
-		if (!insertComplete) {
-			for (ElementLayout centerLayout : centerRowLayout.getElements()) {
-				if (spacer == centerLayout.getRenderer()) {
+		if (!insertComplete)
+		{
+			for (ElementLayout centerLayout : centerRowLayout.getElements())
+			{
+				if (spacer == centerLayout.getRenderer())
+				{
 
 					if (dimensionGroups.indexOf(movedDimGroup) < dimensionGroupManager
 							.getCenterGroupStartIndex())
-						dimensionGroupManager
-								.setCenterGroupStartIndex(dimensionGroupManager
-										.getCenterGroupStartIndex() - 1);
+						dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
+								.getCenterGroupStartIndex() - 1);
 					else if (dimensionGroups.indexOf(movedDimGroup) >= dimensionGroupManager
 							.getRightGroupStartIndex())
-						dimensionGroupManager
-								.setRightGroupStartIndex(dimensionGroupManager
-										.getRightGroupStartIndex() + 1);
+						dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+								.getRightGroupStartIndex() + 1);
 
 					dimensionGroups.remove(movedDimGroup);
-					if (referenceDimGroup == null) {
-						dimensionGroups.add(
-								dimensionGroupManager.getCenterGroupStartIndex(),
+					if (referenceDimGroup == null)
+					{
+						dimensionGroups.add(dimensionGroupManager.getCenterGroupStartIndex(),
 								movedDimGroup);
-					} else {
+					}
+					else
+					{
 
-						dimensionGroups.add(
-								dimensionGroups.indexOf(referenceDimGroup) + 1,
+						dimensionGroups.add(dimensionGroups.indexOf(referenceDimGroup) + 1,
 								movedDimGroup);
 
 					}
@@ -1336,42 +1462,49 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		eventPublisher.triggerEvent(event);
 	}
 
-	public void clearDimensionGroupSpacerHighlight() {
+	public void clearDimensionGroupSpacerHighlight()
+	{
 		// Clear previous spacer highlights
-		for (ElementLayout element : centerRowLayout.getElements()) {
+		for (ElementLayout element : centerRowLayout.getElements())
+		{
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer())
-						.setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 
-		for (ElementLayout element : leftColumnLayout.getElements()) {
+		for (ElementLayout element : leftColumnLayout.getElements())
+		{
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer())
-						.setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 
-		for (ElementLayout element : rightColumnLayout.getElements()) {
+		for (ElementLayout element : rightColumnLayout.getElements())
+		{
 			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer())
-						.setRenderSpacer(false);
+				((DimensionGroupSpacingRenderer) element.getRenderer()).setRenderSpacer(false);
 		}
 	}
 
-	public DimensionGroupManager getDimensionGroupManager() {
+	public DimensionGroupManager getDimensionGroupManager()
+	{
 		return dimensionGroupManager;
 	}
 
-	public void updateConnectionLinesBetweenDimensionGroups() {
+	public void updateConnectionLinesBetweenDimensionGroups()
+	{
 
 		isConnectionLinesDirty = true;
 	}
 
-	private void performConnectionLinesUpdate() {
+	private void performConnectionLinesUpdate()
+	{
 		connectionBandIDCounter = 0;
 
-		if (centerRowLayout != null) {
-			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
-				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
+		if (centerRowLayout != null)
+		{
+			for (ElementLayout elementLayout : centerRowLayout.getElements())
+			{
+				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer)
+				{
 					((DimensionGroupSpacingRenderer) elementLayout.getRenderer()).init();
 				}
 			}
@@ -1380,7 +1513,8 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		isConnectionLinesDirty = false;
 	}
 
-	public void updateLayout() {
+	public void updateLayout()
+	{
 		isLayoutDirty = true;
 	}
 
@@ -1390,28 +1524,34 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * 
 	 * @param lastResizeDirectionWasToLeft
 	 */
-	public void setLastResizeDirectionWasToLeft(boolean lastResizeDirectionWasToLeft) {
+	public void setLastResizeDirectionWasToLeft(boolean lastResizeDirectionWasToLeft)
+	{
 		this.lastResizeDirectionWasToLeft = lastResizeDirectionWasToLeft;
 	}
 
-	public float getArchTopY() {
+	public float getArchTopY()
+	{
 		return archTopY;
 	}
 
-	public float getArchBottomY() {
+	public float getArchBottomY()
+	{
 		return archBottomY;
 	}
 
-	public RecordSelectionManager getRecordSelectionManager() {
+	public RecordSelectionManager getRecordSelectionManager()
+	{
 		return recordSelectionManager;
 	}
 
-	public GLVisBricksKeyListener getKeyListener() {
+	public GLVisBricksKeyListener getKeyListener()
+	{
 		return (GLVisBricksKeyListener) glKeyListener;
 	}
 
 	public void handleTrendHighlightMode(boolean connectionsOn,
-			boolean connectionsHighlightDynamic, float focusFactor) {
+			boolean connectionsHighlightDynamic, float focusFactor)
+	{
 
 		this.connectionsOn = connectionsOn;
 		this.connectionsHighlightDynamic = connectionsHighlightDynamic;
@@ -1420,27 +1560,33 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		updateConnectionLinesBetweenDimensionGroups();
 	}
 
-	public boolean isConnectionsOn() {
+	public boolean isConnectionsOn()
+	{
 		return connectionsOn;
 	}
 
-	public boolean isConnectionsHighlightDynamic() {
+	public boolean isConnectionsHighlightDynamic()
+	{
 		return connectionsHighlightDynamic;
 	}
 
-	public float getConnectionsFocusFactor() {
+	public float getConnectionsFocusFactor()
+	{
 		return connectionsFocusFactor;
 	}
 
-	public int getSelectedConnectionBandID() {
+	public int getSelectedConnectionBandID()
+	{
 		return selectedConnectionBandID;
 	}
 
-	public HashMap<Integer, BrickConnection> getHashConnectionBandIDToRecordVA() {
+	public HashMap<Integer, BrickConnection> getHashConnectionBandIDToRecordVA()
+	{
 		return hashConnectionBandIDToRecordVA;
 	}
 
-	private void selectElementsByConnectionBandID(int connectionBandID) {
+	private void selectElementsByConnectionBandID(int connectionBandID)
+	{
 		recordSelectionManager.clearSelections();
 
 		ClearSelectionsEvent cse = new ClearSelectionsEvent();
@@ -1459,9 +1605,10 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 				volatileBandSelectionType);
 		GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
-		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA
-				.get(connectionBandID).getSharedRecordVirtualArray();
-		for (Integer recordID : recordVA) {
+		RecordVirtualArray recordVA = hashConnectionBandIDToRecordVA.get(connectionBandID)
+				.getSharedRecordVirtualArray();
+		for (Integer recordID : recordVA)
+		{
 			recordSelectionManager.addToType(recordSelectionManager.getSelectionType(),
 					recordVA.getIdType(), recordID);
 		}
@@ -1479,22 +1626,25 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 	 * Splits a brick into two portions: those values that are in the band
 	 * identified through the connection band id and the others.
 	 */
-	public void splitBrick(Integer connectionBandID, boolean isSplitLeftBrick) {
-		BrickConnection brickConnection = hashConnectionBandIDToRecordVA
-				.get(connectionBandID);
+	public void splitBrick(Integer connectionBandID, boolean isSplitLeftBrick)
+	{
+		BrickConnection brickConnection = hashConnectionBandIDToRecordVA.get(connectionBandID);
 		RecordVirtualArray sharedRecordVA = brickConnection.getSharedRecordVirtualArray();
 
 		RecordPerspective sourcePerspective;
 		RecordVirtualArray sourceVA;
 		Integer sourceGroupIndex;
 
-		if (isSplitLeftBrick) {
+		if (isSplitLeftBrick)
+		{
 			sourcePerspective = brickConnection.getLeftBrick().getDimensionGroup()
 					.getDataContainer().getRecordPerspective();
 			sourceVA = sourcePerspective.getVirtualArray();
 			sourceGroupIndex = brickConnection.getLeftBrick().getDataContainer()
 					.getRecordGroup().getGroupIndex();
-		} else {
+		}
+		else
+		{
 			sourcePerspective = brickConnection.getRightBrick().getDimensionGroup()
 					.getDataContainer().getRecordPerspective();
 			sourceVA = sourcePerspective.getVirtualArray();
@@ -1506,18 +1656,22 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 		// this is necessary because the originalGroupIDs is backed by the
 		// original VA and changes in it also change the VA
-		for (Integer id : sourceVA.getIDsOfGroup(sourceGroupIndex)) {
+		for (Integer id : sourceVA.getIDsOfGroup(sourceGroupIndex))
+		{
 			remainingGroupIDs.add(id);
 		}
 
 		// remove the ids of the shared record va from the group which is beeing
 		// split
-		for (Integer recordID : sharedRecordVA) {
+		for (Integer recordID : sharedRecordVA)
+		{
 
 			Iterator<Integer> remainingGroupIDIterator = remainingGroupIDs.iterator();
-			while (remainingGroupIDIterator.hasNext()) {
+			while (remainingGroupIDIterator.hasNext())
+			{
 
-				if (remainingGroupIDIterator.next() == recordID) {
+				if (remainingGroupIDIterator.next() == recordID)
+				{
 					remainingGroupIDIterator.remove();
 				}
 			}
@@ -1526,32 +1680,35 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 		sourceVA.getGroupList().updateGroupInfo();
 
 		List<Integer> newIDs = new ArrayList<Integer>(sourceVA.size());
-		List<Integer> groupSizes = new ArrayList<Integer>(
+		List<Integer> groupSizes = new ArrayList<Integer>(sourceVA.getGroupList().size() + 1);
+		List<String> groupNames = new ArrayList<String>(sourceVA.getGroupList().size() + 1);
+		List<Integer> sampleElements = new ArrayList<Integer>(
 				sourceVA.getGroupList().size() + 1);
-		List<String> groupNames = new ArrayList<String>(
-				sourceVA.getGroupList().size() + 1);
-		List<Integer> sampleElements = new ArrayList<Integer>(sourceVA.getGroupList()
-				.size() + 1);
 
 		// build up the data for the perspective
 		int sizeCounter = 0;
-		for (Integer groupIndex = 0; groupIndex < sourceVA.getGroupList().size(); groupIndex++) {
-			if (groupIndex == sourceGroupIndex) {
+		for (Integer groupIndex = 0; groupIndex < sourceVA.getGroupList().size(); groupIndex++)
+		{
+			if (groupIndex == sourceGroupIndex)
+			{
 				newIDs.addAll(sharedRecordVA.getIDs());
 				groupSizes.add(sharedRecordVA.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += sharedRecordVA.size();
-				groupNames.add( sourceVA.getGroupList().get(groupIndex).getClusterNode()
-								.getLabel()+ " Split 1");
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getClusterNode()
+						.getLabel()
+						+ " Split 1");
 
 				newIDs.addAll(remainingGroupIDs);
 				groupSizes.add(remainingGroupIDs.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += remainingGroupIDs.size();
-				groupNames.add(
-						 sourceVA.getGroupList().get(groupIndex).getClusterNode()
-								.getLabel() + " Split 2");
-			} else {
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getClusterNode()
+						.getLabel()
+						+ " Split 2");
+			}
+			else
+			{
 				newIDs.addAll(sourceVA.getIDsOfGroup(groupIndex));
 				groupSizes.add(sourceVA.getGroupList().get(groupIndex).getSize());
 				sampleElements.add(sizeCounter);
@@ -1576,42 +1733,50 @@ public class GLVisBricks extends AGLView implements IDataContainerBasedView,
 
 	}
 
-	public int getNextConnectionBandID() {
+	public int getNextConnectionBandID()
+	{
 		return connectionBandIDCounter++;
 	}
 
-	public RelationAnalyzer getRelationAnalyzer() {
+	public RelationAnalyzer getRelationAnalyzer()
+	{
 		return relationAnalyzer;
 	}
 
-	public float getArchInnerWidth() {
+	public float getArchInnerWidth()
+	{
 		return archInnerWidth;
 	}
 
 	@Override
-	public Set<IDataDomain> getDataDomains() {
+	public Set<IDataDomain> getDataDomains()
+	{
 		return dataDomains;
 	}
 
 	@Override
-	public boolean isDataView() {
+	public boolean isDataView()
+	{
 		return true;
 	}
 
 	/** Adds the specified data container to the view */
 	@Override
-	public void setDataContainer(DataContainer dataContainer) {
+	public void setDataContainer(DataContainer dataContainer)
+	{
 		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
 		dataContainerWrapper.add(dataContainer);
 		addDimensionGroups(dataContainerWrapper, null);
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers() {
+	public List<DataContainer> getDataContainers()
+	{
 		return dataContainers;
 	}
 
-	public int getArchHeight() {
+	public int getArchHeight()
+	{
 		return ARCH_PIXEL_HEIGHT;
 	}
 
