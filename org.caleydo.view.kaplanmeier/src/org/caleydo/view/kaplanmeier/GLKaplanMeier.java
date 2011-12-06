@@ -140,10 +140,9 @@ public class GLKaplanMeier
 					&& (Integer) recordGroupSelectionManager.getElements(
 							SelectionType.SELECTION).toArray()[0] == group.getID()) {
 				lineWidth = 2;
-				//fillCurve = true;
 			}
-			else
-				fillCurve = false;
+//			else
+//				fillCurve = false;
 
 			if (detailLevel == DetailLevel.HIGH)
 				lineWidth *= 2;
