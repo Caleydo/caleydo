@@ -2,10 +2,8 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
@@ -27,8 +25,9 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
-		IListenerOwner, ITableBasedDataDomainView {
+public class RcpGLHistogramView
+	extends ARcpGLViewPart
+	implements IViewCommandHandler, ITableBasedDataDomainView {
 
 	protected UpdateColorMappingListener updateViewListener;
 	protected ClearSelectionsListener clearSelectionsListener;
@@ -46,7 +45,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 		try {
 			viewContext = JAXBContext.newInstance(SerializedHistogramView.class);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContext", ex);
 		}
 	}
@@ -90,6 +90,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	@Override
 	public void registerEventListeners() {
 
+		super.registerEventListeners();
+
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
 		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
@@ -97,6 +99,8 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 
 	@Override
 	public void unregisterEventListeners() {
+
+		super.unregisterEventListeners();
 
 		if (updateViewListener != null) {
 			eventPublisher.removeListener(updateViewListener);
@@ -106,18 +110,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 			eventPublisher.removeListener(clearSelectionsListener);
 			clearSelectionsListener = null;
 		}
-	}
-
-	@Override
-	public synchronized void queueEvent(
-			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
-
-		parentComposite.getDisplay().asyncExec(new Runnable() {
-			@Override
-			public void run() {
-				listener.handleEvent(event);
-			}
-		});
 	}
 
 	@Override

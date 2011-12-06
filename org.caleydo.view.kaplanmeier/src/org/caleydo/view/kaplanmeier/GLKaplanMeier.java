@@ -263,13 +263,6 @@ public class GLKaplanMeier
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
-
-		// TODO: Implement picking processing here!
-	}
-
-	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedKaplanMeierView serializedForm = new SerializedKaplanMeierView();
 		serializedForm.setViewID(this.getID());
@@ -279,18 +272,6 @@ public class GLKaplanMeier
 	@Override
 	public String toString() {
 		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
-	}
-
-	@Override
-	public void registerEventListeners() {
-		super.registerEventListeners();
-
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-		super.unregisterEventListeners();
-
 	}
 
 	@Override

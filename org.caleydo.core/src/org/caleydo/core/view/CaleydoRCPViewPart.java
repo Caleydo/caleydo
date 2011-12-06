@@ -4,12 +4,10 @@ import java.io.StringReader;
 import java.io.StringWriter;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 import javax.xml.bind.Unmarshaller;
-
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.container.DataContainer;
@@ -18,10 +16,17 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
+import org.caleydo.core.data.selection.delta.SelectionDelta;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
+import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.listener.ExtendedSelectionUpdateListener;
+import org.caleydo.core.view.listener.IExtendedSelectionUpdateHandler;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
@@ -39,7 +44,8 @@ import org.eclipse.ui.part.ViewPart;
  * @author Alexander Lex
  */
 public abstract class CaleydoRCPViewPart
-	extends ViewPart {
+	extends ViewPart
+	implements IListenerOwner, IExtendedSelectionUpdateHandler {
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView serializedView;
@@ -54,16 +60,21 @@ public abstract class CaleydoRCPViewPart
 	protected AView view;
 
 	/**
-	 * Flat determines whether a view changes its content when another data domain is selected.
+	 * Flat determines whether a view changes its content when another data
+	 * domain is selected.
 	 */
 	protected boolean isSupportView = false;
 
 	protected Composite parentComposite;
 
+	protected ExtendedSelectionUpdateListener selectionUpdateListener;
+
 	@Override
 	public void init(IViewSite site) throws PartInitException {
 		super.init(site);
 		eventPublisher = GeneralManager.get().getEventPublisher();
+
+		registerEventListeners();
 	}
 
 	@Override
@@ -73,7 +84,8 @@ public abstract class CaleydoRCPViewPart
 	}
 
 	/**
-	 * Generates and returns a list of all views, caleydo-view-parts and gl-views, contained in this view.
+	 * Generates and returns a list of all views, caleydo-view-parts and
+	 * gl-views, contained in this view.
 	 * 
 	 * @return list of all views contained in this view
 	 */
@@ -93,29 +105,28 @@ public abstract class CaleydoRCPViewPart
 
 	@Override
 	public void dispose() {
-		// unregisterEventListeners();
+		unregisterEventListeners();
 		RCPViewManager.get().removeRCPView(this.getViewSite().getSecondaryId());
 		super.dispose();
 	}
 
 	/**
 	 * <p>
-	 * If applicable initializes the {@link #view} with the {@link ADataDomain} and the {@link DataContainer}
-	 * as they are specified in the {@link #serializedView}.
+	 * If applicable initializes the {@link #view} with the {@link ADataDomain}
+	 * and the {@link DataContainer} as they are specified in the
+	 * {@link #serializedView}.
 	 * </p>
 	 * <p>
 	 * Calls {@link AGLView#initialize()} and
-	 * {@link IView#initFromSerializableRepresentation(ASerializedView)} with the {@link #serializedView}
-	 * variable.
+	 * {@link IView#initFromSerializableRepresentation(ASerializedView)} with
+	 * the {@link #serializedView} variable.
 	 * </p>
 	 */
 	protected void initializeViewWithData() {
 		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain =
-				DataDomainManager.get().getDataDomainByID(
+			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
 					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
+			@SuppressWarnings("unchecked") IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 		view.initFromSerializableRepresentation(serializedView);
@@ -123,12 +134,16 @@ public abstract class CaleydoRCPViewPart
 	}
 
 	/**
-	 * Determines and sets the dataDomain to the {@link #serializedView} based on the following rules:
+	 * Determines and sets the dataDomain to the {@link #serializedView} based
+	 * on the following rules:
 	 * <ul>
 	 * <li>If no dataDomain is registered, null is returned</li>
-	 * <li>If a dataDomainID is set in the serializable representation this is used</li>
-	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
-	 * <li>Else if there was a dataDomainID provided during the creation of the view</li>
+	 * <li>If a dataDomainID is set in the serializable representation this is
+	 * used</li>
+	 * <li>Else if there is exactly one loaded dataDomain which the view can
+	 * this is used</li>
+	 * <li>Else if there was a dataDomainID provided during the creation of the
+	 * view</li>
 	 * <li>Else an exception is thrown</li>
 	 * <ul>
 	 * 
@@ -142,15 +157,19 @@ public abstract class CaleydoRCPViewPart
 	 * Determines and sets the dataDomain based on the following rules:
 	 * <ul>
 	 * <li>If no dataDomain is registered, null is returned</li>
-	 * <li>If a dataDomainID is set in the serializable representation this is used</li>
-	 * <li>Else if there is exactly one loaded dataDomain which the view can this is used</li>
-	 * <li>Else if there was a dataDomainID provided during the creation of the view</li>
+	 * <li>If a dataDomainID is set in the serializable representation this is
+	 * used</li>
+	 * <li>Else if there is exactly one loaded dataDomain which the view can
+	 * this is used</li>
+	 * <li>Else if there was a dataDomainID provided during the creation of the
+	 * view</li>
 	 * <li>Else an exception is thrown</li>
 	 * <ul>
 	 * 
 	 * @param serializedView
 	 */
-	protected void determineDataConfiguration(ASerializedView serializedView, boolean letUserChoose) {
+	protected void determineDataConfiguration(ASerializedView serializedView,
+			boolean letUserChoose) {
 
 		if (!(serializedView instanceof ASerializedTopLevelDataView))
 			return;
@@ -160,64 +179,69 @@ public abstract class CaleydoRCPViewPart
 		// then we check whether the serialization has a data domain already
 		String dataDomainID = serializedTopLevelDataView.getDataDomainID();
 
-		// check whether the data domain ID was provided during the view creation
+		// check whether the data domain ID was provided during the view
+		// creation
 		if (dataDomainID == null) {
-			RCPViewInitializationData rcpViewInitData =
-				RCPViewManager.get().getRCPViewInitializationData(this.getViewSite().getSecondaryId());
+			RCPViewInitializationData rcpViewInitData = RCPViewManager.get()
+					.getRCPViewInitializationData(this.getViewSite().getSecondaryId());
 			if (rcpViewInitData != null) {
 				dataDomainID = rcpViewInitData.getDataDomainID();
 
 				DataContainer dataContainer = rcpViewInitData.getDataContainer();
 				serializedTopLevelDataView.setDataDomainID(dataDomainID);
 				if (dataContainer != null) {
-					serializedTopLevelDataView.setRecordPerspectiveID(dataContainer.getRecordPerspective()
-						.getID());
+					serializedTopLevelDataView.setRecordPerspectiveID(dataContainer
+							.getRecordPerspective().getID());
 
 					serializedTopLevelDataView.setDimensionPerspectiveID(dataContainer
-						.getDimensionPerspective().getID());
+							.getDimensionPerspective().getID());
 				}
 				else {
 
 					serializedTopLevelDataView
-						.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
-							.getDataDomainByID(dataDomainID)).getTable().getDefaultRecordPerspective()
-							.getID());
+							.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager
+									.get().getDataDomainByID(dataDomainID)).getTable()
+									.getDefaultRecordPerspective().getID());
 
 					serializedTopLevelDataView
-						.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager.get()
-							.getDataDomainByID(dataDomainID)).getTable().getDefaultDimensionPerspective()
-							.getID());
+							.setDimensionPerspectiveID(((ATableBasedDataDomain) DataDomainManager
+									.get().getDataDomainByID(dataDomainID)).getTable()
+									.getDefaultDimensionPerspective().getID());
 				}
 			}
 		}
 
 		// ask the user to choose the data domain ID
 		if (dataDomainID == null) {
-			ArrayList<IDataDomain> availableDomains =
-				DataDomainManager.get().getAssociationManager()
+			ArrayList<IDataDomain> availableDomains = DataDomainManager.get()
+					.getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
 
-			DataConfiguration config =
-				DataConfigurationChooser.determineDataConfiguration(availableDomains,
-					serializedView.getViewType(), letUserChoose);
+			DataConfiguration config = DataConfigurationChooser.determineDataConfiguration(
+					availableDomains, serializedView.getViewType(), letUserChoose);
 
 			// for some views its ok if initially no data is set
 			if (config.getDataDomain() == null)
 				return;
 
-			serializedTopLevelDataView.setDataDomainID(config.getDataDomain().getDataDomainID());
-			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective().getID());
-			serializedTopLevelDataView.setDimensionPerspectiveID(config.getDimensionPerspective().getID());
+			serializedTopLevelDataView.setDataDomainID(config.getDataDomain()
+					.getDataDomainID());
+			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective()
+					.getID());
+			serializedTopLevelDataView.setDimensionPerspectiveID(config
+					.getDimensionPerspective().getID());
 		}
 	}
 
 	/**
-	 * Creates a default serialized form ({@link ASerializedView}) of the contained gl-view
+	 * Creates a default serialized form ({@link ASerializedView}) of the
+	 * contained gl-view
 	 */
 	public abstract void createDefaultSerializedView();
 
 	/**
-	 * Setting an external serialized view. Needed for RCP views that are embedded in another RCP view.
+	 * Setting an external serialized view. Needed for RCP views that are
+	 * embedded in another RCP view.
 	 */
 	public void setExternalSerializedView(ASerializedView serializedView) {
 		this.serializedView = serializedView;
@@ -250,12 +274,14 @@ public abstract class CaleydoRCPViewPart
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
 			if (serializedView instanceof ASerializedTopLevelDataView
-				&& DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID()) == null)
+					&& DataDomainManager.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serializedView).getDataDomainID()) == null)
 				serializedView = null;
 		}
-		// this is the case if either the view has not been saved to a memento before, or the configuration
-		// has changed and the serialization is invalid (e.g. different DataDomain is set)
+		// this is the case if either the view has not been saved to a memento
+		// before, or the configuration
+		// has changed and the serialization is invalid (e.g. different
+		// DataDomain is set)
 		if (serializedView == null) {
 			createDefaultSerializedView();
 		}
@@ -293,12 +319,68 @@ public abstract class CaleydoRCPViewPart
 	}
 
 	/**
-	 * Returns the purpose of a view. Support views change its content upon selection of a different data
-	 * domain in another view.
+	 * Returns the purpose of a view. Support views change its content upon
+	 * selection of a different data domain in another view.
 	 * 
 	 * @return
 	 */
 	public boolean isSupportView() {
 		return isSupportView;
+	}
+
+	@Override
+	public void registerEventListeners() {
+
+		selectionUpdateListener = new ExtendedSelectionUpdateListener();
+		selectionUpdateListener.setHandler(this);
+		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		if (selectionUpdateListener != null) {
+			eventPublisher.removeListener(selectionUpdateListener);
+			selectionUpdateListener = null;
+		}
+	}
+
+	@Override
+	public void handleSelectionUpdate(SelectionDelta selectionDelta,
+			boolean scrollToSelection, String info, String dataDomainID) {
+
+		if (!isSupportView())
+			return;
+
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+				.getDataDomainByID(dataDomainID);
+		if (dataDomain == null)
+			return;
+
+		if (selectionDelta.getIDType() != dataDomain.getRecordGroupSelectionManager()
+				.getIDType())
+			return;
+
+		if (this instanceof IDataDomainBasedView) {
+			((IDataDomainBasedView) this).setDataDomain(dataDomain);
+
+		}
+		else if (this.getView() instanceof IDataDomainBasedView) {
+			((IDataDomainBasedView) (this)).setDataDomain(dataDomain);
+		}
+	}
+
+	@Override
+	public synchronized void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
+
+		if (parentComposite.isDisposed())
+			return;
+
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				listener.handleEvent(event);
+			}
+		});
 	}
 }

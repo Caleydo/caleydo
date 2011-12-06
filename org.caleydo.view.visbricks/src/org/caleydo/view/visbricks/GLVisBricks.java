@@ -193,7 +193,7 @@ public class GLVisBricks
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLVisBricks.VIEW_TYPE;
-		viewLabel = "VisBricks";
+		viewLabel = "StratomeX ";
 
 		connectionRenderer = new ConnectionBandRenderer();
 
