@@ -10,11 +10,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
@@ -48,7 +46,8 @@ import org.eclipse.equinox.app.IApplicationContext;
 /**
  * This class controls all aspects of the application's execution
  */
-public class Application implements IApplication {
+public class Application
+	implements IApplication {
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -74,7 +73,8 @@ public class Application implements IApplication {
 			outputCaleydoProjectFile = System.getProperty("user.home")
 					+ System.getProperty("file.separator") + "export_"
 					+ (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal";
-		} else {
+		}
+		else {
 			outputCaleydoProjectFile = runConfigParameters[0];
 			inputDataTypeSetCollectionFile = runConfigParameters[1];
 		}
@@ -84,8 +84,7 @@ public class Application implements IApplication {
 		DataSetMetaInfoCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
 		// Iterate over data type sets and trigger processing
-		for (DataSetMetaInfo dataTypeSet : dataSetMetInfoCollection
-				.getDataTypeSetCollection())
+		for (DataSetMetaInfo dataTypeSet : dataSetMetInfoCollection.getDataTypeSetCollection())
 			loadSources(dataTypeSet);
 
 		// calculateVAIntersections();
@@ -96,8 +95,7 @@ public class Application implements IApplication {
 	}
 
 	private void calculateVAIntersections() {
-		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(
-				5);
+		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(5);
 		// int loopCount = 0;
 		ArrayList<ATableBasedDataDomain> dataDomains = DataDomainManager.get()
 				.getDataDomainsByType(ATableBasedDataDomain.class);
@@ -116,8 +114,7 @@ public class Application implements IApplication {
 			intersectedPerspective.setLabel("Intersected 4 Clusters", false);
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
-			dataDomains.get(i).getTable()
-					.registerRecordPerspective(intersectedPerspective);
+			dataDomains.get(i).getTable().registerRecordPerspective(intersectedPerspective);
 		}
 	}
 
@@ -133,16 +130,19 @@ public class Application implements IApplication {
 		loadExternalClusterInfo(metaInfo.getExternalGroupingPath());
 
 		if (metaInfo.isRunClusteringOnRows()) {
-			runClusteringOnRows(true);
-			runClusteringOnRows(false);
+			runClusteringOnRows(true, 4);
+			runClusteringOnRows(true, 5);
+			runClusteringOnRows(true, 6);
+
+			runClusteringOnRows(false, -1);
 			// if (metaInfo.isCreateGeneSamples())
 			// createSampleOfGenes(clusterResult);
 		}
 
 	}
 
-	protected void loadData(DataSetMetaInfo dataSetMetaInfo)
-			throws FileNotFoundException, IOException {
+	protected void loadData(DataSetMetaInfo dataSetMetaInfo) throws FileNotFoundException,
+			IOException {
 
 		LoadDataParameters loadDataParameters = dataSetMetaInfo.getLoadDataParameters();
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
@@ -158,8 +158,7 @@ public class Application implements IApplication {
 		if (dataDomain.isColumnDimension())
 			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
 		else
-			loadDataParameters
-					.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+			loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
 
 		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
 		thread.start();
@@ -177,8 +176,7 @@ public class Application implements IApplication {
 			throw new IllegalStateException("Problem while creating table!");
 	}
 
-	private void loadClusterInfo(String clusterFile) throws FileNotFoundException,
-			IOException {
+	private void loadClusterInfo(String clusterFile) throws FileNotFoundException, IOException {
 
 		String delimiter = "\t";
 
@@ -211,8 +209,8 @@ public class Application implements IApplication {
 			// String originalID = columns[0];
 
 			Integer mappedID = dataDomain.getRecordIDMappingManager().getID(
-					dataDomain.getHumanReadableRecordIDType(),
-					dataDomain.getRecordIDType(), originalID);
+					dataDomain.getHumanReadableRecordIDType(), dataDomain.getRecordIDType(),
+					originalID);
 
 			for (int columnCount = 1; columnCount < columns.length; columnCount++) {
 				HashMap<String, ArrayList<Integer>> groupList;
@@ -220,7 +218,8 @@ public class Application implements IApplication {
 					groupList = new HashMap<String, ArrayList<Integer>>();
 					listOfGroupLists.add(groupList);
 
-				} else {
+				}
+				else {
 					groupList = listOfGroupLists.get(columnCount - 1);
 				}
 
@@ -282,45 +281,47 @@ public class Application implements IApplication {
 	}
 
 	/**
-	 * Running this once with true creates a default dimension perspective with
-	 * k-means. Running this again with false creates another
+	 * Running this once with true creates a new dimension perspective with
+	 * k-means. Running this with false creates another
 	 * dimensionPerspective using affinity propagation
 	 * 
-	 * @param useKMeansAndMakeDefaultPerspective
+	 * @param useKMeans
 	 * @return
 	 */
-	private void runClusteringOnRows(boolean useKMeansAndMakeDefaultPerspective) {
+	private void runClusteringOnRows(boolean useKMeans,
+			int numClusters) {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
 		String recordPerspectiveID = dataDomain.getTable().getDefaultRecordPerspective()
 				.getID();
-		String dimensionPerspectiveID = dataDomain.getTable()
-				.getDefaultDimensionPerspective().getID();
+		String dimensionPerspectiveID = dataDomain.getTable().getDefaultDimensionPerspective()
+				.getID();
 
 		DimensionPerspective sourceDimensionPerspective = dataDomain.getTable()
 				.getDimensionPerspective(dimensionPerspectiveID);
 
-		if (useKMeansAndMakeDefaultPerspective) {
+		if (useKMeans) {
 			clusterConfiguration.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
-			clusterConfiguration.setkMeansNumberOfClustersForDimensions(5);
-			sourceDimensionPerspective.setLabel("K-Means", false);
+			clusterConfiguration.setkMeansNumberOfClustersForDimensions(numClusters);
 
-		} else {
+			DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
+					dataDomain);
+			dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
+
+			targetDimensionPerspective.setLabel("K-Means, " + numClusters + " Cluster", false);
+
+			clusterConfiguration
+					.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
+		}
+		else {
 			// here we create another dimensionPerspective which uses average
 			// linkage hierarchical clustering
 			clusterConfiguration.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
 			clusterConfiguration.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
-		
-			DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
-					dataDomain);
-			dataDomain.getTable()
-					.registerDimensionPerspective(targetDimensionPerspective);
 
-			targetDimensionPerspective.setLabel("Average Linkage", false);
-			clusterConfiguration
-					.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
+			sourceDimensionPerspective.setLabel("Average Linkage", false);
 		}
 
 		clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
@@ -339,8 +340,7 @@ public class Application implements IApplication {
 	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {
 		if (clusterResult.getIndices().size() < 50)
 			return;
-		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(
-				dataDomain);
+		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(dataDomain);
 
 		sampledDimensionPerspective.init(clusterResult);
 
@@ -367,7 +367,8 @@ public class Application implements IApplication {
 			serializableClasses[2] = TCGAIDStringConverter.class;
 			serializableClasses[3] = DashToPointStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -380,7 +381,8 @@ public class Application implements IApplication {
 
 			dataTypeSetCollection = (DataSetMetaInfoCollection) unmarshaller
 					.unmarshal(new File(inputDataTypeSetCollectionFile));
-		} catch (JAXBException ex) {
+		}
+		catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 
