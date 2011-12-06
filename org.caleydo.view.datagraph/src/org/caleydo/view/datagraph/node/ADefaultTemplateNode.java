@@ -17,7 +17,6 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
@@ -206,6 +205,8 @@ public abstract class ADefaultTemplateNode
 	public Point2D getPosition()
 	{
 		Point2D position = graphLayout.getNodePosition(this);
+		if (position == null)
+			return new Point2D.Float(0, 0);
 		float x = pixelGLConverter.getGLWidthForPixelWidth((int) position.getX());
 		float y = pixelGLConverter.getGLHeightForPixelHeight((int) position.getY());
 		return new Point2D.Float(x, y);
@@ -226,16 +227,16 @@ public abstract class ADefaultTemplateNode
 	@Override
 	public int getHeightPixels()
 	{
-		
-//		heightPixels = 4
-//				* SPACING_PIXELS
-//				+ CAPTION_HEIGHT_PIXELS
-//				+ LINE_SEPARATOR_HEIGHT_PIXELS
-//				+ Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
-//						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
-//								.getMinHeightPixels()));
 
-		
+		// heightPixels = 4
+		// * SPACING_PIXELS
+		// + CAPTION_HEIGHT_PIXELS
+		// + LINE_SEPARATOR_HEIGHT_PIXELS
+		// + Math.max(MIN_DATA_CONTAINER_HEIGHT_PIXELS,
+		// ((getDataContainerRenderer() == null) ? 0 :
+		// getDataContainerRenderer()
+		// .getMinHeightPixels()));
+
 		if (heightPixels < 0)
 			recalculateNodeSize();
 
@@ -246,12 +247,13 @@ public abstract class ADefaultTemplateNode
 	@Override
 	public int getWidthPixels()
 	{
-		
-//		widthPixels = 2
-//				* SPACING_PIXELS
-//				+ Math.max(getMinTitleBarWidthPixels(),
-//						((getDataContainerRenderer() == null) ? 0 : getDataContainerRenderer()
-//								.getMinWidthPixels()));
+
+		// widthPixels = 2
+		// * SPACING_PIXELS
+		// + Math.max(getMinTitleBarWidthPixels(),
+		// ((getDataContainerRenderer() == null) ? 0 :
+		// getDataContainerRenderer()
+		// .getMinWidthPixels()));
 		if (widthPixels < 0)
 			recalculateNodeSize();
 
@@ -341,15 +343,15 @@ public abstract class ADefaultTemplateNode
 		gl.glPopMatrix();
 		// GLHelperFunctions.drawPointAt(gl, x, y, 0);
 
-//		 Rectangle2D boundingBox = getBoundingBox();
-//		
-//		 gl.glColor3f(1, 0, 1);
-//		 gl.glBegin(GL2.GL_LINE_LOOP);
-//		 gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
-//		 gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
-//		 gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
-//		 gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
-//		 gl.glEnd();
+		// Rectangle2D boundingBox = getBoundingBox();
+		//
+		// gl.glColor3f(1, 0, 1);
+		// gl.glBegin(GL2.GL_LINE_LOOP);
+		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMinY());
+		// gl.glVertex2d(boundingBox.getMinX(), boundingBox.getMaxY());
+		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMaxY());
+		// gl.glVertex2d(boundingBox.getMaxX(), boundingBox.getMinY());
+		// gl.glEnd();
 
 	}
 

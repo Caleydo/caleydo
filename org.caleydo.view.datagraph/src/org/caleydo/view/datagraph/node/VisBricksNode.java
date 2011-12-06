@@ -123,6 +123,11 @@ public class VisBricksNode
 		{
 			retrieveDataContainers();
 		}
+		
+//		update();
+		
+//		retrieveDataContainers();
+//		dataContainerListRenderer.setDataContainers(dataContainers);
 
 		// List<ADimensionGroupData> groups = representedView.get();
 		// if (groups == null) {
@@ -152,33 +157,34 @@ public class VisBricksNode
 			}
 		}
 
-		List<Pair<String, IDataDomain>> sortedDataDomains = new ArrayList<Pair<String, IDataDomain>>();
+		List<Pair<Float, ADataNode>> sortedDataNodes = new ArrayList<Pair<Float, ADataNode>>();
 
 		for (IDataDomain dataDomain : dataDomains)
 		{
-			sortedDataDomains.add(new Pair<String, IDataDomain>(dataDomain.getLabel(),
-					dataDomain));
-		}
-
-		Collections.sort(sortedDataDomains);
-
-		for (Pair<String, IDataDomain> dataDomainPair : sortedDataDomains)
-		{
-			ADataNode dataNode = view.getDataNode(dataDomainPair.getSecond());
-
+			ADataNode dataNode = view.getDataNode(dataDomain);
 			if (dataNode != null)
 			{
-				List<DataContainer> sortedNodeDataContainers = dataNode.getDataContainers();
+				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode.getPosition()
+						.getX(), dataNode));
+			}
+		}
 
-				for (DataContainer nodeContainer : sortedNodeDataContainers)
+		Collections.sort(sortedDataNodes);
+
+		for (Pair<Float, ADataNode> dataNodePair : sortedDataNodes)
+		{
+			ADataNode dataNode = dataNodePair.getSecond();
+
+			List<DataContainer> sortedNodeDataContainers = dataNode.getDataContainers();
+
+			for (DataContainer nodeContainer : sortedNodeDataContainers)
+			{
+				for (DataContainer container : containers)
 				{
-					for (DataContainer container : containers)
+					if (nodeContainer == container)
 					{
-						if (nodeContainer == container)
-						{
-							dataContainers.add(container);
-							break;
-						}
+						dataContainers.add(container);
+						break;
 					}
 				}
 			}
@@ -229,6 +235,13 @@ public class VisBricksNode
 		dataContainerListRenderer.setDataContainers(getDataContainers());
 		recalculateNodeSize();
 		view.setDisplayListDirty();
+	}
+	
+	@Override
+	public void render(GL2 gl) {
+		retrieveDataContainers();
+		dataContainerListRenderer.setDataContainers(getDataContainers());
+		super.render(gl);
 	}
 
 }
