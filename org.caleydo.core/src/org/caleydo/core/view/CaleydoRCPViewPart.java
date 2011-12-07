@@ -373,7 +373,7 @@ public abstract class CaleydoRCPViewPart
 	public synchronized void queueEvent(
 			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 
-		if (parentComposite.isDisposed())
+		if (parentComposite == null || parentComposite.isDisposed())
 			return;
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
