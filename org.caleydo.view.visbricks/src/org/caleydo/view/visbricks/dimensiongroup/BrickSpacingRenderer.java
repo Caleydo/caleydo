@@ -26,12 +26,14 @@ public class BrickSpacingRenderer
 	private DimensionGroup dimensionGroup;
 	private int id;
 	private boolean renderDropIndicator = false;
+	private GLBrick lowerBrick;
 
-	public BrickSpacingRenderer(DimensionGroup dimensionGroup, int id)
+	public BrickSpacingRenderer(DimensionGroup dimensionGroup, int id, GLBrick lowerBrick)
 	{
 		// super(new float[] { 1, 0, 0, 1 });
 		this.dimensionGroup = dimensionGroup;
 		this.id = id;
+		this.setLowerBrick(lowerBrick);
 
 		final GLVisBricks visBricks = dimensionGroup.getVisBricksView();
 
@@ -63,7 +65,7 @@ public class BrickSpacingRenderer
 		GLVisBricks visBricks = dimensionGroup.getVisBricksView();
 		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
 				PickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
-		
+
 		gl.glColor4f(1, 0, 0, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(-width / 2.0f, 0, 0);
@@ -71,7 +73,7 @@ public class BrickSpacingRenderer
 		gl.glVertex3f(width / 2.0f, y, 0);
 		gl.glVertex3f(-width / 2.0f, y, 0);
 		gl.glEnd();
-		
+
 		if (renderDropIndicator)
 		{
 			gl.glLineWidth(3);
@@ -99,7 +101,7 @@ public class BrickSpacingRenderer
 		for (IDraggable draggable : draggables)
 		{
 			GLBrick draggedBrick = (GLBrick) draggable;
-			// TODO: Insert code to reorder bricks here
+			dimensionGroup.moveBrick(draggedBrick, lowerBrick);
 		}
 
 	}
@@ -119,6 +121,16 @@ public class BrickSpacingRenderer
 	{
 		setRenderDropIndicator(false);
 
+	}
+
+	public GLBrick getLowerBrick()
+	{
+		return lowerBrick;
+	}
+
+	public void setLowerBrick(GLBrick lowerBrick)
+	{
+		this.lowerBrick = lowerBrick;
 	}
 
 }

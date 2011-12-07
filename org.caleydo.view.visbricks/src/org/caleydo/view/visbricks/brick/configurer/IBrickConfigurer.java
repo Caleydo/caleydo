@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks.brick.configurer;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
@@ -10,6 +9,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 
 /**
@@ -30,7 +30,8 @@ import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
  * @author Christian Partl
  * 
  */
-public interface IBrickConfigurer {
+public interface IBrickConfigurer
+{
 
 	/**
 	 * Configures the specified {@link HeaderBrickLayoutTemplate} for the type
@@ -107,4 +108,5 @@ public interface IBrickConfigurer {
 	 * {@link CompactHeaderBrickLayoutTemplate}
 	 */
 	public int getDefaultWidth();
+
 }

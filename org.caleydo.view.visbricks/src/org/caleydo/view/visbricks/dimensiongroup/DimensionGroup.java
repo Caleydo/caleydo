@@ -356,39 +356,92 @@ public class DimensionGroup
 		List<GLBrick> sortedBricks = brickConfigurer.getBrickSortingStrategy()
 				.getSortedBricks(segmentBricks);
 
+		addSortedBricks(sortedBricks);
+
+		visBricks.getRelationAnalyzer().updateRelations(
+				dataContainer.getRecordPerspective().getID(),
+				dataContainer.getRecordPerspective().getVirtualArray());
+
+	}
+
+	private void addSortedBricks(List<GLBrick> sortedBricks)
+	{
 		for (GLBrick brick : sortedBricks)
 		{
 			// System.out.println("Average Value: "
 			// +
 			// brick.getDataContainer().getContainerStatistics().getAverageValue());
-			clusterBricks.add(brick);
-			clusterBrickColumn.append(brick.getLayout());
-		}
-
-		for (int count = 0; count < clusterBrickColumn.size();)
-		{
 			ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 			brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
 			brickSpacingLayout.setRatioSizeX(0f);
 			BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this,
-					currentBrickSpacerID++);
+					currentBrickSpacerID++, brick);
 			brickSpacingLayout.setRenderer(brickSpacingRenderer);
-			clusterBrickColumn.add(count, brickSpacingLayout);
-			count++;
-			count++;
+			clusterBrickColumn.append(brickSpacingLayout);
+			clusterBricks.add(brick);
+			clusterBrickColumn.append(brick.getLayout());
 		}
-		
+
+		// for (int count = 0; count < clusterBrickColumn.size();)
+		// {
+		// ElementLayout brickSpacingLayout = new
+		// ElementLayout("brickSpacingLayout");
+		// brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
+		// brickSpacingLayout.setRatioSizeX(0f);
+		// BrickSpacingRenderer brickSpacingRenderer = new
+		// BrickSpacingRenderer(this,
+		// currentBrickSpacerID++);
+		// brickSpacingLayout.setRenderer(brickSpacingRenderer);
+		// clusterBrickColumn.add(count, brickSpacingLayout);
+		// count++;
+		// count++;
+		// }
+
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 		brickSpacingLayout.setRatioSizeY(1);
 		brickSpacingLayout.setRatioSizeX(0f);
 		BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this,
-				currentBrickSpacerID++);
+				currentBrickSpacerID++, null);
 		brickSpacingLayout.setRenderer(brickSpacingRenderer);
 		clusterBrickColumn.append(brickSpacingLayout);
+	}
 
-		visBricks.getRelationAnalyzer().updateRelations(
-				dataContainer.getRecordPerspective().getID(),
-				dataContainer.getRecordPerspective().getVirtualArray());
+	/**
+	 * Moves the specified brick from its current position to the position
+	 * before the second specified brick. If the second brick is null, the brick
+	 * will be moved to the last position.
+	 * 
+	 * @param brickToMove
+	 * @param brickAfter
+	 */
+	public void moveBrick(GLBrick brickToMove, GLBrick brickAfter)
+	{
+		if(brickAfter == brickToMove)
+			return;
+		
+		List<GLBrick> sortedBricks = new ArrayList<GLBrick>(clusterBricks);
+
+		int fromIndex = sortedBricks.indexOf(brickToMove);
+		if (fromIndex == -1)
+			return;
+		sortedBricks.set(fromIndex, null);
+		if (brickAfter == null)
+		{
+			sortedBricks.add(brickToMove);
+		}
+		else
+		{
+			sortedBricks.add(sortedBricks.indexOf(brickAfter), brickToMove);
+		}
+
+		sortedBricks.remove(null);
+
+		clusterBrickColumn.clear();
+		clusterBricks.clear();
+
+		addSortedBricks(sortedBricks);
+		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		visBricks.updateLayout();
 
 	}
 
@@ -1194,5 +1247,5 @@ public class DimensionGroup
 	{
 		return isCollapsed;
 	}
-	
+
 }
