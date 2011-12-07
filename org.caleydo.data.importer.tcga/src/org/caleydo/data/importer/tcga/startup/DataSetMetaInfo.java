@@ -28,6 +28,7 @@ public class DataSetMetaInfo {
 	private String colorScheme;
 	private String dataDomainType;
 	private DataDomainConfiguration dataDomainConfiguration;
+	private int column;
 
 	private LoadDataParameters loadDataParameters;
 
@@ -56,6 +57,7 @@ public class DataSetMetaInfo {
 	 */
 	public void setExternalGroupingPath(String externalGroupingPath) {
 		this.externalGroupingPath = externalGroupingPath;
+		this.column = column;
 	}
 
 	/**
@@ -155,6 +157,16 @@ public class DataSetMetaInfo {
 	public boolean isCreateGeneSamples() {
 		return createGeneSamples;
 	}
+	
+	public int getColumn() {
+		return column;
+	}
+
+	public void setColumn(int column) {
+		this.column = column;
+	}
+
+	
 
 	@Override
 	public String toString() {

@@ -127,7 +127,7 @@ public class Application
 
 		loadData(metaInfo);
 		loadClusterInfo(metaInfo.getGroupingPath());
-		loadExternalClusterInfo(metaInfo.getExternalGroupingPath());
+		loadExternalClusterInfo(metaInfo.getExternalGroupingPath(),metaInfo.getColumn());
 
 		if (metaInfo.isRunClusteringOnRows()) {
 			runClusteringOnRows(true, 4);
@@ -259,13 +259,13 @@ public class Application
 		}
 	}
 
-	private void loadExternalClusterInfo(String externalGroupingPath) {
+	private void loadExternalClusterInfo(String externalGroupingPath, int column) {
 		if (externalGroupingPath == null)
 			return;
 
 		ExternalGroupingParser parser = new ExternalGroupingParser();
 		ArrayList<Integer> groupingColumns = new ArrayList<Integer>(1);
-		groupingColumns.add(2);
+		groupingColumns.add(column);
 		ArrayList<PerspectiveInitializationData> perspectiveDatas = parser
 				.loadExternalGrouping(externalGroupingPath, groupingColumns,
 						new TCGAIDStringConverter(),
