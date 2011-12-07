@@ -260,4 +260,11 @@ public class FilterItem<DeltaType extends VirtualArrayDelta<?>> implements IRend
 	public void handleClearMouseOver() {
 		representation.handleClearMouseOver();
 	}
+
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

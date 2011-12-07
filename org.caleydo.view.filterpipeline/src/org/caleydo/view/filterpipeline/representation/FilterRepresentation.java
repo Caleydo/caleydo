@@ -304,4 +304,11 @@ public class FilterRepresentation implements IDraggable, IRenderable, IDropArea 
 	public void handleClearMouseOver() {
 		mouseOverItem = -1;
 	}
+
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

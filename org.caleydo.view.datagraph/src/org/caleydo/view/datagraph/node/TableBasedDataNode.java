@@ -485,4 +485,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
 				+ SPACING_PIXELS;
 	}
+
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

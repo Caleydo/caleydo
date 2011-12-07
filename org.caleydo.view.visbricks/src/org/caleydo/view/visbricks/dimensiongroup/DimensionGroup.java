@@ -2,11 +2,9 @@ package org.caleydo.view.visbricks.dimensiongroup;
 
 import java.awt.Point;
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
-import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
@@ -153,6 +151,11 @@ public class DimensionGroup
 	/** the minimal width of the brick */
 	private int minPixelWidth;
 
+	/**
+	 * ID of the last {@link BrickSpacingRenderer} added.
+	 */
+	private int currentBrickSpacerID = 0;
+
 	private boolean showDetailBrick = false;
 	private boolean hideDetailBrick = false;
 	private boolean isDetailBrickShown = false;
@@ -185,10 +188,11 @@ public class DimensionGroup
 
 		clusterBrickWrapperColumn = new Column("wrapperColumn");
 		clusterBrickWrapperColumn.setXDynamic(true);
+		clusterBrickWrapperColumn.setFrameColor(0, 1, 0, 1);
 		clusterBrickWrapperColumn.setVAlign(VAlign.CENTER);
 
 		clusterBrickColumn = new Column("clusterBrickColumn");
-		clusterBrickColumn.setFrameColor(1, 0, 1, 1);
+		clusterBrickColumn.setFrameColor(1, 0, 0, 1);
 		clusterBrickColumn.setBottomUp(false);
 		clusterBrickColumn.setXDynamic(true);
 		clusterBrickColumn.setIDs(uniqueID, BOTTOM_COLUMN_ID);
@@ -275,22 +279,25 @@ public class DimensionGroup
 		float[] glowColor = dataContainer.getDataDomain().getColor().getRGBA();
 		if (dataContainer instanceof PathwayDataContainer)
 		{
-			glowColor = ((PathwayDataContainer) dataContainer).getPathwayDataDomain().getColor()
-					.getRGBA();
+			glowColor = ((PathwayDataContainer) dataContainer).getPathwayDataDomain()
+					.getColor().getRGBA();
 		}
 
-		mainColumn.addBackgroundRenderer(new DimensionGroupGlowRenderer(glowColor, this, false));
+		mainColumn
+				.addBackgroundRenderer(new DimensionGroupGlowRenderer(glowColor, this, false));
 
 		ElementLayout innerHeaderBrickLayout = new ElementLayout();
 
 		// headerBrickLayout2.setRenderingPriority(1);
 
-		innerHeaderBrickLayout.addBackgroundRenderer(new DimensionGroupGlowRenderer(
-				glowColor, this, true));
+		innerHeaderBrickLayout.addBackgroundRenderer(new DimensionGroupGlowRenderer(glowColor,
+				this, true));
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
 		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
 		brickSpacingLayout.setRatioSizeX(0);
+		// brickSpacingLayout.setRenderer(new BrickSpacingRenderer(this,
+		// currentBrickSpacerID++));
 		headerBrickLayout.append(innerHeaderBrickLayout);
 		headerBrickLayout.append(brickSpacingLayout);
 
@@ -358,17 +365,26 @@ public class DimensionGroup
 			clusterBrickColumn.append(brick.getLayout());
 		}
 
-		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
-		brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
-		brickSpacingLayout.setRatioSizeX(0);
-
 		for (int count = 0; count < clusterBrickColumn.size();)
 		{
-
+			ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+			brickSpacingLayout.setPixelSizeY(BETWEEN_BRICKS_SPACING);
+			brickSpacingLayout.setRatioSizeX(0f);
+			BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this,
+					currentBrickSpacerID++);
+			brickSpacingLayout.setRenderer(brickSpacingRenderer);
 			clusterBrickColumn.add(count, brickSpacingLayout);
 			count++;
 			count++;
 		}
+		
+		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
+		brickSpacingLayout.setRatioSizeY(1);
+		brickSpacingLayout.setRatioSizeX(0f);
+		BrickSpacingRenderer brickSpacingRenderer = new BrickSpacingRenderer(this,
+				currentBrickSpacerID++);
+		brickSpacingLayout.setRenderer(brickSpacingRenderer);
+		clusterBrickColumn.append(brickSpacingLayout);
 
 		visBricks.getRelationAnalyzer().updateRelations(
 				dataContainer.getRecordPerspective().getID(),
@@ -1178,4 +1194,5 @@ public class DimensionGroup
 	{
 		return isCollapsed;
 	}
+	
 }

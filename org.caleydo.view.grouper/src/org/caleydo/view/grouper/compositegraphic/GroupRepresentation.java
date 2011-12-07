@@ -703,4 +703,11 @@ public class GroupRepresentation implements ICompositeGraphic, IDropArea {
 	@Override
 	public void handleDrop(GL2 gl, float mouseCoordinateX, float mouseCoordinateY) {
 	}
+
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

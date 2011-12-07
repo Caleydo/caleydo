@@ -667,4 +667,11 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	public void setRightDimGroup(DimensionGroup rightDimGroup) {
 		this.rightDimGroup = rightDimGroup;
 	}
+
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

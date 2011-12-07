@@ -172,4 +172,11 @@ public class Background implements IRenderable, IDropArea {
 		gl.glEnd();
 		gl.glPopName();
 	}
+
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
 }

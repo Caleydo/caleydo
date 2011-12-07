@@ -1061,7 +1061,7 @@ public class GLVisBricks
 					if (glMouseListener.wasRightMouseButtonPressed())
 						dragAndDropController.clearDraggables();
 					else if (!dragAndDropController.isDragging())
-						dragAndDropController.startDragging();
+						dragAndDropController.startDragging("DimensionGroupDrag");
 				}
 
 			}
@@ -1074,8 +1074,13 @@ public class GLVisBricks
 			public void dragged(Pick pick)
 			{
 
-				dragAndDropController.setDropArea(dimensionGroupManager
-						.getDimensionGroupSpacers().get(pick.getID()));
+				if (dragAndDropController.getDraggingMode() != null
+						&& dragAndDropController.getDraggingMode()
+								.equals("DimensionGroupDrag"))
+				{
+					dragAndDropController.setDropArea(dimensionGroupManager
+							.getDimensionGroupSpacers().get(pick.getID()));
+				}
 			};
 
 		}, PickingType.DIMENSION_GROUP_SPACER.name());
@@ -1778,6 +1783,11 @@ public class GLVisBricks
 	public int getArchHeight()
 	{
 		return ARCH_PIXEL_HEIGHT;
+	}
+
+	public DragAndDropController getDragAndDropController()
+	{
+		return dragAndDropController;
 	}
 
 }

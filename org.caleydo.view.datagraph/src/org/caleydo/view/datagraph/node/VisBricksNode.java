@@ -244,4 +244,11 @@ public class VisBricksNode
 		super.render(gl);
 	}
 
+	@Override
+	public void handleDropAreaReplaced()
+	{
+		// TODO Auto-generated method stub
+		
+	}
+
 }

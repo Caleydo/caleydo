@@ -5,13 +5,11 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class DimensionGroupRenderer
 	extends ADraggableColorRenderer
-	implements IDraggable
 {
 
 	private static final int TEXT_SPACING_PIXELS = 2;

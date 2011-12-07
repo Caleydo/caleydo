@@ -48,7 +48,12 @@ public class DragAndDropController {
 	}
 
 	public void setDropArea(IDropArea dropArea) {
+		if(dropArea == this.dropArea)
+			return;
+		if(this.dropArea != null)
+			this.dropArea.handleDropAreaReplaced();
 		this.dropArea = dropArea;
+		
 	}
 
 	public void clearDraggables() {
