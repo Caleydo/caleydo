@@ -9,7 +9,7 @@
             class="org.caleydo.view.visbricks.RcpGLVisBricksView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.visbricks"
-            name="VisBricks">
+            name="StratomeX">
       </view>
    </extension>
    <extension
@@ -40,7 +40,7 @@
       <command
             defaultHandler="org.caleydo.view.visbricks.command.handler.OpenVisBricksHandler"
             id="org.caleydo.view.visbricks.command.openvisbricks"
-            name="Visbricks">
+            name="StratomeX">
       </command>
    </extension>
    <extension

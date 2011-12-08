@@ -6,7 +6,7 @@
       <command
             defaultHandler="org.caleydo.view.datagraph.command.handler.OpenDataGraphHandler"
             id="org.caleydo.view.datagraph.opendatagraph"
-            name="DataGraph">
+            name="Data-View Integrator">
       </command>
    </extension>
    <extension
@@ -15,7 +15,7 @@
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.datagraph.RcpGLDataGraphView"
             id="org.caleydo.view.datagraph"
-            name="DataGraph"
+            name="Data-View Integrator"
             restorable="true">
          <description>
             description body text
