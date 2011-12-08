@@ -170,12 +170,11 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		if (detailLevel.equals(this.detailLevel))
 			return;
 		super.setDetailLevel(detailLevel);
-		if (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM) {
+		if (dataContainer.getNrDimensions() >1 && (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM)) {
 			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
 		}
-
 		else {
 			layoutManager.setStaticLayoutConfiguration(textureTemplate);
 			showCaptions = false;
