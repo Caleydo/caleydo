@@ -551,7 +551,7 @@ public abstract class ATableBasedView extends AGLView implements
 			break;
 		case LOW:
 		default:
-			return 40;
+			return 1;
 		}
 		VirtualArray<?, ?, ?> va;
 		if (forRecord)

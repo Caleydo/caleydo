@@ -112,7 +112,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
-	public void init() {
+	public void initialize() {
 		DataRepresentation dataRepresentation = heatMap.getRenderingRepresentation();
 		int textureHeight = numberOfRecords = heatMap.getDataContainer()
 				.getRecordPerspective().getVirtualArray().size();

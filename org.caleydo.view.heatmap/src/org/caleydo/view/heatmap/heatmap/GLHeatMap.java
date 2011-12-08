@@ -22,6 +22,9 @@ import org.caleydo.core.event.view.tablebased.HideHeatMapElementsEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.mapping.color.IColorMappingUpdateListener;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
+import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
@@ -54,7 +57,7 @@ import org.eclipse.swt.widgets.Display;
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class GLHeatMap extends ATableBasedView {
+public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateListener {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.heatmap";
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden",
@@ -84,6 +87,8 @@ public class GLHeatMap extends ATableBasedView {
 
 	/** Signals that the heat map is currently active */
 	private boolean isActive = false;
+
+	private UpdateColorMappingListener updateColorMappingListener;
 
 	/**
 	 * Constructor.
@@ -762,5 +767,29 @@ public class GLHeatMap extends ATableBasedView {
 
 	public void updateLayout() {
 		layoutManager.updateLayout();
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+		updateColorMappingListener = new UpdateColorMappingListener();
+		updateColorMappingListener.setHandler(this);
+		eventPublisher.addListener(UpdateColorMappingEvent.class,
+				updateColorMappingListener);
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		if (updateColorMappingListener != null) {
+			eventPublisher.removeListener(updateColorMappingListener);
+			updateColorMappingListener = null;
+		}
+	}
+
+	@Override
+	public void updateColorMapping() {
+		textureTemplate.updateColorMapping();
+
 	}
 }

@@ -839,7 +839,7 @@ public class GLBrick
 
 				selectElementsByGroup();
 
-				if (!isHeaderBrick)
+				if (!isHeaderBrick && brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
 				{
 					Point point = pick.getPickedPoint();
 					DragAndDropController dragAndDropController = visBricks

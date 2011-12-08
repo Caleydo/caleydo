@@ -5,6 +5,9 @@ import java.util.ArrayList;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -53,7 +56,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Alexander Lex
  */
 public class SelectionBrowserView extends ASWTView implements
-		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
+		ISelectionUpdateHandler,
 		IRecordVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
@@ -72,8 +75,7 @@ public class SelectionBrowserView extends ASWTView implements
 	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255,
 			40f / 255, 1 };
 
-	ATableBasedDataDomain dataDomain;
-
+	
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
 
@@ -103,12 +105,13 @@ public class SelectionBrowserView extends ASWTView implements
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();
+		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry.get().getIDMappingManager(IDCategory.getIDCategory("SAMPLE")), IDType.getIDType("SAMPLE"));
+		initSelectedByGroupSelectionTypes();
 	}
 
 	private void initContent() {
-		recordSelectionManager = dataDomain.getRecordSelectionManager();
-
-		initSelectedByGroupSelectionTypes();
+		
+		
 	}
 
 	private void initSelectedByGroupSelectionTypes() {
@@ -463,17 +466,7 @@ public class SelectionBrowserView extends ASWTView implements
 		initContent();
 	}
 
-	@Override
-	public void setDataDomain(ATableBasedDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
 
-		initContent();
-	}
-
-	@Override
-	public ATableBasedDataDomain getDataDomain() {
-		return dataDomain;
-	}
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {

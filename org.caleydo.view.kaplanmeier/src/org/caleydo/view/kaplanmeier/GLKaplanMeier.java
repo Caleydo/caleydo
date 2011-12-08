@@ -156,8 +156,11 @@ public class GLKaplanMeier
 	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs, Color color,
 			boolean fillCurve) {
 
+//		if (recordIDs.size() == 0)
+//			return;
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
+		
 
 		ArrayList<Float> dataVector = new ArrayList<Float>();
 
@@ -170,7 +173,7 @@ public class GLKaplanMeier
 		}
 		Float[] sortedDataVector = new Float[dataVector.size()];
 		dataVector.toArray(sortedDataVector);
-		Arrays.sort(sortedDataVector, 0, sortedDataVector.length - 1);
+		Arrays.sort(sortedDataVector);
 		dataVector.clear();
 
 		// move sorted data back to array list so that we can use it as a stack

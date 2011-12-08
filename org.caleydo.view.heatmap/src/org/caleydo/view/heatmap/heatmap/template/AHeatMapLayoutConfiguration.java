@@ -66,7 +66,7 @@ public abstract class AHeatMapLayoutConfiguration extends LayoutConfiguration {
 	public void initRendererData() {
 
 		if (renderAsTexture) {
-			((HeatMapTextureRenderer) heatMapRenderer).init();
+			((HeatMapTextureRenderer) heatMapRenderer).initialize();
 		}
 	}
 

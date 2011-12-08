@@ -31,7 +31,12 @@ public class TextureHeatLayoutConfiguration extends LayoutConfiguration {
 		mainLayout.setRatioSizeX(1);
 		mainLayout.setRatioSizeY(1);
 		mainLayout.setRenderer(heatMapRenderer);
-		heatMapRenderer.init();
+		heatMapRenderer.initialize();
+	}
+	
+	public void updateColorMapping()
+	{
+		heatMapRenderer.initialize();
 	}
 
 }

@@ -641,6 +641,11 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			if (draggable == this)
 				break;
 
+			if(!(draggable instanceof DimensionGroup))
+			{
+				System.out.println("CHRISTIAN HEEEEELP!!");
+				break;
+			}
 			glVisBricks
 					.moveDimensionGroup(this, (DimensionGroup) draggable, leftDimGroup);
 		}
