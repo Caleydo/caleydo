@@ -286,13 +286,19 @@ public class DataContainerMatrixRenderer
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
 				dragAndDropController.addDraggable(perspectiveRenderer);
+				dragAndDropController.setDraggingMode("PerspectiveDrag");
 				view.setDisplayListDirty();
 			}
 			
 			@Override
 			public void dragged(Pick pick) {
-				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging("PerspectiveDrag");
+				
+				String draggingMode = dragAndDropController.getDraggingMode();
+
+				if (!dragAndDropController.isDragging() && dragAndDropController.hasDraggables()
+						&& draggingMode != null && draggingMode.equals("PerspectiveDrag"))
+				{
+					dragAndDropController.startDragging();
 				}
 			}
 			

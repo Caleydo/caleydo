@@ -36,10 +36,10 @@ public class DragAndDropController {
 		draggables.remove(draggable);
 	}
 
-	public void startDragging(String draggingMode) {
-		this.draggingMode = draggingMode;
-		startDragging();
-	}
+//	public void startDragging(String draggingMode) {
+//		this.draggingMode = draggingMode;
+//		startDragging();
+//	}
 
 	public void startDragging() {
 		isDragging = true;
@@ -138,5 +138,10 @@ public class DragAndDropController {
 
 	public String getDraggingMode() {
 		return draggingMode;
+	}
+
+	public void setDraggingMode(String draggingMode)
+	{
+		this.draggingMode = draggingMode;
 	}
 }

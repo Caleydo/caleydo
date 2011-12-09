@@ -5,12 +5,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
@@ -839,7 +837,7 @@ public class GLBrick
 
 				selectElementsByGroup();
 
-				if (!isHeaderBrick && brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
+				if (!isHeaderBrick)
 				{
 					Point point = pick.getPickedPoint();
 					DragAndDropController dragAndDropController = visBricks
@@ -849,6 +847,8 @@ public class GLBrick
 					dragAndDropController
 							.setDraggingStartPosition(new Point(point.x, point.y));
 					dragAndDropController.addDraggable(GLBrick.this);
+					dragAndDropController
+							.setDraggingMode("BrickDrag" + dimensionGroup.getID());
 					visBricks.setDisplayListDirty();
 				}
 			}
@@ -858,9 +858,12 @@ public class GLBrick
 			{
 				DragAndDropController dragAndDropController = visBricks
 						.getDragAndDropController();
-				if (!dragAndDropController.isDragging())
+				String draggingMode = dragAndDropController.getDraggingMode();
+				if (!dragAndDropController.isDragging()
+						&& dragAndDropController.hasDraggables() && draggingMode != null
+						&& draggingMode.equals("BrickDrag" + dimensionGroup.getID()))
 				{
-					dragAndDropController.startDragging("BrickDrag" + dimensionGroup.getID());
+					dragAndDropController.startDragging();
 				}
 			}
 
