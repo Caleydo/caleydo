@@ -263,8 +263,10 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 	@Override
 	public void handleClearSelections() {
-		contentTree.removeAll();
-		dimensionTree.removeAll();
+		if (!contentTree.isDisposed())
+			contentTree.removeAll();
+		if (!dimensionTree.isDisposed())
+			dimensionTree.removeAll();
 		recordSelectionManager.clearSelections();
 		dimensionSelectionManager.clearSelections();
 	}

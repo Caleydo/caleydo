@@ -2,11 +2,8 @@ package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
 
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
@@ -55,8 +52,7 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class SelectionBrowserView extends ASWTView implements
-		ISelectionUpdateHandler,
+public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHandler,
 		IRecordVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	private final static String SELECTION_TYPE_NAME_1 = "Selected by group 1";
@@ -75,7 +71,6 @@ public class SelectionBrowserView extends ASWTView implements
 	private final static float[] SELECTION_COLOR_4 = new float[] { 166f / 255, 86f / 255,
 			40f / 255, 1 };
 
-	
 	GeneralManager generalManager = null;
 	EventPublisher eventPublisher = null;
 
@@ -105,13 +100,14 @@ public class SelectionBrowserView extends ASWTView implements
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();
-		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry.get().getIDMappingManager(IDCategory.getIDCategory("SAMPLE")), IDType.getIDType("SAMPLE"));
+		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry
+				.get().getIDMappingManager(IDCategory.getIDCategory("SAMPLE")),
+				IDType.getIDType("SAMPLE"));
 		initSelectedByGroupSelectionTypes();
 	}
 
 	private void initContent() {
-		
-		
+
 	}
 
 	private void initSelectedByGroupSelectionTypes() {
@@ -349,6 +345,9 @@ public class SelectionBrowserView extends ASWTView implements
 	@Override
 	public void handleSelectionUpdate(final SelectionDelta selectionDelta,
 			final boolean scrollToSelection, final String info) {
+		if (!selectionDelta.getIDType().getIDCategory()
+				.equals(recordSelectionManager.getIDType().getIDCategory()))
+			return;
 		recordSelectionManager.setDelta(selectionDelta);
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
@@ -465,8 +464,6 @@ public class SelectionBrowserView extends ASWTView implements
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 		initContent();
 	}
-
-
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
