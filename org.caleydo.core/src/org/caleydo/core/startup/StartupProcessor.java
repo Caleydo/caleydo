@@ -117,7 +117,8 @@ public class StartupProcessor {
 			instanceLoc.set(workspaceURL, false);
 		}
 		catch (Exception e) {
-			throw new IllegalStateException("Cannot set workspace location at " + workspacePath);
+			//throw new IllegalStateException
+			System.err.println("Cannot set workspace location at " + workspacePath);
 		}
 	}
 
