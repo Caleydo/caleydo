@@ -14,7 +14,6 @@ public class TextureRenderer
 	extends LayoutRenderer {
 
 	private String imagePath;
-	private boolean isImagePathAbsolute;
 	private TextureManager textureManager;
 
 	/**
@@ -22,13 +21,9 @@ public class TextureRenderer
 	 * 
 	 * @param imagePath Path to the image that shall be used as texture.
 	 * @param textureManager
-	 * @param isImagePathAbsolute Specifies whether the image path is absolute
-	 *            or relative.
 	 */
-	public TextureRenderer(String imagePath, TextureManager textureManager,
-			boolean isImagePathAbsolute) {
+	public TextureRenderer(String imagePath, TextureManager textureManager) {
 		this.imagePath = imagePath;
-		this.isImagePathAbsolute = isImagePathAbsolute;
 		this.textureManager = textureManager;
 	}
 
