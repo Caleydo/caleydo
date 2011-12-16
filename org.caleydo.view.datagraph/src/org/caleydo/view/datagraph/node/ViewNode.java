@@ -161,7 +161,7 @@ public class ViewNode
 
 		Row bodyRow = new Row("bodyRow");
 		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
-				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager(), true));
+				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager()));
 
 		bodyColumn = new Column("bodyColumn");
 

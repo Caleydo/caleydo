@@ -11,6 +11,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.data.loader.ResourceLoader;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -25,25 +26,14 @@ import com.jogamp.opengl.util.texture.TextureIO;
  */
 public class TextureManager {
 
-	// private EnumMap<EIconTextures, Texture> mapIconTextures;
 	private HashMap<String, Texture> mapPathToTexture;
 
 	/**
 	 * Constructor.
 	 */
 	public TextureManager() {
-		// mapIconTextures = new EnumMap<EIconTextures, Texture>(EIconTextures.class);
 		mapPathToTexture = new HashMap<String, Texture>();
 	}
-
-	// public Texture getIconTexture(GL2 gl, final EIconTextures eIconTextures) {
-	// if (!mapIconTextures.containsKey(eIconTextures)) {
-	// Texture tmpTexture =
-	// GeneralManager.get().getResourceLoader().getTexture(eIconTextures.getFileName());
-	// mapIconTextures.put(eIconTextures, tmpTexture);
-	// }
-	// return mapIconTextures.get(eIconTextures);
-	// }
 
 	public Texture getIconTexture(GL2 gl, final String texturePath) {
 		if (!mapPathToTexture.containsKey(texturePath)) {
@@ -98,27 +88,6 @@ public class TextureManager {
 
 		renderTexture(gl, eIconTextures.getFileName(), lowerLeftCorner, lowerRightCorner, upperRightCorner,
 			upperLeftCorner, colorR, colorG, colorB, alpha);
-
-		// Texture tempTexture = getIconTexture(gl, eIconTextures);
-		// tempTexture.enable();
-		// tempTexture.bind();
-		//
-		// TextureCoords texCoords = tempTexture.getImageTexCoords();
-		//
-		// gl.glColor4f(colorR, colorG, colorB, alpha);
-		// gl.glBegin(GL2.GL_POLYGON);
-		// gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		// gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
-		// gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		// gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
-		// gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		// gl.glVertex3f(upperRightCorner.x(), upperRightCorner.y(), upperRightCorner.z());
-		// gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		// gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
-		//
-		// gl.glEnd();
-		//
-		// tempTexture.disable();
 	}
 
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures, Vec3f lowerLeftCorner,
@@ -246,72 +215,5 @@ public class TextureManager {
 		gl.glEnd();
 
 		tempTexture.disable();
-	}
-
-	/**
-	 * Convenience method for rendering textures on a rectangle using an absolute path to an image file.
-	 * 
-	 * @param gl
-	 *            GL2 Context.
-	 * @param texturePath
-	 *            Path to the image.
-	 * @param lowerLeftCorner
-	 *            Lower left corner of the texture.
-	 * @param lowerRightCorner
-	 *            Lower right corner of the texture.
-	 * @param upperRightCorner
-	 *            Upper right corner of the texture.
-	 * @param upperLeftCorner
-	 *            Upper left corner of the texture.
-	 * @param colorR
-	 *            Red portion of the color the Polygon should have where the texture is drawn on.
-	 * @param colorG
-	 *            Green portion of the color the Polygon should have where the texture is drawn on.
-	 * @param colorB
-	 *            Blue portion of the color the Polygon should have where the texture is drawn on.
-	 * @param alpha
-	 *            Alpha value the Polygon should have where the texture is drawn on.
-	 */
-	public void renderTextureFromExtPath(GL2 gl, String texturePath, Vec3f lowerLeftCorner,
-		Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner, float colorR, float colorG,
-		float colorB, float alpha) {
-
-		Texture tmpTexture = mapPathToTexture.get(texturePath);
-
-		if (tmpTexture == null) {
-			InputStream fileStream;
-			try {
-				fileStream = new FileInputStream(texturePath);
-				tmpTexture =
-					TextureIO.newTexture(TextureIO.newTextureData(GLProfile.getDefault(), fileStream, true,
-						"GIF"));
-			}
-			catch (Exception e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-
-			}
-			mapPathToTexture.put(texturePath, tmpTexture);
-		}
-
-		tmpTexture.enable();
-		tmpTexture.bind();
-
-		TextureCoords texCoords = tmpTexture.getImageTexCoords();
-
-		gl.glColor4f(colorR, colorG, colorB, alpha);
-		gl.glBegin(GL2.GL_POLYGON);
-		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-		gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
-		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
-		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(upperRightCorner.x(), upperRightCorner.y(), upperRightCorner.z());
-		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
-
-		gl.glEnd();
-
-		tmpTexture.disable();
 	}
 }

@@ -1,9 +1,7 @@
 package org.caleydo.core.view.opengl.layout.util;
 
 import gleem.linalg.Vec3f;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
@@ -22,13 +20,13 @@ public class TextureRenderer
 	/**
 	 * Constructor.
 	 * 
-	 * @param imagePath
-	 *            Path to the image that shall be used as texture.
+	 * @param imagePath Path to the image that shall be used as texture.
 	 * @param textureManager
-	 * @param isImagePathAbsolute
-	 *            Specifies whether the image path is absolute or relative.
+	 * @param isImagePathAbsolute Specifies whether the image path is absolute
+	 *            or relative.
 	 */
-	public TextureRenderer(String imagePath, TextureManager textureManager, boolean isImagePathAbsolute) {
+	public TextureRenderer(String imagePath, TextureManager textureManager,
+			boolean isImagePathAbsolute) {
 		this.imagePath = imagePath;
 		this.isImagePathAbsolute = isImagePathAbsolute;
 		this.textureManager = textureManager;
@@ -42,15 +40,8 @@ public class TextureRenderer
 		Vec3f upperRightCorner = new Vec3f(x, y, 0);
 		Vec3f upperLeftCorner = new Vec3f(0, y, 0);
 
-		if (isImagePathAbsolute) {
-			textureManager.renderTextureFromExtPath(gl, imagePath, lowerLeftCorner, lowerRightCorner,
+		textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
-		}
-		else {
-			textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, 1, 1, 1, 1);
-		}
-
 	}
 
 }
