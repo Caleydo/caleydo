@@ -1,8 +1,12 @@
 package org.caleydo.core.util.clusterer.gui;
 
+import java.util.ArrayList;
 import java.util.Set;
-
+import org.caleydo.core.data.configuration.DataConfiguration;
+import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
@@ -12,6 +16,7 @@ import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
+import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -63,10 +68,11 @@ public class StartClusteringDialogAction
 	private float fclusterFactorExperiments = 1f;
 
 	private String[] typeOptions = { "DYNAMIC_RECORD", "DYNAMIC_EXPERIMENT", "Both dimensions" };
-	private String[] sArDistOptions = { "Euclidean distance", "Manhattan distance", "Chebyshev distance",
-			"Pearson correlation" };
+	private String[] sArDistOptions = { "Euclidean distance", "Manhattan distance",
+			"Chebyshev distance", "Pearson correlation" };
 	private String[] sArDistOptionsWeka = { "Euclidean distance", "Manhattan distance" };// ,"Chebyshev distance"};
-	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage", "Single Linkage" };
+	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage",
+			"Single Linkage" };
 
 	private ClusterConfiguration clusterState = new ClusterConfiguration();
 
@@ -87,12 +93,13 @@ public class StartClusteringDialogAction
 	/**
 	 * Constructor.
 	 */
-	public StartClusteringDialogAction(final Composite parentComposite, ATableBasedDataDomain dataDomain) {
+	public StartClusteringDialogAction(final Composite parentComposite,
+			ATableBasedDataDomain dataDomain) {
 		super(TEXT);
 		setId(ID);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 
 		this.parentComposite = parentComposite;
 		this.dataDomain = dataDomain;
@@ -101,16 +108,14 @@ public class StartClusteringDialogAction
 	}
 
 	/**
-	 * @param recordPerspective
-	 *            setter, see {@link #recordPerspective}
+	 * @param recordPerspective setter, see {@link #recordPerspective}
 	 */
 	public void setRecordPerspective(RecordPerspective recordPerspective) {
 		this.recordPerspective = recordPerspective;
 	}
 
 	/**
-	 * @param dimensionPerspective
-	 *            setter, see {@link #dimensionPerspective}
+	 * @param dimensionPerspective setter, see {@link #dimensionPerspective}
 	 */
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
 		this.dimensionPerspective = dimensionPerspective;
@@ -137,10 +142,9 @@ public class StartClusteringDialogAction
 			public void helpRequested(HelpEvent e) {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView("org.caleydo.view.browser");
+							.showView("org.caleydo.view.browser");
 
-					final String URL_HELP_CLUSTERING =
-						"http://www.caleydo.org/help/gene_expression.html#Clustering";
+					final String URL_HELP_CLUSTERING = "http://www.caleydo.org/help/gene_expression.html#Clustering";
 					ChangeURLEvent changeURLEvent = new ChangeURLEvent();
 					changeURLEvent.setSender(this);
 					changeURLEvent.setUrl(URL_HELP_CLUSTERING);
@@ -164,7 +168,7 @@ public class StartClusteringDialogAction
 			public void widgetSelected(SelectionEvent e) {
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView("org.caleydo.view.browser");
+							.showView("org.caleydo.view.browser");
 
 					String stHelp = "http://www.caleydo.org/help/gene_expression.html#Cobweb";
 
@@ -284,25 +288,27 @@ public class StartClusteringDialogAction
 
 		final Label lblClusterCntGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterCntGenes.setText("Number clusters for clustering genes");
-		lblClusterCntGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		lblClusterCntGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false,
+				false));
 
 		final Text clusterCntGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
 		clusterCntGenes.addModifyListener(listenerIntGenes);
 		clusterCntGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterCntGenes.setText("5");
 		clusterCntGenes
-			.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
+				.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
 
 		final Label lblClusterCntExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterCntExperiments.setText("Number clusters for clustering experiments");
-		lblClusterCntExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		lblClusterCntExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER,
+				false, false));
 
 		final Text clusterCntExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
 		clusterCntExperiments.addModifyListener(listenerIntExperiments);
 		clusterCntExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterCntExperiments.setText("5");
 		clusterCntExperiments
-			.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
+				.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
 		clusterCntExperiments.setEnabled(false);
 
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
@@ -375,25 +381,27 @@ public class StartClusteringDialogAction
 
 		final Label lblClusterFactorGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterFactorGenes.setText("Factor for clustering genes");
-		lblClusterFactorGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		lblClusterFactorGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false,
+				false));
 
 		clusterFactorGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
 		clusterFactorGenes.addModifyListener(listenerFloatGenes);
 		clusterFactorGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterFactorGenes.setText("1.0");
 		clusterFactorGenes
-			.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
+				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
 
 		final Label lblClusterFactorExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
 		lblClusterFactorExperiments.setText("Factor for clustering experiments");
-		lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER, false, false));
+		lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER,
+				false, false));
 
 		clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
 		clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
 		clusterFactorExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 		clusterFactorExperiments.setText("1.0");
 		clusterFactorExperiments
-			.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
+				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
 		clusterFactorExperiments.setEnabled(false);
 
 		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
@@ -519,7 +527,8 @@ public class StartClusteringDialogAction
 				Shell shell = new Shell();
 				MessageBox messageBox = new MessageBox(shell, SWT.OK);
 				messageBox.setText("Start Clustering");
-				messageBox.setMessage("Factor for affinity propagation has to be between 1.0 and 10.0");
+				messageBox
+						.setMessage("Factor for affinity propagation has to be between 1.0 and 10.0");
 				messageBox.open();
 			}
 		}
@@ -567,26 +576,6 @@ public class StartClusteringDialogAction
 		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
 			clusterState = othersTab.getClusterState();
 
-		if (dimensionPerspective == null || recordPerspective == null) {
-
-			Set<String> dimensionPerspectiveIDs = dataDomain.getTable().getDimensionPerspectiveIDs();
-
-			if (dimensionPerspectiveIDs.size() == 1) {
-				dimensionPerspective =
-					dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveIDs.iterator().next());
-			}
-			else
-				throw new IllegalStateException("Implement choose for perspective");
-
-			Set<String> recordPerspectiveIDs = dataDomain.getTable().getRecordPerspectiveIDs();
-
-			if (recordPerspectiveIDs.size() == 1) {
-				recordPerspective =
-					dataDomain.getTable().getRecordPerspective(recordPerspectiveIDs.iterator().next());
-			}
-			else
-				throw new IllegalStateException("Implement choose for perspective");
-		}
 		clusterState.setSourceDimensionPerspective(dimensionPerspective);
 		// clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
 		clusterState.setSourceRecordPerspective(recordPerspective);
@@ -594,8 +583,8 @@ public class StartClusteringDialogAction
 
 		// by default we use the main VAs for clustering
 
-		ClusteringProgressBar progressBar =
-			new ClusteringProgressBar(clusterState.getClustererAlgo(), clusterState.getClustererType());
+		ClusteringProgressBar progressBar = new ClusteringProgressBar(
+				clusterState.getClustererAlgo(), clusterState.getClustererType());
 		progressBar.run();
 
 	}
