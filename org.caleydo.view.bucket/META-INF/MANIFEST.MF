@@ -13,7 +13,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.bucket,
  org.caleydo.view.bucket.toolbar,
  org.caleydo.view.bucket.command.handler
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.bucket.Activator
 

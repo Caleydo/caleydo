@@ -381,5 +381,5 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: org.caleydo.core.data.virtualarray.delta,
  org.caleydo.core.manager
 Bundle-ActivationPolicy: lazy
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-Activator: org.caleydo.core.startup.Activator

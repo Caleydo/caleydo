@@ -15,6 +15,6 @@ Import-Package: gleem.linalg,
  org.caleydo.view.pathway
 Export-Package: org.caleydo.view.datawindows,
  org.caleydo.view.datawindows.command.handler
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.datawindows.Activator

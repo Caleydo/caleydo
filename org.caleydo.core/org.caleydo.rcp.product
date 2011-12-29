@@ -9,8 +9,7 @@
          Caleydo Visualization Framework
 Check out www.caleydo.org
 
-© Copyright by www.caleydo.org and Institute for Computer Graphics and Vision
-Graz University of Technology - 2011.
+© Copyright by www.caleydo.org (c) and Graz University of Technology - 2012. 
 All Rights Reserved.
       </text>
    </aboutInfo>
@@ -40,7 +39,6 @@ All Rights Reserved.
 
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="org.caleydo.core"/>

@@ -4,7 +4,7 @@ Bundle-Name: Clinical Data Domain
 Bundle-SymbolicName: org.caleydo.datadomain.clinical;singleton:=true
 Bundle-Version: 2.0
 Bundle-Activator: org.caleydo.datadomain.clinical.Activator
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

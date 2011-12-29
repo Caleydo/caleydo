@@ -11,6 +11,6 @@ Import-Package: gleem.linalg,
  org.caleydo.data.loader
 Export-Package: org.caleydo.view.tagclouds,
  org.caleydo.view.tagclouds.toolbar
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.tagclouds.Activator

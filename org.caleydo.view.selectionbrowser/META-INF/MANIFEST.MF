@@ -10,6 +10,6 @@ Import-Package: gleem.linalg,
  org.caleydo.data.loader
 Export-Package: org.caleydo.view.selectionbrowser,
  org.caleydo.view.selectionbrowser.toolbar
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.selectionbrowser.Activator

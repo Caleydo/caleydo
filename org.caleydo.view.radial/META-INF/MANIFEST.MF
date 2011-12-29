@@ -8,7 +8,7 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.radial,
  org.caleydo.view.radial.command.handler,
  org.caleydo.view.radial.toolbar
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.radial.Activator
 

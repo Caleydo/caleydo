@@ -43,5 +43,5 @@ Export-Package: org.ccil.cowan.tagsoup;uses:="org.xml.sax.ext,org.xml.sax.helper
  wiiusej.wiiusejevents.physicalevents;uses:="wiiusej.values,wiiusej.wiiusejevents",
  wiiusej.wiiusejevents.utils;uses:="wiiusej.wiiusejevents.physicalevents,wiiusej.wiiusejevents.wiiuseapievents",
  wiiusej.wiiusejevents.wiiuseapievents;uses:="wiiusej.wiiusejevents.physicalevents,wiiusej.wiiusejevents"
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

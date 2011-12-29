@@ -26,7 +26,7 @@ Bundle-NativeCode:
  processor=x86;
  processor=x86_64;
  processor=ppc
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ClassPath: .,
  lib/JRI.jar

@@ -13,5 +13,5 @@ Export-Package: org.caleydo.data,
  org.caleydo.util.graph.core,
  org.caleydo.util.graph.item
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

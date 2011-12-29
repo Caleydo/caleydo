@@ -11,6 +11,6 @@ Import-Package: gleem.linalg,
  org.caleydo.data.loader
 Export-Package: org.caleydo.view.info,
  org.caleydo.view.info.toolbar
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.info.Activator

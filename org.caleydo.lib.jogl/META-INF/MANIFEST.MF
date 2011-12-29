@@ -78,6 +78,6 @@ Export-Package: com.jogamp.common,
  javax.media.opengl.glu,
  javax.media.opengl.glu.gl2,
  javax.media.opengl.glu.gl2es1
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-ActivationPolicy: lazy

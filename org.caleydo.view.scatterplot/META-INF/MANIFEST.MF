@@ -12,6 +12,6 @@ Import-Package: gleem.linalg,
 Export-Package: org.caleydo.view.scatterplot,
  org.caleydo.view.scatterplot.command.handler,
  org.caleydo.view.scatterplot.toolbar
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.scatterplot.Activator

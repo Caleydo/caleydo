@@ -4,7 +4,7 @@ Bundle-Name: Pathway Data Domain
 Bundle-SymbolicName: org.caleydo.datadomain.pathway;singleton:=true
 Bundle-Version: 2.0
 Bundle-Activator: org.caleydo.datadomain.pathway.Activator
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.data;bundle-version="2.0.0",
  org.caleydo.datadomain.genetic;bundle-version="2.0.0"

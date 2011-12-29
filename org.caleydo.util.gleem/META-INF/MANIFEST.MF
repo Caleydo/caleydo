@@ -9,5 +9,5 @@ Export-Package: gleem,
  gleem.linalg.open
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Require-Bundle: org.caleydo.lib.jogl;bundle-version="2.0.0"
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy

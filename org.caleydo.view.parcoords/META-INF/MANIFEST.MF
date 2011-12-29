@@ -9,6 +9,6 @@ Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.parcoords,
  org.caleydo.view.parcoords.toolbar
-Bundle-Vendor: Graz University of Technology
+Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
 Bundle-Activator: org.caleydo.view.parcoords.Activator

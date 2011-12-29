@@ -3,7 +3,7 @@
       id="org.caleydo.rcp.feature"
       label="Caleydo"
       version="2.0"
-      provider-name="Graz University of Technology"
+      provider-name="www.caleydo.org"
       plugin="org.caleydo.core"
       os="linux,macosx,win32"
       ws="cocoa,gtk,win32"
@@ -15,19 +15,16 @@
    </description>
 
    <copyright url="http://www.caleydo.org">
-      (c) Copyright Institute for Computer Graphics and Vision (ICG)
-Graz University of Technology - 2011.
+      (c) www.caleydo.org and Graz University of Technology - 2012. 
 All Rights Reserved.
    </copyright>
 
    <license url="http://www.caleydo.org">
-      (c) Copyright Institute for Computer Graphics and Vision (ICG)
-Graz University of Technology - 2011.
-All Rights Reserved.
+      (c) Copyright Graz University of Technology - 2012. All Rights Reserved.
    </license>
 
    <url>
-      <discovery label="Caleydo website" url="http://www.caleydo.org"/>
+      <discovery label="Caleydo" url="http://www.caleydo.org"/>
       <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
    </url>
 
@@ -81,26 +78,21 @@ All Rights Reserved.
       <import plugin="org.eclipse.swt" version="3.6.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.ui" version="3.3.0" match="compatible"/>
       <import plugin="org.caleydo.core" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.bookmark" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.genetic" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.pathway" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.heatmap" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.parcoords" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.pathway" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.histogram" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.filterpipeline" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.grouper" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.filter" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.genetic" version="1.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.visbricks" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.parcoords" version="2.0.0" match="greaterOrEqual"/>
+      <import plugin="org.caleydo.view.heatmap" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.tagclouds" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.view.kaplanmeier" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.caleydo.datadomain.generic" version="2.0.0" match="greaterOrEqual"/>
-      <import plugin="org.caleydo.view.bucket" version="2.0.0" match="greaterOrEqual"/>
       <import plugin="org.eclipse.core.expressions" version="3.2.0" match="compatible"/>
       <import plugin="org.eclipse.core.filesystem" version="1.3.0" match="compatible"/>
       <import plugin="org.eclipse.core.runtime" version="3.7.0" match="compatible"/>
       <import plugin="org.eclipse.osgi" version="3.2.0" match="compatible"/>
+      <import plugin="org.caleydo.view.bookmark" version="2.0.0" match="greaterOrEqual"/>
    </requires>
 
    <plugin
@@ -293,21 +285,7 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.heatmap"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.view.parcoords"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.view.bucket"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -356,13 +334,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.tabular"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.datadomain.clinical"
          download-size="0"
          install-size="0"
@@ -399,13 +370,6 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.view.grouper"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.util.r"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -461,13 +425,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.filterpipeline"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.view.tagclouds"
          download-size="0"
          install-size="0"
@@ -483,6 +440,13 @@ All Rights Reserved.
 
    <plugin
          id="org.eclipse.core.filesystem"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.heatmap"
          download-size="0"
          install-size="0"
          version="0.0.0"
