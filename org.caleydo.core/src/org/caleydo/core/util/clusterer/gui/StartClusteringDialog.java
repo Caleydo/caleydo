@@ -65,9 +65,7 @@ public class StartClusteringDialog
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		startClusteringAction = new StartClusteringDialogAction(parent, dataDomain);
-		startClusteringAction.setDimensionPerspective(dimensionPerspective);
-		startClusteringAction.setRecordPerspective(recordPerspective);
+		startClusteringAction = new StartClusteringDialogAction(parent, dataDomain, dimensionPerspective, recordPerspective);
 		startClusteringAction.run();
 		return parent;
 	}

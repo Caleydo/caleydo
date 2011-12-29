@@ -1,12 +1,6 @@
 package org.caleydo.core.util.clusterer.gui;
 
-import java.util.ArrayList;
-import java.util.Set;
-import org.caleydo.core.data.configuration.DataConfiguration;
-import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
@@ -16,7 +10,6 @@ import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
-import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -85,8 +78,6 @@ public class StartClusteringDialogAction
 	private Text clusterFactorGenes = null;
 	private Text clusterFactorExperiments = null;
 
-	private ATableBasedDataDomain dataDomain;
-
 	private RecordPerspective recordPerspective = null;
 	private DimensionPerspective dimensionPerspective = null;
 
@@ -94,7 +85,8 @@ public class StartClusteringDialogAction
 	 * Constructor.
 	 */
 	public StartClusteringDialogAction(final Composite parentComposite,
-			ATableBasedDataDomain dataDomain) {
+			ATableBasedDataDomain dataDomain, DimensionPerspective dimensionPerspective,
+			RecordPerspective recordPerspective) {
 		super(TEXT);
 		setId(ID);
 		setToolTipText(TEXT);
@@ -102,31 +94,16 @@ public class StartClusteringDialogAction
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
 
 		this.parentComposite = parentComposite;
-		this.dataDomain = dataDomain;
+		this.dimensionPerspective = dimensionPerspective;
+		this.recordPerspective = recordPerspective;
 		typeOptions[0] = dataDomain.getRecordDenomination(true, false);
 		typeOptions[1] = dataDomain.getDimensionDenomination(true, false);
-	}
-
-	/**
-	 * @param recordPerspective setter, see {@link #recordPerspective}
-	 */
-	public void setRecordPerspective(RecordPerspective recordPerspective) {
-		this.recordPerspective = recordPerspective;
-	}
-
-	/**
-	 * @param dimensionPerspective setter, see {@link #dimensionPerspective}
-	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
-		this.dimensionPerspective = dimensionPerspective;
-
 	}
 
 	@Override
 	public void run() {
 
 		createGUI();
-
 	}
 
 	private void createGUI() {

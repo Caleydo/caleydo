@@ -77,6 +77,10 @@ public class StartupProcessor {
 					startupProcedure = new XMLStartupProcedure();
 					((XMLStartupProcedure) startupProcedure).setXMLFileName(element);
 				}
+				else if (element.contains(".cal")) {
+					startupProcedure = new SerializationStartupProcedure();
+					((SerializationStartupProcedure) startupProcedure).setProjectLocation(element);
+				}
 				else if (element.contains(":")) {
 					// Parse initial start views
 					int delimiterPos = element.indexOf(":");
