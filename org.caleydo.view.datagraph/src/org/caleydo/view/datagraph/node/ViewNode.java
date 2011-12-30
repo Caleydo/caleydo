@@ -248,4 +248,9 @@ public class ViewNode
 				+ SPACING_PIXELS;
 	}
 
+	@Override
+	public String getCaption() {
+		return viewName;
+	}
+
 }

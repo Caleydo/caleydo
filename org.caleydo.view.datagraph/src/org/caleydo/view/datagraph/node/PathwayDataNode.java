@@ -157,4 +157,9 @@ public class PathwayDataNode
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth);
 	}
 
+	@Override
+	public String getCaption() {
+		return dataDomain.getLabel();
+	}
+
 }

@@ -492,4 +492,9 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		// TODO Auto-generated method stub
 		
 	}
+
+	@Override
+	public String getCaption() {
+		return dataDomain.getLabel();
+	}
 }

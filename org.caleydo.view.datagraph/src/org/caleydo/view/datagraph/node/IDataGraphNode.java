@@ -9,9 +9,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
-public interface IDataGraphNode
-	extends IDraggable
-{
+public interface IDataGraphNode extends IDraggable {
 
 	public List<DataContainer> getDataContainers();
 
@@ -30,7 +28,8 @@ public interface IDataGraphNode
 	public Pair<Point2D, Point2D> getBottomDataContainerAnchorPoints(
 			DataContainer dataContainer);
 
-	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(DataContainer dataContainer);
+	public Pair<Point2D, Point2D> getTopDataContainerAnchorPoints(
+			DataContainer dataContainer);
 
 	public Pair<Point2D, Point2D> getTopAnchorPoints();
 
@@ -68,6 +67,11 @@ public interface IDataGraphNode
 	public float getSpacingX(IDataGraphNode node);
 
 	public float getSpacingY(IDataGraphNode node);
+
+	/**
+	 * @return The caption of this node.
+	 */
+	public String getCaption();
 
 	/**
 	 * This method should be called whenever there are changes to a node that
