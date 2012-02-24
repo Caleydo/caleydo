@@ -1,8 +1,5 @@
 package org.caleydo.view.datagraph;
 
-import java.util.ArrayList;
-
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.view.datagraph.toolbar.DataGraphToolBarContent;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
@@ -34,8 +31,6 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		registerDataDomains();
-
 		ToolBarContentFactory.get().addToolBarContent(GLDataGraph.VIEW_TYPE, false,
 				new DataGraphToolBarContent());
 	}
@@ -60,25 +55,5 @@ public class Activator extends AbstractUIPlugin {
 	 */
 	public static Activator getDefault() {
 		return plugin;
-	}
-
-	private void registerDataDomains() {
-		// FIXME: The DataGraph is independent from dataDomains
-		ArrayList<String> dataDomainTypes = new ArrayList<String>();
-		dataDomainTypes.add("org.caleydo.datadomain.genetic");
-		dataDomainTypes.add("org.caleydo.datadomain.generic");
-		dataDomainTypes.add("org.caleydo.datadomain.clinical");
-
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDataGraph.VIEW_TYPE);
-
-		DataDomainManager
-				.get()
-				.getAssociationManager()
-				.registerDatadomainTypeViewTypeAssociation(dataDomainTypes,
-						GLDataGraph.VIEW_TYPE);
 	}
 }

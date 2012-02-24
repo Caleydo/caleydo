@@ -1,15 +1,16 @@
 package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
-
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
- * A sub-class for {@link LayoutRenderer} intended to render whole {@link AGLView}s. The main contract here,
- * is that the view renders within it's view frustum, which is updated according to the size of the layout in
- * the {@link #setLimits(float, float)} method.
+ * A sub-class for {@link LayoutRenderer} intended to render whole
+ * {@link AGLView}s. The main contract here, is that the view renders within its
+ * view frustum, which is updated according to the size of the layout in the
+ * {@link #setLimits(float, float)} method.
  * 
  * @author Alexander Lex
  */
@@ -40,6 +41,12 @@ public class ViewLayoutRenderer
 	public void setLimits(float x, float y) {
 		super.setLimits(x, y);
 		ViewFrustum viewFrustum = view.getViewFrustum();
+
+		if (viewFrustum == null) {
+			viewFrustum = new ViewFrustum();
+			viewFrustum.setProjectionMode(CameraProjectionMode.ORTHOGRAPHIC);
+		}
+
 		viewFrustum.setLeft(0);
 		viewFrustum.setBottom(0);
 		viewFrustum.setRight(x);

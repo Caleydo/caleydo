@@ -15,7 +15,6 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -225,7 +224,6 @@ public class GLVisBricks
 
 		detailLevel = DetailLevel.HIGH;
 		connectionRenderer.init(gl);
-
 	}
 
 	private void initLayouts() {
@@ -455,6 +453,9 @@ public class GLVisBricks
 	public void initRemote(final GL2 gl, final AGLView glParentView,
 			final GLMouseListener glMouseListener) {
 
+		this.glMouseListener = glMouseListener;
+		init(gl);
+		initLayouts();
 	}
 
 	@Override
@@ -485,6 +486,7 @@ public class GLVisBricks
 
 	@Override
 	public void displayRemote(GL2 gl) {
+		display(gl);
 	}
 
 	@Override
