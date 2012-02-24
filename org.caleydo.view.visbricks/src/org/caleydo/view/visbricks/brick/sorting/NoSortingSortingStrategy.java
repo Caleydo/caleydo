@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.view.visbricks.brick.sorting;
 
 import java.util.List;

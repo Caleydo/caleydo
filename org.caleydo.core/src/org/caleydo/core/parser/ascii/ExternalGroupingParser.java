@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
@@ -16,7 +13,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  */
 public class ExternalGroupingParser {
 

@@ -377,7 +377,7 @@ public class ImportDataDialog
 			@Override
 			public void modifyText(ModifyEvent e) {
 				createDataPreviewTable(txtCustomizedDelimiter.getText());
-				composite.pack();
+				//composite.pack();
 			}
 
 		});
@@ -395,8 +395,6 @@ public class ImportDataDialog
 					return;
 
 				createDataPreviewTable("\t");
-
-				composite.pack();
 			}
 		});
 
@@ -414,8 +412,6 @@ public class ImportDataDialog
 					return;
 
 				createDataPreviewTable(";");
-
-				composite.pack();
 			}
 		});
 
@@ -433,8 +429,6 @@ public class ImportDataDialog
 					return;
 
 				createDataPreviewTable(",");
-
-				composite.pack();
 			}
 		});
 
@@ -452,8 +446,6 @@ public class ImportDataDialog
 					return;
 
 				createDataPreviewTable(".");
-
-				composite.pack();
 			}
 		});
 
@@ -471,8 +463,6 @@ public class ImportDataDialog
 					return;
 
 				createDataPreviewTable(" ");
-
-				composite.pack();
 			}
 		});
 
@@ -490,8 +480,6 @@ public class ImportDataDialog
 					return;
 
 				createDataPreviewTable(" ");
-
-				composite.pack();
 			}
 		});
 	}

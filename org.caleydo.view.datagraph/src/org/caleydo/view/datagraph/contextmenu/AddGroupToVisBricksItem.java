@@ -1,8 +1,5 @@
 package org.caleydo.view.datagraph.contextmenu;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.visbricks.GLVisBricks;
@@ -14,10 +11,7 @@ public class AddGroupToVisBricksItem extends AContextMenuItem {
 
 		setLabel("Add to " + view.getViewLabel());
 
-		List<DataContainer> dataContainers = new ArrayList<DataContainer>();
-		dataContainers.add(dataContainer);
-
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainers);
+		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainer);
 		event.setReceiver(view);
 		event.setSender(this);
 		registerEvent(event);

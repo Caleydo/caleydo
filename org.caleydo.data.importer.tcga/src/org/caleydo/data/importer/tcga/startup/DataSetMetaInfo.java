@@ -57,7 +57,6 @@ public class DataSetMetaInfo {
 	 */
 	public void setExternalGroupingPath(String externalGroupingPath) {
 		this.externalGroupingPath = externalGroupingPath;
-		this.column = column;
 	}
 
 	/**

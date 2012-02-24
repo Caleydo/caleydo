@@ -157,16 +157,6 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 	}
 
 	@Override
-	public void setFocus() {
-
-	}
-
-	@Override
-	public void dispose() {
-		super.dispose();
-	}
-
-	@Override
 	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 
 		// Do nothing if new datadomain is the same as the current one

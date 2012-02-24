@@ -110,6 +110,10 @@ public abstract class CaleydoRCPViewPart
 		super.dispose();
 	}
 
+	@Override
+	public void setFocus() {
+	}
+	
 	/**
 	 * <p>
 	 * If applicable initializes the {@link #view} with the {@link ADataDomain}

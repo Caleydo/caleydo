@@ -597,7 +597,6 @@ public class DimensionGroup
 	@Override
 	public void initRemote(GL2 gl, AGLView glParentView, GLMouseListener glMouseListener)
 	{
-		// createBricks(table.getContentData(Set.CONTENT).getRecordVA());
 		createBricks();
 		init(gl);
 	}

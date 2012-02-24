@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.data.importer.tcga.startup;
 
 import javax.xml.bind.annotation.XmlRootElement;

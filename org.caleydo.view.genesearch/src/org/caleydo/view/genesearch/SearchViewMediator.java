@@ -129,7 +129,6 @@ public class SearchViewMediator {
 				binnedPerspective = binRecords(numberOfBins, id, recordPerspective,
 						dataDomain, label, groupLabels);
 				break;
-
 			}
 		}
 		if (dataDomain.getLabel().contains("Mutation")) {
