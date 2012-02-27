@@ -567,12 +567,12 @@ public class GLVisBricks
 
 		// gl.glRotatef(angle, 1, 0, 0);
 
-		if (isConnectionLinesDirty)
-			performConnectionLinesUpdate();
-
 		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
 			dimensionGroup.display(gl);
 		}
+		
+		if (isConnectionLinesDirty)
+			performConnectionLinesUpdate();
 
 		if (!isRightDetailShown && !isLeftDetailShown) {
 			leftLayoutManager.render(gl);
@@ -1224,6 +1224,7 @@ public class GLVisBricks
 					dataDomains.add(dataContainer.getDataDomain());
 				}
 
+				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager.getRightGroupStartIndex()+1);
 			}
 		}
 
