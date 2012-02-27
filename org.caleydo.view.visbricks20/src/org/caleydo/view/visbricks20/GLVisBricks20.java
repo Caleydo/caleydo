@@ -104,6 +104,9 @@ public class GLVisBricks20
 	@Override
 	public void displayLocal(GL2 gl) {
 
+		dvi.processEvents();
+		visBricks.processEvents();
+		
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
