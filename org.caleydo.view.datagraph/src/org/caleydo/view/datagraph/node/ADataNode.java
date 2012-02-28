@@ -149,7 +149,7 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	// (ATableBasedDataDomain) dataDomain, view, this,
 	// dragAndDropController);
 	// } else {
-	// dataContainerRenderer = new OverviewDataContainerRenderer(this,
+	// dataContainerRender	private Graph dataGraph;er = new OverviewDataContainerRenderer(this,
 	// view, dragAndDropController, getDimensionGroups());
 	// }
 	// // compGroupLayout.setPixelGLConverter(pixelGLConverter);

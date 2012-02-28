@@ -461,21 +461,6 @@ public class GLVisBricks
 	@Override
 	public void displayLocal(GL2 gl) {
 
-		if (!uninitializedDimensionGroups.isEmpty()) {
-			while (uninitializedDimensionGroups.peek() != null) {
-				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
-			}
-			initLayouts();
-		}
-		if (isDisplayListDirty) {
-			buildDisplayList(gl, displayListIndex);
-			isDisplayListDirty = false;
-		}
-
-		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
-			group.processEvents();
-		}
-
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -492,6 +477,21 @@ public class GLVisBricks
 	@Override
 	public void display(GL2 gl) {
 
+		if (!uninitializedDimensionGroups.isEmpty()) {
+			while (uninitializedDimensionGroups.peek() != null) {
+				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
+			}
+			initLayouts();
+		}
+		if (isDisplayListDirty) {
+			buildDisplayList(gl, displayListIndex);
+			isDisplayListDirty = false;
+		}
+
+		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
+			group.processEvents();
+		}
+		
 		handleHorizontalMoveDragging(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;

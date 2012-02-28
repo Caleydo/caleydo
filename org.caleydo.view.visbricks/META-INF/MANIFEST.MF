@@ -18,6 +18,7 @@ Import-Package: gleem.linalg,
  org.caleydo.datadomain.pathway.manager,
  org.caleydo.view.pathway
 Export-Package: org.caleydo.view.visbricks,
+ org.caleydo.view.visbricks.brick.configurer,
  org.caleydo.view.visbricks.brick.sorting,
  org.caleydo.view.visbricks.dimensiongroup,
  org.caleydo.view.visbricks.event,

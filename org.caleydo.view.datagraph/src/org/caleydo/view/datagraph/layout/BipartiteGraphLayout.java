@@ -9,7 +9,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataGraph;
@@ -26,7 +25,8 @@ import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 import org.caleydo.view.datagraph.node.ViewNode;
 
-public class BipartiteGraphLayout extends AGraphLayout {
+public class BipartiteGraphLayout
+	extends AGraphLayout {
 
 	protected static final int MIN_NODE_SPACING_PIXELS = 20;
 	protected static final int MAX_NODE_SPACING_PIXELS = 300;
@@ -88,7 +88,8 @@ public class BipartiteGraphLayout extends AGraphLayout {
 				summedDataNodesWidthPixels += node.getWidthPixels();
 				if (node.getHeightPixels() > maxDataNodeHeightPixels)
 					maxDataNodeHeightPixels = node.getHeightPixels();
-			} else {
+			}
+			else {
 				viewNodes.add(node);
 				summedViewNodesWidthPixels += node.getWidthPixels();
 				if (node.getHeightPixels() > maxViewNodeHeightPixels)
@@ -124,8 +125,7 @@ public class BipartiteGraphLayout extends AGraphLayout {
 
 		int maxBendPointOffsetYPixels = Integer.MIN_VALUE;
 		for (Edge edge : graph.getAllEdges()) {
-			if (edge.getNode1() instanceof ADataNode
-					&& edge.getNode2() instanceof ADataNode) {
+			if (edge.getNode1() instanceof ADataNode && edge.getNode2() instanceof ADataNode) {
 				int bendPointOffsetYPixels = insideLayerEdgeRoutingStrategy
 						.calcEdgeBendPointYOffsetPixels(edge.getNode1(), edge.getNode2());
 				if (bendPointOffsetYPixels > maxBendPointOffsetYPixels) {
@@ -135,19 +135,34 @@ public class BipartiteGraphLayout extends AGraphLayout {
 			}
 		}
 
-		float dataNodesBottomY = (float) layoutArea.getMinY() + maxBendPointOffsetYPixels;
+		boolean isUpsideDown = false;
+		float dataNodesBottomY = 0;
+		// expand direction factor determines if node is expanded to the top or to the bottom
+		float expandDirectorFactor = 1;
+
+		if (view.isRenderedRemote()) {
+			// VisBricks 2.0 case where data nodes will be rendered on top and expand to the bottom
+			isUpsideDown = false;
+			dataNodesBottomY = (float) layoutArea.getMaxY();
+			expandDirectorFactor = -1;
+		}
+		else {
+			isUpsideDown = true;
+			dataNodesBottomY = (float) layoutArea.getMinY() + maxBendPointOffsetYPixels;
+		}
 
 		for (IDataGraphNode node : sortedDataNodes) {
+
 			if (!node.isCustomPosition()) {
-				setNodePosition(
-						node,
-						new Point2D.Float(currentDataNodePositionX
-								+ node.getWidthPixels() / 2.0f, dataNodesBottomY
-								+ node.getHeightPixels() / 2.0f));
+				
+				setNodePosition(node,
+						new Point2D.Float(currentDataNodePositionX + node.getWidthPixels()
+								/ 2.0f, dataNodesBottomY + node.getHeightPixels() / 2.0f * expandDirectorFactor));
 			}
 
 			currentDataNodePositionX += node.getWidthPixels() + dataNodeSpacingPixels;
-			node.setUpsideDown(true);
+
+			node.setUpsideDown(isUpsideDown);
 		}
 
 		float viewNodeSpacingPixels = (float) (layoutArea.getWidth() - summedViewNodesWidthPixels)
@@ -160,16 +175,13 @@ public class BipartiteGraphLayout extends AGraphLayout {
 						- summedViewNodesWidthPixels - (viewNodes.size() - 1)
 						* viewNodeSpacingPixels) / 2.0f), layoutArea.getMinX());
 
-		float viewNodesTopY = (float) layoutArea.getHeight()
-				+ (float) layoutArea.getMinY();
+		float viewNodesTopY = (float) layoutArea.getHeight() + (float) layoutArea.getMinY();
 
 		for (IDataGraphNode node : sortedViewNodes) {
 			if (!node.isCustomPosition()) {
-				setNodePosition(
-						node,
-						new Point2D.Float(currentViewNodePositionX
-								+ node.getWidthPixels() / 2.0f, viewNodesTopY
-								- node.getHeightPixels() / 2.0f));
+				setNodePosition(node,
+						new Point2D.Float(currentViewNodePositionX + node.getWidthPixels()
+								/ 2.0f, viewNodesTopY - node.getHeightPixels() / 2.0f));
 			}
 
 			currentViewNodePositionX += node.getWidthPixels() + viewNodeSpacingPixels;
@@ -552,7 +564,8 @@ public class BipartiteGraphLayout extends AGraphLayout {
 			edgeRenderer = new BipartiteEdgeBandRenderer(edge, view);
 			edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);
 
-		} else {
+		}
+		else {
 			edgeRenderer = new BipartiteEdgeLineRenderer(edge, view, view.getEdgeLabel(
 					(ADataNode) node1, (ADataNode) node2));
 			edgeRenderer.setEdgeRoutingStrategy(insideLayerEdgeRoutingStrategy);
@@ -571,9 +584,10 @@ public class BipartiteGraphLayout extends AGraphLayout {
 		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
 			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
 
-		} else {
-			edgeRenderer = new CustomLayoutEdgeLineRenderer(edge, view,
-					view.getEdgeLabel((ADataNode) node1, (ADataNode) node2));
+		}
+		else {
+			edgeRenderer = new CustomLayoutEdgeLineRenderer(edge, view, view.getEdgeLabel(
+					(ADataNode) node1, (ADataNode) node2));
 		}
 
 		edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);

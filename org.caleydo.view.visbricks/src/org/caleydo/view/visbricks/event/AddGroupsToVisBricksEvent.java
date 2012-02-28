@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;
@@ -28,7 +29,7 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 
 	private List<DataContainer> dataContainers;
 
-	private GLVisBricks receiver;
+	private AGLView receiver;
 
 	/**
 	 * Optional member for determining a specialized data configurer that will
@@ -87,11 +88,11 @@ public class AddGroupsToVisBricksEvent extends AEvent {
 		}
 	}
 
-	public GLVisBricks getReceiver() {
+	public AGLView getReceiver() {
 		return receiver;
 	}
 
-	public void setReceiver(GLVisBricks receiver) {
+	public void setReceiver(AGLView receiver) {
 		this.receiver = receiver;
 	}
 

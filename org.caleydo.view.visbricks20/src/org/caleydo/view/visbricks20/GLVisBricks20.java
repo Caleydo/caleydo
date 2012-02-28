@@ -4,6 +4,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -23,7 +24,9 @@ import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
+import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.visbricks20.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -49,6 +52,8 @@ public class GLVisBricks20
 	private GLDataGraph dvi;
 
 	private GLVisBricks visBricks;
+
+	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
 
 	/**
 	 * Constructor.
@@ -106,7 +111,7 @@ public class GLVisBricks20
 
 		dvi.processEvents();
 		visBricks.processEvents();
-		
+
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -122,16 +127,16 @@ public class GLVisBricks20
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		Column mainColumn = new Column("baseElementLayout");
-		mainColumn.setDebug(true);
-		// mainColumn.setBottomUp(false);
+		mainColumn.setDebug(false);
+		mainColumn.setBottomUp(false);
 		layoutManager.setBaseElementLayout(mainColumn);
 
 		Row dviElementLayout = new Row("dviElementLayoutRow");
-		dviElementLayout.setDebug(true);
+		dviElementLayout.setDebug(false);
 		createDVI(dviElementLayout);
 
 		Row visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		visBricksElementLayout.setDebug(true);
+		visBricksElementLayout.setDebug(false);
 		createVisBricks(visBricksElementLayout);
 
 		mainColumn.append(dviElementLayout);
@@ -217,12 +222,20 @@ public class GLVisBricks20
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
+		addGroupsToVisBricksListener.setHandler(this);
+		eventPublisher.addListener(AddGroupsToVisBricksEvent.class,
+				addGroupsToVisBricksListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
+		if (addGroupsToVisBricksListener != null) {
+			eventPublisher.removeListener(addGroupsToVisBricksListener);
+			addGroupsToVisBricksListener = null;
+		}
 	}
 
 	/*
@@ -261,5 +274,10 @@ public class GLVisBricks20
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void addDimensionGroups(List<DataContainer> dataContainers,
+			IBrickConfigurer dataConfigurer) {
+		visBricks.addDimensionGroups(dataContainers, dataConfigurer);
 	}
 }
