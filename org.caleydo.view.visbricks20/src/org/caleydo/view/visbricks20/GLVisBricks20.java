@@ -18,10 +18,8 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
+import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.picking.PickingMode;
-import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
@@ -34,7 +32,6 @@ import org.eclipse.swt.widgets.Composite;
  * <p>
  * VisBricks 2.0 view.
  * </p>
- * TODO </p>
  * 
  * @author Marc Streit
  */
@@ -52,6 +49,8 @@ public class GLVisBricks20
 	private GLDataGraph dvi;
 
 	private GLVisBricks visBricks;
+	
+	private GLVendingMachine vendingMachine;
 
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
 
@@ -82,6 +81,7 @@ public class GLVisBricks20
 
 		dvi.initRemote(gl, this, glMouseListener);
 		visBricks.initRemote(gl, this, glMouseListener);
+		vendingMachine.initRemote(gl, this, glMouseListener);
 	}
 
 	@Override
@@ -111,7 +111,8 @@ public class GLVisBricks20
 
 		dvi.processEvents();
 		visBricks.processEvents();
-
+		vendingMachine.processEvents();
+		
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -139,8 +140,14 @@ public class GLVisBricks20
 		visBricksElementLayout.setDebug(false);
 		createVisBricks(visBricksElementLayout);
 
+		// Just for testing vending machine
+		Row vendingMachineElementLayout = new Row("wendingMachineElementLayoutRow");
+		vendingMachineElementLayout.setDebug(false);
+		createWendingMachine(vendingMachineElementLayout);
+		
 		mainColumn.append(dviElementLayout);
 		mainColumn.append(visBricksElementLayout);
+		mainColumn.append(vendingMachineElementLayout);
 
 		layoutManager.updateLayout();
 	}
@@ -188,6 +195,32 @@ public class GLVisBricks20
 		return visBricks;
 	}
 
+	/**
+	 * Creates wending machine view
+	 * 
+	 * @param wrappingLayout
+	 * @return
+	 */
+	private GLVendingMachine createWendingMachine(ElementLayout wrappingLayout) {
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+				-4, 4);
+		vendingMachine = (GLVendingMachine) GeneralManager.get().getViewManager()
+				.createGLView(GLVendingMachine.class, parentGLCanvas, parentComposite, frustum);
+
+		vendingMachine.setRemoteRenderingGLView(this);
+		vendingMachine.initialize();
+		vendingMachine.setDimensionGroupManager(visBricks.getDimensionGroupManager());
+
+		ViewLayoutRenderer wendingMachineRenderer = new ViewLayoutRenderer(vendingMachine);
+		wrappingLayout.setRenderer(wendingMachineRenderer);
+		wrappingLayout.setPixelSizeY(500);
+	
+		Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
+		wrappingLayout.setZoomer(zoomer);
+
+		return vendingMachine;
+	}
+	
 	@Override
 	public void displayRemote(GL2 gl) {
 		display(gl);
@@ -197,13 +230,6 @@ public class GLVisBricks20
 	public void display(GL2 gl) {
 
 		layoutManager.render(gl);
-	}
-
-	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
-			int externalID, Pick pick) {
-
-		// TODO: Implement picking processing here!
 	}
 
 	@Override
@@ -238,12 +264,6 @@ public class GLVisBricks20
 		}
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLView#reshape(javax.media.opengl
-	 * .GLAutoDrawable, int, int, int, int)
-	 */
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
@@ -253,23 +273,12 @@ public class GLVisBricks20
 		visBricks.updateLayout();
 	}
 
-	/*
-	 * (non-Javadoc)
-	 * @see org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView#
-	 * getRemoteRenderedViews()
-	 */
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 
 		return null;
 	}
-
-	/*
-	 * (non-Javadoc)
-	 * @see
-	 * org.caleydo.core.view.opengl.canvas.AGLView#getNumberOfSelections(org
-	 * .caleydo.core.data.selection.SelectionType)
-	 */
+	
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
@@ -279,5 +288,8 @@ public class GLVisBricks20
 	public void addDimensionGroups(List<DataContainer> dataContainers,
 			IBrickConfigurer dataConfigurer) {
 		visBricks.addDimensionGroups(dataContainers, dataConfigurer);
+	
+		// TODO choose first ranked
+		vendingMachine.setDataContainer(dataContainers.get(0));
 	}
 }

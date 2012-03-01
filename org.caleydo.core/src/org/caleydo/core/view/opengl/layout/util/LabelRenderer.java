@@ -73,7 +73,7 @@ public class LabelRenderer
 		}
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
-
+		
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		if (labelProvider != null)

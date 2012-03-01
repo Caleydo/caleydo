@@ -361,7 +361,6 @@ public class GLVisBricks
 				centerLayoutWidth, 0, viewFrustum.getHeight(), 0, 1);
 		centerLayoutManager = new LayoutManager(centerArchFrustum, pixelGLConverter);
 		centerLayoutManager.setBaseElementLayout(centerRowLayout);
-
 		centerLayoutManager.updateLayout();
 	}
 
@@ -1140,7 +1139,7 @@ public class GLVisBricks
 	 * </p>
 	 * 
 	 * @param newDataContainers
-	 * @param brickConfigurer The brick configurer can be specificd externally
+	 * @param brickConfigurer The brick configurer can be specified externally
 	 *            (e.g., pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */

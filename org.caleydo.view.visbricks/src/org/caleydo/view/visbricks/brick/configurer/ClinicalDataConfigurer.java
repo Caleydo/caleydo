@@ -26,7 +26,7 @@ import org.caleydo.view.visbricks.brick.viewcreation.KaplanMeierCreator;
 
 /**
  * Configurer for bricks that display numerical clinical data, such as disease
- * free survivial etc.
+ * free survival etc.
  * 
  * @author Marc Streit
  * 

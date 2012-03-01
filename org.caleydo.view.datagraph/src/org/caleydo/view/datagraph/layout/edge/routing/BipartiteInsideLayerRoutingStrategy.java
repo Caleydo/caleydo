@@ -71,5 +71,4 @@ public class BipartiteInsideLayerRoutingStrategy implements IEdgeRoutingStrategy
 
 		return (BEND_POINT_STEP_PIXELS_PER_SLOT * slotDistance);
 	}
-
 }

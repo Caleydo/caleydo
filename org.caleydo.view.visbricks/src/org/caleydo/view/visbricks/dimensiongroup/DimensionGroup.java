@@ -763,10 +763,6 @@ public class DimensionGroup
 		return visBricks;
 	}
 
-	// public DataTable getTable() {
-	// return set;
-	// }
-
 	/**
 	 * Get the id of the set that this dimension group is showing
 	 * 
@@ -843,20 +839,6 @@ public class DimensionGroup
 	public Row getLayout() {
 		return mainRow;
 	}
-
-	// @Override
-	// public void setDataDomain(ASetBasedDataDomain dataDomain) {
-	// this.dataDomain = dataDomain;
-	// }
-	//
-	// @Override
-	// public ASetBasedDataDomain getDataDomain() {
-	// return dataDomain;
-	// }
-
-	// public void setTable(DataTable set) {
-	// this.set = set;
-	// }
 
 	@Override
 	public void handleLayoutSizeCollision(int managingClassID, int layoutID, float toBigBy) {

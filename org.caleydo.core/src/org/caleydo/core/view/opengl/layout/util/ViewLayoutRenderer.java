@@ -55,8 +55,18 @@ public class ViewLayoutRenderer
 		view.setDisplayListDirty();
 	}
 
+	/**
+	 * @param view setter, see {@link #view}
+	 */
 	public void setView(AGLView view) {
 		this.view = view;
+	}
+
+	/**
+	 * @return the view, see {@link #view}
+	 */
+	public AGLView getView() {
+		return view;
 	}
 
 	@Override
