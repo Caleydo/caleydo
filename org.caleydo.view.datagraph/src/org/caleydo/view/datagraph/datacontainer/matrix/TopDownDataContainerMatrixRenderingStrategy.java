@@ -18,12 +18,10 @@ import org.caleydo.view.datagraph.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class TopDownDataContainerMatrixRenderingStrategy
-	extends ADataContainerMatrixRenderingStrategy
-{
+	extends ADataContainerMatrixRenderingStrategy {
 
 	public TopDownDataContainerMatrixRenderingStrategy(
-			DataContainerMatrixRenderer matrixRenderer)
-	{
+			DataContainerMatrixRenderer matrixRenderer) {
 		super(matrixRenderer);
 	}
 
@@ -33,8 +31,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x, float y,
 			IDataGraphNode node, GLDataGraph view,
 			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
-			String columnsCaption)
-	{
+			String columnsCaption) {
 
 		List<CellContainer> rows = matrixRenderer.rows;
 		List<CellContainer> columns = matrixRenderer.columns;
@@ -78,12 +75,10 @@ public class TopDownDataContainerMatrixRenderingStrategy
 				- textHeight, textHeight);
 		gl.glPopMatrix();
 
-		for (int i = 0; i < rows.size(); i++)
-		{
+		for (int i = 0; i < rows.size(); i++) {
 
 			CellContainer row = rows.get(i);
-			if (!row.isVisible)
-			{
+			if (!row.isVisible) {
 				continue;
 			}
 
@@ -93,8 +88,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			float childIndent = 0;
 			float parentIndent = 0;
 
-			if (row.parentContainer == null)
-			{
+			if (row.parentContainer == null) {
 
 				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
 
@@ -109,15 +103,15 @@ public class TopDownDataContainerMatrixRenderingStrategy
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.PERSPECTIVE.name() + node.getID(), row.id.hashCode()));
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), row.id.hashCode()));
+						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+						row.id.hashCode()));
 				perspectiveRenderer.render(gl);
 				popPickingIDs(gl, pickingIDsToBePushed);
 				gl.glPopName();
 				gl.glPopName();
 				gl.glPopMatrix();
 
-				if (row.childContainers != null && row.childContainers.size() > 1)
-				{
+				if (row.childContainers != null && row.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(
 							PickingType.COLLAPSE_BUTTON.name() + node.getID(),
 							row.id.hashCode(),
@@ -145,8 +139,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 				}
 			}
-			else
-			{
+			else {
 
 				childIndent = captionSpacingY * 2;
 
@@ -181,8 +174,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			if ((row.parentContainer != null) && (i != 0)
-					&& (rows.get(i - 1) != row.parentContainer))
-			{
+					&& (rows.get(i - 1) != row.parentContainer)) {
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 			}
 			gl.glLineWidth(1);
@@ -202,11 +194,9 @@ public class TopDownDataContainerMatrixRenderingStrategy
 		currentPositionX += captionColumnWidth
 				+ pixelGLConverter.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
-		for (int i = 0; i < columns.size(); i++)
-		{
+		for (int i = 0; i < columns.size(); i++) {
 			CellContainer column = columns.get(i);
-			if (!column.isVisible)
-			{
+			if (!column.isVisible) {
 				continue;
 			}
 			float currentColumnWidth = columnWidth * column.numSubdivisions;
@@ -216,8 +206,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			float childIndent = 0;
 			float parentIndent = 0;
 
-			if (column.parentContainer == null)
-			{
+			if (column.parentContainer == null) {
 				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(column.id);
 
 				gl.glPushMatrix();
@@ -231,7 +220,8 @@ public class TopDownDataContainerMatrixRenderingStrategy
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 						PickingType.PERSPECTIVE.name() + node.getID(), column.id.hashCode()));
 				gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
-						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(), column.id.hashCode()));
+						PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
+						column.id.hashCode()));
 				pushPickingIDs(gl, view, pickingIDsToBePushed);
 				perspectiveRenderer.render(gl);
 				popPickingIDs(gl, pickingIDsToBePushed);
@@ -249,8 +239,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 				// gl.glVertex3f(currentPositionX, y, 0);
 				// gl.glEnd();
 
-				if (column.childContainers != null && column.childContainers.size() > 1)
-				{
+				if (column.childContainers != null && column.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(
 							PickingType.COLLAPSE_BUTTON.name() + node.getID(),
 							column.id.hashCode(),
@@ -281,8 +270,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 				}
 
 			}
-			else
-			{
+			else {
 
 				childIndent = captionSpacingY * 2;
 
@@ -326,8 +314,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 			gl.glColor3f(0, 0, 0);
 			if ((column.parentContainer != null) && (i != 0)
-					&& (columns.get(i - 1) != column.parentContainer))
-			{
+					&& (columns.get(i - 1) != column.parentContainer)) {
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 			}
 			gl.glLineWidth(1);
@@ -343,11 +330,9 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 			float currentDimGroupPositionX = currentPositionX;
 
-			for (CellContainer row : rows)
-			{
+			for (CellContainer row : rows) {
 
-				if (!row.isVisible)
-				{
+				if (!row.isVisible) {
 					continue;
 				}
 
@@ -364,9 +349,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 				gl.glPushMatrix();
 				int pickingID = 0;
-				if (cell instanceof DimensionGroupRenderer)
-				{
-
+				if (cell instanceof DimensionGroupRenderer) {
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.DATA_CONTAINER.name() + node.getID(),
 							((DimensionGroupRenderer) cell).getDataContainer().getID());
@@ -393,8 +376,7 @@ public class TopDownDataContainerMatrixRenderingStrategy
 
 					currentDimGroupPositionX += columnWidth;
 				}
-				else
-				{
+				else {
 
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.EMPTY_CELL.name() + node.getID(),
@@ -406,14 +388,12 @@ public class TopDownDataContainerMatrixRenderingStrategy
 				cell.setLimits(pixelGLConverter.getGLWidthForPixelWidth(CELL_SIZE_PIXELS),
 						pixelGLConverter.getGLHeightForPixelHeight(CELL_SIZE_PIXELS));
 				gl.glPushName(pickingID);
-				for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed)
-				{
+				for (Pair<String, Integer> pickingIDPair : pickingIDsToBePushed) {
 					gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
 							pickingIDPair.getFirst(), pickingIDPair.getSecond()));
 				}
 				cell.render(gl);
-				for (int k = 0; k < pickingIDsToBePushed.size(); k++)
-				{
+				for (int k = 0; k < pickingIDsToBePushed.size(); k++) {
 					gl.glPopName();
 				}
 				gl.glPopName();
@@ -427,5 +407,4 @@ public class TopDownDataContainerMatrixRenderingStrategy
 			currentPositionX += currentColumnWidth;
 		}
 	}
-
 }

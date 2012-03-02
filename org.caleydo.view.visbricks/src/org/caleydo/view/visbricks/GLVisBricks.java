@@ -44,7 +44,6 @@ import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
@@ -222,7 +221,6 @@ public class GLVisBricks
 
 		textRenderer = new CaleydoTextRenderer(24);
 
-		detailLevel = DetailLevel.HIGH;
 		connectionRenderer.init(gl);
 	}
 
@@ -1203,14 +1201,15 @@ public class GLVisBricks
 						brickConfigurer = new NumericalDataConfigurer(dataContainer);
 					}
 				}
-
+				
+				dimensionGroup.setDetailLevel(this.getDetailLevel());
 				dimensionGroup.setBrickConfigurer(brickConfigurer);
 				dimensionGroup.setDataDomain(dataContainer.getDataDomain());
 				dimensionGroup.setDataContainer(dataContainer);
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricksView(this);
 				dimensionGroup.initialize();
-
+				
 				dimensionGroups.add(dimensionGroup);
 				dataContainers.add(dataContainer);
 

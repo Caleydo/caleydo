@@ -441,12 +441,11 @@ public class DimensionGroup
 		brick.setDataContainer(dataContainer);
 		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
-
-		// brick.setTable(set);
 		brick.setVisBricks(visBricks);
 		brick.setLayout(wrappingLayout);
 		brick.setDimensionGroup(this);
 		brick.initialize();
+		
 		uninitializedBricks.add(brick);
 
 		ViewLayoutRenderer brickRenderer = new ViewLayoutRenderer(brick);

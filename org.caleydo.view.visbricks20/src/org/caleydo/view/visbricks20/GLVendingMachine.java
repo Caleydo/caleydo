@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
@@ -185,15 +186,15 @@ public class GLVendingMachine
 			visBricksStack.add(visBricks);
 			hashVisBricks2DataContainerChoice.put(visBricks, dataContainer);
 
-			if (visBricksStack.size() == 1)
-			{
+			if (visBricksStack.size() == 1) {
 				// by default the first choice is selected
 				selectedVisBricksChoice = visBricksStack.get(0);
-				
+
 				visBricksElementLayout.addBackgroundRenderer(new ColorRenderer(new float[] {
 						1, 1, 0, 1 }));
 			}
 			visBricks.addDimensionGroups(fixedDataContainers, null);
+			
 			uninitializedVisBrickViews.add(visBricks);
 			mainColumn.append(visBricksElementLayout);
 		}
@@ -213,6 +214,7 @@ public class GLVendingMachine
 
 		visBricks.setRemoteRenderingGLView(this);
 		visBricks.initialize();
+		visBricks.setDetailLevel(DetailLevel.LOW);
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);
@@ -307,6 +309,7 @@ public class GLVendingMachine
 
 			DataContainer newDataContainer = dataDomain.getDataContainer(id, dataContainer
 					.getDimensionPerspective().getID());
+			newDataContainer.setPrivate(true);
 
 			dataContainers.add(newDataContainer);
 		}
@@ -323,6 +326,7 @@ public class GLVendingMachine
 
 		// viewLayout.clearBackgroundRenderers();
 		GLVisBricks previouslySelectedVisBricksChoice = selectedVisBricksChoice;
+		hashVisBricks2DataContainerChoice.get(selectedVisBricksChoice).setPrivate(true);
 
 		int selectedIndex = visBricksStack.indexOf(selectedVisBricksChoice);
 		if (next && selectedIndex < visBricksStack.size() + 1)
@@ -331,6 +335,7 @@ public class GLVendingMachine
 			selectedIndex--;
 
 		selectedVisBricksChoice = visBricksStack.get(selectedIndex);
+		hashVisBricks2DataContainerChoice.get(selectedVisBricksChoice).setPrivate(false);
 
 		for (ElementLayout viewLayout : mainColumn.getElements()) {
 
@@ -345,8 +350,12 @@ public class GLVendingMachine
 	}
 
 	public void selectVisBricksChoice() {
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
-				hashVisBricks2DataContainerChoice.get(selectedVisBricksChoice));
+
+		DataContainer selectedDataContainer = hashVisBricks2DataContainerChoice
+				.get(selectedVisBricksChoice);
+		selectedDataContainer.setPrivate(false);
+
+		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(selectedDataContainer);
 		event.setReceiver((AGLView) getRemoteRenderingGLView());
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);

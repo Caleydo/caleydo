@@ -70,7 +70,6 @@ public class DataContainerMatrixRenderer
 
 		createRowsAndColumns(node.getDataContainers());
 		registerPickingListeners();
-
 	}
 
 	@Override

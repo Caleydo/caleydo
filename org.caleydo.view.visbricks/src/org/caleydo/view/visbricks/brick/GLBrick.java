@@ -28,6 +28,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
+import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -392,7 +393,9 @@ public class GLBrick
 		gl.glPopName();
 		gl.glPopName();
 
-		layoutManager.render(gl);
+		// The full brick content will not be rendered with DetailLevel.LOW
+		if (dimensionGroup.getDetailLevel() != DetailLevel.LOW)
+			layoutManager.render(gl);
 
 		gl.glCallList(baseDisplayListIndex);
 
@@ -1421,5 +1424,14 @@ public class GLBrick
 	{
 		// TODO Auto-generated method stub
 
+	}
+	
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLView#setDetailLevel(org.caleydo.core.view.opengl.canvas.DetailLevel)
+	 */
+	@Override
+	public void setDetailLevel(DetailLevel detailLevel) {
+		// TODO Auto-generated method stub
+		super.setDetailLevel(detailLevel);
 	}
 }

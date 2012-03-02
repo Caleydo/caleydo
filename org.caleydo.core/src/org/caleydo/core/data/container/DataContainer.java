@@ -79,23 +79,31 @@ public class DataContainer {
 	@XmlElement
 	private boolean isDefaultLabel = true;
 
+	/**
+	 * Flag determining whether this data container is private to a certain view. That means that other views
+	 * typically should not use this data container.
+	 */
+	@XmlElement
+	protected boolean isPrivate;
+	
 	public static IDCategory DATA_CONTAINER = IDCategory
 			.registerCategory("DATA_CONTAINER");
 	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners",
 			DATA_CONTAINER, EColumnType.INT);
-
+	
 	/**
 	 * A Group describes a part of a virtual array, e.g. a cluster. The group
 	 * for a data container is only set when the DataContainer is a
 	 * sub-container of another recordVirtualArray.group which
 	 */
 	protected Group recordGroup;
+	
 	/**
 	 * Object holding respectively calculating all forms of (statistical)
 	 * meta-data for this container
 	 */
 	protected ContainerStatistics containerStatistics;
-
+	
 	/**
 	 * Empty constructor, nothing initialized
 	 */
@@ -235,6 +243,21 @@ public class DataContainer {
 		this.isDefaultLabel = isDefaultLabel;
 	}
 
+	/**
+	 * @param isPrivate
+	 *            setter, see {@link #isPrivate}
+	 */
+	public void setPrivate(boolean isPrivate) {
+		this.isPrivate = isPrivate;
+	}
+
+	/**
+	 * @return the isPrivate, see {@link #isPrivate}
+	 */
+	public boolean isPrivate() {
+		return isPrivate;
+	}
+	
 	/**
 	 * @return the recordGroup, see {@link #recordGroup}
 	 */

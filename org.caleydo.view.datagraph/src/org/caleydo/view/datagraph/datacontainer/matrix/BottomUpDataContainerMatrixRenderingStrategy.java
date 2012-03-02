@@ -19,12 +19,10 @@ import org.caleydo.view.datagraph.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.datagraph.node.IDataGraphNode;
 
 public class BottomUpDataContainerMatrixRenderingStrategy
-	extends ADataContainerMatrixRenderingStrategy
-{
+	extends ADataContainerMatrixRenderingStrategy {
 
 	public BottomUpDataContainerMatrixRenderingStrategy(
-			DataContainerMatrixRenderer matrixRenderer)
-	{
+			DataContainerMatrixRenderer matrixRenderer) {
 		super(matrixRenderer);
 	}
 
@@ -34,8 +32,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x, float y,
 			IDataGraphNode node, GLDataGraph view,
 			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
-			String columnsCaption)
-	{
+			String columnsCaption) {
 
 		List<CellContainer> columns = matrixRenderer.columns;
 		Map<String, ColorRenderer> cells = matrixRenderer.cells;
@@ -88,21 +85,16 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				- textHeight, textHeight);
 		gl.glPopMatrix();
 
-		for (int i = 0; i < reversedRows.size(); i++)
-		{
+		for (int i = 0; i < reversedRows.size(); i++) {
 
 			CellContainer row = reversedRows.get(i);
-			if (!row.isVisible)
-			{
+			if (!row.isVisible) {
 				continue;
 			}
 
 			float childIndent = 0;
 			float parentIndent = 0;
-			if (row.parentContainer == null)
-			{
-
-
+			if (row.parentContainer == null) {
 				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(row.id);
 
 				gl.glPushMatrix();
@@ -124,8 +116,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				gl.glPopName();
 				gl.glPopMatrix();
 
-				if (row.childContainers != null && row.childContainers.size() > 1)
-				{
+				if (row.childContainers != null && row.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(
 							PickingType.COLLAPSE_BUTTON.name() + node.getID(),
 							row.id.hashCode(),
@@ -151,11 +142,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 					parentIndent = captionSpacingX * 2
 							+ pixelGLConverter.getGLHeightForPixelHeight(2);
-
 				}
 			}
-			else
-			{
+			else {
 				childIndent = captionSpacingY * 2;
 
 				gl.glColor4fv(groupColor, 0);
@@ -193,8 +182,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 			gl.glPushAttrib(GL2.GL_COLOR_BUFFER_BIT | GL2.GL_LINE_BIT);
 			gl.glColor3f(0, 0, 0);
 			if ((row.parentContainer != null) && (i != 0)
-					&& (reversedRows.get(i - 1) != row.parentContainer))
-			{
+					&& (reversedRows.get(i - 1) != row.parentContainer)) {
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 			}
 			gl.glLineWidth(1);
@@ -214,11 +202,9 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 		currentPositionX += captionColumnWidth
 				+ pixelGLConverter.getGLWidthForPixelWidth(CAPTION_SPACING_PIXELS);
 
-		for (int i = 0; i < columns.size(); i++)
-		{
+		for (int i = 0; i < columns.size(); i++) {
 			CellContainer column = columns.get(i);
-			if (!column.isVisible)
-			{
+			if (!column.isVisible) {
 				continue;
 			}
 			float currentColumnWidth = columnWidth * column.numSubdivisions;
@@ -229,8 +215,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 			float parentIndent = 0;
 
 			// gl.glColor3f(0.7f, 0.7f, 0.7f);
-			if (column.parentContainer == null)
-			{
+			if (column.parentContainer == null) {
 
 				PerspectiveRenderer perspectiveRenderer = perspectiveRenderers.get(column.id);
 
@@ -264,8 +249,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 				// gl.glVertex3f(currentPositionX, 0, 0);
 				// gl.glEnd();
 
-				if (column.childContainers != null && column.childContainers.size() > 1)
-				{
+				if (column.childContainers != null && column.childContainers.size() > 1) {
 					Button collapsePerspectiveButton = new Button(
 							PickingType.COLLAPSE_BUTTON.name() + node.getID(),
 							column.id.hashCode(),
@@ -294,8 +278,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 				}
 			}
-			else
-			{
+			else {
 
 				childIndent = captionSpacingY * 2;
 
@@ -333,8 +316,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 			gl.glColor3f(0, 0, 0);
 			if ((column.parentContainer != null) && (i != 0)
-					&& (columns.get(i - 1) != column.parentContainer))
-			{
+					&& (columns.get(i - 1) != column.parentContainer)) {
 				gl.glColor3f(0.5f, 0.5f, 0.5f);
 			}
 			gl.glLineWidth(1);
@@ -350,10 +332,8 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 			float currentDimGroupPositionX = currentPositionX;
 
-			for (CellContainer row : reversedRows)
-			{
-				if (!row.isVisible)
-				{
+			for (CellContainer row : reversedRows) {
+				if (!row.isVisible) {
 					continue;
 				}
 				float cellSpacingX = pixelGLConverter
@@ -369,8 +349,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 				gl.glPushMatrix();
 				int pickingID = 0;
-				if (cell instanceof DimensionGroupRenderer)
-				{
+				if (cell instanceof DimensionGroupRenderer) {
 
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.DATA_CONTAINER.name() + node.getID(),
@@ -398,8 +377,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 
 					currentDimGroupPositionX += columnWidth;
 				}
-				else
-				{
+				else {
 
 					pickingID = view.getPickingManager().getPickingID(view.getID(),
 							PickingType.EMPTY_CELL.name() + node.getID(),
@@ -425,5 +403,4 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 			currentPositionX += currentColumnWidth;
 		}
 	}
-
 }
