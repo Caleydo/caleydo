@@ -11,6 +11,7 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
@@ -28,12 +29,13 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks20.listener.GLVendingMachineKeyListener;
+import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -66,6 +68,8 @@ public class GLVendingMachine
 	private Queue<GLVisBricks> uninitializedVisBrickViews = new LinkedList<GLVisBricks>();
 
 	private GLVisBricks selectedVisBricksChoice;
+
+	private OpenVendingMachineListener openVendingMachineListener;
 
 	/**
 	 * Hash that maps a GLVisBrick to the data container that is shown in
@@ -193,8 +197,10 @@ public class GLVendingMachine
 				visBricksElementLayout.addBackgroundRenderer(new ColorRenderer(new float[] {
 						1, 1, 0, 1 }));
 			}
-			visBricks.addDimensionGroups(fixedDataContainers, null);
 			
+			if (fixedDataContainers != null && fixedDataContainers.size() > 0)
+				visBricks.addDimensionGroups(fixedDataContainers, null);
+
 			uninitializedVisBrickViews.add(visBricks);
 			mainColumn.append(visBricksElementLayout);
 		}
@@ -265,11 +271,20 @@ public class GLVendingMachine
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
+
+		openVendingMachineListener = new OpenVendingMachineListener();
+		openVendingMachineListener.setHandler(this);
+		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
+
+		if (openVendingMachineListener != null) {
+			eventPublisher.removeListener(openVendingMachineListener);
+			openVendingMachineListener = null;
+		}
 	}
 
 	@Override
@@ -300,14 +315,14 @@ public class GLVendingMachine
 
 		ATableBasedDataDomain dataDomain = dataContainer.getDataDomain();
 		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
-		
+
 		int count = 0;
 		for (String id : rowIDs) {
 			count++;
-			
-			if (count > 4)
+
+			if (count > 2)
 				break;
-			
+
 			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
@@ -367,6 +382,27 @@ public class GLVendingMachine
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 		dataContainers.clear();
+		selectedVisBricksChoice = null;
+		visBricksStack.clear();
 		initLayouts();
+	}
+
+	public void handleOpenVendingMachineEvent(IDataDomain dataDomain) {
+		// TODO choose first ranked
+
+		ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+
+		// tableBasedDataDomain.getDataContainer(tableBasedDataDomain.get.gettableBasedDataDomain.getRecordPerspectiveIDs()
+		// .toArray()[0],
+		// tableBasedDataDomain.getDimensionPerspectiveIDs().toArray()[0]);
+
+		// For the vending machine it does not matter which record perspective
+		// we take
+
+		DataContainer dataContainer = tableBasedDataDomain.getDataContainer(
+				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getID(),
+				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getID());
+
+		setDataContainer(dataContainer);
 	}
 }

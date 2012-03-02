@@ -726,10 +726,8 @@ public class DimensionGroup
 	public void updateLayout() {
 		
 		mainRow.updateSubLayout();
-		mainColumn.updateSubLayout(); //HERE
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
 		
-		// HERE
 		for (GLBrick clusterBrick : clusterBricks) {
 			clusterBrick.updateLayout();
 		}

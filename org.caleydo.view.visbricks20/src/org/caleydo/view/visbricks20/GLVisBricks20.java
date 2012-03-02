@@ -143,7 +143,7 @@ public class GLVisBricks20
 		createWendingMachine(vendingMachineElementLayout);
 		
 		mainColumn.append(dviElementLayout);
-		//mainColumn.append(visBricksElementLayout);
+		mainColumn.append(visBricksElementLayout);
 		mainColumn.append(vendingMachineElementLayout);
 
 		layoutManager.updateLayout();
@@ -210,7 +210,7 @@ public class GLVisBricks20
 
 		ViewLayoutRenderer vendingMachineRenderer = new ViewLayoutRenderer(vendingMachine);
 		wrappingLayout.setRenderer(vendingMachineRenderer);
-		//wrappingLayout.setPixelSizeY(500);
+		wrappingLayout.setPixelSizeY(500);
 	
 		Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
 		wrappingLayout.setZoomer(zoomer);
@@ -285,8 +285,5 @@ public class GLVisBricks20
 	public void addDimensionGroups(List<DataContainer> dataContainers,
 			IBrickConfigurer dataConfigurer) {
 		visBricks.addDimensionGroups(dataContainers, dataConfigurer);
-	
-		// TODO choose first ranked
-		vendingMachine.setDataContainer(dataContainers.get(0));
 	}
 }

@@ -18,6 +18,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -36,6 +37,7 @@ import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.datagraph.datacontainer.matrix.DataContainerMatrixRenderer;
+import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public class TableBasedDataNode extends ADataNode implements IDropArea {
@@ -156,6 +158,12 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 //				graphLayout.updateNodePositions();
 				
 				view.setDisplayListDirty();
+				
+
+				// FIXME: just for testing - find proper place
+				OpenVendingMachineEvent event = new OpenVendingMachineEvent(dataDomain);
+				event.setSender(view);
+				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 
 		}, TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
