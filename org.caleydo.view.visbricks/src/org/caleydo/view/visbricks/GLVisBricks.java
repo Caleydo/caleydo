@@ -54,6 +54,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -224,7 +225,7 @@ public class GLVisBricks
 		connectionRenderer.init(gl);
 	}
 
-	private void initLayouts() {
+	public void initLayouts() {
 
 		dimensionGroupManager.getDimensionGroupSpacers().clear();
 
@@ -276,7 +277,7 @@ public class GLVisBricks
 		}
 
 		archHeight = pixelGLConverter.getGLHeightForPixelHeight(ARCH_PIXEL_HEIGHT);
-		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT - archHeight / 2f;
+		archBottomY = viewFrustum.getHeight() * ARCH_BOTTOM_PERCENT - archHeight;
 
 		archTopY = archBottomY + archHeight;
 
@@ -289,9 +290,8 @@ public class GLVisBricks
 		centerRowLayout = new Row("centerArchRow");
 
 		centerRowLayout.setPriorityRendereing(true);
-		centerRowLayout.setFrameColor(1, 1, 0, 1);
-		// centerRowLayout.setDebug(false);
-
+		centerRowLayout.setFrameColor(0, 0, 1, 1);
+		
 		leftDimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
 
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
@@ -946,7 +946,7 @@ public class GLVisBricks
 			rightSpacing.setAbsoluteSizeX(rightSizeX - change);
 		}
 
-		updateLayout();
+		setLayoutDirty();
 	}
 
 	protected void registerPickingListeners() {
@@ -1249,9 +1249,9 @@ public class GLVisBricks
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
-
+		
 		initLayouts();
-
+		setLayoutDirty();
 	}
 
 	@Override
@@ -1391,8 +1391,15 @@ public class GLVisBricks
 		isConnectionLinesDirty = false;
 	}
 
-	public void updateLayout() {
+	public void setLayoutDirty() {
 		isLayoutDirty = true;
+	}
+	
+	public void updateLayout() {
+		
+		for (DimensionGroup dimGroup : dimensionGroupManager.getDimensionGroups()) {
+			dimGroup.updateLayout();
+		}
 	}
 
 	/**

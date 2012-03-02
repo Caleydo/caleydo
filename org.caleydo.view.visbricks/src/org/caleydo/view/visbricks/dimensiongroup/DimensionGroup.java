@@ -49,6 +49,7 @@ import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
+import weka.filters.unsupervised.attribute.Center;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -171,19 +172,28 @@ public class DimensionGroup
 		super(canvas, parentComposite, viewFrustum);
 
 		viewType = VIEW_TYPE;
-
+	}
+	
+	@Override
+	public void initialize() {
+		
+		super.initialize();
+		initLayouts();
+	}
+	
+	private void initLayouts() {
 		mainRow = new Row("mainRow");
 		mainRow.setRenderingPriority(3);
 		mainRow.setXDynamic(true);
-		mainRow.setFrameColor(1, 0, 1, 1);
+		mainRow.setFrameColor(0, 0, 1, 1);
 		mainRow.sethAlign(HAlign.CENTER);
-
+		
 		mainColumn = new Column("mainColumn");
 		mainColumn.setPriorityRendereing(true);
 		mainColumn.setBottomUp(false);
 		mainColumn.setXDynamic(true);
 		mainColumn.setVAlign(VAlign.CENTER);
-
+		
 		clusterBrickWrapperColumn = new Column("wrapperColumn");
 		clusterBrickWrapperColumn.setXDynamic(true);
 		clusterBrickWrapperColumn.setFrameColor(0, 1, 0, 1);
@@ -257,7 +267,6 @@ public class DimensionGroup
 			headerBrick.expand();
 		}
 		initMainColumn();
-		// groupColumn.updateSubLayout();
 	}
 
 	/**
@@ -421,7 +430,7 @@ public class DimensionGroup
 
 		addSortedBricks(sortedBricks);
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
-		visBricks.updateLayout();
+		visBricks.setLayoutDirty();
 
 	}
 
@@ -452,6 +461,7 @@ public class DimensionGroup
 		wrappingLayout.setRenderer(brickRenderer);
 		wrappingLayout.setPixelSizeX(0);
 		wrappingLayout.setPixelSizeY(0);
+	
 		// if (isCollapsed)
 		// {
 		// wrappingLayout.setPixelSizeX(visBricks.getSideArchWidthPixels());
@@ -535,7 +545,7 @@ public class DimensionGroup
 		clusterBrickColumn.clear();
 		clusterBricks.clear();
 		createClusterBricks();
-		visBricks.updateLayout();
+		visBricks.setLayoutDirty();
 		// mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		// visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -588,7 +598,7 @@ public class DimensionGroup
 
 			mainRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
-			visBricks.updateLayout();
+			visBricks.setLayoutDirty();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
 			showDetailBrick = false;
 			isDetailBrickShown = true;
@@ -617,13 +627,13 @@ public class DimensionGroup
 
 			mainRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
-			visBricks.updateLayout();
+			visBricks.setLayoutDirty();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
 		}
 
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
-			visBricks.updateLayout();
+			visBricks.setLayoutDirty();
 			visBricks.updateConnectionLinesBetweenDimensionGroups();
 		}
 		handleVerticalMoveDragging(gl);
@@ -714,9 +724,15 @@ public class DimensionGroup
 	 * Updates the layout of this dimensionGroup
 	 */
 	public void updateLayout() {
+		
 		mainRow.updateSubLayout();
-		// groupColumn.updateSubLayout();
+		mainColumn.updateSubLayout(); //HERE
 		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		
+		// HERE
+		for (GLBrick clusterBrick : clusterBricks) {
+			clusterBrick.updateLayout();
+		}
 	}
 
 	/**
@@ -1116,11 +1132,9 @@ public class DimensionGroup
 		int brickHeightOverhead = 0;
 		for (GLBrick brick : clusterBricks) {
 			brickHeightOverhead += brick.getHeightOverheadOfProportioanlBrick();
-
 		}
 
-		double useablePixelHeight = getParentGLCanvas().getHeight()
-				- visBricks.getArchHeight() - (clusterBricks.size() + 1)
+		double useablePixelHeight = pixelGLConverter.getPixelHeightForGLHeight(clusterBrickColumn.getSizeScaledY()) - (clusterBricks.size() + 1)
 				* BETWEEN_BRICKS_SPACING - DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS
 				- brickHeightOverhead;
 		double proportionalRecordHeight = useablePixelHeight / dataContainer.getNrRecords();

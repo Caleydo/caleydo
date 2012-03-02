@@ -143,7 +143,7 @@ public class GLVendingMachine
 		checkForHits(gl);
 	}
 
-	private void initLayouts() {
+	public void initLayouts() {
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
@@ -300,8 +300,14 @@ public class GLVendingMachine
 
 		ATableBasedDataDomain dataDomain = dataContainer.getDataDomain();
 		Set<String> rowIDs = dataDomain.getRecordPerspectiveIDs();
+		
+		int count = 0;
 		for (String id : rowIDs) {
-
+			count++;
+			
+			if (count > 4)
+				break;
+			
 			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;

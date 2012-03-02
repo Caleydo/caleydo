@@ -23,6 +23,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.datagraph.GLDataGraph;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks20.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
@@ -128,25 +129,21 @@ public class GLVisBricks20
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		Column mainColumn = new Column("baseElementLayout");
-		mainColumn.setDebug(false);
 		mainColumn.setBottomUp(false);
 		layoutManager.setBaseElementLayout(mainColumn);
 
 		Row dviElementLayout = new Row("dviElementLayoutRow");
-		dviElementLayout.setDebug(false);
 		createDVI(dviElementLayout);
 
 		Row visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		visBricksElementLayout.setDebug(false);
 		createVisBricks(visBricksElementLayout);
 
 		// Just for testing vending machine
-		Row vendingMachineElementLayout = new Row("wendingMachineElementLayoutRow");
-		vendingMachineElementLayout.setDebug(false);
+		Row vendingMachineElementLayout = new Row("vendingMachineElementLayoutRow");
 		createWendingMachine(vendingMachineElementLayout);
 		
 		mainColumn.append(dviElementLayout);
-		mainColumn.append(visBricksElementLayout);
+		//mainColumn.append(visBricksElementLayout);
 		mainColumn.append(vendingMachineElementLayout);
 
 		layoutManager.updateLayout();
@@ -211,9 +208,9 @@ public class GLVisBricks20
 		vendingMachine.initialize();
 		vendingMachine.setDimensionGroupManager(visBricks.getDimensionGroupManager());
 
-		ViewLayoutRenderer wendingMachineRenderer = new ViewLayoutRenderer(vendingMachine);
-		wrappingLayout.setRenderer(wendingMachineRenderer);
-		wrappingLayout.setPixelSizeY(500);
+		ViewLayoutRenderer vendingMachineRenderer = new ViewLayoutRenderer(vendingMachine);
+		wrappingLayout.setRenderer(vendingMachineRenderer);
+		//wrappingLayout.setPixelSizeY(500);
 	
 		Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
 		wrappingLayout.setZoomer(zoomer);
@@ -267,9 +264,9 @@ public class GLVisBricks20
 	@Override
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
-		// initLayouts();
 
 		layoutManager.updateLayout();
+		visBricks.initLayouts();
 		visBricks.updateLayout();
 	}
 
