@@ -33,6 +33,7 @@ public class GLVendingMachineKeyListener extends GLKeyListener<GLVendingMachine>
 			break;
 		case SWT.CR:
 			vendingMachine.selectVisBricksChoice();
+			vendingMachine.getVisBricks20View().vendingMachineSelectionFinished();
 			break;
 		}
 

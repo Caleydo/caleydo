@@ -1,20 +1,12 @@
 package org.caleydo.view.visbricks.brick.configurer;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.event.data.StartClusteringEvent;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
@@ -23,14 +15,12 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.visbricks.brick.ui.FuelBarRenderer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Abstract base class for brick configurers for table based data that provides

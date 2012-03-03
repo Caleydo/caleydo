@@ -7,9 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -40,14 +38,24 @@ import org.caleydo.view.datagraph.datacontainer.matrix.DataContainerMatrixRender
 import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
-public class TableBasedDataNode extends ADataNode implements IDropArea {
+public class TableBasedDataNode
+	extends ADataNode
+	implements IDropArea {
 
 	private final static String TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE = "org.caleydo.view.datagraph.toggledatacontainerbutton";
 	private final static int TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID = 0;
 
+	private final static String TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE = "org.caleydo.view.datagraph.triggervendingmachinebutton";
+	private final static int TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID = 1;
+
 	private ATableBasedDataDomain dataDomain;
+
 	private ButtonRenderer toggleDataContainerButtonRenderer;
 	private Button toggleDataContainerButton;
+
+	private ButtonRenderer triggerVendingMachineButtonRenderer;
+	private Button triggerVendingMachineButton;
+
 	private ALayoutState currentState;
 	private OverviewState overviewState;
 	private DetailState detailState;
@@ -66,23 +74,21 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			dataContainerRenderer.registerPickingListeners();
 			dataContainerRenderer.setUpsideDown(isUpsideDown);
 			dataContainerLayout.setRenderer(dataContainerRenderer);
-			toggleDataContainerButtonRenderer
-					.setTextureRotation(currentState.textureRotation);
+			toggleDataContainerButtonRenderer.setTextureRotation(currentState.textureRotation);
 			dataContainerRenderer.setDataContainers(getDataContainers());
 			recalculateNodeSize();
 			graphLayout.updateNodePositions();
-			
 		}
 
 		public abstract ALayoutState getNextState();
 	}
 
-	private class OverviewState extends ALayoutState {
+	private class OverviewState
+		extends ALayoutState {
 
 		public OverviewState() {
-			dataContainerRenderer = new DataContainerListRenderer(
-					TableBasedDataNode.this, view, dragAndDropController,
-					getDataContainers());
+			dataContainerRenderer = new DataContainerListRenderer(TableBasedDataNode.this,
+					view, dragAndDropController, getDataContainers());
 			List<Pair<String, Integer>> pickingIDsToBePushed = new ArrayList<Pair<String, Integer>>();
 			pickingIDsToBePushed.add(new Pair<String, Integer>(
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id));
@@ -101,13 +107,13 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			super.apply();
 			bodyRow.clearBackgroundRenderers();
 			if (getDataContainers().size() > 0) {
-				bodyRow.addBackgroundRenderer(new ColorRenderer(
-						new float[] { 1, 1, 1, 1 }));
+				bodyRow.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
 			}
 		}
 	}
 
-	private class DetailState extends ALayoutState {
+	private class DetailState
+		extends ALayoutState {
 
 		public DetailState() {
 			dataContainerRenderer = new DataContainerMatrixRenderer(dataDomain, view,
@@ -134,8 +140,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	public TableBasedDataNode(AGraphLayout graphLayout, GLDataGraph view,
-			DragAndDropController dragAndDropController, Integer id,
-			IDataDomain dataDomain) {
+			DragAndDropController dragAndDropController, Integer id, IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id, dataDomain);
 		this.dataDomain = (ATableBasedDataDomain) dataDomain;
 
@@ -154,20 +159,27 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			public void clicked(Pick pick) {
 				currentState = currentState.getNextState();
 				currentState.apply();
-//				recalculateNodeSize();
-//				graphLayout.updateNodePositions();
-				
-				view.setDisplayListDirty();
-				
+				// recalculateNodeSize();
+				// graphLayout.updateNodePositions();
 
-				// FIXME: just for testing - find proper place
+				view.setDisplayListDirty();
+			}
+
+		}, TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
+				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+
+		view.addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+
 				OpenVendingMachineEvent event = new OpenVendingMachineEvent(dataDomain);
 				event.setSender(view);
 				GeneralManager.get().getEventPublisher().triggerEvent(event);
 			}
 
-		}, TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
-				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		}, TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE + getID(),
+				TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID);
 
 		view.addIDPickingListener(new APickingListener() {
 
@@ -177,8 +189,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				// DragAndDropController dragAndDropController =
 				// dragAndDropController;
 				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode().equals(
-								"PerspectiveDrag")) {
+						&& dragAndDropController.getDraggingMode().equals("PerspectiveDrag")) {
 					dragAndDropController.setDropArea(TableBasedDataNode.this);
 				}
 
@@ -207,6 +218,25 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		titleRow.setYDynamic(true);
 
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
+
+		if (view.isVendingMachineMode()) {
+			ElementLayout vendingMachineButtonLayout = new ElementLayout(
+					"vendingMachineButtonLayout");
+			vendingMachineButtonLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+			vendingMachineButtonLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
+			triggerVendingMachineButton = new Button(
+					TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE + getID(),
+					TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID,
+					EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
+			triggerVendingMachineButtonRenderer = new ButtonRenderer(
+					triggerVendingMachineButton, view, view.getTextureManager());
+			triggerVendingMachineButtonRenderer.addPickingID(
+					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+			triggerVendingMachineButtonRenderer.setZCoordinate(1);
+			vendingMachineButtonLayout.setRenderer(triggerVendingMachineButtonRenderer);
+			titleRow.append(spacingLayoutX);
+			titleRow.append(vendingMachineButtonLayout);
+		}
 
 		ElementLayout toggleDataContainerButtonLayout = new ElementLayout(
 				"toggleDataContainerLayout");
@@ -254,7 +284,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		setUpsideDown(isUpsideDown);
 
 		currentState.apply();
-//		recalculateNodeSize();
+		// recalculateNodeSize();
 		graphLayout.updateNodePositions();
 
 		return baseRow;
@@ -262,8 +292,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 	@Override
 	public void destroy() {
-		view.removeAllIDPickingListeners(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE
-				+ getID(), TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		view.removeAllIDPickingListeners(TOGGLE_DATA_CONTAINER_BUTTON_PICKING_TYPE + getID(),
+				TOGGLE_DATA_CONTAINER_BUTTON_PICKING_ID);
+		view.removeAllIDPickingListeners(
+				TRIGGER_VENDING_MACHINE_BUTTON_PICKING_TYPE + getID(),
+				TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID);
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		dataContainerRenderer.destroy();
 	}
@@ -326,8 +359,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 						RecordPerspective childPerspective = dataDomain.getTable()
 								.getRecordPerspective(group.getPerspectiveID());
-						childList.add(new Pair<String, RecordPerspective>(
-								childPerspective.getLabel(), childPerspective));
+						childList.add(new Pair<String, RecordPerspective>(childPerspective
+								.getLabel(), childPerspective));
 					}
 				}
 
@@ -360,15 +393,15 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		Map<DimensionPerspective, List<Pair<String, DimensionPerspective>>> childDimensionPerspectiveLists = new HashMap<DimensionPerspective, List<Pair<String, DimensionPerspective>>>();
 
 		for (String perspectiveID : dimensionPerspectiveIDs) {
-			DimensionPerspective perspective = dataDomain.getTable()
-					.getDimensionPerspective(perspectiveID);
+			DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(
+					perspectiveID);
 
 			if (perspective.isPrivate()) {
 				continue;
 			}
 
-			parentDimensionPerspectives.add(new Pair<String, DimensionPerspective>(
-					perspective.getLabel(), perspective));
+			parentDimensionPerspectives.add(new Pair<String, DimensionPerspective>(perspective
+					.getLabel(), perspective));
 
 			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
 
@@ -382,8 +415,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 						DimensionPerspective childPerspective = dataDomain.getTable()
 								.getDimensionPerspective(group.getPerspectiveID());
-						childList.add(new Pair<String, DimensionPerspective>(
-								childPerspective.getLabel(), childPerspective));
+						childList.add(new Pair<String, DimensionPerspective>(childPerspective
+								.getLabel(), childPerspective));
 					}
 				}
 
@@ -416,8 +449,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			for (RecordPerspective recordPerspective : sortedRecordPerspectives) {
 				if (dataDomain.hasDataContainer(recordPerspective.getID(),
 						dimensionPerspective.getID())) {
-					dataContainers.add(dataDomain.getDataContainer(
-							recordPerspective.getID(), dimensionPerspective.getID()));
+					dataContainers.add(dataDomain.getDataContainer(recordPerspective.getID(),
+							dimensionPerspective.getID()));
 				}
 			}
 		}
@@ -437,8 +470,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -451,13 +484,11 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		for (IDraggable draggable : draggables) {
 			if (draggable instanceof PerspectiveRenderer) {
 				PerspectiveRenderer perspectiveRenderer = (PerspectiveRenderer) draggable;
-				ATableBasedDataDomain foreignDataDomain = perspectiveRenderer
-						.getDataDomain();
+				ATableBasedDataDomain foreignDataDomain = perspectiveRenderer.getDataDomain();
 				if (foreignDataDomain != this.dataDomain) {
 					if (perspectiveRenderer.isRecordPerspective()) {
-						RecordPerspective recordPerspective = foreignDataDomain
-								.getTable().getRecordPerspective(
-										perspectiveRenderer.getPerspectiveID());
+						RecordPerspective recordPerspective = foreignDataDomain.getTable()
+								.getRecordPerspective(perspectiveRenderer.getPerspectiveID());
 
 						RecordPerspective convertedPerspective = this.dataDomain
 								.convertForeignRecordPerspective(recordPerspective);
@@ -482,12 +513,10 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 		// }
 
 	}
-	
+
 	@Override
-	protected int getMinTitleBarWidthPixels()
-	{
-		float textWidth = view.getTextRenderer().getRequiredTextWidth(
-				dataDomain.getLabel(),
+	protected int getMinTitleBarWidthPixels() {
+		float textWidth = view.getTextRenderer().getRequiredTextWidth(dataDomain.getLabel(),
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS));
 
 		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
@@ -495,10 +524,9 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 	}
 
 	@Override
-	public void handleDropAreaReplaced()
-	{
+	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override

@@ -405,4 +405,8 @@ public class GLVendingMachine
 
 		setDataContainer(dataContainer);
 	}
+	
+	public GLVisBricks20 getVisBricks20View() {
+		return ((GLVisBricks20)getRemoteRenderingGLView());
+	}
 }

@@ -149,6 +149,8 @@ public class GLDataGraph
 	private boolean isRendered = false;
 	private boolean showDataConnections = true;
 
+	private boolean isVendingMachineMode = false;
+	
 	/**
 	 * Constructor.
 	 */
@@ -221,6 +223,8 @@ public class GLDataGraph
 			final GLMouseListener glMouseListener) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
+		
+		isVendingMachineMode = true;
 	}
 
 	@Override
@@ -1158,5 +1162,12 @@ public class GLDataGraph
 
 	public boolean isShowDataConnections() {
 		return showDataConnections;
+	}
+	
+	/**
+	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
+	 */
+	public boolean isVendingMachineMode() {
+		return isVendingMachineMode;
 	}
 }
