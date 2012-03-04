@@ -54,7 +54,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -183,6 +182,8 @@ public class GLVisBricks
 
 	private Set<IDataDomain> dataDomains;
 	private List<DataContainer> dataContainers;
+	
+	private boolean isVendingMachineMode = false;
 
 	/**
 	 * Constructor.
@@ -1657,4 +1658,17 @@ public class GLVisBricks
 		return dragAndDropController;
 	}
 
+	/**
+	 * @param isVendingMachineMode setter, see {@link #isVendingMachineMode}
+	 */
+	public void setVendingMachineMode(boolean isVendingMachineMode) {
+		this.isVendingMachineMode = isVendingMachineMode;
+	}
+	
+	/**
+	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
+	 */
+	public boolean isVendingMachineMode() {
+		return isVendingMachineMode;
+	}
 }

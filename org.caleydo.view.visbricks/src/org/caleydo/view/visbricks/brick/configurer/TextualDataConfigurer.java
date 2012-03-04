@@ -3,9 +3,7 @@ package org.caleydo.view.visbricks.brick.configurer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -22,6 +20,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
 import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
@@ -32,7 +31,8 @@ import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
  * @author Partl
  * 
  */
-public class TextualDataConfigurer extends ATableBasedDataConfigurer {
+public class TextualDataConfigurer
+	extends ATableBasedDataConfigurer {
 
 	protected static final int PARCOORDS_BUTTON_ID = 2;
 	protected static final int TAGCLOUD_BUTTON_ID = 3;
@@ -44,13 +44,11 @@ public class TextualDataConfigurer extends ATableBasedDataConfigurer {
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
+				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
@@ -94,13 +92,11 @@ public class TextualDataConfigurer extends ATableBasedDataConfigurer {
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
+				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
@@ -130,13 +126,11 @@ public class TextualDataConfigurer extends ATableBasedDataConfigurer {
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
-				EContainedViewType.PARCOORDS_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
-				TAGCLOUD_BUTTON_ID, EIconTextures.TAGCLOUD_ICON,
-				EContainedViewType.TAGCLOUD_VIEW);
+				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
+				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
 		viewSwitchingButtons.add(parCoordsButton);
@@ -173,15 +167,13 @@ public class TextualDataConfigurer extends ATableBasedDataConfigurer {
 		AGLView parCoords = parCoordsCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer parCoordsLayoutRenderer = new ViewLayoutRenderer(parCoords);
 		views.put(EContainedViewType.PARCOORDS_VIEW, parCoords);
-		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW,
-				parCoordsLayoutRenderer);
+		containedViewRenderers.put(EContainedViewType.PARCOORDS_VIEW, parCoordsLayoutRenderer);
 
 		TagCloudCreator tagCloudCreator = new TagCloudCreator();
 		AGLView tagCloud = tagCloudCreator.createRemoteView(brick, gl, glMouseListener);
 		LayoutRenderer tagCloudLayoutRenderer = new ViewLayoutRenderer(tagCloud);
 		views.put(EContainedViewType.TAGCLOUD_VIEW, tagCloud);
-		containedViewRenderers.put(EContainedViewType.TAGCLOUD_VIEW,
-				tagCloudLayoutRenderer);
+		containedViewRenderers.put(EContainedViewType.TAGCLOUD_VIEW, tagCloudLayoutRenderer);
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
@@ -201,6 +193,17 @@ public class TextualDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		layoutTemplate.showFooterBar(true);
+	}
+
+	@Override
+	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.TAGCLOUD_VIEW);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.TAGCLOUD_VIEW);
+		
+		//TODO im
 	}
 
 	@Override

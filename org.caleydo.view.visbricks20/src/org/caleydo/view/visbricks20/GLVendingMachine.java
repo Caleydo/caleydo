@@ -218,6 +218,7 @@ public class GLVendingMachine
 		GLVisBricks visBricks = (GLVisBricks) GeneralManager.get().getViewManager()
 				.createGLView(GLVisBricks.class, parentGLCanvas, parentComposite, frustum);
 
+		visBricks.setVendingMachineMode(true);
 		visBricks.setRemoteRenderingGLView(this);
 		visBricks.initialize();
 		visBricks.setDetailLevel(DetailLevel.LOW);

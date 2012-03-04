@@ -47,9 +47,9 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
-import weka.filters.unsupervised.attribute.Center;
 
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
@@ -307,6 +307,10 @@ public class DimensionGroup
 		if (isCollapsed) {
 			layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick, this,
 					visBricks, headerBrick.getBrickConfigurer());
+		}
+		else if (visBricks.isVendingMachineMode()) {
+			layoutTemplate = new TitleOnlyHeaderBrickLayoutTemplate(headerBrick, this,
+					visBricks, headerBrick.getBrickConfigurer());			
 		}
 		else {
 			layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, visBricks,

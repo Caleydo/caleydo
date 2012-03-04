@@ -9,7 +9,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
+import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 
 /**
@@ -30,8 +30,7 @@ import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
  * @author Christian Partl
  * 
  */
-public interface IBrickConfigurer
-{
+public interface IBrickConfigurer {
 
 	/**
 	 * Configures the specified {@link HeaderBrickLayoutTemplate} for the type
@@ -57,6 +56,14 @@ public interface IBrickConfigurer
 	 */
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate);
 
+	/**
+	 * Configures the specified {@link TitleOnlyHeaderBrickLayoutTemplate} for the type
+	 * of data set of this configurer.
+	 * 
+	 * @param layoutTemplate
+	 */
+	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate);
+	
 	/**
 	 * Same as {@link #configure(HeaderBrickLayoutTemplate)} for
 	 * {@link DefaultBrickLayoutTemplate}

@@ -140,12 +140,12 @@ public class GLVisBricks20
 		createDVI(dviElementLayout);
 
 		visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		visBricksElementLayout.setDebug(true);
+		//visBricksElementLayout.setDebug(true);
 		createVisBricks(visBricksElementLayout);
 
 		// Just for testing vending machine
 		vendingMachineElementLayout = new Row("vendingMachineElementLayoutRow");
-		vendingMachineElementLayout.setDebug(true);
+		//vendingMachineElementLayout.setDebug(true);
 		createWendingMachine(vendingMachineElementLayout);
 		
 		mainColumn.append(dviElementLayout);
@@ -167,6 +167,7 @@ public class GLVisBricks20
 		dvi = (GLDataGraph) GeneralManager.get().getViewManager()
 				.createGLView(GLDataGraph.class, parentGLCanvas, parentComposite, frustum);
 
+		dvi.setVendingMachineMode(true);
 		dvi.setRemoteRenderingGLView(this);
 		dvi.initialize();
 

@@ -378,9 +378,9 @@ public class GLBrick
 		gl.glPopName();
 
 		// The full brick content will not be rendered with DetailLevel.LOW
-		if (dimensionGroup.getDetailLevel() != DetailLevel.LOW)
+		if (dimensionGroup.getDetailLevel() != DetailLevel.LOW || isHeaderBrick)
 			layoutManager.render(gl);
-
+		
 		gl.glCallList(baseDisplayListIndex);
 
 	}

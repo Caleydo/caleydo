@@ -12,7 +12,6 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
-import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
@@ -23,7 +22,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.sorting.AverageValueSortingStrategy;
+import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.CompactPathwayRenderer;
@@ -95,6 +94,24 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 
 		layoutTemplate.showFooterBar(false);
+	}
+	
+	@Override
+	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.PATHWAYS_SUMMARY_COMPACT);
+
+		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
+
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
+
+		layoutTemplate.setHeaderBarElements(headerBarElements);
 	}
 
 	@Override

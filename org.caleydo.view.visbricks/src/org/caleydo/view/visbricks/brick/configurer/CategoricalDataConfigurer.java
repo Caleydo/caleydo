@@ -3,9 +3,7 @@ package org.caleydo.view.visbricks.brick.configurer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -22,6 +20,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.visbricks.brick.ui.OverviewHeatMapRenderer;
 import org.caleydo.view.visbricks.brick.viewcreation.HeatMapCreator;
@@ -86,7 +85,6 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 
 		ArrayList<ElementLayout> footerBarElements = createFooterBarElements(layoutTemplate);
 		layoutTemplate.setFooterBarElements(footerBarElements);
-
 	}
 
 	@Override
@@ -199,9 +197,20 @@ public class CategoricalDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.setFooterBarElements(footerBarElements);
 
 		layoutTemplate.showFooterBar(true);
-
 	}
 
+	@Override
+	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.OVERVIEW_HEATMAP_COMPACT);
+
+		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
+		layoutTemplate.setHeaderBarElements(headerBarElements);
+	}
+	
 	@Override
 	public boolean useDefaultWidth() {
 		return true;

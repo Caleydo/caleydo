@@ -19,6 +19,7 @@ import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.visbricks.brick.sorting.IBrickSortingStrategy;
 import org.caleydo.view.visbricks.brick.ui.KaplanMeierSummaryRenderer;
@@ -93,6 +94,25 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 
 		layoutTemplate.showFooterBar(true);
+	}
+	
+	@Override
+	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
+		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
+		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
+
+		layoutTemplate.setValidViewTypes(validViewTypes);
+		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
+
+		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
+
+		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
+				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
+				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
+				.getVisBricksView()));
+		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
+
+		layoutTemplate.setHeaderBarElements(headerBarElements);
 	}
 
 	@Override

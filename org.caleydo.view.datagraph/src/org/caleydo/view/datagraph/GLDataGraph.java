@@ -223,8 +223,6 @@ public class GLDataGraph
 			final GLMouseListener glMouseListener) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
-		
-		isVendingMachineMode = true;
 	}
 
 	@Override
@@ -1162,6 +1160,13 @@ public class GLDataGraph
 
 	public boolean isShowDataConnections() {
 		return showDataConnections;
+	}
+	
+	/**
+	 * @param isVendingMachineMode setter, see {@link #isVendingMachineMode}
+	 */
+	public void setVendingMachineMode(boolean isVendingMachineMode) {
+		this.isVendingMachineMode = isVendingMachineMode;
 	}
 	
 	/**
