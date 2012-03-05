@@ -18,7 +18,7 @@ public class FoldChange {
 		new HashMap<DataContainer, Pair<double[], FoldChangeSettings>>();
 
 	HashMap<DataContainer, double[]> containerToFoldChangeUncertainty =
-		new HashMap<DataContainer, double[]>();;
+		new HashMap<DataContainer, double[]>();
 
 	public void setResult(DataContainer container, double[] resultVector) {
 

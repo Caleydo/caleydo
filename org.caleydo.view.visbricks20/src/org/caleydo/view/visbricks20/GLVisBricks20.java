@@ -309,7 +309,6 @@ public class GLVisBricks20
 	}
 
 	public void handleOpenVendingMachineEvent(IDataDomain dataDomain) {
-		// TODO choose first ranked
 
 		ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
@@ -347,7 +346,7 @@ public class GLVisBricks20
 	public void vendingMachineSelectionFinished() {
 
 		detailDimensionGroup.hideDetailedBrick();
-		visBricks.updateLayout();
+		visBricks.updateLayout();	
 	}
 	
 	/**

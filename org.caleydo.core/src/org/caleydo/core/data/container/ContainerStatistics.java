@@ -4,7 +4,6 @@
 package org.caleydo.core.data.container;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -40,6 +39,8 @@ public class ContainerStatistics {
 	private FoldChange foldChange;
 
 	private TTest tTest;
+
+	private AdjustedRandIndex adjustedRandIndex;
 
 	/**
 	 * Optionally it is possible to specify the number of bins for the histogram
@@ -96,8 +97,8 @@ public class ContainerStatistics {
 	/**
 	 * This is optional! Read more: {@link #numberOfBucketsForHistogram}
 	 * 
-	 * @param numberOfBucketsForHistogram
-	 *            setter, see {@link #numberOfBucketsForHistogram}
+	 * @param numberOfBucketsForHistogram setter, see
+	 *            {@link #numberOfBucketsForHistogram}
 	 */
 	public void setNumberOfBucketsForHistogram(int numberOfBucketsForHistogram) {
 		this.numberOfBucketsForHistogram = numberOfBucketsForHistogram;
@@ -132,13 +133,9 @@ public class ContainerStatistics {
 		// hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
 		for (Integer dimensionID : container.getDimensionPerspective().getVirtualArray()) {
 			{
-				for (Integer recordID : container.getRecordPerspective()
-						.getVirtualArray()) {
-					float value = container
-							.getDataDomain()
-							.getTable()
-							.getFloat(DataRepresentation.NORMALIZED, recordID,
-									dimensionID);
+				for (Integer recordID : container.getRecordPerspective().getVirtualArray()) {
+					float value = container.getDataDomain().getTable()
+							.getFloat(DataRepresentation.NORMALIZED, recordID, dimensionID);
 
 					// this works because the values in the container are
 					// already noramlized
@@ -161,6 +158,17 @@ public class ContainerStatistics {
 		return foldChange;
 	}
 
+	/**
+	 * Access anything related to Adjusted Rand Index scores.
+	 * 
+	 * @return
+	 */
+	public AdjustedRandIndex adjustedRandIndex() {
+		if (adjustedRandIndex == null)
+			adjustedRandIndex = new AdjustedRandIndex(container);
+		return adjustedRandIndex;
+	}
+	
 	/**
 	 * Access anything related to t-tests
 	 * 

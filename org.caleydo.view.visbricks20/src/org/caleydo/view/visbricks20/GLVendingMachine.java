@@ -1,6 +1,7 @@
 package org.caleydo.view.visbricks20;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -15,6 +16,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -159,9 +161,8 @@ public class GLVendingMachine
 		layoutManager.updateLayout();
 	}
 
+	@SuppressWarnings({ "unchecked", "rawtypes" })
 	private void createRankedVisBricksViews() {
-
-		// TODO: trigger ranking
 
 		List<DataContainer> fixedDataContainers = new ArrayList<DataContainer>();
 
@@ -175,30 +176,47 @@ public class GLVendingMachine
 
 		hashVisBricks2DataContainerChoice.clear();
 
-		Integer rank = 1;
-		for (DataContainer dataContainer : dataContainers) {
-			
+		// Trigger ranking of data containers
+		List<Pair<Float, DataContainer>> score2DataContainerList = new ArrayList<Pair<Float, DataContainer>>();
+		for (DataContainer referenceDataContainer : dataContainers) {
+			float scoreSum = 0;
+			int scoreCount = 0;
+			for (DataContainer fixedDataContainer : fixedDataContainers) {
+
+				scoreSum += referenceDataContainer.getContainerStatistics()
+						.adjustedRandIndex().getScore(fixedDataContainer, false);
+				scoreCount++;
+			}
+			score2DataContainerList
+					.add(new Pair(scoreSum / scoreCount, referenceDataContainer));
+		}
+
+		Collections.sort(score2DataContainerList);
+
+		for (Pair<Float, DataContainer> score2DataContainer : score2DataContainerList) {
+
+			DataContainer dataContainer = score2DataContainer.getSecond();
+
 			Row vendingMachineElementLayout = new Row("vendingMachineElementLayout");
 			vendingMachineElementLayout.setGrabY(true);
 
 			ElementLayout rankElementLayout = new ElementLayout("rankElementLayout");
 			rankElementLayout.setPixelSizeX(70);
-			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer(Integer.toString(rank++),
-					getTextRenderer());
+			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer(
+					Float.toString(score2DataContainer.getFirst()), getTextRenderer());
 			rankElementLayout.setRenderer(rankNumberRenderer);
 
 			ElementLayout visBricksElementLayout = new ElementLayout(
 					"visBricksElementLayoutRow");
-			visBricksElementLayout.setDebug(false);
 
 			GLVisBricks visBricks = createVisBricks(visBricksElementLayout);
 			visBricks.setDataContainer(dataContainer);
 
-			visBricksStack.add(visBricks);
+			visBricksStack.add(0, visBricks);
 			hashVisBricks2DataContainerChoice.put(visBricks, dataContainer);
 
-			if (visBricksStack.size() == 1) {
-				// by default the first choice is selected
+			if (visBricksStack.size() == score2DataContainerList.size()) {
+				// by default the last vending machine is selected
 				selectedVisBricksChoice = visBricksStack.get(0);
 
 				vendingMachineElementLayout.addBackgroundRenderer(new ColorRenderer(
@@ -211,7 +229,7 @@ public class GLVendingMachine
 			uninitializedVisBrickViews.add(visBricks);
 			vendingMachineElementLayout.append(rankElementLayout);
 			vendingMachineElementLayout.append(visBricksElementLayout);
-			mainColumn.append(vendingMachineElementLayout);
+			mainColumn.add(0, vendingMachineElementLayout);
 		}
 	}
 
@@ -321,7 +339,7 @@ public class GLVendingMachine
 		for (String id : rowIDs) {
 			count++;
 
-			if (count > 2)
+			if (count > 3)
 				break;
 
 			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
@@ -385,8 +403,7 @@ public class GLVendingMachine
 		}
 		dimGroupManager.setCenterGroupStartIndex(0);
 		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups().size());
-		// FIXME: does not update?!
-		// getVisBricks20View().getVisBricks().initLayouts();
+
 		getVisBricks20View().getVisBricks().updateLayout();
 
 		layoutManager.updateLayout();
