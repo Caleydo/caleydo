@@ -45,5 +45,4 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 
 		return parCoords;
 	}
-
 }

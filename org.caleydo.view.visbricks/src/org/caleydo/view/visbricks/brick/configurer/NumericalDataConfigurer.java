@@ -265,11 +265,8 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
-
 	}
-
-
-
+	
 	@Override
 	public boolean useDefaultWidth() {
 		return true;

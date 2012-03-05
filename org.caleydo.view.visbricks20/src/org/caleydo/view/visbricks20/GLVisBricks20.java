@@ -1,10 +1,13 @@
 package org.caleydo.view.visbricks20;
 
+import java.util.ArrayList;
 import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
@@ -21,11 +24,13 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks20.listener.AddGroupsToVisBricksListener;
+import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -53,11 +58,15 @@ public class GLVisBricks20
 
 	private GLVisBricks visBricks;
 	private ElementLayout visBricksElementLayout;
-	
+
 	private GLVendingMachine vendingMachine;
 	private ElementLayout vendingMachineElementLayout;
-	
+
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
+	
+	private OpenVendingMachineListener openVendingMachineListener;
+	
+	private DimensionGroup detailDimensionGroup;
 
 	/**
 	 * Constructor.
@@ -117,7 +126,7 @@ public class GLVisBricks20
 		dvi.processEvents();
 		visBricks.processEvents();
 		vendingMachine.processEvents();
-		
+
 		pickingManager.handlePicking(this, gl);
 
 		display(gl);
@@ -140,14 +149,14 @@ public class GLVisBricks20
 		createDVI(dviElementLayout);
 
 		visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		//visBricksElementLayout.setDebug(true);
+		// visBricksElementLayout.setDebug(true);
 		createVisBricks(visBricksElementLayout);
 
 		// Just for testing vending machine
 		vendingMachineElementLayout = new Row("vendingMachineElementLayoutRow");
-		//vendingMachineElementLayout.setDebug(true);
+		// vendingMachineElementLayout.setDebug(true);
 		createWendingMachine(vendingMachineElementLayout);
-		
+
 		mainColumn.append(dviElementLayout);
 		mainColumn.append(visBricksElementLayout);
 		mainColumn.append(vendingMachineElementLayout);
@@ -195,7 +204,7 @@ public class GLVisBricks20
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);
-		wrappingLayout.setPixelSizeY(300);
+		//wrappingLayout.setPixelSizeY(300);
 
 		return visBricks;
 	}
@@ -209,7 +218,9 @@ public class GLVisBricks20
 	private GLVendingMachine createWendingMachine(ElementLayout wrappingLayout) {
 		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 				-4, 4);
-		vendingMachine = (GLVendingMachine) GeneralManager.get().getViewManager()
+		vendingMachine = (GLVendingMachine) GeneralManager
+				.get()
+				.getViewManager()
 				.createGLView(GLVendingMachine.class, parentGLCanvas, parentComposite, frustum);
 
 		vendingMachine.setRemoteRenderingGLView(this);
@@ -218,14 +229,14 @@ public class GLVisBricks20
 
 		ViewLayoutRenderer vendingMachineRenderer = new ViewLayoutRenderer(vendingMachine);
 		wrappingLayout.setRenderer(vendingMachineRenderer);
-//		wrappingLayout.setPixelSizeY(500);
-	
+		// wrappingLayout.setPixelSizeY(500);
+
 		Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
 		wrappingLayout.setZoomer(zoomer);
 
 		return vendingMachine;
 	}
-	
+
 	@Override
 	public void displayRemote(GL2 gl) {
 		display(gl);
@@ -257,6 +268,10 @@ public class GLVisBricks20
 		addGroupsToVisBricksListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToVisBricksEvent.class,
 				addGroupsToVisBricksListener);
+		
+		openVendingMachineListener = new OpenVendingMachineListener();
+		openVendingMachineListener.setHandler(this);
+		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
 	}
 
 	@Override
@@ -266,6 +281,11 @@ public class GLVisBricks20
 		if (addGroupsToVisBricksListener != null) {
 			eventPublisher.removeListener(addGroupsToVisBricksListener);
 			addGroupsToVisBricksListener = null;
+		}
+		
+		if (openVendingMachineListener != null) {
+			eventPublisher.removeListener(openVendingMachineListener);
+			openVendingMachineListener = null;
 		}
 	}
 
@@ -283,27 +303,61 @@ public class GLVisBricks20
 
 		return null;
 	}
-	
+
 	@Override
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
 
+	public void handleOpenVendingMachineEvent(IDataDomain dataDomain) {
+		// TODO choose first ranked
+
+		ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
+
+		// For the vending machine it does not matter which record perspective
+		// we take
+		DataContainer dataContainer = tableBasedDataDomain.getDataContainer(
+				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getID(),
+				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getID());
+		
+		vendingMachine.setDataContainer(dataContainer);
+		
+		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
+		dataContainerWrapper.add(dataContainer);
+		addDimensionGroups(dataContainerWrapper, null);
+		visBricks.addDimensionGroups(dataContainerWrapper, null);
+	}
+	
 	public void addDimensionGroups(List<DataContainer> dataContainers,
 			IBrickConfigurer dataConfigurer) {
-		
+
 		visBricks.addDimensionGroups(dataContainers, dataConfigurer);
-		
-//		vendingMachineElementLayout.setPixelSizeY(300);
-//		visBricksElementLayout.setGrabY(true);
-//		layoutManager.updateLayout();
+
+		for (DimensionGroup dimGroup : visBricks.getDimensionGroupManager()
+				.getDimensionGroups()) {
+			if (dataContainers.get(0) == dimGroup.getDataContainer()) {
+				detailDimensionGroup = dimGroup;
+				detailDimensionGroup.showDetailedBrick(vendingMachine, false);
+				break;
+			}
+		}
+
+		layoutManager.updateLayout();
+		visBricks.initLayouts();
+		visBricks.updateLayout();
 	}
 
 	public void vendingMachineSelectionFinished() {
-		
-//		vendingMachineElementLayout.setPixelSizeY(1);
-//		visBricksElementLayout.setGrabY(true);
-//		layoutManager.updateLayout();
+
+		detailDimensionGroup.hideDetailedBrick();
+		visBricks.updateLayout();
+	}
+	
+	/**
+	 * @return the visBricks, see {@link #visBricks}
+	 */
+	public GLVisBricks getVisBricks() {
+		return visBricks;
 	}
 }

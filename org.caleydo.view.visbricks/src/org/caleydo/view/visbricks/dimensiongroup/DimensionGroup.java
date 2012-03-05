@@ -931,6 +931,45 @@ public class DimensionGroup
 	// }
 
 	/**
+	 * TODO
+	 * 
+	 * @param view The GL view for which a detailed version shall be shown.
+	 * @param expandLeft Specifies, whether the detail brick shall be expanded
+	 *            on the left or on the right.
+	 */
+	public void showDetailedBrick(AGLView view, boolean expandLeft) {
+
+		if (detailBrick != null) {
+			GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
+			detailBrick.unregisterEventListeners();
+			detailBrick.destroy();
+			detailBrick = null;
+		}
+
+		detailBrickLayout = new Column("detailBrickWrappingLayout");
+		
+		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(view);
+		detailBrickLayout.setRenderer(visBricksRenderer);
+		
+		int detailBrickWidth = getDetailBrickWidthPixels(!expandLeft);
+
+		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
+		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
+		overviewDetailGapLayout.setRatioSizeY(1);
+
+		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
+
+		if (otherDetailDimensionGroup != null
+				&& otherDetailDimensionGroup.isDetailBrickShown()) {
+			otherDetailDimensionGroup.setDetailBrickWidth(detailBrickWidth);
+		}
+
+		showDetailBrick = true;
+		this.expandLeft = expandLeft;
+	}
+
+	
+	/**
 	 * Shows a detailed brick.
 	 * 
 	 * @param brick The brick for which a detailed version shall be shown.

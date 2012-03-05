@@ -659,7 +659,7 @@ public class GLVisBricks
 	}
 
 	/**
-	 * Hide the detail brich which is shown left of its parent dimension group
+	 * Hide the detail brick which is shown left of its parent dimension group
 	 */
 	public void switchToOverviewModeLeft() {
 		isLeftDetailShown = false;
