@@ -488,6 +488,7 @@ public class ElementLayout {
 			gl.glVertex3f(0, getSizeScaledY(), 0.2f);
 			gl.glEnd();
 
+			// FIXME: dirty. assign text renderer once via setter
 			if (textRenderer == null) {
 				textRenderer = new CaleydoTextRenderer(24);
 			}

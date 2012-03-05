@@ -32,8 +32,8 @@ public class GLVendingMachineKeyListener extends GLKeyListener<GLVendingMachine>
 			vendingMachine.highlightNextPreviousVisBrick(true);
 			break;
 		case SWT.CR:
-			vendingMachine.selectVisBricksChoice();
 			vendingMachine.getVisBricks20View().vendingMachineSelectionFinished();
+			vendingMachine.selectVisBricksChoice();
 			break;
 		}
 

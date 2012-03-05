@@ -183,23 +183,27 @@ public class DimensionGroup
 	
 	private void initLayouts() {
 		mainRow = new Row("mainRow");
+		mainRow.setDebug(false);
 		mainRow.setRenderingPriority(3);
 		mainRow.setXDynamic(true);
 		mainRow.setFrameColor(0, 0, 1, 1);
 		mainRow.sethAlign(HAlign.CENTER);
 		
 		mainColumn = new Column("mainColumn");
+		mainColumn.setDebug(false);
 		mainColumn.setPriorityRendereing(true);
 		mainColumn.setBottomUp(false);
 		mainColumn.setXDynamic(true);
 		mainColumn.setVAlign(VAlign.CENTER);
 		
 		clusterBrickWrapperColumn = new Column("wrapperColumn");
+		clusterBrickWrapperColumn.setDebug(false);
 		clusterBrickWrapperColumn.setXDynamic(true);
 		clusterBrickWrapperColumn.setFrameColor(0, 1, 0, 1);
 		clusterBrickWrapperColumn.setVAlign(VAlign.CENTER);
 
 		clusterBrickColumn = new Column("clusterBrickColumn");
+		clusterBrickColumn.setDebug(false);
 		clusterBrickColumn.setFrameColor(1, 0, 0, 1);
 		clusterBrickColumn.setBottomUp(false);
 		clusterBrickColumn.setXDynamic(true);
@@ -249,7 +253,7 @@ public class DimensionGroup
 	 * is rendered and no other bricks
 	 */
 	public void setCollapsed(boolean isCollapsed) {
-		this.isCollapsed = isCollapsed;
+		this.isCollapsed = false;//isCollapsed;
 		// centerBrick.setBrickLayoutTemplate(new
 		// CompactBrickLayoutTemplate(centerBrick,
 		// glVisBricksView, this));
@@ -948,8 +952,10 @@ public class DimensionGroup
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
 		
-		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(view);
-		detailBrickLayout.setRenderer(visBricksRenderer);
+		ViewLayoutRenderer vendingMachineRenderer = new ViewLayoutRenderer(view);
+		detailBrickLayout.setRenderer(vendingMachineRenderer);
+		detailBrickLayout.setDebug(false);
+		detailBrickLayout.setGrabY(true);
 		
 		int detailBrickWidth = getDetailBrickWidthPixels(!expandLeft);
 
@@ -1185,5 +1191,4 @@ public class DimensionGroup
 	public boolean isCollapsed() {
 		return isCollapsed;
 	}
-
 }

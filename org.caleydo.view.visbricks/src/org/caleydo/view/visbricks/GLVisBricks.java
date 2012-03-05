@@ -182,8 +182,10 @@ public class GLVisBricks
 
 	private Set<IDataDomain> dataDomains;
 	private List<DataContainer> dataContainers;
-	
+
 	private boolean isVendingMachineMode = false;
+
+	private boolean showArchSides = true;
 
 	/**
 	 * Constructor.
@@ -232,8 +234,10 @@ public class GLVisBricks
 
 		initCenterLayout();
 
-		initLeftLayout();
-		initRightLayout();
+		if (showArchSides) {
+			initLeftLayout();
+			initRightLayout();
+		}
 
 		updateConnectionLinesBetweenDimensionGroups();
 	}
@@ -269,8 +273,12 @@ public class GLVisBricks
 	 */
 	private void initCenterLayout() {
 
-		archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
-		if (isRightDetailShown || isLeftDetailShown) {
+		if (showArchSides)
+			archSideThickness = viewFrustum.getWidth() * ARCH_STAND_WIDTH_PERCENT;
+		else
+			archSideThickness = 0;
+
+		if (!showArchSides || isRightDetailShown || isLeftDetailShown) {
 			archInnerWidth = 0;
 		}
 		else {
@@ -288,11 +296,12 @@ public class GLVisBricks
 		float centerLayoutWidth = viewFrustum.getWidth() - 2 * (archInnerWidth);
 		// float centerLayoutWidth = viewFrustum.getWidth();
 
-		centerRowLayout = new Row("centerArchRow");
+		centerRowLayout = new Row("centerRowLayout");
+		centerRowLayout.setDebug(false);
 
 		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(0, 0, 1, 1);
-		
+
 		leftDimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
 
 		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
@@ -370,10 +379,10 @@ public class GLVisBricks
 	 * @param layoutTemplate
 	 * @param layoutManager
 	 * @param dimensinoGroupStartIndex
-	 * @param dimensinoGroupEndIndex
+	 * @param dimensionGroupEndIndex
 	 */
 	private void initSideLayout(Column columnLayout, LayoutManager layoutManager,
-			int dimensinoGroupStartIndex, int dimensinoGroupEndIndex) {
+			int dimensinoGroupStartIndex, int dimensionGroupEndIndex) {
 
 		layoutManager.setBaseElementLayout(columnLayout);
 
@@ -389,7 +398,7 @@ public class GLVisBricks
 
 		// Handle special case where arch stand contains no groups
 		if (dimensinoGroupStartIndex == 0
-				|| dimensinoGroupStartIndex == dimensinoGroupEndIndex) {
+				|| dimensinoGroupStartIndex == dimensionGroupEndIndex) {
 			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
 					connectionRenderer, null, null, this);
 		}
@@ -404,7 +413,7 @@ public class GLVisBricks
 		dimensionGroupSpacingRenderer.setVertical(false);
 		// dimensionGroupSpacingRenderer.setLineLength(archSideThickness);
 
-		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensinoGroupEndIndex; dimensionGroupIndex++) {
+		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensionGroupEndIndex; dimensionGroupIndex++) {
 
 			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
 					dimensionGroupIndex);
@@ -489,7 +498,7 @@ public class GLVisBricks
 		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
 			group.processEvents();
 		}
-		
+
 		handleHorizontalMoveDragging(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
@@ -568,11 +577,11 @@ public class GLVisBricks
 		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
 			dimensionGroup.display(gl);
 		}
-		
+
 		if (isConnectionLinesDirty)
 			performConnectionLinesUpdate();
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
+		if (showArchSides && !isRightDetailShown && !isLeftDetailShown) {
 			leftLayoutManager.render(gl);
 		}
 
@@ -580,14 +589,14 @@ public class GLVisBricks
 		centerLayoutManager.render(gl);
 		gl.glTranslatef(-archInnerWidth, 0, 0);
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
+		if (showArchSides && !isRightDetailShown && !isLeftDetailShown) {
 			float rightArchStand = (1 - ARCH_STAND_WIDTH_PERCENT) * viewFrustum.getWidth();
 			gl.glTranslatef(rightArchStand, 0, 0);
 			rightLayoutManager.render(gl);
 			gl.glTranslatef(-rightArchStand, 0, 0);
 		}
 
-		if (!isRightDetailShown && !isLeftDetailShown) {
+		if (showArchSides && !isRightDetailShown && !isLeftDetailShown) {
 			renderArch(gl);
 		}
 
@@ -605,18 +614,18 @@ public class GLVisBricks
 	public void switchToDetailModeRight(DimensionGroup dimensionGroup) {
 
 		int dimensionGroupIndex = dimensionGroupManager.indexOfDimensionGroup(dimensionGroup);
-		// false only if this is the rightmost DimensionGroup. If true we move
-		// anything beyond the next dimension group out
+		// false only if this is the rightmost DimensionGroup. If true we
+		// move anything beyond the next dimension group out
 		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
 			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 2);
 
 		}
-		// false only if this is the leftmost DimensionGroup. If true we move
-		// anything further left out
+		// false only if this is the leftmost DimensionGroup. If true we
+		// move anything further left out
 		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
 			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex);
-
 		}
+
 		isRightDetailShown = true;
 
 		initLeftLayout();
@@ -1202,7 +1211,7 @@ public class GLVisBricks
 						brickConfigurer = new NumericalDataConfigurer(dataContainer);
 					}
 				}
-				
+
 				dimensionGroup.setDetailLevel(this.getDetailLevel());
 				dimensionGroup.setBrickConfigurer(brickConfigurer);
 				dimensionGroup.setDataDomain(dataContainer.getDataDomain());
@@ -1210,7 +1219,7 @@ public class GLVisBricks
 				dimensionGroup.setRemoteRenderingGLView(this);
 				dimensionGroup.setVisBricksView(this);
 				dimensionGroup.initialize();
-				
+
 				dimensionGroups.add(dimensionGroup);
 				dataContainers.add(dataContainer);
 
@@ -1223,7 +1232,8 @@ public class GLVisBricks
 					dataDomains.add(dataContainer.getDataDomain());
 				}
 
-				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager.getRightGroupStartIndex()+1);
+				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+						.getRightGroupStartIndex() + 1);
 			}
 		}
 
@@ -1250,7 +1260,7 @@ public class GLVisBricks
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 
 		super.reshape(drawable, x, y, width, height);
-		
+
 		initLayouts();
 		setLayoutDirty();
 	}
@@ -1395,9 +1405,9 @@ public class GLVisBricks
 	public void setLayoutDirty() {
 		isLayoutDirty = true;
 	}
-	
+
 	public void updateLayout() {
-		
+
 		for (DimensionGroup dimGroup : dimensionGroupManager.getDimensionGroups()) {
 			dimGroup.updateLayout();
 		}
@@ -1663,8 +1673,9 @@ public class GLVisBricks
 	 */
 	public void setVendingMachineMode(boolean isVendingMachineMode) {
 		this.isVendingMachineMode = isVendingMachineMode;
+		showArchSides = false;
 	}
-	
+
 	/**
 	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
 	 */

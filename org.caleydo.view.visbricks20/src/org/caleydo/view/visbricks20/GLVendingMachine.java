@@ -28,11 +28,12 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
 import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks20.listener.GLVendingMachineKeyListener;
+import org.caleydo.view.visbricks20.renderer.RankNumberRenderer;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -101,6 +102,8 @@ public class GLVendingMachine
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
 
+		textRenderer = new CaleydoTextRenderer(24);
+
 		initLayouts();
 	}
 
@@ -147,7 +150,6 @@ public class GLVendingMachine
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		mainColumn = new Column("baseElementLayout");
-		mainColumn.setDebug(false);
 		mainColumn.setBottomUp(false);
 		layoutManager.setBaseElementLayout(mainColumn);
 
@@ -173,11 +175,21 @@ public class GLVendingMachine
 
 		hashVisBricks2DataContainerChoice.clear();
 
+		Integer rank = 1;
 		for (DataContainer dataContainer : dataContainers) {
+			
+			Row vendingMachineElementLayout = new Row("vendingMachineElementLayout");
+			vendingMachineElementLayout.setGrabY(true);
 
-			Row visBricksElementLayout = new Row("visBricksElementLayoutRow");
+			ElementLayout rankElementLayout = new ElementLayout("rankElementLayout");
+			rankElementLayout.setPixelSizeX(70);
+			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer(Integer.toString(rank++),
+					getTextRenderer());
+			rankElementLayout.setRenderer(rankNumberRenderer);
+
+			ElementLayout visBricksElementLayout = new ElementLayout(
+					"visBricksElementLayoutRow");
 			visBricksElementLayout.setDebug(false);
-			visBricksElementLayout.setGrabY(true);
 
 			GLVisBricks visBricks = createVisBricks(visBricksElementLayout);
 			visBricks.setDataContainer(dataContainer);
@@ -189,15 +201,17 @@ public class GLVendingMachine
 				// by default the first choice is selected
 				selectedVisBricksChoice = visBricksStack.get(0);
 
-				visBricksElementLayout.addBackgroundRenderer(new ColorRenderer(new float[] {
-						1, 1, 0, 1 }));
+				vendingMachineElementLayout.addBackgroundRenderer(new ColorRenderer(
+						new float[] { 1, 1, 0, 1 }));
 			}
 
 			if (fixedDataContainers != null && fixedDataContainers.size() > 0)
 				visBricks.addDimensionGroups(fixedDataContainers, null);
 
 			uninitializedVisBrickViews.add(visBricks);
-			mainColumn.append(visBricksElementLayout);
+			vendingMachineElementLayout.append(rankElementLayout);
+			vendingMachineElementLayout.append(visBricksElementLayout);
+			mainColumn.append(vendingMachineElementLayout);
 		}
 	}
 
@@ -220,6 +234,7 @@ public class GLVendingMachine
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);
+		wrappingLayout.setDebug(true);
 
 		return visBricks;
 	}
@@ -246,7 +261,6 @@ public class GLVendingMachine
 			while (uninitializedVisBrickViews.peek() != null) {
 				uninitializedVisBrickViews.poll().initRemote(gl, this, glMouseListener);
 			}
-			// initLayouts();
 		}
 
 		layoutManager.render(gl);
@@ -332,14 +346,13 @@ public class GLVendingMachine
 
 	public void highlightNextPreviousVisBrick(boolean next) {
 
-		// viewLayout.clearBackgroundRenderers();
 		GLVisBricks previouslySelectedVisBricksChoice = selectedVisBricksChoice;
 		DataContainer previouslySelectedDatacontainer = hashVisBricks2DataContainerChoice
 				.get(selectedVisBricksChoice);
 		previouslySelectedDatacontainer.setPrivate(true);
 
 		int selectedIndex = visBricksStack.indexOf(selectedVisBricksChoice);
-		if (next && selectedIndex < visBricksStack.size() + 1)
+		if (next && selectedIndex < (visBricksStack.size() - 1))
 			selectedIndex++;
 		else if (!next && selectedIndex > 0)
 			selectedIndex--;
@@ -349,24 +362,31 @@ public class GLVendingMachine
 				.get(selectedVisBricksChoice);
 		selectedDataContainer.setPrivate(false);
 
-		for (ElementLayout viewLayout : mainColumn.getElements()) {
+		for (ElementLayout vendingMachineElementLayout : mainColumn.getElements()) {
 
+			ElementLayout viewLayout = ((Row) vendingMachineElementLayout).getElements()
+					.get(1);
 			if (((ViewLayoutRenderer) viewLayout.getRenderer()).getView() == selectedVisBricksChoice)
-				viewLayout
-						.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 0, 1 }));
+				vendingMachineElementLayout.addBackgroundRenderer(new ColorRenderer(
+						new float[] { 1, 1, 0, 1 }));
 			else if (((ViewLayoutRenderer) viewLayout.getRenderer()).getView() == previouslySelectedVisBricksChoice)
-				viewLayout.clearBackgroundRenderers();
+				vendingMachineElementLayout.clearBackgroundRenderers();
 		}
 
-		// Switch currently shown dim group data container in main VisBricks view
+		// Switch currently shown dim group data container in main VisBricks
+		// view
 		for (DimensionGroup dimGroup : dimGroupManager.getDimensionGroups()) {
 
 			if (dimGroup.isDetailBrickShown()) {
 				dimGroup.setDataContainer(selectedDataContainer);
-				break;
 			}
+
+			// dimGroup.setCollapsed(false);
 		}
+		dimGroupManager.setCenterGroupStartIndex(0);
+		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups().size());
 		// FIXME: does not update?!
+		// getVisBricks20View().getVisBricks().initLayouts();
 		getVisBricks20View().getVisBricks().updateLayout();
 
 		layoutManager.updateLayout();
