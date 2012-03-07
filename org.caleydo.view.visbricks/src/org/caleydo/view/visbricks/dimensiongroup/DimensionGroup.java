@@ -181,7 +181,7 @@ public class DimensionGroup
 		initLayouts();
 	}
 	
-	private void initLayouts() {
+	public void initLayouts() {
 		mainRow = new Row("mainRow");
 		mainRow.setDebug(false);
 		mainRow.setRenderingPriority(3);

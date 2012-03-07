@@ -149,7 +149,7 @@ public class GLVisBricks20
 		createDVI(dviElementLayout);
 
 		visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		visBricksElementLayout.setDebug(true);
+		//visBricksElementLayout.setDebug(true);
 		createVisBricks(visBricksElementLayout);
 
 		// Just for testing vending machine

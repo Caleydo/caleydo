@@ -193,6 +193,7 @@ public class GLVendingMachine
 
 		Collections.sort(score2DataContainerList);
 
+		int rank = score2DataContainerList.size();
 		for (Pair<Float, DataContainer> score2DataContainer : score2DataContainerList) {
 
 			DataContainer dataContainer = score2DataContainer.getSecond();
@@ -203,7 +204,8 @@ public class GLVendingMachine
 			ElementLayout rankElementLayout = new ElementLayout("rankElementLayout");
 			rankElementLayout.setPixelSizeX(70);
 			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer(
-					Float.toString(score2DataContainer.getFirst()), getTextRenderer());
+					"" + rank--, //score2DataContainer.getFirst(), 
+					getTextRenderer());
 			rankElementLayout.setRenderer(rankNumberRenderer);
 
 			ElementLayout visBricksElementLayout = new ElementLayout(
@@ -252,7 +254,7 @@ public class GLVendingMachine
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);
-		wrappingLayout.setDebug(true);
+		//wrappingLayout.setDebug(true);
 
 		return visBricks;
 	}
@@ -339,7 +341,7 @@ public class GLVendingMachine
 		for (String id : rowIDs) {
 			count++;
 
-			if (count > 3)
+			if (count > 2)
 				break;
 
 			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
@@ -397,9 +399,11 @@ public class GLVendingMachine
 
 			if (dimGroup.isDetailBrickShown()) {
 				dimGroup.setDataContainer(selectedDataContainer);
+				//FIXME: update in dim group does not wor
+				//dimGroup.initLayouts();
+				//dimGroup.updateLayout();
+				break;
 			}
-
-			// dimGroup.setCollapsed(false);
 		}
 		dimGroupManager.setCenterGroupStartIndex(0);
 		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups().size());

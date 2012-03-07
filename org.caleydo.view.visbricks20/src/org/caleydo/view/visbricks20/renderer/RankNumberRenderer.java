@@ -22,6 +22,6 @@ public class RankNumberRenderer
 	public void render(GL2 gl) {
 
 		textRenderer.setColor(RANK_NUMBER_COLOR);
-		textRenderer.renderText(gl, rankNumber, x/3f, y-y/6f, 0, 0.01f, 3);
+		textRenderer.renderText(gl, rankNumber, x/2f, y-y/6f, 0, 0.007f, 3);
 	}
 }
