@@ -7,7 +7,7 @@ import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ActionToolBarContainer;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.visbricks.toolbar.ConnectionsModeGUI;
 
 public class DataGraphToolBarContent extends AToolBarContent {
@@ -16,7 +16,7 @@ public class DataGraphToolBarContent extends AToolBarContent {
 
 	@Override
 	public Class<?> getViewClass() {
-		return GLDataGraph.class;
+		return GLDataViewIntegrator.class;
 	}
 
 	@Override

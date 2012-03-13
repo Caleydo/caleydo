@@ -2,7 +2,7 @@ package org.caleydo.view.datagraph.node;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
 public abstract class ADataNode extends ADefaultTemplateNode {
@@ -17,7 +17,7 @@ public abstract class ADataNode extends ADefaultTemplateNode {
 	// protected ADataContainerRenderer dataContainerRenderer;
 	// private ANodeLayout layout;
 
-	public ADataNode(AGraphLayout graphLayout, GLDataGraph view,
+	public ADataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			final DragAndDropController dragAndDropController, Integer id,
 			IDataDomain dataDomain) {
 		super(graphLayout, view, dragAndDropController, id);

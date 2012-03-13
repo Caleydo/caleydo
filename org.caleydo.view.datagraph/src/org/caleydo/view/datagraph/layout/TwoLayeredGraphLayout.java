@@ -11,21 +11,21 @@ import java.util.List;
 import java.util.Set;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.Graph;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
-import org.caleydo.view.datagraph.layout.edge.rendering.BipartiteEdgeBandRenderer;
-import org.caleydo.view.datagraph.layout.edge.rendering.BipartiteEdgeLineRenderer;
-import org.caleydo.view.datagraph.layout.edge.rendering.CustomLayoutEdgeBandRenderer;
-import org.caleydo.view.datagraph.layout.edge.rendering.CustomLayoutEdgeLineRenderer;
-import org.caleydo.view.datagraph.layout.edge.routing.BipartiteInsideLayerRoutingStrategy;
+import org.caleydo.view.datagraph.layout.edge.rendering.TwoLayeredEdgeBandRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.TwoLayeredEdgeLineRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.FreeLayoutEdgeBandRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.FreeLayoutEdgeLineRenderer;
+import org.caleydo.view.datagraph.layout.edge.routing.ArcRoutingStrategy;
 import org.caleydo.view.datagraph.layout.edge.routing.IEdgeRoutingStrategy;
-import org.caleydo.view.datagraph.layout.edge.routing.SimpleEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.layout.edge.routing.CollisionAvoidanceRoutingStrategy;
 import org.caleydo.view.datagraph.node.ADataNode;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 import org.caleydo.view.datagraph.node.ViewNode;
 
-public class BipartiteGraphLayout
+public class TwoLayeredGraphLayout
 	extends AGraphLayout {
 
 	protected static final int MIN_NODE_SPACING_PIXELS = 20;
@@ -36,22 +36,22 @@ public class BipartiteGraphLayout
 
 	private Rectangle2D layoutArea;
 	private IEdgeRoutingStrategy customEdgeRoutingStrategy;
-	private BipartiteInsideLayerRoutingStrategy insideLayerEdgeRoutingStrategy;
+	private ArcRoutingStrategy insideLayerEdgeRoutingStrategy;
 	private int maxDataNodeHeightPixels;
-	private List<IDataGraphNode> sortedDataNodes;
-	private List<IDataGraphNode> sortedViewNodes;
+	private List<IDVINode> sortedDataNodes;
+	private List<IDVINode> sortedViewNodes;
 
 	public int getMaxDataNodeHeightPixels() {
 		return maxDataNodeHeightPixels;
 	}
 
-	public BipartiteGraphLayout(GLDataGraph view, Graph graph) {
+	public TwoLayeredGraphLayout(GLDataViewIntegrator view, Graph graph) {
 		super(view, graph);
 		nodePositions = new HashMap<Object, Point2D>();
-		sortedDataNodes = new ArrayList<IDataGraphNode>();
-		sortedViewNodes = new ArrayList<IDataGraphNode>();
-		customEdgeRoutingStrategy = new SimpleEdgeRoutingStrategy(graph);
-		insideLayerEdgeRoutingStrategy = new BipartiteInsideLayerRoutingStrategy(this,
+		sortedDataNodes = new ArrayList<IDVINode>();
+		sortedViewNodes = new ArrayList<IDVINode>();
+		customEdgeRoutingStrategy = new CollisionAvoidanceRoutingStrategy(graph);
+		insideLayerEdgeRoutingStrategy = new ArcRoutingStrategy(this,
 				view.getPixelGLConverter());
 	}
 
@@ -72,17 +72,17 @@ public class BipartiteGraphLayout
 		if (layoutArea == null)
 			return;
 
-		Set<IDataGraphNode> dataNodes = new HashSet<IDataGraphNode>();
-		Set<IDataGraphNode> viewNodes = new HashSet<IDataGraphNode>();
+		Set<IDVINode> dataNodes = new HashSet<IDVINode>();
+		Set<IDVINode> viewNodes = new HashSet<IDVINode>();
 
-		Collection<IDataGraphNode> nodes = graph.getNodes();
+		Collection<IDVINode> nodes = graph.getNodes();
 
 		int summedDataNodesWidthPixels = 0;
 		int summedViewNodesWidthPixels = 0;
 		maxDataNodeHeightPixels = Integer.MIN_VALUE;
 		int maxViewNodeHeightPixels = Integer.MIN_VALUE;
 
-		for (IDataGraphNode node : nodes) {
+		for (IDVINode node : nodes) {
 			if (node instanceof ADataNode) {
 				dataNodes.add(node);
 				summedDataNodesWidthPixels += node.getWidthPixels();
@@ -101,13 +101,13 @@ public class BipartiteGraphLayout
 		sortedViewNodes.clear();
 		sortedViewNodes.addAll(viewNodes);
 		
-		List<Pair<String, IDataGraphNode>> dataNodeSortingList = new ArrayList<Pair<String,IDataGraphNode>>();
-		for(IDataGraphNode dataNode : dataNodes) {
-			dataNodeSortingList.add(new Pair<String, IDataGraphNode>(dataNode.getCaption().toUpperCase(), dataNode));
+		List<Pair<String, IDVINode>> dataNodeSortingList = new ArrayList<Pair<String,IDVINode>>();
+		for(IDVINode dataNode : dataNodes) {
+			dataNodeSortingList.add(new Pair<String, IDVINode>(dataNode.getCaption().toUpperCase(), dataNode));
 		}
 		Collections.sort(dataNodeSortingList);
 		
-		for(Pair<String, IDataGraphNode> pair : dataNodeSortingList) {
+		for(Pair<String, IDVINode> pair : dataNodeSortingList) {
 			sortedDataNodes.add(pair.getSecond());
 		}
 
@@ -151,7 +151,7 @@ public class BipartiteGraphLayout
 			dataNodesBottomY = (float) layoutArea.getMinY() + maxBendPointOffsetYPixels;
 		}
 
-		for (IDataGraphNode node : sortedDataNodes) {
+		for (IDVINode node : sortedDataNodes) {
 
 			if (!node.isCustomPosition()) {
 				
@@ -177,7 +177,7 @@ public class BipartiteGraphLayout
 
 		float viewNodesTopY = (float) layoutArea.getHeight() + (float) layoutArea.getMinY();
 
-		for (IDataGraphNode node : sortedViewNodes) {
+		for (IDVINode node : sortedViewNodes) {
 			if (!node.isCustomPosition()) {
 				setNodePosition(node,
 						new Point2D.Float(currentViewNodePositionX + node.getWidthPixels()
@@ -327,7 +327,7 @@ public class BipartiteGraphLayout
 
 	private void applyBaryCenterReordering() {
 		
-		List<IDataGraphNode> viewNodesCopy = new ArrayList<IDataGraphNode>(
+		List<IDVINode> viewNodesCopy = new ArrayList<IDVINode>(
 				sortedViewNodes);
 		
 		int numCrossings = calcNumCrossings(sortedViewNodes, sortedDataNodes);
@@ -338,7 +338,7 @@ public class BipartiteGraphLayout
 			sortedViewNodes = viewNodesCopy;
 			numCrossings = currentNumCrossings;
 		}
-		viewNodesCopy = new ArrayList<IDataGraphNode>(
+		viewNodesCopy = new ArrayList<IDVINode>(
 				sortedViewNodes);
 		
 		boolean wasReversed = reverseOrderOfNodesWithEqualBaryCenters(viewNodesCopy,
@@ -433,15 +433,15 @@ public class BipartiteGraphLayout
 	 * @return
 	 */
 	private boolean reverseOrderOfNodesWithEqualBaryCenters(
-			List<IDataGraphNode> nodesToSort, List<IDataGraphNode> otherLevelNodes) {
+			List<IDVINode> nodesToSort, List<IDVINode> otherLevelNodes) {
 
-		List<IDataGraphNode> sortedList = new ArrayList<IDataGraphNode>();
-		List<IDataGraphNode> currentSubList = new ArrayList<IDataGraphNode>();
+		List<IDVINode> sortedList = new ArrayList<IDVINode>();
+		List<IDVINode> currentSubList = new ArrayList<IDVINode>();
 		boolean nodesReversed = false;
 		float prevBaryCenter = -1;
 
 		for (int i = 0; i < nodesToSort.size(); i++) {
-			IDataGraphNode node = nodesToSort.get(i);
+			IDVINode node = nodesToSort.get(i);
 			// Maybe float problem
 			float baryCenter = calcBaryCenter(node, otherLevelNodes);
 
@@ -478,19 +478,19 @@ public class BipartiteGraphLayout
 		return nodesReversed;
 	}
 
-	private int calcNumCrossings(List<IDataGraphNode> level1Nodes,
-			List<IDataGraphNode> level2Nodes) {
+	private int calcNumCrossings(List<IDVINode> level1Nodes,
+			List<IDVINode> level2Nodes) {
 
 		int numCrossings = 0;
 
 		for (int j = 0; j < level1Nodes.size() - 1; j++) {
-			IDataGraphNode level1Node1 = level1Nodes.get(j);
+			IDVINode level1Node1 = level1Nodes.get(j);
 			for (int k = j + 1; k < level1Nodes.size(); k++) {
-				IDataGraphNode level1Node2 = level1Nodes.get(k);
+				IDVINode level1Node2 = level1Nodes.get(k);
 				for (int a = 0; a < level2Nodes.size() - 1; a++) {
-					IDataGraphNode level2Node1 = level2Nodes.get(a);
+					IDVINode level2Node1 = level2Nodes.get(a);
 					for (int b = a + 1; b < level2Nodes.size(); b++) {
-						IDataGraphNode level2Node2 = level2Nodes.get(b);
+						IDVINode level2Node2 = level2Nodes.get(b);
 						if (graph.incident(level1Node1, level2Node2)
 								&& graph.incident(level1Node2, level2Node1)) {
 							numCrossings++;
@@ -507,30 +507,30 @@ public class BipartiteGraphLayout
 
 	}
 
-	private void sortAccordingToBaryCenter(List<IDataGraphNode> nodesToSort,
-			List<IDataGraphNode> otherLevelNodes) {
-		List<Pair<Float, IDataGraphNode>> sortingList = new ArrayList<Pair<Float, IDataGraphNode>>(
+	private void sortAccordingToBaryCenter(List<IDVINode> nodesToSort,
+			List<IDVINode> otherLevelNodes) {
+		List<Pair<Float, IDVINode>> sortingList = new ArrayList<Pair<Float, IDVINode>>(
 				nodesToSort.size());
 
-		for (IDataGraphNode viewNode : nodesToSort) {
+		for (IDVINode viewNode : nodesToSort) {
 			float baryCenter = calcBaryCenter(viewNode, otherLevelNodes);
-			sortingList.add(new Pair<Float, IDataGraphNode>(baryCenter, viewNode));
+			sortingList.add(new Pair<Float, IDVINode>(baryCenter, viewNode));
 		}
 
 		Collections.sort(sortingList);
 
 		nodesToSort.clear();
 
-		for (Pair<Float, IDataGraphNode> viewPair : sortingList) {
+		for (Pair<Float, IDVINode> viewPair : sortingList) {
 			nodesToSort.add(viewPair.getSecond());
 		}
 	}
 
-	private float calcBaryCenter(IDataGraphNode node, List<IDataGraphNode> otherLevelNodes) {
+	private float calcBaryCenter(IDVINode node, List<IDVINode> otherLevelNodes) {
 
 		int dataNodeIndexSum = 0;
 		int numEdges = 0;
-		for (IDataGraphNode otherLevelNode : otherLevelNodes) {
+		for (IDVINode otherLevelNode : otherLevelNodes) {
 			if (graph.incident(node, otherLevelNode)) {
 				dataNodeIndexSum += otherLevelNodes.indexOf(otherLevelNode) + 1;
 				numEdges++;
@@ -555,18 +555,18 @@ public class BipartiteGraphLayout
 	@Override
 	public AEdgeRenderer getLayoutSpecificEdgeRenderer(Edge edge) {
 
-		IDataGraphNode node1 = edge.getNode1();
-		IDataGraphNode node2 = edge.getNode2();
+		IDVINode node1 = edge.getNode1();
+		IDVINode node2 = edge.getNode2();
 
 		AEdgeRenderer edgeRenderer = null;
 
 		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
-			edgeRenderer = new BipartiteEdgeBandRenderer(edge, view);
+			edgeRenderer = new TwoLayeredEdgeBandRenderer(edge, view);
 			edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);
 
 		}
 		else {
-			edgeRenderer = new BipartiteEdgeLineRenderer(edge, view, view.getEdgeLabel(
+			edgeRenderer = new TwoLayeredEdgeLineRenderer(edge, view, view.getEdgeLabel(
 					(ADataNode) node1, (ADataNode) node2));
 			edgeRenderer.setEdgeRoutingStrategy(insideLayerEdgeRoutingStrategy);
 		}
@@ -576,17 +576,17 @@ public class BipartiteGraphLayout
 
 	@Override
 	public AEdgeRenderer getCustomLayoutEdgeRenderer(Edge edge) {
-		IDataGraphNode node1 = edge.getNode1();
-		IDataGraphNode node2 = edge.getNode2();
+		IDVINode node1 = edge.getNode1();
+		IDVINode node2 = edge.getNode2();
 
 		AEdgeRenderer edgeRenderer = null;
 
 		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
-			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
+			edgeRenderer = new FreeLayoutEdgeBandRenderer(edge, view);
 
 		}
 		else {
-			edgeRenderer = new CustomLayoutEdgeLineRenderer(edge, view, view.getEdgeLabel(
+			edgeRenderer = new FreeLayoutEdgeLineRenderer(edge, view, view.getEdgeLabel(
 					(ADataNode) node1, (ADataNode) node2));
 		}
 
@@ -594,7 +594,7 @@ public class BipartiteGraphLayout
 		return edgeRenderer;
 	}
 
-	public int getSlotDistance(IDataGraphNode node1, IDataGraphNode node2) {
+	public int getSlotDistance(IDVINode node1, IDVINode node2) {
 		int index1 = sortedDataNodes.indexOf(node1);
 		int index2 = sortedDataNodes.indexOf(node2);
 		if (index1 == -1 || index2 == -1)

@@ -9,8 +9,8 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public abstract class AEdgeLineRenderer
 	extends AEdgeRenderer
@@ -18,7 +18,7 @@ public abstract class AEdgeLineRenderer
 
 	private String label;
 
-	public AEdgeLineRenderer(Edge edge, GLDataGraph view, String label)
+	public AEdgeLineRenderer(Edge edge, GLDataViewIntegrator view, String label)
 	{
 		super(edge, view);
 		this.label = label;
@@ -44,8 +44,8 @@ public abstract class AEdgeLineRenderer
 		gl.glEnable(GL2.GL_LINE_STIPPLE);
 		gl.glLineStipple(1, (short) 127);
 
-		IDataGraphNode node1 = edge.getNode1();
-		IDataGraphNode node2 = edge.getNode2();
+		IDVINode node1 = edge.getNode1();
+		IDVINode node2 = edge.getNode2();
 		Point2D position1 = node1.getPosition();
 		Point2D position2 = node2.getPosition();
 

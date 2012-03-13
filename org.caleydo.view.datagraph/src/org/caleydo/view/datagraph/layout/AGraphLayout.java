@@ -5,7 +5,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.Map;
 
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.Graph;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 
@@ -13,9 +13,9 @@ public abstract class AGraphLayout {
 
 	protected Graph graph = null;
 	protected Map<Object, Point2D> nodePositions = null;
-	protected GLDataGraph view;
+	protected GLDataViewIntegrator view;
 
-	public AGraphLayout(GLDataGraph view, Graph graph) {
+	public AGraphLayout(GLDataViewIntegrator view, Graph graph) {
 		this.view = view;
 		this.graph = graph;
 	}

@@ -11,24 +11,24 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public abstract class ANodeConnector {
 
-	protected IDataGraphNode node;
+	protected IDVINode node;
 	protected PixelGLConverter pixelGLConverter;
 	protected ConnectionBandRenderer connectionBandRenderer;
 	protected Point2D bandAnchorPoint1;
 	protected Point2D bandAnchorPoint2;
 	protected boolean highlightBand;
 	protected ViewFrustum viewFrustum;
-	protected IDataGraphNode otherNode;
+	protected IDVINode otherNode;
 	protected Point2D bandConnectionPoint;
 
-	public ANodeConnector(IDataGraphNode node,
+	public ANodeConnector(IDVINode node,
 			PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			IDataGraphNode otherNode, ViewFrustum viewFrustum) {
+			IDVINode otherNode, ViewFrustum viewFrustum) {
 		this.node = node;
 		this.pixelGLConverter = pixelGLconverter;
 		this.connectionBandRenderer = connectionBandRenderer;
@@ -107,7 +107,7 @@ public abstract class ANodeConnector {
 
 	}
 
-	public IDataGraphNode getNode() {
+	public IDVINode getNode() {
 		return node;
 	}
 

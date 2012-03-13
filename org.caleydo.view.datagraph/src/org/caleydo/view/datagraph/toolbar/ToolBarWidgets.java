@@ -2,10 +2,10 @@ package org.caleydo.view.datagraph.toolbar;
 
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.datagraph.event.ShowDataConnectionsEvent;
-import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
+import org.caleydo.view.datagraph.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.datagraph.layout.ForceDirectedGraphLayout;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
@@ -19,7 +19,7 @@ import org.eclipse.swt.widgets.Listener;
 
 /**
  * Class that specifies toolbar items that are not buttons for
- * {@link GLDataGraph}.
+ * {@link GLDataViewIntegrator}.
  * 
  * @author Christian
  * 
@@ -65,7 +65,7 @@ public class ToolBarWidgets
 //		layoutLabel.setText("Layout: ");
 		
 		final Button showDataConnectionsCheckBox = new Button(composite, SWT.CHECK);
-		showDataConnectionsCheckBox.setSelection(true);
+		showDataConnectionsCheckBox.setSelection(false);
 		showDataConnectionsCheckBox.setText("Show Data Connections");
 
 
@@ -93,7 +93,7 @@ public class ToolBarWidgets
 				ApplySpecificGraphLayoutEvent e = new ApplySpecificGraphLayoutEvent();
 				if (event.widget == bipartiteLayoutButton)
 				{
-					e.setGraphLayoutClass(BipartiteGraphLayout.class);
+					e.setGraphLayoutClass(TwoLayeredGraphLayout.class);
 				}
 				else
 				{

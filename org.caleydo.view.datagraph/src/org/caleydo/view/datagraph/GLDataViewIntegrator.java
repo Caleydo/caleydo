@@ -62,7 +62,7 @@ import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
 import org.caleydo.view.datagraph.event.OpenViewEvent;
 import org.caleydo.view.datagraph.event.ShowDataConnectionsEvent;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
-import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
+import org.caleydo.view.datagraph.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.datagraph.listener.AddDataContainerEventListener;
 import org.caleydo.view.datagraph.listener.ApplySpecificGraphLayoutEventListener;
@@ -77,7 +77,7 @@ import org.caleydo.view.datagraph.listener.OpenViewEventListener;
 import org.caleydo.view.datagraph.listener.ShowDataConnectionsEventListener;
 import org.caleydo.view.datagraph.listener.ViewClosedEventListener;
 import org.caleydo.view.datagraph.node.ADataNode;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 import org.caleydo.view.datagraph.node.NodeCreator;
 import org.caleydo.view.datagraph.node.ViewNode;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
@@ -97,7 +97,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Christian Partl
  */
-public class GLDataGraph
+public class GLDataViewIntegrator
 	extends AGLView
 	implements IViewCommandHandler {
 
@@ -114,7 +114,7 @@ public class GLDataGraph
 	private int maxNodeHeightPixels;
 	private DragAndDropController dragAndDropController;
 	private boolean applyAutomaticLayout;
-	private Map<IDataGraphNode, Pair<Float, Float>> relativeNodePositions;
+	private Map<IDVINode, Pair<Float, Float>> relativeNodePositions;
 	private int lastNodeID = 0;
 	private Set<ADataNode> dataNodes;
 	private Set<ViewNode> viewNodes;
@@ -137,7 +137,7 @@ public class GLDataGraph
 	private MinSizeAppliedEventListener minSizeAppliedEventListener;
 	private ShowDataConnectionsEventListener showDataConnectionsEventListener;
 
-	private IDataGraphNode currentMouseOverNode;
+	private IDVINode currentMouseOverNode;
 
 	private NodeCreator nodeCreator;
 
@@ -147,24 +147,24 @@ public class GLDataGraph
 	private boolean isMinSizeApplied = false;
 	private boolean waitForMinSizeApplication = false;
 	private boolean isRendered = false;
-	private boolean showDataConnections = true;
+	private boolean showDataConnections = false;
 
 	private boolean isVendingMachineMode = false;
 	
 	/**
 	 * Constructor.
 	 */
-	public GLDataGraph(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataViewIntegrator(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
 		connectionBandRenderer = new ConnectionBandRenderer();
-		viewType = GLDataGraph.VIEW_TYPE;
+		viewType = GLDataViewIntegrator.VIEW_TYPE;
 		glKeyListener = new GLDataGraphKeyListener();
 		dataGraph = new Graph();
-		graphLayout = new BipartiteGraphLayout(this, dataGraph);
+		graphLayout = new TwoLayeredGraphLayout(this, dataGraph);
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
-		relativeNodePositions = new HashMap<IDataGraphNode, Pair<Float, Float>>();
+		relativeNodePositions = new HashMap<IDVINode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
 		dataNodes = new HashSet<ADataNode>();
 		viewNodes = new HashSet<ViewNode>();
@@ -258,7 +258,7 @@ public class GLDataGraph
 			maxNodeWidthPixels = Integer.MIN_VALUE;
 			maxNodeHeightPixels = Integer.MIN_VALUE;
 
-			for (IDataGraphNode node : dataGraph.getNodes()) {
+			for (IDVINode node : dataGraph.getNodes()) {
 				node.recalculateNodeSize();
 				if (node.getHeightPixels() > maxNodeHeightPixels)
 					maxNodeHeightPixels = node.getHeightPixels();
@@ -297,7 +297,7 @@ public class GLDataGraph
 		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
 				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS;
 		if (applyAutomaticLayout) {
-			for (IDataGraphNode node : dataGraph.getNodes()) {
+			for (IDVINode node : dataGraph.getNodes()) {
 				node.setCustomPosition(false);
 			}
 			for (Edge edge : dataGraph.getAllEdges()) {
@@ -316,7 +316,7 @@ public class GLDataGraph
 		else {
 
 		}
-		for (IDataGraphNode node : dataGraph.getNodes()) {
+		for (IDVINode node : dataGraph.getNodes()) {
 			Point2D position = graphLayout.getNodePosition(node);
 
 			node.render(gl);
@@ -348,7 +348,7 @@ public class GLDataGraph
 		int maxX = Integer.MIN_VALUE;
 		int maxY = Integer.MIN_VALUE;
 
-		for (IDataGraphNode node : dataGraph.getNodes()) {
+		for (IDVINode node : dataGraph.getNodes()) {
 			Point2D position = graphLayout.getNodePosition(node);
 
 			if (position.getX() - node.getWidthPixels() / 2.0f < minX) {
@@ -1067,21 +1067,21 @@ public class GLDataGraph
 		});
 	}
 
-	public void setCurrentMouseOverNode(IDataGraphNode currentMouseOverNode) {
+	public void setCurrentMouseOverNode(IDVINode currentMouseOverNode) {
 		this.currentMouseOverNode = currentMouseOverNode;
 	}
 
-	public IDataGraphNode getCurrentMouseOverNode() {
+	public IDVINode getCurrentMouseOverNode() {
 		return currentMouseOverNode;
 	}
 
 	public void applyGraphLayout(Class<? extends AGraphLayout> graphLayoutClass) {
 
 		try {
-			graphLayout = graphLayoutClass.getConstructor(GLDataGraph.class, Graph.class)
+			graphLayout = graphLayoutClass.getConstructor(GLDataViewIntegrator.class, Graph.class)
 					.newInstance(this, dataGraph);
 
-			for (IDataGraphNode node : dataGraph.getNodes()) {
+			for (IDVINode node : dataGraph.getNodes()) {
 				node.setGraphLayout(graphLayout);
 			}
 		}
@@ -1149,7 +1149,7 @@ public class GLDataGraph
 		return graphLayout;
 	}
 
-	public Collection<IDataGraphNode> getAllNodes() {
+	public Collection<IDVINode> getAllNodes() {
 		return dataGraph.getNodes();
 	}
 

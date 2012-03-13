@@ -7,15 +7,15 @@ import java.util.HashMap;
 import java.util.Map;
 
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.Graph;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
-import org.caleydo.view.datagraph.layout.edge.rendering.CustomLayoutEdgeBandRenderer;
-import org.caleydo.view.datagraph.layout.edge.rendering.CustomLayoutEdgeLineRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.FreeLayoutEdgeBandRenderer;
+import org.caleydo.view.datagraph.layout.edge.rendering.FreeLayoutEdgeLineRenderer;
 import org.caleydo.view.datagraph.layout.edge.routing.IEdgeRoutingStrategy;
-import org.caleydo.view.datagraph.layout.edge.routing.SimpleEdgeRoutingStrategy;
+import org.caleydo.view.datagraph.layout.edge.routing.CollisionAvoidanceRoutingStrategy;
 import org.caleydo.view.datagraph.node.ADataNode;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 import org.caleydo.view.datagraph.node.ViewNode;
 
 public class ForceDirectedGraphLayout extends AGraphLayout {
@@ -31,7 +31,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 	protected Rectangle2D layoutingArea = null;
 
-	protected Collection<IDataGraphNode> nodesToLayout = null;
+	protected Collection<IDVINode> nodesToLayout = null;
 
 	// calculation parameters
 	Map<Object, Map<Object, Double>> distanceMatrix = null;
@@ -62,10 +62,10 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 	protected IEdgeRoutingStrategy edgeRoutingStrategy;
 
-	public ForceDirectedGraphLayout(GLDataGraph view, Graph graph) {
+	public ForceDirectedGraphLayout(GLDataViewIntegrator view, Graph graph) {
 		super(view, graph);
 
-		edgeRoutingStrategy = new SimpleEdgeRoutingStrategy(graph);
+		edgeRoutingStrategy = new CollisionAvoidanceRoutingStrategy(graph);
 	}
 
 	// ###################
@@ -158,8 +158,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (!isDataAvailable())
 			return;
 		// initialize with available edges
-		for (IDataGraphNode node1 : graph.getNodes()) {
-			for (IDataGraphNode node2 : graph.getNodes()) {
+		for (IDVINode node1 : graph.getNodes()) {
+			for (IDVINode node2 : graph.getNodes()) {
 				if (graph.incident(node1, node2)) {
 					setDistance(node1, node2, 1.0);
 				}
@@ -167,9 +167,9 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		}
 
 		// calculate distances
-		for (IDataGraphNode nodek : graph.getNodes()) {
-			for (IDataGraphNode nodei : graph.getNodes()) {
-				for (IDataGraphNode nodej : graph.getNodes()) {
+		for (IDVINode nodek : graph.getNodes()) {
+			for (IDVINode nodei : graph.getNodes()) {
+				for (IDVINode nodej : graph.getNodes()) {
 					setDistance(
 							nodei,
 							nodej,
@@ -477,7 +477,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 			running = false;
 		}
 
-		for (IDataGraphNode node : nodesToLayout) {
+		for (IDVINode node : nodesToLayout) {
 			node.setUpsideDown(false);
 		}
 
@@ -489,7 +489,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (nodesToLayout == null)
 			return;
 
-		for (IDataGraphNode node : nodesToLayout) {
+		for (IDVINode node : nodesToLayout) {
 
 			Point2D nodePosition = getNodePosition(node);
 			if (nodePosition == null)
@@ -518,7 +518,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		view.setNodePositionsUpdated(true);
 	}
 
-	protected Collection<IDataGraphNode> getNodesToLayout() {
+	protected Collection<IDVINode> getNodesToLayout() {
 		return graph.getNodes();
 	}
 
@@ -715,16 +715,16 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 	@Override
 	public AEdgeRenderer getLayoutSpecificEdgeRenderer(Edge edge) {
 
-		IDataGraphNode node1 = edge.getNode1();
-		IDataGraphNode node2 = edge.getNode2();
+		IDVINode node1 = edge.getNode1();
+		IDVINode node2 = edge.getNode2();
 
 		AEdgeRenderer edgeRenderer = null;
 
 		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
-			edgeRenderer = new CustomLayoutEdgeBandRenderer(edge, view);
+			edgeRenderer = new FreeLayoutEdgeBandRenderer(edge, view);
 
 		} else {
-			edgeRenderer = new CustomLayoutEdgeLineRenderer(edge, view,
+			edgeRenderer = new FreeLayoutEdgeLineRenderer(edge, view,
 					view.getEdgeLabel((ADataNode) node1, (ADataNode) node2));
 		}
 

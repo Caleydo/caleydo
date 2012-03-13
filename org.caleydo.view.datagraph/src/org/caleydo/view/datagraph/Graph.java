@@ -7,23 +7,23 @@ import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
 
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public class Graph {
-	Vector<IDataGraphNode> nodes = null;
-	Map<IDataGraphNode, Set<Edge>> nodeConnections = null;
+	Vector<IDVINode> nodes = null;
+	Map<IDVINode, Set<Edge>> nodeConnections = null;
 	Set<Edge> edges;
 
 	// TODO custom constructor has to be created
 
 	public Graph() {
-		nodes = new Vector<IDataGraphNode>();
-		nodeConnections = new HashMap<IDataGraphNode, Set<Edge>>();
+		nodes = new Vector<IDVINode>();
+		nodeConnections = new HashMap<IDVINode, Set<Edge>>();
 		edges = new HashSet<Edge>();
 	}
 
 	// node sets
-	public Collection<IDataGraphNode> getNodes() {
+	public Collection<IDVINode> getNodes() {
 		return nodes;
 	}
 
@@ -34,11 +34,11 @@ public class Graph {
 		return nodes.size();
 	}
 
-	public Set<Edge> getEdgesOfNode(IDataGraphNode node) {
+	public Set<Edge> getEdgesOfNode(IDVINode node) {
 		return nodeConnections.get(node);
 	}
 
-	public boolean incident(IDataGraphNode node1, IDataGraphNode node2) {
+	public boolean incident(IDVINode node1, IDVINode node2) {
 		if (nodeConnections == null)
 			return false;
 
@@ -64,14 +64,14 @@ public class Graph {
 		return true;
 	}
 
-	public void addNode(IDataGraphNode node) {
+	public void addNode(IDVINode node) {
 		if (nodes.contains(node))
 			return;
 
 		nodes.add(node);
 	}
 
-	public Edge addEdge(IDataGraphNode node1, IDataGraphNode node2) {
+	public Edge addEdge(IDVINode node1, IDVINode node2) {
 		if (!nodes.contains(node1))
 			nodes.add(node1);
 		if (!nodes.contains(node2))
@@ -117,13 +117,13 @@ public class Graph {
 		return edges;
 	}
 
-	public void removeNode(IDataGraphNode node) {
+	public void removeNode(IDVINode node) {
 
 		Set<Edge> nodeEdges = nodeConnections.get(node);
 
 		if (nodeEdges != null) {
 			for (Edge edge : nodeEdges) {
-				IDataGraphNode neighbor = edge.getNode1() == node ? edge.getNode2()
+				IDVINode neighbor = edge.getNode1() == node ? edge.getNode2()
 						: edge.getNode1();
 				Set<Edge> neighborEdges = nodeConnections.get(neighbor);
 				if (neighborEdges != null) {

@@ -9,9 +9,9 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.GeometryUtil;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public abstract class ABundleConnector
 	extends ANodeConnector
@@ -30,13 +30,13 @@ public abstract class ABundleConnector
 	protected Map<DataContainer, Integer> bandWidthMap = new HashMap<DataContainer, Integer>();
 	protected Point2D bundlingPoint;
 	protected boolean use4ControlPointsForBandBundleConnection;
-	protected GLDataGraph view;
+	protected GLDataViewIntegrator view;
 
-	public ABundleConnector(IDataGraphNode node, PixelGLConverter pixelGLconverter,
+	public ABundleConnector(IDVINode node, PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
 			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
-			int maxDataAmount, IDataGraphNode otherNode, ViewFrustum viewFrustum,
-			GLDataGraph view)
+			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
+			GLDataViewIntegrator view)
 	{
 		super(node, pixelGLconverter, connectionBandRenderer, otherNode, viewFrustum);
 
@@ -45,7 +45,7 @@ public abstract class ABundleConnector
 		calcBandWidths(minBandWidth, maxBandWidth, maxDataAmount);
 	}
 
-	protected float calcXPositionOfBundlingPoint(IDataGraphNode node,
+	protected float calcXPositionOfBundlingPoint(IDVINode node,
 			List<DataContainer> dataContainers)
 	{
 		float summedX = 0;
@@ -118,7 +118,7 @@ public abstract class ABundleConnector
 	 */
 	protected boolean doesLineIntersectWithNode(Point2D point1, Point2D point2)
 	{
-		for(IDataGraphNode node : view.getAllNodes()) {
+		for(IDVINode node : view.getAllNodes()) {
 			
 			if(GeometryUtil.calcIntersectionPoint(point1, point2, node.getBoundingBox()) != null) {
 				return true;

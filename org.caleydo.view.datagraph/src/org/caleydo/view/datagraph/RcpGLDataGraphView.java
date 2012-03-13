@@ -27,7 +27,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLDataGraph(glCanvas, parentComposite, serializedView.getViewFrustum());
+		view = new GLDataViewIntegrator(glCanvas, parentComposite, serializedView.getViewFrustum());
 		view.initFromSerializableRepresentation(serializedView);
 		view.initialize();
 		minSizeComposite.setView((AGLView) view);
@@ -42,7 +42,7 @@ public class RcpGLDataGraphView extends ARcpGLViewPart {
 
 	@Override
 	public String getViewGUIID() {
-		return GLDataGraph.VIEW_TYPE;
+		return GLDataViewIntegrator.VIEW_TYPE;
 	}
 
 }

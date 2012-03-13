@@ -5,7 +5,7 @@ import org.caleydo.core.gui.toolbar.action.AToolBarAction;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.data.loader.ResourceLoader;
 import org.caleydo.view.datagraph.event.ApplySpecificGraphLayoutEvent;
-import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
+import org.caleydo.view.datagraph.layout.TwoLayeredGraphLayout;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.ui.PlatformUI;
 
@@ -27,7 +27,7 @@ public class ApplyBipartiteLayoutAction extends AToolBarAction implements IToolB
 		super.run();
 
 		ApplySpecificGraphLayoutEvent event = new ApplySpecificGraphLayoutEvent();
-		event.setGraphLayoutClass(BipartiteGraphLayout.class);
+		event.setGraphLayoutClass(TwoLayeredGraphLayout.class);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 		setChecked(false);

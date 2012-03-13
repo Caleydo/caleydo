@@ -4,19 +4,19 @@ import java.awt.geom.Point2D;
 import java.util.List;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.view.datagraph.layout.BipartiteGraphLayout;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.layout.TwoLayeredGraphLayout;
+import org.caleydo.view.datagraph.node.IDVINode;
 
-public class BipartiteInsideLayerRoutingStrategy implements IEdgeRoutingStrategy {
+public class ArcRoutingStrategy implements IEdgeRoutingStrategy {
 
 	protected static final int BEND_POINT_STEP_PIXELS_PER_SLOT = 20;
 
-	private BipartiteGraphLayout graphLayout;
-	private IDataGraphNode node1;
-	private IDataGraphNode node2;
+	private TwoLayeredGraphLayout graphLayout;
+	private IDVINode node1;
+	private IDVINode node2;
 	private PixelGLConverter pixelGLConverter;
 
-	public BipartiteInsideLayerRoutingStrategy(BipartiteGraphLayout graphLayout,
+	public ArcRoutingStrategy(TwoLayeredGraphLayout graphLayout,
 			PixelGLConverter pixelGLConverter) {
 		this.graphLayout = graphLayout;
 		this.pixelGLConverter = pixelGLConverter;
@@ -61,12 +61,12 @@ public class BipartiteInsideLayerRoutingStrategy implements IEdgeRoutingStrategy
 	}
 
 	@Override
-	public void setNodes(IDataGraphNode node1, IDataGraphNode node2) {
+	public void setNodes(IDVINode node1, IDVINode node2) {
 		this.node1 = node1;
 		this.node2 = node2;
 	}
 
-	public int calcEdgeBendPointYOffsetPixels(IDataGraphNode node1, IDataGraphNode node2) {
+	public int calcEdgeBendPointYOffsetPixels(IDVINode node1, IDVINode node2) {
 		int slotDistance = graphLayout.getSlotDistance(node1, node2);
 
 		return (BEND_POINT_STEP_PIXELS_PER_SLOT * slotDistance);

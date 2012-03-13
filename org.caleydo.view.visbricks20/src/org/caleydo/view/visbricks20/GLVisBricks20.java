@@ -23,7 +23,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
@@ -53,7 +53,7 @@ public class GLVisBricks20
 	private LayoutManager layoutManager;
 	private Column mainColumn;
 
-	private GLDataGraph dvi;
+	private GLDataViewIntegrator dvi;
 	private ElementLayout dviElementLayout;
 
 	private GLVisBricks visBricks;
@@ -170,11 +170,11 @@ public class GLVisBricks20
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLDataGraph createDVI(ElementLayout wrappingLayout) {
+	private GLDataViewIntegrator createDVI(ElementLayout wrappingLayout) {
 		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
 				-4, 4);
-		dvi = (GLDataGraph) GeneralManager.get().getViewManager()
-				.createGLView(GLDataGraph.class, parentGLCanvas, parentComposite, frustum);
+		dvi = (GLDataViewIntegrator) GeneralManager.get().getViewManager()
+				.createGLView(GLDataViewIntegrator.class, parentGLCanvas, parentComposite, frustum);
 
 		dvi.setVendingMachineMode(true);
 		dvi.setRemoteRenderingGLView(this);

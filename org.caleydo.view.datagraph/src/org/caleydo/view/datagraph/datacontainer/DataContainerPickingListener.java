@@ -13,7 +13,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.contextmenu.AddGroupToVisBricksItem;
 import org.caleydo.view.datagraph.contextmenu.CreateViewItem;
 import org.caleydo.view.datagraph.contextmenu.ShowDataContainerInViewsItem;
@@ -29,11 +29,11 @@ public class DataContainerPickingListener
 	extends APickingListener
 {
 
-	private GLDataGraph view;
+	private GLDataViewIntegrator view;
 	private DragAndDropController dragAndDropController;
 	private ADataContainerRenderer dataContainerRenderer;
 
-	public DataContainerPickingListener(GLDataGraph view,
+	public DataContainerPickingListener(GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController,
 			ADataContainerRenderer dataContainerRenderer)
 	{

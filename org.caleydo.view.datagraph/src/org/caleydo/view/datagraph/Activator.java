@@ -31,7 +31,7 @@ public class Activator extends AbstractUIPlugin {
 		super.start(context);
 		plugin = this;
 
-		ToolBarContentFactory.get().addToolBarContent(GLDataGraph.VIEW_TYPE, false,
+		ToolBarContentFactory.get().addToolBarContent(GLDataViewIntegrator.VIEW_TYPE, false,
 				new DataGraphToolBarContent());
 	}
 

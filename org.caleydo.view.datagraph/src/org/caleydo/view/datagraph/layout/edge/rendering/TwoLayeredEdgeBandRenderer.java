@@ -6,22 +6,22 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ANodeConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.BottomSideConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.TopSideConnector;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
-public class BipartiteEdgeBandRenderer extends AEdgeBandRenderer {
+public class TwoLayeredEdgeBandRenderer extends AEdgeBandRenderer {
 
-	public BipartiteEdgeBandRenderer(Edge edge, GLDataGraph view) {
+	public TwoLayeredEdgeBandRenderer(Edge edge, GLDataViewIntegrator view) {
 		super(edge, view);
 	}
 
 	@Override
 	protected void determineNodeConnectors(
-			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDataGraphNode leftNode,
-			IDataGraphNode rightNode, IDataGraphNode bottomNode, IDataGraphNode topNode,
+			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDVINode leftNode,
+			IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
 			List<DataContainer> commonDataContainersNode1,
 			List<DataContainer> commonDataContainersNode2,
 			ConnectionBandRenderer connectionBandRenderer) {

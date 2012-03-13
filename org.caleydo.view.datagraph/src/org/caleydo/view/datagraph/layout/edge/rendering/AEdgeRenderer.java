@@ -4,16 +4,16 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.edge.routing.IEdgeRoutingStrategy;
 
 public abstract class AEdgeRenderer {
 
 	protected Edge edge;
 	protected IEdgeRoutingStrategy edgeRoutingStrategy;
-	protected GLDataGraph view;
+	protected GLDataViewIntegrator view;
 
-	public AEdgeRenderer(Edge edge, GLDataGraph view) {
+	public AEdgeRenderer(Edge edge, GLDataViewIntegrator view) {
 		this.edge = edge;
 		this.view = view;
 	}

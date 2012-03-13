@@ -2,11 +2,11 @@ package org.caleydo.view.datagraph.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.KeyEvent;
 
-public class GLDataGraphKeyListener extends GLKeyListener<GLDataGraph> {
+public class GLDataGraphKeyListener extends GLKeyListener<GLDataViewIntegrator> {
 
 	private boolean isCtrlDown;
 

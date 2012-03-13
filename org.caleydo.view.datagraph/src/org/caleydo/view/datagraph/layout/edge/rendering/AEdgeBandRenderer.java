@@ -15,13 +15,13 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ABundleConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ANodeConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.BottomBundleConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.TopBundleConnector;
 import org.caleydo.view.datagraph.node.ADataNode;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 
@@ -29,15 +29,15 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 	protected final static int DEFAULT_MAX_BAND_WIDTH = 40;
 	protected final static int DEFAULT_MIN_BAND_WIDTH = 10;
 
-	protected IDataGraphNode node1;
-	protected IDataGraphNode node2;
+	protected IDVINode node1;
+	protected IDVINode node2;
 	protected PixelGLConverter pixelGLConverter;
 	protected ViewFrustum viewFrustum;
 	protected int maxBandWidth = DEFAULT_MAX_BAND_WIDTH;
 	protected int minBandWidth = DEFAULT_MIN_BAND_WIDTH;
 	protected int maxDataAmount;
 
-	public AEdgeBandRenderer(Edge edge, GLDataGraph view) {
+	public AEdgeBandRenderer(Edge edge, GLDataViewIntegrator view) {
 		super(edge, view);
 		this.node1 = edge.getNode1();
 		this.node2 = edge.getNode2();
@@ -83,10 +83,10 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 		float deltaX = (float) (position1.getX() - position2.getX());
 		float deltaY = (float) (position1.getY() - position2.getY());
 
-		IDataGraphNode leftNode = null;
-		IDataGraphNode rightNode = null;
-		IDataGraphNode bottomNode = null;
-		IDataGraphNode topNode = null;
+		IDVINode leftNode = null;
+		IDVINode rightNode = null;
+		IDVINode bottomNode = null;
+		IDVINode topNode = null;
 
 		if (deltaX < 0) {
 			if (deltaY < 0) {
@@ -168,8 +168,8 @@ public abstract class AEdgeBandRenderer extends AEdgeRenderer {
 
 	protected abstract void determineNodeConnectors(
 			Pair<ANodeConnector, ANodeConnector> nodeConnectors,
-			IDataGraphNode leftNode, IDataGraphNode rightNode,
-			IDataGraphNode bottomNode, IDataGraphNode topNode,
+			IDVINode leftNode, IDVINode rightNode,
+			IDVINode bottomNode, IDVINode topNode,
 			List<DataContainer> commonDataContainersNode1,
 			List<DataContainer> commonDataContainersNode2,
 			ConnectionBandRenderer connectionBandRenderer);

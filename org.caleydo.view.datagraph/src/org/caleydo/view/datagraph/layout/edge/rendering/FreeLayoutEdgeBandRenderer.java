@@ -6,17 +6,17 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.ANodeConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.BottomSideConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.LeftSideConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.RightSideConnector;
 import org.caleydo.view.datagraph.layout.edge.rendering.connectors.TopSideConnector;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
-public class CustomLayoutEdgeBandRenderer extends AEdgeBandRenderer {
+public class FreeLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 
-	public CustomLayoutEdgeBandRenderer(Edge edge, GLDataGraph view) {
+	public FreeLayoutEdgeBandRenderer(Edge edge, GLDataViewIntegrator view) {
 		super(edge, view);
 	}
 
@@ -137,8 +137,8 @@ public class CustomLayoutEdgeBandRenderer extends AEdgeBandRenderer {
 
 	@Override
 	protected void determineNodeConnectors(
-			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDataGraphNode leftNode,
-			IDataGraphNode rightNode, IDataGraphNode bottomNode, IDataGraphNode topNode,
+			Pair<ANodeConnector, ANodeConnector> nodeConnectors, IDVINode leftNode,
+			IDVINode rightNode, IDVINode bottomNode, IDVINode topNode,
 			List<DataContainer> commonDataContainersNode1,
 			List<DataContainer> commonDataContainersNode2,
 			ConnectionBandRenderer connectionBandRenderer) {

@@ -17,7 +17,7 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.layout.util.LineSeparatorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
@@ -39,7 +39,7 @@ public abstract class ADefaultTemplateNode
 	protected int heightPixels = -1;
 	protected int widthPixels = -1;
 
-	public ADefaultTemplateNode(AGraphLayout graphLayout, GLDataGraph view,
+	public ADefaultTemplateNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, int id)
 	{
 		super(graphLayout, view, dragAndDropController, id);
@@ -393,11 +393,11 @@ public abstract class ADefaultTemplateNode
 		}
 	}
 
-	public float getSpacingX(IDataGraphNode node)
+	public float getSpacingX(IDVINode node)
 	{
 
-		IDataGraphNode leftNode = null;
-		IDataGraphNode rightNode = null;
+		IDVINode leftNode = null;
+		IDVINode rightNode = null;
 
 		if (getPosition().getX() < node.getPosition().getX())
 		{
@@ -414,10 +414,10 @@ public abstract class ADefaultTemplateNode
 				.getPosition().getX() + leftNode.getWidth() / 2.0f));
 	}
 
-	public float getSpacingY(IDataGraphNode node)
+	public float getSpacingY(IDVINode node)
 	{
-		IDataGraphNode topNode = null;
-		IDataGraphNode bottomNode = null;
+		IDVINode topNode = null;
+		IDVINode bottomNode = null;
 
 		if (getPosition().getY() < node.getPosition().getY())
 		{

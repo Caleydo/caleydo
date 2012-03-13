@@ -3,9 +3,9 @@ package org.caleydo.view.datagraph.listener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.data.NewDataDomainEvent;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 
-public class NewDataDomainEventListener extends AEventListener<GLDataGraph> {
+public class NewDataDomainEventListener extends AEventListener<GLDataViewIntegrator> {
 
 	@Override
 	public void handleEvent(AEvent event) {

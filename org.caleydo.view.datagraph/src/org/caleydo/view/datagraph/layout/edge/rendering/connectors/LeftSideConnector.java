@@ -13,13 +13,13 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public class LeftSideConnector extends ASideConnector {
 
-	public LeftSideConnector(IDataGraphNode node, PixelGLConverter pixelGLconverter,
+	public LeftSideConnector(IDVINode node, PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer, ViewFrustum viewFrustum,
-			IDataGraphNode otherNode) {
+			IDVINode otherNode) {
 		super(node, pixelGLconverter, connectionBandRenderer, viewFrustum, otherNode);
 
 		calcBandConnectionPoint();

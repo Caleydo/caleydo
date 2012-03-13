@@ -23,11 +23,11 @@ public class SerializedDataGraphView extends ASerializedView {
 
 	@Override
 	public String getViewType() {
-		return GLDataGraph.VIEW_TYPE;
+		return GLDataViewIntegrator.VIEW_TYPE;
 	}
 
 	@Override
 	public String getViewClassType() {
-		return GLDataGraph.class.getName();
+		return GLDataViewIntegrator.class.getName();
 	}
 }

@@ -9,7 +9,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.eclipse.core.runtime.Status;
@@ -27,7 +27,7 @@ public class NodeCreator {
 		viewNodeClasses.put(GLVisBricks.class, VisBricksNode.class);
 	}
 
-	public ADataNode createDataNode(AGraphLayout graphLayout, GLDataGraph view,
+	public ADataNode createDataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, int id, IDataDomain dataDomain) {
 
 		Class<? extends ADataNode> nodeClass = dataNodeClasses.get(dataDomain.getClass());
@@ -59,7 +59,7 @@ public class NodeCreator {
 		return null;
 	}
 
-	public ViewNode createViewNode(AGraphLayout graphLayout, GLDataGraph view,
+	public ViewNode createViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, int id, AGLView representedView) {
 
 		Class<? extends ViewNode> nodeClass = viewNodeClasses.get(representedView

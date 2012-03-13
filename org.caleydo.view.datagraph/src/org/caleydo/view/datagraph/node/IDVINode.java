@@ -9,7 +9,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 
-public interface IDataGraphNode extends IDraggable {
+public interface IDVINode extends IDraggable {
 
 	public List<DataContainer> getDataContainers();
 
@@ -64,9 +64,9 @@ public interface IDataGraphNode extends IDraggable {
 	public Point2D getAbsolutPositionOfRelativeDataContainerRendererCoordinates(
 			Point2D coordinates);
 
-	public float getSpacingX(IDataGraphNode node);
+	public float getSpacingX(IDVINode node);
 
-	public float getSpacingY(IDataGraphNode node);
+	public float getSpacingY(IDVINode node);
 
 	/**
 	 * @return The caption of this node.

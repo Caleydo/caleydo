@@ -6,7 +6,7 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public class DimensionGroupRenderer
 	extends ADraggableColorRenderer
@@ -24,7 +24,7 @@ public class DimensionGroupRenderer
 	private DataContainer dataContainer;
 
 	// private AGLView view;
-	private IDataGraphNode node;
+	private IDVINode node;
 	protected boolean showText = true;
 	protected int textRotation = 0;
 	protected int textHeightPixels;
@@ -39,7 +39,7 @@ public class DimensionGroupRenderer
 	// private int textHeightPixels;
 
 	public DimensionGroupRenderer(DataContainer dataContainer, AGLView view,
-			IDataGraphNode node, float[] color)
+			IDVINode node, float[] color)
 	{
 		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2,
 				view);

@@ -9,11 +9,11 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 
-public class BipartiteEdgeLineRenderer extends AEdgeLineRenderer {
+public class TwoLayeredEdgeLineRenderer extends AEdgeLineRenderer {
 
-	public BipartiteEdgeLineRenderer(Edge edge, GLDataGraph view, String label) {
+	public TwoLayeredEdgeLineRenderer(Edge edge, GLDataViewIntegrator view, String label) {
 		super(edge, view, label);
 	}
 

@@ -11,9 +11,9 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.PickingType;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public class DataContainerListRenderer
 	extends ADataContainerRenderer
@@ -27,7 +27,7 @@ public class DataContainerListRenderer
 
 	private List<DimensionGroupRenderer> dimensionGroupRenderers;
 
-	public DataContainerListRenderer(IDataGraphNode node, GLDataGraph view,
+	public DataContainerListRenderer(IDVINode node, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, List<DataContainer> dataContainers)
 	{
 		super(node, view, dragAndDropController);

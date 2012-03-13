@@ -24,7 +24,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.PickingType;
 import org.caleydo.view.datagraph.contextmenu.AddDataContainerItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
@@ -33,7 +33,7 @@ import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
 import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public class DataContainerMatrixRenderer
 	extends ADataContainerRenderer {
@@ -60,8 +60,8 @@ public class DataContainerMatrixRenderer
 
 	protected ADataContainerMatrixRenderingStrategy renderingStrategy;
 
-	public DataContainerMatrixRenderer(ATableBasedDataDomain dataDomain, GLDataGraph view,
-			IDataGraphNode node, DragAndDropController dragAndDropController) {
+	public DataContainerMatrixRenderer(ATableBasedDataDomain dataDomain, GLDataViewIntegrator view,
+			IDVINode node, DragAndDropController dragAndDropController) {
 		super(node, view, dragAndDropController);
 
 		this.dataDomain = dataDomain;

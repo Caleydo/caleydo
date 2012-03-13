@@ -1,11 +1,11 @@
 package org.caleydo.view.datagraph.event;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 
 /**
  * Event that specifies whether the connection between data nodes shall be
- * displayed per default in {@link GLDataGraph}.
+ * displayed per default in {@link GLDataViewIntegrator}.
  * 
  * @author Christian
  * 

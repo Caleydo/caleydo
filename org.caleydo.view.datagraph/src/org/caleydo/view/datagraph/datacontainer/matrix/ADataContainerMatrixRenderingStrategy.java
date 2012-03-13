@@ -8,8 +8,8 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public abstract class ADataContainerMatrixRenderingStrategy {
 
@@ -30,7 +30,7 @@ public abstract class ADataContainerMatrixRenderingStrategy {
 	public abstract void render(GL2 gl,
 			Map<Integer, Pair<Point2D, Point2D>> bottomDimensionGroupPositions,
 			Map<Integer, Pair<Point2D, Point2D>> topDimensionGroupPositions, float x, float y,
-			IDataGraphNode node, GLDataGraph view,
+			IDVINode node, GLDataViewIntegrator view,
 			List<Pair<String, Integer>> pickingIDsToBePushed, String rowsCaption,
 			String columnsCaption);
 

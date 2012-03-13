@@ -13,19 +13,19 @@ import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.view.datagraph.GLDataGraph;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public class TopBundleConnector
 	extends ABundleConnector
 {
 	protected Point2D bundlingPoint;
 
-	public TopBundleConnector(IDataGraphNode node, PixelGLConverter pixelGLConverter,
+	public TopBundleConnector(IDVINode node, PixelGLConverter pixelGLConverter,
 			ConnectionBandRenderer connectionBandRenderer,
 			List<DataContainer> commonDataContainers, int minBandWidth, int maxBandWidth,
-			int maxDataAmount, IDataGraphNode otherNode, ViewFrustum viewFrustum,
-			GLDataGraph view)
+			int maxDataAmount, IDVINode otherNode, ViewFrustum viewFrustum,
+			GLDataViewIntegrator view)
 	{
 		super(node, pixelGLConverter, connectionBandRenderer, commonDataContainers,
 				minBandWidth, maxBandWidth, maxDataAmount, otherNode, viewFrustum, view);

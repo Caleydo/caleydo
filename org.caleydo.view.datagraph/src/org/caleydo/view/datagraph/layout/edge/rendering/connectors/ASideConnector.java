@@ -9,7 +9,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
 public abstract class ASideConnector extends ANodeConnector {
 
@@ -22,10 +22,10 @@ public abstract class ASideConnector extends ANodeConnector {
 	float vecXPoint2 = 0;
 	float vecYPoint2 = 0;
 
-	public ASideConnector(IDataGraphNode node,
+	public ASideConnector(IDVINode node,
 			PixelGLConverter pixelGLconverter,
 			ConnectionBandRenderer connectionBandRenderer,
-			ViewFrustum viewFrustum, IDataGraphNode otherNode) {
+			ViewFrustum viewFrustum, IDVINode otherNode) {
 		super(node, pixelGLconverter, connectionBandRenderer, otherNode,
 				viewFrustum);
 		this.viewFrustum = viewFrustum;

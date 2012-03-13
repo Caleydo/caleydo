@@ -9,20 +9,20 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.Edge;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.Graph;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 
 public abstract class ADraggableDataGraphNode
-	implements IDataGraphNode
+	implements IDVINode
 {
 
 	protected final static String DATA_GRAPH_NODE_PICKING_TYPE = "org.caleydo.view.datagraph.node";
 	protected final static String DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE = "org.caleydo.view.datagraph.node_penetrating";
 
 	protected AGraphLayout graphLayout;
-	protected GLDataGraph view;
+	protected GLDataViewIntegrator view;
 	protected PixelGLConverter pixelGLConverter;
 	protected int id;
 	protected DragAndDropController dragAndDropController;
@@ -32,7 +32,7 @@ public abstract class ADraggableDataGraphNode
 	private float prevDraggingMouseX;
 	private float prevDraggingMouseY;
 
-	public ADraggableDataGraphNode(AGraphLayout graphLayout, GLDataGraph view,
+	public ADraggableDataGraphNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			final DragAndDropController dragAndDropController, int id)
 	{
 		this.graphLayout = graphLayout;

@@ -7,13 +7,13 @@ import java.util.List;
 import java.util.Map;
 import org.caleydo.view.datagraph.GeometryUtil;
 import org.caleydo.view.datagraph.Graph;
-import org.caleydo.view.datagraph.node.IDataGraphNode;
+import org.caleydo.view.datagraph.node.IDVINode;
 
-public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
+public class CollisionAvoidanceRoutingStrategy implements IEdgeRoutingStrategy {
 
 	private Graph dataGraph;
 
-	public SimpleEdgeRoutingStrategy(Graph dataGraph) {
+	public CollisionAvoidanceRoutingStrategy(Graph dataGraph) {
 		this.dataGraph = dataGraph;
 	}
 
@@ -22,13 +22,13 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 		if (edgePoints == null || edgePoints.size() < 2)
 			return;
 
-		Map<Point2D, IDataGraphNode> pointsOnBoundingBoxes = new HashMap<Point2D, IDataGraphNode>();
+		Map<Point2D, IDVINode> pointsOnBoundingBoxes = new HashMap<Point2D, IDVINode>();
 
 		for (int i = 1; i < edgePoints.size(); i++) {
 			Point2D point1 = edgePoints.get(i - 1);
 			Point2D point2 = edgePoints.get(i);
 
-			for (IDataGraphNode node : dataGraph.getNodes()) {
+			for (IDVINode node : dataGraph.getNodes()) {
 				Rectangle2D box = node.getBoundingBox();
 				int code1 = box.outcode(point1);
 				int code2 = box.outcode(point2);
@@ -150,7 +150,7 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 
 				boolean hasIntersection = false;
 
-				for (IDataGraphNode node : dataGraph.getNodes()) {
+				for (IDVINode node : dataGraph.getNodes()) {
 					Rectangle2D box = node.getBoundingBox();
 					int code1 = box.outcode(point1);
 					int code2 = box.outcode(point2);
@@ -268,7 +268,7 @@ public class SimpleEdgeRoutingStrategy implements IEdgeRoutingStrategy {
 //	}
 
 	@Override
-	public void setNodes(IDataGraphNode node1, IDataGraphNode node2) {
+	public void setNodes(IDVINode node1, IDVINode node2) {
 		// This strategy does not need concrete nodes
 	}
 

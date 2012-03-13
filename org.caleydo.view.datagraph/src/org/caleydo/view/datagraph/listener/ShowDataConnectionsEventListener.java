@@ -2,7 +2,7 @@ package org.caleydo.view.datagraph.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.event.ShowDataConnectionsEvent;
 
 /**
@@ -12,7 +12,7 @@ import org.caleydo.view.datagraph.event.ShowDataConnectionsEvent;
  *
  */
 public class ShowDataConnectionsEventListener
-	extends AEventListener<GLDataGraph>
+	extends AEventListener<GLDataViewIntegrator>
 {
 
 	@Override

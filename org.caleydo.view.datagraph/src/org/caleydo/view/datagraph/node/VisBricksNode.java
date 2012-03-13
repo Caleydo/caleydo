@@ -19,7 +19,8 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
+import org.caleydo.view.datagraph.contextmenu.OpenViewItem;
 import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
@@ -35,7 +36,7 @@ public class VisBricksNode
 	protected DataContainerListRenderer dataContainerListRenderer;
 	protected List<DataContainer> dataContainers;
 
-	public VisBricksNode(AGraphLayout graphLayout, GLDataGraph view,
+	public VisBricksNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, Integer id, AGLView representedView)
 	{
 		super(graphLayout, view, dragAndDropController, id, representedView);
@@ -63,6 +64,21 @@ public class VisBricksNode
 
 			}
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+		
+		view.addIDPickingListener(new APickingListener() {
+
+			@Override
+			public void rightClicked(Pick pick) {
+				view.getContextMenuCreator().addContextMenuItem(
+						new OpenViewItem(representedView));
+			}
+
+			@Override
+			public void doubleClicked(Pick pick) {
+				view.openView(representedView);
+			}
+
+		}, DATA_GRAPH_NODE_PICKING_TYPE, id);
 
 	}
 
@@ -232,8 +248,9 @@ public class VisBricksNode
 	public void update()
 	{
 		retrieveDataContainers();
-		dataContainerListRenderer.setDataContainers(getDataContainers());
+		dataContainerListRenderer.setDataContainers(getDataContainers());		
 		recalculateNodeSize();
+		graphLayout.updateNodePositions();
 		view.setDisplayListDirty();
 	}
 	

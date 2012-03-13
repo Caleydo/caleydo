@@ -3,7 +3,7 @@ package org.caleydo.view.datagraph.listener;
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.view.DataContainersChangedEvent;
-import org.caleydo.view.datagraph.GLDataGraph;
+import org.caleydo.view.datagraph.GLDataViewIntegrator;
 
 /**
  * Listener for {@link DataContainersChangedEvent}
@@ -11,7 +11,7 @@ import org.caleydo.view.datagraph.GLDataGraph;
  * @author Partl
  * @author Alexander Lex
  */
-public class DataContainersCangedListener extends AEventListener<GLDataGraph> {
+public class DataContainersCangedListener extends AEventListener<GLDataViewIntegrator> {
 
 	@Override
 	public void handleEvent(AEvent event) {
