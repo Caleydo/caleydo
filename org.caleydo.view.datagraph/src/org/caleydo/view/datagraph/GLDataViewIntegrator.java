@@ -1011,6 +1011,7 @@ public class GLDataViewIntegrator
 					DataContainer dataContainer = dataDomain.getDataContainer(
 							currentRecordPerspeciveID, currentDimensionPerspeciveID);
 					dataContainer.setLabel(dialog.getValue(), false);
+					dataContainer.setPrivate(false);
 
 					if (isRenderedRemote()) {
 						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(

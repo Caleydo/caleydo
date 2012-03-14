@@ -50,6 +50,8 @@ public class DataContainerListRenderer
 		dimensionGroupRenderers.clear();
 		for (DataContainer dataContainer : dataContainers)
 		{
+			if(dataContainer.isPrivate())
+				continue;
 			float[] color = dataContainer.getDataDomain().getColor().getRGBA();
 
 			if (dataContainer instanceof PathwayDataContainer)

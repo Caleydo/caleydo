@@ -496,6 +496,9 @@ public class DataContainerMatrixRenderer
 			for (CellContainer row : rows) {
 				boolean dimensionGroupExists = false;
 				for (DataContainer dataContainer : dataContainers) {
+					
+					if(dataContainer.isPrivate())
+						continue;
 
 					String recordPerspectiveID = row.id;
 					String dimensionPerspectiveID = column.id;
