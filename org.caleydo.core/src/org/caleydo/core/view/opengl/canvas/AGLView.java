@@ -588,8 +588,18 @@ public abstract class AGLView
 		for (String pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
-
+			
 			alHits = pickingManager.getHits(uniqueID, pickingType);
+			
+			//This is a try to fix MOUSE_OUT in remote rendered views, not successful yet
+//			if(isRenderedRemote() && (alHits == null || alHits.size() == 0)) {
+//				AGLView remoteRenderingView = this;
+//				while(remoteRenderingView.isRenderedRemote()) {
+//					remoteRenderingView = (AGLView)(remoteRenderingView.getRemoteRenderingGLView());
+//				}
+//				alHits = pickingManager.getHits(remoteRenderingView.getID(), pickingType);
+//			}
+			
 			if (alHits != null && alHits.size() != 0) {
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {

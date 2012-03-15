@@ -161,8 +161,6 @@ public class GLDataViewIntegrator
 		connectionBandRenderer = new ConnectionBandRenderer();
 		viewType = GLDataViewIntegrator.VIEW_TYPE;
 		glKeyListener = new GLDataGraphKeyListener();
-		dataGraph = new Graph();
-		graphLayout = new TwoLayeredGraphLayout(this, dataGraph);
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
 		relativeNodePositions = new HashMap<IDVINode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
@@ -187,6 +185,8 @@ public class GLDataViewIntegrator
 		});
 
 		textRenderer = new CaleydoTextRenderer(24);
+		dataGraph = new Graph();
+		graphLayout = new TwoLayeredGraphLayout(this, dataGraph);
 
 		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
@@ -223,6 +223,7 @@ public class GLDataViewIntegrator
 			final GLMouseListener glMouseListener) {
 		this.glMouseListener = glMouseListener;
 		init(gl);
+		pixelGLConverter = glParentView.getPixelGLConverter();
 	}
 
 	@Override
