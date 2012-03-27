@@ -7,6 +7,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataViewIntegrator;
@@ -102,6 +103,7 @@ public abstract class ADraggableDataGraphNode
 		view.addIDPickingListener(pickingListener, DATA_GRAPH_NODE_PICKING_TYPE, id);
 		view.addIDPickingListener(pickingListenerPenetrating,
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+		view.addIDPickingListener(new ToolTipPickingListener(view, "Node", "Node in DVI"), DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override

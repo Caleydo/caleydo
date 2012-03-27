@@ -6,18 +6,15 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-
 import com.jogamp.common.nio.Buffers;
 
 /**
@@ -42,15 +39,18 @@ import com.jogamp.common.nio.Buffers;
  * @author Alexander Lex
  * @author Christian Partl
  */
-public class PickingManager {
+public class PickingManager
+{
 
 	/**
 	 * Container for all {@link Pick}s associated with a view. *
 	 */
-	private class ViewSpecificHitListContainer {
+	private class ViewSpecificHitListContainer
+	{
 		HashMap<String, ArrayList<Pick>> hashPickingTypeToPicks;
 
-		private ViewSpecificHitListContainer() {
+		private ViewSpecificHitListContainer()
+		{
 			hashPickingTypeToPicks = new HashMap<String, ArrayList<Pick>>();
 		}
 
@@ -60,26 +60,30 @@ public class PickingManager {
 		 * @param pickingType
 		 * @return
 		 */
-		public ArrayList<Pick> getPicksForPickingType(String pickingType) {
+		public ArrayList<Pick> getPicksForPickingType(String pickingType)
+		{
 			return hashPickingTypeToPicks.get(pickingType);
 		}
 
 		/**
 		 * Add a pick to a type
 		 * 
-		 * @param pickingType
-		 *            the type of the pick
-		 * @param pick
-		 *            the pick itself
+		 * @param pickingType the type of the pick
+		 * @param pick the pick itself
 		 */
 		private void addPicksForPickingType(String pickingType, Pick pick,
-				boolean clearPicksBeforeAdding) {
+				boolean clearPicksBeforeAdding)
+		{
 			ArrayList<Pick> picks = hashPickingTypeToPicks.get(pickingType);
-			if (picks == null) {
+			if (picks == null)
+			{
 				picks = new ArrayList<Pick>();
 				hashPickingTypeToPicks.put(pickingType, picks);
-			} else {
-				if (clearPicksBeforeAdding) {
+			}
+			else
+			{
+				if (clearPicksBeforeAdding)
+				{
 					picks.clear();
 				}
 			}
@@ -91,7 +95,8 @@ public class PickingManager {
 		 * 
 		 * @return
 		 */
-		private Set<String> getPickingTypes() {
+		private Set<String> getPickingTypes()
+		{
 			return hashPickingTypeToPicks.keySet();
 		}
 
@@ -100,9 +105,11 @@ public class PickingManager {
 		 * 
 		 * @return
 		 */
-		private ViewSpecificHitListContainer copy() {
+		private ViewSpecificHitListContainer copy()
+		{
 			ViewSpecificHitListContainer copy = new ViewSpecificHitListContainer();
-			for (String pickingType : hashPickingTypeToPicks.keySet()) {
+			for (String pickingType : hashPickingTypeToPicks.keySet())
+			{
 				ArrayList<Pick> picks = new ArrayList<Pick>(
 						hashPickingTypeToPicks.get(pickingType));
 				copy.hashPickingTypeToPicks.put(pickingType, picks);
@@ -118,12 +125,14 @@ public class PickingManager {
 	 * to the pickedObjectID (which is for internal use in the views which use
 	 * the picking manager)
 	 */
-	private class ViewSpecificPickingIDContainer {
+	private class ViewSpecificPickingIDContainer
+	{
 
 		HashMap<String, HashMap<Integer, Integer>> hashTypeToPickingIDToPickedObjectID;
 		HashMap<String, HashMap<Integer, Integer>> hashTypeToPickedObjectIDToPickingID;
 
-		public ViewSpecificPickingIDContainer() {
+		public ViewSpecificPickingIDContainer()
+		{
 			hashTypeToPickingIDToPickedObjectID = new HashMap<String, HashMap<Integer, Integer>>();
 			hashTypeToPickedObjectIDToPickingID = new HashMap<String, HashMap<Integer, Integer>>();
 		}
@@ -134,11 +143,12 @@ public class PickingManager {
 		 * @param pickingID
 		 * @param pickedObjectID
 		 */
-		public void put(String pickingType, Integer pickingID,
-				Integer pickedObjectID) {
+		public void put(String pickingType, Integer pickingID, Integer pickedObjectID)
+		{
 			HashMap<Integer, Integer> hashPickingIDToPickedObjectID = hashTypeToPickingIDToPickedObjectID
 					.get(pickingType);
-			if (hashPickingIDToPickedObjectID == null) {
+			if (hashPickingIDToPickedObjectID == null)
+			{
 				hashPickingIDToPickedObjectID = new HashMap<Integer, Integer>();
 				hashTypeToPickingIDToPickedObjectID.put(pickingType,
 						hashPickingIDToPickedObjectID);
@@ -147,7 +157,8 @@ public class PickingManager {
 
 			HashMap<Integer, Integer> hashPickedObjectIDToPickingID = hashTypeToPickedObjectIDToPickingID
 					.get(pickingType);
-			if (hashPickedObjectIDToPickingID == null) {
+			if (hashPickedObjectIDToPickingID == null)
+			{
 				hashPickedObjectIDToPickingID = new HashMap<Integer, Integer>();
 				hashTypeToPickedObjectIDToPickingID.put(pickingType,
 						hashPickedObjectIDToPickingID);
@@ -163,7 +174,8 @@ public class PickingManager {
 		 * @param pickingType
 		 * @return the picedObjectID or null if no id was found
 		 */
-		public Integer getPickedObjectID(String pickingType, Integer pickingID) {
+		public Integer getPickedObjectID(String pickingType, Integer pickingID)
+		{
 			HashMap<Integer, Integer> hashMap = hashTypeToPickingIDToPickedObjectID
 					.get(pickingType);
 			if (hashMap == null)
@@ -180,7 +192,8 @@ public class PickingManager {
 		 * @param pickedObjectID
 		 * @return the pickingID or null
 		 */
-		public Integer getPickingID(String pickingType, Integer pickedObjectID) {
+		public Integer getPickingID(String pickingType, Integer pickedObjectID)
+		{
 			HashMap<Integer, Integer> hashMap = hashTypeToPickedObjectIDToPickingID
 					.get(pickingType);
 			if (hashMap == null)
@@ -194,11 +207,12 @@ public class PickingManager {
 		 * 
 		 * @return all picking IDs
 		 */
-		public Set<Integer> getAllPickingIDs() {
+		public Set<Integer> getAllPickingIDs()
+		{
 			Set<Integer> table = new HashSet<Integer>();
-			for (String type : hashTypeToPickingIDToPickedObjectID.keySet()) {
-				table.addAll(hashTypeToPickingIDToPickedObjectID.get(type)
-						.keySet());
+			for (String type : hashTypeToPickingIDToPickedObjectID.keySet())
+			{
+				table.addAll(hashTypeToPickingIDToPickedObjectID.get(type).keySet());
 			}
 
 			return table;
@@ -247,7 +261,8 @@ public class PickingManager {
 	/**
 	 * Constructor
 	 */
-	public PickingManager() {
+	public PickingManager()
+	{
 		hashViewIDToViewSpecificHitListContainer = new HashMap<Integer, ViewSpecificHitListContainer>();
 		hashViewIDToPreviousViewSpecificHitListContainer = new HashMap<Integer, ViewSpecificHitListContainer>();
 		hashViewIDToViewSpecificPickingIDContainer = new HashMap<Integer, ViewSpecificPickingIDContainer>();
@@ -260,7 +275,8 @@ public class PickingManager {
 	 * 
 	 * @param enablePicking
 	 */
-	public void enablePicking(final boolean enablePicking) {
+	public void enablePicking(final boolean enablePicking)
+	{
 		this.enablePicking = enablePicking;
 	}
 
@@ -269,33 +285,28 @@ public class PickingManager {
 	 * commands. The returned id is mapped to the provided pickedObjectID which
 	 * is intended to be used by the caller internally.
 	 * 
-	 * @param viewID
-	 *            the ID of the calling view
-	 * @param ePickingType
-	 *            the type of the pick
-	 * @param pickedObjectID
-	 *            an arbitrary integer which helps the client of the manager to
-	 *            determine which element was picked
+	 * @param viewID the ID of the calling view
+	 * @param ePickingType the type of the pick
+	 * @param pickedObjectID an arbitrary integer which helps the client of the
+	 *            manager to determine which element was picked
 	 * @return the picking id
 	 */
-	public int getPickingID(Integer viewID, String ePickingType,
-			Integer pickedObjectID) {
+	public int getPickingID(Integer viewID, String ePickingType, Integer pickedObjectID)
+	{
 
 		ViewSpecificPickingIDContainer pickingIDContainer = hashViewIDToViewSpecificPickingIDContainer
 				.get(viewID);
-		if (pickingIDContainer == null) {
+		if (pickingIDContainer == null)
+		{
 			pickingIDContainer = new ViewSpecificPickingIDContainer();
-			hashViewIDToViewSpecificPickingIDContainer.put(viewID,
-					pickingIDContainer);
+			hashViewIDToViewSpecificPickingIDContainer.put(viewID, pickingIDContainer);
 		}
-		Integer pickingID = pickingIDContainer.getPickingID(ePickingType,
-				pickedObjectID);
+		Integer pickingID = pickingIDContainer.getPickingID(ePickingType, pickedObjectID);
 		if (pickingID == null)
 			pickingID = calculateID();
 
 		pickingIDContainer.put(ePickingType, pickingID, pickedObjectID);
-		hashPickingIDToViewID.put(pickingID, new Pair<Integer, String>(viewID,
-				ePickingType));
+		hashPickingIDToViewID.put(pickingID, new Pair<Integer, String>(viewID, ePickingType));
 		return pickingID;
 	}
 
@@ -304,19 +315,16 @@ public class PickingManager {
 	 * commands. The returned id is mapped to the provided pickedObjectID which
 	 * is intended to be used by the caller internally. external id
 	 * 
-	 * @param viewID
-	 *            the ID of the calling view
-	 * @param ePickingType
-	 *            the type of the pick
-	 * @param pickedObjectID
-	 *            an arbitrary integer which helps the client of the manager to
-	 *            determine which element was picked
+	 * @param viewID the ID of the calling view
+	 * @param ePickingType the type of the pick
+	 * @param pickedObjectID an arbitrary integer which helps the client of the
+	 *            manager to determine which element was picked
 	 * @return the picking id
 	 * @deprecated use {@link #getPickingID(Integer, String, Integer)} instead
 	 */
 	@Deprecated
-	public int getPickingID(int viewID, PickingType ePickingType,
-			int pickedObjectID) {
+	public int getPickingID(int viewID, PickingType ePickingType, int pickedObjectID)
+	{
 
 		return getPickingID(viewID, ePickingType.name(), pickedObjectID);
 	}
@@ -328,12 +336,11 @@ public class PickingManager {
 	 * calling view, therefore only elements rendered in the display() can be
 	 * picked.
 	 * 
-	 * @param glView
-	 *            a reference to the calling view
-	 * @param gl
-	 *            the GL2 context
+	 * @param glView a reference to the calling view
+	 * @param gl the GL2 context
 	 */
-	public void handlePicking(final AGLView glView, final GL2 gl) {
+	public void handlePicking(final AGLView glView, final GL2 gl)
+	{
 
 		if (enablePicking == false)
 			return;
@@ -344,27 +351,38 @@ public class PickingManager {
 
 		PickingMode ePickingMode = PickingMode.CLICKED;
 
-		if (glMouseListener.wasMouseDoubleClicked()) {
+		if (glMouseListener.wasMouseDoubleClicked())
+		{
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.DOUBLE_CLICKED;
-		} else if (glMouseListener.wasMouseDragged()) {
+		}
+		else if (glMouseListener.wasMouseDragged())
+		{
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.DRAGGED;
-		} else if (glMouseListener.wasLeftMouseButtonPressed()) {
+		}
+		else if (glMouseListener.wasLeftMouseButtonPressed())
+		{
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.CLICKED;
-		} else if (glMouseListener.wasRightMouseButtonPressed()) {
+		}
+		else if (glMouseListener.wasRightMouseButtonPressed())
+		{
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.RIGHT_CLICKED;
-		} else if (glMouseListener.wasMouseMoved()) {
+		}
+		else if (glMouseListener.wasMouseMoved())
+		{
 			// Restart timer
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
 			hashViewIDToIsMouseOverPickingEvent.put(glView.getID(), true);
 			pickPoint = glMouseListener.getPickedPoint();
 			ePickingMode = PickingMode.MOUSE_OVER;
-		} else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
-				&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true) {
+		}
+		else if (hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) != null
+				&& hashViewIDToIsMouseOverPickingEvent.get(glView.getID()) == true)
+		{
 			// pickPoint = glMouseListener.getPickedPoint();
 			// hashViewIDToLastMouseMovedTimeStamp.put(viewID,
 			// System.nanoTime());
@@ -425,54 +443,56 @@ public class PickingManager {
 		// System.out.println("Picking Buffer: " + iArPickingBuffer[0]);
 		// processHits(gl, iHitCount, iArPickingBuffer, tmpPickPoint,
 		// ePickingMode);
-		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount,
-				iArPickingBuffer);
+		ArrayList<Integer> iAlPickedObjectId = processHits(iHitCount, iArPickingBuffer);
 
-		if (iAlPickedObjectId.size() > 0) {
+		if (iAlPickedObjectId.size() > 0)
+		{
 			processPicks(iAlPickedObjectId, ePickingMode, tmpPickPoint,
 					glMouseListener.getPickedPointDragStart());
-		} else {
+		}
+		else
+		{
 
 			// We have to check the parent canvas to identify remote rendered
 			// views
 			GLCanvas parentCanvas = glView.getParentGLCanvas();
-			for (int viewID : hashViewIDToPreviousViewSpecificHitListContainer
-					.keySet()) {
+			for (int viewID : hashViewIDToPreviousViewSpecificHitListContainer.keySet())
+			{
 
-				AGLView currentView = GeneralManager.get().getViewManager()
-						.getGLView(viewID);
-				if (currentView != null
-						&& currentView.getParentGLCanvas() == parentCanvas) {
+				AGLView currentView = GeneralManager.get().getViewManager().getGLView(viewID);
+				if (currentView != null && currentView.getParentGLCanvas() == parentCanvas)
+				{
 
 					ViewSpecificHitListContainer previousHitContainer = hashViewIDToPreviousViewSpecificHitListContainer
 							.get(viewID);
 
-					if (previousHitContainer != null) {
+					if (previousHitContainer != null)
+					{
 
-						for (String pickingType : previousHitContainer
-								.getPickingTypes()) {
+						for (String pickingType : previousHitContainer.getPickingTypes())
+						{
 							for (Pick previousPick : previousHitContainer
-									.getPicksForPickingType(pickingType)) {
+									.getPicksForPickingType(pickingType))
+							{
 
 								ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
 										.get(viewID);
-								if (hitContainer == null) {
+								if (hitContainer == null)
+								{
 									hitContainer = new ViewSpecificHitListContainer();
-									hashViewIDToViewSpecificHitListContainer
-											.put(viewID, hitContainer);
+									hashViewIDToViewSpecificHitListContainer.put(viewID,
+											hitContainer);
 								}
 								Pick pick = new Pick(previousPick.getID(),
 										PickingMode.MOUSE_OUT, tmpPickPoint,
-										glMouseListener
-												.getPickedPointDragStart(),
+										glMouseListener.getPickedPointDragStart(),
 										fMinimumZValue);
-								hitContainer.addPicksForPickingType(
-										pickingType, pick, true);
+								hitContainer.addPicksForPickingType(pickingType, pick, true);
 							}
 						}
 					}
-					hashViewIDToPreviousViewSpecificHitListContainer.put(
-							viewID, new ViewSpecificHitListContainer());
+					hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
+							new ViewSpecificHitListContainer());
 				}
 
 			}
@@ -483,11 +503,11 @@ public class PickingManager {
 	/**
 	 * Returns all picking types for a view that have been hit in the last cycle
 	 * 
-	 * @param viewID
-	 *            the ID of the view
+	 * @param viewID the ID of the view
 	 * @return A set of als picking types hit in the previous cycle
 	 */
-	public Set<String> getHitTypes(int viewID) {
+	public Set<String> getHitTypes(int viewID)
+	{
 		if (hashViewIDToViewSpecificHitListContainer.get(viewID) == null)
 			return null;
 		return hashViewIDToViewSpecificHitListContainer.get(viewID).hashPickingTypeToPicks
@@ -497,32 +517,32 @@ public class PickingManager {
 	/**
 	 * Returns the hits of the last cycle for a particular view and type
 	 * 
-	 * @param viewID
-	 *            the id of the view
-	 * @param ePickingType
-	 *            the type of the hits
+	 * @param viewID the id of the view
+	 * @param ePickingType the type of the hits
 	 * @return null if no Hits, else the ArrayList<Integer> with the hits
 	 */
-	public ArrayList<Pick> getHits(int viewID, String ePickingType) {
+	public ArrayList<Pick> getHits(int viewID, String ePickingType)
+	{
 
 		if (hashViewIDToViewSpecificHitListContainer.get(viewID) == null)
 			return null;
 		// else
-		return hashViewIDToViewSpecificHitListContainer.get(viewID)
-				.getPicksForPickingType(ePickingType);
+		return hashViewIDToViewSpecificHitListContainer.get(viewID).getPicksForPickingType(
+				ePickingType);
 	}
 
 	/**
 	 * Flush a particular hit list. This has to be done after every cycle.
 	 * 
-	 * @param viewID
-	 *            the id of the calling view
-	 * @param ePickingType
-	 *            the picking type determining which hits should be flushed
+	 * @param viewID the id of the calling view
+	 * @param ePickingType the picking type determining which hits should be
+	 *            flushed
 	 */
-	public void flushHits(int viewID, String ePickingType) {
+	public void flushHits(int viewID, String ePickingType)
+	{
 
-		if (hashViewIDToViewSpecificHitListContainer.get(viewID) != null) {
+		if (hashViewIDToViewSpecificHitListContainer.get(viewID) != null)
+		{
 			hashViewIDToViewSpecificHitListContainer.get(viewID)
 					.getPicksForPickingType(ePickingType).clear();
 		}
@@ -532,18 +552,20 @@ public class PickingManager {
 	 * Removes all data associated with a view. You should do that when you
 	 * close a view
 	 * 
-	 * @param viewID
-	 *            the id of the calling view
+	 * @param viewID the id of the calling view
 	 */
-	public void removeViewSpecificData(int viewID) {
+	public void removeViewSpecificData(int viewID)
+	{
 		hashViewIDToIsMouseOverPickingEvent.remove(viewID);
 		hashViewIDToViewSpecificHitListContainer.remove(viewID);
 		hashViewIDToPreviousViewSpecificHitListContainer.remove(viewID);
 		ViewSpecificPickingIDContainer container = hashViewIDToViewSpecificPickingIDContainer
 				.get(viewID);
 
-		if (container != null && container.getAllPickingIDs() != null) {
-			for (Integer pickingID : container.getAllPickingIDs()) {
+		if (container != null && container.getAllPickingIDs() != null)
+		{
+			for (Integer pickingID : container.getAllPickingIDs())
+			{
 				hashPickingIDToViewID.remove(pickingID);
 			}
 		}
@@ -555,27 +577,27 @@ public class PickingManager {
 	 * Returns the pickedObjectID (the id with which you initialized
 	 * getPickingID()) when you provide the picking ID and the id of the view.
 	 * 
-	 * @param viewID
-	 *            the id of the view which has to be the same which was used
+	 * @param viewID the id of the view which has to be the same which was used
 	 *            when the picking id was created
-	 * @param pickingID
-	 *            the picking ID of which the pickedObjectID mapping is desired
+	 * @param pickingID the picking ID of which the pickedObjectID mapping is
+	 *            desired
 	 * @return the pickedObjectID, null if no entry for that pickingID
 	 */
-	private Integer getPickedObjectIDFromPickingID(int viewID,
-			String pickingType, int pickingID) {
-		return hashViewIDToViewSpecificPickingIDContainer.get(viewID)
-				.getPickedObjectID(pickingType, pickingID);
+	private Integer getPickedObjectIDFromPickingID(int viewID, String pickingType,
+			int pickingID)
+	{
+		return hashViewIDToViewSpecificPickingIDContainer.get(viewID).getPickedObjectID(
+				pickingType, pickingID);
 	}
 
 	/**
 	 * Calculates the picking id, based on a type
 	 * 
-	 * @param iType
-	 *            the type
+	 * @param iType the type
 	 * @return a unique ID
 	 */
-	private int calculateID() {
+	private int calculateID()
+	{
 		return iIDCounter++;
 	}
 
@@ -586,7 +608,8 @@ public class PickingManager {
 	 * @param iHitCount
 	 * @param iArPickingBuffer
 	 */
-	private ArrayList<Integer> processHits(int iHitCount, int[] iArPickingBuffer) {
+	private ArrayList<Integer> processHits(int iHitCount, int[] iArPickingBuffer)
+	{
 
 		int iPickingBufferCounter = 0;
 
@@ -596,15 +619,18 @@ public class PickingManager {
 		int iMinimumZValue = Integer.MAX_VALUE;
 		int iNumberOfNames = 0;
 		int iNearestObjectIndex = 0;
-		for (int iCount = 0; iCount < iHitCount; iCount++) {
+		for (int iCount = 0; iCount < iHitCount; iCount++)
+		{
 			// if first object is no hit skip z values
-			if (iArPickingBuffer[iPickingBufferCounter] == 0) {
+			if (iArPickingBuffer[iPickingBufferCounter] == 0)
+			{
 				iPickingBufferCounter += 3;
 				continue;
 			}
 			// iPickingBufferCounter++;
 			// Check if object is nearer than previous objects
-			if (iArPickingBuffer[iPickingBufferCounter + 1] < iMinimumZValue) {
+			if (iArPickingBuffer[iPickingBufferCounter + 1] < iMinimumZValue)
+			{
 				// first element is number of names on name stack
 				// second element is min Z Value
 				iMinimumZValue = iArPickingBuffer[iPickingBufferCounter + 1];
@@ -625,9 +651,9 @@ public class PickingManager {
 
 		iNumberOfNames = iArPickingBuffer[iNearestObjectIndex];
 
-		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++) {
-			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3
-					+ iNameCount]);
+		for (int iNameCount = 0; iNameCount < iNumberOfNames; iNameCount++)
+		{
+			iAlPickedObjectId.add(iArPickingBuffer[iNearestObjectIndex + 3 + iNameCount]);
 		}
 
 		return iAlPickedObjectId;
@@ -636,7 +662,8 @@ public class PickingManager {
 		// return iPickedObjectId;
 	}
 
-	private float getDepth(int iZValue) {
+	private float getDepth(int iZValue)
+	{
 		long depth = iZValue; // large -ve number
 		return (1.0f + ((float) depth / 0x7fffffff));
 		// return as a float between 0 and 1
@@ -651,99 +678,112 @@ public class PickingManager {
 	 * @param pickedPoint
 	 * @param dragStartPoint
 	 */
-	private void processPicks(ArrayList<Integer> alPickingIDs,
-			PickingMode myMode, Point pickedPoint, Point dragStartPoint) {
+	private void processPicks(ArrayList<Integer> alPickingIDs, PickingMode myMode,
+			Point pickedPoint, Point dragStartPoint)
+	{
 
 		HashMap<Integer, ViewSpecificHitListContainer> currentHitListContainers = new HashMap<Integer, ViewSpecificHitListContainer>();
 		HashMap<Integer, HashMap<String, ArrayList<Pick>>> picksToAddToPreviousHitListContainers = new HashMap<Integer, HashMap<String, ArrayList<Pick>>>();
 
-		for (int pickingID : alPickingIDs) {
-			Pair<Integer, String> pickAssociatedValues = hashPickingIDToViewID
-					.get(pickingID);
+		for (int pickingID : alPickingIDs)
+		{
+			Pair<Integer, String> pickAssociatedValues = hashPickingIDToViewID.get(pickingID);
 			String eType = pickAssociatedValues.getSecond();
 			int viewIDToUse = pickAssociatedValues.getFirst();
 
-			Pick pick = new Pick(getPickedObjectIDFromPickingID(viewIDToUse,
-					eType, pickingID), myMode, pickedPoint, dragStartPoint,
-					fMinimumZValue);
+			Pick pick = new Pick(
+					getPickedObjectIDFromPickingID(viewIDToUse, eType, pickingID), myMode,
+					pickedPoint, dragStartPoint, fMinimumZValue);
 
 			ViewSpecificHitListContainer hitContainer = hashViewIDToViewSpecificHitListContainer
 					.get(viewIDToUse);
-			if (hitContainer == null) {
+			if (hitContainer == null)
+			{
 				hitContainer = new ViewSpecificHitListContainer();
-				hashViewIDToViewSpecificHitListContainer.put(viewIDToUse,
-						hitContainer);
+				hashViewIDToViewSpecificHitListContainer.put(viewIDToUse, hitContainer);
 			}
 			ViewSpecificHitListContainer previousHitContainer = hashViewIDToPreviousViewSpecificHitListContainer
 					.get(viewIDToUse);
 
 			boolean addPick = true;
 
-			if (previousHitContainer != null) {
+			if (previousHitContainer != null)
+			{
 				ArrayList<Pick> previousPicks = previousHitContainer
 						.getPicksForPickingType(eType);
 
-				if (previousPicks != null) {
-					for (Pick previousPick : previousPicks) {
+				if (previousPicks != null)
+				{
+					for (Pick previousPick : previousPicks)
+					{
 						// Do not add the same Mouse_Over pick again (Mouse_Over
 						// should only be called once)
 						if (previousPick.getID() == pick.getID()
-								&& pick.getPickingMode() == PickingMode.MOUSE_OVER) {
+								&& pick.getPickingMode() == PickingMode.MOUSE_OVER)
+						{
 							addPick = false;
 						}
 					}
 				}
 			}
-			if (addPick) {
+			if (addPick)
+			{
 				hitContainer.addPicksForPickingType(eType, pick, true);
-			} else {
+			}
+			else
+			{
 				// This Mouse_over pick must be remembered, but not called for
 				// the next time if a mouse out
 				// happens.
 				HashMap<String, ArrayList<Pick>> typeSpecificPicks = picksToAddToPreviousHitListContainers
 						.get(viewIDToUse);
-				if (typeSpecificPicks == null) {
+				if (typeSpecificPicks == null)
+				{
 					typeSpecificPicks = new HashMap<String, ArrayList<Pick>>();
 				}
 
 				ArrayList<Pick> picks = typeSpecificPicks.get(eType);
 
-				if (picks == null) {
+				if (picks == null)
+				{
 					picks = new ArrayList<Pick>();
 				}
 
 				picks.add(pick);
 				typeSpecificPicks.put(eType, picks);
-				picksToAddToPreviousHitListContainers.put(viewIDToUse,
-						typeSpecificPicks);
+				picksToAddToPreviousHitListContainers.put(viewIDToUse, typeSpecificPicks);
 
 			}
 
 			currentHitListContainers.put(viewIDToUse, hitContainer);
 		}
 
-		for (Integer viewID : currentHitListContainers.keySet()) {
-			ViewSpecificHitListContainer hitContainer = currentHitListContainers
-					.get(viewID);
-			ViewSpecificHitListContainer copyWithoutMouseOut = hitContainer
-					.copy();
+		for (Integer viewID : currentHitListContainers.keySet())
+		{
+			ViewSpecificHitListContainer hitContainer = currentHitListContainers.get(viewID);
+			ViewSpecificHitListContainer copyWithoutMouseOut = hitContainer.copy();
 			ViewSpecificHitListContainer previousHitContainer = hashViewIDToPreviousViewSpecificHitListContainer
 					.get(viewID);
-			if (previousHitContainer != null) {
-				for (String pickingType : previousHitContainer
-						.getPickingTypes()) {
+			if (previousHitContainer != null)
+			{
+				for (String pickingType : previousHitContainer.getPickingTypes())
+				{
 
 					for (Pick previousPick : previousHitContainer
-							.getPicksForPickingType(pickingType)) {
+							.getPicksForPickingType(pickingType))
+					{
 
 						ArrayList<Pick> currentPicks = hitContainer
 								.getPicksForPickingType(pickingType);
 
 						boolean isMouseOutOnPreviousPick = true;
 
-						if (currentPicks != null) {
-							for (Pick currentPick : currentPicks) {
-								if (currentPick.getID() == previousPick.getID()) {
+						if (currentPicks != null)
+						{
+							for (Pick currentPick : currentPicks)
+							{
+								if (currentPick.getID() == previousPick.getID())
+								{
 									isMouseOutOnPreviousPick = false;
 									break;
 								}
@@ -752,18 +792,21 @@ public class PickingManager {
 
 						HashMap<String, ArrayList<Pick>> typeSpecificPicks = picksToAddToPreviousHitListContainers
 								.get(viewID);
-						if (typeSpecificPicks != null) {
+						if (typeSpecificPicks != null)
+						{
 
-							ArrayList<Pick> picks = typeSpecificPicks
-									.get(pickingType);
+							ArrayList<Pick> picks = typeSpecificPicks.get(pickingType);
 
-							if (picks != null) {
-								for (Pick pick : picks) {
+							if (picks != null)
+							{
+								for (Pick pick : picks)
+								{
 									// Some Mouse_over picks were not added to
 									// the hitListContainer but
 									// occurred, so no Mouse_Out should be
 									// called.
-									if (previousPick.getID() == pick.getID()) {
+									if (previousPick.getID() == pick.getID())
+									{
 										isMouseOutOnPreviousPick = false;
 										break;
 									}
@@ -771,12 +814,11 @@ public class PickingManager {
 							}
 						}
 
-						if (isMouseOutOnPreviousPick) {
-							hitContainer.addPicksForPickingType(pickingType,
-									new Pick(previousPick.getID(),
-											PickingMode.MOUSE_OUT, pickedPoint,
-											dragStartPoint, fMinimumZValue),
-									false);
+						if (isMouseOutOnPreviousPick)
+						{
+							hitContainer.addPicksForPickingType(pickingType, new Pick(
+									previousPick.getID(), PickingMode.MOUSE_OUT, pickedPoint,
+									dragStartPoint, fMinimumZValue), false);
 						}
 					}
 
@@ -786,18 +828,19 @@ public class PickingManager {
 			// Add mouse over picks for the next run
 			HashMap<String, ArrayList<Pick>> typeSpecificPicks = picksToAddToPreviousHitListContainers
 					.get(viewID);
-			if (typeSpecificPicks != null) {
-				for (String pickingType : typeSpecificPicks.keySet()) {
+			if (typeSpecificPicks != null)
+			{
+				for (String pickingType : typeSpecificPicks.keySet())
+				{
 					ArrayList<Pick> picks = typeSpecificPicks.get(pickingType);
-					for (Pick pick : picks) {
-						copyWithoutMouseOut.addPicksForPickingType(pickingType,
-								pick, true);
+					for (Pick pick : picks)
+					{
+						copyWithoutMouseOut.addPicksForPickingType(pickingType, pick, true);
 					}
 				}
 			}
 
-			hashViewIDToPreviousViewSpecificHitListContainer.put(viewID,
-					copyWithoutMouseOut);
+			hashViewIDToPreviousViewSpecificHitListContainer.put(viewID, copyWithoutMouseOut);
 		}
 	}
 }
