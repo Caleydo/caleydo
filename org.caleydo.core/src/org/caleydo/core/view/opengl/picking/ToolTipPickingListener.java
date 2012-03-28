@@ -43,6 +43,7 @@ public class ToolTipPickingListener extends APickingListener {
 		public synchronized void hideToolTip() {
 			hideToolTip = true;
 			if (toolTip != null) {
+				System.out.println("hide method");
 				toolTip.setVisible(false);
 			}
 		}
@@ -50,6 +51,7 @@ public class ToolTipPickingListener extends APickingListener {
 		private synchronized void createToolTip() {
 			if (hideToolTip)
 				return;
+			System.out.println("create");
 			toolTip = new ToolTip(new Shell(), 0);
 			toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
 			toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
@@ -77,6 +79,17 @@ public class ToolTipPickingListener extends APickingListener {
 
 	@Override
 	public void mouseOver(Pick pick) {
+		
+		
+//		JToolTip tip = new JToolTip();
+//		tip.setTipText("test");
+//JButton button;
+//button.
+//		tip.setLocation(10, 10);
+//		tip.setVisible(true);
+		
+		
+		
 		thread = new ToolTipThread();
 		Runnable runnable = new Runnable() {
 
@@ -112,10 +125,12 @@ public class ToolTipPickingListener extends APickingListener {
 	}
 	
 	private void hideToolTip() {
+		System.out.println("hide picking");
 		view.getParentComposite().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
+				System.out.println("hide thread");
 				if (thread != null)
 					thread.hideToolTip();
 			}

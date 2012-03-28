@@ -39,7 +39,6 @@ public class GLLinearizedPathway extends AGLView {
 		super(glCanvas, parentComposite, viewFrustum);
 
 		viewType = GLLinearizedPathway.VIEW_TYPE;
-		// TODO: RENAME
 		viewLabel = "Linearized Pathway";
 	}
 
