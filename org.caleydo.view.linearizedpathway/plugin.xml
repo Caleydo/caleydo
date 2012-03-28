@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="org.eclipse.ui.commands">
+      <command
+            defaultHandler="org.caleydo.view.linearizedpathway.command.handler.OpenLinearizedPathwayHandler"
+            id="org.caleydo.view.linearizedpathway.openlinearizedpathway"
+            name="Linearized Pathway">
+      </command>
+   </extension>
+   <extension
+         point="org.eclipse.ui.views">
+      <view
+            category="org.caleydo.rcp.views"
+            class="org.caleydo.view.linearizedpathway.RcpGLLinearizedPathwayView"
+            id="org.caleydo.view.linearizedpathway"
+            name="Linearized Pathway"
+            restorable="true">
+         <description>
+            description body text
+         </description>
+      </view>
+   </extension>
+   <extension
+         point="org.eclipse.ui.menus">
+      <menuContribution
+            allPopups="false"
+            locationURI="menu:org.eclipse.ui.main.menu">
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <command
+                  commandId="org.caleydo.view.linearizedpathway.openlinearizedpathway"
+                  style="push">
+            </command>
+         </menu>
+      </menuContribution>
+   </extension>
+   <extension
+         id="org.caleydo.view.linearizedpathway"
+         name="LinearizedPathwayViewCreator"
+         point="org.caleydo.view.ViewCreator">
+         <ViewCreator
+          id="org.caleydo.view.ViewCreator"
+          name="LinearizedPathwayViewCreator"
+          class="org.caleydo.view.linearizedpathway.creator.ViewCreator" />
+   </extension>
+   <extension
+         point="org.caleydo.view.ViewCategory">
+      <ViewCategory
+            isDataView="false"
+            viewID="org.caleydo.view.linearizedpathway">
+      </ViewCategory>
+   </extension>
+
+</plugin>
