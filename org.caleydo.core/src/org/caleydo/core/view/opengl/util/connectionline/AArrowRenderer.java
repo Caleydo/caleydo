@@ -17,26 +17,32 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
  * 
  */
 public abstract class AArrowRenderer {
+	
+	public static final int DEFAULT_HEAD_TO_BASE = 15;
+	public static final int DEFAULT_BASE_WIDTH = 10;
+	public static final int DEFAULT_LINE_WIDTH = 1;
+	public static final int DEFAULT_CROSSING_ANGLE = 90;
+	public static final float[] DEFAULT_LINE_COLOR = { 0, 0, 0, 1 };
 
 	protected PixelGLConverter pixelGLConverter;
 	/**
 	 * The distance from the arrow head to its base in pixels.
 	 */
-	protected int headToBasePixels;
+	protected int headToBasePixels = DEFAULT_HEAD_TO_BASE;
 	/**
 	 * The width of the arrow base in pixels.
 	 */
-	protected int baseWidthPixels;
+	protected int baseWidthPixels = DEFAULT_BASE_WIDTH;
 
 	/**
 	 * RGBA color for the line of the arrow.
 	 */
-	protected float[] lineColor = { 0, 0, 0, 1 };
+	protected float[] lineColor = DEFAULT_LINE_COLOR;
 
 	/**
 	 * Line Width of the arrow.
 	 */
-	protected float lineWidth = 1;
+	protected float lineWidth = DEFAULT_LINE_WIDTH;
 
 	/**
 	 * Constructor.

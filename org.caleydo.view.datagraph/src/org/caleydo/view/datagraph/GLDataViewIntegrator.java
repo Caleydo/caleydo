@@ -1,5 +1,7 @@
 package org.caleydo.view.datagraph;
 
+import gleem.linalg.Vec3f;
+
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -12,9 +14,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainGraph;
@@ -52,6 +56,11 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.util.connectionline.AArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.OpenArrowRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
@@ -97,9 +106,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Christian Partl
  */
-public class GLDataViewIntegrator
-	extends AGLView
-	implements IViewCommandHandler {
+public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.datagraph";
 
@@ -150,11 +157,12 @@ public class GLDataViewIntegrator
 	private boolean showDataConnections = false;
 
 	private boolean isVendingMachineMode = false;
-	
+
 	/**
 	 * Constructor.
 	 */
-	public GLDataViewIntegrator(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLDataViewIntegrator(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum);
 
@@ -237,6 +245,7 @@ public class GLDataViewIntegrator
 
 	@Override
 	public void displayLocal(GL2 gl) {
+
 		if (!lazyMode)
 			pickingManager.handlePicking(this, gl);
 
@@ -287,14 +296,16 @@ public class GLDataViewIntegrator
 	/**
 	 * Builds the display list for a given display list index.
 	 * 
-	 * @param gl Instance of GL2.
-	 * @param iGLDisplayListIndex Index of the display list.
+	 * @param gl
+	 *            Instance of GL2.
+	 * @param iGLDisplayListIndex
+	 *            Index of the display list.
 	 */
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		int drawingAreaWidth = pixelGLConverter
-				.getPixelWidthForGLWidth(viewFrustum.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
+		int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
+				.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
 		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
 				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS;
 		if (applyAutomaticLayout) {
@@ -302,7 +313,8 @@ public class GLDataViewIntegrator
 				node.setCustomPosition(false);
 			}
 			for (Edge edge : dataGraph.getAllEdges()) {
-				AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
+				AEdgeRenderer edgeRenderer = graphLayout
+						.getLayoutSpecificEdgeRenderer(edge);
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 			// graphLayout.setGraph(dataGraph);
@@ -313,8 +325,7 @@ public class GLDataViewIntegrator
 			graphLayout.clearNodePositions();
 			graphLayout.layout(rect);
 			updateMinWindowSize(true);
-		}
-		else {
+		} else {
 
 		}
 		for (IDVINode node : dataGraph.getNodes()) {
@@ -324,8 +335,8 @@ public class GLDataViewIntegrator
 
 			float relativePosX = (float) position.getX() / drawingAreaWidth;
 			float relativePosY = (float) position.getY() / drawingAreaHeight;
-			relativeNodePositions
-					.put(node, new Pair<Float, Float>(relativePosX, relativePosY));
+			relativeNodePositions.put(node, new Pair<Float, Float>(relativePosX,
+					relativePosY));
 		}
 
 		renderEdges(gl);
@@ -372,7 +383,8 @@ public class GLDataViewIntegrator
 		int minHeight = maxY - minY + 2 * BOUNDS_SPACING_PIXELS;
 
 		if (minWidth > minViewWidthPixels + 2 || minWidth < minViewWidthPixels - 2
-				|| minHeight > minViewHeightPixels + 2 || minHeight < minViewHeightPixels - 2) {
+				|| minHeight > minViewHeightPixels + 2
+				|| minHeight < minViewHeightPixels - 2) {
 
 			minViewWidthPixels = minWidth;
 			minViewHeightPixels = minHeight;
@@ -401,11 +413,11 @@ public class GLDataViewIntegrator
 		for (Edge edge : dataGraph.getAllEdges()) {
 
 			// Works because there are no edges between view nodes
-			if ((edge.getNode1() instanceof ViewNode) || (edge.getNode2() instanceof ViewNode)) {
+			if ((edge.getNode1() instanceof ViewNode)
+					|| (edge.getNode2() instanceof ViewNode)) {
 				// Render later transparent in foreground
 				bandConnectedNodes.add(edge);
-			}
-			else {
+			} else {
 				renderEdge(gl, edge, connectionBandRenderer);
 			}
 		}
@@ -416,9 +428,11 @@ public class GLDataViewIntegrator
 
 	}
 
-	private void renderEdge(GL2 gl, Edge edge, ConnectionBandRenderer connectionBandRenderer) {
+	private void renderEdge(GL2 gl, Edge edge,
+			ConnectionBandRenderer connectionBandRenderer) {
 		boolean highlight = false;
-		if (edge.getNode1() == currentMouseOverNode || edge.getNode2() == currentMouseOverNode) {
+		if (edge.getNode1() == currentMouseOverNode
+				|| edge.getNode2() == currentMouseOverNode) {
 			highlight = true;
 		}
 		edge.getEdgeRenderer().renderEdge(gl, connectionBandRenderer, highlight);
@@ -570,7 +584,8 @@ public class GLDataViewIntegrator
 
 		addDataContainerEventListener = new AddDataContainerEventListener();
 		addDataContainerEventListener.setHandler(this);
-		eventPublisher.addListener(AddDataContainerEvent.class, addDataContainerEventListener);
+		eventPublisher.addListener(AddDataContainerEvent.class,
+				addDataContainerEventListener);
 
 		openViewEventListener = new OpenViewEventListener();
 		openViewEventListener.setHandler(this);
@@ -588,7 +603,8 @@ public class GLDataViewIntegrator
 
 		minSizeAppliedEventListener = new MinSizeAppliedEventListener();
 		minSizeAppliedEventListener.setHandler(this);
-		eventPublisher.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
+		eventPublisher
+				.addListener(MinSizeAppliedEvent.class, minSizeAppliedEventListener);
 
 		showDataConnectionsEventListener = new ShowDataConnectionsEventListener();
 		showDataConnectionsEventListener.setHandler(this);
@@ -804,8 +820,8 @@ public class GLDataViewIntegrator
 			}
 		}
 		if (!nodeAdded) {
-			dataNode = nodeCreator.createDataNode(graphLayout, this, dragAndDropController,
-					lastNodeID++, dataDomain);
+			dataNode = nodeCreator.createDataNode(graphLayout, this,
+					dragAndDropController, lastNodeID++, dataDomain);
 			if (dataNode == null)
 				return;
 			dataGraph.addNode(dataNode);
@@ -838,7 +854,8 @@ public class GLDataViewIntegrator
 				dataNodes.add(node);
 				dataNodesOfDataDomains.put(node.getDataDomain(), node);
 				Edge edge = dataGraph.addEdge(dataNode, node);
-				AEdgeRenderer edgeRenderer = graphLayout.getLayoutSpecificEdgeRenderer(edge);
+				AEdgeRenderer edgeRenderer = graphLayout
+						.getLayoutSpecificEdgeRenderer(edge);
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 		}
@@ -870,8 +887,7 @@ public class GLDataViewIntegrator
 			IDCategory category = e.getIdCategory();
 			if (category != null) {
 				stringBuffer.append(e.getIdCategory().getCategoryName());
-			}
-			else {
+			} else {
 				stringBuffer.append("Unknown Mapping");
 			}
 			if (iterator.hasNext()) {
@@ -933,7 +949,8 @@ public class GLDataViewIntegrator
 	public void createDataContainer(final ATableBasedDataDomain dataDomain,
 			final String recordPerspectiveID, final boolean createRecordPerspective,
 			final RecordVirtualArray recordVA, final Group recordGroup,
-			final String dimensionPerspectiveID, final boolean createDimensionPerspective,
+			final String dimensionPerspectiveID,
+			final boolean createDimensionPerspective,
 			final DimensionVirtualArray dimensionVA, final Group dimensionGroup) {
 
 		final String recordPerspectiveLabel = (createRecordPerspective) ? (recordGroup
@@ -958,8 +975,9 @@ public class GLDataViewIntegrator
 					}
 				};
 
-				InputDialog dialog = new InputDialog(new Shell(), "Create Data Container",
-						"Name", dataDomain.getLabel() + " - " + recordPerspectiveLabel + "/"
+				InputDialog dialog = new InputDialog(new Shell(),
+						"Create Data Container", "Name", dataDomain.getLabel() + " - "
+								+ recordPerspectiveLabel + "/"
 								+ dimensionPerspectiveLabel, validator);
 
 				String currentDimensionPerspeciveID = dimensionPerspectiveID;
@@ -982,10 +1000,9 @@ public class GLDataViewIntegrator
 						dataDomain.getTable().registerDimensionPerspective(
 								dimensionPerspective);
 						currentDimensionPerspeciveID = dimensionPerspective.getID();
-					}
-					else {
-						dimensionPerspective = dataDomain.getTable().getDimensionPerspective(
-								dimensionPerspectiveID);
+					} else {
+						dimensionPerspective = dataDomain.getTable()
+								.getDimensionPerspective(dimensionPerspectiveID);
 					}
 
 					RecordPerspective recordPerspective = null;
@@ -1001,10 +1018,10 @@ public class GLDataViewIntegrator
 						// TODO: Shall we really set it private?
 						recordPerspective.setPrivate(true);
 						recordGroup.setPerspectiveID(recordPerspective.getID());
-						dataDomain.getTable().registerRecordPerspective(recordPerspective);
+						dataDomain.getTable()
+								.registerRecordPerspective(recordPerspective);
 						currentRecordPerspeciveID = recordPerspective.getID();
-					}
-					else {
+					} else {
 						recordPerspective = dataDomain.getTable().getRecordPerspective(
 								recordPerspectiveID);
 					}
@@ -1056,12 +1073,15 @@ public class GLDataViewIntegrator
 					RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
 
 					if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-								.showView(viewType, secondaryID, IWorkbenchPage.VIEW_ACTIVATE);
+						PlatformUI
+								.getWorkbench()
+								.getActiveWorkbenchWindow()
+								.getActivePage()
+								.showView(viewType, secondaryID,
+										IWorkbenchPage.VIEW_ACTIVATE);
 
 					}
-				}
-				catch (PartInitException e) {
+				} catch (PartInitException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
@@ -1080,14 +1100,13 @@ public class GLDataViewIntegrator
 	public void applyGraphLayout(Class<? extends AGraphLayout> graphLayoutClass) {
 
 		try {
-			graphLayout = graphLayoutClass.getConstructor(GLDataViewIntegrator.class, Graph.class)
-					.newInstance(this, dataGraph);
+			graphLayout = graphLayoutClass.getConstructor(GLDataViewIntegrator.class,
+					Graph.class).newInstance(this, dataGraph);
 
 			for (IDVINode node : dataGraph.getNodes()) {
 				node.setGraphLayout(graphLayout);
 			}
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			Logger.log(new Status(Status.ERROR, this.toString(),
 					"Failed to create Graph Layout", e));
 		}
@@ -1163,14 +1182,15 @@ public class GLDataViewIntegrator
 	public boolean isShowDataConnections() {
 		return showDataConnections;
 	}
-	
+
 	/**
-	 * @param isVendingMachineMode setter, see {@link #isVendingMachineMode}
+	 * @param isVendingMachineMode
+	 *            setter, see {@link #isVendingMachineMode}
 	 */
 	public void setVendingMachineMode(boolean isVendingMachineMode) {
 		this.isVendingMachineMode = isVendingMachineMode;
 	}
-	
+
 	/**
 	 * @return the isVendingMachineMode, see {@link #isVendingMachineMode}
 	 */

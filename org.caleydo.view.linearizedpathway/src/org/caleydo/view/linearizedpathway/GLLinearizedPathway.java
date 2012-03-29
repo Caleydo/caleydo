@@ -2,6 +2,10 @@ package org.caleydo.view.linearizedpathway;
 
 
 
+import gleem.linalg.Vec3f;
+
+import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 
@@ -11,6 +15,15 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.connectionline.AArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.OpenArrowRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -46,6 +59,7 @@ public class GLLinearizedPathway extends AGLView {
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
 		renderStyle = new TemplateRenderStyle(viewFrustum);
+		textRenderer = new CaleydoTextRenderer(24);
 
 		super.renderStyle = renderStyle;
 		detailLevel = DetailLevel.HIGH;
@@ -91,15 +105,66 @@ public class GLLinearizedPathway extends AGLView {
 	@Override
 	public void display(GL2 gl) {
 
-		// TODO: IMPLEMENT GL2 STUFF
+		
+		//Just for testing different types of connections
+		ConnectionLineRenderer renderer = new ConnectionLineRenderer();
 
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor3f(0, 1, 0);
-		gl.glVertex3f(0, 0, 0);
-		gl.glVertex3f(0, 1, 0);
-		gl.glVertex3f(1, 1, 0);
-		gl.glVertex3f(1, 0, 0);
-		gl.glEnd();
+		ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+//		arrowRenderer.setFillColor(new float[] { 1, 1, 1, 1 });
+
+		AArrowRenderer oarrowRenderer = new OpenArrowRenderer(pixelGLConverter);
+
+		LineEndArrowRenderer a = new LineEndArrowRenderer(false, arrowRenderer);
+		LineEndArrowRenderer b = new LineEndArrowRenderer(true, oarrowRenderer);
+		LineCrossingRenderer c = new LineCrossingRenderer(0.8f, pixelGLConverter);
+		c.setCrossingAngle(45);
+		LineLabelRenderer d = new LineLabelRenderer(0.9f, pixelGLConverter, "e", textRenderer);
+//		d.setLineOffsetPixels(5);
+		LineEndStaticLineRenderer e = new LineEndStaticLineRenderer(false, pixelGLConverter);
+		e.setHorizontalLine(false);
+		
+		LineLabelRenderer f = new LineLabelRenderer(0.4f, pixelGLConverter, "i dont care", textRenderer);
+		f.setLineOffsetPixels(5);
+		
+		LineCrossingRenderer g = new LineCrossingRenderer(0.15f, pixelGLConverter);
+//		g.setCrossingAngle(45);
+		
+		renderer.addAttributeRenderer(a);
+		renderer.addAttributeRenderer(b);
+		renderer.addAttributeRenderer(c);
+		renderer.addAttributeRenderer(d);
+		renderer.addAttributeRenderer(e);
+		renderer.addAttributeRenderer(f);
+		renderer.addAttributeRenderer(g);
+
+		ArrayList<Vec3f> linePoints = new ArrayList<Vec3f>();
+		linePoints.add(new Vec3f(1, 1, 0));
+		linePoints.add(new Vec3f(1, 2, 0));
+		linePoints.add(new Vec3f(2, 1, 0));
+		linePoints.add(new Vec3f(3, 1, 0));
+//		renderer.setLineStippled(true);
+		renderer.renderLine(gl, linePoints);
+		
+		
+		
+		renderer = new ConnectionLineRenderer();
+		
+		arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+		arrowRenderer.setFillColor(new float[] { 1, 1, 1, 1 });
+		a = new LineEndArrowRenderer(false, arrowRenderer);
+		
+		d = new LineLabelRenderer(0.66f, pixelGLConverter, "+g", textRenderer);
+		d.setLineOffsetPixels(5);
+		
+		renderer.addAttributeRenderer(a);
+		renderer.addAttributeRenderer(d);
+		
+		linePoints = new ArrayList<Vec3f>();
+		linePoints.add(new Vec3f(1, 3, 0));
+		linePoints.add(new Vec3f(2, 3, 0));
+		renderer.setLineStippled(true);
+		renderer.renderLine(gl, linePoints);
+		
 
 		checkForHits(gl);
 	}

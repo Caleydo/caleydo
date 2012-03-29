@@ -31,7 +31,7 @@ public class OpenArrowRenderer extends AArrowRenderer {
 		gl.glColor4fv(lineColor, 0);
 		gl.glLineWidth(lineWidth);
 		gl.glBegin(GL2.GL_LINE_STRIP);
-		gl.glVertex3f(arrowHead.x(), arrowHead.y(), arrowHead.z());
+//		gl.glVertex3f(arrowHead.x(), arrowHead.y(), arrowHead.z());
 		gl.glVertex3f(corner1.x(), corner1.y(), corner1.z());
 		gl.glVertex3f(arrowHead.x(), arrowHead.y(), arrowHead.z());
 		gl.glVertex3f(corner2.x(), corner2.y(), corner2.z());

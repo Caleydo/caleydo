@@ -19,6 +19,19 @@ import javax.media.opengl.GL2;
  */
 public class ConnectionLineRenderer {
 
+	public static final int DEFAULT_LINE_WIDTH = 1;
+	public static final float[] DEFAULT_LINE_COLOR = { 0, 0, 0, 1 };
+
+	/**
+	 * Width of the crossing line.
+	 */
+	private float lineWidth = DEFAULT_LINE_WIDTH;
+
+	/**
+	 * RGBA color for the line of the arrow.
+	 */
+	private float[] lineColor = DEFAULT_LINE_COLOR;
+
 	/**
 	 * The list of {@link IConnectionLineAttributeRenderer} objects responsible
 	 * for rendering the line attributes.
@@ -32,10 +45,11 @@ public class ConnectionLineRenderer {
 
 	public void renderLine(GL2 gl, List<Vec3f> linePoints) {
 
-		gl.glColor3f(0, 0, 0);
+		gl.glColor4fv(lineColor, 0);
+		gl.glLineWidth(lineWidth);
 		if (isLineStippled) {
 			gl.glEnable(GL2.GL_LINE_STIPPLE);
-			gl.glLineStipple(1, (short) 255);
+			gl.glLineStipple(1, (short) 2047);
 		}
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		for (Vec3f point : linePoints) {
@@ -79,18 +93,49 @@ public class ConnectionLineRenderer {
 			List<IConnectionLineAttributeRenderer> attributeRenderers) {
 		this.attributeRenderers = attributeRenderers;
 	}
-	
+
 	/**
-	 * @param isLineStippled setter, see {@link #isLineStippled}
+	 * @param isLineStippled
+	 *            setter, see {@link #isLineStippled}
 	 */
 	public void setLineStippled(boolean isLineStippled) {
 		this.isLineStippled = isLineStippled;
 	}
-	
+
 	/**
 	 * @return the isLineStippled, see {@link #isLineStippled}
 	 */
 	public boolean isLineStippled() {
 		return isLineStippled;
+	}
+
+	/**
+	 * @param lineColor
+	 *            setter, see {@link #lineColor}
+	 */
+	public void setLineColor(float[] lineColor) {
+		this.lineColor = lineColor;
+	}
+
+	/**
+	 * @return the lineColor, see {@link #lineColor}
+	 */
+	public float[] getLineColor() {
+		return lineColor;
+	}
+
+	/**
+	 * @param lineWidth
+	 *            setter, see {@link #lineWidth}
+	 */
+	public void setLineWidth(float lineWidth) {
+		this.lineWidth = lineWidth;
+	}
+
+	/**
+	 * @return the lineWidth, see {@link #lineWidth}
+	 */
+	public float getLineWidth() {
+		return lineWidth;
 	}
 }

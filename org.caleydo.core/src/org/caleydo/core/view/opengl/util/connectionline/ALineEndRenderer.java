@@ -4,9 +4,8 @@
 package org.caleydo.core.view.opengl.util.connectionline;
 
 /**
- * Abstract base class for all {@link IConnectionLineAttributeRenderer} that are
- * supposed to be rendered at one end of the connection line. Specifies, which
- * line end to use.
+ * Abstract base class for all attribute renderers that are supposed to be
+ * rendered at one end of the connection line. Specifies, which line end to use.
  * 
  * @author Christian
  * 
