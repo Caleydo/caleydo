@@ -3,8 +3,8 @@ package org.caleydo.view.browser;
 import java.util.ArrayList;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
@@ -58,7 +58,7 @@ public class IDExtractionLocationListener
 			if (iDavidId == null || iDavidId == -1)
 				return;
 
-			PathwayVertexGraphItem vertex = PathwayItemManager.get()
+			PathwayVertex vertex = PathwayItemManager.get()
 					.getPathwayVertexGraphItemByDavidId(iDavidId);
 
 			if (vertex == null)
@@ -67,7 +67,7 @@ public class IDExtractionLocationListener
 			iAlSelectionId = new ArrayList<Integer>();
 			iAlSelectionDepth = new ArrayList<Integer>();
 
-			for (PathwayVertexGraphItemRep vertexRep : vertex.getPathwayVertexReps()) {
+			for (PathwayVertexRep vertexRep : vertex.getPathwayVertexReps()) {
 				iAlSelectionId.add(vertexRep.getID());
 				iAlSelectionDepth.add(0);
 			}

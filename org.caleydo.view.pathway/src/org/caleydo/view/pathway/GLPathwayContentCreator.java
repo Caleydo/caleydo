@@ -19,11 +19,11 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -157,10 +157,10 @@ public class GLPathwayContentCreator {
 		// Copy selection IDs to array list object
 		for (Integer graphItemID : iAlTmpSelectedGraphItemIds) {
 
-			for (PathwayVertexGraphItem vertex : pathwayItemManager.getPathwayVertexRep(
+			for (PathwayVertex vertex : pathwayItemManager.getPathwayVertexRep(
 					graphItemID).getPathwayVertices()) {
 
-				for (PathwayVertexGraphItemRep vertexRep : vertex.getPathwayVertexReps()) {
+				for (PathwayVertexRep vertexRep : vertex.getPathwayVertexReps()) {
 
 					if (tmpItemIDs.contains(vertexRep.getID())) {
 						continue;
@@ -321,12 +321,12 @@ public class GLPathwayContentCreator {
 
 	private void extractVertices(final GL2 gl, final IUniqueObject containingView,
 			PathwayGraph pathwayToExtract) {
-		for (PathwayVertexGraphItemRep vertexRep : pathwayToExtract.vertexSet()) {
+		for (PathwayVertexRep vertexRep : pathwayToExtract.vertexSet()) {
 			if (vertexRep == null) {
 				continue;
 			}
 
-			createVertex(gl, containingView, (PathwayVertexGraphItemRep) vertexRep,
+			createVertex(gl, containingView, (PathwayVertexRep) vertexRep,
 					pathwayToExtract);
 		}
 	}
@@ -350,7 +350,7 @@ public class GLPathwayContentCreator {
 	}
 
 	private void createVertex(final GL2 gl, final IUniqueObject containingView,
-			PathwayVertexGraphItemRep vertexRep, PathwayGraph containingPathway) {
+			PathwayVertexRep vertexRep, PathwayGraph containingPathway) {
 
 		float[] tmpNodeColor = null;
 
@@ -646,7 +646,7 @@ public class GLPathwayContentCreator {
 		gl.glPopName();
 	}
 
-	private void createEdge(final GL2 gl, PathwayRelationEdgeGraphItemRep edgeRep,
+	private void createEdge(final GL2 gl, PathwayRelationEdgeRep edgeRep,
 			PathwayGraph containingPathway) {
 
 		// List<IGraphItem> listGraphItemsIn = edgeRep
@@ -724,10 +724,10 @@ public class GLPathwayContentCreator {
 		}
 	}
 
-	private float[] determineNodeColor(PathwayVertexGraphItemRep vertexRep) {
+	private float[] determineNodeColor(PathwayVertexRep vertexRep) {
 
 		int davidID = pathwayItemManager
-				.getDavidIdByPathwayVertex((PathwayVertexGraphItem) vertexRep
+				.getDavidIdByPathwayVertex((PathwayVertex) vertexRep
 						.getPathwayVertices().get(0));
 
 		if (davidID == -1 || davidID == 0)

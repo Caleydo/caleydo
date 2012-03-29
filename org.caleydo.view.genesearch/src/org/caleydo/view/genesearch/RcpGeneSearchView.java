@@ -18,8 +18,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.swt.SWT;
@@ -807,13 +807,13 @@ public class RcpGeneSearchView
 		// set to avoid duplicate pathwaysserializedView
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
-		PathwayVertexGraphItem vertex = PathwayItemManager.get()
+		PathwayVertex vertex = PathwayItemManager.get()
 				.getPathwayVertexGraphItemByDavidId(iDavidID);
 
 		// Only handle David IDs that does exist in any pathway
 		if (vertex != null) {
 
-			for (PathwayVertexGraphItemRep vertexRep : vertex.getPathwayVertexReps()) {
+			for (PathwayVertexRep vertexRep : vertex.getPathwayVertexReps()) {
 				for (PathwayGraph pathwayGraph : vertexRep.getPathways()) {
 					pathwaysContainingGene.add(pathwayGraph);
 				}

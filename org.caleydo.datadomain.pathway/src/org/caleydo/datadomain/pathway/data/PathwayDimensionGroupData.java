@@ -14,8 +14,8 @@ import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
@@ -99,9 +99,9 @@ public class PathwayDimensionGroupData
 
 			int groupSize = 0;
 
-			for (PathwayVertexGraphItemRep vertexRep : pathway.vertexSet()) {
+			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 
-				for (PathwayVertexGraphItem vertex : vertexRep.getPathwayVertices()) {
+				for (PathwayVertex vertex : vertexRep.getPathwayVertices()) {
 					int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(
 							vertex);
 

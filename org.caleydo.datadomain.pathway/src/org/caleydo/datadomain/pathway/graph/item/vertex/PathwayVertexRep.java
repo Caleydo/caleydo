@@ -14,7 +14,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayGraph;
  * 
  * @author Marc Streit
  */
-public class PathwayVertexGraphItemRep
+public class PathwayVertexRep
 	implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
@@ -31,7 +31,7 @@ public class PathwayVertexGraphItemRep
 
 	private short height = 20;
 
-	private List<PathwayVertexGraphItem> pathwayVertices = new ArrayList<PathwayVertexGraphItem>();
+	private List<PathwayVertex> pathwayVertices = new ArrayList<PathwayVertex>();
 
 	private List<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
 
@@ -42,7 +42,7 @@ public class PathwayVertexGraphItemRep
 	 * @param sShapeType
 	 * @param sCoords
 	 */
-	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
+	public PathwayVertexRep(final String sName, final String sShapeType,
 			final String sCoords) {
 
 		id = GeneralManager.get().getIDCreator()
@@ -64,7 +64,7 @@ public class PathwayVertexGraphItemRep
 	 * @param shWidth
 	 * @param shHeight
 	 */
-	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
+	public PathwayVertexRep(final String sName, final String sShapeType,
 			final short shX, final short shY, final short shWidth, final short shHeight) {
 
 		if (sShapeType == null || sShapeType.isEmpty())
@@ -173,11 +173,11 @@ public class PathwayVertexGraphItemRep
 		return name;
 	}
 
-	public void addPathwayVertex(PathwayVertexGraphItem vertex) {
+	public void addPathwayVertex(PathwayVertex vertex) {
 		pathwayVertices.add(vertex);
 	}
 
-	public List<PathwayVertexGraphItem> getPathwayVertices() {
+	public List<PathwayVertex> getPathwayVertices() {
 		return pathwayVertices;
 	}
 

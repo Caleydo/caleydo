@@ -19,8 +19,8 @@ import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
@@ -61,8 +61,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * Therefore it represents the overall topological network. (The root
 	 * pathway is independent from the representation of the nodes.)
 	 */
-	private DirectedGraph<PathwayVertexGraphItem, DefaultEdge> rootPathwayGraph =
-            new DefaultDirectedGraph<PathwayVertexGraphItem, DefaultEdge>(DefaultEdge.class);
+	private DirectedGraph<PathwayVertex, DefaultEdge> rootPathwayGraph =
+            new DefaultDirectedGraph<PathwayVertex, DefaultEdge>(DefaultEdge.class);
 
 	/**
 	 * Used for pathways where only images can be loaded. The image map defines
@@ -171,7 +171,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return null;
 	}
 
-	public DirectedGraph<PathwayVertexGraphItem, DefaultEdge> getRootPathway() {
+	public DirectedGraph<PathwayVertex, DefaultEdge> getRootPathway() {
 		return rootPathwayGraph;
 	}
 
@@ -400,7 +400,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		// set to avoid duplicate pathways
 		Set<PathwayGraph> pathways = new HashSet<PathwayGraph>();
 
-		PathwayVertexGraphItem pathwayVertexGraphItem;
+		PathwayVertex pathwayVertexGraphItem;
 		if (idType == IDType.getIDType("DAVID"))
 			pathwayVertexGraphItem = PathwayItemManager.get()
 					.getPathwayVertexGraphItemByDavidId(id);
@@ -412,7 +412,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 			return null;
 
 
-		for (PathwayVertexGraphItemRep pathwayItemRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
+		for (PathwayVertexRep pathwayItemRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
 			PathwayGraph pathwayGraph = (PathwayGraph) pathwayItemRep.getPathways();
 			pathways.add(pathwayGraph);
 		}

@@ -8,7 +8,7 @@ import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -182,7 +182,7 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 		if (DataTableDavidID == null)
 			return;
 
-		ArrayList<PathwayVertexGraphItem> alVertex = pathwayItemManager.createVertexGene(sName,
+		ArrayList<PathwayVertex> alVertex = pathwayItemManager.createVertexGene(sName,
 				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "",
 				DataTableDavidID);
 

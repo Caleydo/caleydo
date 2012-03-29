@@ -9,7 +9,7 @@ import org.jgrapht.graph.DefaultEdge;
  * 
  * @author Marc Streit
  */
-public class PathwayReactionEdgeGraphItem extends DefaultEdge implements
+public class PathwayReactionEdge extends DefaultEdge implements
 		Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -24,7 +24,7 @@ public class PathwayReactionEdgeGraphItem extends DefaultEdge implements
 	 * @param sReactionId
 	 * @param sType
 	 */
-	public PathwayReactionEdgeGraphItem(final String sReactionId, final String sType) {
+	public PathwayReactionEdge(final String sReactionId, final String sType) {
 
 		this.sReactionId = sReactionId;
 

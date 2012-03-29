@@ -1,6 +1,7 @@
 package org.caleydo.datadomain.pathway.parser;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
@@ -11,7 +12,11 @@ import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.core.parser.xml.IXmlParserHandler;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdge;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdge;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -25,32 +30,34 @@ import org.xml.sax.SAXException;
  * 
  * @author Marc Streit
  */
-public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandler {
+public class KgmlSaxHandler
+	extends AXmlParserHandler
+	implements IXmlParserHandler {
 
 	private PathwayItemManager pathwayItemManager;
 	private PathwayManager pathwayManager;
 
 	private Attributes attributes;
 
-	private String sAttributeName = "";
-
-	// private HashMap<Integer, IGraphItem> hashKgmlEntryIdToVertexRepId;
-	//
-	// private HashMap<String, IGraphItem> hashKgmlNameToVertexRepId;
-	//
-	// private HashMap<String, IGraphItem> hashKgmlReactionIdToVertexRepId;
+	private String attributeName = "";
 
 	private PathwayGraph currentPathway;
 
-	private PathwayVertexGraphItem currentVertex;
+	private PathwayVertex currentVertex;
 
-	private ArrayList<PathwayVertexGraphItem> alCurrentVertex;
+	private ArrayList<PathwayVertex> currentVertices;
 
-	// private IGraphItem currentReactionSubstrateEdgeRep;
-	//
-	// private IGraphItem currentReactionProductEdgeRep;
-	//
-	// private int iCurrentEntryId;
+	private HashMap<Integer, PathwayVertexRep> hashKgmlEntryIdToVertexRepId = new HashMap<Integer, PathwayVertexRep>();
+
+	private HashMap<String, PathwayVertexRep> hashKgmlNameToVertexRepId = new HashMap<String, PathwayVertexRep>();
+
+	private HashMap<String, PathwayVertexRep> hashKgmlReactionIdToVertexRepId = new HashMap<String, PathwayVertexRep>();
+
+	private PathwayReactionEdgeRep currentReactionSubstrateEdgeRep;
+
+	private PathwayReactionEdgeRep currentReactionProductEdgeRep;
+
+	private int currentEntryId;
 
 	/**
 	 * Constructor.
@@ -58,21 +65,17 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	public KgmlSaxHandler() {
 		super();
 
-		// hashKgmlEntryIdToVertexRepId = new HashMap<Integer, IGraphItem>();
-		// hashKgmlNameToVertexRepId = new HashMap<String, IGraphItem>();
-		// hashKgmlReactionIdToVertexRepId = new HashMap<String, IGraphItem>();
-
 		pathwayItemManager = PathwayItemManager.get();
 		pathwayManager = PathwayManager.get();
 
-		alCurrentVertex = new ArrayList<PathwayVertexGraphItem>();
+		currentVertices = new ArrayList<PathwayVertex>();
 
 		setXmlActivationTag("pathway");
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName,
-			String sQualifiedName, Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
+			Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
@@ -84,23 +87,25 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		if (attributes != null) {
 			if (sElementName.equals("pathway")) {
 				handlePathwayTag();
-			} else if (sElementName.equals("entry")) {
+			}
+			else if (sElementName.equals("entry")) {
 				handleEntryTag();
-			} else if (sElementName.equals("graphics")) {
+			}
+			else if (sElementName.equals("graphics")) {
 				handleGraphicsTag();
 			}
-			// else if (sElementName.equals("relation")) {
-			// handleRelationTag();
-			// }
-			// else if (sElementName.equals("reaction")) {
-			// handleReactionTag();
-			// }
-			// else if (sElementName.equals("product")) {
-			// handleReactionProductTag();
-			// }
-			// else if (sElementName.equals("substrate")) {
-			// handleReactionSubstrateTag();
-			// }
+			else if (sElementName.equals("relation")) {
+				handleRelationTag();
+			}
+			else if (sElementName.equals("reaction")) {
+				handleReactionTag();
+			}
+			else if (sElementName.equals("product")) {
+				handleReactionProductTag();
+			}
+			else if (sElementName.equals("substrate")) {
+				handleReactionSubstrateTag();
+			}
 		}
 	}
 
@@ -137,24 +142,26 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// int iKeggId = 0;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-			sAttributeName = attributes.getLocalName(iAttributeIndex);
+			attributeName = attributes.getLocalName(iAttributeIndex);
 
-			if ("".equals(sAttributeName)) {
-				sAttributeName = attributes.getQName(iAttributeIndex);
+			if ("".equals(attributeName)) {
+				attributeName = attributes.getQName(iAttributeIndex);
 			}
 
-			if (sAttributeName.equals("name")) {
+			if (attributeName.equals("name")) {
 				sName = attributes.getValue(iAttributeIndex);
-			} else if (sAttributeName.equals("title")) {
+			}
+			else if (attributeName.equals("title")) {
 				sTitle = attributes.getValue(iAttributeIndex);
 			}
 			// else if (sAttributeName.equals("number"))
 			// {
 			// iKeggId = new Integer(attributes.getValue(iAttributeIndex));
 			// }
-			else if (sAttributeName.equals("image")) {
+			else if (attributeName.equals("image")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
-			} else if (sAttributeName.equals("link")) {
+			}
+			else if (attributeName.equals("link")) {
 				sExternalLink = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -163,16 +170,16 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 			sTitle = "unknown title";
 		}
 
-		String sPathwayTexturePath = sImageLink.substring(
-				sImageLink.lastIndexOf('/') + 1, sImageLink.length());
+		String sPathwayTexturePath = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
+				sImageLink.length());
 
 		// FIX inconsistency between XML data which state the pathway images as
 		// GIFs - but we have them as
 		// PNGs
 		sPathwayTexturePath = sPathwayTexturePath.replace(".gif", ".png");
 
-		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.KEGG, sName,
-				sTitle, sPathwayTexturePath, sExternalLink);
+		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.KEGG, sName, sTitle,
+				sPathwayTexturePath, sExternalLink);
 	}
 
 	/**
@@ -181,35 +188,38 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	 * link="http://www.genome.jp/dbget-bin/www_bget?enzyme+1.8.4.1">
 	 */
 	protected void handleEntryTag() {
-		// int iEntryId = 0;
+		int entryId = 0;
 		String sName = "";
 		String sType = "";
 		String sExternalLink = "";
 		String sReactionId = "";
 
-		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-			sAttributeName = attributes.getLocalName(iAttributeIndex);
+		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
+			attributeName = attributes.getLocalName(attributeIndex);
 
-			if ("".equals(sAttributeName)) {
-				sAttributeName = attributes.getQName(iAttributeIndex);
+			if ("".equals(attributeName)) {
+				attributeName = attributes.getQName(attributeIndex);
 			}
 
-			if (sAttributeName.equals("id")) {
-				// iEntryId =
-				// Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-			} else if (sAttributeName.equals("name")) {
-				sName = attributes.getValue(iAttributeIndex);
-			} else if (sAttributeName.equals("type")) {
-				sType = attributes.getValue(iAttributeIndex);
-			} else if (sAttributeName.equals("link")) {
-				sExternalLink = attributes.getValue(iAttributeIndex);
-			} else if (sAttributeName.equals("reaction")) {
-				sReactionId = attributes.getValue(iAttributeIndex);
+			if (attributeName.equals("id")) {
+				entryId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
+			}
+			else if (attributeName.equals("name")) {
+				sName = attributes.getValue(attributeIndex);
+			}
+			else if (attributeName.equals("type")) {
+				sType = attributes.getValue(attributeIndex);
+			}
+			else if (attributeName.equals("link")) {
+				sExternalLink = attributes.getValue(attributeIndex);
+			}
+			else if (attributeName.equals("reaction")) {
+				sReactionId = attributes.getValue(attributeIndex);
 			}
 		}
 
-		// iCurrentEntryId = iEntryId;
-		alCurrentVertex.clear();
+		currentEntryId = entryId;
+		currentVertices.clear();
 
 		if (sType.equals("gene")) {
 			StringTokenizer sTokenText = new StringTokenizer(sName, " ");
@@ -226,15 +236,15 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 				try {
 					IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager
-							.get()
-							.getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
+							.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
 							.getGeneIDMappingManager();
 					iDavidId = genomeIdManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
 							IDType.getIDType("DAVID"),
 							Integer.valueOf(sTmpVertexName.substring(4)));
-				} catch (Exception e) {
+				}
+				catch (Exception e) {
 					// TODO: investigate!!
-					// System.out.println("TODO: check why the parsing error occurs");
+					System.out.println("TODO: check why the parsing error occurs");
 				}
 
 				if (iDavidId == null) {
@@ -250,16 +260,17 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 				DataTableDavidID.add(iDavidId);
 			}
 
-			alCurrentVertex.addAll(pathwayItemManager.createVertexGene(sTmpVertexName,
-					sType, sExternalLink, sReactionId, DataTableDavidID));
-		} else {
+			currentVertices.addAll(pathwayItemManager.createVertexGene(sTmpVertexName, sType,
+					sExternalLink, sReactionId, DataTableDavidID));
+		}
+		else {
 			currentVertex = pathwayItemManager.createVertex(sName, sType, sExternalLink,
 					sReactionId);
 
 			if (currentVertex == null)
 				throw new IllegalStateException("New pathway vertex is null");
 
-			alCurrentVertex.add(currentVertex);
+			currentVertices.add(currentVertex);
 		}
 	}
 
@@ -278,45 +289,53 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		short shYPosition = 0;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
-			sAttributeName = attributes.getLocalName(iAttributeIndex);
+			attributeName = attributes.getLocalName(iAttributeIndex);
 
 			try {
-				if ("".equals(sAttributeName)) {
-					sAttributeName = attributes.getQName(iAttributeIndex);
+				if ("".equals(attributeName)) {
+					attributeName = attributes.getQName(iAttributeIndex);
 				}
 
-				if (sAttributeName.equals("name")) {
+				if (attributeName.equals("name")) {
 					sName = attributes.getValue(iAttributeIndex);
-				} else if (sAttributeName.equals("height")) {
+				}
+				else if (attributeName.equals("height")) {
 					shHeight = new Short(attributes.getValue(iAttributeIndex));
-				} else if (sAttributeName.equals("width")) {
+				}
+				else if (attributeName.equals("width")) {
 					shWidth = new Short(attributes.getValue(iAttributeIndex));
-				} else if (sAttributeName.equals("x")) {
+				}
+				else if (attributeName.equals("x")) {
 					shXPosition = new Short(attributes.getValue(iAttributeIndex));
-				} else if (sAttributeName.equals("y")) {
+				}
+				else if (attributeName.equals("y")) {
 					shYPosition = new Short(attributes.getValue(iAttributeIndex));
-				} else if (sAttributeName.equals("type")) {
+				}
+				else if (attributeName.equals("type")) {
 					sShapeType = attributes.getValue(iAttributeIndex);
 				}
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
 
-		if (alCurrentVertex.isEmpty())
+		if (currentVertices.isEmpty()) {
 			// TODO: investigate!
+			System.out.println("TODO: check why the parsing error occurs");
 			return;
+		}
 
-		// IGraphItem vertexRep =
-		pathwayItemManager.createVertexRep(currentPathway, alCurrentVertex, sName,
-				sShapeType, shXPosition, shYPosition, shWidth, shHeight);
+		PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
+				currentVertices, sName, sShapeType, shXPosition, shYPosition, shWidth,
+				shHeight);
 
-		// hashKgmlEntryIdToVertexRepId.put(iCurrentEntryId, vertexRep);
-		// hashKgmlNameToVertexRepId.put(((PathwayVertexGraphItem)
-		// currentVertex).getName(), vertexRep);
-		// hashKgmlReactionIdToVertexRepId.put(((PathwayVertexGraphItem)
-		// currentVertex).getReactionId(),
-		// vertexRep);
+		hashKgmlEntryIdToVertexRepId.put(currentEntryId, vertexRep);
+
+		//for (PathwayVertex vertex : currentVertices) {
+			//hashKgmlNameToVertexRepId.put(vertex.getName(), vertexRep);
+			//hashKgmlReactionIdToVertexRepId.put(vertex.getReactionId(), vertexRep);
+		//}
 	}
 
 	/**
@@ -325,105 +344,98 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	 */
 	protected void handleRelationTag() {
 
-		// int iSourceVertexId = 0;
-		// int iTargetVertexId = 0;
-		// String sType = "";
+		int sourceVertexId = 0;
+		int targetVertexId = 0;
+		String sType = "";
+
+		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
+			attributeName = attributes.getLocalName(attributeIndex);
+
+			if ("".equals(attributeName)) {
+				attributeName = attributes.getQName(attributeIndex);
+			}
+
+			if (attributeName.equals("type")) {
+				sType = attributes.getValue(attributeIndex);
+			}
+			else if (attributeName.equals("entry1")) {
+				sourceVertexId = Integer.valueOf(attributes.getValue(attributeIndex))
+						.intValue();
+			}
+			else if (attributeName.equals("entry2")) {
+				targetVertexId = Integer.valueOf(attributes.getValue(attributeIndex))
+						.intValue();
+			}
+
+			//System.out.println("Attribute name: " + attributeName);
+			//System.out.println("Attribute value: " + attributes.getValue(attributeIndex));
+		}
+
+		PathwayVertexRep sourceVertexRep = hashKgmlEntryIdToVertexRepId.get(sourceVertexId);
+		PathwayVertexRep targetVertexRep = hashKgmlEntryIdToVertexRepId.get(targetVertexId);
+
+		// Create edge (data)
+		PathwayRelationEdge relationEdge = pathwayItemManager.createRelationEdge(
+				sourceVertexRep.getPathwayVertices(), targetVertexRep.getPathwayVertices(),
+				sType);
+
+		// Create edge representation
+		pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge,
+				sourceVertexRep, targetVertexRep);
+	}
+
+	protected void handleSubtypeTag() {
+
+		// String sName = "";
+		// int iCompoundId = 0;
 		//
 		// for (int iAttributeIndex = 0; iAttributeIndex <
-		// attributes.getLength(); iAttributeIndex++) {
+		// attributes.getLength();
+		// iAttributeIndex++)
+		// {
 		// sAttributeName = attributes.getLocalName(iAttributeIndex);
 		//
-		// if ("".equals(sAttributeName)) {
+		// if ("".equals(sAttributeName))
+		// {
 		// sAttributeName = attributes.getQName(iAttributeIndex);
 		// }
 		//
-		// if (sAttributeName.equals("type")) {
-		// sType = attributes.getValue(iAttributeIndex);
-		// }
-		// else if (sAttributeName.equals("entry1")) {
-		// iSourceVertexId =
-		// Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-		// }
-		// else if (sAttributeName.equals("entry2")) {
-		// iTargetVertexId =
-		// Integer.valueOf(attributes.getValue(iAttributeIndex)).intValue();
-		// }
-		//
-		// // System.out.println("Attribute name: " +sAttributeName);
-		// // System.out.println("Attribute value: "
-		// // +attributes.getValue(iAttributeIndex));
+		// if (sAttributeName.equals("name"))
+		// sName = attributes.getValue(iAttributeIndex);
+		// else if (sAttributeName.equals("value"))
+		// {
+		// // TODO: handle special case of value "-->" in signalling pathways
+		// if (attributes.getValue(iAttributeIndex).contains("-") ||
+		// attributes.getValue(iAttributeIndex).contains("=") ||
+		// attributes.getValue(iAttributeIndex).contains("+") ||
+		// attributes.getValue(iAttributeIndex).contains(":") ||
+		// attributes.getValue(iAttributeIndex).contains("."))
+		// iCompoundId = 0;
+		// else
+		// iCompoundId = new Integer(attributes.getValue(iAttributeIndex));
 		// }
 		//
-		// IGraphItem graphItemIn =
-		// hashKgmlEntryIdToVertexRepId.get(iSourceVertexId);
-		// IGraphItem graphItemOut =
-		// hashKgmlEntryIdToVertexRepId.get(iTargetVertexId);
 		//
-		// // Create edge (data)
-		// IGraphItem relationEdge =
-		// pathwayItemManager
-		// .createRelationEdge(((PathwayVertexGraphItemRep) graphItemIn)
-		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT),
-		// ((PathwayVertexGraphItemRep) graphItemOut)
-		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT), sType);
+		// //System.out.println("Attribute name: " +sAttributeName);
+		// //System.out.println("Attribute value: "
+		// +attributes.getValue(iAttributeIndex));
+		// }
 		//
-		// // Create edge representation
-		// pathwayItemManager.createRelationEdgeRep(currentPathway,
-		// relationEdge, graphItemIn, graphItemOut);
-
+		// if (sName.equals("compound"))
+		// {
+		// //retrieve the internal element ID and add the compound value to the
+		// edge
+		// generalManager.getSingelton().getPathwayElementManager().
+		// addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
+		// }
 	}
 
-	//
-	// protected void handleSubtypeTag() {
-	//
-	// String sName = "";
-	// int iCompoundId = 0;
-	//
-	// for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength();
-	// iAttributeIndex++)
-	// {
-	// sAttributeName = attributes.getLocalName(iAttributeIndex);
-	//
-	// if ("".equals(sAttributeName))
-	// {
-	// sAttributeName = attributes.getQName(iAttributeIndex);
-	// }
-	//
-	// if (sAttributeName.equals("name"))
-	// sName = attributes.getValue(iAttributeIndex);
-	// else if (sAttributeName.equals("value"))
-	// {
-	// // TODO: handle special case of value "-->" in signalling pathways
-	// if (attributes.getValue(iAttributeIndex).contains("-") ||
-	// attributes.getValue(iAttributeIndex).contains("=") ||
-	// attributes.getValue(iAttributeIndex).contains("+") ||
-	// attributes.getValue(iAttributeIndex).contains(":") ||
-	// attributes.getValue(iAttributeIndex).contains("."))
-	// iCompoundId = 0;
-	// else
-	// iCompoundId = new Integer(attributes.getValue(iAttributeIndex));
-	// }
-	//
-	//
-	// //System.out.println("Attribute name: " +sAttributeName);
-	// //System.out.println("Attribute value: "
-	// +attributes.getValue(iAttributeIndex));
-	// }
-	//
-	// if (sName.equals("compound"))
-	// {
-	// //retrieve the internal element ID and add the compound value to the edge
-	// generalManager.getSingelton().getPathwayElementManager().
-	// addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
-	// }
-	// }
-	//
 	/**
 	 * Reacts on the elements of the reaction tag. An example reaction tag looks
 	 * like this: <reaction name="rn:R01001" type="irreversible">
 	 */
 	protected void handleReactionTag() {
-
+		//
 		// String sReactionName = "";
 		// String sReactionType = "";
 		//
@@ -444,13 +456,12 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// }
 		//
 		// currentReactionSubstrateEdgeRep =
-		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName,
-		// sReactionType);
+		// pathwayItemManager.createReactionEdge(
+		// currentPathway, sReactionName, sReactionType);
 		//
 		// currentReactionProductEdgeRep =
-		// pathwayItemManager.createReactionEdge(currentPathway, sReactionName,
-		// sReactionType);
-
+		// pathwayItemManager.createReactionEdge(currentPathway,
+		// sReactionName, sReactionType);
 	}
 
 	/**
@@ -477,11 +488,10 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// IGraphItem graphItemIn =
 		// hashKgmlNameToVertexRepId.get(sReactionSubstrateName);
 		//
-		// IGraphItem graphItemOut =
-		// hashKgmlReactionIdToVertexRepId
-		// .get(((PathwayReactionEdgeGraphItem)
-		// currentReactionSubstrateEdgeRep.getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_PARENT).get(0)).getReactionId());
+		// IGraphItem graphItemOut = hashKgmlReactionIdToVertexRepId
+		// .get(((PathwayReactionEdgeGraphItem) currentReactionSubstrateEdgeRep
+		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0))
+		// .getReactionId());
 		//
 		// if (graphItemIn == null || graphItemOut == null)
 		// return;
@@ -492,10 +502,9 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// currentReactionSubstrateEdgeRep.addItemDoubleLinked(graphItemOut,
 		// EGraphItemProperty.OUTGOING);
 		//
-		// IGraphItem tmpReactionEdge =
-		// (PathwayReactionEdgeGraphItem)
-		// currentReactionSubstrateEdgeRep.getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_PARENT).get(0);
+		// IGraphItem tmpReactionEdge = (PathwayReactionEdgeGraphItem)
+		// currentReactionSubstrateEdgeRep
+		// .getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0);
 		//
 		// if (tmpReactionEdge == null)
 		// return;
@@ -505,18 +514,19 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// == 0)
 		// return;
 		//
-		// tmpReactionEdge.addItemDoubleLinked(graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)
-		// .get(0), EGraphItemProperty.INCOMING);
+		// tmpReactionEdge.addItemDoubleLinked(
+		// graphItemIn.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0),
+		// EGraphItemProperty.INCOMING);
 		//
 		// if
 		// (graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).size()
 		// == 0)
 		// return;
 		//
-		// tmpReactionEdge.addItemDoubleLinked((IGraphItem)
-		// graphItemOut.getAllItemsByProp(
-		// EGraphItemProperty.ALIAS_PARENT).get(0),
-		// EGraphItemProperty.OUTGOING);
+		// tmpReactionEdge.addItemDoubleLinked(
+		// (IGraphItem)
+		// graphItemOut.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)
+		// .get(0), EGraphItemProperty.OUTGOING);
 	}
 
 	/**
@@ -597,8 +607,8 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 		super.destroyHandler();
 
-		// hashKgmlEntryIdToVertexRepId.clear();
-		// hashKgmlNameToVertexRepId.clear();
-		// hashKgmlReactionIdToVertexRepId.clear();
+		hashKgmlEntryIdToVertexRepId.clear();
+		hashKgmlNameToVertexRepId.clear();
+		hashKgmlReactionIdToVertexRepId.clear();
 	}
 }

@@ -12,7 +12,7 @@ import org.caleydo.core.manager.GeneralManager;
  * 
  * @author Marc Streit
  */
-public class PathwayVertexGraphItem implements Serializable, IUniqueObject {
+public class PathwayVertex implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -26,7 +26,7 @@ public class PathwayVertexGraphItem implements Serializable, IUniqueObject {
 
 	private final String reactionId;
 	
-	private List<PathwayVertexGraphItemRep> pathwayVertexReps = new ArrayList<PathwayVertexGraphItemRep>();
+	private List<PathwayVertexRep> pathwayVertexReps = new ArrayList<PathwayVertexRep>();
 
 	/**
 	 * Constructor.
@@ -36,7 +36,7 @@ public class PathwayVertexGraphItem implements Serializable, IUniqueObject {
 	 * @param sExternalLink
 	 * @param sReactionId
 	 */
-	public PathwayVertexGraphItem(final String sName, final String sType,
+	public PathwayVertex(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId) {
 
 		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX);
@@ -84,11 +84,11 @@ public class PathwayVertexGraphItem implements Serializable, IUniqueObject {
 		return name;
 	}
 	
-	public void addPathwayVertexRep(PathwayVertexGraphItemRep vertexRep) {
+	public void addPathwayVertexRep(PathwayVertexRep vertexRep) {
 		pathwayVertexReps.add(vertexRep);
 	}
 	
-	public List<PathwayVertexGraphItemRep> getPathwayVertexReps() {
+	public List<PathwayVertexRep> getPathwayVertexReps() {
 		return pathwayVertexReps;
 	}
 }

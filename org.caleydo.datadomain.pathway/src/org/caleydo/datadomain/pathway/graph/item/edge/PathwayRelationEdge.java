@@ -9,7 +9,7 @@ import org.jgrapht.graph.DefaultEdge;
  * 
  * @author Marc Streit
  */
-public class PathwayRelationEdgeGraphItem extends DefaultEdge implements
+public class PathwayRelationEdge extends DefaultEdge implements
 		Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -21,8 +21,8 @@ public class PathwayRelationEdgeGraphItem extends DefaultEdge implements
 	 * 
 	 * @param sType
 	 */
-	public PathwayRelationEdgeGraphItem(final String sType) {
-
+	public PathwayRelationEdge(final String sType) {
+		
 		type = EPathwayRelationEdgeType.valueOf(sType);
 	}
 

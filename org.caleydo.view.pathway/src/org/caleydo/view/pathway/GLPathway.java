@@ -52,8 +52,8 @@ import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -221,6 +221,7 @@ public class GLPathway
 			// TODO: also put this in global DL
 			renderPathway(gl, pathway);
 
+			
 			gl.glCallList(displayListIndex);
 		}
 	}
@@ -331,7 +332,7 @@ public class GLPathway
 					continue;
 				}
 
-				PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) pathwayItemManager
+				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
 						.getPathwayVertexRep(item.getID());
 
 				int viewID = uniqueID;
@@ -374,11 +375,11 @@ public class GLPathway
 
 		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
-		for (PathwayVertexGraphItem vertex : pathwayItemManager.getPathwayVertexRep(
+		for (PathwayVertex vertex : pathwayItemManager.getPathwayVertexRep(
 				iPathwayVertexGraphItemRepID).getPathwayVertices()) {
 
 			int davidID = pathwayItemManager
-					.getDavidIdByPathwayVertex((PathwayVertexGraphItem) vertex);
+					.getDavidIdByPathwayVertex((PathwayVertex) vertex);
 
 			if (davidID == -1) {
 				continue;
@@ -422,7 +423,7 @@ public class GLPathway
 		SelectionDelta newSelectionDelta = new SelectionDelta(
 				pathwayDataDomain.getPrimaryIDType());
 
-		PathwayVertexGraphItem pathwayVertexGraphItem;
+		PathwayVertex pathwayVertexGraphItem;
 
 		IDMappingManager idMappingManager = pathwayDataDomain.getGeneIDMappingManager();
 
@@ -446,7 +447,7 @@ public class GLPathway
 			}
 
 			// Convert DAVID ID to pathway graph item representation ID
-			for (PathwayVertexGraphItemRep vertexRep : pathwayVertexGraphItem
+			for (PathwayVertexRep vertexRep : pathwayVertexGraphItem
 					.getPathwayVertexReps()) {
 				if (!pathway.containsVertex(vertexRep)) {
 					continue;
@@ -594,7 +595,7 @@ public class GLPathway
 
 					SelectionType selectionType;
 
-					PathwayVertexGraphItemRep vertexRep = (PathwayVertexGraphItemRep) pathwayItemManager
+					PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
 							.getPathwayVertexRep(externalID);
 
 					setDisplayListDirty();
@@ -657,7 +658,7 @@ public class GLPathway
 
 							}
 							else if (vertexRep.getType() == EPathwayVertexType.gene) {
-								for (PathwayVertexGraphItem pathwayVertexGraphItem : vertexRep
+								for (PathwayVertex pathwayVertexGraphItem : vertexRep
 										.getPathwayVertices()) {
 
 									GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
@@ -667,7 +668,7 @@ public class GLPathway
 											.setData(
 													pathwayDataDomain.getDavidIDType(),
 													pathwayItemManager
-															.getDavidIdByPathwayVertex((PathwayVertexGraphItem) pathwayVertexGraphItem));
+															.getDavidIdByPathwayVertex((PathwayVertex) pathwayVertexGraphItem));
 									contextMenuCreator
 											.addContextMenuItemContainer(contexMenuItemContainer);
 								}
@@ -730,7 +731,7 @@ public class GLPathway
 				&& selectionType == SelectionType.SELECTION)
 			return;
 
-		PathwayVertexGraphItemRep tmpPathwayVertexGraphItemRep;
+		PathwayVertexRep tmpPathwayVertexGraphItemRep;
 		int pathwayHeight = pathway.getHeight();
 
 		int viewID = uniqueID;
@@ -767,8 +768,8 @@ public class GLPathway
 		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective().getID(),
 				pathwayDataDomain.getDavidIDType());
 
-		for (PathwayVertexGraphItemRep vertexRep : pathway.vertexSet()) {
-			for (PathwayVertexGraphItem vertex : vertexRep.getPathwayVertices()) {
+		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
+			for (PathwayVertex vertex : vertexRep.getPathwayVertices()) {
 
 				int iDavidID = pathwayItemManager.getDavidIdByPathwayVertex(vertex);
 

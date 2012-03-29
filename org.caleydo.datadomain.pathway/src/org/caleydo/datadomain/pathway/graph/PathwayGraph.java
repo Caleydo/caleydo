@@ -4,17 +4,17 @@ import java.io.Serializable;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
-import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.DirectedPseudograph;
 
 /**
  * Overall graph that holds all pathways
  * 
  * @author Marc Streit
  */
-public class PathwayGraph extends DefaultDirectedGraph<PathwayVertexGraphItemRep, DefaultEdge> implements IUniqueObject, Serializable,
+public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultEdge> implements IUniqueObject, Serializable,
 		Comparable<PathwayGraph> {
 	
 	private static final long serialVersionUID = 1L;
