@@ -587,7 +587,7 @@ public class GLPathway
 		}
 
 		// We do not handle picking events in pathways for visbricks
-		if (getRemoteRenderingGLView().getViewType().equals("org.caleydo.view.visbricks"))
+		if (getRemoteRenderingGLView().getViewType().equals("org.caleydo.view.brick"))
 			return;
 
 			switch (pickingType) {

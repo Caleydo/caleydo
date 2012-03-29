@@ -413,8 +413,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 
 		for (PathwayVertexRep pathwayItemRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
-			PathwayGraph pathwayGraph = (PathwayGraph) pathwayItemRep.getPathways();
-			pathways.add(pathwayGraph);
+			pathways.addAll(pathwayItemRep.getPathways());
 		}
 
 		return pathways;
