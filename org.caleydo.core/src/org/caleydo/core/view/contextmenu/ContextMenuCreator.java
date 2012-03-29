@@ -4,10 +4,8 @@ import java.awt.MouseInfo;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
-
 import javax.swing.JPopupMenu;
 import javax.swing.SwingUtilities;
-
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.swt.widgets.Composite;
 

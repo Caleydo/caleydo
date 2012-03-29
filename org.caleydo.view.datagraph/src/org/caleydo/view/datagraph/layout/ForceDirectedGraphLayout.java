@@ -5,15 +5,14 @@ import java.awt.geom.Rectangle2D;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.Graph;
 import org.caleydo.view.datagraph.layout.edge.rendering.AEdgeRenderer;
 import org.caleydo.view.datagraph.layout.edge.rendering.FreeLayoutEdgeBandRenderer;
 import org.caleydo.view.datagraph.layout.edge.rendering.FreeLayoutEdgeLineRenderer;
-import org.caleydo.view.datagraph.layout.edge.routing.IEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.layout.edge.routing.CollisionAvoidanceRoutingStrategy;
+import org.caleydo.view.datagraph.layout.edge.routing.IEdgeRoutingStrategy;
 import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDVINode;
 import org.caleydo.view.datagraph.node.ViewNode;

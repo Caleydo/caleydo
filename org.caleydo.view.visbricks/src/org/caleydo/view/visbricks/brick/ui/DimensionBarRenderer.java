@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks.brick.ui;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 

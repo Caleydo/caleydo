@@ -1,9 +1,7 @@
 package org.caleydo.core.data.selection;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-
 import org.caleydo.core.data.id.IDType;
 
 /**

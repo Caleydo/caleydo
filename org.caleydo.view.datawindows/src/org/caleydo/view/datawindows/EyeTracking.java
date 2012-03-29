@@ -1,7 +1,6 @@
 package org.caleydo.view.datawindows;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.util.system.Time;
 
 public class EyeTracking {

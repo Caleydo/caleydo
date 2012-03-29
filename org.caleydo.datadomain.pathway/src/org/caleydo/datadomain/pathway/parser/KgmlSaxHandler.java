@@ -4,18 +4,17 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.core.parser.xml.IXmlParserHandler;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.util.graph.IGraph;
-import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -41,11 +40,11 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	//
 	// private HashMap<String, IGraphItem> hashKgmlReactionIdToVertexRepId;
 
-	private IGraph currentPathway;
+	private PathwayGraph currentPathway;
 
-	private IGraphItem currentVertex;
+	private PathwayVertexGraphItem currentVertex;
 
-	private ArrayList<IGraphItem> alCurrentVertex;
+	private ArrayList<PathwayVertexGraphItem> alCurrentVertex;
 
 	// private IGraphItem currentReactionSubstrateEdgeRep;
 	//
@@ -66,7 +65,7 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		pathwayItemManager = PathwayItemManager.get();
 		pathwayManager = PathwayManager.get();
 
-		alCurrentVertex = new ArrayList<IGraphItem>();
+		alCurrentVertex = new ArrayList<PathwayVertexGraphItem>();
 
 		setXmlActivationTag("pathway");
 	}

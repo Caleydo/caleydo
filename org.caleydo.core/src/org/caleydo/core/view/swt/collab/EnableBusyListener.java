@@ -2,7 +2,6 @@ package org.caleydo.core.view.swt.collab;
 
 import java.util.logging.Level;
 import java.util.logging.Logger;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Listener;

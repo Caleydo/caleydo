@@ -1,9 +1,7 @@
 package org.caleydo.datadomain.pathway.graph.item.edge;
 
 import java.io.Serializable;
-
-import org.caleydo.core.data.graph.ACaleydoGraphItem;
-import org.caleydo.util.graph.EGraphItemKind;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Pathway relation edge representation belonging to the overall pathway graph.
@@ -11,15 +9,8 @@ import org.caleydo.util.graph.EGraphItemKind;
  * 
  * @author Marc Streit
  */
-public class PathwayRelationEdgeGraphItemRep extends ACaleydoGraphItem implements
+public class PathwayRelationEdgeGraphItemRep extends DefaultEdge implements
 		Serializable {
 
 	private static final long serialVersionUID = 1L;
-
-	/**
-	 * Constructor.
-	 */
-	public PathwayRelationEdgeGraphItemRep() {
-		super(EGraphItemKind.EDGE);
-	}
 }

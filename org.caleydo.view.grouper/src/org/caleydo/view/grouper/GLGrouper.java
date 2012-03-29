@@ -1,7 +1,6 @@
 package org.caleydo.view.grouper;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collection;
@@ -9,11 +8,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;

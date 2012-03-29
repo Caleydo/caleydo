@@ -1,7 +1,6 @@
 package org.caleydo.view.datagraph.layout.edge.rendering;
 
 import java.util.List;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;

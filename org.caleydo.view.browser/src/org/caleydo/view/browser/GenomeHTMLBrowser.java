@@ -1,7 +1,6 @@
 package org.caleydo.view.browser;
 
 import java.util.Set;
-
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;

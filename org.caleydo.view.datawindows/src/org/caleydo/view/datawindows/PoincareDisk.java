@@ -1,7 +1,6 @@
 package org.caleydo.view.datawindows;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.graph.tree.Tree;
 
 public class PoincareDisk {

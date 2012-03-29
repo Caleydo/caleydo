@@ -4,7 +4,6 @@
 package org.caleydo.core.data.configuration;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.ADataPerspective;

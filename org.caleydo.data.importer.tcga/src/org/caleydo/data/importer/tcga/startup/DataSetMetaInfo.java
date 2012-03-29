@@ -2,7 +2,6 @@ package org.caleydo.data.importer.tcga.startup;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 

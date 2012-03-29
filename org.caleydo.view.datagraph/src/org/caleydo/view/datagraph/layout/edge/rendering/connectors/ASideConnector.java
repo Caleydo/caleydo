@@ -1,10 +1,8 @@
 package org.caleydo.view.datagraph.layout.edge.rendering.connectors;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.geom.Point2D;
 import java.util.List;
-
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;

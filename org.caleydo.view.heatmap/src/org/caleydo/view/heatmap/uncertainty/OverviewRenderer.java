@@ -2,9 +2,7 @@ package org.caleydo.view.heatmap.uncertainty;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;

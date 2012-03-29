@@ -1,9 +1,7 @@
 package org.caleydo.datadomain.pathway.graph.item.edge;
 
 import java.io.Serializable;
-
-import org.caleydo.core.data.graph.ACaleydoGraphItem;
-import org.caleydo.util.graph.EGraphItemKind;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Pathway reaction edge belonging to the overall pathway graph. Used for KEGG
@@ -11,7 +9,7 @@ import org.caleydo.util.graph.EGraphItemKind;
  * 
  * @author Marc Streit
  */
-public class PathwayReactionEdgeGraphItem extends ACaleydoGraphItem implements
+public class PathwayReactionEdgeGraphItem extends DefaultEdge implements
 		Serializable {
 
 	private static final long serialVersionUID = 1L;
@@ -27,7 +25,6 @@ public class PathwayReactionEdgeGraphItem extends ACaleydoGraphItem implements
 	 * @param sType
 	 */
 	public PathwayReactionEdgeGraphItem(final String sReactionId, final String sType) {
-		super(EGraphItemKind.EDGE);
 
 		this.sReactionId = sReactionId;
 

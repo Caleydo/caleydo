@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks.brick.layout;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;

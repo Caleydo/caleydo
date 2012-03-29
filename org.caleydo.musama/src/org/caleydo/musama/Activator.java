@@ -3,11 +3,9 @@ package org.caleydo.musama;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
-
 import de.mmis.core.tuplespace.TuplespaceException;
 
 /**

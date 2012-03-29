@@ -2,7 +2,6 @@ package org.caleydo.core.event.view.infoarea;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.event.AEvent;
 
 /**

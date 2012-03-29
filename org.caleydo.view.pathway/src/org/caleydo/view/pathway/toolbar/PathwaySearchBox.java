@@ -1,7 +1,6 @@
 package org.caleydo.view.pathway.toolbar;
 
 import java.util.Collection;
-
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.gui.toolbar.IToolBarItem;

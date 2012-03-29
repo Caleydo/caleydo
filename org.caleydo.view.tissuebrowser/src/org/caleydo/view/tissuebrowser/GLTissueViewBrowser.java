@@ -2,13 +2,10 @@ package org.caleydo.view.tissuebrowser;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;

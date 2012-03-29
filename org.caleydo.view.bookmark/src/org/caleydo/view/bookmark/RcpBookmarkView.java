@@ -2,7 +2,6 @@ package org.caleydo.view.bookmark;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;

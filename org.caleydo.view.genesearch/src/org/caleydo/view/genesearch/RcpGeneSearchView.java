@@ -5,11 +5,9 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Set;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
@@ -21,11 +19,9 @@ import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraphItem;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
@@ -59,7 +55,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  */
-public class RcpGeneSearchView extends CaleydoRCPViewPart {
+public class RcpGeneSearchView
+	extends CaleydoRCPViewPart {
 
 	// private GeneticDataDomain dataDomain;
 	private ArrayList<GeneticDataDomain> geneticDataDomains;
@@ -223,9 +220,9 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void keyPressed(KeyEvent event) {
 				switch (event.keyCode) {
-				case SWT.CR: {
-					startSearch();
-				}
+					case SWT.CR: {
+						startSearch();
+					}
 				}
 			}
 		});
@@ -259,8 +256,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 			geneResultsLabel = new Label(composite, SWT.NULL);
 			geneResultsLabel.setText("Gene results:");
 
-			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION
-					| SWT.VIRTUAL);
+			geneTable = new Table(composite, SWT.BORDER | SWT.FULL_SELECTION | SWT.VIRTUAL);
 			geneTable.setLinesVisible(true);
 			geneTable.setHeaderVisible(true);
 			geneTable.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -300,8 +296,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 
 					for (PathwayGraph pathway : getPathwaysContainingGene((Integer) e.item
 							.getData())) {
-						TableItem item = new TableItem(pathwayContainingGeneTable,
-								SWT.NULL);
+						TableItem item = new TableItem(pathwayContainingGeneTable, SWT.NULL);
 						item.setText(0, pathway.getType().getName());
 						item.setText(1, pathway.getTitle());
 						item.setData(pathway);
@@ -310,9 +305,8 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 					pathwayContainingGeneTable.getColumn(0).pack();
 					pathwayContainingGeneTable.getColumn(1).pack();
 
-					pathwayContainingGeneLabel
-							.setText("Pathway containing selected gene: "
-									+ geneTable.getSelection()[0].getText(3));
+					pathwayContainingGeneLabel.setText("Pathway containing selected gene: "
+							+ geneTable.getSelection()[0].getText(3));
 				}
 			});
 
@@ -321,15 +315,14 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 					.setText("Show only genes contained in any pathway");
 			showOnlyGenesContainedInAnyPathway
 					.setSelection(bShowOnlyGenesContainedInAnyPathway);
-			showOnlyGenesContainedInAnyPathway
-					.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
-							bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway
-									.getSelection();
-							startSearch();
-						}
-					});
+			showOnlyGenesContainedInAnyPathway.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					bShowOnlyGenesContainedInAnyPathway = showOnlyGenesContainedInAnyPathway
+							.getSelection();
+					startSearch();
+				}
+			});
 		}
 
 		if ((useGeneSymbol.getSelection() || useGeneDavidID.getSelection()
@@ -353,11 +346,10 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 
 			pathwayContainingGeneLabel = new Label(pathwayResultsComposite, SWT.NULL);
 			pathwayContainingGeneLabel.setText("Pathway containing selected gene:");
-			pathwayContainingGeneLabel.setLayoutData(new GridData(
-					GridData.FILL_HORIZONTAL));
+			pathwayContainingGeneLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER
-					| SWT.FULL_SELECTION | SWT.VIRTUAL);
+			pathwayTable = new Table(pathwayResultsComposite, SWT.BORDER | SWT.FULL_SELECTION
+					| SWT.VIRTUAL);
 			pathwayTable.setLinesVisible(true);
 			pathwayTable.setHeaderVisible(true);
 			pathwayTable.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -491,8 +483,8 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 					MappingType.getType(geneNameIDType, davidIDType)).keySet()) {
 				regexMatcher = pattern.matcher((String) geneName);
 				if (regexMatcher.find())
-					davidGeneResults.add((Integer) geneIDMappingManager.getID(
-							geneNameIDType, davidIDType, geneName));
+					davidGeneResults.add((Integer) geneIDMappingManager.getID(geneNameIDType,
+							davidIDType, geneName));
 			}
 		}
 
@@ -512,13 +504,13 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 						davidIDType, refseqMrnaIDTYpe, davidID)) {
 					sRefSeqIDs += refSeqID + " ";
 				}
-			} catch (NullPointerException npe) {
+			}
+			catch (NullPointerException npe) {
 				sRefSeqIDs = "<No Mapping>";
 			}
 
 			String entrezGeneID = "";
-			Integer iEntrezGeneID = geneIDMappingManager.getID(davidIDType, entrez,
-					davidID);
+			Integer iEntrezGeneID = geneIDMappingManager.getID(davidIDType, entrez, davidID);
 			if (iEntrezGeneID == null)
 				entrezGeneID = "<No Mapping>";
 			else
@@ -529,20 +521,19 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 			if (geneSymbol == null)
 				geneSymbol = "<Unknown>";
 
-			String geneName = geneIDMappingManager.getID(davidIDType, geneNameIDType,
-					davidID);
+			String geneName = geneIDMappingManager.getID(davidIDType, geneNameIDType, davidID);
 			if (geneName == null)
 				geneName = "<Unknown>";
 
-			ArrayList<String> foundInDataSet = new ArrayList<String>(
-					geneticDataDomains.size());
+			ArrayList<String> foundInDataSet = new ArrayList<String>(geneticDataDomains.size());
 
 			for (GeneticDataDomain geneticDataDomain : geneticDataDomains) {
-				Set<Integer> expressionIndices = geneIDMappingManager.getIDAsSet(
-						davidIDType, geneticDataDomain.getGeneIDType(), davidID);
+				Set<Integer> expressionIndices = geneIDMappingManager.getIDAsSet(davidIDType,
+						geneticDataDomain.getGeneIDType(), davidID);
 				if (expressionIndices != null && expressionIndices.size() > 0) {
 					foundInDataSet.add("Found");
-				} else
+				}
+				else
 					foundInDataSet.add("Not found");
 			}
 
@@ -608,16 +599,15 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 
 				for (final TableItem tableItem : geneTable.getSelection()) {
 
-					for (int dataDomainCount = 0; dataDomainCount < geneticDataDomains
-							.size(); dataDomainCount++) {
+					for (int dataDomainCount = 0; dataDomainCount < geneticDataDomains.size(); dataDomainCount++) {
 						// Do not create context menu for genes that have to
 						// expression value
 
-					
 						if (tableItem.getText(dataDomainCount).equalsIgnoreCase("FOUND")) {
 							createContextMenuItemsForDataDomain(menu, tableItem,
 									geneticDataDomains.get(dataDomainCount));
-						} else {
+						}
+						else {
 							MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 							openInBrowserMenuItem.setText("Not loaded");
 						}
@@ -631,94 +621,98 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 		});
 	}
 
-	private void createContextMenuItemsForDataDomain(Menu menu,
-			final TableItem tableItem, final GeneticDataDomain dataDomain) {
+	private void createContextMenuItemsForDataDomain(Menu menu, final TableItem tableItem,
+			final GeneticDataDomain dataDomain) {
 
-		
-//		
-//		MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
-//		openInBrowserMenuItem.setText("Open in browser");
-//		openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
-//				geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
-//		openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//
-//				searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
-//
-//				// Switch to browser view
-//				try {
-//					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//							.showView("org.caleydo.view.browser");
-//				} catch (PartInitException e1) {
-//					e1.printStackTrace();
-//				}
-//			};
-//		});
-//
-//		MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
-//		loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
-//		loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
-//				geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
-//
-//		loadPathwayInBucketMenuItem.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//
-//				searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
-//			};
-//		});
-//
-//		MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
-//		loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
-//		loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
-//				geneTable.getDisplay(),
-//				"resources/icons/view/tablebased/heatmap/heatmap.png"));
-//
-//		loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//
-//				searchViewMediator.selectGeneSystemWide((Integer) tableItem.getData());
-//
-//				// Switch to browser view
-//				try {
-//					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-//							.showView("org.caleydo.view.heatmap.hierarchical");
-//				} catch (PartInitException e1) {
-//					e1.printStackTrace();
-//				}
-//			};
-//		});
-//
-//		MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu, SWT.PUSH);
-//		loadGeneInParallelCoordinatesMenuItem
-//				.setText("Show gene in parallel coordinates");
-//		loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
-//				.getImage(geneTable.getDisplay(),
-//						"resources/icons/view/tablebased/parcoords/parcoords.png"));
-//
-//		loadGeneInParallelCoordinatesMenuItem
-//				.addSelectionListener(new SelectionAdapter() {
-//					@Override
-//					public void widgetSelected(SelectionEvent e) {
-//
-//						searchViewMediator.selectGeneSystemWide((Integer) tableItem
-//								.getData());
-//
-//						// Switch to browser view
-//						try {
-//							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-//									.getActivePage()
-//									.showView("org.caleydo.view.parcoords");
-//						} catch (PartInitException e1) {
-//							e1.printStackTrace();
-//						}
-//					};
-//				});
-//
+		//
+		// MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
+		// openInBrowserMenuItem.setText("Open in browser");
+		// openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
+		// geneTable.getDisplay(), "resources/icons/view/browser/browser.png"));
+		// openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// searchViewMediator.selectGeneSystemWide((Integer)
+		// tableItem.getData());
+		//
+		// // Switch to browser view
+		// try {
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		// .showView("org.caleydo.view.browser");
+		// } catch (PartInitException e1) {
+		// e1.printStackTrace();
+		// }
+		// };
+		// });
+		//
+		// MenuItem loadPathwayInBucketMenuItem = new MenuItem(menu, SWT.PUSH);
+		// loadPathwayInBucketMenuItem.setText("Load containing pathways in Bucket");
+		// loadPathwayInBucketMenuItem.setImage(generalManager.getResourceLoader().getImage(
+		// geneTable.getDisplay(), "resources/icons/view/remote/remote.png"));
+		//
+		// loadPathwayInBucketMenuItem.addSelectionListener(new
+		// SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// searchViewMediator.loadPathwayByGene((Integer) tableItem.getData());
+		// };
+		// });
+		//
+		// MenuItem loadGeneInHeatMapMenuItem = new MenuItem(menu, SWT.PUSH);
+		// loadGeneInHeatMapMenuItem.setText("Show gene in heat map");
+		// loadGeneInHeatMapMenuItem.setImage(generalManager.getResourceLoader().getImage(
+		// geneTable.getDisplay(),
+		// "resources/icons/view/tablebased/heatmap/heatmap.png"));
+		//
+		// loadGeneInHeatMapMenuItem.addSelectionListener(new SelectionAdapter()
+		// {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// searchViewMediator.selectGeneSystemWide((Integer)
+		// tableItem.getData());
+		//
+		// // Switch to browser view
+		// try {
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+		// .showView("org.caleydo.view.heatmap.hierarchical");
+		// } catch (PartInitException e1) {
+		// e1.printStackTrace();
+		// }
+		// };
+		// });
+		//
+		// MenuItem loadGeneInParallelCoordinatesMenuItem = new MenuItem(menu,
+		// SWT.PUSH);
+		// loadGeneInParallelCoordinatesMenuItem
+		// .setText("Show gene in parallel coordinates");
+		// loadGeneInParallelCoordinatesMenuItem.setImage(generalManager.getResourceLoader()
+		// .getImage(geneTable.getDisplay(),
+		// "resources/icons/view/tablebased/parcoords/parcoords.png"));
+		//
+		// loadGeneInParallelCoordinatesMenuItem
+		// .addSelectionListener(new SelectionAdapter() {
+		// @Override
+		// public void widgetSelected(SelectionEvent e) {
+		//
+		// searchViewMediator.selectGeneSystemWide((Integer) tableItem
+		// .getData());
+		//
+		// // Switch to browser view
+		// try {
+		// PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+		// .getActivePage()
+		// .showView("org.caleydo.view.parcoords");
+		// } catch (PartInitException e1) {
+		// e1.printStackTrace();
+		// }
+		// };
+		// });
+		//
 		MenuItem makeCategoryOfGene = new MenuItem(menu, SWT.PUSH);
-		makeCategoryOfGene.setText("Create categorization of "+ dataDomain.getLabel());
+		makeCategoryOfGene.setText("Create categorization of " + dataDomain.getLabel());
 		// loadGeneInHeatMapMenuItem.setImage(generalManager
 		// .getResourceLoader()
 		// .getImage(geneTable.getDisplay(),dat
@@ -728,14 +722,14 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
 
-				searchViewMediator.createPerspecive(dataDomain,
-						(Integer) tableItem.getData());
+				searchViewMediator.createPerspecive(dataDomain, (Integer) tableItem.getData());
 
 				// Switch to browser view
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 							.showView("org.caleydo.view.datagraph");
-				} catch (PartInitException e1) {
+				}
+				catch (PartInitException e1) {
 					e1.printStackTrace();
 				}
 			};
@@ -761,9 +755,8 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 
 				MenuItem openInBrowserMenuItem = new MenuItem(menu, SWT.PUSH);
 				openInBrowserMenuItem.setText("Open in browser");
-				openInBrowserMenuItem.setImage(generalManager.getResourceLoader()
-						.getImage(pathwayTable.getDisplay(),
-								"resources/icons/view/browser/browser.png"));
+				openInBrowserMenuItem.setImage(generalManager.getResourceLoader().getImage(
+						pathwayTable.getDisplay(), "resources/icons/view/browser/browser.png"));
 				openInBrowserMenuItem.addSelectionListener(new SelectionAdapter() {
 					@Override
 					public void widgetSelected(SelectionEvent e) {
@@ -772,7 +765,8 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 									.getActivePage().showView("org.caleydo.view.browser");
-						} catch (PartInitException e1) {
+						}
+						catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
 
@@ -795,12 +789,13 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 						try {
 							PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 									.getActivePage().showView("org.caleydo.view.bucket");
-						} catch (PartInitException e1) {
+						}
+						catch (PartInitException e1) {
 							e1.printStackTrace();
 						}
 
-						searchViewMediator.loadPathway(((PathwayGraph) tableItem
-								.getData()).getID());
+						searchViewMediator.loadPathway(((PathwayGraph) tableItem.getData())
+								.getID());
 					};
 				});
 			}
@@ -812,18 +807,16 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 		// set to avoid duplicate pathwaysserializedView
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
-		PathwayVertexGraphItem pathwayGraphItem = PathwayItemManager.get()
+		PathwayVertexGraphItem vertex = PathwayItemManager.get()
 				.getPathwayVertexGraphItemByDavidId(iDavidID);
 
 		// Only handle David IDs that does exist in any pathway
-		if (pathwayGraphItem != null) {
+		if (vertex != null) {
 
-			List<IGraphItem> pathwayItems = pathwayGraphItem
-					.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
-			for (IGraphItem pathwayItem : pathwayItems) {
-				PathwayGraph pathwayGraph = (PathwayGraph) pathwayItem.getAllGraphByType(
-						EGraphItemHierarchy.GRAPH_PARENT).get(0);
-				pathwaysContainingGene.add(pathwayGraph);
+			for (PathwayVertexGraphItemRep vertexRep : vertex.getPathwayVertexReps()) {
+				for (PathwayGraph pathwayGraph : vertexRep.getPathways()) {
+					pathwaysContainingGene.add(pathwayGraph);
+				}
 			}
 		}
 		return pathwaysContainingGene;

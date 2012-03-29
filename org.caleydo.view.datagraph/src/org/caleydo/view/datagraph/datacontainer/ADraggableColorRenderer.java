@@ -3,10 +3,8 @@ package org.caleydo.view.datagraph.datacontainer;
 import java.awt.geom.Point2D;
 import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 public abstract class ADraggableColorRenderer
 	extends ColorRenderer

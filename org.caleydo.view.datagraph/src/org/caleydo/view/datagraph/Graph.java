@@ -6,7 +6,6 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.Vector;
-
 import org.caleydo.view.datagraph.node.IDVINode;
 
 public class Graph {

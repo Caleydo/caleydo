@@ -4,7 +4,6 @@
 package org.caleydo.view.filterpipeline.representation;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**

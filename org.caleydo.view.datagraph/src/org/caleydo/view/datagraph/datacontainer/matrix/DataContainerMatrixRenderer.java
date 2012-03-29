@@ -32,7 +32,6 @@ import org.caleydo.view.datagraph.datacontainer.DataContainerPickingListener;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
-import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;
 import org.caleydo.view.datagraph.node.IDVINode;
 
 public class DataContainerMatrixRenderer

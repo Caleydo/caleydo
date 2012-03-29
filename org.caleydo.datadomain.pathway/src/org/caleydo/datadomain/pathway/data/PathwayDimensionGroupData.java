@@ -3,7 +3,6 @@ package org.caleydo.datadomain.pathway.data;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
@@ -16,10 +15,8 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
-import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraphItem;
 
 /**
  * Specialization of {@link DataContainer} for pathway dimension groups. A
@@ -31,7 +28,8 @@ import org.caleydo.util.graph.IGraphItem;
  * @author Marc Streit
  * 
  */
-public class PathwayDimensionGroupData extends DataContainer {
+public class PathwayDimensionGroupData
+	extends DataContainer {
 
 	protected PathwayDataDomain pathwayDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
@@ -98,26 +96,20 @@ public class PathwayDimensionGroupData extends DataContainer {
 		int startIndex = 0;
 		for (PathwayGraph pathway : pathways) {
 			List<Integer> idsInPathway = new ArrayList<Integer>();
-			List<IGraphItem> vertexGraphItemReps = pathway
-					.getAllItemsByKind(EGraphItemKind.NODE);
 
 			int groupSize = 0;
 
-			for (IGraphItem itemRep : vertexGraphItemReps) {
+			for (PathwayVertexGraphItemRep vertexRep : pathway.vertexSet()) {
 
-				List<IGraphItem> vertexGraphItems = itemRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-
-				for (IGraphItem item : vertexGraphItems) {
-					int davidId = PathwayItemManager.get()
-							.getDavidIdByPathwayVertexGraphItem(
-									(PathwayVertexGraphItem) item);
+				for (PathwayVertexGraphItem vertex : vertexRep.getPathwayVertices()) {
+					int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(
+							vertex);
 
 					if (davidId != -1) {
 
 						Set<Integer> ids = pathwayDataDomain.getGeneIDMappingManager()
-								.getIDAsSet(pathwayDataDomain.getDavidIDType(),
-										geneIDType, davidId);
+								.getIDAsSet(pathwayDataDomain.getDavidIDType(), geneIDType,
+										davidId);
 
 						if (ids != null && ids.size() > 0) {
 							groupSize++;
@@ -136,21 +128,19 @@ public class PathwayDimensionGroupData extends DataContainer {
 			data.setData(idsInPathway);
 			PathwayDataContainer pathwayDataContainer;
 			if (dataDomain.isColumnDimension()) {
-				RecordPerspective pathwayRecordPerspective = new RecordPerspective(
-						dataDomain);
+				RecordPerspective pathwayRecordPerspective = new RecordPerspective(dataDomain);
 				pathwayRecordPerspective.init(data);
 
-				pathwayDataContainer = new PathwayDataContainer(dataDomain,
-						pathwayDataDomain, pathwayRecordPerspective,
-						dimensionPerspective, pathway);
-			} else {
+				pathwayDataContainer = new PathwayDataContainer(dataDomain, pathwayDataDomain,
+						pathwayRecordPerspective, dimensionPerspective, pathway);
+			}
+			else {
 				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(
 						dataDomain);
 				pathwayDimensionPerspective.init(data);
 
-				pathwayDataContainer = new PathwayDataContainer(dataDomain,
-						pathwayDataDomain, recordPerspective,
-						pathwayDimensionPerspective, pathway);
+				pathwayDataContainer = new PathwayDataContainer(dataDomain, pathwayDataDomain,
+						recordPerspective, pathwayDimensionPerspective, pathway);
 			}
 
 			pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray()

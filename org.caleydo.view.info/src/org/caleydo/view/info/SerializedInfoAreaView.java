@@ -2,7 +2,6 @@ package org.caleydo.view.info;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 
 /**

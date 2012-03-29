@@ -2,12 +2,9 @@ package org.caleydo.view.pathwaybrowser;
 
 import gleem.linalg.Vec3f;
 import gleem.linalg.open.Transform;
-
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.serialize.ASerializedView;

@@ -1,30 +1,39 @@
 package org.caleydo.datadomain.pathway.graph.item.vertex;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.StringTokenizer;
-
-import org.caleydo.core.data.graph.ACaleydoGraphItem;
-import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.EGraphItemProperty;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 
 /**
  * Pathway vertex representation stored in the overall pathway graph.
  * 
  * @author Marc Streit
  */
-public class PathwayVertexGraphItemRep extends ACaleydoGraphItem implements Serializable {
+public class PathwayVertexGraphItemRep
+	implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
 
-	private String sName;
+	private int id;
+
+	private String name;
 
 	private EPathwayVertexShape shape;
 
-	private short[][] shArCoords;
+	private short[][] coords;
 
-	private short shWidth = 20;
+	private short width = 20;
 
-	private short shHeight = 20;
+	private short height = 20;
+
+	private List<PathwayVertexGraphItem> pathwayVertices = new ArrayList<PathwayVertexGraphItem>();
+
+	private List<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
 
 	/**
 	 * Constructor.
@@ -35,10 +44,12 @@ public class PathwayVertexGraphItemRep extends ACaleydoGraphItem implements Seri
 	 */
 	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
 			final String sCoords) {
-		super(EGraphItemKind.NODE);
+
+		id = GeneralManager.get().getIDCreator()
+				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
 
 		shape = EPathwayVertexShape.valueOf(sShapeType);
-		this.sName = sName;
+		this.name = sName;
 
 		setCoordsByCommaSeparatedString(sCoords);
 	}
@@ -55,16 +66,15 @@ public class PathwayVertexGraphItemRep extends ACaleydoGraphItem implements Seri
 	 */
 	public PathwayVertexGraphItemRep(final String sName, final String sShapeType,
 			final short shX, final short shY, final short shWidth, final short shHeight) {
-		super(EGraphItemKind.NODE);
 
 		if (sShapeType == null || sShapeType.isEmpty())
 			shape = EPathwayVertexShape.rect;
 		else
 			shape = EPathwayVertexShape.valueOf(sShapeType);
 
-		this.sName = sName;
-		this.shWidth = shWidth;
-		this.shHeight = shHeight;
+		this.name = sName;
+		this.width = shWidth;
+		this.height = shHeight;
 
 		setRectangularCoords(shX, shY, shWidth, shHeight);
 	}
@@ -77,49 +87,54 @@ public class PathwayVertexGraphItemRep extends ACaleydoGraphItem implements Seri
 
 		StringTokenizer sToken = new StringTokenizer(sCoords, ",");
 
-		shArCoords = new short[sToken.countTokens() / 2][2];
+		coords = new short[sToken.countTokens() / 2][2];
 
 		int iCount = 0;
 
 		while (sToken.hasMoreTokens()) {
 			// Filter white spaces
-			short shXCoord = Short.valueOf(sToken.nextToken().replace(" ", ""))
-					.shortValue();
+			short shXCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
 
 			if (!sToken.hasMoreTokens())
 				return;
 
-			short shYCoord = Short.valueOf(sToken.nextToken().replace(" ", ""))
-					.shortValue();
+			short shYCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
 
-			shArCoords[iCount][0] = shXCoord;
-			shArCoords[iCount][1] = shYCoord;
+			coords[iCount][0] = shXCoord;
+			coords[iCount][1] = shYCoord;
 
 			iCount++;
 		}
 	}
 
-	private void setRectangularCoords(final short shX, final short shY,
-			final short shWidth, final short shHeight) {
+	private void setRectangularCoords(final short shX, final short shY, final short shWidth,
+			final short shHeight) {
 
-		shArCoords = new short[4][2];
+		coords = new short[4][2];
 
-		shArCoords[0][0] = shX;
-		shArCoords[0][1] = shY;
+		coords[0][0] = shX;
+		coords[0][1] = shY;
 
-		shArCoords[1][0] = (short) (shX + shWidth);
-		shArCoords[1][1] = shY;
+		coords[1][0] = (short) (shX + shWidth);
+		coords[1][1] = shY;
 
-		shArCoords[2][0] = (short) (shX + shWidth);
-		shArCoords[2][1] = (short) (shY + shHeight);
+		coords[2][0] = (short) (shX + shWidth);
+		coords[2][1] = (short) (shY + shHeight);
 
-		shArCoords[3][0] = shX;
-		shArCoords[3][1] = (short) (shY + shHeight);
+		coords[3][0] = shX;
+		coords[3][1] = (short) (shY + shHeight);
+	}
+
+	/**
+	 * @return the id, see {@link #id}
+	 */
+	public int getID() {
+		return id;
 	}
 
 	public String getName() {
 
-		return sName;
+		return name;
 	}
 
 	public EPathwayVertexShape getShapeType() {
@@ -127,39 +142,57 @@ public class PathwayVertexGraphItemRep extends ACaleydoGraphItem implements Seri
 		return shape;
 	}
 
-	public EPathwayVertexType getType() {
-		return ((PathwayVertexGraphItem) this.getAllItemsByProp(
-				EGraphItemProperty.ALIAS_PARENT).get(0)).getType();
-	}
-
 	public short[][] getCoords() {
 
-		return shArCoords;
+		return coords;
 	}
 
 	public short getXOrigin() {
 
-		return shArCoords[0][0];
+		return coords[0][0];
 	}
 
 	public short getYOrigin() {
 
-		return shArCoords[0][1];
+		return coords[0][1];
 	}
 
 	public short getWidth() {
 
-		return shWidth;
+		return width;
 	}
 
 	public short getHeight() {
 
-		return shHeight;
+		return height;
 	}
 
 	@Override
 	public String toString() {
 
-		return sName;
+		return name;
+	}
+
+	public void addPathwayVertex(PathwayVertexGraphItem vertex) {
+		pathwayVertices.add(vertex);
+	}
+
+	public List<PathwayVertexGraphItem> getPathwayVertices() {
+		return pathwayVertices;
+	}
+
+	public void addPathway(PathwayGraph pathway) {
+		pathways.add(pathway);
+	}
+
+	public List<PathwayGraph> getPathways() {
+		return pathways;
+	}
+
+	public EPathwayVertexType getType() {
+
+		// We assume that all vertices that are associated to that vertex rep
+		// are of the same type
+		return pathwayVertices.get(0).getType();
 	}
 }

@@ -1,7 +1,6 @@
 package org.caleydo.core.gui.perspective;
 
 import java.util.List;
-
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.gui.toolbar.AToolBarContent;

@@ -1,26 +1,32 @@
 package org.caleydo.datadomain.pathway.graph.item.vertex;
 
 import java.io.Serializable;
-
-import org.caleydo.core.data.graph.ACaleydoGraphItem;
-import org.caleydo.util.graph.EGraphItemKind;
+import java.util.ArrayList;
+import java.util.List;
+import org.caleydo.core.data.IUniqueObject;
+import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Pathway vertex that belongs to the overall pathway graph.
  * 
  * @author Marc Streit
  */
-public class PathwayVertexGraphItem extends ACaleydoGraphItem implements Serializable {
+public class PathwayVertexGraphItem implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
 
-	final String sName;
+	private int id;
+	
+	private final String name;
 
-	EPathwayVertexType type;
+	private EPathwayVertexType type;
 
-	final String sExternalLink;
+	private final String externalLink;
 
-	final String sReactionId;
+	private final String reactionId;
+	
+	private List<PathwayVertexGraphItemRep> pathwayVertexReps = new ArrayList<PathwayVertexGraphItemRep>();
 
 	/**
 	 * Constructor.
@@ -33,8 +39,8 @@ public class PathwayVertexGraphItem extends ACaleydoGraphItem implements Seriali
 	public PathwayVertexGraphItem(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId) {
 
-		super(EGraphItemKind.NODE);
-
+		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX);
+		
 		// Check if type exists - otherwise assign "other"
 		try {
 			type = EPathwayVertexType.valueOf(sType);
@@ -42,14 +48,19 @@ public class PathwayVertexGraphItem extends ACaleydoGraphItem implements Seriali
 			type = EPathwayVertexType.other;
 		}
 
-		this.sName = sName;
-		this.sExternalLink = sExternalLink;
-		this.sReactionId = sReactionId;
+		this.name = sName;
+		this.externalLink = sExternalLink;
+		this.reactionId = sReactionId;
 	}
 
+	@Override
+	public int getID() {
+		return id;
+	}
+	
 	public String getName() {
 
-		return sName;
+		return name;
 	}
 
 	public EPathwayVertexType getType() {
@@ -59,17 +70,25 @@ public class PathwayVertexGraphItem extends ACaleydoGraphItem implements Seriali
 
 	public String getExternalLink() {
 
-		return sExternalLink;
+		return externalLink;
 	}
 
 	public String getReactionId() {
 
-		return sReactionId;
+		return reactionId;
 	}
 
 	@Override
 	public String toString() {
 
-		return sName;
+		return name;
+	}
+	
+	public void addPathwayVertexRep(PathwayVertexGraphItemRep vertexRep) {
+		pathwayVertexReps.add(vertexRep);
+	}
+	
+	public List<PathwayVertexGraphItemRep> getPathwayVertexReps() {
+		return pathwayVertexReps;
 	}
 }

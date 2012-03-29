@@ -3,7 +3,6 @@ package org.caleydo.view.visbricks.brick.sorting;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**

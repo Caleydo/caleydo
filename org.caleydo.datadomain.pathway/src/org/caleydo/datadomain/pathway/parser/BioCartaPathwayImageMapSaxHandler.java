@@ -2,17 +2,16 @@ package org.caleydo.datadomain.pathway.parser;
 
 import java.util.ArrayList;
 import java.util.Set;
-
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.util.graph.IGraphItem;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -183,7 +182,7 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 		if (DataTableDavidID == null)
 			return;
 
-		ArrayList<IGraphItem> alVertex = pathwayItemManager.createVertexGene(sName,
+		ArrayList<PathwayVertexGraphItem> alVertex = pathwayItemManager.createVertexGene(sName,
 				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "",
 				DataTableDavidID);
 

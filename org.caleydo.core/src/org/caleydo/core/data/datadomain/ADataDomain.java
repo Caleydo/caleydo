@@ -2,11 +2,9 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.event.AEventHandler;

@@ -2,7 +2,6 @@ package org.caleydo.core.manager;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import org.caleydo.core.data.IUniqueObject;
 
 /**

@@ -1,7 +1,6 @@
 package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;

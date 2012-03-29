@@ -1,9 +1,7 @@
 package org.caleydo.view.visbricks.brick.ui;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.Average;
 import org.caleydo.core.data.container.DataContainer;

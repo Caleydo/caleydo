@@ -2,7 +2,6 @@ package org.caleydo.view.treemap;
 
 import java.util.Calendar;
 import java.util.Vector;
-
 import javax.media.opengl.GL2;
 
 /**

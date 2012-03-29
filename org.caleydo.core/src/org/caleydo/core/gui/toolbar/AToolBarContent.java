@@ -1,7 +1,6 @@
 package org.caleydo.core.gui.toolbar;
 
 import java.util.List;
-
 import org.caleydo.core.serialize.ASerializedView;
 
 /**

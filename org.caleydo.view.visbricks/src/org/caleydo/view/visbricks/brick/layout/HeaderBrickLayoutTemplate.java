@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks.brick.layout;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.data.StartClusteringEvent;

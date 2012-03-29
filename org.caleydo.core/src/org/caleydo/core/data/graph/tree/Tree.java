@@ -5,7 +5,6 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDType;
 import org.jgrapht.DirectedGraph;

@@ -1,7 +1,6 @@
 package org.caleydo.datadomain.pathway.manager;
 
 import java.io.Serializable;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 

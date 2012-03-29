@@ -1,7 +1,6 @@
 package org.caleydo.core.view.opengl.util.hierarchy;
 
 import gleem.linalg.open.Transform;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.ManagedObjectType;

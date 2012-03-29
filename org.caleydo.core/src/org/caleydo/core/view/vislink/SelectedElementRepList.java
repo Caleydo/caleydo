@@ -1,7 +1,6 @@
 package org.caleydo.core.view.vislink;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 
 /**

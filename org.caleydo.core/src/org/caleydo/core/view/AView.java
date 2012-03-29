@@ -1,7 +1,6 @@
 package org.caleydo.core.view;
 
 import java.util.Set;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;

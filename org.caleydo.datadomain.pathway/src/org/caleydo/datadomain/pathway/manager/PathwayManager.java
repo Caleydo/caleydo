@@ -3,7 +3,6 @@ package org.caleydo.datadomain.pathway.manager;
 import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -13,7 +12,6 @@ import java.util.Set;
 import java.util.StringTokenizer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
@@ -22,13 +20,10 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.datadomain.pathway.parser.BioCartaPathwayImageMapSaxHandler;
 import org.caleydo.datadomain.pathway.parser.KgmlSaxHandler;
 import org.caleydo.datadomain.pathway.parser.PathwayImageMap;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.util.graph.core.Graph;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -36,6 +31,9 @@ import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.jgrapht.DirectedGraph;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * The pathway manager is in charge of creating and handling the pathways. The
@@ -63,7 +61,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * Therefore it represents the overall topological network. (The root
 	 * pathway is independent from the representation of the nodes.)
 	 */
-	private Graph rootPathwayGraph;
+	private DirectedGraph<PathwayVertexGraphItem, DefaultEdge> rootPathwayGraph =
+            new DefaultDirectedGraph<PathwayVertexGraphItem, DefaultEdge>(DefaultEdge.class);
 
 	/**
 	 * Used for pathways where only images can be loaded. The image map defines
@@ -97,8 +96,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		hashPathwayTitleToPathway = new HashMap<String, PathwayGraph>();
 		hashPathwayDatabase = new HashMap<PathwayDatabaseType, PathwayDatabase>();
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
-
-		rootPathwayGraph = new Graph(0);
 
 		xmlParserManager = new PathwayParserManager();
 
@@ -139,8 +136,6 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		hashPathwayTitleToPathway.put(sTitle, pathway);
 		hashPathwayToVisibilityState.put(pathway, false);
 
-		rootPathwayGraph.addGraph(pathway, EGraphItemHierarchy.GRAPH_CHILDREN);
-
 		currentPathwayGraph = pathway;
 
 		return pathway;
@@ -176,7 +171,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		return null;
 	}
 
-	public Graph getRootPathway() {
+	public DirectedGraph<PathwayVertexGraphItem, DefaultEdge> getRootPathway() {
 		return rootPathwayGraph;
 	}
 
@@ -351,7 +346,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 
 			StringTokenizer tokenizer;
 			String pathwayName;
-			PathwayGraph tmpPathwayGraph;
+
 			while ((line = file.readLine()) != null) {
 				tokenizer = new StringTokenizer(line, " ");
 
@@ -403,7 +398,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	public Set<PathwayGraph> getPathwayGraphsByGeneID(IDType idType, int id) {
 
 		// set to avoid duplicate pathways
-		Set<PathwayGraph> newPathways = new HashSet<PathwayGraph>();
+		Set<PathwayGraph> pathways = new HashSet<PathwayGraph>();
 
 		PathwayVertexGraphItem pathwayVertexGraphItem;
 		if (idType == IDType.getIDType("DAVID"))
@@ -416,16 +411,13 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		if (pathwayVertexGraphItem == null)
 			return null;
 
-		List<IGraphItem> pathwayItems = pathwayVertexGraphItem
-				.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
 
-		for (IGraphItem pathwayItem : pathwayItems) {
-			PathwayGraph pathwayGraph = (PathwayGraph) pathwayItem.getAllGraphByType(
-					EGraphItemHierarchy.GRAPH_PARENT).get(0);
-			newPathways.add(pathwayGraph);
+		for (PathwayVertexGraphItemRep pathwayItemRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
+			PathwayGraph pathwayGraph = (PathwayGraph) pathwayItemRep.getPathways();
+			pathways.add(pathwayGraph);
 		}
 
-		return newPathways;
+		return pathways;
 	}
 
 	/**

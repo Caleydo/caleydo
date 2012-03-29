@@ -3,11 +3,9 @@ package org.caleydo.musama;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.concurrent.TimeoutException;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-
 import de.mmis.core.base.event.Observable;
 import de.mmis.core.base.event.Observer;
 import de.mmis.core.sexpression.Atom;

@@ -1,7 +1,6 @@
 package org.caleydo.view.visbricks.brick.viewcreation;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

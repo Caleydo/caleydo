@@ -2,7 +2,6 @@ package org.caleydo.core.event.data;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.event.AEvent;
 

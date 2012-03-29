@@ -5,7 +5,6 @@
 package org.caleydo.core.util.clusterer.algorithm.cobweb;
 
 import java.io.Serializable;
-
 import weka.core.AttributeStats;
 import weka.core.FastVector;
 import weka.core.Instance;

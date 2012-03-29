@@ -1,7 +1,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.NoSuchElementException;
-
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**

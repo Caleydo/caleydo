@@ -1,7 +1,6 @@
 package org.caleydo.core.view.vislink;
 
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.eclipse.swt.graphics.Point;
 
 /**

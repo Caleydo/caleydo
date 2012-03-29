@@ -29,8 +29,6 @@ import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.parser.ascii.ExternalGroupingParser;
 import org.caleydo.core.serialize.ProjectSaver;
-import org.caleydo.core.util.clusterer.ClusterManager;
-import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;

@@ -21,7 +21,6 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
-import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.event.OpenVendingMachineEvent;

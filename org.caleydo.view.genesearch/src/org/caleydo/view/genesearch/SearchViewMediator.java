@@ -2,7 +2,6 @@ package org.caleydo.view.genesearch;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;

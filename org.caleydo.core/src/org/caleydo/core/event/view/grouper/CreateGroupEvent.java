@@ -1,7 +1,6 @@
 package org.caleydo.core.event.view.grouper;
 
 import java.util.Set;
-
 import org.caleydo.core.event.AEvent;
 
 public class CreateGroupEvent

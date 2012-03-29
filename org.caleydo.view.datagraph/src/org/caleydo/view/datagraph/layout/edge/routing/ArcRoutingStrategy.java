@@ -2,7 +2,6 @@ package org.caleydo.view.datagraph.layout.edge.routing;
 
 import java.awt.geom.Point2D;
 import java.util.List;
-
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.datagraph.layout.TwoLayeredGraphLayout;
 import org.caleydo.view.datagraph.node.IDVINode;

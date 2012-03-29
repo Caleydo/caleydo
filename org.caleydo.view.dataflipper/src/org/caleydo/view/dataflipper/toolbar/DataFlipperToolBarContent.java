@@ -2,7 +2,6 @@ package org.caleydo.view.dataflipper.toolbar;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.view.dataflipper.GLDataFlipper;

@@ -4,7 +4,6 @@
 package org.caleydo.data.importer.tcga.startup;
 
 import java.util.ArrayList;
-
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 

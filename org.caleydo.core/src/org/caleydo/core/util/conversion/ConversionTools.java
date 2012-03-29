@@ -1,7 +1,6 @@
 package org.caleydo.core.util.conversion;
 
 import java.util.StringTokenizer;
-
 import javax.management.InvalidAttributeValueException;
 
 /**

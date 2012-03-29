@@ -3,7 +3,6 @@ package org.caleydo.view.datagraph.layout;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
 import java.util.Map;
-
 import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.Graph;

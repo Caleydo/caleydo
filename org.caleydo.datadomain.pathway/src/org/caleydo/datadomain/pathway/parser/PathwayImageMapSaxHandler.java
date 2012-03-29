@@ -2,7 +2,6 @@ package org.caleydo.datadomain.pathway.parser;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
-
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;

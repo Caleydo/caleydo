@@ -2,10 +2,8 @@ package org.caleydo.view.bucket;
 
 import java.util.ArrayList;
 import java.util.Collection;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;

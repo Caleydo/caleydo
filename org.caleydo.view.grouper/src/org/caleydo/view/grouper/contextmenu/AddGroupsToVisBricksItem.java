@@ -1,7 +1,6 @@
 package org.caleydo.view.grouper.contextmenu;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;

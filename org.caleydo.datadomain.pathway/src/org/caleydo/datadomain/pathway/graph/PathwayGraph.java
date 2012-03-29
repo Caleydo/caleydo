@@ -1,22 +1,26 @@
 package org.caleydo.datadomain.pathway.graph;
 
 import java.io.Serializable;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
-import org.caleydo.util.graph.core.Graph;
+import org.jgrapht.graph.DefaultDirectedGraph;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Overall graph that holds all pathways
  * 
  * @author Marc Streit
  */
-public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
+public class PathwayGraph extends DefaultDirectedGraph<PathwayVertexGraphItemRep, DefaultEdge> implements IUniqueObject, Serializable,
 		Comparable<PathwayGraph> {
+	
 	private static final long serialVersionUID = 1L;
 
+	private int id;
+	
 	private PathwayDatabaseType type;
 
 	private String sName;
@@ -33,13 +37,23 @@ public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
 
 	public PathwayGraph(final PathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sLink) {
-		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY));
+		
+		//super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY));
 
+		super(DefaultEdge.class);
+
+		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY);
+		
 		this.type = type;
 		this.sName = sName;
 		this.sTitle = sTitle;
 		this.sImageLink = sImageLink;
 		this.sExternalLink = sLink;
+	}
+	
+	@Override
+	public int getID() {
+		return id;
 	}
 
 	public final String getName() {
@@ -90,11 +104,6 @@ public class PathwayGraph extends Graph implements IUniqueObject, Serializable,
 	@Override
 	public String toString() {
 		return type + ": " + getTitle();
-	}
-
-	@Override
-	public int getID() {
-		return super.getId();
 	}
 
 	/**

@@ -2,10 +2,8 @@ package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -20,7 +18,6 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;

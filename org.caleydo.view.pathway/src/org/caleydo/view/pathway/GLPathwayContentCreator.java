@@ -19,18 +19,12 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.DetailLevel;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeGraphItemRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeGraphItemRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.EGraphItemKind;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraphItem;
-import org.caleydo.util.graph.algorithm.GraphVisitorSearchBFS;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -117,7 +111,8 @@ public class GLPathwayContentCreator {
 		if (hashPathway2VerticesDisplayListId.containsKey(pathway)) {
 			// Replace current display list if a display list exists
 			iVerticesDisplayListId = hashPathway2VerticesDisplayListId.get(pathway);
-		} else {
+		}
+		else {
 			// Creating vertex display list for pathways
 			iVerticesDisplayListId = gl.glGenLists(1);
 			hashPathway2VerticesDisplayListId.put(pathway, iVerticesDisplayListId);
@@ -130,7 +125,8 @@ public class GLPathwayContentCreator {
 		if (hashPathway2EdgesDisplayListId.containsKey(pathway)) {
 			// Replace current display list if a display list exists
 			iEdgesDisplayListId = hashPathway2EdgesDisplayListId.get(pathway);
-		} else {
+		}
+		else {
 			// Creating edge display list for pathways
 			iEdgesDisplayListId = gl.glGenLists(1);
 			hashPathway2EdgesDisplayListId.put(pathway, iEdgesDisplayListId);
@@ -155,104 +151,82 @@ public class GLPathwayContentCreator {
 			iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
 		}
 
-		// tmpItemIDs =
-		// internalSelectionManager.getElements(SelectionType.SELECTION);
-		//
-		// if (tmpItemIDs != null)
-		// iAlTmpSelectedGraphItemIds.addAll(tmpItemIDs);
-
 		if (iAlTmpSelectedGraphItemIds.size() == 0)
 			return;
 
 		// Copy selection IDs to array list object
 		for (Integer graphItemID : iAlTmpSelectedGraphItemIds) {
 
-			// // Perform identical node highlighting only on nodes with depth 0
-			// if (iAlTmpSelectedGraphItemDepth.get(iItemIndex) != 0)
-			// continue;
+			for (PathwayVertexGraphItem vertex : pathwayItemManager.getPathwayVertexRep(
+					graphItemID).getPathwayVertices()) {
 
-			List<IGraphItem> items = ((IGraphItem) pathwayItemManager
-					.getItem(graphItemID))
-					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT);
-			for (IGraphItem graphItem : ((IGraphItem) pathwayItemManager
-					.getItem(graphItemID))
-					.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT)) {
-				List<IGraphItem> items2 = graphItem
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD);
-				for (IGraphItem graphItemRep : graphItem
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_CHILD)) {
-					if (tmpItemIDs.contains(graphItemRep.getId())) {
+				for (PathwayVertexGraphItemRep vertexRep : vertex.getPathwayVertexReps()) {
+
+					if (tmpItemIDs.contains(vertexRep.getID())) {
 						continue;
 					}
-					internalSelectionManager.addToType(selectionType,
-							graphItemRep.getId());
-
-					// for (int iConnectionID : internalSelectionManager
-					// .getConnectionForElementID(graphItemID)) {
-					// internalSelectionManager.addConnectionID(iConnectionID,
-					// graphItemRep.getId());
-					// }
-					// if (bEnableNeighborhood) {
-					// performNeighborhoodAlgorithm(graphItemRep);
-					// }
+					internalSelectionManager.addToType(selectionType, vertexRep.getID());
 				}
+
 			}
 		}
 	}
 
-	private void performNeighborhoodAlgorithm(final IGraphItem selectedVertex) {
-		GraphVisitorSearchBFS graphVisitorSearchBFS;
-
-		if (enableNeighborhood) {
-			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 4);
-		} else {
-			graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
-		}
-
-		graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
-		graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(
-				EGraphItemHierarchy.GRAPH_PARENT).get(0));
-
-		// List<IGraphItem> lGraphItems =
-		// graphVisitorSearchBFS.getSearchResult();
-		graphVisitorSearchBFS.getSearchResult();
-
-		List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS
-				.getSearchResultDepthOrdered();
-		List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
-		//
-		// int iTmpDepth = 0;
-		// SelectionType tmpType;
-
-		for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size(); iDepthIndex++) {
-			lGraphItems = lDepthSearchResult.get(iDepthIndex);
-
-			for (int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) {
-				// Check if selected item is a vertex
-				if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep) {
-					// iTmpDepth = (iDepthIndex + 1) / 2;
-
-					// FIXME - this needs to be adapted to the new selection
-					// types when re-activating the neighborhoods
-					// if (iTmpDepth == 1) {
-					// tmpType = SelectionType.NEIGHBORHOOD_1;
-					// } else if (iTmpDepth == 2) {
-					// tmpType = SelectionType.NEIGHBORHOOD_2;
-					// } else if (iTmpDepth == 3) {
-					// tmpType = SelectionType.NEIGHBORHOOD_3;
-					// } else
-					// throw new IllegalStateException(
-					// "Neighborhood depth greater than 3 is not supported!");
-					//
-					// internalSelectionManager.addToType(tmpType, lGraphItems
-					// .get(iItemIndex).getId());
-
-				} else {
-					selectedEdgeRepId.add(lGraphItems.get(iItemIndex).getId());
-				}
-			}
-		}
-	}
+	// private void performNeighborhoodAlgorithm(final IGraphItem
+	// selectedVertex) {
+	// GraphVisitorSearchBFS graphVisitorSearchBFS;
+	//
+	// if (enableNeighborhood) {
+	// graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 4);
+	// } else {
+	// graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
+	// }
+	//
+	// graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
+	// graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(
+	// EGraphItemHierarchy.GRAPH_PARENT).get(0));
+	//
+	// // List<IGraphItem> lGraphItems =
+	// // graphVisitorSearchBFS.getSearchResult();
+	// graphVisitorSearchBFS.getSearchResult();
+	//
+	// List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS
+	// .getSearchResultDepthOrdered();
+	// List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
+	// //
+	// // int iTmpDepth = 0;
+	// // SelectionType tmpType;
+	//
+	// for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size();
+	// iDepthIndex++) {
+	// lGraphItems = lDepthSearchResult.get(iDepthIndex);
+	//
+	// for (int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) {
+	// // Check if selected item is a vertex
+	// if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep) {
+	// // iTmpDepth = (iDepthIndex + 1) / 2;
+	//
+	// // FIXME - this needs to be adapted to the new selection
+	// // types when re-activating the neighborhoods
+	// // if (iTmpDepth == 1) {
+	// // tmpType = SelectionType.NEIGHBORHOOD_1;
+	// // } else if (iTmpDepth == 2) {
+	// // tmpType = SelectionType.NEIGHBORHOOD_2;
+	// // } else if (iTmpDepth == 3) {
+	// // tmpType = SelectionType.NEIGHBORHOOD_3;
+	// // } else
+	// // throw new IllegalStateException(
+	// // "Neighborhood depth greater than 3 is not supported!");
+	// //
+	// // internalSelectionManager.addToType(tmpType, lGraphItems
+	// // .get(iItemIndex).getID());
+	//
+	// } else {
+	// selectedEdgeRepId.add(lGraphItems.get(iItemIndex).getID());
+	// }
+	// }
+	// }
+	// }
 
 	private void buildEnzymeNodeDisplayList(final GL2 gl) {
 
@@ -325,8 +299,7 @@ public class GLPathwayContentCreator {
 		gl.glEnd();
 	}
 
-	private void fillUpscaledNodeDisplayList(final GL2 gl, float fNodeWidth,
-			float fNodeHeight) {
+	private void fillUpscaledNodeDisplayList(final GL2 gl, float fNodeWidth, float fNodeHeight) {
 
 		float scaleFactor = 3;
 		fNodeWidth *= scaleFactor;
@@ -335,8 +308,7 @@ public class GLPathwayContentCreator {
 		fillNodeDisplayList(gl, fNodeWidth, fNodeHeight);
 	}
 
-	protected void fillNodeDisplayListFrame(final GL2 gl, float fNodeWidth,
-			float fNodeHeight) {
+	protected void fillNodeDisplayListFrame(final GL2 gl, float fNodeWidth, float fNodeHeight) {
 		gl.glLineWidth(7);
 
 		gl.glBegin(GL2.GL_LINE_LOOP);
@@ -349,8 +321,7 @@ public class GLPathwayContentCreator {
 
 	private void extractVertices(final GL2 gl, final IUniqueObject containingView,
 			PathwayGraph pathwayToExtract) {
-		for (IGraphItem vertexRep : pathwayToExtract
-				.getAllItemsByKind(EGraphItemKind.NODE)) {
+		for (PathwayVertexGraphItemRep vertexRep : pathwayToExtract.vertexSet()) {
 			if (vertexRep == null) {
 				continue;
 			}
@@ -362,25 +333,20 @@ public class GLPathwayContentCreator {
 
 	private void extractEdges(final GL2 gl, PathwayGraph pathwayToExtract) {
 
-		Iterator<IGraphItem> edgeIterator = pathwayToExtract.getAllItemsByKind(
-				EGraphItemKind.EDGE).iterator();
-
-		IGraphItem edgeRep;
-
-		while (edgeIterator.hasNext()) {
-			edgeRep = edgeIterator.next();
-
-			if (edgeRep != null) {
-				if (enableEdgeRendering) {
-					createEdge(gl, edgeRep, pathwayToExtract);
-				}
-				// Render edge if it is contained in the minimum spanning tree
-				// of the neighborhoods
-				else if (selectedEdgeRepId.contains(edgeRep.getId())) {
-					createEdge(gl, edgeRep, pathwayToExtract);
-				}
-			}
-		}
+		// while (pathwayToExtract.edgeSet()) {
+		// edgeRep = edgeIterator.next();
+		//
+		// if (edgeRep != null) {
+		// if (enableEdgeRendering) {
+		// createEdge(gl, edgeRep, pathwayToExtract);
+		// }
+		// // Render edge if it is contained in the minimum spanning tree
+		// // of the neighborhoods
+		// else if (selectedEdgeRepId.contains(edgeRep.getID())) {
+		// createEdge(gl, edgeRep, pathwayToExtract);
+		// }
+		// }
+		// }
 	}
 
 	private void createVertex(final GL2 gl, final IUniqueObject containingView,
@@ -391,12 +357,12 @@ public class GLPathwayContentCreator {
 		gl.glPushName(generalManager
 				.getViewManager()
 				.getPickingManager()
-				.getPickingID(containingView.getID(),
-						PickingType.PATHWAY_ELEMENT_SELECTION, vertexRep.getId()));
+				.getPickingID(containingView.getID(), PickingType.PATHWAY_ELEMENT_SELECTION,
+						vertexRep.getID()));
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
-		if (vertexRep.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).toArray().length == 0) {
+		if (vertexRep.getPathwayVertices().toArray().length == 0) {
 			Logger.log(new Status(IStatus.WARNING, this.toString(),
 					"Cannot create pathway vertex. Pathway node representation "
 							+ vertexRep.getName() + " has not parent in graph!"));
@@ -413,10 +379,8 @@ public class GLPathwayContentCreator {
 				return;
 			}
 
-			float fCanvasXPos = vertexRep.getXOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_X;
-			float fCanvasYPos = vertexRep.getYOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_Y;
+			float fCanvasXPos = vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X;
+			float fCanvasYPos = vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y;
 			float fNodeWidth = vertexRep.getWidth() / 2.0f
 					* PathwayRenderStyle.SCALING_FACTOR_X;
 			float fNodeHeight = vertexRep.getHeight() / 2.0f
@@ -431,12 +395,13 @@ public class GLPathwayContentCreator {
 			// Handle selection highlighting of element
 
 			if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
-					vertexRep.getId())) {
+					vertexRep.getID())) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
-			} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-					vertexRep.getId())) {
+			}
+			else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+					vertexRep.getID())) {
 				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				gl.glColor4fv(tmpNodeColor, 0);
 				fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
@@ -446,22 +411,21 @@ public class GLPathwayContentCreator {
 		}
 		// Compound
 		else if (vertexType.equals(EPathwayVertexType.compound)) {
-			float fCanvasXPos = vertexRep.getXOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_X;
-			float fCanvasYPos = vertexRep.getYOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_Y;
+			float fCanvasXPos = vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X;
+			float fCanvasYPos = vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
 			// Handle selection highlighting of element
 			if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
-					vertexRep.getId())) {
+					vertexRep.getID())) {
 				tmpNodeColor = SelectionType.SELECTION.getColor();
 
 				gl.glColor4fv(tmpNodeColor, 0);
 				gl.glCallList(framedCompoundNodeDisplayListId);
-			} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-					vertexRep.getId())) {
+			}
+			else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+					vertexRep.getID())) {
 				tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 
 				gl.glColor4fv(tmpNodeColor, 0);
@@ -474,7 +438,8 @@ public class GLPathwayContentCreator {
 			gl.glCallList(compoundNodeDisplayListId);
 
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
-		} else if (shape.equals(EPathwayVertexShape.poly)) // BIOCARTA
+		}
+		else if (shape.equals(EPathwayVertexShape.poly)) // BIOCARTA
 		{
 			short[][] shArCoords = vertexRep.getCoords();
 
@@ -494,8 +459,7 @@ public class GLPathwayContentCreator {
 							gl.glVertex3f(shArCoords[iPointIndex][0]
 									* PathwayRenderStyle.SCALING_FACTOR_X,
 									-shArCoords[iPointIndex][1]
-											* PathwayRenderStyle.SCALING_FACTOR_Y,
-									Z_OFFSET);
+											* PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
 						}
 						gl.glEnd();
 
@@ -506,24 +470,23 @@ public class GLPathwayContentCreator {
 							gl.glVertex3f(shArCoords[iPointIndex][0]
 									* PathwayRenderStyle.SCALING_FACTOR_X,
 									-shArCoords[iPointIndex][1]
-											* PathwayRenderStyle.SCALING_FACTOR_Y,
-									Z_OFFSET);
+											* PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
 						}
 						gl.glEnd();
-					} else {
+					}
+					else {
 						gl.glBegin(GL2.GL_POLYGON);
 						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 							gl.glVertex3f(shArCoords[iPointIndex][0]
 									* PathwayRenderStyle.SCALING_FACTOR_X,
 									-shArCoords[iPointIndex][1]
-											* PathwayRenderStyle.SCALING_FACTOR_Y,
-									Z_OFFSET);
+											* PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
 						}
 						gl.glEnd();
 
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
-								vertexRep.getId())) {
+								vertexRep.getID())) {
 							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
@@ -536,8 +499,9 @@ public class GLPathwayContentCreator {
 										Z_OFFSET);
 							}
 							gl.glEnd();
-						} else if (internalSelectionManager.checkStatus(
-								SelectionType.MOUSE_OVER, vertexRep.getId())) {
+						}
+						else if (internalSelectionManager.checkStatus(
+								SelectionType.MOUSE_OVER, vertexRep.getID())) {
 							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glLineWidth(3);
 							gl.glColor4fv(tmpNodeColor, 0);
@@ -553,17 +517,19 @@ public class GLPathwayContentCreator {
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				// Handle selection highlighting of element
 				if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
-						vertexRep.getId())) {
+						vertexRep.getID())) {
 					tmpNodeColor = SelectionType.SELECTION.getColor();
-				} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-						vertexRep.getId())) {
+				}
+				else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+						vertexRep.getID())) {
 					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 				}
 				// else if (internalSelectionManager.checkStatus(
-				// SelectionType.NORMAL, vertexRep.getId())) {
+				// SelectionType.NORMAL, vertexRep.getID())) {
 				// tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
 				// }
 				else {
@@ -576,14 +542,13 @@ public class GLPathwayContentCreator {
 				gl.glBegin(GL2.GL_LINE_STRIP);
 				for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
 					gl.glVertex3f(shArCoords[iPointIndex][0]
-							* PathwayRenderStyle.SCALING_FACTOR_X,
-							-shArCoords[iPointIndex][1]
-									* PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
+							* PathwayRenderStyle.SCALING_FACTOR_X, -shArCoords[iPointIndex][1]
+							* PathwayRenderStyle.SCALING_FACTOR_Y, Z_OFFSET);
 				}
 				gl.glEnd();
 
 				if (!internalSelectionManager.checkStatus(SelectionType.DESELECTED,
-						vertexRep.getId())) {
+						vertexRep.getID())) {
 
 					// Transparent node for picking
 					gl.glColor4f(0, 0, 0, 0);
@@ -605,10 +570,8 @@ public class GLPathwayContentCreator {
 				// which we represent as other
 				|| vertexType.equals(EPathwayVertexType.other)) {
 
-			float fCanvasXPos = vertexRep.getXOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_X;
-			float fCanvasYPos = vertexRep.getYOrigin()
-					* PathwayRenderStyle.SCALING_FACTOR_Y;
+			float fCanvasXPos = vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X;
+			float fCanvasYPos = vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y;
 
 			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
 
@@ -627,35 +590,41 @@ public class GLPathwayContentCreator {
 						// Transparent node for picking
 						gl.glColor4f(0, 0, 0, 0);
 						gl.glCallList(enzymeNodeDisplayListId);
-					} else {
+					}
+					else {
 						gl.glCallList(upscaledEnzymeNodeDisplayListId);
 
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
-								vertexRep.getId())) {
+								vertexRep.getID())) {
 							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(upscaledEnzymeNodeDisplayListId);
-						} else if (internalSelectionManager.checkStatus(
-								SelectionType.MOUSE_OVER, vertexRep.getId())) {
+						}
+						else if (internalSelectionManager.checkStatus(
+								SelectionType.MOUSE_OVER, vertexRep.getID())) {
 							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(upscaledEnzymeNodeDisplayListId);
 						}
 					}
 				}
-			} else {
+			}
+			else {
 				// Handle selection highlighting of element
 				if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
-						vertexRep.getId())) {
+						vertexRep.getID())) {
 					tmpNodeColor = SelectionType.SELECTION.getColor();
-				} else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-						vertexRep.getId())) {
+				}
+				else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+						vertexRep.getID())) {
 					tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
-				} else if (internalSelectionManager.checkStatus(SelectionType.NORMAL,
-						vertexRep.getId())) {
+				}
+				else if (internalSelectionManager.checkStatus(SelectionType.NORMAL,
+						vertexRep.getID())) {
 					tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
-				} else {
+				}
+				else {
 					tmpNodeColor = new float[] { 0, 0, 0, 0 };
 				}
 
@@ -663,7 +632,7 @@ public class GLPathwayContentCreator {
 				gl.glCallList(framedEnzymeNodeDisplayListId);
 
 				if (!internalSelectionManager.checkStatus(SelectionType.DESELECTED,
-						vertexRep.getId())) {
+						vertexRep.getID())) {
 
 					// Transparent node for picking
 					gl.glColor4f(0, 0, 0, 0);
@@ -677,74 +646,75 @@ public class GLPathwayContentCreator {
 		gl.glPopName();
 	}
 
-	private void createEdge(final GL2 gl, IGraphItem edgeRep,
+	private void createEdge(final GL2 gl, PathwayRelationEdgeGraphItemRep edgeRep,
 			PathwayGraph containingPathway) {
 
-		List<IGraphItem> listGraphItemsIn = edgeRep
-				.getAllItemsByProp(EGraphItemProperty.INCOMING);
-		List<IGraphItem> listGraphItemsOut = edgeRep
-				.getAllItemsByProp(EGraphItemProperty.OUTGOING);
-
-		if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
-			return;
-
-		float[] tmpColor;
-		float fReactionLineOffset = 0;
-
-		// Check if edge is a reaction
-		if (edgeRep instanceof PathwayReactionEdgeGraphItemRep) {
-			tmpColor = PathwayRenderStyle.REACTION_EDGE_COLOR;
-			fReactionLineOffset = 0.01f;
-		}
-		// Check if edge is a relation
-		else if (edgeRep instanceof PathwayRelationEdgeGraphItemRep) {
-			tmpColor = PathwayRenderStyle.RELATION_EDGE_COLOR;
-		} else {
-			tmpColor = new float[] { 0, 0, 0, 0 };
-		}
-
-		gl.glLineWidth(4);
-		gl.glColor4fv(tmpColor, 0);
-		gl.glBegin(GL2.GL_LINES);
-
-		Iterator<IGraphItem> iterSourceGraphItem = listGraphItemsIn.iterator();
-		Iterator<IGraphItem> iterTargetGraphItem = listGraphItemsOut.iterator();
-
-		PathwayVertexGraphItemRep tmpSourceGraphItem;
-		PathwayVertexGraphItemRep tmpTargetGraphItem;
-		while (iterSourceGraphItem.hasNext()) {
-
-			tmpSourceGraphItem = (PathwayVertexGraphItemRep) iterSourceGraphItem.next();
-
-			while (iterTargetGraphItem.hasNext()) {
-				tmpTargetGraphItem = (PathwayVertexGraphItemRep) iterTargetGraphItem
-						.next();
-
-				gl.glVertex3f(tmpSourceGraphItem.getXOrigin()
-						* PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
-						-tmpSourceGraphItem.getYOrigin()
-								* PathwayRenderStyle.SCALING_FACTOR_Y
-								+ fReactionLineOffset, 0.02f);
-				gl.glVertex3f(tmpTargetGraphItem.getXOrigin()
-						* PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
-						-tmpTargetGraphItem.getYOrigin()
-								* PathwayRenderStyle.SCALING_FACTOR_Y
-								+ fReactionLineOffset, 0.02f);
-			}
-		}
-
-		gl.glEnd();
+		// List<IGraphItem> listGraphItemsIn = edgeRep
+		// .getAllItemsByProp(EGraphItemProperty.INCOMING);
+		// List<IGraphItem> listGraphItemsOut = edgeRep
+		// .getAllItemsByProp(EGraphItemProperty.OUTGOING);
+		//
+		// if (listGraphItemsIn.isEmpty() || listGraphItemsOut.isEmpty())
+		// return;
+		//
+		// float[] tmpColor;
+		// float fReactionLineOffset = 0;
+		//
+		// // Check if edge is a reaction
+		// if (edgeRep instanceof PathwayReactionEdgeGraphItemRep) {
+		// tmpColor = PathwayRenderStyle.REACTION_EDGE_COLOR;
+		// fReactionLineOffset = 0.01f;
+		// }
+		// // Check if edge is a relation
+		// else if (edgeRep instanceof PathwayRelationEdgeGraphItemRep) {
+		// tmpColor = PathwayRenderStyle.RELATION_EDGE_COLOR;
+		// } else {
+		// tmpColor = new float[] { 0, 0, 0, 0 };
+		// }
+		//
+		// gl.glLineWidth(4);
+		// gl.glColor4fv(tmpColor, 0);
+		// gl.glBegin(GL2.GL_LINES);
+		//
+		// Iterator<IGraphItem> iterSourceGraphItem =
+		// listGraphItemsIn.iterator();
+		// Iterator<IGraphItem> iterTargetGraphItem =
+		// listGraphItemsOut.iterator();
+		//
+		// PathwayVertexGraphItemRep tmpSourceGraphItem;
+		// PathwayVertexGraphItemRep tmpTargetGraphItem;
+		// while (iterSourceGraphItem.hasNext()) {
+		//
+		// tmpSourceGraphItem = (PathwayVertexGraphItemRep)
+		// iterSourceGraphItem.next();
+		//
+		// while (iterTargetGraphItem.hasNext()) {
+		// tmpTargetGraphItem = (PathwayVertexGraphItemRep) iterTargetGraphItem
+		// .next();
+		//
+		// gl.glVertex3f(tmpSourceGraphItem.getXOrigin()
+		// * PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
+		// -tmpSourceGraphItem.getYOrigin()
+		// * PathwayRenderStyle.SCALING_FACTOR_Y
+		// + fReactionLineOffset, 0.02f);
+		// gl.glVertex3f(tmpTargetGraphItem.getXOrigin()
+		// * PathwayRenderStyle.SCALING_FACTOR_X + fReactionLineOffset,
+		// -tmpTargetGraphItem.getYOrigin()
+		// * PathwayRenderStyle.SCALING_FACTOR_Y
+		// + fReactionLineOffset, 0.02f);
+		// }
+		// }
+		//
+		// gl.glEnd();
 	}
 
-	public void renderPathway(final GL2 gl, final PathwayGraph pathway,
-			boolean bRenderLabels) {
+	public void renderPathway(final GL2 gl, final PathwayGraph pathway, boolean bRenderLabels) {
 		if (enableEdgeRendering || !selectedEdgeRepId.isEmpty()) {
 			int iTmpEdgesDisplayListID = hashPathway2EdgesDisplayListId.get(pathway);
 			gl.glCallList(iTmpEdgesDisplayListID);
 		}
 
-		Integer iTmpVerticesDisplayListID = hashPathway2VerticesDisplayListId
-				.get(pathway);
+		Integer iTmpVerticesDisplayListID = hashPathway2VerticesDisplayListId.get(pathway);
 
 		if (iTmpVerticesDisplayListID != null) {
 			gl.glCallList(iTmpVerticesDisplayListID);
@@ -757,17 +727,16 @@ public class GLPathwayContentCreator {
 	private float[] determineNodeColor(PathwayVertexGraphItemRep vertexRep) {
 
 		int davidID = pathwayItemManager
-				.getDavidIdByPathwayVertexGraphItem((PathwayVertexGraphItem) vertexRep
-						.getAllItemsByProp(EGraphItemProperty.ALIAS_PARENT).get(0));
+				.getDavidIdByPathwayVertex((PathwayVertexGraphItem) vertexRep
+						.getPathwayVertices().get(0));
 
 		if (davidID == -1 || davidID == 0)
 			return null;
 		else {
 
-			Set<Integer> expressionIndices = idMappingManager
-					.<Integer, Integer> getIDAsSet(glPathwayView.getPathwayDataDomain()
-							.getDavidIDType(), glPathwayView.getGeneSelectionManager()
-							.getIDType(), davidID);
+			Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(
+					glPathwayView.getPathwayDataDomain().getDavidIDType(), glPathwayView
+							.getGeneSelectionManager().getIDType(), davidID);
 			if (expressionIndices == null)
 				return null;
 			for (Integer expressionIndex : expressionIndices) {
@@ -777,17 +746,16 @@ public class GLPathwayContentCreator {
 				if (glPathwayView.getGeneSelectionManager().getIDType() == geneticDataDomain
 						.getRecordIDType())
 					expression = (float) glPathwayView.getDataContainer()
-							.getContainerStatistics().getAverageRecords()
-							.get(expressionIndex).getArithmeticMean();
+							.getContainerStatistics().getAverageRecords().get(expressionIndex)
+							.getArithmeticMean();
 				else {
 
-					int index = glPathwayView.getDataContainer()
-							.getDimensionPerspective().getVirtualArray()
-							.indexOf(expressionIndex);
+					int index = glPathwayView.getDataContainer().getDimensionPerspective()
+							.getVirtualArray().indexOf(expressionIndex);
 					if (index > 0)
 						expression = (float) glPathwayView.getDataContainer()
-								.getContainerStatistics().getAverageDimensions()
-								.get(index).getArithmeticMean();
+								.getContainerStatistics().getAverageDimensions().get(index)
+								.getArithmeticMean();
 				}
 				return colorMapper.getColor(expression);
 
@@ -820,7 +788,8 @@ public class GLPathwayContentCreator {
 			if (!geneticDataDomain.getTable().containsFoldChangeRepresentation())
 				geneticDataDomain.getTable().createFoldChangeRepresentation();
 			dimensionDataRepresentation = DataRepresentation.FOLD_CHANGE_NORMALIZED;
-		} else
+		}
+		else
 			dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 	}
 }

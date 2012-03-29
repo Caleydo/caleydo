@@ -1,15 +1,11 @@
 package org.caleydo.view.histogram;
 
 import static org.caleydo.view.histogram.HistogramRenderStyle.SIDE_SPACING;
-
-import java.awt.Font;
 import java.awt.Point;
 import java.util.ArrayList;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.id.IDType;
@@ -31,8 +27,6 @@ import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.eclipse.swt.widgets.Composite;
-
-import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**
  * Rendering the histogram.

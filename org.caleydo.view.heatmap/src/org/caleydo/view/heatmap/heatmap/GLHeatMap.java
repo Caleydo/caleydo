@@ -3,12 +3,10 @@ package org.caleydo.view.heatmap.heatmap;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;

@@ -4,7 +4,6 @@
 package org.caleydo.core.data.mapping;
 
 import java.util.HashMap;
-
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 

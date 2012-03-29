@@ -5,7 +5,6 @@ package org.caleydo.core.view.opengl.util.spline;
  * as long as you don't say it's yours or hold me responsible for anything.
  */
 import gleem.linalg.Vec3f;
-
 import java.util.HashMap;
 import java.util.Map;
 

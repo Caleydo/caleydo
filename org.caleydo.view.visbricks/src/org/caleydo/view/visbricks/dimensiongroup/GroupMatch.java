@@ -2,7 +2,6 @@ package org.caleydo.view.visbricks.dimensiongroup;
 
 import java.util.Collection;
 import java.util.HashMap;
-
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**

@@ -1,11 +1,8 @@
 package org.caleydo.view.datawindows;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;

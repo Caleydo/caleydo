@@ -3,9 +3,7 @@ package org.caleydo.musama;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-
 import org.caleydo.musama.InformationProviderEvent.Type;
-
 import de.mmis.core.base.event.AbstractObservable;
 import de.mmis.core.pojop.NetworkPublisher;
 import de.mmis.core.pojop.NetworkPublisher.ServerType;

@@ -4,7 +4,6 @@
 package org.caleydo.core.data.container;
 
 import java.util.HashMap;
-
 import org.caleydo.core.data.container.FoldChangeSettings.FoldChangeEvaluator;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.conversion.ConversionTools;

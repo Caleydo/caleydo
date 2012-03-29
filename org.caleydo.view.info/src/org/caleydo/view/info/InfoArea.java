@@ -1,7 +1,6 @@
 package org.caleydo.view.info;
 
 import java.util.Set;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.id.IDCategory;

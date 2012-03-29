@@ -3,21 +3,11 @@ package org.caleydo.datadomain.pathway.manager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
-
-import org.caleydo.core.data.graph.ICaleydoGraphItem;
 import org.caleydo.core.manager.AManager;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeGraphItemRep;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeGraphItem;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeGraphItemRep;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItem;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGraphItemRep;
-import org.caleydo.util.graph.EGraphItemHierarchy;
-import org.caleydo.util.graph.EGraphItemProperty;
-import org.caleydo.util.graph.IGraph;
-import org.caleydo.util.graph.IGraphItem;
 
 /**
  * The element manager is in charge for handling the items. Items are vertices
@@ -25,8 +15,8 @@ import org.caleydo.util.graph.IGraphItem;
  * 
  * @author Marc Streit
  */
-public class PathwayItemManager extends AManager<ICaleydoGraphItem> implements
-		Serializable {
+public class PathwayItemManager extends AManager<PathwayVertexGraphItem>
+	implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 
@@ -62,36 +52,38 @@ public class PathwayItemManager extends AManager<ICaleydoGraphItem> implements
 		hashIDToPathwayVertexGraphItemRep = new HashMap<Integer, PathwayVertexGraphItemRep>();
 	}
 
-	public IGraphItem createVertex(final String sName, final String sType,
+	public PathwayVertexGraphItem createVertex(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId) {
-		ICaleydoGraphItem pathwayVertex = new PathwayVertexGraphItem(sName, sType,
+		
+		PathwayVertexGraphItem pathwayVertex = new PathwayVertexGraphItem(sName, sType,
 				sExternalLink, sReactionId);
 
 		hashItems.put(pathwayVertex.getID(), pathwayVertex);
 
-		PathwayManager.get().getRootPathway().addItem(pathwayVertex);
+		PathwayManager.get().getRootPathway().addVertex(pathwayVertex);
 
 		return pathwayVertex;
 	}
 
-	public ArrayList<IGraphItem> createVertexGene(final String sName, final String sType,
+	public ArrayList<PathwayVertexGraphItem> createVertexGene(final String sName, final String sType,
 			final String sExternalLink, final String sReactionId,
 			final Set<Integer> DataTableDavidId) {
 
-		ArrayList<IGraphItem> alGraphItems = new ArrayList<IGraphItem>();
-		IGraphItem tmpGraphItem = null;
+		ArrayList<PathwayVertexGraphItem> alGraphItems = new ArrayList<PathwayVertexGraphItem>();
+		PathwayVertexGraphItem tmpGraphItem = null;
 		for (int iDavidId : DataTableDavidId) {
 
 			// Do not create a new vertex if it is already registered
 			if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId)) {
 				tmpGraphItem = hashDavidIdToPathwayVertexGraphItem.get(iDavidId);
-			} else {
+			}
+			else {
 				tmpGraphItem = createVertex(sName, sType, sExternalLink, sReactionId);
 
 				hashDavidIdToPathwayVertexGraphItem.put(iDavidId,
 						(PathwayVertexGraphItem) tmpGraphItem);
-				hashPathwayVertexGraphItemToDavidId.put(
-						(PathwayVertexGraphItem) tmpGraphItem, iDavidId);
+				hashPathwayVertexGraphItemToDavidId.put((PathwayVertexGraphItem) tmpGraphItem,
+						iDavidId);
 			}
 
 			if (tmpGraphItem == null)
@@ -103,144 +95,134 @@ public class PathwayItemManager extends AManager<ICaleydoGraphItem> implements
 		return alGraphItems;
 	}
 
-	public IGraphItem createVertexRep(final IGraph parentPathway,
-			final ArrayList<IGraphItem> alVertexGraphItem, final String sName,
+	public PathwayVertexGraphItemRep createVertexRep(final PathwayGraph parentPathway,
+			final ArrayList<PathwayVertexGraphItem> alVertexGraphItem, final String sName,
 			final String sShapeType, final short shHeight, final short shWidth,
 			final short shXPosition, final short shYPosition) {
 
-		ICaleydoGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(sName,
-				sShapeType, shHeight, shWidth, shXPosition, shYPosition);
+		PathwayVertexGraphItemRep pathwayVertexRep = new PathwayVertexGraphItemRep(sName, sShapeType,
+				shHeight, shWidth, shXPosition, shYPosition);
 
-		registerItem(pathwayVertexRep);
+		//registerItem(pathwayVertexRep);
 
-		parentPathway.addItem(pathwayVertexRep);
-		pathwayVertexRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
-
-		for (IGraphItem parentVertex : alVertexGraphItem) {
-			pathwayVertexRep.addItem(parentVertex, EGraphItemProperty.ALIAS_PARENT);
-			parentVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
+		parentPathway.addVertex(pathwayVertexRep);
+		pathwayVertexRep.addPathway(parentPathway);
+		
+		for (PathwayVertexGraphItem parentVertex : alVertexGraphItem) {
+			pathwayVertexRep.addPathwayVertex(parentVertex);
+			parentVertex.addPathwayVertexRep(pathwayVertexRep);
 		}
 
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(),
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getID(),
 				(PathwayVertexGraphItemRep) pathwayVertexRep);
 
 		return pathwayVertexRep;
 	}
 
-	public IGraphItem createVertexRep(final IGraph parentPathway,
-			final ArrayList<IGraphItem> alVertexGraphItem, final String sName,
+	public PathwayVertexGraphItemRep createVertexRep(final PathwayGraph parentPathway,
+			final ArrayList<PathwayVertexGraphItem> alVertexGraphItem, final String sName,
 			final String sShapeType, final String sCoords) {
 
-		ICaleydoGraphItem pathwayVertexRep = new PathwayVertexGraphItemRep(sName,
-				sShapeType, sCoords);
+		PathwayVertexGraphItemRep pathwayVertexRep = new PathwayVertexGraphItemRep(sName, sShapeType,
+				sCoords);
 
-		registerItem(pathwayVertexRep);
+		//registerItem(pathwayVertexRep);
 
-		parentPathway.addItem(pathwayVertexRep);
+		parentPathway.addVertex(pathwayVertexRep);
+		pathwayVertexRep.addPathway(parentPathway);
 
-		pathwayVertexRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
-
-		for (IGraphItem parentVertex : alVertexGraphItem) {
-			pathwayVertexRep.addItem(parentVertex, EGraphItemProperty.ALIAS_PARENT);
-			parentVertex.addItem(pathwayVertexRep, EGraphItemProperty.ALIAS_CHILD);
+		for (PathwayVertexGraphItem parentVertex : alVertexGraphItem) {
+			pathwayVertexRep.addPathwayVertex(parentVertex);
+			parentVertex.addPathwayVertexRep(pathwayVertexRep);
 		}
 
-		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getId(),
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexRep.getID(),
 				(PathwayVertexGraphItemRep) pathwayVertexRep);
 
 		return pathwayVertexRep;
 	}
 
-	public IGraphItem createRelationEdge(final List<IGraphItem> alGraphItemIn,
-			final List<IGraphItem> alGraphItemOut, final String sType) {
-		IGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(sType);
+//	public PathwayRelationEdgeGraphItem createRelationEdge(final List<PathwayVertexGraphItem> alGraphItemIn,
+//			final List<PathwayVertexGraphItem> alGraphItemOut, final String sType) {
+//		PathwayRelationEdgeGraphItem pathwayRelationEdge = new PathwayRelationEdgeGraphItem(sType);
+//
+//		IGraph rootPathway = PathwayManager.get().getRootPathway();
+//
+//		// Add edge to root pathway
+//		rootPathway.addItem(pathwayRelationEdge);
+//
+//		// Add root pathway to edge
+//		pathwayRelationEdge.addGraph(rootPathway, EGraphItemHierarchy.GRAPH_PARENT);
+//
+//		// Add connection to incoming and outgoing items
+//		for (IGraphItem graphItemIn : alGraphItemIn) {
+//			pathwayRelationEdge.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+//		}
+//
+//		for (IGraphItem graphItemOut : alGraphItemOut) {
+//			pathwayRelationEdge.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+//		}
+//
+//		return pathwayRelationEdge;
+//	}
+//
+//	public void createRelationEdgeRep(final DirectedGraph<PathwayVertexGraphItem, DefaultEdge> parentPathway,
+//			final IGraphItem pathwayRelationEdge, final IGraphItem graphItemIn,
+//			final IGraphItem graphItemOut) {
+//		IGraphItem pathwayRelationEdgeRep = new PathwayRelationEdgeGraphItemRep();
+//
+//		// Add edge to pathway representation
+//		parentPathway.addItem(pathwayRelationEdgeRep);
+//
+//		// Add pathway representation to created edge
+//		pathwayRelationEdgeRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
+//
+//		// Add edge data to representation as ALIAS_PARENT
+//		pathwayRelationEdgeRep.addItem(pathwayRelationEdge, EGraphItemProperty.ALIAS_PARENT);
+//
+//		// Add edge representation to data as ALIAS_CHILD
+//		pathwayRelationEdge.addItem(pathwayRelationEdgeRep, EGraphItemProperty.ALIAS_CHILD);
+//
+//		// Add connection to incoming and outgoing items
+//		pathwayRelationEdgeRep.addItemDoubleLinked(graphItemIn, EGraphItemProperty.INCOMING);
+//		pathwayRelationEdgeRep.addItemDoubleLinked(graphItemOut, EGraphItemProperty.OUTGOING);
+//	}
 
-		IGraph rootPathway = PathwayManager.get().getRootPathway();
-
-		// Add edge to root pathway
-		rootPathway.addItem(pathwayRelationEdge);
-
-		// Add root pathway to edge
-		pathwayRelationEdge.addGraph(rootPathway, EGraphItemHierarchy.GRAPH_PARENT);
-
-		// Add connection to incoming and outgoing items
-		for (IGraphItem graphItemIn : alGraphItemIn) {
-			pathwayRelationEdge.addItemDoubleLinked(graphItemIn,
-					EGraphItemProperty.INCOMING);
-		}
-
-		for (IGraphItem graphItemOut : alGraphItemOut) {
-			pathwayRelationEdge.addItemDoubleLinked(graphItemOut,
-					EGraphItemProperty.OUTGOING);
-		}
-
-		return pathwayRelationEdge;
-	}
-
-	public void createRelationEdgeRep(final IGraph parentPathway,
-			final IGraphItem pathwayRelationEdge, final IGraphItem graphItemIn,
-			final IGraphItem graphItemOut) {
-		IGraphItem pathwayRelationEdgeRep = new PathwayRelationEdgeGraphItemRep();
-
-		// Add edge to pathway representation
-		parentPathway.addItem(pathwayRelationEdgeRep);
-
-		// Add pathway representation to created edge
-		pathwayRelationEdgeRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
-
-		// Add edge data to representation as ALIAS_PARENT
-		pathwayRelationEdgeRep.addItem(pathwayRelationEdge,
-				EGraphItemProperty.ALIAS_PARENT);
-
-		// Add edge representation to data as ALIAS_CHILD
-		pathwayRelationEdge.addItem(pathwayRelationEdgeRep,
-				EGraphItemProperty.ALIAS_CHILD);
-
-		// Add connection to incoming and outgoing items
-		pathwayRelationEdgeRep.addItemDoubleLinked(graphItemIn,
-				EGraphItemProperty.INCOMING);
-		pathwayRelationEdgeRep.addItemDoubleLinked(graphItemOut,
-				EGraphItemProperty.OUTGOING);
-	}
-
-	public IGraphItem createReactionEdge(final IGraph parentPathway,
-			final String sReactionName, final String sReactionType) {
-
-		// Create edge (data)
-		IGraphItem pathwayReactionEdge = new PathwayReactionEdgeGraphItem(sReactionName,
-				sReactionType);
-
-		// Create edge representation
-		IGraphItem pathwayReactionEdgeRep = new PathwayReactionEdgeGraphItemRep();
-
-		IGraph rootPathway = PathwayManager.get().getRootPathway();
-
-		// Add edge to root pathway
-		rootPathway.addItem(pathwayReactionEdge);
-
-		// Add root pathway to edge
-		pathwayReactionEdge.addGraph(rootPathway, EGraphItemHierarchy.GRAPH_PARENT);
-
-		// Add edge to pathway representation
-		parentPathway.addItem(pathwayReactionEdgeRep);
-
-		// Add pathway representation to created edge
-		pathwayReactionEdgeRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
-
-		// Add edge data to representation as ALIAS_PARENT
-		pathwayReactionEdgeRep.addItem(pathwayReactionEdge,
-				EGraphItemProperty.ALIAS_PARENT);
-
-		// Add edge representation to data as ALIAS_CHILD
-		pathwayReactionEdge.addItem(pathwayReactionEdgeRep,
-				EGraphItemProperty.ALIAS_CHILD);
-
-		return pathwayReactionEdgeRep;
-	}
+//	public IGraphItem createReactionEdge(final DirectedGraph<PathwayVertexGraphItem, DefaultEdge> parentPathway,
+//			final String sReactionName, final String sReactionType) {
+//
+//		// Create edge (data)
+//		IGraphItem pathwayReactionEdge = new PathwayReactionEdgeGraphItem(sReactionName,
+//				sReactionType);
+//
+//		// Create edge representation
+//		IGraphItem pathwayReactionEdgeRep = new PathwayReactionEdgeGraphItemRep();
+//
+//		IGraph rootPathway = PathwayManager.get().getRootPathway();
+//
+//		// Add edge to root pathway
+//		rootPathway.addItem(pathwayReactionEdge);
+//
+//		// Add root pathway to edge
+//		pathwayReactionEdge.addGraph(rootPathway, EGraphItemHierarchy.GRAPH_PARENT);
+//
+//		// Add edge to pathway representation
+//		parentPathway.addItem(pathwayReactionEdgeRep);
+//
+//		// Add pathway representation to created edge
+//		pathwayReactionEdgeRep.addGraph(parentPathway, EGraphItemHierarchy.GRAPH_PARENT);
+//
+//		// Add edge data to representation as ALIAS_PARENT
+//		pathwayReactionEdgeRep.addItem(pathwayReactionEdge, EGraphItemProperty.ALIAS_PARENT);
+//
+//		// Add edge representation to data as ALIAS_CHILD
+//		pathwayReactionEdge.addItem(pathwayReactionEdgeRep, EGraphItemProperty.ALIAS_CHILD);
+//
+//		return pathwayReactionEdgeRep;
+//	}
 
 	// TODO: throw exception
-	public final PathwayVertexGraphItem getPathwayVertexGraphItemByDavidId(
-			final int iDavidId) {
+	public final PathwayVertexGraphItem getPathwayVertexGraphItemByDavidId(final int iDavidId) {
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
 
 		if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId))
@@ -249,7 +231,7 @@ public class PathwayItemManager extends AManager<ICaleydoGraphItem> implements
 		return null;
 	}
 
-	public int getDavidIdByPathwayVertexGraphItem(
+	public int getDavidIdByPathwayVertex(
 			final PathwayVertexGraphItem pathwayVertexGraphItem) {
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
 
@@ -263,9 +245,8 @@ public class PathwayItemManager extends AManager<ICaleydoGraphItem> implements
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
 
 		if (!hashIDToPathwayVertexGraphItemRep.containsKey(iID))
-			throw new IllegalArgumentException(
-					"Requested pathway vertex representation ID " + iID
-							+ " does not exist!");
+			throw new IllegalArgumentException("Requested pathway vertex representation ID "
+					+ iID + " does not exist!");
 
 		return hashIDToPathwayVertexGraphItemRep.get(iID);
 	}

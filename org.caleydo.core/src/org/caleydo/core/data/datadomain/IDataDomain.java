@@ -1,7 +1,6 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
-
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.util.color.Color;
