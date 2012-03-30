@@ -8,6 +8,7 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.ColorMarkerPoint;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
  * PDDrawingStrategyRainbow draws partial discs using rainbow colors. The actual

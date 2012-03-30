@@ -8,6 +8,7 @@ import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
  * PDDrawingStrategyExpressionColor draws the partial discs using gene

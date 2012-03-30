@@ -6,6 +6,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
  * PDDrawingStrategySelected is responsible for drawing partial discs which have

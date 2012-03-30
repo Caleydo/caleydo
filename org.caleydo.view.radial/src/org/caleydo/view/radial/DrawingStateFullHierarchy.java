@@ -8,6 +8,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.clusterer.EDrawingStateType;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
  * In this drawing state the radial hierarchy is drawn at the center of the

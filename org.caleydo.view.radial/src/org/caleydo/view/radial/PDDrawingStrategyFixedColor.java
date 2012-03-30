@@ -5,6 +5,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.util.clusterer.EPDDrawingStrategyType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 
 /**
  * PDDrawingStrategyFixedColor uses a definable color for drawing the partial

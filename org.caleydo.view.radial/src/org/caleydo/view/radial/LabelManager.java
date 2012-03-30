@@ -4,6 +4,8 @@ import java.awt.Font;
 import java.util.ArrayList;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
+import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**

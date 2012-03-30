@@ -6,7 +6,8 @@ Bundle-Version: 1.0.0.qualifier
 Bundle-Activator: org.caleydo.view.linearizedpathway.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
- org.caleydo.core;bundle-version="2.0.0"
+ org.caleydo.core;bundle-version="2.0.0",
+ org.caleydo.datadomain.pathway;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.7
 Bundle-Vendor: www.caleydo.org

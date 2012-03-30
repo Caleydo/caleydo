@@ -1,4 +1,4 @@
-package org.caleydo.view.radial;
+package org.caleydo.core.view.opengl.util;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
