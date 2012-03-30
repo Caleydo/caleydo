@@ -183,7 +183,7 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 			return;
 
 		ArrayList<PathwayVertex> alVertex = pathwayItemManager.createVertexGene(sName,
-				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink, "",
+				"gene", BIOCARTA_EXTERNAL_URL_VERTEX + sExternalLink,
 				DataTableDavidID);
 
 		pathwayItemManager.createVertexRep(currentPathway, alVertex, sName, sShape,

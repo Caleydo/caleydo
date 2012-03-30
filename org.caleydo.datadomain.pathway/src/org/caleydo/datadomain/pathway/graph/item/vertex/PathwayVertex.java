@@ -23,34 +23,31 @@ public class PathwayVertex implements Serializable, IUniqueObject {
 	private EPathwayVertexType type;
 
 	private final String externalLink;
-
-	private final String reactionId;
 	
 	private List<PathwayVertexRep> pathwayVertexReps = new ArrayList<PathwayVertexRep>();
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param sName
-	 * @param sType
-	 * @param sExternalLink
-	 * @param sReactionId
+	 * @param name
+	 * @param type
+	 * @param externalLink
+	 * @param reactionId
 	 */
-	public PathwayVertex(final String sName, final String sType,
-			final String sExternalLink, final String sReactionId) {
+	public PathwayVertex(final String name, final String type,
+			final String externalLink) {
 
 		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY_VERTEX);
 		
 		// Check if type exists - otherwise assign "other"
 		try {
-			type = EPathwayVertexType.valueOf(sType);
+			this.type = EPathwayVertexType.valueOf(type);
 		} catch (IllegalArgumentException e) {
-			type = EPathwayVertexType.other;
+			this.type = EPathwayVertexType.other;
 		}
 
-		this.name = sName;
-		this.externalLink = sExternalLink;
-		this.reactionId = sReactionId;
+		this.name = name;
+		this.externalLink = externalLink;
 	}
 
 	@Override
@@ -71,11 +68,6 @@ public class PathwayVertex implements Serializable, IUniqueObject {
 	public String getExternalLink() {
 
 		return externalLink;
-	}
-
-	public String getReactionId() {
-
-		return reactionId;
 	}
 
 	@Override

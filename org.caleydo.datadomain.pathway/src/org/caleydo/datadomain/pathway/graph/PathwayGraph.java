@@ -23,17 +23,17 @@ public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultE
 	
 	private PathwayDatabaseType type;
 
-	private String sName;
+	private String name;
 
-	private String sTitle;
+	private String title;
 
-	private String sImageLink;
+	private String imageLink;
 
-	private String sExternalLink;
+	private String externalLink;
 
-	private int iWidth = -1;
+	private int width = -1;
 
-	private int iHeight = -1;
+	private int height = -1;
 
 	public PathwayGraph(final PathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sLink) {
@@ -45,10 +45,10 @@ public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultE
 		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY);
 		
 		this.type = type;
-		this.sName = sName;
-		this.sTitle = sTitle;
-		this.sImageLink = sImageLink;
-		this.sExternalLink = sLink;
+		this.name = sName;
+		this.title = sTitle;
+		this.imageLink = sImageLink;
+		this.externalLink = sLink;
 	}
 	
 	@Override
@@ -58,22 +58,22 @@ public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultE
 
 	public final String getName() {
 
-		return sName;
+		return name;
 	}
 
 	public final String getTitle() {
 
-		return sTitle;
+		return title;
 	}
 
 	public final String getImageLink() {
 
-		return sImageLink;
+		return imageLink;
 	}
 
 	public final String getExternalLink() {
 
-		return sExternalLink;
+		return externalLink;
 	}
 
 	public final PathwayDatabaseType getType() {
@@ -83,22 +83,22 @@ public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultE
 
 	public final int getWidth() {
 
-		return iWidth;
+		return width;
 	}
 
 	public final int getHeight() {
 
-		return iHeight;
+		return height;
 	}
 
 	public void setWidth(final int iWidth) {
 
-		this.iWidth = iWidth;
+		this.width = iWidth;
 	}
 
 	public void setHeight(final int iHeight) {
 
-		this.iHeight = iHeight;
+		this.height = iHeight;
 	}
 
 	@Override
@@ -134,7 +134,7 @@ public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultE
 
 	@Override
 	public int compareTo(PathwayGraph o) {
-		return this.sTitle.compareToIgnoreCase(o.getTitle());
+		return this.title.compareToIgnoreCase(o.getTitle());
 	}
 
 }

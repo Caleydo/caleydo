@@ -14,30 +14,29 @@ public class PathwayReactionEdge extends DefaultEdge implements
 
 	private static final long serialVersionUID = 1L;
 
-	final String sReactionId;
+//	final String reactionId;
+//
+//	final EPathwayReactionEdgeType type;
+//
+//	/**
+//	 * Constructor.
+//	 * 
+//	 * @param reactionId
+//	 * @param type
+//	 */
+//	public PathwayReactionEdge(final String reactionId, final String type) {
 
-	final EPathwayReactionEdgeType type;
+//		this.reactionId = reactionId;
+//		this.type = EPathwayReactionEdgeType.valueOf(type);
+//	}
 
-	/**
-	 * Constructor.
-	 * 
-	 * @param sReactionId
-	 * @param sType
-	 */
-	public PathwayReactionEdge(final String sReactionId, final String sType) {
-
-		this.sReactionId = sReactionId;
-
-		type = EPathwayReactionEdgeType.valueOf(sType);
-	}
-
-	public EPathwayReactionEdgeType getType() {
-
-		return type;
-	}
-
-	public String getReactionId() {
-
-		return sReactionId;
-	}
+//	public EPathwayReactionEdgeType getType() {
+//
+//		return type;
+//	}
+//
+//	public String getReactionId() {
+//
+//		return reactionId;
+//	}
 }
