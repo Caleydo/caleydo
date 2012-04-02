@@ -50,7 +50,7 @@ import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -235,7 +235,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (useDetailLevel) {
 			super.setDetailLevel(detailLevel);
 			// renderStyle.setDetailLevel(detailLevel);
@@ -526,7 +526,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 

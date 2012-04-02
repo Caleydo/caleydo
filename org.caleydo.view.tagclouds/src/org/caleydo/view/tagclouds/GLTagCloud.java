@@ -19,7 +19,7 @@ import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
@@ -217,7 +217,7 @@ public class GLTagCloud extends ATableBasedView {
 		ElementLayout largerSpacing = new ElementLayout("spacing");
 		largerSpacing.setPixelSizeY(7);
 		largerSpacing.setRatioSizeX(0);
-		if (detailLevel != DetailLevel.LOW) {
+		if (detailLevel != EDetailLevel.LOW) {
 			baseColumn.append(spacing);
 			baseColumn.append(selectionRow);
 
@@ -319,7 +319,7 @@ public class GLTagCloud extends ATableBasedView {
 
 		textRenderer = new CaleydoTextRenderer(80);
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 
 	}
 
@@ -436,7 +436,7 @@ public class GLTagCloud extends ATableBasedView {
 	}
 
 	@Override
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return 120;
@@ -450,7 +450,7 @@ public class GLTagCloud extends ATableBasedView {
 	}
 
 	@Override
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return 100;

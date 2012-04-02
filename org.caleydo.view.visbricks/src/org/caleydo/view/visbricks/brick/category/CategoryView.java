@@ -11,7 +11,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -98,7 +98,7 @@ public class CategoryView extends ATableBasedView {
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 		switch (pickingType) {
@@ -156,7 +156,7 @@ public class CategoryView extends ATableBasedView {
 	}
 
 	@Override
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return getMinPixelHeight();
@@ -170,7 +170,7 @@ public class CategoryView extends ATableBasedView {
 	}
 
 	@Override
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return 100;

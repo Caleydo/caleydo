@@ -539,7 +539,7 @@ public abstract class ATableBasedView extends AGLView implements
 	 *            same as previous for high mode
 	 * @return the number of pixels for the detail level
 	 */
-	protected int getPixelPerElement(boolean forRecord, DetailLevel detailLevel,
+	protected int getPixelPerElement(boolean forRecord, EDetailLevel detailLevel,
 			int pixelPerElementMedium, int pixelPerElementHigh) {
 		int pixelPerElement = 0;
 		switch (detailLevel) {

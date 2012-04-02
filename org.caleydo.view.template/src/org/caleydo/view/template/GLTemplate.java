@@ -10,7 +10,7 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -60,7 +60,7 @@ public class GLTemplate extends ATableBasedView {
 		renderStyle = new TemplateRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 	}
 
 	@Override

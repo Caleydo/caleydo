@@ -33,7 +33,7 @@ import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
@@ -2119,9 +2119,9 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 
 		// Update detail level of moved view when slerp action is finished;
 		if (element == focusElement) {
-			glActiveSubView.setDetailLevel(DetailLevel.HIGH);
+			glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
 		} else {
-			glActiveSubView.setDetailLevel(DetailLevel.LOW);
+			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 		}
 	}
 
@@ -2283,7 +2283,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		if (focusElement.isFree()) {
 			viewSpawnElement.setGLView(view);
 			view.setRemoteLevelElement(focusElement);
-			view.setDetailLevel(DetailLevel.HIGH);
+			view.setDetailLevel(EDetailLevel.HIGH);
 			destinationElement = focusElement;
 		} else {
 

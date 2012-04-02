@@ -21,7 +21,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -128,7 +128,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 	}
 
@@ -289,7 +289,7 @@ public class GLHyperbolic extends AGLView implements IRemoteRenderingHandler,
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 

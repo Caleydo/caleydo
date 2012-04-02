@@ -12,7 +12,7 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.histogram.RcpGLHistogramView;
 import org.eclipse.swt.SWT;
@@ -223,7 +223,7 @@ public class FilterRepresentationSNR extends
 				histogramView.createPartControl(histoComposite);
 				GLHistogram glHistogram = ((GLHistogram) (histogramView.getGLView()));
 				glHistogram.setUseColor(false);
-				glHistogram.setDetailLevel(DetailLevel.HIGH);
+				glHistogram.setDetailLevel(EDetailLevel.HIGH);
 				glHistogram.setHistogram(histogram);
 				// Usually the canvas is registered to the GL2 animator in the
 				// PartListener.

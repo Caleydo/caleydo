@@ -65,7 +65,7 @@ import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -506,7 +506,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 		gl.glColor4fv(renderState.color, 0);
 		gl.glLineWidth(renderState.lineWidth);
-		if (detailLevel == DetailLevel.LOW)
+		if (detailLevel == EDetailLevel.LOW)
 			renderCaption = false;
 
 		float previousX = 0;
@@ -594,7 +594,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 * @param iNumberAxis
 	 */
 	private void renderCoordinateSystem(GL2 gl) {
-		if (detailLevel.equals(DetailLevel.LOW))
+		if (detailLevel.equals(EDetailLevel.LOW))
 			return;
 		textRenderer.setColor(0, 0, 0, 1);
 
@@ -894,7 +894,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	 */
 	private void renderGates(GL2 gl) {
 
-		if (detailLevel != DetailLevel.HIGH)
+		if (detailLevel != EDetailLevel.HIGH)
 			return;
 
 		for (Integer iGateID : hashGates.keySet()) {
@@ -921,7 +921,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	private void renderMasterGate(GL2 gl) {
-		if (detailLevel != DetailLevel.HIGH)
+		if (detailLevel != EDetailLevel.HIGH)
 			return;
 
 		gl.glColor4f(0, 0, 0, 1f);
@@ -1261,7 +1261,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	protected void handlePickingEvents(final PickingType pickingType,
 			final PickingMode pickingMode, final int pickingID, final Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
+		if (detailLevel == EDetailLevel.VERY_LOW || bIsDraggingActive || bWasAxisMoved) {
 			return;
 		}
 
@@ -2218,7 +2218,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	// }
 
 	@Override
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return 400;
@@ -2232,7 +2232,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		return getPixelPerElement(false, detailLevel, 5, 10);
 	}
 
@@ -2244,7 +2244,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 		switch (detailLevel) {
 		case LOW:

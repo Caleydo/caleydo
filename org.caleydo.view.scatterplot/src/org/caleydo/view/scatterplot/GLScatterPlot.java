@@ -58,7 +58,7 @@ import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -236,7 +236,7 @@ public class GLScatterPlot extends ATableBasedView {
 		renderStyle = new ScatterPlotRenderStyle(this, viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 		updateMaxAxis();
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
@@ -326,7 +326,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -340,7 +340,7 @@ public class GLScatterPlot extends ATableBasedView {
 		// textRenderer.setColor(0, 0, 0, 1);
 		// renderNumber(gl, "ScatterPlot View 1.0", 0, 0);
 
-		if (detailLevel == DetailLevel.HIGH) {
+		if (detailLevel == EDetailLevel.HIGH) {
 
 			if (bMainViewZoomDragged) {
 
@@ -470,7 +470,7 @@ public class GLScatterPlot extends ATableBasedView {
 		}
 
 		gl.glCallList(displayListIndex);
-		if (detailLevel == DetailLevel.HIGH) {
+		if (detailLevel == EDetailLevel.HIGH) {
 			gl.glCallList(iGLDisplayListIndexCoord);
 			gl.glCallList(iGLDisplayListIndexMouseOver);
 		}
@@ -2127,7 +2127,7 @@ public class GLScatterPlot extends ATableBasedView {
 		if (iDisplayEveryNthPoint == 0)
 			iDisplayEveryNthPoint = 1;
 
-		if (detailLevel != DetailLevel.HIGH) {
+		if (detailLevel != EDetailLevel.HIGH) {
 			bRender2Axis = false;
 			POINTSTYLE = EScatterPointType.POINT;
 		}
@@ -2938,7 +2938,7 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 
@@ -3563,10 +3563,10 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	public void toggleDetailLevel() {
-		if (detailLevel == DetailLevel.HIGH) {
-			detailLevel = DetailLevel.LOW;
+		if (detailLevel == EDetailLevel.HIGH) {
+			detailLevel = EDetailLevel.LOW;
 		} else
-			detailLevel = DetailLevel.HIGH;
+			detailLevel = EDetailLevel.HIGH;
 		bUpdateMainView = true;
 		setDisplayListDirty();
 	}

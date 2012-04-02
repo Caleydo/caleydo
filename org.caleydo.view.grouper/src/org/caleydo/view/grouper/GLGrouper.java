@@ -41,7 +41,7 @@ import org.caleydo.core.view.contextmenu.item.StatisticsTwoSidedTTestReductionIt
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.IClusterNodeEventReceiver;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -338,7 +338,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (useDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}
@@ -462,7 +462,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 

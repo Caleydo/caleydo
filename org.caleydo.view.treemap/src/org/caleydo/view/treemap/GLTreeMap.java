@@ -29,7 +29,7 @@ import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingManager;
@@ -228,7 +228,7 @@ public class GLTreeMap extends ATableBasedView {
 
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int pickingID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 

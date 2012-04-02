@@ -5,6 +5,6 @@ package org.caleydo.core.view.opengl.canvas;
  * 
  * @author Marc Streit
  */
-public enum DetailLevel {
+public enum EDetailLevel {
 	VERY_LOW, LOW, MEDIUM, HIGH
 }

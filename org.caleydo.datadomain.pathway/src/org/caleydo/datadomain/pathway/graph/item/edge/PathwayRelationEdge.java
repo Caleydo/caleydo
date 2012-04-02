@@ -14,19 +14,19 @@ public class PathwayRelationEdge extends DefaultEdge implements
 
 	private static final long serialVersionUID = 1L;
 
-	final EPathwayRelationEdgeType type;
-
-	/**
-	 * Constructor.
-	 * 
-	 * @param sType
-	 */
-	public PathwayRelationEdge(final String sType) {
-		
-		type = EPathwayRelationEdgeType.valueOf(sType);
-	}
-
-	public EPathwayRelationEdgeType getType() {
-		return type;
-	}
+//	final EPathwayRelationEdgeType type;
+//
+//	/**
+//	 * Constructor.
+//	 * 
+//	 * @param sType
+//	 */
+//	public PathwayRelationEdge(final String sType) {
+//		
+//		type = EPathwayRelationEdgeType.valueOf(sType);
+//	}
+//
+//	public EPathwayRelationEdgeType getType() {
+//		return type;
+//	}
 }

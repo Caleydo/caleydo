@@ -122,7 +122,7 @@ public abstract class AGLView
 	 */
 	protected float fAspectRatio = 1f;
 
-	protected DetailLevel detailLevel = DetailLevel.HIGH;
+	protected EDetailLevel detailLevel = EDetailLevel.HIGH;
 
 	/**
 	 * The remote level element in which the view is placed. This variable is
@@ -542,12 +542,12 @@ public abstract class AGLView
 
 	/**
 	 * Set the level of detail to be displayed, choose from the options in
-	 * {@link DetailLevel}. If the specified detail level differs from the
+	 * {@link EDetailLevel}. If the specified detail level differs from the
 	 * current {@link #setDisplayListDirty()} is called.
 	 * 
 	 * @param detailLevel
 	 */
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (this.detailLevel != detailLevel) {
 			this.detailLevel = detailLevel;
 			setDisplayListDirty();
@@ -555,19 +555,19 @@ public abstract class AGLView
 	}
 
 	private void updateDetailMode() {
-		DetailLevel newDetailLevel;
+		EDetailLevel newDetailLevel;
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
 		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
-		if (pixelHeight > getMinPixelHeight(DetailLevel.HIGH)
-				&& pixelWidth > getMinPixelWidth(DetailLevel.HIGH)) {
-			newDetailLevel = DetailLevel.HIGH;
+		if (pixelHeight > getMinPixelHeight(EDetailLevel.HIGH)
+				&& pixelWidth > getMinPixelWidth(EDetailLevel.HIGH)) {
+			newDetailLevel = EDetailLevel.HIGH;
 		}
-		else if (pixelHeight > getMinPixelHeight(DetailLevel.MEDIUM)
-				&& pixelWidth > getMinPixelWidth(DetailLevel.MEDIUM)) {
-			newDetailLevel = DetailLevel.MEDIUM;
+		else if (pixelHeight > getMinPixelHeight(EDetailLevel.MEDIUM)
+				&& pixelWidth > getMinPixelWidth(EDetailLevel.MEDIUM)) {
+			newDetailLevel = EDetailLevel.MEDIUM;
 		}
 		else {
-			newDetailLevel = DetailLevel.LOW;
+			newDetailLevel = EDetailLevel.LOW;
 		}
 		setDetailLevel(newDetailLevel);
 	}
@@ -1021,7 +1021,7 @@ public abstract class AGLView
 		return fAspectRatio;
 	}
 
-	public final DetailLevel getDetailLevel() {
+	public final EDetailLevel getDetailLevel() {
 		return detailLevel;
 	}
 
@@ -1134,27 +1134,27 @@ public abstract class AGLView
 	 * @return The minimum height in pixels the view currently requires to show
 	 *         its content properly. The default implementation in the base
 	 *         class calls {@link #getMinPixelheight()} with
-	 *         {@link DetailLevel#LOW}
+	 *         {@link EDetailLevel#LOW}
 	 */
 	public int getMinPixelHeight() {
-		return getMinPixelHeight(DetailLevel.LOW);
+		return getMinPixelHeight(EDetailLevel.LOW);
 	}
 
 	/**
 	 * @return The minimum width in pixels the view currently requires to show
 	 *         its content properly. The default implementation in the base
 	 *         class calls {@link #getMinPixelWidth()} with
-	 *         {@link DetailLevel#LOW}
+	 *         {@link EDetailLevel#LOW}
 	 */
 	public int getMinPixelWidth() {
-		return getMinPixelWidth(DetailLevel.LOW);
+		return getMinPixelWidth(EDetailLevel.LOW);
 	}
 
 	/**
 	 * @return The minimum height in pixels the view requires to show its
 	 *         content properly with the specified detail level.
 	 */
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		return 0;
 	}
 
@@ -1162,7 +1162,7 @@ public abstract class AGLView
 	 * @return The minimum width in pixels the view requires to show its content
 	 *         properly with the specified detail level.
 	 */
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		return 0;
 	}
 
@@ -1174,8 +1174,8 @@ public abstract class AGLView
 	 * @param pixelWidth
 	 * @return
 	 */
-	public DetailLevel getHightestPossibleDetailLevel(int pixelHeight, int pixelWidth) {
-		return DetailLevel.LOW;
+	public EDetailLevel getHightestPossibleDetailLevel(int pixelHeight, int pixelWidth) {
+		return EDetailLevel.LOW;
 	}
 
 	/**

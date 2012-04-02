@@ -1069,13 +1069,13 @@ public abstract class AGLViewBrowser
 
 		// Update detail level of moved view when slerp action is finished;
 		if (destinationLevel == focusLevel) {
-			glActiveSubView.setDetailLevel(DetailLevel.MEDIUM);
+			glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
 		}
 		else if (destinationLevel == stackLevel) {
-			glActiveSubView.setDetailLevel(DetailLevel.LOW);
+			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 		}
 		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel) {
-			glActiveSubView.setDetailLevel(DetailLevel.VERY_LOW);
+			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 		}
 
 		compactPoolLevel();
@@ -1617,7 +1617,7 @@ public abstract class AGLViewBrowser
 		arSlerpActions.add(slerpActionTransition);
 
 		view.initRemote(gl, this, glMouseListener);
-		view.setDetailLevel(DetailLevel.MEDIUM);
+		view.setDetailLevel(EDetailLevel.MEDIUM);
 
 		return true;
 	}

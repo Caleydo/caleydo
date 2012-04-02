@@ -13,8 +13,7 @@ import org.caleydo.core.parser.xml.IXmlParserHandler;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdge;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
@@ -45,16 +44,20 @@ public class KgmlSaxHandler
 
 	private ArrayList<PathwayVertex> currentVertices;
 
-	private HashMap<Integer, PathwayVertexRep> hashKgmlEntryIdToVertexRepId = new HashMap<Integer, PathwayVertexRep>();
+	private HashMap<Integer, PathwayVertexRep> hashKgmlEntryIdToVertexRep = new HashMap<Integer, PathwayVertexRep>();
 
-	private HashMap<String, PathwayVertexRep> hashKgmlNameToVertexRepId = new HashMap<String, PathwayVertexRep>();
+	private HashMap<String, PathwayVertexRep> hashKgmlNameToVertexRep = new HashMap<String, PathwayVertexRep>();
 
-	private HashMap<String, PathwayVertexRep> hashKgmlReactionIdToVertexRepId = new HashMap<String, PathwayVertexRep>();
+	private HashMap<String, PathwayVertexRep> hashKgmlReactionNameToVertexRep = new HashMap<String, PathwayVertexRep>();
 
 	private String currentReactionName;
 	// private String currentReactionType;
 
 	private int currentEntryId;
+
+	private PathwayVertexRep relationSourceVertexRep;
+	private PathwayVertexRep relationTargetVertexRep;
+	private String relationType;
 
 	/**
 	 * Constructor.
@@ -100,8 +103,8 @@ public class KgmlSaxHandler
 			else if (sElementName.equals("product")) {
 				handleReactionProductTag();
 			}
-			else if (sElementName.equals("substrate")) {
-				handleReactionSubstrateTag();
+			else if (sElementName.equals("subtype")) {
+				handleSubtypeTag();
 			}
 		}
 	}
@@ -136,7 +139,6 @@ public class KgmlSaxHandler
 		String title = "";
 		String sImageLink = "";
 		String externalLink = "";
-		// int iKeggId = 0;
 
 		for (int iAttributeIndex = 0; iAttributeIndex < attributes.getLength(); iAttributeIndex++) {
 			attributeName = attributes.getLocalName(iAttributeIndex);
@@ -151,10 +153,6 @@ public class KgmlSaxHandler
 			else if (attributeName.equals("title")) {
 				title = attributes.getValue(iAttributeIndex);
 			}
-			// else if (sAttributeName.equals("number"))
-			// {
-			// iKeggId = new Integer(attributes.getValue(iAttributeIndex));
-			// }
 			else if (attributeName.equals("image")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
 			}
@@ -189,7 +187,7 @@ public class KgmlSaxHandler
 		String name = "";
 		String type = "";
 		String externalLink = "";
-		String reactionName = "";
+		// String reactionName = "";
 
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
@@ -231,25 +229,18 @@ public class KgmlSaxHandler
 					continue;
 				}
 
-				try {
-					IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager
-							.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
-							.getGeneIDMappingManager();
-					davidId = genomeIdManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
-							IDType.getIDType("DAVID"),
-							Integer.valueOf(tmpVertexName.substring(4)));
-				}
-				catch (Exception e) {
-					// TODO: investigate!!
-					System.out.println("TODO: check why the parsing error occurs");
-				}
+				IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager
+						.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
+						.getGeneIDMappingManager();
+				davidId = genomeIdManager
+						.getID(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
+								Integer.valueOf(tmpVertexName.substring(4)));
 
 				if (davidId == null) {
-					// TODO: what should we do in this case?
-					// generalManager.getLogger().log(
-					// Level.WARNING,
-					// "NCBI Gene ID " + sTmpVertexName
-					// + " cannot be mapped to David ID.");
+					// Logger.log(new Status(IStatus.INFO,
+					// GeneralManager.PLUGIN_ID,
+					// "NCBI Gene ID " + tmpVertexName +
+					// " cannot be mapped to David ID."));
 
 					continue;
 				}
@@ -315,20 +306,20 @@ public class KgmlSaxHandler
 		}
 
 		if (currentVertices.isEmpty()) {
-			// TODO: investigate!
-			System.out.println("TODO: check why the parsing error occurs");
+			// Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+			// "Cannot handle graphics tag because no gene was mapped for this entry."));
 			return;
 		}
 
 		PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
 				currentVertices, name, shapeType, x, y, width, height);
 
-		hashKgmlEntryIdToVertexRepId.put(currentEntryId, vertexRep);
+		hashKgmlEntryIdToVertexRep.put(currentEntryId, vertexRep);
 
-		hashKgmlNameToVertexRepId.put(currentVertices.get(0).getName(), vertexRep);
+		hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), vertexRep);
 
 		if (currentReactionName != null && !currentReactionName.isEmpty())
-			hashKgmlReactionIdToVertexRepId.put(currentReactionName, vertexRep);
+			hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexRep);
 	}
 
 	/**
@@ -365,63 +356,89 @@ public class KgmlSaxHandler
 			// attributes.getValue(attributeIndex));
 		}
 
-		PathwayVertexRep sourceVertexRep = hashKgmlEntryIdToVertexRepId.get(sourceVertexId);
-		PathwayVertexRep targetVertexRep = hashKgmlEntryIdToVertexRepId.get(targetVertexId);
-
-		// Create edge (data)
-		PathwayRelationEdge relationEdge = pathwayItemManager.createRelationEdge(
-				sourceVertexRep.getPathwayVertices(), targetVertexRep.getPathwayVertices(),
-				type);
-
-		// Create edge representation
-		pathwayItemManager.createRelationEdgeRep(currentPathway, relationEdge,
-				sourceVertexRep, targetVertexRep);
+		relationSourceVertexRep = hashKgmlEntryIdToVertexRep.get(sourceVertexId);
+		relationTargetVertexRep = hashKgmlEntryIdToVertexRep.get(targetVertexId);
+		relationType = type;
 	}
 
 	protected void handleSubtypeTag() {
 
-		// String sName = "";
-		// int iCompoundId = 0;
-		//
-		// for (int iAttributeIndex = 0; iAttributeIndex <
-		// attributes.getLength();
-		// iAttributeIndex++)
-		// {
-		// sAttributeName = attributes.getLocalName(iAttributeIndex);
-		//
-		// if ("".equals(sAttributeName))
-		// {
-		// sAttributeName = attributes.getQName(iAttributeIndex);
-		// }
-		//
-		// if (sAttributeName.equals("name"))
-		// sName = attributes.getValue(iAttributeIndex);
-		// else if (sAttributeName.equals("value"))
-		// {
-		// // TODO: handle special case of value "-->" in signalling pathways
-		// if (attributes.getValue(iAttributeIndex).contains("-") ||
-		// attributes.getValue(iAttributeIndex).contains("=") ||
-		// attributes.getValue(iAttributeIndex).contains("+") ||
-		// attributes.getValue(iAttributeIndex).contains(":") ||
-		// attributes.getValue(iAttributeIndex).contains("."))
-		// iCompoundId = 0;
-		// else
-		// iCompoundId = new Integer(attributes.getValue(iAttributeIndex));
-		// }
-		//
-		//
-		// //System.out.println("Attribute name: " +sAttributeName);
-		// //System.out.println("Attribute value: "
-		// +attributes.getValue(iAttributeIndex));
-		// }
-		//
-		// if (sName.equals("compound"))
-		// {
-		// //retrieve the internal element ID and add the compound value to the
-		// edge
-		// generalManager.getSingelton().getPathwayElementManager().
-		// addRelationCompound(kgmlIdToElementIdLUT.get(iCompoundId));
-		// }
+		String subType = "";
+
+		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
+			attributeName = attributes.getLocalName(attributeIndex);
+
+			if ("".equals(attributeName)) {
+				attributeName = attributes.getQName(attributeIndex);
+			}
+
+			if (attributeName.equals("name"))
+				subType = attributes.getValue(attributeIndex);
+			else if (attributeName.equals("value")) {
+
+				if (subType.equals("compound")) {
+
+					int compoundID = Integer.parseInt(attributes.getValue(attributeIndex));
+
+					PathwayVertexRep compoundVertexRep = hashKgmlEntryIdToVertexRep
+							.get(compoundID);
+
+					// Create edge (data)
+					// PathwayRelationEdge relationEdge =
+					// pathwayItemManager.createRelationEdge(
+					// relationSourceVertexRep.getPathwayVertices(),
+					// compoundVertexRep,
+					// relationType);
+
+					// Create edge representation
+					PathwayRelationEdgeRep pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
+							.getEdge(relationSourceVertexRep, compoundVertexRep);
+
+					// edge from compound to gene
+					if (pathwayRelationEdgeRep == null) {
+						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
+						currentPathway.addEdge(relationSourceVertexRep, compoundVertexRep,
+								pathwayRelationEdgeRep);
+					}
+					else {
+						pathwayRelationEdgeRep.addRelationSubType(subType);
+						
+						if (!subType.equals("compound"))
+							System.out.println("STOP");
+					}
+
+					pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
+							.getEdge(relationSourceVertexRep, compoundVertexRep);
+
+					// edge from gene to compound
+					if (pathwayRelationEdgeRep == null) {
+						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
+						currentPathway.addEdge(compoundVertexRep, relationTargetVertexRep,
+								pathwayRelationEdgeRep);
+					}
+					else {
+						pathwayRelationEdgeRep.addRelationSubType(subType);
+					}
+				}
+				else {
+					// all other cases except "compound"
+					
+					// create edge representation
+					PathwayRelationEdgeRep pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
+							.getEdge(relationSourceVertexRep, relationTargetVertexRep);
+
+					// edge from vertex to vertex
+					if (pathwayRelationEdgeRep == null) {
+						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
+						currentPathway.addEdge(relationSourceVertexRep, relationTargetVertexRep,
+								pathwayRelationEdgeRep);
+					}
+
+					pathwayRelationEdgeRep.addRelationSubType(subType);
+
+				}
+			}
+		}
 	}
 
 	/**
@@ -472,15 +489,13 @@ public class KgmlSaxHandler
 			}
 		}
 
-		PathwayVertexRep sourceVertexRep = hashKgmlNameToVertexRepId
-				.get(reactionSubstrateName);
-
-		PathwayVertexRep targetVertexRep = hashKgmlReactionIdToVertexRepId
+		PathwayVertexRep sourceVertexRep = hashKgmlNameToVertexRep.get(reactionSubstrateName);
+		PathwayVertexRep targetVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
 
 		// Edge from the substrate to the gene
-		pathwayItemManager.createReactionEdgeRep(currentPathway, sourceVertexRep,
-				targetVertexRep);
+		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep();
+		currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
 	}
 
 	/**
@@ -503,14 +518,19 @@ public class KgmlSaxHandler
 			}
 		}
 
-		PathwayVertexRep sourceVertexRep = hashKgmlReactionIdToVertexRepId
+		PathwayVertexRep sourceVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
 
-		PathwayVertexRep targetVertexRep = hashKgmlNameToVertexRepId.get(reactionProductName);
+		PathwayVertexRep targetVertexRep = hashKgmlNameToVertexRep.get(reactionProductName);
 
 		// Edge from the product to the gene
-		pathwayItemManager.createReactionEdgeRep(currentPathway, sourceVertexRep,
-				targetVertexRep);
+		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep();
+		
+		try {
+		currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
+		} catch (Exception e) {
+			System.out.println(sourceVertexRep + " " + targetVertexRep + " " + e);
+		}
 	}
 
 	@Override
@@ -518,8 +538,8 @@ public class KgmlSaxHandler
 
 		super.destroyHandler();
 
-		hashKgmlEntryIdToVertexRepId.clear();
-		hashKgmlNameToVertexRepId.clear();
-		hashKgmlReactionIdToVertexRepId.clear();
+		hashKgmlEntryIdToVertexRep.clear();
+		hashKgmlNameToVertexRep.clear();
+		hashKgmlReactionNameToVertexRep.clear();
 	}
 }

@@ -5,7 +5,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.tagclouds.GLTagCloud;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -40,7 +40,7 @@ public class TagCloudCreator implements IRemoteViewCreator {
 		tagCloud.setDataDomain(remoteRenderingView.getDataDomain());
 		tagCloud.initialize();
 		tagCloud.initRemote(gl, remoteRenderingView, glMouseListener);
-		tagCloud.setDetailLevel(DetailLevel.LOW);
+		tagCloud.setDetailLevel(EDetailLevel.LOW);
 
 		return tagCloud;
 	}

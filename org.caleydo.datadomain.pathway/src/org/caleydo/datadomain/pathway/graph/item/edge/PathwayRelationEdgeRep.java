@@ -1,6 +1,7 @@
 package org.caleydo.datadomain.pathway.graph.item.edge;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -9,8 +10,36 @@ import org.jgrapht.graph.DefaultEdge;
  * 
  * @author Marc Streit
  */
-public class PathwayRelationEdgeRep extends DefaultEdge implements
-		Serializable {
+public class PathwayRelationEdgeRep
+	extends DefaultEdge
+	implements Serializable {
 
 	private static final long serialVersionUID = 1L;
+
+	private EPathwayRelationEdgeType relationType;
+
+	private ArrayList<EPathwayRelationEdgeSubType> relationSubTypes = new ArrayList<EPathwayRelationEdgeSubType>();
+
+	public PathwayRelationEdgeRep(final String relationType) {
+
+		this.relationType = EPathwayRelationEdgeType.valueOf(relationType);
+	}
+
+	public EPathwayRelationEdgeType getType() {
+		return relationType;
+	}
+
+	public void addRelationSubType(String relationSubType) {
+
+		relationSubType = relationSubType.replace(" ", "_");
+		relationSubType = relationSubType.replace("/", "_");
+		relationSubTypes.add(EPathwayRelationEdgeSubType.valueOf(relationSubType));
+	}
+
+	/**
+	 * @return the subTypes, see {@link #relationSubTypes}
+	 */
+	public ArrayList<EPathwayRelationEdgeSubType> getRelationSubTypes() {
+		return relationSubTypes;
+	}
 }

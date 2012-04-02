@@ -5,7 +5,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.histogram.GLHistogram;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -43,7 +43,7 @@ public class HistogramCreator implements IRemoteViewCreator {
 		histogram.setDataDomain(remoteRenderingView.getDataDomain());
 		histogram.initialize();
 		histogram.initRemote(gl, remoteRenderingView, glMouseListener);
-		histogram.setDetailLevel(DetailLevel.LOW);
+		histogram.setDetailLevel(EDetailLevel.LOW);
 
 		// Ctable.getContentData(Set.CONTENT)
 		// if (recordVA != null)

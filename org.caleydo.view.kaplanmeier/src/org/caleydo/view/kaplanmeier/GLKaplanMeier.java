@@ -21,7 +21,7 @@ import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.kaplanmeier.renderstyle.KaplanMeierRenderStyle;
 import org.eclipse.swt.widgets.Composite;
@@ -73,7 +73,7 @@ public class GLKaplanMeier
 		renderStyle = new KaplanMeierRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 	}
 
 	@Override
@@ -141,7 +141,7 @@ public class GLKaplanMeier
 //			else
 //				fillCurve = false;
 
-			if (detailLevel == DetailLevel.HIGH)
+			if (detailLevel == EDetailLevel.HIGH)
 				lineWidth *= 2;
 
 			gl.glLineWidth(lineWidth);
@@ -297,7 +297,7 @@ public class GLKaplanMeier
 	}
 
 	@Override
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 
 		switch (detailLevel) {
 			case HIGH:
@@ -312,7 +312,7 @@ public class GLKaplanMeier
 	}
 
 	@Override
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 
 		switch (detailLevel) {
 			case HIGH:

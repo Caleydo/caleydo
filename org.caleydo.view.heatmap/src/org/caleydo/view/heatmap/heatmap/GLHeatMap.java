@@ -29,7 +29,7 @@ import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -164,11 +164,11 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (detailLevel.equals(this.detailLevel))
 			return;
 		super.setDetailLevel(detailLevel);
-		if (dataContainer.getNrDimensions() >1 && (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM)) {
+		if (dataContainer.getNrDimensions() >1 && (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM)) {
 			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
@@ -240,7 +240,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int pickingID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 
@@ -562,7 +562,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	public void handleSelectionUpdate(SelectionDelta selectionDelta,
 			boolean scrollToSelection, String info) {
 		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
-		if (detailLevel == DetailLevel.HIGH || detailLevel == DetailLevel.MEDIUM) {
+		if (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM) {
 			detailedRenderingTemplate.updateSpacing();
 		}
 
@@ -746,12 +746,12 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	@Override
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		return getPixelPerElement(true, detailLevel, 3, 5);
 	}
 
 	@Override
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		return getPixelPerElement(false, detailLevel, 3, 5);
 	}
 

@@ -45,7 +45,7 @@ import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.AddPathwayListener;
 import org.caleydo.core.view.opengl.canvas.listener.IRemoteRenderingHandler;
 import org.caleydo.core.view.opengl.canvas.listener.ResetViewListener;
@@ -1532,15 +1532,15 @@ public class GLBucket extends AGLView implements
 		if (destinationLevel == focusLevel) {
 			if (bucketMouseWheelListener.isZoomedIn()
 					|| layoutRenderStyle instanceof ListLayoutRenderStyle) {
-				glActiveSubView.setDetailLevel(DetailLevel.HIGH);
+				glActiveSubView.setDetailLevel(EDetailLevel.HIGH);
 			} else {
-				glActiveSubView.setDetailLevel(DetailLevel.MEDIUM);
+				glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
 			}
 		} else if (destinationLevel == stackLevel) {
-			glActiveSubView.setDetailLevel(DetailLevel.LOW);
+			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
 		} else if (destinationLevel == poolLevel
 				|| destinationLevel == externalSelectionLevel) {
-			glActiveSubView.setDetailLevel(DetailLevel.VERY_LOW);
+			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 		}
 
 		compactPoolLevel();
@@ -2432,7 +2432,7 @@ public class GLBucket extends AGLView implements
 		arSlerpActions.add(slerpActionTransition);
 
 		view.initRemote(gl, this, glMouseListener);
-		view.setDetailLevel(DetailLevel.MEDIUM);
+		view.setDetailLevel(EDetailLevel.MEDIUM);
 
 		return true;
 	}

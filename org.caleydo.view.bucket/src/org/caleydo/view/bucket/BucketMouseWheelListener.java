@@ -8,7 +8,7 @@ import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 
 /**
  * Specialized mouse wheel listener for "diving" into the bucket.
@@ -155,7 +155,7 @@ public class BucketMouseWheelListener extends MouseAdapter implements MouseWheel
 						.getElementByPositionIndex(0).getGLView();
 
 				if (glView != null) {
-					glView.setDetailLevel(DetailLevel.HIGH);
+					glView.setDetailLevel(EDetailLevel.HIGH);
 				}
 			} else if (iCurrentBucketZoom == 0) {
 				bBucketBottomReached = false;
@@ -165,7 +165,7 @@ public class BucketMouseWheelListener extends MouseAdapter implements MouseWheel
 						.getElementByPositionIndex(0).getGLView();
 
 				if (glView != null) {
-					glView.setDetailLevel(DetailLevel.MEDIUM);
+					glView.setDetailLevel(EDetailLevel.MEDIUM);
 				}
 			}
 		} else {

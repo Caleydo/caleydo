@@ -18,7 +18,7 @@ import org.caleydo.core.util.mapping.color.UpdateColorMappingEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -78,7 +78,7 @@ public class GLHistogram extends ATableBasedView {
 		
 		// registerEventListeners();
 
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 	}
 
 	public void setRenderColorBars(boolean renderColorBars) {
@@ -117,11 +117,11 @@ public class GLHistogram extends ATableBasedView {
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 		if (bUseDetailLevel) {
 			// renderStyle.setDetailLevel(detailLevel);
-			if (detailLevel == DetailLevel.LOW) {
+			if (detailLevel == EDetailLevel.LOW) {
 				sideSpacing = 0;
 			} else {
 				sideSpacing = SIDE_SPACING;
@@ -161,7 +161,7 @@ public class GLHistogram extends ATableBasedView {
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 		renderHistogram(gl);
-		if (renderColorBars && detailLevel != DetailLevel.LOW)
+		if (renderColorBars && detailLevel != EDetailLevel.LOW)
 			renderColorBars(gl);
 		gl.glEndList();
 	}
@@ -506,7 +506,7 @@ public class GLHistogram extends ATableBasedView {
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 		switch (pickingType) {
@@ -587,7 +587,7 @@ public class GLHistogram extends ATableBasedView {
 
 
 	@Override
-	public int getMinPixelHeight(DetailLevel detailLevel) {
+	public int getMinPixelHeight(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return 300;
@@ -601,7 +601,7 @@ public class GLHistogram extends ATableBasedView {
 	}
 
 	@Override
-	public int getMinPixelWidth(DetailLevel detailLevel) {
+	public int getMinPixelWidth(EDetailLevel detailLevel) {
 		switch (detailLevel) {
 		case HIGH:
 			return 300;

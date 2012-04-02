@@ -23,7 +23,7 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -111,7 +111,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 		renderStyle = new TreeMapRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 
 		// mainTreeMapView = createEmbeddedTreeMap();
 		setMainTreeMapView(createEmbeddedTreeMap());
@@ -154,7 +154,7 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		if (bUseDetailLevel) {
 			super.setDetailLevel(detailLevel);
 		}

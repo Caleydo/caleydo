@@ -16,7 +16,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
@@ -452,7 +452,7 @@ public class GLPathwayContentCreator {
 				if (tmpNodeColor != null) {
 					gl.glColor3fv(tmpNodeColor, 0);
 
-					if (glPathwayView.getDetailLevel() == DetailLevel.HIGH) {
+					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
 						gl.glBegin(GL2.GL_LINE_STRIP);
 						for (int iPointIndex = 0; iPointIndex < shArCoords.length; iPointIndex++) {
@@ -583,7 +583,7 @@ public class GLPathwayContentCreator {
 				if (tmpNodeColor != null) {
 					gl.glColor3fv(tmpNodeColor, 0);
 
-					if (glPathwayView.getDetailLevel() == DetailLevel.HIGH) {
+					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
 						gl.glCallList(framedEnzymeNodeDisplayListId);
 

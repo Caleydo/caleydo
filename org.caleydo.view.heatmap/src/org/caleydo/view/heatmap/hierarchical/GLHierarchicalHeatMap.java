@@ -54,7 +54,7 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupExportingListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupInterChangingActionListener;
 import org.caleydo.core.view.opengl.canvas.listener.DimensionGroupMergingActionListener;
@@ -717,7 +717,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void setDetailLevel(DetailLevel detailLevel) {
+	public void setDetailLevel(EDetailLevel detailLevel) {
 		super.setDetailLevel(detailLevel);
 	}
 
@@ -3974,7 +3974,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int pickingID, Pick pick) {
-		if (detailLevel == DetailLevel.VERY_LOW) {
+		if (detailLevel == EDetailLevel.VERY_LOW) {
 			return;
 		}
 

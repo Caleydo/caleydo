@@ -21,7 +21,7 @@ import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -102,7 +102,7 @@ public class GLVendingMachine
 		renderStyle = new VisBricks20RenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
 
 		textRenderer = new CaleydoTextRenderer(24);
 
@@ -250,7 +250,7 @@ public class GLVendingMachine
 		visBricks.setVendingMachineMode(true);
 		visBricks.setRemoteRenderingGLView(this);
 		visBricks.initialize();
-		visBricks.setDetailLevel(DetailLevel.LOW);
+		visBricks.setDetailLevel(EDetailLevel.LOW);
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);

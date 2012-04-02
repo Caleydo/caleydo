@@ -3,7 +3,7 @@ package org.caleydo.view.parcoords;
 import java.util.HashMap;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
@@ -129,7 +129,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	private float getPolylineOcclusionPrevAlpha(int numberOfRenderedLines) {
 
 		fOcclusionPrevAlpha = (float) (6 / Math.sqrt(numberOfRenderedLines));
-		if (pcs != null && pcs.getDetailLevel() == DetailLevel.LOW)
+		if (pcs != null && pcs.getDetailLevel() == EDetailLevel.LOW)
 			fOcclusionPrevAlpha /= 5;
 
 		return fOcclusionPrevAlpha;
@@ -166,7 +166,7 @@ public class PCRenderStyle extends GeneralRenderStyle {
 	}
 
 	public float getXSpacing() {
-		if (pcs.getDetailLevel().equals(DetailLevel.HIGH))
+		if (pcs.getDetailLevel().equals(EDetailLevel.HIGH))
 			return viewFrustum.getWidth() / 30;
 		else
 			return viewFrustum.getWidth() / 50;

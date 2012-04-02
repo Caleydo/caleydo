@@ -5,7 +5,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.parcoords.GLParallelCoordinates;
 import org.caleydo.view.visbricks.brick.GLBrick;
@@ -40,7 +40,7 @@ public class ParCoordsCreator implements IRemoteViewCreator {
 		parCoords.setDataDomain(remoteRenderingView.getDataDomain());
 		parCoords.initialize();
 		parCoords.initRemote(gl, remoteRenderingView, glMouseListener);
-		parCoords.setDetailLevel(DetailLevel.LOW);
+		parCoords.setDetailLevel(EDetailLevel.LOW);
 
 		return parCoords;
 	}

@@ -149,43 +149,12 @@ public class PathwayItemManager
 	public PathwayRelationEdge createRelationEdge(final List<PathwayVertex> sourceVertices,
 			final List<PathwayVertex> targetVertices, final String type) {
 
-		PathwayRelationEdge pathwayRelationEdge = new PathwayRelationEdge(type);
+		PathwayRelationEdge pathwayRelationEdge = new PathwayRelationEdge();//type);
 
 		DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = PathwayManager.get()
 				.getRootPathway();
 
 		return pathwayRelationEdge;
-	}
-
-	public void createRelationEdgeRep(final PathwayGraph parentPathway,
-			final PathwayRelationEdge pathwayRelationEdge,
-			final PathwayVertexRep sourceVertexRep, final PathwayVertexRep targetVertexRep) {
-
-		PathwayRelationEdgeRep pathwayRelationEdgeRep = new PathwayRelationEdgeRep();
-
-		// Add edge to pathway representation
-		try {
-			parentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayRelationEdgeRep);
-		}
-		catch (Exception e) {
-			System.out.println(e);
-		}
-	}
-
-	public PathwayReactionEdgeRep createReactionEdgeRep(final PathwayGraph parentPathway,
-			final PathwayVertexRep sourceVertexRep, final PathwayVertexRep targetVertexRep) {
-
-		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep();
-		
-		// Add edge to pathway representation
-		try {
-			parentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
-		}
-		catch (Exception e) {
-			System.out.println(e);
-		}
-		
-		return pathwayReactionEdgeRep;
 	}
 
 	// TODO: throw exception
