@@ -3,7 +3,6 @@ package org.caleydo.core.startup;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.AutoSaver;
 import org.caleydo.core.serialize.ProjectSaver;
-import org.eclipse.jface.preference.IPreferenceNode;
 import org.eclipse.jface.preference.PreferenceManager;
 import org.eclipse.ui.IWorkbenchPreferenceConstants;
 import org.eclipse.ui.PlatformUI;
@@ -51,13 +50,13 @@ public class ApplicationWorkbenchAdvisor
 		PreferenceManager preferenceManager =
 			this.getWorkbenchConfigurer().getWorkbench().getPreferenceManager();
 
-		for (Object node : preferenceManager.getElements(PreferenceManager.PRE_ORDER)) {
-
-			IPreferenceNode prefNode = (IPreferenceNode) node;
-			if (!prefNode.getId().contains("org.caleydo.core")) {
-				preferenceManager.remove(prefNode);
-			}
-		}
+//		for (Object node : preferenceManager.getElements(PreferenceManager.PRE_ORDER)) {
+//
+//			IPreferenceNode prefNode = (IPreferenceNode) node;
+//			if (!prefNode.getId().contains("org.caleydo.core")) {
+//				preferenceManager.remove(prefNode);
+//			}
+//		}
 	}
 
 	@Override

@@ -36,6 +36,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		// configurer.setShowProgressIndicator(true);
+		configurer.setShowPerspectiveBar(true);
 		configurer.setTitle("Caleydo");
 
 		configurer.getWindow().getPartService().addPartListener(new PartListener());
@@ -51,7 +52,7 @@ public class ApplicationWorkbenchWindowAdvisor
 		for (IContributionItem item : menuManager.getItems()) {
 
 			// Removing all non Caleydo menus.
-			// Espically useful for Eclipse contributed plugins when starting Caleydo from Eclipses
+			// Especially useful for Eclipse contributed plugins when starting Caleydo from Eclipses
 			if (!item.getId().contains("org.caleydo")) {
 				menuManager.remove(item);
 			}
