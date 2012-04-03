@@ -33,7 +33,13 @@ public class PathwayRelationEdgeRep
 
 		relationSubType = relationSubType.replace(" ", "_");
 		relationSubType = relationSubType.replace("/", "_");
+
+		// Handle typo in KEGG XML file
+		if (relationSubType.equals("ubiquination"))
+			relationSubType = EPathwayRelationEdgeSubType.ubiquitination.name();
+
 		relationSubTypes.add(EPathwayRelationEdgeSubType.valueOf(relationSubType));
+
 	}
 
 	/**

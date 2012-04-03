@@ -8,8 +8,10 @@ import java.util.StringTokenizer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.parser.xml.AXmlParserHandler;
 import org.caleydo.core.parser.xml.IXmlParserHandler;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
@@ -19,6 +21,8 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -315,7 +319,6 @@ public class KgmlSaxHandler
 				currentVertices, name, shapeType, x, y, width, height);
 
 		hashKgmlEntryIdToVertexRep.put(currentEntryId, vertexRep);
-
 		hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), vertexRep);
 
 		if (currentReactionName != null && !currentReactionName.isEmpty())
@@ -402,13 +405,13 @@ public class KgmlSaxHandler
 					}
 					else {
 						pathwayRelationEdgeRep.addRelationSubType(subType);
-						
+
 						if (!subType.equals("compound"))
 							System.out.println("STOP");
 					}
 
-					pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
-							.getEdge(relationSourceVertexRep, compoundVertexRep);
+					pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway.getEdge(
+							relationSourceVertexRep, compoundVertexRep);
 
 					// edge from gene to compound
 					if (pathwayRelationEdgeRep == null) {
@@ -422,7 +425,7 @@ public class KgmlSaxHandler
 				}
 				else {
 					// all other cases except "compound"
-					
+
 					// create edge representation
 					PathwayRelationEdgeRep pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
 							.getEdge(relationSourceVertexRep, relationTargetVertexRep);
@@ -430,8 +433,17 @@ public class KgmlSaxHandler
 					// edge from vertex to vertex
 					if (pathwayRelationEdgeRep == null) {
 						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
-						currentPathway.addEdge(relationSourceVertexRep, relationTargetVertexRep,
-								pathwayRelationEdgeRep);
+
+						try {
+
+							currentPathway.addEdge(relationSourceVertexRep,
+									relationTargetVertexRep, pathwayRelationEdgeRep);
+						}
+						catch (IllegalArgumentException e) {
+							// Logger.log(new Status(IStatus.INFO,
+							// GeneralManager.PLUGIN_ID,
+							// "Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph."));
+						}
 					}
 
 					pathwayRelationEdgeRep.addRelationSubType(subType);
@@ -525,11 +537,14 @@ public class KgmlSaxHandler
 
 		// Edge from the product to the gene
 		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep();
-		
+
 		try {
-		currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
-		} catch (Exception e) {
-			System.out.println(sourceVertexRep + " " + targetVertexRep + " " + e);
+			currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
+		}
+		catch (IllegalArgumentException e) {
+			// Logger.log(new Status(IStatus.INFO,
+			// GeneralManager.PLUGIN_ID,
+			// "Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph."));
 		}
 	}
 

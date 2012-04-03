@@ -3,17 +3,11 @@ package org.caleydo.datadomain.pathway.manager;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import org.caleydo.core.manager.AManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdge;
-import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.jgrapht.DirectedGraph;
-import org.jgrapht.graph.DefaultEdge;
 
 /**
  * The element manager is in charge for handling the items. Items are vertices
@@ -144,17 +138,6 @@ public class PathwayItemManager
 				(PathwayVertexRep) pathwayVertexRep);
 
 		return pathwayVertexRep;
-	}
-
-	public PathwayRelationEdge createRelationEdge(final List<PathwayVertex> sourceVertices,
-			final List<PathwayVertex> targetVertices, final String type) {
-
-		PathwayRelationEdge pathwayRelationEdge = new PathwayRelationEdge();//type);
-
-		DirectedGraph<PathwayVertex, DefaultEdge> rootPathway = PathwayManager.get()
-				.getRootPathway();
-
-		return pathwayRelationEdge;
 	}
 
 	// TODO: throw exception
