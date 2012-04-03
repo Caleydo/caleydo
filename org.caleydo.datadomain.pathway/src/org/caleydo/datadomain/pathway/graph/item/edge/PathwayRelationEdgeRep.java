@@ -10,9 +10,7 @@ import org.jgrapht.graph.DefaultEdge;
  * 
  * @author Marc Streit
  */
-public class PathwayRelationEdgeRep
-	extends DefaultEdge
-	implements Serializable {
+public class PathwayRelationEdgeRep extends DefaultEdge implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 

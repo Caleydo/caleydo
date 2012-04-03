@@ -13,13 +13,19 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.DetailLevel;
+import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
+import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
@@ -39,6 +45,16 @@ public class GLLinearizedPathway extends AGLView {
 	public final static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
 
 	private TemplateRenderStyle renderStyle;
+
+	/**
+	 * The pathway of the linearized path.
+	 */
+	private PathwayGraph pathway;
+
+	/**
+	 * The path of the pathway that is currently linearized.
+	 */
+	private List<PathwayVertexRep> path;
 
 	/**
 	 * Constructor.
@@ -63,7 +79,39 @@ public class GLLinearizedPathway extends AGLView {
 		textRenderer = new CaleydoTextRenderer(24);
 
 		super.renderStyle = renderStyle;
-		detailLevel = DetailLevel.HIGH;
+		detailLevel = EDetailLevel.HIGH;
+
+		path = new ArrayList<PathwayVertexRep>();
+
+		for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
+			if (graph.getType() == PathwayDatabaseType.KEGG
+					&& graph.getTitle().startsWith("Glioma")) {
+				pathway = graph;
+				break;
+			}
+		}
+
+		PathwayVertexRep currentVertex = null;
+
+		for (PathwayVertexRep vertex : pathway.vertexSet()) {
+			currentVertex = vertex;
+			break;
+		}
+
+		// float currentPosition = 7.5f;
+
+		for (int i = 0; i < 6; i++) {
+
+			path.add(currentVertex);
+
+			for (DefaultEdge edge : pathway.edgesOf(currentVertex)) {
+				// PathwayVertexRep v1 = currentGraph.getEdgeSource(edge);
+				PathwayVertexRep v2 = pathway.getEdgeTarget(edge);
+
+				currentVertex = v2;
+			}
+		}
+
 	}
 
 	@Override
@@ -174,59 +222,10 @@ public class GLLinearizedPathway extends AGLView {
 		// renderer.setLineStippled(true);
 		// renderer.renderLine(gl, linePoints);
 
-		PathwayGraph currentGraph = null;
-
-		List<PathwayVertexRep> path = new ArrayList<PathwayVertexRep>();
-
 		GLU glu = new GLU();
 
-		for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
-			if (graph.getType() == PathwayDatabaseType.KEGG
-					&& graph.getTitle().startsWith("Glioma")) {
-				currentGraph = graph;
-				break;
-			}
-		}
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, currentGraph.getTitle(), 1, 8, 0, 3, 0.1f);
-
-		PathwayVertexRep currentVertex = null;
-
-		for (PathwayVertexRep vertex : currentGraph.vertexSet()) {
-			currentVertex = vertex;
-			break;
-		}
-
-		// float currentPosition = 7.5f;
-
-		for (int i = 0; i < 6; i++) {
-
-			path.add(currentVertex);
-
-			// textRenderer.renderTextInBounds(gl, "VertexType: "
-			// + currentVertex.getType().name(), 1, currentPosition, 0, 5,
-			// 0.1f);
-			// currentPosition -= 0.1f;
-			//
-			// textRenderer.renderTextInBounds(gl, "VertexName: " +
-			// currentVertex.getName(),
-			// 1, currentPosition, 0, 5, 0.1f);
-			// currentPosition -= 0.13f;
-
-			// DefaultEdge currentEdge = null;
-			// float space = 0;
-			for (DefaultEdge edge : currentGraph.edgesOf(currentVertex)) {
-				// PathwayVertexRep v1 = currentGraph.getEdgeSource(edge);
-				PathwayVertexRep v2 = currentGraph.getEdgeTarget(edge);
-				// textRenderer.renderTextInBounds(gl, v1.getName(), 1 + space,
-				// currentPosition, 0, 5, 0.1f);
-				// currentPosition -= 0.1f;
-				// textRenderer.renderTextInBounds(gl, v2.getName(), 1 + space,
-				// currentPosition, 0, 5, 0.1f);
-				// currentPosition -= 0.13f;
-				currentVertex = v2;
-			}
-		}
+		textRenderer.renderTextInBounds(gl, pathway.getTitle(), 1, 8, 0, 3, 0.1f);
 
 		Vec3f currentPosition = new Vec3f(viewFrustum.getWidth() / 2.0f,
 				viewFrustum.getHeight() - 0.1f * viewFrustum.getHeight(), 0);
@@ -235,7 +234,7 @@ public class GLLinearizedPathway extends AGLView {
 
 		ANodeRenderer prevRenderer = null;
 		PathwayVertexRep prevVertex = null;
-		
+
 		for (PathwayVertexRep vertex : path) {
 
 			ANodeRenderer renderer = null;
@@ -270,28 +269,187 @@ public class GLLinearizedPathway extends AGLView {
 			renderer.render(gl, glu);
 
 			if (prevRenderer != null) {
-				ConnectionLineRenderer connectionRenderer = new ConnectionLineRenderer();
-				List<Vec3f> linePoints = new ArrayList<Vec3f>();
-				linePoints.add(prevRenderer.getBottomConnectionPoint());
-				linePoints.add(renderer.getTopConnectionPoint());
-				
-				DefaultEdge edge = currentGraph.getEdge(prevVertex, vertex);
-				
-				ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-				LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(currentGraph.getEdgeTarget(edge) != vertex, arrowRenderer);
-				
-				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
-				connectionRenderer.renderLine(gl, linePoints);
+				renderEdge(gl, prevVertex, vertex, prevRenderer, renderer);
 			}
-				
-				prevRenderer = renderer;
-				prevVertex = vertex;
+
+			prevRenderer = renderer;
+			prevVertex = vertex;
 
 			currentPosition = new Vec3f(currentPosition.x(), currentPosition.y() - yStep,
 					currentPosition.z());
 		}
 
 		checkForHits(gl);
+	}
+
+	private void renderEdge(GL2 gl, PathwayVertexRep vertexRep1,
+			PathwayVertexRep vertexRep2, ANodeRenderer nodeRenderer1,
+			ANodeRenderer nodeRenderer2) {
+
+		DefaultEdge edge = pathway.getEdge(vertexRep1, vertexRep2);
+		if (edge == null) {
+			edge = pathway.getEdge(vertexRep2, vertexRep1);
+			if (edge == null)
+				return;
+		}
+
+		ConnectionLineRenderer connectionRenderer = new ConnectionLineRenderer();
+		List<Vec3f> linePoints = new ArrayList<Vec3f>();
+
+		boolean isNode1Target = pathway.getEdgeTarget(edge) == vertexRep1;
+
+		Vec3f sourceConnectionPoint = (isNode1Target) ? nodeRenderer2
+				.getTopConnectionPoint() : nodeRenderer1.getBottomConnectionPoint();
+		Vec3f targetConnectionPoint = (isNode1Target) ? nodeRenderer1
+				.getBottomConnectionPoint() : nodeRenderer2.getTopConnectionPoint();
+
+		linePoints.add(sourceConnectionPoint);
+		linePoints.add(targetConnectionPoint);
+
+		if (edge instanceof PathwayReactionEdgeRep) {
+			// TODO: This is just a default edge. Is this right?
+			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false,
+					arrowRenderer);
+
+			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
+
+			// linePoints.add(nodeRenderer1.getBottomConnectionPoint());
+			// linePoints.add(nodeRenderer2.getTopConnectionPoint());
+
+		} else {
+			if (edge instanceof PathwayRelationEdgeRep) {
+				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
+
+				ArrayList<EPathwayRelationEdgeSubType> subtypes = relationEdgeRep
+						.getRelationSubTypes();
+				float spacing = pixelGLConverter.getGLHeightForPixelHeight(2);
+
+				for (EPathwayRelationEdgeSubType subtype : subtypes) {
+					switch (subtype) {
+					case compound:
+						// TODO:
+						break;
+					case hidden_compound:
+						// TODO:
+						break;
+					case activation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						break;
+					case inhibition:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer());
+						targetConnectionPoint.setY(targetConnectionPoint.y()
+								+ ((isNode1Target) ? -spacing : spacing));
+						break;
+					case expression:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						if (vertexRep1.getType() == EPathwayVertexType.gene
+								&& vertexRep1.getType() == EPathwayVertexType.gene) {
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
+						}
+						break;
+					case repression:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer());
+						targetConnectionPoint.setY(targetConnectionPoint.y()
+								+ ((isNode1Target) ? -spacing : spacing));
+						break;
+					case indirect_effect:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+						connectionRenderer.setLineStippled(true);
+						break;
+					case state_change:
+						connectionRenderer.setLineStippled(true);
+						break;
+					case binding_association:
+						// Nothing to do
+						break;
+					case dissociation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
+						break;
+					case missing_interaction:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLineCrossingRenderer());
+						break;
+					case phosphorylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
+										.getSymbol()));
+						break;
+					case dephosphorylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
+										.getSymbol()));
+						break;
+					case glycosylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
+										.getSymbol()));
+						break;
+					case ubiquitination:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
+										.getSymbol()));
+						break;
+					case methylation:
+						connectionRenderer
+								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
+										.getSymbol()));
+						break;
+					}
+				}
+			}
+		}
+
+		connectionRenderer.renderLine(gl, linePoints);
+	}
+
+	private LineEndArrowRenderer createDefaultLineEndArrowRenderer() {
+		ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+		return new LineEndArrowRenderer(false, arrowRenderer);
+	}
+
+	private LineEndStaticLineRenderer createDefaultLineEndStaticLineRenderer() {
+		LineEndStaticLineRenderer lineEndRenderer = new LineEndStaticLineRenderer(false,
+				pixelGLConverter);
+		lineEndRenderer.setHorizontalLine(true);
+		return lineEndRenderer;
+	}
+
+	private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f,
+				pixelGLConverter, text, textRenderer);
+		lineLabelRenderer.setLineOffsetPixels(0);
+		return lineLabelRenderer;
+	}
+
+	private LineLabelRenderer createDefaultLabelAboveLineRenderer(String text) {
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f,
+				pixelGLConverter, text, textRenderer);
+		lineLabelRenderer.setLineOffsetPixels(5);
+		return lineLabelRenderer;
+	}
+
+	private LineCrossingRenderer createDefaultOrthogonalLineCrossingRenderer() {
+		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f,
+				pixelGLConverter);
+		lineCrossingRenderer.setCrossingAngle(90);
+		return lineCrossingRenderer;
+	}
+
+	private LineCrossingRenderer createDefaultLineCrossingRenderer() {
+		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f,
+				pixelGLConverter);
+		lineCrossingRenderer.setCrossingAngle(45);
+		return lineCrossingRenderer;
 	}
 
 	@Override
