@@ -23,6 +23,14 @@
                   commandId="org.caleydo.view.grouper.command.opengrouper"
                   icon="resources/icons/grouper.png"
                   style="push">
+               <visibleWhen checkEnabled="false">
+                  <with
+                        variable="org.caleydo.core.isReleaseState">
+                     <equals
+                           value="releaseVersion">
+                     </equals>
+                  </with>
+               </visibleWhen>                  
             </command>
          </menu>
       </menuContribution>
