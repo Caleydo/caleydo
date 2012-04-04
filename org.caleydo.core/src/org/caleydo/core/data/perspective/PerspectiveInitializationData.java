@@ -6,16 +6,20 @@ import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 public class PerspectiveInitializationData {
+
+	/** A label of the perspective */
+	private String label;
 	/**
-	 * Indices of elements that represent a group/cluster (cluster centers). Used for initialization to create
-	 * a sample element for every group.
+	 * Indices of elements that represent a group/cluster (cluster centers).
+	 * Used for initialization to create a sample element for every group.
 	 */
 	private List<Integer> indices;
 
 	private List<Integer> sampleElements;
 	/**
-	 * The sizes of the group in a list sorted so that combined with the {@link VirtualArray} the clusters are
-	 * uniquely identified. Used for initialization.
+	 * The sizes of the group in a list sorted so that combined with the
+	 * {@link VirtualArray} the clusters are uniquely identified. Used for
+	 * initialization.
 	 */
 	private List<Integer> groupSizes;
 
@@ -25,12 +29,13 @@ public class PerspectiveInitializationData {
 	private List<String> groupNames;
 
 	/**
-	 * The tree that shows relation between the elements in the {@link VirtualArray}. Always needs to be in
-	 * sync with the VAs.
+	 * The tree that shows relation between the elements in the
+	 * {@link VirtualArray}. Always needs to be in sync with the VAs.
 	 */
 	private ClusterTree tree;
 	/**
-	 * The root of the {@link #tree} which must not be the actual root but can be any node.
+	 * The root of the {@link #tree} which must not be the actual root but can
+	 * be any node.
 	 */
 	private ClusterNode rootNode;
 
@@ -54,10 +59,12 @@ public class PerspectiveInitializationData {
 	 * @param groupSizes
 	 * @param sampleElements
 	 */
-	public void setData(List<Integer> indices, List<Integer> groupSizes, List<Integer> sampleElements) {
+	public void setData(List<Integer> indices, List<Integer> groupSizes,
+			List<Integer> sampleElements) {
 		if (indices == null || groupSizes == null || sampleElements == null)
-			throw new IllegalArgumentException("An argument was null. Indices: " + indices
-				+ " clusterSizes: " + groupSizes + " sampleElements: " + sampleElements);
+			throw new IllegalArgumentException("An argument was null. Indices: "
+					+ indices + " clusterSizes: " + groupSizes + " sampleElements: "
+					+ sampleElements);
 
 		this.indices = indices;
 		this.groupSizes = groupSizes;
@@ -65,18 +72,20 @@ public class PerspectiveInitializationData {
 	}
 
 	/**
-	 * Same as {@link #setData(List, List, List)} but with additional clusterNames
+	 * Same as {@link #setData(List, List, List)} but with additional
+	 * clusterNames
 	 * 
 	 * @param indices
 	 * @param groupSizes
 	 * @param sampleElements
 	 * @param groupNames
 	 */
-	public void setData(List<Integer> indices, List<Integer> groupSizes, List<Integer> sampleElements,
-		List<String> groupNames) {
+	public void setData(List<Integer> indices, List<Integer> groupSizes,
+			List<Integer> sampleElements, List<String> groupNames) {
 		if (indices == null || groupSizes == null || sampleElements == null)
-			throw new IllegalArgumentException("An argument was null. Indices: " + indices + " groupSizes: "
-				+ groupSizes + " sampleElements: " + sampleElements);
+			throw new IllegalArgumentException("An argument was null. Indices: "
+					+ indices + " groupSizes: " + groupSizes + " sampleElements: "
+					+ sampleElements);
 
 		this.indices = indices;
 		this.groupSizes = groupSizes;
@@ -96,8 +105,8 @@ public class PerspectiveInitializationData {
 	}
 
 	/**
-	 * Initialize with tree and an artificial root node (i.e., only the sub-tree starting at the artificial
-	 * root will be used.
+	 * Initialize with tree and an artificial root node (i.e., only the sub-tree
+	 * starting at the artificial root will be used.
 	 * 
 	 * @param tree
 	 * @param rootNode
@@ -172,5 +181,20 @@ public class PerspectiveInitializationData {
 	 */
 	public ClusterNode getRootNode() {
 		return rootNode;
+	}
+
+	/**
+	 * @return the label, see {@link #label}
+	 */
+	public String getLabel() {
+		return label;
+	}
+
+	/**
+	 * @param label
+	 *            setter, see {@link #label}
+	 */
+	public void setLabel(String label) {
+		this.label = label;
 	}
 }

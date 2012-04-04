@@ -6,7 +6,6 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.lib.core"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.gleem"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/org.caleydo.util.graph"/>
 	<classpathentry kind="con" path="org.eclipse.pde.core.requiredPlugins"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

@@ -8,3 +8,4 @@ Require-Bundle: org.caleydo.core;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: www.caleydo.org
+Export-Package: org.caleydo.datadomain.generic

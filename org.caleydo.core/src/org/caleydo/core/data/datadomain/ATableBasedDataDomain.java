@@ -567,7 +567,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 *            ID of the set to cluster
 	 * @param clusterState
 	 */
-	public void startClustering(ClusterConfiguration clusterState) {
+	public ClusterResult startClustering(ClusterConfiguration clusterState) {
 		// FIXME this should be re-designed so that the clustering is a separate
 		// thread and communicates via
 		// events
@@ -576,7 +576,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 		// check if clustering failed. If so, we just ignore it.
 		if (result == null)
-			return;
+			return null;
 
 		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
 				|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
@@ -599,6 +599,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID,
 					recordPerspective.getID(), this));
 		}
+		return result;
 	}
 
 	/**

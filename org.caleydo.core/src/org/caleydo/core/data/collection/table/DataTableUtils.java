@@ -48,8 +48,8 @@ public class DataTableUtils {
 	public static final String DIMENSION_TREE_FILE_PREFIX = "dimensiontree";
 
 	/**
-	 * Loads the set-file as specified in the {@link IDataDomain}'s {@link LoadDataParameters} and stores the
-	 * raw-data in the useCase
+	 * Loads the set-file as specified in the {@link IDataDomain}'s
+	 * {@link LoadDataParameters} and stores the raw-data in the useCase
 	 * 
 	 * @param useCase
 	 */
@@ -64,20 +64,22 @@ public class DataTableUtils {
 		try {
 			FileInputStream is = new FileInputStream(setFile);
 			if (setFile.length() > Integer.MAX_VALUE) {
-				throw new RuntimeException("set-file is larger than maximum internal file-dimension-size");
+				throw new RuntimeException(
+						"set-file is larger than maximum internal file-dimension-size");
 			}
 			buffer = new byte[(int) setFile.length()];
 			is.read(buffer, 0, buffer.length);
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("Could not read from specified set-file '" + setFileName + "'", ex);
+		} catch (IOException ex) {
+			throw new RuntimeException("Could not read from specified set-file '"
+					+ setFileName + "'", ex);
 		}
 		return buffer;
 	}
 
 	/**
-	 * Saves the set-data contained in the useCase in a new created temp-file. The {@link LoadDataParameters}
-	 * of the useCase are set according to the created set-file
+	 * Saves the set-data contained in the useCase in a new created temp-file.
+	 * The {@link LoadDataParameters} of the useCase are set according to the
+	 * created set-file
 	 * 
 	 * @param parameters
 	 *            set-load parameters to store the filename;
@@ -90,9 +92,9 @@ public class DataTableUtils {
 		try {
 			setFile = File.createTempFile(DATA_FILE_PREFIX, "csv", homeDir);
 			parameters.setFileName(setFile.getCanonicalPath());
-		}
-		catch (IOException ex) {
-			throw new RuntimeException("Could not create temporary file to store the set file", ex);
+		} catch (IOException ex) {
+			throw new RuntimeException(
+					"Could not create temporary file to store the set file", ex);
 		}
 		saveFile(data, setFile);
 	}
@@ -110,20 +112,18 @@ public class DataTableUtils {
 		try {
 			os = new FileOutputStream(setFile);
 			os.write(data);
-		}
-		catch (FileNotFoundException ex) {
-			throw new RuntimeException("Could not create temporary file to store the set file", ex);
-		}
-		catch (IOException ex) {
+		} catch (FileNotFoundException ex) {
+			throw new RuntimeException(
+					"Could not create temporary file to store the set file", ex);
+		} catch (IOException ex) {
 			throw new RuntimeException("Could not write to temportary set file", ex);
-		}
-		finally {
+		} finally {
 			if (os != null) {
 				try {
 					os.close();
-				}
-				catch (IOException ex) {
-					// nothing to do here, assuming output stream is already closed
+				} catch (IOException ex) {
+					// nothing to do here, assuming output stream is already
+					// closed
 				}
 			}
 		}
@@ -134,7 +134,8 @@ public class DataTableUtils {
 	 * 
 	 * @param loadDataParameters
 	 *            definition how to create the dimensions
-	 * @return <code>true</code>if the creation was successful, <code>false</code> otherwise
+	 * @return <code>true</code>if the creation was successful,
+	 *         <code>false</code> otherwise
 	 */
 	public static boolean createColumns(LoadDataParameters loadDataParameters) {
 
@@ -148,18 +149,23 @@ public class DataTableUtils {
 			createColumnsFromExistingIDs = true;
 		}
 
-		TabularDataParser reader = new TabularDataParser(null, loadDataParameters.getDataDomain());
+		TabularDataParser reader = new TabularDataParser(null,
+				loadDataParameters.getDataDomain());
 		reader.setTokenPattern(loadDataParameters.getInputPattern());
 		ArrayList<EColumnType> dataTypes = reader.getColumnDataTypes();
 
 		boolean abort = false;
-		Iterator<String> columnLabelIterator = loadDataParameters.getColumnLabels().iterator();
+		// Iterator<String> columnLabelIterator =
+		// loadDataParameters.getColumnLabels()
+		// .iterator();
+
 		CmdDataCreateColumn cmdCreateColumn;
 		String columnLabel;
 
 		ATableBasedDataDomain dataDomain = loadDataParameters.getDataDomain();
 
-		AStringConverter columnHeaderStringConverter = loadDataParameters.getColumnHeaderStringConverter();
+		AStringConverter columnHeaderStringConverter = loadDataParameters
+				.getColumnHeaderStringConverter();
 
 		IDMappingManager columnIDMappingManager;
 		IDType columnIDType;
@@ -168,75 +174,77 @@ public class DataTableUtils {
 			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
 			columnIDType = dataDomain.getDimensionIDType();
 			hrColumnIDType = dataDomain.getHumanReadableDimensionIDType();
-		}
-		else {
+		} else {
 			columnIDMappingManager = dataDomain.getRecordIDMappingManager();
 			columnIDType = dataDomain.getRecordIDType();
 			hrColumnIDType = dataDomain.getHumanReadableRecordIDType();
 		}
 
-		MappingType mappingType = columnIDMappingManager.createMap(columnIDType, hrColumnIDType, false);
+		MappingType mappingType = columnIDMappingManager.createMap(columnIDType,
+				hrColumnIDType, false);
 		Map<Integer, String> columnIDMap = columnIDMappingManager.getMap(mappingType);
 
 		int columnCount = 0;
 
 		for (EColumnType dataType : dataTypes) {
 			switch (dataType) {
-				case FLOAT:
-					cmdCreateColumn =
-						(CmdDataCreateColumn) GeneralManager.get().getCommandManager()
-							.createCommandByType(CommandType.CREATE_COLUMN);
+			case FLOAT:
+				cmdCreateColumn = (CmdDataCreateColumn) GeneralManager.get()
+						.getCommandManager()
+						.createCommandByType(CommandType.CREATE_COLUMN);
 
-					if (createColumnsFromExistingIDs)
-						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL,
+				if (createColumnsFromExistingIDs)
+					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL,
 							columnIDs.get(columnCount++));
-					else
-						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL);
+				else
+					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL);
 
-					cmdCreateColumn.doCommand();
-					columnLabel = columnLabelIterator.next();
-					if (columnHeaderStringConverter != null)
-						columnLabel = columnHeaderStringConverter.convert(columnLabel);
-					else
-						System.out.println("Weird");
+				cmdCreateColumn.doCommand();
+				columnLabel = "asdfasdfasdfasdf";// columnLabelIterator.next();
+				if (columnHeaderStringConverter != null)
+					columnLabel = columnHeaderStringConverter.convert(columnLabel);
+				else
+					System.out.println("Weird");
 
-					NumericalColumn column = (NumericalColumn) cmdCreateColumn.getCreatedObject();
-					column.setLabel(columnLabel);
-					columnIDMap.put(column.getID(), columnLabel);
+				NumericalColumn column = (NumericalColumn) cmdCreateColumn
+						.getCreatedObject();
+				// column.setLabel(columnLabel);
+				columnIDMap.put(column.getID(), columnLabel);
 
-					if (!createColumnsFromExistingIDs)
-						columnIDs.add(column.getID());
+				if (!createColumnsFromExistingIDs)
+					columnIDs.add(column.getID());
 
-					break;
-				case STRING:
-					cmdCreateColumn =
-						(CmdDataCreateColumn) GeneralManager.get().getCommandManager()
-							.createCommandByType(CommandType.CREATE_COLUMN);
+				break;
+			case STRING:
+				cmdCreateColumn = (CmdDataCreateColumn) GeneralManager.get()
+						.getCommandManager()
+						.createCommandByType(CommandType.CREATE_COLUMN);
 
-					if (createColumnsFromExistingIDs)
-						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL,
+				if (createColumnsFromExistingIDs)
+					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL,
 							columnIDs.get(columnCount++));
-					else
-						cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL);
+				else
+					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL);
 
-					cmdCreateColumn.doCommand();
+				cmdCreateColumn.doCommand();
 
-					columnLabel = columnLabelIterator.next();
-					NominalColumn<?> nominalColumn = (NominalColumn<?>) cmdCreateColumn.getCreatedObject();
-					nominalColumn.setLabel(columnLabel);
+				columnLabel = "asasdfasdfasdfasdfdf";// columnLabelIterator.next();
+				NominalColumn<?> nominalColumn = (NominalColumn<?>) cmdCreateColumn
+						.getCreatedObject();
+				nominalColumn.setLabel(columnLabel);
 
-					if (!createColumnsFromExistingIDs)
-						columnIDs.add(nominalColumn.getID());
+				if (!createColumnsFromExistingIDs)
+					columnIDs.add(nominalColumn.getID());
 
-				case SKIP:
-					// nothing to do, just skip
-					break;
-				case ABORT:
-					abort = true;
-					break;
-				default:
-					// nothing to do
-					break;
+			case SKIP:
+				// nothing to do, just skip
+				break;
+			case ABORT:
+				abort = true;
+				break;
+			default:
+				// nothing to do
+				break;
 			}
 			if (abort) {
 				break;
@@ -249,33 +257,46 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Creates the set from a previously prepared dimension definition.
+	 * Creates the {@link DataTable} from a previously prepared dimension
+	 * definition.
+	 * 
+	 * @param dataDomain
+	 * @param createDefaultDimensionPerspectives
+	 * @param createDefaultRecordPerspective
+	 * @return
 	 */
 	public static DataTable createData(ATableBasedDataDomain dataDomain,
-		boolean createDefaultDimensionPerspectives, boolean createDefaultRecordPerspective) {
-		return createData(dataDomain, createDefaultDimensionPerspectives, createDefaultRecordPerspective,
-			null);
+			boolean createDefaultDimensionPerspectives,
+			boolean createDefaultRecordPerspective) {
+		return createData(dataDomain, createDefaultDimensionPerspectives,
+				createDefaultRecordPerspective, null);
 	}
 
+	/**
+	 * Same as {@link #createData(ATableBasedDataDomain, boolean, boolean)} but
+	 * with an additional {@link AStringConverter}
+	 * 
+	 * @param stringConverter
+	 *            non-default converter for id strings
+	 * @return
+	 */
 	public static DataTable createData(ATableBasedDataDomain dataDomain,
-		boolean createDefaultDimensionPerspectives, boolean createDefaultRecordPerspective,
-		AStringConverter stringConverter) {
+			boolean createDefaultDimensionPerspectives,
+			boolean createDefaultRecordPerspective, AStringConverter stringConverter) {
 
 		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
 		ArrayList<Integer> columnIDs = loadDataParameters.getColumnIDs();
 
 		// Create table
-		CmdDataCreateTable cmdCreateTable =
-			(CmdDataCreateTable) GeneralManager.get().getCommandManager()
-				.createCommandByType(CommandType.CREATE_DATA_TABLE);
+		CmdDataCreateTable cmdCreateTable = (CmdDataCreateTable) GeneralManager.get()
+				.getCommandManager().createCommandByType(CommandType.CREATE_DATA_TABLE);
 
 		cmdCreateTable.setAttributes(columnIDs, dataDomain);
 		cmdCreateTable.doCommand();
 
 		// --------- load dynamic mapping ---------------
-		CmdParseIDMapping cmdParseIDMapping =
-			(CmdParseIDMapping) GeneralManager.get().getCommandManager()
-				.createCommandByType(CommandType.PARSE_ID_MAPPING);
+		CmdParseIDMapping cmdParseIDMapping = (CmdParseIDMapping) GeneralManager.get()
+				.getCommandManager().createCommandByType(CommandType.PARSE_ID_MAPPING);
 
 		IDType rowIDType;
 		if (dataDomain.getLoadDataParameters().isColumnDimension())
@@ -283,11 +304,12 @@ public class DataTableUtils {
 		else
 			rowIDType = dataDomain.getDimensionIDType();
 
-		String lookupTableInfo = loadDataParameters.getFileIDTypeName() + "_2_" + rowIDType + " REVERSE";
+		String lookupTableInfo = loadDataParameters.getFileIDTypeName() + "_2_"
+				+ rowIDType + " REVERSE";
 
 		cmdParseIDMapping.setAttributes(loadDataParameters.getFileName(),
-			loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-			loadDataParameters.getDelimiter(), "", rowIDType.getIDCategory());
+				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
+				loadDataParameters.getDelimiter(), "", rowIDType.getIDCategory());
 		if (stringConverter == null)
 			stringConverter = loadDataParameters.getRowIDStringConverter();
 		cmdParseIDMapping.setStringConverter(stringConverter);
@@ -295,9 +317,8 @@ public class DataTableUtils {
 		cmdParseIDMapping.doCommand();
 
 		// --------- data loading ---------------
-		CmdLoadFileNDimensions cmdLoadCSV =
-			(CmdLoadFileNDimensions) GeneralManager.get().getCommandManager()
-				.createCommandByType(CommandType.LOAD_DATA_FILE);
+		CmdLoadFileNDimensions cmdLoadCSV = (CmdLoadFileNDimensions) GeneralManager.get()
+				.getCommandManager().createCommandByType(CommandType.LOAD_DATA_FILE);
 
 		cmdLoadCSV.setAttributes(columnIDs, loadDataParameters);
 		cmdLoadCSV.doCommand();
@@ -327,15 +348,15 @@ public class DataTableUtils {
 		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
 
 		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
-			table.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL, isSetHomogeneous);
-		}
-		else if (loadDataParameters.getMathFilterMode().equals("Log10")) {
-			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG10, isSetHomogeneous);
-		}
-		else if (loadDataParameters.getMathFilterMode().equals("Log2")) {
-			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG2, isSetHomogeneous);
-		}
-		else
+			table.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL,
+					isSetHomogeneous);
+		} else if (loadDataParameters.getMathFilterMode().equals("Log10")) {
+			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG10,
+					isSetHomogeneous);
+		} else if (loadDataParameters.getMathFilterMode().equals("Log2")) {
+			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG2,
+					isSetHomogeneous);
+		} else
 			throw new IllegalStateException("Unknown data representation type");
 
 		return table;
@@ -348,24 +369,27 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Switch the representation of the data. When this is called the data in normalized is replaced with data
-	 * calculated from the mode specified.
+	 * Switch the representation of the data. When this is called the data in
+	 * normalized is replaced with data calculated from the mode specified.
 	 * 
 	 * @param externalDataRep
-	 *            Determines how the data is visualized. For options see {@link ExternalDataRepresentation}
+	 *            Determines how the data is visualized. For options see
+	 *            {@link ExternalDataRepresentation}
 	 * @param bIsSetHomogeneous
-	 *            Determines whether a set is homogeneous or not. Homogeneous means that the sat has a global
-	 *            maximum and minimum, meaning that all dimensions in the set contain equal data. If false,
-	 *            each dimension is treated separately, has it's own min and max etc. Sets that contain
-	 *            nominal data MUST be inhomogeneous.
+	 *            Determines whether a set is homogeneous or not. Homogeneous
+	 *            means that the sat has a global maximum and minimum, meaning
+	 *            that all dimensions in the set contain equal data. If false,
+	 *            each dimension is treated separately, has it's own min and max
+	 *            etc. Sets that contain nominal data MUST be inhomogeneous.
 	 */
 	public static void setExternalDataRepresentation(DataTable table,
-		ExternalDataRepresentation externalDataRep, boolean isSetHomogeneous) {
+			ExternalDataRepresentation externalDataRep, boolean isSetHomogeneous) {
 		table.setExternalDataRepresentation(externalDataRep, isSetHomogeneous);
 	}
 
 	/**
-	 * Creates a contentGroupList from the group information read from a stored file
+	 * Creates a contentGroupList from the group information read from a stored
+	 * file
 	 * 
 	 * @param set
 	 * @param vaType
@@ -377,8 +401,8 @@ public class DataTableUtils {
 
 		int cluster = 0, cnt = 0;
 
-		RecordGroupList contentGroupList =
-			table.getRecordPerspective(vaType).getVirtualArray().getGroupList();
+		RecordGroupList contentGroupList = table.getRecordPerspective(vaType)
+				.getVirtualArray().getGroupList();
 		contentGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -398,7 +422,8 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Creates a dimensionGroupList from the group information read from a stored file
+	 * Creates a dimensionGroupList from the group information read from a
+	 * stored file
 	 * 
 	 * @param set
 	 * @param vaType
@@ -406,11 +431,12 @@ public class DataTableUtils {
 	 * @param groupInfo
 	 *            the array list extracted from the file
 	 */
-	public static void setDimensionGroupList(DataTable table, String vaType, int[] groupInfo) {
+	public static void setDimensionGroupList(DataTable table, String vaType,
+			int[] groupInfo) {
 		int cluster = 0, cnt = 0;
 
-		DimensionGroupList dimensionGroupList =
-			table.getDimensionPerspective(vaType).getVirtualArray().getGroupList();
+		DimensionGroupList dimensionGroupList = table.getDimensionPerspective(vaType)
+				.getVirtualArray().getGroupList();
 		dimensionGroupList.clear();
 
 		for (int i = 0; i < groupInfo.length; i++) {
@@ -436,13 +462,14 @@ public class DataTableUtils {
 	 * @param recordPerspectiveID
 	 * @param groupReps
 	 */
-	public static void setRecordGroupRepresentatives(DataTable table, String recordPerspectiveID,
-		int[] groupReps) {
+	public static void setRecordGroupRepresentatives(DataTable table,
+			String recordPerspectiveID, int[] groupReps) {
 
 		int group = 0;
 
-		RecordGroupList contentGroupList =
-			table.getRecordPerspective(recordPerspectiveID).getVirtualArray().getGroupList();
+		RecordGroupList contentGroupList = table
+				.getRecordPerspective(recordPerspectiveID).getVirtualArray()
+				.getGroupList();
 
 		contentGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;
@@ -462,13 +489,14 @@ public class DataTableUtils {
 	 * @param dimensionPerspectiveID
 	 * @param groupReps
 	 */
-	public static void setDimensionGroupRepresentatives(DataTable table, String dimensionPerspectiveID,
-		int[] groupReps) {
+	public static void setDimensionGroupRepresentatives(DataTable table,
+			String dimensionPerspectiveID, int[] groupReps) {
 
 		int group = 0;
 
-		DimensionGroupList dimensionGroupList =
-			table.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray().getGroupList();
+		DimensionGroupList dimensionGroupList = table
+				.getDimensionPerspective(dimensionPerspectiveID).getVirtualArray()
+				.getGroupList();
 
 		dimensionGroupList.get(group).setRepresentativeElementIndex(0);
 		group++;

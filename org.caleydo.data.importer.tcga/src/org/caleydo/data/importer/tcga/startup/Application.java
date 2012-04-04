@@ -1,23 +1,25 @@
 package org.caleydo.data.importer.tcga.startup;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -27,25 +29,26 @@ import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.ExternalGroupingParser;
+import org.caleydo.core.parser.ascii.GroupingParseSpecification;
+import org.caleydo.core.parser.ascii.GroupingParser;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
-import org.eclipse.core.runtime.Status;
+import org.caleydo.datadomain.generic.GenericDataDomain;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
 /**
  * This class controls all aspects of the application's execution
  */
-public class Application
-	implements IApplication {
+public class Application implements IApplication {
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -71,8 +74,7 @@ public class Application
 			outputCaleydoProjectFile = System.getProperty("user.home")
 					+ System.getProperty("file.separator") + "export_"
 					+ (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal";
-		}
-		else {
+		} else {
 			outputCaleydoProjectFile = runConfigParameters[0];
 			inputDataTypeSetCollectionFile = runConfigParameters[1];
 		}
@@ -82,7 +84,8 @@ public class Application
 		DataSetMetaInfoCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
 		// Iterate over data type sets and trigger processing
-		for (DataSetMetaInfo dataTypeSet : dataSetMetInfoCollection.getDataTypeSetCollection())
+		for (DataSetDescription dataTypeSet : dataSetMetInfoCollection
+				.getDataTypeSetCollection())
 			loadSources(dataTypeSet);
 
 		// calculateVAIntersections();
@@ -93,7 +96,8 @@ public class Application
 	}
 
 	private void calculateVAIntersections() {
-		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(5);
+		ArrayList<RecordVirtualArray> vasToIntersect = new ArrayList<RecordVirtualArray>(
+				5);
 		// int loopCount = 0;
 		ArrayList<ATableBasedDataDomain> dataDomains = DataDomainManager.get()
 				.getDataDomainsByType(ATableBasedDataDomain.class);
@@ -112,7 +116,8 @@ public class Application
 			intersectedPerspective.setLabel("Intersected 4 Clusters", false);
 			intersectedPerspective.setIDType(intersectedVAs.get(i).getIdType());
 			intersectedPerspective.init(data);
-			dataDomains.get(i).getTable().registerRecordPerspective(intersectedPerspective);
+			dataDomains.get(i).getTable()
+					.registerRecordPerspective(intersectedPerspective);
 		}
 	}
 
@@ -120,43 +125,83 @@ public class Application
 	public void stop() {
 	}
 
-	private void loadSources(DataSetMetaInfo metaInfo) throws FileNotFoundException,
-			IOException {
+	private void loadSources(DataSetDescription dataSetDescription)
+			throws FileNotFoundException, IOException {
 
-		loadData(metaInfo);
-		loadClusterInfo(metaInfo.getGroupingPath());
-		loadExternalClusterInfo(metaInfo.getExternalGroupingPath(),metaInfo.getColumn());
+		loadData(dataSetDescription);
+		loadGroupings(dataSetDescription);
 
-		if (metaInfo.isRunClusteringOnRows()) {
+		// if we don't have a row-grouping we create one
+		if (dataSetDescription.getRowGroupingSpecifications() == null) {
 			runClusteringOnRows(true, 4);
-			runClusteringOnRows(true, 5);
+
+			createSampleOfGenes(runClusteringOnRows(true, 5).getDimensionResult());
 			runClusteringOnRows(true, 6);
 
 			runClusteringOnRows(false, -1);
 			// if (metaInfo.isCreateGeneSamples())
-			// createSampleOfGenes(clusterResult);
+
 		}
 
 	}
 
-	protected void loadData(DataSetMetaInfo dataSetMetaInfo) throws FileNotFoundException,
-			IOException {
+	protected void loadData(DataSetDescription dataSetDescription)
+			throws FileNotFoundException, IOException {
 
-		LoadDataParameters loadDataParameters = dataSetMetaInfo.getLoadDataParameters();
-		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
-				dataSetMetaInfo.getDataDomainType(),
-				dataSetMetaInfo.getDataDomainConfiguration());
+		LoadDataParameters loadDataParameters = new LoadDataParameters();
+
+		if (dataSetDescription.isColumnDataTypeGene()
+				|| dataSetDescription.isRowDataTypeGene()) {
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
+		} else {
+			String dimensionName;
+			String recordName;
+
+			if (dataSetDescription.isTransposeMatrix()) {
+				dimensionName = dataSetDescription.getRowName();
+				recordName = dataSetDescription.getColumnName();
+			} else {
+				dimensionName = dataSetDescription.getColumnName();
+				recordName = dataSetDescription.getRowName();
+			}
+
+			DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
+			dataDomainConfiguration.setRecordIDCategory(recordName);
+			dataDomainConfiguration.setPrimaryRecordMappingType(recordName + "_INT");
+			dataDomainConfiguration
+					.setHumanReadableRecordIDType(recordName.toUpperCase());
+			dataDomainConfiguration.setRecordDenominationPlural(recordName + "s");
+			dataDomainConfiguration.setRecordDenominationSingular(recordName);
+
+			dataDomainConfiguration.setDimensionIDCategory(dimensionName);
+			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionName);
+			dataDomainConfiguration.setDimensionDenominationSingular(dimensionName);
+			dataDomainConfiguration.setDimensionDenominationPlural(dimensionName + "s");
+
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.createDataDomain(GenericDataDomain.DATA_DOMAIN_TYPE,
+							dataDomainConfiguration);
+
+		}
 
 		loadDataParameters.setDataDomain(dataDomain);
-		dataDomain.setColorMapper(ColorMapper.createDefaultMapper(EDefaultColorSchemes
-				.valueOf(dataSetMetaInfo.getColorScheme())));
+		loadDataParameters.setFileName(dataSetDescription.getDataSourcePath());
+		loadDataParameters.setIsDataHomogeneous(true);
+		
+
+		dataDomain.setColorMapper(ColorMapper
+				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
 
 		dataDomain.init();
 
 		if (dataDomain.isColumnDimension())
 			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
 		else
-			loadDataParameters.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+			loadDataParameters
+					.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+		
+		loadDataParameters.setInputPattern(dataSetDescription.getParsingPattern());
 
 		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
 		thread.start();
@@ -164,9 +209,9 @@ public class Application
 		// construct input pattern string based on number of columns in file
 		DataTableUtils.createColumns(loadDataParameters);
 
-		boolean createDefaultRecordPerspective = false;
-		if (dataSetMetaInfo.getGroupingPath() == null)
-			createDefaultRecordPerspective = true;
+	
+		boolean createDefaultRecordPerspective = true;
+
 		// the place the matrix is stored:
 		DataTable table = DataTableUtils.createData(dataDomain, true,
 				createDefaultRecordPerspective);
@@ -174,128 +219,205 @@ public class Application
 			throw new IllegalStateException("Problem while creating table!");
 	}
 
-	private void loadClusterInfo(String clusterFile) throws FileNotFoundException, IOException {
+	// private void loadClusterInfo() throws FileNotFoundException, IOException
+	// {
+	//
+	// String clusterFile;
+	//
+	// String delimiter = "\t";
+	//
+	// if (clusterFile == null) {
+	// Logger.log(new Status(Status.INFO, this.toString(),
+	// "No Cluster Information specified"));
+	// return;
+	// }
+	// // open file to read second line to determine number of rows and columns
+	// BufferedReader reader = new BufferedReader(new FileReader(clusterFile));
+	//
+	// // skip header ("#1.2")
+	// // TODO: check if file is indeed a gct file
+	// reader.readLine();
+	//
+	// // read dimensions of data matrix
+	//
+	// ArrayList<HashMap<String, ArrayList<Integer>>> listOfGroupLists = new
+	// ArrayList<HashMap<String, ArrayList<Integer>>>();
+	//
+	// int lineCounter = 0;
+	// while (true) {
+	//
+	// String line = reader.readLine();
+	// if (line == null)
+	// break;
+	// String[] columns = line.split(delimiter);
+	//
+	// TCGAIDStringConverter stringConverter = new TCGAIDStringConverter();
+	// String originalID = stringConverter.convert(columns[0]);
+	// // String originalID = columns[0];
+	//
+	// Integer mappedID = dataDomain.getRecordIDMappingManager().getID(
+	// dataDomain.getHumanReadableRecordIDType(),
+	// dataDomain.getRecordIDType(), originalID);
+	//
+	// for (int columnCount = 1; columnCount < columns.length; columnCount++) {
+	// HashMap<String, ArrayList<Integer>> groupList;
+	// if (lineCounter == 0) {
+	// groupList = new HashMap<String, ArrayList<Integer>>();
+	// listOfGroupLists.add(groupList);
+	//
+	// } else {
+	// groupList = listOfGroupLists.get(columnCount - 1);
+	// }
+	//
+	// ArrayList<Integer> group = groupList.get(columns[columnCount]);
+	// if (group == null) {
+	// group = new ArrayList<Integer>();
+	// groupList.put(columns[columnCount], group);
+	// }
+	// group.add(mappedID);
+	// }
+	// lineCounter++;
+	// }
+	//
+	// for (HashMap<String, ArrayList<Integer>> groupList : listOfGroupLists) {
+	//
+	// RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
+	// recordPerspective.setLabel(groupList.size() + " clusters", false);
+	// if (groupList.size() == 4)
+	// recordPerspective.setDefault(true);
+	// ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
+	// ArrayList<Integer> clusterSizes = new
+	// ArrayList<Integer>(groupList.size());
+	// ArrayList<Integer> sampleElements = new
+	// ArrayList<Integer>(groupList.size());
+	// int sampleIndex = 0;
+	// for (ArrayList<Integer> group : groupList.values()) {
+	//
+	// sortedIDs.addAll(group);
+	// clusterSizes.add(group.size());
+	// sampleElements.add(sampleIndex);
+	// sampleIndex += group.size();
+	// }
+	//
+	// PerspectiveInitializationData data = new PerspectiveInitializationData();
+	// data.setData(sortedIDs, clusterSizes, sampleElements);
+	//
+	// recordPerspective.init(data);
+	// dataDomain.getTable().registerRecordPerspective(recordPerspective);
+	// }
+	// }
 
-		String delimiter = "\t";
+	/**
+	 * Loads all groupings for columns and rows that are specified in the
+	 * {@link DataSetDescription}. Respects transposition.
+	 * 
+	 * @param dataSetDescription
+	 */
+	private void loadGroupings(DataSetDescription dataSetDescription) {
+		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
+				.getColumnGroupingSpecifications();
 
-		if (clusterFile == null) {
-			Logger.log(new Status(Status.INFO, this.toString(),
-					"No Cluster Information specified"));
-			return;
-		}
-		// open file to read second line to determine number of rows and columns
-		BufferedReader reader = new BufferedReader(new FileReader(clusterFile));
+		if (columnGroupingSpecifications != null) {
 
-		// skip header ("#1.2")
-		// TODO: check if file is indeed a gct file
-		reader.readLine();
-
-		// read dimensions of data matrix
-
-		ArrayList<HashMap<String, ArrayList<Integer>>> listOfGroupLists = new ArrayList<HashMap<String, ArrayList<Integer>>>();
-
-		int lineCounter = 0;
-		while (true) {
-
-			String line = reader.readLine();
-			if (line == null)
-				break;
-			String[] columns = line.split(delimiter);
-
-			TCGAIDStringConverter stringConverter = new TCGAIDStringConverter();
-			String originalID = stringConverter.convert(columns[0]);
-			// String originalID = columns[0];
-
-			Integer mappedID = dataDomain.getRecordIDMappingManager().getID(
-					dataDomain.getHumanReadableRecordIDType(), dataDomain.getRecordIDType(),
-					originalID);
-
-			for (int columnCount = 1; columnCount < columns.length; columnCount++) {
-				HashMap<String, ArrayList<Integer>> groupList;
-				if (lineCounter == 0) {
-					groupList = new HashMap<String, ArrayList<Integer>>();
-					listOfGroupLists.add(groupList);
-
-				}
-				else {
-					groupList = listOfGroupLists.get(columnCount - 1);
-				}
-
-				ArrayList<Integer> group = groupList.get(columns[columnCount]);
-				if (group == null) {
-					group = new ArrayList<Integer>();
-					groupList.put(columns[columnCount], group);
-				}
-				group.add(mappedID);
+			IDType sourceIDType, targetIDType;
+			if (dataSetDescription.isTransposeMatrix()) {
+				sourceIDType = dataDomain.getHumanReadableRecordIDType();
+				targetIDType = dataDomain.getRecordIDType();
+			} else {
+				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
+				targetIDType = dataDomain.getHumanReadableRecordIDType();
 			}
-			lineCounter++;
+
+			ArrayList<PerspectiveInitializationData> columnPerspective = createPerspectivesForGroupings(
+					columnGroupingSpecifications, sourceIDType, targetIDType);
+
+			for (PerspectiveInitializationData data : columnPerspective) {
+				if (dataSetDescription.isTransposeMatrix()) {
+					RecordPerspective recordPerspective = new RecordPerspective(
+							dataDomain);
+					recordPerspective.init(data);
+
+					dataDomain.getTable().registerRecordPerspective(recordPerspective);
+				} else {
+					DimensionPerspective dimensionPerspective = new DimensionPerspective(
+							dataDomain);
+					dimensionPerspective.init(data);
+
+					dataDomain.getTable().registerDimensionPerspective(
+							dimensionPerspective);
+				}
+			}
 		}
 
-		for (HashMap<String, ArrayList<Integer>> groupList : listOfGroupLists) {
+		ArrayList<GroupingParseSpecification> rowGroupingSpecifications = dataSetDescription
+				.getRowGroupingSpecifications();
+		if (rowGroupingSpecifications != null) {
 
-			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.setLabel(groupList.size() + " clusters", false);
-			if (groupList.size() == 4)
-				recordPerspective.setDefault(true);
-			ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
-			ArrayList<Integer> clusterSizes = new ArrayList<Integer>(groupList.size());
-			ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
-			int sampleIndex = 0;
-			for (ArrayList<Integer> group : groupList.values()) {
+			IDType sourceIDType, targetIDType;
+			if (dataSetDescription.isTransposeMatrix()) {
+				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
+				targetIDType = dataDomain.getHumanReadableRecordIDType();
 
-				sortedIDs.addAll(group);
-				clusterSizes.add(group.size());
-				sampleElements.add(sampleIndex);
-				sampleIndex += group.size();
+			} else {
+				sourceIDType = dataDomain.getHumanReadableRecordIDType();
+				targetIDType = dataDomain.getRecordIDType();
 			}
 
-			PerspectiveInitializationData data = new PerspectiveInitializationData();
-			data.setData(sortedIDs, clusterSizes, sampleElements);
+			ArrayList<PerspectiveInitializationData> rowPerspective = createPerspectivesForGroupings(
+					columnGroupingSpecifications, sourceIDType, targetIDType);
 
-			recordPerspective.init(data);
-			dataDomain.getTable().registerRecordPerspective(recordPerspective);
+			for (PerspectiveInitializationData data : rowPerspective) {
+				if (dataSetDescription.isTransposeMatrix()) {
+					DimensionPerspective dimensionPerspective = new DimensionPerspective(
+							dataDomain);
+					dimensionPerspective.init(data);
+
+					dataDomain.getTable().registerDimensionPerspective(
+							dimensionPerspective);
+
+				} else {
+					RecordPerspective recordPerspective = new RecordPerspective(
+							dataDomain);
+					recordPerspective.init(data);
+
+					dataDomain.getTable().registerRecordPerspective(recordPerspective);
+				}
+			}
 		}
 	}
 
-	private void loadExternalClusterInfo(String externalGroupingPath, int column) {
-		if (externalGroupingPath == null)
-			return;
+	private ArrayList<PerspectiveInitializationData> createPerspectivesForGroupings(
+			ArrayList<GroupingParseSpecification> groupingSpecifications,
+			IDType sourceIDType, IDType targetIDType) {
 
-		ExternalGroupingParser parser = new ExternalGroupingParser();
-		ArrayList<Integer> groupingColumns = new ArrayList<Integer>(1);
-		groupingColumns.add(column);
-		ArrayList<PerspectiveInitializationData> perspectiveDatas = parser
-				.loadExternalGrouping(externalGroupingPath, groupingColumns,
-						new TCGAIDStringConverter(),
-						dataDomain.getHumanReadableRecordIDType(),
-						dataDomain.getRecordIDType());
-
-		for (PerspectiveInitializationData data : perspectiveDatas) {
-			RecordPerspective groundTruthPerspective = new RecordPerspective(dataDomain);
-			groundTruthPerspective.init(data);
-			groundTruthPerspective.setLabel("Ground Truth", false);
-			dataDomain.getTable().registerRecordPerspective(groundTruthPerspective);
+		GroupingParser parser = new GroupingParser();
+		ArrayList<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
+		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
+			perspectiveDatas.addAll(parser.parseGrouping(groupingSpecification,
+					new TCGAIDStringConverter(), sourceIDType, targetIDType));
 		}
+
+		return perspectiveDatas;
 	}
 
 	/**
 	 * Running this once with true creates a new dimension perspective with
-	 * k-means. Running this with false creates another
-	 * dimensionPerspective using affinity propagation
+	 * k-means. Running this with false creates another dimensionPerspective
+	 * using affinity propagation
 	 * 
 	 * @param useKMeans
 	 * @return
 	 */
-	private void runClusteringOnRows(boolean useKMeans,
-			int numClusters) {
+	private ClusterResult runClusteringOnRows(boolean useKMeans, int numClusters) {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
+		
 		String recordPerspectiveID = dataDomain.getTable().getDefaultRecordPerspective()
 				.getID();
-		String dimensionPerspectiveID = dataDomain.getTable().getDefaultDimensionPerspective()
-				.getID();
+		String dimensionPerspectiveID = dataDomain.getTable()
+				.getDefaultDimensionPerspective().getID();
 
 		DimensionPerspective sourceDimensionPerspective = dataDomain.getTable()
 				.getDimensionPerspective(dimensionPerspectiveID);
@@ -306,14 +428,15 @@ public class Application
 
 			DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
 					dataDomain);
-			dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
+			dataDomain.getTable()
+					.registerDimensionPerspective(targetDimensionPerspective);
 
-			targetDimensionPerspective.setLabel("K-Means, " + numClusters + " Cluster", false);
+			targetDimensionPerspective.setLabel("K-Means, " + numClusters + " Cluster",
+					false);
 
 			clusterConfiguration
 					.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
-		}
-		else {
+		} else {
 			// here we create another dimensionPerspective which uses average
 			// linkage hierarchical clustering
 			clusterConfiguration.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
@@ -326,7 +449,7 @@ public class Application
 				.getRecordPerspective(recordPerspectiveID));
 		clusterConfiguration.setSourceDimensionPerspective(sourceDimensionPerspective);
 
-		dataDomain.startClustering(clusterConfiguration);
+		return dataDomain.startClustering(clusterConfiguration);
 
 		// dimensionPerspective.init(result.getDimensionResult());
 		// dimensionPerspective.setLabel("All genes clustered, size: "
@@ -338,7 +461,8 @@ public class Application
 	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {
 		if (clusterResult.getIndices().size() < 50)
 			return;
-		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(dataDomain);
+		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(
+				dataDomain);
 
 		sampledDimensionPerspective.init(clusterResult);
 
@@ -360,13 +484,12 @@ public class Application
 	private void createJAXBContext() {
 		try {
 			Class<?>[] serializableClasses = new Class<?>[4];
-			serializableClasses[0] = DataSetMetaInfo.class;
+			serializableClasses[0] = DataSetDescription.class;
 			serializableClasses[1] = DataSetMetaInfoCollection.class;
 			serializableClasses[2] = TCGAIDStringConverter.class;
 			serializableClasses[3] = DashToPointStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -379,11 +502,73 @@ public class Application
 
 			dataTypeSetCollection = (DataSetMetaInfoCollection) unmarshaller
 					.unmarshal(new File(inputDataTypeSetCollectionFile));
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 
 		return dataTypeSetCollection;
 	}
+
+	// private static void doGCTSpecificStuff(DataSetDescription
+	// dataSetMetaInfo) {
+	//
+	//
+	// try {
+	// // LoadDataParameters loadDataParameters =
+	// setUpLoadDataParameters(dataSetMetaInfo);
+	//
+	// loadDataParameters.setStartParseFileAtLine(3);
+	//
+	// // open file to read second line to determine number of rows and
+	// // columns
+	// BufferedReader reader;
+	//
+	// reader = new BufferedReader(new
+	// FileReader(dataSetMetaInfo.getDataSourcePath()));
+	// reader.readLine();
+	//
+	// // read dimensions of data matrix
+	// String dimensionString = reader.readLine();
+	//
+	// // TODO: check if there are two numeric columns
+	// String[] dimensions = dimensionString
+	// .split(loadDataParameters.getDelimiter());
+	//
+	// int columns = new Integer(dimensions[1]);
+	//
+	// // read column headers
+	// String headerString = reader.readLine();
+	//
+	// // TODO: check if there are as many column headers as there are
+	// // columns (+ 2)
+	// String[] headers = headerString.split(loadDataParameters.getDelimiter());
+	//
+	// // loadDataParameters.setMinDefined(true);
+	// // loadDataParameters.setMin(min);
+	// // loadDataParameters.setMaxDefined(true);
+	// // loadDataParameters.setMax(max);
+	//
+	// StringBuffer inputPattern = new StringBuffer("SKIP;SKIP;");
+	//
+	// // list to store column labels
+	// List<String> columnLabels = new ArrayList<String>();
+	//
+	// for (int i = 0; i < columns; ++i) {
+	// inputPattern.append("FLOAT;");
+	// columnLabels.add(headers[i + 2]);
+	// }
+	//
+	// loadDataParameters.setInputPattern(inputPattern.toString());
+	// loadDataParameters
+	// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
+	// loadDataParameters.setColumnLabels(columnLabels);
+	//
+	// dataSetMetaInfo.setLoadDataParameters(loadDataParameters);
+	//
+	// } catch (Exception e) {
+	// throw new IllegalStateException(e);
+	// }
+	// }
+	//
+
 }

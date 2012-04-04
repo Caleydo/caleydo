@@ -66,10 +66,10 @@ public abstract class AColumn
 		this.label = sLabel;
 	}
 
-	@Override
-	public String getLabel() {
-		return label;
-	}
+//	@Override
+//	public String getLabel() {
+//		return label;
+//	}
 
 	/**
 	 * Set the raw data with data type float

@@ -11,7 +11,7 @@ public interface ICollection {
 	 * 
 	 * @return label text
 	 */
-	public String getLabel();
+//	public String getLabel();
 
 	/**
 	 * Sets the label for this item.

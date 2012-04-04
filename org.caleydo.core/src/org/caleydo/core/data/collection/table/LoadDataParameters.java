@@ -76,7 +76,7 @@ public class LoadDataParameters {
 	 * Determines whether and if so which transformation should be applied to the data (e.g. log2
 	 * transformation). This is mapped to values of {@link ExternalDataRepresentation}.
 	 */
-	private String mathFilterMode;
+	private String mathFilterMode = "Normal";
 
 	/** String converter for the column headers */
 	private AStringConverter columnHeaderStringConverter;
