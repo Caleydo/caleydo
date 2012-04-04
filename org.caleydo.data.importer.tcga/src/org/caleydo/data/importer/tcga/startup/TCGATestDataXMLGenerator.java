@@ -8,6 +8,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.caleydo.core.data.importing.DataSetDescription;
+import org.caleydo.core.data.importing.DataSetDescriptionCollection;
 import org.caleydo.core.data.importing.ParsingRule;
 import org.caleydo.core.parser.ascii.GroupingParseSpecification;
 
@@ -84,14 +85,14 @@ public class TCGATestDataXMLGenerator {
 		// dataSetMetaInfoList.add(setUpCopyNumberData());
 		// dataSetMetaInfoList.add(setUpClinicalData());
 
-		DataSetMetaInfoCollection dataTypeSetCollection = new DataSetMetaInfoCollection();
-		dataTypeSetCollection.setDataTypeSetCollection(dataSetMetaInfoList);
+		DataSetDescriptionCollection dataTypeSetCollection = new DataSetDescriptionCollection();
+		dataTypeSetCollection.setDataSetDescriptionCollection(dataSetMetaInfoList);
 
 		JAXBContext context = null;
 		try {
 			Class<?>[] serializableClasses = new Class<?>[4];
 			serializableClasses[0] = DataSetDescription.class;
-			serializableClasses[1] = DataSetMetaInfoCollection.class;
+			serializableClasses[1] = DataSetDescriptionCollection.class;
 			serializableClasses[2] = TCGAIDStringConverter.class;
 			serializableClasses[3] = DashToPointStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);

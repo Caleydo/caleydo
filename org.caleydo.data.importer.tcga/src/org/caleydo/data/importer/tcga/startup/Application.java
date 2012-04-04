@@ -20,6 +20,7 @@ import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.importing.DataSetDescription;
+import org.caleydo.core.data.importing.DataSetDescriptionCollection;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -81,11 +82,11 @@ public class Application implements IApplication {
 
 		GeneralManager.get().init();
 		createJAXBContext();
-		DataSetMetaInfoCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
+		DataSetDescriptionCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
 		// Iterate over data type sets and trigger processing
 		for (DataSetDescription dataTypeSet : dataSetMetInfoCollection
-				.getDataTypeSetCollection())
+				.getDataSetDescriptionCollection())
 			loadSources(dataTypeSet);
 
 		// calculateVAIntersections();
@@ -485,7 +486,7 @@ public class Application implements IApplication {
 		try {
 			Class<?>[] serializableClasses = new Class<?>[4];
 			serializableClasses[0] = DataSetDescription.class;
-			serializableClasses[1] = DataSetMetaInfoCollection.class;
+			serializableClasses[1] = DataSetDescriptionCollection.class;
 			serializableClasses[2] = TCGAIDStringConverter.class;
 			serializableClasses[3] = DashToPointStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
@@ -494,13 +495,13 @@ public class Application implements IApplication {
 		}
 	}
 
-	private DataSetMetaInfoCollection deserialzeDataSetMetaInfo() {
+	private DataSetDescriptionCollection deserialzeDataSetMetaInfo() {
 
-		DataSetMetaInfoCollection dataTypeSetCollection = null;
+		DataSetDescriptionCollection dataTypeSetCollection = null;
 		try {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
-			dataTypeSetCollection = (DataSetMetaInfoCollection) unmarshaller
+			dataTypeSetCollection = (DataSetDescriptionCollection) unmarshaller
 					.unmarshal(new File(inputDataTypeSetCollectionFile));
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
