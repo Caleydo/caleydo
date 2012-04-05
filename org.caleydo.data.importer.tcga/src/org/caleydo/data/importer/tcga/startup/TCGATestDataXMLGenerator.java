@@ -114,7 +114,7 @@ public class TCGATestDataXMLGenerator {
 
 		mrnaData.setDataSourcePath(MRNA);
 		mrnaData.setNumberOfHeaderLines(3);
-		
+
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
@@ -122,14 +122,16 @@ public class TCGATestDataXMLGenerator {
 		mrnaData.addParsingRule(parsingRule);
 
 		mrnaData.setRowDataTypeGene(true);
-		mrnaData.setColumnName("sample");
+		mrnaData.setColumnType("sample");
 		mrnaData.setTransposeMatrix(true);
 
-		mrnaData.addColumnGroupingSpecification(new GroupingParseSpecification(
-				MRNA_GROUPING));
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
+				MRNA_GROUPING);
+		firehoseClustering.setContainsColumnIDs(false);
+		mrnaData.addColumnGroupingSpecification(firehoseClustering);
 
 		GroupingParseSpecification groundTruthGrouping = new GroupingParseSpecification();
-		groundTruthGrouping.setPath(GROUND_TRUTH_GROUPING);
+		groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
 		groundTruthGrouping.addColum(2);
 		mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
 

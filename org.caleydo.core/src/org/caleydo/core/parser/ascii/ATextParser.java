@@ -1,6 +1,7 @@
 package org.caleydo.core.parser.ascii;
 
 import java.io.BufferedReader;
+import java.io.FileReader;
 import java.io.IOException;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;
@@ -22,16 +23,18 @@ public abstract class ATextParser {
 	public static final String TAB = "\t";
 
 	/** The path of the file to parse */
-	private String fileName = "";
+	protected String fileName = "";
 
 	/**
-	 * Defines the number of lines to be read from a file. only useful, if loadData_TestLinesToBeRead() was
-	 * called before reading the file.
+	 * Defines the number of lines to be read from a file. only useful, if
+	 * loadData_TestLinesToBeRead() was called before reading the file.
 	 */
 	int nrLinesToRead = -1;
-	int nrLinesToReadWithClusterInfo = -1;
 
-	/** Defines numbers of lines to skip in the read file. This is, e.g., useful to ignore headers. */
+	/**
+	 * Defines numbers of lines to skip in the read file. This is, e.g., useful
+	 * to ignore headers.
+	 */
 	protected int parsingStartLine = 0;
 
 	/** Defines at which line to stop parsing */
@@ -60,8 +63,7 @@ public abstract class ATextParser {
 	public final void setTokenSeperator(final String tokenSeparator) {
 		if (tokenSeparator.equals("\\t")) {
 			tokenSeperator = "\t";
-		}
-		else {
+		} else {
 			tokenSeperator = tokenSeparator;
 		}
 	}
@@ -85,16 +87,8 @@ public abstract class ATextParser {
 		this.fileName = fileName;
 	}
 
-	/**
-	 * Get the filename for the current file.
-	 * 
-	 * @return current file name
-	 */
-	public String getFileName() {
-		return this.fileName;
-	}
-
-	public final void setStartParsingStopParsingAtLine(int startParsingAtLine, int stopParsingAtLine) {
+	public final void setStartParsingStopParsingAtLine(int startParsingAtLine,
+			int stopParsingAtLine) {
 
 		this.parsingStartLine = startParsingAtLine;
 
@@ -110,7 +104,7 @@ public abstract class ATextParser {
 		this.stopParsingAtLine = stopParsingAtLine;
 
 		nrLinesToRead = stopParsingAtLine - parsingStartLine + 1;
-		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
+
 	}
 
 	/**
@@ -118,33 +112,29 @@ public abstract class ATextParser {
 	 */
 	protected final int computeNumberOfLinesInFile(String sFileName) throws IOException {
 
-		int iCountLinesToBeRead = 0;
-		int iCountLines = 0;
+		int countLinesToBeRead = 0;
+		int lineCount = 0;
 
 		try {
-			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(sFileName);
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
-			while (brFile.readLine() != null && iCountLines <= stopParsingAtLine) {
-				if (iCountLines > this.parsingStartLine) {
-					iCountLinesToBeRead++;
+			while (reader.readLine() != null && lineCount <= stopParsingAtLine) {
+				if (lineCount > this.parsingStartLine) {
+					countLinesToBeRead++;
 				}
-
-				iCountLines++;
+				lineCount++;
 			}
-
-			brFile.close();
-		}
-		catch (IOException ioe) {
-			throw new RuntimeException();
+			reader.close();
+		} catch (IOException ioe) {
+			throw new IllegalStateException("Could not read from file: " + fileName);
 		}
 
-		nrLinesToRead = iCountLinesToBeRead + parsingStartLine;
+		nrLinesToRead = countLinesToBeRead + parsingStartLine;
 
 		if (stopParsingAtLine == Integer.MAX_VALUE) {
 			stopParsingAtLine = nrLinesToRead;
 		}
 
-		nrLinesToReadWithClusterInfo = nrLinesToRead - 2;
 		return nrLinesToRead;
 	}
 
@@ -152,29 +142,31 @@ public abstract class ATextParser {
 
 		try {
 
-			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start loading file " + fileName
-				+ "..."));
+			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+					"Start loading file " + fileName + "..."));
 
-			BufferedReader brFile = GeneralManager.get().getResourceLoader().getResource(fileName);
+			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
-			this.loadDataParseFile(brFile, computeNumberOfLinesInFile(fileName));
+			this.loadDataParseFile(reader, computeNumberOfLinesInFile(fileName));
 
-			if (brFile != null) {
-				brFile.close();
+			if (reader != null) {
+				reader.close();
 			}
-		}
-		catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, this.toString(), "Could not read data file.", e));
-			throw new RuntimeException("Could not read data file '" + fileName + "'", e);
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(),
+					"Could not read data file.", e));
+			throw new IllegalStateException(
+					"Could not read data file '" + fileName + "'", e);
 		}
 
-		Logger.log(new Status(IStatus.INFO, toString(), "File " + fileName + " successfully loaded."));
+		Logger.log(new Status(IStatus.INFO, toString(), "File " + fileName
+				+ " successfully loaded."));
 
 		return true;
 	}
 
-	protected abstract void loadDataParseFile(BufferedReader brFile, final int iNumberOfLinesInFile)
-		throws IOException;
+	protected abstract void loadDataParseFile(BufferedReader reader,
+			final int numberOfLinesToRead) throws IOException;
 
 	// protected abstract void setArraysToDimensions();
 }

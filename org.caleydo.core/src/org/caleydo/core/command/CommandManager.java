@@ -2,7 +2,7 @@ package org.caleydo.core.command;
 
 import org.caleydo.core.command.data.CmdDataCreateColumn;
 import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
+import org.caleydo.core.command.data.parser.CmdLoadDataMatrix;
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 
@@ -61,7 +61,7 @@ public class CommandManager {
 				break;
 			}
 			case LOAD_DATA_FILE: {
-				createdCommand = new CmdLoadFileNDimensions();
+				createdCommand = new CmdLoadDataMatrix();
 				break;
 			}
 			case CREATE_COLUMN: {

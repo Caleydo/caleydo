@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
@@ -34,7 +35,7 @@ public class GroupingParser {
 		IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
 				.getIDMappingManager(sourceIDType.getIDCategory());
 
-		if (groupingSpecifications.getPath() == null) {
+		if (groupingSpecifications.getDataSourcePath() == null) {
 			Logger.log(new Status(Status.INFO, this.toString(),
 					"No path for grouping specified"));
 			return null;
@@ -42,18 +43,47 @@ public class GroupingParser {
 		BufferedReader reader;
 		try {
 
-			reader = new BufferedReader(new FileReader(groupingSpecifications.getPath()));
-			String headerLine = reader.readLine();
-			String[] headerCells = headerLine
-					.split(groupingSpecifications.getDelimiter(), -1);
+			String[] headerCells = null;
+
+			// read header
+			if (groupingSpecifications.isContainsColumnIDs()) {
+				reader = new BufferedReader(new FileReader(
+						groupingSpecifications.getDataSourcePath()));
+				String headerLine = "";
+
+				int rowOfColumnIDs = (groupingSpecifications.getRowOfColumnIDs() >= 0) ? groupingSpecifications
+						.getRowOfColumnIDs() : groupingSpecifications
+						.getNumberOfHeaderLines() - 1;
+				for (int countToHeader = 0; countToHeader <= rowOfColumnIDs; countToHeader++) {
+					headerLine = reader.readLine();
+				}
+				headerCells = headerLine.split(groupingSpecifications.getDelimiter(), -1);
+			}
+
+			reader = new BufferedReader(new FileReader(
+					groupingSpecifications.getDataSourcePath()));
+
+			for (int headerLineCounter = 0; headerLineCounter < groupingSpecifications
+					.getNumberOfHeaderLines(); headerLineCounter++) {
+				reader.readLine();
+			}
 
 			ArrayList<Integer> columnsToRead = groupingSpecifications.getColumns();
-			// if this was not specified we read all columns
+			// if this was not specified we read all columns, the row IDs are
+			// guaranteed to be in the first column
+			String firstDataLine = null;
 			if (columnsToRead == null) {
+				firstDataLine = reader.readLine();
+				String[] data = firstDataLine
+						.split(groupingSpecifications.getDelimiter());
+				columnsToRead = new ArrayList<Integer>(data.length);
+				if (headerCells == null) {
+					headerCells = new String[data.length];
+				}
 
-				columnsToRead = new ArrayList<Integer>(headerCells.length);
-				for (int columnCount = 1; columnCount < headerCells.length; columnCount++) {
+				for (int columnCount = 1; columnCount < data.length; columnCount++) {
 					columnsToRead.add(columnCount);
+					headerCells[columnCount] = "Group " + columnCount;
 				}
 			}
 
@@ -71,12 +101,21 @@ public class GroupingParser {
 			}
 			// the actual parsing
 			while (true) {
-
-				String line = reader.readLine();
+				String line = null;
+				if (firstDataLine == null) {
+					line = reader.readLine();
+				} else {
+					// the reader already read the first line so we need to
+					// re-use it
+					line = firstDataLine;
+					firstDataLine = null;
+				}
 				if (line == null)
 					break;
+
+				// read ID
 				String[] columns = line.split(groupingSpecifications.getDelimiter());
-				String originalID = columns[0];
+				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
 				if (idConverter != null) {
 					originalID = idConverter.convert(originalID);
 				}
@@ -88,6 +127,8 @@ public class GroupingParser {
 							"Could not map id: " + originalID));
 					continue;
 				}
+
+				// read data
 				int groupListCounter = 0;
 				for (Integer columnID : columnsToRead) {
 					currentGroupList = listOfGroupLists.get(groupListCounter);
@@ -104,7 +145,6 @@ public class GroupingParser {
 			}
 
 			// Create the initialization datas
-
 			ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
 
 			for (int groupListCount = 0; groupListCount < listOfGroupLists.size(); groupListCount++) {
@@ -134,7 +174,7 @@ public class GroupingParser {
 			return perspectiveInitializationDatas;
 		} catch (IOException ioException) {
 			throw new IllegalStateException("Could not read file: "
-					+ groupingSpecifications.getPath());
+					+ groupingSpecifications.getDataSourcePath());
 		}
 	}
 

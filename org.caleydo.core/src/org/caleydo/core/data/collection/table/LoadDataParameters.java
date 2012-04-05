@@ -51,7 +51,7 @@ public class LoadDataParameters {
 	/** labels of the dimensions */
 	private List<String> columnLabels;
 
-	/** csv-delimiter between to values */
+	/** delimiter seperating the columns */
 	private String delimiter;
 
 	/** line number to start the parsing of the main-data file */
@@ -79,7 +79,7 @@ public class LoadDataParameters {
 	private String mathFilterMode = "Normal";
 
 	/** String converter for the column headers */
-	private AStringConverter columnHeaderStringConverter;
+	private AStringConverter columnIDStringConverter;
 
 	/** String converter for the first ids in the first Column */
 	private AStringConverter rowIDStringConverter;
@@ -355,17 +355,17 @@ public class LoadDataParameters {
 
 	/**
 	 * @param columnHeaderStringConverter
-	 *            setter, see {@link #columnHeaderStringConverter}
+	 *            setter, see {@link #columnIDStringConverter}
 	 */
 	public void setColumnHeaderStringConverter(AStringConverter columnHeaderStringConverter) {
-		this.columnHeaderStringConverter = columnHeaderStringConverter;
+		this.columnIDStringConverter = columnHeaderStringConverter;
 	}
 
 	/**
-	 * @return the columnHeaderStringConverter, see {@link #columnHeaderStringConverter}
+	 * @return the columnHeaderStringConverter, see {@link #columnIDStringConverter}
 	 */
 	public AStringConverter getColumnHeaderStringConverter() {
-		return columnHeaderStringConverter;
+		return columnIDStringConverter;
 	}
 
 	/**

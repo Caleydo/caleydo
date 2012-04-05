@@ -156,29 +156,29 @@ public class Application implements IApplication {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
 		} else {
-			String dimensionName;
-			String recordName;
+			String dimensionType;
+			String recordType;
 
 			if (dataSetDescription.isTransposeMatrix()) {
-				dimensionName = dataSetDescription.getRowName();
-				recordName = dataSetDescription.getColumnName();
+				dimensionType = dataSetDescription.getRowType();
+				recordType = dataSetDescription.getColumnType();
 			} else {
-				dimensionName = dataSetDescription.getColumnName();
-				recordName = dataSetDescription.getRowName();
+				dimensionType = dataSetDescription.getColumnType();
+				recordType = dataSetDescription.getRowType();
 			}
 
 			DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
-			dataDomainConfiguration.setRecordIDCategory(recordName);
-			dataDomainConfiguration.setPrimaryRecordMappingType(recordName + "_INT");
+			dataDomainConfiguration.setRecordIDCategory(recordType);
+			dataDomainConfiguration.setPrimaryRecordMappingType(recordType + "_INT");
 			dataDomainConfiguration
-					.setHumanReadableRecordIDType(recordName.toUpperCase());
-			dataDomainConfiguration.setRecordDenominationPlural(recordName + "s");
-			dataDomainConfiguration.setRecordDenominationSingular(recordName);
+					.setHumanReadableRecordIDType(recordType.toUpperCase());
+			dataDomainConfiguration.setRecordDenominationPlural(recordType + "s");
+			dataDomainConfiguration.setRecordDenominationSingular(recordType);
 
-			dataDomainConfiguration.setDimensionIDCategory(dimensionName);
-			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionName);
-			dataDomainConfiguration.setDimensionDenominationSingular(dimensionName);
-			dataDomainConfiguration.setDimensionDenominationPlural(dimensionName + "s");
+			dataDomainConfiguration.setDimensionIDCategory(dimensionType);
+			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionType);
+			dataDomainConfiguration.setDimensionDenominationSingular(dimensionType);
+			dataDomainConfiguration.setDimensionDenominationPlural(dimensionType + "s");
 
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain(GenericDataDomain.DATA_DOMAIN_TYPE,
@@ -189,7 +189,6 @@ public class Application implements IApplication {
 		loadDataParameters.setDataDomain(dataDomain);
 		loadDataParameters.setFileName(dataSetDescription.getDataSourcePath());
 		loadDataParameters.setIsDataHomogeneous(true);
-		
 
 		dataDomain.setColorMapper(ColorMapper
 				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
@@ -201,7 +200,7 @@ public class Application implements IApplication {
 		else
 			loadDataParameters
 					.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
-		
+
 		loadDataParameters.setInputPattern(dataSetDescription.getParsingPattern());
 
 		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
@@ -210,7 +209,6 @@ public class Application implements IApplication {
 		// construct input pattern string based on number of columns in file
 		DataTableUtils.createColumns(loadDataParameters);
 
-	
 		boolean createDefaultRecordPerspective = true;
 
 		// the place the matrix is stored:
@@ -414,7 +412,6 @@ public class Application implements IApplication {
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 
-		
 		String recordPerspectiveID = dataDomain.getTable().getDefaultRecordPerspective()
 				.getID();
 		String dimensionPerspectiveID = dataDomain.getTable()

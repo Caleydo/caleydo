@@ -17,7 +17,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Description of a data set for creating Caleydo projects 
+ * Description of a data set for creating Caleydo projects
  * 
  * @author Alexander Lex
  * @author Nils Gehlenborg
@@ -25,18 +25,7 @@ import org.eclipse.core.runtime.Status;
  */
 @XmlType
 @XmlRootElement
-public class DataSetDescription {
-
-	/** The path to the source table csv file. Mandatory */
-	private String dataSourcePath;
-
-	/** The number of lines which should be ignored for parsing. */
-	private Integer numberOfHeaderLines = 0;
-
-	/**
-	 * The text delimiter used. Default is tab ("\t");
-	 */
-	private String delimiter = "\t";
+public class DataSetDescription extends MatrixDefinition {
 
 	/**
 	 * Set {@link ParsingRule}s for the source file. Multiple ParsingRules are
@@ -90,7 +79,7 @@ public class DataSetDescription {
 	 * {@link GeneticDataDomain#DATA_DOMAIN_TYPE}
 	 * <p>
 	 */
-	private String columnName;
+	private String columnType;
 
 	/**
 	 * <p>
@@ -98,71 +87,26 @@ public class DataSetDescription {
 	 * must be specified. Defaults to false.
 	 * </p>
 	 * <p>
-	 * If this is true the {@link #columnName} has no effect and needs not be
+	 * If this is true the {@link #columnType} has no effect and needs not be
 	 * set.
 	 * </p>
 	 */
-	private boolean isColumnDataTypeGene = false;
+	private boolean isColumnTypeGene = false;
 
 	/**
-	 * Same as {@link #columnName} but for rows.
+	 * Same as {@link #columnType} but for rows.
 	 */
-	private String rowName;
+	private String rowType;
 
 	/**
 	 * <p>
-	 * Same as {@link #isColumnDataTypeGene} but for rows.
+	 * Same as {@link #isColumnTypeGene} but for rows.
 	 * </p>
 	 * <p>
-	 * If this is true the {@link #rowName} has no effect and needs not be set.
+	 * If this is true the {@link #rowType} has no effect and needs not be set.
 	 * </p>
 	 */
-	private boolean isRowDataTypeGene = false;
-
-	/**
-	 * @param dataSourcePath
-	 *            setter, see {@link #dataSourcePath}
-	 */
-	public void setDataSourcePath(String dataSourcePath) {
-		this.dataSourcePath = dataSourcePath;
-	}
-
-	/**
-	 * @return the dataSourcePath, see {@link #dataSourcePath}
-	 */
-	public String getDataSourcePath() {
-		return dataSourcePath;
-	}
-
-	/**
-	 * @param numberOfHeaderLines
-	 *            setter, see {@link #numberOfHeaderLines}
-	 */
-	public void setNumberOfHeaderLines(Integer numberOfHeaderLines) {
-		this.numberOfHeaderLines = numberOfHeaderLines;
-	}
-
-	/**
-	 * @return the numberOfHeaderLines, see {@link #numberOfHeaderLines}
-	 */
-	public Integer getNumberOfHeaderLines() {
-		return numberOfHeaderLines;
-	}
-
-	/**
-	 * @param delimiter
-	 *            setter, see {@link #delimiter}
-	 */
-	public void setDelimiter(String delimiter) {
-		this.delimiter = delimiter;
-	}
-
-	/**
-	 * @return the delimiter, see {@link #delimiter}
-	 */
-	public String getDelimiter() {
-		return delimiter;
-	}
+	private boolean isRowTypeGene = false;
 
 	/**
 	 * @param parsingRules
@@ -222,63 +166,63 @@ public class DataSetDescription {
 	}
 
 	/**
-	 * @param columnName
-	 *            setter, see {@link #columnName}
+	 * @param columnType
+	 *            setter, see {@link #columnType}
 	 */
-	public void setColumnName(String columnName) {
-		this.columnName = columnName;
+	public void setColumnType(String columnType) {
+		this.columnType = columnType;
 	}
 
 	/**
-	 * @return the columnName, see {@link #columnName}
+	 * @return the columnType, see {@link #columnType}
 	 */
-	public String getColumnName() {
-		return columnName;
+	public String getColumnType() {
+		return columnType;
 	}
 
 	/**
 	 * @param isColumnDataTypeGene
-	 *            setter, see {@link #isColumnDataTypeGene}
+	 *            setter, see {@link #isColumnTypeGene}
 	 */
 	public void setColumnDataTypeGene(boolean isColumnDataTypeGene) {
-		this.isColumnDataTypeGene = isColumnDataTypeGene;
+		this.isColumnTypeGene = isColumnDataTypeGene;
 	}
 
 	/**
-	 * @return the isColumnDataTypeGene, see {@link #isColumnDataTypeGene}
+	 * @return the isColumnDataTypeGene, see {@link #isColumnTypeGene}
 	 */
 	public boolean isColumnDataTypeGene() {
-		return isColumnDataTypeGene;
+		return isColumnTypeGene;
 	}
 
 	/**
-	 * @param rowName
-	 *            setter, see {@link #rowName}
+	 * @param rowType
+	 *            setter, see {@link #rowType}
 	 */
-	public void setRowName(String rowName) {
-		this.rowName = rowName;
+	public void setRowType(String rowType) {
+		this.rowType = rowType;
 	}
 
 	/**
-	 * @return the rowName, see {@link #rowName}
+	 * @return the rowType, see {@link #rowType}
 	 */
-	public String getRowName() {
-		return rowName;
+	public String getRowType() {
+		return rowType;
 	}
 
 	/**
 	 * @param isRowDataTypeGene
-	 *            setter, see {@link #isRowDataTypeGene}
+	 *            setter, see {@link #isRowTypeGene}
 	 */
 	public void setRowDataTypeGene(boolean isRowDataTypeGene) {
-		this.isRowDataTypeGene = isRowDataTypeGene;
+		this.isRowTypeGene = isRowDataTypeGene;
 	}
 
 	/**
-	 * @return the isRowDataTypeGene, see {@link #isRowDataTypeGene}
+	 * @return the isRowDataTypeGene, see {@link #isRowTypeGene}
 	 */
 	public boolean isRowDataTypeGene() {
-		return isRowDataTypeGene;
+		return isRowTypeGene;
 	}
 
 	/**

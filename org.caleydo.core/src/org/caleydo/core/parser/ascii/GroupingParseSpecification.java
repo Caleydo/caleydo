@@ -7,28 +7,42 @@ import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.importing.MatrixDefinition;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 
 /**
  * <p>
  * Specifies how to parse a grouping file to ultimately create {@link GroupList}
- * . The parsing according to the rules specified here is done in
+ * The parsing according to the rules specified here is done in
  * {@link GroupingParser}.
  * </p>
  * <p>
- * Loading groupings is restricted to the following assumptions:
+ * The data is assumed to be available in a delimited text file and follow the
+ * contract specified in the base class {@link MatrixDefinition}
  * </p>
- * <ol>
+ * <p>
+ * Groupings are based on the following assumptions:
+ * </p>
+ * <ul>
  * <li>Groupings are based on an identifier-group relationship, where one group
- * is defined in a column in a delimited text-file.</li>
- * <li>The first column contains an identifier of the ID to be grouped.</li>
+ * is defined in a column.</li>
+ * <li>One column contains an identifier of the ID to be grouped.</li>
  * <li>Other columns contain a key specifying the group the ID belongs to. The
  * key can be an arbitrary string (except for the delimiter).</li>
- * <li>If the keys for two IDs is identical (according to
+ * <li>If the keys for two IDs are identical (according to
  * {@link String#equals(Object)}), they belong to the same group</li>
- * <li>The first row contains a header and is not considered a group or ID</li>
- * <li>The file contains at least one line with groupings</li>
- * </ol>
+ * </ul>
+ * 
+ * <p>
+ * By default, it is assumed that the first column contains the row IDs and all
+ * other columns contain groupings. If one of these assumptions does not hold,
+ * both, the exact column of the ids ({@link #setColumnOfRowIds(Integer)}) and
+ * the exact columns of the groupings ({@link #setColumns(ArrayList)} or
+ * {@link #addColum(Integer)}) can be specified. Note that if you are not using
+ * the default, you need to specify <b>both, the column of the ids and the ids
+ * of all groupings.</b>
+ * </p>
+ * 
  * <p>
  * If the file contains multiple columns, all of them are loaded as a separate
  * grouping. This can be overridden to specific columns using the
@@ -39,11 +53,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
  * 
  */
 @XmlType
-public class GroupingParseSpecification {
-	
-	
-	/** The path to the file of the grouping. Mandatory. */
-	private String path;
+public class GroupingParseSpecification extends MatrixDefinition {
 
 	/**
 	 * Optional parameter to specify the column of the grouping in the delimited
@@ -52,30 +62,16 @@ public class GroupingParseSpecification {
 	private ArrayList<Integer> columns;
 
 	/**
-	 * The text delimiter used. Default is tab ("\t");
-	 */
-	private String delimiter = "\t";
-
-	
-	/**
 	 * Default Constructor, use setters to specify data
 	 */
 	public GroupingParseSpecification() {
 	}
-	
+
 	/**
 	 * Constructor with {@link #path} as argument.
 	 */
-	public GroupingParseSpecification(String path) {
-		this.path = path;
-	}
-	
-	/**
-	 * @param path
-	 *            setter, see {@link #path}
-	 */
-	public void setPath(String path) {
-		this.path = path;
+	public GroupingParseSpecification(String dataSourcePath) {
+		this.dataSourcePath = dataSourcePath;
 	}
 
 	/**
@@ -94,28 +90,6 @@ public class GroupingParseSpecification {
 			columns = new ArrayList<Integer>();
 		}
 		columns.add(column);
-	}
-
-	/**
-	 * @param delimiter
-	 *            setter, see {@link #delimiter}
-	 */
-	public void setDelimiter(String delimiter) {
-		this.delimiter = delimiter;
-	}
-
-	/**
-	 * @return the path, see {@link #path}
-	 */
-	public String getPath() {
-		return path;
-	}
-
-	/**
-	 * @return the delimiter, see {@link #delimiter}
-	 */
-	public String getDelimiter() {
-		return delimiter;
 	}
 
 	/**

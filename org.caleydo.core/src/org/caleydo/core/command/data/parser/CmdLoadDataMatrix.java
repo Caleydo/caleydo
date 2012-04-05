@@ -22,7 +22,7 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Marc Streit
  */
-public class CmdLoadFileNDimensions
+public class CmdLoadDataMatrix
 	extends ACommand {
 
 	private ArrayList<Integer> dimensionIDs;
@@ -36,7 +36,7 @@ public class CmdLoadFileNDimensions
 	/**
 	 * Constructor.
 	 */
-	public CmdLoadFileNDimensions() {
+	public CmdLoadDataMatrix() {
 		super(CommandType.LOAD_DATA_FILE);
 		loadDataParameters = new LoadDataParameters();
 	}

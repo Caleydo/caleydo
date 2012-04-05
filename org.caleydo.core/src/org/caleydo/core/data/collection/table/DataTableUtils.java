@@ -11,7 +11,7 @@ import java.util.Map;
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.CmdDataCreateColumn;
 import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.parser.CmdLoadFileNDimensions;
+import org.caleydo.core.command.data.parser.CmdLoadDataMatrix;
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
@@ -149,10 +149,10 @@ public class DataTableUtils {
 			createColumnsFromExistingIDs = true;
 		}
 
-		TabularDataParser reader = new TabularDataParser(null,
+		TabularDataParser parser = new TabularDataParser(null,
 				loadDataParameters.getDataDomain());
-		reader.setTokenPattern(loadDataParameters.getInputPattern());
-		ArrayList<EColumnType> dataTypes = reader.getColumnDataTypes();
+		parser.setTokenPattern(loadDataParameters.getInputPattern());
+		ArrayList<EColumnType> dataTypes = parser.getColumnDataTypes();
 
 		boolean abort = false;
 		// Iterator<String> columnLabelIterator =
@@ -317,7 +317,7 @@ public class DataTableUtils {
 		cmdParseIDMapping.doCommand();
 
 		// --------- data loading ---------------
-		CmdLoadFileNDimensions cmdLoadCSV = (CmdLoadFileNDimensions) GeneralManager.get()
+		CmdLoadDataMatrix cmdLoadCSV = (CmdLoadDataMatrix) GeneralManager.get()
 				.getCommandManager().createCommandByType(CommandType.LOAD_DATA_FILE);
 
 		cmdLoadCSV.setAttributes(columnIDs, loadDataParameters);

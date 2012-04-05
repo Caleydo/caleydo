@@ -43,9 +43,8 @@ import org.eclipse.ui.part.ViewPart;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class CaleydoRCPViewPart
-	extends ViewPart
-	implements IListenerOwner, IExtendedSelectionUpdateHandler {
+public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOwner,
+		IExtendedSelectionUpdateHandler {
 
 	/** serialized representation of the view to initialize the view itself */
 	protected ASerializedView serializedView;
@@ -113,7 +112,7 @@ public abstract class CaleydoRCPViewPart
 	@Override
 	public void setFocus() {
 	}
-	
+
 	/**
 	 * <p>
 	 * If applicable initializes the {@link #view} with the {@link ADataDomain}
@@ -130,7 +129,8 @@ public abstract class CaleydoRCPViewPart
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
 					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked") IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
+			@SuppressWarnings("unchecked")
+			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
 		view.initFromSerializableRepresentation(serializedView);
@@ -199,8 +199,7 @@ public abstract class CaleydoRCPViewPart
 
 					serializedTopLevelDataView.setDimensionPerspectiveID(dataContainer
 							.getDimensionPerspective().getID());
-				}
-				else {
+				} else {
 
 					serializedTopLevelDataView
 							.setRecordPerspectiveID(((ATableBasedDataDomain) DataDomainManager
@@ -221,17 +220,20 @@ public abstract class CaleydoRCPViewPart
 					.getAssociationManager()
 					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
 
-			DataConfiguration config = DataConfigurationChooser.determineDataConfiguration(
-					availableDomains, serializedView.getViewType(), letUserChoose);
+			DataConfiguration config = DataConfigurationChooser
+					.determineDataConfiguration(availableDomains,
+							serializedView.getViewType(), letUserChoose);
 
 			// for some views its ok if initially no data is set
-			if (config.getDataDomain() == null)
+			if (config.getDataDomain() == null
+					|| config.getDimensionPerspective() == null
+					|| config.getRecordPerspective() == null)
 				return;
 
 			serializedTopLevelDataView.setDataDomainID(config.getDataDomain()
 					.getDataDomainID());
-			serializedTopLevelDataView.setRecordPerspectiveID(config.getRecordPerspective()
-					.getID());
+			serializedTopLevelDataView.setRecordPerspectiveID(config
+					.getRecordPerspective().getID());
 			serializedTopLevelDataView.setDimensionPerspectiveID(config
 					.getDimensionPerspective().getID());
 		}
@@ -265,21 +267,20 @@ public abstract class CaleydoRCPViewPart
 			Unmarshaller unmarshaller;
 			try {
 				unmarshaller = jaxbContext.createUnmarshaller();
-			}
-			catch (JAXBException ex) {
+			} catch (JAXBException ex) {
 				throw new RuntimeException("could not create xml unmarshaller", ex);
 			}
 
 			StringReader xmlInputReader = new StringReader(viewXml);
 			try {
 				serializedView = (ASerializedView) unmarshaller.unmarshal(xmlInputReader);
-			}
-			catch (JAXBException ex) {
+			} catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
 			if (serializedView instanceof ASerializedTopLevelDataView
 					&& DataDomainManager.get().getDataDomainByID(
-							((ASerializedTopLevelDataView) serializedView).getDataDomainID()) == null)
+							((ASerializedTopLevelDataView) serializedView)
+									.getDataDomainID()) == null)
 				serializedView = null;
 		}
 		// this is the case if either the view has not been saved to a memento
@@ -302,8 +303,7 @@ public abstract class CaleydoRCPViewPart
 		try {
 			marshaller = jaxbContext.createMarshaller();
 			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, Boolean.TRUE);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("could not create xml marshaller", ex);
 		}
 
@@ -312,8 +312,7 @@ public abstract class CaleydoRCPViewPart
 			marshaller.marshal(serializedView, xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			ex.printStackTrace();
 		}
 	}
@@ -355,8 +354,8 @@ public abstract class CaleydoRCPViewPart
 		if (!isSupportView())
 			return;
 
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-				.getDataDomainByID(dataDomainID);
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+				.get().getDataDomainByID(dataDomainID);
 		if (dataDomain == null)
 			return;
 
@@ -367,8 +366,7 @@ public abstract class CaleydoRCPViewPart
 		if (this instanceof IDataDomainBasedView) {
 			((IDataDomainBasedView) this).setDataDomain(dataDomain);
 
-		}
-		else if (this.getView() instanceof IDataDomainBasedView) {
+		} else if (this.getView() instanceof IDataDomainBasedView) {
 			((IDataDomainBasedView) (this)).setDataDomain(dataDomain);
 		}
 	}
