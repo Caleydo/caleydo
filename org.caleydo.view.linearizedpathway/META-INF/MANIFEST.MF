@@ -7,7 +7,9 @@ Bundle-Activator: org.caleydo.view.linearizedpathway.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="2.0.0",
- org.caleydo.datadomain.pathway;bundle-version="2.0.0"
+ org.caleydo.datadomain.pathway;bundle-version="2.0.0",
+ org.caleydo.datadomain.genetic;bundle-version="2.0.0",
+ org.caleydo.view.pathway;bundle-version="2.0.0"
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: www.caleydo.org

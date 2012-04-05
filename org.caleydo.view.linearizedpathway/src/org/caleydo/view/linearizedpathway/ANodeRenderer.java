@@ -32,6 +32,11 @@ public abstract class ANodeRenderer {
 	 * Width of the node in Pixels.
 	 */
 	protected int widthPixels;
+	
+	/**
+	 * The number of rows that show the data associated with this node renderer.
+	 */
+	protected int numAssociatedRows = 0;
 
 	public ANodeRenderer(PixelGLConverter pixelGLConverter) {
 		this.pixelGLConverter = pixelGLConverter;
@@ -117,6 +122,20 @@ public abstract class ANodeRenderer {
 	 */
 	public int getWidthPixels() {
 		return widthPixels;
+	}
+	
+	/**
+	 * @param numAssociatedRows setter, see {@link #numAssociatedRows}
+	 */
+	public void setNumAssociatedRows(int numAssociatedRows) {
+		this.numAssociatedRows = numAssociatedRows;
+	}
+	
+	/**
+	 * @return the numAssociatedRows, see {@link #numAssociatedRows}
+	 */
+	public int getNumAssociatedRows() {
+		return numAssociatedRows;
 	}
 
 }

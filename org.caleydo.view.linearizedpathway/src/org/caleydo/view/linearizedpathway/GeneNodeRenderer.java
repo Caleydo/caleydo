@@ -70,7 +70,7 @@ public class GeneNodeRenderer extends ANodeRenderer {
 		float textWidth = textRenderer.getRequiredTextWidthWithMax(caption, height - 2
 				* textSpacing, width - 2 * textSpacing);
 
-		textRenderer.renderTextInBounds(gl, caption, position.x() - textWidth / 2.0f
+		textRenderer.renderTextInBounds(gl, caption + " " +numAssociatedRows, position.x() - textWidth / 2.0f
 				+ textSpacing, lowerLeftPosition.y() + 1.5f * textSpacing,
 				lowerLeftPosition.z(), width - 2 * textSpacing, height - 2 * textSpacing);
 	}

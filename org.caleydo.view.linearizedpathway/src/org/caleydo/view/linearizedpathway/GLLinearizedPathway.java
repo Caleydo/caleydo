@@ -3,12 +3,17 @@ package org.caleydo.view.linearizedpathway;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -22,13 +27,17 @@ import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineEndStaticLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
 import org.eclipse.swt.widgets.Composite;
@@ -41,6 +50,11 @@ import org.jgrapht.graph.DefaultEdge;
  */
 
 public class GLLinearizedPathway extends AGLView {
+
+	public final static int MIN_DATA_ROW_HEIGHT_PIXELS = 150;
+	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
+	public final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
+	public final static int MIN_NODE_DISTANCE_PIXELS = 70;
 
 	public final static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
 
@@ -55,6 +69,22 @@ public class GLLinearizedPathway extends AGLView {
 	 * The path of the pathway that is currently linearized.
 	 */
 	private List<PathwayVertexRep> path;
+
+	/**
+	 * The list of nodes that are rendered.
+	 */
+	private List<ANodeRenderer> nodeRenderers = new ArrayList<ANodeRenderer>();
+
+	/**
+	 * Map that associates all {@link PathwayVertexRep} objects from the path
+	 * with a node renderer.
+	 */
+	private Map<PathwayVertexRep, ANodeRenderer> vertexRepToNodeRendererMap = new HashMap<PathwayVertexRep, ANodeRenderer>();
+
+	/**
+	 * The number of rows in which data values are shown.
+	 */
+	private int numDataRows = 0;
 
 	/**
 	 * Constructor.
@@ -112,6 +142,126 @@ public class GLLinearizedPathway extends AGLView {
 			}
 		}
 
+		createNodeRenderers();
+
+	}
+
+	private void createNodeRenderers() {
+
+		vertexRepToNodeRendererMap.clear();
+		nodeRenderers.clear();
+		numDataRows = 0;
+
+		// determine complex nodes first
+		ComplexNodeRenderer complexNodeRenderer = null;
+		for (int i = 0; i < path.size(); i++) {
+			PathwayVertexRep currentVertexRep = path.get(i);
+			if (i + 1 < path.size()) {
+				PathwayVertexRep nextVertexRep = path.get(i + 1);
+				if (pathway.getEdge(currentVertexRep, nextVertexRep) == null
+						&& pathway.getEdge(nextVertexRep, currentVertexRep) == null) {
+					if (complexNodeRenderer == null) {
+						// nodeRenderers.add(complexNodeRenderer);
+						complexNodeRenderer = new ComplexNodeRenderer(pixelGLConverter);
+						complexNodeRenderer.addVertexRep(currentVertexRep);
+						vertexRepToNodeRendererMap.put(currentVertexRep,
+								complexNodeRenderer);
+					}
+
+					complexNodeRenderer.addVertexRep(nextVertexRep);
+					vertexRepToNodeRendererMap.put(nextVertexRep, complexNodeRenderer);
+				} else {
+					if (complexNodeRenderer != null) {
+						complexNodeRenderer = null;
+					}
+				}
+			}
+		}
+
+		ANodeRenderer prevNodeRenderer = null;
+		for (PathwayVertexRep currentVertexRep : path) {
+
+			ANodeRenderer nodeRenderer = vertexRepToNodeRendererMap.get(currentVertexRep);
+			if (nodeRenderer != null) {
+				if (prevNodeRenderer != nodeRenderer) {
+					nodeRenderers.add(nodeRenderer);
+				}
+			} else {
+				if (currentVertexRep.getType() == EPathwayVertexType.compound) {
+					CompoundNodeRenderer compoundNodeRenderer = new CompoundNodeRenderer(
+							pixelGLConverter);
+
+					compoundNodeRenderer.setVertex(currentVertexRep);
+					compoundNodeRenderer.setHeightPixels(20);
+					compoundNodeRenderer.setWidthPixels(20);
+					nodeRenderer = compoundNodeRenderer;
+
+				} else {
+
+					// TODO: Verify that this also the right approach for
+					// enzymes and ortholog
+					GeneNodeRenderer geneNodeRenderer = new GeneNodeRenderer(
+							pixelGLConverter, textRenderer);
+					int commaIndex = currentVertexRep.getName().indexOf(',');
+					if (commaIndex > 0) {
+						geneNodeRenderer.setCaption(currentVertexRep.getName().substring(
+								0, commaIndex));
+					} else {
+						geneNodeRenderer.setCaption(currentVertexRep.getName());
+					}
+					geneNodeRenderer.setVertex(currentVertexRep);
+					geneNodeRenderer.setHeightPixels(20);
+					geneNodeRenderer.setWidthPixels(70);
+
+					nodeRenderer = geneNodeRenderer;
+				}
+				nodeRenderers.add(nodeRenderer);
+				vertexRepToNodeRendererMap.put(currentVertexRep, nodeRenderer);
+			}
+			int numMappedValues = determineNumberOfMappedValues(currentVertexRep);
+			nodeRenderer.setNumAssociatedRows(nodeRenderer.getNumAssociatedRows()
+					+ numMappedValues);
+
+			numDataRows += numMappedValues;
+
+			prevNodeRenderer = nodeRenderer;
+		}
+
+	}
+
+	private int determineNumberOfMappedValues(PathwayVertexRep vertexRep) {
+		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
+		if (vertices == null)
+			return 0;
+
+		List<IDataDomain> geneticDataDomains = DataDomainManager.get()
+				.getDataDomainsByType("org.caleydo.datadomain.genetic");
+		// for(IDataDomain dataDomain : geneticDataDomains) {
+		// System.out.println(dataDomain.getDataDomainID() + " " +
+		// dataDomain.toString());
+		// }
+		// FIXME: This is quite hacky.
+		GeneticDataDomain geneticDataDomain = (GeneticDataDomain) geneticDataDomains
+				.get(0);
+		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
+		int numMappedGenes = 0;
+
+		for (PathwayVertex vertex : vertices) {
+			int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(vertex);
+
+			Set<Integer> ids = geneticDataDomain.getGeneIDMappingManager().getIDAsSet(
+					pathwayDataDomain.getDavidIDType(),
+					geneticDataDomain.getGeneIDType(), davidId);
+
+			if (ids != null && !ids.isEmpty()) {
+				numMappedGenes++;
+				// TODO: or is it this way?
+				// numMappedGenes+= ids.size();
+			}
+		}
+
+		return numMappedGenes;
 	}
 
 	@Override
@@ -154,132 +304,204 @@ public class GLLinearizedPathway extends AGLView {
 	@Override
 	public void display(GL2 gl) {
 
-		// Just for testing different types of connections
-		// ConnectionLineRenderer renderer = new ConnectionLineRenderer();
-		//
-		// ClosedArrowRenderer arrowRenderer = new
-		// ClosedArrowRenderer(pixelGLConverter);
-		// // arrowRenderer.setFillColor(new float[] { 1, 1, 1, 1 });
-		//
-		// AArrowRenderer oarrowRenderer = new
-		// OpenArrowRenderer(pixelGLConverter);
-		//
-		// LineEndArrowRenderer a = new LineEndArrowRenderer(false,
-		// arrowRenderer);
-		// LineEndArrowRenderer b = new LineEndArrowRenderer(true,
-		// oarrowRenderer);
-		// LineCrossingRenderer c = new LineCrossingRenderer(0.8f,
-		// pixelGLConverter);
-		// c.setCrossingAngle(45);
-		// LineLabelRenderer d = new LineLabelRenderer(0.9f, pixelGLConverter,
-		// "e",
-		// textRenderer);
-		// // d.setLineOffsetPixels(5);
-		// LineEndStaticLineRenderer e = new LineEndStaticLineRenderer(false,
-		// pixelGLConverter);
-		// e.setHorizontalLine(false);
-		//
-		// LineLabelRenderer f = new LineLabelRenderer(0.4f, pixelGLConverter,
-		// "i dont care", textRenderer);
-		// f.setLineOffsetPixels(5);
-		//
-		// LineCrossingRenderer g = new LineCrossingRenderer(0.15f,
-		// pixelGLConverter);
-		// // g.setCrossingAngle(45);
-		//
-		// renderer.addAttributeRenderer(a);
-		// renderer.addAttributeRenderer(b);
-		// renderer.addAttributeRenderer(c);
-		// renderer.addAttributeRenderer(d);
-		// renderer.addAttributeRenderer(e);
-		// renderer.addAttributeRenderer(f);
-		// renderer.addAttributeRenderer(g);
-		//
-		// ArrayList<Vec3f> linePoints = new ArrayList<Vec3f>();
-		// linePoints.add(new Vec3f(1, 1, 0));
-		// linePoints.add(new Vec3f(1, 2, 0));
-		// linePoints.add(new Vec3f(2, 1, 0));
-		// linePoints.add(new Vec3f(3, 1, 0));
-		// // renderer.setLineStippled(true);
-		// renderer.renderLine(gl, linePoints);
-		//
-		// renderer = new ConnectionLineRenderer();
-		//
-		// arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
-		// arrowRenderer.setFillColor(new float[] { 1, 1, 1, 1 });
-		// a = new LineEndArrowRenderer(false, arrowRenderer);
-		//
-		// d = new LineLabelRenderer(0.66f, pixelGLConverter, "+g",
-		// textRenderer);
-		// d.setLineOffsetPixels(5);
-		//
-		// renderer.addAttributeRenderer(a);
-		// renderer.addAttributeRenderer(d);
-		//
-		// linePoints = new ArrayList<Vec3f>();
-		// linePoints.add(new Vec3f(1, 3, 0));
-		// linePoints.add(new Vec3f(2, 3, 0));
-		// renderer.setLineStippled(true);
-		// renderer.renderLine(gl, linePoints);
+		float branchColumnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		float pathwayColumnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
 
 		GLU glu = new GLU();
+
+		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
+		float dataRowHeight = Float.MAX_VALUE;
+		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
+				viewFrustum.getHeight(), 0);
+
+		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
+
+			float yStep = spacing.getCurrentAnchorNodeSpacing()
+					/ ((float) spacing.getNodesInbetween().size() + 1);
+			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
+				ANodeRenderer nodeRenderer = spacing.getNodesInbetween().get(i);
+				nodeRenderer.setPosition(new Vec3f(currentPosition.x(), currentPosition
+						.y() - (i + 1) * yStep, currentPosition.z()));
+				nodeRenderer.render(gl, glu);
+			}
+
+			currentPosition.setY(currentPosition.y()
+					- spacing.getCurrentAnchorNodeSpacing());
+
+			ANodeRenderer endAnchorNode = spacing.getEndNode();
+			if (endAnchorNode != null) {
+				endAnchorNode.setPosition(new Vec3f(currentPosition));
+				endAnchorNode.render(gl, glu);
+			}
+
+			ANodeRenderer startAnchorNode = spacing.getStartNode();
+
+			int numSpacingAnchorNodeRows = 0;
+			if (startAnchorNode != null)
+				numSpacingAnchorNodeRows += startAnchorNode.getNumAssociatedRows();
+			if (endAnchorNode != null)
+				numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
+
+			float currentDataRowHeight = spacing.getCurrentAnchorNodeSpacing()
+					/ ((float) numSpacingAnchorNodeRows / 2.0f);
+
+			if (currentDataRowHeight < dataRowHeight)
+				dataRowHeight = currentDataRowHeight;
+		}
+		
+		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
+		
+		for(ANodeRenderer nodeRenderer : nodeRenderers) {
+			if(nodeRenderer.getNumAssociatedRows() > 0) {
+				
+				Vec3f nodePosition = nodeRenderer.getPosition();
+				
+				gl.glBegin(GL2.GL_LINE_LOOP);
+				gl.glVertex3f(dataRowPositionX, nodePosition.y() - dataRowHeight /2.0f, 0);
+				gl.glVertex3f(viewFrustum.getWidth(), nodePosition.y() - dataRowHeight /2.0f, 0);
+				gl.glVertex3f(viewFrustum.getWidth(), nodePosition.y() + dataRowHeight /2.0f, 0);
+				gl.glVertex3f(dataRowPositionX, nodePosition.y() + dataRowHeight /2.0f, 0);
+				gl.glEnd();
+			}
+		}
+		
+		
 
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.renderTextInBounds(gl, pathway.getTitle(), 1, 8, 0, 3, 0.1f);
 
-		Vec3f currentPosition = new Vec3f(viewFrustum.getWidth() / 2.0f,
-				viewFrustum.getHeight() - 0.1f * viewFrustum.getHeight(), 0);
-		float yStep = (viewFrustum.getHeight() - 0.2f * viewFrustum.getHeight())
-				/ (float) path.size();
+		checkForHits(gl);
+	}
 
-		ANodeRenderer prevRenderer = null;
-		PathwayVertexRep prevVertex = null;
+	/**
+	 * Calculates the spacings between all anchor nodes (nodes with mapped data)
+	 * of the path.
+	 * 
+	 * @return
+	 */
+	private List<AnchorNodeSpacing> calcAnchorNodeSpacings() {
 
-		for (PathwayVertexRep vertex : path) {
+		List<AnchorNodeSpacing> anchorNodeSpacings = new ArrayList<AnchorNodeSpacing>();
+		List<AnchorNodeSpacing> anchorNodeSpacingsWithTooFewSpace = new ArrayList<AnchorNodeSpacing>();
+		List<AnchorNodeSpacing> anchorNodeSpacingsWithEnoughSpace = new ArrayList<AnchorNodeSpacing>();
 
-			ANodeRenderer renderer = null;
-			if (vertex.getType() == EPathwayVertexType.gene) {
-				GeneNodeRenderer geneNodeRenderer = new GeneNodeRenderer(
-						pixelGLConverter, textRenderer);
-				int commaIndex = vertex.getName().indexOf(',');
-				if (commaIndex > 0) {
-					geneNodeRenderer
-							.setCaption(vertex.getName().substring(0, commaIndex));
-				} else {
-					geneNodeRenderer.setCaption(vertex.getName());
+		float dataRowHeight = viewFrustum.getHeight() / (float) numDataRows;
+
+		float minDataRowHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(MIN_DATA_ROW_HEIGHT_PIXELS);
+		float minNodeDistance = pixelGLConverter
+				.getGLHeightForPixelHeight(MIN_NODE_DISTANCE_PIXELS);
+		if (dataRowHeight < minDataRowHeight)
+			dataRowHeight = minDataRowHeight;
+
+		List<ANodeRenderer> unmappedNodeRenderers = new ArrayList<ANodeRenderer>();
+		ANodeRenderer currentAnchorNode = null;
+
+		// Calculate spacings according to a regular row distribution with the
+		// current dataRowHeight
+		for (int i = 0; i < nodeRenderers.size(); i++) {
+
+			ANodeRenderer nodeRenderer = nodeRenderers.get(i);
+			int numAssociatedRows = nodeRenderer.getNumAssociatedRows();
+
+			if (numAssociatedRows == 0) {
+				unmappedNodeRenderers.add(nodeRenderer);
+				if (i == nodeRenderers.size() - 1) {
+					AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
+							currentAnchorNode, null, unmappedNodeRenderers,
+							minDataRowHeight, minNodeDistance, dataRowHeight);
+					anchorNodeSpacings.add(anchorNodeSpacing);
+					if (anchorNodeSpacing.getMinAnchorNodeSpacing() > anchorNodeSpacing
+							.getCurrentAnchorNodeSpacing())
+						anchorNodeSpacingsWithTooFewSpace.add(anchorNodeSpacing);
+					else
+						anchorNodeSpacingsWithEnoughSpace.add(anchorNodeSpacing);
 				}
-				geneNodeRenderer.setVertex(vertex);
-				geneNodeRenderer.setHeightPixels(20);
-				geneNodeRenderer.setWidthPixels(70);
-
-				renderer = geneNodeRenderer;
-
 			} else {
-				CompoundNodeRenderer compoundNodeRenderer = new CompoundNodeRenderer(
-						pixelGLConverter);
+				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
+						currentAnchorNode, nodeRenderer, unmappedNodeRenderers,
+						minDataRowHeight, minNodeDistance, dataRowHeight);
 
-				compoundNodeRenderer.setVertex(vertex);
-				compoundNodeRenderer.setHeightPixels(20);
-				compoundNodeRenderer.setWidthPixels(20);
-				renderer = compoundNodeRenderer;
+				anchorNodeSpacings.add(anchorNodeSpacing);
+
+				unmappedNodeRenderers = new ArrayList<ANodeRenderer>();
+				currentAnchorNode = nodeRenderer;
+
+				if (anchorNodeSpacing.getMinAnchorNodeSpacing() > anchorNodeSpacing
+						.getCurrentAnchorNodeSpacing())
+					anchorNodeSpacingsWithTooFewSpace.add(anchorNodeSpacing);
+				else
+					anchorNodeSpacingsWithEnoughSpace.add(anchorNodeSpacing);
+
 			}
-
-			renderer.setPosition(new Vec3f(currentPosition));
-
-			renderer.render(gl, glu);
-
-			if (prevRenderer != null) {
-				renderEdge(gl, prevVertex, vertex, prevRenderer, renderer);
-			}
-
-			prevRenderer = renderer;
-			prevVertex = vertex;
-
-			currentPosition = new Vec3f(currentPosition.x(), currentPosition.y() - yStep,
-					currentPosition.z());
 		}
 
-		checkForHits(gl);
+		// Reduce space for spacings with enough space to grant spacings with
+		// too few space more space
+		for (AnchorNodeSpacing spacingWithTooFewSpace : anchorNodeSpacingsWithTooFewSpace) {
+			float additionallyRequiredSpace = spacingWithTooFewSpace
+					.getMinAnchorNodeSpacing()
+					- spacingWithTooFewSpace.getCurrentAnchorNodeSpacing();
+
+			while ((additionallyRequiredSpace > 0)
+					&& (anchorNodeSpacingsWithEnoughSpace.size() > 0)) {
+
+				float maxReducableSpace = Float.MAX_VALUE;
+
+				for (AnchorNodeSpacing spacing : anchorNodeSpacingsWithEnoughSpace) {
+					float reducableSpace = spacing.getCurrentAnchorNodeSpacing()
+							- spacing.getMinAnchorNodeSpacing();
+					if (reducableSpace < maxReducableSpace)
+						maxReducableSpace = reducableSpace;
+				}
+
+				float spaceToReduce = Math.min(maxReducableSpace,
+						additionallyRequiredSpace
+								/ (float) anchorNodeSpacingsWithEnoughSpace.size());
+
+				List<AnchorNodeSpacing> spacingsWithEnoughSpaceCopy = new ArrayList<AnchorNodeSpacing>(
+						anchorNodeSpacingsWithEnoughSpace);
+
+				for (AnchorNodeSpacing spacingWithEnoughSpace : spacingsWithEnoughSpaceCopy) {
+					float newSpacing = spacingWithEnoughSpace
+							.getCurrentAnchorNodeSpacing() - spaceToReduce;
+					spacingWithEnoughSpace.setCurrentAnchorNodeSpacing(newSpacing);
+					if (newSpacing <= spacingWithEnoughSpace.getMinAnchorNodeSpacing())
+						anchorNodeSpacingsWithEnoughSpace.remove(spacingWithEnoughSpace);
+					additionallyRequiredSpace -= spaceToReduce;
+				}
+			}
+
+			spacingWithTooFewSpace.setCurrentAnchorNodeSpacing(spacingWithTooFewSpace
+					.getMinAnchorNodeSpacing());
+		}
+
+		return anchorNodeSpacings;
+	}
+
+	private AnchorNodeSpacing createAnchorNodeSpacing(ANodeRenderer startAnchorNode,
+			ANodeRenderer endAnchorNode, List<ANodeRenderer> nodesInbetween,
+			float minDataRowHeight, float minNodeDistance, float dataRowHeight) {
+		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
+		anchorNodeSpacing.setStartNode(startAnchorNode);
+		anchorNodeSpacing.setEndNode(endAnchorNode);
+		anchorNodeSpacing.setNodesInbetween(nodesInbetween);
+
+		int numSpacingAnchorNodeRows = 0;
+		if (startAnchorNode != null)
+			numSpacingAnchorNodeRows += startAnchorNode.getNumAssociatedRows();
+		if (endAnchorNode != null)
+			numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
+
+		anchorNodeSpacing.setMinAnchorNodeSpacing(Math.max(minDataRowHeight
+				* ((float) numSpacingAnchorNodeRows) / 2.0f, minNodeDistance
+				* (float) (nodesInbetween.size() + 1)));
+		anchorNodeSpacing.setCurrentAnchorNodeSpacing(dataRowHeight
+				* ((float) numSpacingAnchorNodeRows) / 2.0f);
+
+		return anchorNodeSpacing;
 	}
 
 	private void renderEdge(GL2 gl, PathwayVertexRep vertexRep1,
@@ -480,6 +702,12 @@ public class GLLinearizedPathway extends AGLView {
 	public int getNumberOfSelections(SelectionType SelectionType) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
+		this.pathway = pathway;
+		this.path = path;
+		// TODO: initialize nodes etc.
 	}
 
 }
