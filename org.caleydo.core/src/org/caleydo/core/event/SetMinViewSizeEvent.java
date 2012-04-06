@@ -18,7 +18,7 @@ public class SetMinViewSizeEvent
 	@Override
 	public boolean checkIntegrity() {
 		if ((minHeight == -1) || (minWidth == -1) || (view == null))
-			throw new IllegalStateException("selectionDelta was not set");
+			throw new IllegalStateException("parameters not set");
 		return true;
 	}
 

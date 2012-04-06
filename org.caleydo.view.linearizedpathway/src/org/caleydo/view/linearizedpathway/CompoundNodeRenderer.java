@@ -19,7 +19,7 @@ public class CompoundNodeRenderer extends ANodeRenderer {
 	/**
 	 * The vertex in the graph this compound belongs to.
 	 */
-	protected PathwayVertexRep vertex;
+	protected PathwayVertexRep pathwayVertexRep;
 
 	/**
 	 * @param pixelGLConverter
@@ -40,20 +40,17 @@ public class CompoundNodeRenderer extends ANodeRenderer {
 		gl.glPopMatrix();
 
 	}
-
+	
 	/**
-	 * @param vertex
-	 *            setter, see {@link #vertex}
+	 * @param pathwayVertexRep setter, see {@link #pathwayVertexRep}
 	 */
-	public void setVertex(PathwayVertexRep vertex) {
-		this.vertex = vertex;
+	public void setPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
+		this.pathwayVertexRep = pathwayVertexRep;
 	}
 
-	/**
-	 * @return the vertex, see {@link #vertex}
-	 */
-	public PathwayVertexRep getVertex() {
-		return vertex;
+	@Override
+	public PathwayVertexRep getPathwayVertexRep() {
+		return pathwayVertexRep;
 	}
 
 }

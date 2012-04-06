@@ -9,12 +9,16 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
 /**
  * @author Christian
  * 
  */
 public abstract class ANodeRenderer {
+
+	public final static int DEFAULT_HEIGHT_PIXELS = 20;
+	public final static int DEFAULT_WIDTH_PIXELS = 70;
 
 	protected PixelGLConverter pixelGLConverter;
 
@@ -26,13 +30,13 @@ public abstract class ANodeRenderer {
 	/**
 	 * Height of the node in Pixels.
 	 */
-	protected int heightPixels;
+	protected int heightPixels = DEFAULT_HEIGHT_PIXELS;
 
 	/**
 	 * Width of the node in Pixels.
 	 */
-	protected int widthPixels;
-	
+	protected int widthPixels = DEFAULT_WIDTH_PIXELS;
+
 	/**
 	 * The number of rows that show the data associated with this node renderer.
 	 */
@@ -48,6 +52,12 @@ public abstract class ANodeRenderer {
 	 * @param gl
 	 */
 	public abstract void render(GL2 gl, GLU glu);
+
+	/**
+	 * @return A {@link PathwayVertexRep} object that is representative for this
+	 *         node.
+	 */
+	public abstract PathwayVertexRep getPathwayVertexRep();
 
 	/**
 	 * @return The point a connection line can connect to at the top of the
@@ -123,14 +133,15 @@ public abstract class ANodeRenderer {
 	public int getWidthPixels() {
 		return widthPixels;
 	}
-	
+
 	/**
-	 * @param numAssociatedRows setter, see {@link #numAssociatedRows}
+	 * @param numAssociatedRows
+	 *            setter, see {@link #numAssociatedRows}
 	 */
 	public void setNumAssociatedRows(int numAssociatedRows) {
 		this.numAssociatedRows = numAssociatedRows;
 	}
-	
+
 	/**
 	 * @return the numAssociatedRows, see {@link #numAssociatedRows}
 	 */

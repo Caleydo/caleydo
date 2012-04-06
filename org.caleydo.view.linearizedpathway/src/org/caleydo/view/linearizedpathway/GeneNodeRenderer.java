@@ -28,7 +28,7 @@ public class GeneNodeRenderer extends ANodeRenderer {
 	 * The vertex in the graph this gene belongs to. This can either be a direct
 	 * relationship, or the vertex can contain multiple genes.
 	 */
-	protected PathwayVertexRep vertex;
+	protected PathwayVertexRep pathwayVertexRep;
 
 	/**
 	 * The caption displayed on the node.
@@ -70,24 +70,23 @@ public class GeneNodeRenderer extends ANodeRenderer {
 		float textWidth = textRenderer.getRequiredTextWidthWithMax(caption, height - 2
 				* textSpacing, width - 2 * textSpacing);
 
-		textRenderer.renderTextInBounds(gl, caption + " " +numAssociatedRows, position.x() - textWidth / 2.0f
-				+ textSpacing, lowerLeftPosition.y() + 1.5f * textSpacing,
-				lowerLeftPosition.z(), width - 2 * textSpacing, height - 2 * textSpacing);
+		textRenderer.renderTextInBounds(gl, caption + " " + numAssociatedRows,
+				position.x() - textWidth / 2.0f + textSpacing, lowerLeftPosition.y()
+						+ 1.5f * textSpacing, lowerLeftPosition.z(), width - 2
+						* textSpacing, height - 2 * textSpacing);
 	}
 
 	/**
-	 * @param vertex
-	 *            setter, see {@link #vertex}
+	 * @param pathwayVertexRep
+	 *            setter, see {@link #pathwayVertexRep}
 	 */
-	public void setVertex(PathwayVertexRep vertex) {
-		this.vertex = vertex;
+	public void setPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
+		this.pathwayVertexRep = pathwayVertexRep;
 	}
 
-	/**
-	 * @return the vertex, see {@link #vertex}
-	 */
-	public PathwayVertexRep getVertex() {
-		return vertex;
+	@Override
+	public PathwayVertexRep getPathwayVertexRep() {
+		return pathwayVertexRep;
 	}
 
 	/**

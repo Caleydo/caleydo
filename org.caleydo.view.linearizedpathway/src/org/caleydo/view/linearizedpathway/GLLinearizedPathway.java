@@ -15,6 +15,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -40,6 +41,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -51,10 +53,12 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class GLLinearizedPathway extends AGLView {
 
-	public final static int MIN_DATA_ROW_HEIGHT_PIXELS = 150;
+	public final static int MIN_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
 	public final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 	public final static int MIN_NODE_DISTANCE_PIXELS = 70;
+	public final static int TOP_SPACING_PIXELS = 60;
+	public final static int BOTTOM_SPACING_PIXELS = 60;
 
 	public final static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
 
@@ -87,6 +91,16 @@ public class GLLinearizedPathway extends AGLView {
 	private int numDataRows = 0;
 
 	/**
+	 * All genetic data domains.
+	 */
+	private List<GeneticDataDomain> geneticDataDomains = new ArrayList<GeneticDataDomain>();
+
+	/**
+	 * The pathway datadomain.
+	 */
+	private PathwayDataDomain pathwayDataDomain;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param glCanvas
@@ -100,6 +114,14 @@ public class GLLinearizedPathway extends AGLView {
 
 		viewType = GLLinearizedPathway.VIEW_TYPE;
 		viewLabel = "Linearized Pathway";
+
+		List<IDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
+				"org.caleydo.datadomain.genetic");
+		for (IDataDomain dataDomain : dataDomains) {
+			geneticDataDomains.add((GeneticDataDomain) dataDomain);
+		}
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
 	}
 
 	@Override
@@ -162,7 +184,8 @@ public class GLLinearizedPathway extends AGLView {
 						&& pathway.getEdge(nextVertexRep, currentVertexRep) == null) {
 					if (complexNodeRenderer == null) {
 						// nodeRenderers.add(complexNodeRenderer);
-						complexNodeRenderer = new ComplexNodeRenderer(pixelGLConverter);
+						complexNodeRenderer = new ComplexNodeRenderer(pixelGLConverter,
+								textRenderer);
 						complexNodeRenderer.addVertexRep(currentVertexRep);
 						vertexRepToNodeRendererMap.put(currentVertexRep,
 								complexNodeRenderer);
@@ -191,7 +214,7 @@ public class GLLinearizedPathway extends AGLView {
 					CompoundNodeRenderer compoundNodeRenderer = new CompoundNodeRenderer(
 							pixelGLConverter);
 
-					compoundNodeRenderer.setVertex(currentVertexRep);
+					compoundNodeRenderer.setPathwayVertexRep(currentVertexRep);
 					compoundNodeRenderer.setHeightPixels(20);
 					compoundNodeRenderer.setWidthPixels(20);
 					nodeRenderer = compoundNodeRenderer;
@@ -209,9 +232,7 @@ public class GLLinearizedPathway extends AGLView {
 					} else {
 						geneNodeRenderer.setCaption(currentVertexRep.getName());
 					}
-					geneNodeRenderer.setVertex(currentVertexRep);
-					geneNodeRenderer.setHeightPixels(20);
-					geneNodeRenderer.setWidthPixels(70);
+					geneNodeRenderer.setPathwayVertexRep(currentVertexRep);
 
 					nodeRenderer = geneNodeRenderer;
 				}
@@ -234,30 +255,22 @@ public class GLLinearizedPathway extends AGLView {
 		if (vertices == null)
 			return 0;
 
-		List<IDataDomain> geneticDataDomains = DataDomainManager.get()
-				.getDataDomainsByType("org.caleydo.datadomain.genetic");
-		// for(IDataDomain dataDomain : geneticDataDomains) {
-		// System.out.println(dataDomain.getDataDomainID() + " " +
-		// dataDomain.toString());
-		// }
-		// FIXME: This is quite hacky.
-		GeneticDataDomain geneticDataDomain = (GeneticDataDomain) geneticDataDomains
-				.get(0);
-		PathwayDataDomain pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		int numMappedGenes = 0;
 
 		for (PathwayVertex vertex : vertices) {
 			int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(vertex);
 
-			Set<Integer> ids = geneticDataDomain.getGeneIDMappingManager().getIDAsSet(
-					pathwayDataDomain.getDavidIDType(),
-					geneticDataDomain.getGeneIDType(), davidId);
+			for (GeneticDataDomain dataDomain : geneticDataDomains) {
+				Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
+						pathwayDataDomain.getDavidIDType(), dataDomain.getGeneIDType(),
+						davidId);
 
-			if (ids != null && !ids.isEmpty()) {
-				numMappedGenes++;
-				// TODO: or is it this way?
-				// numMappedGenes+= ids.size();
+				if (ids != null && !ids.isEmpty()) {
+					numMappedGenes++;
+					// TODO: or is it this way?
+					// numMappedGenes+= ids.size();
+					break;
+				}
 			}
 		}
 
@@ -315,6 +328,7 @@ public class GLLinearizedPathway extends AGLView {
 		float dataRowHeight = Float.MAX_VALUE;
 		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
 				viewFrustum.getHeight(), 0);
+		float pathwayHeight = 0;
 
 		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
@@ -349,28 +363,40 @@ public class GLLinearizedPathway extends AGLView {
 
 			if (currentDataRowHeight < dataRowHeight)
 				dataRowHeight = currentDataRowHeight;
+
+			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
 		}
-		
+
+		int minViewHeightPixels = pixelGLConverter
+				.getPixelHeightForGLHeight(pathwayHeight);
+		if (minViewHeightPixels > parentGLCanvas.getHeight()) {
+			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+			event.setMinViewSize(parentGLCanvas.getBounds().width, minViewHeightPixels);
+			event.setView(this);
+			eventPublisher.triggerEvent(event);
+		}
+
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
-		
-		for(ANodeRenderer nodeRenderer : nodeRenderers) {
-			if(nodeRenderer.getNumAssociatedRows() > 0) {
-				
+
+		for (ANodeRenderer nodeRenderer : nodeRenderers) {
+			for (int i = 0; i < nodeRenderer.getNumAssociatedRows(); i++) {
+
 				Vec3f nodePosition = nodeRenderer.getPosition();
-				
+
+				float rowPositionY = nodePosition.y()
+						+ (nodeRenderer.getNumAssociatedRows() * dataRowHeight / 2.0f)
+						- i * dataRowHeight;
+
 				gl.glBegin(GL2.GL_LINE_LOOP);
-				gl.glVertex3f(dataRowPositionX, nodePosition.y() - dataRowHeight /2.0f, 0);
-				gl.glVertex3f(viewFrustum.getWidth(), nodePosition.y() - dataRowHeight /2.0f, 0);
-				gl.glVertex3f(viewFrustum.getWidth(), nodePosition.y() + dataRowHeight /2.0f, 0);
-				gl.glVertex3f(dataRowPositionX, nodePosition.y() + dataRowHeight /2.0f, 0);
+				gl.glVertex3f(dataRowPositionX, rowPositionY - dataRowHeight, 0);
+				gl.glVertex3f(viewFrustum.getWidth(), rowPositionY - dataRowHeight, 0);
+				gl.glVertex3f(viewFrustum.getWidth(), rowPositionY, 0);
+				gl.glVertex3f(dataRowPositionX, rowPositionY, 0);
 				gl.glEnd();
 			}
 		}
-		
-		
 
-		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, pathway.getTitle(), 1, 8, 0, 3, 0.1f);
+		renderEdges(gl);
 
 		checkForHits(gl);
 	}
@@ -387,12 +413,17 @@ public class GLLinearizedPathway extends AGLView {
 		List<AnchorNodeSpacing> anchorNodeSpacingsWithTooFewSpace = new ArrayList<AnchorNodeSpacing>();
 		List<AnchorNodeSpacing> anchorNodeSpacingsWithEnoughSpace = new ArrayList<AnchorNodeSpacing>();
 
-		float dataRowHeight = viewFrustum.getHeight() / (float) numDataRows;
-
 		float minDataRowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(MIN_DATA_ROW_HEIGHT_PIXELS);
 		float minNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(MIN_NODE_DISTANCE_PIXELS);
+		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+		float bottomSpacing = pixelGLConverter
+				.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+
+		float dataRowHeight = (viewFrustum.getHeight() - bottomSpacing - topSpacing)
+				/ (float) numDataRows;
+
 		if (dataRowHeight < minDataRowHeight)
 			dataRowHeight = minDataRowHeight;
 
@@ -408,21 +439,12 @@ public class GLLinearizedPathway extends AGLView {
 
 			if (numAssociatedRows == 0) {
 				unmappedNodeRenderers.add(nodeRenderer);
-				if (i == nodeRenderers.size() - 1) {
-					AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
-							currentAnchorNode, null, unmappedNodeRenderers,
-							minDataRowHeight, minNodeDistance, dataRowHeight);
-					anchorNodeSpacings.add(anchorNodeSpacing);
-					if (anchorNodeSpacing.getMinAnchorNodeSpacing() > anchorNodeSpacing
-							.getCurrentAnchorNodeSpacing())
-						anchorNodeSpacingsWithTooFewSpace.add(anchorNodeSpacing);
-					else
-						anchorNodeSpacingsWithEnoughSpace.add(anchorNodeSpacing);
-				}
+
 			} else {
 				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
 						currentAnchorNode, nodeRenderer, unmappedNodeRenderers,
-						minDataRowHeight, minNodeDistance, dataRowHeight);
+						minDataRowHeight, minNodeDistance, dataRowHeight,
+						currentAnchorNode == null, false);
 
 				anchorNodeSpacings.add(anchorNodeSpacing);
 
@@ -434,7 +456,18 @@ public class GLLinearizedPathway extends AGLView {
 					anchorNodeSpacingsWithTooFewSpace.add(anchorNodeSpacing);
 				else
 					anchorNodeSpacingsWithEnoughSpace.add(anchorNodeSpacing);
+			}
 
+			if (i == nodeRenderers.size() - 1) {
+				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
+						currentAnchorNode, null, unmappedNodeRenderers, minDataRowHeight,
+						minNodeDistance, dataRowHeight, currentAnchorNode == null, true);
+				anchorNodeSpacings.add(anchorNodeSpacing);
+				if (anchorNodeSpacing.getMinAnchorNodeSpacing() > anchorNodeSpacing
+						.getCurrentAnchorNodeSpacing())
+					anchorNodeSpacingsWithTooFewSpace.add(anchorNodeSpacing);
+				else
+					anchorNodeSpacingsWithEnoughSpace.add(anchorNodeSpacing);
 			}
 		}
 
@@ -483,7 +516,9 @@ public class GLLinearizedPathway extends AGLView {
 
 	private AnchorNodeSpacing createAnchorNodeSpacing(ANodeRenderer startAnchorNode,
 			ANodeRenderer endAnchorNode, List<ANodeRenderer> nodesInbetween,
-			float minDataRowHeight, float minNodeDistance, float dataRowHeight) {
+			float minDataRowHeight, float minNodeDistance, float dataRowHeight,
+			boolean isFirstSpacing, boolean isLastSpacing) {
+
 		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
 		anchorNodeSpacing.setStartNode(startAnchorNode);
 		anchorNodeSpacing.setEndNode(endAnchorNode);
@@ -495,18 +530,36 @@ public class GLLinearizedPathway extends AGLView {
 		if (endAnchorNode != null)
 			numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
 
+		float additionalSpacing = 0;
+		if (isFirstSpacing)
+			additionalSpacing += pixelGLConverter
+					.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+		if (isLastSpacing)
+			additionalSpacing += pixelGLConverter
+					.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+
 		anchorNodeSpacing.setMinAnchorNodeSpacing(Math.max(minDataRowHeight
-				* ((float) numSpacingAnchorNodeRows) / 2.0f, minNodeDistance
-				* (float) (nodesInbetween.size() + 1)));
+				* ((float) numSpacingAnchorNodeRows) / 2.0f + additionalSpacing,
+				minNodeDistance * (float) (nodesInbetween.size() + 1)));
 		anchorNodeSpacing.setCurrentAnchorNodeSpacing(dataRowHeight
-				* ((float) numSpacingAnchorNodeRows) / 2.0f);
+				* ((float) numSpacingAnchorNodeRows) / 2.0f + additionalSpacing);
 
 		return anchorNodeSpacing;
 	}
 
-	private void renderEdge(GL2 gl, PathwayVertexRep vertexRep1,
-			PathwayVertexRep vertexRep2, ANodeRenderer nodeRenderer1,
+	private void renderEdges(GL2 gl) {
+		for (int i = 0; i < nodeRenderers.size() - 1; i++) {
+			ANodeRenderer nodeRenderer1 = nodeRenderers.get(i);
+			ANodeRenderer nodeRenderer2 = nodeRenderers.get(i + 1);
+			renderEdge(gl, nodeRenderer1, nodeRenderer2);
+		}
+	}
+
+	private void renderEdge(GL2 gl, ANodeRenderer nodeRenderer1,
 			ANodeRenderer nodeRenderer2) {
+
+		PathwayVertexRep vertexRep1 = nodeRenderer1.getPathwayVertexRep();
+		PathwayVertexRep vertexRep2 = nodeRenderer2.getPathwayVertexRep();
 
 		DefaultEdge edge = pathway.getEdge(vertexRep1, vertexRep2);
 		if (edge == null) {
