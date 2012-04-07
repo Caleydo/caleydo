@@ -1,8 +1,10 @@
 package org.caleydo.core.data.selection.delta;
 
 import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.selection.SelectionType;
 
 /**

@@ -4,9 +4,11 @@ import java.io.InputStream;
 import java.io.StringReader;
 import java.net.SocketException;
 import java.nio.channels.ClosedByInterruptException;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.manager.GeneralManager;

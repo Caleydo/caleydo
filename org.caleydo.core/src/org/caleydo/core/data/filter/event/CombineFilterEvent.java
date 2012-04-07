@@ -2,6 +2,7 @@ package org.caleydo.core.data.filter.event;
 
 import java.util.ArrayList;
 import java.util.Collection;
+
 import org.caleydo.core.data.filter.Filter;
 
 /**

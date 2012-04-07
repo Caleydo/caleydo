@@ -6,12 +6,9 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Map;
+
 import org.caleydo.core.command.CommandType;
-import org.caleydo.core.command.data.CmdDataCreateColumn;
-import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.parser.CmdLoadDataMatrix;
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
@@ -21,6 +18,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
@@ -53,25 +51,25 @@ public class DataTableUtils {
 	 * 
 	 * @param useCase
 	 */
-	public static byte[] loadSetFile(LoadDataParameters parameters) {
-		String setFileName = parameters.getFileName();
-		if (setFileName == null) {
+	public static byte[] loadSetFile(DataSetDescription dataSetDescription) {
+		String dataPath = dataSetDescription.getDataSourcePath();
+		if (dataPath == null) {
 			throw new RuntimeException("No set-file name specified in use case");
 		}
 
-		File setFile = new File(setFileName);
+		File file = new File(dataPath);
 		byte[] buffer;
 		try {
-			FileInputStream is = new FileInputStream(setFile);
-			if (setFile.length() > Integer.MAX_VALUE) {
+			FileInputStream is = new FileInputStream(file);
+			if (file.length() > Integer.MAX_VALUE) {
 				throw new RuntimeException(
 						"set-file is larger than maximum internal file-dimension-size");
 			}
-			buffer = new byte[(int) setFile.length()];
+			buffer = new byte[(int) file.length()];
 			is.read(buffer, 0, buffer.length);
 		} catch (IOException ex) {
 			throw new RuntimeException("Could not read from specified set-file '"
-					+ setFileName + "'", ex);
+					+ dataPath + "'", ex);
 		}
 		return buffer;
 	}
@@ -86,12 +84,12 @@ public class DataTableUtils {
 	 * @param data
 	 *            set-data to save
 	 */
-	public static void saveTableFile(LoadDataParameters parameters, byte[] data) {
+	public static void saveTableFile(DataSetDescription parameters, byte[] data) {
 		File homeDir = new File(GeneralManager.CALEYDO_HOME_PATH);
 		File setFile;
 		try {
 			setFile = File.createTempFile(DATA_FILE_PREFIX, "csv", homeDir);
-			parameters.setFileName(setFile.getCanonicalPath());
+			parameters.setDataSourcePath(setFile.getCanonicalPath());
 		} catch (IOException ex) {
 			throw new RuntimeException(
 					"Could not create temporary file to store the set file", ex);
@@ -130,133 +128,6 @@ public class DataTableUtils {
 	}
 
 	/**
-	 * Creates the dimensions from a previously prepared dimension definition.
-	 * 
-	 * @param loadDataParameters
-	 *            definition how to create the dimensions
-	 * @return <code>true</code>if the creation was successful,
-	 *         <code>false</code> otherwise
-	 */
-	public static boolean createColumns(LoadDataParameters loadDataParameters) {
-
-		ArrayList<Integer> columnIDs = null;
-		boolean createColumnsFromExistingIDs = false;
-
-		if (loadDataParameters.getColumnIDs() == null)
-			columnIDs = new ArrayList<Integer>();
-		else {
-			columnIDs = loadDataParameters.getColumnIDs();
-			createColumnsFromExistingIDs = true;
-		}
-
-		TabularDataParser parser = new TabularDataParser(null,
-				loadDataParameters.getDataDomain());
-		parser.setTokenPattern(loadDataParameters.getInputPattern());
-		ArrayList<EColumnType> dataTypes = parser.getColumnDataTypes();
-
-		boolean abort = false;
-		// Iterator<String> columnLabelIterator =
-		// loadDataParameters.getColumnLabels()
-		// .iterator();
-
-		CmdDataCreateColumn cmdCreateColumn;
-		String columnLabel;
-
-		ATableBasedDataDomain dataDomain = loadDataParameters.getDataDomain();
-
-		AStringConverter columnHeaderStringConverter = loadDataParameters
-				.getColumnHeaderStringConverter();
-
-		IDMappingManager columnIDMappingManager;
-		IDType columnIDType;
-		IDType hrColumnIDType;
-		if (dataDomain.getLoadDataParameters().isColumnDimension()) {
-			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
-			columnIDType = dataDomain.getDimensionIDType();
-			hrColumnIDType = dataDomain.getHumanReadableDimensionIDType();
-		} else {
-			columnIDMappingManager = dataDomain.getRecordIDMappingManager();
-			columnIDType = dataDomain.getRecordIDType();
-			hrColumnIDType = dataDomain.getHumanReadableRecordIDType();
-		}
-
-		MappingType mappingType = columnIDMappingManager.createMap(columnIDType,
-				hrColumnIDType, false);
-		Map<Integer, String> columnIDMap = columnIDMappingManager.getMap(mappingType);
-
-		int columnCount = 0;
-
-		for (EColumnType dataType : dataTypes) {
-			switch (dataType) {
-			case FLOAT:
-				cmdCreateColumn = (CmdDataCreateColumn) GeneralManager.get()
-						.getCommandManager()
-						.createCommandByType(CommandType.CREATE_COLUMN);
-
-				if (createColumnsFromExistingIDs)
-					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL,
-							columnIDs.get(columnCount++));
-				else
-					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NUMERICAL);
-
-				cmdCreateColumn.doCommand();
-				columnLabel = "asdfasdfasdfasdf";// columnLabelIterator.next();
-				if (columnHeaderStringConverter != null)
-					columnLabel = columnHeaderStringConverter.convert(columnLabel);
-				else
-					System.out.println("Weird");
-
-				NumericalColumn column = (NumericalColumn) cmdCreateColumn
-						.getCreatedObject();
-				// column.setLabel(columnLabel);
-				columnIDMap.put(column.getID(), columnLabel);
-
-				if (!createColumnsFromExistingIDs)
-					columnIDs.add(column.getID());
-
-				break;
-			case STRING:
-				cmdCreateColumn = (CmdDataCreateColumn) GeneralManager.get()
-						.getCommandManager()
-						.createCommandByType(CommandType.CREATE_COLUMN);
-
-				if (createColumnsFromExistingIDs)
-					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL,
-							columnIDs.get(columnCount++));
-				else
-					cmdCreateColumn.setAttributes(ManagedObjectType.COLUMN_NOMINAL);
-
-				cmdCreateColumn.doCommand();
-
-				columnLabel = "asasdfasdfasdfasdfdf";// columnLabelIterator.next();
-				NominalColumn<?> nominalColumn = (NominalColumn<?>) cmdCreateColumn
-						.getCreatedObject();
-				nominalColumn.setLabel(columnLabel);
-
-				if (!createColumnsFromExistingIDs)
-					columnIDs.add(nominalColumn.getID());
-
-			case SKIP:
-				// nothing to do, just skip
-				break;
-			case ABORT:
-				abort = true;
-				break;
-			default:
-				// nothing to do
-				break;
-			}
-			if (abort) {
-				break;
-			}
-		}
-		columnIDMappingManager.createReverseMap(mappingType);
-		loadDataParameters.setColumnIDs(columnIDs);
-
-		return true;
-	}
-
-	/**
 	 * Creates the {@link DataTable} from a previously prepared dimension
 	 * definition.
 	 * 
@@ -265,108 +136,79 @@ public class DataTableUtils {
 	 * @param createDefaultRecordPerspective
 	 * @return
 	 */
-	public static DataTable createData(ATableBasedDataDomain dataDomain,
+	public static void loadData(ATableBasedDataDomain dataDomain,
+			DataSetDescription dataSetDescription,
 			boolean createDefaultDimensionPerspectives,
 			boolean createDefaultRecordPerspective) {
-		return createData(dataDomain, createDefaultDimensionPerspectives,
+		loadData(dataDomain, dataSetDescription, createDefaultDimensionPerspectives,
 				createDefaultRecordPerspective, null);
 	}
+	
 
-	/**
-	 * Same as {@link #createData(ATableBasedDataDomain, boolean, boolean)} but
-	 * with an additional {@link AStringConverter}
-	 * 
-	 * @param stringConverter
-	 *            non-default converter for id strings
-	 * @return
-	 */
-	public static DataTable createData(ATableBasedDataDomain dataDomain,
+	public static void loadData(ATableBasedDataDomain dataDomain,
+			DataSetDescription dataSetDescription,
 			boolean createDefaultDimensionPerspectives,
 			boolean createDefaultRecordPerspective, AStringConverter stringConverter) {
-
-		LoadDataParameters loadDataParameters = dataDomain.getLoadDataParameters();
-		ArrayList<Integer> columnIDs = loadDataParameters.getColumnIDs();
-
-		// Create table
-		CmdDataCreateTable cmdCreateTable = (CmdDataCreateTable) GeneralManager.get()
-				.getCommandManager().createCommandByType(CommandType.CREATE_DATA_TABLE);
-
-		cmdCreateTable.setAttributes(columnIDs, dataDomain);
-		cmdCreateTable.doCommand();
 
 		// --------- load dynamic mapping ---------------
 		CmdParseIDMapping cmdParseIDMapping = (CmdParseIDMapping) GeneralManager.get()
 				.getCommandManager().createCommandByType(CommandType.PARSE_ID_MAPPING);
 
 		IDType rowIDType;
-		if (dataDomain.getLoadDataParameters().isColumnDimension())
+		if (dataDomain.isColumnDimension())
 			rowIDType = dataDomain.getRecordIDType();
 		else
 			rowIDType = dataDomain.getDimensionIDType();
 
-		String lookupTableInfo = loadDataParameters.getFileIDTypeName() + "_2_"
-				+ rowIDType + " REVERSE";
+		String mappingPattern = dataSetDescription.getRowType() + "_2_" + rowIDType
+				+ " REVERSE";
 
-		cmdParseIDMapping.setAttributes(loadDataParameters.getFileName(),
-				loadDataParameters.getStartParseFileAtLine(), -1, lookupTableInfo,
-				loadDataParameters.getDelimiter(), "", rowIDType.getIDCategory());
-		if (stringConverter == null)
-			stringConverter = loadDataParameters.getRowIDStringConverter();
-		cmdParseIDMapping.setStringConverter(stringConverter);
+		cmdParseIDMapping.setAttributes(dataSetDescription.getDataSourcePath(),
+				dataSetDescription.getNumberOfHeaderLines(), -1, mappingPattern,
+				dataSetDescription.getDelimiter(), "", rowIDType.getIDCategory());
+		// if (stringConverter == null)
+		// stringConverter = loadDataParameters.getRowIDStringConverter();
+		// cmdParseIDMapping.setStringConverter(stringConverter);
 
 		cmdParseIDMapping.doCommand();
 
 		// --------- data loading ---------------
-		CmdLoadDataMatrix cmdLoadCSV = (CmdLoadDataMatrix) GeneralManager.get()
-				.getCommandManager().createCommandByType(CommandType.LOAD_DATA_FILE);
 
-		cmdLoadCSV.setAttributes(columnIDs, loadDataParameters);
-		cmdLoadCSV.doCommand();
-
-		if (!cmdLoadCSV.isParsingOK()) {
-			// TODO: Clear created set and dimensions which are empty
-			return null;
-		}
-
+		TabularDataParser parser = new TabularDataParser(dataDomain, dataSetDescription);
+		parser.loadData();
 		DataTable table = dataDomain.getTable();
 
-		if (createDefaultDimensionPerspectives)
-			table.createDefaultDimensionPerspective();
+		// TODO re-enable this
+		// if (createDefaultDimensionPerspectives)
+		table.createDefaultDimensionPerspective();
 
-		if (createDefaultRecordPerspective)
-			table.createDefaultRecordPerspective();
-
+		// if (createDefaultRecordPerspective)
+		table.createDefaultRecordPerspective();
+		// TODO re-enable this
 		// loadTrees(loadDataParameters, set);
 
-		if (loadDataParameters.isMinDefined()) {
-			table.getMetaData().setMin(loadDataParameters.getMin());
+		if (dataSetDescription.getMin() != null) {
+			table.getMetaData().setMin(dataSetDescription.getMin());
 		}
-		if (loadDataParameters.isMaxDefined()) {
-			table.getMetaData().setMax(loadDataParameters.getMax());
+		if (dataSetDescription.getMax() != null) {
+			table.getMetaData().setMax(dataSetDescription.getMax());
 		}
 
-		boolean isSetHomogeneous = loadDataParameters.isDataHomogeneous();
+		boolean isSetHomogeneous = dataSetDescription.isDataHomogeneous();
 
-		if (loadDataParameters.getMathFilterMode().equals("Normal")) {
+		if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Normal")) {
 			table.setExternalDataRepresentation(ExternalDataRepresentation.NORMAL,
 					isSetHomogeneous);
-		} else if (loadDataParameters.getMathFilterMode().equals("Log10")) {
+		} else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log10")) {
 			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG10,
 					isSetHomogeneous);
-		} else if (loadDataParameters.getMathFilterMode().equals("Log2")) {
+		} else if (dataSetDescription.getMathFilterMode().equalsIgnoreCase("Log2")) {
 			table.setExternalDataRepresentation(ExternalDataRepresentation.LOG2,
 					isSetHomogeneous);
 		} else
 			throw new IllegalStateException("Unknown data representation type");
-
-		return table;
 	}
 
-	public static void setTables(DataTable table, ArrayList<Integer> dimensionIDs) {
-		for (int dimensionID : dimensionIDs) {
-			table.addColumn(dimensionID);
-		}
-	}
 
 	/**
 	 * Switch the representation of the data. When this is called the data in

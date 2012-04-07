@@ -1,8 +1,9 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
+
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
@@ -38,15 +39,15 @@ public interface IDataDomain {
 	 * 
 	 * @return parameters for loading the data-{@link Set} of this use case
 	 */
-	public LoadDataParameters getLoadDataParameters();
+	public DataSetDescription getDataSetDescription();
 
 	/**
 	 * Sets the parameters for loading the data-{@link Set} contained in this use case
 	 * 
-	 * @param loadDataParameters
+	 * @param dataSetDescription
 	 *            parameters for loading the data-{@link Set} of this use case
 	 */
-	public void setLoadDataParameters(LoadDataParameters loadDataParameters);
+	public void setDataSetDescription(DataSetDescription dataSetDescription);
 
 	// /**
 	// * @return The dimension groups that have been created for this IDataDomain object (data set).

@@ -3,6 +3,7 @@ package org.caleydo.core.data.datadomain;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Set;
+
 import org.caleydo.core.util.collection.MultiHashMap;
 
 /**

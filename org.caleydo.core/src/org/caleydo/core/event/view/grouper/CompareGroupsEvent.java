@@ -1,6 +1,7 @@
 package org.caleydo.core.event.view.grouper;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.event.AEvent;
 

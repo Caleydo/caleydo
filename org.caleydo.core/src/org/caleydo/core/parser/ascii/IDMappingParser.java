@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.mapping.IDMappingManager;
@@ -16,17 +17,19 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * Loads ID mappings from a file to and {@link IDMappingManager}. The {@link IDMappingManager} is specified
- * trough the {@link IDCategory}.
+ * Loads ID mappings from a file to and {@link IDMappingManager}. The
+ * {@link IDMappingManager} is specified trough the {@link IDCategory}.
  * </p>
  * <p>
  * Mappings can be loaded in two different ways:
  * <ol>
- * <li>From explicit mapping files, which contain something similar to <code>fromID;toID</code> where fromID
- * is of the type fromIDType in and toID of type toIDType in {@link MappingType}.</li>
- * <li>From an ID specified in a file to a dynamically generated ID, where the dynamic ID corresponds to the
- * line number (where line number 0 is considered the line number of the first ID, i.e., skipped lines of the
- * file are ignored).</li>
+ * <li>From explicit mapping files, which contain something similar to
+ * <code>fromID;toID</code> where fromID is of the type fromIDType in and toID
+ * of type toIDType in {@link MappingType}.</li>
+ * <li>From an ID specified in a file to a dynamically generated ID, where the
+ * dynamic ID corresponds to the line number (where line number 0 is considered
+ * the line number of the first ID, i.e., skipped lines of the file are
+ * ignored).</li>
  * </ol>
  * </p>
  * 
@@ -34,17 +37,19 @@ import org.eclipse.core.runtime.Status;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class IDMappingParser
-	extends ATextParser {
+public class IDMappingParser extends ATextParser {
 	protected MappingType mappingType;
 
 	protected final IDMappingManager idMappingManager;
 
 	/**
-	 * Factor with that the line index must be multiplied to get a normalized (0-100) progress percentage
-	 * value.
+	 * Factor with that the line index must be multiplied to get a normalized
+	 * (0-100) progress percentage value.
 	 */
 	protected float progressBarFactor = 0;
+
+	/** Defines the token separator. TAB is default. */
+	protected String tokenSeperator = TAB;
 
 	protected SWTGUIManager swtGuiManager;
 
@@ -59,13 +64,27 @@ public class IDMappingParser
 		this.mappingType = mappingType;
 
 		swtGuiManager = GeneralManager.get().getSWTGUIManager();
-		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idCategory);
+		this.idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				idCategory);
 
 		setTokenSeperator(SEMICOLON);
 
 		// FIXME that should be set from somewhere else
 		if (mappingType.getFromIDType().getTypeName().contains("REFSEQ"))
 			stringConverter = new RefSeqStringConverter();
+	}
+
+	/**
+	 * Set the current token separator.
+	 * 
+	 * @param tokenSeparator
+	 */
+	public final void setTokenSeperator(final String tokenSeparator) {
+		if (tokenSeparator.equals("\\t")) {
+			tokenSeperator = "\t";
+		} else {
+			tokenSeperator = tokenSeparator;
+		}
 	}
 
 	/**
@@ -77,7 +96,7 @@ public class IDMappingParser
 	}
 
 	@Override
-	protected void loadDataParseFile(BufferedReader reader, int numberOfLinesInFile) throws IOException {
+	protected void parseFile(BufferedReader reader) throws IOException {
 
 		String line;
 
@@ -87,7 +106,8 @@ public class IDMappingParser
 
 		while ((line = reader.readLine()) != null && currentLine <= stopParsingAtLine) {
 			/**
-			 * Start parsing if current line lineInFile is larger than parsingStartLine ..
+			 * Start parsing if current line lineInFile is larger than
+			 * parsingStartLine ..
 			 */
 			if (currentLine >= parsingStartLine) {
 
@@ -112,11 +132,14 @@ public class IDMappingParser
 							// cell is empty
 							// try {
 							// Float.valueOf(token);
-							// if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
+							// if (mappingType.getFromIDType().getColumnType()
+							// == EColumnType.INT) {
 							// idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
 							// currentLine - parsingStartLine);
 							// }
-							// else if (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED")) {
+							// else if
+							// (mappingType.getFromIDType().getTypeName().contains("UNSPECIFIED"))
+							// {
 							// idMappingManager.getMap(mappingType).put(token,
 							// currentLine - parsingStartLine);
 							// }
@@ -124,50 +147,49 @@ public class IDMappingParser
 							// catch (NumberFormatException e) {
 							// System.out.println(buffer + " " +
 							// (lineInFile - parsingStartLine));
-							idMappingManager.getMap(mappingType).put(token, currentLine - parsingStartLine);
+							idMappingManager.getMap(mappingType).put(token,
+									currentLine - parsingStartLine);
 							// }
 
 							break;
-						}
-						else {
+						} else {
 							try {
 								if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
 									if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
-										idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
-											Integer.valueOf(textTokens.nextToken()));
-									}
-									else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
-										idMappingManager.getMap(mappingType).put(Integer.valueOf(token),
-											textTokens.nextToken());
-									}
-									else
-										throw new IllegalStateException("Unsupported data type!");
-								}
-								else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
+										idMappingManager.getMap(mappingType).put(
+												Integer.valueOf(token),
+												Integer.valueOf(textTokens.nextToken()));
+									} else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+										idMappingManager.getMap(mappingType).put(
+												Integer.valueOf(token),
+												textTokens.nextToken());
+									} else
+										throw new IllegalStateException(
+												"Unsupported data type!");
+								} else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
 									if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
 										idMappingManager.getMap(mappingType).put(token,
-											Integer.valueOf(textTokens.nextToken()));
-									}
-									else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+												Integer.valueOf(textTokens.nextToken()));
+									} else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
 										idMappingManager.getMap(mappingType).put(token,
-											textTokens.nextToken());
-									}
-									else
-										throw new IllegalStateException("Unsupported data type!");
-								}
-								else
-									throw new IllegalStateException("Unsupported data type!");
-							}
-							catch (NumberFormatException nfe) {
+												textTokens.nextToken());
+									} else
+										throw new IllegalStateException(
+												"Unsupported data type!");
+								} else
+									throw new IllegalStateException(
+											"Unsupported data type!");
+							} catch (NumberFormatException nfe) {
 								Logger.log(new Status(Status.ERROR, this.toString(),
-									"Caught NFE: could not parse: " + mappingType, nfe));
+										"Caught NFE: could not parse: " + mappingType,
+										nfe));
 							}
 						}
 						break;
 					}
-				}
-				catch (NoSuchElementException nsee) {
-					// no ABORT was table. since no more tokens are in ParserTokenHandler skip rest of line..
+				} catch (NoSuchElementException nsee) {
+					// no ABORT was table. since no more tokens are in
+					// ParserTokenHandler skip rest of line..
 					maintainLoop = false;
 
 					// reset return value to indicate error
@@ -179,7 +201,8 @@ public class IDMappingParser
 
 			// Update progress bar only on each 100th line
 			if (currentLine % 1000 == 0) {
-				swtGuiManager.setProgressBarPercentage((int) (progressBarFactor * currentLine));
+				swtGuiManager
+						.setProgressBarPercentage((int) (progressBarFactor * currentLine));
 			}
 		}
 	}

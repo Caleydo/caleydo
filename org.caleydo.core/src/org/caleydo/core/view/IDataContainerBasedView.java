@@ -4,6 +4,7 @@
 package org.caleydo.core.view;
 
 import java.util.List;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 

@@ -2,8 +2,10 @@ package org.caleydo.core.data.virtualarray.delta;
 
 import java.util.Collection;
 import java.util.Iterator;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.delta.IDelta;
 import org.caleydo.core.util.collection.UniqueList;

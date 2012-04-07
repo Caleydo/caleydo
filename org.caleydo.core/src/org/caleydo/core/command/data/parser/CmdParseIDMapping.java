@@ -1,6 +1,7 @@
 package org.caleydo.core.command.data.parser;
 
 import java.util.StringTokenizer;
+
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.id.IDCategory;

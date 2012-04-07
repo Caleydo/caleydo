@@ -1,6 +1,7 @@
 package org.caleydo.core.view.swt.collab;
 
 import java.util.List;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.net.EventFilterBridge;

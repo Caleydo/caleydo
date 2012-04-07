@@ -28,9 +28,9 @@ import javax.xml.bind.annotation.XmlType;
  * other position in the header this can be specified using
  * {@link #rowOfColumnIDs}. If no column IDs are specified, they are
  * automatically generated</li>
- * <li>There must be a column containing identifiers for the rows. The column can be
- * specified in {@link #columnOfRowIds}. If this is not specified it is assumed
- * to be the first column.</li>
+ * <li>There must be a column containing identifiers for the rows. The column
+ * can be specified in {@link #columnOfRowIds}. If this is not specified it is
+ * assumed to be the first column.</li>
  * </ul>
  * 
  * @author Alexander Lex
@@ -45,7 +45,7 @@ public class MatrixDefinition {
 	/**
 	 * The number of lines which should be ignored for parsing, i.e. that don't
 	 * contain data. They may contain the line containing the IDs. This defaults
-	 * to one line for the IDs.
+	 * to 1 line for the IDs.
 	 */
 	protected Integer numberOfHeaderLines = 1;
 
@@ -61,10 +61,10 @@ public class MatrixDefinition {
 	 * Defines in which row the IDs for the columns are found. By default, this
 	 * is assumed to be {@link #numberOfHeaderLines}-1, i.e., if the row of
 	 * column IDs is directly followed by the data it is not necessary to
-	 * specify this.
+	 * specify this. Defaults to null, which means that
+	 * {@link #numberOfHeaderLines}-1 should be used.
 	 */
-	protected Integer rowOfColumnIDs = -1;
-
+	protected Integer rowOfColumnIDs = null;
 
 	/**
 	 * Defines in which columns the IDs for the rows are found. By default it is

@@ -8,11 +8,16 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.ExternalDataRepresentation;
+import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.parser.ascii.GroupingParseSpecification;
+import org.caleydo.core.parser.ascii.TabularDataParser;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -28,11 +33,32 @@ import org.eclipse.core.runtime.Status;
 public class DataSetDescription extends MatrixDefinition {
 
 	/**
+	 * <p>
 	 * Set {@link ParsingRule}s for the source file. Multiple ParsingRules are
 	 * legal, where columns may be omitted, but no column may be added more than
 	 * once!
+	 * </p>
+	 * <p>
+	 * Alternatively a {@link #parsingPattern} can be set.
+	 * </p>
 	 */
 	private ArrayList<ParsingRule> parsingRules;
+
+	/**
+	 * <p>
+	 * The input pattern for the {@link TabularDataParser}, specifying the order
+	 * of how to treat values between delimiters. The string values must map to
+	 * a {@link EColumnType}.
+	 * </p>
+	 * <p>
+	 * Alternative to the {@link #parsingRules}. If both are specified this is
+	 * used.
+	 * </p>
+	 * <p>
+	 * {@link #getParsingPattern()} either returns this parsingPattern, or
+	 * creates one based on the {@link #parsingRules}.
+	 */
+	private ArrayList<ParsingDetails> parsingPattern = null;
 
 	/**
 	 * Flag determining whether the input matrix should be transposed, i.e.,
@@ -40,11 +66,13 @@ public class DataSetDescription extends MatrixDefinition {
 	 * the record (true). Defaults to false.
 	 */
 	private boolean transposeMatrix = false;
+
 	/**
 	 * A list of path to grouping files for the columns of the file specified in
 	 * {@link #dataSourcePath}. Optional.
 	 */
 	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
+
 	/** Same as {@link #columnGroupingSpecifications} for rows. Optional. */
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
 
@@ -109,6 +137,33 @@ public class DataSetDescription extends MatrixDefinition {
 	private boolean isRowTypeGene = false;
 
 	/**
+	 * Set whether the data you want to load is homogeneous, i.e. all the
+	 * columns in the file are of the same data type. If this is true the data
+	 * scale used is the same for all columns. If this is false each column has
+	 * its own data scale. Defaults to true.
+	 */
+	private boolean isDataHomogeneous = true;
+
+	/**
+	 * An artificial min value used for normalization in the {@link DataTable}.
+	 * Defaults to null.
+	 */
+	private Float min = null;
+
+	/**
+	 * An artificial max value used for normalization in the {@link DataTable}.
+	 * Defaults to null.
+	 */
+	private Float max = null;
+
+	/**
+	 * Determines whether and if so which transformation should be applied to
+	 * the data (e.g. log2 transformation). This is mapped to values of
+	 * {@link ExternalDataRepresentation}.
+	 */
+	private String mathFilterMode = "Normal";
+
+	/**
 	 * @param parsingRules
 	 *            setter, see {@link #parsingRules}
 	 */
@@ -131,6 +186,7 @@ public class DataSetDescription extends MatrixDefinition {
 	/**
 	 * @return the parsingRules, see {@link #parsingRules}
 	 */
+	@XmlTransient
 	public ArrayList<ParsingRule> getParsingRules() {
 		return parsingRules;
 	}
@@ -226,6 +282,66 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
+	 * @param isDataHomogeneous
+	 *            setter, see {@link #isDataHomogeneous}
+	 */
+	public void setDataHomogeneous(boolean isDataHomogeneous) {
+		this.isDataHomogeneous = isDataHomogeneous;
+	}
+
+	/**
+	 * @return the isDataHomogeneous, see {@link #isDataHomogeneous}
+	 */
+	public boolean isDataHomogeneous() {
+		return isDataHomogeneous;
+	}
+
+	/**
+	 * @param min
+	 *            setter, see {@link #min}
+	 */
+	public void setMin(Float min) {
+		this.min = min;
+	}
+
+	/**
+	 * @return the min, see {@link #min}
+	 */
+	public Float getMin() {
+		return min;
+	}
+
+	/**
+	 * @param max
+	 *            setter, see {@link #max}
+	 */
+	public void setMax(Float max) {
+		this.max = max;
+	}
+
+	/**
+	 * @return the max, see {@link #max}
+	 */
+	public Float getMax() {
+		return max;
+	}
+
+	/**
+	 * @return the mathFilterMode, see {@link #mathFilterMode}
+	 */
+	public String getMathFilterMode() {
+		return mathFilterMode;
+	}
+
+	/**
+	 * @param mathFilterMode
+	 *            setter, see {@link #mathFilterMode}
+	 */
+	public void setMathFilterMode(String mathFilterMode) {
+		this.mathFilterMode = mathFilterMode;
+	}
+
+	/**
 	 * Setter for {@link #columnGroupingSpecifications}. Overrides previous
 	 * values of columnGroupingPaths
 	 * 
@@ -289,11 +405,23 @@ public class DataSetDescription extends MatrixDefinition {
 		return rowGroupingSpecifications;
 	}
 
-	public String getParsingPattern() {
+	/**
+	 * @param parsingPattern
+	 *            setter, see {@link #parsingPattern}
+	 */
+	public void setParsingPattern(ArrayList<ParsingDetails> parsingPattern) {
+		this.parsingPattern = parsingPattern;
+	}
+
+	public ArrayList<ParsingDetails> getParsingPattern() {
+		if (parsingPattern != null)
+			return parsingPattern;
+
+		parsingPattern = new ArrayList<ParsingDetails>();
+
 		Collections.sort(parsingRules);
 
 		int numberOfColumns = 0;
-		String parsingPattern = "";
 
 		try {
 			BufferedReader reader = new BufferedReader(new FileReader(dataSourcePath));
@@ -339,23 +467,21 @@ public class DataSetDescription extends MatrixDefinition {
 
 					}
 				} else {
-					// we have passed the last rule and we fill the rest of the
-					// columns up with skip
-					parsingPattern += "SKIP;";
-					continue;
+					// we have passed the last rule
+					break;
 				}
 			}
 
 			if (columnCount < currentParsingRule.getFromColumn()) {
 				// we skip until we reach the from column
-				parsingPattern += "SKIP;";
 				continue;
 			}
 			if (currentParsingRule.getToColumn() < 0
 					&& !currentParsingRule.isParseUntilEnd()) {
 				// if only a single from column is specified we write that and
 				// continue with the next parsing rule
-				parsingPattern += currentParsingRule.getDataType() + ";";
+				parsingPattern.add(new ParsingDetails(columnCount,
+						currentParsingRule.getDataType()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
 				continue;
@@ -364,12 +490,14 @@ public class DataSetDescription extends MatrixDefinition {
 					|| currentParsingRule.isParseUntilEnd()) {
 				// we write the data type between the from and to column, or
 				// between the from and end
-				parsingPattern += currentParsingRule.getDataType() + ";";
+				parsingPattern.add(new ParsingDetails(columnCount,
+						currentParsingRule.getDataType()));
 				continue;
 			}
 			if (columnCount == currentParsingRule.getToColumn()) {
 				// we reach the end of a parsing rule
-				parsingPattern += currentParsingRule.getDataType() + ";";
+				parsingPattern.add(new ParsingDetails(columnCount,
+						currentParsingRule.getDataType()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
 				continue;

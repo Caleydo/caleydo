@@ -87,7 +87,7 @@ public class RcpDataMetaView extends CaleydoRCPViewPart implements
 					+ dataDomain.getTable().getMetaData().size());
 
 			label = new Label(infoComposite, SWT.NONE);
-			label.setText("Source: " + dataDomain.getLoadDataParameters().getFileName());
+			label.setText("Source: " + dataDomain.getDataSetDescription().getDataSourcePath());
 
 			// Tree<ClusterNode> dimensionTree =
 			// dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();

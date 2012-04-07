@@ -1,6 +1,7 @@
 package org.caleydo.core.gui.toolbar.action;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.configuration.DataConfiguration;
 import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;

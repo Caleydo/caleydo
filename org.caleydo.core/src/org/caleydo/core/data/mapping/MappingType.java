@@ -1,6 +1,7 @@
 package org.caleydo.core.data.mapping;
 
 import java.util.HashMap;
+
 import org.caleydo.core.data.id.IDType;
 import org.jgrapht.graph.DefaultWeightedEdge;
 

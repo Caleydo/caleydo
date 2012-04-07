@@ -1,6 +1,7 @@
 package org.caleydo.core.util.clusterer.algorithm.affinity;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;

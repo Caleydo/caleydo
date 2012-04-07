@@ -58,6 +58,7 @@ public class GroupingParser {
 					headerLine = reader.readLine();
 				}
 				headerCells = headerLine.split(groupingSpecifications.getDelimiter(), -1);
+				reader.close();
 			}
 
 			reader = new BufferedReader(new FileReader(
@@ -143,6 +144,7 @@ public class GroupingParser {
 				}
 				// lineCounter++;
 			}
+			reader.close();
 
 			// Create the initialization datas
 			ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();

@@ -2,6 +2,7 @@ package org.caleydo.core.data.collection.dimension;
 
 import java.util.EnumMap;
 import java.util.Iterator;
+
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ICollection;
@@ -11,7 +12,6 @@ import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
-import org.caleydo.core.manager.GeneralManager;
 
 /**
  * Interface for Dimensions A Dimension is a container that holds various representations of a particular data
@@ -43,10 +43,8 @@ public abstract class AColumn
 	/**
 	 * Constructor Initializes objects
 	 */
-	public AColumn(int iUniqueID) {
-		super(iUniqueID);
-
-		GeneralManager.get().getColumnManager().registerItem(this);
+	public AColumn(int uniqueID) {
+		super(uniqueID);
 
 		hashCContainers = new EnumMap<DataRepresentation, ICContainer>(DataRepresentation.class);
 		label = new String("Not specified");
@@ -74,10 +72,10 @@ public abstract class AColumn
 	/**
 	 * Set the raw data with data type float
 	 * 
-	 * @param fArRawData
+	 * @param rawData
 	 *            a float array containing the raw data
 	 */
-	public void setRawData(float[] fArRawData) {
+	public void setRawData(float[] rawData) {
 
 		if (isRawDataSet)
 			throw new IllegalStateException("Raw data was already set in Dimension " + uniqueID
@@ -86,7 +84,7 @@ public abstract class AColumn
 		rawDataType = RawDataType.FLOAT;
 		isRawDataSet = true;
 
-		FloatCContainer container = new FloatCContainer(fArRawData);
+		FloatCContainer container = new FloatCContainer(rawData);
 		hashCContainers.put(DataRepresentation.RAW, container);
 	}
 
@@ -96,7 +94,7 @@ public abstract class AColumn
 	 * @param fArRawData
 	 *            a int array containing the raw data
 	 */
-	public void setRawData(int[] iArRawData) {
+	public void setRawData(int[] rawData) {
 
 		if (isRawDataSet)
 			throw new IllegalStateException("Raw data was already set, tried to set again.");
@@ -104,7 +102,7 @@ public abstract class AColumn
 		rawDataType = RawDataType.INT;
 		isRawDataSet = true;
 
-		IntCContainer container = new IntCContainer(iArRawData);
+		IntCContainer container = new IntCContainer(rawData);
 		hashCContainers.put(DataRepresentation.RAW, container);
 	}
 

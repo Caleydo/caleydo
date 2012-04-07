@@ -1,8 +1,10 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import java.nio.FloatBuffer;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
 /**

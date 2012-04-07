@@ -1,6 +1,7 @@
 package org.caleydo.core.data.id;
 
 import java.util.HashMap;
+
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.logging.Logger;

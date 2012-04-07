@@ -4,29 +4,29 @@ import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.util.conversion.ConversionTools;
 
 /**
- * A container for floats. Initialized with a float array. The length can not be modified after
- * initialization. Optimized to hold a large amount of data.
+ * A container for floats. Initialized with a float array. The length can not be
+ * modified after initialization. Optimized to hold a large amount of data.
  * 
  * @author Alexander Lex
  */
-public class FloatCContainer
-	implements INumericalCContainer {
+public class FloatCContainer implements INumericalCContainer {
 
 	private float[] container;
 
-	private float fMin = Float.NaN;
+	private float min = Float.NaN;
 
 	private float fMax = Float.NaN;
 
 	/**
-	 * Constructor Pass a float array. The length of the array can not be modified after initialization
+	 * Constructor Pass a float array. The length of the array can not be
+	 * modified after initialization
 	 * 
-	 * @param fArContainer
+	 * @param container
 	 *            the float array
 	 */
-	public FloatCContainer(final float[] fArContainer) {
+	public FloatCContainer(final float[] container) {
 
-		this.container = fArContainer;
+		this.container = container;
 	}
 
 	@Override
@@ -68,10 +68,10 @@ public class FloatCContainer
 
 	@Override
 	public double getMin() {
-		if (Float.isNaN(fMin)) {
+		if (Float.isNaN(min)) {
 			calculateMinMax();
 		}
-		return fMin;
+		return min;
 	}
 
 	@Override
@@ -84,15 +84,18 @@ public class FloatCContainer
 
 	@Override
 	public FloatCContainer normalize() {
-		return new FloatCContainer(ConversionTools.normalize(container, (int) getMin(), (int) getMax()));
+		return new FloatCContainer(ConversionTools.normalize(container, (int) getMin(),
+				(int) getMax()));
 	}
 
 	@Override
-	public FloatCContainer normalizeWithExternalExtrema(final double dMin, final double dMax) {
+	public FloatCContainer normalizeWithExternalExtrema(final double dMin,
+			final double dMax) {
 		if (dMin >= dMax)
 			throw new IllegalArgumentException("Minimum was bigger or same as maximum");
 
-		return new FloatCContainer(ConversionTools.normalize(container, (float) dMin, (float) dMax));
+		return new FloatCContainer(ConversionTools.normalize(container, (float) dMin,
+				(float) dMax));
 
 	}
 
@@ -114,14 +117,14 @@ public class FloatCContainer
 	// }
 
 	@Override
-	public FloatCContainer log(int iBase) {
+	public FloatCContainer log(int base) {
 		float[] fArTarget = new float[container.length];
 
 		float fTmp;
 		for (int index = 0; index < container.length; index++) {
 			fTmp = container[index];
 
-			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(iBase);
+			fArTarget[index] = (float) Math.log(fTmp) / (float) Math.log(base);
 
 			if (fArTarget[index] == Float.NEGATIVE_INFINITY) {
 				fArTarget[index] = 0;
@@ -132,18 +135,19 @@ public class FloatCContainer
 	}
 
 	/**
-	 * Calculates the min and max of the container and sets them to the fMin and fMax class variables
+	 * Calculates the min and max of the container and sets them to the fMin and
+	 * fMax class variables
 	 */
 	private void calculateMinMax() {
-		fMin = Float.MAX_VALUE;
+		min = Float.MAX_VALUE;
 		fMax = Float.MIN_VALUE;
 		for (float fCurrent : container) {
 			if (Float.isNaN(fCurrent)) {
 				continue;
 			}
 
-			if (fCurrent < fMin) {
-				fMin = fCurrent;
+			if (fCurrent < min) {
+				min = fCurrent;
 				continue;
 			}
 			if (fCurrent > fMax) {

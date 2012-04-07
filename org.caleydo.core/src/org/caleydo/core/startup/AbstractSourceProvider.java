@@ -2,6 +2,7 @@ package org.caleydo.core.startup;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.caleydo.core.manager.GeneralManager;
 
 public class AbstractSourceProvider

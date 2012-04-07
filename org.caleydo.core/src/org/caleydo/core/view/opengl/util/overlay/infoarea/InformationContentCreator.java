@@ -1,6 +1,7 @@
 package org.caleydo.core.view.opengl.util.overlay.infoarea;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.id.IDType;
 
 /**

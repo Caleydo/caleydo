@@ -263,7 +263,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 				selectionType = SelectionType.SELECTION;
 
 				if (dataDomain instanceof GeneticDataDomain
-						&& dataDomain.getLoadDataParameters().isColumnDimension()) {
+						&& dataDomain.isColumnDimension()) {
 
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);
@@ -302,7 +302,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 			case RIGHT_CLICKED:
 
 				if (dataDomain instanceof GeneticDataDomain
-						&& !dataDomain.getLoadDataParameters().isColumnDimension()) {
+						&& !dataDomain.isColumnDimension()) {
 
 					GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 					contexMenuItemContainer.setDataDomain(dataDomain);

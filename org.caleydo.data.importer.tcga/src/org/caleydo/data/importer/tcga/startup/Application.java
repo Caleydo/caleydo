@@ -12,9 +12,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -149,8 +147,6 @@ public class Application implements IApplication {
 	protected void loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
-		LoadDataParameters loadDataParameters = new LoadDataParameters();
-
 		if (dataSetDescription.isColumnDataTypeGene()
 				|| dataSetDescription.isRowDataTypeGene()) {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
@@ -185,37 +181,29 @@ public class Application implements IApplication {
 							dataDomainConfiguration);
 
 		}
-
-		loadDataParameters.setDataDomain(dataDomain);
-		loadDataParameters.setFileName(dataSetDescription.getDataSourcePath());
-		loadDataParameters.setIsDataHomogeneous(true);
-
+		dataDomain.setDataSetDescription(dataSetDescription);
 		dataDomain.setColorMapper(ColorMapper
 				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
 
 		dataDomain.init();
 
-		if (dataDomain.isColumnDimension())
-			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
-		else
-			loadDataParameters
-					.setFileIDType(dataDomain.getHumanReadableDimensionIDType());
+		// if (dataDomain.isColumnDimension())
+		// loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
+		// else
+		// loadDataParameters
+		// .setFileIDType(dataDomain.getHumanReadableDimensionIDType());
 
-		loadDataParameters.setInputPattern(dataSetDescription.getParsingPattern());
+		// loadDataParameters.setInputPattern(dataSetDescription.getParsingPattern());
 
 		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
 		thread.start();
 
-		// construct input pattern string based on number of columns in file
-		DataTableUtils.createColumns(loadDataParameters);
-
 		boolean createDefaultRecordPerspective = true;
 
 		// the place the matrix is stored:
-		DataTable table = DataTableUtils.createData(dataDomain, true,
+		DataTableUtils.loadData(dataDomain, dataSetDescription, true,
 				createDefaultRecordPerspective);
-		if (table == null)
-			throw new IllegalStateException("Problem while creating table!");
+
 	}
 
 	// private void loadClusterInfo() throws FileNotFoundException, IOException

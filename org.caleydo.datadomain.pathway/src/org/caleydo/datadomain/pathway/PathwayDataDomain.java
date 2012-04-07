@@ -2,13 +2,15 @@ package org.caleydo.datadomain.pathway;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
+
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -60,7 +62,7 @@ public class PathwayDataDomain
 
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
-		this.loadDataParameters = new LoadDataParameters();
+		this.dataSetDescription = new DataSetDescription();
 	}
 
 	@Override
@@ -85,7 +87,7 @@ public class PathwayDataDomain
 		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
-		loadDataParameters.setLabel(pathwayDataSources);
+		dataSetDescription.setDataSetName(pathwayDataSources);
 
 		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName()))
 		{

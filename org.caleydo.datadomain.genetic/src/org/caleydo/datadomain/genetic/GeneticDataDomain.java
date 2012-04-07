@@ -371,14 +371,14 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// }
 
 	public IDMappingManager getGeneIDMappingManager() {
-		if (loadDataParameters.isColumnDimension())
+		if (isColumnDimension())
 			return recordIDMappingManager;
 		else
 			return dimensionIDMappingManager;
 	}
 
 	public IDMappingManager getSampleIDMappingManager() {
-		if (loadDataParameters.isColumnDimension())
+		if (isColumnDimension())
 			return dimensionIDMappingManager;
 		else
 			return recordIDMappingManager;
@@ -392,14 +392,14 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 * @return
 	 */
 	public IDType getGeneIDType() {
-		if (loadDataParameters.isColumnDimension())
+		if (isColumnDimension())
 			return getRecordIDType();
 		else
 			return getDimensionIDType();
 	}
 
 	public IDType getHumanReadableGeneIDType() {
-		if (loadDataParameters.isColumnDimension())
+		if (isColumnDimension())
 			return getHumanReadableRecordIDType();
 		else
 			return getHumanReadableDimensionIDType();

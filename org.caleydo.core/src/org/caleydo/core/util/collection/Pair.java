@@ -1,8 +1,9 @@
 package org.caleydo.core.util.collection;
 
+
 /**
- * A pair of values, inspired by STL Caution: when using the compare function only the first element of the
- * pair is used
+ * A pair of values, inspired by STL Caution: when using the compare function
+ * only the first element of the pair is used
  * 
  * @author Alexander Lex
  * @param <T>
@@ -10,9 +11,11 @@ package org.caleydo.core.util.collection;
  * @param <E>
  *            second type
  */
-public class Pair<T, E>
-	implements Comparable<Pair<T, E>> {
+public class Pair<T, E> implements Comparable<Pair<T, E>> {
+
+	/** The first element of the pair */
 	private T first;
+	/** The second element of the pair */
 	private E second;
 
 	public Pair() {
@@ -32,10 +35,16 @@ public class Pair<T, E>
 		this.second = second;
 	}
 
+	/**
+	 * @return the first, see {@link #first}
+	 */
 	public T getFirst() {
 		return first;
 	}
 
+	/**
+	 * @return the second, see {@link #second}
+	 */
 	public E getSecond() {
 		return second;
 	}
@@ -45,10 +54,18 @@ public class Pair<T, E>
 		this.second = second;
 	}
 
+	/**
+	 * @param first
+	 *            setter, see {@link #first}
+	 */
 	public void setFirst(T first) {
 		this.first = first;
 	}
 
+	/**
+	 * @param second
+	 *            setter, see {@link #second}
+	 */
 	public void setSecond(E second) {
 		this.second = second;
 	}
@@ -76,8 +93,7 @@ public class Pair<T, E>
 	public int compareTo(Pair<T, E> o) {
 		if (o.getFirst() instanceof Comparable<?>) {
 			return ((Comparable<T>) first).compareTo(o.getFirst());
-		}
-		else {
+		} else {
 			throw new IllegalStateException("Tried to compare non-comparable values");
 		}
 	}

@@ -3,6 +3,8 @@ package org.caleydo.core.parser.ascii;
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+import java.io.LineNumberReader;
+
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -26,10 +28,10 @@ public abstract class ATextParser {
 	protected String fileName = "";
 
 	/**
-	 * Defines the number of lines to be read from a file. only useful, if
-	 * loadData_TestLinesToBeRead() was called before reading the file.
+	 * Contains the number of lines of the number of lines in the file to be
+	 * parsed, after {@link #calculateNumberOfLinesInFile()} was called.
 	 */
-	int nrLinesToRead = -1;
+	int numberOfLinesInFile = -1;
 
 	/**
 	 * Defines numbers of lines to skip in the read file. This is, e.g., useful
@@ -40,10 +42,7 @@ public abstract class ATextParser {
 	/** Defines at which line to stop parsing */
 	protected int stopParsingAtLine = Integer.MAX_VALUE;
 
-	/** Defines the token separator. TAB is default. */
-	protected String tokenSeperator = TAB;
-
-	protected int lineInFile = 0;
+	// protected int lineInFile = 0;
 
 	protected SWTGUIManager swtGuiManager;
 
@@ -53,28 +52,6 @@ public abstract class ATextParser {
 	public ATextParser(final String fileName) {
 		this.fileName = fileName;
 		this.swtGuiManager = GeneralManager.get().getSWTGUIManager();
-	}
-
-	/**
-	 * Set the current token separator.
-	 * 
-	 * @param tokenSeparator
-	 */
-	public final void setTokenSeperator(final String tokenSeparator) {
-		if (tokenSeparator.equals("\\t")) {
-			tokenSeperator = "\t";
-		} else {
-			tokenSeperator = tokenSeparator;
-		}
-	}
-
-	/**
-	 * Get the current token separator.
-	 * 
-	 * @return current token separator
-	 */
-	public final String getTokenSeperator() {
-		return tokenSeperator;
 	}
 
 	/**
@@ -103,39 +80,25 @@ public abstract class ATextParser {
 		}
 		this.stopParsingAtLine = stopParsingAtLine;
 
-		nrLinesToRead = stopParsingAtLine - parsingStartLine + 1;
+		numberOfLinesInFile = stopParsingAtLine - parsingStartLine + 1;
 
 	}
 
 	/**
 	 * Reads the file and counts the numbers of lines to be read.
 	 */
-	protected final int computeNumberOfLinesInFile(String sFileName) throws IOException {
-
-		int countLinesToBeRead = 0;
-		int lineCount = 0;
-
+	protected final int calculateNumberOfLinesInFile() {
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			LineNumberReader lnr = new LineNumberReader(new FileReader(fileName));
+			lnr.skip(Long.MAX_VALUE);
+			numberOfLinesInFile = lnr.getLineNumber();
+			lnr.close();
 
-			while (reader.readLine() != null && lineCount <= stopParsingAtLine) {
-				if (lineCount > this.parsingStartLine) {
-					countLinesToBeRead++;
-				}
-				lineCount++;
-			}
-			reader.close();
 		} catch (IOException ioe) {
 			throw new IllegalStateException("Could not read from file: " + fileName);
 		}
 
-		nrLinesToRead = countLinesToBeRead + parsingStartLine;
-
-		if (stopParsingAtLine == Integer.MAX_VALUE) {
-			stopParsingAtLine = nrLinesToRead;
-		}
-
-		return nrLinesToRead;
+		return numberOfLinesInFile;
 	}
 
 	public boolean loadData() {
@@ -147,7 +110,7 @@ public abstract class ATextParser {
 
 			BufferedReader reader = new BufferedReader(new FileReader(fileName));
 
-			this.loadDataParseFile(reader, computeNumberOfLinesInFile(fileName));
+			this.parseFile(reader);
 
 			if (reader != null) {
 				reader.close();
@@ -165,8 +128,7 @@ public abstract class ATextParser {
 		return true;
 	}
 
-	protected abstract void loadDataParseFile(BufferedReader reader,
-			final int numberOfLinesToRead) throws IOException;
+	protected abstract void parseFile(BufferedReader reader) throws IOException;
 
 	// protected abstract void setArraysToDimensions();
 }

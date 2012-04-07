@@ -3,7 +3,9 @@ package org.caleydo.core.data.selection.delta;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
+
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 

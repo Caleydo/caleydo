@@ -1,6 +1,7 @@
 package org.caleydo.core.net.config;
 
 import java.util.Collection;
+
 import org.caleydo.core.event.AEvent;
 
 /**

@@ -1,9 +1,9 @@
 package org.caleydo.core.manager;
 
 import java.io.File;
+
 import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.dimension.ColumnManager;
 import org.caleydo.core.data.id.IDCreator;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -61,7 +61,6 @@ public class GeneralManager {
 
 	private BasicInformation basicInfo;
 
-	private ColumnManager dimensionManager;
 	private CommandManager commandManager;
 	private SWTGUIManager swtGUIManager;
 	private ViewManager viewManager;
@@ -80,7 +79,6 @@ public class GeneralManager {
 
 		basicInfo = new BasicInformation();
 
-		dimensionManager = new ColumnManager();
 		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
 		viewManager = new ViewManager();
@@ -129,10 +127,6 @@ public class GeneralManager {
 	 */
 	public ResourceLoader getResourceLoader() {
 		return resourceLoader;
-	}
-
-	public ColumnManager getColumnManager() {
-		return dimensionManager;
 	}
 
 	public ViewManager getViewManager() {

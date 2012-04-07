@@ -7,10 +7,11 @@ import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
+
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -18,6 +19,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.graph.tree.TreePorter;
+import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -220,8 +222,8 @@ public class ProjectSaver {
 				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 				String dataDomainFileName = extendedDirName + DATA_TABLE_FILE;
 
-				LoadDataParameters parameters = dataDomain.getLoadDataParameters();
-				String sourceFileName = parameters.getFileName();
+				DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
+				String sourceFileName = dataSetDescription.getDataSourcePath();
 
 				if (sourceFileName.contains(RECENT_PROJECT_FOLDER))
 					sourceFileName = sourceFileName.replace(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);

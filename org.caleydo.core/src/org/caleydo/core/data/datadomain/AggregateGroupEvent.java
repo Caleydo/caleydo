@@ -1,6 +1,7 @@
 package org.caleydo.core.data.datadomain;
 
 import java.util.Set;
+
 import org.caleydo.core.event.AEvent;
 
 /**

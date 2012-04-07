@@ -1,6 +1,7 @@
 package org.caleydo.core.view.vislink;
 
 import java.util.HashMap;
+
 import org.eclipse.swt.graphics.Point;
 
 /**

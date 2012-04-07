@@ -4,10 +4,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -187,7 +189,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */
 	public boolean isColumnDimension() {
-		return loadDataParameters.isColumnDimension();
+		return !dataSetDescription.isTransposeMatrix();
 	}
 
 	/**
@@ -201,7 +203,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	@Override
 	public void init() {
 		if (configuration == null || configuration.isDefaultConfiguration()) {
-			if (loadDataParameters != null && !loadDataParameters.isColumnDimension()) {
+			if (dataSetDescription != null && dataSetDescription.isTransposeMatrix()) {
 				if (configuration.isDefaultConfiguration()) {
 					IDType.unregisterType(recordIDType);
 					IDType.unregisterType(dimensionIDType);

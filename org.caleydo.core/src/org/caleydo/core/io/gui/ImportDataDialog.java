@@ -7,17 +7,19 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.util.UUID;
+
 import org.caleydo.core.data.collection.EColumnType;
-import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.importing.DataSetDescription;
+import org.caleydo.core.data.importing.ParsingDetails;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.jface.dialogs.Dialog;
@@ -55,8 +57,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  */
-public class ImportDataDialog
-	extends Dialog {
+public class ImportDataDialog extends Dialog {
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 	private static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
@@ -84,7 +85,7 @@ public class ImportDataDialog
 	private String inputFile = "";
 	private String filePath = "";
 
-	private LoadDataParameters loadDataParameters = new LoadDataParameters();
+	private DataSetDescription dataSetDescription = new DataSetDescription();
 
 	private String mathFilterMode = "Log2";
 
@@ -97,8 +98,7 @@ public class ImportDataDialog
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
 
-		this.dataDomain =
-			(ATableBasedDataDomain) DataDomainManager.get()
+		this.dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 				.createDataDomain("org.caleydo.datadomain.genetic");
 
 		isGenetic = true;
@@ -147,15 +147,16 @@ public class ImportDataDialog
 		}
 
 		fillLoadDataParameters();
+		dataDomain.setDataSetDescription(dataSetDescription);
 
 		boolean success = readDimensionDefinition();
 		if (success) {
-			success = DataTableUtils.createColumns(loadDataParameters);
+			DataTableUtils.loadData(dataDomain, dataSetDescription, true, true);
 		}
 
-		DataTable table = DataTableUtils.createData(dataDomain, true, true);
-		if (table == null)
-			throw new IllegalStateException("Problem while creating table!");
+		// DataTable table = DataTableUtils.createData(dataDomain, true, true);
+		// if (table == null)
+		// throw new IllegalStateException("Problem while creating table!");
 
 		// Open default start view for the newly created data domain
 		try {
@@ -167,14 +168,14 @@ public class ImportDataDialog
 
 			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
 				PlatformUI
-					.getWorkbench()
-					.getActiveWorkbenchWindow()
-					.getActivePage()
-					.showView(dataDomain.getDefaultStartViewType(), secondaryID, IWorkbenchPage.VIEW_ACTIVATE);
+						.getWorkbench()
+						.getActiveWorkbenchWindow()
+						.getActivePage()
+						.showView(dataDomain.getDefaultStartViewType(), secondaryID,
+								IWorkbenchPage.VIEW_ACTIVATE);
 
 			}
-		}
-		catch (PartInitException e) {
+		} catch (PartInitException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -196,8 +197,6 @@ public class ImportDataDialog
 
 		int numGridCols = 5;
 
-		loadDataParameters.setDataDomain(dataDomain);
-
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);
 		composite.setLayout(layout);
@@ -211,7 +210,8 @@ public class ImportDataDialog
 
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
 		buttonFileChooser.setText("Choose data file...");
-		// buttonFileChooser.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		// buttonFileChooser.setLayoutData(new
+		// GridData(GridData.FILL_HORIZONTAL));
 
 		txtFileName = new Text(inputFileGroup, SWT.BORDER);
 		txtFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -231,7 +231,7 @@ public class ImportDataDialog
 				if (inputFile == null)
 					return;
 
-				loadDataParameters.setFileName(inputFile);
+				dataSetDescription.setDataSourcePath(inputFile);
 				txtFileName.setText(inputFile);
 
 				txtDataSetLabel.setText(determineDataSetLabel());
@@ -263,10 +263,11 @@ public class ImportDataDialog
 			@Override
 			public void modifyText(ModifyEvent e) {
 
-				// Add 1 because the number that the user enters is human readable and not array index
+				// Add 1 because the number that the user enters is human
+				// readable and not array index
 				// (starting with 0).
-				loadDataParameters.setStartParseFileAtLine(Integer.valueOf(txtStartParseAtLine.getText())
-					.intValue());
+				dataSetDescription.setNumberOfHeaderLines(Integer
+						.valueOf(txtStartParseAtLine.getText()));
 
 				createDataPreviewTable("\t");
 				composite.pack();
@@ -320,7 +321,7 @@ public class ImportDataDialog
 		// Check if an external file name is given to the action
 		if (!inputFile.isEmpty()) {
 			txtFileName.setText(inputFile);
-			loadDataParameters.setFileName(inputFile);
+			dataSetDescription.setDataSourcePath(inputFile);
 			mathFilterMode = "Log10";
 			// mathFilterCombo.select(1);
 
@@ -333,7 +334,8 @@ public class ImportDataDialog
 		if (inputFile == null || inputFile.isEmpty())
 			return "<insert data set name>";
 
-		return inputFile.substring(inputFile.lastIndexOf("/") + 1, inputFile.lastIndexOf("."));
+		return inputFile.substring(inputFile.lastIndexOf("/") + 1,
+				inputFile.lastIndexOf("."));
 	}
 
 	private void createDelimiterGroup() {
@@ -376,7 +378,7 @@ public class ImportDataDialog
 			@Override
 			public void modifyText(ModifyEvent e) {
 				createDataPreviewTable(txtCustomizedDelimiter.getText());
-				//composite.pack();
+				// composite.pack();
 			}
 
 		});
@@ -390,7 +392,7 @@ public class ImportDataDialog
 				buttonDelimiter[4].setSelection(false);
 				buttonDelimiter[5].setSelection(false);
 
-				if (loadDataParameters.getFileName().isEmpty())
+				if (dataSetDescription.getDataSourcePath().isEmpty())
 					return;
 
 				createDataPreviewTable("\t");
@@ -407,7 +409,7 @@ public class ImportDataDialog
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (loadDataParameters.getFileName().isEmpty())
+				if (dataSetDescription.getDataSourcePath().isEmpty())
 					return;
 
 				createDataPreviewTable(";");
@@ -424,7 +426,7 @@ public class ImportDataDialog
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (loadDataParameters.getFileName().isEmpty())
+				if (dataSetDescription.getDataSourcePath().isEmpty())
 					return;
 
 				createDataPreviewTable(",");
@@ -441,7 +443,7 @@ public class ImportDataDialog
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (loadDataParameters.getFileName().isEmpty())
+				if (dataSetDescription.getDataSourcePath().isEmpty())
 					return;
 
 				createDataPreviewTable(".");
@@ -458,7 +460,7 @@ public class ImportDataDialog
 				buttonDelimiter[5].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(false);
 
-				if (loadDataParameters.getFileName().isEmpty())
+				if (dataSetDescription.getDataSourcePath().isEmpty())
 					return;
 
 				createDataPreviewTable(" ");
@@ -475,7 +477,7 @@ public class ImportDataDialog
 				buttonDelimiter[4].setSelection(false);
 				txtCustomizedDelimiter.setEnabled(true);
 
-				if (loadDataParameters.getFileName().isEmpty())
+				if (dataSetDescription.getDataSourcePath().isEmpty())
 					return;
 
 				createDataPreviewTable(" ");
@@ -588,7 +590,7 @@ public class ImportDataDialog
 
 	private void createDataPreviewTable(final String sDelimiter) {
 
-		this.loadDataParameters.setDelimiter(sDelimiter);
+		this.dataSetDescription.setDelimiter(sDelimiter);
 
 		// boolean clusterInfo = false;
 
@@ -606,12 +608,14 @@ public class ImportDataDialog
 		// Read preview table
 		BufferedReader file;
 		try {
-			file = GeneralManager.get().getResourceLoader().getResource(loadDataParameters.getFileName());
+			file = GeneralManager.get().getResourceLoader()
+					.getResource(dataSetDescription.getDataSourcePath());
 
 			String line = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < loadDataParameters.getStartParseFileAtLine() - 1; iIgnoreLineIndex++) {
+			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < dataSetDescription
+					.getNumberOfHeaderLines() - 1; iIgnoreLineIndex++) {
 				file.readLine();
 			}
 
@@ -661,7 +665,8 @@ public class ImportDataDialog
 				// last flag triggers return of delimiter itself
 				tokenizer = new StringTokenizer(line, sDelimiter, true);
 				item = new TableItem(previewTable, SWT.NONE);
-				item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for a non programmer :)
+				item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for
+														// a non programmer :)
 				colIndex = 0;
 
 				while (tokenizer.hasMoreTokens()) {
@@ -671,11 +676,9 @@ public class ImportDataDialog
 					if (nextToken.equals(sDelimiter) && !isCellFilled) {
 						item.setText(colIndex + 1, "");
 						colIndex++;
-					}
-					else if (nextToken.equals(sDelimiter) && isCellFilled) {
+					} else if (nextToken.equals(sDelimiter) && isCellFilled) {
 						isCellFilled = false; // reset
-					}
-					else {
+					} else {
 						isCellFilled = true;
 						item.setText(colIndex + 1, nextToken);
 						colIndex++;
@@ -698,11 +701,9 @@ public class ImportDataDialog
 				nextToken = tokenizer.nextToken();
 			}
 
-		}
-		catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new IllegalStateException("File not found!");
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
 
@@ -730,13 +731,15 @@ public class ImportDataDialog
 						bSkipColumn = !((Button) e.widget).getSelection();
 
 						if (bSkipColumn) {
-							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
-						}
-						else {
-							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+							textColor = Display.getCurrent().getSystemColor(
+									SWT.COLOR_GRAY);
+						} else {
+							textColor = Display.getCurrent().getSystemColor(
+									SWT.COLOR_BLACK);
 						}
 
-						item.setForeground(((Integer) e.widget.getData("column")), textColor);
+						item.setForeground(((Integer) e.widget.getData("column")),
+								textColor);
 					}
 				}
 			});
@@ -756,84 +759,87 @@ public class ImportDataDialog
 		if (txtMin.getEnabled() && !txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {
-				loadDataParameters.setMinDefined(true);
-				loadDataParameters.setMin(fMin);
+				dataSetDescription.setMin(fMin);
 			}
 		}
 		if (txtMax.getEnabled() && !txtMax.getText().isEmpty()) {
 			float fMax = Float.parseFloat(txtMax.getText());
 			if (!Float.isNaN(fMax)) {
-				loadDataParameters.setMaxDefined(true);
-				loadDataParameters.setMax(fMax);
+				dataSetDescription.setMax(fMax);
 			}
 		}
 
-		if (isGenetic)
-			loadDataParameters.setFileIDType(idTypes.get(idCombo.getSelectionIndex()));
-		else
-			loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
+		dataSetDescription
+				.setRowType(idTypes.get(idCombo.getSelectionIndex()).toString());
+		// else
+		// dataSetDescripton.setFileIDType(dataDomain.getHumanReadableRecordIDType());
 
-		loadDataParameters.setMathFilterMode(mathFilterMode);
-		loadDataParameters.setIsDataHomogeneous(buttonHomogeneous.getSelection());
-		loadDataParameters.setColumnDimension(!buttonSwapRowsWithColumns.getSelection());
-		loadDataParameters.setLabel(txtDataSetLabel.getText());
+		dataSetDescription.setMathFilterMode(mathFilterMode);
+		dataSetDescription.setDataHomogeneous(buttonHomogeneous.getSelection());
+		dataSetDescription.setTransposeMatrix(buttonSwapRowsWithColumns.getSelection());
+		dataSetDescription.setDataSetName(txtDataSetLabel.getText());
 	}
 
 	/**
-	 * prepares the dimension creation definition from the preview table. The dimension creation definition
-	 * consists of the definition which columns in the data-CSV-file should be read, which should be skipped
-	 * and the dimension-labels.
+	 * prepares the dimension creation definition from the preview table. The
+	 * dimension creation definition consists of the definition which columns in
+	 * the data-CSV-file should be read, which should be skipped and the
+	 * dimension-labels.
 	 * 
-	 * @return <code>true</code>if the preparation was successful, <code>false</code> otherwise
+	 * @return <code>true</code> if the preparation was successful,
+	 *         <code>false</code> otherwise
 	 */
 	private boolean readDimensionDefinition() {
 		ArrayList<String> dimensionLabels = new ArrayList<String>();
 
-		StringBuffer inputPattern = new StringBuffer("SKIP" + ";");
+		ArrayList<ParsingDetails> inputPattern = new ArrayList<ParsingDetails>();
+		// inputPattern = new StringBuffer("SKIP" + ";");
 
+		// the columnIndex here is the columnIndex of the previewTable. This is
+		// different by one from the index in the source csv.
 		for (int columnIndex = 2; columnIndex < previewTable.getColumnCount(); columnIndex++) {
 
 			if (!skipColumn.get(columnIndex - 2).getSelection()) {
-				inputPattern.append("SKIP;");
-			}
-			else {
+				// do nothing
+				// inputPattern.append("SKIP;");
+			} else {
 
-				// in uncertainty mode each second column is flagged with "CERTAINTY"
-				if (buttonUncertaintyDataProvided.getSelection() && (columnIndex % 2 != 0)) {
-					inputPattern.append("CERTAINTY;");
+				// in uncertainty mode each second column is flagged with
+				// "CERTAINTY"
+				if (buttonUncertaintyDataProvided.getSelection()
+						&& (columnIndex % 2 != 0)) {
+					inputPattern.add(new ParsingDetails(columnIndex - 1, "CERTAINTY"));
 					continue;
 				}
 
 				// here we try to guess the datatype
-				// TODO: move this to the preview window where it can be modified by the user
+				// TODO: move this to the preview window where it can be
+				// modified by the user
 				String dataType = "FLOAT";
 				try {
-					int testSize =
-						previewTable.getItemCount() - loadDataParameters.getStartParseFileAtLine() - 1;
+					int testSize = previewTable.getItemCount()
+							- dataSetDescription.getNumberOfHeaderLines() - 1;
 					for (int rowCount = 1; rowCount < testSize; rowCount++) {
-						String testString = previewTable.getItem(rowCount).getText(columnIndex);
+						String testString = previewTable.getItem(rowCount).getText(
+								columnIndex);
 						if (!testString.isEmpty())
 							Float.parseFloat(testString);
 					}
-				}
-				catch (NumberFormatException nfe) {
+				} catch (NumberFormatException nfe) {
 					dataType = "STRING";
 				}
-
-				inputPattern.append(dataType + ";");
+				inputPattern.add(new ParsingDetails(columnIndex - 1, dataType));
 
 				String labelText = previewTable.getColumn(columnIndex).getText();
 				dimensionLabels.add(labelText);
 			}
 		}
 
-		inputPattern.append("ABORT;");
+		dataSetDescription.setParsingPattern(inputPattern);
+		dataSetDescription.setDataSourcePath(txtFileName.getText());
+		// dataSetDescripton.setColumnLabels(dimensionLabels);
 
-		loadDataParameters.setInputPattern(inputPattern.toString());
-		loadDataParameters.setFileName(txtFileName.getText());
-		loadDataParameters.setColumnLabels(dimensionLabels);
-
-		if (loadDataParameters.getFileName().equals("")) {
+		if (dataSetDescription.getDataSourcePath().equals("")) {
 			MessageDialog.openError(new Shell(), "Invalid filename", "Invalid filename");
 			return false;
 		}
@@ -841,12 +847,12 @@ public class ImportDataDialog
 		return true;
 	}
 
-	public LoadDataParameters getLoadDataParameters() {
-		return loadDataParameters;
+	public DataSetDescription getLoadDataParameters() {
+		return dataSetDescription;
 	}
 
-	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
-		this.loadDataParameters = loadDataParameters;
+	public void setLoadDataParameters(DataSetDescription dataSetDescripton) {
+		this.dataSetDescription = dataSetDescripton;
 	}
 
 	private void determineFileIDType() {
@@ -855,7 +861,8 @@ public class ImportDataDialog
 		TableItem[] items = previewTable.getItems();
 		ArrayList<String> idList = new ArrayList<String>();
 		int rowIndex = 1;
-		while (rowIndex < items.length && rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
+		while (rowIndex < items.length
+				&& rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
 			idList.add(items[rowIndex].getText(1));
 			rowIndex++;
 		}
@@ -883,18 +890,15 @@ public class ImportDataDialog
 						if (idMappingManager.doesElementExist(idType, idInt)) {
 							currentCorrectElements++;
 						}
+					} catch (NumberFormatException e) {
 					}
-					catch (NumberFormatException e) {
-					}
-				}
-				else if (idType.getColumnType().equals(EColumnType.STRING)) {
+				} else if (idType.getColumnType().equals(EColumnType.STRING)) {
 					if (idMappingManager.doesElementExist(idType, currentID)) {
 						currentCorrectElements++;
-					}
-					else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
+					} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
 						if (currentID.contains(".")) {
 							if (idMappingManager.doesElementExist(idType,
-								currentID.substring(0, currentID.indexOf(".")))) {
+									currentID.substring(0, currentID.indexOf(".")))) {
 								currentCorrectElements++;
 							}
 						}

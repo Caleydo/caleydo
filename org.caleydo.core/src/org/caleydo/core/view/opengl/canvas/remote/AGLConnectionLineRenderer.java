@@ -1,9 +1,12 @@
 package org.caleydo.core.view.opengl.canvas.remote;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.renderstyle.ConnectionLineRenderStyle;

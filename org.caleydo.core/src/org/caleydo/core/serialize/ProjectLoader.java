@@ -4,9 +4,11 @@ import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
+
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -144,8 +146,8 @@ public class ProjectLoader {
 				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 
 				// Overwrite filename with new one in caleydo project (data.csv)
-				dataDomain.getLoadDataParameters()
-					.setFileName(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
+				dataDomain.getDataSetDescription()
+					.setDataSourcePath(extendedDirName + ProjectSaver.DATA_TABLE_FILE);
 
 				DataDomainSerializationData dataInitializationData = new DataDomainSerializationData();
 				dataInitializationData.setDataDomain((ATableBasedDataDomain) dataDomain);

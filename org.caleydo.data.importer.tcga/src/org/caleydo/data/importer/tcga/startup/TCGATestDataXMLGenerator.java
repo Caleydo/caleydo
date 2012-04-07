@@ -11,6 +11,7 @@ import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.importing.DataSetDescriptionCollection;
 import org.caleydo.core.data.importing.ParsingRule;
 import org.caleydo.core.parser.ascii.GroupingParseSpecification;
+import org.caleydo.core.util.collection.Pair;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -95,6 +96,7 @@ public class TCGATestDataXMLGenerator {
 			serializableClasses[1] = DataSetDescriptionCollection.class;
 			serializableClasses[2] = TCGAIDStringConverter.class;
 			serializableClasses[3] = DashToPointStringConverter.class;
+			
 			context = JAXBContext.newInstance(serializableClasses);
 
 			Marshaller marshaller;

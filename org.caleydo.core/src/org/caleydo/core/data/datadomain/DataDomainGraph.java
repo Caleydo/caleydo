@@ -2,6 +2,7 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import org.caleydo.core.data.id.IDCategory;
 import org.jgrapht.graph.Multigraph;
 

@@ -1,8 +1,5 @@
 package org.caleydo.core.command;
 
-import org.caleydo.core.command.data.CmdDataCreateColumn;
-import org.caleydo.core.command.data.CmdDataCreateTable;
-import org.caleydo.core.command.data.parser.CmdLoadDataMatrix;
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.parser.parameter.ParameterHandler;
 
@@ -60,19 +57,6 @@ public class CommandManager {
 				createdCommand = new CmdParseIDMapping();
 				break;
 			}
-			case LOAD_DATA_FILE: {
-				createdCommand = new CmdLoadDataMatrix();
-				break;
-			}
-			case CREATE_COLUMN: {
-				createdCommand = new CmdDataCreateColumn();
-				break;
-			}
-			case CREATE_DATA_TABLE: {
-				createdCommand = new CmdDataCreateTable();
-				break;
-			}
-
 			default:
 				throw new IllegalStateException("Unsupported CommandQueue key= [" + cmdType + "]");
 		}

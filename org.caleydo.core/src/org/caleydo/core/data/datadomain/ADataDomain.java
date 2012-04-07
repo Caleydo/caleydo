@@ -2,11 +2,13 @@ package org.caleydo.core.data.datadomain;
 
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.collection.table.LoadDataParameters;
+
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.event.AEventHandler;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -42,7 +44,7 @@ public abstract class ADataDomain
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
 	/** parameters for loading the data-{@link set} */
-	protected LoadDataParameters loadDataParameters;
+	protected DataSetDescription dataSetDescription;
 
 	/** The color used to encode this data domain */
 	protected Color color;
@@ -99,13 +101,13 @@ public abstract class ADataDomain
 	}
 
 	@Override
-	public LoadDataParameters getLoadDataParameters() {
-		return loadDataParameters;
+	public DataSetDescription getDataSetDescription() {
+		return dataSetDescription;
 	}
 
 	@Override
-	public void setLoadDataParameters(LoadDataParameters loadDataParameters) {
-		this.loadDataParameters = loadDataParameters;
+	public void setDataSetDescription(DataSetDescription dataSetDescription) {
+		this.dataSetDescription = dataSetDescription;
 	}
 
 	@Override
@@ -150,10 +152,9 @@ public abstract class ADataDomain
 	 */
 	@Override
 	public String getLabel() {
-
-		if (loadDataParameters == null || loadDataParameters.getLabel() == null)
+		if (dataSetDescription == null || dataSetDescription.getDataSetName() == null)
 			return dataDomainID;
-		return loadDataParameters.getLabel();
+		return dataSetDescription.getDataSetName();
 	}
 
 	/**
