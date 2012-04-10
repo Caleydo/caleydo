@@ -54,20 +54,27 @@ import org.osgi.framework.Bundle;
 @SuppressWarnings("restriction")
 public class ProjectSaver {
 
-	/** full path to directory to temporarily store the projects file before zipping */
-	public static final String TEMP_PROJECT_FOLDER = GeneralManager.CALEYDO_HOME_PATH + "temp_project"
-		+ File.separator;
+	/**
+	 * full path to directory to temporarily store the projects file before
+	 * zipping
+	 */
+	public static final String TEMP_PROJECT_FOLDER = GeneralManager.CALEYDO_HOME_PATH
+			+ "temp_project" + File.separator;
 
 	/** full path to directory of the recently open project */
-	public static final String RECENT_PROJECT_FOLDER = GeneralManager.CALEYDO_HOME_PATH + "recent_project"
-		+ File.separator;
+	public static final String RECENT_PROJECT_FOLDER = GeneralManager.CALEYDO_HOME_PATH
+			+ "recent_project" + File.separator;
 
 	/** full path to directory of the tmp copy of the recently open project */
 	public static final String RECENT_PROJECT_FOLDER_TMP = GeneralManager.CALEYDO_HOME_PATH
-		+ "recent_project_tmp" + File.separator;
+			+ "recent_project_tmp" + File.separator;
 
-	public static final String WORKBENCH_MEMENTO_FOLDER = GeneralManager.CALEYDO_HOME_PATH + ".metadata"
-		+ File.separator + ".plugins" + File.separator + "org.eclipse.ui.workbench" + File.separator;
+	public static final String WORKBENCH_MEMENTO_FOLDER = GeneralManager.CALEYDO_HOME_PATH
+			+ ".metadata"
+			+ File.separator
+			+ ".plugins"
+			+ File.separator
+			+ "org.eclipse.ui.workbench" + File.separator;
 
 	public static final String WORKBENCH_MEMENTO_FILE = "workbench.xml";
 
@@ -94,11 +101,13 @@ public class ProjectSaver {
 	}
 
 	/**
-	 * Saves the data and optionally also the workbench (i.e., view states, etc.)
+	 * Saves the data and optionally also the workbench (i.e., view states,
+	 * etc.)
 	 * 
 	 * @param fileName
 	 * @param onlyData
-	 *            if true, only the data is saved, else also the workbench is saved
+	 *            if true, only the data is saved, else also the workbench is
+	 *            saved
 	 */
 	public void save(String fileName, boolean onlyData) {
 
@@ -108,17 +117,33 @@ public class ProjectSaver {
 			if (!onlyData) {
 				saveWorkbenchData(TEMP_PROJECT_FOLDER);
 			}
-//			savePluginData(TEMP_PROJECT_FOLDER);
+			savePluginData(TEMP_PROJECT_FOLDER);
 			saveData(TEMP_PROJECT_FOLDER);
 
-		}
-		catch (Exception savingException) {
-			String failureMessage = "Faild to save project to " + fileName + ".";
-			Logger.log(new Status(Status.ERROR, "org.caleydo.core", failureMessage, savingException));
+			ZipUtils zipUtils = new ZipUtils();
+			zipUtils.zipDirectory(TEMP_PROJECT_FOLDER, fileName);
+
+			FileOperations.deleteDirectory(TEMP_PROJECT_FOLDER);
+
+			String message = "Caleydo project successfully written to\n" + fileName;
+			Logger.log(new Status(IStatus.INFO, this.toString(), message));
 
 			if (PlatformUI.isWorkbenchRunning()) {
-				MessageBox messageBox =
-					new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
+				MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(), SWT.OK);
+				messageBox.setText("Project Save");
+				messageBox.setMessage(message);
+				messageBox.open();
+			}
+
+		} catch (Exception savingException) {
+			String failureMessage = "Faild to save project to " + fileName + ".";
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core", failureMessage,
+					savingException));
+
+			if (PlatformUI.isWorkbenchRunning()) {
+				MessageBox messageBox = new MessageBox(PlatformUI.getWorkbench()
+						.getActiveWorkbenchWindow().getShell(), SWT.OK);
 				messageBox.setText("Project Save");
 				messageBox.setMessage(failureMessage);
 				messageBox.open();
@@ -126,21 +151,6 @@ public class ProjectSaver {
 			}
 		}
 
-		ZipUtils zipUtils = new ZipUtils();
-		zipUtils.zipDirectory(TEMP_PROJECT_FOLDER, fileName);
-
-		FileOperations.deleteDirectory(TEMP_PROJECT_FOLDER);
-
-		String message = "Caleydo project successfully written to\n" + fileName;
-		Logger.log(new Status(IStatus.INFO, this.toString(), message));
-
-		if (PlatformUI.isWorkbenchRunning()) {
-			MessageBox messageBox =
-				new MessageBox(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), SWT.OK);
-			messageBox.setText("Project Save");
-			messageBox.setMessage(message);
-			messageBox.open();
-		}
 	}
 
 	/**
@@ -149,7 +159,8 @@ public class ProjectSaver {
 	public void saveRecentProject() {
 
 		if (new File(RECENT_PROJECT_FOLDER).exists())
-			FileOperations.renameDirectory(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
+			FileOperations.renameDirectory(RECENT_PROJECT_FOLDER,
+					RECENT_PROJECT_FOLDER_TMP);
 
 		FileOperations.createDirectory(RECENT_PROJECT_FOLDER);
 
@@ -157,10 +168,9 @@ public class ProjectSaver {
 			savePluginData(RECENT_PROJECT_FOLDER);
 			saveData(RECENT_PROJECT_FOLDER);
 			saveWorkbenchData(RECENT_PROJECT_FOLDER);
-		}
-		catch (Exception savingException) {
-			Logger.log(new Status(Status.ERROR, "org.caleydo.core", "Faild to auto-save project.",
-				savingException));
+		} catch (Exception savingException) {
+			Logger.log(new Status(Status.ERROR, "org.caleydo.core",
+					"Faild to auto-save project.", savingException));
 		}
 
 		FileOperations.deleteDirectory(RECENT_PROJECT_FOLDER_TMP);
@@ -174,8 +184,10 @@ public class ProjectSaver {
 	private void savePluginData(String dirName) throws JAXBException {
 		PlugInList plugInList = new PlugInList();
 
-		for (Bundle bundle : Platform.getBundle("org.caleydo.core").getBundleContext().getBundles()) {
-			if (bundle.getSymbolicName().contains("org.caleydo") && bundle.getState() == Bundle.ACTIVE)
+		for (Bundle bundle : Platform.getBundle("org.caleydo.core").getBundleContext()
+				.getBundles()) {
+			if (bundle.getSymbolicName().contains("org.caleydo")
+					&& bundle.getState() == Bundle.ACTIVE)
 				plugInList.plugIns.add(bundle.getSymbolicName());
 		}
 
@@ -184,28 +196,30 @@ public class ProjectSaver {
 			JAXBContext context = JAXBContext.newInstance(PlugInList.class);
 			Marshaller marshaller = context.createMarshaller();
 			marshaller.marshal(plugInList, pluginFile);
-		}
-		catch (JAXBException ex) {
-			Logger.log(new Status(Status.ERROR, this.toString(), "Could not serialize plug-in names: "
-				+ plugInList.toString(), ex));
+		} catch (JAXBException ex) {
+			Logger.log(new Status(Status.ERROR, this.toString(),
+					"Could not serialize plug-in names: " + plugInList.toString(), ex));
 			throw ex;
 		}
 
 	}
 
 	/**
-	 * Saves the project to the directory with the given name. The directory is created before saving.
+	 * Saves the project to the directory with the given name. The directory is
+	 * created before saving.
 	 * 
 	 * @param dirName
 	 *            directory to save the project-files into
 	 */
-	// private void saveProjectData(String dirName) throws JAXBException, IOException {
+	// private void saveProjectData(String dirName) throws JAXBException,
+	// IOException {
 	//
 	// }
 
 	private void saveData(String dirName) throws JAXBException, IOException {
 
-		SerializationManager serializationManager = GeneralManager.get().getSerializationManager();
+		SerializationManager serializationManager = GeneralManager.get()
+				.getSerializationManager();
 		JAXBContext projectContext = serializationManager.getProjectContext();
 
 		Marshaller marshaller = projectContext.createMarshaller();
@@ -222,31 +236,40 @@ public class ProjectSaver {
 				String extendedDirName = dirName + dataDomain.getDataDomainID() + "_";
 				String dataDomainFileName = extendedDirName + DATA_TABLE_FILE;
 
-				DataSetDescription dataSetDescription = dataDomain.getDataSetDescription();
+				DataSetDescription dataSetDescription = dataDomain
+						.getDataSetDescription();
 				String sourceFileName = dataSetDescription.getDataSourcePath();
 
 				if (sourceFileName.contains(RECENT_PROJECT_FOLDER))
-					sourceFileName = sourceFileName.replace(RECENT_PROJECT_FOLDER, RECENT_PROJECT_FOLDER_TMP);
+					sourceFileName = sourceFileName.replace(RECENT_PROJECT_FOLDER,
+							RECENT_PROJECT_FOLDER_TMP);
 
 				try {
-					FileOperations.writeInputStreamToFile(dataDomainFileName, GeneralManager.get()
-						.getResourceLoader().getResource(sourceFileName));
-				}
-				catch (FileNotFoundException e) {
+					FileOperations.writeInputStreamToFile(
+							dataDomainFileName,
+							GeneralManager.get().getResourceLoader()
+									.getResource(sourceFileName));
+				} catch (FileNotFoundException e) {
 					throw new IllegalStateException("Error saving project file", e);
 				}
 
 				ATableBasedDataDomain tableBasedDataDomain = (ATableBasedDataDomain) dataDomain;
 
-				for (String recordPerspectiveID : tableBasedDataDomain.getTable().getRecordPerspectiveIDs()) {
-					saveDataPerspective(marshaller, extendedDirName, recordPerspectiveID,
-						tableBasedDataDomain.getTable().getRecordPerspective(recordPerspectiveID));
+				for (String recordPerspectiveID : tableBasedDataDomain.getTable()
+						.getRecordPerspectiveIDs()) {
+					saveDataPerspective(
+							marshaller,
+							extendedDirName,
+							recordPerspectiveID,
+							tableBasedDataDomain.getTable().getRecordPerspective(
+									recordPerspectiveID));
 				}
 
 				for (String dimensionPerspectiveID : tableBasedDataDomain.getTable()
-					.getDimensionPerspectiveIDs()) {
-					saveDataPerspective(marshaller, extendedDirName, dimensionPerspectiveID,
-						tableBasedDataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID));
+						.getDimensionPerspectiveIDs()) {
+					saveDataPerspective(marshaller, extendedDirName,
+							dimensionPerspectiveID, tableBasedDataDomain.getTable()
+									.getDimensionPerspective(dimensionPerspectiveID));
 				}
 
 			}
@@ -263,17 +286,20 @@ public class ProjectSaver {
 	}
 
 	/**
-	 * Saves the {@link VirtualArray} of the given type. The filename is created from the type.
+	 * Saves the {@link VirtualArray} of the given type. The filename is created
+	 * from the type.
 	 * 
 	 * @param dir
 	 *            directory to save the {@link VirtualArray} in.
 	 * @param useCase
 	 *            {@link IDataDomain} to retrieve the {@link VirtualArray} from.
 	 * @param perspectiveID
-	 *            type of the virtual array within the given {@link IDataDomain}.
+	 *            type of the virtual array within the given {@link IDataDomain}
+	 *            .
 	 */
-	private void saveDataPerspective(Marshaller marshaller, String dir, String perspectiveID,
-		ADataPerspective<?, ?, ?, ?> perspective) throws JAXBException, IOException {
+	private void saveDataPerspective(Marshaller marshaller, String dir,
+			String perspectiveID, ADataPerspective<?, ?, ?, ?> perspective)
+			throws JAXBException, IOException {
 
 		String fileName = dir + perspectiveID + ".xml";
 		marshaller.marshal(perspective, new File(fileName));
@@ -286,7 +312,8 @@ public class ProjectSaver {
 	}
 
 	// /**
-	// * Creates the tree-cluster information of the given {@link Tree} as XML-String
+	// * Creates the tree-cluster information of the given {@link Tree} as
+	// XML-String
 	// *
 	// * @param tree
 	// * {@link Tree} to create the XML-String of
@@ -296,7 +323,8 @@ public class ProjectSaver {
 	// * @throws JAXBException
 	// * if a XML-serialization error occurs
 	// */
-	// public static String getTreeClusterXml(Tree<ClusterNode> tree) throws IOException, JAXBException {
+	// public static String getTreeClusterXml(Tree<ClusterNode> tree) throws
+	// IOException, JAXBException {
 	// String xml = null;
 	//
 	// if (tree != null) {
@@ -309,7 +337,8 @@ public class ProjectSaver {
 	// }
 
 	/**
-	 * Saves all the view's serialized forms to the given directory. The directory must exist.
+	 * Saves all the view's serialized forms to the given directory. The
+	 * directory must exist.
 	 * 
 	 * @param dirName
 	 *            name of the directory to save the views to.
@@ -317,31 +346,34 @@ public class ProjectSaver {
 	private void saveWorkbenchData(String dirName) {
 
 		// Activator.trace( "Saving state." );
-		XMLMemento memento = XMLMemento.createWriteRoot(IWorkbenchConstants.TAG_WORKBENCH);
+		XMLMemento memento = XMLMemento
+				.createWriteRoot(IWorkbenchConstants.TAG_WORKBENCH);
 		saveState(memento);
 		saveMementoToFile(memento);
 
 		try {
 			FileOperations.copyFolder(new File(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
-				+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(dirName
-				+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
-		}
-		catch (Exception e) {
+					+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(dirName
+					+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
+		} catch (Exception e) {
 			throw new RuntimeException("Error saving workbench data (file access)", e);
 		}
 	}
 
 	/**
-	 * Method from http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse-ui-workbench-state_6644.html
+	 * Method from
+	 * http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse
+	 * -ui-workbench-state_6644.html
 	 */
 	private IStatus saveState(final IMemento memento) {
-		MultiStatus result =
-			new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK, WorkbenchMessages.Workbench_problemsSaving,
-				null);
+		MultiStatus result = new MultiStatus(PlatformUI.PLUGIN_ID, IStatus.OK,
+				WorkbenchMessages.Workbench_problemsSaving, null);
 		// Save the version number.
 		memento.putString(IWorkbenchConstants.TAG_VERSION, "2.0");
 		// Save how many plug-ins were loaded while restoring the workbench
-		memento.putInteger(IWorkbenchConstants.TAG_PROGRESS_COUNT, 10); // we guesstimate this
+		memento.putInteger(IWorkbenchConstants.TAG_PROGRESS_COUNT, 10); // we
+																		// guesstimate
+																		// this
 		// Save the advisor state.
 		result.add(Status.OK_STATUS);
 		// Save the workbench windows.
@@ -353,12 +385,14 @@ public class ProjectSaver {
 			result.merge(window.saveState(childMem));
 		}
 		result.add(((Workbench) workbench).getEditorHistory().saveState(
-			memento.createChild(IWorkbenchConstants.TAG_MRU_LIST)));
+				memento.createChild(IWorkbenchConstants.TAG_MRU_LIST)));
 		return result;
 	}
 
 	/**
-	 * Method from http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse-ui-workbench-state_6644.html
+	 * Method from
+	 * http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse
+	 * -ui-workbench-state_6644.html
 	 */
 	private void saveMementoToFile(XMLMemento memento) {
 		File stateFile = getWorkbenchStateFile();
@@ -368,8 +402,7 @@ public class ProjectSaver {
 				OutputStreamWriter writer = new OutputStreamWriter(stream, "utf-8"); //$NON-NLS-1$
 				memento.save(writer);
 				writer.close();
-			}
-			catch (IOException ioe) {
+			} catch (IOException ioe) {
 				stateFile.delete();
 				// Activator.log( ioe );
 			}
@@ -377,7 +410,9 @@ public class ProjectSaver {
 	}
 
 	/**
-	 * Method from http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse-ui-workbench-state_6644.html
+	 * Method from
+	 * http://eclipsenuggets.blogspot.com/2007/09/how-to-save-eclipse
+	 * -ui-workbench-state_6644.html
 	 */
 	private File getWorkbenchStateFile() {
 		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
