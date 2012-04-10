@@ -375,10 +375,10 @@ Require-Bundle: org.eclipse.core.runtime;bundle-version="3.6.0";visibility:=reex
  org.caleydo.lib.core;bundle-version="2.0.0";visibility:=reexport,
  org.eclipse.ui;bundle-version="3.6.0";visibility:=reexport,
  org.eclipse.core.resources;bundle-version="3.6.0"
-ath: .
+Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
-Import-PackagImport-Package: org.caleydo.core.data.virtualarray.delta,
+Import-Package: org.caleydo.core.data.virtualarray.delta,
  org.caleydo.core.manager
-tionPolicy: lazy
+Bundle-ActivationPolicy: lazy
 Bundle-Vendor: www.caleydo.org
 Bundle-Activator: org.caleydo.core.startup.Activator
