@@ -26,7 +26,6 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
 import org.caleydo.core.data.selection.events.ClusterNodeSelectionListener;
 import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEvent;
-import org.caleydo.core.event.data.StatisticsFoldChangeReductionEvent;
 import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
@@ -35,9 +34,6 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
-import org.caleydo.core.view.contextmenu.item.StatisticsFoldChangeReductionItem;
-import org.caleydo.core.view.contextmenu.item.StatisticsPValueReductionItem;
-import org.caleydo.core.view.contextmenu.item.StatisticsTwoSidedTTestReductionItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -606,29 +602,29 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
-							// Lazy loading of R
-							GeneralManager.get().getRStatisticsPerformer();
-
-							if (dataContainers.size() == 2) {
-
-								StatisticsFoldChangeReductionEvent event = new StatisticsFoldChangeReductionEvent(
-										dataContainers.get(0), dataContainers.get(1),
-										false);
-
-								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-										event);
-								contextMenuCreator
-										.addContextMenuItem(foldChangeReductionItem);
-							}
-
-							StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-									dataContainers);
-							contextMenuCreator.addContextMenuItem(pValueReductionItem);
-
-							StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
-									dataContainers);
-							contextMenuCreator
-									.addContextMenuItem(twoSidedTTestReductionItem);
+//							// Lazy loading of R
+							GeneralManager.get().getRStatisticsPerformer().performTest();
+//
+//							if (dataContainers.size() == 2) {
+//
+//								StatisticsFoldChangeReductionEvent event = new StatisticsFoldChangeReductionEvent(
+//										dataContainers.get(0), dataContainers.get(1),
+//										false);
+//
+//								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
+//										event);
+//								contextMenuCreator
+//										.addContextMenuItem(foldChangeReductionItem);
+//							}
+//
+//							StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
+//									dataContainers);
+//							contextMenuCreator.addContextMenuItem(pValueReductionItem);
+//
+//							StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
+//									dataContainers);
+//							contextMenuCreator
+//									.addContextMenuItem(twoSidedTTestReductionItem);
 
 						}
 
