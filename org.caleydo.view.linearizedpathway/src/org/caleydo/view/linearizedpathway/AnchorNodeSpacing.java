@@ -5,6 +5,8 @@ package org.caleydo.view.linearizedpathway;
 
 import java.util.List;
 
+import org.caleydo.view.linearizedpathway.node.ANode;
+
 /**
  * Class that describes different properties of the spacing between two anchor
  * nodes, i.e. nodes that have associated data rows.
@@ -17,15 +19,15 @@ public class AnchorNodeSpacing {
 	/**
 	 * First anchor node.
 	 */
-	private ANodeRenderer startNode;
+	private ANode startNode;
 	/**
 	 * Second anchor node.
 	 */
-	private ANodeRenderer endNode;
+	private ANode endNode;
 	/**
 	 * Nodes that are inbetween the anchor nodes.
 	 */
-	private List<ANodeRenderer> nodesInbetween;
+	private List<ANode> nodesInbetween;
 	/**
 	 * Minimum spacing between the anchor nodes.
 	 */
@@ -40,14 +42,14 @@ public class AnchorNodeSpacing {
 	 * @param startNode
 	 *            setter, see {@link #startNode}
 	 */
-	public void setStartNode(ANodeRenderer startNode) {
+	public void setStartNode(ANode startNode) {
 		this.startNode = startNode;
 	}
 
 	/**
 	 * @return the startNode, see {@link #startNode}
 	 */
-	public ANodeRenderer getStartNode() {
+	public ANode getStartNode() {
 		return startNode;
 	}
 
@@ -55,14 +57,14 @@ public class AnchorNodeSpacing {
 	 * @param endNode
 	 *            setter, see {@link #endNode}
 	 */
-	public void setEndNode(ANodeRenderer endNode) {
+	public void setEndNode(ANode endNode) {
 		this.endNode = endNode;
 	}
 
 	/**
 	 * @return the endNode, see {@link #endNode}
 	 */
-	public ANodeRenderer getEndNode() {
+	public ANode getEndNode() {
 		return endNode;
 	}
 
@@ -70,14 +72,14 @@ public class AnchorNodeSpacing {
 	 * @param nodesInbetween
 	 *            setter, see {@link #nodesInbetween}
 	 */
-	public void setNodesInbetween(List<ANodeRenderer> nodesInbetween) {
+	public void setNodesInbetween(List<ANode> nodesInbetween) {
 		this.nodesInbetween = nodesInbetween;
 	}
 
 	/**
 	 * @return the nodesInbetween, see {@link #nodesInbetween}
 	 */
-	public List<ANodeRenderer> getNodesInbetween() {
+	public List<ANode> getNodesInbetween() {
 		return nodesInbetween;
 	}
 

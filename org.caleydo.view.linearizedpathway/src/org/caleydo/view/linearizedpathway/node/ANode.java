@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.linearizedpathway;
+package org.caleydo.view.linearizedpathway.node;
 
 import gleem.linalg.Vec3f;
 
@@ -15,7 +15,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian
  * 
  */
-public abstract class ANodeRenderer {
+public abstract class ANode {
 
 	public final static int DEFAULT_HEIGHT_PIXELS = 20;
 	public final static int DEFAULT_WIDTH_PIXELS = 70;
@@ -42,7 +42,7 @@ public abstract class ANodeRenderer {
 	 */
 	protected int numAssociatedRows = 0;
 
-	public ANodeRenderer(PixelGLConverter pixelGLConverter) {
+	public ANode(PixelGLConverter pixelGLConverter) {
 		this.pixelGLConverter = pixelGLConverter;
 	}
 
@@ -84,6 +84,16 @@ public abstract class ANodeRenderer {
 	 *         the node.
 	 */
 	public Vec3f getLeftConnectionPoint() {
+		return new Vec3f(position.x()
+				- pixelGLConverter.getGLWidthForPixelWidth(widthPixels) / 2.0f,
+				position.y(), position.z());
+	}
+	
+	/**
+	 * @return The point a connection line can connect to at the right side of
+	 *         the node.
+	 */
+	public Vec3f getRightConnectionPoint() {
 		return new Vec3f(position.x()
 				+ pixelGLConverter.getGLWidthForPixelWidth(widthPixels) / 2.0f,
 				position.y(), position.z());

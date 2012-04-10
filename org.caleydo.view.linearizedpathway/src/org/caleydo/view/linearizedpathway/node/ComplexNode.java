@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.linearizedpathway;
+package org.caleydo.view.linearizedpathway.node;
 
 import gleem.linalg.Vec3f;
 
@@ -22,7 +22,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian
  * 
  */
-public class ComplexNodeRenderer extends ANodeRenderer {
+public class ComplexNode extends ANode {
 	
 	public static final int TEXT_SPACING_PIXELS = 3;
 	
@@ -42,7 +42,7 @@ public class ComplexNodeRenderer extends ANodeRenderer {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public ComplexNodeRenderer(PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer) {
+	public ComplexNode(PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer) {
 		super(pixelGLConverter);
 		this.textRenderer = textRenderer;
 		// TODO Auto-generated constructor stub

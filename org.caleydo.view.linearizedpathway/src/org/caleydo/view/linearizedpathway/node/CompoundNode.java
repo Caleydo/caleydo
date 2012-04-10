@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.linearizedpathway;
+package org.caleydo.view.linearizedpathway.node;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
@@ -14,7 +14,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * @author Christian
  * 
  */
-public class CompoundNodeRenderer extends ANodeRenderer {
+public class CompoundNode extends ANode {
 
 	/**
 	 * The vertex in the graph this compound belongs to.
@@ -24,7 +24,7 @@ public class CompoundNodeRenderer extends ANodeRenderer {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public CompoundNodeRenderer(PixelGLConverter pixelGLConverter) {
+	public CompoundNode(PixelGLConverter pixelGLConverter) {
 		super(pixelGLConverter);
 		// TODO Auto-generated constructor stub
 	}
