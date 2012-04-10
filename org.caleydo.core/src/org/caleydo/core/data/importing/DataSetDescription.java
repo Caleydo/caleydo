@@ -8,10 +8,8 @@ import java.util.Collections;
 import java.util.Iterator;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
@@ -22,7 +20,60 @@ import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
 /**
- * Description of a data set for creating Caleydo projects
+ * <p>
+ * The DataSetDescription class contains rules for loading a data matrix from a
+ * delimited text file.
+ * </p>
+ * <p>
+ * The class is intended to be serialized using JAXB. XML representations that
+ * can be de-serialized into this class are a form of persistent
+ * parameterization of data loading.
+ * </p>
+ * <p>
+ * For a general description of the contract of the files that can be read see
+ * the base class {@link MatrixDefinition}.
+ * </p>
+ * <p>
+ * At a minimum, the following information needs to be provided:
+ * </p>
+ * <ul>
+ * <li>The path to the text file</li>
+ * <li>A parsing specification, i.e. which columns to parse</li>
+ * </ul>
+ * <p>
+ * 
+ * </p>
+ * <p>
+ * Optionally references to other text files containing groupings of the columns
+ * and/or rows can be specified.
+ * </p>
+ * <p>
+ * As explained in {@link MatrixDefinition}, it is recommended that column and
+ * row IDs are present in the source files. The ID type of the rows respectively
+ * columns can be specified ({@link #rowType} and {@link #columnType}).
+ * Multi-dataset relationships and mappings are based on the same definition of
+ * these fields. That means, if tow datasets containing shared IDs from two
+ * different files are loaded, they can be mapped if the respective type is
+ * identical.
+ * </p>
+ * <p>
+ * Caleydo provides special types for gene identifiers, i.e. if the rows or
+ * columns contain gene identifiers, this needs to be specified using the
+ * {@link #isColumnDataTypeGene} resp. the {@link #isRowTypeGene} members.
+ * Additionally, the string for {@link #columnType} resp. {@link #rowType} can
+ * not be arbitrarily chosen. Caleydo uses the DAVID Bioinformatics Resources
+ * (see http://david.abcc.ncifcrf.gov/) for ID Mapping. The supported ID Strings
+ * for the respective types are the following:
+ * </p>
+ * <ul>
+ * <li><code>DAVID</code></li>
+ * <li><code>GENE_NAME</code></li>
+ * <li><code>GENE_SYMBOL</code></li>
+ * <li><code>ENSEMBL_GENE_ID</code></li>
+ * <li><code>ENTREZ_GENE_ID</code></li>
+ * <li><code>REFSEQ_MRNA</code></li>
+ * <li><code>BIOCARTA_GENE_ID</code></li>
+ * </ul>
  * 
  * @author Alexander Lex
  * @author Nils Gehlenborg
@@ -31,6 +82,9 @@ import org.eclipse.core.runtime.Status;
 @XmlType
 @XmlRootElement
 public class DataSetDescription extends MatrixDefinition {
+
+	/** A human readable name of the dataset. Optional. */
+	private String dataSetName;
 
 	/**
 	 * <p>
@@ -46,19 +100,26 @@ public class DataSetDescription extends MatrixDefinition {
 
 	/**
 	 * <p>
-	 * The input pattern for the {@link TabularDataParser}, specifying the order
-	 * of how to treat values between delimiters. The string values must map to
-	 * a {@link EColumnType}.
+	 * The parsing pattern for the {@link TabularDataParser}, specifying the
+	 * order of how to treat values between delimiters. For every column that
+	 * should be parsed one {@link ColumnParsingDetail} object in ascending
+	 * order of columns must be added.
 	 * </p>
 	 * <p>
-	 * Alternative to the {@link #parsingRules}. If both are specified this is
-	 * used.
+	 * This is an alternative to the {@link #parsingRules}, which are
+	 * "shorthand" for the parsingPattern. A parsingPattern is created for the
+	 * {@link #parsingRules} specified, as only the parsingPattern is used for
+	 * the actual parsing.
+	 * </p>
+	 * <p>
+	 * If both, parsingPattern and parsingRules are specified the parsingPattern
+	 * is used.
 	 * </p>
 	 * <p>
 	 * {@link #getParsingPattern()} either returns this parsingPattern, or
 	 * creates one based on the {@link #parsingRules}.
 	 */
-	private ArrayList<ParsingDetails> parsingPattern = null;
+	private ArrayList<ColumnParsingDetail> parsingPattern = null;
 
 	/**
 	 * Flag determining whether the input matrix should be transposed, i.e.,
@@ -66,18 +127,6 @@ public class DataSetDescription extends MatrixDefinition {
 	 * the record (true). Defaults to false.
 	 */
 	private boolean transposeMatrix = false;
-
-	/**
-	 * A list of path to grouping files for the columns of the file specified in
-	 * {@link #dataSourcePath}. Optional.
-	 */
-	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
-
-	/** Same as {@link #columnGroupingSpecifications} for rows. Optional. */
-	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
-
-	/** A human readable name of the dataset. Optional. */
-	private String dataSetName;
 
 	/**
 	 * <p>
@@ -115,8 +164,8 @@ public class DataSetDescription extends MatrixDefinition {
 	 * must be specified. Defaults to false.
 	 * </p>
 	 * <p>
-	 * If this is true the {@link #columnType} has no effect and needs not be
-	 * set.
+	 * If this is true the {@link #columnType} needs to be one of the types
+	 * explained in the class documentation.
 	 * </p>
 	 */
 	private boolean isColumnTypeGene = false;
@@ -131,7 +180,8 @@ public class DataSetDescription extends MatrixDefinition {
 	 * Same as {@link #isColumnTypeGene} but for rows.
 	 * </p>
 	 * <p>
-	 * If this is true the {@link #rowType} has no effect and needs not be set.
+	 * If this is true the {@link #rowType} needs to be one of the types
+	 * explained in the class documentation.
 	 * </p>
 	 */
 	private boolean isRowTypeGene = false;
@@ -164,32 +214,13 @@ public class DataSetDescription extends MatrixDefinition {
 	private String mathFilterMode = "Normal";
 
 	/**
-	 * @param parsingRules
-	 *            setter, see {@link #parsingRules}
+	 * A list of path to grouping files for the columns of the file specified in
+	 * {@link #dataSourcePath}. Optional.
 	 */
-	public void setParsingRules(ArrayList<ParsingRule> parsingRules) {
-		this.parsingRules = parsingRules;
-	}
+	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
 
-	/**
-	 * Adds a parsingRule to {@link #parsingRules}
-	 * 
-	 * @param parsingRule
-	 */
-	public void addParsingRule(ParsingRule parsingRule) {
-		if (parsingRules == null)
-			parsingRules = new ArrayList<ParsingRule>();
-
-		parsingRules.add(parsingRule);
-	}
-
-	/**
-	 * @return the parsingRules, see {@link #parsingRules}
-	 */
-	@XmlTransient
-	public ArrayList<ParsingRule> getParsingRules() {
-		return parsingRules;
-	}
+	/** Same as {@link #columnGroupingSpecifications} for rows. Optional. */
+	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
 
 	/**
 	 * @param transposeMatrix
@@ -406,18 +437,49 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
+	 * @param parsingRules
+	 *            setter, see {@link #parsingRules}
+	 */
+	public void setParsingRules(ArrayList<ParsingRule> parsingRules) {
+		this.parsingRules = parsingRules;
+	}
+
+	/**
+	 * Adds a parsingRule to {@link #parsingRules}
+	 * 
+	 * @param parsingRule
+	 */
+	public void addParsingRule(ParsingRule parsingRule) {
+		if (parsingRules == null)
+			parsingRules = new ArrayList<ParsingRule>();
+
+		parsingRules.add(parsingRule);
+	}
+
+	/**
+	 * @return the parsingRules, see {@link #parsingRules}
+	 */
+	public ArrayList<ParsingRule> getParsingRules() {
+		return parsingRules;
+	}
+
+	/**
 	 * @param parsingPattern
 	 *            setter, see {@link #parsingPattern}
 	 */
-	public void setParsingPattern(ArrayList<ParsingDetails> parsingPattern) {
+	public void setParsingPattern(ArrayList<ColumnParsingDetail> parsingPattern) {
 		this.parsingPattern = parsingPattern;
 	}
 
-	public ArrayList<ParsingDetails> getParsingPattern() {
+	public ArrayList<ColumnParsingDetail> getParsingPattern() {
+
 		if (parsingPattern != null)
 			return parsingPattern;
 
-		parsingPattern = new ArrayList<ParsingDetails>();
+		if (parsingRules == null)
+			return null;
+
+		parsingPattern = new ArrayList<ColumnParsingDetail>();
 
 		Collections.sort(parsingRules);
 
@@ -480,7 +542,7 @@ public class DataSetDescription extends MatrixDefinition {
 					&& !currentParsingRule.isParseUntilEnd()) {
 				// if only a single from column is specified we write that and
 				// continue with the next parsing rule
-				parsingPattern.add(new ParsingDetails(columnCount,
+				parsingPattern.add(new ColumnParsingDetail(columnCount,
 						currentParsingRule.getDataType()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
@@ -490,13 +552,13 @@ public class DataSetDescription extends MatrixDefinition {
 					|| currentParsingRule.isParseUntilEnd()) {
 				// we write the data type between the from and to column, or
 				// between the from and end
-				parsingPattern.add(new ParsingDetails(columnCount,
+				parsingPattern.add(new ColumnParsingDetail(columnCount,
 						currentParsingRule.getDataType()));
 				continue;
 			}
 			if (columnCount == currentParsingRule.getToColumn()) {
 				// we reach the end of a parsing rule
-				parsingPattern.add(new ParsingDetails(columnCount,
+				parsingPattern.add(new ColumnParsingDetail(columnCount,
 						currentParsingRule.getDataType()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
@@ -505,5 +567,13 @@ public class DataSetDescription extends MatrixDefinition {
 
 		}
 		return parsingPattern;
+	}
+
+	@Override
+	public String toString() {
+		if (dataSetName != null)
+			return "Info for " + dataSetName;
+		else
+			return "Info for " + dataSourcePath;
 	}
 }

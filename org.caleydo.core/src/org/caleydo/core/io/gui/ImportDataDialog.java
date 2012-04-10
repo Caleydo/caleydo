@@ -15,7 +15,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.importing.DataSetDescription;
-import org.caleydo.core.data.importing.ParsingDetails;
+import org.caleydo.core.data.importing.ColumnParsingDetail;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
@@ -792,7 +792,7 @@ public class ImportDataDialog extends Dialog {
 	private boolean readDimensionDefinition() {
 		ArrayList<String> dimensionLabels = new ArrayList<String>();
 
-		ArrayList<ParsingDetails> inputPattern = new ArrayList<ParsingDetails>();
+		ArrayList<ColumnParsingDetail> inputPattern = new ArrayList<ColumnParsingDetail>();
 		// inputPattern = new StringBuffer("SKIP" + ";");
 
 		// the columnIndex here is the columnIndex of the previewTable. This is
@@ -808,7 +808,7 @@ public class ImportDataDialog extends Dialog {
 				// "CERTAINTY"
 				if (buttonUncertaintyDataProvided.getSelection()
 						&& (columnIndex % 2 != 0)) {
-					inputPattern.add(new ParsingDetails(columnIndex - 1, "CERTAINTY"));
+					inputPattern.add(new ColumnParsingDetail(columnIndex - 1, "CERTAINTY"));
 					continue;
 				}
 
@@ -828,7 +828,7 @@ public class ImportDataDialog extends Dialog {
 				} catch (NumberFormatException nfe) {
 					dataType = "STRING";
 				}
-				inputPattern.add(new ParsingDetails(columnIndex - 1, dataType));
+				inputPattern.add(new ColumnParsingDetail(columnIndex - 1, dataType));
 
 				String labelText = previewTable.getColumn(columnIndex).getText();
 				dimensionLabels.add(labelText);

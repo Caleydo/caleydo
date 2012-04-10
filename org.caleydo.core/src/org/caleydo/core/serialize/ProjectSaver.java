@@ -108,7 +108,7 @@ public class ProjectSaver {
 			if (!onlyData) {
 				saveWorkbenchData(TEMP_PROJECT_FOLDER);
 			}
-			savePluginData(TEMP_PROJECT_FOLDER);
+//			savePluginData(TEMP_PROJECT_FOLDER);
 			saveData(TEMP_PROJECT_FOLDER);
 
 		}

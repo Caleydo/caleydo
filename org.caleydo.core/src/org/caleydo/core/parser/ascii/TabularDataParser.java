@@ -13,7 +13,7 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.importing.DataSetDescription;
-import org.caleydo.core.data.importing.ParsingDetails;
+import org.caleydo.core.data.importing.ColumnParsingDetail;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.manager.GeneralManager;
@@ -84,7 +84,7 @@ public class TabularDataParser extends ATextParser {
 		DataTable table = new DataTable(dataDomain);
 		dataDomain.setTable(table);
 
-		ArrayList<ParsingDetails> parsingPattern = dataSetDescription.getParsingPattern();
+		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription.getParsingPattern();
 
 		String[] headers = null;
 		if (dataSetDescription.isContainsColumnIDs()) {
@@ -133,7 +133,7 @@ public class TabularDataParser extends ATextParser {
 		Map<Integer, String> columnIDMap = columnIDMappingManager.getMap(mappingType);
 
 		int columnCount = 0;
-		for (ParsingDetails dataType : parsingPattern) {
+		for (ColumnParsingDetail dataType : parsingPattern) {
 			int columnID;
 			if (dataType.getDataType().equalsIgnoreCase("float")) {
 				float[] dataColumn = new float[numberOfDataLines];
@@ -204,7 +204,7 @@ public class TabularDataParser extends ATextParser {
 
 		// int max = stopParsingAtLine - parsingStartLine + 1;
 
-		ArrayList<ParsingDetails> parsingPattern = dataSetDescription.getParsingPattern();
+		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription.getParsingPattern();
 
 		int lineCounter = 0;
 		while ((line = reader.readLine()) != null) {
@@ -213,7 +213,7 @@ public class TabularDataParser extends ATextParser {
 			String splitLine[] = line.split(dataSetDescription.getDelimiter());
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
-				ParsingDetails column = parsingPattern.get(count);
+				ColumnParsingDetail column = parsingPattern.get(count);
 
 				String cellContent = splitLine[column.getColumn()];
 				if (column.getDataType().equalsIgnoreCase("float")) {
@@ -384,10 +384,5 @@ public class TabularDataParser extends ATextParser {
 	//
 	// }
 
-	// @Override
-	// public boolean loadData() {
-	// boolean isParsingOK = super.loadData();
-	// setArraysToDimensions();
-	// return isParsingOK;
-	// }
+
 }

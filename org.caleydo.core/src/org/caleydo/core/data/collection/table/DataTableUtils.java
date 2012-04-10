@@ -154,18 +154,20 @@ public class DataTableUtils {
 		CmdParseIDMapping cmdParseIDMapping = (CmdParseIDMapping) GeneralManager.get()
 				.getCommandManager().createCommandByType(CommandType.PARSE_ID_MAPPING);
 
-		IDType rowIDType;
+		IDType rowTargetIDType;
 		if (dataDomain.isColumnDimension())
-			rowIDType = dataDomain.getRecordIDType();
+			rowTargetIDType = dataDomain.getRecordIDType();
 		else
-			rowIDType = dataDomain.getDimensionIDType();
+			rowTargetIDType = dataDomain.getDimensionIDType();
+		
+		
 
-		String mappingPattern = dataSetDescription.getRowType() + "_2_" + rowIDType
+		String mappingPattern = dataSetDescription.getRowType() + "_2_" + rowTargetIDType
 				+ " REVERSE";
 
 		cmdParseIDMapping.setAttributes(dataSetDescription.getDataSourcePath(),
 				dataSetDescription.getNumberOfHeaderLines(), -1, mappingPattern,
-				dataSetDescription.getDelimiter(), "", rowIDType.getIDCategory());
+				dataSetDescription.getDelimiter(), "", rowTargetIDType.getIDCategory());
 		// if (stringConverter == null)
 		// stringConverter = loadDataParameters.getRowIDStringConverter();
 		// cmdParseIDMapping.setStringConverter(stringConverter);

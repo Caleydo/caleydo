@@ -1,6 +1,3 @@
-/**
- * 
- */
 package org.caleydo.core.parser.ascii;
 
 import java.util.ArrayList;

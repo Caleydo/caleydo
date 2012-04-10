@@ -51,7 +51,7 @@ public class GroupingParser {
 						groupingSpecifications.getDataSourcePath()));
 				String headerLine = "";
 
-				int rowOfColumnIDs = (groupingSpecifications.getRowOfColumnIDs() >= 0) ? groupingSpecifications
+				int rowOfColumnIDs = (groupingSpecifications.getRowOfColumnIDs() != null) ? groupingSpecifications
 						.getRowOfColumnIDs() : groupingSpecifications
 						.getNumberOfHeaderLines() - 1;
 				for (int countToHeader = 0; countToHeader <= rowOfColumnIDs; countToHeader++) {

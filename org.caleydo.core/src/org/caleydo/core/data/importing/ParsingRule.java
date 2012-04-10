@@ -38,7 +38,7 @@ import org.caleydo.core.data.collection.EColumnType;
  * 
  */
 @XmlType
-public class ParsingRule implements Comparable<ParsingRule>{
+public class ParsingRule implements Comparable<ParsingRule> {
 
 	/**
 	 * The first column to be parsed. Notice that we count starting with 0.
@@ -148,5 +148,15 @@ public class ParsingRule implements Comparable<ParsingRule>{
 	@Override
 	public int compareTo(ParsingRule compareTarget) {
 		return fromColumn.compareTo(compareTarget.getFromColumn());
+	}
+
+	@Override
+	public String toString() {
+		if (toColum == -1 && parseUntilEnd == false)
+			return "[" + fromColumn + ", " + dataType + "]";
+		else if (toColum == -1 && parseUntilEnd == true)
+			return "[" + fromColumn + " to end, " + dataType + "]";
+		else
+			return "[" + fromColumn + "-" + toColum + ", " + dataType + "]";
 	}
 }

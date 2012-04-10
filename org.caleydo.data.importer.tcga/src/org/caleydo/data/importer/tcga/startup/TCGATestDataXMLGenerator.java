@@ -96,7 +96,7 @@ public class TCGATestDataXMLGenerator {
 			serializableClasses[1] = DataSetDescriptionCollection.class;
 			serializableClasses[2] = TCGAIDStringConverter.class;
 			serializableClasses[3] = DashToPointStringConverter.class;
-			
+
 			context = JAXBContext.newInstance(serializableClasses);
 
 			Marshaller marshaller;
@@ -124,6 +124,7 @@ public class TCGATestDataXMLGenerator {
 		mrnaData.addParsingRule(parsingRule);
 
 		mrnaData.setRowDataTypeGene(true);
+		mrnaData.setRowType("GENE_SYMBOL");
 		mrnaData.setColumnType("sample");
 		mrnaData.setTransposeMatrix(true);
 
