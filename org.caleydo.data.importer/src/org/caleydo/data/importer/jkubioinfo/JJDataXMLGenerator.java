@@ -23,12 +23,14 @@ import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 public class JJDataXMLGenerator {
 
 	public static final String DATA_FOLDER = System.getProperty("user.home")
-			+ System.getProperty("file.separator") + "caleydo/data/JKU_BioInfo/mGlu2/export/";
+			+ System.getProperty("file.separator")
+			+ "caleydo/data/JKU_BioInfo/mGlu2/export/";
 
-	public static final String MGLU2_GENE_EXPRESSION_DATA = DATA_FOLDER + "fabiaResNormX.csv";
+	public static final String MGLU2_GENE_EXPRESSION_DATA = DATA_FOLDER
+			+ "fabiaResNormX.csv";
 	public static final String MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING = DATA_FOLDER
 			+ "clusterAssignments.csv";
-	
+
 	public static final String MGLU2_EXPERIMENT_BICLUSTER_DATA = DATA_FOLDER
 			+ "fabiaResNormZ.csv";
 
@@ -61,8 +63,7 @@ public class JJDataXMLGenerator {
 
 			System.out.println("Created configuration for " + dataSetMetaInfoList.size()
 					+ " datasets: " + dataSetMetaInfoList);
-		}
-		catch (JAXBException ex) {
+		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
@@ -91,7 +92,7 @@ public class JJDataXMLGenerator {
 		dataConfiguration.setDimensionDenominationSingular("gene");
 
 		geneExpressionData.setDataDomainConfiguration(dataConfiguration);
-		
+
 		String delimiter = "\t";
 
 		LoadDataParameters loadDataParameters = new LoadDataParameters();
@@ -102,7 +103,7 @@ public class JJDataXMLGenerator {
 		loadDataParameters.setMathFilterMode("Normal");
 		loadDataParameters.setIsDataHomogeneous(true);
 		loadDataParameters.setColumnDimension(false);
-		
+
 		// geneExpressionData.setRunClusteringOnRows(true);
 		// geneExpressionData.setCreateGeneSamples(true);
 
@@ -115,7 +116,8 @@ public class JJDataXMLGenerator {
 			// read dimensions of data matrix
 			String dimensionString = reader.readLine();
 
-			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			String[] dimensions = dimensionString
+					.split(loadDataParameters.getDelimiter());
 
 			int columns = dimensions.length - 1;
 
@@ -141,8 +143,7 @@ public class JJDataXMLGenerator {
 
 			geneExpressionData.setLoadDataParameters(loadDataParameters);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 
@@ -154,8 +155,9 @@ public class JJDataXMLGenerator {
 		expertimentBiClusterData.setName("mGlu2 Experiment BiCluster Data");
 		expertimentBiClusterData.setDataDomainType("org.caleydo.datadomain.generic");
 		expertimentBiClusterData.setDataPath(MGLU2_EXPERIMENT_BICLUSTER_DATA);
-		//geneExpressionData.setGroupingPath(MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
-		expertimentBiClusterData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+		// geneExpressionData.setGroupingPath(MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
+		expertimentBiClusterData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED
+				.name());
 
 		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
 		dataConfiguration.setRecordIDCategory("SAMPLE");
@@ -165,7 +167,7 @@ public class JJDataXMLGenerator {
 		dataConfiguration.setRecordDenominationSingular("sample");
 
 		dataConfiguration.setDimensionIDCategory("BICLUSTER");
-		//dataConfiguration.setPrimaryDimensionMappingType("DAVID");
+		// dataConfiguration.setPrimaryDimensionMappingType("DAVID");
 		dataConfiguration.setHumanReadableDimensionIDType("BICLUSTER");
 		dataConfiguration.setDimensionDenominationPlural("biclusters");
 		dataConfiguration.setDimensionDenominationSingular("bicluster");
@@ -195,7 +197,8 @@ public class JJDataXMLGenerator {
 			// read dimensions of data matrix
 			String dimensionString = reader.readLine();
 
-			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			String[] dimensions = dimensionString
+					.split(loadDataParameters.getDelimiter());
 
 			int columns = dimensions.length - 1;
 
@@ -221,8 +224,7 @@ public class JJDataXMLGenerator {
 
 			expertimentBiClusterData.setLoadDataParameters(loadDataParameters);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 
@@ -270,12 +272,14 @@ public class JJDataXMLGenerator {
 		try {
 			loadDataParameters.setStartParseFileAtLine(1);
 
-			BufferedReader reader = new BufferedReader(new FileReader(pic50Data.getDataPath()));
+			BufferedReader reader = new BufferedReader(new FileReader(
+					pic50Data.getDataPath()));
 
 			// read dimensions of data matrix
 			String dimensionString = reader.readLine();
 
-			String[] dimensions = dimensionString.split(loadDataParameters.getDelimiter());
+			String[] dimensions = dimensionString
+					.split(loadDataParameters.getDelimiter());
 
 			int columns = dimensions.length - 1;
 
@@ -301,8 +305,7 @@ public class JJDataXMLGenerator {
 
 			pic50Data.setLoadDataParameters(loadDataParameters);
 
-		}
-		catch (Exception e) {
+		} catch (Exception e) {
 			throw new IllegalStateException(e);
 		}
 

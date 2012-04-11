@@ -59,6 +59,8 @@ public class TCGATestDataXMLGenerator {
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
+	private IDSpecification sampleIDSpecification;
+
 	/*
 	 * public static final String DROPBOX_GBM_FOLDER =
 	 * System.getProperty("user.home") + System.getProperty("file.separator") +
@@ -81,16 +83,26 @@ public class TCGATestDataXMLGenerator {
 
 	public static void main(String[] args) {
 
-		ArrayList<DataSetDescription> dataSetMetaInfoList = new ArrayList<DataSetDescription>();
-		dataSetMetaInfoList.add(setUpMRNAData());
-		// dataSetMetaInfoList.add(setUpMutationData());
-		dataSetMetaInfoList.add(setUpMiRNAData());
-		// dataSetMetaInfoList.add(setUpMethylationData());
-		// dataSetMetaInfoList.add(setUpCopyNumberData());
-		// dataSetMetaInfoList.add(setUpClinicalData());
+		TCGATestDataXMLGenerator generator = new TCGATestDataXMLGenerator();
+		generator.run();
+	}
 
-		DataSetDescriptionCollection dataTypeSetCollection = new DataSetDescriptionCollection();
-		dataTypeSetCollection.setDataSetDescriptionCollection(dataSetMetaInfoList);
+	private void run() {
+		sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdType("SAMPLE");
+		sampleIDSpecification.setReplacementExpression("\\.", "-");
+		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+
+		ArrayList<DataSetDescription> dataSetDescriptions = new ArrayList<DataSetDescription>();
+		dataSetDescriptions.add(setUpMRNAData());
+		// dataSetDescriptions.add(setUpMutationData());
+		dataSetDescriptions.add(setUpMiRNAData());
+//		dataSetDescriptions.add(setUpMethylationData());
+		// dataSetDescriptions.add(setUpCopyNumberData());
+		// dataSetDescriptions.add(setUpClinicalData());
+
+		DataSetDescriptionCollection dataSetDescriptionCollection = new DataSetDescriptionCollection();
+		dataSetDescriptionCollection.setDataSetDescriptionCollection(dataSetDescriptions);
 
 		JAXBContext context = null;
 		try {
@@ -102,16 +114,16 @@ public class TCGATestDataXMLGenerator {
 
 			Marshaller marshaller;
 			marshaller = context.createMarshaller();
-			marshaller.marshal(dataTypeSetCollection, new File(OUTPUT_FILE_PATH));
+			marshaller.marshal(dataSetDescriptionCollection, new File(OUTPUT_FILE_PATH));
 
-			System.out.println("Created configuration for " + dataSetMetaInfoList.size()
-					+ " datasets: " + dataSetMetaInfoList);
+			System.out.println("Created configuration for " + dataSetDescriptions.size()
+					+ " datasets: " + dataSetDescriptions);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
 
-	private static DataSetDescription setUpMRNAData() {
+	private DataSetDescription setUpMRNAData() {
 		DataSetDescription mrnaData = new DataSetDescription();
 		mrnaData.setDataSetName("mRNA");
 
@@ -123,18 +135,13 @@ public class TCGATestDataXMLGenerator {
 		parsingRule.setParseUntilEnd(true);
 		parsingRule.setDataType("FLOAT");
 		mrnaData.addParsingRule(parsingRule);
+		mrnaData.setTransposeMatrix(true);
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
 		mrnaData.setRowIDSpecification(geneIDSpecification);
-
-		IDSpecification sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdType("SAMPLE");
-		sampleIDSpecification.setReplacementExpression("\\.", "-");
-		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
-		mrnaData.setTransposeMatrix(true);
 
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
 				MRNA_GROUPING);
@@ -151,7 +158,7 @@ public class TCGATestDataXMLGenerator {
 		return mrnaData;
 	}
 
-	private static DataSetDescription setUpMiRNAData() {
+	private DataSetDescription setUpMiRNAData() {
 		DataSetDescription mirnaData = new DataSetDescription();
 		mirnaData.setDataSetName("miRNA");
 
@@ -167,13 +174,13 @@ public class TCGATestDataXMLGenerator {
 		IDSpecification mirnaIDSpecification = new IDSpecification();
 		mirnaIDSpecification.setIdType("miRNA");
 		mirnaData.setRowIDSpecification(mirnaIDSpecification);
+		mirnaData.setTransposeMatrix(true);
 
 		IDSpecification sampleIDSpecification = new IDSpecification();
 		sampleIDSpecification.setIdType("SAMPLE");
 		sampleIDSpecification.setReplacementExpression("\\.", "-");
 		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		mirnaData.setColumnIDSpecification(sampleIDSpecification);
-		mirnaData.setTransposeMatrix(true);
 
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
 				MIRNA_GROUPING);
@@ -183,33 +190,39 @@ public class TCGATestDataXMLGenerator {
 
 		return mirnaData;
 	}
-	//
-	// private static DataSetDescription setUpMethylationData() {
-	// DataSetDescription methylationData = new DataSetDescription();
-	// methylationData.setDataSetName("Methylation");
-	// methylationData.setDataDomainType("org.caleydo.datadomain.generic");
-	// methylationData.setDataPath(METHYLATION);
-	// methylationData.setGroupingPath(METHYLATION_GROUPING);
-	// //
-	// methylationData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_PURPLE.name());
-	//
-	// DataDomainConfiguration methylationConfiguration = new
-	// DataDomainConfiguration();
-	// methylationConfiguration.setRecordIDCategory("SAMPLE");
-	// methylationConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-	// methylationConfiguration.setHumanReadableRecordIDType("SAMPLE");
-	// methylationConfiguration.setRecordDenominationPlural("samples");
-	// methylationConfiguration.setRecordDenominationSingular("sample");
-	//
-	// methylationConfiguration.setDimensionIDCategory("Methylation");
-	// methylationConfiguration.setHumanReadableDimensionIDType("Methylation");
-	// methylationConfiguration.setDimensionDenominationPlural("methylations");
-	// methylationConfiguration.setDimensionDenominationSingular("methylation");
-	//
-	// methylationData.setDataDomainConfiguration(methylationConfiguration);
-	// doGCTSpecificStuff(methylationData);
-	// return methylationData;
-	// }
+
+	private DataSetDescription setUpMethylationData() {
+		DataSetDescription methylationData = new DataSetDescription();
+		methylationData.setDataSetName("Methylation");
+
+		methylationData.setDataSourcePath(METHYLATION);
+		methylationData.setNumberOfHeaderLines(3);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(3);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setDataType("FLOAT");
+		methylationData.addParsingRule(parsingRule);
+		methylationData.setTransposeMatrix(true);
+
+		IDSpecification sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdType("SAMPLE");
+		sampleIDSpecification.setReplacementExpression("\\.", "-");
+		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		
+		IDSpecification methylationIDSpecification = new IDSpecification();
+		methylationIDSpecification.setIdType("methylation");
+		methylationData.setRowIDSpecification(methylationIDSpecification);
+		methylationData.setColumnIDSpecification(sampleIDSpecification);
+
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
+				METHYLATION_GROUPING);
+		firehoseClustering.setContainsColumnIDs(false);
+		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
+		methylationData.addColumnGroupingSpecification(firehoseClustering);
+
+		return methylationData;
+	}
 	//
 	// private static DataSetDescription setUpCopyNumberData() {
 	// DataSetDescription copyNumberData = new DataSetDescription();
