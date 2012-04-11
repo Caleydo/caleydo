@@ -14,7 +14,6 @@ import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.parser.ascii.GroupingParseSpecification;
 import org.caleydo.core.parser.ascii.TabularDataParser;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
@@ -50,30 +49,10 @@ import org.eclipse.core.runtime.Status;
  * <p>
  * As explained in {@link MatrixDefinition}, it is recommended that column and
  * row IDs are present in the source files. The ID type of the rows respectively
- * columns can be specified ({@link #rowType} and {@link #columnType}).
- * Multi-dataset relationships and mappings are based on the same definition of
- * these fields. That means, if tow datasets containing shared IDs from two
- * different files are loaded, they can be mapped if the respective type is
- * identical.
- * </p>
- * <p>
- * Caleydo provides special types for gene identifiers, i.e. if the rows or
- * columns contain gene identifiers, this needs to be specified using the
- * {@link #isColumnDataTypeGene} resp. the {@link #isRowTypeGene} members.
- * Additionally, the string for {@link #columnType} resp. {@link #rowType} can
- * not be arbitrarily chosen. Caleydo uses the DAVID Bioinformatics Resources
- * (see http://david.abcc.ncifcrf.gov/) for ID Mapping. The supported ID Strings
- * for the respective types are the following:
- * </p>
- * <ul>
- * <li><code>DAVID</code></li>
- * <li><code>GENE_NAME</code></li>
- * <li><code>GENE_SYMBOL</code></li>
- * <li><code>ENSEMBL_GENE_ID</code></li>
- * <li><code>ENTREZ_GENE_ID</code></li>
- * <li><code>REFSEQ_MRNA</code></li>
- * <li><code>BIOCARTA_GENE_ID</code></li>
- * </ul>
+ * columns can be specified ({@link #rowIDSpecification} and
+ * {@link #columnIDSpecification}). Multi-dataset relationships and mappings are
+ * based on the same definition of the id type. For more Information see
+ * {@link IDSpecification}.
  * 
  * @author Alexander Lex
  * @author Nils Gehlenborg
@@ -128,63 +107,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 */
 	private boolean transposeMatrix = false;
 
-	/**
-	 * <p>
-	 * The name of the data type of the dimensions. For example, if the
-	 * dimensions contain samples this should be <i>sample</i>.
-	 * </p>
-	 * <p>
-	 * Based on this the ID mapping is created. The ID mapping assumes that in
-	 * the line above the first record, labels identifying the dimensions are
-	 * available.
-	 * </p>
-	 * <p>
-	 * This means, that if you have two datasets that are cross-referenced (i.e.
-	 * use the same type of IDs for their entries) the string specified here
-	 * <b>must be identical</b> for both datasets. For example, if you have two
-	 * datasets with samples as dimensions, you must in both cases use the
-	 * string <i>sample</i> so that they can be resolved.
-	 * </p>
-	 * <p>
-	 * The {@link IDCategory}, {@link IDType} and the denominations are created
-	 * based on this.
-	 * </p>
-	 * <p>
-	 * This is optional
-	 * </p>
-	 * This is only necessary if the {@link #dataDomainType} is not
-	 * {@link GeneticDataDomain#DATA_DOMAIN_TYPE}
-	 * <p>
-	 */
-	private String columnType;
 
-	/**
-	 * <p>
-	 * Flag determining whether the column data type is for genes. If so, this
-	 * must be specified. Defaults to false.
-	 * </p>
-	 * <p>
-	 * If this is true the {@link #columnType} needs to be one of the types
-	 * explained in the class documentation.
-	 * </p>
-	 */
-	private boolean isColumnTypeGene = false;
-
-	/**
-	 * Same as {@link #columnType} but for rows.
-	 */
-	private String rowType;
-
-	/**
-	 * <p>
-	 * Same as {@link #isColumnTypeGene} but for rows.
-	 * </p>
-	 * <p>
-	 * If this is true the {@link #rowType} needs to be one of the types
-	 * explained in the class documentation.
-	 * </p>
-	 */
-	private boolean isRowTypeGene = false;
 
 	/**
 	 * Set whether the data you want to load is homogeneous, i.e. all the
@@ -250,66 +173,6 @@ public class DataSetDescription extends MatrixDefinition {
 	 */
 	public String getDataSetName() {
 		return dataSetName;
-	}
-
-	/**
-	 * @param columnType
-	 *            setter, see {@link #columnType}
-	 */
-	public void setColumnType(String columnType) {
-		this.columnType = columnType;
-	}
-
-	/**
-	 * @return the columnType, see {@link #columnType}
-	 */
-	public String getColumnType() {
-		return columnType;
-	}
-
-	/**
-	 * @param isColumnDataTypeGene
-	 *            setter, see {@link #isColumnTypeGene}
-	 */
-	public void setColumnDataTypeGene(boolean isColumnDataTypeGene) {
-		this.isColumnTypeGene = isColumnDataTypeGene;
-	}
-
-	/**
-	 * @return the isColumnDataTypeGene, see {@link #isColumnTypeGene}
-	 */
-	public boolean isColumnDataTypeGene() {
-		return isColumnTypeGene;
-	}
-
-	/**
-	 * @param rowType
-	 *            setter, see {@link #rowType}
-	 */
-	public void setRowType(String rowType) {
-		this.rowType = rowType;
-	}
-
-	/**
-	 * @return the rowType, see {@link #rowType}
-	 */
-	public String getRowType() {
-		return rowType;
-	}
-
-	/**
-	 * @param isRowDataTypeGene
-	 *            setter, see {@link #isRowTypeGene}
-	 */
-	public void setRowDataTypeGene(boolean isRowDataTypeGene) {
-		this.isRowTypeGene = isRowDataTypeGene;
-	}
-
-	/**
-	 * @return the isRowDataTypeGene, see {@link #isRowTypeGene}
-	 */
-	public boolean isRowDataTypeGene() {
-		return isRowTypeGene;
 	}
 
 	/**

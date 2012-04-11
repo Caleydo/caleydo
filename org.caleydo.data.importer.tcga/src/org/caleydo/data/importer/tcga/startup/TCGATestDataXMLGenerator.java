@@ -9,8 +9,9 @@ import javax.xml.bind.Marshaller;
 
 import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.importing.DataSetDescriptionCollection;
+import org.caleydo.core.data.importing.GroupingParseSpecification;
+import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.data.importing.ParsingRule;
-import org.caleydo.core.parser.ascii.GroupingParseSpecification;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -56,6 +57,8 @@ public class TCGATestDataXMLGenerator {
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
 			+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
 
+	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
+
 	/*
 	 * public static final String DROPBOX_GBM_FOLDER =
 	 * System.getProperty("user.home") + System.getProperty("file.separator") +
@@ -91,11 +94,9 @@ public class TCGATestDataXMLGenerator {
 
 		JAXBContext context = null;
 		try {
-			Class<?>[] serializableClasses = new Class<?>[4];
+			Class<?>[] serializableClasses = new Class<?>[2];
 			serializableClasses[0] = DataSetDescription.class;
 			serializableClasses[1] = DataSetDescriptionCollection.class;
-			serializableClasses[2] = TCGAIDStringConverter.class;
-			serializableClasses[3] = DashToPointStringConverter.class;
 
 			context = JAXBContext.newInstance(serializableClasses);
 
@@ -123,19 +124,28 @@ public class TCGATestDataXMLGenerator {
 		parsingRule.setDataType("FLOAT");
 		mrnaData.addParsingRule(parsingRule);
 
-		mrnaData.setRowDataTypeGene(true);
-		mrnaData.setRowType("GENE_SYMBOL");
-		mrnaData.setColumnType("sample");
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		mrnaData.setRowIDSpecification(geneIDSpecification);
+
+		IDSpecification sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdType("SAMPLE");
+		sampleIDSpecification.setReplacementExpression("\\.", "-");
+		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 		mrnaData.setTransposeMatrix(true);
 
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
 				MRNA_GROUPING);
 		firehoseClustering.setContainsColumnIDs(false);
+		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(firehoseClustering);
 
 		GroupingParseSpecification groundTruthGrouping = new GroupingParseSpecification();
 		groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
 		groundTruthGrouping.addColum(2);
+		groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
 
 		return mrnaData;

@@ -5,6 +5,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
 
+import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -128,7 +129,29 @@ public abstract class ATextParser {
 		return true;
 	}
 
-	protected abstract void parseFile(BufferedReader reader) throws IOException;
+	protected void parseFile(BufferedReader reader) throws IOException
+	{}
+	
+	protected String convertID(String sourceID, IDSpecification idSpecification )
+	{
+		if (idSpecification.getReplacingExpression() != null) {
+			sourceID = sourceID.replaceAll(
+					idSpecification.getReplacingExpression(),
+					idSpecification.getReplacementString());
+		}
+		if (idSpecification.getSubStringExpression() != null) {
+			String[] splitID = sourceID.split(idSpecification
+					.getSubStringExpression());
+			for (String result : splitID) {
+				if (!result.isEmpty())
+				{
+					sourceID = result;
+					break;
+				}
+			}
+		}
+		return sourceID;
+	}
 
 	// protected abstract void setArraysToDimensions();
 }

@@ -19,6 +19,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.importing.DataSetDescriptionCollection;
+import org.caleydo.core.data.importing.GroupingParseSpecification;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -28,7 +29,6 @@ import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.GroupingParseSpecification;
 import org.caleydo.core.parser.ascii.GroupingParser;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.clusterer.ClusterResult;
@@ -137,7 +137,7 @@ public class Application implements IApplication {
 			createSampleOfGenes(runClusteringOnRows(true, 5).getDimensionResult());
 			runClusteringOnRows(true, 6);
 
-			runClusteringOnRows(false, -1);
+//			runClusteringOnRows(false, -1);
 			// if (metaInfo.isCreateGeneSamples())
 
 		}
@@ -147,8 +147,8 @@ public class Application implements IApplication {
 	protected void loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
-		if (dataSetDescription.isColumnDataTypeGene()
-				|| dataSetDescription.isRowDataTypeGene()) {
+		if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
+				|| dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
 		} else {
@@ -156,11 +156,11 @@ public class Application implements IApplication {
 			String recordType;
 
 			if (dataSetDescription.isTransposeMatrix()) {
-				dimensionType = dataSetDescription.getRowType();
-				recordType = dataSetDescription.getColumnType();
+				dimensionType = dataSetDescription.getRowIDSpecification().getIdType();
+				recordType = dataSetDescription.getColumnIDSpecification().getIdType();
 			} else {
-				dimensionType = dataSetDescription.getColumnType();
-				recordType = dataSetDescription.getRowType();
+				dimensionType = dataSetDescription.getColumnIDSpecification().getIdType();
+				recordType = dataSetDescription.getRowIDSpecification().getIdType();
 			}
 
 			DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
@@ -377,11 +377,10 @@ public class Application implements IApplication {
 			ArrayList<GroupingParseSpecification> groupingSpecifications,
 			IDType sourceIDType, IDType targetIDType) {
 
-		GroupingParser parser = new GroupingParser();
 		ArrayList<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
 		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
-			perspectiveDatas.addAll(parser.parseGrouping(groupingSpecification,
-					new TCGAIDStringConverter(), sourceIDType, targetIDType));
+			GroupingParser parser = new GroupingParser(groupingSpecification);
+			perspectiveDatas.addAll(parser.parseGrouping(targetIDType));
 		}
 
 		return perspectiveDatas;
@@ -469,11 +468,9 @@ public class Application implements IApplication {
 
 	private void createJAXBContext() {
 		try {
-			Class<?>[] serializableClasses = new Class<?>[4];
+			Class<?>[] serializableClasses = new Class<?>[2];
 			serializableClasses[0] = DataSetDescription.class;
 			serializableClasses[1] = DataSetDescriptionCollection.class;
-			serializableClasses[2] = TCGAIDStringConverter.class;
-			serializableClasses[3] = DashToPointStringConverter.class;
 			context = JAXBContext.newInstance(serializableClasses);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);

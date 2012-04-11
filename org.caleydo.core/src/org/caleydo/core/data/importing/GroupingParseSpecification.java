@@ -1,11 +1,11 @@
-package org.caleydo.core.parser.ascii;
+package org.caleydo.core.data.importing;
 
 import java.util.ArrayList;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.importing.MatrixDefinition;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.parser.ascii.GroupingParser;
 
 /**
  * <p>

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.importing.GroupingParseSpecification;
+import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -22,11 +24,19 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Alexander Lex
  */
-public class GroupingParser {
+public class GroupingParser extends ATextParser {
 
-	public ArrayList<PerspectiveInitializationData> parseGrouping(
-			GroupingParseSpecification groupingSpecifications,
-			AStringConverter idConverter, IDType sourceIDType, IDType targetIDType) {
+	private GroupingParseSpecification groupingSpecifications;
+
+	public GroupingParser(GroupingParseSpecification groupingSpecifications) {
+		super(groupingSpecifications.getDataSourcePath());
+		this.groupingSpecifications = groupingSpecifications;
+	}
+
+	public ArrayList<PerspectiveInitializationData> parseGrouping(IDType targetIDType) {
+
+		IDSpecification idSpecification = groupingSpecifications.getRowIDSpecification();
+		IDType sourceIDType = IDType.getIDType(idSpecification.getIdType());
 
 		if (!sourceIDType.getIDCategory().equals(targetIDType.getIDCategory()))
 			throw new IllegalArgumentException("Can not map between specified IDTypes: "
@@ -117,9 +127,8 @@ public class GroupingParser {
 				// read ID
 				String[] columns = line.split(groupingSpecifications.getDelimiter());
 				String originalID = columns[groupingSpecifications.getColumnOfRowIds()];
-				if (idConverter != null) {
-					originalID = idConverter.convert(originalID);
-				}
+
+				originalID = convertID(originalID, idSpecification);
 
 				Integer mappedID = idMappingManager.getID(sourceIDType, targetIDType,
 						originalID);
@@ -179,5 +188,4 @@ public class GroupingParser {
 					+ groupingSpecifications.getDataSourcePath());
 		}
 	}
-
 }

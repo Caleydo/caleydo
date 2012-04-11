@@ -362,14 +362,16 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@SuppressWarnings("unchecked")
 	public void init(PerspectiveInitializationData data) {
 
+		if (data != null && data.getLabel() != null)
+		{
+			setLabel(data.getLabel(), false);
+		}
+		
+		// Case 1: we want an empty perspective
 		if (data == null) {
 			createVA(null);
 			return;
-		}
-		if (data.getLabel() != null)
-			setLabel(data.getLabel(), false);
-		// Case 1: we want an empty perspective
-
+		}	
 		// Case 2: we only have a virtual array
 		else if (data.getIndices() != null && data.getGroupSizes() == null
 				&& data.getTree() == null) {

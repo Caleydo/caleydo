@@ -7,6 +7,7 @@ import java.util.StringTokenizer;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.MappingType;
@@ -53,7 +54,7 @@ public class IDMappingParser extends ATextParser {
 
 	protected SWTGUIManager swtGuiManager;
 
-	private AStringConverter stringConverter = null;
+	protected IDSpecification idSpecification;
 
 	/**
 	 * Constructor.
@@ -70,8 +71,8 @@ public class IDMappingParser extends ATextParser {
 		setTokenSeperator(SEMICOLON);
 
 		// FIXME that should be set from somewhere else
-		if (mappingType.getFromIDType().getTypeName().contains("REFSEQ"))
-			stringConverter = new RefSeqStringConverter();
+		// if (mappingType.getFromIDType().getTypeName().contains("REFSEQ"))
+		// stringConverter = new RefSeqStringConverter();
 	}
 
 	/**
@@ -88,11 +89,11 @@ public class IDMappingParser extends ATextParser {
 	}
 
 	/**
-	 * @param stringConverter
-	 *            setter, see {@link #stringConverter}
+	 * @param idSpecification
+	 *            setter, see {@link #idSpecification}
 	 */
-	public void setStringConverter(AStringConverter stringConverter) {
-		this.stringConverter = stringConverter;
+	public void setIdSpecification(IDSpecification idSpecification) {
+		this.idSpecification = idSpecification;
 	}
 
 	@Override
@@ -122,8 +123,9 @@ public class IDMappingParser extends ATextParser {
 						String token = textTokens.nextToken();
 						// Special case for creating dynamic IDs for rows
 						if (mappingType.getToIDType().isInternalType()) {
-							if (stringConverter != null) {
-								token = stringConverter.convert(token);
+
+							if (idSpecification != null) {
+								token = convertID(token, idSpecification);
 							}
 
 							// TODO check that we don't need this!

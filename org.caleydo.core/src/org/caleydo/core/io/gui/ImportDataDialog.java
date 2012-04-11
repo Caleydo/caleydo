@@ -16,6 +16,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.importing.ColumnParsingDetail;
+import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.manager.GeneralManager;
@@ -768,9 +769,10 @@ public class ImportDataDialog extends Dialog {
 				dataSetDescription.setMax(fMax);
 			}
 		}
+		IDSpecification rowIDSpecification = new IDSpecification();
+		rowIDSpecification.setIdType(idTypes.get(idCombo.getSelectionIndex()).toString());
 
-		dataSetDescription
-				.setRowType(idTypes.get(idCombo.getSelectionIndex()).toString());
+		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 		// else
 		// dataSetDescripton.setFileIDType(dataDomain.getHumanReadableRecordIDType());
 
@@ -808,7 +810,8 @@ public class ImportDataDialog extends Dialog {
 				// "CERTAINTY"
 				if (buttonUncertaintyDataProvided.getSelection()
 						&& (columnIndex % 2 != 0)) {
-					inputPattern.add(new ColumnParsingDetail(columnIndex - 1, "CERTAINTY"));
+					inputPattern
+							.add(new ColumnParsingDetail(columnIndex - 1, "CERTAINTY"));
 					continue;
 				}
 

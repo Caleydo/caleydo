@@ -7,9 +7,9 @@ import javax.xml.bind.annotation.XmlRootElement;
  */
 @XmlRootElement
 public class RefSeqStringConverter
-	extends AStringConverter {
+	 {
 
-	@Override
+	
 	public String convert(String string) {
 		// Remove multiple RefSeqs because all point to the
 		// same gene DAVID ID

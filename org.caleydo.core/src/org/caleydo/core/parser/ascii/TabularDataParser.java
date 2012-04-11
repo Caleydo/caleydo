@@ -84,7 +84,8 @@ public class TabularDataParser extends ATextParser {
 		DataTable table = new DataTable(dataDomain);
 		dataDomain.setTable(table);
 
-		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription.getParsingPattern();
+		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription
+				.getParsingPattern();
 
 		String[] headers = null;
 		if (dataSetDescription.isContainsColumnIDs()) {
@@ -155,7 +156,10 @@ public class TabularDataParser extends ATextParser {
 			}
 
 			if (headers != null) {
-				columnIDMap.put(columnID, headers[dataType.getColumn()]);
+				String idString = headers[dataType.getColumn()];
+				idString = convertID(idString,
+						dataSetDescription.getColumnIDSpecification());
+				columnIDMap.put(columnID, idString);
 			} else {
 				columnIDMap.put(columnID, "Column " + columnCount++);
 			}
@@ -204,7 +208,8 @@ public class TabularDataParser extends ATextParser {
 
 		// int max = stopParsingAtLine - parsingStartLine + 1;
 
-		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription.getParsingPattern();
+		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription
+				.getParsingPattern();
 
 		int lineCounter = 0;
 		while ((line = reader.readLine()) != null) {
@@ -383,6 +388,5 @@ public class TabularDataParser extends ATextParser {
 	// return rawStringData;
 	//
 	// }
-
 
 }

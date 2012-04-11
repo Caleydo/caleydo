@@ -5,27 +5,18 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Map;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
-import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
-import org.caleydo.core.data.collection.dimension.NominalColumn;
-import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.importing.DataSetDescription;
-import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.mapping.MappingType;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.AStringConverter;
 import org.caleydo.core.parser.ascii.TabularDataParser;
 
 /**
@@ -140,15 +131,6 @@ public class DataTableUtils {
 			DataSetDescription dataSetDescription,
 			boolean createDefaultDimensionPerspectives,
 			boolean createDefaultRecordPerspective) {
-		loadData(dataDomain, dataSetDescription, createDefaultDimensionPerspectives,
-				createDefaultRecordPerspective, null);
-	}
-	
-
-	public static void loadData(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription,
-			boolean createDefaultDimensionPerspectives,
-			boolean createDefaultRecordPerspective, AStringConverter stringConverter) {
 
 		// --------- load dynamic mapping ---------------
 		CmdParseIDMapping cmdParseIDMapping = (CmdParseIDMapping) GeneralManager.get()
@@ -159,11 +141,9 @@ public class DataTableUtils {
 			rowTargetIDType = dataDomain.getRecordIDType();
 		else
 			rowTargetIDType = dataDomain.getDimensionIDType();
-		
-		
 
-		String mappingPattern = dataSetDescription.getRowType() + "_2_" + rowTargetIDType
-				+ " REVERSE";
+		String mappingPattern = dataSetDescription.getRowIDSpecification().getIdType()
+				+ "_2_" + rowTargetIDType + " REVERSE";
 
 		cmdParseIDMapping.setAttributes(dataSetDescription.getDataSourcePath(),
 				dataSetDescription.getNumberOfHeaderLines(), -1, mappingPattern,
@@ -181,11 +161,11 @@ public class DataTableUtils {
 		DataTable table = dataDomain.getTable();
 
 		// TODO re-enable this
-		// if (createDefaultDimensionPerspectives)
-		table.createDefaultDimensionPerspective();
+		if (createDefaultDimensionPerspectives)
+			table.createDefaultDimensionPerspective();
 
-		// if (createDefaultRecordPerspective)
-		table.createDefaultRecordPerspective();
+		if (createDefaultRecordPerspective)
+			table.createDefaultRecordPerspective();
 		// TODO re-enable this
 		// loadTrees(loadDataParameters, set);
 
@@ -210,7 +190,6 @@ public class DataTableUtils {
 		} else
 			throw new IllegalStateException("Unknown data representation type");
 	}
-
 
 	/**
 	 * Switch the representation of the data. When this is called the data in

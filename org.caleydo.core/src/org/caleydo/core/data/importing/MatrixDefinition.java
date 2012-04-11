@@ -67,10 +67,18 @@ public class MatrixDefinition {
 	protected Integer rowOfColumnIDs = null;
 
 	/**
+	 * The specification of the IDs for the columns. Defaults to null. Optional.
+	 */
+	private IDSpecification columnIDSpecification = null;
+
+	/**
 	 * Defines in which columns the IDs for the rows are found. By default it is
 	 * assumed that this is in row 0 (the first row).
 	 */
 	protected Integer columnOfRowIds = 0;
+
+	/** The specification of the IDS for the rows. Defaults to null. Mandatory */
+	private IDSpecification rowIDSpecification = null;
 
 	/**
 	 * @param dataSourcePath
@@ -148,6 +156,21 @@ public class MatrixDefinition {
 	}
 
 	/**
+	 * @param columnIDSpecification
+	 *            setter, see {@link #columnIDSpecification}
+	 */
+	public void setColumnIDSpecification(IDSpecification columnIDSpecification) {
+		this.columnIDSpecification = columnIDSpecification;
+	}
+
+	/**
+	 * @return the columnIDSpecification, see {@link #columnIDSpecification}
+	 */
+	public IDSpecification getColumnIDSpecification() {
+		return columnIDSpecification;
+	}
+
+	/**
 	 * @param columnOfRowIds
 	 *            setter, see {@link #columnOfRowIds}
 	 */
@@ -160,6 +183,21 @@ public class MatrixDefinition {
 	 */
 	public Integer getColumnOfRowIds() {
 		return columnOfRowIds;
+	}
+
+	/**
+	 * @param rowIDSpecification
+	 *            setter, see {@link #rowIDSpecification}
+	 */
+	public void setRowIDSpecification(IDSpecification rowIDSpecification) {
+		this.rowIDSpecification = rowIDSpecification;
+	}
+
+	/**
+	 * @return the rowIDSpecification, see {@link #rowIDSpecification}
+	 */
+	public IDSpecification getRowIDSpecification() {
+		return rowIDSpecification;
 	}
 
 }
