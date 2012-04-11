@@ -134,6 +134,8 @@ public abstract class ATextParser {
 	
 	protected String convertID(String sourceID, IDSpecification idSpecification )
 	{
+		if(idSpecification == null)
+			return sourceID;
 		if (idSpecification.getReplacingExpression() != null) {
 			sourceID = sourceID.replaceAll(
 					idSpecification.getReplacingExpression(),
