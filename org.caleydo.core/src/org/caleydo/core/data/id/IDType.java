@@ -97,7 +97,7 @@ public class IDType {
 		if (idType != null) {
 			if (!idType.getIDCategory().equals(idCategory) || !idType.getColumnType().equals(columnType))
 				throw new IllegalStateException("Tried to register id type: " + typeName
-					+ " but was already registered with conflicting parameters. \n Previousl registered type"
+					+ " but was already registered with conflicting parameters. \n Previousl registered type "
 					+ idType + ", Category: " + idCategory + ", ColumnType: " + columnType);
 		}
 		else {

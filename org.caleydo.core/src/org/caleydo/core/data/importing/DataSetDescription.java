@@ -12,8 +12,6 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.parser.ascii.TabularDataParser;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
@@ -336,7 +334,7 @@ public class DataSetDescription extends MatrixDefinition {
 
 	public ArrayList<ColumnParsingDetail> getParsingPattern() {
 
-		if (parsingPattern != null)
+		if (parsingPattern != null && !(parsingPattern.size()==0))
 			return parsingPattern;
 
 		if (parsingRules == null)
@@ -428,6 +426,10 @@ public class DataSetDescription extends MatrixDefinition {
 				continue;
 			}
 
+		}
+		if(parsingPattern.size() == 0)
+		{
+			throw new IllegalStateException("Failed to create parsing pattern based on the parsing rule / input file / header line information.");
 		}
 		return parsingPattern;
 	}

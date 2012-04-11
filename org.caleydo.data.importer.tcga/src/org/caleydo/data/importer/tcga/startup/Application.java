@@ -137,7 +137,7 @@ public class Application implements IApplication {
 			createSampleOfGenes(runClusteringOnRows(true, 5).getDimensionResult());
 			runClusteringOnRows(true, 6);
 
-//			runClusteringOnRows(false, -1);
+			// runClusteringOnRows(false, -1);
 			// if (metaInfo.isCreateGeneSamples())
 
 		}
@@ -147,21 +147,29 @@ public class Application implements IApplication {
 	protected void loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
+		// if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
+		// || dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
+		// dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+		// .createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
+		// } else {
+		String dimensionType;
+		String recordType;
+
+		if (dataSetDescription.isTransposeMatrix()) {
+			dimensionType = dataSetDescription.getRowIDSpecification().getIdType();
+			recordType = dataSetDescription.getColumnIDSpecification().getIdType();
+		} else {
+			dimensionType = dataSetDescription.getColumnIDSpecification().getIdType();
+			recordType = dataSetDescription.getRowIDSpecification().getIdType();
+		}
+
 		if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
 				|| dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
+			// we use the default provided by the data domain
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
-		} else {
-			String dimensionType;
-			String recordType;
 
-			if (dataSetDescription.isTransposeMatrix()) {
-				dimensionType = dataSetDescription.getRowIDSpecification().getIdType();
-				recordType = dataSetDescription.getColumnIDSpecification().getIdType();
-			} else {
-				dimensionType = dataSetDescription.getColumnIDSpecification().getIdType();
-				recordType = dataSetDescription.getRowIDSpecification().getIdType();
-			}
+		} else {
 
 			DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
 			dataDomainConfiguration.setRecordIDCategory(recordType);
@@ -179,8 +187,8 @@ public class Application implements IApplication {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain(GenericDataDomain.DATA_DOMAIN_TYPE,
 							dataDomainConfiguration);
-
 		}
+
 		dataDomain.setDataSetDescription(dataSetDescription);
 		dataDomain.setColorMapper(ColorMapper
 				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));

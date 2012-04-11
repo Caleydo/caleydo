@@ -74,7 +74,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		configuration.setDimensionIDCategory("SAMPLE");
 
 		configuration.setPrimaryRecordMappingType("DAVID");
-		configuration.setPrimaryDimensionMappingType("SAMPLE");
+		configuration.setPrimaryDimensionMappingType("SAMPLE_INT");
 
 		configuration.setHumanReadableRecordIDType("GENE_SYMBOL");
 		configuration.setHumanReadableDimensionIDType("SAMPLE");
@@ -99,7 +99,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		configuration.setRecordIDCategory("SAMPLE");
 		configuration.setDimensionIDCategory("GENE");
 
-		configuration.setPrimaryRecordMappingType("SAMPLE");
+		configuration.setPrimaryRecordMappingType("SAMPLE_INT");
 		configuration.setPrimaryDimensionMappingType("DAVID");
 
 		configuration.setHumanReadableRecordIDType("SAMPLE");

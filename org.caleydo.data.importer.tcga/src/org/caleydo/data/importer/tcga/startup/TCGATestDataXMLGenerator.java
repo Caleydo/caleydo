@@ -84,7 +84,7 @@ public class TCGATestDataXMLGenerator {
 		ArrayList<DataSetDescription> dataSetMetaInfoList = new ArrayList<DataSetDescription>();
 		dataSetMetaInfoList.add(setUpMRNAData());
 		// dataSetMetaInfoList.add(setUpMutationData());
-		// dataSetMetaInfoList.add(setUpMiRNAData());
+		dataSetMetaInfoList.add(setUpMiRNAData());
 		// dataSetMetaInfoList.add(setUpMethylationData());
 		// dataSetMetaInfoList.add(setUpCopyNumberData());
 		// dataSetMetaInfoList.add(setUpClinicalData());
@@ -151,20 +151,38 @@ public class TCGATestDataXMLGenerator {
 		return mrnaData;
 	}
 
-	// private static DataSetDescription setUpMiRNAData() {
-	// DataSetDescription mirnaData = new DataSetDescription();
-	// mirnaData.setDataSetName("miRNA");
-	// mirnaData.setDataDomainType("org.caleydo.datadomain.generic");
-	// mirnaData.setDataPath(MIRNA);
-	// mirnaData.setGroupingPath(MIRNA_GROUPING);
-	// //
-	// mirnaData.setColorScheme(EDefaultColorSchemes.GREEN_WHITE_BROWN.name());
-	//
-	// mirnaData.setRecordName("miRNA");
-	//
-	// doGCTSpecificStuff(mirnaData);
-	// return mirnaData;
-	// }
+	private static DataSetDescription setUpMiRNAData() {
+		DataSetDescription mirnaData = new DataSetDescription();
+		mirnaData.setDataSetName("miRNA");
+
+		mirnaData.setDataSourcePath(MIRNA);
+		mirnaData.setNumberOfHeaderLines(3);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(3);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setDataType("FLOAT");
+		mirnaData.addParsingRule(parsingRule);
+
+		IDSpecification mirnaIDSpecification = new IDSpecification();
+		mirnaIDSpecification.setIdType("miRNA");
+		mirnaData.setRowIDSpecification(mirnaIDSpecification);
+
+		IDSpecification sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdType("SAMPLE");
+		sampleIDSpecification.setReplacementExpression("\\.", "-");
+		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
+		mirnaData.setColumnIDSpecification(sampleIDSpecification);
+		mirnaData.setTransposeMatrix(true);
+
+		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
+				MIRNA_GROUPING);
+		firehoseClustering.setContainsColumnIDs(false);
+		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
+		mirnaData.addColumnGroupingSpecification(firehoseClustering);
+
+		return mirnaData;
+	}
 	//
 	// private static DataSetDescription setUpMethylationData() {
 	// DataSetDescription methylationData = new DataSetDescription();
