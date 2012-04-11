@@ -2,15 +2,13 @@ package org.caleydo.core.view.opengl.layout.util;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-
 /**
  * Simple renderer for a colored rectangle.
  * 
  * @author Christian Partl
  */
 public class ColorRenderer
-	extends LayoutRenderer {
+	extends APickableLayoutRenderer {
 
 	protected float[] color;
 	protected float[] borderColor;

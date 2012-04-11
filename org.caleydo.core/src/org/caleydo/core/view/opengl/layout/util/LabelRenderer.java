@@ -54,6 +54,12 @@ public class LabelRenderer
 		this.isPickable = true;
 		this.label = label;
 	}
+	
+	public LabelRenderer(AGLView view, String label) {
+		this.isPickable = false;
+		this.view = view;
+		this.label = label;
+	}
 
 	@Override
 	public void render(GL2 gl) {
@@ -81,5 +87,19 @@ public class LabelRenderer
 		textRenderer.setColor(0, 0, 0, 1);
 		textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2 * ySpacing);
 
+	}
+	
+	/**
+	 * @param label setter, see {@link #label}
+	 */
+	public void setLabel(String label) {
+		this.label = label;
+	}
+	
+	/**
+	 * @return the label, see {@link #label}
+	 */
+	public String getLabel() {
+		return label;
 	}
 }

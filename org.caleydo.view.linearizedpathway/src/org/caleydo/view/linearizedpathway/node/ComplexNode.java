@@ -14,6 +14,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
  * The complex node renderer renders a node that represents multiple
@@ -23,9 +24,9 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * 
  */
 public class ComplexNode extends ANode {
-	
+
 	public static final int TEXT_SPACING_PIXELS = 3;
-	
+
 	private CaleydoTextRenderer textRenderer;
 
 	/**
@@ -33,7 +34,7 @@ public class ComplexNode extends ANode {
 	 * complex node.
 	 */
 	private List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
-	
+
 	/**
 	 * The caption displayed on the node.
 	 */
@@ -42,8 +43,9 @@ public class ComplexNode extends ANode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public ComplexNode(PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer) {
-		super(pixelGLConverter);
+	public ComplexNode(PixelGLConverter pixelGLConverter,
+			CaleydoTextRenderer textRenderer, GLLinearizedPathway view, int nodeId) {
+		super(pixelGLConverter, view, nodeId);
 		this.textRenderer = textRenderer;
 		// TODO Auto-generated constructor stub
 	}
@@ -104,14 +106,13 @@ public class ComplexNode extends ANode {
 		return vertexReps;
 	}
 
-
 	@Override
 	public PathwayVertexRep getPathwayVertexRep() {
-		if(vertexReps.size() > 0)
+		if (vertexReps.size() > 0)
 			return vertexReps.get(0);
 		return null;
 	}
-	
+
 	/**
 	 * @param caption
 	 *            setter, see {@link #caption}
@@ -125,6 +126,23 @@ public class ComplexNode extends ANode {
 	 */
 	public String getCaption() {
 		return caption;
+	}
+
+	@Override
+	protected void registerPickingListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterPickingListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getMinRequiredHeightPixels() {
+		return DEFAULT_HEIGHT_PIXELS;
 	}
 
 }

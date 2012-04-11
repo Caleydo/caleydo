@@ -864,9 +864,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		setDisplayListDirty();
 	}
 
-	public TextureManager getTextureManager() {
-		return textureManager;
-	}
+//	public TextureManager getTextureManager() {
+//		return textureManager;
+//	}
 
 	public int getMaxDataAmount() {
 		return maxDataAmount;

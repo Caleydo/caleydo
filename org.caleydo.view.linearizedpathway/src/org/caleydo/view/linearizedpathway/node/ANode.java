@@ -9,7 +9,9 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
  * @author Christian
@@ -21,6 +23,8 @@ public abstract class ANode {
 	public final static int DEFAULT_WIDTH_PIXELS = 70;
 
 	protected PixelGLConverter pixelGLConverter;
+
+	protected int nodeId;
 
 	/**
 	 * Position of the node (center).
@@ -42,9 +46,29 @@ public abstract class ANode {
 	 */
 	protected int numAssociatedRows = 0;
 
-	public ANode(PixelGLConverter pixelGLConverter) {
+	protected GLLinearizedPathway view;
+
+	protected PickingManager pickingManager;
+
+	public ANode(PixelGLConverter pixelGLConverter, GLLinearizedPathway view, int nodeId) {
 		this.pixelGLConverter = pixelGLConverter;
+		this.view = view;
+		this.pickingManager = view.getPickingManager();
+		this.nodeId = nodeId;
+		registerPickingListeners();
 	}
+
+	/**
+	 * Method that is automatically called upon node creation and intended to
+	 * register all picking listeners for this node.
+	 */
+	protected abstract void registerPickingListeners();
+
+	/**
+	 * Method that shall be called when the node is no longer needed to
+	 * unregister its picking listeners.
+	 */
+	public abstract void unregisterPickingListeners();
 
 	/**
 	 * Renders the node.
@@ -88,7 +112,7 @@ public abstract class ANode {
 				- pixelGLConverter.getGLWidthForPixelWidth(widthPixels) / 2.0f,
 				position.y(), position.z());
 	}
-	
+
 	/**
 	 * @return The point a connection line can connect to at the right side of
 	 *         the node.
@@ -158,5 +182,10 @@ public abstract class ANode {
 	public int getNumAssociatedRows() {
 		return numAssociatedRows;
 	}
+
+	/**
+	 * @return The minimum height that is required to render this node properly.
+	 */
+	public abstract int getMinRequiredHeightPixels();
 
 }

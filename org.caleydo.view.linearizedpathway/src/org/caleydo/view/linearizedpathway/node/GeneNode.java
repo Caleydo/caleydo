@@ -11,6 +11,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
  * Renderer for a node that belongs to a gene.
@@ -38,9 +39,9 @@ public class GeneNode extends ANode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public GeneNode(PixelGLConverter pixelGLConverter,
-			CaleydoTextRenderer textRenderer) {
-		super(pixelGLConverter);
+	public GeneNode(PixelGLConverter pixelGLConverter, CaleydoTextRenderer textRenderer,
+			GLLinearizedPathway view, int nodeId) {
+		super(pixelGLConverter, view, nodeId);
 		this.textRenderer = textRenderer;
 	}
 
@@ -102,6 +103,23 @@ public class GeneNode extends ANode {
 	 */
 	public String getCaption() {
 		return caption;
+	}
+
+	@Override
+	protected void registerPickingListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void unregisterPickingListeners() {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public int getMinRequiredHeightPixels() {
+		return DEFAULT_HEIGHT_PIXELS;
 	}
 
 }

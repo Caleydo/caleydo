@@ -1270,4 +1270,11 @@ public abstract class AGLView
 
 		return this;
 	}
+	
+	/**
+	 * @return the textureManager, see {@link #textureManager}
+	 */
+	public TextureManager getTextureManager() {
+		return textureManager;
+	}
 }
