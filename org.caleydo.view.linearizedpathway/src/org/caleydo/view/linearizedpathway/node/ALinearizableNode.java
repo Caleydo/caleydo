@@ -15,7 +15,7 @@ import org.caleydo.view.linearizedpathway.PickingType;
  * @author Christian
  * 
  */
-public abstract class ALinearizableNode extends ANode {
+public abstract class ALinearizableNode extends ALayoutBasedNode {
 	
 	/**
 	 * Determines whether the node shows a preview of its data.

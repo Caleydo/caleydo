@@ -7,8 +7,7 @@ import javax.media.opengl.GL2;
  * 
  * @author Christian Partl
  */
-public class ColorRenderer
-	extends APickableLayoutRenderer {
+public class ColorRenderer extends APickableLayoutRenderer {
 
 	protected float[] color;
 	protected float[] borderColor;
@@ -19,8 +18,8 @@ public class ColorRenderer
 	 * Constructor.
 	 * 
 	 * @param color
-	 *            Color of the rendered rectangle. The array must have a length of 4 specifying the RGBA
-	 *            values of the color.
+	 *            Color of the rendered rectangle. The array must have a length
+	 *            of 4 specifying the RGBA values of the color.
 	 */
 	public ColorRenderer(float[] color) {
 		this.color = color;
@@ -32,11 +31,11 @@ public class ColorRenderer
 	 * Constructor.
 	 * 
 	 * @param color
-	 *            Color of the rendered rectangle. The array must have a length of 4 specifying the RGBA
-	 *            values of the color.
+	 *            Color of the rendered rectangle. The array must have a length
+	 *            of 4 specifying the RGBA values of the color.
 	 * @param borderColor
-	 *            Color of the rendered rectangle's border. The array must have a length of 4 specifying the
-	 *            RGBA values of the color.
+	 *            Color of the rendered rectangle's border. The array must have
+	 *            a length of 4 specifying the RGBA values of the color.
 	 * @param borderWidth
 	 *            Width of the rendered rectangle's border.
 	 */
@@ -49,6 +48,8 @@ public class ColorRenderer
 
 	@Override
 	public void render(GL2 gl) {
+
+		pushNames(gl);
 
 		gl.glColor4fv(color, 0);
 		gl.glBegin(GL2.GL_QUADS);
@@ -80,6 +81,8 @@ public class ColorRenderer
 		gl.glEnd();
 
 		gl.glPopAttrib();
+
+		popNames(gl);
 
 	}
 

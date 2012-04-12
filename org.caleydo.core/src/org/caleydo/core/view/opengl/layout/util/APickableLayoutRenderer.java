@@ -72,4 +72,10 @@ public abstract class APickableLayoutRenderer
 		pickingIDs.add(new Pair<String, Integer>(pickingType, id));
 	}
 
+	/**
+	 * @param view setter, see {@link #view}
+	 */
+	public void setView(AGLView view) {
+		this.view = view;
+	}
 }

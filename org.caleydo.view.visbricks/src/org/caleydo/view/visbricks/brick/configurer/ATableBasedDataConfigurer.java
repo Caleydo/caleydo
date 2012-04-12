@@ -9,6 +9,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.ViewLabelProvider;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -64,9 +65,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
+				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -86,16 +87,16 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
+				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
 
 		return headerBarElements;
 	}
-	
+
 	protected ArrayList<ElementLayout> createHeaderBarElements(
 			TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
 
@@ -107,9 +108,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), layoutTemplate.getBrick(),
-				PickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
-						.getID());
+				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
+				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -133,11 +134,12 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		ElementLayout captionLayout = new ElementLayout("caption1");
 
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-	
+
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), layoutTemplate.getBrick(),
-				PickingType.BRICK.name(), layoutTemplate.getBrick().getID());
-		
+				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				layoutTemplate.getBrick()), PickingType.BRICK.name(), layoutTemplate
+				.getBrick().getID());
+
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);

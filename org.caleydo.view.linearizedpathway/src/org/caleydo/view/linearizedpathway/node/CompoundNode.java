@@ -7,6 +7,7 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
@@ -71,6 +72,12 @@ public class CompoundNode extends ALinearizableNode {
 	@Override
 	public int getMinRequiredWidthPixels() {
 		return DEFAULT_HEIGHT_PIXELS;
+	}
+
+	@Override
+	protected ElementLayout setupLayout() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

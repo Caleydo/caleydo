@@ -16,6 +16,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.ViewLabelProvider;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -95,7 +96,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.showFooterBar(false);
 	}
-	
+
 	@Override
 	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
@@ -160,8 +161,8 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider,
-				pickingType.name(), pickingID);
+		LabelRenderer captionRenderer = new LabelRenderer(view, new ViewLabelProvider(
+				labelProvider), pickingType.name(), pickingID);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;

@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.EContainedViewType;
 import org.caleydo.view.visbricks.brick.GLBrick;
+import org.caleydo.view.visbricks.brick.ViewLabelProvider;
 import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -162,7 +163,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, labelProvider,
+		LabelRenderer captionRenderer = new LabelRenderer(view, new ViewLabelProvider(view),
 				pickingType.name(), pickingID);
 		captionLayout.setRenderer(captionRenderer);
 

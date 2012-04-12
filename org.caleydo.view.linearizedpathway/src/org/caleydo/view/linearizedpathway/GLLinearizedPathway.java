@@ -112,11 +112,6 @@ public class GLLinearizedPathway extends AGLView {
 	 */
 	private Map<ANode, ANode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ANode>();
 
-	/**
-	 * Map that associates all {@link PathwayVertexRep} objects from the path
-	 * with a node.
-	 */
-	private Map<PathwayVertexRep, ANode> vertexRepToNodeMap = new HashMap<PathwayVertexRep, ANode>();
 
 	/**
 	 * The number of rows in which data values are shown.
@@ -208,8 +203,6 @@ public class GLLinearizedPathway extends AGLView {
 	}
 
 	private void createNodes() {
-
-		vertexRepToNodeMap.clear();
 		linearizedNodes.clear();
 		numDataRows = 0;
 		branchNodes.clear();

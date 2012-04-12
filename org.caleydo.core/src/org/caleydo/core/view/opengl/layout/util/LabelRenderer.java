@@ -9,16 +9,24 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
- * Renders a text within the given bounds of the ElementLayout. The text is trunkated if necessary.
+ * Renders a text within the given bounds of the ElementLayout. The text is
+ * truncated if necessary.
  * 
  * @author Partl
  */
-public class LabelRenderer
-	extends APickableLayoutRenderer {
+public class LabelRenderer extends APickableLayoutRenderer {
+
+	public static final int ALIGN_LEFT = 0;
+	public static final int ALIGN_CENTER = 1;
+	public static final int ALIGN_RIGHT = 2;
 
 	private boolean isPickable;
-	private AGLView labelProvider;
+	private ILabelTextProvider labelProvider;
 	private String label = "Not set";
+	/**
+	 * Specifies the alignment of the text.
+	 */
+	private int alignment = ALIGN_LEFT;
 
 	/**
 	 * @param view
@@ -30,31 +38,34 @@ public class LabelRenderer
 	 * @param id
 	 *            ID for picking.
 	 */
-	public LabelRenderer(AGLView view, AGLView labelProvider, String pickingType, int id) {
+	public LabelRenderer(AGLView view, ILabelTextProvider labelProvider,
+			String pickingType, int id) {
 		super(view, pickingType, id);
 
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, AGLView labelProvider) {
+	public LabelRenderer(AGLView view, ILabelTextProvider labelProvider) {
 		this.view = view;
 		this.labelProvider = labelProvider;
 		this.isPickable = false;
 	}
 
-	public LabelRenderer(AGLView view, AGLView labelProvider, List<Pair<String, Integer>> pickingIDs) {
+	public LabelRenderer(AGLView view, ILabelTextProvider labelProvider,
+			List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
 		this.isPickable = true;
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, String label, List<Pair<String, Integer>> pickingIDs) {
+	public LabelRenderer(AGLView view, String label,
+			List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
 		this.isPickable = true;
 		this.label = label;
 	}
-	
+
 	public LabelRenderer(AGLView view, String label) {
 		this.isPickable = false;
 		this.view = view;
@@ -79,27 +90,50 @@ public class LabelRenderer
 		}
 
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
-		
+
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		if (labelProvider != null)
-			label = labelProvider.getLabel();
+			label = labelProvider.getLabelText();
 		textRenderer.setColor(0, 0, 0, 1);
-		textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2 * ySpacing);
+		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2
+				* ySpacing, x);
+		switch (alignment) {
+		case ALIGN_CENTER:
+			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f + 4
+					* ySpacing, ySpacing, 0.1f, x, y - 2 * ySpacing);
+			break;
+		case ALIGN_RIGHT:
+			textRenderer.renderTextInBounds(gl, label, x - textWidth, ySpacing, 0.1f, x,
+					y - 2 * ySpacing);
+			break;
+		default:
+			textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2
+					* ySpacing);
+		}
 
 	}
-	
+
 	/**
-	 * @param label setter, see {@link #label}
+	 * @param label
+	 *            setter, see {@link #label}
 	 */
 	public void setLabel(String label) {
 		this.label = label;
 	}
-	
+
 	/**
 	 * @return the label, see {@link #label}
 	 */
 	public String getLabel() {
 		return label;
+	}
+
+	/**
+	 * @param alignment
+	 *            setter, see {@link #alignment}
+	 */
+	public void setAlignment(int alignment) {
+		this.alignment = alignment;
 	}
 }
