@@ -10,12 +10,13 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
+import org.caleydo.view.linearizedpathway.PickingType;
 
 /**
  * @author Christian
  * 
  */
-public class CompoundNode extends ANode {
+public class CompoundNode extends ALinearizableNode {
 
 	/**
 	 * The vertex in the graph this compound belongs to.
@@ -36,10 +37,16 @@ public class CompoundNode extends ANode {
 
 		float height = pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
 
+		gl.glPushName(pickingManager.getPickingID(view.getID(),
+				PickingType.LINEARIZABLE_NODE.name(), nodeId));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
+		gl.glColor4f(1, 1, 1, 0);
+		GLPrimitives.renderCircle(glu, height / 2.0f, 16);
+		gl.glColor4f(0, 0, 0, 1);
 		GLPrimitives.renderCircleBorder(gl, glu, height / 2.0f, 16, 0.1f);
 		gl.glPopMatrix();
+		gl.glPopName();
 
 	}
 
@@ -57,21 +64,13 @@ public class CompoundNode extends ANode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void unregisterPickingListeners() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public int getMinRequiredHeightPixels() {
-		// TODO Auto-generated method stub
-		return 0;
+		return DEFAULT_HEIGHT_PIXELS;
+	}
+
+	@Override
+	public int getMinRequiredWidthPixels() {
+		return DEFAULT_HEIGHT_PIXELS;
 	}
 
 }

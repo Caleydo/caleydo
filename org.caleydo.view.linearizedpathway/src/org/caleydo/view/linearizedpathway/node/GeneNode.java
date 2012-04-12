@@ -9,9 +9,12 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
+import org.caleydo.view.linearizedpathway.PickingType;
 
 /**
  * Renderer for a node that belongs to a gene.
@@ -19,7 +22,7 @@ import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
  * @author Christian
  * 
  */
-public class GeneNode extends ANode {
+public class GeneNode extends ALinearizableNode {
 
 	public static final int TEXT_SPACING_PIXELS = 3;
 
@@ -51,11 +54,24 @@ public class GeneNode extends ANode {
 		float width = pixelGLConverter.getGLWidthForPixelWidth(widthPixels);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
 
+		gl.glPushName(pickingManager.getPickingID(view.getID(),
+				PickingType.LINEARIZABLE_NODE.name(), nodeId));
 		Vec3f lowerLeftPosition = new Vec3f(position.x() - width / 2.0f, position.y()
 				- height / 2.0f, position.z());
 
 		gl.glColor3f(0, 0, 0);
 		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(), lowerLeftPosition.z());
+		gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
+				lowerLeftPosition.z());
+		gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() + height,
+				position.z());
+		gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
+				lowerLeftPosition.z());
+		gl.glEnd();
+
+		gl.glColor4f(1, 1, 1, 0);
+		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(), lowerLeftPosition.z());
 		gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
 				lowerLeftPosition.z());
@@ -75,6 +91,8 @@ public class GeneNode extends ANode {
 				position.x() - textWidth / 2.0f + textSpacing, lowerLeftPosition.y()
 						+ 1.5f * textSpacing, lowerLeftPosition.z(), width - 2
 						* textSpacing, height - 2 * textSpacing);
+
+		gl.glPopName();
 	}
 
 	/**
@@ -106,20 +124,13 @@ public class GeneNode extends ANode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void unregisterPickingListeners() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
 	public int getMinRequiredHeightPixels() {
 		return DEFAULT_HEIGHT_PIXELS;
+	}
+
+	@Override
+	public int getMinRequiredWidthPixels() {
+		return DEFAULT_WIDTH_PIXELS;
 	}
 
 }

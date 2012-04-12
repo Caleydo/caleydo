@@ -190,14 +190,15 @@ public class BranchSummaryNode extends ALayoutBasedNode {
 					collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_PLUS);
 					labelRenderer.setLabel("..." + branchNodes.size());
 				}
+				view.setDisplayListDirty();
 			}
-		}, PickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
+		}, PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
 
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
-		view.removeAllIDPickingListeners(PickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
+		view.removeAllIDPickingListeners(PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
 	}
 
 	/**
@@ -231,7 +232,7 @@ public class BranchSummaryNode extends ALayoutBasedNode {
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
-		collapseButton = new Button(PickingType.BRANCH_SUMMARY_NODE.name(),
+		collapseButton = new Button(PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(),
 				nodeId, EIconTextures.GROUPER_COLLAPSE_PLUS);
 		ButtonRenderer collapseButtonRenderer = new ButtonRenderer(collapseButton, view,
 				view.getTextureManager());
@@ -262,6 +263,11 @@ public class BranchSummaryNode extends ALayoutBasedNode {
 		baseColumn.append(verticalSpacing);
 		
 		return baseColumn;
+	}
+
+	@Override
+	public int getMinRequiredWidthPixels() {
+		return DEFAULT_WIDTH_PIXELS;
 	}
 
 }
