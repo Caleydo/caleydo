@@ -264,14 +264,25 @@ public class AffinityClusterer
 		return 0;
 	}
 
-	/**
-	 * Java-implementation of the affinity propagation clustering algorithm. See BJ Frey and D Dueck, Science
-	 * 315, 972-976, Feb 16, 2007, for a description of the algorithm. Copyright 2007, BJ Frey and Delbert
-	 * Dueck. This software may be freely used and distributed for non-commercial purposes.
-	 * 
-	 * @param eClustererType
-	 * @return virtual array with ordered indexes
-	 */
+/*******************************************************************************
+ * Caleydo - visualization for molecular biology - http://caleydo.org
+ *  
+ * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
+ * Lex, Christian Partl, Johannes Kepler University Linz </p>
+ *
+ * This program is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License as published by the Free Software
+ * Foundation, either version 3 of the License, or (at your option) any later
+ * version.
+ *  
+ * This program is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
+ * details.
+ *  
+ * You should have received a copy of the GNU General Public License along with
+ * this program. If not, see <http://www.gnu.org/licenses/>
+ *******************************************************************************/
 	private PerspectiveInitializationData affinityPropagation(ClustererType eClustererType) {
 		// Arraylist holding clustered indexes
 		ArrayList<Integer> indices = new ArrayList<Integer>();
