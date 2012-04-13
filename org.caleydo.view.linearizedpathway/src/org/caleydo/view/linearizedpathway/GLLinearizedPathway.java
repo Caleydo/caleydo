@@ -23,6 +23,7 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -130,7 +131,6 @@ public class GLLinearizedPathway extends AGLView {
 	 * Map that associates every node in a branch with a linearized node.
 	 */
 	private Map<ANode, ANode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ANode>();
-
 
 	/**
 	 * The number of rows in which data values are shown.
@@ -433,8 +433,8 @@ public class GLLinearizedPathway extends AGLView {
 		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
 		if (vertices == null)
 			return 0;
-
-		int numMappedGenes = 0;
+		
+		Set<Integer> allIDs = new HashSet<Integer>();
 
 		for (PathwayVertex vertex : vertices) {
 			int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(vertex);
@@ -445,15 +445,12 @@ public class GLLinearizedPathway extends AGLView {
 						davidId);
 
 				if (ids != null && !ids.isEmpty()) {
-					numMappedGenes++;
-					// TODO: or is it this way?
-					// numMappedGenes+= ids.size();
-					break;
+					allIDs.addAll(ids);
 				}
 			}
 		}
 
-		return numMappedGenes;
+		return allIDs.size();
 	}
 
 	@Override
