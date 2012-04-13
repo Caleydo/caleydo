@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -68,7 +68,6 @@ import org.eclipse.equinox.app.IApplicationContext;
  */
 public class Application implements IApplication {
 
-	
 	private boolean useQuickClustering = true;
 
 	/** {link JAXBContext} for DataTypeSet (de-)serialization */
@@ -142,17 +141,21 @@ public class Application implements IApplication {
 	public void stop() {
 	}
 
-	private void loadSources( DataSetDescription dataSetDescription)
+	private void loadSources(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
-		ATableBasedDataDomain dataDomain =	loadData(dataSetDescription);
+		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
 
 		// if we don't have a row-grouping we create one
-		if (dataSetDescription.getRowGroupingSpecifications() == null) {
+		if (dataSetDescription.areAllColumnTypesContinuous()
+				&& dataSetDescription.getRowGroupingSpecifications() == null
+				&& dataSetDescription.isDataHomogeneous()) {
+
 			runClusteringOnRows(dataDomain, true, 4);
 
-			createSampleOfGenes(dataDomain, runClusteringOnRows(dataDomain, true, 5).getDimensionResult());
+			createSampleOfGenes(dataDomain, runClusteringOnRows(dataDomain, true, 5)
+					.getDimensionResult());
 			runClusteringOnRows(dataDomain, true, 6);
 
 			// runClusteringOnRows(false, -1);
@@ -165,11 +168,6 @@ public class Application implements IApplication {
 	protected ATableBasedDataDomain loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
-		// if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
-		// || dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
-		// dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-		// .createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
-		// } else {
 		String dimensionType;
 		String recordType;
 
@@ -181,7 +179,6 @@ public class Application implements IApplication {
 			recordType = dataSetDescription.getRowIDSpecification().getIdType();
 		}
 
-		
 		ATableBasedDataDomain dataDomain;
 		if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
 				|| dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
@@ -215,14 +212,6 @@ public class Application implements IApplication {
 
 		dataDomain.init();
 
-		// if (dataDomain.isColumnDimension())
-		// loadDataParameters.setFileIDType(dataDomain.getHumanReadableRecordIDType());
-		// else
-		// loadDataParameters
-		// .setFileIDType(dataDomain.getHumanReadableDimensionIDType());
-
-		// loadDataParameters.setInputPattern(dataSetDescription.getParsingPattern());
-
 		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
 		thread.start();
 
@@ -235,14 +224,14 @@ public class Application implements IApplication {
 
 	}
 
-	
 	/**
 	 * Loads all groupings for columns and rows that are specified in the
 	 * {@link DataSetDescription}. Respects transposition.
 	 * 
 	 * @param dataSetDescription
 	 */
-	private void loadGroupings(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
+	private void loadGroupings(ATableBasedDataDomain dataDomain,
+			DataSetDescription dataSetDescription) {
 		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
 
@@ -336,7 +325,8 @@ public class Application implements IApplication {
 	 * @param useKMeans
 	 * @return
 	 */
-	private ClusterResult runClusteringOnRows(ATableBasedDataDomain dataDomain, boolean useKMeans, int numClusters) {
+	private ClusterResult runClusteringOnRows(ATableBasedDataDomain dataDomain,
+			boolean useKMeans, int numClusters) {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -385,7 +375,8 @@ public class Application implements IApplication {
 		// return result.getDimensionResult();
 	}
 
-	private void createSampleOfGenes(ATableBasedDataDomain dataDomain, PerspectiveInitializationData clusterResult) {
+	private void createSampleOfGenes(ATableBasedDataDomain dataDomain,
+			PerspectiveInitializationData clusterResult) {
 		if (clusterResult.getIndices().size() < 50)
 			return;
 		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(

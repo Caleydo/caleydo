@@ -33,7 +33,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
-import org.caleydo.core.io.ColumnParsingDetail;
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
@@ -87,7 +87,7 @@ public class TabularDataParser extends ATextParser {
 		DataTable table = new DataTable(dataDomain);
 		dataDomain.setTable(table);
 
-		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription
+		ArrayList<ColumnDescription> parsingPattern = dataSetDescription
 				.getParsingPattern();
 
 		String[] headers = null;
@@ -137,7 +137,7 @@ public class TabularDataParser extends ATextParser {
 		Map<Integer, String> columnIDMap = columnIDMappingManager.getMap(mappingType);
 
 		int columnCount = 0;
-		for (ColumnParsingDetail parsingDetail : parsingPattern) {
+		for (ColumnDescription parsingDetail : parsingPattern) {
 			int columnID;
 			if (parsingDetail.getDataType().equalsIgnoreCase("float")) {
 				float[] dataColumn = new float[numberOfDataLines];
@@ -203,7 +203,7 @@ public class TabularDataParser extends ATextParser {
 			reader.readLine();
 		}
 
-		ArrayList<ColumnParsingDetail> parsingPattern = dataSetDescription
+		ArrayList<ColumnDescription> parsingPattern = dataSetDescription
 				.getParsingPattern();
 
 		int lineCounter = 0;
@@ -213,7 +213,7 @@ public class TabularDataParser extends ATextParser {
 			String splitLine[] = line.split(dataSetDescription.getDelimiter());
 
 			for (int count = 0; count < parsingPattern.size(); count++) {
-				ColumnParsingDetail column = parsingPattern.get(count);
+				ColumnDescription column = parsingPattern.get(count);
 
 				String cellContent = splitLine[column.getColumn()];
 				if (column.getDataType().equalsIgnoreCase("float")) {

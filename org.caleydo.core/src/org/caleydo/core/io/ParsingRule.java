@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -89,12 +89,15 @@ public class ParsingRule implements Comparable<ParsingRule> {
 	private boolean parseUntilEnd = false;
 
 	/**
-	 * The data type of the columns to be parsed. Legal data types are "INT",
-	 * "STRING" and "FLOAT", as listed in {@link EColumnType}. Mandatory.
+	 * Information about the columns to be parsed. The general information must
+	 * be valid for all columns defined in the rule. The column-specific
+	 * information such as the columnID and the column number of the source file
+	 * can not be set, but will be set automatically.
 	 */
-	private String dataType;
+	private ColumnDescription columnDescripton;
 
 	/**
+	 * 
 	 * @param fromColumn
 	 *            setter, see {@link #fromColumn}
 	 */
@@ -139,21 +142,6 @@ public class ParsingRule implements Comparable<ParsingRule> {
 		return parseUntilEnd;
 	}
 
-	/**
-	 * @param dataType
-	 *            setter, see {@link #dataType}
-	 */
-	public void setDataType(String dataType) {
-		this.dataType = dataType;
-	}
-
-	/**
-	 * @return the dataType, see {@link #dataType}
-	 */
-	public String getDataType() {
-		return dataType;
-	}
-
 	@Override
 	public boolean equals(Object obj) {
 		return fromColumn.equals(obj);
@@ -169,13 +157,32 @@ public class ParsingRule implements Comparable<ParsingRule> {
 		return fromColumn.compareTo(compareTarget.getFromColumn());
 	}
 
+	/**
+	 * @param columnDescripton
+	 *            setter, see {@link #columnDescripton}
+	 */
+	public void setColumnDescripton(ColumnDescription columnDescripton) {
+		this.columnDescripton = columnDescripton;
+	}
+
+	/**
+	 * @return the columnDescripton, see {@link #columnDescripton}
+	 */
+	public ColumnDescription getColumnDescripton() {
+		return columnDescripton;
+	}
+
 	@Override
 	public String toString() {
 		if (toColum == -1 && parseUntilEnd == false)
-			return "[" + fromColumn + ", " + dataType + "]";
+			return "[" + fromColumn + ", " + columnDescripton.getDataType() + " "
+					+ columnDescripton.getColumnType() + "]";
 		else if (toColum == -1 && parseUntilEnd == true)
-			return "[" + fromColumn + " to end, " + dataType + "]";
+			return "[" + fromColumn + " to end, " + columnDescripton.getDataType() + " "
+					+ columnDescripton.getColumnType() + "]";
 		else
-			return "[" + fromColumn + "-" + toColum + ", " + dataType + "]";
+			return "[" + fromColumn + "-" + toColum + ", "
+					+ columnDescripton.getDataType() + " "
+					+ columnDescripton.getColumnType() + "]";
 	}
 }

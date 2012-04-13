@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,6 +26,7 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 
+import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -98,8 +99,8 @@ public class DataSetDescription extends MatrixDefinition {
 	 * <p>
 	 * The parsing pattern for the {@link TabularDataParser}, specifying the
 	 * order of how to treat values between delimiters. For every column that
-	 * should be parsed one {@link ColumnParsingDetail} object in ascending
-	 * order of columns must be added.
+	 * should be parsed one {@link ColumnDescription} object in ascending order
+	 * of columns must be added.
 	 * </p>
 	 * <p>
 	 * This is an alternative to the {@link #parsingRules}, which are
@@ -115,7 +116,7 @@ public class DataSetDescription extends MatrixDefinition {
 	 * {@link #getParsingPattern()} either returns this parsingPattern, or
 	 * creates one based on the {@link #parsingRules}.
 	 */
-	private ArrayList<ColumnParsingDetail> parsingPattern = null;
+	private ArrayList<ColumnDescription> parsingPattern = null;
 
 	/**
 	 * Flag determining whether the input matrix should be transposed, i.e.,
@@ -124,13 +125,12 @@ public class DataSetDescription extends MatrixDefinition {
 	 */
 	private boolean transposeMatrix = false;
 
-
-
 	/**
 	 * Set whether the data you want to load is homogeneous, i.e. all the
-	 * columns in the file are of the same data type. If this is true the data
-	 * scale used is the same for all columns. If this is false each column has
-	 * its own data scale. Defaults to true.
+	 * columns in the file are of the same semantic data type, i.e. they have
+	 * the same value ranges, etc. If this is true the data scale used is the
+	 * same for all columns. If this is false each column has its own data
+	 * scale. Defaults to true.
 	 */
 	private boolean isDataHomogeneous = true;
 
@@ -347,19 +347,19 @@ public class DataSetDescription extends MatrixDefinition {
 	 * @param parsingPattern
 	 *            setter, see {@link #parsingPattern}
 	 */
-	public void setParsingPattern(ArrayList<ColumnParsingDetail> parsingPattern) {
+	public void setParsingPattern(ArrayList<ColumnDescription> parsingPattern) {
 		this.parsingPattern = parsingPattern;
 	}
 
-	public ArrayList<ColumnParsingDetail> getParsingPattern() {
+	public ArrayList<ColumnDescription> getParsingPattern() {
 
-		if (parsingPattern != null && !(parsingPattern.size()==0))
+		if (parsingPattern != null && !(parsingPattern.size() == 0))
 			return parsingPattern;
 
 		if (parsingRules == null)
 			return null;
 
-		parsingPattern = new ArrayList<ColumnParsingDetail>();
+		parsingPattern = new ArrayList<ColumnDescription>();
 
 		Collections.sort(parsingRules);
 
@@ -422,8 +422,9 @@ public class DataSetDescription extends MatrixDefinition {
 					&& !currentParsingRule.isParseUntilEnd()) {
 				// if only a single from column is specified we write that and
 				// continue with the next parsing rule
-				parsingPattern.add(new ColumnParsingDetail(columnCount,
-						currentParsingRule.getDataType()));
+				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule
+						.getColumnDescripton().getDataType(), currentParsingRule
+						.getColumnDescripton().getColumnType()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
 				continue;
@@ -432,25 +433,40 @@ public class DataSetDescription extends MatrixDefinition {
 					|| currentParsingRule.isParseUntilEnd()) {
 				// we write the data type between the from and to column, or
 				// between the from and end
-				parsingPattern.add(new ColumnParsingDetail(columnCount,
-						currentParsingRule.getDataType()));
+				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule
+						.getColumnDescripton().getDataType(), currentParsingRule
+						.getColumnDescripton().getColumnType()));
 				continue;
 			}
 			if (columnCount == currentParsingRule.getToColumn()) {
 				// we reach the end of a parsing rule
-				parsingPattern.add(new ColumnParsingDetail(columnCount,
-						currentParsingRule.getDataType()));
+				parsingPattern.add(new ColumnDescription(columnCount, currentParsingRule
+						.getColumnDescripton().getDataType(), currentParsingRule
+						.getColumnDescripton().getColumnType()));
 				previousParsingRule = currentParsingRule;
 				currentParsingRule = null;
 				continue;
 			}
 
 		}
-		if(parsingPattern.size() == 0)
-		{
-			throw new IllegalStateException("Failed to create parsing pattern based on the parsing rule / input file / header line information.");
+		if (parsingPattern.size() == 0) {
+			throw new IllegalStateException(
+					"Failed to create parsing pattern based on the parsing rule / input file / header line information.");
 		}
 		return parsingPattern;
+	}
+
+	/**
+	 * Check whether all columns in the dataset to be loaded are continuous and
+	 * numerical.
+	 */
+	public boolean areAllColumnTypesContinuous() {
+		for (ColumnDescription columnDescription : getParsingPattern()) {
+			if (!columnDescription.getColumnType().equalsIgnoreCase(
+					ColumnDescription.CONTINUOUS))
+				return false;
+		}
+		return true;
 	}
 
 	@Override

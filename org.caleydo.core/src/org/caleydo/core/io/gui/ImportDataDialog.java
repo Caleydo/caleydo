@@ -35,7 +35,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.gui.util.LabelEditorDialog;
-import org.caleydo.core.io.ColumnParsingDetail;
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.manager.GeneralManager;
@@ -813,7 +813,7 @@ public class ImportDataDialog extends Dialog {
 	private boolean readDimensionDefinition() {
 		ArrayList<String> dimensionLabels = new ArrayList<String>();
 
-		ArrayList<ColumnParsingDetail> inputPattern = new ArrayList<ColumnParsingDetail>();
+		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
 		// inputPattern = new StringBuffer("SKIP" + ";");
 
 		// the columnIndex here is the columnIndex of the previewTable. This is
@@ -830,7 +830,7 @@ public class ImportDataDialog extends Dialog {
 				if (buttonUncertaintyDataProvided.getSelection()
 						&& (columnIndex % 2 != 0)) {
 					inputPattern
-							.add(new ColumnParsingDetail(columnIndex - 1, "CERTAINTY"));
+							.add(new ColumnDescription(columnIndex - 1, "CERTAINTY", ColumnDescription.CONTINUOUS));
 					continue;
 				}
 
@@ -850,7 +850,8 @@ public class ImportDataDialog extends Dialog {
 				} catch (NumberFormatException nfe) {
 					dataType = "STRING";
 				}
-				inputPattern.add(new ColumnParsingDetail(columnIndex - 1, dataType));
+				// fixme this does not work for categorical data
+				inputPattern.add(new ColumnDescription(columnIndex - 1, dataType, ColumnDescription.CONTINUOUS));
 
 				String labelText = previewTable.getColumn(columnIndex).getText();
 				dimensionLabels.add(labelText);

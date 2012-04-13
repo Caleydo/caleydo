@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -34,15 +34,28 @@ import org.caleydo.core.data.collection.EColumnType;
  * 
  */
 @XmlType
-public class ColumnParsingDetail {
+public class ColumnDescription {
+
+	public static final String CONTINUOUS = "continuous";
+	public static final String ORDINAL = "ordinal";
+	public static final String NOMINAL = "nominal";
 
 	/** The number of the column to be parsed, starting with 0 */
 	private int column;
+
 	/**
 	 * The dataType of the column, must be one equivalent to those listed in
 	 * {@link EColumnType}
 	 */
 	private String dataType;
+
+	/**
+	 * The type of data found in the column. We destinguish between
+	 * {@link #CONTINUOUS} (real numbers, integers), {@link #ORDINAL} (ordered
+	 * categories) and {@link #NOMINAL} (unordered categories). Defaults to
+	 * continuous.
+	 */
+	private String columnType = CONTINUOUS;
 
 	/**
 	 * An integer ID of the column. For newly loaded data this needs not be set.
@@ -54,7 +67,7 @@ public class ColumnParsingDetail {
 	/**
 	 * Default Constructor
 	 */
-	public ColumnParsingDetail() {
+	public ColumnDescription() {
 	}
 
 	/**
@@ -65,9 +78,22 @@ public class ColumnParsingDetail {
 	 * @param dataType
 	 *            see {@link #dataType}
 	 */
-	public ColumnParsingDetail(int column, String dataType) {
+	public ColumnDescription(int column, String dataType, String columnType) {
 		this.column = column;
 		this.dataType = dataType;
+		this.columnType = columnType;
+	}
+
+	/**
+	 * Constructor specifying the types of the column but not the parsing
+	 * information
+	 * 
+	 * @param dataType
+	 * @param columnType
+	 */
+	public ColumnDescription(String dataType, String columnType) {
+		this.dataType = dataType;
+		this.columnType = columnType;
 	}
 
 	/**
@@ -98,6 +124,26 @@ public class ColumnParsingDetail {
 	 */
 	public String getDataType() {
 		return dataType;
+	}
+
+	/**
+	 * @param columnType
+	 *            setter, see {@link #columnType}
+	 */
+	public void setColumnType(String columnType) {
+		if (columnType.equalsIgnoreCase(CONTINUOUS)
+				|| columnType.equalsIgnoreCase(ORDINAL)
+				|| columnType.equalsIgnoreCase(NOMINAL))
+			this.columnType = columnType;
+		else
+			throw new IllegalStateException("Unknown column type: " + columnType);
+	}
+
+	/**
+	 * @return the columnType, see {@link #columnType}
+	 */
+	public String getColumnType() {
+		return columnType;
 	}
 
 	/**

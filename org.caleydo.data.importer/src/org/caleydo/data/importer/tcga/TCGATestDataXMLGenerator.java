@@ -26,6 +26,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
@@ -152,7 +153,7 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setDataType("FLOAT");
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 
@@ -187,7 +188,7 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setDataType("FLOAT");
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
 		mirnaData.addParsingRule(parsingRule);
 
 		IDSpecification mirnaIDSpecification = new IDSpecification();
@@ -220,7 +221,7 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setDataType("FLOAT");
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
 
@@ -253,7 +254,7 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setDataType("FLOAT");
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.ORDINAL));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
