@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,10 +25,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
-
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
@@ -40,18 +38,20 @@ import org.caleydo.core.manager.AManager;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.execution.DisplayLoopExecution;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.listener.CreateGUIViewListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.overlay.infoarea.GLInfoAreaManager;
 import org.caleydo.core.view.vislink.ConnectedElementRepresentationManager;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**
@@ -64,8 +64,7 @@ public class ViewManager
 	extends AManager<IView>
 	implements IListenerOwner {
 
-	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView =
-		new HashMap<GLCanvas, ArrayList<AGLView>>();
+	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
 
 	private HashMap<Integer, AGLView> hashGLViewID2GLView = new HashMap<Integer, AGLView>();
 
@@ -77,8 +76,8 @@ public class ViewManager
 
 	private PickingManager pickingManager = new PickingManager();
 
-	private ConnectedElementRepresentationManager connectedElementRepManager =
-		ConnectedElementRepresentationManager.get();
+	private ConnectedElementRepresentationManager connectedElementRepManager = ConnectedElementRepresentationManager
+			.get();
 
 	private GLInfoAreaManager infoAreaManager = new GLInfoAreaManager();
 
@@ -87,8 +86,8 @@ public class ViewManager
 	private CreateGUIViewListener createGUIViewListener;
 
 	/**
-	 * Utility object to execute code within the display loop, e.g. used by managers to avoid access conflicts
-	 * with views.
+	 * Utility object to execute code within the display loop, e.g. used by
+	 * managers to avoid access conflicts with views.
 	 */
 	private DisplayLoopExecution displayLoopExecution;
 
@@ -148,7 +147,8 @@ public class ViewManager
 	}
 
 	/**
-	 * Associate an RCP view with the Caleydo view contained inside the RCP view.
+	 * Associate an RCP view with the Caleydo view contained inside the RCP
+	 * view.
 	 * 
 	 * @param rcpView
 	 * @param view
@@ -162,7 +162,8 @@ public class ViewManager
 	}
 
 	/**
-	 * Remove association between an RCP view and the Caleydo view contained inside the RCP view.
+	 * Remove association between an RCP view and the Caleydo view contained
+	 * inside the RCP view.
 	 * 
 	 * @param rcpView
 	 * @param view
@@ -240,11 +241,17 @@ public class ViewManager
 		fpsAnimator.start();
 		fpsAnimator.setIgnoreExceptions(true);
 		fpsAnimator.setPrintExceptions(true);
+		
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+				"Start animator"));
 	}
 
 	public void stopAnimator() {
 		if (fpsAnimator != null && fpsAnimator.isAnimating())
 			fpsAnimator.stop();
+		
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+				"Stop animator"));
 	}
 
 	public void registerGLCanvasToAnimator(final GLCanvas glCaleydoCanvas) {
@@ -255,14 +262,18 @@ public class ViewManager
 		}
 
 		fpsAnimator.add(glCaleydoCanvas);
+		
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+				"Add canvas to animator"));
 	}
 
 	private void initAnimator() {
 		fpsAnimator = new FPSAnimator(60);
-
-		displayLoopExecution = DisplayLoopExecution.get();
-		fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
-		displayLoopExecution.executeMultiple(connectedElementRepManager);
+		
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
+				"Creating animator"));
+		
+		startAnimator();
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -270,12 +281,13 @@ public class ViewManager
 	}
 
 	/**
-	 * Requests busy mode for the application. This method should be called whenever a process needs to stop
-	 * any user interaction with the application, e.g. when starting up or when loading multiple pathways.
-	 * Usually this should result disabling user events and showing a loading screen animation.
+	 * Requests busy mode for the application. This method should be called
+	 * whenever a process needs to stop any user interaction with the
+	 * application, e.g. when starting up or when loading multiple pathways.
+	 * Usually this should result disabling user events and showing a loading
+	 * screen animation.
 	 * 
-	 * @param requestInstance
-	 *            object that wants to request busy mode
+	 * @param requestInstance object that wants to request busy mode
 	 */
 	public void requestBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -296,11 +308,10 @@ public class ViewManager
 	}
 
 	/**
-	 * Releases a previously requested busy mode. Releases are only performed by passing the originally
-	 * requesting object to this method.
+	 * Releases a previously requested busy mode. Releases are only performed by
+	 * passing the originally requesting object to this method.
 	 * 
-	 * @param requestInstance
-	 *            the object that requested the busy mode
+	 * @param requestInstance the object that requested the busy mode
 	 */
 	public void releaseBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -325,9 +336,10 @@ public class ViewManager
 			@Override
 			public void run() {
 				try {
-					IWorkbenchPage page =
-						PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage();
-					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView.getViewType());
+					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+							.getActivePage();
+					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView
+							.getViewType());
 					AGLView view = viewPart.getGLView();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
@@ -335,7 +347,7 @@ public class ViewManager
 				}
 				catch (PartInitException ex) {
 					throw new RuntimeException("could not create view with gui-id="
-						+ serializedView.getViewType(), ex);
+							+ serializedView.getViewType(), ex);
 				}
 			}
 		});
@@ -343,7 +355,7 @@ public class ViewManager
 
 	@SuppressWarnings("rawtypes")
 	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCanvas glCanvas,
-		Composite parentComposite, ViewFrustum viewFrustum) {
+			Composite parentComposite, ViewFrustum viewFrustum) {
 
 		AGLView view;
 		try {
@@ -360,8 +372,8 @@ public class ViewManager
 	}
 
 	@Override
-	public synchronized void queueEvent(final AEventListener<? extends IListenerOwner> listener,
-		final AEvent event) {
+	public synchronized void queueEvent(
+			final AEventListener<? extends IListenerOwner> listener, final AEvent event) {
 		// PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().getDisplay().asyncExec(new
 		// Runnable() {
 		// public void run() {
@@ -392,16 +404,21 @@ public class ViewManager
 	}
 
 	/**
-	 * Retrieves the {@link DisplayLoopExecution} related to the {@link ViewManager}'s display loop.
+	 * Retrieves the {@link DisplayLoopExecution} related to the
+	 * {@link ViewManager}'s display loop.
 	 * 
-	 * @return {@link DisplayLoopExecution} for executing code in the display loop
+	 * @return {@link DisplayLoopExecution} for executing code in the display
+	 *         loop
 	 */
 	public DisplayLoopExecution getDisplayLoopExecution() {
 
 		// lazy creation of animator and display loop
-		if (displayLoopExecution == null)
+		if (displayLoopExecution == null) {
 			initAnimator();
-
+			displayLoopExecution = DisplayLoopExecution.get();
+			fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
+			displayLoopExecution.executeMultiple(connectedElementRepManager);
+		}
 		return displayLoopExecution;
 	}
 }

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -78,7 +78,8 @@ public class InteractiveSplashHandler
 		// (SWT.COLOR_BLACK));
 		progressMessageLabel.setFont(new Font(splash.getDisplay(), "Arial", 10, SWT.NONE));
 		progressMessageLabel.setBounds(20, 230, getSplash().getSize().x - 40, 25);
-		progressMessageLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		progressMessageLabel
+				.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label versionLabel = new Label(splash, SWT.NONE);
 		versionLabel.setText(" Version " + Activator.version + " BETA");
@@ -90,56 +91,70 @@ public class InteractiveSplashHandler
 		brandingLabelTUGCaption.setText(" Graz University of Technology, Austria:");
 		brandingLabelTUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelTUGCaption.setBounds(20, 253, 220, 15);
-		brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		brandingLabelTUGCaption.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
 
 		Label brandingLabelTUGTeamCaption = new Label(splash, SWT.NONE);
-		brandingLabelTUGTeamCaption.setText(" Alexander Lex, Christian Partl, Dieter Schmalstieg ");
-		brandingLabelTUGTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NORMAL));
+		brandingLabelTUGTeamCaption
+				.setText(" Alexander Lex, Christian Partl, Dieter Schmalstieg ");
+		brandingLabelTUGTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8,
+				SWT.NORMAL));
 		brandingLabelTUGTeamCaption.setBounds(240, 253, 250, 15);
-		brandingLabelTUGTeamCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
+		brandingLabelTUGTeamCaption.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
+
 		Label brandingLabelJKUCaption = new Label(splash, SWT.NONE);
 		brandingLabelJKUCaption.setText(" Johannes Kepler University Linz, Austria:");
 		brandingLabelJKUCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelJKUCaption.setBounds(20, 270, 220, 15);
-		brandingLabelJKUCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		brandingLabelJKUCaption.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
 
 		Label brandingLabelJKUTeamCaption = new Label(splash, SWT.NONE);
 		brandingLabelJKUTeamCaption.setText(" Marc Streit ");
-		brandingLabelJKUTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NORMAL));
+		brandingLabelJKUTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8,
+				SWT.NORMAL));
 		brandingLabelJKUTeamCaption.setBounds(240, 270, 100, 15);
-		brandingLabelJKUTeamCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
+		brandingLabelJKUTeamCaption.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
+
 		Label brandingLabelHarvardCaption = new Label(splash, SWT.NONE);
 		brandingLabelHarvardCaption.setText(" Harvard University, US: ");
-		brandingLabelHarvardCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
+		brandingLabelHarvardCaption
+				.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
 		brandingLabelHarvardCaption.setBounds(20, 287, 220, 15);
-		brandingLabelHarvardCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		brandingLabelHarvardCaption.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
 
 		Label brandingLabelHarvardTeamCaption = new Label(splash, SWT.NONE);
 		brandingLabelHarvardTeamCaption.setText(" Nils Gehlenborg ");
-		brandingLabelHarvardTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NORMAL));
+		brandingLabelHarvardTeamCaption.setFont(new Font(splash.getDisplay(), "Arial", 8,
+				SWT.NORMAL));
 		brandingLabelHarvardTeamCaption.setBounds(240, 287, 100, 15);
-		brandingLabelHarvardTeamCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-		
-//		Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
-//		brandingLabelTUGNames
-//			.setText(" Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, \n Werner Puff, Christian Partl, Dieter Schmalstieg");
-//		brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
-//		brandingLabelTUGNames.setBounds(20, 270, 500, 30);
-//		brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		brandingLabelHarvardTeamCaption.setForeground(splash.getDisplay().getSystemColor(
+				SWT.COLOR_WHITE));
 
-//		Label brandingLabelMUGCaption = new Label(splash, SWT.NONE);
-//		brandingLabelMUGCaption.setText(" Medical University of Graz");
-//		brandingLabelMUGCaption.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.BOLD));
-//		brandingLabelMUGCaption.setBounds(20, 298, 500, 15);
-//		brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
-//
-//		Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
-//		brandingLabelMUGNames.setText(" Heimo Mueller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
-//		brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial", 8, SWT.NONE));
-//		brandingLabelMUGNames.setBounds(20, 312, 300, 15);
-//		brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		// Label brandingLabelTUGNames = new Label(splash, SWT.NONE);
+		// brandingLabelTUGNames
+		// .setText(" Marc Streit, Alexander Lex, Michael Kalkusch, Bernhard Schlegl, \n Werner Puff, Christian Partl, Dieter Schmalstieg");
+		// brandingLabelTUGNames.setFont(new Font(splash.getDisplay(), "Arial",
+		// 8, SWT.NONE));
+		// brandingLabelTUGNames.setBounds(20, 270, 500, 30);
+		// brandingLabelTUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+
+		// Label brandingLabelMUGCaption = new Label(splash, SWT.NONE);
+		// brandingLabelMUGCaption.setText(" Medical University of Graz");
+		// brandingLabelMUGCaption.setFont(new Font(splash.getDisplay(),
+		// "Arial", 8, SWT.BOLD));
+		// brandingLabelMUGCaption.setBounds(20, 298, 500, 15);
+		// brandingLabelMUGCaption.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
+		//
+		// Label brandingLabelMUGNames = new Label(splash, SWT.NONE);
+		// brandingLabelMUGNames.setText(" Heimo Mueller, Stefan Sauer, Wilhelm Steiner, Kurt Zatloukal");
+		// brandingLabelMUGNames.setFont(new Font(splash.getDisplay(), "Arial",
+		// 8, SWT.NONE));
+		// brandingLabelMUGNames.setBounds(20, 312, 300, 15);
+		// brandingLabelMUGNames.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		Label copyrightLabel = new Label(splash, SWT.NONE);
 		copyrightLabel.setText(" (c) 2005 - 2012  www.caleydo.org");
@@ -148,7 +163,7 @@ public class InteractiveSplashHandler
 		copyrightLabel.setForeground(splash.getDisplay().getSystemColor(SWT.COLOR_WHITE));
 
 		GeneralManager.get().getSWTGUIManager()
-			.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
+				.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
 
 		// Application.startCaleydoCore();
 	}
@@ -171,11 +186,5 @@ public class InteractiveSplashHandler
 				splash.forceActive();
 			}
 		});
-	}
-
-	@Override
-	public void dispose() {
-		// Start OpenGL2 rendering
-		GeneralManager.get().getViewManager().startAnimator();
 	}
 }

@@ -119,6 +119,7 @@ public class ViewNode
 		}
 		if (iconPath != null) {
 			
+			// FIXME: we need to find a solution that works in the export version as well
 			ClassLoader classLoader = representedView.getClass().getClassLoader();
 			URL url = classLoader.getResource(iconPath);
 			try {

@@ -118,9 +118,10 @@ public class GeneticGUIStartupProcedure
 		// String>("org.caleydo.view.browser",
 		// "org.caleydo.datadomain.genetic"));
 
-		if (appInitData.isLoadPathways()) {
-			startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.bucket",
-					"org.caleydo.datadomain.genetic"));
-		}
+		// if (appInitData.isLoadPathways()) {
+		// startViewWithDataDomain.add(new Pair<String,
+		// String>("org.caleydo.view.bucket",
+		// "org.caleydo.datadomain.genetic"));
+		// }
 	}
 }
