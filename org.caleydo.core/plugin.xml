@@ -297,11 +297,11 @@
                   id="org.caleydo.core.gui.preferences.GeneralPreferencePage"
                   name="General">
             </page>
-            <page
+            <!--page
                   class="org.caleydo.core.gui.preferences.VisualLinksPreferencePage"
                   id="org.caleydo.core.gui.preferences.VisualLinksPreferencePage"
                   name="Visual Links">
-            </page>
+            </page-->
             <page
                   class="org.caleydo.core.gui.preferences.ViewPreferencePage"
                   id="org.caleydo.core.gui.preferences.ViewPreferencePage"

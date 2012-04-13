@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,6 +21,7 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.PartListener;
+import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
@@ -38,7 +39,8 @@ public class ApplicationWorkbenchWindowAdvisor
 	public ApplicationWorkbenchWindowAdvisor(IWorkbenchWindowConfigurer configurer) {
 		super(configurer);
 
-		// Init the core because the workbench must already be initialized for the XML startup progress bar
+		// Init the core because the workbench must already be initialized for
+		// the XML startup progress bar
 		StartupProcessor.get().initCore();
 	}
 
@@ -55,7 +57,10 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setShowCoolBar(false);
 		configurer.setShowStatusLine(false);
 		// configurer.setShowProgressIndicator(true);
-		configurer.setShowPerspectiveBar(true);
+
+		if (!GeneralManager.RELEASE_MODE)
+			configurer.setShowPerspectiveBar(true);
+
 		configurer.setTitle("Caleydo");
 
 		configurer.getWindow().getPartService().addPartListener(new PartListener());
@@ -67,11 +72,13 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
 
-		IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer().getMenuManager();
+		IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer()
+				.getMenuManager();
 		for (IContributionItem item : menuManager.getItems()) {
 
 			// Removing all non Caleydo menus.
-			// Especially useful for Eclipse contributed plugins when starting Caleydo from Eclipses
+			// Especially useful for Eclipse contributed plugins when starting
+			// Caleydo from Eclipses
 			if (!item.getId().contains("org.caleydo")) {
 				menuManager.remove(item);
 			}
@@ -89,8 +96,8 @@ public class ApplicationWorkbenchWindowAdvisor
 					configurer.getMenuManager().remove(menuItem);
 				}
 				else if (menuItem.getId().equals("viewMenu")) {
-					IContributionItem itemToRemove =
-						((MenuManager) menuItem).find("org.caleydo.core.command.openviews.remote");
+					IContributionItem itemToRemove = ((MenuManager) menuItem)
+							.find("org.caleydo.core.command.openviews.remote");
 
 					if (itemToRemove != null)
 						itemToRemove.setVisible(false);
