@@ -49,7 +49,7 @@ public class GeneralManager {
 	/**
 	 * In release mode non-stable or student views are automatically removed from the workbench.
 	 */
-	public static final boolean RELEASE_MODE = false;
+	public static final boolean RELEASE_MODE = true;
 
 	/**
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle.
@@ -63,7 +63,7 @@ public class GeneralManager {
 	// public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 
 	/**
-	 * The template for the concrete caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
+	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
 	 * and is then replaced with the concrete folder
 	 */
 	public static final String USER_HOME = "user.home";

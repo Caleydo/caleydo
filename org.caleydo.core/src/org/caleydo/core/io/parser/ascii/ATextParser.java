@@ -20,10 +20,8 @@
 package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.LineNumberReader;
-
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.manager.GeneralManager;
@@ -109,7 +107,7 @@ public abstract class ATextParser {
 	 */
 	protected final int calculateNumberOfLinesInFile() {
 		try {
-			LineNumberReader lnr = new LineNumberReader(new FileReader(fileName));
+			LineNumberReader lnr = new LineNumberReader(GeneralManager.get().getResourceLoader().getResource(fileName));
 			lnr.skip(Long.MAX_VALUE);
 			numberOfLinesInFile = lnr.getLineNumber();
 			lnr.close();
@@ -128,7 +126,7 @@ public abstract class ATextParser {
 			Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 					"Start loading file " + fileName + "..."));
 
-			BufferedReader reader = new BufferedReader(new FileReader(fileName));
+			BufferedReader reader = GeneralManager.get().getResourceLoader().getResource(fileName);
 
 			this.parseFile(reader);
 

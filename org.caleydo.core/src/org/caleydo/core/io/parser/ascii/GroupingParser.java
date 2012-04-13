@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,7 +24,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
@@ -32,6 +31,7 @@ import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -43,7 +43,8 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Alexander Lex
  */
-public class GroupingParser extends ATextParser {
+public class GroupingParser
+	extends ATextParser {
 
 	private GroupingParseSpecification groupingSpecifications;
 
@@ -76,13 +77,15 @@ public class GroupingParser extends ATextParser {
 
 			// read header
 			if (groupingSpecifications.isContainsColumnIDs()) {
-				reader = new BufferedReader(new FileReader(
-						groupingSpecifications.getDataSourcePath()));
+
+				reader = GeneralManager.get().getResourceLoader()
+						.getResource(groupingSpecifications.getDataSourcePath());
+
 				String headerLine = "";
 
 				int rowOfColumnIDs = (groupingSpecifications.getRowOfColumnIDs() != null) ? groupingSpecifications
-						.getRowOfColumnIDs() : groupingSpecifications
-						.getNumberOfHeaderLines() - 1;
+						.getRowOfColumnIDs()
+						: groupingSpecifications.getNumberOfHeaderLines() - 1;
 				for (int countToHeader = 0; countToHeader <= rowOfColumnIDs; countToHeader++) {
 					headerLine = reader.readLine();
 				}
@@ -90,8 +93,8 @@ public class GroupingParser extends ATextParser {
 				reader.close();
 			}
 
-			reader = new BufferedReader(new FileReader(
-					groupingSpecifications.getDataSourcePath()));
+			reader = GeneralManager.get().getResourceLoader()
+					.getResource(groupingSpecifications.getDataSourcePath());
 
 			for (int headerLineCounter = 0; headerLineCounter < groupingSpecifications
 					.getNumberOfHeaderLines(); headerLineCounter++) {
@@ -104,8 +107,7 @@ public class GroupingParser extends ATextParser {
 			String firstDataLine = null;
 			if (columnsToRead == null) {
 				firstDataLine = reader.readLine();
-				String[] data = firstDataLine
-						.split(groupingSpecifications.getDelimiter());
+				String[] data = firstDataLine.split(groupingSpecifications.getDelimiter());
 				columnsToRead = new ArrayList<Integer>(data.length);
 				if (headerCells == null) {
 					headerCells = new String[data.length];
@@ -119,8 +121,7 @@ public class GroupingParser extends ATextParser {
 
 			ArrayList<HashMap<String, ArrayList<Integer>>> listOfGroupLists = new ArrayList<HashMap<String, ArrayList<Integer>>>(
 					columnsToRead.size());
-			ArrayList<String> listOfGroupNames = new ArrayList<String>(
-					columnsToRead.size());
+			ArrayList<String> listOfGroupNames = new ArrayList<String>(columnsToRead.size());
 
 			HashMap<String, ArrayList<Integer>> currentGroupList;
 			// initialize for every column
@@ -134,7 +135,8 @@ public class GroupingParser extends ATextParser {
 				String line = null;
 				if (firstDataLine == null) {
 					line = reader.readLine();
-				} else {
+				}
+				else {
 					// the reader already read the first line so we need to
 					// re-use it
 					line = firstDataLine;
@@ -182,8 +184,7 @@ public class GroupingParser extends ATextParser {
 						.get(groupListCount);
 				ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
 				ArrayList<Integer> clusterSizes = new ArrayList<Integer>(groupList.size());
-				ArrayList<Integer> sampleElements = new ArrayList<Integer>(
-						groupList.size());
+				ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
 				ArrayList<String> clusterNames = new ArrayList<String>(groupList.size());
 				int sampleIndex = 0;
 				for (String groupName : groupList.keySet()) {
@@ -202,7 +203,8 @@ public class GroupingParser extends ATextParser {
 			}
 
 			return perspectiveInitializationDatas;
-		} catch (IOException ioException) {
+		}
+		catch (IOException ioException) {
 			throw new IllegalStateException("Could not read file: "
 					+ groupingSpecifications.getDataSourcePath());
 		}

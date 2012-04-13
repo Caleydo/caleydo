@@ -75,59 +75,6 @@ public class ToolBarContentFactory {
 		return toolBarContents.get(viewType);
 	}
 
-	// /**
-	// * Initializes an instance of this class. Must be called before the first usage.
-	// */
-	// public void init() {
-
-	// ToolBarInfo info;
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.histogram";
-	// info.ignored = true;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.parcoords";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.bucket";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.radial";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.scatterplot";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.matchmaker";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.dataflipper";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.treemap";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-
-	// info = new ToolBarInfo();
-	// info.viewType = "org.caleydo.view.filter";
-	// info.ignored = false;
-	// toolBarInfos.put(info.viewType, info);
-	// }
-
 	/**
 	 * Looks for toolbar content providers for a specified list of view types
 	 * 

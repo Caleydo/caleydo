@@ -142,6 +142,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
+		
+		registerPickingListeners();
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -199,6 +201,46 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		initPathwayData(gl);
 	}
+	
+	protected void registerPickingListeners() {
+
+//		addIDPickingListener(new APickingListener()
+//		{
+//			@Override
+//			public void dragged(Pick pick)
+//			{
+//				DragAndDropController dragAndDropController = visBricks
+//						.getDragAndDropController();
+//				if (dragAndDropController.isDragging()
+//						&& dragAndDropController.getDraggingMode() != null
+//						&& dragAndDropController.getDraggingMode()
+//								.equals("BrickDrag"
+//										+ BrickSpacingRenderer.this.dimensionGroup.getID()))
+//				{
+//					dragAndDropController.setDropArea(BrickSpacingRenderer.this);
+//				}
+//			}
+//
+//		}, PickingType.PATHWAY_ELEMENT_SELECTION, id);
+		
+//		addTypePickingListener(new APickingListener() {
+//			@Override
+//			public void clicked(Pick pick) {
+//				selectedConnectionBandID = pick.getID();
+//				selectElementsByConnectionBandID(selectedConnectionBandID);
+//			}
+//
+//			@Override
+//			public void rightClicked(Pick pick) {
+//
+//				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(), true));
+//				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(), false));
+//			}
+//
+//		}, PickingType.BRICK_CONNECTION_BAND.name());
+
+	
+	}
 
 	@Override
 	public void displayLocal(final GL2 gl) {
@@ -233,7 +275,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	@Override
 	public void display(final GL2 gl) {
-		checkForHits(gl);
+		//checkForHits(gl);
 
 		if (pathway != null) {
 			// TODO: also put this in global DL

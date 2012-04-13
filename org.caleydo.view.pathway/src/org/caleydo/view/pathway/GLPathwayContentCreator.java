@@ -125,7 +125,7 @@ public class GLPathwayContentCreator {
 			return;
 
 		int iVerticesDisplayListId = -1;
-		int iEdgesDisplayListId = -1;
+		int edgesDisplayListId = -1;
 
 		if (hashPathway2VerticesDisplayListId.containsKey(pathway)) {
 			// Replace current display list if a display list exists
@@ -143,15 +143,15 @@ public class GLPathwayContentCreator {
 
 		if (hashPathway2EdgesDisplayListId.containsKey(pathway)) {
 			// Replace current display list if a display list exists
-			iEdgesDisplayListId = hashPathway2EdgesDisplayListId.get(pathway);
+			edgesDisplayListId = hashPathway2EdgesDisplayListId.get(pathway);
 		}
 		else {
 			// Creating edge display list for pathways
-			iEdgesDisplayListId = gl.glGenLists(1);
-			hashPathway2EdgesDisplayListId.put(pathway, iEdgesDisplayListId);
+			edgesDisplayListId = gl.glGenLists(1);
+			hashPathway2EdgesDisplayListId.put(pathway, edgesDisplayListId);
 		}
 
-		gl.glNewList(iEdgesDisplayListId, GL2.GL_COMPILE);
+		gl.glNewList(edgesDisplayListId, GL2.GL_COMPILE);
 		extractEdges(gl, pathway);
 		gl.glEndList();
 	}
@@ -190,62 +190,6 @@ public class GLPathwayContentCreator {
 			}
 		}
 	}
-
-	// private void performNeighborhoodAlgorithm(final IGraphItem
-	// selectedVertex) {
-	// GraphVisitorSearchBFS graphVisitorSearchBFS;
-	//
-	// if (enableNeighborhood) {
-	// graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 4);
-	// } else {
-	// graphVisitorSearchBFS = new GraphVisitorSearchBFS(selectedVertex, 0);
-	// }
-	//
-	// graphVisitorSearchBFS.setProp(EGraphItemProperty.OUTGOING);
-	// graphVisitorSearchBFS.setGraph(selectedVertex.getAllGraphByType(
-	// EGraphItemHierarchy.GRAPH_PARENT).get(0));
-	//
-	// // List<IGraphItem> lGraphItems =
-	// // graphVisitorSearchBFS.getSearchResult();
-	// graphVisitorSearchBFS.getSearchResult();
-	//
-	// List<List<IGraphItem>> lDepthSearchResult = graphVisitorSearchBFS
-	// .getSearchResultDepthOrdered();
-	// List<IGraphItem> lGraphItems = new ArrayList<IGraphItem>();
-	// //
-	// // int iTmpDepth = 0;
-	// // SelectionType tmpType;
-	//
-	// for (int iDepthIndex = 0; iDepthIndex < lDepthSearchResult.size();
-	// iDepthIndex++) {
-	// lGraphItems = lDepthSearchResult.get(iDepthIndex);
-	//
-	// for (int iItemIndex = 0; iItemIndex < lGraphItems.size(); iItemIndex++) {
-	// // Check if selected item is a vertex
-	// if (lGraphItems.get(iItemIndex) instanceof PathwayVertexGraphItemRep) {
-	// // iTmpDepth = (iDepthIndex + 1) / 2;
-	//
-	// // FIXME - this needs to be adapted to the new selection
-	// // types when re-activating the neighborhoods
-	// // if (iTmpDepth == 1) {
-	// // tmpType = SelectionType.NEIGHBORHOOD_1;
-	// // } else if (iTmpDepth == 2) {
-	// // tmpType = SelectionType.NEIGHBORHOOD_2;
-	// // } else if (iTmpDepth == 3) {
-	// // tmpType = SelectionType.NEIGHBORHOOD_3;
-	// // } else
-	// // throw new IllegalStateException(
-	// // "Neighborhood depth greater than 3 is not supported!");
-	// //
-	// // internalSelectionManager.addToType(tmpType, lGraphItems
-	// // .get(iItemIndex).getID());
-	//
-	// } else {
-	// selectedEdgeRepId.add(lGraphItems.get(iItemIndex).getID());
-	// }
-	// }
-	// }
-	// }
 
 	private void buildEnzymeNodeDisplayList(final GL2 gl) {
 

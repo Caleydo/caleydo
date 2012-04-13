@@ -110,13 +110,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.util.graph"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.lib.jogl"
          download-size="0"
          install-size="0"
@@ -404,13 +397,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.data.importer.tcga"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.view.genesearch"
          download-size="0"
          install-size="0"
@@ -419,13 +405,6 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.view.selectionbrowser"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.view.tagclouds"
          download-size="0"
          install-size="0"
          version="0.0.0"

@@ -8,7 +8,6 @@ Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.view.parcoords;bundle-version="2.0.0",
  org.caleydo.view.heatmap;bundle-version="2.0.0",
  org.caleydo.view.histogram,
- org.caleydo.view.tagclouds;bundle-version="2.0.0",
  org.caleydo.datadomain.pathway,
  org.caleydo.view.kaplanmeier;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6

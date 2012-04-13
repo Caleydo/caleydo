@@ -94,7 +94,7 @@ public class TabularDataParser extends ATextParser {
 		if (dataSetDescription.isContainsColumnIDs()) {
 			try {
 
-				BufferedReader reader = new BufferedReader(new FileReader(fileName));
+				BufferedReader reader = GeneralManager.get().getResourceLoader().getResource(fileName);
 
 				Integer rowOfColumnIDs = dataSetDescription.getNumberOfHeaderLines() - 1;
 				if (dataSetDescription.getRowOfColumnIDs() != null)

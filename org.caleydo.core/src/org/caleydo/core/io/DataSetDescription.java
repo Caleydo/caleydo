@@ -20,19 +20,16 @@
 package org.caleydo.core.io;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
-
-import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -366,7 +363,10 @@ public class DataSetDescription extends MatrixDefinition {
 		int numberOfColumns = 0;
 
 		try {
-			BufferedReader reader = new BufferedReader(new FileReader(dataSourcePath));
+			
+			BufferedReader reader = GeneralManager.get().getResourceLoader()
+					.getResource(dataSourcePath);
+			
 			// move the reader to the first line that contains the actual data
 			for (int countHeaderLines = 0; countHeaderLines < numberOfHeaderLines; countHeaderLines++) {
 				reader.readLine();

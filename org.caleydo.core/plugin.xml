@@ -74,7 +74,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org and Graz University of Technology - 2012.&#x0A;All Rights Reserved.">
+               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org (c) and Graz University of Technology - 2012. &#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

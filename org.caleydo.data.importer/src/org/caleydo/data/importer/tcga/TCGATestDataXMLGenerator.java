@@ -21,18 +21,15 @@ package org.caleydo.data.importer.tcga;
 
 import java.io.File;
 import java.util.ArrayList;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.ParsingRule;
-import org.caleydo.core.util.collection.Pair;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data

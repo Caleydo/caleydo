@@ -118,6 +118,7 @@ public class ViewNode
 			iconPath = null;
 		}
 		if (iconPath != null) {
+			
 			ClassLoader classLoader = representedView.getClass().getClassLoader();
 			URL url = classLoader.getResource(iconPath);
 			try {

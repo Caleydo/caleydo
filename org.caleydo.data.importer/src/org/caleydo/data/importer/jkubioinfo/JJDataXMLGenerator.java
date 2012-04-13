@@ -19,19 +19,16 @@
  *******************************************************************************/
 package org.caleydo.data.importer.jkubioinfo;
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.FileReader;
 import java.util.ArrayList;
-import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
-
-import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
+import org.caleydo.core.io.DataSetDescriptionCollection;
+import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.ParsingRule;
 
 /**
  * Generator class that writes the loading information of a series of
@@ -57,277 +54,236 @@ public class JJDataXMLGenerator {
 
 	public static final String OUTPUT_FILE_PATH = DATA_FOLDER + "caleydo_mGlu2.xml";
 
+	private IDSpecification sampleIDSpecification;
+	
 	public static void main(String[] args) {
 
-		ArrayList<DataSetDescription> dataSetMetaInfoList = new ArrayList<DataSetDescription>();
-		dataSetMetaInfoList.add(setUpXMLGLU2GeneExpressionData());
-		// dataSetMetaInfoList.add(setUpXMGLU2Pic50Data());
-		dataSetMetaInfoList.add(setUpXMLGLU2BiClusterData());
+		JJDataXMLGenerator generator = new JJDataXMLGenerator();
+		generator.run();
+	}
+	
+	private void run() {
+		
+		sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdType("SAMPLE");
+		//sampleIDSpecification.setReplacementExpression("\\.", "-");
+		//sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 
-		DataSetMetaInfoCollection dataTypeSetCollection = new DataSetMetaInfoCollection();
-		dataTypeSetCollection.setDataTypeSetCollection(dataSetMetaInfoList);
+		ArrayList<DataSetDescription> dataSetDescriptions = new ArrayList<DataSetDescription>();
+		dataSetDescriptions.add(setUpXMLGLU2GeneExpressionData());
+		//dataSetDescriptions.add(setUpXMLGLU2BiClusterData());
+
+		DataSetDescriptionCollection dataSetDescriptionCollection = new DataSetDescriptionCollection();
+		dataSetDescriptionCollection.setDataSetDescriptionCollection(dataSetDescriptions);
 
 		JAXBContext context = null;
 		try {
 			Class<?>[] serializableClasses = new Class<?>[2];
-			serializableClasses[0] = DataSetMetaInfo.class;
-			serializableClasses[1] = DataSetMetaInfoCollection.class;
-			// serializableClasses[2] = TCGAIDStringConverter.class;
-			// serializableClasses[3] = DashToPointStringConverter.class;
+			serializableClasses[0] = DataSetDescription.class;
+			serializableClasses[1] = DataSetDescriptionCollection.class;
+
 			context = JAXBContext.newInstance(serializableClasses);
 
 			Marshaller marshaller;
 			marshaller = context.createMarshaller();
-			marshaller.marshal(dataTypeSetCollection, new File(OUTPUT_FILE_PATH));
+			marshaller.marshal(dataSetDescriptionCollection, new File(OUTPUT_FILE_PATH));
 
-			System.out.println("Created configuration for " + dataSetMetaInfoList.size()
-					+ " datasets: " + dataSetMetaInfoList);
+			System.out.println("Created configuration for " + dataSetDescriptions.size()
+					+ " datasets: " + dataSetDescriptions);
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}
 	}
 
-	private static DataSetMetaInfo setUpXMLGLU2GeneExpressionData() {
-		DataSetMetaInfo geneExpressionData = new DataSetMetaInfo();
-		geneExpressionData.setName("mGlu2 Gene Expression Data");
-		geneExpressionData.setDataDomainType("org.caleydo.datadomain.genetic");
-		geneExpressionData.setDataPath(MGLU2_GENE_EXPRESSION_DATA);
-		geneExpressionData.setGroupingPath(MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
-		geneExpressionData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+	private DataSetDescription setUpXMLGLU2GeneExpressionData() {
+		
+		DataSetDescription mrnaData = new DataSetDescription();
+		mrnaData.setDataSetName("mGlu2 Gene Expression Data");
 
-		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
-		dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
+		mrnaData.setDataSourcePath(MGLU2_GENE_EXPRESSION_DATA);
+		mrnaData.setNumberOfHeaderLines(3);
 
-		dataConfiguration.setRecordIDCategory("SAMPLE");
-		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		dataConfiguration.setRecordDenominationPlural("samples");
-		dataConfiguration.setRecordDenominationSingular("sample");
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(1);
+		parsingRule.setParseUntilEnd(true);
+		//parsingRule.setDataType("FLOAT");
+		mrnaData.addParsingRule(parsingRule);
+		mrnaData.setTransposeMatrix(true);
 
-		dataConfiguration.setDimensionIDCategory("GENE");
-		dataConfiguration.setPrimaryDimensionMappingType("DAVID");
-		dataConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-		dataConfiguration.setDimensionDenominationPlural("genes");
-		dataConfiguration.setDimensionDenominationSingular("gene");
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		mrnaData.setRowIDSpecification(geneIDSpecification);
+		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
-		geneExpressionData.setDataDomainConfiguration(dataConfiguration);
+		GroupingParseSpecification clustering = new GroupingParseSpecification(
+				MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
+		clustering.setContainsColumnIDs(false);
+		clustering.setRowIDSpecification(sampleIDSpecification);
+		mrnaData.addColumnGroupingSpecification(clustering);
 
-		String delimiter = "\t";
-
-		LoadDataParameters loadDataParameters = new LoadDataParameters();
-		loadDataParameters.setLabel(geneExpressionData.getName());
-		loadDataParameters.setFileName(geneExpressionData.getDataPath());
-		loadDataParameters.setDelimiter(delimiter);
-
-		loadDataParameters.setMathFilterMode("Normal");
-		loadDataParameters.setIsDataHomogeneous(true);
-		loadDataParameters.setColumnDimension(false);
-
-		// geneExpressionData.setRunClusteringOnRows(true);
-		// geneExpressionData.setCreateGeneSamples(true);
-
-		try {
-			loadDataParameters.setStartParseFileAtLine(1);
-
-			BufferedReader reader = new BufferedReader(new FileReader(
-					geneExpressionData.getDataPath()));
-
-			// read dimensions of data matrix
-			String dimensionString = reader.readLine();
-
-			String[] dimensions = dimensionString
-					.split(loadDataParameters.getDelimiter());
-
-			int columns = dimensions.length - 1;
-
-			// loadDataParameters.setMinDefined(true);
-			// loadDataParameters.setMin(min);
-			// loadDataParameters.setMaxDefined(true);
-			// loadDataParameters.setMax(max);
-
-			StringBuffer inputPattern = new StringBuffer("SKIP;");
-
-			// list to store column labels
-			List<String> columnLabels = new ArrayList<String>();
-
-			for (int i = 0; i < columns; ++i) {
-				inputPattern.append("FLOAT;");
-				columnLabels.add(dimensions[i + 1]);
-			}
-
-			loadDataParameters.setInputPattern(inputPattern.toString());
-			// loadDataParameters
-			// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
-			loadDataParameters.setColumnLabels(columnLabels);
-
-			geneExpressionData.setLoadDataParameters(loadDataParameters);
-
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-
-		return geneExpressionData;
+		return mrnaData;
 	}
 
-	private static DataSetMetaInfo setUpXMLGLU2BiClusterData() {
-		DataSetMetaInfo expertimentBiClusterData = new DataSetMetaInfo();
-		expertimentBiClusterData.setName("mGlu2 Experiment BiCluster Data");
-		expertimentBiClusterData.setDataDomainType("org.caleydo.datadomain.generic");
-		expertimentBiClusterData.setDataPath(MGLU2_EXPERIMENT_BICLUSTER_DATA);
-		// geneExpressionData.setGroupingPath(MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
-		expertimentBiClusterData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED
-				.name());
+//	private DataSetDescription setUpXMLGLU2BiClusterData() {
+//		DataSetMetaInfo expertimentBiClusterData = new DataSetMetaInfo();
+//		expertimentBiClusterData.setName("mGlu2 Experiment BiCluster Data");
+//		expertimentBiClusterData.setDataDomainType("org.caleydo.datadomain.generic");
+//		expertimentBiClusterData.setDataPath(MGLU2_EXPERIMENT_BICLUSTER_DATA);
+//		// geneExpressionData.setGroupingPath(MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
+//		expertimentBiClusterData.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED
+//				.name());
+//
+//		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
+//		dataConfiguration.setRecordIDCategory("SAMPLE");
+//		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
+//		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
+//		dataConfiguration.setRecordDenominationPlural("samples");
+//		dataConfiguration.setRecordDenominationSingular("sample");
+//
+//		dataConfiguration.setDimensionIDCategory("BICLUSTER");
+//		// dataConfiguration.setPrimaryDimensionMappingType("DAVID");
+//		dataConfiguration.setHumanReadableDimensionIDType("BICLUSTER");
+//		dataConfiguration.setDimensionDenominationPlural("biclusters");
+//		dataConfiguration.setDimensionDenominationSingular("bicluster");
+//
+//		expertimentBiClusterData.setDataDomainConfiguration(dataConfiguration);
+//
+//		String delimiter = "\t";
+//
+//		LoadDataParameters loadDataParameters = new LoadDataParameters();
+//		loadDataParameters.setLabel(expertimentBiClusterData.getName());
+//		loadDataParameters.setFileName(expertimentBiClusterData.getDataPath());
+//		loadDataParameters.setDelimiter(delimiter);
+//
+//		loadDataParameters.setMathFilterMode("Normal");
+//		loadDataParameters.setIsDataHomogeneous(true);
+//		loadDataParameters.setColumnDimension(false);
+//
+//		// geneExpressionData.setRunClusteringOnRows(true);
+//		// geneExpressionData.setCreateGeneSamples(true);
+//
+//		try {
+//			loadDataParameters.setStartParseFileAtLine(1);
+//
+//			BufferedReader reader = new BufferedReader(new FileReader(
+//					expertimentBiClusterData.getDataPath()));
+//
+//			// read dimensions of data matrix
+//			String dimensionString = reader.readLine();
+//
+//			String[] dimensions = dimensionString
+//					.split(loadDataParameters.getDelimiter());
+//
+//			int columns = dimensions.length - 1;
+//
+//			// loadDataParameters.setMinDefined(true);
+//			// loadDataParameters.setMin(min);
+//			// loadDataParameters.setMaxDefined(true);
+//			// loadDataParameters.setMax(max);
+//
+//			StringBuffer inputPattern = new StringBuffer("SKIP;");
+//
+//			// list to store column labels
+//			List<String> columnLabels = new ArrayList<String>();
+//
+//			for (int i = 0; i < columns; ++i) {
+//				inputPattern.append("FLOAT;");
+//				columnLabels.add(dimensions[i + 1]);
+//			}
+//
+//			loadDataParameters.setInputPattern(inputPattern.toString());
+//			// loadDataParameters
+//			// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
+//			loadDataParameters.setColumnLabels(columnLabels);
+//
+//			expertimentBiClusterData.setLoadDataParameters(loadDataParameters);
+//
+//		} catch (Exception e) {
+//			throw new IllegalStateException(e);
+//		}
+//
+//		return expertimentBiClusterData;
+//	}
 
-		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
-		dataConfiguration.setRecordIDCategory("SAMPLE");
-		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		dataConfiguration.setRecordDenominationPlural("samples");
-		dataConfiguration.setRecordDenominationSingular("sample");
-
-		dataConfiguration.setDimensionIDCategory("BICLUSTER");
-		// dataConfiguration.setPrimaryDimensionMappingType("DAVID");
-		dataConfiguration.setHumanReadableDimensionIDType("BICLUSTER");
-		dataConfiguration.setDimensionDenominationPlural("biclusters");
-		dataConfiguration.setDimensionDenominationSingular("bicluster");
-
-		expertimentBiClusterData.setDataDomainConfiguration(dataConfiguration);
-
-		String delimiter = "\t";
-
-		LoadDataParameters loadDataParameters = new LoadDataParameters();
-		loadDataParameters.setLabel(expertimentBiClusterData.getName());
-		loadDataParameters.setFileName(expertimentBiClusterData.getDataPath());
-		loadDataParameters.setDelimiter(delimiter);
-
-		loadDataParameters.setMathFilterMode("Normal");
-		loadDataParameters.setIsDataHomogeneous(true);
-		loadDataParameters.setColumnDimension(false);
-
-		// geneExpressionData.setRunClusteringOnRows(true);
-		// geneExpressionData.setCreateGeneSamples(true);
-
-		try {
-			loadDataParameters.setStartParseFileAtLine(1);
-
-			BufferedReader reader = new BufferedReader(new FileReader(
-					expertimentBiClusterData.getDataPath()));
-
-			// read dimensions of data matrix
-			String dimensionString = reader.readLine();
-
-			String[] dimensions = dimensionString
-					.split(loadDataParameters.getDelimiter());
-
-			int columns = dimensions.length - 1;
-
-			// loadDataParameters.setMinDefined(true);
-			// loadDataParameters.setMin(min);
-			// loadDataParameters.setMaxDefined(true);
-			// loadDataParameters.setMax(max);
-
-			StringBuffer inputPattern = new StringBuffer("SKIP;");
-
-			// list to store column labels
-			List<String> columnLabels = new ArrayList<String>();
-
-			for (int i = 0; i < columns; ++i) {
-				inputPattern.append("FLOAT;");
-				columnLabels.add(dimensions[i + 1]);
-			}
-
-			loadDataParameters.setInputPattern(inputPattern.toString());
-			// loadDataParameters
-			// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
-			loadDataParameters.setColumnLabels(columnLabels);
-
-			expertimentBiClusterData.setLoadDataParameters(loadDataParameters);
-
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-
-		return expertimentBiClusterData;
-	}
-
-	private static DataSetMetaInfo setUpXMGLU2Pic50Data() {
-		DataSetMetaInfo pic50Data = new DataSetMetaInfo();
-		pic50Data.setName("mGlu2 pic50");
-		pic50Data.setDataDomainType("org.caleydo.datadomain.generic");
-		pic50Data.setDataPath(MGLU2_PIC50_DATA);
-		pic50Data.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
-
-		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
-		// dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
-
-		dataConfiguration.setRecordIDCategory("SAMPLE");
-		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
-		dataConfiguration.setRecordDenominationPlural("samples");
-		dataConfiguration.setRecordDenominationSingular("sample");
-
-		dataConfiguration.setDimensionIDCategory("PIC50ID");
-		// dataConfiguration.setPrimaryDimensionMappingType("DAVID");
-		dataConfiguration.setHumanReadableDimensionIDType("PIC50ID");
-		dataConfiguration.setDimensionDenominationPlural("pic50IDs");
-		dataConfiguration.setDimensionDenominationSingular("pic50");
-
-		pic50Data.setDataDomainConfiguration(dataConfiguration);
-
-		String delimiter = "\t";
-
-		LoadDataParameters loadDataParameters = new LoadDataParameters();
-		loadDataParameters.setLabel(pic50Data.getName());
-		loadDataParameters.setFileName(pic50Data.getDataPath());
-		loadDataParameters.setDelimiter(delimiter);
-
-		loadDataParameters.setMathFilterMode("Normal");
-		loadDataParameters.setIsDataHomogeneous(true);
-		loadDataParameters.setColumnDimension(false);
-
-		// geneExpressionData.setRunClusteringOnRows(true);
-		// geneExpressionData.setCreateGeneSamples(true);
-
-		try {
-			loadDataParameters.setStartParseFileAtLine(1);
-
-			BufferedReader reader = new BufferedReader(new FileReader(
-					pic50Data.getDataPath()));
-
-			// read dimensions of data matrix
-			String dimensionString = reader.readLine();
-
-			String[] dimensions = dimensionString
-					.split(loadDataParameters.getDelimiter());
-
-			int columns = dimensions.length - 1;
-
-			// loadDataParameters.setMinDefined(true);
-			// loadDataParameters.setMin(min);
-			// loadDataParameters.setMaxDefined(true);
-			// loadDataParameters.setMax(max);
-
-			StringBuffer inputPattern = new StringBuffer("SKIP;");
-
-			// list to store column labels
-			List<String> columnLabels = new ArrayList<String>();
-
-			for (int i = 0; i < columns; ++i) {
-				inputPattern.append("FLOAT;");
-				columnLabels.add(dimensions[i + 1]);
-			}
-
-			loadDataParameters.setInputPattern(inputPattern.toString());
-			// loadDataParameters
-			// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
-			loadDataParameters.setColumnLabels(columnLabels);
-
-			pic50Data.setLoadDataParameters(loadDataParameters);
-
-		} catch (Exception e) {
-			throw new IllegalStateException(e);
-		}
-
-		return pic50Data;
-	}
+//	private DataSetMetaInfo setUpXMGLU2Pic50Data() {
+//		DataSetMetaInfo pic50Data = new DataSetMetaInfo();
+//		pic50Data.setName("mGlu2 pic50");
+//		pic50Data.setDataDomainType("org.caleydo.datadomain.generic");
+//		pic50Data.setDataPath(MGLU2_PIC50_DATA);
+//		pic50Data.setColorScheme(EDefaultColorSchemes.BLUE_WHITE_RED.name());
+//
+//		DataDomainConfiguration dataConfiguration = new DataDomainConfiguration();
+//		// dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
+//
+//		dataConfiguration.setRecordIDCategory("SAMPLE");
+//		dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
+//		dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
+//		dataConfiguration.setRecordDenominationPlural("samples");
+//		dataConfiguration.setRecordDenominationSingular("sample");
+//
+//		dataConfiguration.setDimensionIDCategory("PIC50ID");
+//		// dataConfiguration.setPrimaryDimensionMappingType("DAVID");
+//		dataConfiguration.setHumanReadableDimensionIDType("PIC50ID");
+//		dataConfiguration.setDimensionDenominationPlural("pic50IDs");
+//		dataConfiguration.setDimensionDenominationSingular("pic50");
+//
+//		pic50Data.setDataDomainConfiguration(dataConfiguration);
+//
+//		String delimiter = "\t";
+//
+//		LoadDataParameters loadDataParameters = new LoadDataParameters();
+//		loadDataParameters.setLabel(pic50Data.getName());
+//		loadDataParameters.setFileName(pic50Data.getDataPath());
+//		loadDataParameters.setDelimiter(delimiter);
+//
+//		loadDataParameters.setMathFilterMode("Normal");
+//		loadDataParameters.setIsDataHomogeneous(true);
+//		loadDataParameters.setColumnDimension(false);
+//
+//		// geneExpressionData.setRunClusteringOnRows(true);
+//		// geneExpressionData.setCreateGeneSamples(true);
+//
+//		try {
+//			loadDataParameters.setStartParseFileAtLine(1);
+//
+//			BufferedReader reader = new BufferedReader(new FileReader(
+//					pic50Data.getDataPath()));
+//
+//			// read dimensions of data matrix
+//			String dimensionString = reader.readLine();
+//
+//			String[] dimensions = dimensionString
+//					.split(loadDataParameters.getDelimiter());
+//
+//			int columns = dimensions.length - 1;
+//
+//			// loadDataParameters.setMinDefined(true);
+//			// loadDataParameters.setMin(min);
+//			// loadDataParameters.setMaxDefined(true);
+//			// loadDataParameters.setMax(max);
+//
+//			StringBuffer inputPattern = new StringBuffer("SKIP;");
+//
+//			// list to store column labels
+//			List<String> columnLabels = new ArrayList<String>();
+//
+//			for (int i = 0; i < columns; ++i) {
+//				inputPattern.append("FLOAT;");
+//				columnLabels.add(dimensions[i + 1]);
+//			}
+//
+//			loadDataParameters.setInputPattern(inputPattern.toString());
+//			// loadDataParameters
+//			// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
+//			loadDataParameters.setColumnLabels(columnLabels);
+//
+//			pic50Data.setLoadDataParameters(loadDataParameters);
+//
+//		} catch (Exception e) {
+//			throw new IllegalStateException(e);
+//		}
+//
+//		return pic50Data;
+//	}
 }
