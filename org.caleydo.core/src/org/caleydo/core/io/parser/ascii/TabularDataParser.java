@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.ascii;
+package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -31,10 +31,10 @@ import org.caleydo.core.data.collection.dimension.NumericalColumn;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.importing.ColumnParsingDetail;
-import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.MappingType;
+import org.caleydo.core.io.ColumnParsingDetail;
+import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;

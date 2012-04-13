@@ -21,7 +21,8 @@ package org.caleydo.datadomain.pathway.parser;
 
 import java.awt.Rectangle;
 import java.util.StringTokenizer;
-import org.caleydo.core.parser.xml.AXmlParserHandler;
+
+import org.caleydo.core.io.parser.xml.AXmlParserHandler;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -150,8 +151,8 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 	}
 
 	/**
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#destroyHandler()
-	 * @see org.caleydo.core.parser.xml.AXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.io.parser.xml.AXmlParserHandler#destroyHandler()
 	 */
 	@Override
 	public void destroyHandler() {

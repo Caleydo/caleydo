@@ -17,42 +17,31 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-/**
- * 
- */
-package org.caleydo.core.data.importing;
-
-import java.util.ArrayList;
+package org.caleydo.core.io.parser.ascii;
 
 import javax.xml.bind.annotation.XmlRootElement;
-import javax.xml.bind.annotation.XmlType;
-
 
 /**
- * Collection of all @DataTypeSet objects that are needed for loading multiple
- * TCGA data sets.
- * 
- * @author Marc Streit
+ * @author Alexander Lex
  */
-@XmlType
 @XmlRootElement
-public class DataSetDescriptionCollection {
+public class RefSeqStringConverter
+	 {
 
-	ArrayList<DataSetDescription> dataSetDescriptionCollection = new ArrayList<DataSetDescription>();
-
-
-	/**
-	 * @param dataSetDescriptionCollection setter, see {@link #dataSetDescriptionCollection}
-	 */
-	public void setDataSetDescriptionCollection(
-			ArrayList<DataSetDescription> dataSetDescriptionCollection) {
-		this.dataSetDescriptionCollection = dataSetDescriptionCollection;
-	}
 	
-	/**
-	 * @return the dataSetDescriptionCollection, see {@link #dataSetDescriptionCollection}
-	 */
-	public ArrayList<DataSetDescription> getDataSetDescriptionCollection() {
-		return dataSetDescriptionCollection;
+	public String convert(String string) {
+		// Remove multiple RefSeqs because all point to the
+		// same gene DAVID ID
+		if (string.contains(";")) {
+			string = string.substring(0, string.indexOf(";"));
+		}
+
+		// Remove version in RefSeq (NM_*.* -> NM_*)
+		if (string.contains(".")) {
+			string = string.substring(0, string.indexOf("."));
+		}
+
+		return string;
 	}
+
 }

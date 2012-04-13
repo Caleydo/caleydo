@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.xml;
+package org.caleydo.core.io.parser.xml;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;
@@ -137,9 +137,9 @@ public class XmlParserManager
 	 * Register a SaxHandler by its opening Tag. Calls getXmlActivationTag() and hasOpeningTagOnlyOnce() for
 	 * each handler and registers the handler using this data. Also calls initHandler() on the new Handler.
 	 * 
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#initHandler()
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#getXmlActivationTag()
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#initHandler()
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#getXmlActivationTag()
 	 * @param handler
 	 *            register handler to an opening tag.
 	 * @param sOpeningAndClosingTag
@@ -268,7 +268,7 @@ public class XmlParserManager
 	 * Call this method, if current tag was not handled by startElement(String, String, String,
 	 * org.xml.sax.Attributes) of org.caleydo.core.parser.handler.IXmlParserHandler
 	 * 
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#startElement(Stringt, Stringt, Stringt, org.xml.sax.Attributes)
 	 */
 	public void startElementSearch4Tag(String uri, String localName, String qName, Attributes attrib) {
@@ -326,7 +326,7 @@ public class XmlParserManager
 	 * Call this method if the current tag was not handled by endElement(String, String, String) of
 	 * org.caleydo.core.parser.handler.IXmlParserHandler
 	 * 
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler
 	 * @see org.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 */
 	public void endElementSearch4Tag(String uri, String localName, String qName) {
@@ -346,7 +346,7 @@ public class XmlParserManager
 	 * Callback called by org.caleydo.core.parser.handler.IXmlParserHandler if closing tag is read in
 	 * endElement()
 	 * 
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler
 	 * @see orl.xml.sax.ContentHandler#endElement(Stringt, Stringt, Stringt)
 	 * @param handler
 	 *            calling handler, that just read its closing tag

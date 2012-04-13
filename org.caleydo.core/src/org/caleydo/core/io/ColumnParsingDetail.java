@@ -20,7 +20,7 @@
 /**
  * 
  */
-package org.caleydo.core.data.importing;
+package org.caleydo.core.io;
 
 import javax.xml.bind.annotation.XmlType;
 

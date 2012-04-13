@@ -20,7 +20,7 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
-import org.caleydo.core.parser.parameter.ParameterHandler;
+import org.caleydo.core.io.parser.parameter.ParameterHandler;
 
 /**
  * Manager for creating commands.

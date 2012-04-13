@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.xml;
+package org.caleydo.core.io.parser.xml;
 
 import org.caleydo.core.manager.GeneralManager;
 import org.xml.sax.helpers.DefaultHandler;
@@ -75,7 +75,7 @@ public abstract class AXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#initHandler()
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#initHandler()
 	 */
 	@Override
 	public void initHandler() {
@@ -88,7 +88,7 @@ public abstract class AXmlParserHandler
 	/**
 	 * Sends init message to logger.
 	 * 
-	 * @see org.caleydo.core.parser.xml.IXmlParserHandler#destroyHandler()
+	 * @see org.caleydo.core.io.parser.xml.IXmlParserHandler#destroyHandler()
 	 */
 	@Override
 	public void destroyHandler() {

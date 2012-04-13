@@ -17,12 +17,12 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.xml;
+package org.caleydo.core.io.parser.xml;
 
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
-import org.caleydo.core.parser.parameter.ParameterHandler;
-import org.caleydo.core.parser.parameter.ParameterHandler.ParameterHandlerType;
+import org.caleydo.core.io.parser.parameter.ParameterHandler;
+import org.caleydo.core.io.parser.parameter.ParameterHandler.ParameterHandlerType;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 

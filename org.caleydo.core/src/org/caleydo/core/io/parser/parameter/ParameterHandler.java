@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.parameter;
+package org.caleydo.core.io.parser.parameter;
 
 import org.xml.sax.Attributes;
 

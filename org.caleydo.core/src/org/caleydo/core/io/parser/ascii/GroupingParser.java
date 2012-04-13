@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.ascii;
+package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -26,12 +26,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.importing.GroupingParseSpecification;
-import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 

@@ -23,7 +23,7 @@ import org.caleydo.core.command.base.ACmdCreational;
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.parser.parameter.ParameterHandler;
+import org.caleydo.core.io.parser.parameter.ParameterHandler;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;

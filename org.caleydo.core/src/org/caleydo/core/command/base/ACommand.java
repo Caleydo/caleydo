@@ -24,8 +24,8 @@ import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.ICommand;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.io.parser.parameter.ParameterHandler;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 
 /**
  * Abstract base class for all commands. Supports serialization for exporting commands.

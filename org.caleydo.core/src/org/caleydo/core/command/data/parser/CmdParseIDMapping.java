@@ -25,14 +25,14 @@ import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.base.ACmdExternalAttributes;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.importing.IDSpecification;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.mapping.MappingType;
+import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.parser.ascii.ATextParser;
+import org.caleydo.core.io.parser.ascii.IDMappingParser;
+import org.caleydo.core.io.parser.parameter.ParameterHandler;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.ATextParser;
-import org.caleydo.core.parser.ascii.IDMappingParser;
-import org.caleydo.core.parser.parameter.ParameterHandler;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.conversion.ConversionTools;
 

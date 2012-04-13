@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.parser.xml;
+package org.caleydo.core.io.parser.xml;
 
 import org.xml.sax.ContentHandler;
 import org.xml.sax.EntityResolver;
@@ -25,7 +25,7 @@ import org.xml.sax.EntityResolver;
 /**
  * Interface for all XML Handler's registered to the org.caleydo.core.manager.XmlParserManager
  * 
- * @see org.caleydo.core.parser.xml.XmlParserManager
+ * @see org.caleydo.core.io.parser.xml.XmlParserManager
  * @author Michael Kalkusch
  */
 public interface IXmlParserHandler
@@ -33,7 +33,7 @@ public interface IXmlParserHandler
 	/**
 	 * Initilization of handler. Called once by Manager before using the handler.
 	 * 
-	 * @see org.caleydo.core.parser.xml.XmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
+	 * @see org.caleydo.core.io.parser.xml.XmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
 	public void initHandler();
 
@@ -56,7 +56,7 @@ public interface IXmlParserHandler
 	 * TRUE if handler is destoryed after activation tag is closed.
 	 * 
 	 * @see org.caleydo.core.parser.xml.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
-	 * @see org.caleydo.core.parser.xml.XmlParserManager
+	 * @see org.caleydo.core.io.parser.xml.XmlParserManager
 	 * @return TRUE if handler is destoryed after activation tag is closed
 	 */
 	public boolean isHandlerDestoryedAfterClosingTag();

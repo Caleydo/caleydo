@@ -20,7 +20,7 @@
 package org.caleydo.core.command;
 
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.parser.parameter.ParameterHandler;
+import org.caleydo.core.io.parser.parameter.ParameterHandler;
 
 /**
  * Design Pattern "Command" ; behavior pattern Is combined with Design Pattern "IMemento" to provide Do-Undo

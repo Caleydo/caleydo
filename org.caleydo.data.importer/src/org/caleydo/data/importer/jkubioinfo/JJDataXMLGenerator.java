@@ -30,7 +30,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
-import org.caleydo.core.data.importing.DataSetDescription;
+import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
 /**

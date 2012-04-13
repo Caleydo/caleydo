@@ -72,7 +72,6 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.collection.table,
    org.caleydo.core.data.id",
  org.caleydo.core.data.id;uses:="org.caleydo.core.data.collection",
- org.caleydo.core.data.importing,
  org.caleydo.core.data.mapping;uses:="org.jgrapht.graph,org.caleydo.core.data.id",
  org.caleydo.core.data.perspective,
  org.caleydo.core.data.selection;uses:="org.caleydo.core.data.selection.delta,org.caleydo.core.manager.event,org.caleydo.core.data.id",
@@ -147,6 +146,7 @@ Export-Package: org.caleydo.core.command;
    org.eclipse.swt.layout",
  org.caleydo.core.gui.toolbar.action;uses:="org.eclipse.jface.action,org.caleydo.core.gui.toolbar,org.eclipse.swt.widgets",
  org.caleydo.core.gui.util;uses:="org.eclipse.swt.events,org.eclipse.swt.graphics,org.eclipse.swt.widgets",
+ org.caleydo.core.io,
  org.caleydo.core.io.gui;
   uses:="org.caleydo.core.data.datadomain,
    org.caleydo.core.gui.toolbar.action,
@@ -154,6 +154,13 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.data.collection.table,
    org.eclipse.swt.widgets,
    org.eclipse.jface.dialogs",
+ org.caleydo.core.io.parser.ascii;uses:="org.caleydo.core.data.mapping,org.caleydo.core.gui,org.caleydo.core.data.datadomain",
+ org.caleydo.core.io.parser.parameter;uses:="org.xml.sax",
+ org.caleydo.core.io.parser.xml;
+  uses:="org.caleydo.core.manager,
+   org.caleydo.core.command,
+   org.xml.sax.helpers,
+   org.xml.sax",
  org.caleydo.core.manager;
   uses:="org.caleydo.core.util.wii,
    org.caleydo.core.manager.view,
@@ -173,13 +180,6 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.data.loader,
    org.caleydo.core.data.id",
  org.caleydo.core.net;uses:="org.caleydo.core.serialize,org.caleydo.core.manager.event,javax.xml.bind",
- org.caleydo.core.parser.ascii;uses:="org.caleydo.core.data.mapping,org.caleydo.core.gui,org.caleydo.core.data.datadomain",
- org.caleydo.core.parser.parameter;uses:="org.xml.sax",
- org.caleydo.core.parser.xml;
-  uses:="org.caleydo.core.manager,
-   org.caleydo.core.command,
-   org.xml.sax.helpers,
-   org.xml.sax",
  org.caleydo.core.serialize;uses:="org.caleydo.core.data.datadomain,org.caleydo.core.view.opengl.camera,javax.xml.bind",
  org.caleydo.core.specialized,
  org.caleydo.core.util,

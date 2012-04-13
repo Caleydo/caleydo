@@ -31,12 +31,12 @@ import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.TabularDataParser;
 
 /**
  * Utility class that features creating, loading and saving sets and dimensions.

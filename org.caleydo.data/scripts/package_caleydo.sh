@@ -86,7 +86,7 @@ print_help()
   echo "-s package and copy standalone"
   echo "-w copy webstart"
   echo ""
-  echo "If none of the options is present all first the archive is made then the result is copied to the web, then the webstart is copied"
+  echo "If none of the options is present all are run: first the archive is made then the result is copied to the web, then the webstart is copied"
 }
 
 ask_for_version()

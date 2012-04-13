@@ -36,9 +36,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.importing.DataSetDescription;
-import org.caleydo.core.data.importing.DataSetDescriptionCollection;
-import org.caleydo.core.data.importing.GroupingParseSpecification;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -47,8 +44,11 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescriptionCollection;
+import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.parser.ascii.GroupingParser;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
@@ -235,94 +235,7 @@ public class Application implements IApplication {
 
 	}
 
-	// private void loadClusterInfo() throws FileNotFoundException, IOException
-	// {
-	//
-	// String clusterFile;
-	//
-	// String delimiter = "\t";
-	//
-	// if (clusterFile == null) {
-	// Logger.log(new Status(Status.INFO, this.toString(),
-	// "No Cluster Information specified"));
-	// return;
-	// }
-	// // open file to read second line to determine number of rows and columns
-	// BufferedReader reader = new BufferedReader(new FileReader(clusterFile));
-	//
-	// // skip header ("#1.2")
-	// // TODO: check if file is indeed a gct file
-	// reader.readLine();
-	//
-	// // read dimensions of data matrix
-	//
-	// ArrayList<HashMap<String, ArrayList<Integer>>> listOfGroupLists = new
-	// ArrayList<HashMap<String, ArrayList<Integer>>>();
-	//
-	// int lineCounter = 0;
-	// while (true) {
-	//
-	// String line = reader.readLine();
-	// if (line == null)
-	// break;
-	// String[] columns = line.split(delimiter);
-	//
-	// TCGAIDStringConverter stringConverter = new TCGAIDStringConverter();
-	// String originalID = stringConverter.convert(columns[0]);
-	// // String originalID = columns[0];
-	//
-	// Integer mappedID = dataDomain.getRecordIDMappingManager().getID(
-	// dataDomain.getHumanReadableRecordIDType(),
-	// dataDomain.getRecordIDType(), originalID);
-	//
-	// for (int columnCount = 1; columnCount < columns.length; columnCount++) {
-	// HashMap<String, ArrayList<Integer>> groupList;
-	// if (lineCounter == 0) {
-	// groupList = new HashMap<String, ArrayList<Integer>>();
-	// listOfGroupLists.add(groupList);
-	//
-	// } else {
-	// groupList = listOfGroupLists.get(columnCount - 1);
-	// }
-	//
-	// ArrayList<Integer> group = groupList.get(columns[columnCount]);
-	// if (group == null) {
-	// group = new ArrayList<Integer>();
-	// groupList.put(columns[columnCount], group);
-	// }
-	// group.add(mappedID);
-	// }
-	// lineCounter++;
-	// }
-	//
-	// for (HashMap<String, ArrayList<Integer>> groupList : listOfGroupLists) {
-	//
-	// RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-	// recordPerspective.setLabel(groupList.size() + " clusters", false);
-	// if (groupList.size() == 4)
-	// recordPerspective.setDefault(true);
-	// ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
-	// ArrayList<Integer> clusterSizes = new
-	// ArrayList<Integer>(groupList.size());
-	// ArrayList<Integer> sampleElements = new
-	// ArrayList<Integer>(groupList.size());
-	// int sampleIndex = 0;
-	// for (ArrayList<Integer> group : groupList.values()) {
-	//
-	// sortedIDs.addAll(group);
-	// clusterSizes.add(group.size());
-	// sampleElements.add(sampleIndex);
-	// sampleIndex += group.size();
-	// }
-	//
-	// PerspectiveInitializationData data = new PerspectiveInitializationData();
-	// data.setData(sortedIDs, clusterSizes, sampleElements);
-	//
-	// recordPerspective.init(data);
-	// dataDomain.getTable().registerRecordPerspective(recordPerspective);
-	// }
-	// }
-
+	
 	/**
 	 * Loads all groupings for columns and rows that are specified in the
 	 * {@link DataSetDescription}. Respects transposition.

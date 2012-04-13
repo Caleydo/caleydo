@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,11 +26,11 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
 
-import org.caleydo.core.data.importing.DataSetDescription;
-import org.caleydo.core.data.importing.DataSetDescriptionCollection;
-import org.caleydo.core.data.importing.GroupingParseSpecification;
-import org.caleydo.core.data.importing.IDSpecification;
-import org.caleydo.core.data.importing.ParsingRule;
+import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.DataSetDescriptionCollection;
+import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.IDSpecification;
+import org.caleydo.core.io.ParsingRule;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -117,7 +117,7 @@ public class TCGATestDataXMLGenerator {
 		// dataSetDescriptions.add(setUpMutationData());
 		dataSetDescriptions.add(setUpMiRNAData());
 		dataSetDescriptions.add(setUpMethylationData());
-		// dataSetDescriptions.add(setUpCopyNumberData());
+		dataSetDescriptions.add(setUpCopyNumberData());
 		// dataSetDescriptions.add(setUpClinicalData());
 
 		DataSetDescriptionCollection dataSetDescriptionCollection = new DataSetDescriptionCollection();
@@ -150,7 +150,7 @@ public class TCGATestDataXMLGenerator {
 		mrnaData.setNumberOfHeaderLines(3);
 
 		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(3);
+		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
 		parsingRule.setDataType("FLOAT");
 		mrnaData.addParsingRule(parsingRule);
@@ -185,7 +185,7 @@ public class TCGATestDataXMLGenerator {
 		mirnaData.setNumberOfHeaderLines(3);
 
 		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(3);
+		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
 		parsingRule.setDataType("FLOAT");
 		mirnaData.addParsingRule(parsingRule);
@@ -218,7 +218,7 @@ public class TCGATestDataXMLGenerator {
 		methylationData.setNumberOfHeaderLines(3);
 
 		ParsingRule parsingRule = new ParsingRule();
-		parsingRule.setFromColumn(3);
+		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
 		parsingRule.setDataType("FLOAT");
 		methylationData.addParsingRule(parsingRule);
@@ -242,39 +242,32 @@ public class TCGATestDataXMLGenerator {
 
 		return methylationData;
 	}
-	//
-	// private static DataSetDescription setUpCopyNumberData() {
-	// DataSetDescription copyNumberData = new DataSetDescription();
-	// copyNumberData.setDataSetName("Copy number");
-	// copyNumberData.setDataDomainType("org.caleydo.datadomain.genetic");
-	// copyNumberData.setDataPath(COPY_NUMBER);
-	// // methylationData.setGroupingPath(METHYLATION_GROUPING);
-	// //
-	// copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING.name());
-	//
-	// DataDomainConfiguration copyNumberConfiguration = new
-	// DataDomainConfiguration();
-	// copyNumberConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
-	// copyNumberConfiguration.setRecordIDCategory("SAMPLE");
-	// copyNumberConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-	// copyNumberConfiguration.setHumanReadableRecordIDType("SAMPLE");
-	// copyNumberConfiguration.setRecordDenominationPlural("samples");
-	// copyNumberConfiguration.setRecordDenominationSingular("sample");
-	//
-	// copyNumberConfiguration.setDimensionIDCategory("GENE");
-	// copyNumberConfiguration.setPrimaryDimensionMappingType("DAVID");
-	// copyNumberConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-	// copyNumberConfiguration.setDimensionDenominationPlural("genes");
-	// copyNumberConfiguration.setDimensionDenominationSingular("gene");
-	//
-	// copyNumberData.setDataDomainConfiguration(copyNumberConfiguration);
-	//
-	// setUpLoadDataParameters(copyNumberData);
-	//
-	// doCopyNumberSpecificStuff(copyNumberData);
-	//
-	// return copyNumberData;
-	// }
+
+	private DataSetDescription setUpCopyNumberData() {
+		DataSetDescription copyNumberData = new DataSetDescription();
+		copyNumberData.setDataSetName("Copy number");
+
+		copyNumberData.setDataSourcePath(COPY_NUMBER);
+		copyNumberData.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(3);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setDataType("FLOAT");
+		copyNumberData.addParsingRule(parsingRule);
+		copyNumberData.setTransposeMatrix(true);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		copyNumberData.setRowIDSpecification(geneIDSpecification);
+		copyNumberData.setColumnIDSpecification(sampleIDSpecification);
+
+		return copyNumberData;
+
+		// copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING
+		// .name());
+	}
 	//
 	// private static DataSetDescription setUpClinicalData() {
 	// DataSetDescription clinicalData = new DataSetDescription();

@@ -27,8 +27,8 @@ import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.importing.DataSetDescription;
 import org.caleydo.core.event.AEventHandler;
+import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.util.color.Color;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 

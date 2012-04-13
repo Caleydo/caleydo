@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.importing;
+package org.caleydo.core.io;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.parser.ascii.TabularDataParser;
+import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
