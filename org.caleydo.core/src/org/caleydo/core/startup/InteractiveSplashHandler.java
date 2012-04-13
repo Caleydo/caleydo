@@ -54,9 +54,6 @@ public class InteractiveSplashHandler
 		// loading until all work is done
 		doEventLoop();
 
-		// splash.setImage(GeneralManager.get().getResourceLoader().getImage(splash.getDisplay(),
-		// "resources/icons/caleydo16.gif"));
-
 		splash.setText("Loading Caleydo...");
 	}
 
@@ -164,8 +161,6 @@ public class InteractiveSplashHandler
 
 		GeneralManager.get().getSWTGUIManager()
 				.setExternalProgressBarAndLabel(progressBar, progressMessageLabel);
-
-		// Application.startCaleydoCore();
 	}
 
 	private void doEventLoop() {

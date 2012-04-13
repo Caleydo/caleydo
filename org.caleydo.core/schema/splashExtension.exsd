@@ -3,7 +3,7 @@
 <schema targetNamespace="org.caleydo.rcp">
 <annotation>
       <appInfo>
-         <meta.schema plugin="org.caleydo.rcp" id="splashExtension" name="Splash Extensions"/>
+         <meta.schema plugin="org.caleydo.core" id="splashExtension" name="Splash Extensions"/>
       </appInfo>
       <documentation>
          [Enter description of this extension point.]

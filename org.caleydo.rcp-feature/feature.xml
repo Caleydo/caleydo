@@ -11,21 +11,22 @@
       arch="x86,x86_64">
 
    <description url="http://www.caleydo.org">
-      Caleydo is a visual analysis framework for biomolecular data.
+      Caleydo - visualization for molecular biology.
    </description>
 
    <copyright url="http://www.caleydo.org">
-      (c) www.caleydo.org and Graz University of Technology - 2012. 
+      Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler University Linz.
 All Rights Reserved.
    </copyright>
 
    <license url="http://www.caleydo.org">
-      (c) Copyright Graz University of Technology - 2012. All Rights Reserved.
+      Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler University Linz.
    </license>
 
    <url>
       <discovery label="Caleydo" url="http://www.caleydo.org"/>
-      <discovery label="Graz University of Technology - Institute for Computer Graphics and Visison (ICG)" url="http://www.icg.tugraz.at"/>
+      <discovery label="Graz University of Technology" url="http://www.icg.tugraz.at"/>
+      <discovery label="Johannes Kepler University Linz" url="http://www.jku.at/cg"/>      
    </url>
 
    <includes

@@ -6,7 +6,6 @@
    <extension-point id="org.caleydo.util.statistics.StatisticsPerformer" name="StatisticsPerformer" schema="schema/org.caleydo.util.statistics.StatisticsPerformer.exsd"/>
    <extension-point id="org.caleydo.datadomain.DataDomain" name="DataDomain" schema="schema/org.caleydo.datadomain.DataDomain.exsd"/>
    <extension-point id="org.caleydo.view.ViewCreator" name="ViewCreator" schema="schema/org.caleydo.view.ViewCreator.exsd"/>
-
    <extension-point id="splashExtension" name="Splash Extensions" schema="schema/splashExtension.exsd"/>
    <extension-point id="org.caleydo.view.ViewCategory" name="ViewCategory" schema="schema/org.caleydo.view.ViewCategory.exsd"/>
 
@@ -74,7 +73,7 @@
          </property>
          <property
                name="aboutText"
-               value="Caleydo Visualization Framework&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright by www.caleydo.org (c) and Graz University of Technology - 2012. &#x0A;All Rights Reserved.">
+               value="Caleydo - visualization for molecular biology&#x0A;Check out www.caleydo.org&#x0A;&#x0A;© Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler University Linz.&#x0A;All Rights Reserved.">
          </property>
       </product>
    </extension>

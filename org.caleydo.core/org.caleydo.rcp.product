@@ -6,10 +6,10 @@
    <aboutInfo>
       <image path="resources/wizard/wizard.png"/>
       <text>
-         Caleydo Visualization Framework
+         Caleydo - visualization for molecular biology
 Check out www.caleydo.org
 
-© Copyright by www.caleydo.org (c) and Graz University of Technology - 2012. 
+© Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander Lex, Christian Partl, Johannes Kepler University Linz.
 All Rights Reserved.
       </text>
    </aboutInfo>
@@ -26,7 +26,7 @@ All Rights Reserved.
    <windowImages i16="/org.caleydo.data/resources/icons/caleydo/caleydo16.gif" i32="/org.caleydo.data/resources/icons/caleydo/caleydo32.gif" i48="/org.caleydo.data/resources/icons/caleydo/caleydo48.gif" i64="/org.caleydo.data/resources/icons/caleydo/caleydo64.gif" i128="/org.caleydo.data/resources/icons/caleydo/caleydo128.gif"/>
 
    <splash
-      location="org.caleydo.rcp" />
+      location="org.caleydo.core" />
    <launcher name="Caleydo">
       <solaris/>
       <win useIco="false">
@@ -34,6 +34,7 @@ All Rights Reserved.
          <bmp/>
       </win>
    </launcher>
+
 
    <vm>
    </vm>
