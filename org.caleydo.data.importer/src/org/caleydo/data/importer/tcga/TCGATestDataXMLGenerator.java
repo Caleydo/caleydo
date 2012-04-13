@@ -35,8 +35,8 @@ import org.caleydo.core.io.ParsingRule;
  * Generator class that writes the loading information of a series of TCGA data
  * sets to an XML file.
  * 
- * @author Marc Streit
  * @author Alexander Lex
+ * @author Marc Streit
  */
 public class TCGATestDataXMLGenerator {
 
@@ -112,11 +112,11 @@ public class TCGATestDataXMLGenerator {
 
 		ArrayList<DataSetDescription> dataSetDescriptions = new ArrayList<DataSetDescription>();
 		dataSetDescriptions.add(setUpMRNAData());
-		// dataSetDescriptions.add(setUpMutationData());
+		dataSetDescriptions.add(setUpMutationData());
 		dataSetDescriptions.add(setUpMiRNAData());
 		dataSetDescriptions.add(setUpMethylationData());
 		dataSetDescriptions.add(setUpCopyNumberData());
-		// dataSetDescriptions.add(setUpClinicalData());
+		dataSetDescriptions.add(setUpClinicalData());
 
 		DataSetDescriptionCollection dataSetDescriptionCollection = new DataSetDescriptionCollection();
 		dataSetDescriptionCollection.setDataSetDescriptionCollection(dataSetDescriptions);
@@ -150,7 +150,8 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.CONTINUOUS));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 
@@ -185,7 +186,8 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.CONTINUOUS));
 		mirnaData.addParsingRule(parsingRule);
 
 		IDSpecification mirnaIDSpecification = new IDSpecification();
@@ -218,7 +220,8 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.CONTINUOUS));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.CONTINUOUS));
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
 
@@ -251,7 +254,8 @@ public class TCGATestDataXMLGenerator {
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(3);
 		parsingRule.setParseUntilEnd(true);
-		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT", ColumnDescription.ORDINAL));
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.ORDINAL));
 		copyNumberData.addParsingRule(parsingRule);
 		copyNumberData.setTransposeMatrix(true);
 
@@ -266,230 +270,64 @@ public class TCGATestDataXMLGenerator {
 		// copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING
 		// .name());
 	}
-	//
-	// private static DataSetDescription setUpClinicalData() {
-	// DataSetDescription clinicalData = new DataSetDescription();
-	// clinicalData.setDataSetName("Clinical");
-	// clinicalData.setDataDomainType("org.caleydo.datadomain.generic");
-	// clinicalData.setDataPath(CLINICAL);
-	//
-	// DataDomainConfiguration clinicalConfiguration = new
-	// DataDomainConfiguration();
-	// clinicalConfiguration.setRecordIDCategory("SAMPLE");
-	// clinicalConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-	// clinicalConfiguration.setHumanReadableRecordIDType("SAMPLE");
-	// clinicalConfiguration.setRecordDenominationPlural("samples");
-	// clinicalConfiguration.setRecordDenominationSingular("sample");
-	//
-	// clinicalConfiguration.setDimensionIDCategory("CLINICAL");
-	// clinicalConfiguration.setHumanReadableDimensionIDType("Clinical");
-	// clinicalConfiguration.setDimensionDenominationPlural("Clinical");
-	// clinicalConfiguration.setDimensionDenominationSingular("Clinical");
-	//
-	// clinicalData.setDataDomainConfiguration(clinicalConfiguration);
-	//
-	// String delimiter = "\t";
-	//
-	// LoadDataParameters loadDataParameters = new LoadDataParameters();
-	// loadDataParameters.setLabel(clinicalData.getDataSetName());
-	// loadDataParameters.setFileName(clinicalData.getDataPath());
-	// loadDataParameters.setDelimiter(delimiter);
-	//
-	// loadDataParameters.setMathFilterMode("Normal");
-	// loadDataParameters.setIsDataHomogeneous(true);
-	// loadDataParameters.setColumnDimension(true);
-	//
-	// try {
-	// loadDataParameters.setStartParseFileAtLine(1);
-	//
-	// // open file to read second line to determine number of rows and
-	// // columns
-	// BufferedReader reader = new BufferedReader(new FileReader(
-	// clinicalData.getDataPath()));
-	//
-	// // read dimensions of data matrix
-	// // String dimensionString = reader.readLine();
-	//
-	// // TODO: check if there are two numeric columns
-	// // String[] dimensions =
-	// // dimensionString.split(loadDataParameters.getDelimiter());
-	//
-	// StringBuffer inputPattern = new StringBuffer(
-	// "SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;SKIP;FLOAT;SKIP;FLOAT;FLOAT;FLOAT;FLOAT;ABORT;");
-	//
-	// // list to store column labels
-	// List<String> columnLabels = new ArrayList<String>();
-	// columnLabels.add("Days to birth");
-	// columnLabels.add("Days to death");
-	// columnLabels.add("Days to last followup");
-	// columnLabels.add("Days to tumor progression");
-	// columnLabels.add("Days to tumor recurrence");
-	//
-	// loadDataParameters.setInputPattern(inputPattern.toString());
-	// loadDataParameters.setRowIDStringConverter(new TCGAIDStringConverter());
-	// loadDataParameters.setColumnLabels(columnLabels);
-	// clinicalData.setLoadDataParameters(loadDataParameters);
-	//
-	// } catch (Exception e) {
-	// throw new IllegalStateException(e);
-	// }
-	//
-	// // doCopyNumberSpecificStuff(clinicalConfiguration);
-	//
-	// return clinicalData;
-	// }
-	//
-	// private static DataSetDescription setUpMutationData() {
-	// DataSetDescription mutationDataMetaInfo = new DataSetDescription();
-	// mutationDataMetaInfo.setDataSetName("Mutation Status");
-	// mutationDataMetaInfo.setDataDomainType("org.caleydo.datadomain.genetic");
-	// mutationDataMetaInfo.setDataPath(MUTATION);
-	//
-	// CategoryProperties categoryProperties = new CategoryProperties();
-	// categoryProperties.setNumberOfCategories(2);
-	// categoryProperties.setColorScheme(EDefaultColorSchemes.WHITE_RED.name());
-	//
-	// DataDomainConfiguration dataConfiguration = new
-	// DataDomainConfiguration();
-	// dataConfiguration.setMappingFile("data/bootstrap/bootstrap.xml");
-	//
-	// dataConfiguration.setRecordIDCategory("SAMPLE");
-	// dataConfiguration.setPrimaryRecordMappingType("SAMPLE_INT");
-	// dataConfiguration.setHumanReadableRecordIDType("SAMPLE");
-	// dataConfiguration.setRecordDenominationPlural("samples");
-	// dataConfiguration.setRecordDenominationSingular("sample");
-	//
-	// dataConfiguration.setDimensionIDCategory("GENE");
-	// dataConfiguration.setPrimaryDimensionMappingType("DAVID");
-	// dataConfiguration.setHumanReadableDimensionIDType("GENE_SYMBOL");
-	// dataConfiguration.setDimensionDenominationPlural("genes");
-	// dataConfiguration.setDimensionDenominationSingular("gene");
-	//
-	// mutationDataMetaInfo.setDataDomainConfiguration(dataConfiguration);
-	//
-	// try {
-	// LoadDataParameters loadDataParameters =
-	// setUpLoadDataParameters(mutationDataMetaInfo);
-	//
-	// loadDataParameters.setStartParseFileAtLine(3);
-	//
-	// // open file to read second line to determine number of rows and
-	// // columns
-	// BufferedReader reader;
-	//
-	// reader = new BufferedReader(
-	// new FileReader(mutationDataMetaInfo.getDataPath()));
-	//
-	// // read dimensions of data matrix
-	// String dimensionString = reader.readLine();
-	//
-	// // TODO: check if there are two numeric columns
-	// String[] dimensionHeadings = dimensionString.split(loadDataParameters
-	// .getDelimiter());
-	//
-	// int columns = new Integer(dimensionHeadings.length);
-	//
-	// // loadDataParameters.setMinDefined(true);
-	// // loadDataParameters.setMin(min);
-	// // loadDataParameters.setMaxDefined(true);
-	// // loadDataParameters.setMax(max);
-	//
-	// StringBuffer inputPattern = new StringBuffer("SKIP;");
-	//
-	// // list to store column labels
-	// List<String> columnLabels = new ArrayList<String>();
-	//
-	// for (int i = 0; i < columns - 1; ++i) {
-	// inputPattern.append("FLOAT;");
-	// columnLabels.add(dimensionHeadings[i + 1]);
-	// }
-	//
-	// loadDataParameters.setInputPattern(inputPattern.toString());
-	// loadDataParameters
-	// .setColumnHeaderStringConverter(new DashToPointStringConverter());
-	// loadDataParameters.setColumnLabels(columnLabels);
-	//
-	// mutationDataMetaInfo.setLoadDataParameters(loadDataParameters);
-	//
-	// } catch (Exception e) {
-	// throw new IllegalStateException(e);
-	// }
-	//
-	// return mutationDataMetaInfo;
-	// }
-
-	// private static LoadDataParameters setUpLoadDataParameters(
-	// DataSetDescription dataSetMetaInfo) {
-	//
-	// String delimiter = "\t";
-	//
-	// LoadDataParameters loadDataParameters = new LoadDataParameters();
-	// loadDataParameters.setLabel(dataSetMetaInfo.getDataSetName());
-	// loadDataParameters.setFileName(dataSetMetaInfo.getDataPath());
-	// loadDataParameters.setDelimiter(delimiter);
-	//
-	// loadDataParameters.setMathFilterMode("Normal");
-	// loadDataParameters.setIsDataHomogeneous(true);
-	// loadDataParameters.setColumnDimension(false);
-	//
-	// return loadDataParameters;
-	// }
 
 	//
-	// private static void doCopyNumberSpecificStuff(DataSetDescription
-	// dataSetMetaInfo) {
-	// try {
-	// LoadDataParameters loadDataParameters =
-	// setUpLoadDataParameters(dataSetMetaInfo);
-	//
-	// loadDataParameters.setStartParseFileAtLine(1);
-	//
-	// // open file to read second line to determine number of rows and
-	// // columns
-	// BufferedReader reader = new BufferedReader(new FileReader(
-	// dataSetMetaInfo.getDataPath()));
-	//
-	// // read dimensions of data matrix
-	// String dimensionString = reader.readLine();
-	//
-	// // TODO: check if there are two numeric columns
-	// String[] dimensions = dimensionString
-	// .split(loadDataParameters.getDelimiter());
-	//
-	// int columns = dimensions.length - 3;// new Integer(dimensions[1]);
-	//
-	// // read column headers
-	// // String headerString = reader.readLine();
-	//
-	// // TODO: check if there are as many column headers as there are
-	// // columns (+ 2)
-	// // String[] headers =
-	// // headerString.split(loadDataParameters.getDelimiter());
-	//
-	// // loadDataParameters.setMinDefined(true);
-	// // loadDataParameters.setMin(min);
-	// // loadDataParameters.setMaxDefined(true);
-	// // loadDataParameters.setMax(max);
-	//
-	// StringBuffer inputPattern = new StringBuffer("SKIP;SKIP;SKIP;");
-	//
-	// // list to store column labels
-	// List<String> columnLabels = new ArrayList<String>();
-	//
-	// for (int i = 0; i < columns; ++i) {
-	// inputPattern.append("FLOAT;");
-	// columnLabels.add(dimensions[i + 3]);
-	// }
-	//
-	// loadDataParameters.setInputPattern(inputPattern.toString());
-	// loadDataParameters
-	// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
-	// loadDataParameters.setColumnLabels(columnLabels);
-	// dataSetMetaInfo.setLoadDataParameters(loadDataParameters);
-	//
-	// } catch (Exception e) {
-	// throw new IllegalStateException(e);
-	// }
-	// }
+	private DataSetDescription setUpClinicalData() {
+		DataSetDescription clinicalData = new DataSetDescription();
+		clinicalData.setDataSetName("Clinical");
+		clinicalData.setDataHomogeneous(false);
+
+		clinicalData.setDataSourcePath(CLINICAL);
+		clinicalData.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(10);
+		parsingRule.setToColumn(11);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		clinicalData.addParsingRule(parsingRule);
+		parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(13);
+		parsingRule.setToColumn(15);
+		parsingRule.setColumnDescripton(new ColumnDescription());
+		clinicalData.addParsingRule(parsingRule);
+
+		IDSpecification clinicalIdSpecification = new IDSpecification();
+		clinicalIdSpecification.setIdType("clinical");
+
+		clinicalData.setColumnIDSpecification(clinicalIdSpecification);
+		clinicalData.setRowIDSpecification(sampleIDSpecification);
+
+		// columnLabels.add("Days to birth");
+		// columnLabels.add("Days to death");
+		// columnLabels.add("Days to last followup");
+		// columnLabels.add("Days to tumor progression");
+		// columnLabels.add("Days to tumor recurrence");
+
+		return clinicalData;
+	}
+
+	private DataSetDescription setUpMutationData() {
+		DataSetDescription mutationDataMetaInfo = new DataSetDescription();
+		mutationDataMetaInfo.setDataSetName("Mutation Status");
+		mutationDataMetaInfo.setDataSourcePath(MUTATION);
+
+		mutationDataMetaInfo.setNumberOfHeaderLines(1);
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(1);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.NOMINAL));
+		mutationDataMetaInfo.addParsingRule(parsingRule);
+		mutationDataMetaInfo.setTransposeMatrix(true);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("GENE_SYMBOL");
+		mutationDataMetaInfo.setRowIDSpecification(geneIDSpecification);
+		mutationDataMetaInfo.setColumnIDSpecification(sampleIDSpecification);
+
+		return mutationDataMetaInfo;
+	}
 
 }

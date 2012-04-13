@@ -112,7 +112,7 @@ public class ConversionTools {
 	 */
 	public static float[] normalize(float[] inputData, final float min, final float max) {
 		if (min > max)
-			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max + ")");
+			throw new IllegalArgumentException("Minimum (" + min + ") was bigger as maximum (" + max + ") for: \n" + inputData);
 
 		float[] targetData = new float[inputData.length];
 		if (inputData.length > 1) {

@@ -45,9 +45,9 @@ public class ColumnDescription {
 
 	/**
 	 * The dataType of the column, must be one equivalent to those listed in
-	 * {@link EColumnType}
+	 * {@link EColumnType}. Defaults to float.
 	 */
-	private String dataType;
+	private String dataType = "FLOAT";
 
 	/**
 	 * The type of data found in the column. We destinguish between
@@ -65,7 +65,8 @@ public class ColumnDescription {
 	private Integer columnID = null;
 
 	/**
-	 * Default Constructor
+	 * Default Constructor, creates a ColumnDescripton with float dataType and
+	 * continuous columnType and no column number for parsing.
 	 */
 	public ColumnDescription() {
 	}

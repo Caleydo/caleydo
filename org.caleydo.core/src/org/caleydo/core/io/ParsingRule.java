@@ -116,7 +116,7 @@ public class ParsingRule implements Comparable<ParsingRule> {
 	 * @param toColum
 	 *            setter, see {@link #toColum}
 	 */
-	public void setToColum(int toColum) {
+	public void setToColumn(int toColum) {
 		this.toColum = toColum;
 	}
 
