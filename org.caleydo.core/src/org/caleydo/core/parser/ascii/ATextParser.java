@@ -154,6 +154,4 @@ public abstract class ATextParser {
 		}
 		return sourceID;
 	}
-
-	// protected abstract void setArraysToDimensions();
 }

@@ -97,7 +97,7 @@ public class TCGATestDataXMLGenerator {
 		dataSetDescriptions.add(setUpMRNAData());
 		// dataSetDescriptions.add(setUpMutationData());
 		dataSetDescriptions.add(setUpMiRNAData());
-//		dataSetDescriptions.add(setUpMethylationData());
+		dataSetDescriptions.add(setUpMethylationData());
 		// dataSetDescriptions.add(setUpCopyNumberData());
 		// dataSetDescriptions.add(setUpClinicalData());
 
@@ -209,7 +209,7 @@ public class TCGATestDataXMLGenerator {
 		sampleIDSpecification.setIdType("SAMPLE");
 		sampleIDSpecification.setReplacementExpression("\\.", "-");
 		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
-		
+
 		IDSpecification methylationIDSpecification = new IDSpecification();
 		methylationIDSpecification.setIdType("methylation");
 		methylationData.setRowIDSpecification(methylationIDSpecification);

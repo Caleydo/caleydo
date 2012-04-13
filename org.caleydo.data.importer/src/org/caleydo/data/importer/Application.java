@@ -49,8 +49,7 @@ import org.eclipse.equinox.app.IApplicationContext;
  */
 public class Application implements IApplication {
 
-	private ATableBasedDataDomain dataDomain;
-
+	
 	private boolean useQuickClustering = true;
 
 	/** {link JAXBContext} for DataTypeSet (de-)serialization */
@@ -124,18 +123,18 @@ public class Application implements IApplication {
 	public void stop() {
 	}
 
-	private void loadSources(DataSetDescription dataSetDescription)
+	private void loadSources( DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
-		loadData(dataSetDescription);
-		loadGroupings(dataSetDescription);
+		ATableBasedDataDomain dataDomain =	loadData(dataSetDescription);
+		loadGroupings(dataDomain, dataSetDescription);
 
 		// if we don't have a row-grouping we create one
 		if (dataSetDescription.getRowGroupingSpecifications() == null) {
-			runClusteringOnRows(true, 4);
+			runClusteringOnRows(dataDomain, true, 4);
 
-			createSampleOfGenes(runClusteringOnRows(true, 5).getDimensionResult());
-			runClusteringOnRows(true, 6);
+			createSampleOfGenes(dataDomain, runClusteringOnRows(dataDomain, true, 5).getDimensionResult());
+			runClusteringOnRows(dataDomain, true, 6);
 
 			// runClusteringOnRows(false, -1);
 			// if (metaInfo.isCreateGeneSamples())
@@ -144,7 +143,7 @@ public class Application implements IApplication {
 
 	}
 
-	protected void loadData(DataSetDescription dataSetDescription)
+	protected ATableBasedDataDomain loadData(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
 		// if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
@@ -163,6 +162,8 @@ public class Application implements IApplication {
 			recordType = dataSetDescription.getRowIDSpecification().getIdType();
 		}
 
+		
+		ATableBasedDataDomain dataDomain;
 		if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
 				|| dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
 			// we use the default provided by the data domain
@@ -211,6 +212,7 @@ public class Application implements IApplication {
 		// the place the matrix is stored:
 		DataTableUtils.loadData(dataDomain, dataSetDescription, true,
 				createDefaultRecordPerspective);
+		return dataDomain;
 
 	}
 
@@ -308,7 +310,7 @@ public class Application implements IApplication {
 	 * 
 	 * @param dataSetDescription
 	 */
-	private void loadGroupings(DataSetDescription dataSetDescription) {
+	private void loadGroupings(ATableBasedDataDomain dataDomain, DataSetDescription dataSetDescription) {
 		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
 				.getColumnGroupingSpecifications();
 
@@ -402,7 +404,7 @@ public class Application implements IApplication {
 	 * @param useKMeans
 	 * @return
 	 */
-	private ClusterResult runClusteringOnRows(boolean useKMeans, int numClusters) {
+	private ClusterResult runClusteringOnRows(ATableBasedDataDomain dataDomain, boolean useKMeans, int numClusters) {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
@@ -451,7 +453,7 @@ public class Application implements IApplication {
 		// return result.getDimensionResult();
 	}
 
-	private void createSampleOfGenes(PerspectiveInitializationData clusterResult) {
+	private void createSampleOfGenes(ATableBasedDataDomain dataDomain, PerspectiveInitializationData clusterResult) {
 		if (clusterResult.getIndices().size() < 50)
 			return;
 		DimensionPerspective sampledDimensionPerspective = new DimensionPerspective(

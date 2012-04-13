@@ -26,6 +26,13 @@ public class ColumnParsingDetail {
 	private String dataType;
 
 	/**
+	 * An integer ID of the column. For newly loaded data this needs not be set.
+	 * After serializing the data however, this is the way we re-assign the same
+	 * columnID to the same column again.
+	 */
+	private Integer columnID = null;
+
+	/**
 	 * Default Constructor
 	 */
 	public ColumnParsingDetail() {
@@ -72,6 +79,21 @@ public class ColumnParsingDetail {
 	 */
 	public String getDataType() {
 		return dataType;
+	}
+
+	/**
+	 * @param columnID
+	 *            setter, see {@link #columnID}
+	 */
+	public void setColumnID(Integer columnID) {
+		this.columnID = columnID;
+	}
+
+	/**
+	 * @return the columnID, see {@link #columnID}
+	 */
+	public Integer getColumnID() {
+		return columnID;
 	}
 
 	@Override

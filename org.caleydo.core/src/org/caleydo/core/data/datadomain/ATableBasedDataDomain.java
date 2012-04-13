@@ -95,6 +95,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/** The raw data for this data domain. */
 	protected DataTable table;
 
+
 	/**
 	 * <p>
 	 * The {@link DataContainer} registered for this data domain. A
@@ -262,13 +263,11 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 		IDType primaryRecordMappingType;
 
-		if (configuration.primaryRecordMappingType != null)
-		{
+		if (configuration.primaryRecordMappingType != null) {
 			IDType.getIDType(configuration.primaryRecordMappingType);
 			primaryRecordMappingType = IDType
 					.getIDType(configuration.primaryRecordMappingType);
-		}
-			else
+		} else
 			primaryRecordMappingType = recordIDType;
 
 		recordIDCategory.setPrimaryMappingType(primaryRecordMappingType);
