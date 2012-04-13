@@ -206,10 +206,22 @@ public abstract class ANode {
 	 * @return The minimum height that is required to render this node properly.
 	 */
 	public abstract int getMinRequiredHeightPixels();
-	
+
 	/**
 	 * @return The minimum width that is required to render this node properly.
 	 */
 	public abstract int getMinRequiredWidthPixels();
+
+	/**
+	 * @return the nodeId, see {@link #nodeId}
+	 */
+	public int getNodeId() {
+		return nodeId;
+	}
+
+	/**
+	 * @return The caption of this node.
+	 */
+	public abstract String getCaption();
 
 }

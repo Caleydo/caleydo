@@ -30,10 +30,11 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
+ * Base class for nodes that make use of layouts.
+ * 
  * @author Christian
  * 
  */
@@ -50,17 +51,17 @@ public abstract class ALayoutBasedNode extends ANode {
 			int nodeId) {
 		super(pixelGLConverter, view, nodeId);
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
-		ElementLayout baseLayout = setupLayout();
-		layoutManager.setBaseElementLayout(baseLayout);
+		// ElementLayout baseLayout = setupLayout();
+		// layoutManager.setBaseElementLayout(baseLayout);
 	}
 
-	/**
-	 * Subclasses are intended to setup their layout within this method, which
-	 * is automatically called upon node creation.
-	 * 
-	 * @return The base layout element of the node layout.
-	 */
-	protected abstract ElementLayout setupLayout();
+	// /**
+	// * Subclasses are intended to setup their layout within this method, which
+	// * is automatically called upon node creation.
+	// *
+	// * @return The base layout element of the node layout.
+	// */
+	// protected abstract ElementLayout setupLayout();
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
@@ -79,6 +80,15 @@ public abstract class ALayoutBasedNode extends ANode {
 		layoutManager.render(gl);
 		gl.glPopMatrix();
 
+	}
+
+	/**
+	 * Sets the base {@link ElementLayout} of the node.
+	 * 
+	 * @param baseLayout
+	 */
+	public void setBaseLayout(ElementLayout baseLayout) {
+		layoutManager.setBaseElementLayout(baseLayout);
 	}
 
 }

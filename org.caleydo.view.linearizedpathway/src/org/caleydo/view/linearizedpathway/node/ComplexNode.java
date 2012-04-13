@@ -31,11 +31,13 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
+import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
+import org.caleydo.view.linearizedpathway.node.mode.ComplexNodeLinearizedMode;
+import org.caleydo.view.linearizedpathway.node.mode.ComplexNodePreviewMode;
 
 /**
  * The complex node renderer renders a node that represents multiple
@@ -147,27 +149,25 @@ public class ComplexNode extends ALinearizableNode {
 		this.caption = caption;
 	}
 
-	/**
-	 * @return the caption, see {@link #caption}
-	 */
+	@Override
 	public String getCaption() {
 		return caption;
 	}
 
 	@Override
-	public int getMinRequiredHeightPixels() {
-		return DEFAULT_HEIGHT_PIXELS;
+	protected ALinearizeableNodeMode getLinearizedMode() {
+		return new ComplexNodeLinearizedMode(view);
+	}
+
+
+	@Override
+	protected ALinearizeableNodeMode getPreviewMode() {
+		return new ComplexNodePreviewMode(view);
 	}
 
 	@Override
-	public int getMinRequiredWidthPixels() {
-		return DEFAULT_WIDTH_PIXELS;
-	}
+	protected void registerPickingListeners() {
 
-	@Override
-	protected ElementLayout setupLayout() {
-		// TODO Auto-generated method stub
-		return null;
 	}
 
 }

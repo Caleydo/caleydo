@@ -26,13 +26,17 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
+import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
+import org.caleydo.view.linearizedpathway.node.mode.CompoundNodeLinearizedMode;
+import org.caleydo.view.linearizedpathway.node.mode.CompoundNodePreviewMode;
 
 /**
+ * Node that represents a compound in a pathway.
+ * 
  * @author Christian
  * 
  */
@@ -49,12 +53,11 @@ public class CompoundNode extends ALinearizableNode {
 	public CompoundNode(PixelGLConverter pixelGLConverter, GLLinearizedPathway view,
 			int nodeId) {
 		super(pixelGLConverter, view, nodeId);
-		// TODO Auto-generated constructor stub
 	}
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
-
+		// This node does not use layouts.
 		float height = pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(),
@@ -84,19 +87,23 @@ public class CompoundNode extends ALinearizableNode {
 	}
 
 	@Override
-	public int getMinRequiredHeightPixels() {
-		return DEFAULT_HEIGHT_PIXELS;
+	protected ALinearizeableNodeMode getLinearizedMode() {
+		return new CompoundNodeLinearizedMode(view);
 	}
 
 	@Override
-	public int getMinRequiredWidthPixels() {
-		return DEFAULT_HEIGHT_PIXELS;
+	protected ALinearizeableNodeMode getPreviewMode() {
+		return new CompoundNodePreviewMode(view);
 	}
 
 	@Override
-	protected ElementLayout setupLayout() {
-		// TODO Auto-generated method stub
-		return null;
+	public String getCaption() {
+		return pathwayVertexRep.getName();
+	}
+
+	@Override
+	protected void registerPickingListeners() {
+
 	}
 
 }

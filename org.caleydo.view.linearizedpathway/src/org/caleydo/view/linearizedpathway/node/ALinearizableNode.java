@@ -23,10 +23,9 @@
 package org.caleydo.view.linearizedpathway.node;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
+import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
 
 /**
  * Base class for all nodes that can be linearized.
@@ -35,11 +34,16 @@ import org.caleydo.view.linearizedpathway.PickingType;
  * 
  */
 public abstract class ALinearizableNode extends ALayoutBasedNode {
-	
+
 	/**
 	 * Determines whether the node shows a preview of its data.
 	 */
 	protected boolean isPreviewMode = false;
+
+	/**
+	 * The current mode of the node.
+	 */
+	protected ALinearizeableNodeMode mode;
 
 	/**
 	 * @param pixelGLConverter
@@ -49,33 +53,33 @@ public abstract class ALinearizableNode extends ALayoutBasedNode {
 	public ALinearizableNode(PixelGLConverter pixelGLConverter, GLLinearizedPathway view,
 			int nodeId) {
 		super(pixelGLConverter, view, nodeId);
+		mode = getLinearizedMode();
+		mode.apply(this);
 	}
 
 	@Override
-	protected void registerPickingListeners() {
-		view.addIDPickingListener(new APickingListener() {
-			@Override
-			public void clicked(Pick pick) {
-				
-				if(isPreviewMode) {
-					view.setExpandedBranchSummaryNode(null);
-					view.selectBranch(ALinearizableNode.this);
-				}
-			}
-		}, PickingType.LINEARIZABLE_NODE.name(), nodeId);
-	}
-	
-	@Override
 	public void unregisterPickingListeners() {
 		view.removeAllIDPickingListeners(PickingType.GENE_NODE.name(), nodeId);
+		mode.unregisterPickingListeners();
 	}
-	
+
 	/**
 	 * @param isPreviewMode
 	 *            setter, see {@link #isPreviewMode}
 	 */
 	public void setPreviewMode(boolean isPreviewMode) {
+
+		if (this.isPreviewMode == isPreviewMode)
+			return;
 		this.isPreviewMode = isPreviewMode;
+		mode.unregisterPickingListeners();
+
+		if (isPreviewMode) {
+			mode = getPreviewMode();
+		} else {
+			mode = getLinearizedMode();
+		}
+		mode.apply(this);
 	}
 
 	/**
@@ -83,6 +87,26 @@ public abstract class ALinearizableNode extends ALayoutBasedNode {
 	 */
 	public boolean isPreviewMode() {
 		return isPreviewMode;
+	}
+
+	/**
+	 * @return A new linearized mode object for the concrete node.
+	 */
+	protected abstract ALinearizeableNodeMode getLinearizedMode();
+
+	/**
+	 * @return A new preview mode object for the concrete node.
+	 */
+	protected abstract ALinearizeableNodeMode getPreviewMode();
+
+	@Override
+	public int getMinRequiredHeightPixels() {
+		return mode.getMinHeightPixels();
+	}
+
+	@Override
+	public int getMinRequiredWidthPixels() {
+		return mode.getMinWidthPixels();
 	}
 
 }
