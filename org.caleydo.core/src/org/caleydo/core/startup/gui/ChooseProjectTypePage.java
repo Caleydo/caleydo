@@ -319,15 +319,19 @@ public class ChooseProjectTypePage extends WizardPage {
 		geneticDataUseCaseTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
+		GridData gridData = new GridData(GridData.FILL_BOTH);
+		//gridData.grabExcessHorizontalSpace = true;
+		
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
-		buttonNewProject.setLayoutData(new GridData(GridData.FILL_BOTH));
+		buttonNewProject.setLayoutData(gridData);
 		buttonNewProject.setSelection(true);
 		setPageComplete(true);
 
-		Group groupOrganism = new Group(composite, SWT.None);
+		Group groupOrganism = new Group(composite, SWT.NONE);
 		groupOrganism.setText("Select organism");
 		groupOrganism.setLayout(new RowLayout(SWT.VERTICAL));
+		groupOrganism.setLayoutData(gridData);
 
 		final Button btnOrganismHuman = new Button(groupOrganism, SWT.RADIO);
 		btnOrganismHuman.setText("Human (homo sapiens)");
@@ -363,7 +367,8 @@ public class ChooseProjectTypePage extends WizardPage {
 		btnLoadPathwayData = new Button(composite, SWT.CHECK);
 		btnLoadPathwayData.setText("Load pathway data");
 		btnLoadPathwayData.setEnabled(true);
-		btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
+		btnLoadPathwayData.setLayoutData(gridData);
+		//btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Set if pathways were loaded in last session
 		String sLastChosenPathwayDataSources = GeneralManager.get().getPreferenceStore()
@@ -376,8 +381,9 @@ public class ChooseProjectTypePage extends WizardPage {
 
 		final Group groupPathways = new Group(composite, SWT.None);
 		groupPathways.setText("Select pathway database");
-		groupPathways.setLayout(new RowLayout());
-
+		groupPathways.setLayoutData(gridData);
+		groupPathways.setLayout(new RowLayout(SWT.VERTICAL));
+		
 		final Button btnLoadKEGGPathwayData = new Button(groupPathways, SWT.CHECK);
 		btnLoadKEGGPathwayData.setText("KEGG");
 
