@@ -472,8 +472,8 @@ public class DataSetDescription extends MatrixDefinition {
 	@Override
 	public String toString() {
 		if (dataSetName != null)
-			return "Info for " + dataSetName;
+			return dataSetName;
 		else
-			return "Info for " + dataSourcePath;
+			return dataSourcePath;
 	}
 }

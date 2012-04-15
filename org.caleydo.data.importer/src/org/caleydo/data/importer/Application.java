@@ -65,6 +65,10 @@ import org.eclipse.equinox.app.IApplicationContext;
 
 /**
  * This class controls all aspects of the application's execution
+ * 
+ * @author Alexander Lex 
+ * @author Marc Streit
+ * @author Nils Gehlenborg
  */
 public class Application implements IApplication {
 
@@ -73,26 +77,26 @@ public class Application implements IApplication {
 	/** {link JAXBContext} for DataTypeSet (de-)serialization */
 	private JAXBContext context;
 
-	private String inputDataTypeSetCollectionFile = "";
+	private String dataSetDescriptionFilePath = "";
 
 	@Override
 	public Object start(IApplicationContext context) throws Exception {
 
 		String[] runConfigParameters = (String[]) context.getArguments().get(
 				"application.args");
-		String outputCaleydoProjectFile = "";
+		String outputCaleydoProjectFilePath = "";
 
 		if (runConfigParameters == null || runConfigParameters.length != 2) {
 
-			inputDataTypeSetCollectionFile = System.getProperty("user.home")
+			dataSetDescriptionFilePath = System.getProperty("user.home")
 					+ System.getProperty("file.separator") + "caleydo_data.xml";
 
-			outputCaleydoProjectFile = System.getProperty("user.home")
+			outputCaleydoProjectFilePath = System.getProperty("user.home")
 					+ System.getProperty("file.separator") + "export_"
-					+ (new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date())) + ".cal";
+					+ (new SimpleDateFormat("yyyy.MM.dd_HH.mm").format(new Date())) + ".cal";
 		} else {
-			outputCaleydoProjectFile = runConfigParameters[0];
-			inputDataTypeSetCollectionFile = runConfigParameters[1];
+			outputCaleydoProjectFilePath = runConfigParameters[0];
+			dataSetDescriptionFilePath = runConfigParameters[1];
 		}
 
 		GeneralManager.get().init();
@@ -106,7 +110,7 @@ public class Application implements IApplication {
 
 		// calculateVAIntersections();
 
-		new ProjectSaver().save(outputCaleydoProjectFile, true);
+		new ProjectSaver().save(outputCaleydoProjectFilePath, true);
 
 		return IApplication.EXIT_OK;
 	}
@@ -417,7 +421,7 @@ public class Application implements IApplication {
 			Unmarshaller unmarshaller = context.createUnmarshaller();
 
 			dataTypeSetCollection = (DataSetDescriptionCollection) unmarshaller
-					.unmarshal(new File(inputDataTypeSetCollectionFile));
+					.unmarshal(new File(dataSetDescriptionFilePath));
 		} catch (JAXBException ex) {
 			throw new RuntimeException("Could not create JAXBContexts", ex);
 		}

@@ -30,15 +30,17 @@ import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.ParsingRule;
+import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
 /**
- * Generator class that writes the loading information of a series of TCGA data
- * sets to an XML file.
+ * Creates and parameterizes a series of {@link DataSetDescription}s for the
+ * TCGA dataset. Writes the result to an xml file, which can then be loaded by
+ * the importer plugin, which creates and caleydo project file.
  * 
  * @author Alexander Lex
  * @author Marc Streit
  */
-public class TCGATestDataXMLGenerator {
+public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 
 	public static final String DROPBOX_GBM_FOLDER = System.getProperty("user.home")
 			+ System.getProperty("file.separator")
@@ -71,9 +73,6 @@ public class TCGATestDataXMLGenerator {
 	public static final String MUTATION = DROPBOX_GBM_FOLDER
 			+ "mutation/mut_patient_centric_table_public_transposed_01.txt";
 
-	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
-			+ System.getProperty("file.separator") + "caleydo_data.xml";
-
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 
 	private IDSpecification sampleIDSpecification;
@@ -100,44 +99,33 @@ public class TCGATestDataXMLGenerator {
 
 	public static void main(String[] args) {
 
-		TCGATestDataXMLGenerator generator = new TCGATestDataXMLGenerator();
+		TCGATestDataXMLGenerator generator = new TCGATestDataXMLGenerator(args);
 		generator.run();
 	}
 
-	private void run() {
+	/**
+	 * 
+	 */
+	public TCGATestDataXMLGenerator(String[] arguments) {
+		super(arguments);
+	}
+
+	@Override
+	protected void setUpDataSetDescriptions() {
 		sampleIDSpecification = new IDSpecification();
 		sampleIDSpecification.setIdType("SAMPLE");
 		sampleIDSpecification.setReplacementExpression("\\.", "-");
 		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 
-		ArrayList<DataSetDescription> dataSetDescriptions = new ArrayList<DataSetDescription>();
-		dataSetDescriptions.add(setUpMRNAData());
-		dataSetDescriptions.add(setUpMutationData());
-		dataSetDescriptions.add(setUpMiRNAData());
-		dataSetDescriptions.add(setUpMethylationData());
-		dataSetDescriptions.add(setUpCopyNumberData());
-		dataSetDescriptions.add(setUpClinicalData());
+		dataSetDescriptionCollection = new DataSetDescriptionCollection();
 
-		DataSetDescriptionCollection dataSetDescriptionCollection = new DataSetDescriptionCollection();
-		dataSetDescriptionCollection.setDataSetDescriptionCollection(dataSetDescriptions);
+		dataSetDescriptionCollection.add(setUpMRNAData());
+		dataSetDescriptionCollection.add(setUpMutationData());
+		dataSetDescriptionCollection.add(setUpMiRNAData());
+		dataSetDescriptionCollection.add(setUpMethylationData());
+		dataSetDescriptionCollection.add(setUpCopyNumberData());
+		dataSetDescriptionCollection.add(setUpClinicalData());
 
-		JAXBContext context = null;
-		try {
-			Class<?>[] serializableClasses = new Class<?>[2];
-			serializableClasses[0] = DataSetDescription.class;
-			serializableClasses[1] = DataSetDescriptionCollection.class;
-
-			context = JAXBContext.newInstance(serializableClasses);
-
-			Marshaller marshaller;
-			marshaller = context.createMarshaller();
-			marshaller.marshal(dataSetDescriptionCollection, new File(OUTPUT_FILE_PATH));
-
-			System.out.println("Created configuration for " + dataSetDescriptions.size()
-					+ " datasets: " + dataSetDescriptions);
-		} catch (JAXBException ex) {
-			throw new RuntimeException("Could not create JAXBContexts", ex);
-		}
 	}
 
 	private DataSetDescription setUpMRNAData() {

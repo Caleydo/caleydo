@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,6 +28,7 @@ import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.specialized.Organism;
+import org.caleydo.core.util.link.LinkHandler;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
@@ -54,28 +55,31 @@ import org.eclipse.swt.widgets.TabItem;
 import org.eclipse.swt.widgets.Text;
 
 /**
- * 1st wizard page: The user has to choose the type of project, if she wants to create a new project or load
- * an existing one, or load sample data
+ * 1st wizard page: The user has to choose the type of project, if she wants to
+ * create a new project or load an existing one, or load sample data
  * 
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ChooseProjectTypePage
-	extends WizardPage {
+public class ChooseProjectTypePage extends WizardPage {
 
 	public static final String PAGE_NAME = "Project Wizard";
 
 	private static final String HCC_SAMPLE_DATASET_PAPER_LINK = "http://www.ncbi.nlm.nih.gov/pubmed/17241883";
 
+	private static final String TCGA_LINK = "http://cancergenome.nih.gov";
+
+	private static final String BROAD_GDAC_LINK = "http://gdac.broadinstitute.org";
+
 	public Wizard parentWizard = null;
 
 	/**
-	 * If we load a project (i.e. projectMode is either {@link ProjectMode#SAMPLE_PROJECT} or
-	 * {@link ProjectMode#LOAD_PROJECT}, this enum specifies the options we have.
+	 * If we load a project (i.e. projectMode is either
+	 * {@link ProjectMode#SAMPLE_PROJECT} or {@link ProjectMode#LOAD_PROJECT},
+	 * this enum specifies the options we have.
 	 */
 	public enum EProjectLoadType {
-		RECENT,
-		SPECIFIED
+		RECENT, SPECIFIED
 	}
 
 	private ProjectMode projectMode = ProjectMode.SAMPLE_PROJECT;
@@ -116,8 +120,8 @@ public class ChooseProjectTypePage
 	public ChooseProjectTypePage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
-			.getResource("resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
+				.getClassLoader().getResource("resources/wizard/wizard.png")));
 
 		this.setDescription("Which data do you want to analyze?");
 
@@ -128,7 +132,10 @@ public class ChooseProjectTypePage
 
 	/*
 	 * (non-Javadoc)
-	 * @see org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets.Composite)
+	 * 
+	 * @see
+	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
+	 * .Composite)
 	 */
 	@Override
 	public void createControl(Composite parent) {
@@ -139,8 +146,7 @@ public class ChooseProjectTypePage
 
 		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
 
-		projectMode =
-			ProjectMode.valueOf(GeneralManager.get().getPreferenceStore()
+		projectMode = ProjectMode.valueOf(GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
 		createSampleTab(tabFolder);
@@ -154,26 +160,20 @@ public class ChooseProjectTypePage
 		// restore the previously selected tab
 		if (projectMode == null || projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
 			tabFolder.setSelection(0);
-		}
-		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+		} else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
 			tabFolder.setSelection(0);
-		}
-		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
+		} else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(1);
-		}
-		else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
+		} else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(2);
-		}
-		else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
+		} else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
 			tabFolder.setSelection(3);
-		}
-		else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
+		} else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
 			// if we are in release mode we don't have the collab client
 			if (GeneralManager.RELEASE_MODE) {
 				tabFolder.setSelection(0);
 				projectMode = ProjectMode.SAMPLE_PROJECT;
-			}
-			else {
+			} else {
 				tabFolder.setSelection(4);
 			}
 		}
@@ -184,24 +184,19 @@ public class ChooseProjectTypePage
 			public void widgetSelected(SelectionEvent e) {
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
 					projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
-				}
-				else if (((TabItem) e.item) == sampleTab) {
+				} else if (((TabItem) e.item) == sampleTab) {
 					if (btnSampleProject.getSelection())
 						projectMode = ProjectMode.SAMPLE_PROJECT;
 					else
 						projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
-				}
-				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
+				} else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
-				}
-				else if (((TabItem) e.item) == loadProjectTab) {
+				} else if (((TabItem) e.item) == loadProjectTab) {
 					projectMode = ProjectMode.LOAD_PROJECT;
 
-				}
-				else if (((TabItem) e.item) == collaborationClientTab) {
+				} else if (((TabItem) e.item) == collaborationClientTab) {
 					projectMode = ProjectMode.COLLABORATION_CLIENT;
-				}
-				else
+				} else
 					throw new IllegalStateException("Not implemented!");
 			}
 		});
@@ -213,12 +208,23 @@ public class ChooseProjectTypePage
 	}
 
 	/**
-	 * This tab lets you choose between a sample project, which has e.g. cluster data included and a sample
-	 * dataset, which is basically just a set csv file.
+	 * This tab lets you choose between a sample project, which has e.g. cluster
+	 * data included and a sample dataset, which is basically just a set csv
+	 * file.
 	 * 
 	 * @param tabFolder
 	 */
 	private void createSampleTab(TabFolder tabFolder) {
+
+		SelectionAdapter linkSelectedAdapter = new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				String link = e.text;
+				LinkHandler.openLink(link);
+			}
+
+		};
+
 		sampleTab = new TabItem(tabFolder, SWT.NONE);
 		sampleTab.setText("Sample Data");
 
@@ -243,12 +249,29 @@ public class ChooseProjectTypePage
 			}
 		});
 
-		Text sampleProjectDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
+		Link sampleProjectDescription = new Link(composite, SWT.NULL);
 		sampleProjectDescription
-			.setText("This sample project loads the dataset linked below. The data is pre-filterd to "
-				+ "2000 genes and 39 experiments. Hierarchical clustering was run on the datatable. Pathways are loaded. The visualizations "
-				+ "use a logarithmic scale. The ideal choice if you want to try out Calyedo.");
+				.setText("This sample project loads five linked datasets from the <a href=\""
+						+ TCGA_LINK
+						+ "\">TCGA</a> GBM dataset made available by the Broad Institute's <a href=\""
+						+ BROAD_GDAC_LINK
+						+ "\">Genome Data Analysis Center (GDAC)</a>."
+						+ "\n"
+						+ "\n"
+						+ "The datasets are mRNA expression data, microRNA expression, methylation and copy-number data. Additionally some clinical data is available. The project contains 300-550 samples for each dataset. The expression datasets contain about 1,500 pre-selected values, copy number status is availiabe for about 5,000 genes. "
+						+ "\n"
+						+ "The ideal choice if you want to try out multi-dataset analysis in Calyedo.");
+
+		// sampleProjectDescription
+		// .setText("This sample project loads the dataset linked below. The data is pre-filterd to "
+		// +
+		// "2000 genes and 39 experiments. Hierarchical clustering was run on the datatable. Pathways are loaded. The visualizations "
+		// +
+		// "use a logarithmic scale. The ideal choice if you want to try out Calyedo.");
+
 		sampleProjectDescription.setBackground(composite.getBackground());
+		sampleProjectDescription.addSelectionListener(linkSelectedAdapter);
+
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.widthHint = 400;
 		sampleProjectDescription.setLayoutData(gd);
@@ -264,53 +287,17 @@ public class ChooseProjectTypePage
 
 		Text sampleDataDescription = new Text(composite, SWT.MULTI | SWT.WRAP);
 		sampleDataDescription
-			.setText("This option loads the sample dataset (about 4000 genes and 39 experiments) through the standard loading dialog. Pathways are loaded.");
+				.setText("This option loads a single sample mRNA expression dataset with samples for hepatocellular carcinoma (about 4000 genes and 39 experiments) through the standard loading dialog. The dataset is made available by the Institute of Pathology at the Medical University of Graz.");
 		sampleDataDescription.setBackground(composite.getBackground());
 		gd = new GridData(GridData.FILL_BOTH);
 		gd.widthHint = 400;
 		sampleDataDescription.setLayoutData(gd);
 
 		Link link = new Link(composite, SWT.NULL);
-		link.setText("Dataset: <a href=\"HCC_SAMPLE_DATASET_PAPER_LINK\">" + HCC_SAMPLE_DATASET_PAPER_LINK
-			+ "</a>");
+		link.setText("Dataset: <a href=\"" + HCC_SAMPLE_DATASET_PAPER_LINK + "\">"
+				+ HCC_SAMPLE_DATASET_PAPER_LINK + "</a>");
 		link.setLayoutData(new GridData(GridData.FILL_BOTH));
-		link.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				String osName = System.getProperty("os.name");
-				try {
-					if (osName.startsWith("Mac OS")) {
-						Class<?> fileMgr = Class.forName("com.apple.eio.FileManager");
-						Method openURL = fileMgr.getDeclaredMethod("openURL", new Class[] { String.class });
-						openURL.invoke(null, new Object[] { HCC_SAMPLE_DATASET_PAPER_LINK });
-					}
-					else if (osName.startsWith("Windows")) {
-						Runtime.getRuntime().exec(
-							"rundll32 url.dll,FileProtocolHandler " + HCC_SAMPLE_DATASET_PAPER_LINK);
-					}
-					else {
-						// Assume Unix or Linux
-						String[] browsers =
-							{ "firefox", "opera", "konqueror", "epiphany", "mozilla", "netscape" };
-						String browser = null;
-						for (int count = 0; count < browsers.length && browser == null; count++)
-							if (Runtime.getRuntime().exec(new String[] { "which", browsers[count] })
-								.waitFor() == 0) {
-								browser = browsers[count];
-							}
-						if (browser == null)
-							throw new Exception("Could not find web browser");
-						else {
-							Runtime.getRuntime()
-								.exec(new String[] { browser, HCC_SAMPLE_DATASET_PAPER_LINK });
-						}
-					}
-				}
-				catch (Exception exception) {
-				}
-			}
-
-		});
+		link.addSelectionListener(linkSelectedAdapter);
 
 		btnSampleData.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -363,14 +350,13 @@ public class ChooseProjectTypePage
 		});
 
 		// Set organism which was used in last session
-		Organism lastChosenOrganism =
-			Organism.valueOf(GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
+		Organism lastChosenOrganism = Organism
+				.valueOf(GeneralManager.get().getPreferenceStore()
+						.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 		if (lastChosenOrganism == Organism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
 			organism = Organism.HOMO_SAPIENS;
-		}
-		else {
+		} else {
 			btnOrganismMouse.setSelection(true);
 			organism = Organism.MUS_MUSCULUS;
 		}
@@ -380,8 +366,7 @@ public class ChooseProjectTypePage
 		btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Set if pathways were loaded in last session
-		String sLastChosenPathwayDataSources =
-			GeneralManager.get().getPreferenceStore()
+		String sLastChosenPathwayDataSources = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
 
 		if (sLastChosenPathwayDataSources.isEmpty())
@@ -403,8 +388,7 @@ public class ChooseProjectTypePage
 		if (sLastChosenPathwayDataSources.contains("KEGG")) {
 			btnLoadKEGGPathwayData.setSelection(true);
 			btnLoadKEGGPathwayData.setEnabled(true);
-		}
-		else {
+		} else {
 			btnLoadKEGGPathwayData.setSelection(false);
 			bLoadKEGGPathwayData = false;
 		}
@@ -412,8 +396,7 @@ public class ChooseProjectTypePage
 		if (sLastChosenPathwayDataSources.contains("BioCarta")) {
 			btnLoadBioCartaPathwayData.setSelection(true);
 			bLoadBioCartaPathwayData = true;
-		}
-		else {
+		} else {
 			btnLoadBioCartaPathwayData.setSelection(false);
 			bLoadBioCartaPathwayData = false;
 		}
@@ -454,8 +437,7 @@ public class ChooseProjectTypePage
 					}
 				}
 			});
-		}
-		else {
+		} else {
 			bLoadKEGGPathwayData = false;
 			btnLoadKEGGPathwayData.setEnabled(false);
 		}
@@ -478,8 +460,7 @@ public class ChooseProjectTypePage
 					}
 				}
 			});
-		}
-		else {
+		} else {
 			bLoadBioCartaPathwayData = false;
 			btnLoadBioCartaPathwayData.setEnabled(false);
 		}
@@ -543,8 +524,7 @@ public class ChooseProjectTypePage
 		chooseProjectFile.setEnabled(false);
 		chooseProjectFile.setText("Choose File");
 
-		String lastProjectFileName =
-			GeneralManager.get().getPreferenceStore()
+		String lastProjectFileName = GeneralManager.get().getPreferenceStore()
 				.getString(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT);
 		projectFileName = new Text(composite, SWT.BORDER);
 		projectFileName.setEnabled(false);
@@ -555,29 +535,30 @@ public class ChooseProjectTypePage
 
 		String lastModifiedDate = "";
 		String text = "Open project from last session";
-		File recentProjectFile = new File(ProjectSaver.RECENT_PROJECT_FOLDER + ProjectSaver.DATA_DOMAIN_FILE);
+		File recentProjectFile = new File(ProjectSaver.RECENT_PROJECT_FOLDER
+				+ ProjectSaver.DATA_DOMAIN_FILE);
 
 		try {
-			projectLoadType =
-				EProjectLoadType.valueOf(GeneralManager.get().getPreferenceStore()
+			projectLoadType = EProjectLoadType.valueOf(GeneralManager.get()
+					.getPreferenceStore()
 					.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE));
-		}
-		catch (Exception e) {
-			// this happens when no preference value exists jet (legal situation) or when the value could not
+		} catch (Exception e) {
+			// this happens when no preference value exists jet (legal
+			// situation) or when the value could not
 			// be matched to the enum
 		}
-		if ((projectLoadType != null && projectLoadType.equals(EProjectLoadType.SPECIFIED))
-			|| !recentProjectFile.exists()) {
+		if ((projectLoadType != null && projectLoadType
+				.equals(EProjectLoadType.SPECIFIED)) || !recentProjectFile.exists()) {
 			recentProject.setEnabled(false);
 			loadProject.setSelection(true);
 
 			projectLoadType = EProjectLoadType.SPECIFIED;
 			projectFileName.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
-		}
-		else {
+		} else {
 			Date date = new Date(recentProjectFile.lastModified());
-			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL, DateFormat.FULL);
+			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL,
+					DateFormat.FULL);
 			lastModifiedDate = dataformat.format(date);
 			recentProject.setSelection(true);
 			projectLoadType = EProjectLoadType.RECENT;
@@ -604,10 +585,10 @@ public class ChooseProjectTypePage
 				projectLoadType = EProjectLoadType.SPECIFIED;
 				projectFileName.setEnabled(true);
 				chooseProjectFile.setEnabled(true);
-				if (projectFileName.getText() != null && !projectFileName.getText().isEmpty()) {
+				if (projectFileName.getText() != null
+						&& !projectFileName.getText().isEmpty()) {
 					setPageComplete(true);
-				}
-				else {
+				} else {
 					setPageComplete(false);
 				}
 			}
@@ -631,8 +612,8 @@ public class ChooseProjectTypePage
 	}
 
 	/**
-	 * Creates the tab for connecting a client to a already running caleydo-server-application to get the use
-	 * case and basic data from.
+	 * Creates the tab for connecting a client to a already running
+	 * caleydo-server-application to get the use case and basic data from.
 	 * 
 	 * @param tabFolder
 	 *            tab-widget to create the new tab-item in
@@ -677,7 +658,8 @@ public class ChooseProjectTypePage
 	}
 
 	/**
-	 * Returns the network-name entered by the user in the network-name text-field
+	 * Returns the network-name entered by the user in the network-name
+	 * text-field
 	 * 
 	 * @return network-name to use
 	 */
@@ -686,7 +668,8 @@ public class ChooseProjectTypePage
 	}
 
 	/**
-	 * Returns the network-address entered by the user in the network-address text-field
+	 * Returns the network-address entered by the user in the network-address
+	 * text-field
 	 * 
 	 * @return network-address to connect to
 	 */
