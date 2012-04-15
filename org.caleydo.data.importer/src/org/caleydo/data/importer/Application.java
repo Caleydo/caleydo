@@ -85,7 +85,7 @@ public class Application implements IApplication {
 		if (runConfigParameters == null || runConfigParameters.length != 2) {
 
 			inputDataTypeSetCollectionFile = System.getProperty("user.home")
-					+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
+					+ System.getProperty("file.separator") + "caleydo_data.xml";
 
 			outputCaleydoProjectFile = System.getProperty("user.home")
 					+ System.getProperty("file.separator") + "export_"

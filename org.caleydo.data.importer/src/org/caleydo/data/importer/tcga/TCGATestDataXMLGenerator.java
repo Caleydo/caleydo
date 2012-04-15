@@ -72,7 +72,7 @@ public class TCGATestDataXMLGenerator {
 			+ "mutation/mut_patient_centric_table_public_transposed_01.txt";
 
 	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
-			+ System.getProperty("file.separator") + "tcga_gbm_data.xml";
+			+ System.getProperty("file.separator") + "caleydo_data.xml";
 
 	public static final String TCGA_ID_SUBSTRING_REGEX = "TCGA\\-|\\-...\\-";
 

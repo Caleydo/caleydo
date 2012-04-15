@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
@@ -52,7 +53,8 @@ public class JJDataXMLGenerator {
 
 	public static final String MGLU2_PIC50_DATA = DATA_FOLDER + "pic50.csv";
 
-	public static final String OUTPUT_FILE_PATH = DATA_FOLDER + "caleydo_mGlu2.xml";
+	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
+			+ System.getProperty("file.separator") + "caleydo_data.xml";
 
 	private IDSpecification sampleIDSpecification;
 	
@@ -101,12 +103,13 @@ public class JJDataXMLGenerator {
 		mrnaData.setDataSetName("mGlu2 Gene Expression Data");
 
 		mrnaData.setDataSourcePath(MGLU2_GENE_EXPRESSION_DATA);
-		mrnaData.setNumberOfHeaderLines(3);
+		mrnaData.setNumberOfHeaderLines(1);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
-		//parsingRule.setDataType("FLOAT");
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.CONTINUOUS));
 		mrnaData.addParsingRule(parsingRule);
 		mrnaData.setTransposeMatrix(true);
 
@@ -114,11 +117,12 @@ public class JJDataXMLGenerator {
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
 		mrnaData.setRowIDSpecification(geneIDSpecification);
+		mrnaData.setContainsColumnIDs(true);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification clustering = new GroupingParseSpecification(
 				MGLU2_EXPERIMENT_CHEM_CLUSTER_GROUPING);
-		clustering.setContainsColumnIDs(false);
+		clustering.setContainsColumnIDs(true);
 		clustering.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(clustering);
 
