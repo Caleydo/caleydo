@@ -745,7 +745,7 @@ public abstract class AGLView
 	 * picking id.
 	 * 
 	 * @see AGLView#addIDPickingListener(IPickingListener, String, int) for
-	 *      picking id dependend
+	 *      picking id dependent
 	 * @param pickingListener the picking listener that should be called on
 	 *            picking event
 	 * @param pickingType the picking type. Take care that the type is unique

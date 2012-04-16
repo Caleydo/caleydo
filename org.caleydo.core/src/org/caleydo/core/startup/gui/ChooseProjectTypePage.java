@@ -319,7 +319,8 @@ public class ChooseProjectTypePage extends WizardPage {
 		geneticDataUseCaseTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		GridData gridData = new GridData(GridData.FILL_BOTH);
+		//GridData gridData = new GridData(GridData.FILL_BOTH);
+		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 		//gridData.grabExcessHorizontalSpace = true;
 		
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
@@ -330,8 +331,9 @@ public class ChooseProjectTypePage extends WizardPage {
 
 		Group groupOrganism = new Group(composite, SWT.NONE);
 		groupOrganism.setText("Select organism");
-		groupOrganism.setLayout(new RowLayout(SWT.VERTICAL));
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		groupOrganism.setLayoutData(gridData);
+		groupOrganism.setLayout(new RowLayout(SWT.VERTICAL));
 
 		final Button btnOrganismHuman = new Button(groupOrganism, SWT.RADIO);
 		btnOrganismHuman.setText("Human (homo sapiens)");
@@ -381,6 +383,7 @@ public class ChooseProjectTypePage extends WizardPage {
 
 		final Group groupPathways = new Group(composite, SWT.None);
 		groupPathways.setText("Select pathway database");
+		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		groupPathways.setLayoutData(gridData);
 		groupPathways.setLayout(new RowLayout(SWT.VERTICAL));
 		
@@ -522,8 +525,6 @@ public class ChooseProjectTypePage extends WizardPage {
 
 		Button loadProject = new Button(composite, SWT.RADIO);
 		loadProject.setText("Specify project-file to load");
-		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-		gd.horizontalSpan = 2;
 		loadProject.setLayoutData(gd);
 
 		final Button chooseProjectFile = new Button(composite, SWT.CENTER);
@@ -537,7 +538,6 @@ public class ChooseProjectTypePage extends WizardPage {
 		projectFileName.setText(lastProjectFileName);
 		gd = new GridData(GridData.FILL_HORIZONTAL);
 		projectFileName.setLayoutData(gd);
-		gd = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
 
 		String lastModifiedDate = "";
 		String text = "Open project from last session";
