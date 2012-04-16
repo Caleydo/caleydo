@@ -23,7 +23,7 @@ import org.caleydo.view.linearizedpathway.node.ComplexNode;
  * @author Christian
  * 
  */
-public class ComplexNodePreviewMode extends ALinearizeableNodeMode implements
+public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
 		ILabelTextProvider {
 
 	public static final int MIN_NODE_WIDTH_PIXELS = 150;
@@ -70,7 +70,7 @@ public class ComplexNodePreviewMode extends ALinearizeableNodeMode implements
 		baseColumn.append(baseRow);
 		baseColumn.append(verticalSpacing);
 
-		node.setBaseLayout(baseColumn);
+		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	@Override

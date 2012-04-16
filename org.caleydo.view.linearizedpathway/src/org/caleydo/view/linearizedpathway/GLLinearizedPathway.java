@@ -286,10 +286,10 @@ public class GLLinearizedPathway extends AGLView {
 
 			Set<DefaultEdge> edges = pathway.edgesOf(currentNode.getPathwayVertexRep());
 
-			BranchSummaryNode incomingNode = new BranchSummaryNode(pixelGLConverter,
-					textRenderer, this, lastNodeId++, currentNode);
-			BranchSummaryNode outgoingNode = new BranchSummaryNode(pixelGLConverter,
-					textRenderer, this, lastNodeId++, currentNode);
+			BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++,
+					currentNode);
+			BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++,
+					currentNode);
 			List<PathwayVertexRep> sourceVertexReps = new ArrayList<PathwayVertexRep>();
 			List<PathwayVertexRep> targetVertexReps = new ArrayList<PathwayVertexRep>();
 

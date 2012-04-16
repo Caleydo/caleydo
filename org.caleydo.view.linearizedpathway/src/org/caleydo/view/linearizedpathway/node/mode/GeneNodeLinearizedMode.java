@@ -3,12 +3,15 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
@@ -21,8 +24,10 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
  * @author Christian
  * 
  */
-public class GeneNodeLinearizedMode extends ALinearizeableNodeMode implements
+public class GeneNodeLinearizedMode extends ALayoutBasedNodeMode implements
 		ILabelTextProvider {
+
+	protected ColorRenderer colorRenderer;
 
 	/**
 	 * @param view
@@ -38,7 +43,7 @@ public class GeneNodeLinearizedMode extends ALinearizeableNodeMode implements
 
 		Column baseColumn = new Column("baseColumn");
 		Row baseRow = new Row("baseRow");
-		ColorRenderer colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
+		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer
@@ -66,7 +71,7 @@ public class GeneNodeLinearizedMode extends ALinearizeableNodeMode implements
 		baseColumn.append(baseRow);
 		baseColumn.append(verticalSpacing);
 
-		node.setBaseLayout(baseColumn);
+		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	@Override
@@ -81,13 +86,28 @@ public class GeneNodeLinearizedMode extends ALinearizeableNodeMode implements
 
 	@Override
 	protected void registerPickingListeners() {
-		
+		view.addIDPickingListener(new APickingListener() {
 
+			@Override
+			public void mouseOver(Pick pick) {
+				node.setSelectionType(SelectionType.MOUSE_OVER);
+				colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
+				view.setDisplayListDirty();
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				node.setSelectionType(SelectionType.NORMAL);
+				colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
+				view.setDisplayListDirty();
+			}
+		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
-
+		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
+				node.getNodeId());
 	}
 
 	@Override

@@ -22,14 +22,9 @@
  */
 package org.caleydo.view.linearizedpathway.node;
 
-import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
-import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
 import org.caleydo.view.linearizedpathway.node.mode.CompoundNodeLinearizedMode;
 import org.caleydo.view.linearizedpathway.node.mode.CompoundNodePreviewMode;
@@ -42,6 +37,8 @@ import org.caleydo.view.linearizedpathway.node.mode.CompoundNodePreviewMode;
  */
 public class CompoundNode extends ALinearizableNode {
 
+	protected final static float[] DEFAULT_CIRCLE_COLOR = new float[] { 1, 1, 1, 0 };
+
 	/**
 	 * The vertex in the graph this compound belongs to.
 	 */
@@ -53,24 +50,6 @@ public class CompoundNode extends ALinearizableNode {
 	public CompoundNode(PixelGLConverter pixelGLConverter, GLLinearizedPathway view,
 			int nodeId) {
 		super(pixelGLConverter, view, nodeId);
-	}
-
-	@Override
-	public void render(GL2 gl, GLU glu) {
-		// This node does not use layouts.
-		float height = pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
-
-		gl.glPushName(pickingManager.getPickingID(view.getID(),
-				PickingType.LINEARIZABLE_NODE.name(), nodeId));
-		gl.glPushMatrix();
-		gl.glTranslatef(position.x(), position.y(), position.z());
-		gl.glColor4f(1, 1, 1, 0);
-		GLPrimitives.renderCircle(glu, height / 2.0f, 16);
-		gl.glColor4f(0, 0, 0, 1);
-		GLPrimitives.renderCircleBorder(gl, glu, height / 2.0f, 16, 0.1f);
-		gl.glPopMatrix();
-		gl.glPopName();
-
 	}
 
 	/**

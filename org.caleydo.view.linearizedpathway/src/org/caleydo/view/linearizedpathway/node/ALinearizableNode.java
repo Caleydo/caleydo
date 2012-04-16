@@ -22,6 +22,10 @@
  */
 package org.caleydo.view.linearizedpathway.node;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
@@ -33,12 +37,22 @@ import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
  * @author Christian
  * 
  */
-public abstract class ALinearizableNode extends ALayoutBasedNode {
+public abstract class ALinearizableNode extends ANode {
 
 	/**
 	 * Determines whether the node shows a preview of its data.
 	 */
 	protected boolean isPreviewMode = false;
+	
+	/**
+	 * Determines whether the button to remove the 
+	 */
+	protected boolean showRemoveButton = false;
+	
+	/**
+	 * The {@link SelectionType} of the node.
+	 */
+	protected SelectionType selectionType;
 
 	/**
 	 * The current mode of the node.
@@ -61,6 +75,11 @@ public abstract class ALinearizableNode extends ALayoutBasedNode {
 	public void unregisterPickingListeners() {
 		view.removeAllIDPickingListeners(PickingType.GENE_NODE.name(), nodeId);
 		mode.unregisterPickingListeners();
+	}
+	
+	@Override
+	public void render(GL2 gl, GLU glu) {
+		mode.render(gl, glu);
 	}
 
 	/**
@@ -98,6 +117,20 @@ public abstract class ALinearizableNode extends ALayoutBasedNode {
 	 * @return A new preview mode object for the concrete node.
 	 */
 	protected abstract ALinearizeableNodeMode getPreviewMode();
+	
+	/**
+	 * @param selectionType setter, see {@link #selectionType}
+	 */
+	public void setSelectionType(SelectionType selectionType) {
+		this.selectionType = selectionType;
+	}
+	
+	/**
+	 * @return the selectionType, see {@link #selectionType}
+	 */
+	public SelectionType getSelectionType() {
+		return selectionType;
+	}
 
 	@Override
 	public int getMinRequiredHeightPixels() {

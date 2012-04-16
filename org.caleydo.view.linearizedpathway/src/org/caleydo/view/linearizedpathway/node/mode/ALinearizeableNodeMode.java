@@ -3,6 +3,9 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -36,6 +39,14 @@ public abstract class ALinearizeableNodeMode {
 		this.textRenderer = view.getTextRenderer();
 		this.textureManager = view.getTextureManager();
 	}
+
+	/**
+	 * Renders the node in its current mode.
+	 * 
+	 * @param gl
+	 * @param glu
+	 */
+	public abstract void render(GL2 gl, GLU glu);
 
 	/**
 	 * Applies the mode for the specified node.

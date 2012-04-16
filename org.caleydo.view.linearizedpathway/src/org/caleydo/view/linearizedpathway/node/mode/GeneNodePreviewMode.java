@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -37,13 +38,15 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
  * @author Christian
  * 
  */
-public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
+public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 		ILabelTextProvider {
 
 	protected static final int MIN_NODE_WIDTH_PIXELS = 150;
 	protected static final int SPACING_PIXELS = 2;
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int GENE_ROW_HEIGHT_PIXELS = 30;
+
+	protected ColorRenderer colorRenderer;
 
 	/**
 	 * Specifies the pixel height of the node layout defined by this mode.
@@ -70,7 +73,7 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 		titleRow.setFrameColor(0, 1, 0, 1);
 		titleRow.setYDynamic(true);
 		// titleRow.setPixelSizeY(20);
-		ColorRenderer colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
+		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer
@@ -110,7 +113,7 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 			heightPixels += SPACING_PIXELS;
 		}
 
-		node.setBaseLayout(baseColumn);
+		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	private Row createPreviewRow(ElementLayout horizontalSpacing,
@@ -140,22 +143,23 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 							pathwayDataDomain.getDavidIDType(),
 							dataDomain.getGeneIDType(), davidId);
 
-					// TODO: This is only true if the davidID maps to one id of the
+					// TODO: This is only true if the davidID maps to one id of
+					// the
 					// genetic
 					// datadomain. However, matching multiple ids from different
 					// genetic
 					// datadomains is difficult.
 					if (ids != null && !ids.isEmpty()) {
-//						for (Integer id : ids) {
-							Set<GeneticDataDomain> set = geneIDsToDataDomains.get(davidId);
-							if (set == null) {
-								set = new HashSet<GeneticDataDomain>();
+						// for (Integer id : ids) {
+						Set<GeneticDataDomain> set = geneIDsToDataDomains.get(davidId);
+						if (set == null) {
+							set = new HashSet<GeneticDataDomain>();
 
-								geneIDsToDataDomains.put(davidId, set);
-							}
-							set.add(dataDomain);
-							dataDomainsWithMappedGenes.add(dataDomain);
-//						}
+							geneIDsToDataDomains.put(davidId, set);
+						}
+						set.add(dataDomain);
+						dataDomainsWithMappedGenes.add(dataDomain);
+						// }
 					}
 				}
 			}
@@ -209,7 +213,8 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 
 			for (int j = 0; j < davidIdList.size(); j++) {
 				Integer davidId = davidIdList.get(j);
-				Set<GeneticDataDomain> mappedDataDomains = geneIDsToDataDomains.get(davidId);
+				Set<GeneticDataDomain> mappedDataDomains = geneIDsToDataDomains
+						.get(davidId);
 				if (mappedDataDomains.contains(currentDataDomain)) {
 					Row geneRow = new Row("dataDomain" + i + "geneRow");
 					ColorRenderer geneRowColorRenderer = new ColorRenderer(new float[] {
@@ -250,10 +255,25 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 	@Override
 	protected void registerPickingListeners() {
 		view.addIDPickingListener(new APickingListener() {
+
 			@Override
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
 				view.selectBranch(node);
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+				node.setSelectionType(SelectionType.MOUSE_OVER);
+				colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
+				view.setDisplayListDirty();
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				node.setSelectionType(SelectionType.NORMAL);
+				colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
+				view.setDisplayListDirty();
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 

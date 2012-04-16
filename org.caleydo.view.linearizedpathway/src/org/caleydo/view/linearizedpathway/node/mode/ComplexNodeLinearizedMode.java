@@ -21,7 +21,7 @@ import org.caleydo.view.linearizedpathway.node.ComplexNode;
  * @author Christian
  * 
  */
-public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements ILabelTextProvider{
+public class ComplexNodeLinearizedMode extends ALayoutBasedNodeMode implements ILabelTextProvider{
 
 	/**
 	 * @param view
@@ -64,7 +64,7 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 		baseColumn.append(baseRow);
 		baseColumn.append(verticalSpacing);
 
-		node.setBaseLayout(baseColumn);
+		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	@Override

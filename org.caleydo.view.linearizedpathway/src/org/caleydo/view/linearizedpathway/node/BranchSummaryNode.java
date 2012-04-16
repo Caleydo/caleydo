@@ -25,9 +25,14 @@ package org.caleydo.view.linearizedpathway.node;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
+import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
+import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
@@ -35,7 +40,6 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
-import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
@@ -47,11 +51,11 @@ import org.caleydo.view.linearizedpathway.PickingType;
  * @author Christian
  * 
  */
-public class BranchSummaryNode extends ALayoutBasedNode {
+public class BranchSummaryNode extends ANode {
 
 	public static final int TEXT_SPACING_PIXELS = 3;
 
-	private CaleydoTextRenderer textRenderer;
+	protected LayoutManager layoutManager;
 
 	/**
 	 * Determines whether the node is collapsed and shall be rendered itself, or
@@ -78,81 +82,13 @@ public class BranchSummaryNode extends ALayoutBasedNode {
 	/**
 	 * @param pixelGLConverter
 	 */
-	public BranchSummaryNode(PixelGLConverter pixelGLConverter,
-			CaleydoTextRenderer textRenderer, GLLinearizedPathway view, int nodeId,
+	public BranchSummaryNode(GLLinearizedPathway view, int nodeId,
 			ANode associatedLinearizedNode) {
-		super(pixelGLConverter, view, nodeId);
-		this.textRenderer = textRenderer;
+		super(view.getPixelGLConverter(), view, nodeId);
+		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
 		this.associatedLinearizedNode = associatedLinearizedNode;
 		setupLayout();
 	}
-
-	// @Override
-	// public void render(GL2 gl, GLU glu) {
-	// float width = pixelGLConverter.getGLWidthForPixelWidth(widthPixels);
-	// float height = pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
-	//
-	// Vec3f lowerLeftPosition = new Vec3f(position.x() - width / 2.0f,
-	// position.y()
-	// - height / 2.0f, position.z());
-	//
-	// gl.glPushName(pickingManager.getPickingID(view.getID(),
-	// PickingType.BRANCH_SUMMARY_NODE.name(), nodeId));
-	//
-	// gl.glColor3f(0, 0, 0);
-	// gl.glBegin(GL2.GL_LINE_LOOP);
-	// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(),
-	// lowerLeftPosition.z());
-	// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
-	// lowerLeftPosition.z());
-	// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() +
-	// height,
-	// position.z());
-	// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
-	// lowerLeftPosition.z());
-	// gl.glEnd();
-	//
-	// gl.glColor4f(1, 1, 1, 0);
-	// gl.glBegin(GL2.GL_QUADS);
-	// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(),
-	// lowerLeftPosition.z());
-	// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
-	// lowerLeftPosition.z());
-	// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() +
-	// height,
-	// position.z());
-	// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
-	// lowerLeftPosition.z());
-	// gl.glEnd();
-	//
-	// float buttonSpacing = pixelGLConverter.getGLHeightForPixelHeight(2);
-	//
-	// // Vec3f lowerLeftCorner = new Vec3f(0, 0, zCoordinate);
-	// // Vec3f lowerRightCorner = new Vec3f(x, 0, zCoordinate);
-	// // Vec3f upperRightCorner = new Vec3f(x, y, zCoordinate);
-	// // Vec3f upperLeftCorner = new Vec3f(0, y, zCoordinate);
-	// //
-	// // switch (textureRotation) {
-	// // case TEXTURE_ROTATION_0:
-	// // textureManager.renderTexture(gl, button.getIconTexture(),
-	// // lowerLeftCorner, lowerRightCorner,
-	// // upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
-	//
-	// textRenderer.setColor(0, 0, 0, 1);
-	//
-	// float textSpacing =
-	// pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS);
-	// float textWidth = textRenderer.getRequiredTextWidthWithMax(
-	// "..." + branchNodes.size(), height - 2 * textSpacing, width - 2
-	// * textSpacing);
-	//
-	// textRenderer.renderTextInBounds(gl, branchNodes.size() + "...",
-	// position.x()
-	// - textWidth / 2.0f + textSpacing, lowerLeftPosition.y() + 1.5f
-	// * textSpacing, lowerLeftPosition.z(), width - 2 * textSpacing, height - 2
-	// * textSpacing);
-	// gl.glPopName();
-	// }
 
 	@Override
 	public PathwayVertexRep getPathwayVertexRep() {
@@ -290,7 +226,7 @@ public class BranchSummaryNode extends ALayoutBasedNode {
 		baseColumn.append(baseRow);
 		baseColumn.append(verticalSpacing);
 
-		setBaseLayout(baseColumn);
+		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	@Override
@@ -301,6 +237,21 @@ public class BranchSummaryNode extends ALayoutBasedNode {
 	@Override
 	public String getCaption() {
 		return "..." + branchNodes.size();
+	}
+
+	@Override
+	public void render(GL2 gl, GLU glu) {
+		float width = pixelGLConverter.getGLWidthForPixelWidth(getWidthPixels());
+		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+
+		gl.glPushMatrix();
+		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f, 0f);
+		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
+				0, width, 0, height, -1, 20));
+
+		layoutManager.render(gl);
+		gl.glPopMatrix();
+
 	}
 
 }

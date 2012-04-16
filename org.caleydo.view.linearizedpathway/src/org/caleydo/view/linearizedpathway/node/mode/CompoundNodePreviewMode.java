@@ -3,12 +3,12 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
-import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
 
 /**
@@ -17,7 +17,7 @@ import org.caleydo.view.linearizedpathway.node.CompoundNode;
  * @author Christian
  * 
  */
-public class CompoundNodePreviewMode extends ALinearizeableNodeMode {
+public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 	/**
 	 * @param view
@@ -33,22 +33,26 @@ public class CompoundNodePreviewMode extends ALinearizeableNodeMode {
 	}
 
 	@Override
-	public int getMinHeightPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
-	}
-
-	@Override
-	public int getMinWidthPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
-	}
-
-	@Override
 	protected void registerPickingListeners() {
 		view.addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
 				view.selectBranch(node);
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+				node.setSelectionType(SelectionType.MOUSE_OVER);
+				circleColor = SelectionType.MOUSE_OVER.getColor();
+				view.setDisplayListDirty();
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				node.setSelectionType(SelectionType.NORMAL);
+				circleColor = DEFAULT_CIRCLE_COLOR;
+				view.setDisplayListDirty();
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
