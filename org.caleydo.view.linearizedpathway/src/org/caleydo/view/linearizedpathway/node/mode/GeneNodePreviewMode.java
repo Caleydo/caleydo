@@ -24,9 +24,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
@@ -133,8 +131,6 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 
 		Map<Integer, Set<GeneticDataDomain>> geneIDsToDataDomains = new HashMap<Integer, Set<GeneticDataDomain>>();
 		Set<GeneticDataDomain> dataDomainsWithMappedGenes = new HashSet<GeneticDataDomain>();
-
-		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
 
 		List<Integer> davidIDs = vertexRep.getDavidIDs();
 

@@ -53,6 +53,7 @@ import org.caleydo.view.linearizedpathway.PickingType;
  */
 public class BranchSummaryNode extends ANode {
 
+	public static final int MIN_NODE_WIDTH_PIXELS = 176;
 	public static final int TEXT_SPACING_PIXELS = 3;
 
 	protected LayoutManager layoutManager;
@@ -141,15 +142,15 @@ public class BranchSummaryNode extends ANode {
 				if (isCollapsed) {
 					isCollapsed = false;
 					view.setExpandedBranchSummaryNode(BranchSummaryNode.this);
-					colorRenderer.setBorderColor(new float[] { 1, 1, 1, 0 });
-					colorRenderer.setColor(new float[] { 1, 1, 1, 0 });
+//					colorRenderer.setBorderColor(new float[] { 1, 1, 1, 0 });
+//					colorRenderer.setColor(new float[] { 1, 1, 1, 0 });
 					collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_MINUS);
 					labelRenderer.setLabel("");
 				} else {
 					isCollapsed = true;
 					view.setExpandedBranchSummaryNode(null);
-					colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
-					colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
+//					colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
+//					colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
 					collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_PLUS);
 					labelRenderer.setLabel("..." + branchNodes.size());
 				}
@@ -193,6 +194,7 @@ public class BranchSummaryNode extends ANode {
 		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		baseColumn.addBackgroundRenderer(colorRenderer);
+		baseColumn.setBottomUp(false);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
 		collapseButton = new Button(
@@ -220,18 +222,21 @@ public class BranchSummaryNode extends ANode {
 		baseRow.append(horizontalSpacing);
 
 		ElementLayout verticalSpacing = new ElementLayout();
+		
 		verticalSpacing.setPixelSizeY(2);
-
+//		ElementLayout x = new ElementLayout();
+//		x.setRatioSizeY(1);
 		baseColumn.append(verticalSpacing);
 		baseColumn.append(baseRow);
 		baseColumn.append(verticalSpacing);
+//		baseColumn.append(x);
 
 		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	@Override
 	public int getMinRequiredWidthPixels() {
-		return DEFAULT_WIDTH_PIXELS;
+		return MIN_NODE_WIDTH_PIXELS;
 	}
 
 	@Override

@@ -23,7 +23,6 @@ import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -55,10 +54,8 @@ import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubTyp
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
-import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
@@ -71,7 +68,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
- * 
+ * Main view class for the linearized pathway view.
  * 
  * @author Christian
  */
@@ -88,6 +85,7 @@ public class GLLinearizedPathway extends AGLView {
 	public final static int BRANCH_SUMMARY_NODE_DISTANCE_PIXELS = 40;
 	public final static int EXPANDED_BRANCH_NODE_SPACING_PIXELS = 20;
 	public final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
+	public final static int SPACING_PIXELS = 2;
 
 	public final static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
 
@@ -627,16 +625,26 @@ public class GLLinearizedPathway extends AGLView {
 	 */
 	private void renderCollapsedBranchNodes(GL2 gl, GLU glu, ANode node) {
 
-		float branchNodePositionX = pixelGLConverter
-				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS) / 2.0f;
+		// float branchNodePositionX = pixelGLConverter
+		// .getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS) / 2.0f;
+		float spacing = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
 		float verticalBranchNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(20);
 
 		Vec3f nodePosition = node.getPosition();
 		ANode collapsedIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap
 				.get(node);
-		if (collapsedIncomingNode != null) {
-			collapsedIncomingNode.setPosition(new Vec3f(branchNodePositionX, nodePosition
-					.y() + verticalBranchNodeSpacing, nodePosition.z()));
+		if ((collapsedIncomingNode != null)
+				&& (collapsedIncomingNode != expandedBranchSummaryNode)) {
+			float minNodeWidth = pixelGLConverter
+					.getGLWidthForPixelWidth(collapsedIncomingNode
+							.getMinRequiredWidthPixels());
+
+			collapsedIncomingNode.setWidthPixels(collapsedIncomingNode
+					.getMinRequiredWidthPixels());
+			collapsedIncomingNode.setHeightPixels(collapsedIncomingNode
+					.getMinRequiredHeightPixels());
+			collapsedIncomingNode.setPosition(new Vec3f(spacing + minNodeWidth / 2.0f,
+					nodePosition.y() + verticalBranchNodeSpacing, nodePosition.z()));
 			collapsedIncomingNode.render(gl, glu);
 
 			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
@@ -652,10 +660,19 @@ public class GLLinearizedPathway extends AGLView {
 
 		ANode collapsedOutgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap
 				.get(node);
-		if (collapsedOutgoingNode != null) {
+		if ((collapsedOutgoingNode != null)
+				&& (collapsedOutgoingNode != expandedBranchSummaryNode)) {
 
-			collapsedOutgoingNode.setPosition(new Vec3f(branchNodePositionX, nodePosition
-					.y() - verticalBranchNodeSpacing, nodePosition.z()));
+			float minNodeWidth = pixelGLConverter
+					.getGLWidthForPixelWidth(collapsedOutgoingNode
+							.getMinRequiredWidthPixels());
+
+			collapsedOutgoingNode.setWidthPixels(collapsedOutgoingNode
+					.getMinRequiredWidthPixels());
+			collapsedOutgoingNode.setHeightPixels(collapsedOutgoingNode
+					.getMinRequiredHeightPixels());
+			collapsedOutgoingNode.setPosition(new Vec3f(spacing + minNodeWidth / 2.0f,
+					nodePosition.y() - verticalBranchNodeSpacing, nodePosition.z()));
 			collapsedOutgoingNode.render(gl, glu);
 
 			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
@@ -681,6 +698,7 @@ public class GLLinearizedPathway extends AGLView {
 	 */
 	private void renderExpandedBranchNode(GL2 gl, GLU glu) {
 		ANode linearizedNode = expandedBranchSummaryNode.getAssociatedLinearizedNode();
+		Vec3f branchSummaryNodePosition = expandedBranchSummaryNode.getPosition();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 		float branchSummaryNodeHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(expandedBranchSummaryNode.getHeightPixels());
@@ -704,7 +722,8 @@ public class GLLinearizedPathway extends AGLView {
 
 		totalHeight += nodeSpacing * (branchNodes.size() - 1);
 
-		float topPositionY = linearizedNodePosition.y() + totalHeight / 2.0f;
+		float topPositionY = branchSummaryNodePosition.y() - branchSummaryNodeHeight
+				/ 2.0f;
 		if (topPositionY - totalHeight < viewFrustum.getBottom()) {
 			topPositionY += (viewFrustum.getBottom() - (topPositionY - totalHeight));
 		}
@@ -726,10 +745,40 @@ public class GLLinearizedPathway extends AGLView {
 					linearizedNode.getLeftConnectionPoint());
 		}
 
-		expandedBranchSummaryNode.setPosition(new Vec3f(
-				pixelGLConverter.getGLWidthForPixelWidth(expandedBranchSummaryNode
-						.getWidthPixels()) / 2.0f, topPositionY + branchSummaryNodeHeight
-						/ 2.0f, 0));
+		// float topPositionY = linearizedNodePosition.y() + totalHeight / 2.0f;
+		// if (topPositionY - totalHeight < viewFrustum.getBottom()) {
+		// topPositionY += (viewFrustum.getBottom() - (topPositionY -
+		// totalHeight));
+		// }
+		// if (topPositionY > viewFrustum.getTop() - branchSummaryNodeHeight) {
+		// topPositionY -= (topPositionY - (viewFrustum.getTop() -
+		// branchSummaryNodeHeight));
+		// }
+		//
+		// float currentPositionY = topPositionY;
+		//
+		// for (ANode node : branchNodes) {
+		// float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(node
+		// .getHeightPixels());
+		// node.setPosition(new Vec3f(branchNodePositionX, currentPositionY -
+		// nodeHeight
+		// / 2.0f, 0));
+		// node.render(gl, glu);
+		// currentPositionY -= nodeHeight + nodeSpacing;
+		//
+		// renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
+		// linearizedNode.getLeftConnectionPoint());
+		// }
+
+		float spacing = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
+		float nodeWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(expandedBranchSummaryNode.getWidthPixels());
+		expandedBranchSummaryNode.setHeightPixels(expandedBranchSummaryNode
+				.getMinRequiredHeightPixels()
+				+ pixelGLConverter.getPixelHeightForGLHeight(totalHeight));
+
+		expandedBranchSummaryNode.setPosition(new Vec3f(spacing + nodeWidth / 2.0f,
+				topPositionY + branchSummaryNodeHeight / 2.0f, 0));
 		expandedBranchSummaryNode.render(gl, glu);
 
 	}
@@ -1093,6 +1142,7 @@ public class GLLinearizedPathway extends AGLView {
 	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
 		this.pathway = pathway;
 		this.path = path;
+		expandedBranchSummaryNode = null;
 		for (ANode node : linearizedNodes) {
 			node.unregisterPickingListeners();
 		}

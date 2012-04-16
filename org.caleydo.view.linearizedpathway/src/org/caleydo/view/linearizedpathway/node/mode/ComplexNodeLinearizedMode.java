@@ -3,9 +3,6 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
-import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
