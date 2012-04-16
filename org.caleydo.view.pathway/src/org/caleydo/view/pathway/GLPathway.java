@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -142,7 +142,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		vecScaling = new Vec3f(1, 1, 1);
 		vecTranslation = new Vec3f(0, 0, 0);
-		
+
 		registerPickingListeners();
 	}
 
@@ -201,45 +201,46 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		initPathwayData(gl);
 	}
-	
+
 	protected void registerPickingListeners() {
 
-//		addIDPickingListener(new APickingListener()
-//		{
-//			@Override
-//			public void dragged(Pick pick)
-//			{
-//				DragAndDropController dragAndDropController = visBricks
-//						.getDragAndDropController();
-//				if (dragAndDropController.isDragging()
-//						&& dragAndDropController.getDraggingMode() != null
-//						&& dragAndDropController.getDraggingMode()
-//								.equals("BrickDrag"
-//										+ BrickSpacingRenderer.this.dimensionGroup.getID()))
-//				{
-//					dragAndDropController.setDropArea(BrickSpacingRenderer.this);
-//				}
-//			}
-//
-//		}, PickingType.PATHWAY_ELEMENT_SELECTION, id);
-		
-//		addTypePickingListener(new APickingListener() {
-//			@Override
-//			public void clicked(Pick pick) {
-//				selectedConnectionBandID = pick.getID();
-//				selectElementsByConnectionBandID(selectedConnectionBandID);
-//			}
-//
-//			@Override
-//			public void rightClicked(Pick pick) {
-//
-//				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(), true));
-//				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(), false));
-//			}
-//
-//		}, PickingType.BRICK_CONNECTION_BAND.name());
+		// addIDPickingListener(new APickingListener()
+		// {
+		// @Override
+		// public void dragged(Pick pick)
+		// {
+		// DragAndDropController dragAndDropController = visBricks
+		// .getDragAndDropController();
+		// if (dragAndDropController.isDragging()
+		// && dragAndDropController.getDraggingMode() != null
+		// && dragAndDropController.getDraggingMode()
+		// .equals("BrickDrag"
+		// + BrickSpacingRenderer.this.dimensionGroup.getID()))
+		// {
+		// dragAndDropController.setDropArea(BrickSpacingRenderer.this);
+		// }
+		// }
+		//
+		// }, PickingType.PATHWAY_ELEMENT_SELECTION, id);
 
-	
+		// addTypePickingListener(new APickingListener() {
+		// @Override
+		// public void clicked(Pick pick) {
+		// selectedConnectionBandID = pick.getID();
+		// selectElementsByConnectionBandID(selectedConnectionBandID);
+		// }
+		//
+		// @Override
+		// public void rightClicked(Pick pick) {
+		//
+		// contextMenuCreator.addContextMenuItem(new
+		// SplitBrickItem(pick.getID(), true));
+		// contextMenuCreator.addContextMenuItem(new
+		// SplitBrickItem(pick.getID(), false));
+		// }
+		//
+		// }, PickingType.BRICK_CONNECTION_BAND.name());
+
 	}
 
 	@Override
@@ -275,7 +276,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	@Override
 	public void display(final GL2 gl) {
-		//checkForHits(gl);
+		// checkForHits(gl);
 
 		if (pathway != null) {
 			// TODO: also put this in global DL
@@ -835,20 +836,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				.getID(), pathwayDataDomain.getDavidIDType());
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
-			for (PathwayVertex vertex : vertexRep.getPathwayVertices()) {
-
-				int iDavidID = pathwayItemManager.getDavidIdByPathwayVertex(vertex);
-
-				if (iDavidID == -1 || iDavidID == 0) {
-					// generalManager.getLogger().log(
-					// new Status(Status.WARNING, GeneralManager.PLUGIN_ID,
-					// "Invalid David Gene ID."));
-					continue;
-				}
-
-				// for (Object iRefSeqID : DataTableRefSeq) {
-				delta.add(VADeltaItem.create(type, (Integer) iDavidID));
-				// }
+			for (Integer davidID : vertexRep.getDavidIDs()) {
+				delta.add(VADeltaItem.create(type, (Integer) davidID));
 			}
 		}
 
@@ -862,6 +851,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	@Override
 	public String getViewLabel() {
+		if(pathway == null)
+			return viewLabel;
 		return viewLabel + ": " + pathway.getName();
 	}
 

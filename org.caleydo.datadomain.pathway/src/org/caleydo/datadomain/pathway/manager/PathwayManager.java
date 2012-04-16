@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -62,7 +62,7 @@ import org.jgrapht.graph.DefaultEdge;
  */
 public class PathwayManager extends AManager<PathwayGraph> {
 
-	private static PathwayManager pathwayManager;
+	private volatile static PathwayManager pathwayManager;
 
 	private PathwayParserManager xmlParserManager;
 
@@ -80,8 +80,8 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * Therefore it represents the overall topological network. (The root
 	 * pathway is independent from the representation of the nodes.)
 	 */
-	private DirectedGraph<PathwayVertex, DefaultEdge> rootPathwayGraph =
-            new DefaultDirectedGraph<PathwayVertex, DefaultEdge>(DefaultEdge.class);
+	private DirectedGraph<PathwayVertex, DefaultEdge> rootPathwayGraph = new DefaultDirectedGraph<PathwayVertex, DefaultEdge>(
+			DefaultEdge.class);
 
 	/**
 	 * Used for pathways where only images can be loaded. The image map defines
@@ -104,10 +104,13 @@ public class PathwayManager extends AManager<PathwayGraph> {
 	 * @return singleton PathwayManager instance
 	 */
 	public static PathwayManager get() {
-		if (pathwayManager == null) {
-			pathwayManager = new PathwayManager();
-			pathwayManager.init();
+		synchronized (PathwayManager.class) {
+			if (pathwayManager == null) {
+				pathwayManager = new PathwayManager();
+				pathwayManager.init();
+			}
 		}
+
 		return pathwayManager;
 	}
 
@@ -430,9 +433,9 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		if (pathwayVertexGraphItem == null)
 			return null;
 
-
-		for (PathwayVertexRep pathwayItemRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
-			pathways.addAll(pathwayItemRep.getPathways());
+		for (PathwayVertexRep pathwayItemRep : pathwayVertexGraphItem
+				.getPathwayVertexReps()) {
+			pathways.add(pathwayItemRep.getPathway());
 		}
 
 		return pathways;

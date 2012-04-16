@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,52 +23,69 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 
 /**
- * Pathway vertex representation stored in the overall pathway graph.
+ * <p>
+ * A <code>PathwayVertexRep</code> is a visible representation of a node (a
+ * {@link PathwayVertex}) in a pathway texture. It may contain 1-n
+ * {@link PathwayVertex} objects.
+ * </p>
+ * <p>
+ * The representation contains information on the type of shape, the position
+ * and the size of the representation.
+ * </p>
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
-public class PathwayVertexRep
-	implements Serializable, IUniqueObject {
+public class PathwayVertexRep implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
 
+	/** A unique id of the vertex rep */
 	private int id;
 
 	private String name;
 
+	/** The type of shape that this vertex rep uses */
 	private EPathwayVertexShape shape;
 
-	private short[][] coords;
+	private ArrayList<Pair<Short, Short>> coords;
 
 	private short width = 20;
 
 	private short height = 20;
 
+	/**
+	 * The {@link PathwayVertex} objects that map to this representation there
+	 * might be several
+	 */
 	private List<PathwayVertex> pathwayVertices = new ArrayList<PathwayVertex>();
 
-	private List<PathwayGraph> pathways = new ArrayList<PathwayGraph>();
+	private PathwayGraph pathway;
 
 	/**
 	 * Constructor.
 	 * 
-	 * @param sName
-	 * @param sShapeType
+	 * @param name
+	 * @param shapeType
 	 * @param sCoords
 	 */
-	public PathwayVertexRep(final String sName, final String sShapeType,
+	public PathwayVertexRep(final String name, final String shapeType,
 			final String sCoords) {
 
 		id = GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
 
-		shape = EPathwayVertexShape.valueOf(sShapeType);
-		this.name = sName;
+		shape = EPathwayVertexShape.valueOf(shapeType);
+		this.name = name;
 
 		setCoordsByCommaSeparatedString(sCoords);
 	}
@@ -76,26 +93,26 @@ public class PathwayVertexRep
 	/**
 	 * Constructor.
 	 * 
-	 * @param sName
-	 * @param sShapeType
-	 * @param shX
-	 * @param shY
-	 * @param shWidth
-	 * @param shHeight
+	 * @param name
+	 * @param shapeType
+	 * @param x
+	 * @param y
+	 * @param width
+	 * @param height
 	 */
-	public PathwayVertexRep(final String sName, final String sShapeType,
-			final short shX, final short shY, final short shWidth, final short shHeight) {
+	public PathwayVertexRep(final String name, final String shapeType, final short x,
+			final short y, final short width, final short height) {
 
-		if (sShapeType == null || sShapeType.isEmpty())
+		if (shapeType == null || shapeType.isEmpty())
 			shape = EPathwayVertexShape.rect;
 		else
-			shape = EPathwayVertexShape.valueOf(sShapeType);
+			shape = EPathwayVertexShape.valueOf(shapeType);
 
-		this.name = sName;
-		this.width = shWidth;
-		this.height = shHeight;
+		this.name = name;
+		this.width = width;
+		this.height = height;
 
-		setRectangularCoords(shX, shY, shWidth, shHeight);
+		setRectangularCoords(x, y, width, height);
 	}
 
 	/**
@@ -104,44 +121,34 @@ public class PathwayVertexRep
 	 */
 	private void setCoordsByCommaSeparatedString(final String sCoords) {
 
-		StringTokenizer sToken = new StringTokenizer(sCoords, ",");
+		String[] stringCoordinates = sCoords.split(",");
+		coords = new ArrayList<Pair<Short, Short>>();
 
-		coords = new short[sToken.countTokens() / 2][2];
-
-		int iCount = 0;
-
-		while (sToken.hasMoreTokens()) {
+		for (int coordinateCount = 0; coordinateCount < stringCoordinates.length;) {
 			// Filter white spaces
-			short shXCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
+			String xString = stringCoordinates[coordinateCount++].replace(" ", "");
+			Short xCoord = Short.valueOf(xString);
 
-			if (!sToken.hasMoreTokens())
+			if(coordinateCount >= stringCoordinates.length)
 				return;
+			
+			String yString = stringCoordinates[coordinateCount++].replace(" ", "");
+			Short yCoord = Short.valueOf(yString);
 
-			short shYCoord = Short.valueOf(sToken.nextToken().replace(" ", "")).shortValue();
-
-			coords[iCount][0] = shXCoord;
-			coords[iCount][1] = shYCoord;
-
-			iCount++;
+			Pair<Short, Short> coordinates = new Pair<Short, Short>(xCoord, yCoord);
+			coords.add(coordinates);
 		}
 	}
 
-	private void setRectangularCoords(final short shX, final short shY, final short shWidth,
-			final short shHeight) {
+	private void setRectangularCoords(final short x, final short y, final short width,
+			final short height) {
 
-		coords = new short[4][2];
+		coords = new ArrayList<Pair<Short, Short>>(4);
 
-		coords[0][0] = shX;
-		coords[0][1] = shY;
-
-		coords[1][0] = (short) (shX + shWidth);
-		coords[1][1] = shY;
-
-		coords[2][0] = (short) (shX + shWidth);
-		coords[2][1] = (short) (shY + shHeight);
-
-		coords[3][0] = shX;
-		coords[3][1] = (short) (shY + shHeight);
+		coords.add(new Pair<Short, Short>(x, y));
+		coords.add(new Pair<Short, Short>((short) (x + width), y));
+		coords.add(new Pair<Short, Short>((short) (x + width), (short) (y + height)));
+		coords.add(new Pair<Short, Short>(x, (short) (y + height)));
 	}
 
 	/**
@@ -161,19 +168,19 @@ public class PathwayVertexRep
 		return shape;
 	}
 
-	public short[][] getCoords() {
+	public ArrayList<Pair<Short, Short>> getCoords() {
 
 		return coords;
 	}
 
 	public short getXOrigin() {
 
-		return coords[0][0];
+		return coords.get(0).getFirst();
 	}
 
 	public short getYOrigin() {
 
-		return coords[0][1];
+		return coords.get(0).getSecond();
 	}
 
 	public short getWidth() {
@@ -192,26 +199,49 @@ public class PathwayVertexRep
 		return name;
 	}
 
+	/** Adds a vertex to {@link #pathwayVertices} */
 	public void addPathwayVertex(PathwayVertex vertex) {
 		pathwayVertices.add(vertex);
 	}
 
+	/**
+	 * @return The pathwayVertices, see {@link #pathwayVertices}, or an empty
+	 *         list if no vertices can be resolved.
+	 */
 	public List<PathwayVertex> getPathwayVertices() {
 		return pathwayVertices;
 	}
 
-	public void addPathway(PathwayGraph pathway) {
-		pathways.add(pathway);
+	/**
+	 * @param pathway
+	 *            setter, see {@link #pathway}
+	 */
+	public void setPathway(PathwayGraph pathway) {
+		this.pathway = pathway;
 	}
 
-	public List<PathwayGraph> getPathways() {
-		return pathways;
+	/**
+	 * @return the pathway, see {@link #pathway}
+	 */
+	public PathwayGraph getPathway() {
+		return pathway;
 	}
 
+	/**
+	 * Returns the type of the pathway vertex underneath, assuming that alle
+	 * vertex reps are of the same type
+	 */
 	public EPathwayVertexType getType() {
-
-		// We assume that all vertices that are associated to that vertex rep
-		// are of the same type
 		return pathwayVertices.get(0).getType();
+	}
+
+	/**
+	 * Returns all david IDs of all vertices stored in this
+	 * <code>PathwayVertexRep</code>, or an empty list if no IDs can be mapped.
+	 * 
+	 * @see PathwayItemManager#getDavidIDsByPathwayVertexRep(PathwayVertexRep)
+	 */
+	public ArrayList<Integer> getDavidIDs() {
+		return PathwayItemManager.get().getDavidIDsByPathwayVertexRep(this);
 	}
 }

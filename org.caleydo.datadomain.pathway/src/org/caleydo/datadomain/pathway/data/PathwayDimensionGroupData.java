@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -47,8 +47,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
  * @author Marc Streit
  * 
  */
-public class PathwayDimensionGroupData
-	extends DataContainer {
+public class PathwayDimensionGroupData extends DataContainer {
 
 	protected PathwayDataDomain pathwayDataDomain;
 	protected ArrayList<PathwayGraph> pathways;
@@ -121,14 +120,14 @@ public class PathwayDimensionGroupData
 			for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 
 				for (PathwayVertex vertex : vertexRep.getPathwayVertices()) {
-					int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(
+					Integer davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(
 							vertex);
 
-					if (davidId != -1) {
+					if (davidId != null) {
 
 						Set<Integer> ids = pathwayDataDomain.getGeneIDMappingManager()
-								.getIDAsSet(pathwayDataDomain.getDavidIDType(), geneIDType,
-										davidId);
+								.getIDAsSet(pathwayDataDomain.getDavidIDType(),
+										geneIDType, davidId);
 
 						if (ids != null && ids.size() > 0) {
 							groupSize++;
@@ -147,19 +146,21 @@ public class PathwayDimensionGroupData
 			data.setData(idsInPathway);
 			PathwayDataContainer pathwayDataContainer;
 			if (dataDomain.isColumnDimension()) {
-				RecordPerspective pathwayRecordPerspective = new RecordPerspective(dataDomain);
+				RecordPerspective pathwayRecordPerspective = new RecordPerspective(
+						dataDomain);
 				pathwayRecordPerspective.init(data);
 
-				pathwayDataContainer = new PathwayDataContainer(dataDomain, pathwayDataDomain,
-						pathwayRecordPerspective, dimensionPerspective, pathway);
-			}
-			else {
+				pathwayDataContainer = new PathwayDataContainer(dataDomain,
+						pathwayDataDomain, pathwayRecordPerspective,
+						dimensionPerspective, pathway);
+			} else {
 				DimensionPerspective pathwayDimensionPerspective = new DimensionPerspective(
 						dataDomain);
 				pathwayDimensionPerspective.init(data);
 
-				pathwayDataContainer = new PathwayDataContainer(dataDomain, pathwayDataDomain,
-						recordPerspective, pathwayDimensionPerspective, pathway);
+				pathwayDataContainer = new PathwayDataContainer(dataDomain,
+						pathwayDataDomain, recordPerspective,
+						pathwayDimensionPerspective, pathway);
 			}
 
 			pathwayDataContainer.setRecordGroup(recordPerspective.getVirtualArray()

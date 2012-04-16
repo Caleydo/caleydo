@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -430,32 +430,35 @@ public class GLLinearizedPathway extends AGLView {
 	}
 
 	private int determineNumberOfMappedValues(PathwayVertexRep vertexRep) {
-		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
-		if (vertices == null)
-			return 0;
-
-		Set<Integer> allIDs = new HashSet<Integer>();
-
-		for (PathwayVertex vertex : vertices) {
-			int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(vertex);
-
-			for (GeneticDataDomain dataDomain : geneticDataDomains) {
-				Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
-						pathwayDataDomain.getDavidIDType(), dataDomain.getGeneIDType(),
-						davidId);
-
-				// TODO: This is only true if the davidID maps to one id of the
-				// genetic
-				// datadomain. However, matching multiple ids from different
-				// genetic
-				// datadomains is difficult.
-				if (ids != null && !ids.isEmpty()) {
-					allIDs.add(davidId);
-				}
-			}
-		}
-
-		return allIDs.size();
+		return vertexRep.getDavidIDs().size();
+		// List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
+		//
+		// if (vertices == null)
+		// return 0;
+		//
+		// Set<Integer> allIDs = new HashSet<Integer>();
+		//
+		// for (PathwayVertex vertex : vertices) {
+		// Integer davidId =
+		// PathwayItemManager.get().getDavidIdByPathwayVertex(vertex);
+		//
+		// for (GeneticDataDomain dataDomain : geneticDataDomains) {
+		// Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
+		// pathwayDataDomain.getDavidIDType(), dataDomain.getGeneIDType(),
+		// davidId);
+		//
+		// // TODO: This is only true if the davidID maps to one id of the
+		// // genetic
+		// // datadomain. However, matching multiple ids from different
+		// // genetic
+		// // datadomains is difficult.
+		// if (ids != null && !ids.isEmpty()) {
+		// allIDs.add(davidId);
+		// }
+		// }
+		// }
+		//
+		// return allIDs.size();
 	}
 
 	@Override

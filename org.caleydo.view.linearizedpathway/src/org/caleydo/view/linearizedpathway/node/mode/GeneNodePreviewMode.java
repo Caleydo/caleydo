@@ -133,34 +133,34 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 		Set<GeneticDataDomain> dataDomainsWithMappedGenes = new HashSet<GeneticDataDomain>();
 
 		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
-		if (vertices != null) {
 
-			for (PathwayVertex vertex : vertices) {
-				int davidId = PathwayItemManager.get().getDavidIdByPathwayVertex(vertex);
+		List<Integer> davidIDs = vertexRep.getDavidIDs();
 
-				for (GeneticDataDomain dataDomain : geneticDataDomains) {
-					Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
-							pathwayDataDomain.getDavidIDType(),
-							dataDomain.getGeneIDType(), davidId);
+		for (Integer davidID : davidIDs) {
 
-					// TODO: This is only true if the davidID maps to one id of
-					// the
-					// genetic
-					// datadomain. However, matching multiple ids from different
-					// genetic
-					// datadomains is difficult.
-					if (ids != null && !ids.isEmpty()) {
-						// for (Integer id : ids) {
-						Set<GeneticDataDomain> set = geneIDsToDataDomains.get(davidId);
-						if (set == null) {
-							set = new HashSet<GeneticDataDomain>();
+			for (GeneticDataDomain dataDomain : geneticDataDomains) {
+				Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
+						pathwayDataDomain.getDavidIDType(), dataDomain.getGeneIDType(),
+						davidID);
 
-							geneIDsToDataDomains.put(davidId, set);
-						}
-						set.add(dataDomain);
-						dataDomainsWithMappedGenes.add(dataDomain);
-						// }
+				// TODO: This is only true if the davidID maps to one id of
+				// the
+				// genetic
+				// datadomain. However, matching multiple ids from different
+				// genetic
+				// datadomains is difficult.
+				if (ids != null && !ids.isEmpty()) {
+					// for (Integer id : ids) {
+					Set<GeneticDataDomain> set = geneIDsToDataDomains.get(davidID);
+					if (set == null) {
+						set = new HashSet<GeneticDataDomain>();
+
+						geneIDsToDataDomains.put(davidID, set);
 					}
+					set.add(dataDomain);
+					dataDomainsWithMappedGenes.add(dataDomain);
+					// }
+
 				}
 			}
 		}
