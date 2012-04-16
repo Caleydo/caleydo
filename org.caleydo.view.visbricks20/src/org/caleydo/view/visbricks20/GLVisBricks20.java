@@ -320,7 +320,7 @@ public class GLVisBricks20
 		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
 		dataContainerWrapper.add(dataContainer);
 		addDimensionGroups(dataContainerWrapper, null);
-		visBricks.addDimensionGroups(dataContainerWrapper, null);
+		visBricks.addDataContainers(dataContainerWrapper, null);
 		
 		vendingMachine.setDataContainer(dataContainer);
 	}
@@ -328,7 +328,7 @@ public class GLVisBricks20
 	public void addDimensionGroups(List<DataContainer> dataContainers,
 			IBrickConfigurer dataConfigurer) {
 
-		visBricks.addDimensionGroups(dataContainers, dataConfigurer);
+		visBricks.addDataContainers(dataContainers, dataConfigurer);
 		
 		// Show dimension group as detail brick
 		for (DimensionGroup dimGroup : visBricks.getDimensionGroupManager()

@@ -226,7 +226,7 @@ public class GLVendingMachine
 			}
 
 			if (fixedDataContainers != null && fixedDataContainers.size() > 0)
-				visBricks.addDimensionGroups(fixedDataContainers, null);
+				visBricks.addDataContainers(fixedDataContainers, null);
 
 			uninitializedVisBrickViews.add(visBricks);
 			vendingMachineElementLayout.append(rankElementLayout);
