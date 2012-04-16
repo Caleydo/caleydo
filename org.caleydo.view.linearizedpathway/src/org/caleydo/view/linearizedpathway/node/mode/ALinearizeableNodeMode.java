@@ -3,6 +3,9 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -32,6 +35,12 @@ public abstract class ALinearizeableNodeMode {
 	protected CaleydoTextRenderer textRenderer;
 
 	protected TextureManager textureManager;
+
+	/**
+	 * The {@link ANodeAttributeRenderer}s that shall be rendered in the current
+	 * mode.
+	 */
+	protected List<ANodeAttributeRenderer> attributeRenderers = new ArrayList<ANodeAttributeRenderer>();
 
 	public ALinearizeableNodeMode(GLLinearizedPathway view) {
 		this.view = view;
@@ -77,6 +86,29 @@ public abstract class ALinearizeableNodeMode {
 	 * Method that shall be called when the mode is no longer needed to
 	 * unregister its picking listeners.
 	 */
-	public abstract void unregisterPickingListeners();
+	public void unregisterPickingListeners() {
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.unregisterPickingListeners();
+		}
+	}
+
+	/**
+	 * @param attributeRenderers
+	 *            setter, see {@link #attributeRenderers}
+	 */
+	public void setAttributeRenderers(List<ANodeAttributeRenderer> attributeRenderers) {
+		this.attributeRenderers = attributeRenderers;
+	}
+
+	/**
+	 * @return the attributeRenderers, see {@link #attributeRenderers}
+	 */
+	public List<ANodeAttributeRenderer> getAttributeRenderers() {
+		return attributeRenderers;
+	}
+
+	public void addAttributeRenderer(ANodeAttributeRenderer attributeRenderer) {
+		attributeRenderers.add(attributeRenderer);
+	}
 
 }

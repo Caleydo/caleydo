@@ -23,7 +23,7 @@ import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 
 	protected LayoutManager layoutManager;
-	
+
 	protected PixelGLConverter pixelGLConverter;
 
 	/**
@@ -34,12 +34,12 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 		this.pixelGLConverter = view.getPixelGLConverter();
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
 	}
-	
+
 	@Override
 	public void render(GL2 gl, GLU glu) {
 		float width = pixelGLConverter.getGLWidthForPixelWidth(node.getWidthPixels());
 		float height = pixelGLConverter.getGLHeightForPixelHeight(node.getHeightPixels());
-		
+
 		Vec3f position = node.getPosition();
 
 		gl.glPushMatrix();
@@ -49,6 +49,10 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
+
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
+		}
 
 	}
 

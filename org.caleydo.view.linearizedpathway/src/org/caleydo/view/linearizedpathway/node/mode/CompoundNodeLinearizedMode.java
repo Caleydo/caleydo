@@ -29,7 +29,12 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
+		unregisterPickingListeners();
 		registerPickingListeners();
+		attributeRenderers.clear();
+		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
+				view, node);
+		addAttributeRenderer(attributeRenderer);
 	}
 
 	@Override
@@ -54,6 +59,7 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 	@Override
 	public void unregisterPickingListeners() {
+		super.unregisterPickingListeners();
 		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
 	}

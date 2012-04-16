@@ -63,7 +63,9 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
+		unregisterPickingListeners();
 		registerPickingListeners();
+		attributeRenderers.clear();
 
 		Column baseColumn = new Column("baseColumn");
 		// baseColumn.setDebug(true);
@@ -281,6 +283,7 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 
 	@Override
 	public void unregisterPickingListeners() {
+		super.unregisterPickingListeners();
 		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
 	}

@@ -3,6 +3,9 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -32,7 +35,12 @@ public class ComplexNodeLinearizedMode extends ALayoutBasedNodeMode implements I
 
 	public void apply(ALinearizableNode node) {
 		this.node = node;
+		unregisterPickingListeners();
 		registerPickingListeners();
+		attributeRenderers.clear();
+		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
+				view, node);
+		addAttributeRenderer(attributeRenderer);
 		
 		Column baseColumn = new Column("baseColumn");
 		Row baseRow = new Row("baseRow");
@@ -84,7 +92,7 @@ public class ComplexNodeLinearizedMode extends ALayoutBasedNodeMode implements I
 
 	@Override
 	public void unregisterPickingListeners() {
-
+		super.unregisterPickingListeners();
 	}
 
 	@Override

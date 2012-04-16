@@ -528,8 +528,12 @@ public class GLLinearizedPathway extends AGLView {
 
 		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
 
-			float yStep = spacing.getCurrentAnchorNodeSpacing()
+			float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
+			// if(Float.isNaN(currentAnchorNodeSpacing))
+			float yStep = (Float.isNaN(currentAnchorNodeSpacing) ? viewFrustum
+					.getHeight() : spacing.getCurrentAnchorNodeSpacing())
 					/ ((float) spacing.getNodesInbetween().size() + 1);
+
 			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
 				ANode node = spacing.getNodesInbetween().get(i);
 				node.setPosition(new Vec3f(currentPosition.x(), currentPosition.y()
@@ -591,6 +595,8 @@ public class GLLinearizedPathway extends AGLView {
 				float rowPositionY = nodePosition.y()
 						+ (node.getNumAssociatedRows() * dataRowHeight / 2.0f) - i
 						* dataRowHeight;
+
+				gl.glColor4f(0, 0, 0, 1);
 
 				gl.glBegin(GL2.GL_LINE_LOOP);
 				gl.glVertex3f(dataRowPositionX, rowPositionY - dataRowHeight, 0);
@@ -1135,7 +1141,7 @@ public class GLLinearizedPathway extends AGLView {
 			edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
 		}
 
-		int linearizedNodeIndex = path.indexOf(linearizedVertexRep);
+		int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
 		List<PathwayVertexRep> newPath = null;
 		if (pathway.getEdgeSource(edge) == branchVertexRep) {
 			// insert above linearized node
@@ -1151,4 +1157,25 @@ public class GLLinearizedPathway extends AGLView {
 		setPath(pathway, newPath);
 	}
 
+	/**
+	 * @return the linearizedNodes, see {@link #linearizedNodes}
+	 */
+	public List<ANode> getLinearizedNodes() {
+		return linearizedNodes;
+	}
+
+	/**
+	 * Removes the specified linearized node from the path if it is at the start
+	 * or the end of the path.
+	 * 
+	 * @param node
+	 */
+	public void removeLinearizedNode(ANode node) {
+		int index = linearizedNodes.indexOf(node);
+
+		if ((index == 0) || (index == linearizedNodes.size() - 1)) {
+			path.remove(index);
+			setPath(pathway, path);
+		}
+	}
 }

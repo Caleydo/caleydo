@@ -3,6 +3,9 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -39,7 +42,12 @@ public class GeneNodeLinearizedMode extends ALayoutBasedNodeMode implements
 	@Override
 	public void apply(ALinearizableNode node) {
 		this.node = node;
+		unregisterPickingListeners();
 		registerPickingListeners();
+		attributeRenderers.clear();
+		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
+				view, node);
+		addAttributeRenderer(attributeRenderer);
 
 		Column baseColumn = new Column("baseColumn");
 		Row baseRow = new Row("baseRow");
@@ -75,6 +83,12 @@ public class GeneNodeLinearizedMode extends ALayoutBasedNodeMode implements
 	}
 
 	@Override
+	public void render(GL2 gl, GLU glu) {
+		super.render(gl, glu);
+
+	}
+
+	@Override
 	public int getMinHeightPixels() {
 		return ANode.DEFAULT_HEIGHT_PIXELS;
 	}
@@ -90,9 +104,11 @@ public class GeneNodeLinearizedMode extends ALayoutBasedNodeMode implements
 
 			@Override
 			public void mouseOver(Pick pick) {
+
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
 				view.setDisplayListDirty();
+
 			}
 
 			@Override
@@ -100,12 +116,15 @@ public class GeneNodeLinearizedMode extends ALayoutBasedNodeMode implements
 				node.setSelectionType(SelectionType.NORMAL);
 				colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
 				view.setDisplayListDirty();
+
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
+		super.unregisterPickingListeners();
 		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
 	}

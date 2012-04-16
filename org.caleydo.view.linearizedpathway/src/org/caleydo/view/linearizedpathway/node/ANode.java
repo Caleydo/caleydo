@@ -33,6 +33,8 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
+ * Base class for all nodes that can be displayed in the linearized pathway view.
+ * 
  * @author Christian
  * 
  */

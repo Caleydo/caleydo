@@ -13,8 +13,11 @@ import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ANode;
+import org.caleydo.view.linearizedpathway.node.CompoundNode;
 
 /**
+ * Base class for modes of a {@link CompoundNode}.
+ * 
  * @author Christian
  * 
  */
@@ -52,6 +55,10 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		GLPrimitives.renderCircleBorder(gl, glu, height / 2.0f, 16, 0.1f);
 		gl.glPopMatrix();
 		gl.glPopName();
+
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
+		}
 
 	}
 
