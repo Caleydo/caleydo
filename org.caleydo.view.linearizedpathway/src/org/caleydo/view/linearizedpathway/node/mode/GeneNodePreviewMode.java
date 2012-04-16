@@ -140,17 +140,22 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 							pathwayDataDomain.getDavidIDType(),
 							dataDomain.getGeneIDType(), davidId);
 
+					// TODO: This is only true if the davidID maps to one id of the
+					// genetic
+					// datadomain. However, matching multiple ids from different
+					// genetic
+					// datadomains is difficult.
 					if (ids != null && !ids.isEmpty()) {
-						for (Integer id : ids) {
-							Set<GeneticDataDomain> set = geneIDsToDataDomains.get(id);
+//						for (Integer id : ids) {
+							Set<GeneticDataDomain> set = geneIDsToDataDomains.get(davidId);
 							if (set == null) {
 								set = new HashSet<GeneticDataDomain>();
 
-								geneIDsToDataDomains.put(id, set);
+								geneIDsToDataDomains.put(davidId, set);
 							}
 							set.add(dataDomain);
 							dataDomainsWithMappedGenes.add(dataDomain);
-						}
+//						}
 					}
 				}
 			}
@@ -170,22 +175,41 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 			if (dataDomainsWithMappedGenes.contains(dataDomain)) {
 				mappedGeneticDataDomainList.add(dataDomain);
 				Column column = new Column("dataDomainColumn");
+				column.setBottomUp(false);
 				dataDomainColumns.add(column);
+
+				ElementLayout labelLayout = new ElementLayout("label");
+				LabelRenderer labelRenderer = new LabelRenderer(view,
+						dataDomain.getLabel());
+				labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
+
+				labelLayout.setRenderer(labelRenderer);
+				labelLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
+				column.append(labelLayout);
+				column.append(verticalSpacing);
+				column.append(verticalSpacing);
+
 				previewRow.append(column);
 				previewRow.append(horizontalSpacing);
 			}
 		}
 
-		List<Integer> geneIDList = new ArrayList<Integer>(geneIDsToDataDomains.keySet());
-		Collections.sort(geneIDList);
+		List<Integer> davidIdList = new ArrayList<Integer>(geneIDsToDataDomains.keySet());
+		Collections.sort(davidIdList);
 
 		for (int i = 0; i < mappedGeneticDataDomainList.size(); i++) {
 			GeneticDataDomain currentDataDomain = mappedGeneticDataDomainList.get(i);
 			Column column = dataDomainColumns.get(i);
 
-			for (int j = 0; j < geneIDList.size(); j++) {
-				Integer id = geneIDList.get(j);
-				Set<GeneticDataDomain> mappedDataDomains = geneIDsToDataDomains.get(id);
+			column.setRatioSizeX(1.0f / (float) dataDomainColumns.size());
+
+			if (i == 0) {
+				heightPixels += CAPTION_HEIGHT_PIXELS + SPACING_PIXELS + SPACING_PIXELS;
+			}
+
+			for (int j = 0; j < davidIdList.size(); j++) {
+				Integer davidId = davidIdList.get(j);
+				Set<GeneticDataDomain> mappedDataDomains = geneIDsToDataDomains.get(davidId);
 				if (mappedDataDomains.contains(currentDataDomain)) {
 					Row geneRow = new Row("dataDomain" + i + "geneRow");
 					ColorRenderer geneRowColorRenderer = new ColorRenderer(new float[] {
@@ -202,7 +226,7 @@ public class GeneNodePreviewMode extends ALinearizeableNodeMode implements
 				if (i == 0)
 					heightPixels += GENE_ROW_HEIGHT_PIXELS;
 
-				if (j != geneIDList.size()) {
+				if (j != davidIdList.size()) {
 					column.append(verticalSpacing);
 					if (i == 0)
 						heightPixels += SPACING_PIXELS;

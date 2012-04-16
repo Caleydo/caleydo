@@ -433,7 +433,7 @@ public class GLLinearizedPathway extends AGLView {
 		List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
 		if (vertices == null)
 			return 0;
-		
+
 		Set<Integer> allIDs = new HashSet<Integer>();
 
 		for (PathwayVertex vertex : vertices) {
@@ -444,8 +444,13 @@ public class GLLinearizedPathway extends AGLView {
 						pathwayDataDomain.getDavidIDType(), dataDomain.getGeneIDType(),
 						davidId);
 
+				// TODO: This is only true if the davidID maps to one id of the
+				// genetic
+				// datadomain. However, matching multiple ids from different
+				// genetic
+				// datadomains is difficult.
 				if (ids != null && !ids.isEmpty()) {
-					allIDs.addAll(ids);
+					allIDs.add(davidId);
 				}
 			}
 		}
