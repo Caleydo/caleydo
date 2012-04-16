@@ -40,9 +40,9 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainGraph;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -895,14 +895,14 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
-		Set<org.caleydo.core.data.datadomain.Edge> edges = dataDomainGraph.getEdges(
+		Set<org.caleydo.core.data.datadomain.graph.Edge> edges = dataDomainGraph.getEdges(
 				node1.getDataDomain(), node2.getDataDomain());
 
 		StringBuffer stringBuffer = new StringBuffer();
 
-		Iterator<org.caleydo.core.data.datadomain.Edge> iterator = edges.iterator();
+		Iterator<org.caleydo.core.data.datadomain.graph.Edge> iterator = edges.iterator();
 		while (iterator.hasNext()) {
-			org.caleydo.core.data.datadomain.Edge e = iterator.next();
+			org.caleydo.core.data.datadomain.graph.Edge e = iterator.next();
 			IDCategory category = e.getIdCategory();
 			if (category != null) {
 				stringBuffer.append(e.getIdCategory().getCategoryName());

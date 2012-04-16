@@ -32,6 +32,9 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
+import org.caleydo.core.data.datadomain.event.AggregateGroupListener;
+import org.caleydo.core.data.datadomain.event.StartClusteringListener;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingLoader;
@@ -127,6 +130,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * {@link #createKey(String, String)},
 	 * </p>
 	 */
+	@XmlElement
 	protected HashMap<String, DataContainer> dataContainers = new HashMap<String, DataContainer>();
 
 	protected String recordDenominationSingular = "<not specified>";
@@ -205,6 +209,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		defaultStartViewType = "org.caleydo.view.heatmap.hierarchical";
 	}
 
+	
 	/**
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */

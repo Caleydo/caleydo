@@ -17,25 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.datadomain;
+package org.caleydo.core.data.datadomain.event;
+
+import java.util.Set;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
 
 /**
- * Listener for {@link AggregateGroupEvent}s
+ * Event signaling that the groups specified should be aggregated into one dimension
  * 
  * @author Alexander Lex
  */
-public class AggregateGroupListener
-	extends AEventListener<ATableBasedDataDomain> {
+public class AggregateGroupEvent
+	extends AEvent {
+
+	private Set<Integer> setGroupsToAggregate;
+
+	public AggregateGroupEvent(Set<Integer> setGroupsToAggregate) {
+		this.setGroupsToAggregate = setGroupsToAggregate;
+	}
 
 	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof AggregateGroupEvent) {
-			AggregateGroupEvent aggregateGroupEvent = (AggregateGroupEvent) event;
-			handler.aggregateGroups(aggregateGroupEvent.getGroups());
-		}
+	public boolean checkIntegrity() {
+		return setGroupsToAggregate != null;
+	}
+
+	public Set<Integer> getGroups() {
+		return setGroupsToAggregate;
+	}
+
+	public void setGroupsToDelete(Set<Integer> setGroupsToDelete) {
+		this.setGroupsToAggregate = setGroupsToDelete;
 	}
 
 }

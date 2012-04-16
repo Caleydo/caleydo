@@ -58,6 +58,8 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.util.clusterer,
    org.caleydo.core.data.id,
    org.caleydo.core.data.selection",
+ org.caleydo.core.data.datadomain.event,
+ org.caleydo.core.data.datadomain.graph,
  org.caleydo.core.data.filter;
   uses:="org.caleydo.core.data.filter.representation,
    org.caleydo.core.data.perspective,

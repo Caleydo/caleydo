@@ -26,6 +26,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlRootElement;
+import javax.xml.bind.annotation.XmlTransient;
+import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -70,6 +73,7 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
  * 
  * @author Alexander Lex
  */
+@XmlType
 public class DataContainer {
 
 	/** The static counter used to create unique ids */
@@ -80,7 +84,7 @@ public class DataContainer {
 	protected ATableBasedDataDomain dataDomain;
 
 	/**
-	 * The recordPerspective defines the properties of the records (occurence,
+	 * The recordPerspective defines the properties of the records (occurrence,
 	 * order, groups, relationships)
 	 */
 	protected RecordPerspective recordPerspective;
@@ -121,6 +125,7 @@ public class DataContainer {
 	 * Object holding respectively calculating all forms of (statistical)
 	 * meta-data for this container
 	 */
+	@XmlTransient
 	protected ContainerStatistics containerStatistics;
 	
 	/**

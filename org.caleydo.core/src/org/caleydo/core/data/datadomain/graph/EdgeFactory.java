@@ -17,22 +17,17 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.datadomain;
+package org.caleydo.core.data.datadomain.graph;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.event.data.StartClusteringEvent;
+import org.caleydo.core.data.datadomain.IDataDomain;
 
-public class StartClusteringListener
-	extends AEventListener<ATableBasedDataDomain> {
+public class EdgeFactory
+	implements org.jgrapht.EdgeFactory<IDataDomain, Edge> {
 
 	@Override
-	public void handleEvent(AEvent event) {
-		if (event instanceof StartClusteringEvent) {
-			StartClusteringEvent startClusteringEvent = (StartClusteringEvent) event;
-			if (handler.getDataDomainID() == startClusteringEvent.getDataDomainID())
-				handler.startClustering(startClusteringEvent.getClusteConfiguration());
-		}
+	public Edge createEdge(IDataDomain vertex1, IDataDomain vertex2) {
+		Edge edge = new Edge(vertex1, vertex2);
+		return edge;
 	}
 
 }

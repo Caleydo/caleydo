@@ -19,11 +19,6 @@
  *******************************************************************************/
 package org.caleydo.data.importer.tcga;
 
-import java.io.File;
-import java.util.ArrayList;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;

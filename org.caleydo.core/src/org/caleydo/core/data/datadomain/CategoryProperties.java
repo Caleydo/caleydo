@@ -23,7 +23,7 @@
 package org.caleydo.core.data.datadomain;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  * 
  */
 public class CategoryProperties {

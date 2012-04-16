@@ -17,37 +17,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.datadomain;
+package org.caleydo.core.data.datadomain.event;
 
-import java.util.Set;
-
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.event.data.StartClusteringEvent;
 
-/**
- * Event signaling that the groups specified should be aggregated into one dimension
- * 
- * @author Alexander Lex
- */
-public class AggregateGroupEvent
-	extends AEvent {
-
-	private Set<Integer> setGroupsToAggregate;
-
-	public AggregateGroupEvent(Set<Integer> setGroupsToAggregate) {
-		this.setGroupsToAggregate = setGroupsToAggregate;
-	}
+public class StartClusteringListener
+	extends AEventListener<ATableBasedDataDomain> {
 
 	@Override
-	public boolean checkIntegrity() {
-		return setGroupsToAggregate != null;
-	}
-
-	public Set<Integer> getGroups() {
-		return setGroupsToAggregate;
-	}
-
-	public void setGroupsToDelete(Set<Integer> setGroupsToDelete) {
-		this.setGroupsToAggregate = setGroupsToDelete;
+	public void handleEvent(AEvent event) {
+		if (event instanceof StartClusteringEvent) {
+			StartClusteringEvent startClusteringEvent = (StartClusteringEvent) event;
+			if (handler.getDataDomainID() == startClusteringEvent.getDataDomainID())
+				handler.startClustering(startClusteringEvent.getClusteConfiguration());
+		}
 	}
 
 }

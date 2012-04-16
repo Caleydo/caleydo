@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import org.caleydo.core.data.configuration.ChooseDataConfigurationDialog;
+import org.caleydo.core.data.datadomain.graph.DataDomainGraph;
 import org.caleydo.core.event.data.NewDataDomainEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.color.Color;

@@ -17,15 +17,26 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.datadomain;
+package org.caleydo.core.data.datadomain.event;
 
-public class EdgeFactory
-	implements org.jgrapht.EdgeFactory<IDataDomain, Edge> {
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+
+/**
+ * Listener for {@link AggregateGroupEvent}s
+ * 
+ * @author Alexander Lex
+ */
+public class AggregateGroupListener
+	extends AEventListener<ATableBasedDataDomain> {
 
 	@Override
-	public Edge createEdge(IDataDomain vertex1, IDataDomain vertex2) {
-		Edge edge = new Edge(vertex1, vertex2);
-		return edge;
+	public void handleEvent(AEvent event) {
+		if (event instanceof AggregateGroupEvent) {
+			AggregateGroupEvent aggregateGroupEvent = (AggregateGroupEvent) event;
+			handler.aggregateGroups(aggregateGroupEvent.getGroups());
+		}
 	}
 
 }

@@ -20,7 +20,8 @@
 package org.caleydo.view.grouper.contextmenu;
 
 import java.util.Set;
-import org.caleydo.core.data.datadomain.AggregateGroupEvent;
+
+import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

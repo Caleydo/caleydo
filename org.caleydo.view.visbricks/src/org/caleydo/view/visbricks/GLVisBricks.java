@@ -1055,7 +1055,7 @@ public class GLVisBricks
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedVisBricksView serializedForm = new SerializedVisBricksView();
+		SerializedVisBricksView serializedForm = new SerializedVisBricksView(this);
 		serializedForm.setViewID(this.getID());
 		return serializedForm;
 	}
@@ -1156,8 +1156,7 @@ public class GLVisBricks
 
 	/**
 	 * <p>
-	 * Creates visible groups of bricks for the specified list of dimension
-	 * group data.
+	 * Creates a column for each DataContainer supplied 
 	 * </p>
 	 * <p>
 	 * As VisBricks can only map between data sets that share a mapping between
@@ -1170,7 +1169,7 @@ public class GLVisBricks
 	 *            (e.g., pathways, kaplan meier). If null, the
 	 *            {@link NumericalDataConfigurer} will be used.
 	 */
-	public void addDimensionGroups(List<DataContainer> newDataContainers,
+	public void addDataContainers(List<DataContainer> newDataContainers,
 			IBrickConfigurer brickConfigurer) {
 
 		if (newDataContainers == null || newDataContainers.size() == 0) {
@@ -1671,7 +1670,7 @@ public class GLVisBricks
 	public void setDataContainer(DataContainer dataContainer) {
 		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
 		dataContainerWrapper.add(dataContainer);
-		addDimensionGroups(dataContainerWrapper, null);
+		addDataContainers(dataContainerWrapper, null);
 	}
 
 	@Override
