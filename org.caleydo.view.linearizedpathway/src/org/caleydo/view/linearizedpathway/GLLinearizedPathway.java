@@ -41,7 +41,6 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
@@ -59,6 +58,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.linearizedpathway.listener.LinearizePathwayPathEventListener;
 import org.caleydo.view.linearizedpathway.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
@@ -67,6 +67,7 @@ import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
+import org.caleydo.view.pathway.event.LinearizePathwayPathEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -166,6 +167,8 @@ public class GLLinearizedPathway extends AGLView {
 	 * The current height for all data rows.
 	 */
 	private float dataRowHeight;
+
+	private LinearizePathwayPathEventListener linearizePathwayPathEventListener;
 
 	/**
 	 * Constructor.
@@ -1158,12 +1161,20 @@ public class GLLinearizedPathway extends AGLView {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
+		linearizePathwayPathEventListener = new LinearizePathwayPathEventListener();
+		linearizePathwayPathEventListener.setHandler(this);
+		eventPublisher.addListener(LinearizePathwayPathEvent.class,
+				linearizePathwayPathEventListener);
 	}
 
 	@Override
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
+		if (linearizePathwayPathEventListener != null) {
+			eventPublisher.removeListener(linearizePathwayPathEventListener);
+			linearizePathwayPathEventListener = null;
+		}
 	}
 
 	@Override
@@ -1244,6 +1255,11 @@ public class GLLinearizedPathway extends AGLView {
 			newPath = path.subList(0, linearizedNodeIndex + 1);
 			newPath.add(branchVertexRep);
 		}
+//		LinearizePathwayPathEvent event = new LinearizePathwayPathEvent();
+//		event.setPath(newPath);
+//		event.setPathway(pathway);
+//
+//		eventPublisher.triggerEvent(event);
 
 		setPath(pathway, newPath);
 	}
@@ -1290,4 +1306,5 @@ public class GLLinearizedPathway extends AGLView {
 	public float getDataRowHeight() {
 		return dataRowHeight;
 	}
+
 }
