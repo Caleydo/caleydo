@@ -32,10 +32,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
  * Event that specifies a pathway path as a list of {@link PathwayVertexRep}
  * objects in order to be linearized.
  * 
- * @author Christian
+ * @author Christian Partl
  * 
  */
-public class LinearizePathwayPathEvent extends AEvent {
+public class LinearizedPathwayPathEvent extends AEvent {
 
 	/**
 	 * List of {@link PathwayVertexRep} objects that specifies a path in a

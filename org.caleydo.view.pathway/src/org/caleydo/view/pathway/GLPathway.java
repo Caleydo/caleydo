@@ -22,6 +22,7 @@ package org.caleydo.view.pathway;
 import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -75,6 +76,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
@@ -125,7 +127,7 @@ public class GLPathway
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
 	private IPickingListener pathwayElementPickingListener;
-	
+
 	private GraphPath<PathwayVertexRep, DefaultEdge> selectedPath;
 
 	/**
@@ -406,7 +408,7 @@ public class GLPathway
 
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
 		renderSelectedPath(gl);
-		
+
 		gl.glTranslatef(0, -tmp, 0);
 
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
@@ -416,24 +418,25 @@ public class GLPathway
 	}
 
 	private void renderSelectedPath(GL2 gl) {
-	
+
 		if (selectedPath == null)
 			return;
-		
-		gl.glColor3f(1,0,0);
+
+		gl.glColor3f(1, 0, 0);
 		gl.glLineWidth(5);
-		for (DefaultEdge edge : selectedPath.getEdgeList()) 
-		{
+		for (DefaultEdge edge : selectedPath.getEdgeList()) {
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
-			
+
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(sourceVertexRep.getXOrigin()*PathwayRenderStyle.SCALING_FACTOR_X, -sourceVertexRep.getYOrigin()*PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-			gl.glVertex3f(targetVertexRep.getXOrigin()*PathwayRenderStyle.SCALING_FACTOR_X, -targetVertexRep.getYOrigin()*PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			gl.glVertex3f(sourceVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
+					-sourceVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			gl.glVertex3f(targetVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
+					-targetVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
 			gl.glEnd();
 		}
 	}
-	
+
 	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
 
@@ -919,9 +922,24 @@ public class GLPathway
 			DijkstraShortestPath<PathwayVertexRep, DefaultEdge> pathAlgo = new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>(
 					pathway, vertexRep, previouslySelectedVertexRep);
 			selectedPath = pathAlgo.getPath();
+			
+			if (selectedPath != null) {
+				
+				List<PathwayVertexRep> pathVertices = new ArrayList<PathwayVertexRep>();
+				for (DefaultEdge edge : selectedPath.getEdgeList()) {
+					pathVertices.add(pathway.getEdgeSource(edge));
+					pathVertices.add(pathway.getEdgeTarget(edge));
+				}
+				
+				LinearizedPathwayPathEvent pathEvent = new LinearizedPathwayPathEvent();
+				pathEvent.setPath(pathVertices);
+				pathEvent.setPathway(pathway);
+				pathEvent.setDataDomainID(dataDomain.getDataDomainID());
+				pathEvent.setSender(this);
+				eventPublisher.triggerEvent(pathEvent);
 
-			if (selectedPath != null)
 				System.out.println(selectedPath.getEdgeList());
+			}
 		}
 
 		// Add new vertex to internal selection manager
@@ -942,7 +960,6 @@ public class GLPathway
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
 		event.setInfo(getViewLabel());
-
 		eventPublisher.triggerEvent(event);
 	}
 

@@ -67,7 +67,7 @@ import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
-import org.caleydo.view.pathway.event.LinearizePathwayPathEvent;
+import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -1163,7 +1163,7 @@ public class GLLinearizedPathway extends AGLView {
 
 		linearizePathwayPathEventListener = new LinearizePathwayPathEventListener();
 		linearizePathwayPathEventListener.setHandler(this);
-		eventPublisher.addListener(LinearizePathwayPathEvent.class,
+		eventPublisher.addListener(LinearizedPathwayPathEvent.class,
 				linearizePathwayPathEventListener);
 	}
 
