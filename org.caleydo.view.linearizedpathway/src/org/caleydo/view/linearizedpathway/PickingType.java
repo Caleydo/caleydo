@@ -30,6 +30,7 @@ package org.caleydo.view.linearizedpathway;
  */
 public enum PickingType {
 	BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON,
+	BRANCH_SUMMARY_NODE,
 	GENE_NODE,
 	COMPOUND_NODE,
 	LINEARIZABLE_NODE,

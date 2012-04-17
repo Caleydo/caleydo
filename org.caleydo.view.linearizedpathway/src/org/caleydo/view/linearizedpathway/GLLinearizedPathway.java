@@ -28,6 +28,7 @@ import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GL2;
+import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
@@ -149,6 +150,8 @@ public class GLLinearizedPathway extends AGLView {
 	 * The branch node that is currently expanded to show the possible branches.
 	 */
 	private BranchSummaryNode expandedBranchSummaryNode = null;
+
+	private boolean isLayoutDirty = true;
 
 	/**
 	 * Constructor.
@@ -503,6 +506,7 @@ public class GLLinearizedPathway extends AGLView {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
 		}
+		isLayoutDirty = false;
 		gl.glCallList(displayListIndex);
 
 		checkForHits(gl);
@@ -521,7 +525,7 @@ public class GLLinearizedPathway extends AGLView {
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
 		float dataRowHeight = Float.MAX_VALUE;
 		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
-				viewFrustum.getHeight(), 0);
+				viewFrustum.getHeight(), 0.2f);
 		float pathwayHeight = 0;
 
 		for (AnchorNodeSpacing spacing : anchorNodeSpacings) {
@@ -537,8 +541,8 @@ public class GLLinearizedPathway extends AGLView {
 				node.setPosition(new Vec3f(currentPosition.x(), currentPosition.y()
 						- (i + 1) * yStep, currentPosition.z()));
 				node.render(gl, glu);
-				if (expandedBranchSummaryNode == null)
-					renderCollapsedBranchNodes(gl, glu, node);
+				// if (expandedBranchSummaryNode == null)
+				renderCollapsedBranchNodes(gl, glu, node);
 			}
 
 			currentPosition.setY(currentPosition.y()
@@ -548,8 +552,8 @@ public class GLLinearizedPathway extends AGLView {
 			if (endAnchorNode != null) {
 				endAnchorNode.setPosition(new Vec3f(currentPosition));
 				endAnchorNode.render(gl, glu);
-				if (expandedBranchSummaryNode == null)
-					renderCollapsedBranchNodes(gl, glu, endAnchorNode);
+				// if (expandedBranchSummaryNode == null)
+				renderCollapsedBranchNodes(gl, glu, endAnchorNode);
 			}
 
 			ANode startAnchorNode = spacing.getStartNode();
@@ -644,13 +648,17 @@ public class GLLinearizedPathway extends AGLView {
 			collapsedIncomingNode.setHeightPixels(collapsedIncomingNode
 					.getMinRequiredHeightPixels());
 			collapsedIncomingNode.setPosition(new Vec3f(spacing + minNodeWidth / 2.0f,
-					nodePosition.y() + verticalBranchNodeSpacing, nodePosition.z()));
+					nodePosition.y() + verticalBranchNodeSpacing, 0));
 			collapsedIncomingNode.render(gl, glu);
 
 			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
 			List<Vec3f> linePoints = new ArrayList<Vec3f>();
-			linePoints.add(collapsedIncomingNode.getRightConnectionPoint());
-			linePoints.add(node.getLeftConnectionPoint());
+			Vec3f sourcePosition = collapsedIncomingNode.getRightConnectionPoint();
+			Vec3f targetPosition = node.getLeftConnectionPoint();
+			sourcePosition.setZ(0);
+			targetPosition.setZ(0);
+			linePoints.add(sourcePosition);
+			linePoints.add(targetPosition);
 
 			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
 			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
@@ -672,13 +680,18 @@ public class GLLinearizedPathway extends AGLView {
 			collapsedOutgoingNode.setHeightPixels(collapsedOutgoingNode
 					.getMinRequiredHeightPixels());
 			collapsedOutgoingNode.setPosition(new Vec3f(spacing + minNodeWidth / 2.0f,
-					nodePosition.y() - verticalBranchNodeSpacing, nodePosition.z()));
+					nodePosition.y() - verticalBranchNodeSpacing, 0));
 			collapsedOutgoingNode.render(gl, glu);
 
 			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
 			List<Vec3f> linePoints = new ArrayList<Vec3f>();
-			linePoints.add(node.getLeftConnectionPoint());
-			linePoints.add(collapsedOutgoingNode.getRightConnectionPoint());
+			
+			Vec3f sourcePosition = node.getLeftConnectionPoint();
+			Vec3f targetPosition = collapsedOutgoingNode.getRightConnectionPoint();
+			sourcePosition.setZ(0);
+			targetPosition.setZ(0);
+			linePoints.add(sourcePosition);
+			linePoints.add(targetPosition);
 
 			LineEndArrowRenderer lineEndArrowRenderer = createDefaultLineEndArrowRenderer();
 			connectionLineRenderer.addAttributeRenderer(lineEndArrowRenderer);
@@ -699,9 +712,13 @@ public class GLLinearizedPathway extends AGLView {
 	private void renderExpandedBranchNode(GL2 gl, GLU glu) {
 		ANode linearizedNode = expandedBranchSummaryNode.getAssociatedLinearizedNode();
 		Vec3f branchSummaryNodePosition = expandedBranchSummaryNode.getPosition();
-		Vec3f linearizedNodePosition = linearizedNode.getPosition();
-		float branchSummaryNodeHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(expandedBranchSummaryNode.getHeightPixels());
+		float branchSummaryNodeTopY = branchSummaryNodePosition.y()
+				+ pixelGLConverter.getGLHeightForPixelHeight(expandedBranchSummaryNode
+						.getHeightPixels()) / 2.0f;
+		float branchSummaryNodeMinHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(expandedBranchSummaryNode
+						.getMinRequiredHeightPixels());
+		float spacing = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
 
 		List<ANode> branchNodes = expandedBranchSummaryNode.getBranchNodes();
 		// float previewDataRowHeight =
@@ -722,13 +739,12 @@ public class GLLinearizedPathway extends AGLView {
 
 		totalHeight += nodeSpacing * (branchNodes.size() - 1);
 
-		float topPositionY = branchSummaryNodePosition.y() - branchSummaryNodeHeight
-				/ 2.0f;
+		float topPositionY = branchSummaryNodeTopY - branchSummaryNodeMinHeight - spacing;
 		if (topPositionY - totalHeight < viewFrustum.getBottom()) {
 			topPositionY += (viewFrustum.getBottom() - (topPositionY - totalHeight));
 		}
-		if (topPositionY > viewFrustum.getTop() - branchSummaryNodeHeight) {
-			topPositionY -= (topPositionY - (viewFrustum.getTop() - branchSummaryNodeHeight));
+		if (topPositionY > viewFrustum.getTop() - branchSummaryNodeMinHeight) {
+			topPositionY -= (topPositionY - (viewFrustum.getTop() - branchSummaryNodeMinHeight));
 		}
 
 		float currentPositionY = topPositionY;
@@ -737,49 +753,45 @@ public class GLLinearizedPathway extends AGLView {
 			float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(node
 					.getHeightPixels());
 			node.setPosition(new Vec3f(branchNodePositionX, currentPositionY - nodeHeight
-					/ 2.0f, 0));
+					/ 2.0f, 0.2f));
 			node.render(gl, glu);
 			currentPositionY -= nodeHeight + nodeSpacing;
 
 			renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
-					linearizedNode.getLeftConnectionPoint());
+					linearizedNode.getLeftConnectionPoint(), 0.2f);
 		}
 
-		// float topPositionY = linearizedNodePosition.y() + totalHeight / 2.0f;
-		// if (topPositionY - totalHeight < viewFrustum.getBottom()) {
-		// topPositionY += (viewFrustum.getBottom() - (topPositionY -
-		// totalHeight));
-		// }
-		// if (topPositionY > viewFrustum.getTop() - branchSummaryNodeHeight) {
-		// topPositionY -= (topPositionY - (viewFrustum.getTop() -
-		// branchSummaryNodeHeight));
-		// }
-		//
-		// float currentPositionY = topPositionY;
-		//
-		// for (ANode node : branchNodes) {
-		// float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(node
-		// .getHeightPixels());
-		// node.setPosition(new Vec3f(branchNodePositionX, currentPositionY -
-		// nodeHeight
-		// / 2.0f, 0));
-		// node.render(gl, glu);
-		// currentPositionY -= nodeHeight + nodeSpacing;
-		//
-		// renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
-		// linearizedNode.getLeftConnectionPoint());
-		// }
-
-		float spacing = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
 		float nodeWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(expandedBranchSummaryNode.getWidthPixels());
-		expandedBranchSummaryNode.setHeightPixels(expandedBranchSummaryNode
-				.getMinRequiredHeightPixels()
-				+ pixelGLConverter.getPixelHeightForGLHeight(totalHeight));
+		float currentHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(expandedBranchSummaryNode.getHeightPixels());
+		if (branchSummaryNodeMinHeight + 0.0001f > currentHeight || isLayoutDirty) {
 
-		expandedBranchSummaryNode.setPosition(new Vec3f(spacing + nodeWidth / 2.0f,
-				topPositionY + branchSummaryNodeHeight / 2.0f, 0));
+			expandedBranchSummaryNode.setHeightPixels(expandedBranchSummaryNode
+					.getMinRequiredHeightPixels()
+					+ pixelGLConverter.getPixelHeightForGLHeight(totalHeight)
+					+ 2
+					* SPACING_PIXELS);
+			expandedBranchSummaryNode.setPosition(new Vec3f(spacing + nodeWidth / 2.0f,
+					topPositionY + branchSummaryNodeMinHeight + spacing
+							- (totalHeight + branchSummaryNodeMinHeight + 2 * spacing)
+							/ 2.0f, 0.15f));
+		}
 		expandedBranchSummaryNode.render(gl, glu);
+
+		float coverWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
+						+ BRANCH_COLUMN_WIDTH_PIXELS);
+
+//		gl.glPushName(pickingManager.getPickingID(getID(), "asd", 0));
+		gl.glColor4f(1, 1, 1, 0.8f);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, 0, 0.1f);
+		gl.glVertex3f(coverWidth, 0, 0.1f);
+		gl.glVertex3f(coverWidth, viewFrustum.getHeight(), 0.1f);
+		gl.glVertex3f(0, viewFrustum.getHeight(), 0.1f);
+		gl.glEnd();
+//		gl.glPopName();
 
 	}
 
@@ -933,12 +945,12 @@ public class GLLinearizedPathway extends AGLView {
 			ANode node1 = linearizedNodes.get(i);
 			ANode node2 = linearizedNodes.get(i + 1);
 			renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(),
-					node2.getTopConnectionPoint());
+					node2.getTopConnectionPoint(), 0.2f);
 		}
 	}
 
 	private void renderEdge(GL2 gl, ANode node1, ANode node2, Vec3f node1ConnectionPoint,
-			Vec3f node2ConnectionPoint) {
+			Vec3f node2ConnectionPoint, float zCoordinate) {
 
 		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
 		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
@@ -959,6 +971,10 @@ public class GLLinearizedPathway extends AGLView {
 				: node1ConnectionPoint;
 		Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint
 				: node2ConnectionPoint;
+		
+		sourceConnectionPoint.setZ(zCoordinate);
+		targetConnectionPoint.setZ(zCoordinate);
+
 
 		linePoints.add(sourceConnectionPoint);
 		linePoints.add(targetConnectionPoint);
@@ -1166,6 +1182,13 @@ public class GLLinearizedPathway extends AGLView {
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
 	}
+	
+	/**
+	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
+	 */
+	public BranchSummaryNode getExpandedBranchSummaryNode() {
+		return expandedBranchSummaryNode;
+	}
 
 	/**
 	 * @return the currentExpandedBranchNode, see
@@ -1227,5 +1250,11 @@ public class GLLinearizedPathway extends AGLView {
 			path.remove(index);
 			setPath(pathway, path);
 		}
+	}
+
+	@Override
+	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
+		super.reshape(drawable, x, y, width, height);
+		isLayoutDirty = true;
 	}
 }

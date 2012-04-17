@@ -124,6 +124,11 @@ public class BranchSummaryNode extends ANode {
 	 */
 	public void setCollapsed(boolean isCollapsed) {
 		this.isCollapsed = isCollapsed;
+		if (isCollapsed) {
+			collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_PLUS);
+		} else {
+			collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_MINUS);
+		}
 	}
 
 	/**
@@ -140,19 +145,14 @@ public class BranchSummaryNode extends ANode {
 			public void clicked(Pick pick) {
 
 				if (isCollapsed) {
-					isCollapsed = false;
+					setCollapsed(false);
+					BranchSummaryNode node = view.getExpandedBranchSummaryNode();
+					if (node != null)
+						node.setCollapsed(true);
 					view.setExpandedBranchSummaryNode(BranchSummaryNode.this);
-//					colorRenderer.setBorderColor(new float[] { 1, 1, 1, 0 });
-//					colorRenderer.setColor(new float[] { 1, 1, 1, 0 });
-					collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_MINUS);
-					labelRenderer.setLabel("");
 				} else {
-					isCollapsed = true;
+					setCollapsed(true);
 					view.setExpandedBranchSummaryNode(null);
-//					colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
-//					colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
-					collapseButton.setIconTexture(EIconTextures.GROUPER_COLLAPSE_PLUS);
-					labelRenderer.setLabel("..." + branchNodes.size());
 				}
 				view.setDisplayListDirty();
 			}
@@ -190,11 +190,19 @@ public class BranchSummaryNode extends ANode {
 	protected void setupLayout() {
 
 		Column baseColumn = new Column("baseColumn");
-		Row baseRow = new Row("baseRow");
+		// baseColumn.setDebug(true);
+		// baseColumn.setFrameColor(1, 0, 0, 1);
 		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
+		colorRenderer.setView(view);
+		colorRenderer.addPickingID(PickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
 		baseColumn.addBackgroundRenderer(colorRenderer);
 		baseColumn.setBottomUp(false);
+
+		Row baseRow = new Row("baseRow");
+		// baseRow.setDebug(true);
+		// baseRow.setFrameColor(0, 1, 0, 1);
+		baseRow.setPixelSizeY(16);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
 		collapseButton = new Button(
@@ -222,14 +230,14 @@ public class BranchSummaryNode extends ANode {
 		baseRow.append(horizontalSpacing);
 
 		ElementLayout verticalSpacing = new ElementLayout();
-		
+
 		verticalSpacing.setPixelSizeY(2);
-//		ElementLayout x = new ElementLayout();
-//		x.setRatioSizeY(1);
+		// ElementLayout x = new ElementLayout();
+		// x.setRatioSizeY(1);
 		baseColumn.append(verticalSpacing);
 		baseColumn.append(baseRow);
 		baseColumn.append(verticalSpacing);
-//		baseColumn.append(x);
+		// baseColumn.append(x);
 
 		layoutManager.setBaseElementLayout(baseColumn);
 	}
@@ -250,7 +258,8 @@ public class BranchSummaryNode extends ANode {
 		float height = pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
 
 		gl.glPushMatrix();
-		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f, 0f);
+		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f,
+				position.z());
 		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
 				0, width, 0, height, -1, 20));
 

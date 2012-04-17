@@ -43,7 +43,8 @@ public abstract class ALayoutBasedNodeMode extends ALinearizeableNodeMode {
 		Vec3f position = node.getPosition();
 
 		gl.glPushMatrix();
-		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f, 0f);
+		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f,
+				position.z());
 		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
 				0, width, 0, height, -1, 20));
 
