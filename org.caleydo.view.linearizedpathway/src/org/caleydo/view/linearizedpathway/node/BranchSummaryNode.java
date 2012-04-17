@@ -35,6 +35,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
+import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -44,6 +45,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
+import org.caleydo.view.linearizedpathway.node.layout.BranchNodeLabelRenderer;
 
 /**
  * Node that represents multiple nodes in a branch.
@@ -51,7 +53,7 @@ import org.caleydo.view.linearizedpathway.PickingType;
  * @author Christian
  * 
  */
-public class BranchSummaryNode extends ANode {
+public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 
 	public static final int MIN_NODE_WIDTH_PIXELS = 176;
 	public static final int TEXT_SPACING_PIXELS = 3;
@@ -76,7 +78,7 @@ public class BranchSummaryNode extends ANode {
 
 	private ColorRenderer colorRenderer;
 
-	private LabelRenderer labelRenderer;
+	private BranchNodeLabelRenderer labelRenderer;
 
 	private Button collapseButton;
 
@@ -103,7 +105,6 @@ public class BranchSummaryNode extends ANode {
 	 */
 	public void setBranchNodes(List<ANode> branchNodes) {
 		this.branchNodes = branchNodes;
-		labelRenderer.setLabel("..." + branchNodes.size());
 	}
 
 	/**
@@ -115,7 +116,6 @@ public class BranchSummaryNode extends ANode {
 
 	public void addBranchNode(ANode node) {
 		branchNodes.add(node);
-		labelRenderer.setLabel("..." + branchNodes.size());
 	}
 
 	/**
@@ -214,11 +214,21 @@ public class BranchSummaryNode extends ANode {
 		collapseButtonLayout.setPixelSizeX(12);
 		collapseButtonLayout.setPixelSizeY(12);
 
-		ElementLayout labelLayout = new ElementLayout("label");
-		labelRenderer = new LabelRenderer(view, "...0");
+		ElementLayout captionLayout = new ElementLayout("label");
+		labelRenderer = new BranchNodeLabelRenderer(this, view);
 
-		labelLayout.setRenderer(labelRenderer);
-		labelLayout.setPixelSizeY(16);
+		captionLayout.setRenderer(labelRenderer);
+		captionLayout.setPixelSizeY(16);
+
+		ElementLayout numNodesLabelLayout = new ElementLayout("numNodeslabel");
+//		numNodesLabelLayout.setDebug(true);
+//		numNodesLabelLayout.setFrameColor(1, 0, 0, 1);
+		LabelRenderer numNodesLabelRenderer = new LabelRenderer(view, this);
+//		numNodesLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
+
+		numNodesLabelLayout.setRenderer(numNodesLabelRenderer);
+		numNodesLabelLayout.setPixelSizeY(16);
+		numNodesLabelLayout.setPixelSizeX(20);
 
 		ElementLayout horizontalSpacing = new ElementLayout();
 		horizontalSpacing.setPixelSizeX(2);
@@ -226,7 +236,9 @@ public class BranchSummaryNode extends ANode {
 		baseRow.append(horizontalSpacing);
 		baseRow.append(collapseButtonLayout);
 		baseRow.append(horizontalSpacing);
-		baseRow.append(labelLayout);
+		baseRow.append(captionLayout);
+		baseRow.append(horizontalSpacing);
+		baseRow.append(numNodesLabelLayout);
 		baseRow.append(horizontalSpacing);
 
 		ElementLayout verticalSpacing = new ElementLayout();
@@ -249,7 +261,7 @@ public class BranchSummaryNode extends ANode {
 
 	@Override
 	public String getCaption() {
-		return "..." + branchNodes.size();
+		return " " + branchNodes.size();
 	}
 
 	@Override
@@ -266,6 +278,11 @@ public class BranchSummaryNode extends ANode {
 		layoutManager.render(gl);
 		gl.glPopMatrix();
 
+	}
+
+	@Override
+	public String getLabelText() {
+		return getCaption();
 	}
 
 }

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.linearizedpathway.node.mode;
+package org.caleydo.view.linearizedpathway.node;
 
 import gleem.linalg.Vec3f;
 
@@ -16,7 +16,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
-import org.caleydo.view.linearizedpathway.node.ANode;
 
 /**
  * Renderer for a button to remove a node from the linearized pathway.

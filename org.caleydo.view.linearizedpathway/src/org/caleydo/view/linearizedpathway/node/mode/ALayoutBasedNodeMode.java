@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
+import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
 
 /**
  * Base class for all nodes that make use of layouts.

@@ -10,6 +10,7 @@ import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
+import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer;
 
 /**
  * The linearized mode for {@link CompoundNode}s.

@@ -13,6 +13,7 @@ import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ANode;
+import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
 
 /**

@@ -1,7 +1,7 @@
 /**
  * 
  */
-package org.caleydo.view.linearizedpathway.node.mode;
+package org.caleydo.view.linearizedpathway.node;
 
 import javax.media.opengl.GL2;
 
@@ -9,7 +9,6 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
-import org.caleydo.view.linearizedpathway.node.ANode;
 
 /**
  * Base class for renderers of optional attributes for {@link ANode}s.

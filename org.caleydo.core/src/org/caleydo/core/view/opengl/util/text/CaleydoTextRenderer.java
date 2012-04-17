@@ -229,11 +229,18 @@ public class CaleydoTextRenderer extends TextRenderer {
 	 */
 	public float getRequiredTextWidth(String text, float height) {
 
-		Rectangle2D bounds = super.getBounds(text);
+		// we use the height of a standard string so we don't have varying
+		// height
+		double scaling = height / super.getBounds("Sgfy").getHeight();
 
-		double scaling = height / bounds.getHeight();
+		Rectangle2D boundsForWidth = super.getBounds(text);
+//		double requiredWidth = boundsForWidth.getWidth() * scaling;
 
-		return (float) (bounds.getWidth() * scaling);
+//		Rectangle2D bounds = super.getBounds(text);
+//
+//		double scaling = height / bounds.getHeight();
+
+		return (float) (boundsForWidth.getWidth() * scaling);
 	}
 
 	/**

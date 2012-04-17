@@ -14,6 +14,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
+import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
 
 /**
  * Base class for the different modes (preview, linearized) of nodes.

@@ -14,6 +14,7 @@ import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
+import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer;
 
 /**
  * The linearized mode for {@link ComplexNode}s.

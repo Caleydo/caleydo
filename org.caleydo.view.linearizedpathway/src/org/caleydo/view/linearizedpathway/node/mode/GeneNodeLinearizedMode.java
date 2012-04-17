@@ -20,6 +20,7 @@ import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
+import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer;
 
 /**
  * The linearized mode for {@link GeneNode}s.
