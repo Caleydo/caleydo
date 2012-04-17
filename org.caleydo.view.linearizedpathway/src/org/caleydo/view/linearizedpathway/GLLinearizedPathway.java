@@ -41,6 +41,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
@@ -58,6 +59,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
+import org.caleydo.view.linearizedpathway.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.BranchSummaryNode;
@@ -71,7 +73,8 @@ import org.jgrapht.graph.DefaultEdge;
 /**
  * Main view class for the linearized pathway view.
  * 
- * @author Christian
+ * @author Christian Partl
+ * @author Alexander Lex
  */
 
 public class GLLinearizedPathway extends AGLView {
@@ -154,6 +157,12 @@ public class GLLinearizedPathway extends AGLView {
 	private boolean isLayoutDirty = true;
 
 	/**
+	 * The renderer for the experimental data of the nodes in the linearized
+	 * pathways.
+	 */
+	MappedDataRenderer mappedDataRenderer;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param glCanvas
@@ -175,6 +184,7 @@ public class GLLinearizedPathway extends AGLView {
 		}
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
+
 	}
 
 	@Override
@@ -218,6 +228,8 @@ public class GLLinearizedPathway extends AGLView {
 		}
 
 		setPath(pathway, path);
+
+		mappedDataRenderer = new MappedDataRenderer(this);
 		// createNodes();
 
 	}
@@ -589,25 +601,18 @@ public class GLLinearizedPathway extends AGLView {
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 
-		for (ANode node : linearizedNodes) {
-			for (int i = 0; i < node.getNumAssociatedRows(); i++) {
+		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_PIXELS);
+		gl.glPushMatrix();
 
-				Vec3f nodePosition = node.getPosition();
+		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
+		// TODO do this only when necessary - cause re-initialization
+		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 
-				float rowPositionY = nodePosition.y()
-						+ (node.getNumAssociatedRows() * dataRowHeight / 2.0f) - i
-						* dataRowHeight;
+		mappedDataRenderer.setFrustum(viewFrustum.getWidth() - dataRowPositionX
+				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowHeight);
 
-				gl.glColor4f(0, 0, 0, 1);
-
-				gl.glBegin(GL2.GL_LINE_LOOP);
-				gl.glVertex3f(dataRowPositionX, rowPositionY - dataRowHeight, 0);
-				gl.glVertex3f(viewFrustum.getWidth(), rowPositionY - dataRowHeight, 0);
-				gl.glVertex3f(viewFrustum.getWidth(), rowPositionY, 0);
-				gl.glVertex3f(dataRowPositionX, rowPositionY, 0);
-				gl.glEnd();
-			}
-		}
+		mappedDataRenderer.render(gl);
+		gl.glPopMatrix();
 
 		renderEdges(gl);
 

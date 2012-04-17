@@ -48,7 +48,7 @@ public abstract class ANode {
 	protected int nodeId;
 
 	/**
-	 * Position of the node (center).
+	 * Position of the node center.
 	 */
 	protected Vec3f position;
 
