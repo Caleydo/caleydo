@@ -121,6 +121,7 @@ public class GLPathwayContentCreator {
 		buildFramedEnzymeNodeDisplayList(gl);
 		buildFramedCompoundNodeDisplayList(gl);
 		buildUpscaledEnzymeNodeDisplayList(gl);
+		buildUpscaledFramedEnzymeNodeDisplayList(gl);
 
 		this.internalSelectionManager = geneSelectionManager;
 	}
@@ -233,11 +234,11 @@ public class GLPathwayContentCreator {
 		float fNodeWidth = PathwayRenderStyle.ENZYME_NODE_WIDTH;
 		float fNodeHeight = PathwayRenderStyle.ENZYME_NODE_HEIGHT;
 
-		float scaleFactor = 2;
+		float scaleFactor = 1.4f;
 		fNodeWidth *= scaleFactor;
 		fNodeHeight *= scaleFactor;
 
-		gl.glNewList(framedEnzymeNodeDisplayListId, GL2.GL_COMPILE);
+		gl.glNewList(upscaledFramedEnzymeNodeDisplayListID, GL2.GL_COMPILE);
 		fillNodeDisplayListFrame(gl, fNodeWidth, fNodeHeight);
 		gl.glEndList();
 	}
@@ -576,6 +577,12 @@ public class GLPathwayContentCreator {
 						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 								vertexRep.getID())) {
 							tmpNodeColor = SelectionType.SELECTION.getColor();
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glCallList(upscaledFramedEnzymeNodeDisplayListID);
+						}
+						else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
+								vertexRep.getID())) {
+							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(upscaledFramedEnzymeNodeDisplayListID);
 						}

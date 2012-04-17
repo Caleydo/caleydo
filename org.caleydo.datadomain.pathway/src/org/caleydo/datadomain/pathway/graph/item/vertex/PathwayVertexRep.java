@@ -103,6 +103,9 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	public PathwayVertexRep(final String name, final String shapeType, final short x,
 			final short y, final short width, final short height) {
 
+		id = GeneralManager.get().getIDCreator()
+				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
+		
 		if (shapeType == null || shapeType.isEmpty())
 			shape = EPathwayVertexShape.rect;
 		else
