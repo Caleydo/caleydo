@@ -789,7 +789,7 @@ public class GLLinearizedPathway extends AGLView {
 						+ BRANCH_COLUMN_WIDTH_PIXELS);
 
 //		gl.glPushName(pickingManager.getPickingID(getID(), "asd", 0));
-		gl.glColor4f(1, 1, 1, 0.8f);
+		gl.glColor4f(1, 1, 1, 0.9f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0.1f);
 		gl.glVertex3f(coverWidth, 0, 0.1f);

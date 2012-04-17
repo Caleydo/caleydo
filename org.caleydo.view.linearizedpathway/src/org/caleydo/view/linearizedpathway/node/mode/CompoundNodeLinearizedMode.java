@@ -3,12 +3,17 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
+import org.caleydo.view.linearizedpathway.node.ANode;
+import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
 import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer;
 
@@ -39,6 +44,18 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	}
 
 	@Override
+	public void render(GL2 gl, GLU glu) {
+
+		renderCircle(gl, glu, node.getPosition(),
+				pixelGLConverter.getGLHeightForPixelHeight(node.getHeightPixels()));
+
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
+		}
+
+	}
+
+	@Override
 	protected void registerPickingListeners() {
 		view.addIDPickingListener(new APickingListener() {
 
@@ -63,6 +80,11 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 		super.unregisterPickingListeners();
 		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
+	}
+
+	@Override
+	public int getMinWidthPixels() {
+		return ANode.DEFAULT_HEIGHT_PIXELS;
 	}
 
 }

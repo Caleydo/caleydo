@@ -41,35 +41,22 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		this.pixelGLConverter = view.getPixelGLConverter();
 	}
 
-	@Override
-	public void render(GL2 gl, GLU glu) {
-		float height = pixelGLConverter.getGLHeightForPixelHeight(node.getHeightPixels());
-		Vec3f position = node.getPosition();
+	protected void renderCircle(GL2 gl, GLU glu, Vec3f position, float radius) {
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(),
 				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
 		gl.glColor4fv(circleColor, 0);
-		GLPrimitives.renderCircle(glu, height / 2.0f, 16);
+		GLPrimitives.renderCircle(glu, radius / 2.0f, 16);
 		gl.glColor4f(0, 0, 0, 1);
-		GLPrimitives.renderCircleBorder(gl, glu, height / 2.0f, 16, 0.1f);
+		GLPrimitives.renderCircleBorder(gl, glu, radius / 2.0f, 16, 0.1f);
 		gl.glPopMatrix();
 		gl.glPopName();
-
-		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
-			attributeRenderer.render(gl);
-		}
-
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
-	}
-
-	@Override
-	public int getMinWidthPixels() {
 		return ANode.DEFAULT_HEIGHT_PIXELS;
 	}
 
