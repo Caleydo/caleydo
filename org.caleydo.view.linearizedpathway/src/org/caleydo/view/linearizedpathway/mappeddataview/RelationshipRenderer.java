@@ -21,48 +21,41 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 
 /**
  * @author alexsb
  * 
  */
-public class RowBackgroundRenderer extends LayoutRenderer {
+public class RelationshipRenderer {
+
+	float[] topLeft = new float[3];
+	float[] bottomLeft = new float[3];
+	float[] topRight = new float[3];
+	float[] bottomRight = new float[3];
+	float[] color;
+
+	ElementLayout topRightLayout;
+	ElementLayout bottomRightLayout;
 
 	/**
-	 * Flag telling whether the row of this <code>RowBackgroundRenderer</code>
-	 * is at an even (true, default) or at an odd position (false)
+	 * 
 	 */
-	private boolean isEven;
-	float[] backgroundColor;
-
-	float[] frameColor = { 0, 0, 0, 1 };
-
-	@Override
-	public void render(GL2 gl) {
-
-		float backgroundZ = 0;
-		float frameZ = 0.3f;
-
-		gl.glColor4fv(backgroundColor, 0);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glVertex3f(0, y, backgroundZ);
-		gl.glVertex3f(x, y, backgroundZ);
-		gl.glVertex3f(x, 0, backgroundZ);
-		gl.glEnd();
-
-		gl.glColor4fv(frameColor, 0);
-		gl.glBegin(GL2.GL_LINE_LOOP);
-		gl.glVertex3f(0, 0, frameZ);
-		gl.glVertex3f(0, y, frameZ);
-		gl.glVertex3f(x, y, frameZ);
-		gl.glVertex3f(x, 0, frameZ);
-		gl.glEnd();
-
+	public RelationshipRenderer(float[] color) {
+		this.color = color;
 	}
 
-	public void setColor(float[] color) {
-		this.backgroundColor = color;
+	public void render(GL2 gl, ConnectionBandRenderer renderer) {
+
+		topRight[0] = topRightLayout.getTranslateX();
+		topRight[1] = topRightLayout.getTranslateY() + topRightLayout.getSizeScaledY();
+
+		bottomRight[0] = bottomRightLayout.getTranslateX();
+		bottomRight[1] = bottomRightLayout.getTranslateY();
+
+		renderer.renderSingleBand(gl, topLeft, bottomLeft, topRight, bottomRight, false,
+				0.1f, 0, color);
 	}
 }

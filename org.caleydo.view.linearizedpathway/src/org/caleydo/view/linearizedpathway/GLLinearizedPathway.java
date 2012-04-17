@@ -235,6 +235,7 @@ public class GLLinearizedPathway extends AGLView {
 		setPath(pathway, path);
 
 		mappedDataRenderer = new MappedDataRenderer(this);
+		mappedDataRenderer.init(gl);
 		// createNodes();
 
 	}
@@ -530,10 +531,10 @@ public class GLLinearizedPathway extends AGLView {
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
-		
+
 		dataRowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
-		
+
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		float branchColumnWidth = pixelGLConverter
@@ -544,7 +545,7 @@ public class GLLinearizedPathway extends AGLView {
 		GLU glu = new GLU();
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
-//		float dataRowHeight = Float.MAX_VALUE;
+		// float dataRowHeight = Float.MAX_VALUE;
 		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
 				viewFrustum.getHeight(), 0.2f);
 		float pathwayHeight = 0;
@@ -585,11 +586,12 @@ public class GLLinearizedPathway extends AGLView {
 			if (endAnchorNode != null)
 				numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
 
-//			float currentDataRowHeight = spacing.getCurrentAnchorNodeSpacing()
-//					/ ((float) numSpacingAnchorNodeRows / 2.0f);
+			// float currentDataRowHeight =
+			// spacing.getCurrentAnchorNodeSpacing()
+			// / ((float) numSpacingAnchorNodeRows / 2.0f);
 
-//			if (currentDataRowHeight < dataRowHeight)
-//				dataRowHeight = currentDataRowHeight;
+			// if (currentDataRowHeight < dataRowHeight)
+			// dataRowHeight = currentDataRowHeight;
 
 			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
 		}
@@ -618,7 +620,8 @@ public class GLLinearizedPathway extends AGLView {
 		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 
 		mappedDataRenderer.setFrustum(viewFrustum.getWidth() - dataRowPositionX
-				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowHeight);
+				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowHeight,
+				dataRowPositionX, topSpacing);
 
 		mappedDataRenderer.render(gl);
 		gl.glPopMatrix();
@@ -799,6 +802,7 @@ public class GLLinearizedPathway extends AGLView {
 
 		// gl.glPushName(pickingManager.getPickingID(getID(), "asd", 0));
 		gl.glColor4f(1, 1, 1, 0.9f);
+
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0.1f);
 		gl.glVertex3f(coverWidth, 0, 0.1f);

@@ -26,10 +26,12 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ANode;
 
@@ -43,10 +45,29 @@ public class MappedDataRenderer {
 
 	private List<ANode> linearizedNodes;
 
+	private ArrayList<RelationshipRenderer> relationShipRenderers;
+
+	/**
+	 * the distance from the left edge of this renderer to the left edge of the
+	 * window
+	 */
+	private float xOffset = 0;
+
+	/**
+	 * The distance from the upper edge of this renderer to the upper edge of
+	 * the window
+	 */
+	private float yOffset = 0;
+
 	private float rowHeight;
 
 	private LayoutManager layoutManger;
 	private ViewFrustum viewFrustum;
+
+	private ConnectionBandRenderer connectionBandRenderer;
+
+	private float[] oddColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+	private float[] evenColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
 
 	/**
 	 * 
@@ -57,17 +78,30 @@ public class MappedDataRenderer {
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 	}
 
+	public void init(GL2 gl) {
+		connectionBandRenderer = new ConnectionBandRenderer();
+		connectionBandRenderer.init(gl);
+	}
+
 	public void render(GL2 gl) {
 		layoutManger.updateLayout();
 		layoutManger.render(gl);
 
+		for (RelationshipRenderer relationshipRenderer : relationShipRenderers) {
+			relationshipRenderer.render(gl, connectionBandRenderer);
+		}
+
 	}
 
-	public void setFrustum(float width, float height, float rowHeight) {
+	public void setFrustum(float width, float height, float rowHeight, float xOffset,
+			float yOffset) {
 		viewFrustum.setRight(width);
 		viewFrustum.setTop(height);
 		this.rowHeight = rowHeight;
 		layoutManger.updateLayout();
+		this.xOffset = xOffset;
+		this.yOffset = yOffset;
+
 	}
 
 	/**
@@ -75,6 +109,10 @@ public class MappedDataRenderer {
 	 *            setter, see {@link #linearizedNodes}
 	 */
 	public void setLinearizedNodes(List<ANode> linearizedNodes) {
+
+		float[] color;
+		relationShipRenderers = new ArrayList<RelationshipRenderer>(
+				linearizedNodes.size());
 
 		Row baseRow = new Row("baseRow");
 		layoutManger.setBaseElementLayout(baseRow);
@@ -101,15 +139,28 @@ public class MappedDataRenderer {
 			if (node.getNumAssociatedRows() == 0)
 				continue;
 
-			boolean isEven;
 			if (nodeCount % 2 == 0)
-				isEven = true;
+				color = evenColor;
 			else
-				isEven = false;
+				color = oddColor;
+
+			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color);
+			relationShipRenderers.add(relationShipRenderer);
+			float x = node.getPosition().x()
+					+ parentView.getPixelGLConverter().getGLWidthForPixelWidth(
+							node.getWidthPixels()) / 2;
+			float height = parentView.getPixelGLConverter().getGLHeightForPixelHeight(
+					node.getHeightPixels());
+			// float y =
+			relationShipRenderer.topLeft[0] = x - xOffset;
+			relationShipRenderer.topLeft[1] = node.getPosition().y() + height / 2
+					- yOffset;
+
+			relationShipRenderer.bottomLeft[0] = x - xOffset;
+			relationShipRenderer.bottomLeft[1] = node.getPosition().y() - height / 2
+					- yOffset;
 
 			nodeCount++;
-
-			int idCount = 0;
 
 			ArrayList<Integer> davidIDs = node.getPathwayVertexRep().getDavidIDs();
 
@@ -133,13 +184,14 @@ public class MappedDataRenderer {
 			previousNodePosition = currentNodePositionY;
 			previousNrDavids = davidIDs.size();
 
+			int idCount = 0;
 			for (Integer davidID : davidIDs) {
 
 				Vec3f nodePosition = node.getPosition();
 
 				Row row = new Row();
 				RowBackgroundRenderer rowBackgroundRenderer = new RowBackgroundRenderer();
-				rowBackgroundRenderer.setEven(isEven);
+				rowBackgroundRenderer.setColor(color);
 				row.addBackgroundRenderer(rowBackgroundRenderer);
 				// row.setPixelSizeY(10);
 				row.setAbsoluteSizeY(rowHeight);
@@ -159,10 +211,14 @@ public class MappedDataRenderer {
 				// idCount
 				// * dataRowHeight;
 
+				if (idCount == 0)
+					relationShipRenderer.topRightLayout = row;
+				if (idCount == davidIDs.size() - 1)
+					relationShipRenderer.bottomRightLayout = row;
+
 				idCount++;
 			}
 		}
 
 	}
-
 }
