@@ -33,9 +33,7 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
-import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -83,6 +81,9 @@ import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.jgrapht.GraphPath;
+import org.jgrapht.alg.DijkstraShortestPath;
+import org.jgrapht.graph.DefaultEdge;
 
 /**
  * Single OpenGL2 pathway view
@@ -124,6 +125,8 @@ public class GLPathway
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
 
 	private IPickingListener pathwayElementPickingListener;
+	
+	private GraphPath<PathwayVertexRep, DefaultEdge> selectedPath;
 
 	/**
 	 * Constructor.
@@ -207,7 +210,6 @@ public class GLPathway
 	}
 
 	protected void registerPickingListeners() {
-
 
 		pathwayElementPickingListener = new APickingListener() {
 
@@ -367,7 +369,7 @@ public class GLPathway
 	}
 
 	protected void initPathwayData(final GL2 gl) {
-		
+
 		gLPathwayContentCreator.init(gl, geneSelectionManager);
 
 		// Create new pathway manager for GL2 context
@@ -403,7 +405,8 @@ public class GLPathway
 		gl.glTranslatef(0, tmp, 0);
 
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
-
+		renderSelectedPath(gl);
+		
 		gl.glTranslatef(0, -tmp, 0);
 
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
@@ -412,6 +415,25 @@ public class GLPathway
 		gl.glPopMatrix();
 	}
 
+	private void renderSelectedPath(GL2 gl) {
+	
+		if (selectedPath == null)
+			return;
+		
+		gl.glColor3f(1,0,0);
+		gl.glLineWidth(5);
+		for (DefaultEdge edge : selectedPath.getEdgeList()) 
+		{
+			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+			
+			gl.glBegin(GL.GL_LINES);
+			gl.glVertex3f(sourceVertexRep.getXOrigin()*PathwayRenderStyle.SCALING_FACTOR_X, -sourceVertexRep.getYOrigin()*PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			gl.glVertex3f(targetVertexRep.getXOrigin()*PathwayRenderStyle.SCALING_FACTOR_X, -targetVertexRep.getYOrigin()*PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			gl.glEnd();
+		}
+	}
+	
 	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
 
@@ -474,7 +496,8 @@ public class GLPathway
 		for (PathwayVertex vertex : pathwayItemManager.getPathwayVertexRep(
 				iPathwayVertexGraphItemRepID).getPathwayVertices()) {
 
-			Integer davidID = pathwayItemManager.getDavidIdByPathwayVertex((PathwayVertex) vertex);
+			Integer davidID = pathwayItemManager
+					.getDavidIdByPathwayVertex((PathwayVertex) vertex);
 
 			if (davidID == null || davidID == -1) {
 				continue;
@@ -730,7 +753,7 @@ public class GLPathway
 
 	@Override
 	public String getViewLabel() {
-		if(pathway == null)
+		if (pathway == null)
 			return viewLabel;
 		return viewLabel + ": " + pathway.getName();
 	}
@@ -880,14 +903,26 @@ public class GLPathway
 			return;
 		}
 
-		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
-				.getPathwayVertexRep(externalID);
+		PathwayVertexRep previouslySelectedVertexRep = null;
+		if (geneSelectionManager.getElements(SelectionType.SELECTION).size() == 1) {
+			previouslySelectedVertexRep = (PathwayVertexRep) pathwayItemManager
+					.getPathwayVertexRep((Integer) geneSelectionManager.getElements(
+							SelectionType.SELECTION).toArray()[0]);
+		}
 
 		geneSelectionManager.clearSelection(selectionType);
 
-		SelectionCommand command = new SelectionCommand(ESelectionCommandType.CLEAR,
-				selectionType);
-		sendSelectionCommandEvent(geneSelectionManager.getIDType(), command);
+		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
+				.getPathwayVertexRep(externalID);
+
+		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
+			DijkstraShortestPath<PathwayVertexRep, DefaultEdge> pathAlgo = new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>(
+					pathway, vertexRep, previouslySelectedVertexRep);
+			selectedPath = pathAlgo.getPath();
+
+			if (selectedPath != null)
+				System.out.println(selectedPath.getEdgeList());
+		}
 
 		// Add new vertex to internal selection manager
 		geneSelectionManager.addToType(selectionType, vertexRep.getID());

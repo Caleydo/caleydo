@@ -29,27 +29,20 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
-import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContainer;
-import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
-import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 
@@ -580,8 +573,8 @@ public class GLPathwayContentCreator {
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(upscaledFramedEnzymeNodeDisplayListID);
 						}
-						else if (internalSelectionManager.checkStatus(SelectionType.MOUSE_OVER,
-								vertexRep.getID())) {
+						else if (internalSelectionManager.checkStatus(
+								SelectionType.MOUSE_OVER, vertexRep.getID())) {
 							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
 							gl.glCallList(upscaledFramedEnzymeNodeDisplayListID);
