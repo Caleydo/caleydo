@@ -79,7 +79,7 @@ import org.jgrapht.graph.DefaultEdge;
 
 public class GLLinearizedPathway extends AGLView {
 
-	public final static int MIN_DATA_ROW_HEIGHT_PIXELS = 60;
+	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
 	public final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 	public final static int MIN_NODE_DISTANCE_PIXELS = 70;
@@ -161,6 +161,11 @@ public class GLLinearizedPathway extends AGLView {
 	 * pathways.
 	 */
 	MappedDataRenderer mappedDataRenderer;
+
+	/**
+	 * The current height for all data rows.
+	 */
+	private float dataRowHeight;
 
 	/**
 	 * Constructor.
@@ -525,6 +530,10 @@ public class GLLinearizedPathway extends AGLView {
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
+		
+		dataRowHeight = pixelGLConverter
+				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
 		float branchColumnWidth = pixelGLConverter
@@ -535,7 +544,7 @@ public class GLLinearizedPathway extends AGLView {
 		GLU glu = new GLU();
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = calcAnchorNodeSpacings();
-		float dataRowHeight = Float.MAX_VALUE;
+//		float dataRowHeight = Float.MAX_VALUE;
 		Vec3f currentPosition = new Vec3f(branchColumnWidth + pathwayColumnWidth / 2.0f,
 				viewFrustum.getHeight(), 0.2f);
 		float pathwayHeight = 0;
@@ -576,11 +585,11 @@ public class GLLinearizedPathway extends AGLView {
 			if (endAnchorNode != null)
 				numSpacingAnchorNodeRows += endAnchorNode.getNumAssociatedRows();
 
-			float currentDataRowHeight = spacing.getCurrentAnchorNodeSpacing()
-					/ ((float) numSpacingAnchorNodeRows / 2.0f);
+//			float currentDataRowHeight = spacing.getCurrentAnchorNodeSpacing()
+//					/ ((float) numSpacingAnchorNodeRows / 2.0f);
 
-			if (currentDataRowHeight < dataRowHeight)
-				dataRowHeight = currentDataRowHeight;
+//			if (currentDataRowHeight < dataRowHeight)
+//				dataRowHeight = currentDataRowHeight;
 
 			pathwayHeight += spacing.getCurrentAnchorNodeSpacing();
 		}
@@ -690,7 +699,7 @@ public class GLLinearizedPathway extends AGLView {
 
 			ConnectionLineRenderer connectionLineRenderer = new ConnectionLineRenderer();
 			List<Vec3f> linePoints = new ArrayList<Vec3f>();
-			
+
 			Vec3f sourcePosition = node.getLeftConnectionPoint();
 			Vec3f targetPosition = collapsedOutgoingNode.getRightConnectionPoint();
 			sourcePosition.setZ(0);
@@ -788,7 +797,7 @@ public class GLLinearizedPathway extends AGLView {
 				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS
 						+ BRANCH_COLUMN_WIDTH_PIXELS);
 
-//		gl.glPushName(pickingManager.getPickingID(getID(), "asd", 0));
+		// gl.glPushName(pickingManager.getPickingID(getID(), "asd", 0));
 		gl.glColor4f(1, 1, 1, 0.9f);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0.1f);
@@ -796,7 +805,7 @@ public class GLLinearizedPathway extends AGLView {
 		gl.glVertex3f(coverWidth, viewFrustum.getHeight(), 0.1f);
 		gl.glVertex3f(0, viewFrustum.getHeight(), 0.1f);
 		gl.glEnd();
-//		gl.glPopName();
+		// gl.glPopName();
 
 	}
 
@@ -812,19 +821,20 @@ public class GLLinearizedPathway extends AGLView {
 		List<AnchorNodeSpacing> anchorNodeSpacingsWithTooFewSpace = new ArrayList<AnchorNodeSpacing>();
 		List<AnchorNodeSpacing> anchorNodeSpacingsWithEnoughSpace = new ArrayList<AnchorNodeSpacing>();
 
-		float minDataRowHeight = pixelGLConverter
-				.getGLHeightForPixelHeight(MIN_DATA_ROW_HEIGHT_PIXELS);
+		// float minDataRowHeight = pixelGLConverter
+		// .getGLHeightForPixelHeight(MIN_DATA_ROW_HEIGHT_PIXELS);
 		float minNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(MIN_NODE_DISTANCE_PIXELS);
 		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
 		float bottomSpacing = pixelGLConverter
 				.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
-		float dataRowHeight = (viewFrustum.getHeight() - bottomSpacing - topSpacing)
-				/ (float) numDataRows;
-
-		if (dataRowHeight < minDataRowHeight)
-			dataRowHeight = minDataRowHeight;
+		// float dataRowHeight = (viewFrustum.getHeight() - bottomSpacing -
+		// topSpacing)
+		// / (float) numDataRows;
+		//
+		// if (dataRowHeight < minDataRowHeight)
+		// dataRowHeight = minDataRowHeight;
 
 		List<ANode> unmappedNodes = new ArrayList<ANode>();
 		ANode currentAnchorNode = null;
@@ -841,8 +851,8 @@ public class GLLinearizedPathway extends AGLView {
 
 			} else {
 				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
-						currentAnchorNode, node, unmappedNodes, minDataRowHeight,
-						minNodeDistance, dataRowHeight, currentAnchorNode == null, false);
+						currentAnchorNode, node, unmappedNodes, minNodeDistance,
+						currentAnchorNode == null, false);
 
 				anchorNodeSpacings.add(anchorNodeSpacing);
 
@@ -858,8 +868,8 @@ public class GLLinearizedPathway extends AGLView {
 
 			if (i == linearizedNodes.size() - 1) {
 				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
-						currentAnchorNode, null, unmappedNodes, minDataRowHeight,
-						minNodeDistance, dataRowHeight, currentAnchorNode == null, true);
+						currentAnchorNode, null, unmappedNodes, minNodeDistance,
+						currentAnchorNode == null, true);
 				anchorNodeSpacings.add(anchorNodeSpacing);
 				if (anchorNodeSpacing.getMinAnchorNodeSpacing() > anchorNodeSpacing
 						.getCurrentAnchorNodeSpacing())
@@ -913,9 +923,8 @@ public class GLLinearizedPathway extends AGLView {
 	}
 
 	private AnchorNodeSpacing createAnchorNodeSpacing(ANode startAnchorNode,
-			ANode endAnchorNode, List<ANode> nodesInbetween, float minDataRowHeight,
-			float minNodeDistance, float dataRowHeight, boolean isFirstSpacing,
-			boolean isLastSpacing) {
+			ANode endAnchorNode, List<ANode> nodesInbetween, float minNodeDistance,
+			boolean isFirstSpacing, boolean isLastSpacing) {
 
 		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
 		anchorNodeSpacing.setStartNode(startAnchorNode);
@@ -936,7 +945,7 @@ public class GLLinearizedPathway extends AGLView {
 			additionalSpacing += pixelGLConverter
 					.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
-		anchorNodeSpacing.setMinAnchorNodeSpacing(Math.max(minDataRowHeight
+		anchorNodeSpacing.setMinAnchorNodeSpacing(Math.max(dataRowHeight
 				* ((float) numSpacingAnchorNodeRows) / 2.0f + additionalSpacing,
 				minNodeDistance * (float) (nodesInbetween.size() + 1)));
 		anchorNodeSpacing.setCurrentAnchorNodeSpacing(dataRowHeight
@@ -976,10 +985,9 @@ public class GLLinearizedPathway extends AGLView {
 				: node1ConnectionPoint;
 		Vec3f targetConnectionPoint = (isNode1Target) ? node1ConnectionPoint
 				: node2ConnectionPoint;
-		
+
 		sourceConnectionPoint.setZ(zCoordinate);
 		targetConnectionPoint.setZ(zCoordinate);
-
 
 		linePoints.add(sourceConnectionPoint);
 		linePoints.add(targetConnectionPoint);
@@ -1187,9 +1195,10 @@ public class GLLinearizedPathway extends AGLView {
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
 	}
-	
+
 	/**
-	 * @return the expandedBranchSummaryNode, see {@link #expandedBranchSummaryNode}
+	 * @return the expandedBranchSummaryNode, see
+	 *         {@link #expandedBranchSummaryNode}
 	 */
 	public BranchSummaryNode getExpandedBranchSummaryNode() {
 		return expandedBranchSummaryNode;
@@ -1261,5 +1270,20 @@ public class GLLinearizedPathway extends AGLView {
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 		isLayoutDirty = true;
+	}
+
+	/**
+	 * @param dataRowHeight
+	 *            setter, see {@link #dataRowHeight}
+	 */
+	public void setDataRowHeight(float dataRowHeight) {
+		this.dataRowHeight = dataRowHeight;
+	}
+
+	/**
+	 * @return the dataRowHeight, see {@link #dataRowHeight}
+	 */
+	public float getDataRowHeight() {
+		return dataRowHeight;
 	}
 }
