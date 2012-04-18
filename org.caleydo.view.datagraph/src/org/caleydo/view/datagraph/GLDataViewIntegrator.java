@@ -179,6 +179,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		connectionBandRenderer = new ConnectionBandRenderer();
 		viewType = GLDataViewIntegrator.VIEW_TYPE;
+		viewLabel = "Data-View Integrator";
+		
 		glKeyListener = new GLDataGraphKeyListener();
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
 		relativeNodePositions = new HashMap<IDVINode, Pair<Float, Float>>();

@@ -47,7 +47,7 @@ public class MappedDataRenderer {
 	private List<ANode> linearizedNodes;
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
-	
+
 	private ArrayList<DataContainer> dataContainers;
 
 	/**
@@ -79,6 +79,7 @@ public class MappedDataRenderer {
 		this.parentView = parentView;
 		viewFrustum = new ViewFrustum();
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
+		dataContainers = new ArrayList<DataContainer>(5);
 	}
 
 	public void render(GL2 gl) {
@@ -205,7 +206,6 @@ public class MappedDataRenderer {
 			int idCount = 0;
 			for (Integer davidID : davidIDs) {
 
-
 				Row row = new Row();
 				RowBackgroundRenderer rowBackgroundRenderer = new RowBackgroundRenderer(
 						color);
@@ -221,7 +221,6 @@ public class MappedDataRenderer {
 				captionRow.setRenderer(captionRenderer);
 				captionColumn.append(captionRow);
 
-		
 				if (idCount == 0)
 					relationShipRenderer.topRightLayout = row;
 				if (idCount == davidIDs.size() - 1)
@@ -232,20 +231,18 @@ public class MappedDataRenderer {
 		}
 
 	}
-	
+
 	public void addDataContainer(DataContainer newDataContainer) {
-		// TODO Auto-generated method stub
-		
+		dataContainers.add(newDataContainer);
+
 	}
 
 	public void addDataContainers(List<DataContainer> newDataContainers) {
-		// TODO Auto-generated method stub
-		
+		dataContainers.addAll(newDataContainers);
 	}
 
 	public List<DataContainer> getDataContainers() {
-		// TODO Auto-generated method stub
-		return new ArrayList<DataContainer>();
+		return dataContainers;
 	}
 
 }

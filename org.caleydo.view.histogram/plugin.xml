@@ -9,7 +9,7 @@
             class="org.caleydo.view.histogram.RcpGLColorMapperHistogramView"
             icon="resources/icons/histogram.png"
             id="org.caleydo.view.histogram"
-            name="Histogram">
+            name="Histogram, Color Legend">
       </view>
    </extension>
    <extension
@@ -18,11 +18,14 @@
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
                id="org.caleydo.menu.view"
-               label="View">
+               label="View"
+               tooltip="Test">
             <command
                   commandId="org.caleydo.view.histogram.command.openhistogram"
                   icon="resources/icons/histogram.png"
-                  style="push">
+                  label="Histogram, Color Legend"
+                  style="push"
+                  tooltip="test2">
             </command>
          </menu>
       </menuContribution>
@@ -32,7 +35,7 @@
       <command
             defaultHandler="org.caleydo.view.histogram.command.handler.OpenHistogramHandler"
             id="org.caleydo.view.histogram.command.openhistogram"
-            name="Histogram">
+            name="Histogram, Color Legend">
       </command>
    </extension>
    <extension

@@ -9,7 +9,7 @@
             class="org.caleydo.view.datameta.RcpDataMetaView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.datameta"
-            name="Data Meta">
+            name="Dataset Info">
       </view>
    </extension>
    <extension
@@ -22,6 +22,7 @@
             <command
                   commandId="org.caleydo.view.datameta.command.opendatameta"
                   icon="resources/icons/icon.png"
+                  label="Dataset Info"
                   style="push">
             </command>
          </menu>
@@ -32,7 +33,7 @@
       <command
             defaultHandler="org.caleydo.view.datameta.command.handler.OpenDataMetaHandler"
             id="org.caleydo.view.datameta.command.opendatameta"
-            name="Data Meta">
+            name="Dataset Info">
       </command>
    </extension>
    <extension

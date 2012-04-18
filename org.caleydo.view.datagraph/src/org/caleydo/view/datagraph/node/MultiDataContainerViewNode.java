@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,6 +30,7 @@ import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.IDataContainerBasedView;
+import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -47,43 +48,36 @@ import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
-public class MultiDataContainerViewNode
-	extends ViewNode
-	implements IDropArea
-{
+public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 
 	protected DataContainerListRenderer dataContainerListRenderer;
 	protected List<DataContainer> dataContainers;
 
-	public MultiDataContainerViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id, AGLView representedView)
-	{
+	public MultiDataContainerViewNode(AGraphLayout graphLayout,
+			GLDataViewIntegrator view, DragAndDropController dragAndDropController,
+			Integer id, AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id, representedView);
 
 	}
 
 	@Override
-	protected void registerPickingListeners()
-	{
+	protected void registerPickingListeners() {
 
-		view.addIDPickingListener(new APickingListener()
-		{
+		view.addIDPickingListener(new APickingListener() {
 
 			@Override
-			public void dragged(Pick pick)
-			{
+			public void dragged(Pick pick) {
 
 				DragAndDropController dragAndDropController = MultiDataContainerViewNode.this.dragAndDropController;
 				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode()
-								.equals("DimensionGroupDrag"))
-				{
+						&& dragAndDropController.getDraggingMode().equals(
+								"DimensionGroupDrag")) {
 					dragAndDropController.setDropArea(MultiDataContainerViewNode.this);
 				}
 
 			}
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-		
+
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -102,8 +96,7 @@ public class MultiDataContainerViewNode
 	}
 
 	@Override
-	protected ElementLayout setupLayout()
-	{
+	protected ElementLayout setupLayout() {
 		ElementLayout baseLayout = super.setupLayout();
 
 		bodyColumn.clear();
@@ -131,38 +124,33 @@ public class MultiDataContainerViewNode
 	}
 
 	@Override
-	protected ADataContainerRenderer getDataContainerRenderer()
-	{
+	protected ADataContainerRenderer getDataContainerRenderer() {
 		return dataContainerListRenderer;
 	}
 
 	@Override
-	public boolean showsDataContainers()
-	{
+	public boolean showsDataContainers() {
 		return true;
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY)
-	{
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public List<DataContainer> getDataContainers()
-	{
+	public List<DataContainer> getDataContainers() {
 
-		if (dataContainers == null)
-		{
+		if (dataContainers == null) {
 			retrieveDataContainers();
 		}
-		
-//		update();
-		
-//		retrieveDataContainers();
-//		dataContainerListRenderer.setDataContainers(dataContainers);
+
+		// update();
+
+		// retrieveDataContainers();
+		// dataContainerListRenderer.setDataContainers(dataContainers);
 
 		// List<ADimensionGroupData> groups = representedView.get();
 		// if (groups == null) {
@@ -171,8 +159,7 @@ public class MultiDataContainerViewNode
 		// return new ArrayList<DataContainer>(groups);
 	}
 
-	protected void retrieveDataContainers()
-	{
+	protected void retrieveDataContainers() {
 		dataContainers = new ArrayList<DataContainer>();
 
 		List<DataContainer> containers = ((IDataContainerBasedView) representedView)
@@ -180,44 +167,35 @@ public class MultiDataContainerViewNode
 
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 
-		for (DataContainer container : containers)
-		{
-			if (container instanceof PathwayDataContainer)
-			{
-				dataDomains.add(((PathwayDataContainer) container).getPathwayDataDomain());
-			}
-			else
-			{
+		for (DataContainer container : containers) {
+			if (container instanceof PathwayDataContainer) {
+				dataDomains
+						.add(((PathwayDataContainer) container).getPathwayDataDomain());
+			} else {
 				dataDomains.add(container.getDataDomain());
 			}
 		}
 
 		List<Pair<Float, ADataNode>> sortedDataNodes = new ArrayList<Pair<Float, ADataNode>>();
 
-		for (IDataDomain dataDomain : dataDomains)
-		{
+		for (IDataDomain dataDomain : dataDomains) {
 			ADataNode dataNode = view.getDataNode(dataDomain);
-			if (dataNode != null)
-			{
-				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode.getPosition()
-						.getX(), dataNode));
+			if (dataNode != null) {
+				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode
+						.getPosition().getX(), dataNode));
 			}
 		}
 
 		Collections.sort(sortedDataNodes);
 
-		for (Pair<Float, ADataNode> dataNodePair : sortedDataNodes)
-		{
+		for (Pair<Float, ADataNode> dataNodePair : sortedDataNodes) {
 			ADataNode dataNode = dataNodePair.getSecond();
 
 			List<DataContainer> sortedNodeDataContainers = dataNode.getDataContainers();
 
-			for (DataContainer nodeContainer : sortedNodeDataContainers)
-			{
-				for (DataContainer container : containers)
-				{
-					if (nodeContainer == container)
-					{
+			for (DataContainer nodeContainer : sortedNodeDataContainers) {
+				for (DataContainer container : containers) {
+					if (nodeContainer == container) {
 						dataContainers.add(container);
 						break;
 					}
@@ -228,23 +206,19 @@ public class MultiDataContainerViewNode
 
 	@Override
 	public void handleDrop(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY, DragAndDropController dragAndDropController)
-	{
+			float mouseCoordinateY, DragAndDropController dragAndDropController) {
 		ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>();
-		for (IDraggable draggable : draggables)
-		{
-			if (draggable instanceof DimensionGroupRenderer)
-			{
+		for (IDraggable draggable : draggables) {
+			if (draggable instanceof DimensionGroupRenderer) {
 				DimensionGroupRenderer dimensionGroupRenderer = (DimensionGroupRenderer) draggable;
 				dataContainers.add(dimensionGroupRenderer.getDataContainer());
 			}
 		}
 
-		if (!dataContainers.isEmpty())
-		{
+		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
 			System.out.println("Drop");
-			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+			AddDataContainersEvent event = new AddDataContainersEvent(
 					dataContainers.get(0));
 			event.setReceiver(representedView);
 			event.setSender(this);
@@ -256,23 +230,21 @@ public class MultiDataContainerViewNode
 	}
 
 	@Override
-	public void destroy()
-	{
+	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
 	@Override
-	public void update()
-	{
+	public void update() {
 		retrieveDataContainers();
-		dataContainerListRenderer.setDataContainers(getDataContainers());		
+		dataContainerListRenderer.setDataContainers(getDataContainers());
 		recalculateNodeSize();
 		graphLayout.updateNodePositions();
 		view.setDisplayListDirty();
 	}
-	
+
 	@Override
 	public void render(GL2 gl) {
 		retrieveDataContainers();
@@ -281,10 +253,9 @@ public class MultiDataContainerViewNode
 	}
 
 	@Override
-	public void handleDropAreaReplaced()
-	{
+	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 }

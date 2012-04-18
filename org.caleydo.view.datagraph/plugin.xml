@@ -14,6 +14,7 @@
       <view
             category="org.caleydo.rcp.views"
             class="org.caleydo.view.datagraph.RcpGLDataGraphView"
+            icon="resources/icons/dataviewintegrator.png"
             id="org.caleydo.view.datagraph"
             name="Data-View Integrator"
             restorable="true">
@@ -28,10 +29,12 @@
             allPopups="false"
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
+               icon="resources/icons/dataviewintegrator.png"
                id="org.caleydo.menu.view"
                label="View">
             <command
                   commandId="org.caleydo.view.datagraph.opendatagraph"
+                  icon="resources/icons/dataviewintegrator.png"
                   style="push">
             </command>
          </menu>

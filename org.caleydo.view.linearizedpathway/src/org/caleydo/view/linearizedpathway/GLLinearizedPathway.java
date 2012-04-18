@@ -211,6 +211,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		}
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
+		mappedDataRenderer = new MappedDataRenderer(this);
 
 	}
 
@@ -256,7 +257,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		setPath(pathway, path);
 
-		mappedDataRenderer = new MappedDataRenderer(this);
+	
 		// mappedDataRenderer.init(gl);
 		// createNodes();
 

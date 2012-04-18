@@ -9,7 +9,7 @@
             class="org.caleydo.view.info.RcpInfoAreaView"
             icon="resources/icons/info.png"
             id="org.caleydo.view.info"
-            name="Info">
+            name="Selection Info">
       </view>
    </extension>
    <extension
