@@ -54,7 +54,7 @@ public class RcpGLLinearizedPathwayView extends ARcpGLViewPart {
 		view = new GLLinearizedPathway(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeViewWithData();
 		view.initFromSerializableRepresentation(serializedView);
-		view.initialize();
+//		view.initialize();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
 	}

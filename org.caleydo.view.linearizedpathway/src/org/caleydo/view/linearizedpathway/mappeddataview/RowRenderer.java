@@ -19,7 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
+import javax.media.opengl.GL2;
+
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
+import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * @author Alexander Lex
@@ -27,4 +34,62 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  */
 public class RowRenderer extends LayoutRenderer {
 
+	Integer geneID;
+	DataContainer dataContainer;
+	ADataPerspective<?, ?, ?, ?> experimentPerspective;
+	GeneticDataDomain dataDomain;
+
+	/**
+	 * 
+	 */
+	public RowRenderer(Integer geneID, GeneticDataDomain dataDomain,
+			DataContainer dataContainer,
+			ADataPerspective<?, ?, ?, ?> experimentPerspective) {
+		this.geneID = geneID;
+		this.dataDomain = dataDomain;
+		this.dataContainer = dataContainer;
+		this.experimentPerspective = experimentPerspective;
+		// TODO Auto-generated constructor stub
+	}
+
+	@Override
+	public void render(GL2 gl) {
+		float xIncrement = x / experimentPerspective.getVirtualArray().size();
+
+		int experimentCount = 0;
+
+		float z = 0.05f;
+		
+//		GLHelperFunctions.drawPointAt(gl, 0, 0, 1);
+
+		float[] barColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+		float[] noMappingColor =  { 166f / 255f, 189f / 255, 219f / 255, 1f };
+		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
+			float value;
+			if (geneID == null) {
+				value = 1;
+				gl.glColor4fv(noMappingColor, 0);
+			} else {
+				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
+						experimentID);
+				gl.glColor4fv(barColor, 0);
+			}
+
+			float leftEdge = xIncrement * experimentCount;
+			float upperEdge = value * y;
+
+			gl.glBegin(GL2.GL_QUADS);
+			gl.glVertex3f(leftEdge, 0, z);
+			gl.glVertex3f(leftEdge, upperEdge, z);
+			gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
+
+			gl.glVertex3f(leftEdge + xIncrement, 0, z);
+
+			gl.glEnd();
+
+			experimentCount++;
+
+		}
+
+	}
 }

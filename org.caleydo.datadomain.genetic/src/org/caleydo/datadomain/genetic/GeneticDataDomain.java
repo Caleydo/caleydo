@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,6 +21,8 @@ package org.caleydo.datadomain.genetic;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
@@ -42,7 +44,7 @@ import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * Use case specialized to genetic data.
+ * DataDomain for genetic data.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -422,6 +424,29 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			return getHumanReadableRecordIDType();
 		else
 			return getHumanReadableDimensionIDType();
+	}
+
+	/**
+	 * Returns the value of the type specified in the dataRepresentation from
+	 * the table based on the ID of the gene and the experiment. Resolves
+	 * dimension/record association for you in doing so.
+	 */
+	public float getGeneValue(DataRepresentation dataRepresentation, Integer geneID,
+			Integer experimentID) {
+		Integer recordID;
+		Integer dimensionID;
+		if (isGeneRecord()) {
+			recordID = geneID;
+			dimensionID = experimentID;
+		} else {
+			recordID = experimentID;
+			dimensionID = geneID;
+		}
+		return table.getFloat(dataRepresentation, recordID, dimensionID);
+	}
+
+	public boolean isGeneRecord() {
+		return (recordIDCategory == IDCategory.getIDCategory("GENE"));
 	}
 
 }

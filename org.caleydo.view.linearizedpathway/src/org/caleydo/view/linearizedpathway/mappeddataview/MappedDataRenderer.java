@@ -21,14 +21,19 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
+import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ANode;
 
@@ -69,8 +74,10 @@ public class MappedDataRenderer {
 
 	// private ConnectionBandRenderer connectionBandRenderer;
 
-	private float[] oddColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
-	private float[] evenColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
+	// private float[] oddColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+	// private float[] evenColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
+	private float[] oddColor = { 240f / 255f, 240f / 255, 240f / 255, 1f };
+	private float[] evenColor = { 220f / 255f, 220f / 255, 220f / 255, 1f };
 
 	/**
 	 * Constructor with parent view as parameter.
@@ -153,6 +160,16 @@ public class MappedDataRenderer {
 		int nodeCount = 0;
 		float previousNodePosition = -1;
 		int previousNrDavids = 1;
+
+		/** A list of rows for each data container */
+		ArrayList<ArrayList<Row>> rowListForDataContainers = new ArrayList<ArrayList<Row>>(
+				(int) (dataContainers.size() * 1.6));
+
+		for (DataContainer dataContainer : dataContainers) {
+			rowListForDataContainers.add(new ArrayList<Row>(linearizedNodes.size() * 2));
+		}
+
+		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
 		for (ANode node : linearizedNodes) {
 
 			if (node.getNumAssociatedRows() == 0)
@@ -181,7 +198,8 @@ public class MappedDataRenderer {
 
 			nodeCount++;
 
-			ArrayList<Integer> davidIDs = node.getPathwayVertexRep().getDavidIDs();
+			ArrayList<Integer> subDavidIDs = node.getPathwayVertexRep().getDavidIDs();
+			davidIDs.addAll(subDavidIDs);
 
 			float currentNodePositionY = node.getPosition().y();
 			float deviation;
@@ -190,7 +208,7 @@ public class MappedDataRenderer {
 				deviation = 0;
 			} else {
 				deviation = previousNodePosition - rowHeight * previousNrDavids / 2
-						- currentNodePositionY - rowHeight * davidIDs.size() / 2;
+						- currentNodePositionY - rowHeight * subDavidIDs.size() / 2;
 				// - (currentNodePositionY - rowHeight * davidIDs.size());
 			}
 
@@ -201,10 +219,10 @@ public class MappedDataRenderer {
 				captionColumn.append(spacing);
 			}
 			previousNodePosition = currentNodePositionY;
-			previousNrDavids = davidIDs.size();
+			previousNrDavids = subDavidIDs.size();
 
 			int idCount = 0;
-			for (Integer davidID : davidIDs) {
+			for (Integer davidID : subDavidIDs) {
 
 				Row row = new Row();
 				RowBackgroundRenderer rowBackgroundRenderer = new RowBackgroundRenderer(
@@ -212,6 +230,23 @@ public class MappedDataRenderer {
 				row.addBackgroundRenderer(rowBackgroundRenderer);
 				row.setAbsoluteSizeY(rowHeight);
 				dataSetColumn.append(row);
+
+				for (int dataContainerCount = 0; dataContainerCount < dataContainers
+						.size(); dataContainerCount++) {
+					// DataContainer dataContainer =
+					// dataContainers.get(dataContainerCount);
+					// rowListForDataContainers.get(dataContainer);
+					Row dataContainerRow = new Row("DataContainer " + dataContainerCount
+							+ " / " + idCount);
+					dataContainerRow.setRatioSizeX(1.0f / dataContainers.size());
+					// dataContainerRow.setPixelSizeX(5);
+					row.append(dataContainerRow);
+					rowListForDataContainers.get(dataContainerCount)
+							.add(dataContainerRow);
+					ElementLayout spacing = new ElementLayout();
+					spacing.setPixelSizeX(5);
+					row.append(spacing);
+				}
 
 				Row captionRow = new Row();
 				captionRow.setAbsoluteSizeY(rowHeight);
@@ -223,11 +258,58 @@ public class MappedDataRenderer {
 
 				if (idCount == 0)
 					relationShipRenderer.topRightLayout = row;
-				if (idCount == davidIDs.size() - 1)
+				if (idCount == subDavidIDs.size() - 1)
 					relationShipRenderer.bottomRightLayout = row;
 
 				idCount++;
 			}
+
+		}
+
+		for (int dataContainerCount = 0; dataContainerCount < dataContainers.size(); dataContainerCount++) {
+			prepareData(dataContainers.get(dataContainerCount),
+					rowListForDataContainers.get(dataContainerCount), davidIDs);
+		}
+
+	}
+
+	private void prepareData(DataContainer dataContainer, ArrayList<Row> rowLayouts,
+			ArrayList<Integer> davidIDs) {
+		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
+
+		ADataPerspective<?, ?, ?, ?> experimentPerspective;
+		if (dataDomain.isGeneRecord()) {
+			experimentPerspective = dataContainer.getDimensionPerspective();
+		} else {
+			experimentPerspective = dataContainer.getRecordPerspective();
+		}
+
+		IDType geneIDTYpe = dataDomain.getGeneIDType();
+		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
+		for (int rowCount = 0; rowCount < davidIDs.size(); rowCount++) {
+			Integer davidID = davidIDs.get(rowCount);
+			Set<Integer> geneIDs = dataDomain.getGeneIDMappingManager().getIDAsSet(
+					IDType.getIDType("DAVID"), geneIDTYpe, davidID);
+			Integer geneID;
+			if (geneIDs == null) {
+				System.out.println("No mapping for david: " + davidID);
+				geneID = null;
+
+			} else {
+				geneID = geneIDs.iterator().next();
+				if (geneIDs.size() > 1) {
+
+					Set<String> names = dataDomain.getGeneIDMappingManager().getIDAsSet(
+							IDType.getIDType("DAVID"),
+							dataDomain.getHumanReadableGeneIDType(), davidID);
+					System.out.println("Here's the problem: " + names + " / " + geneIDs);
+				}
+			}
+
+			// geneIDs.add(davidID);
+			Row row = rowLayouts.get(rowCount);
+			row.setRenderer(new RowRenderer(geneID, dataDomain, dataContainer,
+					experimentPerspective));
 		}
 
 	}
