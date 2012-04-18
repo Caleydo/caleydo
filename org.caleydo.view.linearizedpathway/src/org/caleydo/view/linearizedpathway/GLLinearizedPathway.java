@@ -256,8 +256,7 @@ public class GLLinearizedPathway
 			}
 		}
 
-		// TODO Christian
-		//setPath(pathway, path);
+		setPath(pathway, path);
 
 		// mappedDataRenderer.init(gl);
 		// createNodes();
@@ -1241,11 +1240,9 @@ public class GLLinearizedPathway
 		return 0;
 	}
 
-	public void setPath(PathwayPath path) {
-		this.pathway = (PathwayGraph) path.getPath().getGraph();
-		
-		// TODO Christian
-		this.path = null;
+	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
+		this.pathway = pathway;
+		this.path = path;
 		
 		expandedBranchSummaryNode = null;
 		for (ANode node : linearizedNodes) {
@@ -1324,8 +1321,7 @@ public class GLLinearizedPathway
 			newPath.addAll(branchPath);
 		}
 
-		// TODO Christian
-		//setPath(pathway, newPath);
+		setPath(pathway, newPath);
 	}
 
 	/**
@@ -1497,8 +1493,7 @@ public class GLLinearizedPathway
 			return;
 		}
 
-		// TODO Christian
-		//setPath(pathway, path);
+		setPath(pathway, path);
 	}
 
 	@Override

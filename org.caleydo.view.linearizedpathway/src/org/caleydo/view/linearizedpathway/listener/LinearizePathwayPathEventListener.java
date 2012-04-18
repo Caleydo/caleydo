@@ -24,6 +24,8 @@ package org.caleydo.view.linearizedpathway.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
+import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
 
@@ -31,15 +33,18 @@ import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
  * Listener for {@link LinearizedPathwayPathEvent}.
  * 
  * @author Christian Partl
- *
+ * 
  */
-public class LinearizePathwayPathEventListener extends AEventListener<GLLinearizedPathway> {
+public class LinearizePathwayPathEventListener extends
+		AEventListener<GLLinearizedPathway> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if(event instanceof LinearizedPathwayPathEvent) {
+		if (event instanceof LinearizedPathwayPathEvent) {
 			LinearizedPathwayPathEvent e = (LinearizedPathwayPathEvent) event;
-			handler.setPath(e.getPath());
+			PathwayPath path = e.getPath();
+			PathwayGraph pathway = (PathwayGraph) path.getPath().getGraph();
+			handler.setPath(pathway, path.getNodes());
 		}
 	}
 }

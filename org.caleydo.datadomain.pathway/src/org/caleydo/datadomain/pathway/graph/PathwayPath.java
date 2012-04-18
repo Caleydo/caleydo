@@ -21,7 +21,9 @@ package org.caleydo.datadomain.pathway.graph;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -43,21 +45,30 @@ public class PathwayPath {
 	public PathwayPath(GraphPath<PathwayVertexRep, DefaultEdge> path) {
 		this.path = path;
 	}
-	
+
 	/**
 	 * @return the path, see {@link #path}
 	 */
 	public GraphPath<PathwayVertexRep, DefaultEdge> getPath() {
 		return path;
 	}
-	
+
 	/**
 	 * @return the nodes along the path
 	 */
 	public List<PathwayVertexRep> getNodes() {
 		
-		//TODO Christian
+		List<DefaultEdge> edges = path.getEdgeList();
+		List<PathwayVertexRep> nodes = new ArrayList<PathwayVertexRep>();
+		Graph<PathwayVertexRep, DefaultEdge> pathway = path.getGraph();
 		
-		return new ArrayList<PathwayVertexRep>();
+		for(int i = 0 ; i < edges.size(); i++) {
+			DefaultEdge edge = edges.get(i);
+			if(i == 0)
+				nodes.add(pathway.getEdgeSource(edge));
+			nodes.add(pathway.getEdgeTarget(edge));
+		}
+			
+		return nodes;
 	}
 }
