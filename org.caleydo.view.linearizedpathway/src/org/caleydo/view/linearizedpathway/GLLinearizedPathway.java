@@ -20,19 +20,16 @@
 package org.caleydo.view.linearizedpathway;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -56,6 +53,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
@@ -83,7 +81,9 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  */
 
-public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView {
+public class GLLinearizedPathway
+	extends AGLView
+	implements IMultiDataContainerBasedView {
 
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
@@ -210,8 +210,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (IDataDomain dataDomain : dataDomains) {
 			geneticDataDomains.add((GeneticDataDomain) dataDomain);
 		}
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType("org.caleydo.datadomain.pathway");
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				"org.caleydo.datadomain.pathway");
 		mappedDataRenderer = new MappedDataRenderer(this);
 
 	}
@@ -256,7 +256,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 		}
 
-		setPath(pathway, path);
+		// TODO Christian
+		//setPath(pathway, path);
 
 		// mappedDataRenderer.init(gl);
 		// createNodes();
@@ -283,8 +284,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 						&& pathway.getEdge(nextVertexRep, currentVertexRep) == null) {
 					if (complexNode == null) {
 						// nodeRenderers.add(complexNodeRenderer);
-						complexNode = new ComplexNode(pixelGLConverter, textRenderer,
-								this, lastNodeId++);
+						complexNode = new ComplexNode(pixelGLConverter, textRenderer, this,
+								lastNodeId++);
 						complexNode.addVertexRep(currentVertexRep);
 						// vertexRepToNodeMap.put(currentVertexRep,
 						// complexNode);
@@ -293,7 +294,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 					complexNode.addVertexRep(nextVertexRep);
 					// vertexRepToNodeMap.put(nextVertexRep, complexNode);
-				} else {
+				}
+				else {
 					if (complexNode != null) {
 						complexNode = null;
 					}
@@ -312,16 +314,14 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 			if (i > 0) {
 				ANode prevNode = linearizedNodes.get(i - 1);
-				prevEdge = pathway.getEdge(prevNode.getPathwayVertexRep(),
-						currentVertexRep);
+				prevEdge = pathway.getEdge(prevNode.getPathwayVertexRep(), currentVertexRep);
 				if (prevEdge == null)
 					prevEdge = pathway.getEdge(currentVertexRep,
 							prevNode.getPathwayVertexRep());
 			}
 			if (i != linearizedNodes.size() - 1) {
 				ANode nextNode = linearizedNodes.get(i + 1);
-				nextEdge = pathway.getEdge(nextNode.getPathwayVertexRep(),
-						currentVertexRep);
+				nextEdge = pathway.getEdge(nextNode.getPathwayVertexRep(), currentVertexRep);
 				if (nextEdge == null)
 					nextEdge = pathway.getEdge(currentVertexRep,
 							nextNode.getPathwayVertexRep());
@@ -341,7 +341,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 					if (pathway.getEdgeTarget(edge) == currentVertexRep) {
 						sourceVertexReps.add(pathway.getEdgeSource(edge));
 
-					} else {
+					}
+					else {
 						targetVertexReps.add(pathway.getEdgeTarget(edge));
 					}
 				}
@@ -350,11 +351,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			if (sourceVertexReps.size() > 0) {
 				List<ANode> sourceNodes = new ArrayList<ANode>();
 				complexNodes = createComplexBranchNodes(sourceVertexReps);
-				createNodesForList(sourceNodes, sourceVertexReps, false, complexNodes,
-						false);
+				createNodesForList(sourceNodes, sourceVertexReps, false, complexNodes, false);
 				incomingNode.setBranchNodes(sourceNodes);
-				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode,
-						incomingNode);
+				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode, incomingNode);
 				branchNodes.add(incomingNode);
 				branchNodes.addAll(sourceNodes);
 				for (ANode node : sourceNodes) {
@@ -366,11 +365,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			if (targetVertexReps.size() > 0) {
 				List<ANode> targetNodes = new ArrayList<ANode>();
 				complexNodes = createComplexBranchNodes(targetVertexReps);
-				createNodesForList(targetNodes, targetVertexReps, false, complexNodes,
-						false);
+				createNodesForList(targetNodes, targetVertexReps, false, complexNodes, false);
 				outgoingNode.setBranchNodes(targetNodes);
-				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode,
-						outgoingNode);
+				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode, outgoingNode);
 				branchNodes.add(outgoingNode);
 				branchNodes.addAll(targetNodes);
 				for (ANode node : targetNodes) {
@@ -434,9 +431,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		return complexNodes;
 	}
 
-	private void createNodesForList(List<ANode> nodeList,
-			List<PathwayVertexRep> vertexReps, boolean affectsDataRows,
-			List<ComplexNode> complexNodes,
+	private void createNodesForList(List<ANode> nodeList, List<PathwayVertexRep> vertexReps,
+			boolean affectsDataRows, List<ComplexNode> complexNodes,
 			boolean fillLinearizedNodesToPathwayVertexRepMap) {
 		ANode prevNode = null;
 		for (int i = 0; i < vertexReps.size(); i++) {
@@ -457,7 +453,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				if (prevNode != node) {
 					nodeList.add(node);
 				}
-			} else {
+			}
+			else {
 				if (currentVertexRep.getType() == EPathwayVertexType.compound) {
 					CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this,
 							lastNodeId++);
@@ -467,17 +464,19 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 					compoundNode.setWidthPixels(20);
 					node = compoundNode;
 
-				} else {
+				}
+				else {
 
 					// TODO: Verify that this is also the right approach for
 					// enzymes and ortholog
-					GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer,
-							this, lastNodeId++);
+					GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer, this,
+							lastNodeId++);
 					int commaIndex = currentVertexRep.getName().indexOf(',');
 					if (commaIndex > 0) {
-						geneNode.setCaption(currentVertexRep.getName().substring(0,
-								commaIndex));
-					} else {
+						geneNode.setCaption(currentVertexRep.getName()
+								.substring(0, commaIndex));
+					}
+					else {
 						geneNode.setCaption(currentVertexRep.getName());
 					}
 					geneNode.setPathwayVertexRep(currentVertexRep);
@@ -491,8 +490,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			node.setNumAssociatedRows(node.getNumAssociatedRows() + numMappedValues);
 
 			if (fillLinearizedNodesToPathwayVertexRepMap) {
-				List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
-						.get(node);
+				List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap.get(node);
 				if (indices == null) {
 					indices = new ArrayList<Integer>();
 					linearizedNodesToPathwayVertexRepIndicesMap.put(node, indices);
@@ -614,21 +612,20 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 			float currentAnchorNodeSpacing = spacing.getCurrentAnchorNodeSpacing();
 			// if(Float.isNaN(currentAnchorNodeSpacing))
-			float yStep = (Float.isNaN(currentAnchorNodeSpacing) ? viewFrustum
-					.getHeight() : spacing.getCurrentAnchorNodeSpacing())
+			float yStep = (Float.isNaN(currentAnchorNodeSpacing) ? viewFrustum.getHeight()
+					: spacing.getCurrentAnchorNodeSpacing())
 					/ ((float) spacing.getNodesInbetween().size() + 1);
 
 			for (int i = 0; i < spacing.getNodesInbetween().size(); i++) {
 				ANode node = spacing.getNodesInbetween().get(i);
-				node.setPosition(new Vec3f(currentPosition.x(), currentPosition.y()
-						- (i + 1) * yStep, currentPosition.z()));
+				node.setPosition(new Vec3f(currentPosition.x(), currentPosition.y() - (i + 1)
+						* yStep, currentPosition.z()));
 				node.render(gl, glu);
 				// if (expandedBranchSummaryNode == null)
 				renderCollapsedBranchNodes(gl, glu, node);
 			}
 
-			currentPosition.setY(currentPosition.y()
-					- spacing.getCurrentAnchorNodeSpacing());
+			currentPosition.setY(currentPosition.y() - spacing.getCurrentAnchorNodeSpacing());
 
 			ANode endAnchorNode = spacing.getEndNode();
 			if (endAnchorNode != null) {
@@ -659,8 +656,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		if (expandedBranchSummaryNode != null)
 			renderExpandedBranchNode(gl, glu);
 
-		int minViewHeightPixels = pixelGLConverter
-				.getPixelHeightForGLHeight(pathwayHeight);
+		int minViewHeightPixels = pixelGLConverter.getPixelHeightForGLHeight(pathwayHeight);
 
 		if (minViewHeightPixels > parentGLCanvas.getHeight()) {
 			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
@@ -679,9 +675,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		// TODO do this only when necessary - cause re-initialization
 		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 
-		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
-				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
-				topSpacing, dataRowHeight);
+		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX - topSpacing,
+				viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX, topSpacing,
+				dataRowHeight);
 
 		mappedDataRenderer.render(gl);
 		gl.glPopMatrix();
@@ -712,13 +708,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		float verticalBranchNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(20);
 
 		Vec3f nodePosition = node.getPosition();
-		ANode collapsedIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap
-				.get(node);
+		ANode collapsedIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
 		if ((collapsedIncomingNode != null)
 				&& (collapsedIncomingNode != expandedBranchSummaryNode)) {
 			float minNodeWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(collapsedIncomingNode
-							.getMinRequiredWidthPixels());
+					.getGLWidthForPixelWidth(collapsedIncomingNode.getMinRequiredWidthPixels());
 
 			collapsedIncomingNode.setWidthPixels(collapsedIncomingNode
 					.getMinRequiredWidthPixels());
@@ -743,14 +737,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			connectionLineRenderer.renderLine(gl, linePoints);
 		}
 
-		ANode collapsedOutgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap
-				.get(node);
+		ANode collapsedOutgoingNode = linearizedNodesToOutgoingBranchSummaryNodesMap.get(node);
 		if ((collapsedOutgoingNode != null)
 				&& (collapsedOutgoingNode != expandedBranchSummaryNode)) {
 
 			float minNodeWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(collapsedOutgoingNode
-							.getMinRequiredWidthPixels());
+					.getGLWidthForPixelWidth(collapsedOutgoingNode.getMinRequiredWidthPixels());
 
 			collapsedOutgoingNode.setWidthPixels(collapsedOutgoingNode
 					.getMinRequiredWidthPixels());
@@ -838,8 +830,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 					linearizedNode.getLeftConnectionPoint(), 0.2f);
 		}
 
-		float nodeWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(expandedBranchSummaryNode.getWidthPixels());
+		float nodeWidth = pixelGLConverter.getGLWidthForPixelWidth(expandedBranchSummaryNode
+				.getWidthPixels());
 		float currentHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(expandedBranchSummaryNode.getHeightPixels());
 		if (branchSummaryNodeMinHeight + 0.0001f > currentHeight || isLayoutDirty) {
@@ -851,8 +843,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 					* SPACING_PIXELS);
 			expandedBranchSummaryNode.setPosition(new Vec3f(spacing + nodeWidth / 2.0f,
 					topPositionY + branchSummaryNodeMinHeight + spacing
-							- (totalHeight + branchSummaryNodeMinHeight + 2 * spacing)
-							/ 2.0f, 0.15f));
+							- (totalHeight + branchSummaryNodeMinHeight + 2 * spacing) / 2.0f,
+					0.15f));
 		}
 		expandedBranchSummaryNode.render(gl, glu);
 
@@ -913,7 +905,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			if (numAssociatedRows == 0) {
 				unmappedNodes.add(node);
 
-			} else {
+			}
+			else {
 				AnchorNodeSpacing anchorNodeSpacing = createAnchorNodeSpacing(
 						currentAnchorNode, node, unmappedNodes, minNodeDistance,
 						currentAnchorNode == null, false);
@@ -946,8 +939,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		// Reduce space for spacings with enough space to grant spacings with
 		// too few space more space
 		for (AnchorNodeSpacing spacingWithTooFewSpace : anchorNodeSpacingsWithTooFewSpace) {
-			float additionallyRequiredSpace = spacingWithTooFewSpace
-					.getMinAnchorNodeSpacing()
+			float additionallyRequiredSpace = spacingWithTooFewSpace.getMinAnchorNodeSpacing()
 					- spacingWithTooFewSpace.getCurrentAnchorNodeSpacing();
 
 			while ((additionallyRequiredSpace > 0)
@@ -962,16 +954,15 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 						maxReducableSpace = reducableSpace;
 				}
 
-				float spaceToReduce = Math.min(maxReducableSpace,
-						additionallyRequiredSpace
-								/ (float) anchorNodeSpacingsWithEnoughSpace.size());
+				float spaceToReduce = Math.min(maxReducableSpace, additionallyRequiredSpace
+						/ (float) anchorNodeSpacingsWithEnoughSpace.size());
 
 				List<AnchorNodeSpacing> spacingsWithEnoughSpaceCopy = new ArrayList<AnchorNodeSpacing>(
 						anchorNodeSpacingsWithEnoughSpace);
 
 				for (AnchorNodeSpacing spacingWithEnoughSpace : spacingsWithEnoughSpaceCopy) {
-					float newSpacing = spacingWithEnoughSpace
-							.getCurrentAnchorNodeSpacing() - spaceToReduce;
+					float newSpacing = spacingWithEnoughSpace.getCurrentAnchorNodeSpacing()
+							- spaceToReduce;
 					spacingWithEnoughSpace.setCurrentAnchorNodeSpacing(newSpacing);
 					if (newSpacing <= spacingWithEnoughSpace.getMinAnchorNodeSpacing())
 						anchorNodeSpacingsWithEnoughSpace.remove(spacingWithEnoughSpace);
@@ -1067,7 +1058,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			// linePoints.add(nodeRenderer1.getBottomConnectionPoint());
 			// linePoints.add(nodeRenderer2.getTopConnectionPoint());
 
-		} else {
+		}
+		else {
 			if (edge instanceof PathwayRelationEdgeRep) {
 				PathwayRelationEdgeRep relationEdgeRep = (PathwayRelationEdgeRep) edge;
 
@@ -1077,83 +1069,83 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 				for (EPathwayRelationEdgeSubType subtype : subtypes) {
 					switch (subtype) {
-					case compound:
-						// TODO:
-						break;
-					case hidden_compound:
-						// TODO:
-						break;
-					case activation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						break;
-					case inhibition:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer());
-						targetConnectionPoint.setY(targetConnectionPoint.y()
-								+ ((isNode1Target) ? -spacing : spacing));
-						break;
-					case expression:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						if (vertexRep1.getType() == EPathwayVertexType.gene
-								&& vertexRep1.getType() == EPathwayVertexType.gene) {
+						case compound:
+							// TODO:
+							break;
+						case hidden_compound:
+							// TODO:
+							break;
+						case activation:
 							connectionRenderer
-									.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
-						}
-						break;
-					case repression:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndStaticLineRenderer());
-						targetConnectionPoint.setY(targetConnectionPoint.y()
-								+ ((isNode1Target) ? -spacing : spacing));
-						break;
-					case indirect_effect:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineEndArrowRenderer());
-						connectionRenderer.setLineStippled(true);
-						break;
-					case state_change:
-						connectionRenderer.setLineStippled(true);
-						break;
-					case binding_association:
-						// Nothing to do
-						break;
-					case dissociation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
-						break;
-					case missing_interaction:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLineCrossingRenderer());
-						break;
-					case phosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
-										.getSymbol()));
-						break;
-					case dephosphorylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
-										.getSymbol()));
-						break;
-					case glycosylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
-										.getSymbol()));
-						break;
-					case ubiquitination:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
-										.getSymbol()));
-						break;
-					case methylation:
-						connectionRenderer
-								.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
-										.getSymbol()));
-						break;
+									.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							break;
+						case inhibition:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndStaticLineRenderer());
+							targetConnectionPoint.setY(targetConnectionPoint.y()
+									+ ((isNode1Target) ? -spacing : spacing));
+							break;
+						case expression:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							if (vertexRep1.getType() == EPathwayVertexType.gene
+									&& vertexRep1.getType() == EPathwayVertexType.gene) {
+								connectionRenderer
+										.addAttributeRenderer(createDefaultLabelOnLineRenderer("e"));
+							}
+							break;
+						case repression:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndStaticLineRenderer());
+							targetConnectionPoint.setY(targetConnectionPoint.y()
+									+ ((isNode1Target) ? -spacing : spacing));
+							break;
+						case indirect_effect:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineEndArrowRenderer());
+							connectionRenderer.setLineStippled(true);
+							break;
+						case state_change:
+							connectionRenderer.setLineStippled(true);
+							break;
+						case binding_association:
+							// Nothing to do
+							break;
+						case dissociation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultOrthogonalLineCrossingRenderer());
+							break;
+						case missing_interaction:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLineCrossingRenderer());
+							break;
+						case phosphorylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.phosphorylation
+											.getSymbol()));
+							break;
+						case dephosphorylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.dephosphorylation
+											.getSymbol()));
+							break;
+						case glycosylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.glycosylation
+											.getSymbol()));
+							break;
+						case ubiquitination:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.ubiquitination
+											.getSymbol()));
+							break;
+						case methylation:
+							connectionRenderer
+									.addAttributeRenderer(createDefaultLabelAboveLineRenderer(EPathwayRelationEdgeSubType.methylation
+											.getSymbol()));
+							break;
 					}
 				}
 			}
@@ -1175,15 +1167,15 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	}
 
 	private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f,
-				pixelGLConverter, text, textRenderer);
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter,
+				text, textRenderer);
 		lineLabelRenderer.setLineOffsetPixels(0);
 		return lineLabelRenderer;
 	}
 
 	private LineLabelRenderer createDefaultLabelAboveLineRenderer(String text) {
-		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f,
-				pixelGLConverter, text, textRenderer);
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.66f, pixelGLConverter,
+				text, textRenderer);
 		lineLabelRenderer.setLineOffsetPixels(5);
 		return lineLabelRenderer;
 	}
@@ -1225,8 +1217,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		addDataContainersListener = new AddDataContainersListener();
 		addDataContainersListener.setHandler(this);
-		eventPublisher.addListener(AddDataContainersEvent.class,
-				addDataContainersListener);
+		eventPublisher.addListener(AddDataContainersEvent.class, addDataContainersListener);
 	}
 
 	@Override
@@ -1250,9 +1241,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		return 0;
 	}
 
-	public void setPath(PathwayGraph pathway, List<PathwayVertexRep> path) {
-		this.pathway = pathway;
-		this.path = path;
+	public void setPath(PathwayPath path) {
+		this.pathway = (PathwayGraph) path.getPath().getGraph();
+		
+		// TODO Christian
+		this.path = null;
+		
 		expandedBranchSummaryNode = null;
 		for (ANode node : linearizedNodes) {
 			node.unregisterPickingListeners();
@@ -1271,8 +1265,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	}
 
 	/**
-	 * @param currentExpandedBranchNode
-	 *            setter, see {@link #expandedBranchSummaryNode}
+	 * @param currentExpandedBranchNode setter, see
+	 *            {@link #expandedBranchSummaryNode}
 	 */
 	public void setExpandedBranchSummaryNode(BranchSummaryNode expandedBranchSummaryNode) {
 		this.expandedBranchSummaryNode = expandedBranchSummaryNode;
@@ -1323,13 +1317,15 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			newPath = path.subList(indices.get(0), path.size());
 			newPath.addAll(0, branchPath);
 
-		} else {
+		}
+		else {
 			// insert below linearized node
 			newPath = path.subList(0, indices.get(indices.size() - 1) + 1);
 			newPath.addAll(branchPath);
 		}
 
-		setPath(pathway, newPath);
+		// TODO Christian
+		//setPath(pathway, newPath);
 	}
 
 	/**
@@ -1340,12 +1336,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * <code>PathwayVertexRep</code> that represents the start of the path is
 	 * added at the beginning of the path.
 	 * 
-	 * @param branchVertexRep
-	 *            The <code>PathwayVertexRep</code> that represents the start of
-	 *            the branch path.
-	 * @param linearizedVertexRep
-	 *            The <code>PathwayVertexRep</code> of the linearized path this
-	 *            branch belongs to.
+	 * @param branchVertexRep The <code>PathwayVertexRep</code> that represents
+	 *            the start of the branch path.
+	 * @param linearizedVertexRep The <code>PathwayVertexRep</code> of the
+	 *            linearized path this branch belongs to.
 	 * @return
 	 */
 	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(
@@ -1371,7 +1365,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 			if (edges.size() == 0) {
 				return vertexReps;
-			} else {
+			}
+			else {
 
 				List<PathwayVertexRep> vertices = new ArrayList<PathwayVertexRep>();
 				for (DefaultEdge edge : edges) {
@@ -1389,7 +1384,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 					existingEdge = edges.get(0);
 					currentVertexRep = vertices.get(0);
 					vertexReps.add(currentVertexRep);
-				} else {
+				}
+				else {
 					if (isComplexNode(vertices)) {
 						vertexReps.addAll(vertices);
 						// It is ok to continue with only one vertexRep from the
@@ -1397,11 +1393,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 						existingEdge = pathway.getEdge(currentVertexRep, vertices.get(0));
 						if (existingEdge == null)
-							existingEdge = pathway.getEdge(vertices.get(0),
-									currentVertexRep);
+							existingEdge = pathway.getEdge(vertices.get(0), currentVertexRep);
 						currentVertexRep = vertices.get(0);
 
-					} else {
+					}
+					else {
 						return vertexReps;
 					}
 				}
@@ -1429,8 +1425,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 					List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
 					List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
+
 					List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
 					List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
+
 					getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
 					getEdgeEnds(edgeSources2, edgeTargets2, vRep);
 
@@ -1488,16 +1486,19 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			for (int i = 0; i < indices.size(); i++) {
 				path.remove(0);
 			}
-		} else if (indices.get(indices.size() - 1) == path.size() - 1) {
+		}
+		else if (indices.get(indices.size() - 1) == path.size() - 1) {
 			for (int i = 0; i < indices.size(); i++) {
 				path.remove(path.size() - 1);
 			}
 
-		} else {
+		}
+		else {
 			return;
 		}
 
-		setPath(pathway, path);
+		// TODO Christian
+		//setPath(pathway, path);
 	}
 
 	@Override
@@ -1507,8 +1508,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	}
 
 	/**
-	 * @param dataRowHeight
-	 *            setter, see {@link #dataRowHeight}
+	 * @param dataRowHeight setter, see {@link #dataRowHeight}
 	 */
 	public void setDataRowHeight(float dataRowHeight) {
 		this.dataRowHeight = dataRowHeight;

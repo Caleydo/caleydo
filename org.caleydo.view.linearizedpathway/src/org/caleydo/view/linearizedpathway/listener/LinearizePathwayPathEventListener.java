@@ -30,19 +30,16 @@ import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
 /**
  * Listener for {@link LinearizedPathwayPathEvent}.
  * 
- * @author Christian
+ * @author Christian Partl
  *
  */
 public class LinearizePathwayPathEventListener extends AEventListener<GLLinearizedPathway> {
-
 
 	@Override
 	public void handleEvent(AEvent event) {
 		if(event instanceof LinearizedPathwayPathEvent) {
 			LinearizedPathwayPathEvent e = (LinearizedPathwayPathEvent) event;
-			handler.setPath(e.getPathway(), e.getPath());
+			handler.setPath(e.getPath());
 		}
-
 	}
-
 }

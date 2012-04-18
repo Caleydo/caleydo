@@ -22,15 +22,11 @@
  */
 package org.caleydo.view.pathway.event;
 
-import java.util.List;
-
 import org.caleydo.core.event.AEvent;
-import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 
 /**
- * Event that specifies a pathway path as a list of {@link PathwayVertexRep}
- * objects in order to be linearized.
+ * Event that specifies a pathway path objects in order to be linearized.
  * 
  * @author Christian Partl
  * 
@@ -38,50 +34,27 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 public class LinearizedPathwayPathEvent extends AEvent {
 
 	/**
-	 * List of {@link PathwayVertexRep} objects that specifies a path in a
-	 * pathway. The first object represents the start and the last object the
-	 * end of the path. If there are multiple objects that represent a complex
-	 * node, these objects must be placed in a sequence.
+	 * Path object that specifies a path. 
 	 */
-	private List<PathwayVertexRep> path;
-	
-	/**
-	 * The pathway whose path shall be linearized.
-	 */
-	private PathwayGraph pathway;
+	private PathwayPath path;
 
 	@Override
 	public boolean checkIntegrity() {
-		return (pathway != null) && (path != null);
+		return (path != null);
 	}
 
 	/**
 	 * @param path
 	 *            setter, see {@link #path}
 	 */
-	public void setPath(List<PathwayVertexRep> path) {
+	public void setPath(PathwayPath path) {
 		this.path = path;
 	}
 
 	/**
 	 * @return the path, see {@link #path}
 	 */
-	public List<PathwayVertexRep> getPath() {
+	public PathwayPath getPath() {
 		return path;
 	}
-	
-	/**
-	 * @param pathway setter, see {@link #pathway}
-	 */
-	public void setPathway(PathwayGraph pathway) {
-		this.pathway = pathway;
-	}
-	
-	/**
-	 * @return the pathway, see {@link #pathway}
-	 */
-	public PathwayGraph getPathway() {
-		return pathway;
-	}
-
 }

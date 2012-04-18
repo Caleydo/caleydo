@@ -22,7 +22,6 @@ package org.caleydo.view.pathway;
 import gleem.linalg.Vec3f;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Set;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
@@ -70,6 +69,7 @@ import org.caleydo.datadomain.pathway.contextmenu.container.GeneMenuItemContaine
 import org.caleydo.datadomain.pathway.contextmenu.item.LoadPathwaysByPathwayItem;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
@@ -83,7 +83,6 @@ import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-import org.jgrapht.GraphPath;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -128,7 +127,7 @@ public class GLPathway
 
 	private IPickingListener pathwayElementPickingListener;
 
-	private GraphPath<PathwayVertexRep, DefaultEdge> selectedPath;
+	private PathwayPath selectedPath;
 
 	/**
 	 * Constructor.
@@ -424,7 +423,7 @@ public class GLPathway
 
 		gl.glColor3f(1, 0, 0);
 		gl.glLineWidth(5);
-		for (DefaultEdge edge : selectedPath.getEdgeList()) {
+		for (DefaultEdge edge : selectedPath.getPath().getEdgeList()) {
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 
@@ -921,24 +920,18 @@ public class GLPathway
 		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
 			DijkstraShortestPath<PathwayVertexRep, DefaultEdge> pathAlgo = new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>(
 					pathway, vertexRep, previouslySelectedVertexRep);
-			selectedPath = pathAlgo.getPath();
+			selectedPath = new PathwayPath(pathAlgo.getPath());
 			
 			if (selectedPath != null) {
-				
-				List<PathwayVertexRep> pathVertices = new ArrayList<PathwayVertexRep>();
-				for (DefaultEdge edge : selectedPath.getEdgeList()) {
-					pathVertices.add(pathway.getEdgeSource(edge));
-					pathVertices.add(pathway.getEdgeTarget(edge));
-				}
-				
+			
 				LinearizedPathwayPathEvent pathEvent = new LinearizedPathwayPathEvent();
-				pathEvent.setPath(pathVertices);
-				pathEvent.setPathway(pathway);
+				
+				pathEvent.setPath(selectedPath);
 				pathEvent.setDataDomainID(dataDomain.getDataDomainID());
 				pathEvent.setSender(this);
 				eventPublisher.triggerEvent(pathEvent);
 
-				System.out.println(selectedPath.getEdgeList());
+				System.out.println(selectedPath.getPath().getEdgeList());
 			}
 		}
 
