@@ -258,7 +258,6 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		setPath(pathway, path);
 
-	
 		// mappedDataRenderer.init(gl);
 		// createNodes();
 
@@ -384,30 +383,51 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	}
 
+	/**
+	 * Determines the {@link ComplexNode}s for the specified
+	 * {@link PathwayVertexRep}s.
+	 * 
+	 * @param vertexReps
+	 * @return
+	 */
 	private List<ComplexNode> createComplexBranchNodes(List<PathwayVertexRep> vertexReps) {
+
+		List<PathwayVertexRep> vertexRepsLeft = new ArrayList<PathwayVertexRep>(
+				vertexReps);
 
 		// Detect complex nodes by comparing their edges
 		List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
-		for (PathwayVertexRep vertexRep : vertexReps) {
-			ComplexNode complexNode = null;
-			for (PathwayVertexRep vRep : vertexReps) {
-				if (vertexRep != vRep) {
-					Set<DefaultEdge> edges1 = pathway.edgesOf(vertexRep);
-					Set<DefaultEdge> edges2 = pathway.edgesOf(vRep);
+		while (vertexRepsLeft.size() > 0) {
 
-					if ((edges1.containsAll(edges2)) && (edges1.size() == edges2.size())) {
+			PathwayVertexRep vertexRep = vertexRepsLeft.get(0);
+			ComplexNode complexNode = null;
+			for (PathwayVertexRep vRep : vertexRepsLeft) {
+				if (vertexRep != vRep) {
+					List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
+					List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
+					List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
+					List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
+					getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
+					getEdgeEnds(edgeSources2, edgeTargets2, vRep);
+
+					if ((edgeSources1.size() == edgeSources2.size())
+							&& (edgeTargets1.size() == edgeTargets2.size())
+							&& (edgeTargets1.containsAll(edgeTargets2))
+							&& (edgeSources1.containsAll(edgeSources2))) {
 						if (complexNode == null) {
 							complexNode = new ComplexNode(pixelGLConverter, textRenderer,
 									this, lastNodeId++);
 							complexNode.addVertexRep(vertexRep);
 							complexNodes.add(complexNode);
-							// vertexRepToNodeMap.put(vertexRep, complexNode);
 						}
-
 						complexNode.addVertexRep(vRep);
-						// vertexRepToNodeMap.put(vRep, complexNode);
 					}
 				}
+			}
+			if (complexNode == null)
+				break;
+			for (PathwayVertexRep vRep : complexNode.getVertexReps()) {
+				vertexRepsLeft.remove(vRep);
 			}
 		}
 
@@ -1392,6 +1412,13 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		return vertexReps;
 	}
 
+	/**
+	 * Determines whether the specified list of {@link PathwayVertexRep}s
+	 * represents one complex node.
+	 * 
+	 * @param vertexReps
+	 * @return
+	 */
 	private boolean isComplexNode(List<PathwayVertexRep> vertexReps) {
 
 		// Detect complex nodes by comparing the sources and targets of their
@@ -1399,30 +1426,13 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (PathwayVertexRep vertexRep : vertexReps) {
 			for (PathwayVertexRep vRep : vertexReps) {
 				if (vertexRep != vRep) {
-					Set<DefaultEdge> edges1 = pathway.edgesOf(vertexRep);
-					Set<DefaultEdge> edges2 = pathway.edgesOf(vRep);
 
 					List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
 					List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
-					for (DefaultEdge edge : edges1) {
-						PathwayVertexRep target = pathway.getEdgeTarget(edge);
-						if (target == vertexRep) {
-							edgeSources1.add(pathway.getEdgeSource(edge));
-						} else {
-							edgeTargets1.add(target);
-						}
-					}
-
 					List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
 					List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
-					for (DefaultEdge edge : edges2) {
-						PathwayVertexRep target = pathway.getEdgeTarget(edge);
-						if (target == vertexRep) {
-							edgeSources2.add(pathway.getEdgeSource(edge));
-						} else {
-							edgeTargets2.add(target);
-						}
-					}
+					getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
+					getEdgeEnds(edgeSources2, edgeTargets2, vRep);
 
 					if ((edgeSources1.size() != edgeSources2.size())
 							|| (edgeTargets1.size() != edgeTargets2.size())
@@ -1434,6 +1444,28 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 		}
 		return true;
+	}
+
+	/**
+	 * Determines the edge ends of a specified {@link PathwayVertexRep} and
+	 * fills the specified lists (source, target) accordingly.
+	 * 
+	 * @param edges
+	 * @param edgeSources
+	 * @param edgeTargets
+	 * @param vertexRep
+	 */
+	private void getEdgeEnds(List<PathwayVertexRep> edgeSources,
+			List<PathwayVertexRep> edgeTargets, PathwayVertexRep vertexRep) {
+		Set<DefaultEdge> edges = pathway.edgesOf(vertexRep);
+		for (DefaultEdge edge : edges) {
+			PathwayVertexRep target = pathway.getEdgeTarget(edge);
+			if (target == vertexRep) {
+				edgeSources.add(pathway.getEdgeSource(edge));
+			} else {
+				edgeTargets.add(target);
+			}
+		}
 	}
 
 	/**
