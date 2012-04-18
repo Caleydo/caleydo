@@ -47,7 +47,7 @@ import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
-public class VisBricksNode
+public class MultiDataContainerViewNode
 	extends ViewNode
 	implements IDropArea
 {
@@ -55,7 +55,7 @@ public class VisBricksNode
 	protected DataContainerListRenderer dataContainerListRenderer;
 	protected List<DataContainer> dataContainers;
 
-	public VisBricksNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
+	public MultiDataContainerViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
 			DragAndDropController dragAndDropController, Integer id, AGLView representedView)
 	{
 		super(graphLayout, view, dragAndDropController, id, representedView);
@@ -73,12 +73,12 @@ public class VisBricksNode
 			public void dragged(Pick pick)
 			{
 
-				DragAndDropController dragAndDropController = VisBricksNode.this.dragAndDropController;
+				DragAndDropController dragAndDropController = MultiDataContainerViewNode.this.dragAndDropController;
 				if (dragAndDropController.isDragging()
 						&& dragAndDropController.getDraggingMode()
 								.equals("DimensionGroupDrag"))
 				{
-					dragAndDropController.setDropArea(VisBricksNode.this);
+					dragAndDropController.setDropArea(MultiDataContainerViewNode.this);
 				}
 
 			}
@@ -246,7 +246,7 @@ public class VisBricksNode
 			System.out.println("Drop");
 			AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
 					dataContainers.get(0));
-			event.setReceiver((GLVisBricks) representedView);
+			event.setReceiver(representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
 		}

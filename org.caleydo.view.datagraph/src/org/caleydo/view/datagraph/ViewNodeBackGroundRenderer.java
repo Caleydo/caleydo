@@ -24,8 +24,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 
-public class ViewNodeBackGroundRenderer
-	extends LayoutRenderer {
+public class ViewNodeBackGroundRenderer extends LayoutRenderer {
 
 	private float[] color;
 	private String imagePath;
@@ -34,9 +33,11 @@ public class ViewNodeBackGroundRenderer
 	/**
 	 * Constructor.
 	 * 
-	 * @param color Color of the rendered rectangle. The array must have a
-	 *            length of 4 specifying the RGBA values of the color.
-	 * @param imagePath Path to the image that shall be used as texture.
+	 * @param color
+	 *            Color of the rendered rectangle. The array must have a length
+	 *            of 4 specifying the RGBA values of the color.
+	 * @param imagePath
+	 *            Path to the image that shall be used as texture.
 	 * @param textureManager
 	 */
 	public ViewNodeBackGroundRenderer(float[] color, String imagePath,
@@ -57,6 +58,7 @@ public class ViewNodeBackGroundRenderer
 		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
 
+		if (imagePath != null) {
 		float textureSize = Math.min(x, y);
 		float posX = x / 2.0f - textureSize / 2.0f;
 		float posY = y / 2.0f - textureSize / 2.0f;
@@ -66,8 +68,11 @@ public class ViewNodeBackGroundRenderer
 		Vec3f upperRightCorner = new Vec3f(posX + textureSize, posY + textureSize, 0);
 		Vec3f upperLeftCorner = new Vec3f(posX, posY + textureSize, 0);
 
-		textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner,
-				upperRightCorner, upperLeftCorner, color[0], color[1], color[2], 0.5f);
+		
+			textureManager.renderTexture(gl, imagePath, lowerLeftCorner,
+					lowerRightCorner, upperRightCorner, upperLeftCorner, color[0],
+					color[1], color[2], 0.5f);
+		}
 	}
 
 }

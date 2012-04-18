@@ -49,8 +49,7 @@ import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
 
-public class ViewNode
-	extends ADefaultTemplateNode {
+public class ViewNode extends ADefaultTemplateNode {
 
 	// private DataContainerListRenderer overviewDataContainerRenderer;
 	protected AGLView representedView;
@@ -59,7 +58,8 @@ public class ViewNode
 	protected String iconPath;
 
 	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id, AGLView representedView) {
+			DragAndDropController dragAndDropController, Integer id,
+			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
@@ -114,18 +114,18 @@ public class ViewNode
 			}
 		}
 
-		if (iconPath.equals("")) {
+		if (iconPath != null && iconPath.equals("")) {
 			iconPath = null;
 		}
 		if (iconPath != null) {
-			
-			// FIXME: we need to find a solution that works in the export version as well
+
+			// FIXME: we need to find a solution that works in the export
+			// version as well
 			ClassLoader classLoader = representedView.getClass().getClassLoader();
 			URL url = classLoader.getResource(iconPath);
 			try {
 				url = FileLocator.resolve(url);
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				e.printStackTrace();
 			}
 			iconPath = new File(url.getFile()).getAbsolutePath();
@@ -151,7 +151,8 @@ public class ViewNode
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
+			iconLayout
+					.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -163,8 +164,8 @@ public class ViewNode
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
-				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager()));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
+				1, 1 }, iconPath, view.getTextureManager()));
 
 		bodyColumn = new Column("bodyColumn");
 
@@ -265,8 +266,8 @@ public class ViewNode
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 
-		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
-				+ SPACING_PIXELS;
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth)
+				+ CAPTION_HEIGHT_PIXELS + SPACING_PIXELS;
 	}
 
 	@Override

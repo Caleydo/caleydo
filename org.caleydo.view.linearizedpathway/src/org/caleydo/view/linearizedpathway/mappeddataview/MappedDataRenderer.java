@@ -245,7 +245,7 @@ public class MappedDataRenderer {
 
 	public List<DataContainer> getDataContainers() {
 		// TODO Auto-generated method stub
-		return null;
+		return new ArrayList<DataContainer>();
 	}
 
 }

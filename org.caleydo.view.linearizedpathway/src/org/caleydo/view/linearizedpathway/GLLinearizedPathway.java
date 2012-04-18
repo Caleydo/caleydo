@@ -96,6 +96,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public final static int EXPANDED_BRANCH_NODE_WIDTH_PIXELS = 150;
 	public final static int SPACING_PIXELS = 2;
 
+	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
+
 	public final static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
 
 	private TemplateRenderStyle renderStyle;
@@ -140,6 +142,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	private Map<ANode, ANode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ANode>();
 
 	/**
+	 * Map that associates each linearized node with the indices of the
+	 * corresponding {@link PathwayVertexRep} objects in the {@link #path}.
+	 */
+	private Map<ANode, List<Integer>> linearizedNodesToPathwayVertexRepIndicesMap = new HashMap<ANode, List<Integer>>();
+
+	/**
 	 * The number of rows in which data values are shown.
 	 */
 	private int numDataRows = 0;
@@ -171,6 +179,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * The current height for all data rows.
 	 */
 	private float dataRowHeight;
+
+	/**
+	 * The maximum number of nodes that are added at once to the linearized
+	 * pathway when switching branches.
+	 */
+	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
 
 	private LinearizePathwayPathEventListener linearizePathwayPathEventListener;
 	private AddDataContainersListener addDataContainersListener;
@@ -255,6 +269,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		branchNodesToLinearizedNodesMap.clear();
 		linearizedNodesToIncomingBranchSummaryNodesMap.clear();
 		linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
+		linearizedNodesToPathwayVertexRepIndicesMap.clear();
 
 		// determine complex nodes first
 		List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
@@ -285,7 +300,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 		}
 
-		createNodesForList(linearizedNodes, path, true, complexNodes);
+		createNodesForList(linearizedNodes, path, true, complexNodes, true);
 
 		// Create branch nodes
 		for (int i = 0; i < linearizedNodes.size(); i++) {
@@ -334,7 +349,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			if (sourceVertexReps.size() > 0) {
 				List<ANode> sourceNodes = new ArrayList<ANode>();
 				complexNodes = createComplexBranchNodes(sourceVertexReps);
-				createNodesForList(sourceNodes, sourceVertexReps, false, complexNodes);
+				createNodesForList(sourceNodes, sourceVertexReps, false, complexNodes,
+						false);
 				incomingNode.setBranchNodes(sourceNodes);
 				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode,
 						incomingNode);
@@ -349,7 +365,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			if (targetVertexReps.size() > 0) {
 				List<ANode> targetNodes = new ArrayList<ANode>();
 				complexNodes = createComplexBranchNodes(targetVertexReps);
-				createNodesForList(targetNodes, targetVertexReps, false, complexNodes);
+				createNodesForList(targetNodes, targetVertexReps, false, complexNodes,
+						false);
 				outgoingNode.setBranchNodes(targetNodes);
 				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode,
 						outgoingNode);
@@ -397,9 +414,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	private void createNodesForList(List<ANode> nodeList,
 			List<PathwayVertexRep> vertexReps, boolean affectsDataRows,
-			List<ComplexNode> complexNodes) {
+			List<ComplexNode> complexNodes,
+			boolean fillLinearizedNodesToPathwayVertexRepMap) {
 		ANode prevNode = null;
-		for (PathwayVertexRep currentVertexRep : vertexReps) {
+		for (int i = 0; i < vertexReps.size(); i++) {
+
+			PathwayVertexRep currentVertexRep = vertexReps.get(i);
 
 			ANode node = null;
 			for (ComplexNode complexNode : complexNodes) {
@@ -447,6 +467,16 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 			int numMappedValues = determineNumberOfMappedValues(currentVertexRep);
 			node.setNumAssociatedRows(node.getNumAssociatedRows() + numMappedValues);
+
+			if (fillLinearizedNodesToPathwayVertexRepMap) {
+				List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
+						.get(node);
+				if (indices == null) {
+					indices = new ArrayList<Integer>();
+					linearizedNodesToPathwayVertexRepIndicesMap.put(node, indices);
+				}
+				indices.add(i);
+			}
 
 			if (affectsDataRows) {
 				numDataRows += numMappedValues;
@@ -1258,16 +1288,18 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
 		}
 
-		int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
+		// int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
+		List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
+				.get(linearizedNode);
 		List<PathwayVertexRep> newPath = null;
 		if (pathway.getEdgeSource(edge) == branchVertexRep) {
 			// insert above linearized node
-			newPath = path.subList(linearizedNodeIndex, path.size());
+			newPath = path.subList(indices.get(0), path.size());
 			newPath.add(0, branchVertexRep);
 
 		} else {
 			// insert below linearized node
-			newPath = path.subList(0, linearizedNodeIndex + 1);
+			newPath = path.subList(0, indices.get(indices.size() - 1) + 1);
 			newPath.add(branchVertexRep);
 		}
 		// LinearizePathwayPathEvent event = new LinearizePathwayPathEvent();
@@ -1277,6 +1309,35 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		// eventPublisher.triggerEvent(event);
 
 		setPath(pathway, newPath);
+	}
+
+	private boolean isComplexNode(List<PathwayVertexRep> vertexReps) {
+
+		// Detect complex nodes by comparing their edges
+		List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
+		for (PathwayVertexRep vertexRep : vertexReps) {
+			ComplexNode complexNode = null;
+			for (PathwayVertexRep vRep : vertexReps) {
+				if (vertexRep != vRep) {
+					Set<DefaultEdge> edges1 = pathway.edgesOf(vertexRep);
+					Set<DefaultEdge> edges2 = pathway.edgesOf(vRep);
+
+					if ((edges1.containsAll(edges2)) && (edges1.size() == edges2.size())) {
+						if (complexNode == null) {
+							complexNode = new ComplexNode(pixelGLConverter, textRenderer,
+									this, lastNodeId++);
+							complexNode.addVertexRep(vertexRep);
+							complexNodes.add(complexNode);
+							// vertexRepToNodeMap.put(vertexRep, complexNode);
+						}
+
+						complexNode.addVertexRep(vRep);
+						// vertexRepToNodeMap.put(vRep, complexNode);
+					}
+				}
+			}
+		}
+		return false;
 	}
 
 	/**
@@ -1293,12 +1354,22 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * @param node
 	 */
 	public void removeLinearizedNode(ANode node) {
-		int index = linearizedNodes.indexOf(node);
+		List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap.get(node);
 
-		if ((index == 0) || (index == linearizedNodes.size() - 1)) {
-			path.remove(index);
-			setPath(pathway, path);
+		if (indices.get(0) == 0) {
+			for (int i = 0; i < indices.size(); i++) {
+				path.remove(0);
+			}
+		} else if (indices.get(indices.size() - 1) == path.size() - 1) {
+			for (int i = 0; i < indices.size(); i++) {
+				path.remove(path.size() - 1);
+			}
+
+		} else {
+			return;
 		}
+
+		setPath(pathway, path);
 	}
 
 	@Override
@@ -1336,6 +1407,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public List<DataContainer> getDataContainers() {
 		return mappedDataRenderer.getDataContainers();
+	}
+
+	@Override
+	public boolean isDataView() {
+		return true;
 	}
 
 }

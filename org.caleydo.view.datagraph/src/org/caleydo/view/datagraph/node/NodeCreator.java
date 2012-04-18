@@ -21,28 +21,33 @@ package org.caleydo.view.datagraph.node;
 
 import java.util.HashMap;
 import java.util.Map;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.util.logging.Logger;
+import org.caleydo.core.view.IDataContainerBasedView;
+import org.caleydo.core.view.IMultiDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
-import org.caleydo.view.visbricks.GLVisBricks;
 import org.eclipse.core.runtime.Status;
 
 public class NodeCreator {
 
 	private Map<Class<? extends IDataDomain>, Class<? extends ADataNode>> dataNodeClasses = new HashMap<Class<? extends IDataDomain>, Class<? extends ADataNode>>();
-	private Map<Class<? extends AGLView>, Class<? extends ViewNode>> viewNodeClasses = new HashMap<Class<? extends AGLView>, Class<? extends ViewNode>>();
+	private Map<Class<? extends IDataContainerBasedView>, Class<? extends ViewNode>> viewNodeClasses = new HashMap<Class<? extends IDataContainerBasedView>, Class<? extends ViewNode>>();
 
 	public NodeCreator() {
 		dataNodeClasses.put(ATableBasedDataDomain.class, TableBasedDataNode.class);
 		dataNodeClasses.put(PathwayDataDomain.class, PathwayDataNode.class);
 
-		viewNodeClasses.put(AGLView.class, ViewNode.class);
-		viewNodeClasses.put(GLVisBricks.class, VisBricksNode.class);
+		viewNodeClasses.put(ISingleDataContainerBasedView.class, ViewNode.class);
+		viewNodeClasses.put(IMultiDataContainerBasedView.class,
+				MultiDataContainerViewNode.class);
+		// viewNodeClasses.put(GLLin.class, MultiDataContainerViewNode.class);
 	}
 
 	public ADataNode createDataNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
@@ -84,7 +89,7 @@ public class NodeCreator {
 				.getClass());
 
 		if (nodeClass == null) {
-			for (Class<? extends AGLView> c : viewNodeClasses.keySet()) {
+			for (Class<? extends IDataContainerBasedView> c : viewNodeClasses.keySet()) {
 				if (c.isAssignableFrom(representedView.getClass())) {
 					nodeClass = viewNodeClasses.get(c);
 					break;
