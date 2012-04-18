@@ -83,6 +83,7 @@ import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.jgrapht.GraphPath;
 import org.jgrapht.alg.DijkstraShortestPath;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -920,9 +921,12 @@ public class GLPathway
 		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
 			DijkstraShortestPath<PathwayVertexRep, DefaultEdge> pathAlgo = new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>(
 					pathway, vertexRep, previouslySelectedVertexRep);
-			selectedPath = new PathwayPath(pathAlgo.getPath());
+
+			GraphPath<PathwayVertexRep, DefaultEdge> path = pathAlgo.getPath();
 			
-			if (selectedPath != null) {
+			if (path != null) {
+				
+				selectedPath = new PathwayPath(path);
 			
 				LinearizedPathwayPathEvent pathEvent = new LinearizedPathwayPathEvent();
 				
