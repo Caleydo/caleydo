@@ -22,6 +22,7 @@ package org.caleydo.view.linearizedpathway;
 import gleem.linalg.Vec3f;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -1293,52 +1294,146 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
 				.get(linearizedNode);
 		List<PathwayVertexRep> newPath = null;
+		List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(
+				branchVertexRep, linearizedVertexRep);
+
 		if (pathway.getEdgeSource(edge) == branchVertexRep) {
 			// insert above linearized node
+			Collections.reverse(branchPath);
 			newPath = path.subList(indices.get(0), path.size());
-			newPath.add(0, branchVertexRep);
+			newPath.addAll(0, branchPath);
 
 		} else {
 			// insert below linearized node
 			newPath = path.subList(0, indices.get(indices.size() - 1) + 1);
-			newPath.add(branchVertexRep);
+			newPath.addAll(branchPath);
 		}
-		// LinearizePathwayPathEvent event = new LinearizePathwayPathEvent();
-		// event.setPath(newPath);
-		// event.setPathway(pathway);
-		//
-		// eventPublisher.triggerEvent(event);
 
 		setPath(pathway, newPath);
 	}
 
+	/**
+	 * Calculates a branch path consisting of {@link PathwayVertexRep} objects
+	 * for a specified branch node. This path ends if there is no unambiguous
+	 * way to continue, the direction of edges changes, the pathway ends, or the
+	 * {@link #maxBranchSwitchingPathLength} is reached. The specified
+	 * <code>PathwayVertexRep</code> that represents the start of the path is
+	 * added at the beginning of the path.
+	 * 
+	 * @param branchVertexRep
+	 *            The <code>PathwayVertexRep</code> that represents the start of
+	 *            the branch path.
+	 * @param linearizedVertexRep
+	 *            The <code>PathwayVertexRep</code> of the linearized path this
+	 *            branch belongs to.
+	 * @return
+	 */
+	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(
+			PathwayVertexRep branchVertexRep, PathwayVertexRep linearizedVertexRep) {
+		List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
+		vertexReps.add(branchVertexRep);
+		DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
+		if (existingEdge == null)
+			existingEdge = pathway.getEdge(linearizedVertexRep, branchVertexRep);
+
+		boolean isIncomingBranchPath = false;
+
+		if (pathway.getEdgeSource(existingEdge) == branchVertexRep) {
+			isIncomingBranchPath = true;
+		}
+		PathwayVertexRep currentVertexRep = branchVertexRep;
+
+		for (int i = 0; i < maxBranchSwitchingPathLength; i++) {
+
+			List<DefaultEdge> edges = new ArrayList<DefaultEdge>(
+					pathway.edgesOf(currentVertexRep));
+			edges.remove(existingEdge);
+
+			if (edges.size() == 0) {
+				return vertexReps;
+			} else {
+
+				List<PathwayVertexRep> vertices = new ArrayList<PathwayVertexRep>();
+				for (DefaultEdge edge : edges) {
+					PathwayVertexRep source = pathway.getEdgeSource(edge);
+					PathwayVertexRep target = pathway.getEdgeTarget(edge);
+
+					if ((target != currentVertexRep && isIncomingBranchPath)
+							|| (source != currentVertexRep && !isIncomingBranchPath)) {
+						return vertexReps;
+					}
+					vertices.add((target == currentVertexRep) ? source : target);
+				}
+
+				if (edges.size() == 1) {
+					existingEdge = edges.get(0);
+					currentVertexRep = vertices.get(0);
+					vertexReps.add(currentVertexRep);
+				} else {
+					if (isComplexNode(vertices)) {
+						vertexReps.addAll(vertices);
+						// It is ok to continue with only one vertexRep from the
+						// complex node.
+
+						existingEdge = pathway.getEdge(currentVertexRep, vertices.get(0));
+						if (existingEdge == null)
+							existingEdge = pathway.getEdge(vertices.get(0),
+									currentVertexRep);
+						currentVertexRep = vertices.get(0);
+
+					} else {
+						return vertexReps;
+					}
+				}
+			}
+
+		}
+
+		return vertexReps;
+	}
+
 	private boolean isComplexNode(List<PathwayVertexRep> vertexReps) {
 
-		// Detect complex nodes by comparing their edges
-		List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
+		// Detect complex nodes by comparing the sources and targets of their
+		// edges
 		for (PathwayVertexRep vertexRep : vertexReps) {
-			ComplexNode complexNode = null;
 			for (PathwayVertexRep vRep : vertexReps) {
 				if (vertexRep != vRep) {
 					Set<DefaultEdge> edges1 = pathway.edgesOf(vertexRep);
 					Set<DefaultEdge> edges2 = pathway.edgesOf(vRep);
 
-					if ((edges1.containsAll(edges2)) && (edges1.size() == edges2.size())) {
-						if (complexNode == null) {
-							complexNode = new ComplexNode(pixelGLConverter, textRenderer,
-									this, lastNodeId++);
-							complexNode.addVertexRep(vertexRep);
-							complexNodes.add(complexNode);
-							// vertexRepToNodeMap.put(vertexRep, complexNode);
+					List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
+					List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
+					for (DefaultEdge edge : edges1) {
+						PathwayVertexRep target = pathway.getEdgeTarget(edge);
+						if (target == vertexRep) {
+							edgeSources1.add(pathway.getEdgeSource(edge));
+						} else {
+							edgeTargets1.add(target);
 						}
+					}
 
-						complexNode.addVertexRep(vRep);
-						// vertexRepToNodeMap.put(vRep, complexNode);
+					List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
+					List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
+					for (DefaultEdge edge : edges2) {
+						PathwayVertexRep target = pathway.getEdgeTarget(edge);
+						if (target == vertexRep) {
+							edgeSources2.add(pathway.getEdgeSource(edge));
+						} else {
+							edgeTargets2.add(target);
+						}
+					}
+
+					if ((edgeSources1.size() != edgeSources2.size())
+							|| (edgeTargets1.size() != edgeTargets2.size())
+							|| !(edgeTargets1.containsAll(edgeTargets2))
+							|| !(edgeSources1.containsAll(edgeSources2))) {
+						return false;
 					}
 				}
 			}
 		}
-		return false;
+		return true;
 	}
 
 	/**
