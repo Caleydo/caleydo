@@ -17,38 +17,29 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.visbricks.listener;
+package org.caleydo.core.view.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.core.view.listener.AddDataContainersEvent;
-import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.core.view.IMultiDataContainerBasedView;
 
 /**
- * Listener for the event {@link AddGroupsToVisBricksEvent}.
+ * Listener for {@link AddDataContainersEvent}s for setting data containers to
+ * {@link IMultiDataContainerBasedView}s.
  * 
- * @author Christian Partl
- * @auhtor Alexander Lex
+ * @author Alexander Lex
  * 
  */
-public class AddGroupsToVisBricksListener extends AEventListener<GLVisBricks> {
+public class AddDataContainersListener extends
+		AEventListener<IMultiDataContainerBasedView> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof AddGroupsToVisBricksEvent) {
-			AddGroupsToVisBricksEvent addGroupsToVisBricksEvent = (AddGroupsToVisBricksEvent) event;
-			if (addGroupsToVisBricksEvent.getReceiver() == handler) {
-				handler.addDataContainers(addGroupsToVisBricksEvent.getDataContainers(),
-						addGroupsToVisBricksEvent.getDataConfigurer());
-			}
-		}
 
 		if (event instanceof AddDataContainersEvent) {
 			AddDataContainersEvent addDataContainersEvent = (AddDataContainersEvent) event;
 			if (addDataContainersEvent.getReceiver() == handler) {
-				handler.addDataContainers(addDataContainersEvent.getDataContainers(),
-						null);
+				handler.addDataContainers(addDataContainersEvent.getDataContainers());
 			}
 		}
 	}

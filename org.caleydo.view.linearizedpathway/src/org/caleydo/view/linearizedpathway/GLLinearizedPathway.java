@@ -32,11 +32,15 @@ import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.IMultiDataContainerBasedView;
+import org.caleydo.core.view.listener.AddDataContainersEvent;
+import org.caleydo.core.view.listener.AddDataContainersListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -78,7 +82,7 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  */
 
-public class GLLinearizedPathway extends AGLView {
+public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView {
 
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
@@ -161,7 +165,7 @@ public class GLLinearizedPathway extends AGLView {
 	 * The renderer for the experimental data of the nodes in the linearized
 	 * pathways.
 	 */
-	MappedDataRenderer mappedDataRenderer;
+	private MappedDataRenderer mappedDataRenderer;
 
 	/**
 	 * The current height for all data rows.
@@ -169,6 +173,7 @@ public class GLLinearizedPathway extends AGLView {
 	private float dataRowHeight;
 
 	private LinearizePathwayPathEventListener linearizePathwayPathEventListener;
+	private AddDataContainersListener addDataContainersListener;
 
 	/**
 	 * Constructor.
@@ -238,7 +243,7 @@ public class GLLinearizedPathway extends AGLView {
 		setPath(pathway, path);
 
 		mappedDataRenderer = new MappedDataRenderer(this);
-		mappedDataRenderer.init(gl);
+		// mappedDataRenderer.init(gl);
 		// createNodes();
 
 	}
@@ -622,9 +627,9 @@ public class GLLinearizedPathway extends AGLView {
 		// TODO do this only when necessary - cause re-initialization
 		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 
-		mappedDataRenderer.setFrustum(viewFrustum.getWidth() - dataRowPositionX
-				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowHeight,
-				dataRowPositionX, topSpacing);
+		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
+				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
+				topSpacing, dataRowHeight);
 
 		mappedDataRenderer.render(gl);
 		gl.glPopMatrix();
@@ -1165,6 +1170,11 @@ public class GLLinearizedPathway extends AGLView {
 		linearizePathwayPathEventListener.setHandler(this);
 		eventPublisher.addListener(LinearizedPathwayPathEvent.class,
 				linearizePathwayPathEventListener);
+
+		addDataContainersListener = new AddDataContainersListener();
+		addDataContainersListener.setHandler(this);
+		eventPublisher.addListener(AddDataContainersEvent.class,
+				addDataContainersListener);
 	}
 
 	@Override
@@ -1174,6 +1184,11 @@ public class GLLinearizedPathway extends AGLView {
 		if (linearizePathwayPathEventListener != null) {
 			eventPublisher.removeListener(linearizePathwayPathEventListener);
 			linearizePathwayPathEventListener = null;
+		}
+
+		if (addDataContainersListener != null) {
+			eventPublisher.removeListener(addDataContainersListener);
+			addDataContainersListener = null;
 		}
 	}
 
@@ -1255,11 +1270,11 @@ public class GLLinearizedPathway extends AGLView {
 			newPath = path.subList(0, linearizedNodeIndex + 1);
 			newPath.add(branchVertexRep);
 		}
-//		LinearizePathwayPathEvent event = new LinearizePathwayPathEvent();
-//		event.setPath(newPath);
-//		event.setPathway(pathway);
-//
-//		eventPublisher.triggerEvent(event);
+		// LinearizePathwayPathEvent event = new LinearizePathwayPathEvent();
+		// event.setPath(newPath);
+		// event.setPathway(pathway);
+		//
+		// eventPublisher.triggerEvent(event);
 
 		setPath(pathway, newPath);
 	}
@@ -1305,6 +1320,22 @@ public class GLLinearizedPathway extends AGLView {
 	 */
 	public float getDataRowHeight() {
 		return dataRowHeight;
+	}
+
+	@Override
+	public void addDataContainer(DataContainer newDataContainer) {
+		mappedDataRenderer.addDataContainer(newDataContainer);
+
+	}
+
+	@Override
+	public void addDataContainers(List<DataContainer> newDataContainers) {
+		mappedDataRenderer.addDataContainers(newDataContainers);
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		return mappedDataRenderer.getDataContainers();
 	}
 
 }

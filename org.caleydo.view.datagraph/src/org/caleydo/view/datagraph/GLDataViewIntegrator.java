@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.view.datagraph;
 
-import gleem.linalg.Vec3f;
-
 import java.awt.Rectangle;
 import java.awt.geom.Point2D;
 import java.awt.geom.Rectangle2D;
@@ -67,6 +65,7 @@ import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
+import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -75,15 +74,9 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.core.view.opengl.util.connectionline.AArrowRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.ClosedArrowRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.LineEndArrowRenderer;
-import org.caleydo.core.view.opengl.util.connectionline.OpenArrowRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.caleydo.view.datagraph.event.AddDataContainerEvent;
 import org.caleydo.view.datagraph.event.ApplySpecificGraphLayoutEvent;
 import org.caleydo.view.datagraph.event.CreateViewFromDataContainerEvent;
@@ -108,7 +101,6 @@ import org.caleydo.view.datagraph.node.ADataNode;
 import org.caleydo.view.datagraph.node.IDVINode;
 import org.caleydo.view.datagraph.node.NodeCreator;
 import org.caleydo.view.datagraph.node.ViewNode;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.dialogs.IInputValidator;
 import org.eclipse.jface.dialogs.InputDialog;
@@ -1051,7 +1043,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					dataContainer.setPrivate(false);
 
 					if (isRenderedRemote()) {
-						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+						AddDataContainersEvent event = new AddDataContainersEvent(
 								dataContainer);
 						event.setReceiver((AGLView) getRemoteRenderingGLView());
 						event.setSender(this);

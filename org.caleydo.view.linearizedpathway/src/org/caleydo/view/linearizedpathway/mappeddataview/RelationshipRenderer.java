@@ -21,12 +21,13 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 
 /**
- * @author alexsb
+ * Renders connection bands between a block of rows and a node.
+ * 
+ * @author Alexander Lex
  * 
  */
 public class RelationshipRenderer {
@@ -40,14 +41,33 @@ public class RelationshipRenderer {
 	ElementLayout topRightLayout;
 	ElementLayout bottomRightLayout;
 
+	private ConnectionBandRenderer connectionBandRenderer = null;
+
 	/**
+	 * Constructor
 	 * 
+	 * @param color
+	 *            the color of the connection band
 	 */
 	public RelationshipRenderer(float[] color) {
 		this.color = color;
 	}
 
-	public void render(GL2 gl, ConnectionBandRenderer renderer) {
+	/**
+	 * Initializes stuff that needs a gl context
+	 * 
+	 * @param gl
+	 */
+	private void init(GL2 gl) {
+		connectionBandRenderer = new ConnectionBandRenderer();
+		connectionBandRenderer.init(gl);
+	}
+
+	/** Renders a connection band based on the provided coordinates */
+	public void render(GL2 gl) {
+		if (connectionBandRenderer == null) {
+			init(gl);
+		}
 
 		topRight[0] = topRightLayout.getTranslateX();
 		topRight[1] = topRightLayout.getTranslateY() + topRightLayout.getSizeScaledY();
@@ -55,7 +75,7 @@ public class RelationshipRenderer {
 		bottomRight[0] = bottomRightLayout.getTranslateX();
 		bottomRight[1] = bottomRightLayout.getTranslateY();
 
-		renderer.renderSingleBand(gl, topLeft, bottomLeft, topRight, bottomRight, false,
-				0.1f, 0, color);
+		connectionBandRenderer.renderSingleBand(gl, topLeft, bottomLeft, topRight,
+				bottomRight, false, 0.1f, 0, color);
 	}
 }

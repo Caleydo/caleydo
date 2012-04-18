@@ -19,23 +19,24 @@
  *******************************************************************************/
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.util.collection.Pair;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ANode;
 
 /**
+ * Renderer for mapped genomic data for linearized pathway view. Based on a list
+ * of input nodes genomic data is rendered in a row-column layout. For every
+ * node 0-n rows are created, depending on the mapping of the node to the data.
+ * 
  * @author Alexander Lex
  * 
  */
@@ -46,6 +47,8 @@ public class MappedDataRenderer {
 	private List<ANode> linearizedNodes;
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
+	
+	private ArrayList<DataContainer> dataContainers;
 
 	/**
 	 * the distance from the left edge of this renderer to the left edge of the
@@ -64,13 +67,13 @@ public class MappedDataRenderer {
 	private LayoutManager layoutManger;
 	private ViewFrustum viewFrustum;
 
-	private ConnectionBandRenderer connectionBandRenderer;
+	// private ConnectionBandRenderer connectionBandRenderer;
 
 	private float[] oddColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
 	private float[] evenColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
 
 	/**
-	 * 
+	 * Constructor with parent view as parameter.
 	 */
 	public MappedDataRenderer(GLLinearizedPathway parentView) {
 		this.parentView = parentView;
@@ -78,33 +81,48 @@ public class MappedDataRenderer {
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 	}
 
-	public void init(GL2 gl) {
-		connectionBandRenderer = new ConnectionBandRenderer();
-		connectionBandRenderer.init(gl);
-	}
-
 	public void render(GL2 gl) {
 		layoutManger.updateLayout();
 		layoutManger.render(gl);
 
 		for (RelationshipRenderer relationshipRenderer : relationShipRenderers) {
-			relationshipRenderer.render(gl, connectionBandRenderer);
+			relationshipRenderer.render(gl);
 		}
 
 	}
 
-	public void setFrustum(float width, float height, float rowHeight, float xOffset,
-			float yOffset) {
+	/**
+	 * Set the geometry information for this <code>MappedDataRenderer</code>.
+	 * 
+	 * @param width
+	 *            the width of the drawing space of this renderer
+	 * @param height
+	 *            the height of teh drawing space of this renderer
+	 * @param xOffset
+	 *            how much this renderer is translated in x direction from the
+	 *            window origin
+	 * @param yOffset
+	 *            how much this renderer is translated in y direction from the
+	 *            window origin
+	 * @param rowHeight
+	 *            the height of a single row in the renderer rows
+	 */
+	public void setGeometry(float width, float height, float xOffset, float yOffset,
+			float rowHeight) {
 		viewFrustum.setRight(width);
 		viewFrustum.setTop(height);
-		this.rowHeight = rowHeight;
-		layoutManger.updateLayout();
 		this.xOffset = xOffset;
 		this.yOffset = yOffset;
+		this.rowHeight = rowHeight;
+
+		layoutManger.updateLayout();
 
 	}
 
 	/**
+	 * Sets the list of nodes that are used as the basis for rendering the
+	 * mapped data. Triggers a complete re-build of the layout
+	 * 
 	 * @param linearizedNodes
 	 *            setter, see {@link #linearizedNodes}
 	 */
@@ -151,7 +169,7 @@ public class MappedDataRenderer {
 							node.getWidthPixels()) / 2;
 			float height = parentView.getPixelGLConverter().getGLHeightForPixelHeight(
 					node.getHeightPixels());
-			// float y =
+
 			relationShipRenderer.topLeft[0] = x - xOffset;
 			relationShipRenderer.topLeft[1] = node.getPosition().y() + height / 2
 					- yOffset;
@@ -187,13 +205,11 @@ public class MappedDataRenderer {
 			int idCount = 0;
 			for (Integer davidID : davidIDs) {
 
-				Vec3f nodePosition = node.getPosition();
 
 				Row row = new Row();
-				RowBackgroundRenderer rowBackgroundRenderer = new RowBackgroundRenderer();
-				rowBackgroundRenderer.setColor(color);
+				RowBackgroundRenderer rowBackgroundRenderer = new RowBackgroundRenderer(
+						color);
 				row.addBackgroundRenderer(rowBackgroundRenderer);
-				// row.setPixelSizeY(10);
 				row.setAbsoluteSizeY(rowHeight);
 				dataSetColumn.append(row);
 
@@ -205,12 +221,7 @@ public class MappedDataRenderer {
 				captionRow.setRenderer(captionRenderer);
 				captionColumn.append(captionRow);
 
-				// row.setDebug(true);
-				// float rowPositionY = nodePosition.y()
-				// + (node.getNumAssociatedRows() * dataRowHeight / 2.0f) -
-				// idCount
-				// * dataRowHeight;
-
+		
 				if (idCount == 0)
 					relationShipRenderer.topRightLayout = row;
 				if (idCount == davidIDs.size() - 1)
@@ -221,4 +232,20 @@ public class MappedDataRenderer {
 		}
 
 	}
+	
+	public void addDataContainer(DataContainer newDataContainer) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void addDataContainers(List<DataContainer> newDataContainers) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public List<DataContainer> getDataContainers() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
 }

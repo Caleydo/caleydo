@@ -7,9 +7,11 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -17,7 +19,6 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.collection.Pair;
-import org.caleydo.core.view.IDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -47,9 +48,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 
-public class GLVendingMachine
-	extends AGLView
-	implements IGLRemoteRenderingView, IDataContainerBasedView {
+public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.vendingmachine";
 
@@ -187,8 +186,8 @@ public class GLVendingMachine
 						.adjustedRandIndex().getScore(fixedDataContainer, false);
 				scoreCount++;
 			}
-			score2DataContainerList
-					.add(new Pair(scoreSum / scoreCount, referenceDataContainer));
+			score2DataContainerList.add(new Pair(scoreSum / scoreCount,
+					referenceDataContainer));
 		}
 
 		Collections.sort(score2DataContainerList);
@@ -203,8 +202,7 @@ public class GLVendingMachine
 
 			ElementLayout rankElementLayout = new ElementLayout("rankElementLayout");
 			rankElementLayout.setPixelSizeX(70);
-			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer(
-					"" + rank--, //score2DataContainer.getFirst(), 
+			RankNumberRenderer rankNumberRenderer = new RankNumberRenderer("" + rank--, // score2DataContainer.getFirst(),
 					getTextRenderer());
 			rankElementLayout.setRenderer(rankNumberRenderer);
 
@@ -212,7 +210,7 @@ public class GLVendingMachine
 					"visBricksElementLayoutRow");
 
 			GLVisBricks visBricks = createVisBricks(visBricksElementLayout);
-			visBricks.setDataContainer(dataContainer);
+			visBricks.addDataContainer(dataContainer);
 
 			visBricksStack.add(0, visBricks);
 			hashVisBricks2DataContainerChoice.put(visBricks, dataContainer);
@@ -242,9 +240,11 @@ public class GLVendingMachine
 	 * @return
 	 */
 	private GLVisBricks createVisBricks(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-				-4, 4);
-		GLVisBricks visBricks = (GLVisBricks) GeneralManager.get().getViewManager()
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+				1, -4, 4);
+		GLVisBricks visBricks = (GLVisBricks) GeneralManager
+				.get()
+				.getViewManager()
 				.createGLView(GLVisBricks.class, parentGLCanvas, parentComposite, frustum);
 
 		visBricks.setVendingMachineMode(true);
@@ -254,7 +254,7 @@ public class GLVendingMachine
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);
-		//wrappingLayout.setDebug(true);
+		// wrappingLayout.setDebug(true);
 
 		return visBricks;
 	}
@@ -328,7 +328,6 @@ public class GLVendingMachine
 		return 0;
 	}
 
-	@Override
 	public void setDataContainer(DataContainer dataContainer) {
 		// dataContainers.add(dataContainer);
 
@@ -344,13 +343,14 @@ public class GLVendingMachine
 			if (count > 2)
 				break;
 
-			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
+			RecordPerspective perspective = dataDomain.getTable()
+					.getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
 
-			DataContainer newDataContainer = dataDomain.getDataContainer(id, dataContainer
-					.getDimensionPerspective().getID());
+			DataContainer newDataContainer = dataDomain.getDataContainer(id,
+					dataContainer.getDimensionPerspective().getID());
 			newDataContainer.setPrivate(true);
 
 			dataContainers.add(newDataContainer);
@@ -359,7 +359,6 @@ public class GLVendingMachine
 		initLayouts();
 	}
 
-	@Override
 	public List<DataContainer> getDataContainers() {
 		return dataContainers;
 	}
@@ -399,14 +398,15 @@ public class GLVendingMachine
 
 			if (dimGroup.isDetailBrickShown()) {
 				dimGroup.setDataContainer(selectedDataContainer);
-				//FIXME: update in dim group does not wor
-				//dimGroup.initLayouts();
-				//dimGroup.updateLayout();
+				// FIXME: update in dim group does not wor
+				// dimGroup.initLayouts();
+				// dimGroup.updateLayout();
 				break;
 			}
 		}
 		dimGroupManager.setCenterGroupStartIndex(0);
-		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups().size());
+		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups()
+				.size());
 
 		getVisBricks20View().getVisBricks().updateLayout();
 

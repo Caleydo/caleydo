@@ -244,6 +244,7 @@ Export-Package: org.caleydo.core.command;
    org.caleydo.core.manager.event,
    org.eclipse.swt.widgets",
  org.caleydo.core.view.contextmenu.item;uses:="org.caleydo.core.view.contextmenu,org.caleydo.core.data.collection.table,org.caleydo.core.data.id",
+ org.caleydo.core.view.listener,
  org.caleydo.core.view.opengl.camera;uses:="org.caleydo.core.data,javax.media.opengl,gleem.linalg",
  org.caleydo.core.view.opengl.canvas;
   uses:="org.caleydo.core.view.opengl.canvas.remote,

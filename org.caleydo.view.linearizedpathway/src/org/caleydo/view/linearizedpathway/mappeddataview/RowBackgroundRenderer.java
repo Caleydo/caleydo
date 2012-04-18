@@ -24,19 +24,23 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
- * @author alexsb
+ * Renders the background of a row
+ * 
+ * @author Alexander Lex
  * 
  */
 public class RowBackgroundRenderer extends LayoutRenderer {
 
-	/**
-	 * Flag telling whether the row of this <code>RowBackgroundRenderer</code>
-	 * is at an even (true, default) or at an odd position (false)
-	 */
-	private boolean isEven;
-	float[] backgroundColor;
+	private float[] backgroundColor;
 
-	float[] frameColor = { 0, 0, 0, 1 };
+	private float[] frameColor = { 0, 0, 0, 1 };
+
+	/**
+	 * 
+	 */
+	public RowBackgroundRenderer(float[] backgroundColor) {
+		this.backgroundColor = backgroundColor;
+	}
 
 	@Override
 	public void render(GL2 gl) {
@@ -62,7 +66,4 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 
 	}
 
-	public void setColor(float[] color) {
-		this.backgroundColor = color;
-	}
 }

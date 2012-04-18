@@ -22,7 +22,7 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  *
  */
 public class RowContentRenderer extends LayoutRenderer {

@@ -28,10 +28,11 @@ import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.eclipse.jface.layout.PixelConverter;
 
 /**
- * @author alexsb
+ * Renders a row caption based on david IDs
+ * 
+ * @author Alexander Lex
  * 
  */
 public class CaptionRenderer extends LayoutRenderer {
@@ -41,7 +42,15 @@ public class CaptionRenderer extends LayoutRenderer {
 	private PixelGLConverter pixelGLConverter;
 
 	/**
+	 * Constructor
 	 * 
+	 * @param textRenderer
+	 *            the <code>CaleydoTextRenderer</code> of the parent GL view
+	 * @param pixelGLConverter
+	 *            the <code>PixelGLConverter</code> of the parent GL view
+	 * @param davidID
+	 *            the id used for the resolution of the human readable id type
+	 *            that is rendered
 	 */
 	public CaptionRenderer(CaleydoTextRenderer textRenderer,
 			PixelGLConverter pixelGLConverter, Integer davidID) {
@@ -54,11 +63,13 @@ public class CaptionRenderer extends LayoutRenderer {
 	public void render(GL2 gl) {
 		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
-	IDMappingManager geneIDMappingManager =	IDMappingManagerRegistry.get().getIDMappingManager(IDCategory.getIDCategory("GENE"));
-	String geneName = geneIDMappingManager.getID(IDType.getIDType("DAVID"), IDType.getIDType("GENE_SYMBOL"), davidID);	
-	
-		textRenderer.renderTextInBounds(gl, geneName, sideSpacing, (y-height)/2, 0.1f, x,
-				height);
+		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get()
+				.getIDMappingManager(IDCategory.getIDCategory("GENE"));
+		String geneName = geneIDMappingManager.getID(IDType.getIDType("DAVID"),
+				IDType.getIDType("GENE_SYMBOL"), davidID);
+
+		textRenderer.renderTextInBounds(gl, geneName, sideSpacing, (y - height) / 2,
+				0.1f, x, height);
 	}
 
 }
