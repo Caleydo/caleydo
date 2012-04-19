@@ -66,7 +66,7 @@ import org.eclipse.equinox.app.IApplicationContext;
 /**
  * This class controls all aspects of the application's execution
  * 
- * @author Alexander Lex 
+ * @author Alexander Lex
  * @author Marc Streit
  * @author Nils Gehlenborg
  */
@@ -93,7 +93,8 @@ public class Application implements IApplication {
 
 			outputCaleydoProjectFilePath = System.getProperty("user.home")
 					+ System.getProperty("file.separator") + "export_"
-					+ (new SimpleDateFormat("yyyy.MM.dd_HH.mm").format(new Date())) + ".cal";
+					+ (new SimpleDateFormat("yyyy.MM.dd_HH.mm").format(new Date()))
+					+ ".cal";
 		} else {
 			outputCaleydoProjectFilePath = runConfigParameters[0];
 			dataSetDescriptionFilePath = runConfigParameters[1];
@@ -151,21 +152,39 @@ public class Application implements IApplication {
 		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
 
-		// if we don't have a row-grouping we create one
-		if (dataSetDescription.areAllColumnTypesContinuous()
-				&& dataSetDescription.getRowGroupingSpecifications() == null
-				&& dataSetDescription.isDataHomogeneous()) {
+//		if (dataSetDescription.areAllColumnTypesContinuous()
+//				&& dataSetDescription.getRowGroupingSpecifications() == null
+//				&& dataSetDescription.isDataHomogeneous()) {
 
-			runClusteringOnRows(dataDomain, true, 4);
+//			runClusteringOnDimensions(dataDomain, true, 4);
 
-			createSampleOfGenes(dataDomain, runClusteringOnRows(dataDomain, true, 5)
-					.getDimensionResult());
-			runClusteringOnRows(dataDomain, true, 6);
+			createSampleOfGenes(dataDomain,
+					runClusteringOnDimensions(dataDomain, true, 5).getDimensionResult());
+			runClusteringOnDimensions(dataDomain, true, 6);
 
 			// runClusteringOnRows(false, -1);
 			// if (metaInfo.isCreateGeneSamples())
 
-		}
+//		}
+		
+		// if we don't have a row-grouping we create one
+//		if (dataSetDescription.areAllColumnTypesContinuous()
+//				&& dataSetDescription.getRowGroupingSpecifications() == null
+//				&& dataSetDescription.isDataHomogeneous()) {
+
+//			runClusteringOnRecords(dataDomain, false, 4);
+
+//			createSampleOfGenes(dataDomain,
+//					runClusteringOnRecords(dataDomain, true, 5).getDimensionResult());
+			runClusteringOnRecords(dataDomain, true, 6);
+//			runClusteringOnRecords(dataDomain, false, 6);
+
+			// runClusteringOnRows(false, -1);
+			// if (metaInfo.isCreateGeneSamples())
+
+//		}
+		
+	
 
 	}
 
@@ -247,7 +266,7 @@ public class Application implements IApplication {
 				targetIDType = dataDomain.getRecordIDType();
 			} else {
 				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
-				targetIDType = dataDomain.getHumanReadableRecordIDType();
+				targetIDType = dataDomain.getDimensionIDType();
 			}
 
 			ArrayList<PerspectiveInitializationData> columnPerspective = createPerspectivesForGroupings(
@@ -329,7 +348,7 @@ public class Application implements IApplication {
 	 * @param useKMeans
 	 * @return
 	 */
-	private ClusterResult runClusteringOnRows(ATableBasedDataDomain dataDomain,
+	private ClusterResult runClusteringOnDimensions(ATableBasedDataDomain dataDomain,
 			boolean useKMeans, int numClusters) {
 		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
 		clusterConfiguration.setClustererType(ClustererType.DIMENSION_CLUSTERING);
@@ -370,6 +389,69 @@ public class Application implements IApplication {
 				.getRecordPerspective(recordPerspectiveID));
 		clusterConfiguration.setSourceDimensionPerspective(sourceDimensionPerspective);
 
+		return dataDomain.startClustering(clusterConfiguration);
+
+		// dimensionPerspective.init(result.getDimensionResult());
+		// dimensionPerspective.setLabel("All genes clustered, size: "
+		// + dimensionPerspective.getVirtualArray().size(), false);
+		//
+		// return result.getDimensionResult();
+	}
+
+	/**
+	 * Running this once with true creates a new dimension perspective with
+	 * k-means. Running this with false creates another dimensionPerspective
+	 * using affinity propagation
+	 * 
+	 * @param useKMeans
+	 * @return
+	 */
+	private ClusterResult runClusteringOnRecords(ATableBasedDataDomain dataDomain,
+			boolean useKMeans, int numClusters) {
+		ClusterConfiguration clusterConfiguration = new ClusterConfiguration();
+		clusterConfiguration.setClustererType(ClustererType.RECORD_CLUSTERING);
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+
+		String recordPerspectiveID = dataDomain.getTable().getDefaultRecordPerspective()
+				.getID();
+		String dimensionPerspectiveID = dataDomain.getTable()
+				.getDefaultDimensionPerspective().getID();
+
+		RecordPerspective sourceRecordPerspective = dataDomain.getTable()
+				.getRecordPerspective(recordPerspectiveID);
+
+		if (useKMeans) {
+			clusterConfiguration.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
+			clusterConfiguration.setkMeansNumberOfClustersForRecords(numClusters);
+
+			RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
+			dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
+
+			targetRecordPerspective.setLabel("K-Means, " + numClusters + " Cluster",
+					false);
+
+			clusterConfiguration
+					.setOptionalTargetRecordPerspective(targetRecordPerspective);
+		} else {
+			// here we create another dimensionPerspective which uses average
+			// linkage hierarchical clustering
+			clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
+			clusterConfiguration.setAffinityPropClusterFactorGenes(9);
+			
+			RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
+			dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
+
+			targetRecordPerspective.setLabel("Affinity",
+					false);
+
+			clusterConfiguration
+					.setOptionalTargetRecordPerspective(targetRecordPerspective);
+
+		}
+
+		clusterConfiguration.setSourceRecordPerspective(sourceRecordPerspective);
+		clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+				.getDimensionPerspective(dimensionPerspectiveID));
 		return dataDomain.startClustering(clusterConfiguration);
 
 		// dimensionPerspective.init(result.getDimensionResult());
@@ -428,67 +510,5 @@ public class Application implements IApplication {
 
 		return dataTypeSetCollection;
 	}
-
-	// private static void doGCTSpecificStuff(DataSetDescription
-	// dataSetMetaInfo) {
-	//
-	//
-	// try {
-	// // LoadDataParameters loadDataParameters =
-	// setUpLoadDataParameters(dataSetMetaInfo);
-	//
-	// loadDataParameters.setStartParseFileAtLine(3);
-	//
-	// // open file to read second line to determine number of rows and
-	// // columns
-	// BufferedReader reader;
-	//
-	// reader = new BufferedReader(new
-	// FileReader(dataSetMetaInfo.getDataSourcePath()));
-	// reader.readLine();
-	//
-	// // read dimensions of data matrix
-	// String dimensionString = reader.readLine();
-	//
-	// // TODO: check if there are two numeric columns
-	// String[] dimensions = dimensionString
-	// .split(loadDataParameters.getDelimiter());
-	//
-	// int columns = new Integer(dimensions[1]);
-	//
-	// // read column headers
-	// String headerString = reader.readLine();
-	//
-	// // TODO: check if there are as many column headers as there are
-	// // columns (+ 2)
-	// String[] headers = headerString.split(loadDataParameters.getDelimiter());
-	//
-	// // loadDataParameters.setMinDefined(true);
-	// // loadDataParameters.setMin(min);
-	// // loadDataParameters.setMaxDefined(true);
-	// // loadDataParameters.setMax(max);
-	//
-	// StringBuffer inputPattern = new StringBuffer("SKIP;SKIP;");
-	//
-	// // list to store column labels
-	// List<String> columnLabels = new ArrayList<String>();
-	//
-	// for (int i = 0; i < columns; ++i) {
-	// inputPattern.append("FLOAT;");
-	// columnLabels.add(headers[i + 2]);
-	// }
-	//
-	// loadDataParameters.setInputPattern(inputPattern.toString());
-	// loadDataParameters
-	// .setColumnHeaderStringConverter(new TCGAIDStringConverter());
-	// loadDataParameters.setColumnLabels(columnLabels);
-	//
-	// dataSetMetaInfo.setLoadDataParameters(loadDataParameters);
-	//
-	// } catch (Exception e) {
-	// throw new IllegalStateException(e);
-	// }
-	// }
-	//
 
 }

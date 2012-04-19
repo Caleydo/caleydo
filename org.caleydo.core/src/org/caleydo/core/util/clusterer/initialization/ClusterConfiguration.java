@@ -59,8 +59,8 @@ public class ClusterConfiguration {
 	private ClustererType clustererType;
 	private EDistanceMeasure distanceMeasure;
 	private ETreeClustererAlgo treeClustererAlgo;
-	private int kMeansNumberOfClustersForRecords;
-	private int kMeansNumberOfClustersForDimensions;
+	private int kMeansNumberOfClustersForRecords = -1;
+	private int kMeansNumberOfClustersForDimensions = -1;
 	private float affinityPropClusterFactorGenes;
 	private float affinityPropClusterFactorExperiments;
 

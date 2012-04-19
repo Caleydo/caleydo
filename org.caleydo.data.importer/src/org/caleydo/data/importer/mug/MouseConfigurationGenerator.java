@@ -45,9 +45,11 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 	// public static final String MRNA =
 	// "data/genome/microarray/kashofer/mouse/all_mice.csv";
 	public static final String MRNA = "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/kashofer/mouse/all_mice.csv";
+	public static final String MRNA_SAMPLE_GROUPING = "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/kashofer/mouse/all_mice_grouping.csv";
 
-//	public static final String OUTPUT_FILE_PATH = System.getProperty("user.home")
-//			+ System.getProperty("file.separator") + "mouse_caleydo_data.xml";
+	// public static final String OUTPUT_FILE_PATH =
+	// System.getProperty("user.home")
+	// + System.getProperty("file.separator") + "mouse_caleydo_data.xml";
 
 	private IDSpecification sampleIDSpecification;
 
@@ -84,17 +86,16 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 
 		IDSpecification geneIDSpecification = new IDSpecification();
 		geneIDSpecification.setIDTypeGene(true);
-		geneIDSpecification.setIdType("GENE_SYMBOL");
+		geneIDSpecification.setIdType("REFSEQ_MRNA");
 		geneIDSpecification.setSubStringExpression("\\.");
 		mrnaData.setRowIDSpecification(geneIDSpecification);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
-		// GroupingParseSpecification firehoseClustering = new
-		// GroupingParseSpecification(
-		// MRNA_GROUPING);
+		GroupingParseSpecification sampleGrouping = new GroupingParseSpecification(
+				MRNA_SAMPLE_GROUPING);
 		// firehoseClustering.setContainsColumnIDs(false);
-		// firehoseClustering.setRowIDSpecification(sampleIDSpecification);
-		// mrnaData.addColumnGroupingSpecification(firehoseClustering);
+		sampleGrouping.setRowIDSpecification(sampleIDSpecification);
+		mrnaData.addColumnGroupingSpecification(sampleGrouping);
 
 		// GroupingParseSpecification groundTruthGrouping = new
 		// GroupingParseSpecification();

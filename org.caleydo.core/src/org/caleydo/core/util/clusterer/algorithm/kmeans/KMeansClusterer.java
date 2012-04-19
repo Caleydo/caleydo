@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -50,9 +50,7 @@ import weka.core.ManhattanDistance;
  * 
  * @author Bernhard Schlegl
  */
-public class KMeansClusterer
-	extends AClusterer
-	implements IClusterer {
+public class KMeansClusterer extends AClusterer implements IClusterer {
 
 	private SimpleKMeans clusterer = null;
 
@@ -62,7 +60,8 @@ public class KMeansClusterer
 		clusterer = new SimpleKMeans();
 	}
 
-	private PerspectiveInitializationData cluster(DataTable table, ClusterConfiguration clusterState) {
+	private PerspectiveInitializationData cluster(DataTable table,
+			ClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -74,7 +73,8 @@ public class KMeansClusterer
 		DistanceFunction distanceMeasure;
 
 		// SimpleKMeans only supports Eudlidean and Manhattan at that time
-		// if (clusterState.getDistanceMeasure() == EDistanceMeasure.CHEBYSHEV_DISTANCE)
+		// if (clusterState.getDistanceMeasure() ==
+		// EDistanceMeasure.CHEBYSHEV_DISTANCE)
 		// distanceMeasure = new ChebyshevDistance();
 		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
 			distanceMeasure = new ManhattanDistance();
@@ -86,9 +86,9 @@ public class KMeansClusterer
 			clusterer.setMaxIterations(1000);
 			if (distanceMeasure != null)
 				clusterer.setDistanceFunction(distanceMeasure);
-		}
-		catch (Exception e2) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		} catch (Exception e2) {
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
 
@@ -100,8 +100,12 @@ public class KMeansClusterer
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Determine Similarities for gene clustering"));
 
 			int iNrElements = recordVA.size();
 
@@ -120,32 +124,36 @@ public class KMeansClusterer
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt / recordVA.size() * 100);
 					if (percentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(percentage, false));
+						GeneralManager
+								.get()
+								.getEventPublisher()
+								.triggerEvent(new ClusterProgressEvent(percentage, false));
 						percentage++;
 					}
 
 					for (Integer iDimensionIndex : dimensionVA) {
-						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
-							iDimensionIndex) + ", ");
+						buffer.append(table.getFloat(DataRepresentation.NORMALIZED,
+								recordIndex, iDimensionIndex) + ", ");
 
 					}
 					buffer.append("\n");
 					icnt++;
 
 					processEvents();
-				}
-				else {
+				} else {
 					GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(100, true));
+							.triggerEvent(new ClusterProgressEvent(100, true));
 					return null;
 				}
 			}
-		}
-		else {
+		} else {
 
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Determine Similarities for experiment clustering"));
 
 			int iNrElements = dimensionVA.size();
 
@@ -164,39 +172,49 @@ public class KMeansClusterer
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) isto / dimensionVA.size() * 100);
 					if (percentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(percentage, false));
+						GeneralManager
+								.get()
+								.getEventPublisher()
+								.triggerEvent(new ClusterProgressEvent(percentage, false));
 						percentage++;
 					}
 
 					for (Integer recordIndex : recordVA) {
-						buffer.append(table.getFloat(DataRepresentation.NORMALIZED, recordIndex,
-							iDimensionIndex) + ", ");
+						buffer.append(table.getFloat(DataRepresentation.NORMALIZED,
+								recordIndex, iDimensionIndex) + ", ");
 
 					}
 					buffer.append("\n");
 					isto++;
 					processEvents();
-				}
-				else {
+				} else {
 					GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(100, true));
+							.triggerEvent(new ClusterProgressEvent(100, true));
 					return null;
 				}
 			}
 		}
 		GeneralManager
-			.get()
-			.getEventPublisher()
-			.triggerEvent(
-				new ClusterProgressEvent(25 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+				.get()
+				.getEventPublisher()
+				.triggerEvent(
+						new ClusterProgressEvent(25 * iProgressBarMultiplier
+								+ iProgressBarOffsetValue, true));
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of genes in progress"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"KMeans clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("KMeans clustering of experiments in progress"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"KMeans clustering of experiments in progress"));
 
 		Instances data = null;
 
@@ -204,45 +222,50 @@ public class KMeansClusterer
 
 		try {
 			data = new Instances(new StringReader(buffer.toString()));
-		}
-		catch (IOException e1) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		} catch (IOException e1) {
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
 
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(10, false));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new ClusterProgressEvent(10, false));
 
 		try {
 			// train the clusterer
 			clusterer.buildClusterer(data);
-		}
-		catch (Exception e) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		} catch (Exception e) {
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
 
 		processEvents();
 		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(45, false));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new ClusterProgressEvent(45, false));
 
 		ClusterEvaluation eval = new ClusterEvaluation();
 		eval.setClusterer(clusterer); // the cluster to evaluate
 		try {
 			eval.evaluateClusterer(data);
-		}
-		catch (Exception e) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+		} catch (Exception e) {
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
 		processEvents();
 		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(60, false));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new ClusterProgressEvent(60, false));
 
 		double[] ClusterAssignments = eval.getClusterAssignments();
 
@@ -264,10 +287,12 @@ public class KMeansClusterer
 		}
 		processEvents();
 		if (bClusteringCanceled) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
-		GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(80, false));
+		GeneralManager.get().getEventPublisher()
+				.triggerEvent(new ClusterProgressEvent(80, false));
 
 		HashMap<Integer, Integer> hashExamples = new HashMap<Integer, Integer>();
 
@@ -280,7 +305,7 @@ public class KMeansClusterer
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(table, recordVA, dimensionVA, sampleElements,
-			clusterState.getClustererType());
+				clusterState.getClustererType());
 
 		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
 			for (int cluster : sampleElements) {
@@ -288,19 +313,18 @@ public class KMeansClusterer
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
 						indices.add(recordVA.get(i));
 						clusterSizes.set(hashExamples.get(cluster),
-							clusterSizes.get(hashExamples.get(cluster)) + 1);
+								clusterSizes.get(hashExamples.get(cluster)) + 1);
 					}
 				}
 			}
-		}
-		else {
+		} else {
 
 			for (int cluster : sampleElements) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
 						indices.add(dimensionVA.get(i));
 						clusterSizes.set(hashExamples.get(cluster),
-							clusterSizes.get(hashExamples.get(cluster)) + 1);
+								clusterSizes.get(hashExamples.get(cluster)) + 1);
 					}
 				}
 			}
@@ -310,17 +334,19 @@ public class KMeansClusterer
 		tempResult.setData(indices, clusterSizes, sampleElements);
 
 		GeneralManager
-			.get()
-			.getEventPublisher()
-			.triggerEvent(
-				new ClusterProgressEvent(50 * iProgressBarMultiplier + iProgressBarOffsetValue, true));
+				.get()
+				.getEventPublisher()
+				.triggerEvent(
+						new ClusterProgressEvent(50 * iProgressBarMultiplier
+								+ iProgressBarOffsetValue, true));
 
 		return tempResult;
 	}
 
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+			ClusterConfiguration clusterState, int iProgressBarOffsetValue,
+			int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
@@ -329,6 +355,10 @@ public class KMeansClusterer
 			numberOfCluster = clusterState.getkMeansNumberOfClustersForRecords();
 		else
 			numberOfCluster = clusterState.getkMeansNumberOfClustersForDimensions();
+		if (numberOfCluster < 1) {
+			throw new IllegalStateException("Illegal Number of clusters: "
+					+ numberOfCluster);
+		}
 
 		return cluster(dataDomain.getTable(), clusterState);
 	}

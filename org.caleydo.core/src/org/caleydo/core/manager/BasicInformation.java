@@ -36,6 +36,8 @@ public class BasicInformation {
 	}
 
 	public Organism getOrganism() {
-		return organism;
+		// FIXME temp hack
+		return Organism.MUS_MUSCULUS;
+//		return organism;
 	}
 }
