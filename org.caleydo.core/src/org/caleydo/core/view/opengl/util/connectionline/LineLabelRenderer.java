@@ -90,7 +90,8 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 			Vec3f enclosingPoint1, Vec3f enclosingPoint2) {
 
 		float height = pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels);
-		float width = textRenderer.getRequiredTextWidth(text, height);
+		//Add some spacing because required width calculation is not always accurate
+		float width = textRenderer.getRequiredTextWidth(text, height) + pixelGLConverter.getGLWidthForPixelWidth(3);
 		float lineOffset = pixelGLConverter.getGLWidthForPixelWidth(lineOffsetPixels);
 		float xPosition;
 		float yPosition;

@@ -23,7 +23,7 @@ import org.caleydo.view.linearizedpathway.node.CompoundNode;
  */
 public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
-	protected final static float[] DEFAULT_CIRCLE_COLOR = new float[] { 1, 1, 1, 0 };
+	protected final static float[] DEFAULT_CIRCLE_COLOR = new float[] { 1, 1, 1, 1 };
 
 	protected PixelGLConverter pixelGLConverter;
 

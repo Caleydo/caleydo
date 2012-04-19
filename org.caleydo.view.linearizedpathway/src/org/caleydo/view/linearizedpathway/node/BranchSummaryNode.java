@@ -55,7 +55,7 @@ import org.caleydo.view.linearizedpathway.node.layout.BranchNodeLabelRenderer;
  */
 public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 
-	public static final int MIN_NODE_WIDTH_PIXELS = 176;
+	public static final int MIN_NODE_WIDTH_PIXELS = 180;
 	public static final int TEXT_SPACING_PIXELS = 3;
 
 	protected LayoutManager layoutManager;
@@ -147,11 +147,13 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 				if (isCollapsed) {
 					setCollapsed(false);
 					BranchSummaryNode node = view.getExpandedBranchSummaryNode();
+					// colorRenderer.setBorderColor(new float[] { 1, 1, 1, 1 });
 					if (node != null)
 						node.setCollapsed(true);
 					view.setExpandedBranchSummaryNode(BranchSummaryNode.this);
 				} else {
 					setCollapsed(true);
+					// colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 					view.setExpandedBranchSummaryNode(null);
 				}
 				view.setDisplayListDirty();
@@ -194,6 +196,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		// baseColumn.setFrameColor(1, 0, 0, 1);
 		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
+		colorRenderer.setColor(new float[] { 0.9f, 0.9f, 0.9f, 1 });
 		colorRenderer.setView(view);
 		colorRenderer.addPickingID(PickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
 		baseColumn.addBackgroundRenderer(colorRenderer);
@@ -221,10 +224,10 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		captionLayout.setPixelSizeY(16);
 
 		ElementLayout numNodesLabelLayout = new ElementLayout("numNodeslabel");
-//		numNodesLabelLayout.setDebug(true);
-//		numNodesLabelLayout.setFrameColor(1, 0, 0, 1);
+		// numNodesLabelLayout.setDebug(true);
+		// numNodesLabelLayout.setFrameColor(1, 0, 0, 1);
 		LabelRenderer numNodesLabelRenderer = new LabelRenderer(view, this);
-//		numNodesLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
+		// numNodesLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
 
 		numNodesLabelLayout.setRenderer(numNodesLabelRenderer);
 		numNodesLabelLayout.setPixelSizeY(16);
