@@ -920,7 +920,7 @@ public class GLPathway
 
 		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
 			DijkstraShortestPath<PathwayVertexRep, DefaultEdge> pathAlgo = new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>(
-					pathway, vertexRep, previouslySelectedVertexRep);
+					pathway, previouslySelectedVertexRep, vertexRep);
 
 			GraphPath<PathwayVertexRep, DefaultEdge> path = pathAlgo.getPath();
 			
