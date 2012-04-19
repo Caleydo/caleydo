@@ -149,7 +149,7 @@ public abstract class ATextParser {
 	protected void parseFile(BufferedReader reader) throws IOException
 	{}
 	
-	protected String convertID(String sourceID, IDSpecification idSpecification )
+	public static String convertID(String sourceID, IDSpecification idSpecification )
 	{
 		if(idSpecification == null)
 			return sourceID;

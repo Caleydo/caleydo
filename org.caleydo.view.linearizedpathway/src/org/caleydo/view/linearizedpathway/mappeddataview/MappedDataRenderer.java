@@ -105,7 +105,7 @@ public class MappedDataRenderer {
 	 * @param width
 	 *            the width of the drawing space of this renderer
 	 * @param height
-	 *            the height of teh drawing space of this renderer
+	 *            the height of the drawing space of this renderer
 	 * @param xOffset
 	 *            how much this renderer is translated in x direction from the
 	 *            window origin
