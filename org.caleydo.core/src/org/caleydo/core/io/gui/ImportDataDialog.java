@@ -789,8 +789,15 @@ public class ImportDataDialog extends Dialog {
 			}
 		}
 		IDSpecification rowIDSpecification = new IDSpecification();
-		rowIDSpecification.setIdType(idTypes.get(idCombo.getSelectionIndex()).toString());
+		IDType rowIDType = idTypes.get(idCombo.getSelectionIndex());
+		rowIDSpecification.setIdType(rowIDType.toString());
 
+		
+		if(rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA"))
+		{
+			// for REFSEQ_MRNA we ignor the .1, etc.
+			rowIDSpecification.setSubStringExpression("\\.");
+		}
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 		// else
 		// dataSetDescripton.setFileIDType(dataDomain.getHumanReadableRecordIDType());

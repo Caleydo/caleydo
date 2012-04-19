@@ -29,6 +29,7 @@ import org.caleydo.core.specialized.Organism;
 public class BasicInformation {
 
 	private Organism organism = Organism.HOMO_SAPIENS;
+//	private Organism organism = Organism.MUS_MUSCULUS;
 
 	public void setOrganism(Organism organism) {
 		this.organism = organism;

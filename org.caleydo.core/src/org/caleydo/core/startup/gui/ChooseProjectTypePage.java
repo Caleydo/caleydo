@@ -319,10 +319,10 @@ public class ChooseProjectTypePage extends WizardPage {
 		geneticDataUseCaseTab.setControl(composite);
 		composite.setLayout(new GridLayout(1, false));
 
-		//GridData gridData = new GridData(GridData.FILL_BOTH);
+		// GridData gridData = new GridData(GridData.FILL_BOTH);
 		GridData gridData = new GridData(GridData.HORIZONTAL_ALIGN_BEGINNING);
-		//gridData.grabExcessHorizontalSpace = true;
-		
+		// gridData.grabExcessHorizontalSpace = true;
+
 		Button buttonNewProject = new Button(composite, SWT.RADIO);
 		buttonNewProject.setText("Load data from file (CSV, TXT)");
 		buttonNewProject.setLayoutData(gridData);
@@ -370,7 +370,7 @@ public class ChooseProjectTypePage extends WizardPage {
 		btnLoadPathwayData.setText("Load pathway data");
 		btnLoadPathwayData.setEnabled(true);
 		btnLoadPathwayData.setLayoutData(gridData);
-		//btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
+		// btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
 
 		// Set if pathways were loaded in last session
 		String sLastChosenPathwayDataSources = GeneralManager.get().getPreferenceStore()
@@ -386,7 +386,7 @@ public class ChooseProjectTypePage extends WizardPage {
 		gridData = new GridData(GridData.FILL_HORIZONTAL);
 		groupPathways.setLayoutData(gridData);
 		groupPathways.setLayout(new RowLayout(SWT.VERTICAL));
-		
+
 		final Button btnLoadKEGGPathwayData = new Button(groupPathways, SWT.CHECK);
 		btnLoadKEGGPathwayData.setText("KEGG");
 
