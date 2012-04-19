@@ -20,13 +20,17 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -77,8 +81,10 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
+import org.caleydo.view.pathway.event.ShowBubbleSetForPathwayVertexRepsEvent;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
+import org.caleydo.view.pathway.listener.ShowBubbleSetForPathwayVertexRepsEventListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -93,9 +99,8 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLPathway
-	extends ATableBasedView
-	implements ISelectionUpdateHandler, IViewCommandHandler, ISelectionCommandHandler {
+public class GLPathway extends ATableBasedView implements ISelectionUpdateHandler,
+		IViewCommandHandler, ISelectionCommandHandler {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
@@ -125,6 +130,7 @@ public class GLPathway
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
+	protected ShowBubbleSetForPathwayVertexRepsEventListener showBubbleSetForPathwayVertexRepsEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -141,8 +147,8 @@ public class GLPathway
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.pathway");
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
 
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
@@ -234,8 +240,8 @@ public class GLPathway
 
 				// We do not handle picking events in pathways for visbricks
 				if (glRemoteRenderingView != null
-						&& glRemoteRenderingView.getViewType()
-								.equals("org.caleydo.view.brick"))
+						&& glRemoteRenderingView.getViewType().equals(
+								"org.caleydo.view.brick"))
 					return;
 
 				handlePathwayElementSelection(SelectionType.SELECTION, pick.getID());
@@ -263,8 +269,7 @@ public class GLPathway
 						event.setDataDomainID(dataDomain.getDataDomainID());
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
-				}
-				else {
+				} else {
 
 					// // Load pathways
 					// for (IGraphItem pathwayVertexGraphItem :
@@ -302,12 +307,13 @@ public class GLPathway
 
 					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(
 							PathwayManager.get().searchPathwayByName(vertexRep.getName(),
-									PathwayDatabaseType.KEGG), dataDomain.getDataDomainID());
+									PathwayDatabaseType.KEGG),
+							dataDomain.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 
-				}
-				else if (vertexRep.getType() == EPathwayVertexType.gene) {
-					for (PathwayVertex pathwayVertexGraphItem : vertexRep.getPathwayVertices()) {
+				} else if (vertexRep.getType() == EPathwayVertexType.gene) {
+					for (PathwayVertex pathwayVertexGraphItem : vertexRep
+							.getPathwayVertices()) {
 
 						GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 						contexMenuItemContainer
@@ -429,10 +435,12 @@ public class GLPathway
 			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 
 			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(sourceVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
-					-sourceVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-			gl.glVertex3f(targetVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
-					-targetVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			gl.glVertex3f(sourceVertexRep.getXOrigin()
+					* PathwayRenderStyle.SCALING_FACTOR_X, -sourceVertexRep.getYOrigin()
+					* PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			gl.glVertex3f(targetVertexRep.getXOrigin()
+					* PathwayRenderStyle.SCALING_FACTOR_X, -targetVertexRep.getYOrigin()
+					* PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
 			gl.glEnd();
 		}
 	}
@@ -452,8 +460,8 @@ public class GLPathway
 		if (pathway == null)
 			return;
 
-		if (selectionDelta.getIDType().getIDCategory() == geneSelectionManager.getIDType()
-				.getIDCategory()) {
+		if (selectionDelta.getIDType().getIDCategory() == geneSelectionManager
+				.getIDType().getIDCategory()) {
 			SelectionDelta resolvedDelta = resolveExternalSelectionDelta(selectionDelta);
 			geneSelectionManager.setDelta(resolvedDelta);
 
@@ -479,7 +487,8 @@ public class GLPathway
 				ElementConnectionInformation elementRep = new ElementConnectionInformation(
 						dataDomain.getRecordIDType(), viewID, vertexRep.getXOrigin()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
-								+ vecTranslation.x(), (pathwayHeight - vertexRep.getYOrigin())
+								+ vecTranslation.x(),
+						(pathwayHeight - vertexRep.getYOrigin())
 								* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 								+ vecTranslation.y(), 0);
 
@@ -509,8 +518,8 @@ public class GLPathway
 			IDType geneIDType = geneSelectionManager.getIDType();
 
 			Set<Integer> dataTableExpressionIndex = pathwayDataDomain
-					.getGeneIDMappingManager().getIDAsSet(pathwayDataDomain.getDavidIDType(),
-							geneIDType, davidID);
+					.getGeneIDMappingManager().getIDAsSet(
+							pathwayDataDomain.getDavidIDType(), geneIDType, davidID);
 			if (dataTableExpressionIndex == null)
 				continue;
 			alExpressionIndex.addAll(dataTableExpressionIndex);
@@ -520,14 +529,15 @@ public class GLPathway
 	}
 
 	private SelectionDelta createExternalSelectionDelta(SelectionDelta selectionDelta) {
-		SelectionDelta newSelectionDelta = new SelectionDelta(geneSelectionManager.getIDType());
+		SelectionDelta newSelectionDelta = new SelectionDelta(
+				geneSelectionManager.getIDType());
 
 		for (SelectionDeltaItem item : selectionDelta) {
 			for (Integer expressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item
 					.getID())) {
 
-				SelectionDeltaItem newItem = newSelectionDelta.addSelection(expressionIndex,
-						item.getSelectionType());
+				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
+						expressionIndex, item.getSelectionType());
 				newItem.setRemove(item.isRemove());
 
 				for (Integer connectionID : item.getConnectionIDs()) {
@@ -550,8 +560,9 @@ public class GLPathway
 
 		for (SelectionDeltaItem item : selectionDelta) {
 
-			Set<Integer> tableIDs = idMappingManager.getIDAsSet(selectionDelta.getIDType(),
-					pathwayDataDomain.getDavidIDType(), item.getID());
+			Set<Integer> tableIDs = idMappingManager.getIDAsSet(
+					selectionDelta.getIDType(), pathwayDataDomain.getDavidIDType(),
+					item.getID());
 
 			if (tableIDs == null || tableIDs.isEmpty()) {
 				continue;
@@ -568,13 +579,14 @@ public class GLPathway
 			}
 
 			// Convert DAVID ID to pathway graph item representation ID
-			for (PathwayVertexRep vertexRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
+			for (PathwayVertexRep vertexRep : pathwayVertexGraphItem
+					.getPathwayVertexReps()) {
 				if (!pathway.containsVertex(vertexRep)) {
 					continue;
 				}
 
-				SelectionDeltaItem newItem = newSelectionDelta.addSelection(vertexRep.getID(),
-						item.getSelectionType());
+				SelectionDeltaItem newItem = newSelectionDelta.addSelection(
+						vertexRep.getID(), item.getSelectionType());
 				newItem.setRemove(item.isRemove());
 				for (int iConnectionID : item.getConnectionIDs()) {
 					newItem.addConnectionID(iConnectionID);
@@ -607,8 +619,7 @@ public class GLPathway
 
 		if (pathway.getType().equals(PathwayDatabaseType.BIOCARTA)) {
 			fPathwayScalingFactor = 5;
-		}
-		else {
+		} else {
 			fPathwayScalingFactor = 3.2f;
 		}
 
@@ -631,7 +642,8 @@ public class GLPathway
 		float viewFrustumAspectRatio = viewFrustumWidth / viewFrustumHeight;
 		boolean pathwayFitsViewFrustum = true;
 
-		if (viewFrustumAspectRatio < pathwayAspectRatio && fTmpPathwayWidth > viewFrustumWidth) {
+		if (viewFrustumAspectRatio < pathwayAspectRatio
+				&& fTmpPathwayWidth > viewFrustumWidth) {
 
 			// if (fTmpPathwayWidth > viewFrustum.getRight() -
 			// viewFrustum.getLeft()
@@ -640,10 +652,12 @@ public class GLPathway
 					/ (iImageWidth * PathwayRenderStyle.SCALING_FACTOR_X) * fPadding);
 			vecScaling.setY(vecScaling.x());
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
-							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+			vecTranslation
+					.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
+							(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
+									* PathwayRenderStyle.SCALING_FACTOR_Y
+									* vecScaling.y()) / 2.0f, 0);
 			pathwayFitsViewFrustum = false;
 		}
 		if (viewFrustumAspectRatio >= pathwayAspectRatio
@@ -655,10 +669,12 @@ public class GLPathway
 					/ (iImageHeight * PathwayRenderStyle.SCALING_FACTOR_Y) * fPadding);
 			vecScaling.setX(vecScaling.y());
 
-			vecTranslation.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
-					* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
-					(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
-							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()) / 2.0f, 0);
+			vecTranslation
+					.set((viewFrustum.getRight() - viewFrustum.getLeft() - iImageWidth
+							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()) / 2.0f,
+							(viewFrustum.getTop() - viewFrustum.getBottom() - iImageHeight
+									* PathwayRenderStyle.SCALING_FACTOR_Y
+									* vecScaling.y()) / 2.0f, 0);
 			pathwayFitsViewFrustum = false;
 
 		} // else {
@@ -713,7 +729,8 @@ public class GLPathway
 		// viewID = glRemoteRenderingView.getID();
 
 		for (int vertexRepID : geneSelectionManager.getElements(selectionType)) {
-			tmpPathwayVertexGraphItemRep = pathwayItemManager.getPathwayVertexRep(vertexRepID);
+			tmpPathwayVertexGraphItemRep = pathwayItemManager
+					.getPathwayVertexRep(vertexRepID);
 
 			ElementConnectionInformation elementRep = new ElementConnectionInformation(
 					dataDomain.getRecordIDType(), viewID,
@@ -737,8 +754,8 @@ public class GLPathway
 	@Override
 	public void broadcastElements(EVAOperation type) {
 
-		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective().getID(),
-				pathwayDataDomain.getDavidIDType());
+		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective()
+				.getID(), pathwayDataDomain.getDavidIDType());
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			for (Integer davidID : vertexRep.getDavidIDs()) {
@@ -780,16 +797,23 @@ public class GLPathway
 
 		enableGeneMappingListener = new EnableGeneMappingListener();
 		enableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(EnableGeneMappingEvent.class, enableGeneMappingListener);
+		eventPublisher.addListener(EnableGeneMappingEvent.class,
+				enableGeneMappingListener);
 
 		disableGeneMappingListener = new DisableGeneMappingListener();
 		disableGeneMappingListener.setHandler(this);
-		eventPublisher.addListener(DisableGeneMappingEvent.class, disableGeneMappingListener);
+		eventPublisher.addListener(DisableGeneMappingEvent.class,
+				disableGeneMappingListener);
 
 		switchDataRepresentationListener = new SwitchDataRepresentationListener();
 		switchDataRepresentationListener.setHandler(this);
 		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
 				switchDataRepresentationListener);
+
+		showBubbleSetForPathwayVertexRepsEventListener = new ShowBubbleSetForPathwayVertexRepsEventListener();
+		showBubbleSetForPathwayVertexRepsEventListener.setHandler(this);
+		eventPublisher.addListener(ShowBubbleSetForPathwayVertexRepsEvent.class,
+				showBubbleSetForPathwayVertexRepsEventListener);
 	}
 
 	@Override
@@ -810,6 +834,11 @@ public class GLPathway
 		if (switchDataRepresentationListener != null) {
 			eventPublisher.removeListener(switchDataRepresentationListener);
 			switchDataRepresentationListener = null;
+		}
+
+		if (showBubbleSetForPathwayVertexRepsEventListener != null) {
+			eventPublisher.removeListener(showBubbleSetForPathwayVertexRepsEventListener);
+			showBubbleSetForPathwayVertexRepsEventListener = null;
 		}
 	}
 
@@ -863,8 +892,7 @@ public class GLPathway
 		if (pathwayDataDomain.getGeneIDMappingManager().hasMapping(
 				pathwayDataDomain.getDavidIDType(), dataDomain.getRecordIDType())) {
 			geneSelectionManager = dataDomain.getRecordSelectionManager();
-		}
-		else {
+		} else {
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
 		}
 
@@ -918,18 +946,20 @@ public class GLPathway
 		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
 				.getPathwayVertexRep(externalID);
 
-		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
+		if (previouslySelectedVertexRep != null
+				&& selectionType == SelectionType.SELECTION) {
 			DijkstraShortestPath<PathwayVertexRep, DefaultEdge> pathAlgo = new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>(
 					pathway, previouslySelectedVertexRep, vertexRep);
+			// new DijkstraShortestPath<PathwayVertexRep, DefaultEdge>()
 
 			GraphPath<PathwayVertexRep, DefaultEdge> path = pathAlgo.getPath();
-			
+
 			if (path != null) {
-				
+
 				selectedPath = new PathwayPath(path);
-			
+
 				LinearizedPathwayPathEvent pathEvent = new LinearizedPathwayPathEvent();
-				
+
 				pathEvent.setPath(selectedPath);
 				pathEvent.setDataDomainID(dataDomain.getDataDomainID());
 				pathEvent.setSender(this);
@@ -958,6 +988,15 @@ public class GLPathway
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
 		event.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(event);
+	}
+
+	/**
+	 * Shows the bubble set for the specified list of {@link PathwayVertexRep}s.
+	 * 
+	 * @param vertexReps
+	 */
+	public void showBubbleSet(List<PathwayVertexRep> vertexReps) {
+		// TODO: Denis.
 	}
 
 	/**

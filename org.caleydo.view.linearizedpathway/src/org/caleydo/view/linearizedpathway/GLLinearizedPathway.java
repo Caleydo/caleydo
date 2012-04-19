@@ -20,16 +20,19 @@
 package org.caleydo.view.linearizedpathway;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -53,7 +56,6 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
@@ -71,6 +73,7 @@ import org.caleydo.view.linearizedpathway.node.CompoundNode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
 import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
+import org.caleydo.view.pathway.event.ShowBubbleSetForPathwayVertexRepsEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.graph.DefaultEdge;
 
@@ -1351,6 +1354,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		}
 
 		setPath(pathway, newPath);
+
+		ShowBubbleSetForPathwayVertexRepsEvent event = new ShowBubbleSetForPathwayVertexRepsEvent(
+				new ArrayList<PathwayVertexRep>(newPath));
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
 	/**
@@ -1521,6 +1529,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		}
 
 		setPath(pathway, path);
+		
+		ShowBubbleSetForPathwayVertexRepsEvent event = new ShowBubbleSetForPathwayVertexRepsEvent(
+				new ArrayList<PathwayVertexRep>(path));
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
 	}
 
 	@Override

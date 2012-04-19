@@ -19,12 +19,11 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway.graph;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.jgrapht.Graph;
 import org.jgrapht.GraphPath;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -58,17 +57,17 @@ public class PathwayPath {
 	 */
 	public List<PathwayVertexRep> getNodes() {
 		
-		List<DefaultEdge> edges = path.getEdgeList();
-		List<PathwayVertexRep> nodes = new ArrayList<PathwayVertexRep>();
-		Graph<PathwayVertexRep, DefaultEdge> pathway = path.getGraph();
-		
-		for(int i = 0 ; i < edges.size(); i++) {
-			DefaultEdge edge = edges.get(i);
-			if(i == 0)
-				nodes.add(pathway.getEdgeSource(edge));
-			nodes.add(pathway.getEdgeTarget(edge));
-		}
+//		List<DefaultEdge> edges = path.getEdgeList();
+//		List<PathwayVertexRep> nodes = new ArrayList<PathwayVertexRep>();
+//		Graph<PathwayVertexRep, DefaultEdge> pathway = path.getGraph();
+//		
+//		for(int i = 0 ; i < edges.size(); i++) {
+//			DefaultEdge edge = edges.get(i);
+//			if(i == 0)
+//				nodes.add(pathway.getEdgeSource(edge));
+//			nodes.add(pathway.getEdgeTarget(edge));
+//		}
 			
-		return nodes;
+		return Graphs.getPathVertexList(path);
 	}
 }
