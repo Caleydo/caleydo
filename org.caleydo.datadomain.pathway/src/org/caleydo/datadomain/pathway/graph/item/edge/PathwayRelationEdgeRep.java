@@ -37,9 +37,9 @@ public class PathwayRelationEdgeRep extends DefaultEdge implements Serializable 
 
 	private ArrayList<EPathwayRelationEdgeSubType> relationSubTypes = new ArrayList<EPathwayRelationEdgeSubType>();
 
-	public PathwayRelationEdgeRep(final String relationType) {
+	public PathwayRelationEdgeRep(final EPathwayRelationEdgeType relationType) {
 
-		this.relationType = EPathwayRelationEdgeType.valueOf(relationType);
+		this.relationType = relationType;
 	}
 
 	public EPathwayRelationEdgeType getType() {

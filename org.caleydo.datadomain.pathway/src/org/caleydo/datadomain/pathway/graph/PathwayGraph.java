@@ -26,14 +26,14 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.jgrapht.graph.DefaultEdge;
-import org.jgrapht.graph.DirectedPseudograph;
+import org.jgrapht.graph.DirectedMultigraph;
 
 /**
  * Overall graph that holds all pathways
  * 
  * @author Marc Streit
  */
-public class PathwayGraph extends DirectedPseudograph<PathwayVertexRep, DefaultEdge> implements IUniqueObject, Serializable,
+public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEdge> implements IUniqueObject, Serializable,
 		Comparable<PathwayGraph> {
 	
 	private static final long serialVersionUID = 1L;

@@ -33,6 +33,8 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
+import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
@@ -52,7 +54,9 @@ import org.xml.sax.SAXException;
  * 
  * @author Marc Streit
  */
-public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandler {
+public class KgmlSaxHandler
+	extends AXmlParserHandler
+	implements IXmlParserHandler {
 
 	private PathwayItemManager pathwayItemManager;
 	private PathwayManager pathwayManager;
@@ -72,13 +76,13 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	private HashMap<String, PathwayVertexRep> hashKgmlReactionNameToVertexRep = new HashMap<String, PathwayVertexRep>();
 
 	private String currentReactionName;
-	// private String currentReactionType;
+	private EPathwayReactionEdgeType currentReactionType;
 
 	private int currentEntryId;
 
 	private PathwayVertexRep relationSourceVertexRep;
 	private PathwayVertexRep relationTargetVertexRep;
-	private String relationType;
+	private EPathwayRelationEdgeType relationType;
 
 	/**
 	 * Constructor.
@@ -95,8 +99,8 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	}
 
 	@Override
-	public void startElement(String namespaceURI, String sSimpleName,
-			String sQualifiedName, Attributes attributes) throws SAXException {
+	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
+			Attributes attributes) throws SAXException {
 
 		String sElementName = sSimpleName;
 		this.attributes = attributes;
@@ -108,17 +112,23 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		if (attributes != null) {
 			if (sElementName.equals("pathway")) {
 				handlePathwayTag();
-			} else if (sElementName.equals("entry")) {
+			}
+			else if (sElementName.equals("entry")) {
 				handleEntryTag();
-			} else if (sElementName.equals("graphics")) {
+			}
+			else if (sElementName.equals("graphics")) {
 				handleGraphicsTag();
-			} else if (sElementName.equals("relation")) {
+			}
+			else if (sElementName.equals("relation")) {
 				handleRelationTag();
-			} else if (sElementName.equals("reaction")) {
+			}
+			else if (sElementName.equals("reaction")) {
 				handleReactionTag();
-			} else if (sElementName.equals("product")) {
+			}
+			else if (sElementName.equals("product")) {
 				handleReactionProductTag();
-			} else if (sElementName.equals("subtype")) {
+			}
+			else if (sElementName.equals("subtype")) {
 				handleSubtypeTag();
 			}
 		}
@@ -164,11 +174,14 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 			if (attributeName.equals("name")) {
 				name = attributes.getValue(iAttributeIndex);
-			} else if (attributeName.equals("title")) {
+			}
+			else if (attributeName.equals("title")) {
 				title = attributes.getValue(iAttributeIndex);
-			} else if (attributeName.equals("image")) {
+			}
+			else if (attributeName.equals("image")) {
 				sImageLink = attributes.getValue(iAttributeIndex);
-			} else if (attributeName.equals("link")) {
+			}
+			else if (attributeName.equals("link")) {
 				externalLink = attributes.getValue(iAttributeIndex);
 			}
 		}
@@ -185,8 +198,8 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		// PNGs
 		pathwayTexturePath = pathwayTexturePath.replace(".gif", ".png");
 
-		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.KEGG, name,
-				title, pathwayTexturePath, externalLink);
+		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.KEGG, name, title,
+				pathwayTexturePath, externalLink);
 	}
 
 	/**
@@ -210,13 +223,17 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 			if (attributeName.equals("id")) {
 				entryId = Integer.valueOf(attributes.getValue(attributeIndex)).intValue();
-			} else if (attributeName.equals("name")) {
+			}
+			else if (attributeName.equals("name")) {
 				name = attributes.getValue(attributeIndex);
-			} else if (attributeName.equals("type")) {
+			}
+			else if (attributeName.equals("type")) {
 				type = attributes.getValue(attributeIndex);
-			} else if (attributeName.equals("link")) {
+			}
+			else if (attributeName.equals("link")) {
 				externalLink = attributes.getValue(attributeIndex);
-			} else if (attributeName.equals("reaction")) {
+			}
+			else if (attributeName.equals("reaction")) {
 				currentReactionName = attributes.getValue(attributeIndex);
 			}
 		}
@@ -240,9 +257,9 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 				IDMappingManager genomeIdManager = ((PathwayDataDomain) DataDomainManager
 						.get().getDataDomainByType(PathwayDataDomain.DATA_DOMAIN_TYPE))
 						.getGeneIDMappingManager();
-				davidId = genomeIdManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
-						IDType.getIDType("DAVID"),
-						Integer.valueOf(tmpVertexName.substring(4)));
+				davidId = genomeIdManager
+						.getID(IDType.getIDType("ENTREZ_GENE_ID"), IDType.getIDType("DAVID"),
+								Integer.valueOf(tmpVertexName.substring(4)));
 
 				if (davidId == null) {
 					// Logger.log(new Status(IStatus.INFO,
@@ -256,9 +273,10 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 				DataTableDavidID.add(davidId);
 			}
 
-			currentVertices.addAll(pathwayItemManager.createVertexGene(tmpVertexName,
-					type, externalLink, DataTableDavidID));
-		} else {
+			currentVertices.addAll(pathwayItemManager.createVertexGene(tmpVertexName, type,
+					externalLink, DataTableDavidID));
+		}
+		else {
 			PathwayVertex currentVertex = pathwayItemManager.createVertex(name, type,
 					externalLink);
 
@@ -290,18 +308,24 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 				if (attributeName.equals("name")) {
 					name = attributes.getValue(iAttributeIndex);
-				} else if (attributeName.equals("height")) {
+				}
+				else if (attributeName.equals("height")) {
 					height = new Short(attributes.getValue(iAttributeIndex));
-				} else if (attributeName.equals("width")) {
+				}
+				else if (attributeName.equals("width")) {
 					width = new Short(attributes.getValue(iAttributeIndex));
-				} else if (attributeName.equals("x")) {
+				}
+				else if (attributeName.equals("x")) {
 					x = new Short(attributes.getValue(iAttributeIndex));
-				} else if (attributeName.equals("y")) {
+				}
+				else if (attributeName.equals("y")) {
 					y = new Short(attributes.getValue(iAttributeIndex));
-				} else if (attributeName.equals("type")) {
+				}
+				else if (attributeName.equals("type")) {
 					shapeType = attributes.getValue(iAttributeIndex);
 				}
-			} catch (NumberFormatException e) {
+			}
+			catch (NumberFormatException e) {
 				e.printStackTrace();
 			}
 		}
@@ -341,10 +365,12 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 			if (attributeName.equals("type")) {
 				type = attributes.getValue(attributeIndex);
-			} else if (attributeName.equals("entry1")) {
+			}
+			else if (attributeName.equals("entry1")) {
 				sourceVertexId = Integer.valueOf(attributes.getValue(attributeIndex))
 						.intValue();
-			} else if (attributeName.equals("entry2")) {
+			}
+			else if (attributeName.equals("entry2")) {
 				targetVertexId = Integer.valueOf(attributes.getValue(attributeIndex))
 						.intValue();
 			}
@@ -356,7 +382,7 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 		relationSourceVertexRep = hashKgmlEntryIdToVertexRep.get(sourceVertexId);
 		relationTargetVertexRep = hashKgmlEntryIdToVertexRep.get(targetVertexId);
-		relationType = type;
+		relationType = EPathwayRelationEdgeType.valueOf(type);
 	}
 
 	protected void handleSubtypeTag() {
@@ -376,8 +402,7 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 				if (subType.equals("compound")) {
 
-					int compoundID = Integer
-							.parseInt(attributes.getValue(attributeIndex));
+					int compoundID = Integer.parseInt(attributes.getValue(attributeIndex));
 
 					PathwayVertexRep compoundVertexRep = hashKgmlEntryIdToVertexRep
 							.get(compoundID);
@@ -396,34 +421,46 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 					// edge from compound to gene
 					if (pathwayRelationEdgeRep == null) {
 						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
-						try{
-						currentPathway.addEdge(relationSourceVertexRep,
-								compoundVertexRep, pathwayRelationEdgeRep);
+						try {
+							currentPathway.addEdge(relationSourceVertexRep, compoundVertexRep,
+									pathwayRelationEdgeRep);
 						}
-						catch(Exception e)
-						{
+						catch (Exception e) {
 							// TODO: marc, investigate why this happens here
 							e.printStackTrace();
 						}
-					} else {
+						
+						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
+						try {
+							currentPathway.addEdge(compoundVertexRep, relationSourceVertexRep,
+									pathwayRelationEdgeRep);
+						}
+						catch (Exception e) {
+							// TODO: marc, investigate why this happens here
+							e.printStackTrace();
+						}
+					}
+					else {
 						pathwayRelationEdgeRep.addRelationSubType(subType);
 
 						if (!subType.equals("compound"))
 							System.out.println("STOP");
 					}
 
-					pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
-							.getEdge(relationSourceVertexRep, compoundVertexRep);
+					pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway.getEdge(
+							relationSourceVertexRep, compoundVertexRep);
 
 					// edge from gene to compound
 					if (pathwayRelationEdgeRep == null) {
 						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
-						currentPathway.addEdge(compoundVertexRep,
-								relationTargetVertexRep, pathwayRelationEdgeRep);
-					} else {
+						currentPathway.addEdge(compoundVertexRep, relationTargetVertexRep,
+								pathwayRelationEdgeRep);
+					}
+					else {
 						pathwayRelationEdgeRep.addRelationSubType(subType);
 					}
-				} else {
+				}
+				else {
 					// all other cases except "compound"
 
 					// create edge representation
@@ -438,7 +475,8 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 
 							currentPathway.addEdge(relationSourceVertexRep,
 									relationTargetVertexRep, pathwayRelationEdgeRep);
-						} catch (IllegalArgumentException e) {
+						}
+						catch (IllegalArgumentException e) {
 							// Logger.log(new Status(IStatus.INFO,
 							// GeneralManager.PLUGIN_ID,
 							// "Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph."));
@@ -459,7 +497,7 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 	protected void handleReactionTag() {
 
 		String reactionName = "";
-		// String reactionType = "";
+		String reactionType = "";
 
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
@@ -469,14 +507,15 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 			}
 
 			if (attributeName.equals("type")) {
-				// reactionType = attributes.getValue(attributeIndex);
-			} else if (attributeName.equals("name")) {
+				reactionType = attributes.getValue(attributeIndex);
+			}
+			else if (attributeName.equals("name")) {
 				reactionName = attributes.getValue(attributeIndex);
 			}
 		}
 
 		currentReactionName = reactionName;
-		// currentReactionType = reactionType;
+		currentReactionType = EPathwayReactionEdgeType.valueOf(reactionType);
 	}
 
 	/**
@@ -499,14 +538,19 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 			}
 		}
 
-		PathwayVertexRep sourceVertexRep = hashKgmlNameToVertexRep
-				.get(reactionSubstrateName);
+		PathwayVertexRep sourceVertexRep = hashKgmlNameToVertexRep.get(reactionSubstrateName);
 		PathwayVertexRep targetVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
 
 		// Edge from the substrate to the gene
-		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep();
+		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(
+				currentReactionType);
 		currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
+
+		//if (currentReactionType == EPathwayReactionEdgeType.reversible) {
+			pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
+			currentPathway.addEdge(targetVertexRep, sourceVertexRep, pathwayReactionEdgeRep);
+		//}
 	}
 
 	/**
@@ -532,20 +576,28 @@ public class KgmlSaxHandler extends AXmlParserHandler implements IXmlParserHandl
 		PathwayVertexRep sourceVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
 
-		PathwayVertexRep targetVertexRep = hashKgmlNameToVertexRep
-				.get(reactionProductName);
+		PathwayVertexRep targetVertexRep = hashKgmlNameToVertexRep.get(reactionProductName);
 
 		// Edge from the product to the gene
-		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep();
+		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(
+				currentReactionType);
 
 		try {
-			currentPathway.addEdge(sourceVertexRep, targetVertexRep,
-					pathwayReactionEdgeRep);
-		} catch (Exception e) {
+			currentPathway.addEdge(sourceVertexRep, targetVertexRep, pathwayReactionEdgeRep);
+
+			//if (currentReactionType == EPathwayReactionEdgeType.reversible) {
+				pathwayReactionEdgeRep = new PathwayReactionEdgeRep(currentReactionType);
+				currentPathway.addEdge(targetVertexRep, sourceVertexRep,
+						pathwayReactionEdgeRep);
+			//}
+
+		}
+		catch (Exception e) {
 			Logger.log(new Status(
 					IStatus.INFO,
 					GeneralManager.PLUGIN_ID,
-					"Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n" + e.getStackTrace()));
+					"Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n"
+							+ e.getStackTrace()));
 		}
 	}
 

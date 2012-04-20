@@ -395,7 +395,8 @@ public class GLPathway
 	protected void initPathwayData(final GL2 gl) {
 
 		isPathwayDataDirty = false;
-
+		isDisplayListDirty = true;
+		
 		geneSelectionManager.clearSelections();
 		selectedPath = null;
 		allPaths = null;
@@ -962,9 +963,12 @@ public class GLPathway
 					pathway, previouslySelectedVertexRep, MAX_PATHS);
 
 			allPaths = pathAlgo.getPaths(vertexRep);
+			selectedPath = null;
 
 			if (allPaths != null && allPaths.size() > 0) {
 
+				System.out.println("paths: " +allPaths.size());
+				
 				selectedPath = new PathwayPath(allPaths.get(0));
 
 				LinearizedPathwayPathEvent pathEvent = new LinearizedPathwayPathEvent();
