@@ -50,6 +50,7 @@ import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.clusterer.ClusterResult;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
@@ -101,6 +102,9 @@ public class Application implements IApplication {
 		}
 
 		GeneralManager.get().init();
+		// FIXME: temp hack
+		GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
+
 		createJAXBContext();
 		DataSetDescriptionCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
 
@@ -152,39 +156,37 @@ public class Application implements IApplication {
 		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
 
-//		if (dataSetDescription.areAllColumnTypesContinuous()
-//				&& dataSetDescription.getRowGroupingSpecifications() == null
-//				&& dataSetDescription.isDataHomogeneous()) {
+		// if (dataSetDescription.areAllColumnTypesContinuous()
+		// && dataSetDescription.getRowGroupingSpecifications() == null
+		// && dataSetDescription.isDataHomogeneous()) {
 
-//			runClusteringOnDimensions(dataDomain, true, 4);
+		// runClusteringOnDimensions(dataDomain, true, 4);
 
-			createSampleOfGenes(dataDomain,
-					runClusteringOnDimensions(dataDomain, true, 5).getDimensionResult());
-			runClusteringOnDimensions(dataDomain, true, 6);
+		createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain, true, 5)
+				.getDimensionResult());
+		runClusteringOnDimensions(dataDomain, true, 6);
 
-			// runClusteringOnRows(false, -1);
-			// if (metaInfo.isCreateGeneSamples())
+		// runClusteringOnRows(false, -1);
+		// if (metaInfo.isCreateGeneSamples())
 
-//		}
-		
+		// }
+
 		// if we don't have a row-grouping we create one
-//		if (dataSetDescription.areAllColumnTypesContinuous()
-//				&& dataSetDescription.getRowGroupingSpecifications() == null
-//				&& dataSetDescription.isDataHomogeneous()) {
+		// if (dataSetDescription.areAllColumnTypesContinuous()
+		// && dataSetDescription.getRowGroupingSpecifications() == null
+		// && dataSetDescription.isDataHomogeneous()) {
 
-//			runClusteringOnRecords(dataDomain, false, 4);
+		// runClusteringOnRecords(dataDomain, false, 4);
 
-//			createSampleOfGenes(dataDomain,
-//					runClusteringOnRecords(dataDomain, true, 5).getDimensionResult());
-			runClusteringOnRecords(dataDomain, true, 6);
-//			runClusteringOnRecords(dataDomain, false, 6);
+		// createSampleOfGenes(dataDomain,
+		// runClusteringOnRecords(dataDomain, true, 5).getDimensionResult());
+		runClusteringOnRecords(dataDomain, true, 6);
+		// runClusteringOnRecords(dataDomain, false, 6);
 
-			// runClusteringOnRows(false, -1);
-			// if (metaInfo.isCreateGeneSamples())
+		// runClusteringOnRows(false, -1);
+		// if (metaInfo.isCreateGeneSamples())
 
-//		}
-		
-	
+		// }
 
 	}
 
@@ -437,12 +439,11 @@ public class Application implements IApplication {
 			// linkage hierarchical clustering
 			clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
 			clusterConfiguration.setAffinityPropClusterFactorGenes(9);
-			
+
 			RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
 			dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
 
-			targetRecordPerspective.setLabel("Affinity",
-					false);
+			targetRecordPerspective.setLabel("Affinity", false);
 
 			clusterConfiguration
 					.setOptionalTargetRecordPerspective(targetRecordPerspective);
