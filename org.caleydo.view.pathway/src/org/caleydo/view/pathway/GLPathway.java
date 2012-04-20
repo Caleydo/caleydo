@@ -107,8 +107,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	protected PathwayDataDomain pathwayDataDomain;
 	private PathwayGraph pathway;
 
-	private boolean bEnablePathwayTexture = true;
+	private boolean enablePathwayTexture = true;
 
+	private boolean isPathwayDataDirty = false;
+	
 	private PathwayManager pathwayManager;
 	private PathwayItemManager pathwayItemManager;
 
@@ -168,6 +170,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		}
 
 		this.pathway = pathway;
+		isPathwayDataDirty = true;
 	}
 
 	@Override
@@ -340,8 +343,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
 			return;
 
-		// FIXME - check if already initialized with dirty flag
-		initPathwayData(gl);
+		if (isPathwayDataDirty)
+			initPathwayData(gl);
 
 		pickingManager.handlePicking(this, gl);
 		if (isDisplayListDirty) {
@@ -378,6 +381,11 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	protected void initPathwayData(final GL2 gl) {
 
+		isPathwayDataDirty = false;
+		
+		geneSelectionManager.clearSelections();
+		selectedPath = null;
+		
 		gLPathwayContentCreator.init(gl, geneSelectionManager);
 
 		// Create new pathway manager for GL2 context
@@ -399,7 +407,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 
-		if (bEnablePathwayTexture) {
+		if (enablePathwayTexture) {
 			float fPathwayTransparency = 1.0f;
 
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway,
@@ -698,7 +706,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gLPathwayContentCreator.enableEdgeRendering(!bEnablePathwayTexture);
 		setDisplayListDirty();
 
-		this.bEnablePathwayTexture = bEnablePathwayTexture;
+		this.enablePathwayTexture = bEnablePathwayTexture;
 	}
 
 	public void enableNeighborhood(final boolean bEnableNeighborhood) {
