@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,7 +26,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -35,11 +34,15 @@ import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 
 /**
@@ -69,6 +72,14 @@ import org.caleydo.core.data.virtualarray.group.RecordGroupList;
  * perspectives with the same instance of the DataContainer, thereby avoiding
  * double-calculation of derived meta-data (which can be both, computationally
  * and storage-wise expensive)
+ * </p>
+ * <p>
+ * Data containers can be hierarchically created based on {@link GroupList}s of
+ * one of the {@link ADataPerspective}s using the
+ * {@link #getRecordSubDataContainers()} and
+ * {@link #getDimensionSubDataContainers()}. The resulting
+ * <code>DataContainer</code>s have the {@link #recordGroup}, resp. the
+ * #dimensionGroup set, which are otherwise null.
  * </p>
  * 
  * @author Alexander Lex
@@ -103,31 +114,38 @@ public class DataContainer {
 	private boolean isDefaultLabel = true;
 
 	/**
-	 * Flag determining whether this data container is private to a certain view. That means that other views
-	 * typically should not use this data container.
+	 * Flag determining whether this data container is private to a certain
+	 * view. That means that other views typically should not use this data
+	 * container.
 	 */
 	@XmlElement
 	protected boolean isPrivate;
-	
+
 	public static IDCategory DATA_CONTAINER = IDCategory
 			.registerCategory("DATA_CONTAINER");
 	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners",
 			DATA_CONTAINER, EColumnType.INT);
-	
+
 	/**
-	 * A Group describes a part of a virtual array, e.g. a cluster. The group
-	 * for a data container is only set when the DataContainer is a
-	 * sub-container of another recordVirtualArray.group which
+	 * A group containing all elements of the {@link #recordPerspective}'s
+	 * virtual array of this data container. This is only set when the
+	 * <code>DataContainer</code> is a sub-container of another
+	 * <code>DataContainer</code> which
 	 */
-	protected Group recordGroup;
-	
+	protected Group recordGroup = null;
+
+	/**
+	 * Same as {@link #recordGroup} for dimensions
+	 */
+	protected Group dimensionGroup = null;
+
 	/**
 	 * Object holding respectively calculating all forms of (statistical)
 	 * meta-data for this container
 	 */
 	@XmlTransient
 	protected ContainerStatistics containerStatistics;
-	
+
 	/**
 	 * Empty constructor, nothing initialized
 	 */
@@ -281,7 +299,7 @@ public class DataContainer {
 	public boolean isPrivate() {
 		return isPrivate;
 	}
-	
+
 	/**
 	 * @return the recordGroup, see {@link #recordGroup}
 	 */
@@ -295,6 +313,21 @@ public class DataContainer {
 	 */
 	public void setRecordGroup(Group recordGroup) {
 		this.recordGroup = recordGroup;
+	}
+
+	/**
+	 * @return the dimensionGroup, see {@link #dimensionGroup}
+	 */
+	public Group getDimensionGroup() {
+		return dimensionGroup;
+	}
+
+	/**
+	 * @param dimensionGroup
+	 *            setter, see {@link #dimensionGroup}
+	 */
+	public void setDimensionGroup(Group dimensionGroup) {
+		this.dimensionGroup = dimensionGroup;
 	}
 
 	/**
@@ -338,6 +371,50 @@ public class DataContainer {
 		}
 
 		return recordSubDataContainers;
+	}
+
+	/**
+	 * Creates and returns one new {@link DataContainer} for each group in the
+	 * {@link RecordPerspective}, where the new {@link RecordPerspective}
+	 * contains the elements of the group. The {@link DimensionPerspective} is
+	 * the same as for this container.
+	 * 
+	 * @return a new list of new {@link DataContainer}s
+	 */
+	public List<DataContainer> getDimensionSubDataContainers() {
+
+		List<DataContainer> dimensionSubDataContainers = new ArrayList<DataContainer>();
+
+		DimensionVirtualArray dimensionVA = dimensionPerspective.getVirtualArray();
+
+		if (dimensionVA.getGroupList() == null)
+			return null;
+
+		DimensionGroupList groupList = dimensionVA.getGroupList();
+		groupList.updateGroupInfo();
+
+		for (Group group : groupList) {
+
+			List<Integer> indices = dimensionVA.getIDsOfGroup(group.getGroupIndex());
+
+			DimensionPerspective dimensionPerspective = new DimensionPerspective(
+					dataDomain);
+			dimensionPerspective.setLabel(group.getClusterNode().getLabel(), group
+					.getClusterNode().isDefaultLabel());
+			PerspectiveInitializationData data = new PerspectiveInitializationData();
+			data.setData(indices);
+			dimensionPerspective.init(data);
+
+			DataContainer subDataContainer = new DataContainer(dataDomain,
+					recordPerspective, dimensionPerspective);
+			subDataContainer.setDimensionGroup(group);
+			subDataContainer.setLabel(group.getClusterNode().getLabel(),
+					group.getClusterNode().isDefaultLabel());
+			dimensionSubDataContainers.add(subDataContainer);
+
+		}
+
+		return dimensionSubDataContainers;
 	}
 
 }

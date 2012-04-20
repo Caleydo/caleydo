@@ -59,11 +59,11 @@ public class RowRenderer extends LayoutRenderer {
 		int experimentCount = 0;
 
 		float z = 0.05f;
-		
-//		GLHelperFunctions.drawPointAt(gl, 0, 0, 1);
+
+		// GLHelperFunctions.drawPointAt(gl, 0, 0, 1);
 
 		float[] barColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
-		float[] noMappingColor =  { 166f / 255f, 189f / 255, 219f / 255, 1f };
+		float[] noMappingColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
 		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
 			float value;
 			if (geneID == null) {
@@ -73,20 +73,19 @@ public class RowRenderer extends LayoutRenderer {
 				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
 						experimentID);
 				gl.glColor4fv(barColor, 0);
+
+				float leftEdge = xIncrement * experimentCount;
+				float upperEdge = value * y;
+
+				gl.glBegin(GL2.GL_QUADS);
+				gl.glVertex3f(leftEdge, 0, z);
+				gl.glVertex3f(leftEdge, upperEdge, z);
+				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
+
+				gl.glVertex3f(leftEdge + xIncrement, 0, z);
+
+				gl.glEnd();
 			}
-
-			float leftEdge = xIncrement * experimentCount;
-			float upperEdge = value * y;
-
-			gl.glBegin(GL2.GL_QUADS);
-			gl.glVertex3f(leftEdge, 0, z);
-			gl.glVertex3f(leftEdge, upperEdge, z);
-			gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
-
-			gl.glVertex3f(leftEdge + xIncrement, 0, z);
-
-			gl.glEnd();
-
 			experimentCount++;
 
 		}

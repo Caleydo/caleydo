@@ -28,10 +28,13 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
+import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
@@ -53,7 +56,24 @@ public class MappedDataRenderer {
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
 
-	private ArrayList<DataContainer> dataContainers;
+	/**
+	 * The top-level data containers as set externally through the
+	 * {@link IMultiDataContainerBasedView} interface of {@link #parentView}
+	 */
+	private ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>(5);;
+
+	/**
+	 * The data containers resolved based on the {@link GroupList}s of the
+	 * {@link #dataContainers}. That means that this list contains a
+	 * dataContainer for every experiment group in one of the DataContainers in
+	 * {@link #dataContainers}.
+	 */
+	private ArrayList<DataContainer> resolvedDataContainers = new ArrayList<DataContainer>();
+
+	/**
+	 * Set to either {@link #dataContainers} or {@link #resolvedDataContainers}
+	 */
+	private ArrayList<DataContainer> usedDataContainers;
 
 	/**
 	 * the distance from the left edge of this renderer to the left edge of the
@@ -86,7 +106,7 @@ public class MappedDataRenderer {
 		this.parentView = parentView;
 		viewFrustum = new ViewFrustum();
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
-		dataContainers = new ArrayList<DataContainer>(5);
+		usedDataContainers = resolvedDataContainers;
 	}
 
 	public void render(GL2 gl) {
@@ -163,13 +183,17 @@ public class MappedDataRenderer {
 
 		/** A list of rows for each data container */
 		ArrayList<ArrayList<Row>> rowListForDataContainers = new ArrayList<ArrayList<Row>>(
-				(int) (dataContainers.size() * 1.6));
+				(int) (usedDataContainers.size() * 1.6));
 
-		for (DataContainer dataContainer : dataContainers) {
+		for (DataContainer dataContainer : usedDataContainers) {
 			rowListForDataContainers.add(new ArrayList<Row>(linearizedNodes.size() * 2));
 		}
 
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
+
+		ElementLayout xSpacing = new ElementLayout();
+		xSpacing.setPixelSizeX(5);
+
 		for (ANode node : linearizedNodes) {
 
 			if (node.getNumAssociatedRows() == 0)
@@ -209,7 +233,6 @@ public class MappedDataRenderer {
 			} else {
 				deviation = previousNodePosition - rowHeight * previousNrDavids / 2
 						- currentNodePositionY - rowHeight * subDavidIDs.size() / 2;
-				// - (currentNodePositionY - rowHeight * davidIDs.size());
 			}
 
 			if (previousNodePosition > 0 && deviation > 0) {
@@ -222,6 +245,7 @@ public class MappedDataRenderer {
 			previousNrDavids = subDavidIDs.size();
 
 			int idCount = 0;
+
 			for (Integer davidID : subDavidIDs) {
 
 				Row row = new Row();
@@ -231,30 +255,25 @@ public class MappedDataRenderer {
 				row.setAbsoluteSizeY(rowHeight);
 				dataSetColumn.append(row);
 
-				for (int dataContainerCount = 0; dataContainerCount < dataContainers
+				for (int dataContainerCount = 0; dataContainerCount < usedDataContainers
 						.size(); dataContainerCount++) {
-					// DataContainer dataContainer =
-					// dataContainers.get(dataContainerCount);
-					// rowListForDataContainers.get(dataContainer);
 					Row dataContainerRow = new Row("DataContainer " + dataContainerCount
 							+ " / " + idCount);
-					dataContainerRow.setRatioSizeX(1.0f / dataContainers.size());
 					// dataContainerRow.setPixelSizeX(5);
 					row.append(dataContainerRow);
 					rowListForDataContainers.get(dataContainerCount)
 							.add(dataContainerRow);
-					ElementLayout spacing = new ElementLayout();
-					spacing.setPixelSizeX(5);
-					row.append(spacing);
+					if (dataContainerCount != usedDataContainers.size() - 1) {
+						row.append(xSpacing);
+					}
 				}
-
-				Row captionRow = new Row();
-				captionRow.setAbsoluteSizeY(rowHeight);
+				ElementLayout rowCaption = new ElementLayout();
+				rowCaption.setAbsoluteSizeY(rowHeight);
 				CaptionRenderer captionRenderer = new CaptionRenderer(
 						parentView.getTextRenderer(), parentView.getPixelGLConverter(),
 						davidID);
-				captionRow.setRenderer(captionRenderer);
-				captionColumn.append(captionRow);
+				rowCaption.setRenderer(captionRenderer);
+				captionColumn.append(rowCaption);
 
 				if (idCount == 0)
 					relationShipRenderer.topRightLayout = row;
@@ -265,16 +284,29 @@ public class MappedDataRenderer {
 			}
 
 		}
+		ElementLayout ySpacing = new ElementLayout();
+		ySpacing.setPixelSizeY(5);
+		dataSetColumn.append(ySpacing);
+		
+		Row captionRow = new Row("captionRow");
+		captionRow.setPixelSizeY(40);
+		dataSetColumn.append(captionRow);
 
-		for (int dataContainerCount = 0; dataContainerCount < dataContainers.size(); dataContainerCount++) {
-			prepareData(dataContainers.get(dataContainerCount),
-					rowListForDataContainers.get(dataContainerCount), davidIDs);
+		for (int dataContainerCount = 0; dataContainerCount < usedDataContainers.size(); dataContainerCount++) {
+			ElementLayout captionLayout = new ElementLayout("caption layout");
+			captionRow.append(captionLayout);
+			if (dataContainerCount != usedDataContainers.size() - 1) {
+				captionRow.append(xSpacing);
+			}
+			prepareData(usedDataContainers.get(dataContainerCount),
+					rowListForDataContainers.get(dataContainerCount), captionLayout,
+					davidIDs);
 		}
 
 	}
 
 	private void prepareData(DataContainer dataContainer, ArrayList<Row> rowLayouts,
-			ArrayList<Integer> davidIDs) {
+			ElementLayout captionLayout, ArrayList<Integer> davidIDs) {
 		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
 
 		ADataPerspective<?, ?, ?, ?> experimentPerspective;
@@ -308,6 +340,19 @@ public class MappedDataRenderer {
 
 			// geneIDs.add(davidID);
 			Row row = rowLayouts.get(rowCount);
+
+			float width = 1.0f / usedDataContainers.size();
+			row.setRatioSizeX(width);
+
+			captionLayout.setRatioSizeX(width);
+			
+			
+			
+			LayoutRenderer columnCaptionRenderer = new ColumnCaptionRenderer(
+					parentView.getTextRenderer(), parentView.getPixelGLConverter(),
+					dataContainer.getLabel());
+			captionLayout.setRenderer(columnCaptionRenderer);
+
 			row.setRenderer(new RowRenderer(geneID, dataDomain, dataContainer,
 					experimentPerspective));
 		}
@@ -316,15 +361,33 @@ public class MappedDataRenderer {
 
 	public void addDataContainer(DataContainer newDataContainer) {
 		dataContainers.add(newDataContainer);
+		ArrayList<DataContainer> newDataContainers = new ArrayList<DataContainer>(1);
+		newDataContainers.add(newDataContainer);
+		resolveSubDataContainers(newDataContainers);
 
 	}
 
 	public void addDataContainers(List<DataContainer> newDataContainers) {
 		dataContainers.addAll(newDataContainers);
+		resolveSubDataContainers(newDataContainers);
 	}
 
 	public List<DataContainer> getDataContainers() {
 		return dataContainers;
+	}
+
+	private void resolveSubDataContainers(List<DataContainer> newDataContainers) {
+		for (DataContainer dataContainer : newDataContainers) {
+			GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer
+					.getDataDomain();
+			if (dataDomain.isGeneRecord()) {
+				resolvedDataContainers.addAll(dataContainer
+						.getDimensionSubDataContainers());
+			} else {
+				resolvedDataContainers.addAll(dataContainer.getRecordSubDataContainers());
+			}
+		}
+
 	}
 
 }
