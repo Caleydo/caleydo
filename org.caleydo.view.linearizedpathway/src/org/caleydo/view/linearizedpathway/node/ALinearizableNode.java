@@ -43,12 +43,12 @@ public abstract class ALinearizableNode extends ANode {
 	 * Determines whether the node shows a preview of its data.
 	 */
 	protected boolean isPreviewMode = false;
-	
+
 	/**
-	 * Determines whether the button to remove the 
+	 * Determines whether the button to remove the
 	 */
 	protected boolean showRemoveButton = false;
-	
+
 	/**
 	 * The {@link SelectionType} of the node.
 	 */
@@ -76,7 +76,7 @@ public abstract class ALinearizableNode extends ANode {
 		view.removeAllIDPickingListeners(PickingType.GENE_NODE.name(), nodeId);
 		mode.unregisterPickingListeners();
 	}
-	
+
 	@Override
 	public void render(GL2 gl, GLU glu) {
 		mode.render(gl, glu);
@@ -117,14 +117,15 @@ public abstract class ALinearizableNode extends ANode {
 	 * @return A new preview mode object for the concrete node.
 	 */
 	protected abstract ALinearizeableNodeMode getPreviewMode();
-	
+
 	/**
-	 * @param selectionType setter, see {@link #selectionType}
+	 * @param selectionType
+	 *            setter, see {@link #selectionType}
 	 */
 	public void setSelectionType(SelectionType selectionType) {
 		this.selectionType = selectionType;
 	}
-	
+
 	/**
 	 * @return the selectionType, see {@link #selectionType}
 	 */
@@ -133,13 +134,23 @@ public abstract class ALinearizableNode extends ANode {
 	}
 
 	@Override
-	public int getMinRequiredHeightPixels() {
+	public int getHeightPixels() {
 		return mode.getMinHeightPixels();
 	}
 
 	@Override
-	public int getMinRequiredWidthPixels() {
+	public int getWidthPixels() {
 		return mode.getMinWidthPixels();
 	}
+
+	// @Override
+	// public int getMinRequiredHeightPixels() {
+	// return mode.getMinHeightPixels();
+	// }
+	//
+	// @Override
+	// public int getMinRequiredWidthPixels() {
+	// return mode.getMinWidthPixels();
+	// }
 
 }

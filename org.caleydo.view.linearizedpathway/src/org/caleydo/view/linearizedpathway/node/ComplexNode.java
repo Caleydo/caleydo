@@ -59,6 +59,12 @@ public class ComplexNode extends ALinearizableNode {
 	private List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
 
 	/**
+	 * List of {@link ALinearizableNode} objects that belong to this complex
+	 * node.
+	 */
+	private List<ALinearizableNode> nodes = new ArrayList<ALinearizableNode>();
+
+	/**
 	 * The caption displayed on the node.
 	 */
 	protected String caption = "Complex";
@@ -75,38 +81,56 @@ public class ComplexNode extends ALinearizableNode {
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
-		float width = pixelGLConverter.getGLWidthForPixelWidth(widthPixels);
-		float height = pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
 
-		Vec3f lowerLeftPosition = new Vec3f(position.x() - width / 2.0f, position.y()
-				- height / 2.0f, position.z());
+		float currentPositionY = position.y() + getHeight() / 2.0f;
 
-		gl.glPushName(pickingManager.getPickingID(view.getID(),
-				PickingType.LINEARIZABLE_NODE.name(), nodeId));
+		for (ALinearizableNode node : nodes) {
+			float nodeHeight = node.getHeight();
+			currentPositionY -= nodeHeight / 2.0f;
+			node.setPosition(new Vec3f(position.x(), currentPositionY, position.z()));
+			node.render(gl, glu);
+			currentPositionY -= nodeHeight / 2.0f;
+		}
 
-		gl.glColor3f(0, 0, 0);
-		gl.glBegin(GL2.GL_LINE_LOOP);
-		gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(), lowerLeftPosition.z());
-		gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
-				lowerLeftPosition.z());
-		gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() + height,
-				position.z());
-		gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
-				lowerLeftPosition.z());
-		gl.glEnd();
-
-		textRenderer.setColor(0, 0, 0, 1);
-
-		float textSpacing = pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS);
-		float textWidth = textRenderer.getRequiredTextWidthWithMax(caption, height - 2
-				* textSpacing, width - 2 * textSpacing);
-
-		textRenderer.renderTextInBounds(gl, caption + " " + numAssociatedRows,
-				position.x() - textWidth / 2.0f + textSpacing, lowerLeftPosition.y()
-						+ 1.5f * textSpacing, lowerLeftPosition.z(), width - 2
-						* textSpacing, height - 2 * textSpacing);
-
-		gl.glPopName();
+		// float width = pixelGLConverter.getGLWidthForPixelWidth(widthPixels);
+		// float height =
+		// pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
+		//
+		// Vec3f lowerLeftPosition = new Vec3f(position.x() - width / 2.0f,
+		// position.y()
+		// - height / 2.0f, position.z());
+		//
+		// gl.glPushName(pickingManager.getPickingID(view.getID(),
+		// PickingType.LINEARIZABLE_NODE.name(), nodeId));
+		//
+		// gl.glColor3f(0, 0, 0);
+		// gl.glBegin(GL2.GL_LINE_LOOP);
+		// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(),
+		// lowerLeftPosition.z());
+		// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
+		// lowerLeftPosition.z());
+		// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() +
+		// height,
+		// position.z());
+		// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
+		// lowerLeftPosition.z());
+		// gl.glEnd();
+		//
+		// textRenderer.setColor(0, 0, 0, 1);
+		//
+		// float textSpacing =
+		// pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS);
+		// float textWidth = textRenderer.getRequiredTextWidthWithMax(caption,
+		// height - 2
+		// * textSpacing, width - 2 * textSpacing);
+		//
+		// textRenderer.renderTextInBounds(gl, caption + " " +
+		// numAssociatedRows,
+		// position.x() - textWidth / 2.0f + textSpacing, lowerLeftPosition.y()
+		// + 1.5f * textSpacing, lowerLeftPosition.z(), width - 2
+		// * textSpacing, height - 2 * textSpacing);
+		//
+		// gl.glPopName();
 
 	}
 
@@ -158,7 +182,6 @@ public class ComplexNode extends ALinearizableNode {
 	protected ALinearizeableNodeMode getLinearizedMode() {
 		return new ComplexNodeLinearizedMode(view);
 	}
-
 
 	@Override
 	protected ALinearizeableNodeMode getPreviewMode() {

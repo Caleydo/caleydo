@@ -33,7 +33,8 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
- * Base class for all nodes that can be displayed in the linearized pathway view.
+ * Base class for all nodes that can be displayed in the linearized pathway
+ * view.
  * 
  * @author Christian
  * 
@@ -52,15 +53,15 @@ public abstract class ANode {
 	 */
 	protected Vec3f position;
 
-	/**
-	 * Height of the node in Pixels.
-	 */
-	protected int heightPixels = DEFAULT_HEIGHT_PIXELS;
-
-	/**
-	 * Width of the node in Pixels.
-	 */
-	protected int widthPixels = DEFAULT_WIDTH_PIXELS;
+	// /**
+	// * Height of the node in Pixels.
+	// */
+	// protected int heightPixels = DEFAULT_HEIGHT_PIXELS;
+	//
+	// /**
+	// * Width of the node in Pixels.
+	// */
+	// protected int widthPixels = DEFAULT_WIDTH_PIXELS;
 
 	/**
 	 * The number of rows that show the data associated with this node renderer.
@@ -109,9 +110,7 @@ public abstract class ANode {
 	 *         node.
 	 */
 	public Vec3f getTopConnectionPoint() {
-		return new Vec3f(position.x(), position.y()
-				+ pixelGLConverter.getGLHeightForPixelHeight(heightPixels) / 2.0f,
-				position.z());
+		return new Vec3f(position.x(), position.y() + getHeight() / 2.0f, position.z());
 	}
 
 	/**
@@ -119,9 +118,7 @@ public abstract class ANode {
 	 *         node.
 	 */
 	public Vec3f getBottomConnectionPoint() {
-		return new Vec3f(position.x(), position.y()
-				- pixelGLConverter.getGLHeightForPixelHeight(heightPixels) / 2.0f,
-				position.z());
+		return new Vec3f(position.x(), position.y() - getHeight() / 2.0f, position.z());
 	}
 
 	/**
@@ -129,9 +126,7 @@ public abstract class ANode {
 	 *         the node.
 	 */
 	public Vec3f getLeftConnectionPoint() {
-		return new Vec3f(position.x()
-				- pixelGLConverter.getGLWidthForPixelWidth(widthPixels) / 2.0f,
-				position.y(), position.z());
+		return new Vec3f(position.x() - getWidth() / 2.0f, position.y(), position.z());
 	}
 
 	/**
@@ -139,9 +134,7 @@ public abstract class ANode {
 	 *         the node.
 	 */
 	public Vec3f getRightConnectionPoint() {
-		return new Vec3f(position.x()
-				+ pixelGLConverter.getGLWidthForPixelWidth(widthPixels) / 2.0f,
-				position.y(), position.z());
+		return new Vec3f(position.x() + getWidth() / 2.0f, position.y(), position.z());
 	}
 
 	/**
@@ -159,35 +152,31 @@ public abstract class ANode {
 		return position;
 	}
 
+	// /**
+	// * @param heightPixels
+	// * setter, see {@link #heightPixels}
+	// */
+	// public void setHeightPixels(int heightPixels) {
+	// this.heightPixels = heightPixels;
+	// }
+	//
 	/**
-	 * @param heightPixels
-	 *            setter, see {@link #heightPixels}
+	 * @return the height of the node in pixels.
 	 */
-	public void setHeightPixels(int heightPixels) {
-		this.heightPixels = heightPixels;
-	}
+	public abstract int getHeightPixels();
+
+	// /**
+	// * @param widthPixels
+	// * setter, see {@link #widthPixels}
+	// */
+	// public void setWidthPixels(int widthPixels) {
+	// this.widthPixels = widthPixels;
+	// }
 
 	/**
-	 * @return the heightPixels, see {@link #heightPixels}
+	 * @return the width of the node in pixels.
 	 */
-	public int getHeightPixels() {
-		return heightPixels;
-	}
-
-	/**
-	 * @param widthPixels
-	 *            setter, see {@link #widthPixels}
-	 */
-	public void setWidthPixels(int widthPixels) {
-		this.widthPixels = widthPixels;
-	}
-
-	/**
-	 * @return the widthPixels, see {@link #widthPixels}
-	 */
-	public int getWidthPixels() {
-		return widthPixels;
-	}
+	public abstract int getWidthPixels();
 
 	/**
 	 * @param numAssociatedRows
@@ -204,15 +193,28 @@ public abstract class ANode {
 		return numAssociatedRows;
 	}
 
-	/**
-	 * @return The minimum height that is required to render this node properly.
-	 */
-	public abstract int getMinRequiredHeightPixels();
+	// /**
+	// * @return The minimum height that is required to render this node
+	// properly.
+	// */
+	// public abstract int getMinRequiredHeightPixels();
+	//
+	// /**
+	// * @return The minimum width that is required to render this node
+	// properly.
+	// */
+	// public abstract int getMinRequiredWidthPixels();
 
 	/**
-	 * @return The minimum width that is required to render this node properly.
+	 * @return GL height of the nodes.
 	 */
-	public abstract int getMinRequiredWidthPixels();
+	public float getHeight() {
+		return pixelGLConverter.getGLHeightForPixelHeight(getHeightPixels());
+	}
+
+	public float getWidth() {
+		return pixelGLConverter.getGLHeightForPixelHeight(getWidthPixels());
+	}
 
 	/**
 	 * @return the nodeId, see {@link #nodeId}

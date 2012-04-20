@@ -22,6 +22,8 @@
  */
 package org.caleydo.view.linearizedpathway.node;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,8 +57,13 @@ import org.caleydo.view.linearizedpathway.node.layout.BranchNodeLabelRenderer;
  */
 public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 
-	public static final int MIN_NODE_WIDTH_PIXELS = 180;
-	public static final int TEXT_SPACING_PIXELS = 3;
+	protected static final int MIN_NODE_WIDTH_PIXELS = 180;
+	protected static final int SPACING_PIXELS = 2;
+	protected static final int COLLAPSE_BUTTON_SIZE_PIXELS = 12;
+	protected static final int LABEL_HEIGHT_PIXELS = 16;
+	protected static final int NUM_NODES_LABEL_WIDTH_PIXELS = 20;
+	protected static final int BRANCH_NODE_SPACING = 20;
+	protected static final int BRANCH_AREA_SPACING = 8;
 
 	protected LayoutManager layoutManager;
 
@@ -184,11 +191,6 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		return associatedLinearizedNode;
 	}
 
-	@Override
-	public int getMinRequiredHeightPixels() {
-		return DEFAULT_HEIGHT_PIXELS;
-	}
-
 	protected void setupLayout() {
 
 		Column baseColumn = new Column("baseColumn");
@@ -205,7 +207,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		Row baseRow = new Row("baseRow");
 		// baseRow.setDebug(true);
 		// baseRow.setFrameColor(0, 1, 0, 1);
-		baseRow.setPixelSizeY(16);
+		baseRow.setPixelSizeY(LABEL_HEIGHT_PIXELS);
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
 		collapseButton = new Button(
@@ -214,14 +216,14 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		ButtonRenderer collapseButtonRenderer = new ButtonRenderer(collapseButton, view,
 				view.getTextureManager());
 		collapseButtonLayout.setRenderer(collapseButtonRenderer);
-		collapseButtonLayout.setPixelSizeX(12);
-		collapseButtonLayout.setPixelSizeY(12);
+		collapseButtonLayout.setPixelSizeX(COLLAPSE_BUTTON_SIZE_PIXELS);
+		collapseButtonLayout.setPixelSizeY(COLLAPSE_BUTTON_SIZE_PIXELS);
 
 		ElementLayout captionLayout = new ElementLayout("label");
 		labelRenderer = new BranchNodeLabelRenderer(this, view);
 
 		captionLayout.setRenderer(labelRenderer);
-		captionLayout.setPixelSizeY(16);
+		captionLayout.setPixelSizeY(LABEL_HEIGHT_PIXELS);
 
 		ElementLayout numNodesLabelLayout = new ElementLayout("numNodeslabel");
 		// numNodesLabelLayout.setDebug(true);
@@ -230,11 +232,11 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		// numNodesLabelRenderer.setAlignment(LabelRenderer.ALIGN_RIGHT);
 
 		numNodesLabelLayout.setRenderer(numNodesLabelRenderer);
-		numNodesLabelLayout.setPixelSizeY(16);
-		numNodesLabelLayout.setPixelSizeX(20);
+		numNodesLabelLayout.setPixelSizeY(LABEL_HEIGHT_PIXELS);
+		numNodesLabelLayout.setPixelSizeX(NUM_NODES_LABEL_WIDTH_PIXELS);
 
 		ElementLayout horizontalSpacing = new ElementLayout();
-		horizontalSpacing.setPixelSizeX(2);
+		horizontalSpacing.setPixelSizeX(SPACING_PIXELS);
 
 		baseRow.append(horizontalSpacing);
 		baseRow.append(collapseButtonLayout);
@@ -246,7 +248,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 
 		ElementLayout verticalSpacing = new ElementLayout();
 
-		verticalSpacing.setPixelSizeY(2);
+		verticalSpacing.setPixelSizeY(SPACING_PIXELS);
 		// ElementLayout x = new ElementLayout();
 		// x.setRatioSizeY(1);
 		baseColumn.append(verticalSpacing);
@@ -255,11 +257,6 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		// baseColumn.append(x);
 
 		layoutManager.setBaseElementLayout(baseColumn);
-	}
-
-	@Override
-	public int getMinRequiredWidthPixels() {
-		return MIN_NODE_WIDTH_PIXELS;
 	}
 
 	@Override
@@ -274,18 +271,73 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x() - width / 2.0f, position.y() - height / 2.0f,
-				position.z());
+				position.z() - (isCollapsed ? 0 : 0.001f));
 		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC,
 				0, width, 0, height, -1, 20));
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();
 
+		if (!isCollapsed) {
+
+			float titleAreaHeight = pixelGLConverter
+					.getGLHeightForPixelHeight(getTitleAreaHeightPixels());
+			float branchAreaSpacing = pixelGLConverter
+					.getGLHeightForPixelHeight(BRANCH_AREA_SPACING);
+			float branchNodeSpacing = pixelGLConverter
+					.getGLHeightForPixelHeight(BRANCH_NODE_SPACING);
+			float currentPositionY = position.y() + height / 2.0f - titleAreaHeight
+					- branchAreaSpacing;
+
+			for (ANode node : branchNodes) {
+				float nodeHeight = node.getHeight();
+				currentPositionY -= nodeHeight / 2.0f;
+				node.setPosition(new Vec3f(position.x(), currentPositionY, position.z()));
+				node.render(gl, glu);
+				currentPositionY -= (nodeHeight / 2.0f + branchNodeSpacing);
+			}
+		}
+
+	}
+
+	/**
+	 * @return Height of the title area of the branch node in pixels.
+	 */
+	public int getTitleAreaHeightPixels() {
+		return 2 * SPACING_PIXELS + LABEL_HEIGHT_PIXELS;
+	}
+
+	/**
+	 * @return Height of the area where the branch nodes are accommodated in
+	 *         pixels.
+	 */
+	public int getBranchAreaHeightPixels() {
+
+		int minHeight = 0;
+		for (ANode node : branchNodes) {
+			minHeight += node.getHeightPixels();
+		}
+
+		minHeight += (branchNodes.size() - 1) * BRANCH_NODE_SPACING;
+		minHeight += 2 * BRANCH_AREA_SPACING;
+
+		return minHeight;
 	}
 
 	@Override
 	public String getLabelText() {
 		return getCaption();
+	}
+
+	@Override
+	public int getHeightPixels() {
+		return getTitleAreaHeightPixels()
+				+ (isCollapsed ? 0 : getBranchAreaHeightPixels());
+	}
+
+	@Override
+	public int getWidthPixels() {
+		return MIN_NODE_WIDTH_PIXELS;
 	}
 
 }
