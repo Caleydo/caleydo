@@ -3,14 +3,13 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
-import org.caleydo.core.view.opengl.layout.Column;
-import org.caleydo.core.view.opengl.layout.ElementLayout;
-import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
+import gleem.linalg.Vec3f;
+
+import javax.media.opengl.GL2;
+import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
-import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
-import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
@@ -22,7 +21,8 @@ import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer
  * @author Christian
  * 
  */
-public class ComplexNodeLinearizedMode extends ALayoutBasedNodeMode implements ILabelTextProvider{
+public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
+		ILabelTextProvider {
 
 	/**
 	 * @param view
@@ -39,48 +39,65 @@ public class ComplexNodeLinearizedMode extends ALayoutBasedNodeMode implements I
 		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
 				view, node);
 		addAttributeRenderer(attributeRenderer);
-		
-		Column baseColumn = new Column("baseColumn");
-		Row baseRow = new Row("baseRow");
-		ColorRenderer colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
-		colorRenderer.setView(view);
-		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
-		colorRenderer
-				.addPickingID(PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
-		baseColumn.addBackgroundRenderer(colorRenderer);
 
-		ElementLayout labelLayout = new ElementLayout("label");
-		LabelRenderer labelRenderer = new LabelRenderer(view, this);
-		labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
-
-		labelLayout.setRenderer(labelRenderer);
-		labelLayout.setPixelSizeY(16);
-
-		ElementLayout horizontalSpacing = new ElementLayout();
-		horizontalSpacing.setPixelSizeX(2);
-
-		// baseRow.append(horizontalSpacing);
-		baseRow.append(labelLayout);
-		// baseRow.append(horizontalSpacing);
-
-		ElementLayout verticalSpacing = new ElementLayout();
-		verticalSpacing.setPixelSizeY(2);
-
-		baseColumn.append(verticalSpacing);
-		baseColumn.append(baseRow);
-		baseColumn.append(verticalSpacing);
-
-		layoutManager.setBaseElementLayout(baseColumn);
+		// Column baseColumn = new Column("baseColumn");
+		// Row baseRow = new Row("baseRow");
+		// ColorRenderer colorRenderer = new ColorRenderer(new float[] { 1, 1,
+		// 1, 1 });
+		// colorRenderer.setView(view);
+		// colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
+		// colorRenderer
+		// .addPickingID(PickingType.LINEARIZABLE_NODE.name(),
+		// node.getNodeId());
+		// baseColumn.addBackgroundRenderer(colorRenderer);
+		//
+		// ElementLayout labelLayout = new ElementLayout("label");
+		// LabelRenderer labelRenderer = new LabelRenderer(view, this);
+		// labelRenderer.setAlignment(LabelRenderer.ALIGN_CENTER);
+		//
+		// labelLayout.setRenderer(labelRenderer);
+		// labelLayout.setPixelSizeY(16);
+		//
+		// ElementLayout horizontalSpacing = new ElementLayout();
+		// horizontalSpacing.setPixelSizeX(2);
+		//
+		// // baseRow.append(horizontalSpacing);
+		// baseRow.append(labelLayout);
+		// // baseRow.append(horizontalSpacing);
+		//
+		// ElementLayout verticalSpacing = new ElementLayout();
+		// verticalSpacing.setPixelSizeY(2);
+		//
+		// baseColumn.append(verticalSpacing);
+		// baseColumn.append(baseRow);
+		// baseColumn.append(verticalSpacing);
+		//
+		// layoutManager.setBaseElementLayout(baseColumn);
 	}
 
 	@Override
 	public int getMinHeightPixels() {
-		return ANode.DEFAULT_HEIGHT_PIXELS;
+		ComplexNode complexNode = (ComplexNode) node;
+		int heightPixels = 0;
+		for (ALinearizableNode node : complexNode.getNodes()) {
+			heightPixels += node.getHeightPixels();
+		}
+
+		return heightPixels;
 	}
 
 	@Override
 	public int getMinWidthPixels() {
-		return ANode.DEFAULT_WIDTH_PIXELS;
+
+		ComplexNode complexNode = (ComplexNode) node;
+		int maxWidthPixels = Integer.MIN_VALUE;
+		for (ALinearizableNode node : complexNode.getNodes()) {
+			if (maxWidthPixels < node.getWidthPixels()) {
+				maxWidthPixels = node.getWidthPixels();
+			}
+		}
+
+		return maxWidthPixels;
 	}
 
 	@Override
@@ -96,6 +113,22 @@ public class ComplexNodeLinearizedMode extends ALayoutBasedNodeMode implements I
 	@Override
 	public String getLabelText() {
 		return node.getCaption();
+	}
+
+	@Override
+	public void render(GL2 gl, GLU glu) {
+		ComplexNode complexNode = (ComplexNode) node;
+		Vec3f position = complexNode.getPosition();
+		float currentPositionY = position.y() + complexNode.getHeight() / 2.0f;
+
+		for (ALinearizableNode node : complexNode.getNodes()) {
+			float nodeHeight = node.getHeight();
+			currentPositionY -= nodeHeight / 2.0f;
+			node.setPosition(new Vec3f(position.x(), currentPositionY, position.z()));
+			node.render(gl, glu);
+			currentPositionY -= nodeHeight / 2.0f;
+		}
+
 	}
 
 }

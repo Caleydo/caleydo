@@ -22,22 +22,15 @@
  */
 package org.caleydo.view.linearizedpathway.node;
 
-import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.media.opengl.GL2;
-import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
-import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
 import org.caleydo.view.linearizedpathway.node.mode.ComplexNodeLinearizedMode;
-import org.caleydo.view.linearizedpathway.node.mode.ComplexNodePreviewMode;
 
 /**
  * The complex node renderer renders a node that represents multiple
@@ -56,18 +49,12 @@ public class ComplexNode extends ALinearizableNode {
 	 * List of {@link PathwayVertexRep} objects that are combined in this
 	 * complex node.
 	 */
-	private List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
+//	private List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
 
 	/**
-	 * List of {@link ALinearizableNode} objects that belong to this complex
-	 * node.
+	 * List of {@link ANode} objects that belong to this complex node.
 	 */
 	private List<ALinearizableNode> nodes = new ArrayList<ALinearizableNode>();
-
-	/**
-	 * The caption displayed on the node.
-	 */
-	protected String caption = "Complex";
 
 	/**
 	 * @param pixelGLConverter
@@ -79,104 +66,95 @@ public class ComplexNode extends ALinearizableNode {
 		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void render(GL2 gl, GLU glu) {
+//	@Override
+//	public void render(GL2 gl, GLU glu) {
+//		mode.render(gl, glu)
+//
+//		// float width = pixelGLConverter.getGLWidthForPixelWidth(widthPixels);
+//		// float height =
+//		// pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
+//		//
+//		// Vec3f lowerLeftPosition = new Vec3f(position.x() - width / 2.0f,
+//		// position.y()
+//		// - height / 2.0f, position.z());
+//		//
+//		// gl.glPushName(pickingManager.getPickingID(view.getID(),
+//		// PickingType.LINEARIZABLE_NODE.name(), nodeId));
+//		//
+//		// gl.glColor3f(0, 0, 0);
+//		// gl.glBegin(GL2.GL_LINE_LOOP);
+//		// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(),
+//		// lowerLeftPosition.z());
+//		// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
+//		// lowerLeftPosition.z());
+//		// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() +
+//		// height,
+//		// position.z());
+//		// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
+//		// lowerLeftPosition.z());
+//		// gl.glEnd();
+//		//
+//		// textRenderer.setColor(0, 0, 0, 1);
+//		//
+//		// float textSpacing =
+//		// pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS);
+//		// float textWidth = textRenderer.getRequiredTextWidthWithMax(caption,
+//		// height - 2
+//		// * textSpacing, width - 2 * textSpacing);
+//		//
+//		// textRenderer.renderTextInBounds(gl, caption + " " +
+//		// numAssociatedRows,
+//		// position.x() - textWidth / 2.0f + textSpacing, lowerLeftPosition.y()
+//		// + 1.5f * textSpacing, lowerLeftPosition.z(), width - 2
+//		// * textSpacing, height - 2 * textSpacing);
+//		//
+//		// gl.glPopName();
+//
+//	}
 
-		float currentPositionY = position.y() + getHeight() / 2.0f;
+//	/**
+//	 * Adds a {@link PathwayVertexRep} object to this node renderer.
+//	 * 
+//	 * @param vertexRep
+//	 */
+//	public void addVertexRep(PathwayVertexRep vertexRep) {
+//		vertexReps.add(vertexRep);
+//	}
+//
+//	/**
+//	 * @param vertexReps
+//	 *            setter, see {@link #vertexReps}
+//	 */
+//	public void setVertexReps(List<PathwayVertexRep> vertexReps) {
+//		this.vertexReps = vertexReps;
+//	}
+//
+//	/**
+//	 * @return the vertexReps, see {@link #vertexReps}
+//	 */
+//	public List<PathwayVertexRep> getVertexReps() {
+//		return vertexReps;
+//	}
 
-		for (ALinearizableNode node : nodes) {
-			float nodeHeight = node.getHeight();
-			currentPositionY -= nodeHeight / 2.0f;
-			node.setPosition(new Vec3f(position.x(), currentPositionY, position.z()));
-			node.render(gl, glu);
-			currentPositionY -= nodeHeight / 2.0f;
-		}
+//	@Override
+//	public PathwayVertexRep getPathwayVertexRep() {
+//		if (vertexReps.size() > 0)
+//			return vertexReps.get(0);
+//		return null;
+//	}
 
-		// float width = pixelGLConverter.getGLWidthForPixelWidth(widthPixels);
-		// float height =
-		// pixelGLConverter.getGLHeightForPixelHeight(heightPixels);
-		//
-		// Vec3f lowerLeftPosition = new Vec3f(position.x() - width / 2.0f,
-		// position.y()
-		// - height / 2.0f, position.z());
-		//
-		// gl.glPushName(pickingManager.getPickingID(view.getID(),
-		// PickingType.LINEARIZABLE_NODE.name(), nodeId));
-		//
-		// gl.glColor3f(0, 0, 0);
-		// gl.glBegin(GL2.GL_LINE_LOOP);
-		// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y(),
-		// lowerLeftPosition.z());
-		// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y(),
-		// lowerLeftPosition.z());
-		// gl.glVertex3f(lowerLeftPosition.x() + width, lowerLeftPosition.y() +
-		// height,
-		// position.z());
-		// gl.glVertex3f(lowerLeftPosition.x(), lowerLeftPosition.y() + height,
-		// lowerLeftPosition.z());
-		// gl.glEnd();
-		//
-		// textRenderer.setColor(0, 0, 0, 1);
-		//
-		// float textSpacing =
-		// pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS);
-		// float textWidth = textRenderer.getRequiredTextWidthWithMax(caption,
-		// height - 2
-		// * textSpacing, width - 2 * textSpacing);
-		//
-		// textRenderer.renderTextInBounds(gl, caption + " " +
-		// numAssociatedRows,
-		// position.x() - textWidth / 2.0f + textSpacing, lowerLeftPosition.y()
-		// + 1.5f * textSpacing, lowerLeftPosition.z(), width - 2
-		// * textSpacing, height - 2 * textSpacing);
-		//
-		// gl.glPopName();
-
-	}
-
-	/**
-	 * Adds a {@link PathwayVertexRep} object to this node renderer.
-	 * 
-	 * @param vertexRep
-	 */
-	public void addVertexRep(PathwayVertexRep vertexRep) {
-		vertexReps.add(vertexRep);
-	}
-
-	/**
-	 * @param vertexReps
-	 *            setter, see {@link #vertexReps}
-	 */
-	public void setVertexReps(List<PathwayVertexRep> vertexReps) {
-		this.vertexReps = vertexReps;
-	}
-
-	/**
-	 * @return the vertexReps, see {@link #vertexReps}
-	 */
-	public List<PathwayVertexRep> getVertexReps() {
-		return vertexReps;
-	}
-
-	@Override
-	public PathwayVertexRep getPathwayVertexRep() {
-		if (vertexReps.size() > 0)
-			return vertexReps.get(0);
-		return null;
-	}
-
-	/**
-	 * @param caption
-	 *            setter, see {@link #caption}
-	 */
-	public void setCaption(String caption) {
-		this.caption = caption;
-	}
-
-	@Override
-	public String getCaption() {
-		return caption;
-	}
+	// /**
+	// * @param caption
+	// * setter, see {@link #caption}
+	// */
+	// public void setCaption(String caption) {
+	// this.caption = caption;
+	// }
+	//
+	// @Override
+	// public String getCaption() {
+	// return caption;
+	// }
 
 	@Override
 	protected ALinearizeableNodeMode getLinearizedMode() {
@@ -185,12 +163,42 @@ public class ComplexNode extends ALinearizableNode {
 
 	@Override
 	protected ALinearizeableNodeMode getPreviewMode() {
-		return new ComplexNodePreviewMode(view);
+		//FIXME: just temporary
+		return new ComplexNodeLinearizedMode(view);
 	}
 
 	@Override
 	protected void registerPickingListeners() {
 
+	}
+
+	@Override
+	public String getCaption() {
+		return "Complex";
+	}
+
+	/**
+	 * @param nodes
+	 *            setter, see {@link #nodes}
+	 */
+	public void setNodes(List<ALinearizableNode> nodes) {
+		this.nodes = nodes;
+	}
+
+	/**
+	 * @return the nodes, see {@link #nodes}
+	 */
+	public List<ALinearizableNode> getNodes() {
+		return nodes;
+	}
+
+	@Override
+	public void setPreviewMode(boolean isPreviewMode) {
+		super.setPreviewMode(isPreviewMode);
+
+		for (ALinearizableNode node : nodes) {
+			node.setPreviewMode(isPreviewMode);
+		}
 	}
 
 }

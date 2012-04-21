@@ -56,10 +56,12 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
@@ -75,6 +77,7 @@ import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
 import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
 import org.caleydo.view.pathway.event.ShowBubbleSetForPathwayVertexRepsEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
 
 /**
@@ -120,7 +123,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	/**
 	 * The list of nodes that are rendered in a linearized way.
 	 */
-	private List<ANode> linearizedNodes = new ArrayList<ANode>();
+	private List<ALinearizableNode> linearizedNodes = new ArrayList<ALinearizableNode>();
 
 	/**
 	 * List of nodes that can currently be displayed in branches.
@@ -142,13 +145,15 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	/**
 	 * Map that associates every node in a branch with a linearized node.
 	 */
-	private Map<ANode, ANode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ANode>();
+	private Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
 
 	/**
 	 * Map that associates each linearized node with the indices of the
 	 * corresponding {@link PathwayVertexRep} objects in the {@link #path}.
 	 */
-	private Map<ANode, List<Integer>> linearizedNodesToPathwayVertexRepIndicesMap = new HashMap<ANode, List<Integer>>();
+	// private Map<ANode, List<Integer>>
+	// linearizedNodesToPathwayVertexRepIndicesMap = new HashMap<ANode,
+	// List<Integer>>();
 
 	/**
 	 * The number of rows in which data values are shown.
@@ -272,48 +277,50 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		branchNodesToLinearizedNodesMap.clear();
 		linearizedNodesToIncomingBranchSummaryNodesMap.clear();
 		linearizedNodesToOutgoingBranchSummaryNodesMap.clear();
-		linearizedNodesToPathwayVertexRepIndicesMap.clear();
+		// linearizedNodesToPathwayVertexRepIndicesMap.clear();
+
+		createNodesForList(linearizedNodes, path);
 
 		// determine complex nodes first
-		List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
-		ComplexNode complexNode = null;
-		for (int i = 0; i < path.size(); i++) {
-			PathwayVertexRep currentVertexRep = path.get(i);
-			if (i + 1 < path.size()) {
-				PathwayVertexRep nextVertexRep = path.get(i + 1);
-				if (pathway.getEdge(currentVertexRep, nextVertexRep) == null
-						&& pathway.getEdge(nextVertexRep, currentVertexRep) == null) {
-					if (complexNode == null) {
-						// nodeRenderers.add(complexNodeRenderer);
-						complexNode = new ComplexNode(pixelGLConverter, textRenderer,
-								this, lastNodeId++);
-						complexNode.addVertexRep(currentVertexRep);
-						// vertexRepToNodeMap.put(currentVertexRep,
-						// complexNode);
-						complexNodes.add(complexNode);
-					}
+		// List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
+		// ComplexNode complexNode = null;
+		// for (int i = 0; i < path.size(); i++) {
+		// PathwayVertexRep currentVertexRep = path.get(i);
+		// if (i + 1 < path.size()) {
+		// PathwayVertexRep nextVertexRep = path.get(i + 1);
+		// if (pathway.getEdge(currentVertexRep, nextVertexRep) == null
+		// && pathway.getEdge(nextVertexRep, currentVertexRep) == null) {
+		// if (complexNode == null) {
+		// // nodeRenderers.add(complexNodeRenderer);
+		// complexNode = new ComplexNode(pixelGLConverter, textRenderer,
+		// this, lastNodeId++);
+		// complexNode.addVertexRep(currentVertexRep);
+		// // vertexRepToNodeMap.put(currentVertexRep,
+		// // complexNode);
+		// complexNodes.add(complexNode);
+		// }
+		//
+		// complexNode.addVertexRep(nextVertexRep);
+		// // vertexRepToNodeMap.put(nextVertexRep, complexNode);
+		// } else {
+		// if (complexNode != null) {
+		// complexNode = null;
+		// }
+		// }
+		// }
+		// }
 
-					complexNode.addVertexRep(nextVertexRep);
-					// vertexRepToNodeMap.put(nextVertexRep, complexNode);
-				} else {
-					if (complexNode != null) {
-						complexNode = null;
-					}
-				}
-			}
-		}
-
-		createNodesForList(linearizedNodes, path, true, complexNodes, true);
+		// createNodesForList(linearizedNodes, path, true, complexNodes, true);
 
 		// Create branch nodes
 		for (int i = 0; i < linearizedNodes.size(); i++) {
-			ANode currentNode = linearizedNodes.get(i);
+			ALinearizableNode currentNode = linearizedNodes.get(i);
 			PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
 			DefaultEdge prevEdge = null;
 			DefaultEdge nextEdge = null;
 
 			if (i > 0) {
-				ANode prevNode = linearizedNodes.get(i - 1);
+				ALinearizableNode prevNode = linearizedNodes.get(i - 1);
 				prevEdge = pathway.getEdge(prevNode.getPathwayVertexRep(),
 						currentVertexRep);
 				if (prevEdge == null)
@@ -321,7 +328,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 							prevNode.getPathwayVertexRep());
 			}
 			if (i != linearizedNodes.size() - 1) {
-				ANode nextNode = linearizedNodes.get(i + 1);
+				ALinearizableNode nextNode = linearizedNodes.get(i + 1);
 				nextEdge = pathway.getEdge(nextNode.getPathwayVertexRep(),
 						currentVertexRep);
 				if (nextEdge == null)
@@ -329,7 +336,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 							nextNode.getPathwayVertexRep());
 			}
 
-			Set<DefaultEdge> edges = pathway.edgesOf(currentNode.getPathwayVertexRep());
+			Set<DefaultEdge> edges = pathway.edgesOf(currentVertexRep);
 
 			BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++,
 					currentNode);
@@ -350,10 +357,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 
 			if (sourceVertexReps.size() > 0) {
-				List<ANode> sourceNodes = new ArrayList<ANode>();
-				complexNodes = createComplexBranchNodes(sourceVertexReps);
-				createNodesForList(sourceNodes, sourceVertexReps, false, complexNodes,
-						false);
+				List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
+
+				createNodesForList(sourceNodes, sourceVertexReps);
 				incomingNode.setBranchNodes(sourceNodes);
 				linearizedNodesToIncomingBranchSummaryNodesMap.put(currentNode,
 						incomingNode);
@@ -366,10 +372,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 
 			if (targetVertexReps.size() > 0) {
-				List<ANode> targetNodes = new ArrayList<ANode>();
-				complexNodes = createComplexBranchNodes(targetVertexReps);
-				createNodesForList(targetNodes, targetVertexReps, false, complexNodes,
-						false);
+				List<ALinearizableNode> targetNodes = new ArrayList<ALinearizableNode>();
+				createNodesForList(targetNodes, targetVertexReps);
+
 				outgoingNode.setBranchNodes(targetNodes);
 				linearizedNodesToOutgoingBranchSummaryNodesMap.put(currentNode,
 						outgoingNode);
@@ -385,6 +390,52 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	}
 
+	private void createNodesForList(List<ALinearizableNode> nodes,
+			List<PathwayVertexRep> vertexReps) {
+
+		for (int i = 0; i < vertexReps.size(); i++) {
+			PathwayVertexRep currentVertexRep = vertexReps.get(i);
+			ALinearizableNode node = null;
+			if (currentVertexRep.getType() == EPathwayVertexType.group) {
+				PathwayVertexGroupRep groupRep = (PathwayVertexGroupRep) currentVertexRep;
+				List<PathwayVertexRep> groupedReps = groupRep.getGroupedVertexReps();
+				List<ALinearizableNode> groupedNodes = new ArrayList<ALinearizableNode>();
+				createNodesForList(groupedNodes, groupedReps);
+				ComplexNode complexNode = new ComplexNode(pixelGLConverter, textRenderer,
+						this, lastNodeId++);
+				complexNode.setNodes(groupedNodes);
+				complexNode.setPathwayVertexRep(currentVertexRep);
+				node = complexNode;
+			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
+				CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this,
+						lastNodeId++);
+
+				compoundNode.setPathwayVertexRep(currentVertexRep);
+				node = compoundNode;
+
+			} else {
+
+				// TODO: Verify that this is also the right approach for
+				// enzymes and ortholog
+				GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer, this,
+						lastNodeId++);
+				int commaIndex = currentVertexRep.getName().indexOf(',');
+				if (commaIndex > 0) {
+					geneNode.setCaption(currentVertexRep.getName().substring(0,
+							commaIndex));
+				} else {
+					geneNode.setCaption(currentVertexRep.getName());
+				}
+				geneNode.setPathwayVertexRep(currentVertexRep);
+
+				node = geneNode;
+			}
+
+			nodes.add(node);
+			setNumberOfMappedValues(node);
+		}
+	}
+
 	/**
 	 * Determines the {@link ComplexNode}s for the specified
 	 * {@link PathwayVertexRep}s.
@@ -392,124 +443,142 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * @param vertexReps
 	 * @return
 	 */
-	private List<ComplexNode> createComplexBranchNodes(List<PathwayVertexRep> vertexReps) {
+	// private List<ComplexNode> createComplexBranchNodes(List<PathwayVertexRep>
+	// vertexReps) {
+	//
+	// List<PathwayVertexRep> vertexRepsLeft = new ArrayList<PathwayVertexRep>(
+	// vertexReps);
+	//
+	// // Detect complex nodes by comparing their edges
+	// List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
+	// while (vertexRepsLeft.size() > 0) {
+	//
+	// PathwayVertexRep vertexRep = vertexRepsLeft.get(0);
+	// ComplexNode complexNode = null;
+	// for (PathwayVertexRep vRep : vertexRepsLeft) {
+	// if (vertexRep != vRep) {
+	// List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
+	// List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
+	// List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
+	// List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
+	// getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
+	// getEdgeEnds(edgeSources2, edgeTargets2, vRep);
+	//
+	// if ((edgeSources1.size() == edgeSources2.size())
+	// && (edgeTargets1.size() == edgeTargets2.size())
+	// && (edgeTargets1.containsAll(edgeTargets2))
+	// && (edgeSources1.containsAll(edgeSources2))) {
+	// if (complexNode == null) {
+	// complexNode = new ComplexNode(pixelGLConverter, textRenderer,
+	// this, lastNodeId++);
+	// complexNode.addVertexRep(vertexRep);
+	// complexNodes.add(complexNode);
+	// }
+	// complexNode.addVertexRep(vRep);
+	// }
+	// }
+	// }
+	// if (complexNode == null)
+	// break;
+	// for (PathwayVertexRep vRep : complexNode.getVertexReps()) {
+	// vertexRepsLeft.remove(vRep);
+	// }
+	// }
+	//
+	// return complexNodes;
+	// }
+	//
+	// private void createNodesForList(List<ANode> nodeList,
+	// List<PathwayVertexRep> vertexReps, boolean affectsDataRows,
+	// List<ComplexNode> complexNodes,
+	// boolean fillLinearizedNodesToPathwayVertexRepMap) {
+	// // ANode prevNode = null;
+	// // for (int i = 0; i < vertexReps.size(); i++) {
+	// //
+	// // PathwayVertexRep currentVertexRep = vertexReps.get(i);
+	// //
+	// // ANode node = null;
+	// // for (ComplexNode complexNode : complexNodes) {
+	// // List<PathwayVertexRep> vReps = complexNode.getVertexReps();
+	// // for (PathwayVertexRep vRep : vReps) {
+	// // if (vRep == currentVertexRep) {
+	// // node = complexNode;
+	// // break;
+	// // }
+	// // }
+	// // }
+	// // if (node != null) {
+	// // if (prevNode != node) {
+	// // nodeList.add(node);
+	// // }
+	// // } else {
+	// // if (currentVertexRep.getType() == EPathwayVertexType.compound) {
+	// // CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this,
+	// // lastNodeId++);
+	// //
+	// // compoundNode.setPathwayVertexRep(currentVertexRep);
+	// // node = compoundNode;
+	// //
+	// // } else {
+	// //
+	// // // TODO: Verify that this is also the right approach for
+	// // // enzymes and ortholog
+	// // GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer,
+	// // this, lastNodeId++);
+	// // int commaIndex = currentVertexRep.getName().indexOf(',');
+	// // if (commaIndex > 0) {
+	// // geneNode.setCaption(currentVertexRep.getName().substring(0,
+	// // commaIndex));
+	// // } else {
+	// // geneNode.setCaption(currentVertexRep.getName());
+	// // }
+	// // geneNode.setPathwayVertexRep(currentVertexRep);
+	// //
+	// // node = geneNode;
+	// // }
+	// // nodeList.add(node);
+	// // // vertexRepToNodeMap.put(currentVertexRep, node);
+	// // }
+	// // // int numMappedValues =
+	// // determineNumberOfMappedValues(currentVertexRep);
+	// // // node.setNumAssociatedRows(node.getNumAssociatedRows() +
+	// // numMappedValues);
+	// //
+	// // // if (fillLinearizedNodesToPathwayVertexRepMap) {
+	// // // List<Integer> indices =
+	// // // linearizedNodesToPathwayVertexRepIndicesMap
+	// // // .get(node);
+	// // // if (indices == null) {
+	// // // indices = new ArrayList<Integer>();
+	// // // linearizedNodesToPathwayVertexRepIndicesMap.put(node, indices);
+	// // // }
+	// // // indices.add(i);
+	// // // }
+	// //
+	// // // if (affectsDataRows) {
+	// // // numDataRows += numMappedValues;
+	// // // }
+	// //
+	// // prevNode = node;
+	// // }
+	// }
 
-		List<PathwayVertexRep> vertexRepsLeft = new ArrayList<PathwayVertexRep>(
-				vertexReps);
+	private int setNumberOfMappedValues(ALinearizableNode node) {
+		int numMappedValues = 0;
 
-		// Detect complex nodes by comparing their edges
-		List<ComplexNode> complexNodes = new ArrayList<ComplexNode>();
-		while (vertexRepsLeft.size() > 0) {
+		if (node instanceof ComplexNode) {
+			ComplexNode complexNode = (ComplexNode) node;
 
-			PathwayVertexRep vertexRep = vertexRepsLeft.get(0);
-			ComplexNode complexNode = null;
-			for (PathwayVertexRep vRep : vertexRepsLeft) {
-				if (vertexRep != vRep) {
-					List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
-					List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
-					List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
-					List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
-					getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
-					getEdgeEnds(edgeSources2, edgeTargets2, vRep);
-
-					if ((edgeSources1.size() == edgeSources2.size())
-							&& (edgeTargets1.size() == edgeTargets2.size())
-							&& (edgeTargets1.containsAll(edgeTargets2))
-							&& (edgeSources1.containsAll(edgeSources2))) {
-						if (complexNode == null) {
-							complexNode = new ComplexNode(pixelGLConverter, textRenderer,
-									this, lastNodeId++);
-							complexNode.addVertexRep(vertexRep);
-							complexNodes.add(complexNode);
-						}
-						complexNode.addVertexRep(vRep);
-					}
-				}
+			for (ALinearizableNode groupedNode : complexNode.getNodes()) {
+				numMappedValues += setNumberOfMappedValues(groupedNode);
 			}
-			if (complexNode == null)
-				break;
-			for (PathwayVertexRep vRep : complexNode.getVertexReps()) {
-				vertexRepsLeft.remove(vRep);
-			}
+		} else {
+			numMappedValues = node.getPathwayVertexRep().getDavidIDs().size();
 		}
+		node.setNumAssociatedRows(numMappedValues);
 
-		return complexNodes;
-	}
+		return numMappedValues;
 
-	private void createNodesForList(List<ANode> nodeList,
-			List<PathwayVertexRep> vertexReps, boolean affectsDataRows,
-			List<ComplexNode> complexNodes,
-			boolean fillLinearizedNodesToPathwayVertexRepMap) {
-		ANode prevNode = null;
-		for (int i = 0; i < vertexReps.size(); i++) {
-
-			PathwayVertexRep currentVertexRep = vertexReps.get(i);
-
-			ANode node = null;
-			for (ComplexNode complexNode : complexNodes) {
-				List<PathwayVertexRep> vReps = complexNode.getVertexReps();
-				for (PathwayVertexRep vRep : vReps) {
-					if (vRep == currentVertexRep) {
-						node = complexNode;
-						break;
-					}
-				}
-			}
-			if (node != null) {
-				if (prevNode != node) {
-					nodeList.add(node);
-				}
-			} else {
-				if (currentVertexRep.getType() == EPathwayVertexType.compound) {
-					CompoundNode compoundNode = new CompoundNode(pixelGLConverter, this,
-							lastNodeId++);
-
-					compoundNode.setPathwayVertexRep(currentVertexRep);
-					node = compoundNode;
-
-				} else {
-
-					// TODO: Verify that this is also the right approach for
-					// enzymes and ortholog
-					GeneNode geneNode = new GeneNode(pixelGLConverter, textRenderer,
-							this, lastNodeId++);
-					int commaIndex = currentVertexRep.getName().indexOf(',');
-					if (commaIndex > 0) {
-						geneNode.setCaption(currentVertexRep.getName().substring(0,
-								commaIndex));
-					} else {
-						geneNode.setCaption(currentVertexRep.getName());
-					}
-					geneNode.setPathwayVertexRep(currentVertexRep);
-
-					node = geneNode;
-				}
-				nodeList.add(node);
-				// vertexRepToNodeMap.put(currentVertexRep, node);
-			}
-			int numMappedValues = determineNumberOfMappedValues(currentVertexRep);
-			node.setNumAssociatedRows(node.getNumAssociatedRows() + numMappedValues);
-
-			if (fillLinearizedNodesToPathwayVertexRepMap) {
-				List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
-						.get(node);
-				if (indices == null) {
-					indices = new ArrayList<Integer>();
-					linearizedNodesToPathwayVertexRepIndicesMap.put(node, indices);
-				}
-				indices.add(i);
-			}
-
-			if (affectsDataRows) {
-				numDataRows += numMappedValues;
-			}
-
-			prevNode = node;
-		}
-	}
-
-	private int determineNumberOfMappedValues(PathwayVertexRep vertexRep) {
-		return vertexRep.getDavidIDs().size();
 		// List<PathwayVertex> vertices = vertexRep.getPathwayVertices();
 		//
 		// if (vertices == null)
@@ -695,7 +764,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
 				topSpacing, dataRowHeight);
 
-		mappedDataRenderer.render(gl);
+//		mappedDataRenderer.render(gl);
 		gl.glPopMatrix();
 
 		renderEdgesOfLinearizedNodes(gl);
@@ -720,10 +789,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		// float branchNodePositionX = pixelGLConverter
 		// .getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS) / 2.0f;
-		float spacing = pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
-		float verticalBranchNodeSpacing = pixelGLConverter.getGLHeightForPixelHeight(20);
-
-		Vec3f nodePosition = node.getPosition();
+		// float spacing =
+		// pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
+		// float verticalBranchNodeSpacing =
+		// pixelGLConverter.getGLHeightForPixelHeight(20);
+		//
+		// Vec3f nodePosition = node.getPosition();
 		ANode incomingNode = linearizedNodesToIncomingBranchSummaryNodesMap.get(node);
 		if ((incomingNode != null) && (incomingNode != expandedBranchSummaryNode)) {
 
@@ -769,7 +840,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	private void renderBranchSummaryNode(GL2 gl, GLU glu, BranchSummaryNode summaryNode) {
 		boolean isIncomingNode = linearizedNodesToIncomingBranchSummaryNodesMap
 				.get(summaryNode.getAssociatedLinearizedNode()) == summaryNode;
-		ANode linearizedNode = summaryNode.getAssociatedLinearizedNode();
+		ALinearizableNode linearizedNode = summaryNode.getAssociatedLinearizedNode();
 		Vec3f linearizedNodePosition = linearizedNode.getPosition();
 
 		float sideSpacing = pixelGLConverter
@@ -790,8 +861,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		summaryNode.render(gl, glu);
 
 		if (!summaryNode.isCollapsed()) {
-			List<ANode> branchNodes = summaryNode.getBranchNodes();
-			for (ANode node : branchNodes) {
+			List<ALinearizableNode> branchNodes = summaryNode.getBranchNodes();
+			for (ALinearizableNode node : branchNodes) {
 				renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
 						linearizedNode.getLeftConnectionPoint(), 0.2f, false);
 			}
@@ -806,83 +877,86 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * @param glu
 	 * @param linearizedNode
 	 */
-	private void renderExpandedBranchNode(GL2 gl, GLU glu) {
-		ANode linearizedNode = expandedBranchSummaryNode.getAssociatedLinearizedNode();
-
-		// Vec3f branchSummaryNodePosition =
-		// expandedBranchSummaryNode.getPosition();
-		// float branchSummaryNodeTopY = branchSummaryNodePosition.y()
-		// +
-		// pixelGLConverter.getGLHeightForPixelHeight(expandedBranchSummaryNode
-		// .getHeightPixels()) / 2.0f;
-		// float branchSummaryNodeMinHeight = pixelGLConverter
-		// .getGLHeightForPixelHeight(expandedBranchSummaryNode
-		// .getMinRequiredHeightPixels());
-		// float spacing =
-		// pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
-		//
-		// List<ANode> branchNodes = expandedBranchSummaryNode.getBranchNodes();
-		// // float previewDataRowHeight =
-		// //
-		// pixelGLConverter.getGLHeightForPixelHeight(PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS);
-		// float nodeSpacing = pixelGLConverter
-		// .getGLHeightForPixelHeight(EXPANDED_BRANCH_NODE_SPACING_PIXELS);
-		// float branchNodePositionX = pixelGLConverter
-		// .getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS) / 2.0f;
-		//
-		// float totalHeight = 0;
-		//
-		// for (ANode node : branchNodes) {
-		// totalHeight += pixelGLConverter.getGLHeightForPixelHeight(node
-		// .getMinRequiredHeightPixels());
-		// node.setHeightPixels(node.getMinRequiredHeightPixels());
-		// node.setWidthPixels(node.getMinRequiredWidthPixels());
-		// }
-		//
-		// totalHeight += nodeSpacing * (branchNodes.size() - 1);
-		//
-		// float topPositionY = branchSummaryNodeTopY -
-		// branchSummaryNodeMinHeight - 4
-		// * spacing;
-		// if (topPositionY - totalHeight < viewFrustum.getBottom()) {
-		// topPositionY += (viewFrustum.getBottom() - (topPositionY -
-		// totalHeight));
-		// }
-		// if (topPositionY > viewFrustum.getTop() - branchSummaryNodeMinHeight)
-		// {
-		// topPositionY -= (topPositionY - (viewFrustum.getTop() -
-		// branchSummaryNodeMinHeight));
-		// }
-
-		// float nodeWidth = pixelGLConverter
-		// .getGLWidthForPixelWidth(expandedBranchSummaryNode.getWidthPixels());
-		// float currentHeight = pixelGLConverter
-		// .getGLHeightForPixelHeight(expandedBranchSummaryNode.getHeightPixels());
-		// if (branchSummaryNodeMinHeight + 0.0001f > currentHeight ||
-		// isLayoutDirty) {
-		//
-		// expandedBranchSummaryNode.setHeightPixels(expandedBranchSummaryNode
-		// .getMinRequiredHeightPixels()
-		// + pixelGLConverter.getPixelHeightForGLHeight(totalHeight)
-		// + 7
-		// * SPACING_PIXELS);
-		// expandedBranchSummaryNode.setPosition(new Vec3f(4 * spacing +
-		// nodeWidth
-		// / 2.0f, topPositionY + branchSummaryNodeMinHeight + 4 * spacing
-		// - (totalHeight + branchSummaryNodeMinHeight + 7 * spacing) / 2.0f,
-		// 0.15f));
-		// }
-		// expandedBranchSummaryNode.render(gl, glu);
-		//
-		// float currentPositionY = topPositionY;
-		// // System.out.println(branchSummaryNodeTopY + "," +
-		// // branchSummaryNodeMinHeight + ","
-		// // + topPositionY);
-		//
-
-		// gl.glPopName();
-
-	}
+	// private void renderExpandedBranchNode(GL2 gl, GLU glu) {
+	// ANode linearizedNode =
+	// expandedBranchSummaryNode.getAssociatedLinearizedNode();
+	//
+	// // Vec3f branchSummaryNodePosition =
+	// // expandedBranchSummaryNode.getPosition();
+	// // float branchSummaryNodeTopY = branchSummaryNodePosition.y()
+	// // +
+	// // pixelGLConverter.getGLHeightForPixelHeight(expandedBranchSummaryNode
+	// // .getHeightPixels()) / 2.0f;
+	// // float branchSummaryNodeMinHeight = pixelGLConverter
+	// // .getGLHeightForPixelHeight(expandedBranchSummaryNode
+	// // .getMinRequiredHeightPixels());
+	// // float spacing =
+	// // pixelGLConverter.getGLWidthForPixelWidth(SPACING_PIXELS);
+	// //
+	// // List<ANode> branchNodes = expandedBranchSummaryNode.getBranchNodes();
+	// // // float previewDataRowHeight =
+	// // //
+	// //
+	// pixelGLConverter.getGLHeightForPixelHeight(PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS);
+	// // float nodeSpacing = pixelGLConverter
+	// // .getGLHeightForPixelHeight(EXPANDED_BRANCH_NODE_SPACING_PIXELS);
+	// // float branchNodePositionX = pixelGLConverter
+	// // .getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS) / 2.0f;
+	// //
+	// // float totalHeight = 0;
+	// //
+	// // for (ANode node : branchNodes) {
+	// // totalHeight += pixelGLConverter.getGLHeightForPixelHeight(node
+	// // .getMinRequiredHeightPixels());
+	// // node.setHeightPixels(node.getMinRequiredHeightPixels());
+	// // node.setWidthPixels(node.getMinRequiredWidthPixels());
+	// // }
+	// //
+	// // totalHeight += nodeSpacing * (branchNodes.size() - 1);
+	// //
+	// // float topPositionY = branchSummaryNodeTopY -
+	// // branchSummaryNodeMinHeight - 4
+	// // * spacing;
+	// // if (topPositionY - totalHeight < viewFrustum.getBottom()) {
+	// // topPositionY += (viewFrustum.getBottom() - (topPositionY -
+	// // totalHeight));
+	// // }
+	// // if (topPositionY > viewFrustum.getTop() - branchSummaryNodeMinHeight)
+	// // {
+	// // topPositionY -= (topPositionY - (viewFrustum.getTop() -
+	// // branchSummaryNodeMinHeight));
+	// // }
+	//
+	// // float nodeWidth = pixelGLConverter
+	// // .getGLWidthForPixelWidth(expandedBranchSummaryNode.getWidthPixels());
+	// // float currentHeight = pixelGLConverter
+	// //
+	// .getGLHeightForPixelHeight(expandedBranchSummaryNode.getHeightPixels());
+	// // if (branchSummaryNodeMinHeight + 0.0001f > currentHeight ||
+	// // isLayoutDirty) {
+	// //
+	// // expandedBranchSummaryNode.setHeightPixels(expandedBranchSummaryNode
+	// // .getMinRequiredHeightPixels()
+	// // + pixelGLConverter.getPixelHeightForGLHeight(totalHeight)
+	// // + 7
+	// // * SPACING_PIXELS);
+	// // expandedBranchSummaryNode.setPosition(new Vec3f(4 * spacing +
+	// // nodeWidth
+	// // / 2.0f, topPositionY + branchSummaryNodeMinHeight + 4 * spacing
+	// // - (totalHeight + branchSummaryNodeMinHeight + 7 * spacing) / 2.0f,
+	// // 0.15f));
+	// // }
+	// // expandedBranchSummaryNode.render(gl, glu);
+	// //
+	// // float currentPositionY = topPositionY;
+	// // // System.out.println(branchSummaryNodeTopY + "," +
+	// // // branchSummaryNodeMinHeight + ","
+	// // // + topPositionY);
+	// //
+	//
+	// // gl.glPopName();
+	//
+	// }
 
 	/**
 	 * Calculates the spacings between all anchor nodes (nodes with mapped data)
@@ -1031,15 +1105,16 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	private void renderEdgesOfLinearizedNodes(GL2 gl) {
 		for (int i = 0; i < linearizedNodes.size() - 1; i++) {
-			ANode node1 = linearizedNodes.get(i);
-			ANode node2 = linearizedNodes.get(i + 1);
+			ALinearizableNode node1 = linearizedNodes.get(i);
+			ALinearizableNode node2 = linearizedNodes.get(i + 1);
 			renderEdge(gl, node1, node2, node1.getBottomConnectionPoint(),
 					node2.getTopConnectionPoint(), 0.2f, true);
 		}
 	}
 
-	private void renderEdge(GL2 gl, ANode node1, ANode node2, Vec3f node1ConnectionPoint,
-			Vec3f node2ConnectionPoint, float zCoordinate, boolean isVerticalConnection) {
+	private void renderEdge(GL2 gl, ALinearizableNode node1, ALinearizableNode node2,
+			Vec3f node1ConnectionPoint, Vec3f node2ConnectionPoint, float zCoordinate,
+			boolean isVerticalConnection) {
 
 		PathwayVertexRep vertexRep1 = node1.getPathwayVertexRep();
 		PathwayVertexRep vertexRep2 = node2.getPathwayVertexRep();
@@ -1069,11 +1144,19 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		if (edge instanceof PathwayReactionEdgeRep) {
 			// TODO: This is just a default edge. Is this right?
+			PathwayReactionEdgeRep reactionEdge = (PathwayReactionEdgeRep) edge;
+
 			ClosedArrowRenderer arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
 			LineEndArrowRenderer lineEndArrowRenderer = new LineEndArrowRenderer(false,
 					arrowRenderer);
 
 			connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
+
+			if (reactionEdge.getType() == EPathwayReactionEdgeType.reversible) {
+				arrowRenderer = new ClosedArrowRenderer(pixelGLConverter);
+				lineEndArrowRenderer = new LineEndArrowRenderer(true, arrowRenderer);
+				connectionRenderer.addAttributeRenderer(lineEndArrowRenderer);
+			}
 
 			// linePoints.add(nodeRenderer1.getBottomConnectionPoint());
 			// linePoints.add(nodeRenderer2.getTopConnectionPoint());
@@ -1327,8 +1410,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * 
 	 * @param node
 	 */
-	public void selectBranch(ANode node) {
-		ANode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
+	public void selectBranch(ALinearizableNode node) {
+		ALinearizableNode linearizedNode = branchNodesToLinearizedNodesMap.get(node);
 
 		PathwayVertexRep linearizedVertexRep = linearizedNode.getPathwayVertexRep();
 		PathwayVertexRep branchVertexRep = node.getPathwayVertexRep();
@@ -1338,9 +1421,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			edge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
 		}
 
-		// int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
-		List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
-				.get(linearizedNode);
+		int linearizedNodeIndex = linearizedNodes.indexOf(linearizedNode);
+		// List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap
+		// .get(linearizedNode);
 		List<PathwayVertexRep> newPath = null;
 		List<PathwayVertexRep> branchPath = determineDefiniteUniDirectionalBranchPath(
 				branchVertexRep, linearizedVertexRep);
@@ -1348,12 +1431,13 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		if (pathway.getEdgeSource(edge) == branchVertexRep) {
 			// insert above linearized node
 			Collections.reverse(branchPath);
-			newPath = path.subList(indices.get(0), path.size());
+			newPath = path.subList(linearizedNodeIndex, path.size());
+
 			newPath.addAll(0, branchPath);
 
 		} else {
 			// insert below linearized node
-			newPath = path.subList(0, indices.get(indices.size() - 1) + 1);
+			newPath = path.subList(0, linearizedNodeIndex + 1);
 			newPath.addAll(branchPath);
 		}
 
@@ -1383,6 +1467,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 */
 	private List<PathwayVertexRep> determineDefiniteUniDirectionalBranchPath(
 			PathwayVertexRep branchVertexRep, PathwayVertexRep linearizedVertexRep) {
+
 		List<PathwayVertexRep> vertexReps = new ArrayList<PathwayVertexRep>();
 		vertexReps.add(branchVertexRep);
 		DefaultEdge existingEdge = pathway.getEdge(branchVertexRep, linearizedVertexRep);
@@ -1398,46 +1483,56 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		for (int i = 0; i < maxBranchSwitchingPathLength; i++) {
 
-			List<DefaultEdge> edges = new ArrayList<DefaultEdge>(
-					pathway.edgesOf(currentVertexRep));
-			edges.remove(existingEdge);
+			// List<DefaultEdge> edges = new ArrayList<DefaultEdge>(
+			// pathway.edgesOf(currentVertexRep));
+			// edges.remove(existingEdge);
+			List<PathwayVertexRep> nextVertices = null;
+			if (isIncomingBranchPath) {
+				nextVertices = Graphs.predecessorListOf(pathway, currentVertexRep);
+			} else {
+				nextVertices = Graphs.successorListOf(pathway, currentVertexRep);
+			}
 
-			if (edges.size() == 0) {
+			if (nextVertices.size() == 0 || nextVertices.size() > 1) {
 				return vertexReps;
 			} else {
+				currentVertexRep = nextVertices.get(0);
+				vertexReps.add(currentVertexRep);
 
-				List<PathwayVertexRep> vertices = new ArrayList<PathwayVertexRep>();
-				for (DefaultEdge edge : edges) {
-					PathwayVertexRep source = pathway.getEdgeSource(edge);
-					PathwayVertexRep target = pathway.getEdgeTarget(edge);
-
-					if ((target != currentVertexRep && isIncomingBranchPath)
-							|| (source != currentVertexRep && !isIncomingBranchPath)) {
-						return vertexReps;
-					}
-					vertices.add((target == currentVertexRep) ? source : target);
-				}
-
-				if (edges.size() == 1) {
-					existingEdge = edges.get(0);
-					currentVertexRep = vertices.get(0);
-					vertexReps.add(currentVertexRep);
-				} else {
-					if (isComplexNode(vertices)) {
-						vertexReps.addAll(vertices);
-						// It is ok to continue with only one vertexRep from the
-						// complex node.
-
-						existingEdge = pathway.getEdge(currentVertexRep, vertices.get(0));
-						if (existingEdge == null)
-							existingEdge = pathway.getEdge(vertices.get(0),
-									currentVertexRep);
-						currentVertexRep = vertices.get(0);
-
-					} else {
-						return vertexReps;
-					}
-				}
+				// List<PathwayVertexRep> vertices = new
+				// ArrayList<PathwayVertexRep>();
+				// for (DefaultEdge edge : edges) {
+				// PathwayVertexRep source = pathway.getEdgeSource(edge);
+				// PathwayVertexRep target = pathway.getEdgeTarget(edge);
+				//
+				// if ((target != currentVertexRep && isIncomingBranchPath)
+				// || (source != currentVertexRep && !isIncomingBranchPath)) {
+				// return vertexReps;
+				// }
+				// vertices.add((target == currentVertexRep) ? source : target);
+				// }
+				//
+				// if (edges.size() == 1) {
+				// existingEdge = edges.get(0);
+				// currentVertexRep = vertices.get(0);
+				// vertexReps.add(currentVertexRep);
+				// } else {
+				// if (isComplexNode(vertices)) {
+				// vertexReps.addAll(vertices);
+				// // It is ok to continue with only one vertexRep from the
+				// // complex node.
+				//
+				// existingEdge = pathway.getEdge(currentVertexRep,
+				// vertices.get(0));
+				// if (existingEdge == null)
+				// existingEdge = pathway.getEdge(vertices.get(0),
+				// currentVertexRep);
+				// currentVertexRep = vertices.get(0);
+				//
+				// } else {
+				// return vertexReps;
+				// }
+				// }
 			}
 
 		}
@@ -1452,34 +1547,34 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * @param vertexReps
 	 * @return
 	 */
-	private boolean isComplexNode(List<PathwayVertexRep> vertexReps) {
-
-		// Detect complex nodes by comparing the sources and targets of their
-		// edges
-		for (PathwayVertexRep vertexRep : vertexReps) {
-			for (PathwayVertexRep vRep : vertexReps) {
-				if (vertexRep != vRep) {
-
-					List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
-					List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
-
-					List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
-					List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
-
-					getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
-					getEdgeEnds(edgeSources2, edgeTargets2, vRep);
-
-					if ((edgeSources1.size() != edgeSources2.size())
-							|| (edgeTargets1.size() != edgeTargets2.size())
-							|| !(edgeTargets1.containsAll(edgeTargets2))
-							|| !(edgeSources1.containsAll(edgeSources2))) {
-						return false;
-					}
-				}
-			}
-		}
-		return true;
-	}
+	// private boolean isComplexNode(List<PathwayVertexRep> vertexReps) {
+	//
+	// // Detect complex nodes by comparing the sources and targets of their
+	// // edges
+	// for (PathwayVertexRep vertexRep : vertexReps) {
+	// for (PathwayVertexRep vRep : vertexReps) {
+	// if (vertexRep != vRep) {
+	//
+	// List<PathwayVertexRep> edgeSources1 = new ArrayList<PathwayVertexRep>();
+	// List<PathwayVertexRep> edgeTargets1 = new ArrayList<PathwayVertexRep>();
+	//
+	// List<PathwayVertexRep> edgeSources2 = new ArrayList<PathwayVertexRep>();
+	// List<PathwayVertexRep> edgeTargets2 = new ArrayList<PathwayVertexRep>();
+	//
+	// getEdgeEnds(edgeSources1, edgeTargets1, vertexRep);
+	// getEdgeEnds(edgeSources2, edgeTargets2, vRep);
+	//
+	// if ((edgeSources1.size() != edgeSources2.size())
+	// || (edgeTargets1.size() != edgeTargets2.size())
+	// || !(edgeTargets1.containsAll(edgeTargets2))
+	// || !(edgeSources1.containsAll(edgeSources2))) {
+	// return false;
+	// }
+	// }
+	// }
+	// }
+	// return true;
+	// }
 
 	/**
 	 * Determines the edge ends of a specified {@link PathwayVertexRep} and
@@ -1490,23 +1585,23 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * @param edgeTargets
 	 * @param vertexRep
 	 */
-	private void getEdgeEnds(List<PathwayVertexRep> edgeSources,
-			List<PathwayVertexRep> edgeTargets, PathwayVertexRep vertexRep) {
-		Set<DefaultEdge> edges = pathway.edgesOf(vertexRep);
-		for (DefaultEdge edge : edges) {
-			PathwayVertexRep target = pathway.getEdgeTarget(edge);
-			if (target == vertexRep) {
-				edgeSources.add(pathway.getEdgeSource(edge));
-			} else {
-				edgeTargets.add(target);
-			}
-		}
-	}
+	// private void getEdgeEnds(List<PathwayVertexRep> edgeSources,
+	// List<PathwayVertexRep> edgeTargets, PathwayVertexRep vertexRep) {
+	// Set<DefaultEdge> edges = pathway.edgesOf(vertexRep);
+	// for (DefaultEdge edge : edges) {
+	// PathwayVertexRep target = pathway.getEdgeTarget(edge);
+	// if (target == vertexRep) {
+	// edgeSources.add(pathway.getEdgeSource(edge));
+	// } else {
+	// edgeTargets.add(target);
+	// }
+	// }
+	// }
 
 	/**
 	 * @return the linearizedNodes, see {@link #linearizedNodes}
 	 */
-	public List<ANode> getLinearizedNodes() {
+	public List<ALinearizableNode> getLinearizedNodes() {
 		return linearizedNodes;
 	}
 
@@ -1517,16 +1612,18 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * @param node
 	 */
 	public void removeLinearizedNode(ANode node) {
-		List<Integer> indices = linearizedNodesToPathwayVertexRepIndicesMap.get(node);
+		// List<Integer> indices =
+		// linearizedNodesToPathwayVertexRepIndicesMap.get(node);
+		int linearizedNodeIndex = linearizedNodes.indexOf(node);
 
-		if (indices.get(0) == 0) {
-			for (int i = 0; i < indices.size(); i++) {
-				path.remove(0);
-			}
-		} else if (indices.get(indices.size() - 1) == path.size() - 1) {
-			for (int i = 0; i < indices.size(); i++) {
-				path.remove(path.size() - 1);
-			}
+		if (linearizedNodeIndex == 0) {
+			// for (int i = 0; i < indices.size(); i++) {
+			path.remove(0);
+			// }
+		} else if (linearizedNodeIndex == path.size() - 1) {
+			// for (int i = 0; i < indices.size(); i++) {
+			path.remove(path.size() - 1);
+			// }
 
 		} else {
 			return;

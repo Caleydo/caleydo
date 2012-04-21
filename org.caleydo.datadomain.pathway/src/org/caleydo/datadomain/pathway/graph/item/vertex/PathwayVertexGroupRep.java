@@ -4,6 +4,7 @@
 package org.caleydo.datadomain.pathway.graph.item.vertex;
 
 import java.util.ArrayList;
+import java.util.List;
 
 /**
  * A pathway vertex representation that groups together multiple
@@ -17,7 +18,7 @@ public class PathwayVertexGroupRep
 
 	private static final long serialVersionUID = 1L;
 
-	private ArrayList<PathwayVertexRep> groupedVertexReps = new ArrayList<PathwayVertexRep>();
+	private List<PathwayVertexRep> groupedVertexReps = new ArrayList<PathwayVertexRep>();
 
 	/**
 	 * Constructor that takes a list of {@link PathwayVertexReps} and calculates
@@ -39,7 +40,7 @@ public class PathwayVertexGroupRep
 	/**
 	 * @return the groupedVertexReps, see {@link #groupedVertexReps}
 	 */
-	public ArrayList<PathwayVertexRep> getGroupedVertexReps() {
+	public List<PathwayVertexRep> getGroupedVertexReps() {
 		return groupedVertexReps;
 	}
 	

@@ -100,12 +100,6 @@ public abstract class ANode {
 	public abstract void render(GL2 gl, GLU glu);
 
 	/**
-	 * @return A {@link PathwayVertexRep} object that is representative for this
-	 *         node.
-	 */
-	public abstract PathwayVertexRep getPathwayVertexRep();
-
-	/**
 	 * @return The point a connection line can connect to at the top of the
 	 *         node.
 	 */

@@ -10,6 +10,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
+import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.BranchSummaryNode;
 
@@ -42,7 +43,7 @@ public class BranchNodeLabelRenderer extends LayoutRenderer {
 
 	@Override
 	public void render(GL2 gl) {
-		List<ANode> branchNodes = node.getBranchNodes();
+		List<ALinearizableNode> branchNodes = node.getBranchNodes();
 
 		float spacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 		float textHeight = y - 2 * spacing;

@@ -103,7 +103,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			@Override
 			public void mouseOver(Pick pick) {
 
-				List<ANode> linearizedNodes = view.getLinearizedNodes();
+				List<ALinearizableNode> linearizedNodes = view.getLinearizedNodes();
 				int index = linearizedNodes.indexOf(node);
 
 				if ((index == 0) || (index == linearizedNodes.size() - 1)) {

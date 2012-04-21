@@ -119,8 +119,8 @@ public class LabelRenderer extends APickableLayoutRenderer {
 				* ySpacing, x);
 		switch (alignment) {
 		case ALIGN_CENTER:
-			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f + 4
-					* ySpacing, ySpacing, 0.1f, x, y - 2 * ySpacing);
+			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f +
+					ySpacing, 2*ySpacing, 0.1f, x, y - 2 * ySpacing);
 			break;
 		case ALIGN_RIGHT:
 			textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing,

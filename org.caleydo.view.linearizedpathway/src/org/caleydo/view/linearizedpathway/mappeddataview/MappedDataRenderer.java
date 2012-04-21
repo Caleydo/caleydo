@@ -38,7 +38,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
-import org.caleydo.view.linearizedpathway.node.ANode;
+import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 
 /**
  * Renderer for mapped genomic data for linearized pathway view. Based on a list
@@ -62,7 +62,8 @@ public class MappedDataRenderer {
 
 	private GLLinearizedPathway parentView;
 
-	private List<ANode> linearizedNodes;
+	private List<ALinearizableNode> linearizedNodes;
+
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
 
@@ -158,7 +159,7 @@ public class MappedDataRenderer {
 	 * @param linearizedNodes
 	 *            setter, see {@link #linearizedNodes}
 	 */
-	public void setLinearizedNodes(List<ANode> linearizedNodes) {
+	public void setLinearizedNodes(List<ALinearizableNode> linearizedNodes) {
 
 		float[] color;
 		relationShipRenderers = new ArrayList<RelationshipRenderer>(
@@ -198,7 +199,7 @@ public class MappedDataRenderer {
 		ElementLayout xSpacing = new ElementLayout();
 		xSpacing.setPixelSizeX(5);
 
-		for (ANode node : linearizedNodes) {
+		for (ALinearizableNode node : linearizedNodes) {
 
 			if (node.getNumAssociatedRows() == 0)
 				continue;

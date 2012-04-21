@@ -44,7 +44,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.layout.BranchNodeLabelRenderer;
@@ -76,12 +75,12 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 	/**
 	 * Nodes that are collapsed within this one.
 	 */
-	private List<ANode> branchNodes = new ArrayList<ANode>();
+	private List<ALinearizableNode> branchNodes = new ArrayList<ALinearizableNode>();
 
 	/**
 	 * The linearized node this branch refers to.
 	 */
-	private ANode associatedLinearizedNode;
+	private ALinearizableNode associatedLinearizedNode;
 
 	private ColorRenderer colorRenderer;
 
@@ -93,35 +92,29 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 	 * @param pixelGLConverter
 	 */
 	public BranchSummaryNode(GLLinearizedPathway view, int nodeId,
-			ANode associatedLinearizedNode) {
+			ALinearizableNode associatedLinearizedNode) {
 		super(view.getPixelGLConverter(), view, nodeId);
 		layoutManager = new LayoutManager(new ViewFrustum(), pixelGLConverter);
 		this.associatedLinearizedNode = associatedLinearizedNode;
 		setupLayout();
 	}
 
-	@Override
-	public PathwayVertexRep getPathwayVertexRep() {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	/**
 	 * @param branchNodes
 	 *            setter, see {@link #branchNodes}
 	 */
-	public void setBranchNodes(List<ANode> branchNodes) {
+	public void setBranchNodes(List<ALinearizableNode> branchNodes) {
 		this.branchNodes = branchNodes;
 	}
 
 	/**
 	 * @return the branchNodes, see {@link #branchNodes}
 	 */
-	public List<ANode> getBranchNodes() {
+	public List<ALinearizableNode> getBranchNodes() {
 		return branchNodes;
 	}
 
-	public void addBranchNode(ANode node) {
+	public void addBranchNode(ALinearizableNode node) {
 		branchNodes.add(node);
 	}
 
@@ -179,7 +172,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 	 * @param associatedLinearizedNode
 	 *            setter, see {@link #associatedLinearizedNode}
 	 */
-	public void setAssociatedLinearizedNode(ANode associatedLinearizedNode) {
+	public void setAssociatedLinearizedNode(ALinearizableNode associatedLinearizedNode) {
 		this.associatedLinearizedNode = associatedLinearizedNode;
 	}
 
@@ -187,7 +180,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 	 * @return the associatedLinearizedNode, see
 	 *         {@link #associatedLinearizedNode}
 	 */
-	public ANode getAssociatedLinearizedNode() {
+	public ALinearizableNode getAssociatedLinearizedNode() {
 		return associatedLinearizedNode;
 	}
 

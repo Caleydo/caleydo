@@ -43,12 +43,6 @@ public class GeneNode extends ALinearizableNode  {
 	protected CaleydoTextRenderer textRenderer;
 
 	/**
-	 * The vertex in the graph this gene belongs to. This can either be a direct
-	 * relationship, or the vertex can contain multiple genes.
-	 */
-	protected PathwayVertexRep pathwayVertexRep;
-
-	/**
 	 * The caption displayed on the node.
 	 */
 	protected String caption = "";

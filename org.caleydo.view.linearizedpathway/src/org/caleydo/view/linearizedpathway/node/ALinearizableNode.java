@@ -27,6 +27,7 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
@@ -58,6 +59,13 @@ public abstract class ALinearizableNode extends ANode {
 	 * The current mode of the node.
 	 */
 	protected ALinearizeableNodeMode mode;
+
+	/**
+	 * The {@link PathwayVertexRep} in the graph this node belongs to. This can
+	 * either be a direct relationship, or the vertex can contain multiple
+	 * genes.
+	 */
+	protected PathwayVertexRep pathwayVertexRep;
 
 	/**
 	 * @param pixelGLConverter
@@ -141,6 +149,21 @@ public abstract class ALinearizableNode extends ANode {
 	@Override
 	public int getWidthPixels() {
 		return mode.getMinWidthPixels();
+	}
+
+	/**
+	 * @param pathwayVertexRep
+	 *            setter, see {@link #pathwayVertexRep}
+	 */
+	public void setPathwayVertexRep(PathwayVertexRep pathwayVertexRep) {
+		this.pathwayVertexRep = pathwayVertexRep;
+	}
+
+	/**
+	 * @return the pathwayVertexRep, see {@link #pathwayVertexRep}
+	 */
+	public PathwayVertexRep getPathwayVertexRep() {
+		return pathwayVertexRep;
 	}
 
 	// @Override
