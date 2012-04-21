@@ -411,9 +411,8 @@ public class GLPathwayContentCreator {
 				break;
 			case group:
 			
-				gl.glColor4f(0, 1, 0, 1);
+				gl.glColor4f(1, 1, 0, 1);
 				gl.glCallList(enzymeNodeDisplayListId);
-				
 				break;
 			case gene:
 			case enzyme:

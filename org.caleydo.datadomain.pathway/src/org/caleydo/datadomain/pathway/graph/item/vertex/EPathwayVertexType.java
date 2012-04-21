@@ -41,7 +41,7 @@ public enum EPathwayVertexType {
 	map("Linked Pathway"),
 	/** the type of the node is unknwon */
 	other("Unknown");
-
+	
 	private final String name;
 
 	EPathwayVertexType(final String name) {

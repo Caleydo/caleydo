@@ -35,7 +35,6 @@ import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
-import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
@@ -223,7 +222,8 @@ public class KgmlSaxHandler
 		String name = "";
 		String type = "";
 		String externalLink = "";
-		// String reactionName = "";
+
+		currentReactionName = null;
 
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
@@ -459,56 +459,66 @@ public class KgmlSaxHandler
 
 				if (subType.equals("compound")) {
 
-//					int compoundID = Integer.parseInt(attributes.getValue(attributeIndex));
-//
-//					PathwayVertexRep compoundVertexRep = hashKgmlEntryIdToVertexRep
-//							.get(compoundID);
-//
-//					// Create edge representation
-//					PathwayRelationEdgeRep pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway
-//							.getEdge(relationSourceVertexRep, compoundVertexRep);
-//
-//					// edge from compound to gene
-//					if (pathwayRelationEdgeRep == null) {
-//						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
-//						try {
-//							currentPathway.addEdge(relationSourceVertexRep, compoundVertexRep,
-//									pathwayRelationEdgeRep);
-//						}
-//						catch (Exception e) {
-//							// TODO: marc, investigate why this happens here
-//							e.printStackTrace();
-//						}
-//
-//						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
-//						try {
-//							currentPathway.addEdge(compoundVertexRep, relationSourceVertexRep,
-//									pathwayRelationEdgeRep);
-//						}
-//						catch (Exception e) {
-//							// TODO: marc, investigate why this happens here
-//							e.printStackTrace();
-//						}
-//					}
-//					else {
-//						pathwayRelationEdgeRep.addRelationSubType(subType);
-//
-//						if (!subType.equals("compound"))
-//							System.out.println("STOP");
-//					}
-//
-//					pathwayRelationEdgeRep = (PathwayRelationEdgeRep) currentPathway.getEdge(
-//							relationSourceVertexRep, compoundVertexRep);
-//
-//					// edge from gene to compound
-//					if (pathwayRelationEdgeRep == null) {
-//						pathwayRelationEdgeRep = new PathwayRelationEdgeRep(relationType);
-//						currentPathway.addEdge(compoundVertexRep, relationTargetVertexRep,
-//								pathwayRelationEdgeRep);
-//					}
-//					else {
-//						pathwayRelationEdgeRep.addRelationSubType(subType);
-//					}
+					// int compoundID =
+					// Integer.parseInt(attributes.getValue(attributeIndex));
+					//
+					// PathwayVertexRep compoundVertexRep =
+					// hashKgmlEntryIdToVertexRep
+					// .get(compoundID);
+					//
+					// // Create edge representation
+					// PathwayRelationEdgeRep pathwayRelationEdgeRep =
+					// (PathwayRelationEdgeRep) currentPathway
+					// .getEdge(relationSourceVertexRep, compoundVertexRep);
+					//
+					// // edge from compound to gene
+					// if (pathwayRelationEdgeRep == null) {
+					// pathwayRelationEdgeRep = new
+					// PathwayRelationEdgeRep(relationType);
+					// try {
+					// currentPathway.addEdge(relationSourceVertexRep,
+					// compoundVertexRep,
+					// pathwayRelationEdgeRep);
+					// }
+					// catch (Exception e) {
+					// // TODO: marc, investigate why this happens here
+					// e.printStackTrace();
+					// }
+					//
+					// pathwayRelationEdgeRep = new
+					// PathwayRelationEdgeRep(relationType);
+					// try {
+					// currentPathway.addEdge(compoundVertexRep,
+					// relationSourceVertexRep,
+					// pathwayRelationEdgeRep);
+					// }
+					// catch (Exception e) {
+					// // TODO: marc, investigate why this happens here
+					// e.printStackTrace();
+					// }
+					// }
+					// else {
+					// pathwayRelationEdgeRep.addRelationSubType(subType);
+					//
+					// if (!subType.equals("compound"))
+					// System.out.println("STOP");
+					// }
+					//
+					// pathwayRelationEdgeRep = (PathwayRelationEdgeRep)
+					// currentPathway.getEdge(
+					// relationSourceVertexRep, compoundVertexRep);
+					//
+					// // edge from gene to compound
+					// if (pathwayRelationEdgeRep == null) {
+					// pathwayRelationEdgeRep = new
+					// PathwayRelationEdgeRep(relationType);
+					// currentPathway.addEdge(compoundVertexRep,
+					// relationTargetVertexRep,
+					// pathwayRelationEdgeRep);
+					// }
+					// else {
+					// pathwayRelationEdgeRep.addRelationSubType(subType);
+					// }
 				}
 				else {
 					// all other cases except "compound"
@@ -575,10 +585,6 @@ public class KgmlSaxHandler
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
 
-			if ("".equals(attributeName)) {
-				attributeName = attributes.getQName(attributeIndex);
-			}
-
 			if (attributeName.equals("id")) {
 				reactionSubstrateID = Integer.valueOf(attributes.getValue(attributeIndex));
 			}
@@ -625,10 +631,6 @@ public class KgmlSaxHandler
 
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
-
-			if ("".equals(attributeName)) {
-				attributeName = attributes.getQName(attributeIndex);
-			}
 
 			if (attributeName.equals("id")) {
 				reactionProductID = Integer.valueOf(attributes.getValue(attributeIndex));
