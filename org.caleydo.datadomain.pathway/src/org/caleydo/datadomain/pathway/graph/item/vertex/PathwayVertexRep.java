@@ -57,11 +57,11 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	/** The type of shape that this vertex rep uses */
 	private EPathwayVertexShape shape;
 
-	private ArrayList<Pair<Short, Short>> coords;
+	protected ArrayList<Pair<Short, Short>> coords;
 
-	private short width = 20;
+	protected short width = 20;
 
-	private short height = 20;
+	protected short height = 20;
 
 	/**
 	 * The {@link PathwayVertex} objects that map to this representation there
@@ -76,10 +76,10 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	 * 
 	 * @param name
 	 * @param shapeType
-	 * @param sCoords
+	 * @param coords
 	 */
 	public PathwayVertexRep(final String name, final String shapeType,
-			final String sCoords) {
+			final String coords) {
 
 		id = GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
@@ -87,7 +87,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		shape = EPathwayVertexShape.valueOf(shapeType);
 		this.name = name;
 
-		setCoordsByCommaSeparatedString(sCoords);
+		setCoordsByCommaSeparatedString(coords);
 	}
 
 	/**
@@ -143,7 +143,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		}
 	}
 
-	private void setRectangularCoords(final short x, final short y, final short width,
+	protected void setRectangularCoords(final short x, final short y, final short width,
 			final short height) {
 
 		coords = new ArrayList<Pair<Short, Short>>(4);

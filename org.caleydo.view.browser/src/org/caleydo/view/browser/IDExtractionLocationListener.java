@@ -78,7 +78,7 @@ public class IDExtractionLocationListener
 				return;
 
 			PathwayVertex vertex = PathwayItemManager.get()
-					.getPathwayVertexGraphItemByDavidId(iDavidId);
+					.getPathwayVertexByDavidId(iDavidId);
 
 			if (vertex == null)
 				return;

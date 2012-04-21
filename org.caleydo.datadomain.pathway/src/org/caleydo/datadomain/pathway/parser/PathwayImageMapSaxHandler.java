@@ -73,7 +73,7 @@ public class PathwayImageMapSaxHandler extends AXmlParserHandler {
 		String eName = "".equals(sSimpleName) ? sQualifiedName : sSimpleName;
 
 		if (null != eName) {
-			if (eName.equals(sOpeningTag)) {
+			if (eName.equals(openingTag)) {
 				/**
 				 * section (xml block) finished, call callback function from
 				 * XmlParserManager

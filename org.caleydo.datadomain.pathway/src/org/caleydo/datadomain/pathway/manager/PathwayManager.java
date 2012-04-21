@@ -425,7 +425,7 @@ public class PathwayManager extends AManager<PathwayGraph> {
 		PathwayVertex pathwayVertexGraphItem;
 		if (idType == IDType.getIDType("DAVID"))
 			pathwayVertexGraphItem = PathwayItemManager.get()
-					.getPathwayVertexGraphItemByDavidId(id);
+					.getPathwayVertexByDavidId(id);
 		else
 			throw new IllegalStateException(
 					"Only David IDs can be resolved to pathways lists");

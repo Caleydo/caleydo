@@ -22,10 +22,10 @@ package org.caleydo.datadomain.pathway.manager;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Set;
-
 import org.caleydo.core.manager.AManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 
 /**
@@ -108,7 +108,7 @@ public class PathwayItemManager extends AManager<PathwayVertex> {
 	}
 
 	public PathwayVertexRep createVertexRep(final PathwayGraph parentPathway,
-			final ArrayList<PathwayVertex> alVertexGraphItem, final String sName,
+			final ArrayList<PathwayVertex> alVertex, final String sName,
 			final String sShapeType, final short shHeight, final short shWidth,
 			final short shXPosition, final short shYPosition) {
 
@@ -120,7 +120,7 @@ public class PathwayItemManager extends AManager<PathwayVertex> {
 		parentPathway.addVertex(pathwayVertexRep);
 		pathwayVertexRep.setPathway(parentPathway);
 
-		for (PathwayVertex parentVertex : alVertexGraphItem) {
+		for (PathwayVertex parentVertex : alVertex) {
 			pathwayVertexRep.addPathwayVertex(parentVertex);
 			parentVertex.addPathwayVertexRep(pathwayVertexRep);
 		}
@@ -154,8 +154,23 @@ public class PathwayItemManager extends AManager<PathwayVertex> {
 		return pathwayVertexRep;
 	}
 
+	public PathwayVertexGroupRep createVertexGroupRep(final PathwayGraph parentPathway) {
+
+		PathwayVertexGroupRep pathwayVertexGroupRep = new PathwayVertexGroupRep();
+
+		// registerItem(pathwayVertexRep);
+
+		parentPathway.addVertex(pathwayVertexGroupRep);
+		pathwayVertexGroupRep.setPathway(parentPathway);
+
+		hashIDToPathwayVertexGraphItemRep.put(pathwayVertexGroupRep.getID(),
+				(PathwayVertexRep) pathwayVertexGroupRep);
+
+		return pathwayVertexGroupRep;
+	}
+	
 	// TODO: throw exception
-	public final PathwayVertex getPathwayVertexGraphItemByDavidId(final int iDavidId) {
+	public final PathwayVertex getPathwayVertexByDavidId(final int iDavidId) {
 		PathwayManager.get().waitUntilPathwayLoadingIsFinished();
 
 		if (hashDavidIdToPathwayVertexGraphItem.containsKey(iDavidId))

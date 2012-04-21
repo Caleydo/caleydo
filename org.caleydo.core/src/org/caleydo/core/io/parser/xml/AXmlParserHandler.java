@@ -35,7 +35,7 @@ public abstract class AXmlParserHandler
 	protected final GeneralManager generalManager;
 	protected final XmlParserManager xmlParserManager;
 
-	protected String sOpeningTag = "";
+	protected String openingTag = "";
 
 	/**
 	 * Constructor.
@@ -49,13 +49,13 @@ public abstract class AXmlParserHandler
 		if (tag.length() < 2)
 			throw new IllegalStateException("setXmlActivationTag() tag must be at least one char!");
 
-		this.sOpeningTag = tag;
+		this.openingTag = tag;
 	}
 
 	@Override
 	public final String getXmlActivationTag() {
 
-		return sOpeningTag;
+		return openingTag;
 	}
 
 	@Override
@@ -79,10 +79,6 @@ public abstract class AXmlParserHandler
 	 */
 	@Override
 	public void initHandler() {
-
-		// generalManager.logMsg(
-		// this.getClass().getSimpleName() +
-		// ": initHandler", LoggerType.VERBOSE_EXTRA );
 	}
 
 	/**
@@ -92,10 +88,5 @@ public abstract class AXmlParserHandler
 	 */
 	@Override
 	public void destroyHandler() {
-
-		// generalManager.logMsg(
-		// this.getClass().getSimpleName() +
-		// ": destroyHandler",
-		// LoggerType.VERBOSE );
 	}
 }

@@ -329,7 +329,7 @@ public class GLPathway
 
 				}
 				else if (vertexRep.getType() == EPathwayVertexType.gene) {
-					for (PathwayVertex pathwayVertexGraphItem : vertexRep.getPathwayVertices()) {
+					for (PathwayVertex pathwayVertex : vertexRep.getPathwayVertices()) {
 
 						GeneMenuItemContainer contexMenuItemContainer = new GeneMenuItemContainer();
 						contexMenuItemContainer
@@ -338,7 +338,7 @@ public class GLPathway
 								.setData(
 										pathwayDataDomain.getDavidIDType(),
 										pathwayItemManager
-												.getDavidIdByPathwayVertex((PathwayVertex) pathwayVertexGraphItem));
+												.getDavidIdByPathwayVertex((PathwayVertex) pathwayVertex));
 						contextMenuCreator
 								.addContextMenuItemContainer(contexMenuItemContainer);
 					}
@@ -520,13 +520,13 @@ public class GLPathway
 		}
 	}
 
-	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexGraphItemRep(
-			int iPathwayVertexGraphItemRepID) {
+	private ArrayList<Integer> getExpressionIndicesFromPathwayVertexRep(
+			int pathwayVertexRepID) {
 
 		ArrayList<Integer> alExpressionIndex = new ArrayList<Integer>();
 
 		for (PathwayVertex vertex : pathwayItemManager.getPathwayVertexRep(
-				iPathwayVertexGraphItemRepID).getPathwayVertices()) {
+				pathwayVertexRepID).getPathwayVertices()) {
 
 			Integer davidID = pathwayItemManager
 					.getDavidIdByPathwayVertex((PathwayVertex) vertex);
@@ -552,7 +552,7 @@ public class GLPathway
 		SelectionDelta newSelectionDelta = new SelectionDelta(geneSelectionManager.getIDType());
 
 		for (SelectionDeltaItem item : selectionDelta) {
-			for (Integer expressionIndex : getExpressionIndicesFromPathwayVertexGraphItemRep(item
+			for (Integer expressionIndex : getExpressionIndicesFromPathwayVertexRep(item
 					.getID())) {
 
 				SelectionDeltaItem newItem = newSelectionDelta.addSelection(expressionIndex,
@@ -573,7 +573,7 @@ public class GLPathway
 		SelectionDelta newSelectionDelta = new SelectionDelta(
 				pathwayDataDomain.getPrimaryIDType());
 
-		PathwayVertex pathwayVertexGraphItem;
+		PathwayVertex pathwayVertex;
 
 		IDMappingManager idMappingManager = pathwayDataDomain.getGeneIDMappingManager();
 
@@ -588,16 +588,16 @@ public class GLPathway
 
 			Integer davidID = (Integer) tableIDs.toArray()[0];
 
-			pathwayVertexGraphItem = pathwayItemManager
-					.getPathwayVertexGraphItemByDavidId(davidID);
+			pathwayVertex = pathwayItemManager
+					.getPathwayVertexByDavidId(davidID);
 
 			// Ignore David IDs that do not exist in any pathway
-			if (pathwayVertexGraphItem == null) {
+			if (pathwayVertex == null) {
 				continue;
 			}
 
 			// Convert DAVID ID to pathway graph item representation ID
-			for (PathwayVertexRep vertexRep : pathwayVertexGraphItem.getPathwayVertexReps()) {
+			for (PathwayVertexRep vertexRep : pathwayVertex.getPathwayVertexReps()) {
 				if (!pathway.containsVertex(vertexRep)) {
 					continue;
 				}
@@ -732,7 +732,7 @@ public class GLPathway
 				&& selectionType == SelectionType.SELECTION)
 			return;
 
-		PathwayVertexRep tmpPathwayVertexGraphItemRep;
+		PathwayVertexRep tmpPathwayVertexRep;
 		int pathwayHeight = pathway.getHeight();
 
 		int viewID = uniqueID;
@@ -742,14 +742,14 @@ public class GLPathway
 		// viewID = glRemoteRenderingView.getID();
 
 		for (int vertexRepID : geneSelectionManager.getElements(selectionType)) {
-			tmpPathwayVertexGraphItemRep = pathwayItemManager.getPathwayVertexRep(vertexRepID);
+			tmpPathwayVertexRep = pathwayItemManager.getPathwayVertexRep(vertexRepID);
 
 			ElementConnectionInformation elementRep = new ElementConnectionInformation(
 					dataDomain.getRecordIDType(), viewID,
-					tmpPathwayVertexGraphItemRep.getXOrigin()
+					tmpPathwayVertexRep.getXOrigin()
 							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 							+ vecTranslation.x(),
-					(pathwayHeight - tmpPathwayVertexGraphItemRep.getYOrigin())
+					(pathwayHeight - tmpPathwayVertexRep.getYOrigin())
 							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 							+ vecTranslation.y(), 0);
 

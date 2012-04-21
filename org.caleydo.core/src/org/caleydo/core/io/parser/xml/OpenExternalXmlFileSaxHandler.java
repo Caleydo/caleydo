@@ -22,7 +22,7 @@ package org.caleydo.core.io.parser.xml;
 import org.xml.sax.Attributes;
 
 /**
- * Parser for recursively parsing of external files
+ * Parser for recursive parsing of external files
  * 
  * @author Michael Kalkusch
  * @author Marc Streit
@@ -61,11 +61,9 @@ public class OpenExternalXmlFileSaxHandler
 	@Override
 	public void startElement(String uri, String localName, String qName, Attributes attributes) {
 
-		if (qName.equalsIgnoreCase(this.sOpeningTag)) {
+		if (qName.equalsIgnoreCase(this.openingTag)) {
 			String sTargetFileName = "";
-			//
-			// try
-			// {
+
 			sTargetFileName = attributes.getValue(sXML_attribute_target);
 
 			if (sTargetFileName == null)
@@ -76,16 +74,7 @@ public class OpenExternalXmlFileSaxHandler
 			 */
 			xmlParserManager.parseXmlFileByName(sTargetFileName);
 
-			// }
-			// catch (CaleydoRuntimeException cre)
-			// {
-			// throw new CaleydoRuntimeException(
-			// "file [" + sTargetFileName
-			// + "] could not be loaded! Skip file... (Error="
-			// + cre.toString() + ")", CaleydoRuntimeExceptionType.SAXPARSER);
-			// }
-
-		} // if ( qName.equalsIgnoreCase( this.sOpeningTag ) )
+		}
 		else {
 			xmlParserManager.startElementSearch4Tag(uri, localName, qName, attributes);
 		}
@@ -104,7 +93,7 @@ public class OpenExternalXmlFileSaxHandler
 	@Override
 	public void endElement(String uri, String localName, String qName) {
 
-		if (qName.equals(sOpeningTag)) {
+		if (qName.equals(openingTag)) {
 			xmlParserManager.sectionFinishedByHandler(this);
 		}
 	}

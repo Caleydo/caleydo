@@ -30,8 +30,9 @@ import org.xml.sax.EntityResolver;
  */
 public interface IXmlParserHandler
 	extends ContentHandler, EntityResolver {
+	
 	/**
-	 * Initilization of handler. Called once by Manager before using the handler.
+	 * Initialization of handler. Called once by Manager before using the handler.
 	 * 
 	 * @see org.caleydo.core.io.parser.xml.XmlParserManager#registerAndInitSaxHandler(IXmlParserHandler)
 	 */
@@ -50,19 +51,17 @@ public interface IXmlParserHandler
 	 */
 	public String getXmlActivationTag();
 
-	// public boolean setXmlActivationTag( final String sXmlActivationTag );
-
 	/**
-	 * TRUE if handler is destoryed after activation tag is closed.
+	 * TRUE if handler is destroyed after activation tag is closed.
 	 * 
 	 * @see org.caleydo.core.parser.xml.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
 	 * @see org.caleydo.core.io.parser.xml.XmlParserManager
-	 * @return TRUE if handler is destoryed after activation tag is closed
+	 * @return TRUE if handler is destroyed after activation tag is closed
 	 */
 	public boolean isHandlerDestoryedAfterClosingTag();
 
 	/**
-	 * TRUE if handler is destoryed after activation tag is closed.
+	 * TRUE if handler is destroyed after activation tag is closed.
 	 * 
 	 * @see org.caleydo.core.parser.xml.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
 	 * @param setHandlerDestoryedAfterClosingTag

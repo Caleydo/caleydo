@@ -108,10 +108,10 @@ public class CommandSaxHandler
 
 		if (null != eName) {
 
-			if (eName.equals(sOpeningTag)) {
+			if (eName.equals(openingTag)) {
 				/* <sFrameStateTag> */
 				if (bCommandBuffer_isActive)
-					throw new SAXException("<" + sOpeningTag + "> already opened!");
+					throw new SAXException("<" + openingTag + "> already opened!");
 				else {
 					bCommandBuffer_isActive = true;
 					return;
@@ -137,7 +137,7 @@ public class CommandSaxHandler
 
 				}
 				else
-					throw new SAXException("<" + sTag_Command + "> opens without <" + sOpeningTag
+					throw new SAXException("<" + sTag_Command + "> opens without <" + openingTag
 						+ "> being opened!");
 			}
 		}
@@ -152,7 +152,7 @@ public class CommandSaxHandler
 		String eName = "".equals(localName) ? qName : localName;
 
 		if (null != eName) {
-			if (eName.equals(sOpeningTag)) {
+			if (eName.equals(openingTag)) {
 
 				/* </CommandBuffer> */
 				if (bCommandBuffer_isActive) {
@@ -166,14 +166,14 @@ public class CommandSaxHandler
 					return;
 				}
 				else
-					throw new SAXException("<" + sOpeningTag + "> was already closed.");
+					throw new SAXException("<" + openingTag + "> was already closed.");
 
 			}
 			else if (eName.equals(sTag_Command)) {
 
 				/* </cmd> */
 				if (!bCommandBuffer_isActive)
-					throw new SAXException("<" + sTag_Command + "> opens without " + sOpeningTag
+					throw new SAXException("<" + sTag_Command + "> opens without " + openingTag
 						+ " being opened.");
 
 			}

@@ -832,7 +832,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 		Set<PathwayGraph> pathwaysContainingGene = new HashSet<PathwayGraph>();
 
 		PathwayVertex vertex = PathwayItemManager.get()
-				.getPathwayVertexGraphItemByDavidId(iDavidID);
+				.getPathwayVertexByDavidId(iDavidID);
 
 		// Only handle David IDs that does exist in any pathway
 		if (vertex != null) {

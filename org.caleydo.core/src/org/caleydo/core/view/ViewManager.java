@@ -236,9 +236,11 @@ public class ViewManager
 	public void startAnimator() {
 
 		if (fpsAnimator == null)
-			initAnimator();
-
-		fpsAnimator.start();
+			fpsAnimator = new FPSAnimator(60);
+		
+		if (!fpsAnimator.isAnimating())
+			fpsAnimator.start();
+		
 		fpsAnimator.setIgnoreExceptions(true);
 		fpsAnimator.setPrintExceptions(true);
 		
@@ -258,22 +260,13 @@ public class ViewManager
 
 		// Lazy creation of animator
 		if (fpsAnimator == null) {
-			initAnimator();
+			startAnimator();
 		}
 
 		fpsAnimator.add(glCaleydoCanvas);
 		
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
 				"Add canvas to animator"));
-	}
-
-	private void initAnimator() {
-		fpsAnimator = new FPSAnimator(60);
-		
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-				"Creating animator"));
-		
-		startAnimator();
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -414,7 +407,7 @@ public class ViewManager
 
 		// lazy creation of animator and display loop
 		if (displayLoopExecution == null) {
-			initAnimator();
+			startAnimator();
 			displayLoopExecution = DisplayLoopExecution.get();
 			fpsAnimator.add((GLAutoDrawable) displayLoopExecution.getDisplayLoopCanvas());
 			displayLoopExecution.executeMultiple(connectedElementRepManager);

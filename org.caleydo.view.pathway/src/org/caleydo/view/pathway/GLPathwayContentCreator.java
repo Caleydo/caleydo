@@ -41,6 +41,7 @@ import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
+import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.eclipse.core.runtime.IStatus;
@@ -325,7 +326,11 @@ public class GLPathwayContentCreator {
 
 	private void createVertex(final GL2 gl, final IUniqueObject containingView,
 			PathwayVertexRep vertexRep, PathwayGraph containingPathway) {
-
+		
+		if (vertexRep instanceof PathwayVertexGroupRep) {
+			System.out.println("BLADFS");
+		}
+		
 		float[] tmpNodeColor = null;
 
 		gl.glPushName(generalManager
@@ -336,12 +341,12 @@ public class GLPathwayContentCreator {
 
 		EPathwayVertexShape shape = vertexRep.getShapeType();
 
-		if (vertexRep.getPathwayVertices().toArray().length == 0) {
-			Logger.log(new Status(IStatus.WARNING, this.toString(),
-					"Cannot create pathway vertex. Pathway node representation "
-							+ vertexRep.getName() + " has not parent in graph!"));
-			return;
-		}
+//		if (vertexRep.getPathwayVertices().toArray().length == 0) {
+//			Logger.log(new Status(IStatus.WARNING, this.toString(),
+//					"Cannot create pathway vertex. Pathway node representation "
+//							+ vertexRep.getName() + " has not parent in graph!"));
+//			return;
+//		}
 
 		glPathwayView.addIDPickingListener(glPathwayView.getPathwayElementPickingListener(),
 				PickingType.PATHWAY_ELEMENT_SELECTION.name(), vertexRep.getID());
@@ -537,6 +542,14 @@ public class GLPathwayContentCreator {
 					gl.glEnd();
 				}
 			}
+		}else if (vertexType.equals(EPathwayVertexType.group)) {
+			float fCanvasXPos = vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X;
+			float fCanvasYPos = vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y;
+
+			gl.glTranslatef(fCanvasXPos, -fCanvasYPos, 0);
+			gl.glColor4f(0, 1, 0, 1);
+			gl.glCallList(enzymeNodeDisplayListId);
+			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
 		// Enzyme / Gene
 		else if (vertexType.equals(EPathwayVertexType.gene)
@@ -544,7 +557,7 @@ public class GLPathwayContentCreator {
 				// new kegg data assign enzymes without mapping to "undefined"
 				// which we represent as other
 				|| vertexType.equals(EPathwayVertexType.other)) {
-
+			
 			float fCanvasXPos = vertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X;
 			float fCanvasYPos = vertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y;
 
@@ -630,6 +643,7 @@ public class GLPathwayContentCreator {
 					gl.glCallList(enzymeNodeDisplayListId);
 				}
 			}
+
 
 			gl.glTranslatef(-fCanvasXPos, fCanvasYPos, 0);
 		}
