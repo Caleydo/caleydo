@@ -431,11 +431,13 @@ public class GLPathwayContentCreator {
 
 						if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
-							gl.glCallList(framedEnzymeNodeDisplayListId);
+							gl.glCallList(enzymeNodeDisplayListId);
+							
+							//gl.glCallList(framedEnzymeNodeDisplayListId);
 
 							// Transparent node for picking
-							gl.glColor4f(0, 0, 0, 0);
-							gl.glCallList(enzymeNodeDisplayListId);
+							//gl.glColor4f(0, 0, 0, 0);
+							//gl.glCallList(enzymeNodeDisplayListId);
 
 							// Handle selection highlighting of element
 							if (internalSelectionManager.checkStatus(SelectionType.SELECTION,

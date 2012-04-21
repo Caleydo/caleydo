@@ -297,19 +297,20 @@ public class KgmlSaxHandler
 			currentVertices.add(currentVertex);
 		}
 	}
-	
+
 	/**
 	 * Handles compound tags which are subtags of group entry elements.
 	 */
 	protected void handleComponentTag() {
 
 		String kgmlEntryID = attributes.getValue(0);
-		
-		PathwayVertexRep vertexRep = hashKgmlEntryIdToVertexRep.get(Integer.parseInt(kgmlEntryID));
-		
+
+		PathwayVertexRep vertexRep = hashKgmlEntryIdToVertexRep.get(Integer
+				.parseInt(kgmlEntryID));
+
 		if (vertexRep == null)
 			return;
-		
+
 		currentVertexGroupRep.addVertexRep(vertexRep);
 	}
 
@@ -365,14 +366,15 @@ public class KgmlSaxHandler
 			return;
 		}
 
-		// Check if we need to create a group vertex rep instead of a standard vertex rep
+		// Check if we need to create a group vertex rep instead of a standard
+		// vertex rep
 		if (currentVertices.get(0).getType().equals(EPathwayVertexType.group)) {
-		
-			currentVertexGroupRep = pathwayItemManager
-					.createVertexGroupRep(currentPathway);
-			
+
+			currentVertexGroupRep = pathwayItemManager.createVertexGroupRep(currentPathway);
+
 			hashKgmlEntryIdToVertexRep.put(currentEntryId, currentVertexGroupRep);
-			hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), currentVertexGroupRep);
+			hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(),
+					currentVertexGroupRep);
 		}
 		else {
 			PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
@@ -400,7 +402,8 @@ public class KgmlSaxHandler
 						vertexGroupRep.addVertexRep(alreadyPresentReactionNode);
 						vertexGroupRep.addVertexRep(vertexRep);
 						hashKgmlReactionNameToVertexRep.remove(alreadyPresentReactionNode);
-						hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexGroupRep);
+						hashKgmlReactionNameToVertexRep.put(currentReactionName,
+								vertexGroupRep);
 					}
 				}
 				else {
@@ -602,6 +605,11 @@ public class KgmlSaxHandler
 		PathwayVertexRep targetVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
 
+		// Prevent double insertion of edges that connect to group nodes
+		if (currentPathway.getEdge(sourceVertexRep, targetVertexRep) != null
+				|| targetVertexRep.getType().equals(EPathwayVertexType.group))
+			return;
+
 		// Edge from the substrate to the gene
 		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(
 				currentReactionType);
@@ -616,10 +624,10 @@ public class KgmlSaxHandler
 			}
 		}
 		catch (Exception e) {
-//			Logger.log(new Status(
-//					IStatus.INFO,
-//					GeneralManager.PLUGIN_ID,
-//					"Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n"));
+			// Logger.log(new Status(
+			// IStatus.INFO,
+			// GeneralManager.PLUGIN_ID,
+			// "Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n"));
 		}
 	}
 
@@ -648,6 +656,11 @@ public class KgmlSaxHandler
 
 		PathwayVertexRep targetVertexRep = hashKgmlNameToVertexRep.get(reactionProductName);
 
+		// Prevent double insertion of edges that connect to group nodes
+		if (currentPathway.getEdge(sourceVertexRep, targetVertexRep) != null
+				|| sourceVertexRep.getType().equals(EPathwayVertexType.group))
+			return;
+
 		// Edge from the product to the gene
 		PathwayReactionEdgeRep pathwayReactionEdgeRep = new PathwayReactionEdgeRep(
 				currentReactionType);
@@ -662,10 +675,10 @@ public class KgmlSaxHandler
 			}
 		}
 		catch (Exception e) {
-//			Logger.log(new Status(
-//					IStatus.INFO,
-//					GeneralManager.PLUGIN_ID,
-//					"Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n"));
+			// Logger.log(new Status(
+			// IStatus.INFO,
+			// GeneralManager.PLUGIN_ID,
+			// "Cannot add edge because one of the gene vertices was not mapped to David and therefore not inserted in the graph.\n"));
 		}
 	}
 
