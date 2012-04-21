@@ -326,11 +326,7 @@ public class GLPathwayContentCreator {
 
 	private void createVertex(final GL2 gl, final IUniqueObject containingView,
 			PathwayVertexRep vertexRep, PathwayGraph containingPathway) {
-		
-		if (vertexRep instanceof PathwayVertexGroupRep) {
-			System.out.println("BLADFS");
-		}
-		
+
 		float[] tmpNodeColor = null;
 
 		gl.glPushName(generalManager
