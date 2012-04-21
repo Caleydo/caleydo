@@ -48,6 +48,7 @@ public class GeneNodeLinearizedMode extends ALayoutBasedNodeMode implements
 		attributeRenderers.clear();
 		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
 				view, node);
+		attributeRenderer.addNodeId(node.getNodeId());
 		addAttributeRenderer(attributeRenderer);
 
 		Column baseColumn = new Column("baseColumn");

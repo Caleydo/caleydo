@@ -5,13 +5,15 @@ package org.caleydo.view.linearizedpathway.node.mode;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
-import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer;
 
@@ -38,6 +40,17 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 		attributeRenderers.clear();
 		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
 				view, node);
+
+		ComplexNode complexNode = (ComplexNode) node;
+
+		if (complexNode.getNodes() != null) {
+			List<Integer> nodeIds = new ArrayList<Integer>();
+
+			for (ALinearizableNode n : complexNode.getNodes()) {
+				nodeIds.add(n.getNodeId());
+			}
+			attributeRenderer.setNodeIds(nodeIds);
+		}
 		addAttributeRenderer(attributeRenderer);
 
 		// Column baseColumn = new Column("baseColumn");

@@ -243,7 +243,6 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		}
 
 		PathwayVertexRep currentVertex = null;
-
 		for (PathwayVertexRep vertex : pathway.vertexSet()) {
 			currentVertex = vertex;
 			break;
@@ -404,6 +403,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				ComplexNode complexNode = new ComplexNode(pixelGLConverter, textRenderer,
 						this, lastNodeId++);
 				complexNode.setNodes(groupedNodes);
+				for (ALinearizableNode groupedNode : groupedNodes) {
+					groupedNode.setParentNode(complexNode);
+				}
 				complexNode.setPathwayVertexRep(currentVertexRep);
 				node = complexNode;
 			} else if (currentVertexRep.getType() == EPathwayVertexType.compound) {
@@ -764,7 +766,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
 				topSpacing, dataRowHeight);
 
-//		mappedDataRenderer.render(gl);
+		// mappedDataRenderer.render(gl);
 		gl.glPopMatrix();
 
 		renderEdgesOfLinearizedNodes(gl);
@@ -851,11 +853,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		float titleAreaHeight = pixelGLConverter.getGLHeightForPixelHeight(summaryNode
 				.getTitleAreaHeightPixels());
 
-		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f,
-				linearizedNodePosition.y()
-						+ (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
-								: -branchSummaryNodeToLinearizedNodeDistance)
-						- (summaryNode.getHeight() / 2.0f) + titleAreaHeight / 2.0f,
+		float nodePositionY = linearizedNodePosition.y()
+				+ (isIncomingNode ? branchSummaryNodeToLinearizedNodeDistance
+						: -branchSummaryNodeToLinearizedNodeDistance)
+				- (summaryNode.getHeight() / 2.0f) + titleAreaHeight / 2.0f;
+
+		summaryNode.setPosition(new Vec3f(sideSpacing + width / 2.0f, nodePositionY,
 				(summaryNode.isCollapsed() ? 0 : 0.2f)));
 
 		summaryNode.render(gl, glu);
@@ -866,6 +869,19 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				renderEdge(gl, node, linearizedNode, node.getRightConnectionPoint(),
 						linearizedNode.getLeftConnectionPoint(), 0.2f, false);
 			}
+		}
+
+		float bottomPositionY = nodePositionY - (summaryNode.getHeight() / 2.0f);
+
+		if (viewFrustum.getBottom() > bottomPositionY) {
+			int additionalHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+					.getBottom() - bottomPositionY);
+			SetMinViewSizeEvent event = new SetMinViewSizeEvent();
+			event.setMinViewSize(parentGLCanvas.getBounds().width,
+					parentGLCanvas.getBounds().height + additionalHeight);
+			event.setView(this);
+			eventPublisher.triggerEvent(event);
+			setDisplayListDirty();
 		}
 	}
 
@@ -1671,7 +1687,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	@Override
 	public List<DataContainer> getDataContainers() {
-		if(mappedDataRenderer == null)
+		if (mappedDataRenderer == null)
 			return null;
 		return mappedDataRenderer.getDataContainers();
 	}

@@ -68,6 +68,12 @@ public abstract class ALinearizableNode extends ANode {
 	protected PathwayVertexRep pathwayVertexRep;
 
 	/**
+	 * The {@link ComplexNode} this node belongs to. Null if this node is not
+	 * part of a complex node.
+	 */
+	protected ComplexNode parentNode;
+
+	/**
 	 * @param pixelGLConverter
 	 * @param view
 	 * @param nodeId
@@ -164,6 +170,21 @@ public abstract class ALinearizableNode extends ANode {
 	 */
 	public PathwayVertexRep getPathwayVertexRep() {
 		return pathwayVertexRep;
+	}
+
+	/**
+	 * @param parentNode
+	 *            setter, see {@link #parentNode}
+	 */
+	public void setParentNode(ComplexNode parentNode) {
+		this.parentNode = parentNode;
+	}
+
+	/**
+	 * @return the parentNode, see {@link #parentNode}
+	 */
+	public ComplexNode getParentNode() {
+		return parentNode;
 	}
 
 	// @Override

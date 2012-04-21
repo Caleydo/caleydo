@@ -5,6 +5,7 @@ package org.caleydo.view.linearizedpathway.node;
 
 import gleem.linalg.Vec3f;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.media.opengl.GL2;
@@ -44,6 +45,11 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 	private IPickingListener showButtonPickingListener;
 
 	/**
+	 * List of nodeIds that shall be used for picking.
+	 */
+	private List<Integer> nodeIds = new ArrayList<Integer>();
+
+	/**
 	 * @param view
 	 * @param node
 	 */
@@ -56,10 +62,13 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 		if (showRemoveButton) {
 
 			// gl.glPushAttrib(GL2.GL_COLOR);
-			gl.glPushName(pickingManager.getPickingID(view.getID(),
-					PickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
-			gl.glPushName(pickingManager.getPickingID(view.getID(),
-					PickingType.REMOVE_NODE_BUTTON.name(), node.getNodeId()));
+			for (Integer nodeId : nodeIds) {
+				gl.glPushName(pickingManager.getPickingID(view.getID(),
+						PickingType.LINEARIZABLE_NODE.name(), nodeId));
+				gl.glPushName(pickingManager.getPickingID(view.getID(),
+						PickingType.REMOVE_NODE_BUTTON.name(), nodeId));
+			}
+			// ALinearizableNode currentNode =
 			Vec3f position = node.getPosition();
 			float nodeHeight = pixelGLConverter.getGLHeightForPixelHeight(node
 					.getHeightPixels());
@@ -80,8 +89,10 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			textureManager.renderTexture(gl, EIconTextures.REMOVE, lowerLeftCorner,
 					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
 
-			gl.glPopName();
-			gl.glPopName();
+			for (int i = 0; i < nodeIds.size(); i++) {
+				gl.glPopName();
+				gl.glPopName();
+			}
 
 			// gl.glPopAttrib();
 
@@ -142,5 +153,22 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 		view.removeIDPickingListener(buttonPickingListener,
 				PickingType.REMOVE_NODE_BUTTON.name(), node.getNodeId());
+	}
+
+	/**
+	 * @param nodeIds
+	 *            setter, see {@link #nodeIds}
+	 */
+	public void setNodeIds(List<Integer> nodeIds) {
+		this.nodeIds = nodeIds;
+	}
+
+	/**
+	 * Adds a node id to {@link #nodeIds}.
+	 * 
+	 * @param nodeId
+	 */
+	public void addNodeId(int nodeId) {
+		nodeIds.add(nodeId);
 	}
 }

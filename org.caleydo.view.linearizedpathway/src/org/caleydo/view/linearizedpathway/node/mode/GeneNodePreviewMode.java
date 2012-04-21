@@ -28,6 +28,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
+import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
 
 /**
@@ -257,7 +258,11 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 			@Override
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
-				view.selectBranch(node);
+				ComplexNode parent = node.getParentNode();
+				if(parent != null)
+					view.selectBranch(parent);
+				else 
+					view.selectBranch(node);
 			}
 
 			@Override

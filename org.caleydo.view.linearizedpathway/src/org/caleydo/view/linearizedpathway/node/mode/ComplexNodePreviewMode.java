@@ -91,7 +91,11 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
 			@Override
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
-				view.selectBranch(node);
+				ComplexNode parent = node.getParentNode();
+				if(parent != null)
+					view.selectBranch(parent);
+				else 
+					view.selectBranch(node);
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 

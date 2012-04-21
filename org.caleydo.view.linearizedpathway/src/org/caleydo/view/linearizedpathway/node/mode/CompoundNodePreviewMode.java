@@ -15,6 +15,7 @@ import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
+import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.CompoundNode;
 
 /**
@@ -94,7 +95,11 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 			@Override
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
-				view.selectBranch(node);
+				ComplexNode parent = node.getParentNode();
+				if(parent != null)
+					view.selectBranch(parent);
+				else 
+					view.selectBranch(node);
 			}
 
 			@Override
