@@ -70,8 +70,6 @@ public class KgmlSaxHandler
 
 	private HashMap<Integer, PathwayVertexRep> hashKgmlEntryIdToVertexRep = new HashMap<Integer, PathwayVertexRep>();
 
-	private HashMap<String, PathwayVertexRep> hashKgmlNameToVertexRep = new HashMap<String, PathwayVertexRep>();
-
 	private HashMap<String, PathwayVertexRep> hashKgmlReactionNameToVertexRep = new HashMap<String, PathwayVertexRep>();
 
 	private String currentReactionName;
@@ -207,7 +205,6 @@ public class KgmlSaxHandler
 				pathwayTexturePath, externalLink);
 
 		hashKgmlEntryIdToVertexRep.clear();
-		hashKgmlNameToVertexRep.clear();
 		hashKgmlReactionNameToVertexRep.clear();
 		currentEntryId = -1;
 		currentReactionName = null;
@@ -373,15 +370,12 @@ public class KgmlSaxHandler
 			currentVertexGroupRep = pathwayItemManager.createVertexGroupRep(currentPathway);
 
 			hashKgmlEntryIdToVertexRep.put(currentEntryId, currentVertexGroupRep);
-			hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(),
-					currentVertexGroupRep);
 		}
 		else {
 			PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
 					currentVertices, name, shapeType, x, y, width, height);
 
 			hashKgmlEntryIdToVertexRep.put(currentEntryId, vertexRep);
-			hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), vertexRep);
 
 			if (currentReactionName != null && !currentReactionName.isEmpty()) {
 
@@ -576,7 +570,7 @@ public class KgmlSaxHandler
 	 */
 	protected void handleReactionSubstrateTag() {
 
-		String reactionSubstrateName = "";
+		Integer reactionSubstrateID = -1;
 
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
@@ -585,12 +579,12 @@ public class KgmlSaxHandler
 				attributeName = attributes.getQName(attributeIndex);
 			}
 
-			if (attributeName.equals("name")) {
-				reactionSubstrateName = attributes.getValue(attributeIndex);
+			if (attributeName.equals("id")) {
+				reactionSubstrateID = Integer.valueOf(attributes.getValue(attributeIndex));
 			}
 		}
 
-		PathwayVertexRep sourceVertexRep = hashKgmlNameToVertexRep.get(reactionSubstrateName);
+		PathwayVertexRep sourceVertexRep = hashKgmlEntryIdToVertexRep.get(reactionSubstrateID);
 
 		PathwayVertexRep targetVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
@@ -627,7 +621,7 @@ public class KgmlSaxHandler
 	 */
 	protected void handleReactionProductTag() {
 
-		String reactionProductName = "";
+		Integer reactionProductID = -1;
 
 		for (int attributeIndex = 0; attributeIndex < attributes.getLength(); attributeIndex++) {
 			attributeName = attributes.getLocalName(attributeIndex);
@@ -636,15 +630,15 @@ public class KgmlSaxHandler
 				attributeName = attributes.getQName(attributeIndex);
 			}
 
-			if (attributeName.equals("name")) {
-				reactionProductName = attributes.getValue(attributeIndex);
+			if (attributeName.equals("id")) {
+				reactionProductID = Integer.valueOf(attributes.getValue(attributeIndex));
 			}
 		}
 
 		PathwayVertexRep sourceVertexRep = hashKgmlReactionNameToVertexRep
 				.get(currentReactionName);
 
-		PathwayVertexRep targetVertexRep = hashKgmlNameToVertexRep.get(reactionProductName);
+		PathwayVertexRep targetVertexRep = hashKgmlEntryIdToVertexRep.get(reactionProductID);
 
 		// Prevent double insertion of edges that connect to group nodes
 		if (currentPathway.getEdge(sourceVertexRep, targetVertexRep) != null
@@ -678,7 +672,6 @@ public class KgmlSaxHandler
 		super.destroyHandler();
 
 		hashKgmlEntryIdToVertexRep.clear();
-		hashKgmlNameToVertexRep.clear();
 		hashKgmlReactionNameToVertexRep.clear();
 	}
 }
