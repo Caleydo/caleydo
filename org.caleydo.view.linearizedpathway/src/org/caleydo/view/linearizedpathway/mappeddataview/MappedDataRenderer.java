@@ -50,7 +50,17 @@ import org.caleydo.view.linearizedpathway.node.ANode;
  */
 public class MappedDataRenderer {
 
-	GLLinearizedPathway parentView;
+	public static float[] FRAME_COLOR = { 1, 1, 1, 1 };
+
+	public static float[] ODD_BACKGROUND_COLOR = { 240f / 255f, 240f / 255, 240f / 255,
+			1f };
+	public static float[] EVEN_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255,
+			1f };
+
+	public static float[] CAPTION_BACKGROUND_COLOR = { 220f / 255f, 220f / 255,
+			220f / 255, 1f };
+
+	private GLLinearizedPathway parentView;
 
 	private List<ANode> linearizedNodes;
 
@@ -91,13 +101,6 @@ public class MappedDataRenderer {
 
 	private LayoutManager layoutManger;
 	private ViewFrustum viewFrustum;
-
-	// private ConnectionBandRenderer connectionBandRenderer;
-
-	// private float[] oddColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
-	// private float[] evenColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
-	private float[] oddColor = { 240f / 255f, 240f / 255, 240f / 255, 1f };
-	private float[] evenColor = { 220f / 255f, 220f / 255, 220f / 255, 1f };
 
 	/**
 	 * Constructor with parent view as parameter.
@@ -149,7 +152,8 @@ public class MappedDataRenderer {
 
 	/**
 	 * Sets the list of nodes that are used as the basis for rendering the
-	 * mapped data. Triggers a complete re-build of the layout
+	 * mapped data. Triggers a complete re-build of the layout. Creates the
+	 * layout used for the rendering.
 	 * 
 	 * @param linearizedNodes
 	 *            setter, see {@link #linearizedNodes}
@@ -200,9 +204,9 @@ public class MappedDataRenderer {
 				continue;
 
 			if (nodeCount % 2 == 0)
-				color = evenColor;
+				color = EVEN_BACKGROUND_COLOR;
 			else
-				color = oddColor;
+				color = ODD_BACKGROUND_COLOR;
 
 			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color);
 			relationShipRenderers.add(relationShipRenderer);
@@ -269,10 +273,15 @@ public class MappedDataRenderer {
 				}
 				ElementLayout rowCaption = new ElementLayout();
 				rowCaption.setAbsoluteSizeY(rowHeight);
-				CaptionRenderer captionRenderer = new CaptionRenderer(
+
+				RowCaptionRenderer captionRenderer = new RowCaptionRenderer(
 						parentView.getTextRenderer(), parentView.getPixelGLConverter(),
 						davidID);
 				rowCaption.setRenderer(captionRenderer);
+
+				RowBackgroundRenderer rowCaptionBackgroundRenderer = new RowBackgroundRenderer(
+						CAPTION_BACKGROUND_COLOR);
+				rowCaption.addBackgroundRenderer(rowCaptionBackgroundRenderer);
 				captionColumn.append(rowCaption);
 
 				if (idCount == 0)
@@ -287,7 +296,7 @@ public class MappedDataRenderer {
 		ElementLayout ySpacing = new ElementLayout();
 		ySpacing.setPixelSizeY(5);
 		dataSetColumn.append(ySpacing);
-		
+
 		Row captionRow = new Row("captionRow");
 		captionRow.setPixelSizeY(40);
 		dataSetColumn.append(captionRow);
@@ -305,6 +314,7 @@ public class MappedDataRenderer {
 
 	}
 
+	/** Fills the layout with data specific for the data containers */
 	private void prepareData(DataContainer dataContainer, ArrayList<Row> rowLayouts,
 			ElementLayout captionLayout, ArrayList<Integer> davidIDs) {
 		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
@@ -345,9 +355,7 @@ public class MappedDataRenderer {
 			row.setRatioSizeX(width);
 
 			captionLayout.setRatioSizeX(width);
-			
-			
-			
+
 			LayoutRenderer columnCaptionRenderer = new ColumnCaptionRenderer(
 					parentView.getTextRenderer(), parentView.getPixelGLConverter(),
 					dataContainer.getLabel());
@@ -359,6 +367,12 @@ public class MappedDataRenderer {
 
 	}
 
+	/**
+	 * Adds a data container to {@link #dataContainers} and resolves sub data
+	 * containers by calling {@link #resolveSubDataContainers(List)}
+	 * 
+	 * @param newDataContainer
+	 */
 	public void addDataContainer(DataContainer newDataContainer) {
 		dataContainers.add(newDataContainer);
 		ArrayList<DataContainer> newDataContainers = new ArrayList<DataContainer>(1);
@@ -367,25 +381,47 @@ public class MappedDataRenderer {
 
 	}
 
+	/**
+	 * Same as {@link #addDataContainer(DataContainer)} but for multiple data
+	 * containers
+	 */
 	public void addDataContainers(List<DataContainer> newDataContainers) {
 		dataContainers.addAll(newDataContainers);
 		resolveSubDataContainers(newDataContainers);
 	}
 
-	public List<DataContainer> getDataContainers() {
+	/**
+	 * @return the dataContainers, see {@link #dataContainers}
+	 */
+	public ArrayList<DataContainer> getDataContainers() {
 		return dataContainers;
 	}
 
+	/**
+	 * Creates new data containers for every group in a gene-group-list of every
+	 * data container. If no group lists are present, the original data
+	 * container is added.
+	 */
 	private void resolveSubDataContainers(List<DataContainer> newDataContainers) {
 		for (DataContainer dataContainer : newDataContainers) {
 			GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer
 					.getDataDomain();
+
+			List<DataContainer> newlyResovedDataContainers;
 			if (dataDomain.isGeneRecord()) {
-				resolvedDataContainers.addAll(dataContainer
-						.getDimensionSubDataContainers());
+				newlyResovedDataContainers = dataContainer
+						.getDimensionSubDataContainers();
+
 			} else {
-				resolvedDataContainers.addAll(dataContainer.getRecordSubDataContainers());
+				newlyResovedDataContainers = dataContainer.getRecordSubDataContainers();
 			}
+			if (newlyResovedDataContainers != null) {
+				resolvedDataContainers.addAll(newDataContainers);
+
+			} else {
+				resolvedDataContainers.add(dataContainer);
+			}
+
 		}
 
 	}

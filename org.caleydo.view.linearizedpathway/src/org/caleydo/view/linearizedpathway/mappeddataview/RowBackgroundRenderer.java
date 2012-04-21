@@ -33,7 +33,7 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 
 	private float[] backgroundColor;
 
-	private float[] frameColor = { 0, 0, 0, 1 };
+//	private float[] frameColor = { 0, 0, 0, 1 };
 
 	/**
 	 * 
@@ -52,11 +52,13 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, backgroundZ);
 		gl.glVertex3f(0, y, backgroundZ);
+		gl.glColor3f(backgroundColor[0]*1.1f,backgroundColor[0]*1.1f,backgroundColor[0]*1.1f);
 		gl.glVertex3f(x, y, backgroundZ);
 		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glEnd();
 
-		gl.glColor4fv(frameColor, 0);
+		gl.glLineWidth(1);
+		gl.glColor4fv(MappedDataRenderer.FRAME_COLOR, 0);
 		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, frameZ);
 		gl.glVertex3f(0, y, frameZ);

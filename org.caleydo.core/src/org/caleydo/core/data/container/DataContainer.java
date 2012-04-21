@@ -336,7 +336,8 @@ public class DataContainer {
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
 	 * 
-	 * @return a new list of new {@link DataContainer}s
+	 * @return a new list of new {@link DataContainer}s or null if no group list
+	 *         is set.
 	 */
 	public List<DataContainer> getRecordSubDataContainers() {
 
@@ -379,7 +380,8 @@ public class DataContainer {
 	 * contains the elements of the group. The {@link DimensionPerspective} is
 	 * the same as for this container.
 	 * 
-	 * @return a new list of new {@link DataContainer}s
+	 * @return a new list of new {@link DataContainer}s or null if no group list
+	 *         is set.
 	 */
 	public List<DataContainer> getDimensionSubDataContainers() {
 
@@ -408,8 +410,8 @@ public class DataContainer {
 			DataContainer subDataContainer = new DataContainer(dataDomain,
 					recordPerspective, dimensionPerspective);
 			subDataContainer.setDimensionGroup(group);
-			subDataContainer.setLabel(group.getClusterNode().getLabel(),
-					group.getClusterNode().isDefaultLabel());
+			subDataContainer.setLabel(group.getClusterNode().getLabel(), group
+					.getClusterNode().isDefaultLabel());
 			dimensionSubDataContainers.add(subDataContainer);
 
 		}

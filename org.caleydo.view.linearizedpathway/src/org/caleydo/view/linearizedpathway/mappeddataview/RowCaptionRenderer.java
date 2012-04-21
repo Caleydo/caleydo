@@ -35,7 +35,7 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Alexander Lex
  * 
  */
-public class CaptionRenderer extends LayoutRenderer {
+public class RowCaptionRenderer extends LayoutRenderer {
 
 	private Integer davidID;
 	private CaleydoTextRenderer textRenderer;
@@ -52,7 +52,7 @@ public class CaptionRenderer extends LayoutRenderer {
 	 *            the id used for the resolution of the human readable id type
 	 *            that is rendered
 	 */
-	public CaptionRenderer(CaleydoTextRenderer textRenderer,
+	public RowCaptionRenderer(CaleydoTextRenderer textRenderer,
 			PixelGLConverter pixelGLConverter, Integer davidID) {
 		this.textRenderer = textRenderer;
 		this.pixelGLConverter = pixelGLConverter;

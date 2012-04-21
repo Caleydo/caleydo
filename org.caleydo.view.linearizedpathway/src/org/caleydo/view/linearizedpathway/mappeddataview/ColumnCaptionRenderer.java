@@ -44,17 +44,15 @@ public class ColumnCaptionRenderer extends LayoutRenderer {
 
 	@Override
 	public void render(GL2 gl) {
-//		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
-		float sideSpacing =0;
-		
+		// float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
+		float sideSpacing = 0;
+
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
 
 		float backgroundZ = 0;
-		
-		float[] evenColor = { 220f / 255f, 220f / 255, 220f / 255, 1f };
 
 		
-		gl.glColor4fv(evenColor, 0);
+		gl.glColor4fv(MappedDataRenderer.CAPTION_BACKGROUND_COLOR, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, backgroundZ);
 		gl.glVertex3f(0, y, backgroundZ);
@@ -62,9 +60,16 @@ public class ColumnCaptionRenderer extends LayoutRenderer {
 		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glEnd();
 
-		
-		textRenderer.renderTextInBounds(gl, label, sideSpacing, (y - height) / 2, 0.1f,
+		float width = textRenderer.getRequiredTextWidth(label, height);
+
+		float textXOffset = sideSpacing;
+
+		if (width < x) {
+			textXOffset = (x - width) / 2;
+		}
+
+		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - height) / 2, 0.1f,
 				x, height);
-		
+
 	}
 }

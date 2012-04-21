@@ -32,7 +32,8 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
  * 
  */
 public class DataContainerRenderer {
-
+	
+	
 	DataContainer dataContainer;
 	ArrayList<Row> rowLayouts;
 	ArrayList<Integer> davidIDs;
