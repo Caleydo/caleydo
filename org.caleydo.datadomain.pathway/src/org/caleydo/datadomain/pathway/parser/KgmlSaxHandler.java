@@ -29,22 +29,20 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.io.parser.xml.AXmlParserHandler;
 import org.caleydo.core.io.parser.xml.IXmlParserHandler;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.logging.Logger;
 import org.caleydo.datadomain.pathway.PathwayDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
+import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
+import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.eclipse.core.runtime.IStatus;
-import org.eclipse.core.runtime.Status;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 
@@ -78,8 +76,8 @@ public class KgmlSaxHandler
 
 	private String currentReactionName;
 	private EPathwayReactionEdgeType currentReactionType;
-
 	private int currentEntryId;
+	private PathwayVertexGroupRep currentVertexGroupRep;
 
 	private PathwayVertexRep relationSourceVertexRep;
 	private PathwayVertexRep relationTargetVertexRep;
@@ -103,37 +101,40 @@ public class KgmlSaxHandler
 	public void startElement(String namespaceURI, String sSimpleName, String sQualifiedName,
 			Attributes attributes) throws SAXException {
 
-		String sElementName = sSimpleName;
+		String elementName = sSimpleName;
 		this.attributes = attributes;
 
-		if ("".equals(sElementName)) {
-			sElementName = sQualifiedName; // namespaceAware = false
+		if ("".equals(elementName)) {
+			elementName = sQualifiedName; // namespaceAware = false
 		}
 
 		if (attributes != null) {
-			if (sElementName.equals("pathway")) {
+			if (elementName.equals("pathway")) {
 				handlePathwayTag();
 			}
-			else if (sElementName.equals("entry")) {
+			else if (elementName.equals("entry")) {
 				handleEntryTag();
 			}
-			else if (sElementName.equals("graphics")) {
+			else if (elementName.equals("graphics")) {
 				handleGraphicsTag();
 			}
-			else if (sElementName.equals("relation")) {
+			else if (elementName.equals("relation")) {
 				handleRelationTag();
 			}
-			else if (sElementName.equals("reaction")) {
+			else if (elementName.equals("reaction")) {
 				handleReactionTag();
 			}
-			else if (sElementName.equals("product")) {
+			else if (elementName.equals("product")) {
 				handleReactionProductTag();
 			}
-			else if (sElementName.equals("substrate")) {
+			else if (elementName.equals("substrate")) {
 				handleReactionSubstrateTag();
 			}
-			else if (sElementName.equals("subtype")) {
+			else if (elementName.equals("subtype")) {
 				handleSubtypeTag();
+			}
+			else if (elementName.equals("component")) {
+				handleComponentTag();
 			}
 		}
 	}
@@ -212,6 +213,7 @@ public class KgmlSaxHandler
 		currentReactionName = null;
 		currentReactionType = null;
 		currentVertices.clear();
+		currentVertexGroupRep = null;
 	}
 
 	/**
@@ -295,6 +297,21 @@ public class KgmlSaxHandler
 			currentVertices.add(currentVertex);
 		}
 	}
+	
+	/**
+	 * Handles compound tags which are subtags of group entry elements.
+	 */
+	protected void handleComponentTag() {
+
+		String kgmlEntryID = attributes.getValue(0);
+		
+		PathwayVertexRep vertexRep = hashKgmlEntryIdToVertexRep.get(Integer.parseInt(kgmlEntryID));
+		
+		if (vertexRep == null)
+			return;
+		
+		currentVertexGroupRep.addVertexRep(vertexRep);
+	}
 
 	/**
 	 * Reacts on the elements of the graphics tag. An example graphics tag looks
@@ -348,36 +365,47 @@ public class KgmlSaxHandler
 			return;
 		}
 
-		PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
-				currentVertices, name, shapeType, x, y, width, height);
+		// Check if we need to create a group vertex rep instead of a standard vertex rep
+		if (currentVertices.get(0).getType().equals(EPathwayVertexType.group)) {
+		
+			currentVertexGroupRep = pathwayItemManager
+					.createVertexGroupRep(currentPathway);
+			
+			hashKgmlEntryIdToVertexRep.put(currentEntryId, currentVertexGroupRep);
+			hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), currentVertexGroupRep);
+		}
+		else {
+			PathwayVertexRep vertexRep = pathwayItemManager.createVertexRep(currentPathway,
+					currentVertices, name, shapeType, x, y, width, height);
 
-		hashKgmlEntryIdToVertexRep.put(currentEntryId, vertexRep);
-		hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), vertexRep);
+			hashKgmlEntryIdToVertexRep.put(currentEntryId, vertexRep);
+			hashKgmlNameToVertexRep.put(currentVertices.get(0).getName(), vertexRep);
 
-		if (currentReactionName != null && !currentReactionName.isEmpty()) {
+			if (currentReactionName != null && !currentReactionName.isEmpty()) {
 
-			// Check if a vertex rep node for that reaction has already been
-			// added. If this is the case, then the node will be removed and
-			// replaced by a vertex group rep node.
-			if (hashKgmlReactionNameToVertexRep.get(currentReactionName) != null) {
-				PathwayVertexRep alreadyPresentReactionNode = hashKgmlReactionNameToVertexRep
-						.get(currentReactionName);
+				// Check if a vertex rep node for that reaction has already been
+				// added. If this is the case, then the node will be removed and
+				// replaced by a vertex group rep node.
+				if (hashKgmlReactionNameToVertexRep.get(currentReactionName) != null) {
+					PathwayVertexRep alreadyPresentReactionNode = hashKgmlReactionNameToVertexRep
+							.get(currentReactionName);
 
-				if (alreadyPresentReactionNode instanceof PathwayVertexGroupRep) {
-					((PathwayVertexGroupRep) alreadyPresentReactionNode)
-							.addVertexRep(vertexRep);
+					if (alreadyPresentReactionNode instanceof PathwayVertexGroupRep) {
+						((PathwayVertexGroupRep) alreadyPresentReactionNode)
+								.addVertexRep(vertexRep);
+					}
+					else {
+						PathwayVertexGroupRep vertexGroupRep = pathwayItemManager
+								.createVertexGroupRep(currentPathway);
+						vertexGroupRep.addVertexRep(alreadyPresentReactionNode);
+						vertexGroupRep.addVertexRep(vertexRep);
+						hashKgmlReactionNameToVertexRep.remove(alreadyPresentReactionNode);
+						hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexGroupRep);
+					}
 				}
 				else {
-					PathwayVertexGroupRep vertexGroupRep = pathwayItemManager
-							.createVertexGroupRep(currentPathway);
-					vertexGroupRep.addVertexRep(alreadyPresentReactionNode);
-					vertexGroupRep.addVertexRep(vertexRep);
-					hashKgmlReactionNameToVertexRep.remove(alreadyPresentReactionNode);
-					hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexGroupRep);
+					hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexRep);
 				}
-			}
-			else {
-				hashKgmlReactionNameToVertexRep.put(currentReactionName, vertexRep);
 			}
 		}
 	}
