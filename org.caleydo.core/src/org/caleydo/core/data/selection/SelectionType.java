@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -54,7 +54,7 @@ import java.util.ArrayList;
  * 
  * @author Alexander Lex
  */
-public class SelectionType {
+public class SelectionType implements Comparable<SelectionType> {
 
 	/** a name for the selection type, human readable */
 	private String type = "Not set";
@@ -79,7 +79,7 @@ public class SelectionType {
 	 * case of multi-selections. The valid range is 0-1 where {@link #NORMAL}
 	 * has 0, {@link #MOUSE_OVER} 1 and {@link #SELECTION} 0.99
 	 */
-	private float priority = 0.1f;
+	private Float priority = 0.1f;
 
 	/**
 	 * flag that determines whether a particular selection type should be
@@ -91,10 +91,18 @@ public class SelectionType {
 
 	public static final SelectionType NORMAL = new SelectionType("Normal", new float[] {
 			0, 0, 0, 1 }, 0.3f, true, false, 0);
+	// public static final SelectionType MOUSE_OVER = new
+	// SelectionType("MouseOver",
+	// new int[] { 116, 169, 207 }, 1, true, true, 0.99f);
+
 	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver",
-			new int[] { 116, 169, 207 }, 1, true, true, 0.99f);
+			new int[] { 259, 196, 79 }, 1, true, true, 0.99f);
+
+	// public static final SelectionType SELECTION = new
+	// SelectionType("Selected",
+	// new int[] { 5, 112, 176 }, 1, true, false, 1f);
 	public static final SelectionType SELECTION = new SelectionType("Selected",
-			new int[] { 5, 112, 176 }, 1, true, false, 1f);
+			new int[] { 236, 112, 20 }, 1, true, false, 1f);
 	public static final SelectionType DESELECTED = new SelectionType("Deselected",
 			new float[] { 0, 0, 0, 1 }, 1, false, false, 0);
 
@@ -416,6 +424,16 @@ public class SelectionType {
 	@Override
 	public int hashCode() {
 		return type.hashCode();
+	}
+
+	@Override
+	public int compareTo(SelectionType comparisonTarget) {
+		return priority.compareTo(comparisonTarget.priority);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		return type.equals(((SelectionType) obj).type);
 	}
 
 }

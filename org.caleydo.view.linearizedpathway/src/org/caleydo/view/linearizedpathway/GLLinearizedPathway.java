@@ -766,7 +766,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
 				topSpacing, dataRowHeight);
 
-		// mappedDataRenderer.render(gl);
+		mappedDataRenderer.render(gl);
+
 		gl.glPopMatrix();
 
 		renderEdgesOfLinearizedNodes(gl);

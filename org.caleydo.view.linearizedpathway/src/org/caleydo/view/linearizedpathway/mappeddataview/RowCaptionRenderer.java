@@ -19,14 +19,17 @@
  *******************************************************************************/
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -35,9 +38,8 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Alexander Lex
  * 
  */
-public class RowCaptionRenderer extends LayoutRenderer {
+public class RowCaptionRenderer extends RowRenderer {
 
-	private Integer davidID;
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
 
@@ -52,24 +54,61 @@ public class RowCaptionRenderer extends LayoutRenderer {
 	 *            the id used for the resolution of the human readable id type
 	 *            that is rendered
 	 */
-	public RowCaptionRenderer(CaleydoTextRenderer textRenderer,
-			PixelGLConverter pixelGLConverter, Integer davidID) {
-		this.textRenderer = textRenderer;
-		this.pixelGLConverter = pixelGLConverter;
-		this.davidID = davidID;
+	public RowCaptionRenderer(Integer davidID, AGLView parentView,
+			MappedDataRenderer parent, float[] backgroundColor) {
+		super(davidID, parentView, parent);
+		textRenderer = parentView.getTextRenderer();
+		pixelGLConverter = parentView.getPixelGLConverter();
+		topBarColor = backgroundColor;
+		bottomBarColor = backgroundColor;
+
 	}
 
 	@Override
 	public void render(GL2 gl) {
+		ArrayList<SelectionType> selectionTypes = parent.geneSelectionManager
+				.getSelectionTypes(davidID);
+
+		calculateColors(selectionTypes);
+		float backgroundZ = 0;
+		float frameZ = 0.3f;
+
+		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+				PickingType.GENE.name(), davidID));
+
+		gl.glColor4fv(topBarColor, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, 0, backgroundZ);
+		gl.glVertex3f(0, y, backgroundZ);
+		gl.glColor3f(bottomBarColor[0] * 1.05f, bottomBarColor[1] * 1.05f,
+				bottomBarColor[2] * 1.05f);
+		// gl.glColor3f(bottomBarColor[0] * 1.f, bottomBarColor[1] * 1.f,
+		// bottomBarColor[2] * 1.f);
+
+		gl.glVertex3f(x, y, backgroundZ);
+		gl.glVertex3f(x, 0, backgroundZ);
+		gl.glEnd();
+
+		gl.glLineWidth(1);
+		gl.glColor4fv(MappedDataRenderer.FRAME_COLOR, 0);
+		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, frameZ);
+		gl.glVertex3f(0, y, frameZ);
+		gl.glVertex3f(x, y, frameZ);
+		gl.glVertex3f(x, 0, frameZ);
+		gl.glEnd();
+
 		float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float height = pixelGLConverter.getGLHeightForPixelHeight(15);
 		IDMappingManager geneIDMappingManager = IDMappingManagerRegistry.get()
 				.getIDMappingManager(IDCategory.getIDCategory("GENE"));
 		String geneName = geneIDMappingManager.getID(IDType.getIDType("DAVID"),
 				IDType.getIDType("GENE_SYMBOL"), davidID);
+		if (geneName != null)
+			textRenderer.renderTextInBounds(gl, geneName, sideSpacing, (y - height) / 2,
+					0.1f, x, height);
 
-		textRenderer.renderTextInBounds(gl, geneName, sideSpacing, (y - height) / 2,
-				0.1f, x, height);
+		gl.glPopName();
 	}
 
 }

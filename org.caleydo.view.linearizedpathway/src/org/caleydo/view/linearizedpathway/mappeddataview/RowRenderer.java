@@ -21,96 +21,44 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
 
-import javax.media.opengl.GL2;
-
-import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * @author Alexander Lex
  * 
  */
-public class RowRenderer extends LayoutRenderer {
+public abstract class RowRenderer extends LayoutRenderer {
 
-	Integer geneID;
 	Integer davidID;
-	DataContainer dataContainer;
-	ADataPerspective<?, ?, ?, ?> experimentPerspective;
-	GeneticDataDomain dataDomain;
-	private AGLView parentView;
-	private MappedDataRenderer parent;
+	protected AGLView parentView;
+	protected MappedDataRenderer parent;
+
+	float[] topBarColor;
+	float[] bottomBarColor;
 
 	/**
 	 * 
 	 */
-	public RowRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
-			DataContainer dataContainer,
-			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
-			MappedDataRenderer parent) {
-		this.geneID = geneID;
+	public RowRenderer(Integer davidID, AGLView parentView, MappedDataRenderer parent) {
 		this.davidID = davidID;
-		this.dataDomain = dataDomain;
-		this.dataContainer = dataContainer;
-		this.experimentPerspective = experimentPerspective;
 		this.parentView = parentView;
 		this.parent = parent;
-		// TODO Auto-generated constructor stub
 	}
 
-	@Override
-	public void render(GL2 gl) {
-		float xIncrement = x / experimentPerspective.getVirtualArray().size();
+	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
 
-		int experimentCount = 0;
+		if (selectionTypes.size() != 0
+				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)) {
+			topBarColor = selectionTypes.get(0).getColor();
 
-		float z = 0.05f;
-
-		// GLHelperFunctions.drawPointAt(gl, 0, 0, 1);
-		float[] notSelectedColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
-		float[] barColor = notSelectedColor;
-
-		ArrayList<SelectionType> selectionTypes = parent.geneSelectionManager
-				.getSelectionTypes(davidID);
-		if (selectionTypes.size() != 0) {
-			barColor = selectionTypes.get(0).getColor();
-		}
-
-		float[] noMappingColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
-
-		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
-			float value;
-			if (geneID == null) {
-				value = 1;
-				gl.glColor4fv(noMappingColor, 0);
+			if (selectionTypes.size() > 1
+					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)) {
+				bottomBarColor = selectionTypes.get(1).getColor();
 			} else {
-				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
-						experimentID);
-				gl.glColor4fv(barColor, 0);
-
-				float leftEdge = xIncrement * experimentCount;
-				float upperEdge = value * y;
-
-				gl.glPushName(parentView.getPickingManager().getPickingID(
-						parentView.getID(), PickingType.GENE.name(), davidID));
-
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(leftEdge, 0, z);
-				gl.glVertex3f(leftEdge, upperEdge, z);
-				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
-
-				gl.glVertex3f(leftEdge + xIncrement, 0, z);
-
-				gl.glEnd();
-				gl.glPopName();
+				bottomBarColor = topBarColor;
 			}
-			experimentCount++;
-
 		}
-
 	}
 }

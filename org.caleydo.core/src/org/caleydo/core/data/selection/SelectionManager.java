@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,10 +21,12 @@ package org.caleydo.core.data.selection;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
@@ -42,29 +44,36 @@ import org.eclipse.core.runtime.Status;
 
 /**
  * <p>
- * Manages selections generically by storing them in hash maps. The manager can
- * handle an arbitrary number of selection types, which have to be defined in
- * {@link SelectionType} A normal type, by default NORMAL in the aforementioned
- * enum is considered to be the base type, where all elements are initially
- * added to.
+ * Manages selection-id associations. The ids are specified as Integers, while
+ * the selection type must be of {@link SelectionType}. While
+ * <code>SelectionType</code> objects can be arbitrarily created, there are some
+ * specially pre-created types (for details see {@link SelectionType}). Of
+ * importance to the <code>SelectionManager</code> is
+ * {@link SelectionType#NORMAL}. The <code>SelectionManager</code> stores only
+ * not-normal types, i.e. it assumes that every ID is of state "normal" unless
+ * otherwise specified. So when you call {@link #getSelectionTypes(int)} for an
+ * identifier that is unknown to the <code>SelectionManager</code> it will
+ * return a List of selection types containing a single "normal" entry.
  * </p>
  * <p>
- * The selection manager always keeps a {@link SelectionDelta}, which can be
- * used to communicate changes in the selection to other views. This is reset
- * every time you call it's getter.
+ * The manager can handle an <b>arbitrary number of selection types</b> for
+ * every id.
+ * </p>
+ * 
+ * <p>
+ * The <code>SelectionManager</code> always keeps a {@link SelectionDelta},
+ * which can be used to <b>synchronize multiple <code>SelectionManager</code>
+ * s</b>. The <code>SelectionDelta</code> is reset every time you call it's
+ * getter ( {@link #getDelta()}).
  * </p>
  * <p>
- * Consequently it can also merge external deltas into its own selection.
- * </p>
- * <p>
- * When a selection delta is merged into the manager that contains values that
- * are not specified in the list of allowed values, the selections are ignored
- * </p>
- * <p>
- * When using the manager on data that is also managed by a
- * {@link IVirtualArray} set the currently active virtual array so that the tow
- * are kept synchronous.
- * </p>
+ * A <code>SelectionManager</code> can be synchronized by setting a
+ * <code>SelectionDelta</code> using {@link #setDelta(SelectionDelta)}. These
+ * deltas have to be of the same {@link IDCategory}, so that they can be
+ * resolved to match the {@link IDType} of the receiving
+ * <code>SelectionManager</code>. If the <code>IDCategory</code> matches, the
+ * set <code>SelectionDelta</code> is automatically resolved to the
+ * {@link IDType} of the <code>SelectionManager</code>
  * 
  * @author Alexander Lex
  * @author Marc Streit
@@ -86,7 +95,8 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 
 	/**
 	 * The current type that is used for selections. By default this is the
-	 * standard SELECTION type.
+	 * standard SELECTION type, but this can be changed for multi-colored
+	 * brushing for example.
 	 */
 	protected SelectionType selectionType = SelectionType.SELECTION;
 
@@ -104,7 +114,8 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 */
 	public SelectionManager(IDType idType) {
 		this.idType = idType;
-		idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(idType.getIDCategory());
+		idMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				idType.getIDCategory());
 		selectionTypes = new ArrayList<SelectionType>(SelectionType.getDefaultTypes());
 
 		hashSelectionTypes = new HashMap<SelectionType, HashMap<Integer, Integer>>();
@@ -120,8 +131,6 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 		this.registerEventListeners();
 
 	}
-
-
 
 	/**
 	 * Returns the id type the dimension is handling.
@@ -139,7 +148,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param elementID
 	 *            the element to be removed
 	 */
-	public  synchronized void remove(int elementID) {
+	public synchronized void remove(int elementID) {
 
 		for (SelectionType selectionType : selectionTypes) {
 			if (checkStatus(selectionType, elementID)) {
@@ -161,7 +170,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param type
 	 *            the type of the selection which should be purged
 	 */
-	public  synchronized void removeElements(SelectionType type) {
+	public synchronized void removeElements(SelectionType type) {
 		HashMap<Integer, Integer> elementMap = hashSelectionTypes.get(type);
 		Integer[] tempAr = new Integer[elementMap.size()];
 		tempAr = elementMap.keySet().toArray(tempAr);
@@ -175,7 +184,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * Removes all elements and sets the element counter to 0 Removes all
 	 * elements in selectionDelta. Clears the virtual array.
 	 */
-	public  synchronized void resetSelectionManager() {
+	public synchronized void resetSelectionManager() {
 		hashSelectionTypes.clear();
 		for (SelectionType eType : selectionTypes) {
 			hashSelectionTypes.put(eType, new HashMap<Integer, Integer>());
@@ -187,7 +196,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	/**
 	 * All selections are written into the "normal" type. Delta is cleared.
 	 */
-	public  synchronized void clearSelections() {
+	public synchronized void clearSelections() {
 		bIsDeltaWritingEnabled = false;
 		for (SelectionType type : selectionTypes) {
 			if (type == SelectionType.NORMAL) {
@@ -206,7 +215,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param sSelectionType
 	 *            the selection type to be cleared
 	 */
-	public  synchronized void clearSelection(SelectionType selectionType) {
+	public synchronized void clearSelection(SelectionType selectionType) {
 		if (selectionType == SelectionType.NORMAL)
 			throw new IllegalArgumentException(
 					"SelectionManager: cannot reset selections of normal selection");
@@ -233,7 +242,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 *         if no elements are contained for this type. Note that no normal
 	 *         types are contained at any time.
 	 */
-	public  synchronized Set<Integer> getElements(SelectionType selectionType) {
+	public synchronized Set<Integer> getElements(SelectionType selectionType) {
 		if (hashSelectionTypes.containsKey(selectionType))
 			return hashSelectionTypes.get(selectionType).keySet();
 
@@ -247,7 +256,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @return
 	 */
 	@Deprecated
-	public  synchronized  Set<Integer> getAllElements() {
+	public synchronized Set<Integer> getAllElements() {
 		Set<Integer> allElements = new HashSet<Integer>();
 		for (HashMap<Integer, Integer> elementMap : hashSelectionTypes.values()) {
 			allElements.addAll(elementMap.keySet());
@@ -267,7 +276,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param id
 	 *            the id of the element
 	 */
-	public  synchronized void addToType(SelectionType targetType, int id) {
+	public synchronized void addToType(SelectionType targetType, int id) {
 		if (!hashSelectionTypes.containsKey(targetType)) {
 			addSelectionType(targetType);
 		}
@@ -300,7 +309,8 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param sourceIDType
 	 * @param elementID
 	 */
-	public synchronized  void addToType(SelectionType targetType, IDType sourceIDType, int id) {
+	public synchronized void addToType(SelectionType targetType, IDType sourceIDType,
+			int id) {
 		if (sourceIDType.equals(idType)) {
 			addToType(targetType, id);
 		} else {
@@ -322,7 +332,8 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @throws IllegalArgumentException
 	 *             if the element is not in the selection manager
 	 */
-	public synchronized void addToType(SelectionType targetType, Collection<Integer> idCollection) {
+	public synchronized void addToType(SelectionType targetType,
+			Collection<Integer> idCollection) {
 		for (int value : idCollection) {
 			addToType(targetType, value);
 		}
@@ -336,7 +347,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param sourceIDType
 	 * @param idCollection
 	 */
-	public  synchronized void addToType(SelectionType targetType, IDType sourceIDType,
+	public synchronized void addToType(SelectionType targetType, IDType sourceIDType,
 			Collection<Integer> idCollection) {
 		for (int value : idCollection) {
 			addToType(targetType, sourceIDType, value);
@@ -353,9 +364,8 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @throws IllegalArgumentException
 	 *             if called with the normal type, REMOVE or ADD
 	 */
-	public  synchronized void removeFromType(SelectionType selectionType, int elementID) {
-		if(!hashSelectionTypes.containsKey(selectionType))
-		{
+	public synchronized void removeFromType(SelectionType selectionType, int elementID) {
+		if (!hashSelectionTypes.containsKey(selectionType)) {
 			addSelectionType(selectionType);
 		}
 		if (selectionType == SelectionType.NORMAL)
@@ -385,7 +395,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 *             when called with {@link SelectionType#REMOVE}
 	 */
 	@Deprecated
-	public  synchronized void moveType(SelectionType srcType, SelectionType targetType) {
+	public synchronized void moveType(SelectionType srcType, SelectionType targetType) {
 		HashMap<Integer, Integer> tempHash = hashSelectionTypes.remove(srcType);
 		for (Integer value : tempHash.keySet()) {
 			if (!deltaBlackList.containsKey(targetType))
@@ -417,7 +427,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 *            the selection type of interest
 	 * @return the number of element in this selection
 	 */
-	public  synchronized int getNumberOfElements(SelectionType SelectionType) {
+	public synchronized int getNumberOfElements(SelectionType SelectionType) {
 		HashMap<Integer, Integer> hashElements = hashSelectionTypes.get(SelectionType);
 		if (hashElements != null)
 			return hashElements.size();
@@ -435,7 +445,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @return true if the type contains the element, else false, also false
 	 *         when called with REMOVE
 	 */
-	public  synchronized boolean checkStatus(SelectionType selectionType, int elementID) {
+	public synchronized boolean checkStatus(SelectionType selectionType, int elementID) {
 
 		if (selectionType == SelectionType.NORMAL)
 			return false;
@@ -456,7 +466,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 *            the element id
 	 * @return true if the element exists in the selection manager, else false
 	 */
-	public  synchronized boolean checkStatus(int elementID) {
+	public synchronized boolean checkStatus(int elementID) {
 		for (SelectionType type : selectionTypes) {
 			if (checkStatus(type, elementID))
 				return true;
@@ -473,7 +483,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * 
 	 * @return the SelectionDelta
 	 */
-	public  synchronized SelectionDelta getDelta() {
+	public synchronized SelectionDelta getDelta() {
 		SelectionDelta returnDelta = selectionDelta;
 
 		selectionDelta = new SelectionDelta(idType);
@@ -490,7 +500,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 *         manager
 	 */
 	@Deprecated
-	public  synchronized SelectionDelta getCompleteDelta() {
+	public synchronized SelectionDelta getCompleteDelta() {
 		SelectionDelta tempDelta = new SelectionDelta(idType);
 		HashMap<Integer, Integer> tempHash;
 		for (SelectionType selectionType : selectionTypes) {
@@ -538,7 +548,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @return a SelectionDelta that contains the internal ID of the manager as
 	 *         its primary ID
 	 */
-	public  synchronized void setDelta(SelectionDelta selectionDelta) {
+	public synchronized void setDelta(SelectionDelta selectionDelta) {
 		bIsDeltaWritingEnabled = false;
 		if (selectionDelta.getIDType() != idType)
 			selectionDelta = DeltaConverter.convertDelta(idMappingManager, idType,
@@ -580,7 +590,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param selectionCommand
 	 *            a selection command
 	 */
-	public  synchronized void executeSelectionCommand(SelectionCommand selectionCommand) {
+	public synchronized void executeSelectionCommand(SelectionCommand selectionCommand) {
 		if (selectionCommand == null)
 			return;
 
@@ -607,7 +617,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param iSelectionID
 	 *            the selection id which has to be already stored in the manager
 	 */
-	public  synchronized void addConnectionID(int iConnectionID, int iSelectionID) {
+	public synchronized void addConnectionID(int iConnectionID, int iSelectionID) {
 		if (!hashConnectionToElementID.containsKey(iConnectionID)) {
 			hashConnectionToElementID.put(iConnectionID, new ArrayList<Integer>());
 		}
@@ -627,7 +637,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param iConnectionID
 	 *            the connection ID
 	 */
-	public  synchronized void clearConnectionID(int iConnectionID) {
+	public synchronized void clearConnectionID(int iConnectionID) {
 		hashConnectionToElementID.remove(iConnectionID);
 	}
 
@@ -638,7 +648,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @return the collection ids. Collection is empty if no connection ids are
 	 *         found.
 	 */
-	public  synchronized Collection<Integer> getConnectionForElementID(int iElementID) {
+	public synchronized Collection<Integer> getConnectionForElementID(int iElementID) {
 		Collection<Integer> colConnectionIDs = new ArrayList<Integer>();
 		for (Integer iConnectionID : hashConnectionToElementID.keySet()) {
 			ArrayList<Integer> alElementIDs = hashConnectionToElementID
@@ -652,20 +662,25 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 		return colConnectionIDs;
 	}
 
-	private  synchronized void removeConnectionForElementID(int iElementID) {
+	private synchronized void removeConnectionForElementID(int iElementID) {
 		for (int iConnectionID : getConnectionForElementID(iElementID)) {
 			hashConnectionToElementID.remove(iConnectionID);
 		}
 	}
 
 	/**
-	 * Returns the {@link SelectionType} for a element ID or null, if element ID
-	 * is not in the selection manager
+	 * Returns the {@link SelectionType}s for an elementID. As if element ID is
+	 * not in the selection manager
+	 * <p>
+	 * The <code>SelectionType</code>s are sorted by their Priority (
+	 * {@link SelectionType#getPriority()})
+	 * </p>
 	 * 
 	 * @param elementID
 	 * @return selection type or NULL
 	 */
-	public  synchronized ArrayList<SelectionType> getSelectionTypes(int elementID) {
+	public synchronized ArrayList<SelectionType> getSelectionTypes(int elementID) {
+
 		ArrayList<SelectionType> selectedTypes = new ArrayList<SelectionType>(2);
 		for (SelectionType type : selectionTypes) {
 			if (checkStatus(type, elementID))
@@ -673,11 +688,15 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 		}
 		if (selectedTypes.isEmpty())
 			selectedTypes.add(SelectionType.NORMAL);
+		Collections.sort(selectedTypes);
 		return selectedTypes;
 	}
 
-	/** Returns a list of all currently registered selection types */
-	public  synchronized ArrayList<SelectionType> getSelectionTypes() {
+	/**
+	 * Returns a list of all currently registered selection types, sorted by
+	 * their Priority ({@link SelectionType#getPriority()})
+	 */
+	public synchronized ArrayList<SelectionType> getSelectionTypes() {
 		return selectionTypes;
 	}
 
@@ -685,10 +704,11 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * Adds a new, custom selection type to the selection manager. Should only
 	 * be called via a {@link SelectionTypeEvent}
 	 */
-	public  synchronized void addSelectionType(SelectionType selectionType) {
+	public synchronized void addSelectionType(SelectionType selectionType) {
 		if (!hashSelectionTypes.containsKey(selectionType)) {
 			hashSelectionTypes.put(selectionType, new HashMap<Integer, Integer>());
 			selectionTypes.add(selectionType);
+			Collections.sort(selectionTypes);
 		}
 	}
 
@@ -705,7 +725,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * Removes all managed selection types. These are for example newly created
 	 * selection groups.
 	 */
-	public  synchronized void removeMangagedSelectionTypes() {
+	public synchronized void removeMangagedSelectionTypes() {
 
 		for (int selectionTypeIndex = 0; selectionTypeIndex < selectionTypes.size(); selectionTypeIndex++) {
 
@@ -724,7 +744,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * @param type
 	 *            the selection type which should not be written to deltas
 	 */
-	public  synchronized void addTypeToDeltaBlacklist(SelectionType type) {
+	public synchronized void addTypeToDeltaBlacklist(SelectionType type) {
 		deltaBlackList.put(type, null);
 	}
 

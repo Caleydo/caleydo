@@ -26,6 +26,7 @@ import java.util.Set;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -65,10 +66,11 @@ public class MappedDataRenderer {
 	public static float[] CAPTION_BACKGROUND_COLOR = { 220f / 255f, 220f / 255,
 			220f / 255, 1f };
 
+	public static float[] BAR_COLOR = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+
 	private GLLinearizedPathway parentView;
 
 	private List<ALinearizableNode> linearizedNodes;
-
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
 
@@ -109,6 +111,7 @@ public class MappedDataRenderer {
 	private ViewFrustum viewFrustum;
 
 	EventBasedSelectionManager geneSelectionManager;
+	EventBasedSelectionManager experimentSelectionManager;
 
 	/**
 	 * Constructor with parent view as parameter.
@@ -121,6 +124,17 @@ public class MappedDataRenderer {
 
 		geneSelectionManager = new EventBasedSelectionManager(IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
+
+		ArrayList<GeneticDataDomain> dataDomains = DataDomainManager.get()
+				.getDataDomainsByType(GeneticDataDomain.class);
+		if (dataDomains.size() != 0) {
+			IDType sampleIDType = dataDomains.get(0).getSampleIDType();
+			experimentSelectionManager = new EventBasedSelectionManager(sampleIDType);
+
+		} else {
+			throw new IllegalStateException("No Valid Datadomain");
+		}
+
 		registerPickingListeners();
 	}
 
@@ -293,14 +307,10 @@ public class MappedDataRenderer {
 				ElementLayout rowCaption = new ElementLayout();
 				rowCaption.setAbsoluteSizeY(rowHeight);
 
-				RowCaptionRenderer captionRenderer = new RowCaptionRenderer(
-						parentView.getTextRenderer(), parentView.getPixelGLConverter(),
-						davidID);
+				RowCaptionRenderer captionRenderer = new RowCaptionRenderer(davidID,
+						parentView, this, color);
 				rowCaption.setRenderer(captionRenderer);
 
-				RowBackgroundRenderer rowCaptionBackgroundRenderer = new RowBackgroundRenderer(
-						CAPTION_BACKGROUND_COLOR);
-				rowCaption.addBackgroundRenderer(rowCaptionBackgroundRenderer);
 				captionColumn.append(rowCaption);
 
 				if (idCount == 0)
@@ -380,8 +390,8 @@ public class MappedDataRenderer {
 					dataContainer.getLabel());
 			captionLayout.setRenderer(columnCaptionRenderer);
 
-			row.setRenderer(new RowRenderer(geneID, davidID, dataDomain, dataContainer,
-					experimentPerspective, parentView, this));
+			row.setRenderer(new RowContentRenderer(geneID, davidID, dataDomain,
+					dataContainer, experimentPerspective, parentView, this));
 		}
 
 	}
@@ -449,6 +459,16 @@ public class MappedDataRenderer {
 		parentView.addTypePickingListener(new APickingListener() {
 
 			@Override
+			public void clicked(Pick pick) {
+				geneSelectionManager.clearSelection(SelectionType.SELECTION);
+				geneSelectionManager.addToType(SelectionType.SELECTION,
+						pick.getObjectID());
+				geneSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
 			public void mouseOver(Pick pick) {
 
 				geneSelectionManager.addToType(SelectionType.MOUSE_OVER,
@@ -467,6 +487,38 @@ public class MappedDataRenderer {
 
 			}
 		}, PickingType.GENE.name());
+
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				experimentSelectionManager.clearSelection(SelectionType.SELECTION);
+				experimentSelectionManager.addToType(SelectionType.SELECTION,
+						pick.getObjectID());
+				experimentSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+
+				experimentSelectionManager.addToType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+				experimentSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				experimentSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+
+				parentView.setDisplayListDirty();
+
+			}
+		}, PickingType.SAMPLE.name());
 
 	}
 

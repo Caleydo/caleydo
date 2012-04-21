@@ -418,6 +418,13 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			return getDimensionIDType();
 	}
 
+	public IDType getSampleIDType() {
+		if (isColumnDimension)
+			return getDimensionIDType();
+		else
+			return getRecordIDType();
+	}
+
 	public IDType getHumanReadableGeneIDType() {
 		if (isColumnDimension())
 			return getHumanReadableRecordIDType();

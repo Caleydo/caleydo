@@ -24,6 +24,6 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
  * 
  */
 public enum PickingType {
-	GENE, EXPERIMENT
+	GENE, SAMPLE
 
 }

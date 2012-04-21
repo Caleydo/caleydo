@@ -36,13 +36,14 @@ import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * @author alexsb
+ * Wrapper for {@link SelectionManager} that integrates all the event handling
+ * related to selections.
+ * 
+ * @author Alexander Lex
  * 
  */
 public class EventBasedSelectionManager extends SelectionManager implements
 		ISelectionUpdateHandler, ISelectionCommandHandler {
-
-	protected IDType idType;
 
 	protected SelectionUpdateListener selectionUpdateListener;
 	protected SelectionCommandListener selectionCommandListener;
