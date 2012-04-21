@@ -90,7 +90,7 @@ public class HandleRenderer extends LayoutRenderer {
 		brickPickingListener = new APickingListener() {
 			@Override
 			public void mouseOver(Pick pick) {
-				if (pick.getID() == brick.getID())
+				if (pick.getObjectID() == brick.getID())
 					hide = false;
 				else
 					hide = true;

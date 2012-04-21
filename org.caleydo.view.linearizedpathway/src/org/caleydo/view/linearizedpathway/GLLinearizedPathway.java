@@ -1671,6 +1671,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	@Override
 	public List<DataContainer> getDataContainers() {
+		if(mappedDataRenderer == null)
+			return null;
 		return mappedDataRenderer.getDataContainers();
 	}
 

@@ -310,9 +310,8 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
+		super.handleSelectionUpdate(selectionDelta);
 
 		if (selectionDelta.getIDType() == recordGroupSelectionManager.getIDType()) {
 			recordGroupSelectionManager.setDelta(selectionDelta);

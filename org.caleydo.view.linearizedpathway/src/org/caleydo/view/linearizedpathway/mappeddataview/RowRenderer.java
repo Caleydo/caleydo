@@ -19,13 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
@@ -35,20 +38,27 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 public class RowRenderer extends LayoutRenderer {
 
 	Integer geneID;
+	Integer davidID;
 	DataContainer dataContainer;
 	ADataPerspective<?, ?, ?, ?> experimentPerspective;
 	GeneticDataDomain dataDomain;
+	private AGLView parentView;
+	private MappedDataRenderer parent;
 
 	/**
 	 * 
 	 */
-	public RowRenderer(Integer geneID, GeneticDataDomain dataDomain,
+	public RowRenderer(Integer geneID, Integer davidID, GeneticDataDomain dataDomain,
 			DataContainer dataContainer,
-			ADataPerspective<?, ?, ?, ?> experimentPerspective) {
+			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
+			MappedDataRenderer parent) {
 		this.geneID = geneID;
+		this.davidID = davidID;
 		this.dataDomain = dataDomain;
 		this.dataContainer = dataContainer;
 		this.experimentPerspective = experimentPerspective;
+		this.parentView = parentView;
+		this.parent = parent;
 		// TODO Auto-generated constructor stub
 	}
 
@@ -61,9 +71,17 @@ public class RowRenderer extends LayoutRenderer {
 		float z = 0.05f;
 
 		// GLHelperFunctions.drawPointAt(gl, 0, 0, 1);
+		float[] notSelectedColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+		float[] barColor = notSelectedColor;
 
-		float[] barColor = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+		ArrayList<SelectionType> selectionTypes = parent.geneSelectionManager
+				.getSelectionTypes(davidID);
+		if (selectionTypes.size() != 0) {
+			barColor = selectionTypes.get(0).getColor();
+		}
+
 		float[] noMappingColor = { 166f / 255f, 189f / 255, 219f / 255, 1f };
+
 		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
 			float value;
 			if (geneID == null) {
@@ -77,6 +95,9 @@ public class RowRenderer extends LayoutRenderer {
 				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
 
+				gl.glPushName(parentView.getPickingManager().getPickingID(
+						parentView.getID(), PickingType.GENE.name(), davidID));
+
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(leftEdge, 0, z);
 				gl.glVertex3f(leftEdge, upperEdge, z);
@@ -85,6 +106,7 @@ public class RowRenderer extends LayoutRenderer {
 				gl.glVertex3f(leftEdge + xIncrement, 0, z);
 
 				gl.glEnd();
+				gl.glPopName();
 			}
 			experimentCount++;
 

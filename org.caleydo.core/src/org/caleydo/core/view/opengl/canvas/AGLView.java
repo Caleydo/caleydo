@@ -623,7 +623,7 @@ public abstract class AGLView
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
 					Pick tempPick = alHits.get(iCount);
-					int pickedObjectID = tempPick.getID();
+					int pickedObjectID = tempPick.getObjectID();
 					if (pickedObjectID == -1) {
 						continue;
 					}

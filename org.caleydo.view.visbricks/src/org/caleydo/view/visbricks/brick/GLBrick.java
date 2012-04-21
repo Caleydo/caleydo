@@ -926,8 +926,7 @@ public class GLBrick
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() == dataContainerSelectionManager.getIDType()) {
 			dataContainerSelectionManager.setDelta(selectionDelta);
 

@@ -155,8 +155,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			final boolean scrollToSelection, final String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
 		IDType recordIDType = dataDomain.getRecordIDType();
 		if (selectionDelta.getIDType().getIDCategory()
@@ -169,21 +168,20 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 			}
 
 			recordSelectionManager.setDelta(selectionDelta);
-			updateTree(true, recordSelectionManager, contentTree, info);
+			updateTree(true, recordSelectionManager, contentTree);
 		}
 
 		if (selectionDelta.getIDType() == recordSelectionManager.getIDType()) {
 
 		} else if (selectionDelta.getIDType() == dimensionSelectionManager.getIDType()) {
 			dimensionSelectionManager.setDelta(selectionDelta);
-			updateTree(false, dimensionSelectionManager, dimensionTree, info);
+			updateTree(false, dimensionSelectionManager, dimensionTree);
 		}
 
 	}
 
 	private void updateTree(final boolean isContent,
-			final SelectionManager selectionManager, final TreeItem tree,
-			final String info) {
+			final SelectionManager selectionManager, final TreeItem tree) {
 
 		if (parentComposite.isDisposed())
 			return;
@@ -192,9 +190,9 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 			@Override
 			public void run() {
 
-				if (info != null) {
-					lblViewInfoContent.setText(info);
-				}
+//				if (info != null) {
+//					lblViewInfoContent.setText(info);
+//				}
 
 				// Flush old items from this selection type
 				for (TreeItem item : tree.getItems()) {
@@ -406,7 +404,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		updateTree(true, recordSelectionManager, contentTree, null);
+		updateTree(true, recordSelectionManager, contentTree);
 	}
 
 	@Override
@@ -414,7 +412,7 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		if (parentComposite.isDisposed())
 			return;
 
-		updateTree(false, dimensionSelectionManager, dimensionTree, null);
+		updateTree(false, dimensionSelectionManager, dimensionTree);
 	}
 
 	@Override

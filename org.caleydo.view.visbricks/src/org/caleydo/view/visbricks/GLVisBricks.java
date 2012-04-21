@@ -988,16 +988,16 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 		addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				selectedConnectionBandID = pick.getID();
+				selectedConnectionBandID = pick.getObjectID();
 				selectElementsByConnectionBandID(selectedConnectionBandID);
 			}
 
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(),
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(),
 						true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getID(),
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(),
 						false));
 			}
 
@@ -1009,7 +1009,7 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
 				dragAndDropController.addDraggable((DimensionGroup) generalManager
-						.getViewManager().getGLView(pick.getID()));
+						.getViewManager().getGLView(pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");
 
 			}
@@ -1039,7 +1039,7 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 						&& dragAndDropController.getDraggingMode().equals(
 								"DimensionGroupDrag")) {
 					dragAndDropController.setDropArea(dimensionGroupManager
-							.getDimensionGroupSpacers().get(pick.getID()));
+							.getDimensionGroupSpacers().get(pick.getObjectID()));
 				} else {
 					if (dragAndDropController.isDragging()) {
 						int i = 0;
@@ -1053,7 +1053,7 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 			@Override
 			public void clicked(Pick pick) {
 				isHorizontalMoveDraggingActive = true;
-				movedDimensionGroup = pick.getID();
+				movedDimensionGroup = pick.getObjectID();
 			};
 
 		}, PickingType.MOVE_HORIZONTALLY_HANDLE.name());
@@ -1123,8 +1123,7 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		// TODO Auto-generated method stub
 
 	}
@@ -1285,8 +1284,7 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 	private void imprintVisBricks(ATableBasedDataDomain dataDomain) {
 		recordIDCategory = dataDomain.getRecordIDCategory();
 		IDType mappingRecordIDType = recordIDCategory.getPrimaryMappingType();
-		recordSelectionManager = new RecordSelectionManager(IDMappingManagerRegistry
-				.get().getIDMappingManager(recordIDCategory), mappingRecordIDType);
+		recordSelectionManager = new RecordSelectionManager(mappingRecordIDType);
 	}
 
 	@Override

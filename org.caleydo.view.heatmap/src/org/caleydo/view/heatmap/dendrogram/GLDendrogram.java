@@ -1490,7 +1490,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getViewLabel());
 				eventPublisher.triggerEvent(event);
 
 				setDisplayListDirty();
@@ -1575,7 +1574,6 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 				SelectionUpdateEvent event = new SelectionUpdateEvent();
 				event.setSender(this);
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getViewLabel());
 				eventPublisher.triggerEvent(event);
 
 				setDisplayListDirty();
@@ -1625,8 +1623,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(SelectionDelta delta,
-			boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta delta) {
 
 		if (bRenderContentTree == true) {
 			if (tree != null && tree.getRoot() != null) {

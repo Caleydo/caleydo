@@ -1182,8 +1182,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
 		if (selectionDelta.getIDType() == selectionManager.getIDType()
 				|| selectionDelta.getIDType() == dataDomain.getDimensionIDType()) {

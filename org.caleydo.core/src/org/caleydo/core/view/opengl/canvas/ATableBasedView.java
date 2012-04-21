@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -88,16 +88,12 @@ public abstract class ATableBasedView extends AGLView implements
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * This manager is responsible for the content in the dimensions (the
-	 * indices). The contentSelectionManager is initialized when the useCase is
-	 * set ({@link #setDataDomain(IDataDomain)}).
+	 * This manager is responsible for the selection states of the records. 
 	 */
 	protected RecordSelectionManager recordSelectionManager;
 
 	/**
-	 * This manager is responsible for the management of the dimensions in the
-	 * table. The dimensionSelectionManager is initialized when the useCase is
-	 * set ( {@link #setDataDomain(IDataDomain)} ).
+	 * This manager is responsible for the selection states of the dimensions.
 	 */
 	protected DimensionSelectionManager dimensionSelectionManager;
 
@@ -235,8 +231,7 @@ public abstract class ATableBasedView extends AGLView implements
 			IDType idType, int id) throws InvalidAttributeValueException;
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
 		if (selectionDelta.getIDType().getIDCategory()
 				.equals(recordIDType.getIDCategory())) {
@@ -250,14 +245,14 @@ public abstract class ATableBasedView extends AGLView implements
 			recordSelectionManager.setDelta(selectionDelta);
 			if (isVisualLinkingActive)
 				prepareVisualLinkingInformation(selectionDelta);
-			reactOnExternalSelection(selectionDelta, scrollToSelection);
+			reactOnExternalSelection(selectionDelta);
 			setDisplayListDirty();
 		} else if (selectionDelta.getIDType() == dimensionIDType) {
 
 			dimensionSelectionManager.setDelta(selectionDelta);
 			if (isVisualLinkingActive)
 				prepareVisualLinkingInformation(selectionDelta);
-			reactOnExternalSelection(selectionDelta, scrollToSelection);
+			reactOnExternalSelection(selectionDelta);
 			setDisplayListDirty();
 		}
 
@@ -284,8 +279,7 @@ public abstract class ATableBasedView extends AGLView implements
 	 * Is called any time a update is triggered externally. Should be
 	 * implemented by inheriting views.
 	 */
-	protected void reactOnExternalSelection(SelectionDelta selectionDelta,
-			boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta selectionDelta) {
 
 	}
 

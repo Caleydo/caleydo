@@ -297,8 +297,7 @@ public class GLBookmarkView extends ATableBasedView {
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		// EIDCategory category = ;
 		ABookmarkContainer<?> container = hashCategoryToBookmarkContainer
 				.get(selectionDelta.getIDType().getIDCategory());

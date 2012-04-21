@@ -67,8 +67,7 @@ public class GeneClusterDataEventManager extends ADataEventManager implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() == radialHierarchy.getDataDomain()
 				.getRecordIDType()) {
 			SelectionManager selectionManager = radialHierarchy.getSelectionManager();

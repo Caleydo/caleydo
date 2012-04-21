@@ -52,7 +52,7 @@ public class ToolBar extends Row {
 		brickPickingListener = new APickingListener() {
 			@Override
 			public void mouseOver(Pick pick) {
-				if (pick.getID() == brick.getID())
+				if (pick.getObjectID() == brick.getID())
 					hide = false;
 				else
 					hide = true;
@@ -60,7 +60,7 @@ public class ToolBar extends Row {
 
 			@Override
 			public void mouseOut(Pick pick) {
-				if (pick.getID() == brick.getID())
+				if (pick.getObjectID() == brick.getID())
 					hide = true;
 			}
 		};

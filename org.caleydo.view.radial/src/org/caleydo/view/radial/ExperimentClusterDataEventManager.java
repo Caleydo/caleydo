@@ -116,8 +116,7 @@ public class ExperimentClusterDataEventManager extends ADataEventManager impleme
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() == radialHierarchy.getDataDomain()
 				.getDimensionIDType()) {
 			SelectionManager selectionManager = radialHierarchy.getSelectionManager();

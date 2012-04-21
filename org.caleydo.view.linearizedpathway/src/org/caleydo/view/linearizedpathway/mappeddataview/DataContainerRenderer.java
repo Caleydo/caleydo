@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
@@ -50,7 +51,7 @@ public class DataContainerRenderer {
 	 *            the davidIDs in the same order as the rowLayouts
 	 */
 	public DataContainerRenderer(DataContainer dataContainer, ArrayList<Row> rowLayout,
-			ArrayList<Integer> daivdIDs) {
+			ArrayList<Integer> daivdIDs, AGLView parentView) {
 		this.dataContainer = dataContainer;
 		this.rowLayouts = rowLayout;
 		this.davidIDs = daivdIDs;
@@ -59,29 +60,29 @@ public class DataContainerRenderer {
 	}
 
 	private void prepareData() {
-		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
-
-		ADataPerspective<?, ?, ?, ?> experimentPerspective;
-		if (dataDomain.isGeneRecord()) {
-			experimentPerspective = dataContainer.getDimensionPerspective();
-		} else {
-			experimentPerspective = dataContainer.getRecordPerspective();
-		}
-
-		IDType geneIDTYpe = dataDomain.getGeneIDType();
-		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
-		for (int rowCount = 0; rowCount < davidIDs.size(); rowCount++) {
-			Integer davidID = davidIDs.get(rowCount);
-			Integer geneID = dataDomain.getGeneIDMappingManager().getID(
-					IDType.getIDType("DAVID"), geneIDTYpe, davidID);
-			if (geneID == null) {
-				System.out.println("No mapping for david");
-			}
-			// geneIDs.add(davidID);
-			Row row = rowLayouts.get(rowCount);
-			row.setRenderer(new RowRenderer(geneID, dataDomain, dataContainer,
-					experimentPerspective));
-		}
-
+//		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
+//
+//		ADataPerspective<?, ?, ?, ?> experimentPerspective;
+//		if (dataDomain.isGeneRecord()) {
+//			experimentPerspective = dataContainer.getDimensionPerspective();
+//		} else {
+//			experimentPerspective = dataContainer.getRecordPerspective();
+//		}
+//
+//		IDType geneIDTYpe = dataDomain.getGeneIDType();
+//		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
+//		for (int rowCount = 0; rowCount < davidIDs.size(); rowCount++) {
+//			Integer davidID = davidIDs.get(rowCount);
+//			Integer geneID = dataDomain.getGeneIDMappingManager().getID(
+//					IDType.getIDType("DAVID"), geneIDTYpe, davidID);
+//			if (geneID == null) {
+//				System.out.println("No mapping for david");
+//			}
+//			// geneIDs.add(davidID);
+//			Row row = rowLayouts.get(rowCount);
+//			row.setRenderer(new RowRenderer(geneID, dataDomain, dataContainer,
+//					experimentPerspective, paren));
+//		}
+//
 	}
 }

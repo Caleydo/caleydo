@@ -367,9 +367,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
+		super.handleSelectionUpdate(selectionDelta);
 
 	}
 

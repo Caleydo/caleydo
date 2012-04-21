@@ -406,7 +406,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		event.setSender(this);
 		// event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta(selectionDelta);
-		event.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(event);
 		detailedRenderingTemplate.updateSpacing();
 		setDisplayListDirty();
@@ -578,9 +577,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
-		super.handleSelectionUpdate(selectionDelta, scrollToSelection, info);
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
+		super.handleSelectionUpdate(selectionDelta);
 		if (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM) {
 			detailedRenderingTemplate.updateSpacing();
 		}

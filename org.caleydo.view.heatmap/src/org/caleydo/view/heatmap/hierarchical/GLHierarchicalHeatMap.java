@@ -778,13 +778,12 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	 * @param
 	 */
 	@Override
-	protected void reactOnExternalSelection(SelectionDelta delta,
-			boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta delta) {
 
 		if (delta.getIDType() != recordIDType)
 			return;
 
-		if (scrollToSelection && bSkipLevel2 == false) {
+		if (bSkipLevel2 == false) {
 
 			int mouseOverElement = 0;
 			SelectionType type = SelectionType.NORMAL;

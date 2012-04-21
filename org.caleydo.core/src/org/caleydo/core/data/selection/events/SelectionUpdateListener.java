@@ -45,9 +45,7 @@ public class SelectionUpdateListener
 		if (event instanceof SelectionUpdateEvent) {
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event;
 			SelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
-			boolean scrollToSelection = selectioUpdateEvent.isScrollToSelection();
-			String info = selectioUpdateEvent.getInfo();
-			handler.handleSelectionUpdate(delta, scrollToSelection, info);
+			handler.handleSelectionUpdate(delta);
 			VisLinkScene.resetAnimation(System.currentTimeMillis());
 		}
 	}

@@ -421,8 +421,7 @@ public class TabularDataView extends ASWTView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scroolToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		// Check for type that can be handled
 		if (selectionDelta.getIDType().getIDCategory() == dataDomain
 				.getRecordIDCategory()) {

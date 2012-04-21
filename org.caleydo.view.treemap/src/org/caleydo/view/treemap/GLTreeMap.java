@@ -514,7 +514,7 @@ public class GLTreeMap extends ATableBasedView {
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (bIsInteractive) {
 			if (dataDomain.getRecordIDType() == selectionDelta.getIDType()) {
 				SelectionDelta newDelta = new SelectionDelta(treeSelectionManager.getIDType());

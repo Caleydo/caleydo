@@ -244,7 +244,7 @@ public class GLPathway
 					return;
 				}
 
-				handlePathwayElementSelection(SelectionType.MOUSE_OVER, pick.getID());
+				handlePathwayElementSelection(SelectionType.MOUSE_OVER, pick.getObjectID());
 			}
 
 			@Override
@@ -260,7 +260,7 @@ public class GLPathway
 								.equals("org.caleydo.view.brick"))
 					return;
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getID());
+				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
 
 			@Override
@@ -271,7 +271,7 @@ public class GLPathway
 				}
 
 				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
-						.getPathwayVertexRep(pick.getID());
+						.getPathwayVertexRep(pick.getObjectID());
 
 				// Load embedded pathway
 				if (vertexRep.getType() == EPathwayVertexType.map) {
@@ -307,7 +307,7 @@ public class GLPathway
 
 				// same behavior as for single click except that
 				// pathways are also loaded
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getID());
+				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
 
 			@Override
@@ -318,7 +318,7 @@ public class GLPathway
 				}
 
 				PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
-						.getPathwayVertexRep(pick.getID());
+						.getPathwayVertexRep(pick.getObjectID());
 
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
@@ -344,7 +344,7 @@ public class GLPathway
 					}
 				}
 
-				handlePathwayElementSelection(SelectionType.SELECTION, pick.getID());
+				handlePathwayElementSelection(SelectionType.SELECTION, pick.getObjectID());
 			}
 		};
 	}
@@ -475,8 +475,7 @@ public class GLPathway
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
 		if (pathway == null)
 			return;
@@ -997,7 +996,6 @@ public class GLPathway
 		event.setSender(this);
 		event.setDataDomainID(dataDomain.getDataDomainID());
 		event.setSelectionDelta((SelectionDelta) selectionDelta);
-		event.setInfo(getViewLabel());
 		eventPublisher.triggerEvent(event);
 	}
 

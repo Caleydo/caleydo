@@ -3172,8 +3172,7 @@ public class GLScatterPlot extends ATableBasedView {
 	}
 
 	@Override
-	protected void reactOnExternalSelection(SelectionDelta delta,
-			boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta delta) {
 		selectAxesfromExternal();
 		bUpdateSelection = true;
 		bUpdateSelectionTexures = true;

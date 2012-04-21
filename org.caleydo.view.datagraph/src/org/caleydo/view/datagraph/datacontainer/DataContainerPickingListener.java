@@ -80,7 +80,7 @@ public class DataContainerPickingListener
 	@Override
 	public void clicked(Pick pick)
 	{
-		int dimensionGroupID = pick.getID();
+		int dimensionGroupID = pick.getObjectID();
 
 		DimensionGroupRenderer draggedComparisonGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
 		if (draggedComparisonGroupRenderer == null)
@@ -100,7 +100,7 @@ public class DataContainerPickingListener
 	@Override
 	public void mouseOver(Pick pick)
 	{
-		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick.getID());
+		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
 
@@ -111,7 +111,7 @@ public class DataContainerPickingListener
 	@Override
 	public void mouseOut(Pick pick)
 	{
-		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick.getID());
+		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(pick.getObjectID());
 		if (dimensionGroupRenderer == null)
 			return;
 
@@ -145,7 +145,7 @@ public class DataContainerPickingListener
 	public void rightClicked(Pick pick)
 	{
 
-		int dimensionGroupID = pick.getID();
+		int dimensionGroupID = pick.getObjectID();
 		DimensionGroupRenderer dimensionGroupRenderer = getDimensionGroupRenderer(dimensionGroupID);
 		if (dimensionGroupRenderer == null)
 			return;

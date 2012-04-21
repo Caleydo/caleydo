@@ -1207,8 +1207,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	protected void reactOnExternalSelection(SelectionDelta delta,
-			boolean scrollToSelection) {
+	protected void reactOnExternalSelection(SelectionDelta delta) {
 		handleUnselection();
 		resetAxisSpacing();
 	}
@@ -1348,7 +1347,6 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				event.setSender(this);
 				event.setDataDomainID(dataDomain.getDataDomainID());
 				event.setSelectionDelta((SelectionDelta) selectionDelta);
-				event.setInfo(getViewLabel());
 				eventPublisher.triggerEvent(event);
 			}
 

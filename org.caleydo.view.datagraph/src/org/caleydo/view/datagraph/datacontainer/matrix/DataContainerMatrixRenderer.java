@@ -104,7 +104,7 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void mouseOver(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -115,7 +115,7 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void mouseOut(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -126,12 +126,12 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void rightClicked(Pick pick) {
-				triggerDataContainerCreation(pick.getID(), true);
+				triggerDataContainerCreation(pick.getObjectID(), true);
 			}
 
 			@Override
 			public void clicked(Pick pick) {
-				triggerDataContainerCreation(pick.getID(), false);
+				triggerDataContainerCreation(pick.getObjectID(), false);
 			}
 
 			private void triggerDataContainerCreation(int id, boolean useContextMenu) {
@@ -231,7 +231,7 @@ public class DataContainerMatrixRenderer
 			@Override
 			public void clicked(Pick pick) {
 
-				CellContainer container = getCellContainerWithHashID(pick.getID());
+				CellContainer container = getCellContainerWithHashID(pick.getObjectID());
 
 				if (container == null)
 					return;
@@ -267,7 +267,7 @@ public class DataContainerMatrixRenderer
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 				//
@@ -309,7 +309,7 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void mouseOver(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 				float[] color = renderingStrategy.getPerspectiveColor();
@@ -321,7 +321,7 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void mouseOut(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 

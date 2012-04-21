@@ -37,6 +37,13 @@ public class ExtendedSelectionUpdateListener
 	extends AEventListener<IExtendedSelectionUpdateHandler> {
 
 	/**
+	 * 
+	 */
+	public ExtendedSelectionUpdateListener() {
+		// TODO Auto-generated constructor stub
+	}
+	
+	/**
 	 * Handles {@link SelectionUdpateEvent}s by extracting the event's payload
 	 * and calling the related handler
 	 * 
@@ -48,9 +55,7 @@ public class ExtendedSelectionUpdateListener
 		if (event instanceof SelectionUpdateEvent) {
 			SelectionUpdateEvent selectioUpdateEvent = (SelectionUpdateEvent) event;
 			SelectionDelta delta = selectioUpdateEvent.getSelectionDelta();
-			boolean scrollToSelection = selectioUpdateEvent.isScrollToSelection();
-			String info = selectioUpdateEvent.getInfo();
-			handler.handleSelectionUpdate(delta, scrollToSelection, info, event.getDataDomainID());
+			handler.handleSelectionUpdate(delta, event.getDataDomainID());
 			VisLinkScene.resetAnimation(System.currentTimeMillis());
 		}
 	}

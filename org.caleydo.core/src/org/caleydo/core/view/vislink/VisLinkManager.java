@@ -183,7 +183,7 @@ public class VisLinkManager
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		System.out.println("VisLinkManager: handleSelectionUpdate");
 
 		for (SelectionDeltaItem deltaItem : selectionDelta.getAllItems()) {

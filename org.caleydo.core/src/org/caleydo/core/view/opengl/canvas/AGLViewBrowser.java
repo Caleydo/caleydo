@@ -1129,7 +1129,7 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta, boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		lastSelectionDelta = selectionDelta;
 	}
 
@@ -1706,7 +1706,6 @@ public abstract class AGLViewBrowser
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) lastSelectionDelta);
-			event.setInfo(getViewLabel());
 			eventPublisher.triggerEvent(event);
 		}
 	}

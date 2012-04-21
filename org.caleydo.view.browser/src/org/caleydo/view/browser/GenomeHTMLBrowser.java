@@ -149,8 +149,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(final SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(final SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType().getIDCategory() != dataDomain
 				.getRecordIDCategory())
 			return;

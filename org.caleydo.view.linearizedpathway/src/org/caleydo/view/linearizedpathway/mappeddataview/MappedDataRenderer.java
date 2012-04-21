@@ -28,6 +28,9 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.SelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -36,6 +39,8 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
@@ -71,7 +76,7 @@ public class MappedDataRenderer {
 	 * The top-level data containers as set externally through the
 	 * {@link IMultiDataContainerBasedView} interface of {@link #parentView}
 	 */
-	private ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>(5);;
+	private ArrayList<DataContainer> dataContainers = new ArrayList<DataContainer>(5);
 
 	/**
 	 * The data containers resolved based on the {@link GroupList}s of the
@@ -103,6 +108,8 @@ public class MappedDataRenderer {
 	private LayoutManager layoutManger;
 	private ViewFrustum viewFrustum;
 
+	EventBasedSelectionManager geneSelectionManager;
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
@@ -111,6 +118,17 @@ public class MappedDataRenderer {
 		viewFrustum = new ViewFrustum();
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 		usedDataContainers = resolvedDataContainers;
+
+		geneSelectionManager = new EventBasedSelectionManager(IDType.getIDType("DAVID"));
+		geneSelectionManager.registerEventListeners();
+		registerPickingListeners();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		super.finalize();
+		geneSelectionManager.unregisterEventListeners();
+		geneSelectionManager = null;
 	}
 
 	public void render(GL2 gl) {
@@ -362,8 +380,8 @@ public class MappedDataRenderer {
 					dataContainer.getLabel());
 			captionLayout.setRenderer(columnCaptionRenderer);
 
-			row.setRenderer(new RowRenderer(geneID, dataDomain, dataContainer,
-					experimentPerspective));
+			row.setRenderer(new RowRenderer(geneID, davidID, dataDomain, dataContainer,
+					experimentPerspective, parentView, this));
 		}
 
 	}
@@ -425,6 +443,37 @@ public class MappedDataRenderer {
 
 		}
 
+	}
+
+	protected void registerPickingListeners() {
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void mouseOver(Pick pick) {
+
+				geneSelectionManager.addToType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+				geneSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				geneSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+
+				parentView.setDisplayListDirty();
+
+			}
+		}, PickingType.GENE.name());
+
+	}
+
+	public void unregisterPickingListeners() {
+		// super.unregisterPickingListeners();
+		// view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
+		// node.getNodeId());
 	}
 
 }

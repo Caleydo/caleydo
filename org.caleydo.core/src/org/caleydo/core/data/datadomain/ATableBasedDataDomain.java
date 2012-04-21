@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -117,7 +117,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	/** The raw data for this data domain. */
 	protected DataTable table;
 
-
 	/**
 	 * <p>
 	 * The {@link DataContainer} registered for this data domain. A
@@ -209,7 +208,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		defaultStartViewType = "org.caleydo.view.heatmap.hierarchical";
 	}
 
-	
 	/**
 	 * @return the isColumnDimension, see {@link #isColumnDimension}
 	 */
@@ -316,10 +314,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		dimensionIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
 				dimensionIDCategory);
 
-		recordSelectionManager = new RecordSelectionManager(recordIDMappingManager,
-				recordIDType);
-		dimensionSelectionManager = new DimensionSelectionManager(
-				dimensionIDMappingManager, dimensionIDType);
+		recordSelectionManager = new RecordSelectionManager(recordIDType);
+		dimensionSelectionManager = new DimensionSelectionManager(dimensionIDType);
 		recordGroupSelectionManager = new SelectionManager(recordGroupIDType);
 
 		addIDCategory(dimensionIDCategory);
@@ -696,8 +692,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 
 		if (recordSelectionManager == null)
 			return;
@@ -734,8 +729,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * @param scrollToSelection
 	 * @param info
 	 */
-	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta,
-			boolean scrollToSelection, String info) {
+	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta) {
 		// may be interesting to implement in sub-class
 	}
 

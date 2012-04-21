@@ -267,8 +267,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	@Override
-	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta,
-			boolean scrollToSelection, String info) {
+	public void handleForeignSelectionUpdate(String dataDomainType, SelectionDelta delta) {
 		// if (dataDomainType == CLINICAL_DATADOMAIN_TYPE)
 		// System.out
 		// .println("TODO Convert and re-send selection from clinical to genetic");

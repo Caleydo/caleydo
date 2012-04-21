@@ -1710,8 +1710,7 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		lastSelectionDelta = selectionDelta;
 		bUpdateOffScreenTextures = true;
 	}
@@ -2526,7 +2525,6 @@ public class GLBucket extends AGLView implements
 			SelectionUpdateEvent event = new SelectionUpdateEvent();
 			event.setSender(this);
 			event.setSelectionDelta((SelectionDelta) lastSelectionDelta);
-			event.setInfo(getViewLabel());
 			eventPublisher.triggerEvent(event);
 		}
 	}

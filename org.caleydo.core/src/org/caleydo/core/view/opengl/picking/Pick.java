@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,38 +28,37 @@ import java.awt.Point;
  */
 public class Pick {
 
-	private int externalID = 0;
+	/** The id of the picked object. */
+	private int objectID = 0;
 
 	private PickingMode ePickingMode = PickingMode.CLICKED;
 
+	/** The coordinates in the plane where the pick occurred */
 	private Point pickedPoint;
-
+	/** The coordinates in the plane where the drag action started */
 	private Point dragStartPoint;
 
-	private float fDepth;
+	/** The z-value of the picked element */
+	private float depth;
 
 	/**
 	 * Constructor.
 	 */
-	public Pick(int externalID, PickingMode ePickingMode, Point pickedPoint, Point dragStartPoint,
-		float fDepth) {
+	public Pick(int objectID, PickingMode ePickingMode, Point pickedPoint,
+			Point dragStartPoint, float depth) {
 
-		this.externalID = externalID;
+		this.objectID = objectID;
 		this.ePickingMode = ePickingMode;
 		this.pickedPoint = pickedPoint;
 		this.dragStartPoint = dragStartPoint;
-		this.fDepth = fDepth;
+		this.depth = depth;
 	}
 
 	/**
-	 * Returns the ID which was previously specified as externalID in the
-	 * {@link PickingManager#getPickingID(int, EPickingType, int)} method
-	 * 
-	 * @return
+	 * @return the objectID, see {@link #objectID}
 	 */
-	public int getID() {
-
-		return externalID;
+	public int getObjectID() {
+		return objectID;
 	}
 
 	/**
@@ -73,7 +72,8 @@ public class Pick {
 	}
 
 	/**
-	 * The 2D screen coordinates of the mouse position at the time the pick occurred.
+	 * The 2D screen coordinates of the mouse position at the time the pick
+	 * occurred.
 	 */
 	public Point getPickedPoint() {
 
@@ -81,7 +81,8 @@ public class Pick {
 	}
 
 	/**
-	 * The 2D screen coordinates of the mouse position where the user started the drag action.
+	 * The 2D screen coordinates of the mouse position where the user started
+	 * the drag action.
 	 */
 	public Point getDragStartPoint() {
 
@@ -89,12 +90,9 @@ public class Pick {
 	}
 
 	/**
-	 * The z-value of the picked element
-	 * 
-	 * @return
+	 * @return the depth, see {@link #depth}
 	 */
 	public float getDepth() {
-		return fDepth;
+		return depth;
 	}
-
 }

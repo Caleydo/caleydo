@@ -444,8 +444,7 @@ public class GLTagCloud extends ATableBasedView {
 	}
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() == recordSelectionManager.getIDType()) {
 			recordSelectionManager.setDelta(selectionDelta);
 			for (TagRenderer tagRenderer : selectedTagRenderers)

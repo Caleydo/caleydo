@@ -294,8 +294,7 @@ public class GLTissueViewBrowser extends AGLViewBrowser implements IRecordVAUpda
 	// }
 
 	@Override
-	public void handleSelectionUpdate(SelectionDelta selectionDelta,
-			boolean scrollToSelection, String info) {
+	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		if (selectionDelta.getIDType() == primaryIDType) {
 			experiementSelectionManager.setDelta(selectionDelta);
 
