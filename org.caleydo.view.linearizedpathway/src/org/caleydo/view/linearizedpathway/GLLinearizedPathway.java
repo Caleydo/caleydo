@@ -36,6 +36,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -220,7 +221,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		mappedDataRenderer = new MappedDataRenderer(this);
-		
+
 	}
 
 	@Override
@@ -760,11 +761,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_PIXELS);
 		gl.glPushMatrix();
 
-		
-		
-		
 		// TODO do this only when necessary - cause re-initialization
-		 mappedDataRenderer.setLinearizedNodes(linearizedNodes);
+		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
 		//
 		// mappedDataRenderer.setGeometry(viewFrustum.getWidth() -
 		// dataRowPositionX
@@ -1404,8 +1402,6 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		createNodes();
 		setDisplayListDirty();
 
-		
-
 	}
 
 	private void setMappedDataRendererGeometry() {
@@ -1727,6 +1723,19 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public boolean isDataView() {
 		return true;
+	}
+
+	public boolean doesDavidMapToData(Integer davidID) {
+		for (DataContainer currentDataContainer : mappedDataRenderer.getDataContainers()) {
+			GeneticDataDomain dataDomain = (GeneticDataDomain) currentDataContainer
+					.getDataDomain();
+			Set<Integer> ids = dataDomain.getGeneIDMappingManager().getIDAsSet(
+					IDType.getIDType("DAVID"), dataDomain.getGeneIDType(), davidID);
+			if (ids != null && ids.size() > 0) {
+				return true;
+			}
+		}
+		return false;
 	}
 
 }
