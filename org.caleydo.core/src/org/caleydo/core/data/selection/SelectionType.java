@@ -96,7 +96,7 @@ public class SelectionType implements Comparable<SelectionType> {
 	// new int[] { 116, 169, 207 }, 1, true, true, 0.99f);
 
 	public static final SelectionType MOUSE_OVER = new SelectionType("MouseOver",
-			new int[] { 259, 196, 79 }, 1, true, true, 0.99f);
+			new int[] { 249, 196, 79 }, 1, true, true, 0.99f);
 
 	// public static final SelectionType SELECTION = new
 	// SelectionType("Selected",

@@ -30,7 +30,6 @@ import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
-import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
@@ -45,6 +44,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
+import org.caleydo.view.linearizedpathway.node.ANode;
+import org.caleydo.view.linearizedpathway.node.ComplexNode;
 
 /**
  * Renderer for mapped genomic data for linearized pathway view. Based on a list
@@ -153,7 +154,6 @@ public class MappedDataRenderer {
 		for (RelationshipRenderer relationshipRenderer : relationShipRenderers) {
 			relationshipRenderer.render(gl);
 		}
-
 	}
 
 	/**
@@ -180,7 +180,7 @@ public class MappedDataRenderer {
 		this.yOffset = yOffset;
 		this.rowHeight = rowHeight;
 
-		layoutManger.updateLayout();
+		// layoutManger.updateLayout();
 
 	}
 
@@ -200,8 +200,7 @@ public class MappedDataRenderer {
 
 		Row baseRow = new Row("baseRow");
 		layoutManger.setBaseElementLayout(baseRow);
-		// baseRow.setDebug(true);
-
+	
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
 		baseRow.append(dataSetColumn);
@@ -216,8 +215,8 @@ public class MappedDataRenderer {
 		this.linearizedNodes = linearizedNodes;
 
 		int nodeCount = 0;
-		float previousNodePosition = -1;
-		int previousNrDavids = 1;
+		float previousNodePosition = viewFrustum.getHeight() + yOffset;
+		int previousNrDavids = 0;
 
 		/** A list of rows for each data container */
 		ArrayList<ArrayList<Row>> rowListForDataContainers = new ArrayList<ArrayList<Row>>(
@@ -232,10 +231,49 @@ public class MappedDataRenderer {
 		ElementLayout xSpacing = new ElementLayout();
 		xSpacing.setPixelSizeX(5);
 
+		ArrayList<ALinearizableNode> resolvedNodes = new ArrayList<ALinearizableNode>();
+
+		// resolve complex nodes
 		for (ALinearizableNode node : linearizedNodes) {
+			if (node instanceof ComplexNode) {
+				List<ALinearizableNode> embeddedNodes = ((ComplexNode) node).getNodes();
+				resolvedNodes.addAll(embeddedNodes);
+			} else
+				resolvedNodes.add(node);
+		}
+
+		for (ALinearizableNode node : resolvedNodes) {
 
 			if (node.getNumAssociatedRows() == 0)
 				continue;
+
+			ArrayList<Integer> subDavidIDs = node.getPathwayVertexRep().getDavidIDs();
+			int currentNrDavids = subDavidIDs.size();
+			davidIDs.addAll(subDavidIDs);
+
+			float currentNodePositionY = node.getPosition().y();
+			float deviation;
+
+			ALinearizableNode previousParent = null;
+			if (node.getParentNode() != null) {
+				currentNodePositionY = node.getParentNode().getPosition().y();
+				currentNrDavids = node.getParentNode().getNumAssociatedRows();
+			}
+			float previousLowerHeight = previousNodePosition - rowHeight
+					* ((float) previousNrDavids) / 2;
+			float currentUpperHeight = (currentNodePositionY + rowHeight
+					* ((float) currentNrDavids) / 2);
+			deviation = previousLowerHeight - currentUpperHeight;
+
+			if (previousNodePosition > 0 && deviation > 0) {
+				Row spacing = new Row();
+				spacing.setAbsoluteSizeY(deviation);
+				dataSetColumn.append(spacing);
+				captionColumn.append(spacing);
+			}
+
+			previousNodePosition = currentNodePositionY;
+			previousNrDavids = currentNrDavids;
 
 			if (nodeCount % 2 == 0)
 				color = EVEN_BACKGROUND_COLOR;
@@ -259,28 +297,6 @@ public class MappedDataRenderer {
 					- yOffset;
 
 			nodeCount++;
-
-			ArrayList<Integer> subDavidIDs = node.getPathwayVertexRep().getDavidIDs();
-			davidIDs.addAll(subDavidIDs);
-
-			float currentNodePositionY = node.getPosition().y();
-			float deviation;
-
-			if (previousNodePosition < 0) {
-				deviation = 0;
-			} else {
-				deviation = previousNodePosition - rowHeight * previousNrDavids / 2
-						- currentNodePositionY - rowHeight * subDavidIDs.size() / 2;
-			}
-
-			if (previousNodePosition > 0 && deviation > 0) {
-				Row spacing = new Row();
-				spacing.setAbsoluteSizeY(deviation);
-				dataSetColumn.append(spacing);
-				captionColumn.append(spacing);
-			}
-			previousNodePosition = currentNodePositionY;
-			previousNrDavids = subDavidIDs.size();
 
 			int idCount = 0;
 

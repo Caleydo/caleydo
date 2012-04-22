@@ -68,14 +68,15 @@ public class RelationshipRenderer {
 		if (connectionBandRenderer == null) {
 			init(gl);
 		}
+		float lineWidthCompensation = 0.005f;
 
-		topRight[0] = topRightLayout.getTranslateX();
-		topRight[1] = topRightLayout.getTranslateY() + topRightLayout.getSizeScaledY();
+		topRight[0] = topRightLayout.getTranslateX() ;
+		topRight[1] = topRightLayout.getTranslateY() + topRightLayout.getSizeScaledY() -lineWidthCompensation;
 
 		bottomRight[0] = bottomRightLayout.getTranslateX();
-		bottomRight[1] = bottomRightLayout.getTranslateY();
+		bottomRight[1] = bottomRightLayout.getTranslateY()+lineWidthCompensation;
 
 		connectionBandRenderer.renderSingleBand(gl, topLeft, bottomLeft, topRight,
-				bottomRight, false, 0.1f, 0, color);
+				bottomRight, false, 0.07f, 0, color);
 	}
 }

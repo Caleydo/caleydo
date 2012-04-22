@@ -220,7 +220,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
 				.getDataDomainByType("org.caleydo.datadomain.pathway");
 		mappedDataRenderer = new MappedDataRenderer(this);
-
+		
 	}
 
 	@Override
@@ -263,6 +263,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		}
 
 		setPath(pathway, path);
+
+		setMappedDataRendererGeometry();
 
 		// mappedDataRenderer.init(gl);
 		// createNodes();
@@ -758,16 +760,20 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_PIXELS);
 		gl.glPushMatrix();
 
-		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
+		
+		
+		
 		// TODO do this only when necessary - cause re-initialization
-		mappedDataRenderer.setLinearizedNodes(linearizedNodes);
+		 mappedDataRenderer.setLinearizedNodes(linearizedNodes);
+		//
+		// mappedDataRenderer.setGeometry(viewFrustum.getWidth() -
+		// dataRowPositionX
+		// - topSpacing, viewFrustum.getHeight() - 2 * topSpacing,
+		// dataRowPositionX,
+		// topSpacing, dataRowHeight);
 
-		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
-				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
-				topSpacing, dataRowHeight);
-
+		gl.glTranslatef(dataRowPositionX, topSpacing, 0);
 		mappedDataRenderer.render(gl);
-
 		gl.glPopMatrix();
 
 		renderEdgesOfLinearizedNodes(gl);
@@ -991,9 +997,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		// .getGLHeightForPixelHeight(MIN_DATA_ROW_HEIGHT_PIXELS);
 		float minNodeDistance = pixelGLConverter
 				.getGLHeightForPixelHeight(MIN_NODE_DISTANCE_PIXELS);
-		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
-		float bottomSpacing = pixelGLConverter
-				.getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+		// float topSpacing =
+		// pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+		// float bottomSpacing = pixelGLConverter
+		// .getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
 
 		// float dataRowHeight = (viewFrustum.getHeight() - bottomSpacing -
 		// topSpacing)
@@ -1396,6 +1403,29 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		createNodes();
 		setDisplayListDirty();
+
+		
+
+	}
+
+	private void setMappedDataRendererGeometry() {
+
+		// float minNodeDistance = pixelGLConverter
+		// .getGLHeightForPixelHeight(MIN_NODE_DISTANCE_PIXELS);
+		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+		// float bottomSpacing = pixelGLConverter
+		// .getGLHeightForPixelHeight(BOTTOM_SPACING_PIXELS);
+
+		float branchColumnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
+		float pathwayColumnWidth = pixelGLConverter
+				.getGLWidthForPixelWidth(PATHWAY_COLUMN_WIDTH_PIXELS);
+		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
+
+		mappedDataRenderer.setGeometry(viewFrustum.getWidth() - dataRowPositionX
+				- topSpacing, viewFrustum.getHeight() - 2 * topSpacing, dataRowPositionX,
+				topSpacing, dataRowHeight);
+
 	}
 
 	/**
@@ -1658,6 +1688,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 		isLayoutDirty = true;
+		setMappedDataRendererGeometry();
 	}
 
 	/**
