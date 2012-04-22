@@ -90,7 +90,8 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  */
 
-public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView, IEventBasedSelectionManagerUser {
+public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView,
+		IEventBasedSelectionManagerUser {
 
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
@@ -264,45 +265,28 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (int i = 0; i < linearizedNodes.size(); i++) {
 			ALinearizableNode currentNode = linearizedNodes.get(i);
 			PathwayVertexRep currentVertexRep = currentNode.getPathwayVertexRep();
-			DefaultEdge prevEdge = null;
-			DefaultEdge nextEdge = null;
+			PathwayVertexRep prevVertexRep = null;
+			PathwayVertexRep nextVertexRep = null;
 
 			if (i > 0) {
 				ALinearizableNode prevNode = linearizedNodes.get(i - 1);
-				prevEdge = pathway.getEdge(prevNode.getPathwayVertexRep(),
-						currentVertexRep);
-				if (prevEdge == null)
-					prevEdge = pathway.getEdge(currentVertexRep,
-							prevNode.getPathwayVertexRep());
+				prevVertexRep = prevNode.getPathwayVertexRep();
 			}
 			if (i != linearizedNodes.size() - 1) {
 				ALinearizableNode nextNode = linearizedNodes.get(i + 1);
-				nextEdge = pathway.getEdge(nextNode.getPathwayVertexRep(),
-						currentVertexRep);
-				if (nextEdge == null)
-					nextEdge = pathway.getEdge(currentVertexRep,
-							nextNode.getPathwayVertexRep());
+				nextVertexRep = nextNode.getPathwayVertexRep();
 			}
-
-			Set<DefaultEdge> edges = pathway.edgesOf(currentVertexRep);
 
 			BranchSummaryNode incomingNode = new BranchSummaryNode(this, lastNodeId++,
 					currentNode);
 			BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++,
 					currentNode);
-			List<PathwayVertexRep> sourceVertexReps = new ArrayList<PathwayVertexRep>();
-			List<PathwayVertexRep> targetVertexReps = new ArrayList<PathwayVertexRep>();
-
-			for (DefaultEdge edge : edges) {
-				if ((edge != prevEdge) && (edge != nextEdge)) {
-					if (pathway.getEdgeTarget(edge) == currentVertexRep) {
-						sourceVertexReps.add(pathway.getEdgeSource(edge));
-
-					} else {
-						targetVertexReps.add(pathway.getEdgeTarget(edge));
-					}
-				}
-			}
+			List<PathwayVertexRep> sourceVertexReps = Graphs.successorListOf(pathway,
+					currentVertexRep);
+			sourceVertexReps.remove(prevVertexRep);
+			List<PathwayVertexRep> targetVertexReps = Graphs.predecessorListOf(pathway,
+					currentVertexRep);
+			targetVertexReps.remove(nextVertexRep);
 
 			if (sourceVertexReps.size() > 0) {
 				List<ALinearizableNode> sourceNodes = new ArrayList<ALinearizableNode>();
@@ -1276,7 +1260,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	@Override
 	public void notifyOfChange() {
-		setDisplayListDirty();		
+		setDisplayListDirty();
 	}
 
 }
