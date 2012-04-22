@@ -58,9 +58,9 @@ public class MappedDataRenderer {
 
 	public static float[] FRAME_COLOR = { 1, 1, 1, 1 };
 
-	public static float[] ODD_BACKGROUND_COLOR = { 240f / 255f, 240f / 255, 240f / 255,
+	public static float[] ODD_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255,
 			1f };
-	public static float[] EVEN_BACKGROUND_COLOR = { 220f / 255f, 220f / 255, 220f / 255,
+	public static float[] EVEN_BACKGROUND_COLOR = { 180f / 255f, 180f / 255, 180f / 255,
 			1f };
 
 	public static float[] CAPTION_BACKGROUND_COLOR = { 220f / 255f, 220f / 255,
@@ -111,7 +111,8 @@ public class MappedDataRenderer {
 	private ViewFrustum viewFrustum;
 
 	EventBasedSelectionManager geneSelectionManager;
-	EventBasedSelectionManager experimentSelectionManager;
+	EventBasedSelectionManager sampleSelectionManager;
+	EventBasedSelectionManager sampleGroupSelectionManager;
 
 	/**
 	 * Constructor with parent view as parameter.
@@ -129,7 +130,7 @@ public class MappedDataRenderer {
 				.getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
 			IDType sampleIDType = dataDomains.get(0).getSampleIDType();
-			experimentSelectionManager = new EventBasedSelectionManager(sampleIDType);
+			sampleSelectionManager = new EventBasedSelectionManager(sampleIDType);
 
 		} else {
 			throw new IllegalStateException("No Valid Datadomain");
@@ -445,7 +446,7 @@ public class MappedDataRenderer {
 				newlyResovedDataContainers = dataContainer.getRecordSubDataContainers();
 			}
 			if (newlyResovedDataContainers != null) {
-				resolvedDataContainers.addAll(newDataContainers);
+				resolvedDataContainers.addAll(newlyResovedDataContainers);
 
 			} else {
 				resolvedDataContainers.add(dataContainer);
@@ -492,10 +493,10 @@ public class MappedDataRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-				experimentSelectionManager.clearSelection(SelectionType.SELECTION);
-				experimentSelectionManager.addToType(SelectionType.SELECTION,
+				sampleSelectionManager.clearSelection(SelectionType.SELECTION);
+				sampleSelectionManager.addToType(SelectionType.SELECTION,
 						pick.getObjectID());
-				experimentSelectionManager.triggerSelectionUpdateEvent();
+				sampleSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}
@@ -503,16 +504,16 @@ public class MappedDataRenderer {
 			@Override
 			public void mouseOver(Pick pick) {
 
-				experimentSelectionManager.addToType(SelectionType.MOUSE_OVER,
+				sampleSelectionManager.addToType(SelectionType.MOUSE_OVER,
 						pick.getObjectID());
-				experimentSelectionManager.triggerSelectionUpdateEvent();
+				sampleSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				experimentSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
+				sampleSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
 						pick.getObjectID());
 
 				parentView.setDisplayListDirty();
@@ -520,6 +521,37 @@ public class MappedDataRenderer {
 			}
 		}, PickingType.SAMPLE.name());
 
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				sampleGroupSelectionManager.clearSelection(SelectionType.SELECTION);
+				sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
+						pick.getObjectID());
+				sampleSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+
+				sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+				sampleSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+
+				parentView.setDisplayListDirty();
+
+			}
+		}, PickingType.SAMPLE_GROUP.name());
 	}
 
 	public void unregisterPickingListeners() {

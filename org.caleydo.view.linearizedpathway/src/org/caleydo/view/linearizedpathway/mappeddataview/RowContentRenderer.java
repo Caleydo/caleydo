@@ -73,7 +73,7 @@ public class RowContentRenderer extends RowRenderer {
 		float[] tempBottomBarColor = bottomBarColor;
 
 		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
-			ArrayList<SelectionType> experimentSelectionTypes = parent.experimentSelectionManager
+			ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
 					.getSelectionTypes(experimentID);
 			calculateColors(experimentSelectionTypes);
 
@@ -81,7 +81,6 @@ public class RowContentRenderer extends RowRenderer {
 			if (geneID != null) {
 				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
 						experimentID);
-				gl.glColor4fv(topBarColor, 0);
 
 				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
@@ -90,12 +89,18 @@ public class RowContentRenderer extends RowRenderer {
 						parentView.getID(), PickingType.GENE.name(), davidID));
 				gl.glPushName(parentView.getPickingManager().getPickingID(
 						parentView.getID(), PickingType.SAMPLE.name(), experimentID));
-
+				gl.glColor4fv(topBarColor, 0);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(leftEdge, 0, z);
+				gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
+						topBarColor[2] * 0.9f);
 				gl.glVertex3f(leftEdge + xIncrement, 0, z);
-				gl.glColor4fv(bottomBarColor, 0);
+				gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+						bottomBarColor[2] * 0.9f);
+
 				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
+				gl.glColor4fv(bottomBarColor, 0);
+
 				gl.glVertex3f(leftEdge, upperEdge, z);
 
 				gl.glEnd();

@@ -20,10 +20,17 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  * 
  */
 public enum PickingType {
-	GENE, SAMPLE
+	/** Picking type for genes */
+	GENE, 
+	/** Picking type for samples */
+	SAMPLE, 
+	/** Picking type for sample groups */
+	SAMPLE_GROUP
+	
+	
 
 }
