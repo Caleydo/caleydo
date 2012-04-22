@@ -152,8 +152,10 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
-	/** IDType used for {@link Group}s in this dataDomain */
+	/** IDType used for {@link Group}s or records in this dataDomain */
 	protected IDType recordGroupIDType;
+	/** same as {@link #recordGroupIDType} for dimensions */
+	protected IDType dimensionGroupIDType;
 
 	protected RecordSelectionManager recordSelectionManager;
 	protected DimensionSelectionManager dimensionSelectionManager;
@@ -282,6 +284,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
 				+ hashCode(), recordIDCategory, EColumnType.INT);
 		recordGroupIDType.setInternalType(true);
+
+		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
+				+ "_" + hashCode(), dimensionIDCategory, EColumnType.INT);
 
 		IDType primaryRecordMappingType;
 
@@ -477,6 +482,13 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public IDType getRecordGroupIDType() {
 		return recordGroupIDType;
+	}
+
+	/**
+	 * @return the dimensionGroupIDType, see {@link #dimensionGroupIDType}
+	 */
+	public IDType getDimensionGroupIDType() {
+		return dimensionGroupIDType;
 	}
 
 	/**

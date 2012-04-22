@@ -38,10 +38,12 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * @author Alexander Lex
  * 
  */
-public class RowCaptionRenderer extends RowRenderer {
+public class RowCaptionRenderer extends SelectableRenderer {
 
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
+
+	private Integer davidID;
 
 	/**
 	 * Constructor
@@ -56,7 +58,8 @@ public class RowCaptionRenderer extends RowRenderer {
 	 */
 	public RowCaptionRenderer(Integer davidID, AGLView parentView,
 			MappedDataRenderer parent, float[] backgroundColor) {
-		super(davidID, parentView, parent);
+		super(parentView, parent);
+		this.davidID = davidID;
 		textRenderer = parentView.getTextRenderer();
 		pixelGLConverter = parentView.getPixelGLConverter();
 		topBarColor = backgroundColor;
@@ -79,14 +82,14 @@ public class RowCaptionRenderer extends RowRenderer {
 		gl.glColor4fv(topBarColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glVertex3f(0, y, backgroundZ);
-		gl.glColor3f(bottomBarColor[0] * 1.05f, bottomBarColor[1] * 1.05f,
-				bottomBarColor[2] * 1.05f);
-		// gl.glColor3f(bottomBarColor[0] * 1.f, bottomBarColor[1] * 1.f,
-		// bottomBarColor[2] * 1.f);
-
-		gl.glVertex3f(x, y, backgroundZ);
+		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 		gl.glVertex3f(x, 0, backgroundZ);
+		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+				bottomBarColor[2] * 0.9f);
+		gl.glVertex3f(x, y, backgroundZ);
+		gl.glColor3f(bottomBarColor[0], bottomBarColor[1], bottomBarColor[2]);
+		gl.glVertex3f(0, y, backgroundZ);
+
 		gl.glEnd();
 
 		gl.glLineWidth(1);

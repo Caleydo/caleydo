@@ -31,6 +31,7 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -123,14 +124,19 @@ public class MappedDataRenderer {
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 		usedDataContainers = resolvedDataContainers;
 
-		geneSelectionManager = new EventBasedSelectionManager(parentView, IDType.getIDType("DAVID"));
+		geneSelectionManager = new EventBasedSelectionManager(parentView,
+				IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
 		ArrayList<GeneticDataDomain> dataDomains = DataDomainManager.get()
 				.getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
 			IDType sampleIDType = dataDomains.get(0).getSampleIDType();
-			sampleSelectionManager = new EventBasedSelectionManager(parentView, sampleIDType);
+			sampleSelectionManager = new EventBasedSelectionManager(parentView,
+					sampleIDType);
+
+			sampleGroupSelectionManager = new EventBasedSelectionManager(parentView,
+					dataDomains.get(0).getSampleGroupIDType());
 
 		} else {
 			throw new IllegalStateException("No Valid Datadomain");
@@ -199,7 +205,7 @@ public class MappedDataRenderer {
 
 		Row baseRow = new Row("baseRow");
 		layoutManger.setBaseElementLayout(baseRow);
-	
+
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
 		baseRow.append(dataSetColumn);
@@ -253,7 +259,6 @@ public class MappedDataRenderer {
 			float currentNodePositionY = node.getPosition().y();
 			float deviation;
 
-			ALinearizableNode previousParent = null;
 			if (node.getParentNode() != null) {
 				currentNodePositionY = node.getParentNode().getPosition().y();
 				currentNrDavids = node.getParentNode().getNumAssociatedRows();
@@ -401,9 +406,22 @@ public class MappedDataRenderer {
 
 			captionLayout.setRatioSizeX(width);
 
-			LayoutRenderer columnCaptionRenderer = new ColumnCaptionRenderer(
-					parentView.getTextRenderer(), parentView.getPixelGLConverter(),
-					dataContainer.getLabel());
+			Group group = null;
+			if (dataDomain.isGeneRecord()) {
+				group = dataContainer.getDimensionGroup();
+				if (group == null) {
+					dataContainer.getDimensionPerspective().getVirtualArray()
+							.getGroupList().get(0);
+				}
+			} else {
+				group = dataContainer.getRecordGroup();
+				if (group == null) {
+					dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
+							.get(0);
+				}
+			}
+			LayoutRenderer columnCaptionRenderer = new ColumnCaptionRenderer(parentView,
+					this, group);
 			captionLayout.setRenderer(columnCaptionRenderer);
 
 			row.setRenderer(new RowContentRenderer(geneID, davidID, dataDomain,
@@ -543,7 +561,7 @@ public class MappedDataRenderer {
 				sampleGroupSelectionManager.clearSelection(SelectionType.SELECTION);
 				sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
 						pick.getObjectID());
-				sampleSelectionManager.triggerSelectionUpdateEvent();
+				sampleGroupSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}
@@ -553,7 +571,7 @@ public class MappedDataRenderer {
 
 				sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER,
 						pick.getObjectID());
-				sampleSelectionManager.triggerSelectionUpdateEvent();
+				sampleGroupSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}

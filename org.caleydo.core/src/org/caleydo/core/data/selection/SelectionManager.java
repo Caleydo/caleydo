@@ -578,11 +578,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 				removeFromType(item.getSelectionType(), selectionID);
 			}
 		}
-
 		bIsDeltaWritingEnabled = true;
-		
-		
-
 	}
 
 	/**

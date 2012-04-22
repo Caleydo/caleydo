@@ -29,9 +29,8 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
  * @author Alexander Lex
  * 
  */
-public abstract class RowRenderer extends LayoutRenderer {
+public abstract class SelectableRenderer extends LayoutRenderer {
 
-	Integer davidID;
 	protected AGLView parentView;
 	protected MappedDataRenderer parent;
 
@@ -41,8 +40,7 @@ public abstract class RowRenderer extends LayoutRenderer {
 	/**
 	 * 
 	 */
-	public RowRenderer(Integer davidID, AGLView parentView, MappedDataRenderer parent) {
-		this.davidID = davidID;
+	public SelectableRenderer(AGLView parentView, MappedDataRenderer parent) {
 		this.parentView = parentView;
 		this.parent = parent;
 	}

@@ -19,27 +19,37 @@
  *******************************************************************************/
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
+import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
  * @author alexsb
  * 
  */
-public class ColumnCaptionRenderer extends LayoutRenderer {
+public class ColumnCaptionRenderer extends SelectableRenderer {
 
-	private String label;
+	private Group group;
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
+	private String label;
 
-	public ColumnCaptionRenderer(CaleydoTextRenderer textRenderer,
-			PixelGLConverter pixelGLConverter, String label) {
-		this.textRenderer = textRenderer;
-		this.pixelGLConverter = pixelGLConverter;
-		this.label = label;
+	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent,
+			Group group) {
+		super(parentView, parent);
+		this.textRenderer = parentView.getTextRenderer();
+		this.pixelGLConverter = parentView.getPixelGLConverter();
+		this.group = group;
+		this.label = group.getClusterNode().getLabel();
+		
+		topBarColor = MappedDataRenderer.CAPTION_BACKGROUND_COLOR;
+		bottomBarColor = topBarColor;
 	}
 
 	@Override
@@ -51,14 +61,22 @@ public class ColumnCaptionRenderer extends LayoutRenderer {
 
 		float backgroundZ = 0;
 
-		
-		gl.glColor4fv(MappedDataRenderer.CAPTION_BACKGROUND_COLOR, 0);
+		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
+				.getSelectionTypes(group.getID());
+		calculateColors(selectionTypes);
+
+		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+				PickingType.SAMPLE_GROUP.name(), group.getID()));
+		gl.glColor4fv(topBarColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glVertex3f(0, y, backgroundZ);
-		gl.glVertex3f(x, y, backgroundZ);
 		gl.glVertex3f(x, 0, backgroundZ);
+		gl.glColor4fv(bottomBarColor, 0);
+		gl.glVertex3f(x, y, backgroundZ);
+		gl.glVertex3f(0, y, backgroundZ);
+		
 		gl.glEnd();
+		gl.glPopName();
 
 		float width = textRenderer.getRequiredTextWidth(label, height);
 
@@ -71,5 +89,20 @@ public class ColumnCaptionRenderer extends LayoutRenderer {
 		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - height) / 2, 0.1f,
 				x, height);
 
+	}
+
+	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
+
+		if (selectionTypes.size() != 0
+				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)) {
+			topBarColor = selectionTypes.get(0).getColor();
+
+			if (selectionTypes.size() > 1
+					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)) {
+				bottomBarColor = selectionTypes.get(1).getColor();
+			} else {
+				bottomBarColor = topBarColor;
+			}
+		}
 	}
 }

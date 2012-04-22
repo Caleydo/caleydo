@@ -24,6 +24,8 @@ import java.util.ArrayList;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
+import org.caleydo.core.data.container.Average;
+import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
@@ -34,18 +36,22 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
  * @author Alexander Lex
  * 
  */
-public class RowContentRenderer extends RowRenderer {
+public class RowContentRenderer extends SelectableRenderer {
 
 	Integer geneID;
 	DataContainer dataContainer;
 	ADataPerspective<?, ?, ?, ?> experimentPerspective;
 	GeneticDataDomain dataDomain;
+	Integer davidID;
+	float z = 0.05f;
+	Average average;
 
 	public RowContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, DataContainer dataContainer,
 			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent) {
-		super(davidID, parentView, parent);
+		super(parentView, parent);
+		this.davidID = davidID;
 		this.geneID = geneID;
 
 		topBarColor = MappedDataRenderer.BAR_COLOR;
@@ -53,6 +59,12 @@ public class RowContentRenderer extends RowRenderer {
 		this.dataDomain = dataDomain;
 		this.dataContainer = dataContainer;
 		this.experimentPerspective = experimentPerspective;
+		init();
+	}
+
+	public void init() {
+		average = ContainerStatistics.calculateAverage(
+				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
 
 	}
 
@@ -62,25 +74,52 @@ public class RowContentRenderer extends RowRenderer {
 				.getSelectionTypes(davidID);
 
 		calculateColors(geneSelectionTypes);
+		renderAllBars(gl);
+//		renderAverageBar(gl);
 
+	}
+
+	public void renderAverageBar(GL2 gl) {
+
+		// gl.glPushName(parentView.getPickingManager().getPickingID(
+		// parentView.getID(), PickingType.GENE.name(), davidID));
+		// gl.glPushName(parentView.getPickingManager().getPickingID(
+		// parentView.getID(), PickingType.SAMPLE.name(), experimentID));
+		gl.glColor4fv(topBarColor, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(0, y/3, z);
+		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+		gl.glVertex3d(average.getArithmeticMean() * x, y/3, z);
+		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+				bottomBarColor[2] * 0.9f);
+
+		gl.glVertex3d(average.getArithmeticMean() * x, y/3*2, z);
+		gl.glColor4fv(bottomBarColor, 0);
+
+		gl.glVertex3f(0, y/3*2, z);
+
+		gl.glEnd();
+		// gl.glPopName();
+		// gl.glPopName();
+
+	}
+
+	private void renderAllBars(GL2 gl) {
 		float xIncrement = x / experimentPerspective.getVirtualArray().size();
-
 		int experimentCount = 0;
-
-		float z = 0.05f;
 
 		float[] tempTopBarColor = topBarColor;
 		float[] tempBottomBarColor = bottomBarColor;
 
 		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
-			ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
-					.getSelectionTypes(experimentID);
-			calculateColors(experimentSelectionTypes);
 
 			float value;
 			if (geneID != null) {
 				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
 						experimentID);
+				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
+						.getSelectionTypes(experimentID);
+				calculateColors(experimentSelectionTypes);
 
 				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
@@ -106,10 +145,10 @@ public class RowContentRenderer extends RowRenderer {
 				gl.glEnd();
 				gl.glPopName();
 				gl.glPopName();
+				experimentCount++;
+				topBarColor = tempTopBarColor;
+				bottomBarColor = tempBottomBarColor;
 			}
-			experimentCount++;
-			topBarColor = tempTopBarColor;
-			bottomBarColor = tempBottomBarColor;
 
 		}
 	}

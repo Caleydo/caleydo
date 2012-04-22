@@ -432,6 +432,21 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			return getHumanReadableDimensionIDType();
 	}
 
+	public IDType getGeneGroupIDType() {
+		if (isColumnDimension())
+			return getRecordGroupIDType();
+		else
+			return getDimensionGroupIDType();
+	}
+
+	public IDType getSampleGroupIDType() {
+		if (isColumnDimension())
+			return getDimensionGroupIDType();
+		else
+			return getRecordGroupIDType();
+
+	}
+
 	/**
 	 * Returns the value of the type specified in the dataRepresentation from
 	 * the table based on the ID of the gene and the experiment. Resolves
