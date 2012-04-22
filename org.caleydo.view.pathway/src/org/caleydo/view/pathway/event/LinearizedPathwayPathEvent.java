@@ -26,7 +26,7 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 
 /**
- * Event that specifies a pathway path objects in order to be linearized.
+ * Event that specifies a linearizable pathway path.
  * 
  * @author Christian Partl
  * 
@@ -34,13 +34,13 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 public class LinearizedPathwayPathEvent extends AEvent {
 
 	/**
-	 * Path object that specifies a path. 
+	 * Path object that specifies a path.
 	 */
 	private PathwayPath path;
 
 	@Override
 	public boolean checkIntegrity() {
-		return (path != null);
+		return true;
 	}
 
 	/**

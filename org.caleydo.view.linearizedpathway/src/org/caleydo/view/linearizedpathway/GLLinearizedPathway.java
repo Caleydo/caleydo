@@ -58,6 +58,7 @@ import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayReactionEdgeType;
 import org.caleydo.datadomain.pathway.graph.item.edge.EPathwayRelationEdgeSubType;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayReactionEdgeRep;
@@ -68,7 +69,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.linearizedpathway.event.RemoveLinearizedNodeEvent;
-import org.caleydo.view.linearizedpathway.listener.LinearizePathwayPathEventListener;
+import org.caleydo.view.linearizedpathway.listener.LinearizedPathwayPathEventListener;
 import org.caleydo.view.linearizedpathway.listener.RemoveLinearizedNodeEventListener;
 import org.caleydo.view.linearizedpathway.mappeddataview.MappedDataRenderer;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
@@ -79,10 +80,11 @@ import org.caleydo.view.linearizedpathway.node.CompoundNode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
 import org.caleydo.view.linearizedpathway.renderstyle.TemplateRenderStyle;
 import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
-import org.caleydo.view.pathway.event.ShowBubbleSetForPathwayVertexRepsEvent;
 import org.eclipse.swt.widgets.Composite;
+import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
 import org.jgrapht.graph.DefaultEdge;
+import org.jgrapht.graph.GraphPathImpl;
 
 /**
  * Main view class for the linearized pathway view.
@@ -179,13 +181,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * pathway when switching branches.
 	 */
 	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
-	
+
 	private EventBasedSelectionManager geneSelectionManager;
 
-	private LinearizePathwayPathEventListener linearizePathwayPathEventListener;
+	private LinearizedPathwayPathEventListener linearizePathwayPathEventListener;
 	private AddDataContainersListener addDataContainersListener;
 	private RemoveLinearizedNodeEventListener removeLinearizedNodeEventListener;
-	
 
 	/**
 	 * Constructor.
@@ -208,8 +209,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			geneticDataDomains.add((GeneticDataDomain) dataDomain);
 		}
 		mappedDataRenderer = new MappedDataRenderer(this);
-		
-		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
+
+		geneSelectionManager = new EventBasedSelectionManager(this,
+				IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
 	}
@@ -943,7 +945,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		linearizePathwayPathEventListener = new LinearizePathwayPathEventListener();
+		linearizePathwayPathEventListener = new LinearizedPathwayPathEventListener();
 		linearizePathwayPathEventListener.setHandler(this);
 		eventPublisher.addListener(LinearizedPathwayPathEvent.class,
 				linearizePathwayPathEventListener);
@@ -977,7 +979,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			eventPublisher.removeListener(removeLinearizedNodeEventListener);
 			removeLinearizedNodeEventListener = null;
 		}
-		
+
 		geneSelectionManager.unregisterEventListeners();
 	}
 
@@ -1098,10 +1100,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		setPath(pathway, newPath);
 
-		ShowBubbleSetForPathwayVertexRepsEvent event = new ShowBubbleSetForPathwayVertexRepsEvent(
-				new ArrayList<PathwayVertexRep>(newPath));
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
+		broadcastPath();
 	}
 
 	/**
@@ -1183,10 +1182,37 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		setPath(pathway, path);
 
-		ShowBubbleSetForPathwayVertexRepsEvent event = new ShowBubbleSetForPathwayVertexRepsEvent(
-				new ArrayList<PathwayVertexRep>(path));
-		event.setSender(this);
-		eventPublisher.triggerEvent(event);
+		broadcastPath();
+	}
+
+	private void broadcastPath() {
+
+		PathwayPath pathwayPath = null;
+		if (path.size() > 0) {
+
+			PathwayVertexRep startVertexRep = path.get(0);
+			PathwayVertexRep endVertexRep = path.get(path.size() - 1);
+			List<DefaultEdge> edges = new ArrayList<DefaultEdge>();
+
+			for (int i = 0; i < path.size() - 1; i++) {
+				PathwayVertexRep currentVertexRep = path.get(i);
+				PathwayVertexRep nextVertexRep = path.get(i + 1);
+
+				DefaultEdge edge = pathway.getEdge(currentVertexRep, nextVertexRep);
+				if (edge == null)
+					edge = pathway.getEdge(nextVertexRep, currentVertexRep);
+				edges.add(edge);
+			}
+			GraphPath<PathwayVertexRep, DefaultEdge> graphPath = new GraphPathImpl<PathwayVertexRep, DefaultEdge>(
+					pathway, startVertexRep, endVertexRep, edges, (double) edges.size());
+
+			pathwayPath = new PathwayPath(graphPath);
+		}
+			LinearizedPathwayPathEvent event = new LinearizedPathwayPathEvent();
+			event.setPath(pathwayPath);
+			event.setSender(this);
+			eventPublisher.triggerEvent(event);
+		
 	}
 
 	@Override
@@ -1271,7 +1297,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public void notifyOfChange() {
 		setDisplayListDirty();
 	}
-	
+
 	/**
 	 * @return the geneSelectionManager, see {@link #geneSelectionManager}
 	 */
