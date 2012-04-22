@@ -73,6 +73,14 @@ make_archive()
   
   #cd $export_root/win32.wpf.x86/
   #zip -r $export_path/caleydo_$version_number"_win_vista_x86-32.zip" caleydo
+
+
+  cd $export_root/macosx.cocoa.x86/
+  zip -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-32.zip" caleydo
+  
+  cd $export_root/macosx.cocoa.x86_64/
+  zip -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-64.zip" caleydo 
+
 }
 
 print_help()
