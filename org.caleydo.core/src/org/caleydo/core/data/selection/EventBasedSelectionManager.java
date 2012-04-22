@@ -49,11 +49,21 @@ public class EventBasedSelectionManager extends SelectionManager implements
 	protected SelectionCommandListener selectionCommandListener;
 	protected ClearSelectionsListener clearSelectionsListener;
 
+	protected IEventBasedSelectionManagerUser parent;
+
 	/**
+	 * Creates a new <code> EventBasedSelectionManager</code> for the provided
+	 * {@link IDType}.
 	 * 
+	 * @param parent
+	 *            the referencing class
+	 * @param idType
+	 *            the idType for this manager
 	 */
-	public EventBasedSelectionManager(IDType idType) {
+	public EventBasedSelectionManager(IEventBasedSelectionManagerUser parent,
+			IDType idType) {
 		super(idType);
+		this.parent = parent;
 		this.idType = idType;
 	}
 
@@ -62,7 +72,6 @@ public class EventBasedSelectionManager extends SelectionManager implements
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {
 		synchronized (this) {
 			listener.handleEvent(event);
-
 		}
 	}
 
@@ -110,6 +119,8 @@ public class EventBasedSelectionManager extends SelectionManager implements
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
 		setDelta(selectionDelta);
+		if (selectionDelta.getIDType().getIDCategory().equals(idType.getIDCategory()))
+			parent.notifyOfChange();
 	}
 
 	@Override

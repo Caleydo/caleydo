@@ -580,6 +580,8 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 		}
 
 		bIsDeltaWritingEnabled = true;
+		
+		
 
 	}
 

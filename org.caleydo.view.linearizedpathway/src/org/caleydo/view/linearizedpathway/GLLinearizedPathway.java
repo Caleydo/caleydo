@@ -37,6 +37,7 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.serialize.ASerializedView;
@@ -89,7 +90,7 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Alexander Lex
  */
 
-public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView {
+public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView, IEventBasedSelectionManagerUser {
 
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
@@ -1252,6 +1253,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 		}
 		return false;
+	}
+
+	@Override
+	public void notifyOfChange() {
+		setDisplayListDirty();		
 	}
 
 }

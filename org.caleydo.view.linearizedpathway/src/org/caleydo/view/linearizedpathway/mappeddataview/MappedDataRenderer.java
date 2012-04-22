@@ -124,14 +124,14 @@ public class MappedDataRenderer {
 		layoutManger = new LayoutManager(viewFrustum, parentView.getPixelGLConverter());
 		usedDataContainers = resolvedDataContainers;
 
-		geneSelectionManager = new EventBasedSelectionManager(IDType.getIDType("DAVID"));
+		geneSelectionManager = new EventBasedSelectionManager(parentView, IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
 
 		ArrayList<GeneticDataDomain> dataDomains = DataDomainManager.get()
 				.getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
 			IDType sampleIDType = dataDomains.get(0).getSampleIDType();
-			sampleSelectionManager = new EventBasedSelectionManager(sampleIDType);
+			sampleSelectionManager = new EventBasedSelectionManager(parentView, sampleIDType);
 
 		} else {
 			throw new IllegalStateException("No Valid Datadomain");
