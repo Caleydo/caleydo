@@ -1705,12 +1705,13 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public void addDataContainer(DataContainer newDataContainer) {
 		mappedDataRenderer.addDataContainer(newDataContainer);
-
+		// TODO christian: update layout
 	}
 
 	@Override
 	public void addDataContainers(List<DataContainer> newDataContainers) {
 		mappedDataRenderer.addDataContainers(newDataContainers);
+		// TODO christian: update layout
 	}
 
 	@Override
@@ -1725,6 +1726,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		return true;
 	}
 
+	/**
+	 * Returns true if one of the set {@link DataContainer}s maps to the davidID
+	 * provided, else false
+	 */
 	public boolean doesDavidMapToData(Integer davidID) {
 		for (DataContainer currentDataContainer : mappedDataRenderer.getDataContainers()) {
 			GeneticDataDomain dataDomain = (GeneticDataDomain) currentDataContainer
