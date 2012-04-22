@@ -29,7 +29,6 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.PickingManager;
-import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
@@ -62,11 +61,6 @@ public abstract class ANode {
 	// * Width of the node in Pixels.
 	// */
 	// protected int widthPixels = DEFAULT_WIDTH_PIXELS;
-
-	/**
-	 * The number of rows that show the data associated with this node renderer.
-	 */
-	protected int numAssociatedRows = 0;
 
 	protected GLLinearizedPathway view;
 
@@ -171,21 +165,6 @@ public abstract class ANode {
 	 * @return the width of the node in pixels.
 	 */
 	public abstract int getWidthPixels();
-
-	/**
-	 * @param numAssociatedRows
-	 *            setter, see {@link #numAssociatedRows}
-	 */
-	public void setNumAssociatedRows(int numAssociatedRows) {
-		this.numAssociatedRows = numAssociatedRows;
-	}
-
-	/**
-	 * @return the numAssociatedRows, see {@link #numAssociatedRows}
-	 */
-	public int getNumAssociatedRows() {
-		return numAssociatedRows;
-	}
 
 	// /**
 	// * @return The minimum height that is required to render this node

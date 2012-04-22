@@ -22,6 +22,9 @@
  */
 package org.caleydo.view.linearizedpathway.node;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -72,6 +75,11 @@ public abstract class ALinearizableNode extends ANode {
 	 * part of a complex node.
 	 */
 	protected ComplexNode parentNode;
+
+	/**
+	 * The david ids associated with this node.
+	 */
+	protected List<Integer> davidIDs = new ArrayList<Integer>();
 
 	/**
 	 * @param pixelGLConverter
@@ -185,6 +193,29 @@ public abstract class ALinearizableNode extends ANode {
 	 */
 	public ComplexNode getParentNode() {
 		return parentNode;
+	}
+
+	/**
+	 * @param davidIDs
+	 *            setter, see {@link #davidIDs}
+	 */
+	public void setDavidIDs(List<Integer> davidIDs) {
+		this.davidIDs = davidIDs;
+	}
+
+	/**
+	 * @return the davidIDs, see {@link #davidIDs}
+	 */
+	public List<Integer> getDavidIDs() {
+		return davidIDs;
+	}
+
+	/**
+	 * @return The number of rows that are associated with this node. This
+	 *         number is equal to the size of {@link #davidIDs}.
+	 */
+	public int getNumAssociatedRows() {
+		return davidIDs.size();
 	}
 
 	// @Override

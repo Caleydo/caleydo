@@ -44,7 +44,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
-import org.caleydo.view.linearizedpathway.node.ANode;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
 
 /**
@@ -247,7 +246,7 @@ public class MappedDataRenderer {
 			if (node.getNumAssociatedRows() == 0)
 				continue;
 
-			ArrayList<Integer> subDavidIDs = node.getPathwayVertexRep().getDavidIDs();
+			List<Integer> subDavidIDs = node.getDavidIDs();
 			int currentNrDavids = subDavidIDs.size();
 			davidIDs.addAll(subDavidIDs);
 

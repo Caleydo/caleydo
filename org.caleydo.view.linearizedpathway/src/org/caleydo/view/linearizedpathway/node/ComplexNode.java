@@ -43,8 +43,6 @@ public class ComplexNode extends ALinearizableNode {
 
 	public static final int TEXT_SPACING_PIXELS = 3;
 
-	private CaleydoTextRenderer textRenderer;
-
 	/**
 	 * List of {@link PathwayVertexRep} objects that are combined in this
 	 * complex node.
@@ -63,7 +61,6 @@ public class ComplexNode extends ALinearizableNode {
 	public ComplexNode(PixelGLConverter pixelGLConverter,
 			CaleydoTextRenderer textRenderer, GLLinearizedPathway view, int nodeId) {
 		super(pixelGLConverter, view, nodeId);
-		this.textRenderer = textRenderer;
 	}
 
 	// @Override

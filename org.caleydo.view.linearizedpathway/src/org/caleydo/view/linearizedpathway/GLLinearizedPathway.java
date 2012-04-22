@@ -383,27 +383,30 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			}
 
 			nodes.add(node);
-			setNumberOfMappedValues(node);
+			setMappedDavidIds(node);
 		}
 	}
 
-	private int setNumberOfMappedValues(ALinearizableNode node) {
-		int numMappedValues = 0;
+	private List<Integer> setMappedDavidIds(ALinearizableNode node) {
+		List<Integer> mappedDavidIds = new ArrayList<Integer>();
 
 		if (node instanceof ComplexNode) {
 			ComplexNode complexNode = (ComplexNode) node;
 
 			for (ALinearizableNode groupedNode : complexNode.getNodes()) {
-				numMappedValues += setNumberOfMappedValues(groupedNode);
+				mappedDavidIds.addAll(setMappedDavidIds(groupedNode));
 			}
 		} else {
 			// TODO: This is only true if the davidID maps to one id of the
 			// genetic
-			numMappedValues = node.getPathwayVertexRep().getDavidIDs().size();
+			for (Integer davidID : node.getPathwayVertexRep().getDavidIDs()) {
+				if (doesDavidMapToData(davidID))
+					mappedDavidIds.add(davidID);
+			}
 		}
-		node.setNumAssociatedRows(numMappedValues);
+		node.setDavidIDs(mappedDavidIds);
 
-		return numMappedValues;
+		return mappedDavidIds;
 	}
 
 	@Override
@@ -574,11 +577,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		List<AnchorNodeSpacing> anchorNodeSpacings = new ArrayList<AnchorNodeSpacing>();
 		List<ANode> unmappedNodes = new ArrayList<ANode>();
-		ANode currentAnchorNode = null;
+		ALinearizableNode currentAnchorNode = null;
 
 		for (int i = 0; i < linearizedNodes.size(); i++) {
 
-			ANode node = linearizedNodes.get(i);
+			ALinearizableNode node = linearizedNodes.get(i);
 			int numAssociatedRows = node.getNumAssociatedRows();
 
 			if (numAssociatedRows == 0) {
@@ -607,9 +610,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		return anchorNodeSpacings;
 	}
 
-	private AnchorNodeSpacing createAnchorNodeSpacing(ANode startAnchorNode,
-			ANode endAnchorNode, List<ANode> nodesInbetween, boolean isFirstSpacing,
-			boolean isLastSpacing) {
+	private AnchorNodeSpacing createAnchorNodeSpacing(ALinearizableNode startAnchorNode,
+			ALinearizableNode endAnchorNode, List<ANode> nodesInbetween,
+			boolean isFirstSpacing, boolean isLastSpacing) {
 
 		AnchorNodeSpacing anchorNodeSpacing = new AnchorNodeSpacing();
 		anchorNodeSpacing.setStartNode(startAnchorNode);
@@ -1217,13 +1220,29 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public void addDataContainer(DataContainer newDataContainer) {
 		mappedDataRenderer.addDataContainer(newDataContainer);
-		// TODO christian: update layout
+		for (ALinearizableNode node : linearizedNodes) {
+			setMappedDavidIds(node);
+		}
+		for (ANode node : branchNodes) {
+			if (node instanceof ALinearizableNode) {
+				setMappedDavidIds((ALinearizableNode) node);
+			}
+		}
+		setDisplayListDirty();
 	}
 
 	@Override
 	public void addDataContainers(List<DataContainer> newDataContainers) {
 		mappedDataRenderer.addDataContainers(newDataContainers);
-		// TODO christian: update layout
+		for (ALinearizableNode node : linearizedNodes) {
+			setMappedDavidIds(node);
+		}
+		for (ANode node : branchNodes) {
+			if (node instanceof ALinearizableNode) {
+				setMappedDavidIds((ALinearizableNode) node);
+			}
+		}
+		setDisplayListDirty();
 	}
 
 	@Override
