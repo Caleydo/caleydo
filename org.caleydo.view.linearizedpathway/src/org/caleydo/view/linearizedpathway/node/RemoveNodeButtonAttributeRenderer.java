@@ -64,7 +64,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			// gl.glPushAttrib(GL2.GL_COLOR);
 			for (Integer nodeId : nodeIds) {
 				gl.glPushName(pickingManager.getPickingID(view.getID(),
-						PickingType.LINEARIZABLE_NODE.name(), nodeId));
+						PickingType.REMOVABLE_NODE.name(), nodeId));
 				gl.glPushName(pickingManager.getPickingID(view.getID(),
 						PickingType.REMOVE_NODE_BUTTON.name(), nodeId));
 			}
@@ -102,57 +102,66 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 
 	@Override
 	public void registerPickingListeners() {
+		
+		for (Integer nodeId : nodeIds) {
+			showButtonPickingListener = new ATimedMouseOutPickingListener() {
 
-		showButtonPickingListener = new ATimedMouseOutPickingListener() {
-
-			@Override
-			protected void timedMouseOut(Pick pick) {
-				showRemoveButton = false;
-				view.setDisplayListDirty();
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-
-				List<ALinearizableNode> linearizedNodes = view.getLinearizedNodes();
-				int index = linearizedNodes.indexOf(node);
-
-				if ((index == 0) || (index == linearizedNodes.size() - 1)) {
-					super.mouseOver(pick);
-					showRemoveButton = true;
+				@Override
+				protected void timedMouseOut(Pick pick) {
+					showRemoveButton = false;
+					view.setDisplayListDirty();
 				}
-			}
 
-			@Override
-			public void mouseOut(Pick pick) {
-				if (showRemoveButton) {
-					super.mouseOut(pick);
+				@Override
+				public void mouseOver(Pick pick) {
+
+					List<ALinearizableNode> linearizedNodes = view.getLinearizedNodes();
+					int index = linearizedNodes.indexOf(node);
+
+					if ((index == 0) || (index == linearizedNodes.size() - 1)) {
+						super.mouseOver(pick);
+						showRemoveButton = true;
+						view.setDisplayListDirty();
+					}
 				}
-			}
-		};
 
-		view.addIDPickingListener(showButtonPickingListener,
-				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+				@Override
+				public void mouseOut(Pick pick) {
+					if (showRemoveButton) {
+						super.mouseOut(pick);
+					}
+				}
+			};
 
-		buttonPickingListener = new APickingListener() {
+			view.addIDPickingListener(showButtonPickingListener,
+					PickingType.LINEARIZABLE_NODE.name(), nodeId);
+			view.addIDPickingListener(showButtonPickingListener,
+					PickingType.REMOVABLE_NODE.name(), nodeId);
 
-			@Override
-			public void clicked(Pick pick) {
-				view.removeLinearizedNode(node);
-			}
+			buttonPickingListener = new APickingListener() {
 
-		};
+				@Override
+				public void clicked(Pick pick) {
+					view.removeLinearizedNode(node);
+				}
 
-		view.addIDPickingListener(buttonPickingListener,
-				PickingType.REMOVE_NODE_BUTTON.name(), node.getNodeId());
+			};
+
+			view.addIDPickingListener(buttonPickingListener,
+					PickingType.REMOVE_NODE_BUTTON.name(), nodeId);
+		}
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
-		view.removeIDPickingListener(showButtonPickingListener,
-				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
-		view.removeIDPickingListener(buttonPickingListener,
-				PickingType.REMOVE_NODE_BUTTON.name(), node.getNodeId());
+		for (Integer nodeId : nodeIds) {
+			view.removeIDPickingListener(showButtonPickingListener,
+					PickingType.LINEARIZABLE_NODE.name(), nodeId);
+			view.removeIDPickingListener(showButtonPickingListener,
+					PickingType.REMOVABLE_NODE.name(), nodeId);
+			view.removeIDPickingListener(buttonPickingListener,
+					PickingType.REMOVE_NODE_BUTTON.name(), nodeId);
+		}
 	}
 
 	/**

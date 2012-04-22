@@ -64,7 +64,6 @@ public class ComplexNode extends ALinearizableNode {
 			CaleydoTextRenderer textRenderer, GLLinearizedPathway view, int nodeId) {
 		super(pixelGLConverter, view, nodeId);
 		this.textRenderer = textRenderer;
-		// TODO Auto-generated constructor stub
 	}
 
 	// @Override
@@ -200,6 +199,14 @@ public class ComplexNode extends ALinearizableNode {
 
 		for (ALinearizableNode node : nodes) {
 			node.setPreviewMode(isPreviewMode);
+		}
+	}
+
+	@Override
+	public void unregisterPickingListeners() {
+		super.unregisterPickingListeners();
+		for (ALinearizableNode node : nodes) {
+			node.unregisterPickingListeners();
 		}
 	}
 

@@ -37,7 +37,6 @@ public abstract class ANodeAttributeRenderer {
 		this.pickingManager = view.getPickingManager();
 		this.textureManager = view.getTextureManager();
 		this.pixelGLConverter = view.getPixelGLConverter();
-		registerPickingListeners();
 	}
 
 	/**

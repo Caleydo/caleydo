@@ -14,6 +14,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
+import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer;
 
@@ -50,6 +51,7 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 				nodeIds.add(n.getNodeId());
 			}
 			attributeRenderer.setNodeIds(nodeIds);
+			attributeRenderer.registerPickingListeners();
 		}
 		addAttributeRenderer(attributeRenderer);
 
@@ -140,6 +142,10 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 			node.setPosition(new Vec3f(position.x(), currentPositionY, position.z()));
 			node.render(gl, glu);
 			currentPositionY -= nodeHeight / 2.0f;
+		}
+		
+		for (ANodeAttributeRenderer attributeRenderer : attributeRenderers) {
+			attributeRenderer.render(gl);
 		}
 
 	}

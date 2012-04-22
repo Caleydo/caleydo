@@ -38,10 +38,13 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 		unregisterPickingListeners();
 		registerPickingListeners();
 		attributeRenderers.clear();
-		RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
-				view, node);
-		attributeRenderer.addNodeId(node.getNodeId());
-		addAttributeRenderer(attributeRenderer);
+		if (node.getParentNode() == null) {
+			RemoveNodeButtonAttributeRenderer attributeRenderer = new RemoveNodeButtonAttributeRenderer(
+					view, node);
+			attributeRenderer.addNodeId(node.getNodeId());
+			attributeRenderer.registerPickingListeners();
+			addAttributeRenderer(attributeRenderer);
+		}
 	}
 
 	@Override
