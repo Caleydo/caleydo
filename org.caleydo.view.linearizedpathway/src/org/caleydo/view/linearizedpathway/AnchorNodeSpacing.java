@@ -48,9 +48,10 @@ public class AnchorNodeSpacing {
 	 */
 	private List<ANode> nodesInbetween;
 	/**
-	 * Minimum spacing between the anchor nodes.
+	 * The height of all nodes that are within the spacing. This also includes
+	 * the halves of the anchor node heigths.
 	 */
-	private float minAnchorNodeSpacing;
+	private float totalNodeHeight;
 
 	/**
 	 * Current spacing between the anchor nodes.
@@ -103,18 +104,28 @@ public class AnchorNodeSpacing {
 	}
 
 	/**
-	 * @param minAnchorNodeSpacing
-	 *            setter, see {@link #minAnchorNodeSpacing}
+	 * Calculates {@link #totalNodeHeight}.
 	 */
-	public void setMinAnchorNodeSpacing(float minAnchorNodeSpacing) {
-		this.minAnchorNodeSpacing = minAnchorNodeSpacing;
+	public void calcTotalNodeHeight() {
+		totalNodeHeight = 0;
+
+		if (startNode != null) {
+			totalNodeHeight += startNode.getHeight() / 2.0f;
+		}
+		if (endNode != null) {
+			totalNodeHeight += endNode.getHeight() / 2.0f;
+		}
+
+		for (ANode node : nodesInbetween) {
+			totalNodeHeight += node.getHeight();
+		}
 	}
 
 	/**
-	 * @return the minAnchorNodeSpacing, see {@link #minAnchorNodeSpacing}
+	 * @return the totalNodeHeight, see {@link #totalNodeHeight}
 	 */
-	public float getMinAnchorNodeSpacing() {
-		return minAnchorNodeSpacing;
+	public float getTotalNodeHeight() {
+		return totalNodeHeight;
 	}
 
 	/**

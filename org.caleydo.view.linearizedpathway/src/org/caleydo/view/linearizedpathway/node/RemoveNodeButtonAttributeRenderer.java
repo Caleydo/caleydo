@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -17,6 +18,7 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
+import org.caleydo.view.linearizedpathway.event.RemoveLinearizedNodeEvent;
 
 /**
  * Renderer for a button to remove a node from the linearized pathway.
@@ -142,7 +144,10 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 
 				@Override
 				public void clicked(Pick pick) {
-					view.removeLinearizedNode(node);
+					RemoveLinearizedNodeEvent event = new RemoveLinearizedNodeEvent((ALinearizableNode)node);
+					event.setSender(this);
+					GeneralManager.get().getEventPublisher().triggerEvent(event);
+//					view.removeLinearizedNode((ALinearizableNode)node);
 				}
 
 			};
