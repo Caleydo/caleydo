@@ -206,7 +206,7 @@ public abstract class ALinearizableNode extends ANode {
 	/**
 	 * @return the davidIDs, see {@link #davidIDs}
 	 */
-	public List<Integer> getDavidIDs() {
+	public List<Integer> getMappedDavidIDs() {
 		return davidIDs;
 	}
 

@@ -32,6 +32,7 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	protected float[] borderColor;
 	protected int borderWidth;
 	protected boolean drawBorder;
+	protected IColorProvider colorProvider;
 
 	/**
 	 * Constructor.
@@ -65,12 +66,16 @@ public class ColorRenderer extends APickableLayoutRenderer {
 		drawBorder = true;
 	}
 
+	public ColorRenderer(IColorProvider colorProvider) {
+		this.colorProvider = colorProvider;
+	}
+
 	@Override
 	public void render(GL2 gl) {
 
 		pushNames(gl);
 
-		gl.glColor4fv(color, 0);
+		gl.glColor4fv(colorProvider == null ? color : colorProvider.getColor(), 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(0, 0, 0);
 		gl.glVertex3f(x, 0, 0);

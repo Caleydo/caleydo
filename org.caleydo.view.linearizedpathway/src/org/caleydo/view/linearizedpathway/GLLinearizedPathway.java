@@ -37,6 +37,7 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
@@ -178,10 +179,13 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 * pathway when switching branches.
 	 */
 	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
+	
+	private EventBasedSelectionManager geneSelectionManager;
 
 	private LinearizePathwayPathEventListener linearizePathwayPathEventListener;
 	private AddDataContainersListener addDataContainersListener;
 	private RemoveLinearizedNodeEventListener removeLinearizedNodeEventListener;
+	
 
 	/**
 	 * Constructor.
@@ -204,6 +208,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			geneticDataDomains.add((GeneticDataDomain) dataDomain);
 		}
 		mappedDataRenderer = new MappedDataRenderer(this);
+		
+		geneSelectionManager = new EventBasedSelectionManager(this, IDType.getIDType("DAVID"));
+		geneSelectionManager.registerEventListeners();
 
 	}
 
@@ -281,10 +288,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 					currentNode);
 			BranchSummaryNode outgoingNode = new BranchSummaryNode(this, lastNodeId++,
 					currentNode);
-			List<PathwayVertexRep> sourceVertexReps = Graphs.successorListOf(pathway,
+			List<PathwayVertexRep> sourceVertexReps = Graphs.predecessorListOf(pathway,
 					currentVertexRep);
 			sourceVertexReps.remove(prevVertexRep);
-			List<PathwayVertexRep> targetVertexReps = Graphs.predecessorListOf(pathway,
+			List<PathwayVertexRep> targetVertexReps = Graphs.successorListOf(pathway,
 					currentVertexRep);
 			targetVertexReps.remove(nextVertexRep);
 
@@ -970,6 +977,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 			eventPublisher.removeListener(removeLinearizedNodeEventListener);
 			removeLinearizedNodeEventListener = null;
 		}
+		
+		geneSelectionManager.unregisterEventListeners();
 	}
 
 	@Override
@@ -1261,6 +1270,13 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public void notifyOfChange() {
 		setDisplayListDirty();
+	}
+	
+	/**
+	 * @return the geneSelectionManager, see {@link #geneSelectionManager}
+	 */
+	public EventBasedSelectionManager getGeneSelectionManager() {
+		return geneSelectionManager;
 	}
 
 }

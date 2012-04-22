@@ -252,7 +252,7 @@ public class MappedDataRenderer {
 			if (node.getNumAssociatedRows() == 0)
 				continue;
 
-			List<Integer> subDavidIDs = node.getDavidIDs();
+			List<Integer> subDavidIDs = node.getMappedDavidIDs();
 			int currentNrDavids = subDavidIDs.size();
 			davidIDs.addAll(subDavidIDs);
 
@@ -516,6 +516,7 @@ public class MappedDataRenderer {
 			public void mouseOut(Pick pick) {
 				geneSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
 						pick.getObjectID());
+				geneSelectionManager.triggerSelectionUpdateEvent();
 
 				parentView.setDisplayListDirty();
 
@@ -548,7 +549,7 @@ public class MappedDataRenderer {
 			public void mouseOut(Pick pick) {
 				sampleSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
 						pick.getObjectID());
-
+				sampleSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
 			}
@@ -580,6 +581,7 @@ public class MappedDataRenderer {
 			public void mouseOut(Pick pick) {
 				sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
 						pick.getObjectID());
+				sampleSelectionManager.triggerSelectionUpdateEvent();
 
 				parentView.setDisplayListDirty();
 

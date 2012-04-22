@@ -24,6 +24,8 @@ import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
  */
 public abstract class ALinearizeableNodeMode {
 
+	protected final static float[] DEFAULT_BACKGROUND_COLOR = new float[] { 1, 1, 1, 1 };
+
 	/**
 	 * The node associated with this mode.
 	 */

@@ -13,6 +13,7 @@ import java.util.Set;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -37,7 +38,7 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
  * @author Christian
  * 
  */
-public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
+public class GeneNodePreviewMode extends AGeneNodeMode implements
 		ILabelTextProvider {
 
 	protected static final int MIN_NODE_WIDTH_PIXELS = 150;
@@ -74,7 +75,7 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 		titleRow.setFrameColor(0, 1, 0, 1);
 		titleRow.setYDynamic(true);
 		// titleRow.setPixelSizeY(20);
-		colorRenderer = new ColorRenderer(new float[] { 1, 1, 1, 1 });
+		colorRenderer = new ColorRenderer(this);
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer
@@ -259,23 +260,41 @@ public class GeneNodePreviewMode extends ALayoutBasedNodeMode implements
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
 				ComplexNode parent = node.getParentNode();
-				if(parent != null)
+				EventBasedSelectionManager selectionManager = view
+						.getGeneSelectionManager();
+				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
+				}
+				selectionManager.triggerSelectionUpdateEvent();
+				
+				if (parent != null) {
 					view.selectBranch(parent);
-				else 
+				} else {
 					view.selectBranch(node);
+				}
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
-				node.setSelectionType(SelectionType.MOUSE_OVER);
-				colorRenderer.setColor(SelectionType.MOUSE_OVER.getColor());
+				EventBasedSelectionManager selectionManager = view
+						.getGeneSelectionManager();
+				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
+				}
+				selectionManager.triggerSelectionUpdateEvent();
+
 				view.setDisplayListDirty();
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				node.setSelectionType(SelectionType.NORMAL);
-				colorRenderer.setColor(new float[] { 1, 1, 1, 1 });
+				EventBasedSelectionManager selectionManager = view
+						.getGeneSelectionManager();
+				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
+					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
+				}
+				selectionManager.triggerSelectionUpdateEvent();
+
 				view.setDisplayListDirty();
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
