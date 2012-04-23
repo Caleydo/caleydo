@@ -57,17 +57,6 @@ public class PathwayPath {
 	 */
 	public List<PathwayVertexRep> getNodes() {
 
-		// List<DefaultEdge> edges = path.getEdgeList();
-		// List<PathwayVertexRep> nodes = new ArrayList<PathwayVertexRep>();
-		// Graph<PathwayVertexRep, DefaultEdge> pathway = path.getGraph();
-		//
-		// for(int i = 0 ; i < edges.size(); i++) {
-		// DefaultEdge edge = edges.get(i);
-		// if(i == 0)
-		// nodes.add(pathway.getEdgeSource(edge));
-		// nodes.add(pathway.getEdgeTarget(edge));
-		// }
-
 		return Graphs.getPathVertexList(path);
 	}
 

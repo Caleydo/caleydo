@@ -75,6 +75,7 @@ public enum PickingType {
 	// pathway manager
 	PATHWAY_ELEMENT_SELECTION,
 	PATHWAY_TEXTURE_SELECTION,
+	PATHWAY_PATH_SELECTION,
 
 	// heat map
 	HEAT_MAP_RECORD_SELECTION,
