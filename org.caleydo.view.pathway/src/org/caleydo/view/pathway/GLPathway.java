@@ -20,6 +20,8 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
+
+import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -92,6 +94,15 @@ import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
 
+import setvis.SetOutline;
+import setvis.bubbleset.BubbleSet;
+import setvis.gui.CanvasComponent;
+import setvis.shape.AbstractShapeGenerator;
+import setvis.shape.BSplineShapeGenerator;
+
+import com.jogamp.opengl.util.awt.TextureRenderer;
+import com.jogamp.opengl.util.texture.Texture;
+
 /**
  * Single OpenGL2 pathway view
  * 
@@ -156,6 +167,15 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
 
 	/**
+	 * 
+	 */
+	private TextureRenderer texRenderer;
+    private SetOutline setOutline;
+    private AbstractShapeGenerator shaper;
+	private CanvasComponent bubblesetCanvas;
+
+	
+	/**
 	 * Constructor.
 	 */
 	public GLPathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
@@ -183,6 +203,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		registerPickingListeners();
+		
+		/////////////////////////////////////////////////////
+		/// bubble sets 
+	    setOutline = new BubbleSet();
+	    shaper = new BSplineShapeGenerator(
+	                setOutline);
+	    bubblesetCanvas = new CanvasComponent(shaper);
+	    bubblesetCanvas.setDefaultView();
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -223,6 +251,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void initLocal(final GL2 gl) {
 		init(gl);
+		texRenderer = new TextureRenderer(1280, 768, true);// we will adapt the dimensions in each frame   
 	}
 
 	@Override
@@ -444,7 +473,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		gl.glPushMatrix();
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
-		gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
+		//gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 
 		if (enablePathwayTexture) {
@@ -452,6 +481,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 			hashGLcontext2TextureManager.get(gl).renderPathway(gl, this, pathway,
 					fPathwayTransparency, false);
+			overlayBubbleSets(gl);
 		}
 
 		float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
@@ -459,19 +489,124 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// Pathway texture height is subtracted from Y to align pathways to
 		// front level
 		gl.glTranslatef(0, tmp, 0);
-
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
-
-		renderPaths(gl);
-
+		renderPaths(gl);		
 		gl.glTranslatef(0, -tmp, 0);
-
+		
+		//
+	
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
-		gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
+		//gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
 
 		gl.glPopMatrix();
 	}
+	
+	private void overlayBubbleSets(GL2 gl){
+		if (allPaths == null)
+			return;
+		// FIXME: can't delete all groups 
+		while(bubblesetCanvas.getGroupCount()>1){ 
+			bubblesetCanvas.removeLastGroup();
+		}
+	    final double bbItemW = 10;
+	    final double bbItemH = 10;
+		int bbGroupID=0;
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths){
+			gl.glPushName(generalManager
+					.getViewManager()
+					.getPickingManager()
+					.getPickingID(uniqueID, PickingType.PATHWAY_PATH_SELECTION.name(),
+							allPaths.indexOf(path)));
 
+			if (path == selectedPath)
+				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
+			else
+				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
+			
+			bubblesetCanvas.addGroup();
+			bbGroupID++;
+			DefaultEdge lastEdge=null;
+			for (DefaultEdge edge : path.getEdgeList()) {
+				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+			    double posX=sourceVertexRep.getXOrigin();//*PathwayRenderStyle.SCALING_FACTOR_X;
+			    double posY=sourceVertexRep.getYOrigin();//* PathwayRenderStyle.SCALING_FACTOR_Y;
+			    bubblesetCanvas.addItem(bbGroupID,posX, posY, bbItemW, bbItemH);
+			    lastEdge=edge;
+			}
+		    if(lastEdge!=null){
+				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
+			    double posX=targetVertexRep.getXOrigin();//*PathwayRenderStyle.SCALING_FACTOR_X;
+			    double posY=targetVertexRep.getYOrigin();//* PathwayRenderStyle.SCALING_FACTOR_Y;
+			    bubblesetCanvas.addItem(bbGroupID,posX, posY, bbItemW, bbItemH);
+		    }
+			gl.glPopName();
+		}
+	    ////////////render bubblesets 
+		//Texture tmpPathwayTexture = hashGLcontext2TextureManager.get(gl).loadPathwayTexture(pathway);
+//		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
+//		float fTextureWidth = pathway.getWidth();//PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
+//		float fTextureHeight =  pathway.getHeight();//PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
+        //
+		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
+	    System.out.println("pathway.getWidth()" + pathway.getWidth() + "  pathway.getHeight()" + pathway.getHeight() + "\n");
+	    System.out.println("texRenderer.getWidth()" + texRenderer.getWidth() + "  texRenderer.getHeight()" + texRenderer.getHeight() + "\n");
+	    texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
+		Graphics2D g2d = texRenderer.createGraphics();			    	   	    
+	    bubblesetCanvas.paint(g2d);
+	    g2d.dispose();
+	    ////////// blendBubbleTexture
+		//float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
+		//gl.glTranslatef(0, -tmp, 0);
+    	/////////preGLCalls()
+        gl.glPushMatrix();
+        gl.glMatrixMode(GL2.GL_PROJECTION);
+        gl.glPushMatrix();
+        gl.glLoadIdentity();
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glLoadIdentity();        
+        gl.glPushAttrib(GL2.GL_ALL_ATTRIB_BITS);
+
+        //
+        Texture tex = texRenderer.getTexture();
+        gl.glEnable(GL2.GL_BLEND);
+        gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+
+        tex.enable();
+        tex.bind();                
+        gl.glBegin(GL2.GL_QUADS);
+        gl.glTexCoord2f(0, 1); gl.glVertex3f(-1.0f ,-1.0f, 0.0f);
+        gl.glTexCoord2f(1, 1); gl.glVertex3f(1.0f,  -1.0f, 0.0f);
+        gl.glTexCoord2f(1, 0); gl.glVertex3f(1.0f,   1.0f, 0.0f);
+        gl.glTexCoord2f(0, 0); gl.glVertex3f(-1.0f,  1.0f, 0.0f);
+        
+//		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
+//		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		
+//		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());		
+//		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
+//		
+//		gl.glTexCoord2f(texCoords.right(), texCoords.top());		
+//		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
+//		
+//		gl.glTexCoord2f(texCoords.left(), texCoords.top());
+//		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
+        
+        gl.glEnd();     
+        tex.disable();
+        
+        //post calls
+        gl.glPopAttrib();
+        gl.glMatrixMode(GL2.GL_PROJECTION);
+        gl.glPopMatrix();
+        gl.glMatrixMode(GL2.GL_MODELVIEW);
+        gl.glPopMatrix();
+
+//        System.out.println("texCoords.left():"+texCoords.left() + " texCoords.right():"+ texCoords.right() +"\n");
+//        System.out.println("texCoords.bottom():"+texCoords.bottom() + " texCoords.top():"+ texCoords.top() +"\n");	
+//        System.out.println("fTextureWidth:"+fTextureWidth + " fTextureHeight:"+ fTextureHeight +"\n");
+		//gl.glTranslatef(0, tmp, 0);	
+	}
+	
 	private void renderPaths(GL2 gl) {
 
 		if (allPaths == null)
@@ -515,6 +650,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glPopName();
 	}
 
+
+	
 	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
 
