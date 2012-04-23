@@ -541,32 +541,19 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		    }
 			gl.glPopName();
 		}
-	    ////////////render bubblesets 
-		//Texture tmpPathwayTexture = hashGLcontext2TextureManager.get(gl).loadPathwayTexture(pathway);
-//		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
-//		float fTextureWidth = pathway.getWidth();//PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
-//		float fTextureHeight =  pathway.getHeight();//PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
-        //
+
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
-	    System.out.println("pathway.getWidth()" + pathway.getWidth() + "  pathway.getHeight()" + pathway.getHeight() + "\n");
-	    System.out.println("texRenderer.getWidth()" + texRenderer.getWidth() + "  texRenderer.getHeight()" + texRenderer.getHeight() + "\n");
+	    //System.out.println("pathway.getWidth()" + pathway.getWidth() + "  pathway.getHeight()" + pathway.getHeight() + "\n");
+	    //System.out.println("texRenderer.getWidth()" + texRenderer.getWidth() + "  texRenderer.getHeight()" + texRenderer.getHeight() + "\n");
 	    texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
+	    
 		Graphics2D g2d = texRenderer.createGraphics();			    	   	    
 	    bubblesetCanvas.paint(g2d);
 	    g2d.dispose();
-	    ////////// blendBubbleTexture
-		//float tmp = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
-		//gl.glTranslatef(0, -tmp, 0);
-    	/////////preGLCalls()
-        gl.glPushMatrix();
-        gl.glMatrixMode(GL2.GL_PROJECTION);
-        gl.glPushMatrix();
-        gl.glLoadIdentity();
-        gl.glMatrixMode(GL2.GL_MODELVIEW);
-        gl.glLoadIdentity();        
-        gl.glPushAttrib(GL2.GL_ALL_ATTRIB_BITS);
-
-        //
+        
+		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
+		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
+        
         Texture tex = texRenderer.getTexture();
         gl.glEnable(GL2.GL_BLEND);
         gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -574,37 +561,19 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
         tex.enable();
         tex.bind();                
         gl.glBegin(GL2.GL_QUADS);
-        gl.glTexCoord2f(0, 1); gl.glVertex3f(-1.0f ,-1.0f, 0.0f);
-        gl.glTexCoord2f(1, 1); gl.glVertex3f(1.0f,  -1.0f, 0.0f);
-        gl.glTexCoord2f(1, 0); gl.glVertex3f(1.0f,   1.0f, 0.0f);
-        gl.glTexCoord2f(0, 0); gl.glVertex3f(-1.0f,  1.0f, 0.0f);
-        
-//		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
-//		gl.glVertex3f(0.0f, 0.0f, 0.0f);
-		
-//		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());		
-//		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
-//		
-//		gl.glTexCoord2f(texCoords.right(), texCoords.top());		
-//		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
-//		
-//		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-//		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
+  
+		gl.glTexCoord2f(0, 1);
+		gl.glVertex3f(0.0f, 0.0f, 0.0f);
+		gl.glTexCoord2f(1, 1);
+		gl.glVertex3f(textureWidth, 0.0f, 0.0f);
+		gl.glTexCoord2f(1, 0);
+		gl.glVertex3f(textureWidth, textureHeight, 0.0f);
+		gl.glTexCoord2f(0, 0);
+		gl.glVertex3f(0.0f, textureHeight, 0.0f);
         
         gl.glEnd();     
         tex.disable();
-        
-        //post calls
-        gl.glPopAttrib();
-        gl.glMatrixMode(GL2.GL_PROJECTION);
-        gl.glPopMatrix();
-        gl.glMatrixMode(GL2.GL_MODELVIEW);
-        gl.glPopMatrix();
 
-//        System.out.println("texCoords.left():"+texCoords.left() + " texCoords.right():"+ texCoords.right() +"\n");
-//        System.out.println("texCoords.bottom():"+texCoords.bottom() + " texCoords.top():"+ texCoords.top() +"\n");	
-//        System.out.println("fTextureWidth:"+fTextureWidth + " fTextureHeight:"+ fTextureHeight +"\n");
-		//gl.glTranslatef(0, tmp, 0);	
 	}
 	
 	private void renderPaths(GL2 gl) {
