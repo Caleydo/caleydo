@@ -6,6 +6,7 @@ package org.caleydo.view.linearizedpathway.node.mode;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -50,6 +51,8 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 	@Override
 	public void render(GL2 gl, GLU glu) {
 
+		// circleColor = SelectionType.MOUSE_OVER.getColor();
+		determineBackgroundColor(view.getMetaboliteSelectionManager());
 		renderCircle(gl, glu, node.getPosition(),
 				pixelGLConverter.getGLHeightForPixelHeight(node.getHeightPixels()));
 
@@ -65,15 +68,29 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 
 			@Override
 			public void mouseOver(Pick pick) {
+
+				EventBasedSelectionManager selectionManager = view
+						.getMetaboliteSelectionManager();
+				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node
+						.getPathwayVertexRep().getName().hashCode());
+				selectionManager.triggerSelectionUpdateEvent();
+
 				node.setSelectionType(SelectionType.MOUSE_OVER);
-				circleColor = SelectionType.MOUSE_OVER.getColor();
 				view.setDisplayListDirty();
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
+
+				EventBasedSelectionManager selectionManager = view
+						.getMetaboliteSelectionManager();
+				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node
+						.getPathwayVertexRep().getName().hashCode());
+				selectionManager.triggerSelectionUpdateEvent();
+
 				node.setSelectionType(SelectionType.NORMAL);
-				circleColor = DEFAULT_CIRCLE_COLOR;
+				// circleColor = DEFAULT_CIRCLE_COLOR;
 				view.setDisplayListDirty();
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());

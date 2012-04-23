@@ -121,6 +121,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements
 			public void mouseOver(Pick pick) {
 				EventBasedSelectionManager selectionManager = view
 						.getGeneSelectionManager();
+				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);
 				}

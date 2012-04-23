@@ -25,8 +25,6 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
 public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 		IColorProvider {
 
-	protected float[] backgroundColor = DEFAULT_BACKGROUND_COLOR;
-
 	/**
 	 * @param view
 	 */
@@ -36,8 +34,13 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 
 	@Override
 	public void render(GL2 gl, GLU glu) {
+		determineBackgroundColor(view.getGeneSelectionManager());
+		super.render(gl, glu);
 
-		EventBasedSelectionManager selectionManager = view.getGeneSelectionManager();
+	}
+
+	@Override
+	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
 		List<SelectionType> allSelectionTypes = new ArrayList<SelectionType>();
 		for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 			ArrayList<SelectionType> selectionTypes = selectionManager
@@ -56,9 +59,6 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 				backgroundColor = selectionType.getColor();
 			break;
 		}
-
-		super.render(gl, glu);
-
 	}
 
 	@Override

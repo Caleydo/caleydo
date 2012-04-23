@@ -9,6 +9,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
@@ -30,6 +31,11 @@ public abstract class ALinearizeableNodeMode {
 	 * The node associated with this mode.
 	 */
 	protected ALinearizableNode node;
+
+	/**
+	 * The background color of the node.
+	 */
+	protected float[] backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
 	protected GLLinearizedPathway view;
 
@@ -84,6 +90,16 @@ public abstract class ALinearizeableNodeMode {
 	 * mode.
 	 */
 	protected abstract void registerPickingListeners();
+
+	/**
+	 * This method is intended to set the background color according to the
+	 * selection status of the data that is associated with the {@link #node}
+	 * 
+	 * @param selectionManager
+	 */
+	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
+		backgroundColor = DEFAULT_BACKGROUND_COLOR;
+	}
 
 	/**
 	 * Method that shall be called when the mode is no longer needed to

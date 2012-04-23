@@ -183,6 +183,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	private int maxBranchSwitchingPathLength = DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH;
 
 	private EventBasedSelectionManager geneSelectionManager;
+	private EventBasedSelectionManager metaboliteSelectionManager;
 
 	private LinearizedPathwayPathEventListener linearizePathwayPathEventListener;
 	private AddDataContainersListener addDataContainersListener;
@@ -213,6 +214,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		geneSelectionManager = new EventBasedSelectionManager(this,
 				IDType.getIDType("DAVID"));
 		geneSelectionManager.registerEventListeners();
+
+		metaboliteSelectionManager = new EventBasedSelectionManager(this,
+				IDType.getIDType("METABOLITE"));
+		metaboliteSelectionManager.registerEventListeners();
 
 	}
 
@@ -981,6 +986,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		}
 
 		geneSelectionManager.unregisterEventListeners();
+		metaboliteSelectionManager.unregisterEventListeners();
 	}
 
 	@Override
@@ -1208,11 +1214,11 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 			pathwayPath = new PathwayPath(graphPath);
 		}
-			LinearizedPathwayPathEvent event = new LinearizedPathwayPathEvent();
-			event.setPath(pathwayPath);
-			event.setSender(this);
-			eventPublisher.triggerEvent(event);
-		
+		LinearizedPathwayPathEvent event = new LinearizedPathwayPathEvent();
+		event.setPath(pathwayPath);
+		event.setSender(this);
+		eventPublisher.triggerEvent(event);
+
 	}
 
 	@Override
@@ -1303,6 +1309,14 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 */
 	public EventBasedSelectionManager getGeneSelectionManager() {
 		return geneSelectionManager;
+	}
+
+	/**
+	 * @return the metaboliteSelectionManager, see
+	 *         {@link #metaboliteSelectionManager}
+	 */
+	public EventBasedSelectionManager getMetaboliteSelectionManager() {
+		return metaboliteSelectionManager;
 	}
 
 }

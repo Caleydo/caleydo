@@ -8,6 +8,7 @@ import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -59,9 +60,11 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		float leftX = nodePosition.x() - width / 2.0f;
 		float bottomY = nodePosition.y() - height / 2.0f;
 
+		determineBackgroundColor(view.getMetaboliteSelectionManager());
+
 		gl.glPushName(pickingManager.getPickingID(view.getID(),
 				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
-		gl.glColor4fv(circleColor, 0);
+		gl.glColor4fv(backgroundColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());
 		gl.glVertex3f(leftX + width, bottomY, nodePosition.z());
@@ -96,23 +99,42 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 			public void clicked(Pick pick) {
 				view.setExpandedBranchSummaryNode(null);
 				ComplexNode parent = node.getParentNode();
-				if(parent != null)
+				EventBasedSelectionManager selectionManager = view
+						.getMetaboliteSelectionManager();
+				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				
+				if (parent != null)
 					view.selectBranch(parent);
-				else 
+				else
 					view.selectBranch(node);
 			}
 
 			@Override
 			public void mouseOver(Pick pick) {
+
+				EventBasedSelectionManager selectionManager = view
+						.getMetaboliteSelectionManager();
+				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
+				selectionManager.addToType(SelectionType.MOUSE_OVER, node
+						.getPathwayVertexRep().getName().hashCode());
+				selectionManager.triggerSelectionUpdateEvent();
+				
 				node.setSelectionType(SelectionType.MOUSE_OVER);
-				circleColor = SelectionType.MOUSE_OVER.getColor();
+				// circleColor = SelectionType.MOUSE_OVER.getColor();
 				view.setDisplayListDirty();
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
+				
+				EventBasedSelectionManager selectionManager = view
+						.getMetaboliteSelectionManager();
+				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node
+						.getPathwayVertexRep().getName().hashCode());
+				selectionManager.triggerSelectionUpdateEvent();
+				
 				node.setSelectionType(SelectionType.NORMAL);
-				circleColor = DEFAULT_CIRCLE_COLOR;
+				// circleColor = DEFAULT_CIRCLE_COLOR;
 				view.setDisplayListDirty();
 			}
 		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());

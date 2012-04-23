@@ -3,11 +3,15 @@
  */
 package org.caleydo.view.linearizedpathway.node.mode;
 
+import java.util.ArrayList;
+
 import gleem.linalg.Vec3f;
 
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
@@ -23,14 +27,7 @@ import org.caleydo.view.linearizedpathway.node.CompoundNode;
  */
 public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 
-	protected final static float[] DEFAULT_CIRCLE_COLOR = new float[] { 1, 1, 1, 1 };
-
 	protected PixelGLConverter pixelGLConverter;
-
-	/**
-	 * Fill color of the rendered circle.
-	 */
-	protected float[] circleColor = DEFAULT_CIRCLE_COLOR;
 
 	/**
 	 * @param view
@@ -46,12 +43,24 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
-		gl.glColor4fv(circleColor, 0);
+		gl.glColor4fv(backgroundColor, 0);
 		GLPrimitives.renderCircle(glu, radius / 2.0f, 16);
 		gl.glColor4f(0, 0, 0, 1);
 		GLPrimitives.renderCircleBorder(gl, glu, radius / 2.0f, 16, 0.1f);
 		gl.glPopMatrix();
 		gl.glPopName();
+	}
+	
+	@Override
+	protected void determineBackgroundColor(EventBasedSelectionManager selectionManager) {
+		ArrayList<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node
+				.getPathwayVertexRep().getName().hashCode());
+		backgroundColor = DEFAULT_BACKGROUND_COLOR;
+		for (SelectionType selectionType : selectionTypes) {
+			if (!selectionType.equals(SelectionType.NORMAL))
+				backgroundColor = selectionType.getColor();
+			break;
+		}
 	}
 
 	@Override
