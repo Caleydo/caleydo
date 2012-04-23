@@ -61,14 +61,16 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 		Collections.reverse(allSelectionTypes);
 		backgroundColor = DEFAULT_BACKGROUND_COLOR;
 
-		SelectionType selectionType = allSelectionTypes.get(0);
-		if (!selectionType.equals(SelectionType.NORMAL))
-			backgroundColor = selectionType.getColor();
-		gradientColor = null;
-		if (allSelectionTypes.size() > 1) {
-			selectionType = allSelectionTypes.get(1);
+		if (allSelectionTypes.size() > 0) {
+			SelectionType selectionType = allSelectionTypes.get(0);
 			if (!selectionType.equals(SelectionType.NORMAL))
-				gradientColor = selectionType.getColor();
+				backgroundColor = selectionType.getColor();
+			gradientColor = null;
+			if (allSelectionTypes.size() > 1) {
+				selectionType = allSelectionTypes.get(1);
+				if (!selectionType.equals(SelectionType.NORMAL))
+					gradientColor = selectionType.getColor();
+			}
 		}
 
 	}
