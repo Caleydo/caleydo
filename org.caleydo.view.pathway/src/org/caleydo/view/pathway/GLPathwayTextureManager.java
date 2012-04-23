@@ -99,8 +99,8 @@ public class GLPathwayTextureManager {
 
 		TextureCoords texCoords = tmpPathwayTexture.getImageTexCoords();
 
-		float fTextureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
-		float fTextureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
+		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
+		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
 		// gl.glPushName(generalManager.getSingelton().getViewGLCanvasManager().
 		// getPickingManager()
@@ -111,11 +111,11 @@ public class GLPathwayTextureManager {
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
+		gl.glVertex3f(textureWidth, 0.0f, 0.0f);
 		gl.glTexCoord2f(texCoords.right(), texCoords.top());
-		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
+		gl.glVertex3f(textureWidth, textureHeight, 0.0f);
 		gl.glTexCoord2f(texCoords.left(), texCoords.top());
-		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
+		gl.glVertex3f(0.0f, textureHeight, 0.0f);
 		gl.glEnd();
 
 		tmpPathwayTexture.disable();
@@ -130,9 +130,9 @@ public class GLPathwayTextureManager {
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
-		gl.glVertex3f(fTextureWidth, 0.0f, 0.0f);
-		gl.glVertex3f(fTextureWidth, fTextureHeight, 0.0f);
-		gl.glVertex3f(0.0f, fTextureHeight, 0.0f);
+		gl.glVertex3f(textureWidth, 0.0f, 0.0f);
+		gl.glVertex3f(textureWidth, textureHeight, 0.0f);
+		gl.glVertex3f(0.0f, textureHeight, 0.0f);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glEnd();
 

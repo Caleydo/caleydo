@@ -24,6 +24,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class PathwayRenderStyle extends GeneralRenderStyle {
+	
 	public static final int neighborhoodNodeColorArraysize = 4;
 
 	public static final float SCALING_FACTOR_X = 0.0025f;

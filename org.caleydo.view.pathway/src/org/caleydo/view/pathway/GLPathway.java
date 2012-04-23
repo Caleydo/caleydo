@@ -617,8 +617,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	private SelectionDelta resolveExternalSelectionDelta(SelectionDelta selectionDelta) {
 
-		SelectionDelta newSelectionDelta = new SelectionDelta(
-				pathwayDataDomain.getPrimaryIDType());
+		SelectionDelta newSelectionDelta = new SelectionDelta(geneSelectionManager.getIDType());
+				//pathwayDataDomain.getPrimaryIDType());
 
 		PathwayVertex pathwayVertex;
 

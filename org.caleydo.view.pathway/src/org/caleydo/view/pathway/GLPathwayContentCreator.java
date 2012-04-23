@@ -693,14 +693,14 @@ public class GLPathwayContentCreator {
 
 	public void renderPathway(final GL2 gl, final PathwayGraph pathway, boolean bRenderLabels) {
 		if (enableEdgeRendering || !selectedEdgeRepId.isEmpty()) {
-			int iTmpEdgesDisplayListID = hashPathway2EdgesDisplayListId.get(pathway);
-			gl.glCallList(iTmpEdgesDisplayListID);
+			int tmpEdgesDisplayListID = hashPathway2EdgesDisplayListId.get(pathway);
+			gl.glCallList(tmpEdgesDisplayListID);
 		}
 
-		Integer iTmpVerticesDisplayListID = hashPathway2VerticesDisplayListId.get(pathway);
+		Integer tmpVerticesDisplayListID = hashPathway2VerticesDisplayListId.get(pathway);
 
-		if (iTmpVerticesDisplayListID != null) {
-			gl.glCallList(iTmpVerticesDisplayListID);
+		if (tmpVerticesDisplayListID != null) {
+			gl.glCallList(tmpVerticesDisplayListID);
 
 			// if (bRenderLabels && bEnableAnnotation)
 			// renderLabels(gl, iPathwayID);
