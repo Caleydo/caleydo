@@ -20,7 +20,6 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -93,13 +92,11 @@ import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
 import org.jgrapht.graph.DefaultEdge;
-
 import setvis.SetOutline;
 import setvis.bubbleset.BubbleSet;
 import setvis.gui.CanvasComponent;
 import setvis.shape.AbstractShapeGenerator;
 import setvis.shape.BSplineShapeGenerator;
-
 import com.jogamp.opengl.util.awt.TextureRenderer;
 import com.jogamp.opengl.util.texture.Texture;
 
@@ -110,8 +107,10 @@ import com.jogamp.opengl.util.texture.Texture;
  * @author Alexander Lex
  */
 
-public class GLPathway extends ATableBasedView implements ISelectionUpdateHandler,
-		IViewCommandHandler, ISelectionCommandHandler, IEventBasedSelectionManagerUser {
+public class GLPathway
+	extends ATableBasedView
+	implements ISelectionUpdateHandler, IViewCommandHandler, ISelectionCommandHandler,
+	IEventBasedSelectionManagerUser {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
@@ -170,11 +169,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	 * 
 	 */
 	private TextureRenderer texRenderer;
-    private SetOutline setOutline;
-    private AbstractShapeGenerator shaper;
+	private SetOutline setOutline;
+	private AbstractShapeGenerator shaper;
 	private CanvasComponent bubblesetCanvas;
 
-	
 	/**
 	 * Constructor.
 	 */
@@ -190,9 +188,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				IDType.getIDType("METABOLITE"));
 		metaboliteSelectionManager.registerEventListeners();
 
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
-				.getDataDomainByType("org.caleydo.datadomain.pathway");
-
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
+				"org.caleydo.datadomain.pathway");
 
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
@@ -203,14 +200,13 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		registerPickingListeners();
-		
-		/////////////////////////////////////////////////////
-		/// bubble sets 
-	    setOutline = new BubbleSet();
-	    shaper = new BSplineShapeGenerator(
-	                setOutline);
-	    bubblesetCanvas = new CanvasComponent(shaper);
-	    bubblesetCanvas.setDefaultView();
+
+		// ///////////////////////////////////////////////////
+		// / bubble sets
+		setOutline = new BubbleSet();
+		shaper = new BSplineShapeGenerator(setOutline);
+		bubblesetCanvas = new CanvasComponent(shaper);
+		bubblesetCanvas.setDefaultView();
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -251,7 +247,9 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public void initLocal(final GL2 gl) {
 		init(gl);
-		texRenderer = new TextureRenderer(1280, 768, true);// we will adapt the dimensions in each frame   
+		texRenderer = new TextureRenderer(1280, 768, true);// we will adapt the
+															// dimensions in
+															// each frame
 	}
 
 	@Override
@@ -473,7 +471,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		gl.glPushMatrix();
 		// GLHelperFunctions.drawPointAt(gl, new Vec3f(0,0,0));
-		//gl.glTranslatef(vecTranslation.x(), vecTranslation.y(), vecTranslation.z());
+		// gl.glTranslatef(vecTranslation.x(), vecTranslation.y(),
+		// vecTranslation.z());
 		gl.glScalef(vecScaling.x(), vecScaling.y(), vecScaling.z());
 
 		if (enablePathwayTexture) {
@@ -490,28 +489,29 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		// front level
 		gl.glTranslatef(0, tmp, 0);
 		gLPathwayContentCreator.renderPathway(gl, pathway, false);
-		renderPaths(gl);		
+		renderPaths(gl);
 		gl.glTranslatef(0, -tmp, 0);
-		
+
 		//
-	
+
 		gl.glScalef(1 / vecScaling.x(), 1 / vecScaling.y(), 1 / vecScaling.z());
-		//gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(), -vecTranslation.z());
+		// gl.glTranslatef(-vecTranslation.x(), -vecTranslation.y(),
+		// -vecTranslation.z());
 
 		gl.glPopMatrix();
 	}
-	
-	private void overlayBubbleSets(GL2 gl){
+
+	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
 			return;
-		// FIXME: can't delete all groups 
-		while(bubblesetCanvas.getGroupCount()>1){ 
+		// FIXME: can't delete all groups
+		while (bubblesetCanvas.getGroupCount() > 1) {
 			bubblesetCanvas.removeLastGroup();
 		}
-	    final double bbItemW = 10;
-	    final double bbItemH = 10;
-		int bbGroupID=0;
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths){
+		final double bbItemW = 10;
+		final double bbItemH = 10;
+		int bbGroupID = 0;
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 			gl.glPushName(generalManager
 					.getViewManager()
 					.getPickingManager()
@@ -522,46 +522,44 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
 			else
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-			
+
 			bubblesetCanvas.addGroup();
 			bbGroupID++;
-			DefaultEdge lastEdge=null;
+			DefaultEdge lastEdge = null;
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
-			    double posX=sourceVertexRep.getXOrigin();//*PathwayRenderStyle.SCALING_FACTOR_X;
-			    double posY=sourceVertexRep.getYOrigin();//* PathwayRenderStyle.SCALING_FACTOR_Y;
-			    bubblesetCanvas.addItem(bbGroupID,posX, posY, bbItemW, bbItemH);
-			    lastEdge=edge;
+				double posX = sourceVertexRep.getXOrigin();
+				double posY = sourceVertexRep.getYOrigin();
+				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+				lastEdge = edge;
 			}
-		    if(lastEdge!=null){
+			if (lastEdge != null) {
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-			    double posX=targetVertexRep.getXOrigin();//*PathwayRenderStyle.SCALING_FACTOR_X;
-			    double posY=targetVertexRep.getYOrigin();//* PathwayRenderStyle.SCALING_FACTOR_Y;
-			    bubblesetCanvas.addItem(bbGroupID,posX, posY, bbItemW, bbItemH);
-		    }
+				double posX = targetVertexRep.getXOrigin();
+				double posY = targetVertexRep.getYOrigin();
+				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+			}
 			gl.glPopName();
 		}
 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
-	    //System.out.println("pathway.getWidth()" + pathway.getWidth() + "  pathway.getHeight()" + pathway.getHeight() + "\n");
-	    //System.out.println("texRenderer.getWidth()" + texRenderer.getWidth() + "  texRenderer.getHeight()" + texRenderer.getHeight() + "\n");
-	    texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
-	    
-		Graphics2D g2d = texRenderer.createGraphics();			    	   	    
-	    bubblesetCanvas.paint(g2d);
-	    g2d.dispose();
-        
+		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
+
+		Graphics2D g2d = texRenderer.createGraphics();
+		bubblesetCanvas.paint(g2d);
+		g2d.dispose();
+
 		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
 		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
-        
-        Texture tex = texRenderer.getTexture();
-        gl.glEnable(GL2.GL_BLEND);
-        gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-        tex.enable();
-        tex.bind();                
-        gl.glBegin(GL2.GL_QUADS);
-  
+		Texture tex = texRenderer.getTexture();
+		gl.glEnable(GL2.GL_BLEND);
+		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
+
+		tex.enable();
+		tex.bind();
+		gl.glBegin(GL2.GL_QUADS);
+
 		gl.glTexCoord2f(0, 1);
 		gl.glVertex3f(0.0f, 0.0f, 0.0f);
 		gl.glTexCoord2f(1, 1);
@@ -570,12 +568,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glVertex3f(textureWidth, textureHeight, 0.0f);
 		gl.glTexCoord2f(0, 0);
 		gl.glVertex3f(0.0f, textureHeight, 0.0f);
-        
-        gl.glEnd();     
-        tex.disable();
+
+		gl.glEnd();
+		tex.disable();
 
 	}
-	
+
 	private void renderPaths(GL2 gl) {
 
 		if (allPaths == null)
@@ -602,7 +600,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
 		else
 			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-		
+
 		for (DefaultEdge edge : path.getEdgeList()) {
 
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
@@ -615,12 +613,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					-targetVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
 			gl.glEnd();
 		}
-		
+
 		gl.glPopName();
 	}
 
-
-	
 	private void rebuildPathwayDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gLPathwayContentCreator.buildPathwayDisplayList(gl, this, pathway);
 
@@ -724,7 +720,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private SelectionDelta resolveExternalSelectionDelta(SelectionDelta selectionDelta) {
 
 		SelectionDelta newSelectionDelta = new SelectionDelta(geneSelectionManager.getIDType());
-				//pathwayDataDomain.getPrimaryIDType());
+		// pathwayDataDomain.getPrimaryIDType());
 
 		PathwayVertex pathwayVertex;
 
@@ -1116,14 +1112,12 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				.getPathwayVertexRep(externalID);
 
 		if (vertexRep.getType() == EPathwayVertexType.compound) {
-			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName()
-					.hashCode());
+			metaboliteSelectionManager
+					.addToType(selectionType, vertexRep.getName().hashCode());
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-		if (previouslySelectedVertexRep != null
-				&& selectionType == SelectionType.SELECTION) {
-
+		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
 
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, previouslySelectedVertexRep, MAX_PATHS);
@@ -1165,7 +1159,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		pathEvent.setSender(this);
 		eventPublisher.triggerEvent(pathEvent);
 	}
-	
+
 	/**
 	 * @param selectedPath setter, see {@link #selectedPath}
 	 */
