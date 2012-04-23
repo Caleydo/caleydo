@@ -4,6 +4,7 @@
 package org.caleydo.view.linearizedpathway.node.mode;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 import gleem.linalg.Vec3f;
 
@@ -56,6 +57,8 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 		ArrayList<SelectionType> selectionTypes = selectionManager.getSelectionTypes(node
 				.getPathwayVertexRep().getName().hashCode());
 		backgroundColor = DEFAULT_BACKGROUND_COLOR;
+		Collections.sort(selectionTypes);
+		Collections.reverse(selectionTypes);
 		for (SelectionType selectionType : selectionTypes) {
 			if (!selectionType.equals(SelectionType.NORMAL))
 				backgroundColor = selectionType.getColor();
