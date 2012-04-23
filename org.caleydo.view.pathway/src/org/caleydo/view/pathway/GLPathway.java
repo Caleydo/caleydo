@@ -1183,10 +1183,15 @@ public class GLPathway
 	 *            setter, see {@link #selectedPath}
 	 */
 	public void setSelectedPath(PathwayPath selectedPath) {
-		if (selectedPath.getPathway() == pathway) {
-			this.selectedPath = selectedPath.getPath();
-			setDisplayListDirty();
-		}
+		if (selectedPath.getPathway() != pathway)
+			return;
+
+		this.selectedPath = selectedPath.getPath();
+
+		allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
+		allPaths.add(selectedPath.getPath());
+
+		setDisplayListDirty();
 	}
 
 	/**
