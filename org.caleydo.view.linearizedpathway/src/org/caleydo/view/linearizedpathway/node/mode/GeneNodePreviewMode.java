@@ -38,8 +38,7 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
  * @author Christian
  * 
  */
-public class GeneNodePreviewMode extends AGeneNodeMode implements
-		ILabelTextProvider {
+public class GeneNodePreviewMode extends AGeneNodeMode implements ILabelTextProvider {
 
 	protected static final int MIN_NODE_WIDTH_PIXELS = 150;
 	protected static final int SPACING_PIXELS = 2;
@@ -266,7 +265,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode implements
 					selectionManager.removeFromType(SelectionType.MOUSE_OVER, davidId);
 				}
 				selectionManager.triggerSelectionUpdateEvent();
-				
+
 				if (parent != null) {
 					view.selectBranch(parent);
 				} else {
@@ -278,6 +277,9 @@ public class GeneNodePreviewMode extends AGeneNodeMode implements
 			public void mouseOver(Pick pick) {
 				EventBasedSelectionManager selectionManager = view
 						.getGeneSelectionManager();
+				EventBasedSelectionManager metaboliteSelectionManager = view
+						.getMetaboliteSelectionManager();
+				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);

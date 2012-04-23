@@ -35,6 +35,8 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
+import org.caleydo.core.data.selection.EventBasedSelectionManager;
+import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -96,9 +98,9 @@ import org.jgrapht.graph.DefaultEdge;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class GLPathway
-	extends ATableBasedView
-	implements ISelectionUpdateHandler, IViewCommandHandler, ISelectionCommandHandler {
+
+public class GLPathway extends ATableBasedView implements ISelectionUpdateHandler,
+		IViewCommandHandler, ISelectionCommandHandler, IEventBasedSelectionManagerUser {
 
 	public final static String VIEW_TYPE = "org.caleydo.view.pathway";
 
@@ -122,6 +124,8 @@ public class GLPathway
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private SelectionManager geneSelectionManager;
+
+	private EventBasedSelectionManager metaboliteSelectionManager;
 
 	private ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
@@ -162,8 +166,13 @@ public class GLPathway
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
-		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get().getDataDomainByType(
-				"org.caleydo.datadomain.pathway");
+		metaboliteSelectionManager = new EventBasedSelectionManager(this,
+				IDType.getIDType("METABOLITE"));
+		metaboliteSelectionManager.registerEventListeners();
+
+		pathwayDataDomain = (PathwayDataDomain) DataDomainManager.get()
+				.getDataDomainByType("org.caleydo.datadomain.pathway");
+
 
 		hashGLcontext2TextureManager = new HashMap<GL, GLPathwayTextureManager>();
 
@@ -887,6 +896,8 @@ public class GLPathway
 			linearizedPathwayPathEventListener = null;
 		}
 
+		metaboliteSelectionManager.unregisterEventListeners();
+
 	}
 
 	@Override
@@ -990,11 +1001,23 @@ public class GLPathway
 		}
 
 		geneSelectionManager.clearSelection(selectionType);
+		if (metaboliteSelectionManager.getNumberOfElements(selectionType) > 0) {
+			metaboliteSelectionManager.clearSelection(selectionType);
+			metaboliteSelectionManager.triggerSelectionUpdateEvent();
+		}
 
 		PathwayVertexRep vertexRep = (PathwayVertexRep) pathwayItemManager
 				.getPathwayVertexRep(externalID);
 
-		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
+		if (vertexRep.getType() == EPathwayVertexType.compound) {
+			metaboliteSelectionManager.addToType(selectionType, vertexRep.getName()
+					.hashCode());
+			metaboliteSelectionManager.triggerSelectionUpdateEvent();
+		}
+
+		if (previouslySelectedVertexRep != null
+				&& selectionType == SelectionType.SELECTION) {
+
 
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, previouslySelectedVertexRep, MAX_PATHS);
@@ -1053,5 +1076,10 @@ public class GLPathway
 	public IPickingListener getPathwayElementPickingListener() {
 
 		return pathwayElementPickingListener;
+	}
+
+	@Override
+	public void notifyOfChange() {
+		setDisplayListDirty();
 	}
 }

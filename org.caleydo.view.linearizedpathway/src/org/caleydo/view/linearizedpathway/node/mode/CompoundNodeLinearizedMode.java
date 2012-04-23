@@ -67,10 +67,29 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 		view.addIDPickingListener(new APickingListener() {
 
 			@Override
-			public void mouseOver(Pick pick) {
-
+			public void clicked(Pick pick) {
 				EventBasedSelectionManager selectionManager = view
 						.getMetaboliteSelectionManager();
+				EventBasedSelectionManager geneSelectionManager = view
+						.getGeneSelectionManager();
+				geneSelectionManager.clearSelection(SelectionType.SELECTION);
+				selectionManager.clearSelection(SelectionType.SELECTION);
+				selectionManager.addToType(SelectionType.SELECTION, node
+						.getPathwayVertexRep().getName().hashCode());
+				selectionManager.triggerSelectionUpdateEvent();
+
+				node.setSelectionType(SelectionType.SELECTION);
+				view.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+				EventBasedSelectionManager selectionManager = view
+						.getMetaboliteSelectionManager();
+				EventBasedSelectionManager geneSelectionManager = view
+						.getGeneSelectionManager();
+				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.addToType(SelectionType.MOUSE_OVER, node
 						.getPathwayVertexRep().getName().hashCode());

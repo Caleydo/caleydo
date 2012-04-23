@@ -26,8 +26,7 @@ import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer
  * @author Christian
  * 
  */
-public class GeneNodeLinearizedMode extends AGeneNodeMode implements
-		ILabelTextProvider {
+public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelTextProvider {
 
 	protected ColorRenderer colorRenderer;
 
@@ -85,8 +84,6 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements
 		layoutManager.setBaseElementLayout(baseColumn);
 	}
 
-	
-
 	@Override
 	public int getMinHeightPixels() {
 		return ANode.DEFAULT_HEIGHT_PIXELS;
@@ -100,11 +97,14 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements
 	@Override
 	protected void registerPickingListeners() {
 		view.addIDPickingListener(new APickingListener() {
-			
+
 			@Override
 			public void clicked(Pick pick) {
 				EventBasedSelectionManager selectionManager = view
 						.getGeneSelectionManager();
+				EventBasedSelectionManager metaboliteSelectionManager = view
+						.getMetaboliteSelectionManager();
+				metaboliteSelectionManager.clearSelection(SelectionType.SELECTION);
 				selectionManager.clearSelection(SelectionType.SELECTION);
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.SELECTION, davidId);
@@ -121,6 +121,9 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements
 			public void mouseOver(Pick pick) {
 				EventBasedSelectionManager selectionManager = view
 						.getGeneSelectionManager();
+				EventBasedSelectionManager metaboliteSelectionManager = view
+						.getMetaboliteSelectionManager();
+				metaboliteSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				for (Integer davidId : node.getPathwayVertexRep().getDavidIDs()) {
 					selectionManager.addToType(SelectionType.MOUSE_OVER, davidId);

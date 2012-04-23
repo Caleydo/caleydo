@@ -101,6 +101,9 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 				ComplexNode parent = node.getParentNode();
 				EventBasedSelectionManager selectionManager = view
 						.getMetaboliteSelectionManager();
+				EventBasedSelectionManager geneSelectionManager = view
+						.getGeneSelectionManager();
+				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				
 				if (parent != null)
