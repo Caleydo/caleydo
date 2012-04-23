@@ -32,7 +32,7 @@
       <command
             defaultHandler="org.caleydo.view.info.command.handler.OpenInfoHandler"
             id="org.caleydo.view.info.command.openinfo"
-            name="Info">
+            name="Selection Info">
       </command>
    </extension>
    <extension
