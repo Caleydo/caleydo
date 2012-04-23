@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -32,8 +32,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * 
  * @author Christian Partl
  */
-public class ButtonRenderer
-	extends APickableLayoutRenderer {
+public class ButtonRenderer extends APickableLayoutRenderer {
 
 	public static final int TEXTURE_ROTATION_0 = 0;
 	public static final int TEXTURE_ROTATION_90 = 1;
@@ -56,27 +55,26 @@ public class ButtonRenderer
 	 *            View that calls this renderer.
 	 * @param iconTexture
 	 *            Texture for the button.
-	 * @param textureManager
-	 *            TextureManager.
 	 */
-	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager) {
+	public ButtonRenderer(Button button, AGLView view) {
 		// this.view = view;
 		this.view = view;
 		this.button = button;
-		this.textureManager = textureManager;
+		this.textureManager = view.getTextureManager();
 		textureRotation = TEXTURE_ROTATION_0;
 	}
 
 	/**
-	 * Same as {@link #ButtonRenderer(Button, AGLView, TextureManager)} but with additional zCoordinate for
-	 * button
+	 * Same as {@link #ButtonRenderer(Button, AGLView)} but with additional
+	 * zCoordinate for button
 	 * 
 	 * @param button
 	 * @param view
 	 * @param textureManager
 	 * @param zCoordinate
 	 */
-	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager, float zCoordinate) {
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager,
+			float zCoordinate) {
 		// this.view = view;
 		this.view = view;
 		this.button = button;
@@ -98,10 +96,13 @@ public class ButtonRenderer
 	 * @param textureManager
 	 *            TextureManager.
 	 * @param textureRotation
-	 *            Specifies the angle the texture of the button should be rotated. Possible values:
-	 *            TEXTURE_ROTATION_0, TEXTURE_ROTATION_90, TEXTURE_ROTATION_180, TEXTURE_ROTATION_270
+	 *            Specifies the angle the texture of the button should be
+	 *            rotated. Possible values: TEXTURE_ROTATION_0,
+	 *            TEXTURE_ROTATION_90, TEXTURE_ROTATION_180,
+	 *            TEXTURE_ROTATION_270
 	 */
-	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager, int textureRotation) {
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager,
+			int textureRotation) {
 		this.view = view;
 		this.button = button;
 		this.textureManager = textureManager;
@@ -109,8 +110,8 @@ public class ButtonRenderer
 	}
 
 	/**
-	 * Same as {@link #ButtonRenderer(Button, AGLView, TextureManager, int)} but with additional zCoordinate
-	 * for button
+	 * Same as {@link #ButtonRenderer(Button, AGLView, TextureManager, int)} but
+	 * with additional zCoordinate for button
 	 * 
 	 * @param button
 	 * @param view
@@ -118,8 +119,8 @@ public class ButtonRenderer
 	 * @param textureRotation
 	 * @param zCoordinate
 	 */
-	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager, int textureRotation,
-		float zCoordinate) {
+	public ButtonRenderer(Button button, AGLView view, TextureManager textureManager,
+			int textureRotation, float zCoordinate) {
 		this.view = view;
 		this.button = button;
 		this.textureManager = textureManager;
@@ -134,8 +135,8 @@ public class ButtonRenderer
 			return;
 
 		pushNames(gl);
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), button.getPickingType(),
-			button.getButtonID()));
+		gl.glPushName(view.getPickingManager().getPickingID(view.getID(),
+				button.getPickingType(), button.getButtonID()));
 
 		Vec3f lowerLeftCorner = new Vec3f(0, 0, zCoordinate);
 		Vec3f lowerRightCorner = new Vec3f(x, 0, zCoordinate);
@@ -143,22 +144,22 @@ public class ButtonRenderer
 		Vec3f upperLeftCorner = new Vec3f(0, y, zCoordinate);
 
 		switch (textureRotation) {
-			case TEXTURE_ROTATION_0:
-				textureManager.renderTexture(gl, button.getIconTexture(), lowerLeftCorner, lowerRightCorner,
-					upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
-				break;
-			case TEXTURE_ROTATION_90:
-				textureManager.renderTexture(gl, button.getIconTexture(), lowerRightCorner, upperRightCorner,
-					upperLeftCorner, lowerLeftCorner, 1, 1, 1, 1);
-				break;
-			case TEXTURE_ROTATION_180:
-				textureManager.renderTexture(gl, button.getIconTexture(), upperRightCorner, upperLeftCorner,
-					lowerLeftCorner, lowerRightCorner, 1, 1, 1, 1);
-				break;
-			case TEXTURE_ROTATION_270:
-				textureManager.renderTexture(gl, button.getIconTexture(), upperLeftCorner, lowerLeftCorner,
-					lowerRightCorner, upperRightCorner, 1, 1, 1, 1);
-				break;
+		case TEXTURE_ROTATION_0:
+			textureManager.renderTexture(gl, button.getIconTexture(), lowerLeftCorner,
+					lowerRightCorner, upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+			break;
+		case TEXTURE_ROTATION_90:
+			textureManager.renderTexture(gl, button.getIconTexture(), lowerRightCorner,
+					upperRightCorner, upperLeftCorner, lowerLeftCorner, 1, 1, 1, 1);
+			break;
+		case TEXTURE_ROTATION_180:
+			textureManager.renderTexture(gl, button.getIconTexture(), upperRightCorner,
+					upperLeftCorner, lowerLeftCorner, lowerRightCorner, 1, 1, 1, 1);
+			break;
+		case TEXTURE_ROTATION_270:
+			textureManager.renderTexture(gl, button.getIconTexture(), upperLeftCorner,
+					lowerLeftCorner, lowerRightCorner, upperRightCorner, 1, 1, 1, 1);
+			break;
 		}
 
 		if (button.isSelected()) {

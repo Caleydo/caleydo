@@ -48,11 +48,13 @@ public abstract class SelectableRenderer extends LayoutRenderer {
 	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
 
 		if (selectionTypes.size() != 0
-				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)) {
+				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
+				&& selectionTypes.get(0).isVisible()) {
 			topBarColor = selectionTypes.get(0).getColor();
 
 			if (selectionTypes.size() > 1
-					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)) {
+					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
+					&& selectionTypes.get(1).isVisible()) {
 				bottomBarColor = selectionTypes.get(1).getColor();
 			} else {
 				bottomBarColor = topBarColor;

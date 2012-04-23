@@ -206,8 +206,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 		collapseButton = new Button(
 				PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
 				EIconTextures.GROUPER_COLLAPSE_PLUS);
-		ButtonRenderer collapseButtonRenderer = new ButtonRenderer(collapseButton, view,
-				view.getTextureManager());
+		ButtonRenderer collapseButtonRenderer = new ButtonRenderer(collapseButton, view);
 		collapseButtonLayout.setRenderer(collapseButtonRenderer);
 		collapseButtonLayout.setPixelSizeX(COLLAPSE_BUTTON_SIZE_PIXELS);
 		collapseButtonLayout.setPixelSizeY(COLLAPSE_BUTTON_SIZE_PIXELS);

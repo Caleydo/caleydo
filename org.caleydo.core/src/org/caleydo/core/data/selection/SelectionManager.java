@@ -687,6 +687,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 		if (selectedTypes.isEmpty())
 			selectedTypes.add(SelectionType.NORMAL);
 		Collections.sort(selectedTypes);
+		Collections.reverse(selectedTypes);
 		return selectedTypes;
 	}
 

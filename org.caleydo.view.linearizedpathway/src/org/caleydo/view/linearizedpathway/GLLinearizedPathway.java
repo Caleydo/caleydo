@@ -1253,6 +1253,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				setMappedDavidIds((ALinearizableNode) node);
 			}
 		}
+		setMappedDataRendererGeometry();
 		setDisplayListDirty();
 	}
 
@@ -1267,6 +1268,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 				setMappedDavidIds((ALinearizableNode) node);
 			}
 		}
+		setMappedDataRendererGeometry();
 		setDisplayListDirty();
 	}
 

@@ -29,7 +29,9 @@ public enum PickingType {
 	/** Picking type for samples */
 	SAMPLE, 
 	/** Picking type for sample groups */
-	SAMPLE_GROUP
+	SAMPLE_GROUP,
+	/** The view mode for the sample group */
+	SAMPLE_GROUP_VIEW_MODE
 	
 	
 

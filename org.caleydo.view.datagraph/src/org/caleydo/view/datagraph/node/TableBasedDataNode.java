@@ -248,7 +248,7 @@ public class TableBasedDataNode
 					TRIGGER_VENDING_MACHINE_BUTTON_PICKING_ID,
 					EIconTextures.CM_SELECTION_RIGHT_EXTENSIBLE_BLACK);
 			triggerVendingMachineButtonRenderer = new ButtonRenderer(
-					triggerVendingMachineButton, view, view.getTextureManager());
+					triggerVendingMachineButton, view);
 			triggerVendingMachineButtonRenderer.addPickingID(
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 			triggerVendingMachineButtonRenderer.setZCoordinate(1);
@@ -270,7 +270,7 @@ public class TableBasedDataNode
 			toggleDataContainerButton.setVisible(false);
 		}
 		toggleDataContainerButtonRenderer = new ButtonRenderer(toggleDataContainerButton,
-				view, view.getTextureManager());
+				view);
 		toggleDataContainerButtonRenderer.addPickingID(
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleDataContainerButtonRenderer.setZCoordinate(1);

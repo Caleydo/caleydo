@@ -31,14 +31,15 @@ import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.selection.SelectionTypeEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
-import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -68,6 +69,11 @@ public class MappedDataRenderer {
 			220f / 255, 1f };
 
 	public static float[] BAR_COLOR = { 43f / 255f, 140f / 255, 190f / 255, 1f };
+
+	public static float[] SUMMARY_BAR_COLOR = { 49f / 255f, 163f / 255, 84f / 255, 1f };
+
+	public static final SelectionType abstractGroupType = new SelectionType(
+			"AbstactGroup", new int[] { 0, 0, 0 }, 1, false, false, 0);
 
 	private GLLinearizedPathway parentView;
 
@@ -137,6 +143,10 @@ public class MappedDataRenderer {
 
 			sampleGroupSelectionManager = new EventBasedSelectionManager(parentView,
 					dataDomains.get(0).getSampleGroupIDType());
+
+			SelectionTypeEvent selectionTypeEvent = new SelectionTypeEvent(
+					abstractGroupType);
+			GeneralManager.get().getEventPublisher().triggerEvent(selectionTypeEvent);
 
 		} else {
 			throw new IllegalStateException("No Valid Datadomain");
@@ -223,18 +233,23 @@ public class MappedDataRenderer {
 		float previousNodePosition = viewFrustum.getHeight() + yOffset;
 		int previousNrDavids = 0;
 
-		/** A list of rows for each data container */
-		ArrayList<ArrayList<Row>> rowListForDataContainers = new ArrayList<ArrayList<Row>>(
+		/**
+		 * A list of lists of element layouts where the outer list contains one
+		 * nested list for every data container and the inner list one element
+		 * layout for every gene in the linearized pathway
+		 */
+		ArrayList<ArrayList<ElementLayout>> rowListForDataContainers = new ArrayList<ArrayList<ElementLayout>>(
 				(int) (usedDataContainers.size() * 1.6));
 
 		for (DataContainer dataContainer : usedDataContainers) {
-			rowListForDataContainers.add(new ArrayList<Row>(linearizedNodes.size() * 2));
+			rowListForDataContainers.add(new ArrayList<ElementLayout>(linearizedNodes
+					.size() * 2));
 		}
 
 		ArrayList<Integer> davidIDs = new ArrayList<Integer>(linearizedNodes.size() * 2);
 
 		ElementLayout xSpacing = new ElementLayout();
-		xSpacing.setPixelSizeX(5);
+		xSpacing.setPixelSizeX(1);
 
 		ArrayList<ALinearizableNode> resolvedNodes = new ArrayList<ALinearizableNode>();
 
@@ -307,20 +322,25 @@ public class MappedDataRenderer {
 			for (Integer davidID : subDavidIDs) {
 
 				Row row = new Row();
-				RowBackgroundRenderer rowBackgroundRenderer = new RowBackgroundRenderer(
-						color);
-				row.addBackgroundRenderer(rowBackgroundRenderer);
+				// RowBackgroundRenderer rowBackgroundRenderer = new
+				// RowBackgroundRenderer(
+				// color);
+				// row.addBackgroundRenderer(rowBackgroundRenderer);
 				row.setAbsoluteSizeY(rowHeight);
 				dataSetColumn.append(row);
 
 				for (int dataContainerCount = 0; dataContainerCount < usedDataContainers
 						.size(); dataContainerCount++) {
-					Row dataContainerRow = new Row("DataContainer " + dataContainerCount
-							+ " / " + idCount);
+
+					ElementLayout dataContainerLayout = new Row("DataContainer "
+							+ dataContainerCount + " / " + idCount);
 					// dataContainerRow.setPixelSizeX(5);
-					row.append(dataContainerRow);
-					rowListForDataContainers.get(dataContainerCount)
-							.add(dataContainerRow);
+					dataContainerLayout.addBackgroundRenderer(new RowBackgroundRenderer(
+							color));
+
+					row.append(dataContainerLayout);
+					rowListForDataContainers.get(dataContainerCount).add(
+							dataContainerLayout);
 					if (dataContainerCount != usedDataContainers.size() - 1) {
 						row.append(xSpacing);
 					}
@@ -348,11 +368,12 @@ public class MappedDataRenderer {
 		dataSetColumn.append(ySpacing);
 
 		Row captionRow = new Row("captionRow");
-		captionRow.setPixelSizeY(40);
+		// captionRow.setDebug(true);
+		captionRow.setPixelSizeY(50);
 		dataSetColumn.append(captionRow);
 
 		for (int dataContainerCount = 0; dataContainerCount < usedDataContainers.size(); dataContainerCount++) {
-			ElementLayout captionLayout = new ElementLayout("caption layout");
+			ColumnCaptionLayout captionLayout = new ColumnCaptionLayout(parentView, this);
 			captionRow.append(captionLayout);
 			if (dataContainerCount != usedDataContainers.size() - 1) {
 				captionRow.append(xSpacing);
@@ -365,8 +386,9 @@ public class MappedDataRenderer {
 	}
 
 	/** Fills the layout with data specific for the data containers */
-	private void prepareData(DataContainer dataContainer, ArrayList<Row> rowLayouts,
-			ElementLayout captionLayout, ArrayList<Integer> davidIDs) {
+	private void prepareData(DataContainer dataContainer,
+			ArrayList<ElementLayout> rowLayouts, ColumnCaptionLayout captionLayout,
+			ArrayList<Integer> davidIDs) {
 		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
 
 		ADataPerspective<?, ?, ?, ?> experimentPerspective;
@@ -375,6 +397,22 @@ public class MappedDataRenderer {
 		} else {
 			experimentPerspective = dataContainer.getRecordPerspective();
 		}
+
+		Group group = null;
+		if (dataDomain.isGeneRecord()) {
+			group = dataContainer.getDimensionGroup();
+			if (group == null) {
+				dataContainer.getDimensionPerspective().getVirtualArray().getGroupList()
+						.get(0);
+			}
+		} else {
+			group = dataContainer.getRecordGroup();
+			if (group == null) {
+				dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
+						.get(0);
+			}
+		}
+		captionLayout.init(group);
 
 		IDType geneIDTYpe = dataDomain.getGeneIDType();
 		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
@@ -399,33 +437,25 @@ public class MappedDataRenderer {
 			}
 
 			// geneIDs.add(davidID);
-			Row row = rowLayouts.get(rowCount);
+			ElementLayout dataContainerLayout = rowLayouts.get(rowCount);
 
-			float width = 1.0f / usedDataContainers.size();
-			row.setRatioSizeX(width);
-
-			captionLayout.setRatioSizeX(width);
-
-			Group group = null;
-			if (dataDomain.isGeneRecord()) {
-				group = dataContainer.getDimensionGroup();
-				if (group == null) {
-					dataContainer.getDimensionPerspective().getVirtualArray()
-							.getGroupList().get(0);
-				}
+			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
+				dataContainerLayout.setPixelSizeX(100);
+				captionLayout.setPixelSizeX(100);
 			} else {
-				group = dataContainer.getRecordGroup();
-				if (group == null) {
-					dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
-							.get(0);
-				}
+				float width = 1.0f / usedDataContainers.size();
+				dataContainerLayout.setRatioSizeX(width);
+				captionLayout.setRatioSizeX(width);
 			}
-			LayoutRenderer columnCaptionRenderer = new ColumnCaptionRenderer(parentView,
-					this, group);
-			captionLayout.setRenderer(columnCaptionRenderer);
 
-			row.setRenderer(new RowContentRenderer(geneID, davidID, dataDomain,
-					dataContainer, experimentPerspective, parentView, this));
+			// LayoutRenderer columnCaptionRenderer = new
+			// ColumnCaptionRenderer(parentView,
+			// this, group);
+			// captionLayout.setRenderer(columnCaptionRenderer);
+
+			dataContainerLayout.setRenderer(new RowContentRenderer(geneID, davidID,
+					dataDomain, dataContainer, experimentPerspective, parentView, this,
+					group));
 		}
 
 	}
@@ -587,6 +617,43 @@ public class MappedDataRenderer {
 
 			}
 		}, PickingType.SAMPLE_GROUP.name());
+
+		parentView.addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				if (sampleGroupSelectionManager.checkStatus(abstractGroupType,
+						pick.getObjectID()))
+					sampleGroupSelectionManager.removeFromType(abstractGroupType,
+							pick.getObjectID());
+				else
+					sampleGroupSelectionManager.addToType(abstractGroupType,
+							pick.getObjectID());
+				sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			// @Override
+			// public void mouseOver(Pick pick) {
+			//
+			// sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER,
+			// pick.getObjectID());
+			// sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+			// parentView.setDisplayListDirty();
+			//
+			// }
+			//
+			// @Override
+			// public void mouseOut(Pick pick) {
+			// sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
+			// pick.getObjectID());
+			// sampleSelectionManager.triggerSelectionUpdateEvent();
+			//
+			// parentView.setDisplayListDirty();
+			//
+			// }
+		}, PickingType.SAMPLE_GROUP_VIEW_MODE.name());
 	}
 
 	public void unregisterPickingListeners() {

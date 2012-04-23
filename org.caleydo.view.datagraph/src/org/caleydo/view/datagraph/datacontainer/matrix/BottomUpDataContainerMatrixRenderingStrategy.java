@@ -143,7 +143,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 									: EIconTextures.GROUPER_COLLAPSE_MINUS);
 
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
-							collapsePerspectiveButton, view, view.getTextureManager());
+							collapsePerspectiveButton, view);
 					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
 					collapsePerspectiveButtonRenderer.addPickingID(
 							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),
@@ -276,7 +276,7 @@ public class BottomUpDataContainerMatrixRenderingStrategy
 									: EIconTextures.GROUPER_COLLAPSE_MINUS);
 
 					ButtonRenderer collapsePerspectiveButtonRenderer = new ButtonRenderer(
-							collapsePerspectiveButton, view, view.getTextureManager());
+							collapsePerspectiveButton, view);
 					collapsePerspectiveButtonRenderer.addPickingIDs(pickingIDsToBePushed);
 					collapsePerspectiveButtonRenderer.addPickingID(
 							PickingType.PERSPECTIVE_PENETRATING.name() + node.getID(),

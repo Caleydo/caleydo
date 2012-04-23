@@ -306,7 +306,7 @@ public class ContainerStatistics {
 				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, recordID);
 			}
 			if (!value.isNaN()) {
-				sumDeviation = Math.pow(-averageDimension.arithmeticMean, 2);
+				sumDeviation += Math.pow(value-averageDimension.arithmeticMean, 2);
 			}
 		}
 		averageDimension.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);

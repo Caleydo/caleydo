@@ -27,7 +27,10 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
+import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
  * @author alexsb
@@ -47,7 +50,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		this.pixelGLConverter = parentView.getPixelGLConverter();
 		this.group = group;
 		this.label = group.getClusterNode().getLabel();
-		
+
 		topBarColor = MappedDataRenderer.CAPTION_BACKGROUND_COLOR;
 		bottomBarColor = topBarColor;
 	}
@@ -74,7 +77,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(x, y, backgroundZ);
 		gl.glVertex3f(0, y, backgroundZ);
-		
+
 		gl.glEnd();
 		gl.glPopName();
 
@@ -89,16 +92,18 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - height) / 2, 0.1f,
 				x, height);
 
+	
+
 	}
 
 	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
 
 		if (selectionTypes.size() != 0
-				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)) {
+				&& !selectionTypes.get(0).equals(SelectionType.NORMAL) && selectionTypes.get(0).isVisible()) {
 			topBarColor = selectionTypes.get(0).getColor();
 
 			if (selectionTypes.size() > 1
-					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)) {
+					&& !selectionTypes.get(1).equals(SelectionType.NORMAL) && selectionTypes.get(1).isVisible()) {
 				bottomBarColor = selectionTypes.get(1).getColor();
 			} else {
 				bottomBarColor = topBarColor;

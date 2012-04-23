@@ -118,15 +118,19 @@ public class EventBasedSelectionManager extends SelectionManager implements
 
 	@Override
 	public void handleSelectionUpdate(SelectionDelta selectionDelta) {
-		setDelta(selectionDelta);
-		if (selectionDelta.getIDType().getIDCategory().equals(idType.getIDCategory()))
+		if (selectionDelta.getIDType().getIDCategory().equals(idType.getIDCategory())) {
+			setDelta(selectionDelta);
 			parent.notifyOfChange();
+		}
 	}
 
 	@Override
 	public void handleSelectionCommand(IDCategory idCategory,
 			SelectionCommand selectionCommand) {
-		handleSelectionCommand(idCategory, selectionCommand);
+		if (idCategory == null || idCategory.equals(idType.getIDCategory())) {
+			super.executeSelectionCommand(selectionCommand);
+			parent.notifyOfChange();
+		}
 	}
 
 	public void triggerSelectionUpdateEvent() {

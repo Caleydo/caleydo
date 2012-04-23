@@ -231,14 +231,14 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		lockResizingButtonLayout.setRenderer(new ButtonRenderer(lockResizingButton,
-				brick, brick.getTextureManager()));
+				brick));
 
 		ElementLayout toggleViewSwitchingButtonLayout = new ElementLayout(
 				"viewSwitchtingButtonLayout");
 		toggleViewSwitchingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		toggleViewSwitchingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		toggleViewSwitchingButtonLayout.setRenderer(new ButtonRenderer(
-				viewSwitchingModeButton, brick, brick.getTextureManager()));
+				viewSwitchingModeButton, brick));
 
 		ElementLayout closeButtonLayout = new ElementLayout("closeButtonLayout");
 		closeButtonLayout.setFrameColor(1, 0, 0, 1);
@@ -246,7 +246,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		closeButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		closeButtonLayout.setRenderer(new ButtonRenderer(new Button(
 				PickingType.BRICK_CLOSE_BUTTON.name(), CLOSE_BUTTON_ID,
-				EIconTextures.REMOVE), brick, brick.getTextureManager()));
+				EIconTextures.REMOVE), brick));
 
 		// toolBar.append(ratioSpacingLayoutX);
 		toolBar.append(lockResizingButtonLayout);
