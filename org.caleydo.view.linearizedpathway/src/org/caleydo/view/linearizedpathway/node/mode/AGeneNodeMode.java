@@ -26,6 +26,12 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 		IColorProvider {
 
 	/**
+	 * Second color that is used to show a color gradient made up of combined
+	 * selection colors.
+	 */
+	protected float[] gradientColor = null;
+
+	/**
 	 * @param view
 	 */
 	public AGeneNodeMode(GLLinearizedPathway view) {
@@ -54,16 +60,37 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 		Collections.sort(allSelectionTypes);
 		Collections.reverse(allSelectionTypes);
 		backgroundColor = DEFAULT_BACKGROUND_COLOR;
-		for (SelectionType selectionType : allSelectionTypes) {
+
+		SelectionType selectionType = allSelectionTypes.get(0);
+		if (!selectionType.equals(SelectionType.NORMAL))
+			backgroundColor = selectionType.getColor();
+		gradientColor = null;
+		if (allSelectionTypes.size() > 1) {
+			selectionType = allSelectionTypes.get(1);
 			if (!selectionType.equals(SelectionType.NORMAL))
-				backgroundColor = selectionType.getColor();
-			break;
+				gradientColor = selectionType.getColor();
 		}
+
 	}
 
 	@Override
 	public float[] getColor() {
-		return backgroundColor;
+		return (gradientColor != null) ? gradientColor : backgroundColor;
+	}
+
+	@Override
+	public float[] getGradientColor() {
+		return (gradientColor != null) ? backgroundColor : gradientColor;
+	}
+
+	@Override
+	public boolean useGradient() {
+		return gradientColor != null;
+	}
+
+	@Override
+	public boolean isHorizontalGradient() {
+		return false;
 	}
 
 }

@@ -28,11 +28,26 @@ import javax.media.opengl.GL2;
  */
 public class ColorRenderer extends APickableLayoutRenderer {
 
-	protected float[] color;
-	protected float[] borderColor;
+	public static final float[] DEFAULT_COLOR = new float[] { 0, 0, 0, 1 };
+
+	protected float[] color = DEFAULT_COLOR;
+	/**
+	 * A second color that is used to display a gradient together with
+	 * {@link #color}.
+	 */
+	protected float[] gradientColor = DEFAULT_COLOR;
+	protected float[] borderColor = DEFAULT_COLOR;
 	protected int borderWidth;
 	protected boolean drawBorder;
 	protected IColorProvider colorProvider;
+	/**
+	 * Determines whether a gradient shall be shown.
+	 */
+	protected boolean useGradient = false;
+	/**
+	 * Determines whether the gradient is horizontal.
+	 */
+	protected boolean isHorizontalGradient = false;
 
 	/**
 	 * Constructor.
@@ -66,6 +81,16 @@ public class ColorRenderer extends APickableLayoutRenderer {
 		drawBorder = true;
 	}
 
+	public ColorRenderer(float[] color, float[] borderColor, int borderWidth,
+			float[] gradientColor, boolean isHorizontalGradient) {
+		this.color = color;
+		this.borderColor = borderColor;
+		this.borderWidth = borderWidth;
+		drawBorder = true;
+		this.gradientColor = gradientColor;
+		useGradient = true;
+	}
+
 	public ColorRenderer(IColorProvider colorProvider) {
 		this.colorProvider = colorProvider;
 	}
@@ -73,13 +98,27 @@ public class ColorRenderer extends APickableLayoutRenderer {
 	@Override
 	public void render(GL2 gl) {
 
+		if (colorProvider != null) {
+			color = colorProvider.getColor();
+			useGradient = colorProvider.useGradient();
+			gradientColor = colorProvider.getGradientColor();
+			isHorizontalGradient = colorProvider.isHorizontalGradient();
+
+		}
+
 		pushNames(gl);
 
-		gl.glColor4fv(colorProvider == null ? color : colorProvider.getColor(), 0);
 		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor4fv(color, 0);
 		gl.glVertex3f(0, 0, 0);
+		if (useGradient && isHorizontalGradient)
+			gl.glColor4fv(gradientColor, 0);
 		gl.glVertex3f(x, 0, 0);
+		if (useGradient)
+			gl.glColor4fv(gradientColor, 0);
 		gl.glVertex3f(x, y, 0);
+		if (useGradient && !isHorizontalGradient)
+			gl.glColor4fv(gradientColor, 0);
 		gl.glVertex3f(0, y, 0);
 		gl.glEnd();
 
@@ -140,5 +179,50 @@ public class ColorRenderer extends APickableLayoutRenderer {
 
 	public boolean isDrawBorder() {
 		return drawBorder;
+	}
+
+	/**
+	 * @param gradientColor
+	 *            setter, see {@link #gradientColor}
+	 */
+	public void setGradientColor(float[] gradientColor) {
+		this.gradientColor = gradientColor;
+	}
+
+	/**
+	 * @return the gradientColor, see {@link #gradientColor}
+	 */
+	public float[] getGradientColor() {
+		return gradientColor;
+	}
+
+	/**
+	 * @param isHorizontalGradient
+	 *            setter, see {@link #isHorizontalGradient}
+	 */
+	public void setHorizontalGradient(boolean isHorizontalGradient) {
+		this.isHorizontalGradient = isHorizontalGradient;
+	}
+
+	/**
+	 * @return the isHorizontalGradient, see {@link #isHorizontalGradient}
+	 */
+	public boolean isHorizontalGradient() {
+		return isHorizontalGradient;
+	}
+
+	/**
+	 * @param showGradient
+	 *            setter, see {@link #useGradient}
+	 */
+	public void setUseGradient(boolean useGradient) {
+		this.useGradient = useGradient;
+	}
+
+	/**
+	 * @return the showGradient, see {@link #useGradient}
+	 */
+	public boolean useGradient() {
+		return useGradient;
 	}
 }

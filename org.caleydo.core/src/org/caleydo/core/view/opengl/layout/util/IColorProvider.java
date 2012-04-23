@@ -16,4 +16,19 @@ public interface IColorProvider {
 	 */
 	public float[] getColor();
 
+	/**
+	 * @return The second color that is used to display a gradient.
+	 */
+	public float[] getGradientColor();
+
+	/**
+	 * @return True, if a gradient color shall be used, false otherwise.
+	 */
+	public boolean useGradient();
+
+	/**
+	 * @return True, if the gradient is horizontal, false otherwise.
+	 */
+	public boolean isHorizontalGradient();
+
 }
