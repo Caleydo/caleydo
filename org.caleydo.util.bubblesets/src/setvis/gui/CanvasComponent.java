@@ -459,6 +459,11 @@ public class CanvasComponent extends JComponent implements Canvas {
         invalidateOutlines(CanvasListener.GROUPS);
     }
 
+    public void clearCurrentGroup()
+    {
+    	items.get(curItemGroup).clear();
+    }
+    
     @Override
     public void setCurrentGroup(final int curItemGroup) {
         this.curItemGroup = curItemGroup;
