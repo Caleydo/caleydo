@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -94,7 +94,8 @@ public class TabularDataParser extends ATextParser {
 		if (dataSetDescription.isContainsColumnIDs()) {
 			try {
 
-				BufferedReader reader = GeneralManager.get().getResourceLoader().getResource(fileName);
+				BufferedReader reader = GeneralManager.get().getResourceLoader()
+						.getResource(fileName);
 
 				Integer rowOfColumnIDs = dataSetDescription.getNumberOfHeaderLines() - 1;
 				if (dataSetDescription.getRowOfColumnIDs() != null)
@@ -234,7 +235,11 @@ public class TabularDataParser extends ATextParser {
 								errorMessage));
 						value = Float.NaN;
 					}
-					targetColumn[lineCounter] = value;
+					if (lineCounter < targetColumn.length) {
+						targetColumn[lineCounter] = value;
+					} else {
+						System.out.println("Index out of bounds at line: " + lineCounter + " for column " + count);
+					}
 				} else if (column.getDataType().equalsIgnoreCase("string")) {
 					@SuppressWarnings("unchecked")
 					ArrayList<String> targetColumn = (ArrayList<String>) targetColumns

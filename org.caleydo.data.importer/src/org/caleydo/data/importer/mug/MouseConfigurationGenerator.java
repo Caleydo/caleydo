@@ -47,6 +47,10 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 	public static final String MRNA = "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/kashofer/mouse/all_mice.csv";
 	public static final String MRNA_SAMPLE_GROUPING = "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/kashofer/mouse/all_mice_grouping.csv";
 
+	public static final String SEQUENCED_MRNA = "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/kashofer/mouse/20110621_TRpCSingleProbes_Mean_SD_8w_7d_con.txt";
+	// public static final String MRNA_SAMPLE_GROUPING =
+	// "/home/alexsb/uni/caleydo/org.caleydo.data/data/genome/microarray/kashofer/mouse/all_mice_grouping.csv";
+
 	// public static final String OUTPUT_FILE_PATH =
 	// System.getProperty("user.home")
 	// + System.getProperty("file.separator") + "mouse_caleydo_data.xml";
@@ -66,6 +70,7 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdType("SAMPLE");
 
 		dataSetDescriptionCollection.add(setUpMRNAData());
+		dataSetDescriptionCollection.add(setUpSequencedMRNAData());
 
 	}
 
@@ -97,12 +102,39 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 		sampleGrouping.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(sampleGrouping);
 
-		// GroupingParseSpecification groundTruthGrouping = new
-		// GroupingParseSpecification();
-		// groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
-		// groundTruthGrouping.addColum(2);
-		// groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
-		// mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
+		return mrnaData;
+	}
+
+	private DataSetDescription setUpSequencedMRNAData() {
+		DataSetDescription mrnaData = new DataSetDescription();
+		mrnaData.setDataSetName("mRNA Sequenced");
+
+		mrnaData.setDataSourcePath(SEQUENCED_MRNA);
+		mrnaData.setNumberOfHeaderLines(1);
+		mrnaData.setMathFilterMode("LOG2");
+
+		ParsingRule parsingRule = new ParsingRule();
+		parsingRule.setFromColumn(5);
+		parsingRule.setParseUntilEnd(true);
+		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
+				ColumnDescription.CONTINUOUS));
+		mrnaData.addParsingRule(parsingRule);
+
+		IDSpecification geneIDSpecification = new IDSpecification();
+		geneIDSpecification.setIDTypeGene(true);
+		geneIDSpecification.setIdType("ENSEMBL_GENE_ID");
+//		mrnaData.setColumnOfRowIds(1);
+//		geneIDSpecification.setIdType("GENE_SYMBOL");
+		
+		// geneIDSpecification.setSubStringExpression("\\.");
+		mrnaData.setRowIDSpecification(geneIDSpecification);
+		mrnaData.setColumnIDSpecification(sampleIDSpecification);
+
+//		GroupingParseSpecification sampleGrouping = new GroupingParseSpecification(
+//				MRNA_SAMPLE_GROUPING);
+//		// firehoseClustering.setContainsColumnIDs(false);
+//		sampleGrouping.setRowIDSpecification(sampleIDSpecification);
+//		mrnaData.addColumnGroupingSpecification(sampleGrouping);
 
 		return mrnaData;
 	}
