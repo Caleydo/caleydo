@@ -508,10 +508,14 @@ public class GLPathway
 	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
 			return;
-		// FIXME: can't delete all groups
+		
 		while (bubblesetCanvas.getGroupCount() > 1) {
 			bubblesetCanvas.removeLastGroup();
 		}
+		////can't delete all groups why we have to remove all items in group 0 instead
+		bubblesetCanvas.setCurrentGroup(0);
+		bubblesetCanvas.clearCurrentGroup();
+
 		final double bbItemW = 10;
 		final double bbItemH = 10;
 		int bbGroupID = 0;
@@ -526,9 +530,9 @@ public class GLPathway
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
 			else
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-
-			bubblesetCanvas.addGroup();
-			bbGroupID++;
+			if(bbGroupID>0){
+				bubblesetCanvas.addGroup();	//bubble sets do not allow to delete group0		
+			}
 			DefaultEdge lastEdge = null;
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
@@ -544,6 +548,7 @@ public class GLPathway
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
 			}
 			gl.glPopName();
+			bbGroupID++;
 		}
 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
