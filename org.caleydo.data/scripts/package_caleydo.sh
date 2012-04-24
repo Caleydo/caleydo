@@ -61,26 +61,26 @@ make_archive()
   #echo $export_path/caleydo_$version_number"_linux_x86-32.tar.gz"
   #echo $export_root/linux.gtk.x86/caleydo/*
   tar -czvf $export_path/caleydo_$version_number"_linux_x86-32.tar.gz" -C $export_root/linux.gtk.x86/ caleydo
-  
+  tar -czvf $export_path/caleydo_data_importer_$version_number"_linux_x86-32.tar.gz" -C $export_root/linux.gtk.x86/ caleydo_data_importer
+ 
   tar -czvf $export_path/caleydo_$version_number"_linux_x86-64.tar.gz" -C $export_root/linux.gtk.x86_64/ caleydo
-  
+  tar -czvf $export_path/caleydo_data_importer_$version_number"_linux_x86-64.tar.gz" -C $export_root/linux.gtk.x86_64/ caleydo_data_importer  
   
   cd $export_root/win32.win32.x86/
   zip -r $export_path/caleydo_$version_number"_win_x86-32.zip" caleydo
+  zip -r $export_path/caleydo_data_importer_$version_number"_win_x86-32.zip" caleydo_data_importer
   
   cd $export_root/win32.win32.x86_64/
   zip -r $export_path/caleydo_$version_number"_win_x86-64.zip" caleydo 
+  zip -r $export_path/caleydo_data_importer_$version_number"_win_x86-64.zip" caleydo_data_importer 
   
-  #cd $export_root/win32.wpf.x86/
-  #zip -r $export_path/caleydo_$version_number"_win_vista_x86-32.zip" caleydo
-
-
   cd $export_root/macosx.cocoa.x86/
   zip -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-32.zip" caleydo
+  zip -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-32.zip" caleydo_data_importer
   
   cd $export_root/macosx.cocoa.x86_64/
   zip -r $export_path/caleydo_$version_number"_macosx_cocoa_x86-64.zip" caleydo 
-
+  zip -r $export_path/caleydo_data_importer_$version_number"_macosx_cocoa_x86-64.zip" caleydo_data_importer
 }
 
 print_help()
