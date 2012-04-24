@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,18 +30,20 @@ import org.caleydo.core.view.opengl.layout.util.Zoomer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
- * An ElementLayout holds the size, and the position of an element in a layout. The position is specified
- * implicitly through the nesting in parent {@link ALayoutContainer}s. The size can be specified in four ways:
+ * An ElementLayout holds the size, and the position of an element in a layout.
+ * The position is specified implicitly through the nesting in parent
+ * {@link ALayoutContainer}s. The size can be specified in four ways:
  * <ol>
- * <li>specifying a ratio - where 1 takes up the whole space granted by the parent (see
- * {@link #setRatioSizeX(float)} and {@link #setRatioSizeY(float)}</li>
- * <li>specifying an absolute value in gl coordinate space (see {@link #setAbsoluteSizeY(float)} and
- * {@link #setAbsoluteSizeY(float)}</li>
- * <li>specifying an absolute value in pixel space (see {@link #setPixelSizeX(int)} and
- * {@link #setPixelSizeY(int)}. Notice that using pixel sizes requires the {@link PixelGLConverter} for this
- * layout to be set (see {@link #setPixelGLConverter(PixelGLConverter)}.</li>
- * <li>setting the element to grab the remaining available space in the container (see
- * {@link #setGrabX(boolean)} and {@link #grabY(boolean)}</li>
+ * <li>specifying a ratio - where 1 takes up the whole space granted by the
+ * parent (see {@link #setRatioSizeX(float)} and {@link #setRatioSizeY(float)}</li>
+ * <li>specifying an absolute value in gl coordinate space (see
+ * {@link #setAbsoluteSizeY(float)} and {@link #setAbsoluteSizeY(float)}</li>
+ * <li>specifying an absolute value in pixel space (see
+ * {@link #setPixelSizeX(int)} and {@link #setPixelSizeY(int)}. Notice that
+ * using pixel sizes requires the {@link PixelGLConverter} for this layout to be
+ * set (see {@link #setPixelGLConverter(PixelGLConverter)}.</li>
+ * <li>setting the element to grab the remaining available space in the
+ * container (see {@link #setGrabX(boolean)} and {@link #grabY(boolean)}</li>
  * </ol>
  * <p>
  * This can be done independently for X and Y
@@ -50,11 +52,13 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * If no size is specified, a ratio value of 1 is assumed.
  * </p>
  * <p>
- * The values set are then converted to the coordinates actually used for rendering, which can be retrieved
- * using {@link #getSizeScaledX()} and {@link #getSizeScaledY()}
+ * The values set are then converted to the coordinates actually used for
+ * rendering, which can be retrieved using {@link #getSizeScaledX()} and
+ * {@link #getSizeScaledY()}
  * </p>
  * <p>
- * An ElementLayout also holds the {@link LayoutRenderer}s which define its appearance.
+ * An ElementLayout also holds the {@link LayoutRenderer}s which define its
+ * appearance.
  * </p>
  * 
  * @author Alexander Lex
@@ -90,6 +94,9 @@ public class ElementLayout {
 	protected int pixelSizeX = Integer.MIN_VALUE;
 	protected int pixelSizeY = Integer.MIN_VALUE;
 
+	protected int dynamicSizeUnitsX = Integer.MIN_VALUE;
+	protected int dynamicSizeUnitsY = Integer.MIN_VALUE;
+
 	protected float sizeScaledX = 0;
 	protected float sizeScaledY = 0;
 
@@ -98,27 +105,29 @@ public class ElementLayout {
 	protected float[] frameColor = null;
 
 	/**
-	 * Flag determining whether the element layout is hidden or not. If it is hidden, it is not rendered and
-	 * the size is not taken into account for the element and all possible sub-elements.
+	 * Flag determining whether the element layout is hidden or not. If it is
+	 * hidden, it is not rendered and the size is not taken into account for the
+	 * element and all possible sub-elements.
 	 */
 	protected boolean isHidden = false;
 
 	private CaleydoTextRenderer textRenderer;
 	/**
-	 * The uniqueID of the managing class. Used for notifications on collisions via event.
+	 * The uniqueID of the managing class. Used for notifications on collisions
+	 * via event.
 	 */
 	protected int managingClassID = -1;
 	/** An id to identify the layout. */
 	protected int layoutID = -1;
 
 	/**
-	 * The currently available width for the layout. Used if only this sub-part of the layout is updated via
-	 * {@link #updateSubLayout()}
+	 * The currently available width for the layout. Used if only this sub-part
+	 * of the layout is updated via {@link #updateSubLayout()}
 	 */
 	protected float totalWidth = 0;
 	/**
-	 * The currently available height for the layout. Used if only this sub-part of the layout is updated via
-	 * {@link #updateSubLayout()}
+	 * The currently available height for the layout. Used if only this sub-part
+	 * of the layout is updated via {@link #updateSubLayout()}
 	 */
 	protected float totalHeight = 0;
 
@@ -127,8 +136,8 @@ public class ElementLayout {
 	protected Zoomer zoomer;
 
 	/**
-	 * Determines the point in time this element layout is rendered if its {@link ALayoutContainer} uses
-	 * priority rendering.
+	 * Determines the point in time this element layout is rendered if its
+	 * {@link ALayoutContainer} uses priority rendering.
 	 */
 	protected int renderingPriority = 0;
 
@@ -165,8 +174,8 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Set ids for the layout, which are used for events in case an element doesn't fit into a
-	 * {@link Container}
+	 * Set ids for the layout, which are used for events in case an element
+	 * doesn't fit into a {@link Container}
 	 * 
 	 * @param managingClassID
 	 *            the id of the class to be called-back by this layout
@@ -179,8 +188,8 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Set a flag specifying whether a frame, showing the extend of this layout should be drawn. This is a
-	 * debug option.
+	 * Set a flag specifying whether a frame, showing the extend of this layout
+	 * should be drawn. This is a debug option.
 	 * 
 	 * @param debug
 	 */
@@ -218,40 +227,45 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Set a ratio size in x direction. The ration indicates how much of the containing element this element
-	 * occupies. The size has to be normalized between 0 and 1, where 1 is the whole space available for the
-	 * rendered elements
+	 * Set a ratio size in x direction. The ration indicates how much of the
+	 * containing element this element occupies. The size has to be normalized
+	 * between 0 and 1, where 1 is the whole space available for the rendered
+	 * elements
 	 * 
 	 * @param ratioSizeX
-	 *            the size of the element in relation to other elements in the same container on a scale of 0
-	 *            to 1
+	 *            the size of the element in relation to other elements in the
+	 *            same container on a scale of 0 to 1
 	 */
 	public void setRatioSizeX(float ratioSizeX) {
 		if (ratioSizeX > 1 || ratioSizeX < 0)
-			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1, but was: " + ratioSizeX);
+			throw new IllegalArgumentException(
+					"Ratio sizes must be between 0 and 1, but was: " + ratioSizeX);
 		resetX();
 		this.ratioSizeX = ratioSizeX;
 	}
 
 	/**
-	 * Set a ratio size in y direction. The ration indicates how much of the containing element this element
-	 * occupies. The size has to be normalized between 0 and 1, where 1 is the whole space available for the
-	 * rendered elements
+	 * Set a ratio size in y direction. The ration indicates how much of the
+	 * containing element this element occupies. The size has to be normalized
+	 * between 0 and 1, where 1 is the whole space available for the rendered
+	 * elements
 	 * 
 	 * @param ratioSizeY
-	 *            the size of the element in relation to other elements in the same container on a scale of 0
-	 *            to 1
+	 *            the size of the element in relation to other elements in the
+	 *            same container on a scale of 0 to 1
 	 */
 	public void setRatioSizeY(float ratioSizeY) {
 		if (ratioSizeY > 1 || ratioSizeY < 0)
-			throw new IllegalArgumentException("Ratio sizes must be between 0 and 1, but was: " + ratioSizeY);
+			throw new IllegalArgumentException(
+					"Ratio sizes must be between 0 and 1, but was: " + ratioSizeY);
 		resetY();
 		this.ratioSizeY = ratioSizeY;
 	}
 
 	/**
-	 * Set the size of the element in x direction in pixels. As a consequence, the size remains static even if
-	 * the window size changes. This requires the PixelGLConverte to be set (see
+	 * Set the size of the element in x direction in pixels. As a consequence,
+	 * the size remains static even if the window size changes. This requires
+	 * the PixelGLConverte to be set (see
 	 * {@link #setPixelGLConverter(PixelGLConverter)}).
 	 * 
 	 * @param pixelSizeX
@@ -262,8 +276,9 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Set the size of the element in y direction in pixels. As a consequence, the size remains static even if
-	 * the window size changes. This requires the PixelGLConverte to be set (see
+	 * Set the size of the element in y direction in pixels. As a consequence,
+	 * the size remains static even if the window size changes. This requires
+	 * the PixelGLConverte to be set (see
 	 * {@link #setPixelGLConverter(PixelGLConverter)}).
 	 * 
 	 * @param pixelSizeY
@@ -274,8 +289,25 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Get the scaled size of X. This is the absolute size actually used for rendering. It is calculated from
-	 * the size set via one of the set* methods.
+	 * @param dynamicSizeUnitsX
+	 *            setter, see {@link #dynamicSizeUnitsX}
+	 */
+	public void setDynamicSizeUnitsX(int dynamicSizeUnitsX) {
+		this.dynamicSizeUnitsX = dynamicSizeUnitsX;
+	}
+
+	/**
+	 * @param dynamicSizeUnitsY
+	 *            setter, see {@link #dynamicSizeUnitsY}
+	 */
+	public void setDynamicSizeUnitsY(int dynamicSizeUnitsY) {
+		this.dynamicSizeUnitsY = dynamicSizeUnitsY;
+	}
+
+	/**
+	 * Get the scaled size of X. This is the absolute size actually used for
+	 * rendering. It is calculated from the size set via one of the set*
+	 * methods.
 	 * 
 	 * @return
 	 */
@@ -286,8 +318,9 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Get the scaled size of Y. This is the absolute size actually used for rendering. It is calculated from
-	 * the size set via one of the set* methods.
+	 * Get the scaled size of Y. This is the absolute size actually used for
+	 * rendering. It is calculated from the size set via one of the set*
+	 * methods.
 	 * 
 	 * @return
 	 */
@@ -298,8 +331,9 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Instruct the element to grab the remaining space in the x direction. If multiple elements are defined
-	 * to grab in one direction, the space is shared evenly.
+	 * Instruct the element to grab the remaining space in the x direction. If
+	 * multiple elements are defined to grab in one direction, the space is
+	 * shared evenly.
 	 * 
 	 * @param grabX
 	 *            true if this element should grab remaining space, false if not
@@ -310,8 +344,9 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Instruct the element to grab the remaining space in the y direction. If multiple elements are defined
-	 * to grab in one direction, the space is shared evenly.
+	 * Instruct the element to grab the remaining space in the y direction. If
+	 * multiple elements are defined to grab in one direction, the space is
+	 * shared evenly.
 	 * 
 	 * @param grabY
 	 *            true if this element should grab remaining space, false if not
@@ -334,20 +369,22 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Update the layout recursively for all elements below this layout. Requires a previous call to
-	 * {@link LayoutManager#updateLayout()}. The values calculated through the LayoutManager in this step are
-	 * used for this layout. The sub-layouts are calculated from scratch.
+	 * Update the layout recursively for all elements below this layout.
+	 * Requires a previous call to {@link LayoutManager#updateLayout()}. The
+	 * values calculated through the LayoutManager in this step are used for
+	 * this layout. The sub-layouts are calculated from scratch.
 	 */
 	public void updateSubLayout() {
 		if (isHidden)
 			return;
-		calculateScales(totalWidth, totalHeight);
+		calculateScales(totalWidth, totalHeight, null, null);
 		updateSpacings();
 	}
 
 	/**
-	 * Returns true if the height of this element has been set statically (either via
-	 * {@link #setAbsoluteSizeY(float)} or {@link #setPixelSizeY(int)})
+	 * Returns true if the height of this element has been set statically
+	 * (either via {@link #setAbsoluteSizeY(float)} or
+	 * {@link #setPixelSizeY(int)})
 	 * 
 	 * @return true if this is a static layout in y, else false
 	 */
@@ -361,8 +398,8 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Returns true if the width of this element has been set statically (either via
-	 * {@link #setAbsoluteSizeX(float)} or {@link #setPixelSizeX(int)})
+	 * Returns true if the width of this element has been set statically (either
+	 * via {@link #setAbsoluteSizeX(float)} or {@link #setPixelSizeX(int)})
 	 * 
 	 * @return true if this is a static layout in x, else false
 	 */
@@ -376,14 +413,16 @@ public class ElementLayout {
 	}
 
 	/**
-	 * Get the value specifying how much this element has to be transformed in X absolutely
+	 * Get the value specifying how much this element has to be transformed in X
+	 * absolutely
 	 */
 	public float getTranslateX() {
 		return translateX;
 	}
 
 	/**
-	 * Get the value specifying how much this element has to be transformed in Y absolutely
+	 * Get the value specifying how much this element has to be transformed in Y
+	 * absolutely
 	 */
 	public float getTranslateY() {
 		return translateY;
@@ -429,19 +468,22 @@ public class ElementLayout {
 	}
 
 	/**
-	 * @return The rendering priority, which determines the point in time this element layout is rendered if
-	 *         its {@link ALayoutContainer} uses priority rendering.
+	 * @return The rendering priority, which determines the point in time this
+	 *         element layout is rendered if its {@link ALayoutContainer} uses
+	 *         priority rendering.
 	 */
 	public int getRenderingPriority() {
 		return renderingPriority;
 	}
 
 	/**
-	 * Sets the rendering priority and therefore determines the point in time this element layout is rendered
-	 * if its {@link ALayoutContainer} uses priority rendering.
+	 * Sets the rendering priority and therefore determines the point in time
+	 * this element layout is rendered if its {@link ALayoutContainer} uses
+	 * priority rendering.
 	 * 
 	 * @param renderingPriority
-	 *            sets the priority of the rendering, where higher values have a higher priority
+	 *            sets the priority of the rendering, where higher values have a
+	 *            higher priority
 	 */
 	public void setRenderingPriority(int renderingPriority) {
 		this.renderingPriority = renderingPriority;
@@ -462,18 +504,21 @@ public class ElementLayout {
 		return isHidden;
 	}
 
-	// ---------------------------- END OF PUBLIC INTERFACE -----------------------------------
+	// ---------------------------- END OF PUBLIC INTERFACE
+	// -----------------------------------
 
 	private void resetX() {
 		absoluteSizeX = Float.NaN;
 		ratioSizeX = 1;
 		pixelSizeX = Integer.MIN_VALUE;
+		dynamicSizeUnitsX = 0;
 	}
 
 	private void resetY() {
 		absoluteSizeY = Float.NaN;
 		ratioSizeY = 1;
 		pixelSizeY = Integer.MIN_VALUE;
+		dynamicSizeUnitsY = 0;
 	}
 
 	void render(GL2 gl) {
@@ -495,8 +540,7 @@ public class ElementLayout {
 
 				gl.glLineWidth(6);
 				yPositionDebugText = getSizeScaledY() / 2;
-			}
-			else {
+			} else {
 				gl.glLineWidth(2);
 			}
 
@@ -513,7 +557,8 @@ public class ElementLayout {
 			}
 
 			textRenderer.setColor(color[0], color[1], color[2], color[3]);
-			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f, 0.005f, 3);
+			textRenderer.renderText(gl, layoutName, 0, yPositionDebugText, 0.4f, 0.005f,
+					3);
 
 		}
 
@@ -537,24 +582,32 @@ public class ElementLayout {
 		gl.glTranslatef(-getTranslateX(), -getTranslateY(), 0);
 	}
 
-	void calculateScales(float totalWidth, float totalHeight) {
+	void calculateScales(float totalWidth, float totalHeight,
+			Integer numberOfDynamicSizeUnitsX, Integer numberOfDynamicSizeUnitsY) {
 		if (isHidden)
 			return;
 		this.totalWidth = totalWidth;
 		this.totalHeight = totalHeight;
 
 		if (pixelSizeX != Integer.MIN_VALUE)
-			sizeScaledX = layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(pixelSizeX);
-
+			sizeScaledX = layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(
+					pixelSizeX);
 		else if (!Float.isNaN(absoluteSizeX))
 			sizeScaledX = absoluteSizeX;
+		else if (numberOfDynamicSizeUnitsX > 0 && dynamicSizeUnitsX > 0)
+			sizeScaledX = (float) dynamicSizeUnitsX / numberOfDynamicSizeUnitsX
+					* totalWidth;
 		else
 			sizeScaledX = ratioSizeX * totalWidth;
 
 		if (pixelSizeY != Integer.MIN_VALUE)
-			sizeScaledY = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(pixelSizeY);
+			sizeScaledY = layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(
+					pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			sizeScaledY = absoluteSizeY;
+		else if (numberOfDynamicSizeUnitsY > 0 && dynamicSizeUnitsY > 0)
+			sizeScaledX = (float) dynamicSizeUnitsY / numberOfDynamicSizeUnitsY
+					* totalHeight;
 		else
 			sizeScaledY = ratioSizeY * totalHeight;
 	}
@@ -570,7 +623,8 @@ public class ElementLayout {
 	protected void updateSpacings() {
 		if (isHidden)
 			return;
-		// LayoutRenderer renderer = ((RenderableLayoutElement) layout).getRenderer();
+		// LayoutRenderer renderer = ((RenderableLayoutElement)
+		// layout).getRenderer();
 		if (renderer == null)
 			return;
 		if (foregroundRenderers != null) {
@@ -617,7 +671,8 @@ public class ElementLayout {
 		if (grabY)
 			return 0;
 		else if (pixelSizeY != Integer.MIN_VALUE)
-			return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(pixelSizeY);
+			return layoutManager.getPixelGLConverter().getGLHeightForPixelHeight(
+					pixelSizeY);
 		else if (!Float.isNaN(absoluteSizeY))
 			return absoluteSizeY;
 		else
@@ -636,9 +691,30 @@ public class ElementLayout {
 		if (grabX)
 			return 0;
 		else if (pixelSizeX != Integer.MIN_VALUE)
-			return layoutManager.getPixelGLConverter().getGLWidthForPixelWidth(pixelSizeX);
+			return layoutManager.getPixelGLConverter()
+					.getGLWidthForPixelWidth(pixelSizeX);
 		else if (!Float.isNaN(absoluteSizeX))
 			return absoluteSizeX;
+		else
+			return 0;
+	}
+
+	/**
+	 * @return the dynamicSizeUnitsX, see {@link #dynamicSizeUnitsX}
+	 */
+	int getDynamicSizeUnitsX() {
+		if (dynamicSizeUnitsX > 0)
+			return dynamicSizeUnitsX;
+		else
+			return 0;
+	}
+
+	/**
+	 * @return the dynamicSizeUnitsY, see {@link #dynamicSizeUnitsY}
+	 */
+	int getDynamicSizeUnitsY() {
+		if (dynamicSizeUnitsY > 0)
+			return dynamicSizeUnitsY;
 		else
 			return 0;
 	}
@@ -651,48 +727,48 @@ public class ElementLayout {
 	}
 
 	/**
-	 * @return Width of the ElementLayout in Pixels. Note, that the returned value is only valid, if the pixel
-	 *         size has been set explicitly.
+	 * @return Width of the ElementLayout in Pixels. Note, that the returned
+	 *         value is only valid, if the pixel size has been set explicitly.
 	 */
 	public int getPixelSizeX() {
 		return pixelSizeX;
 	}
 
 	/**
-	 * @return Height of the ElementLayout in Pixels. Note, that the returned value is only valid, if the
-	 *         pixel size has been set explicitly.
+	 * @return Height of the ElementLayout in Pixels. Note, that the returned
+	 *         value is only valid, if the pixel size has been set explicitly.
 	 */
 	public int getPixelSizeY() {
 		return pixelSizeY;
 	}
 
 	/**
-	 * @return GL-Width of the ElementLayout. Note, that the returned value is only valid, if the absolute
-	 *         size has been set explicitly.
+	 * @return GL-Width of the ElementLayout. Note, that the returned value is
+	 *         only valid, if the absolute size has been set explicitly.
 	 */
 	public float getAbsoluteSizeX() {
 		return absoluteSizeX;
 	}
 
 	/**
-	 * @return GL-Height of the ElementLayout. Note, that the returned value is only valid, if the absolute
-	 *         size has been set explicitly.
+	 * @return GL-Height of the ElementLayout. Note, that the returned value is
+	 *         only valid, if the absolute size has been set explicitly.
 	 */
 	public float getAbsoluteSizeY() {
 		return absoluteSizeY;
 	}
 
 	/**
-	 * @return Ratio width of the ElementLayout. Note, that the returned value is only valid, if the ratio
-	 *         size has been set explicitly.
+	 * @return Ratio width of the ElementLayout. Note, that the returned value
+	 *         is only valid, if the ratio size has been set explicitly.
 	 */
 	public float getRatioSizeX() {
 		return ratioSizeX;
 	}
 
 	/**
-	 * @return Ratio height of the ElementLayout. Note, that the returned value is only valid, if the ratio
-	 *         size has been set explicitly.
+	 * @return Ratio height of the ElementLayout. Note, that the returned value
+	 *         is only valid, if the ratio size has been set explicitly.
 	 */
 	public float getRatioSizeY() {
 		return ratioSizeY;

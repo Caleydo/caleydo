@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -26,9 +26,9 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 /**
- * The LayoutManager is responsible for rendering all the elements specified in its set {@link #template}. It
- * contains a reference to the view frustum and initializes the calculation of spacing once the view frustum
- * is changed.
+ * The LayoutManager is responsible for rendering all the elements specified in
+ * its set {@link #template}. It contains a reference to the view frustum and
+ * initializes the calculation of spacing once the view frustum is changed.
  * 
  * @author Alexander Lex
  */
@@ -51,7 +51,8 @@ public class LayoutManager {
 
 	public LayoutManager(ViewFrustum viewFrustum, PixelGLConverter pixelGLConverter) {
 		if (viewFrustum == null || pixelGLConverter == null)
-			throw new IllegalArgumentException("Arguments viewFrustum or pixelGLConverter were null");
+			throw new IllegalArgumentException(
+					"Arguments viewFrustum or pixelGLConverter were null");
 		this.viewFrustum = viewFrustum;
 		this.pixelGLConverter = pixelGLConverter;
 	}
@@ -67,9 +68,10 @@ public class LayoutManager {
 	}
 
 	/**
-	 * Set a static layout configuration which contains an ElementLayout which is accessible using
-	 * {@link LayoutConfiguration#getBaseElementLayout()}, which is set as the {@link #baseElementLayout} of
-	 * this {@link LayoutManager}.
+	 * Set a static layout configuration which contains an ElementLayout which
+	 * is accessible using {@link LayoutConfiguration#getBaseElementLayout()},
+	 * which is set as the {@link #baseElementLayout} of this
+	 * {@link LayoutManager}.
 	 */
 	public void setStaticLayoutConfiguration(LayoutConfiguration layoutConfiguration) {
 		this.layoutConfiguration = layoutConfiguration;
@@ -78,11 +80,12 @@ public class LayoutManager {
 	}
 
 	/**
-	 * Recursively update the whole layout of this renderer. The dimensions are extracted from the viewFrustum
-	 * provided in the constructor. Since the viewFrustum is passed by reference, changes to the viewFrustum,
-	 * e.g. by a reshape of the window are reflected. FIXME: this should be split into two different methods,
-	 * one for updating the layout due to size changes, and one for updating the layout through to new
-	 * elements
+	 * Recursively update the whole layout of this renderer. The dimensions are
+	 * extracted from the viewFrustum provided in the constructor. Since the
+	 * viewFrustum is passed by reference, changes to the viewFrustum, e.g. by a
+	 * reshape of the window are reflected. FIXME: this should be split into two
+	 * different methods, one for updating the layout due to size changes, and
+	 * one for updating the layout through to new elements
 	 */
 	public void updateLayout() {
 
@@ -95,9 +98,11 @@ public class LayoutManager {
 		// layoutConfiguration.setStaticLayouts();
 		// setBaseElementLayout(layoutConfiguration.getBaseElementLayout());
 		// }
-		// should we do this here? we could integrate this with another traversal
+		// should we do this here? we could integrate this with another
+		// traversal
 		baseElementLayout.setLayoutManager(this);
-		calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth, totalHeight);
+		calculateScales(viewFrustum.getLeft(), viewFrustum.getBottom(), totalWidth,
+				totalHeight);
 
 		baseElementLayout.updateSpacings();
 	}
@@ -118,16 +123,22 @@ public class LayoutManager {
 	 * @param totalHeight
 	 */
 	void calculateScales(float bottom, float left, float totalWidth, float totalHeight) {
-
 		baseElementLayout.setTranslateX(left);
 		baseElementLayout.setTranslateY(bottom);
-		baseElementLayout.calculateScales(totalWidth, totalHeight);
+
+		Integer dynamicSizeUnitsX = baseElementLayout.getDynamicSizeUnitsX();
+		Integer dynamicSizeUnitsY = baseElementLayout.getDynamicSizeUnitsY();
+
+		baseElementLayout.calculateScales(totalWidth, totalHeight, dynamicSizeUnitsX,
+				dynamicSizeUnitsY);
 		if (baseElementLayout instanceof ALayoutContainer)
-			((ALayoutContainer) baseElementLayout).calculateTransforms(bottom, left, totalHeight, totalWidth);
+			((ALayoutContainer) baseElementLayout).calculateTransforms(bottom, left,
+					totalHeight, totalWidth);
 	}
 
 	/**
-	 * Set the base element layout - which is the topmost layout containing all other element layouts
+	 * Set the base element layout - which is the topmost layout containing all
+	 * other element layouts
 	 * 
 	 * @param baseElementLayout
 	 */

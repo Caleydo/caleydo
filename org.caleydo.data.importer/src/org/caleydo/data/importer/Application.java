@@ -156,13 +156,18 @@ public class Application implements IApplication {
 		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
 
-		// if (dataSetDescription.areAllColumnTypesContinuous()
-		// && dataSetDescription.getRowGroupingSpecifications() == null
-		// && dataSetDescription.isDataHomogeneous()) {
-
-		// runClusteringOnDimensions(dataDomain, true, 4);
-
+//		if (dataSetDescription.areAllColumnTypesContinuous()
+//				&& dataSetDescription.getRowGroupingSpecifications() == null
+//				&& dataSetDescription.isDataHomogeneous()) {
 		
+//		if (dataSetDescription.areAllColumnTypesContinuous()
+//				&& dataSetDescription.getRowGroupingSpecifications() == null
+//				&& dataSetDescription.isDataHomogeneous())
+//
+//			runClusteringOnDimensions(dataDomain, true, 4);
+//	}
+
+//		}
 		
 //		createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain, true, 5)
 //				.getDimensionResult());

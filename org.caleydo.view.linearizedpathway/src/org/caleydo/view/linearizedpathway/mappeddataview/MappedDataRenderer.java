@@ -25,6 +25,7 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
@@ -74,6 +75,8 @@ public class MappedDataRenderer {
 
 	public static final SelectionType abstractGroupType = new SelectionType(
 			"AbstactGroup", new int[] { 0, 0, 0 }, 1, false, false, 0);
+
+	public static int ABSTRACT_GROUP_PIXEL_SIZE = 100;
 
 	private GLLinearizedPathway parentView;
 
@@ -285,7 +288,7 @@ public class MappedDataRenderer {
 			deviation = previousLowerHeight - currentUpperHeight;
 
 			if (previousNodePosition > 0 && deviation > 0) {
-				Row spacing = new Row();
+				ElementLayout spacing = new ElementLayout();
 				spacing.setAbsoluteSizeY(deviation);
 				dataSetColumn.append(spacing);
 				captionColumn.append(spacing);
@@ -318,11 +321,12 @@ public class MappedDataRenderer {
 			nodeCount++;
 
 			int idCount = 0;
-//			for (int davidCounter = subDavidIDs.size()-1; davidCounter>=0; davidCounter--) {
-				
+			// for (int davidCounter = subDavidIDs.size()-1; davidCounter>=0;
+			// davidCounter--) {
+
 			for (Integer davidID : subDavidIDs) {
 
-				Row row = new Row();
+				Row row = new Row("Row " + davidID);
 				// RowBackgroundRenderer rowBackgroundRenderer = new
 				// RowBackgroundRenderer(
 				// color);
@@ -333,7 +337,7 @@ public class MappedDataRenderer {
 				for (int dataContainerCount = 0; dataContainerCount < usedDataContainers
 						.size(); dataContainerCount++) {
 
-					ElementLayout dataContainerLayout = new Row("DataContainer "
+					ElementLayout dataContainerLayout = new ElementLayout("DataContainer "
 							+ dataContainerCount + " / " + idCount);
 					// dataContainerRow.setPixelSizeX(5);
 					dataContainerLayout.addBackgroundRenderer(new RowBackgroundRenderer(
@@ -369,9 +373,9 @@ public class MappedDataRenderer {
 		dataSetColumn.append(ySpacing);
 
 		Row captionRow = new Row("captionRow");
-//		 captionRow.setDebug(true);
+		// captionRow.setDebug(true);
 		captionRow.setPixelSizeY(50);
-//		dataSetColumn.add(0, captionRow);
+		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(captionRow);
 
 		for (int dataContainerCount = 0; dataContainerCount < usedDataContainers.size(); dataContainerCount++) {
@@ -440,14 +444,18 @@ public class MappedDataRenderer {
 
 			// geneIDs.add(davidID);
 			ElementLayout dataContainerLayout = rowLayouts.get(rowCount);
+			
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
-				dataContainerLayout.setPixelSizeX(100);
-				captionLayout.setPixelSizeX(100);
+				dataContainerLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
+				captionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
 			} else {
-				float width = 1.0f / usedDataContainers.size();
-				dataContainerLayout.setRatioSizeX(width);
-				captionLayout.setRatioSizeX(width);
+				// float width = 1.0f / usedDataContainers.size();
+//				 dataContainerLayout.setRatioSizeX(0.2);
+				dataContainerLayout.setDynamicSizeUnitsX(experimentPerspective
+						.getVirtualArray().size());
+				captionLayout.setDynamicSizeUnitsX(experimentPerspective
+						.getVirtualArray().size());
 			}
 
 			// LayoutRenderer columnCaptionRenderer = new
@@ -455,9 +463,17 @@ public class MappedDataRenderer {
 			// this, group);
 			// captionLayout.setRenderer(columnCaptionRenderer);
 
-			dataContainerLayout.setRenderer(new RowContentRenderer(geneID, davidID,
-					dataDomain, dataContainer, experimentPerspective, parentView, this,
-					group));
+			// FIXME: BAAAAD Hack to distinguish categorical data
+			if (!dataDomain.getLabel().contains("Copy")) {
+				dataContainerLayout.setRenderer(new ContinuousContentRenderer(geneID,
+						davidID, dataDomain, dataContainer, experimentPerspective,
+						parentView, this, group));
+			} else {
+				dataContainerLayout.setRenderer(new CategoricalRowContentRenderer(geneID,
+						davidID, dataDomain, dataContainer, experimentPerspective,
+						parentView, this, group));
+			}
+
 		}
 
 	}

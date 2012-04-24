@@ -127,12 +127,17 @@ public class ContainerStatistics {
 
 	public Histogram getHistogram() {
 		if (histogram == null)
-			calculateHistogram();
+			histogram = calculateHistogram(container.getDataDomain().getTable(),
+					container.getRecordPerspective().getVirtualArray(), container
+							.getDimensionPerspective().getVirtualArray(),
+					numberOfBucketsForHistogram);
 		return histogram;
 	}
 
-	private void calculateHistogram() {
-		if (!container.getDataDomain().getTable().isDataHomogeneous()) {
+	public static Histogram calculateHistogram(DataTable dataTable,
+			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
+			int numberOfBucketsForHistogram) {
+		if (!dataTable.isDataHomogeneous()) {
 			throw new UnsupportedOperationException(
 					"Tried to calcualte a set-wide histogram on a not homogeneous table. This makes no sense. Use dimension based histograms instead!");
 		}
@@ -142,9 +147,8 @@ public class ContainerStatistics {
 		if (numberOfBucketsForHistogram != Integer.MIN_VALUE)
 			numberOfBuckets = numberOfBucketsForHistogram;
 		else
-			numberOfBuckets = (int) Math.sqrt(container.getRecordPerspective()
-					.getVirtualArray().size());
-		histogram = new Histogram(numberOfBuckets);
+			numberOfBuckets = (int) Math.sqrt(recordVA.size());
+		Histogram histogram = new Histogram(numberOfBuckets);
 		for (int iCount = 0; iCount < numberOfBuckets; iCount++) {
 			histogram.add(0);
 		}
@@ -152,15 +156,11 @@ public class ContainerStatistics {
 		// FloatCContainerIterator iterator =
 		// ((FloatCContainer)
 		// hashCContainers.get(DataRepresentation.NORMALIZED)).iterator(recordVA);
-		for (Integer dimensionID : container.getDimensionPerspective().getVirtualArray()) {
+		for (Integer dimensionID : dimensionVA) {
 			{
-				for (Integer recordID : container.getRecordPerspective()
-						.getVirtualArray()) {
-					float value = container
-							.getDataDomain()
-							.getTable()
-							.getFloat(DataRepresentation.NORMALIZED, recordID,
-									dimensionID);
+				for (Integer recordID : recordVA) {
+					float value = dataTable.getFloat(DataRepresentation.NORMALIZED,
+							recordID, dimensionID);
 
 					// this works because the values in the container are
 					// already noramlized
@@ -172,6 +172,8 @@ public class ContainerStatistics {
 				}
 			}
 		}
+
+		return histogram;
 	}
 
 	/**
@@ -287,9 +289,11 @@ public class ContainerStatistics {
 		for (Integer virtualArrayID : virtualArray) {
 			Float value;
 			if (virtualArray instanceof RecordVirtualArray) {
-				value = table.getFloat(DataRepresentation.NORMALIZED, virtualArrayID, objectID);
+				value = table.getFloat(DataRepresentation.NORMALIZED, virtualArrayID,
+						objectID);
 			} else {
-				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, virtualArrayID);
+				value = table.getFloat(DataRepresentation.NORMALIZED, objectID,
+						virtualArrayID);
 			}
 			if (!value.isNaN()) {
 				sumOfValues += value;
@@ -306,10 +310,11 @@ public class ContainerStatistics {
 				value = table.getFloat(DataRepresentation.NORMALIZED, objectID, recordID);
 			}
 			if (!value.isNaN()) {
-				sumDeviation += Math.pow(value-averageDimension.arithmeticMean, 2);
+				sumDeviation += Math.pow(value - averageDimension.arithmeticMean, 2);
 			}
 		}
 		averageDimension.standardDeviation = Math.sqrt(sumDeviation / nrValidValues);
 		return averageDimension;
 	}
+
 }

@@ -20,12 +20,11 @@
 package org.caleydo.data.importer.setupgenerator;
 
 import java.io.File;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+import javax.xml.validation.Schema;
 
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
@@ -92,7 +91,7 @@ public abstract class DataSetDescriptionSerializer {
 			Marshaller marshaller;
 			marshaller = context.createMarshaller();
 			marshaller.marshal(dataSetDescriptionCollection, new File(outputFilePath));
-
+			marshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, new Boolean(true));
 			System.out.println("Created configuration for "
 					+ dataSetDescriptionCollection.getDataSetDescriptionCollection()
 							.size() + " datasets: " + dataSetDescriptionCollection);

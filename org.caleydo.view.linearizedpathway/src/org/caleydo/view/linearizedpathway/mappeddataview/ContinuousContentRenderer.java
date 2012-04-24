@@ -39,42 +39,37 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
  * @author Alexander Lex
  * 
  */
-public class RowContentRenderer extends SelectableRenderer {
+public class ContinuousContentRenderer extends ContentRenderer {
 
-	Integer geneID;
-	DataContainer dataContainer;
-	ADataPerspective<?, ?, ?, ?> experimentPerspective;
-	GeneticDataDomain dataDomain;
-	Integer davidID;
-	float z = 0.05f;
 	Average average;
-	Group group;
+	boolean useShading = true;
 
-	public RowContentRenderer(Integer geneID, Integer davidID,
+	public ContinuousContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, DataContainer dataContainer,
 			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
 			MappedDataRenderer parent, Group group) {
-		super(parentView, parent);
-		this.davidID = davidID;
-		this.geneID = geneID;
+		super(geneID, davidID, dataDomain, dataContainer, experimentPerspective,
+				parentView, parent, group);
 
 		topBarColor = MappedDataRenderer.BAR_COLOR;
 		bottomBarColor = topBarColor;
-		this.dataDomain = dataDomain;
-		this.dataContainer = dataContainer;
-		this.experimentPerspective = experimentPerspective;
-		this.group = group;
 		init();
 	}
 
 	public void init() {
+		if (geneID == null)
+			return;
 		average = ContainerStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
+		if (experimentPerspective.getVirtualArray().size() > 30)
+			useShading = false;
 
 	}
 
 	@Override
 	public void render(GL2 gl) {
+		if (geneID == null)
+			return;
 		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
 				.getSelectionTypes(davidID);
 
@@ -108,29 +103,27 @@ public class RowContentRenderer extends SelectableRenderer {
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 				PickingType.GENE.name(), davidID));
-		// gl.glPushName(parentView.getPickingManager().getPickingID(
-		// parentView.getID(), PickingType.SAMPLE.name(), experimentID));
 		gl.glBegin(GL2.GL_QUADS);
-
 		gl.glColor4fv(topBarColor, 0);
 		gl.glVertex3f(0, y / 3, z);
-		// gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
-		// topBarColor[2] * 0.9f);
 		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		// gl.glColor4fv(topBarColor, 0);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
-
-		// gl.glColor4fv(bottomBarColor, 0);
 		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 				bottomBarColor[2] * 0.9f);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
-
 		gl.glColor4fv(bottomBarColor, 0);
-		// gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-		// bottomBarColor[2] * 0.9f);
 		gl.glVertex3f(0, y / 3 * 2, z);
-
 		gl.glEnd();
+
+		gl.glColor3f(0, 0, 0);
+		gl.glLineWidth(0.5f);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glVertex3f(0, y / 3, z);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
+		gl.glVertex3f(0, y / 3 * 2, z);
+		gl.glEnd();
+
 		gl.glPopName();
 
 		float lineZ = z + 0.01f;
@@ -193,12 +186,18 @@ public class RowContentRenderer extends SelectableRenderer {
 				gl.glColor4fv(topBarColor, 0);
 				gl.glBegin(GL2.GL_QUADS);
 				gl.glVertex3f(leftEdge, 0, z);
-				gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
-						topBarColor[2] * 0.9f);
+				if (useShading) {
+					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
+							topBarColor[2] * 0.9f);
+				}
 				gl.glVertex3f(leftEdge + xIncrement, 0, z);
-				gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-						bottomBarColor[2] * 0.9f);
+				if (useShading) {
+					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+							bottomBarColor[2] * 0.9f);
 
+				} else {
+					gl.glColor4fv(bottomBarColor, 0);
+				}
 				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
 				gl.glColor4fv(bottomBarColor, 0);
 

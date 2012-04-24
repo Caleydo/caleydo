@@ -166,7 +166,7 @@ public abstract class ALayoutContainer
 	public void updateSubLayout() {
 		if (isHidden)
 			return;
-		calculateScales(totalWidth, totalHeight);
+		calculateScales(totalWidth, totalHeight, dynamicSizeUnitsX, dynamicSizeUnitsY);
 		updateSpacings();
 		calculateTransforms(bottom, left, top, right);
 	}
@@ -197,7 +197,7 @@ public abstract class ALayoutContainer
 
 	// --------------------- End of Public Interface ---------------------
 
-	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight);
+	protected abstract void calculateSubElementScales(float availableWidth, float availableHeight, Integer numberOfDynamicSizeUnitsX, Integer numberOfDynamicSizeUnitsY);
 
 	protected void calculateTransforms(float bottom, float left, float top, float right) {
 		this.bottom = bottom;

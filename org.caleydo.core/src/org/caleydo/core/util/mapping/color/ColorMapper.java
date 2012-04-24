@@ -179,19 +179,19 @@ public class ColorMapper {
 	/**
 	 * Return the mapped color for any value between 0 and 1
 	 * 
-	 * @param fValue
+	 * @param value
 	 * @return float array with length 3, RGB
 	 * @throws IllegalArgumentException
 	 *             if fvalue > 1 || fvalue < 0
 	 */
-	public float[] getColor(float fValue) {
-		if (Float.isNaN(fValue))
+	public float[] getColor(float value) {
+		if (Float.isNaN(value))
 			return NOT_A_NUMBER_COLOR;
 
-		if (fValue > 1 || fValue < 0)
-			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1");
+		if (value > 1 || value < 0)
+			throw new IllegalArgumentException("Invalid value in fValue. Has to be between 0 and 1 but was: " + value);
 
-		return colorList.get((int) (fValue * (COLOR_DEPTH - 1)));
+		return colorList.get((int) (value * (COLOR_DEPTH - 1)));
 	}
 
 	/**
