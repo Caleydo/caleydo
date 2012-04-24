@@ -233,6 +233,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 					IDType.unregisterType(recordIDType);
 					IDType.unregisterType(dimensionIDType);
 					IDType.unregisterType(recordGroupIDType);
+					IDType.unregisterType(dimensionGroupIDType);
 				}
 				createDefaultConfigurationWithColumnsAsRecords();
 

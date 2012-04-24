@@ -103,7 +103,7 @@ public class Application implements IApplication {
 
 		GeneralManager.get().init();
 		// FIXME: temp hack
-		GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
+		// GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
 
 		createJAXBContext();
 		DataSetDescriptionCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
@@ -162,10 +162,16 @@ public class Application implements IApplication {
 
 		// runClusteringOnDimensions(dataDomain, true, 4);
 
-		createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain, true, 5)
-				.getDimensionResult());
-		runClusteringOnDimensions(dataDomain, true, 6);
+		
+		
+//		createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain, true, 5)
+//				.getDimensionResult());
+		
+		
+		
+		// runClusteringOnDimensions(dataDomain, true, 6);
 
+		
 		// runClusteringOnRows(false, -1);
 		// if (metaInfo.isCreateGeneSamples())
 
@@ -180,7 +186,9 @@ public class Application implements IApplication {
 
 		// createSampleOfGenes(dataDomain,
 		// runClusteringOnRecords(dataDomain, true, 5).getDimensionResult());
-		runClusteringOnRecords(dataDomain, true, 6);
+
+		// runClusteringOnRecords(dataDomain, true, 6);
+
 		// runClusteringOnRecords(dataDomain, false, 6);
 
 		// runClusteringOnRows(false, -1);

@@ -377,8 +377,9 @@ public class DataSetDescription extends MatrixDefinition {
 			numberOfColumns = columns.length;
 
 		} catch (IOException e) {
-			Logger.log(new Status(Status.ERROR, "Parsing", "Cannot read from: "
-					+ dataSourcePath));
+//			Logger.log(new Status(Status.ERROR, "Parsing", "Cannot read from: "
+//					+ dataSourcePath));
+//			System.out.println("Cannot read from: " + dataSourcePath);
 			throw new IllegalStateException("Cannot read from: " + dataSourcePath);
 		}
 

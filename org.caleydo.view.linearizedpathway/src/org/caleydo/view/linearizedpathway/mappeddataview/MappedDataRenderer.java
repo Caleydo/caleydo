@@ -318,7 +318,8 @@ public class MappedDataRenderer {
 			nodeCount++;
 
 			int idCount = 0;
-
+//			for (int davidCounter = subDavidIDs.size()-1; davidCounter>=0; davidCounter--) {
+				
 			for (Integer davidID : subDavidIDs) {
 
 				Row row = new Row();
@@ -368,8 +369,9 @@ public class MappedDataRenderer {
 		dataSetColumn.append(ySpacing);
 
 		Row captionRow = new Row("captionRow");
-		// captionRow.setDebug(true);
+//		 captionRow.setDebug(true);
 		captionRow.setPixelSizeY(50);
+//		dataSetColumn.add(0, captionRow);
 		dataSetColumn.append(captionRow);
 
 		for (int dataContainerCount = 0; dataContainerCount < usedDataContainers.size(); dataContainerCount++) {
