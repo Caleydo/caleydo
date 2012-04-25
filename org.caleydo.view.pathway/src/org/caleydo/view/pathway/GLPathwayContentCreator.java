@@ -427,24 +427,28 @@ public class GLPathwayContentCreator {
 
 					if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
-						// gl.glCallList(enzymeNodeDisplayListId);
-
-						gl.glCallList(framedEnzymeNodeDisplayListId);
+						//gl.glCallList(framedEnzymeNodeDisplayListId);
 						// Transparent node for picking
-						gl.glColor4f(0, 0, 0, 0);
-						gl.glCallList(enzymeNodeDisplayListId);
+						//gl.glColor4f(0, 0, 0, 0);
 
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 0.5f);
+						
+						gl.glEnable(GL2.GL_BLEND);
+						gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+						gl.glCallList(enzymeNodeDisplayListId);
+						gl.glEnable(GL2.GL_DEPTH_TEST);
+						
 						// Handle selection highlighting of element
 						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
 								vertexRep.getID())) {
 							tmpNodeColor = SelectionType.SELECTION.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
-							gl.glCallList(upscaledFramedEnzymeNodeDisplayListID);
+							gl.glCallList(framedEnzymeNodeDisplayListId);
 						} else if (internalSelectionManager.checkStatus(
 								SelectionType.MOUSE_OVER, vertexRep.getID())) {
 							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
 							gl.glColor4fv(tmpNodeColor, 0);
-							gl.glCallList(upscaledFramedEnzymeNodeDisplayListID);
+							gl.glCallList(framedEnzymeNodeDisplayListId);
 						}
 					} else {
 						// Upscaled version of pathway node needed for e.g.
