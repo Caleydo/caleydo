@@ -165,6 +165,11 @@ public class GLPathway
 	private GraphPath<PathwayVertexRep, DefaultEdge> selectedPath;
 
 	/**
+	 * The currently mouse over path as selected by the user from allPaths.
+	 */
+	private GraphPath<PathwayVertexRep, DefaultEdge> mouseOverPath;
+
+	/**
 	 * All paths which are available between two user selected nodes.
 	 */
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
@@ -210,7 +215,7 @@ public class GLPathway
 		// ///////////////////////////////////////////////////
 		// / bubble sets
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
-		((BubbleSet)setOutline).useVirtualEdges(false);
+		((BubbleSet) setOutline).useVirtualEdges(false);
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
@@ -525,7 +530,9 @@ public class GLPathway
 							allPaths.indexOf(path)));
 
 			if (path == selectedPath)
-				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
+				gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+			else if (path == mouseOverPath)
+				gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 			else
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
 
@@ -534,8 +541,8 @@ public class GLPathway
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 
-				bbItemW=sourceVertexRep.getWidth();
-				bbItemH=sourceVertexRep.getHeight();
+				bbItemW = sourceVertexRep.getWidth();
+				bbItemH = sourceVertexRep.getHeight();
 				double posX = sourceVertexRep.getLowerLeftCornerX();
 				double posY = sourceVertexRep.getLowerLeftCornerY();
 				double tX = targetVertexRep.getLowerLeftCornerX();
@@ -549,8 +556,8 @@ public class GLPathway
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
 				double posX = targetVertexRep.getLowerLeftCornerX();
 				double posY = targetVertexRep.getLowerLeftCornerY();
-				bbItemW=targetVertexRep.getWidth();
-				bbItemH=targetVertexRep.getHeight();
+				bbItemW = targetVertexRep.getWidth();
+				bbItemH = targetVertexRep.getHeight();
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
 			}
 			gl.glPopName();
@@ -558,28 +565,27 @@ public class GLPathway
 		}
 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
-		
+
 		Graphics2D g2d = texRenderer.createGraphics();
 		bubblesetCanvas.paint(g2d);
-		
-		g2d.dispose();		
+
+		g2d.dispose();
 	}
 
 	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
-			return;		
-		
+			return;
+
 		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
-		if(isBubbleTextureDirty){
+		if (isBubbleTextureDirty) {
 			updateBubbleSetsTexture(gl);
-			isBubbleTextureDirty=false;
+			isBubbleTextureDirty = false;
 		}
 		bubbleSetsTexture = texRenderer.getTexture();
 
 		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
 		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
-		
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -624,7 +630,7 @@ public class GLPathway
 						allPaths.indexOf(path)));
 
 		if (path == selectedPath)
-			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
+			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
 		else
 			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
 
@@ -633,12 +639,16 @@ public class GLPathway
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 
-//			gl.glBegin(GL.GL_LINES);
-//			gl.glVertex3f(sourceVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
-//					-sourceVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-//			gl.glVertex3f(targetVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
-//					-targetVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-//			gl.glEnd();
+			// gl.glBegin(GL.GL_LINES);
+			// gl.glVertex3f(sourceVertexRep.getXOrigin() *
+			// PathwayRenderStyle.SCALING_FACTOR_X,
+			// -sourceVertexRep.getYOrigin() *
+			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			// gl.glVertex3f(targetVertexRep.getXOrigin() *
+			// PathwayRenderStyle.SCALING_FACTOR_X,
+			// -targetVertexRep.getYOrigin() *
+			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			// gl.glEnd();
 		}
 
 		gl.glPopName();
@@ -685,7 +695,8 @@ public class GLPathway
 				ElementConnectionInformation elementRep = new ElementConnectionInformation(
 						dataDomain.getRecordIDType(), viewID, vertexRep.getLowerLeftCornerX()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
-								+ vecTranslation.x(), (pathwayHeight - vertexRep.getLowerLeftCornerY())
+								+ vecTranslation.x(),
+						(pathwayHeight - vertexRep.getLowerLeftCornerY())
 								* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 								+ vecTranslation.y(), 0);
 
@@ -920,7 +931,8 @@ public class GLPathway
 			tmpPathwayVertexRep = pathwayItemManager.getPathwayVertexRep(vertexRepID);
 
 			ElementConnectionInformation elementRep = new ElementConnectionInformation(
-					dataDomain.getRecordIDType(), viewID, tmpPathwayVertexRep.getLowerLeftCornerX()
+					dataDomain.getRecordIDType(), viewID,
+					tmpPathwayVertexRep.getLowerLeftCornerX()
 							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 							+ vecTranslation.x(),
 					(pathwayHeight - tmpPathwayVertexRep.getLowerLeftCornerY())
@@ -1144,17 +1156,23 @@ public class GLPathway
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
+		if (previouslySelectedVertexRep != null
+				&& (selectionType == SelectionType.SELECTION || selectionType == SelectionType.MOUSE_OVER)) {
 
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, previouslySelectedVertexRep, MAX_PATHS);
 
 			allPaths = pathAlgo.getPaths(vertexRep);
 			selectedPath = null;
-
+			mouseOverPath = null;
+			
 			if (allPaths != null && allPaths.size() > 0) {
 
-				selectedPath = allPaths.get(0);
+				if (selectionType == SelectionType.MOUSE_OVER)
+					mouseOverPath = allPaths.get(0);
+				else
+					selectedPath = allPaths.get(0);
+				
 				triggerPathUpdate();
 				isBubbleTextureDirty = true;
 			}
