@@ -210,6 +210,7 @@ public class GLPathway
 		// ///////////////////////////////////////////////////
 		// / bubble sets
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
+		((BubbleSet)setOutline).useVirtualEdges(false);
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
