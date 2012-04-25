@@ -176,7 +176,7 @@ public class GLPathway
 	private SetOutline setOutline;
 	private AbstractShapeGenerator shaper;
 	private CanvasComponent bubblesetCanvas;
-
+	private boolean isBubbleTextureDirty;
 	/**
 	 * Constructor.
 	 */
@@ -211,6 +211,7 @@ public class GLPathway
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
+		isBubbleTextureDirty=true;
 	}
 
 	public void setPathway(final PathwayGraph pathway) {
@@ -254,6 +255,7 @@ public class GLPathway
 		texRenderer = new TextureRenderer(1280, 768, true);// we will adapt the
 															// dimensions in
 															// each frame
+		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
 	}
 
 	@Override
@@ -505,21 +507,20 @@ public class GLPathway
 		gl.glPopMatrix();
 	}
 
-	private void overlayBubbleSets(GL2 gl) {
-		if (allPaths == null)
-			return;
-		
-		while (bubblesetCanvas.getGroupCount() > 1) {
-			bubblesetCanvas.removeLastGroup();
+	private void updateBubbleSetsTexture(GL2 gl)
+	{		
+		int groupID=bubblesetCanvas.getGroupCount()-1;
+		while (bubblesetCanvas.getGroupCount() > 0) {			
+			bubblesetCanvas.setCurrentGroup(groupID);
+			bubblesetCanvas.removeCurrentGroup();
+			groupID--;
 		}
-		////can't delete all groups why we have to remove all items in group 0 instead
-		bubblesetCanvas.setCurrentGroup(0);
-		bubblesetCanvas.clearCurrentGroup();
-
 		final double bbItemW = 10;
 		final double bbItemH = 10;
 		int bbGroupID = 0;
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
+			bubblesetCanvas.addGroup();	//bubble sets do not allow to delete group0	
+			
 			gl.glPushName(generalManager
 					.getViewManager()
 					.getPickingManager()
@@ -530,9 +531,8 @@ public class GLPathway
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR_SELECTED, 0);
 			else
 				gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-			if(bbGroupID>0){
-				bubblesetCanvas.addGroup();	//bubble sets do not allow to delete group0		
-			}
+			
+				
 			DefaultEdge lastEdge = null;
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
@@ -556,8 +556,18 @@ public class GLPathway
 
 		Graphics2D g2d = texRenderer.createGraphics();
 		bubblesetCanvas.paint(g2d);
-		g2d.dispose();
-
+		g2d.dispose();		
+	}
+	
+	private void overlayBubbleSets(GL2 gl) {
+		if (allPaths == null)
+			return;
+		
+		//if(isBubbleTextureDirty){
+			updateBubbleSetsTexture(gl);
+			isBubbleTextureDirty=false;
+		//}
+		
 		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
 		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
@@ -1152,7 +1162,9 @@ public class GLPathway
 
 				selectedPath = allPaths.get(0);
 				triggerPathUpdate();
+				isBubbleTextureDirty=true;
 			}
+
 		}
 
 		// Add new vertex to internal selection manager
