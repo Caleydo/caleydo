@@ -531,9 +531,13 @@ public class GLPathway
 			DefaultEdge lastEdge = null;
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
+				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 				double posX = sourceVertexRep.getXOrigin();
 				double posY = sourceVertexRep.getYOrigin();
+				double tX = targetVertexRep.getXOrigin();
+				double tY = targetVertexRep.getYOrigin();
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+				bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
 				lastEdge = edge;
 			}
 			if (lastEdge != null) {
@@ -622,12 +626,12 @@ public class GLPathway
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 
-			gl.glBegin(GL.GL_LINES);
-			gl.glVertex3f(sourceVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
-					-sourceVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-			gl.glVertex3f(targetVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
-					-targetVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-			gl.glEnd();
+//			gl.glBegin(GL.GL_LINES);
+//			gl.glVertex3f(sourceVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
+//					-sourceVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+//			gl.glVertex3f(targetVertexRep.getXOrigin() * PathwayRenderStyle.SCALING_FACTOR_X,
+//					-targetVertexRep.getYOrigin() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+//			gl.glEnd();
 		}
 
 		gl.glPopName();
