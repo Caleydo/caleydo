@@ -995,10 +995,10 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 			@Override
 			public void rightClicked(Pick pick) {
 
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(),
-						true));
-				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick.getObjectID(),
-						false));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick
+						.getObjectID(), true));
+				contextMenuCreator.addContextMenuItem(new SplitBrickItem(pick
+						.getObjectID(), false));
 			}
 
 		}, PickingType.BRICK_CONNECTION_BAND.name());
@@ -1628,24 +1628,21 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 				groupSizes.add(sharedRecordVA.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += sharedRecordVA.size();
-				groupNames.add(sourceVA.getGroupList().get(groupIndex).getClusterNode()
-						.getLabel()
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel()
 						+ " Split 1");
 
 				newIDs.addAll(remainingGroupIDs);
 				groupSizes.add(remainingGroupIDs.size());
 				sampleElements.add(sizeCounter);
 				sizeCounter += remainingGroupIDs.size();
-				groupNames.add(sourceVA.getGroupList().get(groupIndex).getClusterNode()
-						.getLabel()
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel()
 						+ " Split 2");
 			} else {
 				newIDs.addAll(sourceVA.getIDsOfGroup(groupIndex));
 				groupSizes.add(sourceVA.getGroupList().get(groupIndex).getSize());
 				sampleElements.add(sizeCounter);
 				sizeCounter += sourceVA.getGroupList().get(groupIndex).getSize();
-				groupNames.add(sourceVA.getGroupList().get(groupIndex).getClusterNode()
-						.getLabel());
+				groupNames.add(sourceVA.getGroupList().get(groupIndex).getLabel());
 			}
 
 		}

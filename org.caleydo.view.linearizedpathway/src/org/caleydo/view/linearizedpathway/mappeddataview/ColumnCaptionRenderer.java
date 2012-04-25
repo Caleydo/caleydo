@@ -49,7 +49,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
 		this.group = group;
-		this.label = group.getClusterNode().getLabel();
+		this.label = group.getLabel();
 
 		topBarColor = MappedDataRenderer.CAPTION_BACKGROUND_COLOR;
 		bottomBarColor = topBarColor;

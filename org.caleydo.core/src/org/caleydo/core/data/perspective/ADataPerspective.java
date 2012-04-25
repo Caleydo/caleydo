@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -289,8 +289,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlTransient
 	public ClusterTree getTree() {
 		// this should only happen when we de-serialize with a default tree.
-		if (tree == null)
-			createDefaultTreeAndGroupList();
+//		if (tree == null)
+//			createDefaultTreeAndGroupList();
 		return tree;
 	}
 
@@ -362,7 +362,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 */
 	public void setVADelta(DeltaType delta) {
 		virtualArray.setDelta(delta);
-		createDefaultTreeAndGroupList();
+		createDefaultGroupList();
 		// virtualArray.setGroupList(null);
 	}
 
@@ -381,21 +381,20 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@SuppressWarnings("unchecked")
 	public void init(PerspectiveInitializationData data) {
 
-		if (data != null && data.getLabel() != null)
-		{
+		if (data != null && data.getLabel() != null) {
 			setLabel(data.getLabel(), false);
 		}
-		
+
 		// Case 1: we want an empty perspective
 		if (data == null) {
 			createVA(null);
 			return;
-		}	
+		}
 		// Case 2: we only have a virtual array
 		else if (data.getIndices() != null && data.getGroupSizes() == null
 				&& data.getTree() == null) {
 			createVA(data.getIndices());
-			createDefaultTreeAndGroupList();
+			createDefaultGroupList();
 		}
 		// Case 3: we have a virtual array and grouping
 		else if (data.getIndices() != null && data.getGroupSizes() != null) {
@@ -451,31 +450,34 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	// -------------------------------------
 
 	/** Creates a default tree of depth 1 and a {@link GroupList} with one group */
-	private void createDefaultTreeAndGroupList() {
-		isTreeDefaultTree = true;
-		tree = new ClusterTree(idType, virtualArray.size());
-		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
-		tree.setRootNode(root);
-		for (Integer id : virtualArray) {
-			tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id, false, id));
-		}
+	private void createDefaultGroupList() {
+//		isTreeDefaultTree = true;
+//		tree = new ClusterTree(idType, virtualArray.size());
+//		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
+//		tree.setRootNode(root);
+//		for (Integer id : virtualArray) {
+//			tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id, false, id));
+//		}
 		GroupType groupList = createGroupList();
-		Group group = new Group(virtualArray.size(), 0, root);
+		Group group = new Group(virtualArray.size(), 0);
 		groupList.append(group);
 		virtualArray.setGroupList(groupList);
 
 	}
+	
+	
 
 	private void createGroupListAndDefaultTreeFromClusterSizes(
 			PerspectiveInitializationData data) {
 		GroupType groupList = createGroupList();
 		int groupCounter = 0;
 		isTreeDefaultTree = true;
-		tree = new ClusterTree(idType, data.getIndices().size());
+//		tree = new ClusterTree(idType, data.getIndices().size());
 		int clusterNr = 0;
-		ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true, -1);
-		tree.setRootNode(root);
-		ClusterNode node;
+		// ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true,
+		// -1);
+		// tree.setRootNode(root);
+		// ClusterNode node;
 		int from = 0;
 		int to = 0;
 		List<Integer> groupSizes = data.getGroupSizes();
@@ -490,20 +492,23 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			} else
 				groupName = "Group: " + groupCount;
 
-			node = new ClusterNode(tree, groupName, clusterNr++, false, -1);
-			node.setDefaultLabel(isDefaultLabel);
+			// node = new ClusterNode(tree, groupName, clusterNr++, false, -1);
+			// node.setDefaultLabel(isDefaultLabel);
 			Group tempGroup = new Group(groupSize, data.getSampleElements().get(
-					groupCounter), node);
-			tree.addChild(root, node);
+					groupCounter));
+			tempGroup.setLabel(groupName);
+			// tree.addChild(root, node);
 			groupList.append(tempGroup);
 			groupCounter++;
+			tempGroup.setStartIndex(from);
 			to += groupSize;
-			ClusterNode leaf;
-			for (int vaIndex = from; vaIndex < to; vaIndex++) {
-				Integer id = virtualArray.get(vaIndex);
-				leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, false, id);
-				tree.addChild(node, leaf);
-			}
+			// ClusterNode leaf;
+			// for (int vaIndex = from; vaIndex < to; vaIndex++) {
+			// Integer id = virtualArray.get(vaIndex);
+			// leaf = new ClusterNode(tree, "Leaf: " + id, clusterNr++, false,
+			// id);
+			// tree.addChild(node, leaf);
+			// }
 			from = to;
 		}
 		virtualArray.setGroupList(groupList);

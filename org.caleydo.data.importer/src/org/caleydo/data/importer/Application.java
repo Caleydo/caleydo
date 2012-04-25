@@ -103,7 +103,7 @@ public class Application implements IApplication {
 
 		GeneralManager.get().init();
 		// FIXME: temp hack
-		// GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
+//		GeneralManager.get().getBasicInfo().setOrganism(Organism.MUS_MUSCULUS);
 
 		createJAXBContext();
 		DataSetDescriptionCollection dataSetMetInfoCollection = deserialzeDataSetMetaInfo();
@@ -156,27 +156,25 @@ public class Application implements IApplication {
 		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
 
-//		if (dataSetDescription.areAllColumnTypesContinuous()
-//				&& dataSetDescription.getRowGroupingSpecifications() == null
-//				&& dataSetDescription.isDataHomogeneous()) {
-		
-//		if (dataSetDescription.areAllColumnTypesContinuous()
-//				&& dataSetDescription.getRowGroupingSpecifications() == null
-//				&& dataSetDescription.isDataHomogeneous())
-//
-//			runClusteringOnDimensions(dataDomain, true, 4);
-//	}
+		// if (dataSetDescription.areAllColumnTypesContinuous()
+		// && dataSetDescription.getRowGroupingSpecifications() == null
+		// && dataSetDescription.isDataHomogeneous()) {
 
-//		}
-		
-//		createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain, true, 5)
-//				.getDimensionResult());
-		
-		
-		
+		// if (dataSetDescription.areAllColumnTypesContinuous()
+		// && dataSetDescription.getRowGroupingSpecifications() == null
+		// && dataSetDescription.isDataHomogeneous())
+		//
+		// runClusteringOnDimensions(dataDomain, true, 4);
+		// }
+
+		// }
+
+		// createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain,
+		// true, 5)
+		// .getDimensionResult());
+
 		// runClusteringOnDimensions(dataDomain, true, 6);
 
-		
 		// runClusteringOnRows(false, -1);
 		// if (metaInfo.isCreateGeneSamples())
 

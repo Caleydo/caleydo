@@ -20,10 +20,10 @@
 package org.caleydo.core.io.parser.ascii;
 
 import java.io.BufferedReader;
-import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
@@ -32,6 +32,7 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -43,8 +44,7 @@ import org.eclipse.core.runtime.Status;
  * 
  * @author Alexander Lex
  */
-public class GroupingParser
-	extends ATextParser {
+public class GroupingParser extends ATextParser {
 
 	private GroupingParseSpecification groupingSpecifications;
 
@@ -84,8 +84,8 @@ public class GroupingParser
 				String headerLine = "";
 
 				int rowOfColumnIDs = (groupingSpecifications.getRowOfColumnIDs() != null) ? groupingSpecifications
-						.getRowOfColumnIDs()
-						: groupingSpecifications.getNumberOfHeaderLines() - 1;
+						.getRowOfColumnIDs() : groupingSpecifications
+						.getNumberOfHeaderLines() - 1;
 				for (int countToHeader = 0; countToHeader <= rowOfColumnIDs; countToHeader++) {
 					headerLine = reader.readLine();
 				}
@@ -107,7 +107,8 @@ public class GroupingParser
 			String firstDataLine = null;
 			if (columnsToRead == null) {
 				firstDataLine = reader.readLine();
-				String[] data = firstDataLine.split(groupingSpecifications.getDelimiter());
+				String[] data = firstDataLine
+						.split(groupingSpecifications.getDelimiter());
 				columnsToRead = new ArrayList<Integer>(data.length);
 				if (headerCells == null) {
 					headerCells = new String[data.length];
@@ -119,14 +120,15 @@ public class GroupingParser
 				}
 			}
 
-			ArrayList<HashMap<String, ArrayList<Integer>>> listOfGroupLists = new ArrayList<HashMap<String, ArrayList<Integer>>>(
+			ArrayList<ArrayList<Pair<String, ArrayList<Integer>>>> listOfGroupLists = new ArrayList<ArrayList<Pair<String, ArrayList<Integer>>>>(
 					columnsToRead.size());
-			ArrayList<String> listOfGroupNames = new ArrayList<String>(columnsToRead.size());
+			ArrayList<String> listOfGroupNames = new ArrayList<String>(
+					columnsToRead.size());
 
-			HashMap<String, ArrayList<Integer>> currentGroupList;
+			ArrayList<Pair<String, ArrayList<Integer>>> currentGroupList;
 			// initialize for every column
 			for (Integer columnCount : columnsToRead) {
-				currentGroupList = new HashMap<String, ArrayList<Integer>>();
+				currentGroupList = new ArrayList<Pair<String, ArrayList<Integer>>>();
 				listOfGroupLists.add(currentGroupList);
 				listOfGroupNames.add(headerCells[columnCount]);
 			}
@@ -135,8 +137,7 @@ public class GroupingParser
 				String line = null;
 				if (firstDataLine == null) {
 					line = reader.readLine();
-				}
-				else {
+				} else {
 					// the reader already read the first line so we need to
 					// re-use it
 					line = firstDataLine;
@@ -164,10 +165,16 @@ public class GroupingParser
 				for (Integer columnID : columnsToRead) {
 					currentGroupList = listOfGroupLists.get(groupListCounter);
 
-					ArrayList<Integer> group = currentGroupList.get(columns[columnID]);
+					ArrayList<Integer> group = null;
+					for (Pair<String, ArrayList<Integer>> groupPair : currentGroupList) {
+						if (groupPair.getFirst().equals(columns[columnID]))
+							group = groupPair.getSecond();
+					}
+					// ArrayList<Integer> group = currentGroupList.get();
 					if (group == null) {
 						group = new ArrayList<Integer>();
-						currentGroupList.put(columns[columnID], group);
+						currentGroupList.add(new Pair<String, ArrayList<Integer>>(
+								columns[columnID], group));
 					}
 					group.add(mappedID);
 					groupListCounter++;
@@ -180,18 +187,19 @@ public class GroupingParser
 			ArrayList<PerspectiveInitializationData> perspectiveInitializationDatas = new ArrayList<PerspectiveInitializationData>();
 
 			for (int groupListCount = 0; groupListCount < listOfGroupLists.size(); groupListCount++) {
-				HashMap<String, ArrayList<Integer>> groupList = listOfGroupLists
+				ArrayList<Pair<String, ArrayList<Integer>>> groupList = listOfGroupLists
 						.get(groupListCount);
 				ArrayList<Integer> sortedIDs = new ArrayList<Integer>();
 				ArrayList<Integer> clusterSizes = new ArrayList<Integer>(groupList.size());
-				ArrayList<Integer> sampleElements = new ArrayList<Integer>(groupList.size());
+				ArrayList<Integer> sampleElements = new ArrayList<Integer>(
+						groupList.size());
 				ArrayList<String> clusterNames = new ArrayList<String>(groupList.size());
 				int sampleIndex = 0;
-				for (String groupName : groupList.keySet()) {
-					ArrayList<Integer> group = groupList.get(groupName);
+				for (Pair<String, ArrayList<Integer>> groupPair : groupList) {
+					ArrayList<Integer> group = groupPair.getSecond();
 					sortedIDs.addAll(group);
 					clusterSizes.add(group.size());
-					clusterNames.add(groupName);
+					clusterNames.add(groupPair.getFirst());
 					sampleElements.add(sampleIndex);
 					sampleIndex += group.size();
 				}
@@ -203,8 +211,7 @@ public class GroupingParser
 			}
 
 			return perspectiveInitializationDatas;
-		}
-		catch (IOException ioException) {
+		} catch (IOException ioException) {
 			throw new IllegalStateException("Could not read file: "
 					+ groupingSpecifications.getDataSourcePath());
 		}

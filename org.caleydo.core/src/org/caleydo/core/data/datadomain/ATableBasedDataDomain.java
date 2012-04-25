@@ -1031,7 +1031,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			// initialize number of groups with 0
 			groupSizes.add(0);
 			sampleElements.add(0);
-			groupNames.add(foreignGroup.getClusterNode().getLabel());
+			groupNames.add(foreignGroup.getLabel());
 
 		}
 

@@ -1,24 +1,25 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.data.graph.tree;
 
+import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -40,6 +41,8 @@ import javax.xml.bind.annotation.XmlRootElement;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
+import org.eclipse.core.runtime.Status;
 import org.jgrapht.DirectedGraph;
 import org.jgrapht.graph.DefaultDirectedGraph;
 import org.jgrapht.graph.DefaultEdge;
@@ -87,8 +90,8 @@ public class TreePorter {
 	 * @throws JAXBException
 	 *             in case of a XML-serialization error
 	 */
-	public ClusterTree importTree(String fileName, IDType leafIDType) throws JAXBException,
-		FileNotFoundException {
+	public ClusterTree importTree(String fileName, IDType leafIDType)
+			throws JAXBException, FileNotFoundException {
 
 		JAXBContext jaxbContext = null;
 		TreePorter treePorter = null;
@@ -96,24 +99,33 @@ public class TreePorter {
 
 		jaxbContext = JAXBContext.newInstance(TreePorter.class);
 		unmarshaller = jaxbContext.createUnmarshaller();
-		treePorter =
-			(TreePorter) unmarshaller.unmarshal(GeneralManager.get().getResourceLoader()
-				.getResource(fileName));
+		BufferedReader treeFileReader;
+		try {
+			treeFileReader = GeneralManager.get().getResourceLoader()
+					.getResource(fileName);
+		} catch (FileNotFoundException fnfe) {
+			Logger.log(new Status(Status.INFO, "TreePorter", "No tree available for "
+					+ fileName));
+			return null;
+		}
+		treePorter = (TreePorter) unmarshaller.unmarshal(treeFileReader);
 
 		ClusterTree tree = new ClusterTree(leafIDType, treePorter.nodeSet.size());
 		// tree.initializeIDTypes(IDType.getIDType(leaveIDTypeString));
 		ClusterNode rootNode = null;
 
-		DirectedGraph<ClusterNode, DefaultEdge> graph =
-			new DefaultDirectedGraph<ClusterNode, DefaultEdge>(DefaultEdge.class);
+		DirectedGraph<ClusterNode, DefaultEdge> graph = new DefaultDirectedGraph<ClusterNode, DefaultEdge>(
+				DefaultEdge.class);
 
 		tree.setSortingStrategy(treePorter.sortingStrategy);
 
 		int size = (int) (treePorter.nodeSet.size() * 1.5);
-		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(size);
-		// HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String, ClusterNode>(size);
-		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs =
-			new HashMap<Integer, ArrayList<Integer>>(size);
+		HashMap<Integer, ClusterNode> hashClusterNr = new HashMap<Integer, ClusterNode>(
+				size);
+		// HashMap<String, ClusterNode> hashClusterNodes = new HashMap<String,
+		// ClusterNode>(size);
+		HashMap<Integer, ArrayList<Integer>> hashLeafIDToNodeIDs = new HashMap<Integer, ArrayList<Integer>>(
+				size);
 
 		for (ClusterNode node : treePorter.nodeSet) {
 			graph.addVertex(node);
@@ -127,10 +139,10 @@ public class TreePorter {
 			// take care of hashing leaf ids to node ids
 			if (node.getLeafID() >= 0) {
 				if (hashLeafIDToNodeIDs.containsKey(node.getLeafID())) {
-					ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(node.getLeafID());
+					ArrayList<Integer> alNodeIDs = hashLeafIDToNodeIDs.get(node
+							.getLeafID());
 					alNodeIDs.add(node.getID());
-				}
-				else {
+				} else {
 
 					ArrayList<Integer> alNodeIDs = new ArrayList<Integer>();
 					alNodeIDs.add(node.getID());
@@ -151,13 +163,15 @@ public class TreePorter {
 		return tree;
 	}
 
-	public ClusterTree importDimensionTree(String fileName) throws JAXBException, FileNotFoundException {
+	public ClusterTree importDimensionTree(String fileName) throws JAXBException,
+			FileNotFoundException {
 		ClusterTree tree = importTree(fileName, dataDomain.getDimensionIDType());
 		return tree;
 	}
 
 	/**
-	 * Export function uses {@link JAXBContext} to export a given tree into an XML file.
+	 * Export function uses {@link JAXBContext} to export a given tree into an
+	 * XML file.
 	 * 
 	 * @param fileName
 	 *            name of the file where the exported tree should be saved
@@ -168,18 +182,17 @@ public class TreePorter {
 	 * @throws IOException
 	 *             in case of an error while writing to the stream
 	 */
-	public void exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException, IOException {
+	public void exportTree(String fileName, Tree<ClusterNode> tree) throws JAXBException,
+			IOException {
 		FileWriter writer = new FileWriter(fileName);
 		try {
 			exportTree(writer, tree);
 			writer.close();
-		}
-		finally {
+		} finally {
 			if (writer != null) {
 				try {
 					writer.close();
-				}
-				catch (IOException ex) {
+				} catch (IOException ex) {
 					// nothing to do here, assuming the writer is closed
 				}
 				writer = null;
@@ -188,7 +201,8 @@ public class TreePorter {
 	}
 
 	/**
-	 * Export function uses {@link JAXBContext} to export a given tree to a {@link Writer}
+	 * Export function uses {@link JAXBContext} to export a given tree to a
+	 * {@link Writer}
 	 * 
 	 * @param writer
 	 *            {@link Writer} to write the serialized tree to.
@@ -199,7 +213,8 @@ public class TreePorter {
 	 * @throws IOException
 	 *             in case of an error while writing to the stream
 	 */
-	public void exportTree(Writer writer, Tree<ClusterNode> tree) throws JAXBException, IOException {
+	public void exportTree(Writer writer, Tree<ClusterNode> tree) throws JAXBException,
+			IOException {
 
 		Set<DefaultEdge> edgeSet = tree.graph.edgeSet();
 
@@ -214,7 +229,8 @@ public class TreePorter {
 		leaveIDTypeString = tree.getLeaveIDType().getTypeName();
 		sortingStrategy = tree.getSortingStrategy();
 
-		JAXBContext jaxbContext = JAXBContext.newInstance(TreePorter.class, DefaultEdge.class);
+		JAXBContext jaxbContext = JAXBContext.newInstance(TreePorter.class,
+				DefaultEdge.class);
 		Marshaller marshaller = jaxbContext.createMarshaller();
 
 		marshaller.marshal(this, writer);

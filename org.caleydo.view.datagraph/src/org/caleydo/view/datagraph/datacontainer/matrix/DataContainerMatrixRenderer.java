@@ -398,7 +398,7 @@ public class DataContainerMatrixRenderer
 					CellContainer subRow = rowMap.get(subRowID);
 					if (subRow == null) {
 						subRow = new CellContainer();
-						subRow.caption = group.getClusterNode().getLabel();
+						subRow.caption = group.getLabel();
 						subRow.id = subRowID;
 						subRow.numSubdivisions = 1;
 						subRow.isVisible = false;
@@ -414,12 +414,12 @@ public class DataContainerMatrixRenderer
 
 				}
 
-				Collections.sort(childList);
+//				Collections.sort(childList);
 				childContainerLists.put(row, childList);
 			}
 		}
 
-		Collections.sort(parentContainers);
+//		Collections.sort(parentContainers);
 
 		for (CellContainer row : parentContainers) {
 			rows.add(row);
@@ -474,7 +474,7 @@ public class DataContainerMatrixRenderer
 
 					if (subColumn == null) {
 						subColumn = new CellContainer();
-						subColumn.caption = group.getClusterNode().getLabel();
+						subColumn.caption = group.getLabel();
 						subColumn.id = subColumnID;
 						subColumn.numSubdivisions = 1;
 						subColumn.isVisible = false;
@@ -488,12 +488,12 @@ public class DataContainerMatrixRenderer
 
 				}
 
-				Collections.sort(childList);
+//				Collections.sort(childList);
 				childContainerLists.put(column, childList);
 			}
 		}
 
-		Collections.sort(parentContainers);
+//		Collections.sort(parentContainers);
 
 		for (CellContainer column : parentContainers) {
 			columns.add(column);

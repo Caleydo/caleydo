@@ -5,8 +5,9 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.linearizedpathway.command.handler.OpenLinearizedPathwayHandler"
+            description="Path and Experimental Data View"
             id="org.caleydo.view.linearizedpathway.openlinearizedpathway"
-            name="Linearized Pathway">
+            name="enRoute ">
       </command>
    </extension>
    <extension
@@ -16,7 +17,7 @@
             class="org.caleydo.view.linearizedpathway.RcpGLLinearizedPathwayView"
             icon="resources/icons/linearizedpathway.png"
             id="org.caleydo.view.linearizedpathway"
-            name="Linearized Pathway"
+            name="enRoute"
             restorable="true">
          <description>
             description body text
@@ -35,6 +36,7 @@
             <command
                   commandId="org.caleydo.view.linearizedpathway.openlinearizedpathway"
                   icon="resources/icons/linearizedpathway.png"
+                  label="enRoute - Pathway Path"
                   style="push">
             </command>
          </menu>

@@ -33,5 +33,6 @@ public interface ILabelTextProvider {
 	/**
 	 * @return The text that shall be displayed by a {@link LabelRenderer}.
 	 */
-	public String getLabelText();
+	public String getLabel();
+	
 }

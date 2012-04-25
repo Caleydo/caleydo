@@ -383,13 +383,13 @@ public class TableBasedDataNode
 					}
 				}
 
-				Collections.sort(childList);
+//				Collections.sort(childList);
 				childRecordPerspectiveLists.put(perspective, childList);
 			}
 
 		}
 
-		Collections.sort(parentRecordPerspectives);
+//		Collections.sort(parentRecordPerspectives);
 
 		List<RecordPerspective> sortedRecordPerspectives = new ArrayList<RecordPerspective>();
 
@@ -439,13 +439,13 @@ public class TableBasedDataNode
 					}
 				}
 
-				Collections.sort(childList);
+//				Collections.sort(childList);
 				childDimensionPerspectiveLists.put(perspective, childList);
 			}
 
 		}
 
-		Collections.sort(parentDimensionPerspectives);
+//		Collections.sort(parentDimensionPerspectives);
 
 		List<DimensionPerspective> sortedDimensionPerspectives = new ArrayList<DimensionPerspective>();
 

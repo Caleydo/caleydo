@@ -317,7 +317,7 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 	}
 
 	@Override
-	public String getLabelText() {
+	public String getLabel() {
 		return getCaption();
 	}
 

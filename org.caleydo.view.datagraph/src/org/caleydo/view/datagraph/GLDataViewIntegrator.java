@@ -967,11 +967,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			final DimensionVirtualArray dimensionVA, final Group dimensionGroup) {
 
 		final String recordPerspectiveLabel = (createRecordPerspective) ? (recordGroup
-				.getClusterNode().getLabel()) : dataDomain.getTable()
+				.getLabel()) : dataDomain.getTable()
 				.getRecordPerspective(recordPerspectiveID).getLabel();
 
 		final String dimensionPerspectiveLabel = (createDimensionPerspective) ? (dimensionGroup
-				.getClusterNode().getLabel()) : dataDomain.getTable()
+				.getLabel()) : dataDomain.getTable()
 				.getDimensionPerspective(dimensionPerspectiveID).getLabel();
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {

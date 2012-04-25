@@ -356,8 +356,8 @@ public class DataContainer {
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.setLabel(group.getClusterNode().getLabel(), group
-					.getClusterNode().isDefaultLabel());
+			recordPerspective.setLabel(group.getLabel(), group
+					.isDefaultLabel());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			recordPerspective.init(data);
@@ -401,8 +401,8 @@ public class DataContainer {
 
 			DimensionPerspective dimensionPerspective = new DimensionPerspective(
 					dataDomain);
-			dimensionPerspective.setLabel(group.getClusterNode().getLabel(), group
-					.getClusterNode().isDefaultLabel());
+			dimensionPerspective.setLabel(group.getLabel(), group
+					.isDefaultLabel());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			dimensionPerspective.init(data);
@@ -410,8 +410,8 @@ public class DataContainer {
 			DataContainer subDataContainer = new DataContainer(dataDomain,
 					recordPerspective, dimensionPerspective);
 			subDataContainer.setDimensionGroup(group);
-			subDataContainer.setLabel(group.getClusterNode().getLabel(), group
-					.getClusterNode().isDefaultLabel());
+			subDataContainer.setLabel(group.getLabel(), group
+					.isDefaultLabel());
 			dimensionSubDataContainers.add(subDataContainer);
 
 		}

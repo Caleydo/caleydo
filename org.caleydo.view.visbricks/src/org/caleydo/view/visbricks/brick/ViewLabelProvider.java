@@ -40,7 +40,7 @@ public class ViewLabelProvider implements ILabelTextProvider {
 	}
 
 	@Override
-	public String getLabelText() {
+	public String getLabel() {
 		return view.getLabel();
 	}
 

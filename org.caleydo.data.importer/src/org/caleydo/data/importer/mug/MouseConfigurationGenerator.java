@@ -70,7 +70,7 @@ public class MouseConfigurationGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setIdType("SAMPLE");
 
 		dataSetDescriptionCollection.add(setUpMRNAData());
-		dataSetDescriptionCollection.add(setUpSequencedMRNAData());
+//		dataSetDescriptionCollection.add(setUpSequencedMRNAData());
 
 	}
 

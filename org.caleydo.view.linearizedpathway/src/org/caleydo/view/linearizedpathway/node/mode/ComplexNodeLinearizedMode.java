@@ -126,7 +126,7 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 	}
 
 	@Override
-	public String getLabelText() {
+	public String getLabel() {
 		return node.getCaption();
 	}
 

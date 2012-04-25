@@ -312,7 +312,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode implements ILabelTextProv
 	}
 
 	@Override
-	public String getLabelText() {
+	public String getLabel() {
 		return node.getCaption();
 	}
 

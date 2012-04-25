@@ -162,7 +162,7 @@ public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelTextP
 	}
 
 	@Override
-	public String getLabelText() {
+	public String getLabel() {
 		return node.getCaption();
 	}
 

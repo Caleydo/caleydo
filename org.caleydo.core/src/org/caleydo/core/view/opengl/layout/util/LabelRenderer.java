@@ -113,7 +113,7 @@ public class LabelRenderer extends APickableLayoutRenderer {
 		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
 
 		if (labelProvider != null)
-			label = labelProvider.getLabelText();
+			label = labelProvider.getLabel();
 		textRenderer.setColor(0, 0, 0, 1);
 		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2
 				* ySpacing, x);
