@@ -191,7 +191,7 @@ public class BubbleSet implements SetOutline {
         this.nodeR0 = nodeR0;
         this.nodeR1 = nodeR1;
         this.morphBuffer = morphBuffer;
-        this.skip = skip;
+        this.skip = skip;        
     }
 
     /**
@@ -201,6 +201,11 @@ public class BubbleSet implements SetOutline {
         // use default paramters
     }
 
+    protected boolean useVirtualEdges=true;
+    public void useVirtualEdges(boolean value)
+    {
+    	useVirtualEdges=value;
+    }
     // FIELDS BELOW ARE USED BY THE ALGORITHM AND GENERALLY SHOULD NOT BE
     // CHANGED (HENCE NO GET/SET)
 
@@ -284,7 +289,10 @@ public class BubbleSet implements SetOutline {
         }
 
         // calculate and store virtual edges
-        calculateVirtualEdges(memberItems, nonMembers);
+        virtualEdges.clear();
+        if(useVirtualEdges){
+        	calculateVirtualEdges(memberItems, nonMembers);
+        }
 
         if (edges != null) {
             virtualEdges.addAll(Arrays.asList(edges));
@@ -641,16 +649,15 @@ public class BubbleSet implements SetOutline {
      */
     private void calculateVirtualEdges(final Item[] items,
             final Rectangle2D[] nonMembers) {
-//final Deque<Item> visited = new ArrayDeque<Item>();
-        virtualEdges.clear();
+    	final Deque<Item> visited = new ArrayDeque<Item>();
 
-//        calculateCentroidDistances(items);
-//        Arrays.sort(items);
-//
-//        for (final Item item : items) {
-//            virtualEdges.addAll(connectItem(items, nonMembers, item, visited));
-//            visited.add(item);
-//        }
+        calculateCentroidDistances(items);
+        Arrays.sort(items);
+
+        for (final Item item : items) {
+            virtualEdges.addAll(connectItem(items, nonMembers, item, visited));
+            visited.add(item);
+        }
     }
 
     /**
