@@ -209,7 +209,7 @@ public class GLPathway
 
 		// ///////////////////////////////////////////////////
 		// / bubble sets
-		setOutline = new BubbleSet();
+		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
 		shaper = new BSplineShapeGenerator(setOutline);
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
@@ -510,8 +510,8 @@ public class GLPathway
 			bubblesetCanvas.removeCurrentGroup();
 			groupID--;
 		}
-		final double bbItemW = 10;
-		final double bbItemH = 10;
+		double bbItemW = 10;
+		double bbItemH = 10;
 		int bbGroupID = 0;
 		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
 			bubblesetCanvas.addGroup(); // bubble sets do not allow to delete
@@ -532,6 +532,8 @@ public class GLPathway
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+				bbItemW=sourceVertexRep.getWidth();
+				bbItemH=sourceVertexRep.getHeight();
 				double posX = sourceVertexRep.getXOrigin();
 				double posY = sourceVertexRep.getYOrigin();
 				double tX = targetVertexRep.getXOrigin();
@@ -544,6 +546,8 @@ public class GLPathway
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
 				double posX = targetVertexRep.getXOrigin();
 				double posY = targetVertexRep.getYOrigin();
+				bbItemW=targetVertexRep.getWidth();
+				bbItemH=targetVertexRep.getHeight();
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
 			}
 			gl.glPopName();
