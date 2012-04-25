@@ -641,16 +641,16 @@ public class BubbleSet implements SetOutline {
      */
     private void calculateVirtualEdges(final Item[] items,
             final Rectangle2D[] nonMembers) {
-        final Deque<Item> visited = new ArrayDeque<Item>();
+//final Deque<Item> visited = new ArrayDeque<Item>();
         virtualEdges.clear();
 
-        calculateCentroidDistances(items);
-        Arrays.sort(items);
-
-        for (final Item item : items) {
-            virtualEdges.addAll(connectItem(items, nonMembers, item, visited));
-            visited.add(item);
-        }
+//        calculateCentroidDistances(items);
+//        Arrays.sort(items);
+//
+//        for (final Item item : items) {
+//            virtualEdges.addAll(connectItem(items, nonMembers, item, visited));
+//            visited.add(item);
+//        }
     }
 
     /**
