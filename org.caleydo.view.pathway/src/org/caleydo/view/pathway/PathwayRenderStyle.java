@@ -30,10 +30,10 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	public static final float SCALING_FACTOR_X = 0.0025f;
 	public static final float SCALING_FACTOR_Y = 0.0025f;
 
-	public static final float ENZYME_NODE_WIDTH = 45 * SCALING_FACTOR_X / 2.0f;
-	public static final float ENZYME_NODE_HEIGHT = 17 * SCALING_FACTOR_X / 2.0f;
-	public static final float COMPOUND_NODE_WIDTH = 8 * SCALING_FACTOR_X / 2.0f;
-	public static final float COMPOUND_NODE_HEIGHT = 8 * SCALING_FACTOR_X / 2.0f;
+	public static final float ENZYME_NODE_WIDTH = 45 * SCALING_FACTOR_X;
+	public static final float ENZYME_NODE_HEIGHT = 17 * SCALING_FACTOR_X;
+	public static final float COMPOUND_NODE_WIDTH = 8 * SCALING_FACTOR_X;
+	public static final float COMPOUND_NODE_HEIGHT = 8 * SCALING_FACTOR_X;
 
 	public static final float[] ENZYME_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };
 	public static final float[] COMPOUND_NODE_COLOR = new float[] { 0.3f, 0.3f, 0.3f, 1 };

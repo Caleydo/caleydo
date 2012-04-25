@@ -533,20 +533,22 @@ public class GLPathway
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
+
 				bbItemW=sourceVertexRep.getWidth();
 				bbItemH=sourceVertexRep.getHeight();
-				double posX = sourceVertexRep.getXOrigin();
-				double posY = sourceVertexRep.getYOrigin();
-				double tX = targetVertexRep.getXOrigin();
-				double tY = targetVertexRep.getYOrigin();
+				double posX = sourceVertexRep.getLowerLeftCornerX();
+				double posY = sourceVertexRep.getLowerLeftCornerY();
+				double tX = targetVertexRep.getLowerLeftCornerX();
+				double tY = targetVertexRep.getLowerLeftCornerY();
+
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
 				bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
 				lastEdge = edge;
 			}
 			if (lastEdge != null) {
 				PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(lastEdge);
-				double posX = targetVertexRep.getXOrigin();
-				double posY = targetVertexRep.getYOrigin();
+				double posX = targetVertexRep.getLowerLeftCornerX();
+				double posY = targetVertexRep.getLowerLeftCornerY();
 				bbItemW=targetVertexRep.getWidth();
 				bbItemH=targetVertexRep.getHeight();
 				bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
@@ -681,9 +683,9 @@ public class GLPathway
 				// viewID = glRemoteRenderingView.getID();
 
 				ElementConnectionInformation elementRep = new ElementConnectionInformation(
-						dataDomain.getRecordIDType(), viewID, vertexRep.getXOrigin()
+						dataDomain.getRecordIDType(), viewID, vertexRep.getLowerLeftCornerX()
 								* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
-								+ vecTranslation.x(), (pathwayHeight - vertexRep.getYOrigin())
+								+ vecTranslation.x(), (pathwayHeight - vertexRep.getLowerLeftCornerY())
 								* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 								+ vecTranslation.y(), 0);
 
@@ -918,10 +920,10 @@ public class GLPathway
 			tmpPathwayVertexRep = pathwayItemManager.getPathwayVertexRep(vertexRepID);
 
 			ElementConnectionInformation elementRep = new ElementConnectionInformation(
-					dataDomain.getRecordIDType(), viewID, tmpPathwayVertexRep.getXOrigin()
+					dataDomain.getRecordIDType(), viewID, tmpPathwayVertexRep.getLowerLeftCornerX()
 							* PathwayRenderStyle.SCALING_FACTOR_X * vecScaling.x()
 							+ vecTranslation.x(),
-					(pathwayHeight - tmpPathwayVertexRep.getYOrigin())
+					(pathwayHeight - tmpPathwayVertexRep.getLowerLeftCornerY())
 							* PathwayRenderStyle.SCALING_FACTOR_Y * vecScaling.y()
 							+ vecTranslation.y(), 0);
 

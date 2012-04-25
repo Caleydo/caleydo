@@ -22,8 +22,6 @@ package org.caleydo.datadomain.pathway.graph.item.vertex;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.StringTokenizer;
-
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
@@ -45,7 +43,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class PathwayVertexRep implements Serializable, IUniqueObject {
+public class PathwayVertexRep
+	implements Serializable, IUniqueObject {
 
 	private static final long serialVersionUID = 1L;
 
@@ -58,10 +57,6 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	private EPathwayVertexShape shape;
 
 	protected ArrayList<Pair<Short, Short>> coords;
-
-	protected short width = 20;
-
-	protected short height = 20;
 
 	/**
 	 * The {@link PathwayVertex} objects that map to this representation there
@@ -78,8 +73,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	 * @param shapeType
 	 * @param coords
 	 */
-	public PathwayVertexRep(final String name, final String shapeType,
-			final String coords) {
+	public PathwayVertexRep(final String name, final String shapeType, final String coords) {
 
 		id = GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
@@ -105,16 +99,13 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 
 		id = GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.PATHWAY_VERTEX_REP);
-		
+
 		if (shapeType == null || shapeType.isEmpty())
 			shape = EPathwayVertexShape.rect;
 		else
 			shape = EPathwayVertexShape.valueOf(shapeType);
 
 		this.name = name;
-		this.width = width;
-		this.height = height;
-
 		setRectangularCoords(x, y, width, height);
 	}
 
@@ -132,9 +123,9 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 			String xString = stringCoordinates[coordinateCount++].replace(" ", "");
 			Short xCoord = Short.valueOf(xString);
 
-			if(coordinateCount >= stringCoordinates.length)
+			if (coordinateCount >= stringCoordinates.length)
 				return;
-			
+
 			String yString = stringCoordinates[coordinateCount++].replace(" ", "");
 			Short yCoord = Short.valueOf(yString);
 
@@ -143,15 +134,14 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		}
 	}
 
-	protected void setRectangularCoords(final short x, final short y, final short width,
-			final short height) {
+	protected void setRectangularCoords(short x, short y, short width, short height) {
 
 		coords = new ArrayList<Pair<Short, Short>>(4);
 
-		coords.add(new Pair<Short, Short>(x, y));
-		coords.add(new Pair<Short, Short>((short) (x + width), y));
-		coords.add(new Pair<Short, Short>((short) (x + width), (short) (y + height)));
-		coords.add(new Pair<Short, Short>(x, (short) (y + height)));
+		coords.add(new Pair<Short, Short>((short) (x - width / 2), (short) (y - height / 2)));
+		coords.add(new Pair<Short, Short>((short) (x + width / 2), (short) (y - height / 2)));
+		coords.add(new Pair<Short, Short>((short) (x + width / 2), (short) (y + height / 2)));
+		coords.add(new Pair<Short, Short>((short) (x - width / 2), (short) (y + height / 2)));
 	}
 
 	/**
@@ -176,24 +166,34 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 		return coords;
 	}
 
-	public short getXOrigin() {
+	public short getCenterX() {
 
 		return coords.get(0).getFirst();
 	}
 
-	public short getYOrigin() {
+	public short getCenterY() {
 
 		return coords.get(0).getSecond();
 	}
 
+	public short getLowerLeftCornerX() {
+		return (short) (coords.get(0).getFirst() + ((coords.get(1).getFirst() - coords.get(0)
+				.getFirst())/2));
+	}
+
+	public short getLowerLeftCornerY() {
+		return (short) (coords.get(1).getSecond() + ((coords.get(2).getSecond() - coords.get(1)
+				.getSecond())/2));
+	}
+
 	public short getWidth() {
 
-		return width;
+		return (short) (coords.get(1).getFirst() - coords.get(0).getFirst());
 	}
 
 	public short getHeight() {
 
-		return height;
+		return (short) (coords.get(2).getSecond() - coords.get(1).getSecond());
 	}
 
 	@Override
@@ -216,8 +216,7 @@ public class PathwayVertexRep implements Serializable, IUniqueObject {
 	}
 
 	/**
-	 * @param pathway
-	 *            setter, see {@link #pathway}
+	 * @param pathway setter, see {@link #pathway}
 	 */
 	public void setPathway(PathwayGraph pathway) {
 		this.pathway = pathway;
