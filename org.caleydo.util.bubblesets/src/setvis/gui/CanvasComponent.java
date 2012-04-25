@@ -464,6 +464,19 @@ public class CanvasComponent extends JComponent implements Canvas {
     	items.get(curItemGroup).clear();
     }
     
+    /**
+     * removes current group without updating the outline.
+     * this allows to remove ALL groups
+     */
+    public void removeCurrentGroup()
+    {    	
+        if (items.size() < 1) {
+            return;
+        }
+        items.remove(curItemGroup);
+        --curItemGroup;
+    }
+    
     @Override
     public void setCurrentGroup(final int curItemGroup) {
         this.curItemGroup = curItemGroup;
