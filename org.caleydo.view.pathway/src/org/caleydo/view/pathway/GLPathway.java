@@ -176,6 +176,7 @@ public class GLPathway
 	private SetOutline setOutline;
 	private AbstractShapeGenerator shaper;
 	private CanvasComponent bubblesetCanvas;
+	Texture bubbleSetsTexture;
 	private boolean isBubbleTextureDirty;
 	/**
 	 * Constructor.
@@ -255,7 +256,6 @@ public class GLPathway
 		texRenderer = new TextureRenderer(1280, 768, true);// we will adapt the
 															// dimensions in
 															// each frame
-		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
 	}
 
 	@Override
@@ -552,31 +552,34 @@ public class GLPathway
 		}
 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
-		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
-
+		
 		Graphics2D g2d = texRenderer.createGraphics();
 		bubblesetCanvas.paint(g2d);
+		
 		g2d.dispose();		
 	}
 	
 	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
-			return;
+			return;		
 		
-		//if(isBubbleTextureDirty){
+		texRenderer.setColor(1.0f, 1.0f, 1.0f, 0.75f);
+		if(isBubbleTextureDirty){
 			updateBubbleSetsTexture(gl);
 			isBubbleTextureDirty=false;
-		//}
+		}
+		bubbleSetsTexture = texRenderer.getTexture();
+
 		
 		float textureWidth = PathwayRenderStyle.SCALING_FACTOR_X * pathway.getWidth();
 		float textureHeight = PathwayRenderStyle.SCALING_FACTOR_Y * pathway.getHeight();
 
-		Texture tex = texRenderer.getTexture();
+		
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-		tex.enable();
-		tex.bind();
+		bubbleSetsTexture.enable();
+		bubbleSetsTexture.bind();
 		gl.glBegin(GL2.GL_QUADS);
 
 		gl.glTexCoord2f(0, 1);
@@ -589,7 +592,7 @@ public class GLPathway
 		gl.glVertex3f(0.0f, textureHeight, 0.0f);
 
 		gl.glEnd();
-		tex.disable();
+		bubbleSetsTexture.disable();
 
 	}
 
