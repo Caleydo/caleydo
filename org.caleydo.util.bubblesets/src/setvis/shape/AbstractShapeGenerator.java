@@ -72,6 +72,36 @@ public abstract class AbstractShapeGenerator {
     }
 
     /**
+     *
+     * @return The outline shapes for each set given.
+     */
+    public final Shape[] createShapesForLists(final Collection<? extends Collection<Rectangle2D>> items,
+    										 final Collection<? extends Collection<Line2D>> edges)
+  
+    {
+        final List<Rectangle2D[]> list = new LinkedList<Rectangle2D[]>();
+        for (final Collection<Rectangle2D> group : items) {
+            list.add(group.toArray(new Rectangle2D[group.size()]));
+        }
+        final List<Line2D[]> edgelist = new LinkedList<Line2D[]>();
+        for (final Collection<Line2D> egroup : edges) {
+        	edgelist.add(egroup.toArray(new Line2D[egroup.size()]));
+        }
+        
+          final Shape[] res = new Shape[list.size()];
+          int i = 0;
+          for (final Rectangle2D[] group : list) {
+
+        		  res[i] = createShapeFor(group, getNonMembers(list, i),edgelist.get(i));
+             i++;
+          }
+        
+          return res;
+      }
+    
+
+    
+    /**
      * Creates shapes for all sets given by {@code items}.
      * 
      * @param items
@@ -146,6 +176,21 @@ public abstract class AbstractShapeGenerator {
         return res.toArray(new Rectangle2D[res.size()]);
     }
 
+    private static Rectangle2D[] getNonMembers(
+            final List<List<Rectangle2D>> items, final int groupID) {
+        final List<Rectangle2D> res = new LinkedList<Rectangle2D>();
+        int g = 0;
+        for (final List<Rectangle2D> group : items) {
+            if (g++ == groupID) {
+                continue;
+            }
+            for(final Rectangle2D item : group) {
+            	res.add(item);
+            }
+        }
+        return res.toArray(new Rectangle2D[res.size()]);
+    }
+
     /**
      * Finds all rectangles not belonging to the given group.
      * 
@@ -196,7 +241,8 @@ public abstract class AbstractShapeGenerator {
      * @return The resulting shape.
      */
     public final Shape createShapeFor(final Rectangle2D[] members,
-            final Rectangle2D[] nonMembers, final Line2D[] lines) {
+            final Rectangle2D[] nonMembers, final Line2D[] lines) 
+    {
         final Rectangle2D[] m = mapRects(members);
         final Rectangle2D[] n = mapRects(nonMembers);
         final Point2D[] res = setOutline.createOutline(m, n, lines);

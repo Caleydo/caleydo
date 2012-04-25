@@ -38,6 +38,7 @@ public final class Main {
         final double h = canvas.getCurrentItemHeight();
         canvas.addItem(0, 86.0, 141.0, w, h);
         canvas.addItem(0, 53.0, 306.0, w, h);
+        canvas.addEdge(0,86.0, 141.0, 53.0, 306.0);
         canvas.addItem(0, 202.0, 256.0, w, h);
         canvas.addGroup();
         canvas.addItem(1, 85.0, 219.0, w, h);

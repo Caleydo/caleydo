@@ -237,6 +237,9 @@ public interface Canvas {
      */
     void addItem(int groupID, double tx, double ty, double width, double height);
 
+    
+    public void addEdge(final int groupID, final double startX, final double startY, 
+    										final double endX, final double endY);
     /**
      * Generates a list of all items at the position {@code (tx, ty)}.
      * 
