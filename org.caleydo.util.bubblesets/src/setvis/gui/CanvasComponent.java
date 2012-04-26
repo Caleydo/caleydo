@@ -784,7 +784,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
         	
         	
-            final Shape gs = groupShapes[pos];
+            final Shape gs = groupShapes[i];
             if (gs != null) {
                 g2d.setColor(t);
                 g2d.fill(gs);
@@ -808,9 +808,9 @@ public class CanvasComponent extends JComponent implements Canvas {
             hue += step;
             ++pos;
         }
-        hue = 0f;
-        pos = 0;
-        int rects = 0;
+//        hue = 0f;
+//        pos = 0;
+//        int rects = 0;
         // draw the items
 //        for (final List<Rectangle2D> group : items) {
 //            final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
@@ -843,15 +843,15 @@ public class CanvasComponent extends JComponent implements Canvas {
 //            ++pos;
 //            rects += group.size();
 //        }
-        final String info = "Groups: " + items.size() + " Items: " + rects
-                + (controlPoints > 0 ? " Points: " + controlPoints : "");
-        if (!infoText.equals(info)) {
-            infoText = info;
-            textChanged = true;
-        }
-        if (textChanged) {
-            notifyCanvasListeners(CanvasListener.TEXT);
-        }
+//        final String info = "Groups: " + items.size() + " Items: " + rects
+//                + (controlPoints > 0 ? " Points: " + controlPoints : "");
+//        if (!infoText.equals(info)) {
+//            infoText = info;
+//            textChanged = true;
+//        }
+//        if (textChanged) {
+//            notifyCanvasListeners(CanvasListener.TEXT);
+//        }
     }
 
     // whether to draw points
