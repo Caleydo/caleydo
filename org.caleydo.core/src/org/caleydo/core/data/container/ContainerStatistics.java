@@ -149,9 +149,7 @@ public class ContainerStatistics {
 		else
 			numberOfBuckets = (int) Math.sqrt(recordVA.size());
 		Histogram histogram = new Histogram(numberOfBuckets);
-		for (int iCount = 0; iCount < numberOfBuckets; iCount++) {
-			histogram.add(0);
-		}
+		
 
 		// FloatCContainerIterator iterator =
 		// ((FloatCContainer)
@@ -167,8 +165,7 @@ public class ContainerStatistics {
 					int iIndex = (int) (value * numberOfBuckets);
 					if (iIndex == numberOfBuckets)
 						iIndex--;
-					Integer iNumOccurences = histogram.get(iIndex);
-					histogram.set(iIndex, ++iNumOccurences);
+					histogram.add(iIndex, recordID);
 				}
 			}
 		}

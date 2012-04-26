@@ -30,7 +30,8 @@ public class HistogramCreator {
 	public static Histogram createHistogram(double[] vector) {
 
 		int iNumberOfBuckets = (int) Math.sqrt(vector.length);
-		Histogram histogram = new Histogram(iNumberOfBuckets);
+		Histogram histogram = new Histogram(iNumberOfBuckets);// private ArrayList<Integer>
+		
 
 		double min = Double.MAX_VALUE;
 		double max = Double.MIN_VALUE;
@@ -46,17 +47,12 @@ public class HistogramCreator {
 		histogram.setMax((float) max);
 		histogram.setMin((float) min);
 
-		for (int count = 0; count < iNumberOfBuckets; count++) {
-
-			histogram.add(0);
-		}
-
+		
 		for (double value : vector) {
 			int iIndex = (int) (normalize(min, max, value) * iNumberOfBuckets);
 			if (iIndex == iNumberOfBuckets)
 				iIndex--;
-			Integer iNumOccurences = histogram.get(iIndex);
-			histogram.set(iIndex, ++iNumOccurences);
+			histogram.add(iIndex, 0);
 		}
 		return histogram;
 	}
@@ -78,21 +74,18 @@ public class HistogramCreator {
 		histogram.setMax((float) max);
 		histogram.setMin((float) min);
 
-		for (int count = 0; count < iNumberOfBuckets; count++) {
-
-			histogram.add(0);
-		}
+		
 
 		for (float value : vector) {
 			int iIndex = (int) (normalize(min, max, value) * iNumberOfBuckets);
 			if (iIndex == iNumberOfBuckets)
 				iIndex--;
-			Integer iNumOccurences = histogram.get(iIndex);
-			histogram.set(iIndex, ++iNumOccurences);
+			histogram.add(iIndex, 0);
 		}
 		return histogram;
 	}
-
+	// private ArrayList<Integer>
+	
 	public static Histogram createLogHistogram(double vec[]) {
 		return createHistogram(runLog(vec));
 	}

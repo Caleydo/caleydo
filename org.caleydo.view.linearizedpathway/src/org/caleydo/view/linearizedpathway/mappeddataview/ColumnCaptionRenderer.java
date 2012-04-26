@@ -23,17 +23,17 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.util.button.Button;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  * 
  */
 public class ColumnCaptionRenderer extends SelectableRenderer {
@@ -42,17 +42,26 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 	private CaleydoTextRenderer textRenderer;
 	private PixelGLConverter pixelGLConverter;
 	private String label;
+	ADataPerspective<?, ?, ?, ?> samplePerspective;
+	APickingListener groupPickingListener;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent,
-			Group group) {
+			Group group, ADataPerspective<?, ?, ?, ?> samplePerspective) {
 		super(parentView, parent);
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
 		this.group = group;
 		this.label = group.getLabel();
+		this.samplePerspective = samplePerspective;
 
 		topBarColor = MappedDataRenderer.CAPTION_BACKGROUND_COLOR;
 		bottomBarColor = topBarColor;
+		registerPickingListener();
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		unregisterPickingListener();
 	}
 
 	@Override
@@ -113,5 +122,55 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 				bottomBarColor = topBarColor;
 			}
 		}
+	}
+
+	private void registerPickingListener() {
+		groupPickingListener = new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				parent.sampleGroupSelectionManager
+						.clearSelection(SelectionType.SELECTION);
+				parent.sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
+						pick.getObjectID());
+				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+
+				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
+				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
+						samplePerspective.getIdType(), samplePerspective
+								.getVirtualArray().getIDs());
+				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOver(Pick pick) {
+
+				parent.sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER,
+						pick.getObjectID());
+				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				parent.sampleGroupSelectionManager.removeFromType(
+						SelectionType.MOUSE_OVER, pick.getObjectID());
+				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+
+				parentView.setDisplayListDirty();
+
+			}
+		};
+
+		parentView.addIDPickingListener(groupPickingListener,
+				PickingType.SAMPLE_GROUP.name(), group.getID());
+	}
+
+	private void unregisterPickingListener() {
+		parentView.removePickingListener(groupPickingListener);
 	}
 }

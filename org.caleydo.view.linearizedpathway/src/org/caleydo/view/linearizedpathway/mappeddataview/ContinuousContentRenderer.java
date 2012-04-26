@@ -34,6 +34,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
@@ -42,8 +44,11 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
  */
 public class ContinuousContentRenderer extends ContentRenderer {
 
+	private static Integer rendererIDCounter = 0;
+
 	Average average;
 	boolean useShading = true;
+	private int rendererID;
 
 	public ContinuousContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, DataContainer dataContainer,
@@ -51,6 +56,9 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			MappedDataRenderer parent, Group group) {
 		super(geneID, davidID, dataDomain, dataContainer, experimentPerspective,
 				parentView, parent, group);
+		synchronized (rendererIDCounter) {
+			rendererID = rendererIDCounter++;
+		}
 
 		topBarColor = MappedDataRenderer.BAR_COLOR;
 		bottomBarColor = topBarColor;
@@ -62,9 +70,11 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			return;
 		average = ContainerStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
-		if (experimentPerspective.getVirtualArray().size() > 30)
-			useShading = false;
+		if (experimentPerspective.getVirtualArray().size() > 30) {
 
+			useShading = false;
+		}
+		registerPickingListener();
 	}
 
 	@Override
@@ -85,8 +95,11 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			selectionLists.add(geneSelectionTypes);
 
 			for (Integer experimentID : experimentPerspective.getVirtualArray()) {
+				Integer resolvedSampleID = sampleIDMappingManager.getID(
+						dataDomain.getSampleIDType(), parent.sampleIDType, experimentID);
+
 				selectionLists.add(parent.sampleSelectionManager
-						.getSelectionTypes(experimentID));
+						.getSelectionTypes(resolvedSampleID));
 			}
 
 			calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
@@ -95,66 +108,6 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		} else {
 			renderAllBars(gl, geneSelectionTypes);
 		}
-
-	}
-
-	public void renderAverageBar(GL2 gl) {
-		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-		// bottomBarColor = topBarColor;
-
-		// gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-		// PickingType.GENE.name(), davidID));
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor4fv(bottomBarColor, 0);
-		gl.glVertex3f(0, y / 3, z);
-		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-				bottomBarColor[2] * 0.9f);
-		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
-		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
-		gl.glColor4fv(topBarColor, 0);
-		gl.glVertex3f(0, y / 3 * 2, z);
-		gl.glEnd();
-
-		gl.glColor3f(0, 0, 0);
-		gl.glLineWidth(0.5f);
-		gl.glBegin(GL2.GL_LINE_STRIP);
-		gl.glVertex3f(0, y / 3, z);
-		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
-		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
-		gl.glVertex3f(0, y / 3 * 2, z);
-		gl.glEnd();
-
-		// gl.glPopName();
-
-		float lineZ = z + 0.01f;
-
-		gl.glColor3f(0, 0, 0);
-		// gl.glColor3f(1 , 1, 1);
-
-		gl.glLineWidth(0.8f);
-
-		float xMinusDeviation = (float) (average.getArithmeticMean() - average
-				.getStandardDeviation()) * x;
-		float xPlusDeviation = (float) (average.getArithmeticMean() + average
-				.getStandardDeviation()) * x;
-
-		float lineTailHeight = parentView.getPixelGLConverter()
-				.getGLHeightForPixelHeight(3);
-
-		gl.glBegin(GL.GL_LINES);
-		gl.glVertex3f(xMinusDeviation, y / 2, lineZ);
-		gl.glVertex3f(xPlusDeviation, y / 2, lineZ);
-
-		gl.glLineWidth(0.6f);
-
-		gl.glVertex3f(xPlusDeviation, y / 2 - lineTailHeight, lineZ);
-		gl.glVertex3f(xPlusDeviation, y / 2 + lineTailHeight, lineZ);
-
-		gl.glVertex3f(xMinusDeviation, y / 2 - lineTailHeight, lineZ);
-		gl.glVertex3f(xMinusDeviation, y / 2 + lineTailHeight, lineZ);
-
-		gl.glEnd();
 
 	}
 
@@ -225,4 +178,92 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		}
 	}
+
+	public void renderAverageBar(GL2 gl) {
+		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+		// bottomBarColor = topBarColor;
+
+		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+				PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor4fv(bottomBarColor, 0);
+		gl.glVertex3f(0, y / 3, z);
+		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+				bottomBarColor[2] * 0.9f);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
+		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
+		gl.glColor4fv(topBarColor, 0);
+		gl.glVertex3f(0, y / 3 * 2, z);
+		gl.glEnd();
+
+		gl.glColor3f(0, 0, 0);
+		gl.glLineWidth(0.5f);
+		gl.glBegin(GL2.GL_LINE_STRIP);
+		gl.glVertex3f(0, y / 3, z);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
+		gl.glVertex3f(0, y / 3 * 2, z);
+		gl.glEnd();
+
+		float lineZ = z + 0.01f;
+
+		gl.glColor3f(0, 0, 0);
+		// gl.glColor3f(1 , 1, 1);
+
+		gl.glLineWidth(0.8f);
+
+		float xMinusDeviation = (float) (average.getArithmeticMean() - average
+				.getStandardDeviation()) * x;
+		float xPlusDeviation = (float) (average.getArithmeticMean() + average
+				.getStandardDeviation()) * x;
+
+		float lineTailHeight = parentView.getPixelGLConverter()
+				.getGLHeightForPixelHeight(3);
+
+		gl.glBegin(GL.GL_LINES);
+		gl.glVertex3f(xMinusDeviation, y / 2, lineZ);
+		gl.glVertex3f(xPlusDeviation, y / 2, lineZ);
+
+		gl.glLineWidth(0.6f);
+
+		gl.glVertex3f(xPlusDeviation, y / 2 - lineTailHeight, lineZ);
+		gl.glVertex3f(xPlusDeviation, y / 2 + lineTailHeight, lineZ);
+
+		gl.glVertex3f(xMinusDeviation, y / 2 - lineTailHeight, lineZ);
+		gl.glVertex3f(xMinusDeviation, y / 2 + lineTailHeight, lineZ);
+
+		gl.glEnd();
+		gl.glPopName();
+
+	}
+
+	private void registerPickingListener() {
+		pickingListener = new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+
+				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
+
+				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
+						sampleIDType, experimentPerspective.getVirtualArray().getIDs());
+				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
+
+				parent.sampleGroupSelectionManager
+						.clearSelection(SelectionType.SELECTION);
+
+				parent.sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
+						group.getID());
+				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+			}
+
+		};
+
+		parentView.addIDPickingListener(pickingListener,
+				PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
+
+	}
+
 }

@@ -25,14 +25,16 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
  */
 public enum PickingType {
 	/** Picking type for genes */
-	GENE, 
+	GENE,
 	/** Picking type for samples */
-	SAMPLE, 
+	SAMPLE,
 	/** Picking type for sample groups */
 	SAMPLE_GROUP,
 	/** The view mode for the sample group */
-	SAMPLE_GROUP_VIEW_MODE
-	
-	
+	SAMPLE_GROUP_VIEW_MODE,
+	/** Picking type for abstract bars */
+	SAMPLE_GROUP_RENDERER,
+	/** A bar in a histogram which can be resolved to samples */
+	HISTOGRAM_BAR
 
 }

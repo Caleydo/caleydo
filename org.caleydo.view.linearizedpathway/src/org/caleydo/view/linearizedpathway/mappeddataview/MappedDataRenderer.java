@@ -25,7 +25,6 @@ import java.util.Set;
 
 import javax.media.opengl.GL2;
 
-import org.caleydo.core.data.collection.table.DataTableDataType;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDType;
@@ -383,6 +382,7 @@ public class MappedDataRenderer {
 		dataSetColumn.append(captionRow);
 
 		for (int dataContainerCount = 0; dataContainerCount < usedDataContainers.size(); dataContainerCount++) {
+
 			ColumnCaptionLayout captionLayout = new ColumnCaptionLayout(parentView, this);
 			captionRow.append(captionLayout);
 			if (dataContainerCount != usedDataContainers.size() - 1) {
@@ -422,7 +422,7 @@ public class MappedDataRenderer {
 						.get(0);
 			}
 		}
-		captionLayout.init(group);
+		captionLayout.init(group, experimentPerspective);
 
 		IDType geneIDTYpe = dataDomain.getGeneIDType();
 		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
@@ -550,6 +550,8 @@ public class MappedDataRenderer {
 						pick.getObjectID());
 				geneSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
+				
+				
 
 			}
 
@@ -610,39 +612,6 @@ public class MappedDataRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-				sampleGroupSelectionManager.clearSelection(SelectionType.SELECTION);
-				sampleGroupSelectionManager.addToType(SelectionType.SELECTION,
-						pick.getObjectID());
-				sampleGroupSelectionManager.triggerSelectionUpdateEvent();
-				parentView.setDisplayListDirty();
-
-			}
-
-			@Override
-			public void mouseOver(Pick pick) {
-
-				sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER,
-						pick.getObjectID());
-				sampleGroupSelectionManager.triggerSelectionUpdateEvent();
-				parentView.setDisplayListDirty();
-
-			}
-
-			@Override
-			public void mouseOut(Pick pick) {
-				sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
-						pick.getObjectID());
-				sampleSelectionManager.triggerSelectionUpdateEvent();
-
-				parentView.setDisplayListDirty();
-
-			}
-		}, PickingType.SAMPLE_GROUP.name());
-
-		parentView.addTypePickingListener(new APickingListener() {
-
-			@Override
-			public void clicked(Pick pick) {
 				if (sampleGroupSelectionManager.checkStatus(abstractGroupType,
 						pick.getObjectID()))
 					sampleGroupSelectionManager.removeFromType(abstractGroupType,
@@ -655,32 +624,10 @@ public class MappedDataRenderer {
 
 			}
 
-			// @Override
-			// public void mouseOver(Pick pick) {
-			//
-			// sampleGroupSelectionManager.addToType(SelectionType.MOUSE_OVER,
-			// pick.getObjectID());
-			// sampleGroupSelectionManager.triggerSelectionUpdateEvent();
-			// parentView.setDisplayListDirty();
-			//
-			// }
-			//
-			// @Override
-			// public void mouseOut(Pick pick) {
-			// sampleGroupSelectionManager.removeFromType(SelectionType.MOUSE_OVER,
-			// pick.getObjectID());
-			// sampleSelectionManager.triggerSelectionUpdateEvent();
-			//
-			// parentView.setDisplayListDirty();
-			//
-			// }
 		}, PickingType.SAMPLE_GROUP_VIEW_MODE.name());
 	}
 
 	public void unregisterPickingListeners() {
-		// super.unregisterPickingListeners();
-		// view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
-		// node.getNodeId());
 	}
 
 }

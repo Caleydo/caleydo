@@ -27,6 +27,7 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
@@ -35,10 +36,12 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
- * @author alexsb
+ * @author Alexander Lex
  * 
  */
 public class CategoricalRowContentRenderer extends ContentRenderer {
@@ -57,11 +60,14 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				parentView, parent, group);
 	}
 
+	
+
 	@Override
 	public void init() {
 		if (geneID == null)
 			return;
 		if (experimentPerspective instanceof RecordPerspective) {
+
 			DimensionVirtualArray dimensionVirtualArray = new DimensionVirtualArray();
 			dimensionVirtualArray.append(geneID);
 			histogram = ContainerStatistics.calculateHistogram(dataDomain.getTable(),
@@ -74,6 +80,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 					recordVirtualArray,
 					(DimensionVirtualArray) experimentPerspective.getVirtualArray(), 5);
 		}
+		registerPickingListener();
 
 	}
 
@@ -91,15 +98,11 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 			bottomBarColor = topBarColor;
 
-			ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
-			selectionLists.add(geneSelectionTypes);
+			// ArrayList<ArrayList<SelectionType>> selectionLists = new
+			// ArrayList<ArrayList<SelectionType>>();
+			// selectionLists.add(geneSelectionTypes);
 
-			for (Integer experimentID : experimentPerspective.getVirtualArray()) {
-				selectionLists.add(parent.sampleSelectionManager
-						.getSelectionTypes(experimentID));
-			}
-
-			renderAverageBar(gl, Algorithms.mergeListsToUniqueList(selectionLists));
+			renderAverageBar(gl, selectionTypes);
 		} else {
 			renderAllBars(gl, geneSelectionTypes);
 		}
@@ -189,29 +192,38 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public void renderAverageBar(GL2 gl, ArrayList<SelectionType> selectionTypes) {
-		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-				PickingType.GENE.name(), davidID));
-
 		int bucketCount = 0;
 		float barWidth = y / histogram.size();
 		float renderWith = x
 				- parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
-		for (Integer nrValues : histogram) {
-			// calculateColors(Algorithms.mergeListsToUniqueList(
-			// experimentSelectionTypes, geneSelectionTypes));
-			float lowerEdge = barWidth * bucketCount;
-			float value = 0;
-			if (nrValues != 0)
-				value = ((float) nrValues) / histogram.getLargestValue();
+		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
+			ArrayList<SelectionType> sampleSelectionTypes = new ArrayList<SelectionType>();
+			for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
+				Integer resolvedSampleID = sampleIDMappingManager.getID(
+						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
+				sampleSelectionTypes.addAll(parent.sampleSelectionManager
+						.getSelectionTypes(resolvedSampleID));
+			}
 
 			topBarColor = dataDomain.getColorMapper().getColor(
 					(float) bucketCount / (histogram.size() - 1));
 			bottomBarColor = topBarColor;
+			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
+					sampleSelectionTypes));
+			float lowerEdge = barWidth * bucketCount;
+			float value = 0;
+			int nrValues = histogram.get(bucketNumber);
+			if (nrValues != 0)
+				value = ((float) nrValues) / histogram.getLargestValue();
+
 			calculateColors(selectionTypes);
 
 			float barHeight = value * renderWith;
-
+			gl.glPushName(parentView.getPickingManager()
+					.getPickingID(parentView.getID(), PickingType.HISTOGRAM_BAR.name(),
+							histogram.getBucketID(bucketNumber)));
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glColor3fv(bottomBarColor, 0);
 			gl.glVertex3f(0, lowerEdge, z);
@@ -225,7 +237,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			gl.glVertex3d(barHeight, lowerEdge + barWidth, z);
 
 			gl.glColor3fv(topBarColor, 0);
-			
+
 			gl.glVertex3f(0, lowerEdge + barWidth, z);
 
 			gl.glEnd();
@@ -238,11 +250,34 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			gl.glVertex3d(barHeight, lowerEdge + barWidth, z);
 			gl.glVertex3f(0, lowerEdge + barWidth, z);
 			gl.glEnd();
-
+			gl.glPopName();
 			bucketCount++;
-
 		}
-		// gl.glPopName();
 	}
+
+	private void registerPickingListener() {
+		pickingListener = new APickingListener() {
+
+			@Override
+			public void clicked(Pick pick) {
+				System.out.println("Bucket: " + pick.getObjectID());
+
+				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
+				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
+						sampleIDType,
+						histogram.getIDsForBucketFromBucketID(pick.getObjectID()));
+				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
+				parentView.setDisplayListDirty();
+
+			}
+
+		};
+
+		for (int bucketCount = 0; bucketCount < histogram.size(); bucketCount++) {
+			parentView.addIDPickingListener(pickingListener,
+					PickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketCount));
+		}
+	}
+
 
 }
