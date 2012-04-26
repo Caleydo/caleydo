@@ -90,7 +90,7 @@ public class CanvasComponent extends JComponent implements Canvas {
     private final List<List<Line2D>> edges;
     private final List<Color> colorList;
     private final List<Integer> outlineThickness;
-    
+    private final List<Boolean> isVisibleList;
     
 
     /**
@@ -235,7 +235,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         edges = new ArrayList<List<Line2D>>();
         colorList = new ArrayList<Color>();
         outlineThickness= new ArrayList<Integer>();
-        addGroup(new Color(1,0,0),1);
+        isVisibleList= new ArrayList<Boolean>();;
+        addGroup(new Color(1,0,0),1,true);
         dx = 0.0;
         dy = 0.0;
         zoom = 1.0;
@@ -444,15 +445,17 @@ public class CanvasComponent extends JComponent implements Canvas {
         items.add(new LinkedList<Rectangle2D>());
         edges.add(new LinkedList<Line2D>());
         colorList.add(new Color(0,1,0));//default Color
+        isVisibleList.add(true);
         invalidateOutlines(CanvasListener.GROUPS);
     }
     
-    public void addGroup(Color  aColor, Integer borderThickness) {
+    public void addGroup(Color  aColor, Integer borderThickness, boolean isVisible) {
         curItemGroup = items.size();
         items.add(new LinkedList<Rectangle2D>());
         edges.add(new LinkedList<Line2D>());
         outlineThickness.add(borderThickness);
         colorList.add(aColor);
+        isVisibleList.add(isVisible);
         invalidateOutlines(CanvasListener.GROUPS);        
     }
     
@@ -467,6 +470,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         edges.remove(last);
         colorList.remove(last);
         outlineThickness.remove(last);
+        isVisibleList.remove(last);
         if (curItemGroup == last) {
             curItemGroup = 0;
         }
@@ -482,6 +486,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         edges.remove(curItemGroup);
         colorList.remove(curItemGroup);
         outlineThickness.remove(curItemGroup);
+        isVisibleList.remove(curItemGroup);
         --curItemGroup;
         if (curItemGroup < 0) {
             curItemGroup = 0;
@@ -508,6 +513,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         edges.remove(curItemGroup);
         colorList.remove(curItemGroup);
         outlineThickness.remove(curItemGroup);
+        isVisibleList.remove(curItemGroup);
         --curItemGroup;
     }
     
@@ -769,6 +775,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         int controlPoints = 0;
         // draw the outlines
         for (int i = items.size()-1; i >=0 ; i--) {
+        	if(!isVisibleList.get(i))
+        		continue;
         //for (int i =0; i < items.size() ; ++i) {
             //final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
         	final Color c = colorList.get(i);
