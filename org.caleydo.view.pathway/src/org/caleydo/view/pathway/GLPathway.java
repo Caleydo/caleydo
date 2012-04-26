@@ -521,8 +521,11 @@ public class GLPathway
 		//updateSingleBubbleSet(gl, selectedPath);
 		//updateSingleBubbleSet(gl, mouseOverPath);
 
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
-			updateSingleBubbleSet(gl, path);
+		int bbGroupID = 0;
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {			
+			bubblesetCanvas.addGroup(); // bubble sets do not allow to delete			
+			updateSingleBubbleSet(gl, path, bbGroupID);
+			bbGroupID++;
 		}
 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
@@ -533,16 +536,14 @@ public class GLPathway
 		g2d.dispose();
 	}
 
-	private void updateSingleBubbleSet(GL2 gl, GraphPath<PathwayVertexRep, DefaultEdge> path) {
+	private void updateSingleBubbleSet(GL2 gl, GraphPath<PathwayVertexRep, DefaultEdge> path, final int groupID) {
 
 		if (path == null)
 			return;
 
 		double bbItemW = 10;
 		double bbItemH = 10;
-		int bbGroupID = 0;
 
-		bubblesetCanvas.addGroup(); // bubble sets do not allow to delete
 		// group0
 
 		gl.glPushName(generalManager
@@ -570,8 +571,8 @@ public class GLPathway
 			double tX = targetVertexRep.getLowerLeftCornerX();
 			double tY = targetVertexRep.getLowerLeftCornerY();
 
-			bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-			bubblesetCanvas.addEdge(bbGroupID, posX, posY, tX, tY);
+			bubblesetCanvas.addItem(groupID, posX, posY, bbItemW, bbItemH);
+			bubblesetCanvas.addEdge(groupID, posX, posY, tX, tY);
 			lastEdge = edge;
 		}
 		if (lastEdge != null) {
@@ -580,10 +581,10 @@ public class GLPathway
 			double posY = targetVertexRep.getLowerLeftCornerY();
 			bbItemW = targetVertexRep.getWidth();
 			bbItemH = targetVertexRep.getHeight();
-			bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+			bubblesetCanvas.addItem(groupID, posX, posY, bbItemW, bbItemH);
 		}
 		gl.glPopName();
-		bbGroupID++;
+
 	}
 
 	private void overlayBubbleSets(GL2 gl) {
