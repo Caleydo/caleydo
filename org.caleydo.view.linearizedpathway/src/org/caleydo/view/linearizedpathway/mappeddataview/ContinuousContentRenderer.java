@@ -28,6 +28,7 @@ import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.container.Average;
 import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -101,17 +102,17 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		// topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 		// bottomBarColor = topBarColor;
 
-		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
-				PickingType.GENE.name(), davidID));
+		// gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
+		// PickingType.GENE.name(), davidID));
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor4fv(topBarColor, 0);
+		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(0, y / 3, z);
-		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
 		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 				bottomBarColor[2] * 0.9f);
+		gl.glVertex3d(average.getArithmeticMean() * x, y / 3, z);
+		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 		gl.glVertex3d(average.getArithmeticMean() * x, y / 3 * 2, z);
-		gl.glColor4fv(bottomBarColor, 0);
+		gl.glColor4fv(topBarColor, 0);
 		gl.glVertex3f(0, y / 3 * 2, z);
 		gl.glEnd();
 
@@ -124,7 +125,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		gl.glVertex3f(0, y / 3 * 2, z);
 		gl.glEnd();
 
-		gl.glPopName();
+		// gl.glPopName();
 
 		float lineZ = z + 0.01f;
 
@@ -165,47 +166,58 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		float[] tempTopBarColor = topBarColor;
 		float[] tempBottomBarColor = bottomBarColor;
 
-		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
+		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
 
 			float value;
 			if (geneID != null) {
 				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
-						experimentID);
+						sampleID);
+				Integer resolvedSampleID = sampleIDMappingManager.getID(
+						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
-						.getSelectionTypes(experimentID);
+						.getSelectionTypes(resolvedSampleID);
 				calculateColors(Algorithms.mergeListsToUniqueList(
 						experimentSelectionTypes, geneSelectionTypes));
 
 				float leftEdge = xIncrement * experimentCount;
 				float upperEdge = value * y;
 
-				gl.glPushName(parentView.getPickingManager().getPickingID(
-						parentView.getID(), PickingType.GENE.name(), davidID));
-				gl.glPushName(parentView.getPickingManager().getPickingID(
-						parentView.getID(), PickingType.SAMPLE.name(), experimentID));
-				gl.glColor4fv(topBarColor, 0);
-				gl.glBegin(GL2.GL_QUADS);
-				gl.glVertex3f(leftEdge, 0, z);
-				if (useShading) {
-					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
-							topBarColor[2] * 0.9f);
+				// gl.glPushName(parentView.getPickingManager().getPickingID(
+				// parentView.getID(), PickingType.GENE.name(), davidID));
+
+				if (resolvedSampleID != null) {
+					gl.glPushName(parentView.getPickingManager().getPickingID(
+							parentView.getID(), PickingType.SAMPLE.name(),
+							resolvedSampleID));
 				}
-				gl.glVertex3f(leftEdge + xIncrement, 0, z);
+
+				gl.glBegin(GL2.GL_QUADS);
+
+				gl.glColor4fv(bottomBarColor, 0);
+				gl.glVertex3f(leftEdge, 0, z);
 				if (useShading) {
 					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 							bottomBarColor[2] * 0.9f);
 
-				} else {
-					gl.glColor4fv(bottomBarColor, 0);
 				}
+				gl.glVertex3f(leftEdge + xIncrement, 0, z);
+				if (useShading) {
+					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
+							topBarColor[2] * 0.9f);
+				} else {
+					gl.glColor4fv(topBarColor, 0);
+				}
+
 				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
-				gl.glColor4fv(bottomBarColor, 0);
+				gl.glColor4fv(topBarColor, 0);
 
 				gl.glVertex3f(leftEdge, upperEdge, z);
 
 				gl.glEnd();
-				gl.glPopName();
-				gl.glPopName();
+				if (resolvedSampleID != null)
+					gl.glPopName();
+
+				// gl.glPopName();
 				experimentCount++;
 				topBarColor = tempTopBarColor;
 				bottomBarColor = tempBottomBarColor;
@@ -213,5 +225,4 @@ public class ContinuousContentRenderer extends ContentRenderer {
 
 		}
 	}
-
 }

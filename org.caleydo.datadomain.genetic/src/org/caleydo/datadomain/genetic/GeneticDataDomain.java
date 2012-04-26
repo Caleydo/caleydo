@@ -420,7 +420,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	public IDType getSampleIDType() {
-		if (isColumnDimension)
+		if (isColumnDimension())
 			return getDimensionIDType();
 		else
 			return getRecordIDType();

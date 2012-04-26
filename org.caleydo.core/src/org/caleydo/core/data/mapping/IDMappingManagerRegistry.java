@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,10 +28,10 @@ import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 
 /**
- * Registry for {@link IDMappingManagers} . Each {@link IDMappingManager} is associated with an
- * {@link IDCategory}, which summarizes which {@link IDType}s can be mapped to each other.For each
- * {@link IDCategory} there is exactly one {@link IDMappingManager} which may only be accessed through this
- * Registry.
+ * Registry for {@link IDMappingManagers} . Each {@link IDMappingManager} is
+ * associated with an {@link IDCategory}, which summarizes which {@link IDType}s
+ * can be mapped to each other.For each {@link IDCategory} there is exactly one
+ * {@link IDMappingManager} which may only be accessed through this Registry.
  * 
  * @author Alexander Lex
  */
@@ -39,8 +39,8 @@ public class IDMappingManagerRegistry {
 
 	private volatile static IDMappingManagerRegistry instance;
 
-	HashMap<IDCategory, IDMappingManager> hashIDMappingManagers =
-		new HashMap<IDCategory, IDMappingManager>(5);
+	HashMap<IDCategory, IDMappingManager> hashIDMappingManagers = new HashMap<IDCategory, IDMappingManager>(
+			5);
 
 	private IDMappingManagerRegistry() {
 
@@ -57,8 +57,9 @@ public class IDMappingManagerRegistry {
 	}
 
 	/**
-	 * Returns the {@link IDMappingManager} for the {@link IDCategory} specified. If no such
-	 * {@link IDMappingManager} exists, a new one is created and registered.
+	 * Returns the {@link IDMappingManager} for the {@link IDCategory}
+	 * specified. If no such {@link IDMappingManager} exists, a new one is
+	 * created and registered.
 	 * 
 	 * @param idCategory
 	 * @return
@@ -70,6 +71,16 @@ public class IDMappingManagerRegistry {
 			hashIDMappingManagers.put(idCategory, new IDMappingManager(idCategory));
 		}
 		return hashIDMappingManagers.get(idCategory);
+	}
+
+	/**
+	 * Same as {@link #getIDMappingManager(IDCategory)} but for IDType.
+	 * 
+	 * @param idType
+	 * @return
+	 */
+	public IDMappingManager getIDMappingManager(IDType idType) {
+		return getIDMappingManager(idType.getIDCategory());
 	}
 
 	@Override

@@ -70,12 +70,16 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 				PickingType.SAMPLE_GROUP.name(), group.getID()));
-		gl.glColor4fv(topBarColor, 0);
+
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glColor4fv(bottomBarColor, 0);
+		gl.glVertex3f(0, 0, backgroundZ);
+		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+				bottomBarColor[2] * 0.9f);
+		gl.glVertex3f(x, 0, backgroundZ);
+		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 		gl.glVertex3f(x, y, backgroundZ);
+		gl.glColor4fv(topBarColor, 0);
 		gl.glVertex3f(0, y, backgroundZ);
 
 		gl.glEnd();
@@ -92,18 +96,18 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		textRenderer.renderTextInBounds(gl, label, textXOffset, (y - height) / 2, 0.1f,
 				x, height);
 
-	
-
 	}
 
 	protected void calculateColors(ArrayList<SelectionType> selectionTypes) {
 
 		if (selectionTypes.size() != 0
-				&& !selectionTypes.get(0).equals(SelectionType.NORMAL) && selectionTypes.get(0).isVisible()) {
+				&& !selectionTypes.get(0).equals(SelectionType.NORMAL)
+				&& selectionTypes.get(0).isVisible()) {
 			topBarColor = selectionTypes.get(0).getColor();
 
 			if (selectionTypes.size() > 1
-					&& !selectionTypes.get(1).equals(SelectionType.NORMAL) && selectionTypes.get(1).isVisible()) {
+					&& !selectionTypes.get(1).equals(SelectionType.NORMAL)
+					&& selectionTypes.get(1).isVisible()) {
 				bottomBarColor = selectionTypes.get(1).getColor();
 			} else {
 				bottomBarColor = topBarColor;

@@ -20,6 +20,8 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -39,6 +41,8 @@ public abstract class ContentRenderer extends SelectableRenderer {
 	float z = 0.05f;
 	Group group;
 	
+	IDMappingManager sampleIDMappingManager;
+	
 	public ContentRenderer(Integer geneID, Integer davidID,
 			GeneticDataDomain dataDomain, DataContainer dataContainer,
 			ADataPerspective<?, ?, ?, ?> experimentPerspective, AGLView parentView,
@@ -53,6 +57,7 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		this.dataContainer = dataContainer;
 		this.experimentPerspective = experimentPerspective;
 		this.group = group;
+		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(parent.sampleIDType.getIDCategory());
 		init();
 	}
 	

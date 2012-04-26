@@ -35,7 +35,6 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.util.collection.Algorithms;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
@@ -112,8 +111,8 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		float xIncrement = x / experimentPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
-//		float[] tempTopBarColor = topBarColor;
-//		float[] tempBottomBarColor = bottomBarColor;
+		// float[] tempTopBarColor = topBarColor;
+		// float[] tempBottomBarColor = bottomBarColor;
 
 		gl.glColor3f(0, 0, 0);
 		gl.glBegin(GL2.GL_LINES);
@@ -121,21 +120,21 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		gl.glVertex3f(x, 0.5f * y, z);
 		gl.glEnd();
 
-		for (Integer experimentID : experimentPerspective.getVirtualArray()) {
+		for (Integer sampleID : experimentPerspective.getVirtualArray()) {
 
 			float value;
 			if (geneID != null) {
 				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
-						experimentID);
+						sampleID);
 
-				if (value < 0.5001 && value > 0.499)
-				{
+				if (value < 0.5001 && value > 0.499) {
 					experimentCount++;
 					continue;
 				}
-				
+				Integer resolvedSampleID = sampleIDMappingManager.getID(
+						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
-						.getSelectionTypes(experimentID);
+						.getSelectionTypes(resolvedSampleID);
 
 				topBarColor = dataDomain.getColorMapper().getColor(value);
 				bottomBarColor = topBarColor;
@@ -146,16 +145,19 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 				float upperEdge = value * y;
 
-				gl.glPushName(parentView.getPickingManager().getPickingID(
-						parentView.getID(), PickingType.GENE.name(), davidID));
-				gl.glPushName(parentView.getPickingManager().getPickingID(
-						parentView.getID(), PickingType.SAMPLE.name(), experimentID));
+				// gl.glPushName(parentView.getPickingManager().getPickingID(
+				// parentView.getID(), PickingType.GENE.name(), davidID));
 
-				gl.glColor3fv(topBarColor, 0);
+				gl.glPushName(parentView.getPickingManager().getPickingID(
+						parentView.getID(), PickingType.SAMPLE.name(), resolvedSampleID));
+
+				gl.glColor3fv(bottomBarColor, 0);
 				gl.glBegin(GL2.GL_QUADS);
 
 				gl.glVertex3f(leftEdge, 0.5f * y, z);
 				gl.glVertex3f(leftEdge + xIncrement, 0.5f * y, z);
+
+				gl.glColor3fv(topBarColor, 0);
 
 				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
 				gl.glVertex3f(leftEdge, upperEdge, z);
@@ -178,10 +180,10 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				gl.glEnd();
 
 				gl.glPopName();
-				gl.glPopName();
+				// gl.glPopName();
 				experimentCount++;
-//				topBarColor = tempTopBarColor;
-//				bottomBarColor = tempBottomBarColor;
+				// topBarColor = tempTopBarColor;
+				// bottomBarColor = tempBottomBarColor;
 			}
 
 		}
@@ -210,27 +212,20 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			float barHeight = value * renderWith;
 
-			// barHeight = x;
-			// barHeight *= x/20;
-			// gl.glPushName(parentView.getPickingManager().getPickingID(
-			// parentView.getID(), PickingType.SAMPLE.name(), experimentID));
 			gl.glBegin(GL2.GL_QUADS);
-
-			gl.glColor3fv(topBarColor, 0);
+			gl.glColor3fv(bottomBarColor, 0);
 			gl.glVertex3f(0, lowerEdge, z);
-			gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
-					topBarColor[2] * 0.9f);
-			// gl.glColor4fv(topBarColor, 0);
-			gl.glVertex3d(barHeight, lowerEdge, z);
-
-			// gl.glColor4fv(bottomBarColor, 0);
 			gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 					bottomBarColor[2] * 0.9f);
+
+			gl.glVertex3d(barHeight, lowerEdge, z);
+
+			gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
+					topBarColor[2] * 0.9f);
 			gl.glVertex3d(barHeight, lowerEdge + barWidth, z);
 
-			gl.glColor3fv(bottomBarColor, 0);
-			// gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-			// bottomBarColor[2] * 0.9f);
+			gl.glColor3fv(topBarColor, 0);
+			
 			gl.glVertex3f(0, lowerEdge + barWidth, z);
 
 			gl.glEnd();
@@ -247,7 +242,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			bucketCount++;
 
 		}
-		gl.glPopName();
+		// gl.glPopName();
 	}
 
 }

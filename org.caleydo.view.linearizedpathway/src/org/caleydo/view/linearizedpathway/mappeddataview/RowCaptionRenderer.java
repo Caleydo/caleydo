@@ -79,15 +79,19 @@ public class RowCaptionRenderer extends SelectableRenderer {
 		gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 				PickingType.GENE.name(), davidID));
 
-		gl.glColor4fv(topBarColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
+		
+		gl.glColor3f(bottomBarColor[0], bottomBarColor[1], bottomBarColor[2]);
+		
 		gl.glVertex3f(0, 0, backgroundZ);
-		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 				bottomBarColor[2] * 0.9f);
+		gl.glVertex3f(x, 0, backgroundZ);
+		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
+		
 		gl.glVertex3f(x, y, backgroundZ);
-		gl.glColor3f(bottomBarColor[0], bottomBarColor[1], bottomBarColor[2]);
+		gl.glColor4fv(topBarColor, 0);
+		
 		gl.glVertex3f(0, y, backgroundZ);
 
 		gl.glEnd();

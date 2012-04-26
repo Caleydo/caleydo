@@ -124,6 +124,9 @@ public class MappedDataRenderer {
 	EventBasedSelectionManager sampleSelectionManager;
 	EventBasedSelectionManager sampleGroupSelectionManager;
 
+	/** The mapping Type all samples understand */
+	IDType sampleIDType;
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
@@ -140,7 +143,8 @@ public class MappedDataRenderer {
 		ArrayList<GeneticDataDomain> dataDomains = DataDomainManager.get()
 				.getDataDomainsByType(GeneticDataDomain.class);
 		if (dataDomains.size() != 0) {
-			IDType sampleIDType = dataDomains.get(0).getSampleIDType();
+			sampleIDType = dataDomains.get(0).getSampleIDType().getIDCategory()
+					.getPrimaryMappingType();
 			sampleSelectionManager = new EventBasedSelectionManager(parentView,
 					sampleIDType);
 
@@ -337,8 +341,8 @@ public class MappedDataRenderer {
 				for (int dataContainerCount = 0; dataContainerCount < usedDataContainers
 						.size(); dataContainerCount++) {
 
-					ElementLayout dataContainerLayout = new ElementLayout("DataContainer "
-							+ dataContainerCount + " / " + idCount);
+					ElementLayout dataContainerLayout = new ElementLayout(
+							"DataContainer " + dataContainerCount + " / " + idCount);
 					// dataContainerRow.setPixelSizeX(5);
 					dataContainerLayout.addBackgroundRenderer(new RowBackgroundRenderer(
 							color));
@@ -444,14 +448,13 @@ public class MappedDataRenderer {
 
 			// geneIDs.add(davidID);
 			ElementLayout dataContainerLayout = rowLayouts.get(rowCount);
-			
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
 				dataContainerLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
 				captionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
 			} else {
 				// float width = 1.0f / usedDataContainers.size();
-//				 dataContainerLayout.setRatioSizeX(0.2);
+				// dataContainerLayout.setRatioSizeX(0.2);
 				dataContainerLayout.setDynamicSizeUnitsX(experimentPerspective
 						.getVirtualArray().size());
 				captionLayout.setDynamicSizeUnitsX(experimentPerspective
