@@ -89,6 +89,7 @@ public class CanvasComponent extends JComponent implements Canvas {
     private final List<List<Rectangle2D>> items;
     private final List<List<Line2D>> edges;
     private final List<Color> colorList;
+    private final List<Integer> outlineThickness;
     
     
 
@@ -233,7 +234,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         items = new ArrayList<List<Rectangle2D>>();
         edges = new ArrayList<List<Line2D>>();
         colorList = new ArrayList<Color>();
-        addGroup(new Color(1,0,0));
+        outlineThickness= new ArrayList<Integer>();
+        addGroup(new Color(1,0,0),1);
         dx = 0.0;
         dy = 0.0;
         zoom = 1.0;
@@ -441,14 +443,15 @@ public class CanvasComponent extends JComponent implements Canvas {
         curItemGroup = items.size();
         items.add(new LinkedList<Rectangle2D>());
         edges.add(new LinkedList<Line2D>());
-        invalidateOutlines(CanvasListener.GROUPS);
         colorList.add(new Color(0,1,0));//default Color
+        invalidateOutlines(CanvasListener.GROUPS);
     }
     
-    public void addGroup(Color  aColor) {
+    public void addGroup(Color  aColor, Integer borderThickness) {
         curItemGroup = items.size();
         items.add(new LinkedList<Rectangle2D>());
         edges.add(new LinkedList<Line2D>());
+        outlineThickness.add(borderThickness);
         colorList.add(aColor);
         invalidateOutlines(CanvasListener.GROUPS);        
     }
@@ -463,6 +466,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         items.remove(last);
         edges.remove(last);
         colorList.remove(last);
+        outlineThickness.remove(last);
         if (curItemGroup == last) {
             curItemGroup = 0;
         }
@@ -477,6 +481,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         items.remove(curItemGroup);
         edges.remove(curItemGroup);
         colorList.remove(curItemGroup);
+        outlineThickness.remove(curItemGroup);
         --curItemGroup;
         if (curItemGroup < 0) {
             curItemGroup = 0;
@@ -501,6 +506,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         }
         items.remove(curItemGroup);
         edges.remove(curItemGroup);
+        colorList.remove(curItemGroup);
+        outlineThickness.remove(curItemGroup);
         --curItemGroup;
     }
     
@@ -761,15 +768,20 @@ public class CanvasComponent extends JComponent implements Canvas {
         int pos = 0;
         int controlPoints = 0;
         // draw the outlines
-        for (int i = 0; i < items.size(); ++i) {
+        for (int i = items.size()-1; i >=0 ; i--) {
+        //for (int i =0; i < items.size() ; ++i) {
             //final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
         	final Color c = colorList.get(i);
             final Color t = new Color(~0x80000000 & c.getRGB(), true);
+        	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
+        	
+        	
             final Shape gs = groupShapes[pos];
             if (gs != null) {
                 g2d.setColor(t);
                 g2d.fill(gs);
                 g2d.setColor(c);
+                g2d.setStroke(new BasicStroke(outlineThickness.get(i)));
                 g2d.draw(gs);
                 if (drawPoints) {
                     g2d.setColor(Color.BLACK);
@@ -792,24 +804,24 @@ public class CanvasComponent extends JComponent implements Canvas {
         pos = 0;
         int rects = 0;
         // draw the items
-        for (final List<Rectangle2D> group : items) {
-            final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
-            g2d.setColor(c);
-            for (final Rectangle2D item : group) {
-                final Graphics2D g = (Graphics2D) g2d.create();
-                g.setStroke(new BasicStroke(3));
-                final int w = (int) item.getWidth();
-                final int h = (int) item.getHeight();
-                g.translate(item.getMinX(), item.getMinY());
-                g.fillRect(0, 0, w, h);
-                g.setColor(Color.BLACK);
-                g.drawRect(0, 0, w, h);
-                g.dispose();
-            }
-            hue += step;
-            ++pos;
-            rects += group.size();
-        }
+//        for (final List<Rectangle2D> group : items) {
+//            final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
+//            g2d.setColor(c);
+//            for (final Rectangle2D item : group) {
+//                final Graphics2D g = (Graphics2D) g2d.create();
+//                g.setStroke(new BasicStroke(3));
+//                final int w = (int) item.getWidth();
+//                final int h = (int) item.getHeight();
+//                g.translate(item.getMinX(), item.getMinY());
+//                g.fillRect(0, 0, w, h);
+//                g.setColor(Color.BLACK);
+//                g.drawRect(0, 0, w, h);
+//                g.dispose();
+//            }
+//            hue += step;
+//            ++pos;
+//            rects += group.size();
+//        }
 //        // draw edges
 //        for (final List<Line2D> group : edges) {
 //            for (final Line2D edge : group) {
