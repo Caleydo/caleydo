@@ -20,6 +20,8 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
+
+import java.awt.Color;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -522,8 +524,7 @@ public class GLPathway
 		//updateSingleBubbleSet(gl, mouseOverPath);
 
 		int bbGroupID = 0;
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {			
-			bubblesetCanvas.addGroup(); // bubble sets do not allow to delete			
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {					
 			updateSingleBubbleSet(gl, path, bbGroupID);
 			bbGroupID++;
 		}
@@ -551,14 +552,21 @@ public class GLPathway
 				.getPickingManager()
 				.getPickingID(uniqueID, PickingType.PATHWAY_PATH_SELECTION.name(),
 						allPaths.indexOf(path)));
-
-		if (path == selectedPath)
-			gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);
+		float[] colorValues= new float[3];
+				
+		if (path == selectedPath){
+			//gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);			
+			colorValues=SelectionType.SELECTION.getColor();
+		}
 		//else if (path == mouseOverPath)
 		//	gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-		else
-			gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);
-
+		else{
+			//gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);	
+			colorValues=PathwayRenderStyle.PATH_COLOR;
+		}
+		//Color c= new Color;
+		bubblesetCanvas.addGroup(new Color(colorValues[0],colorValues[1],colorValues[2])); // bubble sets do not allow to delete	
+		
 		DefaultEdge lastEdge = null;
 		for (DefaultEdge edge : path.getEdgeList()) {
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
