@@ -58,6 +58,7 @@ import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.color.ColorManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -553,19 +554,25 @@ public class GLPathway
 				.getPickingID(uniqueID, PickingType.PATHWAY_PATH_SELECTION.name(),
 						allPaths.indexOf(path)));
 		float[] colorValues= new float[3];
-				
-		if (path == selectedPath){
-			//gl.glColor4fv(SelectionType.SELECTION.getColor(), 0);			
+		Integer outlineThickness;
+		if (path == selectedPath){	
 			colorValues=SelectionType.SELECTION.getColor();
+			outlineThickness=3;
+			bubblesetCanvas.addGroup(new Color(colorValues[0],colorValues[1],colorValues[2]),outlineThickness); // bubble sets do not allow to delete	
 		}
 		//else if (path == mouseOverPath)
 		//	gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
 		else{
-			//gl.glColor4fv(PathwayRenderStyle.PATH_COLOR, 0);	
-			colorValues=PathwayRenderStyle.PATH_COLOR;
+			List<org.caleydo.core.util.color.Color> colorTable=(ColorManager.get()).getColorList("qualitativeColors");
+			int colorID;
+			if(groupID<colorTable.size()-2)//avoid the last two colors because they are close to orange (the selection color)
+				colorID=groupID;
+			else
+				colorID=colorTable.size()-1;
+			org.caleydo.core.util.color.Color c=colorTable.get(colorID);
+			outlineThickness=1;
+			bubblesetCanvas.addGroup(new Color(c.r,c.g,c.b),outlineThickness); // bubble sets do not allow to delete	
 		}
-		//Color c= new Color;
-		bubblesetCanvas.addGroup(new Color(colorValues[0],colorValues[1],colorValues[2])); // bubble sets do not allow to delete	
 		
 		DefaultEdge lastEdge = null;
 		for (DefaultEdge edge : path.getEdgeList()) {
