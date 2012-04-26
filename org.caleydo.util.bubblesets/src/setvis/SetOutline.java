@@ -43,5 +43,7 @@ public interface SetOutline {
 	 */
 	Point2D[] createOutline(Rectangle2D[] members, Rectangle2D[] nonMembers,
 			Line2D[] lines);
+	
+
 
 }

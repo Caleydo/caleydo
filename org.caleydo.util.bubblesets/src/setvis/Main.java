@@ -29,6 +29,7 @@ public final class Main {
      */
     public static void main(final String[] args) {
         final SetOutline setOutline = new BubbleSet();
+        ((BubbleSet)setOutline).useVirtualEdges(false);
         final AbstractShapeGenerator shaper = new BSplineShapeGenerator(
                 setOutline);
         final MainWindow mw = new MainWindow(shaper);

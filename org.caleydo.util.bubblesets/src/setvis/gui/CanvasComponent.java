@@ -19,6 +19,8 @@ import java.awt.geom.Line2D;
 import java.awt.geom.PathIterator;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -86,6 +88,7 @@ public class CanvasComponent extends JComponent implements Canvas {
      */
     private final List<List<Rectangle2D>> items;
     private final List<List<Line2D>> edges;
+    private final List<Color> colorList;
     
     
 
@@ -229,7 +232,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         canvasListeners = new LinkedList<CanvasListener>();
         items = new ArrayList<List<Rectangle2D>>();
         edges = new ArrayList<List<Line2D>>();
-        addGroup();
+        colorList = new ArrayList<Color>();
+        addGroup(new Color(1,0,0));
         dx = 0.0;
         dy = 0.0;
         zoom = 1.0;
@@ -437,9 +441,19 @@ public class CanvasComponent extends JComponent implements Canvas {
         curItemGroup = items.size();
         items.add(new LinkedList<Rectangle2D>());
         edges.add(new LinkedList<Line2D>());
+        invalidateOutlines(CanvasListener.GROUPS);
+        colorList.add(new Color(0,1,0));//default Color
+    }
+    
+    public void addGroup(Color  aColor) {
+        curItemGroup = items.size();
+        items.add(new LinkedList<Rectangle2D>());
+        edges.add(new LinkedList<Line2D>());
+        colorList.add(aColor);
         invalidateOutlines(CanvasListener.GROUPS);        
     }
-
+    
+    
     @Override
     public void removeLastGroup() {
         final int last = items.size() - 1;
@@ -448,6 +462,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         }
         items.remove(last);
         edges.remove(last);
+        colorList.remove(last);
         if (curItemGroup == last) {
             curItemGroup = 0;
         }
@@ -461,6 +476,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         }
         items.remove(curItemGroup);
         edges.remove(curItemGroup);
+        colorList.remove(curItemGroup);
         --curItemGroup;
         if (curItemGroup < 0) {
             curItemGroup = 0;
@@ -545,7 +561,7 @@ public class CanvasComponent extends JComponent implements Canvas {
      *            The components x coordinate.
      * @return The real coordinate.
      */
-    protected double getXForScreen(final double x) {
+    public double getXForScreen(final double x) {
         return inReal(x - dx);
     }
 
@@ -556,7 +572,7 @@ public class CanvasComponent extends JComponent implements Canvas {
      *            The components y coordinate.
      * @return The real coordinate.
      */
-    protected double getYForScreen(final double y) {
+    public double getYForScreen(final double y) {
         return inReal(y - dy);
     }
 
@@ -584,6 +600,84 @@ public class CanvasComponent extends JComponent implements Canvas {
         notifyCanvasListeners(CanvasListener.ITEMS);
     }
 
+    public void resolveEdgeIntersections(HashSet<Rectangle2D> noneBSetRects)
+    {
+        //check all edges if they intersect with any of the noneBSetsRects
+        Iterator iter=noneBSetRects.iterator();
+        while(iter.hasNext())
+        {
+        	Rectangle2D noneBSetRect=(Rectangle2D)iter.next();
+	        for(int i=0;i<edges.size(); i++)
+	        {
+	        	List<Line2D> edgeList_i= edges.get(i);
+	        	List<Line2D> newEdges= new  LinkedList<Line2D>();
+	        	for(int j=0;j<edgeList_i.size();j++)
+	        	{
+	        		Line2D edge=edgeList_i.get(j);
+	        		//test intersection for edge and noneBSetRect
+	        		if(noneBSetRect.intersectsLine(edge))
+	        		{
+	        			System.out.println(" ---- ---- --- -- found Intersecting Rectangle \n");
+	        			//
+	        			double sx,sy,ex,ey;
+	        			Line2D nEdge1;
+	        			Line2D nEdge2;
+	        			Line2D nEdge3;
+	        			
+	        			if(edge.getY1()>noneBSetRect.getX())
+	        			{
+		        	        sx = edge.getX1();
+		        	        sy = edge.getY1();
+		        	        ex = getXForScreen(noneBSetRect.getX());
+		        	        ey = getYForScreen(noneBSetRect.getY());
+		        	        nEdge1=new Line2D.Double(sx, sy, ex, ey);
+		        	        //
+		        	        sx = getXForScreen(noneBSetRect.getX());
+		        	        sy = getYForScreen(noneBSetRect.getY());
+		        	        ex = getXForScreen(noneBSetRect.getX());
+		        	        ey = getYForScreen(noneBSetRect.getY())-(noneBSetRect.getHeight());
+		        			nEdge2=new Line2D.Double(sx, sy, ex, ey);
+		        			//
+		        	        sx = noneBSetRect.getX();
+		        	        sy = noneBSetRect.getY()-(noneBSetRect.getHeight());
+		        	        ex = edge.getX2();
+		        	        ey = edge.getY2();
+		        			nEdge3=new Line2D.Double(sx, sy, ex, ey);
+	        			}
+	        			else
+	        			{
+		        	        sx = edge.getX2();
+		        	        sy = edge.getY2();
+		        	        ex = getXForScreen(noneBSetRect.getX());
+		        	        ey = getYForScreen(noneBSetRect.getY());//-noneBSetRect.getHeight();
+		        	        nEdge1=new Line2D.Double(sx, sy, ex, ey);
+		        	        //
+		        	        sx = getXForScreen(noneBSetRect.getX());
+		        	        sy = getYForScreen(noneBSetRect.getY());
+		        	        ex = getXForScreen(noneBSetRect.getX());
+		        	        ey = getYForScreen(noneBSetRect.getY())+noneBSetRect.getHeight();
+		        			nEdge2=new Line2D.Double(sx, sy, ex, ey);
+		        			//
+		        	        sx = getXForScreen(noneBSetRect.getX());
+		        	        sy = getYForScreen(noneBSetRect.getY())+noneBSetRect.getHeight();
+		        	        ex = edge.getX1();
+		        	        ey = edge.getY1();
+		        			nEdge3=new Line2D.Double(sx, sy, ex, ey);
+	        			}	        	        
+	        			//
+	        			newEdges.add(nEdge1);
+	        			newEdges.add(nEdge2);
+	        			newEdges.add(nEdge3);
+	        		}
+	        		else{
+	        			newEdges.add(edge);
+	        		}
+	        	}//for loop
+	        	edges.set(i,newEdges);
+	        }//for edges.size
+    	}//while 
+    }
+    
     @Override
     public List<Position> getItemsAt(final double tx, final double ty) {
         final double x = getXForScreen(tx);
@@ -668,7 +762,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         int controlPoints = 0;
         // draw the outlines
         for (int i = 0; i < items.size(); ++i) {
-            final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
+            //final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
+        	final Color c = colorList.get(i);
             final Color t = new Color(~0x80000000 & c.getRGB(), true);
             final Shape gs = groupShapes[pos];
             if (gs != null) {
@@ -701,7 +796,8 @@ public class CanvasComponent extends JComponent implements Canvas {
             final Color c = new Color(Color.HSBtoRGB(hue, 0.7f, 1f));
             g2d.setColor(c);
             for (final Rectangle2D item : group) {
-                final Graphics2D g = (Graphics2D) g2d.create();        	
+                final Graphics2D g = (Graphics2D) g2d.create();
+                g.setStroke(new BasicStroke(3));
                 final int w = (int) item.getWidth();
                 final int h = (int) item.getHeight();
                 g.translate(item.getMinX(), item.getMinY());
@@ -714,19 +810,19 @@ public class CanvasComponent extends JComponent implements Canvas {
             ++pos;
             rects += group.size();
         }
-        // draw edges
-        for (final List<Line2D> group : edges) {
-            for (final Line2D edge : group) {
-                final Graphics2D g = (Graphics2D) g2d.create();
-                g.setColor(Color.GREEN);
-                g.setStroke(new BasicStroke(5));
-                g.draw(edge);
-                g.dispose();
-            }
-            hue += step;
-            ++pos;
-            rects += group.size();
-        }
+//        // draw edges
+//        for (final List<Line2D> group : edges) {
+//            for (final Line2D edge : group) {
+//                final Graphics2D g = (Graphics2D) g2d.create();
+//                g.setColor(Color.RED);
+//                g.setStroke(new BasicStroke(5));
+//                g.draw(edge);
+//                g.dispose();
+//            }
+//            hue += step;
+//            ++pos;
+//            rects += group.size();
+//        }
         final String info = "Groups: " + items.size() + " Items: " + rects
                 + (controlPoints > 0 ? " Points: " + controlPoints : "");
         if (!infoText.equals(info)) {
