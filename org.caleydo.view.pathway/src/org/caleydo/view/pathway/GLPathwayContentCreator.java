@@ -410,8 +410,8 @@ public class GLPathwayContentCreator {
 				break;
 			case group:
 
-				//gl.glColor4f(1, 1, 0, 1);
-				//fillNodeDisplayList(gl, nodeWidth, nodeHeight);
+				// gl.glColor4f(1, 1, 0, 1);
+				// fillNodeDisplayList(gl, nodeWidth, nodeHeight);
 				break;
 			case gene:
 			case enzyme:
@@ -425,12 +425,11 @@ public class GLPathwayContentCreator {
 					tmpNodeColor = determineNodeColor(vertexRep);
 
 					if (tmpNodeColor != null) {
-						gl.glColor3fv(tmpNodeColor, 0);
 
 						if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
 
 							gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2],
-									0.5f);
+									0.7f);
 
 							gl.glEnable(GL2.GL_BLEND);
 							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -469,6 +468,33 @@ public class GLPathwayContentCreator {
 								gl.glColor4fv(tmpNodeColor, 0);
 								gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
 							}
+						}
+					}
+					else {
+						// render a black glyph in the corder of the
+						// rectangle in order to indicate that we either do
+						// not have mapping or data
+
+						// transparent node for picking
+						gl.glColor4f(0, 0, 0, 0);
+						gl.glCallList(enzymeNodeDisplayListId);
+
+						tmpNodeColor = PathwayRenderStyle.ENZYME_NODE_COLOR;
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 0.7f);
+						gl.glCallList(compoundNodeDisplayListId);
+
+						// Handle selection highlighting of element
+						if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
+								vertexRep.getID())) {
+							tmpNodeColor = SelectionType.SELECTION.getColor();
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glCallList(framedEnzymeNodeDisplayListId);
+						}
+						else if (internalSelectionManager.checkStatus(
+								SelectionType.MOUSE_OVER, vertexRep.getID())) {
+							tmpNodeColor = SelectionType.MOUSE_OVER.getColor();
+							gl.glColor4fv(tmpNodeColor, 0);
+							gl.glCallList(framedEnzymeNodeDisplayListId);
 						}
 					}
 				}
@@ -742,8 +768,8 @@ public class GLPathwayContentCreator {
 								.getContainerStatistics().getAverageDimensions().get(index)
 								.getArithmeticMean();
 				}
-				return colorMapper.getColor(expression);
 
+				return colorMapper.getColor(expression);
 			}
 		}
 
