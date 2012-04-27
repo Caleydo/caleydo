@@ -23,6 +23,8 @@ import gleem.linalg.Vec3f;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.MouseWheelEvent;
+import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -172,11 +174,6 @@ public class GLPathway
 	private GraphPath<PathwayVertexRep, DefaultEdge> selectedPath;
 
 	/**
-	 * The currently mouse over path as selected by the user from allPaths.
-	 */
-	private GraphPath<PathwayVertexRep, DefaultEdge> mouseOverPath;
-
-	/**
 	 * All paths which are available between two user selected nodes.
 	 */
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
@@ -216,7 +213,7 @@ public class GLPathway
 
 		registerPickingListeners();
 		registerMouseListeners();
-
+		
 		// ///////////////////////////////////////////////////
 		// / bubble sets
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
@@ -265,9 +262,8 @@ public class GLPathway
 	@Override
 	public void initLocal(final GL2 gl) {
 		init(gl);
-		texRenderer = new TextureRenderer(1280, 768, true);// we will adapt the
-															// dimensions in
-															// each frame
+		// we will adapt the dimensions in each frame
+		texRenderer = new TextureRenderer(1280, 768, true);
 	}
 
 	@Override
@@ -279,6 +275,7 @@ public class GLPathway
 
 	@Override
 	public void init(final GL2 gl) {
+		
 		displayListIndex = gl.glGenLists(1);
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
@@ -287,17 +284,16 @@ public class GLPathway
 		initPathwayData(gl);
 	}
 
-	protected void registerMouseListeners() 
-	{
-	  registerMouseWheelListener( new IMouseWheelHandler(){
-		@Override
-		public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
-			// TODO Auto-generated method stub
-			System.out.println("Wheel Moved ------------ \n ");
-		}
-	  });		
+	protected void registerMouseListeners() {
+
+		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
+			@Override
+			public void mouseWheelMoved(MouseWheelEvent e) {
+				System.out.println("HALLO DENIS :)");
+			}
+		});
 	}
-	
+
 	protected void registerPickingListeners() {
 
 		addTypePickingListener(new APickingListener() {
@@ -480,7 +476,6 @@ public class GLPathway
 
 		geneSelectionManager.clearSelections();
 		selectedPath = null;
-		mouseOverPath = null;
 		allPaths = null;
 
 		gLPathwayContentCreator.init(gl, geneSelectionManager);
@@ -560,13 +555,6 @@ public class GLPathway
 			if (path == selectedPath) {
 				colorValues = SelectionType.SELECTION.getColor();
 				outlineThickness = 3;
-				// bubble sets do not allow to delete
-				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1],
-						colorValues[2]), outlineThickness, true);
-			}
-			else if (path == mouseOverPath) {
-				colorValues = SelectionType.MOUSE_OVER.getColor();
-				outlineThickness = 1;
 				// bubble sets do not allow to delete
 				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1],
 						colorValues[2]), outlineThickness, true);
@@ -1080,7 +1068,7 @@ public class GLPathway
 
 		super.destroy();
 	}
-		
+
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
@@ -1258,6 +1246,8 @@ public class GLPathway
 
 			if (allPaths != null && allPaths.size() > 0) {
 				selectedPath = allPaths.get(0);
+				allPaths.clear();
+				allPaths.add(selectedPath);
 				triggerPathUpdate();
 				isBubbleTextureDirty = true;
 			}
@@ -1265,28 +1255,16 @@ public class GLPathway
 		else if (previouslySelectedVertexRep != null
 				&& selectionType == SelectionType.MOUSE_OVER) {
 
-			// remove the old mouse over path when a new only is hovered
-			if (mouseOverPath != null && allPaths != null)
-				allPaths.remove(mouseOverPath);
-			
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, previouslySelectedVertexRep, MAX_PATHS);
 
 			if (vertexRep != previouslySelectedVertexRep) {
-				List<GraphPath<PathwayVertexRep, DefaultEdge>> mouserOverPaths = pathAlgo
+				List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths = pathAlgo
 						.getPaths(vertexRep);
 
-				if (mouserOverPaths != null && mouserOverPaths.size() > 0) {
+				if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
 
-					// take shortest path and set it as mouse over
-					mouseOverPath = mouserOverPaths.get(0);
-					if (allPaths != null)
-						allPaths.add(mouseOverPath);
-					else {
-						mouserOverPaths.clear();
-						mouserOverPaths.add(mouseOverPath);
-						allPaths = mouserOverPaths;
-					}
+					allPaths = mouseOverPaths;
 					isBubbleTextureDirty = true;
 				}
 			}
