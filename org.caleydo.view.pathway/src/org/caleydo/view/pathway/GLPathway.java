@@ -22,6 +22,7 @@ package org.caleydo.view.pathway;
 import gleem.linalg.Vec3f;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -66,6 +67,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
+import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.APickingListener;
@@ -213,6 +215,7 @@ public class GLPathway
 		vecTranslation = new Vec3f(0, 0, 0);
 
 		registerPickingListeners();
+		registerMouseListeners();
 
 		// ///////////////////////////////////////////////////
 		// / bubble sets
@@ -284,6 +287,17 @@ public class GLPathway
 		initPathwayData(gl);
 	}
 
+	protected void registerMouseListeners() 
+	{
+	  registerMouseWheelListener( new IMouseWheelHandler(){
+		@Override
+		public void handleMouseWheel(int wheelAmount, Point wheelPosition) {
+			// TODO Auto-generated method stub
+			System.out.println("Wheel Moved ------------ \n ");
+		}
+	  });		
+	}
+	
 	protected void registerPickingListeners() {
 
 		addTypePickingListener(new APickingListener() {
@@ -1066,7 +1080,7 @@ public class GLPathway
 
 		super.destroy();
 	}
-
+		
 	@Override
 	public void registerEventListeners() {
 		super.registerEventListeners();
