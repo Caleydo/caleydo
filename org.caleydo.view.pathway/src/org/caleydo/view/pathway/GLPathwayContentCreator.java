@@ -439,25 +439,31 @@ public class GLPathwayContentCreator {
 							gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2],
 									0.7f);
 
-							gl.glEnable(GL2.GL_BLEND);
-							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
+							// gl.glEnable(GL2.GL_BLEND);
+							// gl.glBlendFunc(GL2.GL_SRC_ALPHA,
+							// GL2.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glCallList(enzymeNodeDisplayListId);
-							gl.glEnable(GL2.GL_DEPTH_TEST);
+							// gl.glEnable(GL2.GL_DEPTH_TEST);
 
 							gl.glColor3f(0, 1, 0);
 							// max std dev is 0.5 -> thus we multiply it with 2
-							float stdDev = PathwayRenderStyle.ENZYME_NODE_HEIGHT
+							Float stdDev = PathwayRenderStyle.ENZYME_NODE_HEIGHT
 									* (float) average.getStandardDeviation() * 5.0f;
-							gl.glBegin(GL2.GL_QUADS);
-							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH,
-									-PathwayRenderStyle.ENZYME_NODE_HEIGHT, Z_OFFSET);
-							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.02f,
-									-PathwayRenderStyle.ENZYME_NODE_HEIGHT, Z_OFFSET);
-							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.02f,
-									-PathwayRenderStyle.ENZYME_NODE_HEIGHT + stdDev, Z_OFFSET);
-							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH,
-									-PathwayRenderStyle.ENZYME_NODE_HEIGHT + stdDev, Z_OFFSET);
-							gl.glEnd();
+							if (!stdDev.isNaN()) {
+
+								gl.glBegin(GL2.GL_QUADS);
+								gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH,
+										-PathwayRenderStyle.ENZYME_NODE_HEIGHT, Z_OFFSET);
+								gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.02f,
+										-PathwayRenderStyle.ENZYME_NODE_HEIGHT, Z_OFFSET);
+								gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.02f,
+										-PathwayRenderStyle.ENZYME_NODE_HEIGHT + stdDev,
+										Z_OFFSET);
+								gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH,
+										-PathwayRenderStyle.ENZYME_NODE_HEIGHT + stdDev,
+										Z_OFFSET);
+								gl.glEnd();
+							}
 
 							// Handle selection highlighting of element
 							if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
@@ -773,6 +779,17 @@ public class GLPathwayContentCreator {
 					.getElements(SelectionType.SELECTION);
 			List<Integer> selectedSamplesArray = new ArrayList<Integer>();
 			selectedSamplesArray.addAll(selectedSamples);
+
+			// if no sample is currently selected, we add all samples for
+			// calculating the average
+			if (selectedSamplesArray.size() == 0) {
+				if (!geneticDataDomain.isGeneRecord())
+					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+							.getRecordPerspective().getVirtualArray().getIDs());
+				else
+					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+							.getDimensionPerspective().getVirtualArray().getIDs());					
+			}
 
 			VirtualArray<?, ?, ?> selectedSamplesVA;
 
