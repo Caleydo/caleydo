@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -131,6 +131,8 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		}
 	}
 
+	// FIXME this is probably the worst place ever for this and it's not general
+	// at all
 	private void generateSampleIntIDs() {
 		IDCategory sampleIDCategory = IDCategory.getIDCategory("SAMPLE");
 		IDType sampleIDType = IDType.getIDType("SAMPLE");
@@ -150,18 +152,24 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 
 			if (dataDomain instanceof ATableBasedDataDomain) {
 				ATableBasedDataDomain tableDataDomain = (ATableBasedDataDomain) dataDomain;
-				if (tableDataDomain.getRecordIDCategory() != sampleIDCategory)
+
+				IDType sourceIDType;
+
+				if (tableDataDomain.getRecordIDCategory() == sampleIDCategory)
+					sourceIDType = tableDataDomain.getRecordIDType();
+				else if (tableDataDomain.getDimensionIDCategory() == sampleIDCategory)
+					sourceIDType = tableDataDomain.getDimensionIDType();
+				else {
+					Logger.log(new Status(Status.ERROR, this.toString(),
+							"No sample ID Category specified"));
 					continue;
+				}
 
 				MappingType mappingType = null;
-				// if (tableDataDomain.isColumnDimension())
-				// mappingType =
-				// idMappingManager.getMappingType(sampleIDType + "_2_"
-				// + tableDataDomain.getDimensionIDType());
-				// else
+
 				// FIXME marc look into this please!
 				mappingType = idMappingManager.getMappingType(sampleIDType + "_2_"
-						+ tableDataDomain.getRecordIDType());
+						+ sourceIDType);
 
 				if (mappingType == null) {
 					Logger.log(new Status(Status.ERROR, this.toString(),
@@ -170,7 +178,6 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 					continue;
 				}
 				for (Object sampleID : idMappingManager.getMap(mappingType).keySet()) {
-
 					if (sampleIDMap.containsKey(sampleID))
 						continue;
 
