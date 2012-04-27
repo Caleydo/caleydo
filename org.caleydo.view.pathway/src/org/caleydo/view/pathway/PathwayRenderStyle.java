@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,8 +23,9 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
-public class PathwayRenderStyle extends GeneralRenderStyle {
-	
+public class PathwayRenderStyle
+	extends GeneralRenderStyle {
+
 	public static final int neighborhoodNodeColorArraysize = 4;
 
 	public static final float SCALING_FACTOR_X = 0.0025f;
@@ -42,11 +43,14 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	public static final float[] RELATION_EDGE_COLOR = new float[] { 0, 0, 1, 1 };
 	public static final float[] REACTION_EDGE_COLOR = new float[] { 0, 0, 1, 1 };
 	public static final float[] MAPLINK_EDGE_COLOR = new float[] { 1, 0, 1, 1 };
-	
+
 	public static final float[] PATH_COLOR = new float[] { 1, 1, 1, 0.3f };
 
-	public static final float[] NODE_STD_DEV_COLOR = new float[] { 1, 0, 0, 1f };
+	public static final float[] STD_DEV_COLOR = new float[] { 49f / 255f, 163f / 255,
+			84f / 255, 1f };
+	public static final float STD_DEV_BAR_WIDTH = 0.018f;
 
+	
 	/**
 	 * The color of the neighborhood node with the distance to the clicked node
 	 * of [1..neighborhoodNodeColorArraysize]
@@ -54,15 +58,19 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	private float[][] neighborhoodNodeColorArray;
 
 	public enum NodeShape {
-		RECTANGULAR, ROUND, ROUNDRECTANGULAR
+		RECTANGULAR,
+		ROUND,
+		ROUNDRECTANGULAR
 	};
 
 	public enum EdgeLineStyle {
-		NORMAL, DASHED
+		NORMAL,
+		DASHED
 	};
 
 	public enum EdgeArrowHeadStyle {
-		FILLED, EMPTY
+		FILLED,
+		EMPTY
 	};
 
 	protected NodeShape enzymeNodeShape;
@@ -142,8 +150,7 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 		return reactionEdgeArrowHeadStyle;
 	}
 
-	public void setReactionEdgeArrowHeadStyle(
-			EdgeArrowHeadStyle reactionEdgeArrowHeadStyle) {
+	public void setReactionEdgeArrowHeadStyle(EdgeArrowHeadStyle reactionEdgeArrowHeadStyle) {
 		this.reactionEdgeArrowHeadStyle = reactionEdgeArrowHeadStyle;
 	}
 
@@ -162,8 +169,7 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	/**
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#neighborhoodNodeColorArraysize
 	 * @see org.caleydo.core.view.opengl.canvas.pathway.PathwayRenderStyle#highlightedNodeColor
-	 * @param depth
-	 *            [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0
+	 * @param depth [0..1.. (neighborhoodNodeColorArraysize-1) ] ; if depth ==0
 	 *            highlightedNodeColor is returned
 	 * @return
 	 */
