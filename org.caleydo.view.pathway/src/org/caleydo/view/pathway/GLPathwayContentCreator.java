@@ -21,22 +21,27 @@ package org.caleydo.view.pathway;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Set;
 import javax.media.opengl.GL2;
 import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.container.Average;
+import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
+import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.picking.PickingType;
-import org.caleydo.core.view.opengl.util.GLHelperFunctions;
+import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexShape;
@@ -80,7 +85,7 @@ public class GLPathwayContentCreator {
 
 	private PathwayItemManager pathwayItemManager;
 
-	private ATableBasedDataDomain geneticDataDomain;
+	private GeneticDataDomain geneticDataDomain;
 
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
@@ -102,7 +107,7 @@ public class GLPathwayContentCreator {
 
 		pathwayItemManager = PathwayItemManager.get();
 
-		geneticDataDomain = glPathwayView.getDataDomain();
+		geneticDataDomain = (GeneticDataDomain) glPathwayView.getDataDomain();
 	}
 
 	public void init(final GL2 gl, SelectionManager geneSelectionManager) {
@@ -422,7 +427,10 @@ public class GLPathwayContentCreator {
 				gl.glLineWidth(1);
 				if (enableGeneMapping) {
 
-					tmpNodeColor = determineNodeColor(vertexRep);
+					Average average = getExpressionAverage(vertexRep);
+					if (average != null)
+						tmpNodeColor = colorMapper.getColor((float) average
+								.getArithmeticMean());
 
 					if (tmpNodeColor != null) {
 
@@ -435,6 +443,21 @@ public class GLPathwayContentCreator {
 							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glCallList(enzymeNodeDisplayListId);
 							gl.glEnable(GL2.GL_DEPTH_TEST);
+
+							gl.glColor3f(0, 1, 0);
+							// max std dev is 0.5 -> thus we multiply it with 2
+							float stdDev = PathwayRenderStyle.ENZYME_NODE_HEIGHT
+									* (float) average.getStandardDeviation() * 5.0f;
+							gl.glBegin(GL2.GL_QUADS);
+							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH,
+									-PathwayRenderStyle.ENZYME_NODE_HEIGHT, Z_OFFSET);
+							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.02f,
+									-PathwayRenderStyle.ENZYME_NODE_HEIGHT, Z_OFFSET);
+							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH + 0.02f,
+									-PathwayRenderStyle.ENZYME_NODE_HEIGHT + stdDev, Z_OFFSET);
+							gl.glVertex3f(PathwayRenderStyle.ENZYME_NODE_WIDTH,
+									-PathwayRenderStyle.ENZYME_NODE_HEIGHT + stdDev, Z_OFFSET);
+							gl.glEnd();
 
 							// Handle selection highlighting of element
 							if (internalSelectionManager.checkStatus(SelectionType.SELECTION,
@@ -545,7 +568,8 @@ public class GLPathwayContentCreator {
 		gl.glLineWidth(3);
 		if (enableGeneMapping) {
 
-			tmpNodeColor = determineNodeColor(vertexRep);
+			Average average = getExpressionAverage(vertexRep);
+			tmpNodeColor = colorMapper.getColor((float) average.getArithmeticMean());
 			gl.glLineWidth(4);
 
 			if (tmpNodeColor != null) {
@@ -736,7 +760,7 @@ public class GLPathwayContentCreator {
 		}
 	}
 
-	private float[] determineNodeColor(PathwayVertexRep vertexRep) {
+	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
 
 		int davidID = pathwayItemManager.getDavidIdByPathwayVertex((PathwayVertex) vertexRep
 				.getPathwayVertices().get(0));
@@ -745,31 +769,34 @@ public class GLPathwayContentCreator {
 			return null;
 		else {
 
+			Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager()
+					.getElements(SelectionType.SELECTION);
+			List<Integer> selectedSamplesArray = new ArrayList<Integer>();
+			selectedSamplesArray.addAll(selectedSamples);
+
+			VirtualArray<?, ?, ?> selectedSamplesVA;
+
+			if (!geneticDataDomain.isGeneRecord())
+				selectedSamplesVA = new RecordVirtualArray(glPathwayView
+						.getSampleSelectionManager().getIDType(), selectedSamplesArray);
+			else
+				selectedSamplesVA = new DimensionVirtualArray(glPathwayView
+						.getSampleSelectionManager().getIDType(), selectedSamplesArray);
+
 			Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(
 					glPathwayView.getPathwayDataDomain().getDavidIDType(), glPathwayView
 							.getGeneSelectionManager().getIDType(), davidID);
 			if (expressionIndices == null)
 				return null;
+
+			// FIXME multi mappings not properly handled - only the first is
+			// taken
 			for (Integer expressionIndex : expressionIndices) {
 
-				float expression = 0;
+				Average average = ContainerStatistics.calculateAverage(selectedSamplesVA,
+						geneticDataDomain.getTable(), expressionIndex);
 
-				if (glPathwayView.getGeneSelectionManager().getIDType() == geneticDataDomain
-						.getRecordIDType())
-					expression = (float) glPathwayView.getDataContainer()
-							.getContainerStatistics().getAverageRecords().get(expressionIndex)
-							.getArithmeticMean();
-				else {
-
-					int index = glPathwayView.getDataContainer().getDimensionPerspective()
-							.getVirtualArray().indexOf(expressionIndex);
-					if (index > 0)
-						expression = (float) glPathwayView.getDataContainer()
-								.getContainerStatistics().getAverageDimensions().get(index)
-								.getArithmeticMean();
-				}
-
-				return colorMapper.getColor(expression);
+				return average;
 			}
 		}
 

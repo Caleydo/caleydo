@@ -44,7 +44,9 @@ public class PathwayRenderStyle extends GeneralRenderStyle {
 	public static final float[] MAPLINK_EDGE_COLOR = new float[] { 1, 0, 1, 1 };
 	
 	public static final float[] PATH_COLOR = new float[] { 1, 1, 1, 0.3f };
-	
+
+	public static final float[] NODE_STD_DEV_COLOR = new float[] { 1, 0, 0, 1f };
+
 	/**
 	 * The color of the neighborhood node with the distance to the clicked node
 	 * of [1..neighborhoodNodeColorArraysize]

@@ -146,6 +146,7 @@ public class GLPathway
 	private GLPathwayContentCreator gLPathwayContentCreator;
 
 	private SelectionManager geneSelectionManager;
+	private EventBasedSelectionManager sampleSelectionManager;
 
 	/**
 	 * Selection manager for metabolites (compounds). Uses the hash value of
@@ -498,6 +499,7 @@ public class GLPathway
 		isDisplayListDirty = true;
 
 		geneSelectionManager.clearSelections();
+		sampleSelectionManager.clearSelections();
 		selectedPath = null;
 		allPaths = null;
 
@@ -1202,6 +1204,9 @@ public class GLPathway
 		// selectedSampleIndex =
 		// dataContainer.getDimensionPerspective().getVirtualArray().get(0);
 
+		sampleSelectionManager = new EventBasedSelectionManager(this,
+				((GeneticDataDomain) dataDomain).getSampleIDType());
+
 		super.setDataDomain(dataDomain);
 	}
 
@@ -1222,6 +1227,13 @@ public class GLPathway
 	 */
 	public SelectionManager getGeneSelectionManager() {
 		return geneSelectionManager;
+	}
+
+	/**
+	 * @return the sampleSelectionManager, see {@link #sampleSelectionManager}
+	 */
+	public SelectionManager getSampleSelectionManager() {
+		return sampleSelectionManager;
 	}
 
 	@Override
@@ -1276,7 +1288,7 @@ public class GLPathway
 					isBubbleTextureDirty = true;
 				}
 			}
-			else if (selectedPath != null){
+			else if (selectedPath != null) {
 				KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 						pathway, selectedPath.getStartVertex(), MAX_PATHS);
 				allPaths = pathAlgo.getPaths(vertexRep);
