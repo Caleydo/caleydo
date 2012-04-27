@@ -235,6 +235,9 @@ public class GLPathway
 
 	private void selectNextPath()
 	{
+		if (allPaths == null)
+			return;
+
 		if(allPaths.size()==1)
 			selectedPathID=0;
 		else{
