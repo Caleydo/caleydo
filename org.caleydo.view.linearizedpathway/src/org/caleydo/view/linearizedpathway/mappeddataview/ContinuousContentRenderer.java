@@ -70,7 +70,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			return;
 		average = ContainerStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
-		if (experimentPerspective.getVirtualArray().size() > 30) {
+		if (experimentPerspective.getVirtualArray().size() > 100) {
 
 			useShading = false;
 		}
@@ -94,12 +94,13 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
 			selectionLists.add(geneSelectionTypes);
 
-			for (Integer experimentID : experimentPerspective.getVirtualArray()) {
-				Integer resolvedSampleID = sampleIDMappingManager.getID(
-						dataDomain.getSampleIDType(), parent.sampleIDType, experimentID);
+			for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+				// Integer resolvedSampleID = sampleIDMappingManager.getID(
+				// dataDomain.getSampleIDType(), parent.sampleIDType,
+				// experimentID);
 
-				selectionLists.add(parent.sampleSelectionManager
-						.getSelectionTypes(resolvedSampleID));
+				selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
+						sampleIDType, sampleID));
 			}
 
 			calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));

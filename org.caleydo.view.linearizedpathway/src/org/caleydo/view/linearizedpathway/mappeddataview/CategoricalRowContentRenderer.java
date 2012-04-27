@@ -60,8 +60,6 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				parentView, parent, group);
 	}
 
-	
-
 	@Override
 	public void init() {
 		if (geneID == null)
@@ -134,10 +132,9 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 					experimentCount++;
 					continue;
 				}
-				Integer resolvedSampleID = sampleIDMappingManager.getID(
-						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
+
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
-						.getSelectionTypes(resolvedSampleID);
+						.getSelectionTypes(sampleIDType, sampleID);
 
 				topBarColor = dataDomain.getColorMapper().getColor(value);
 				bottomBarColor = topBarColor;
@@ -151,6 +148,8 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.GENE.name(), davidID));
 
+				Integer resolvedSampleID = sampleIDMappingManager.getID(
+						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				gl.glPushName(parentView.getPickingManager().getPickingID(
 						parentView.getID(), PickingType.SAMPLE.name(), resolvedSampleID));
 
@@ -201,10 +200,10 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
 			ArrayList<SelectionType> sampleSelectionTypes = new ArrayList<SelectionType>();
 			for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
-				Integer resolvedSampleID = sampleIDMappingManager.getID(
-						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
+				// Integer resolvedSampleID = sampleIDMappingManager.getID(
+				// dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				sampleSelectionTypes.addAll(parent.sampleSelectionManager
-						.getSelectionTypes(resolvedSampleID));
+						.getSelectionTypes(sampleIDType, sampleID));
 			}
 
 			topBarColor = dataDomain.getColorMapper().getColor(
@@ -278,6 +277,5 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 					PickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketCount));
 		}
 	}
-
 
 }
