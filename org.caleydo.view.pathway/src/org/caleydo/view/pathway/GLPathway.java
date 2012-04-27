@@ -190,7 +190,7 @@ public class GLPathway
 	private boolean isBubbleTextureDirty;
 
 	private boolean isControlKeyDown = false;
-
+	private int selectedPathID;
 	/**
 	 * Constructor.
 	 */
@@ -229,8 +229,27 @@ public class GLPathway
 		bubblesetCanvas = new CanvasComponent(shaper);
 		bubblesetCanvas.setDefaultView();
 		isBubbleTextureDirty = true;
+		selectedPathID=0;
 	}
 
+
+	private void selectNextPath()
+	{
+		if(allPaths.size()==1)
+			selectedPathID=0;
+		else{
+			selectedPathID++;
+			if(selectedPathID>allPaths.size()-1)
+				selectedPathID=0;
+			
+			System.out.println("selectedPathID" + selectedPathID);
+			selectedPath = allPaths.get(selectedPathID);
+		}
+		isBubbleTextureDirty=true;
+		setDisplayListDirty();
+		triggerPathUpdate();	
+	}
+	
 	public void setPathway(final PathwayGraph pathway) {
 		// Unregister former pathway in visibility list
 		if (pathway != null) {
@@ -296,7 +315,7 @@ public class GLPathway
 		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
-				System.out.println("HALLO DENIS :)");
+				selectNextPath();
 			}
 		});
 	}
@@ -441,7 +460,8 @@ public class GLPathway
 				if (allPaths == null || allPaths.size() <= pick.getObjectID())
 					return;
 
-				selectedPath = allPaths.get(pick.getObjectID());
+				//selectedPath = allPaths.get(pick.getObjectID());
+				selectedPath = allPaths.get(selectedPathID);
 
 				setDisplayListDirty();
 				triggerPathUpdate();
@@ -1281,8 +1301,10 @@ public class GLPathway
 					allPaths = pathAlgo.getPaths(vertexRep);
 
 				if (allPaths != null && allPaths.size() > 0) {
-					selectedPath = allPaths.get(0);
+					//selectedPath = allPaths.get(0);
+					selectedPath = allPaths.get(selectedPathID);
 					allPaths.clear();
+					selectedPathID=0;
 					allPaths.add(selectedPath);
 					triggerPathUpdate();
 					isBubbleTextureDirty = true;
@@ -1293,8 +1315,10 @@ public class GLPathway
 						pathway, selectedPath.getStartVertex(), MAX_PATHS);
 				allPaths = pathAlgo.getPaths(vertexRep);
 				if (allPaths != null && allPaths.size() > 0) {
-					selectedPath = allPaths.get(0);
+					//selectedPath = allPaths.get(0);
+					selectedPath = allPaths.get(selectedPathID);
 					allPaths.clear();
+					selectedPathID=0;
 					allPaths.add(selectedPath);
 					triggerPathUpdate();
 					isBubbleTextureDirty = true;
@@ -1315,7 +1339,7 @@ public class GLPathway
 				if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
 
 					allPaths = mouseOverPaths;
-
+					selectedPath = allPaths.get(selectedPathID);					
 					if (selectedPath != null && isControlKeyDown)
 						allPaths.add(selectedPath);
 
