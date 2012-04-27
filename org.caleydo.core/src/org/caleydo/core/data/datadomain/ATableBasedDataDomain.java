@@ -149,6 +149,9 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	protected IDCategory recordIDCategory;
 	protected IDCategory dimensionIDCategory;
 
+	protected IDCategory recordGroupIDCategory;
+	protected IDCategory dimensionGroupIDCategory;
+
 	protected IDType recordIDType;
 	protected IDType dimensionIDType;
 
@@ -282,12 +285,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 				+ hashCode(), dimensionIDCategory, EColumnType.INT);
 		dimensionIDType.setInternalType(true);
 
+		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory
+				.getCategoryName() + "_GROUP");
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
-				+ hashCode(), recordIDCategory, EColumnType.INT);
+				+ hashCode(), recordGroupIDCategory, EColumnType.INT);
 		recordGroupIDType.setInternalType(true);
 
+		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory
+				.getCategoryName() + "_GROUP");
 		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
-				+ "_" + hashCode(), dimensionIDCategory, EColumnType.INT);
+				+ "_" + hashCode(), dimensionGroupIDCategory, EColumnType.INT);
 
 		IDType primaryRecordMappingType;
 

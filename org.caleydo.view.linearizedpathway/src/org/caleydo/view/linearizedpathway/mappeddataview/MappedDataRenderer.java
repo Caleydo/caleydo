@@ -432,7 +432,7 @@ public class MappedDataRenderer {
 					IDType.getIDType("DAVID"), geneIDTYpe, davidID);
 			Integer geneID;
 			if (geneIDs == null) {
-				System.out.println("No mapping for david: " + davidID);
+//				System.out.println("No mapping for david: " + davidID);
 				geneID = null;
 
 			} else {
