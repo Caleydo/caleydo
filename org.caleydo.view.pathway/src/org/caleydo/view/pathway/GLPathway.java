@@ -20,7 +20,6 @@
 package org.caleydo.view.pathway;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.geom.Rectangle2D;
@@ -180,9 +179,6 @@ public class GLPathway
 	 */
 	private List<GraphPath<PathwayVertexRep, DefaultEdge>> allPaths = null;
 
-	/**
-	 * 
-	 */
 	private TextureRenderer texRenderer;
 	private SetOutline setOutline;
 	private AbstractShapeGenerator shaper;
@@ -524,14 +520,13 @@ public class GLPathway
 			groupID--;
 		}
 
-		//updateSingleBubbleSet(gl, selectedPath);
-		//updateSingleBubbleSet(gl, mouseOverPath);
+		// updateSingleBubbleSet(gl, selectedPath);
+		// updateSingleBubbleSet(gl, mouseOverPath);
 
 		int bbGroupID = -1;
 		HashSet<PathwayVertexRep> visitedNodes = new HashSet();
-		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) 
-		{					
-			//updateSingleBubbleSet(gl, path, bbGroupID,visitedNodes);
+		for (GraphPath<PathwayVertexRep, DefaultEdge> path : allPaths) {
+			// updateSingleBubbleSet(gl, path, bbGroupID,visitedNodes);
 			if (path == null)
 				return;
 
@@ -539,34 +534,45 @@ public class GLPathway
 			double bbItemH = 10;
 
 			// group0
-			
+
 			gl.glPushName(generalManager
 					.getViewManager()
 					.getPickingManager()
 					.getPickingID(uniqueID, PickingType.PATHWAY_PATH_SELECTION.name(),
 							allPaths.indexOf(path)));
-			float[] colorValues= new float[3];
+			float[] colorValues = new float[3];
 			Integer outlineThickness;
 			bbGroupID++;
-			if (path == selectedPath){	
-				colorValues=SelectionType.SELECTION.getColor();
-				outlineThickness=3;
-				bubblesetCanvas.addGroup(new Color(colorValues[0],colorValues[1],colorValues[2]),outlineThickness,true); // bubble sets do not allow to delete
+			if (path == selectedPath) {
+				colorValues = SelectionType.SELECTION.getColor();
+				outlineThickness = 3;
+				// bubble sets do not allow to delete
+				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1],
+						colorValues[2]), outlineThickness, true);
 			}
-			//else if (path == mouseOverPath)
-			//	gl.glColor4fv(SelectionType.MOUSE_OVER.getColor(), 0);
-			else{
-				List<org.caleydo.core.util.color.Color> colorTable=(ColorManager.get()).getColorList("qualitativeColors");
+			else if (path == mouseOverPath) {
+				colorValues = SelectionType.MOUSE_OVER.getColor();
+				outlineThickness = 1;
+				// bubble sets do not allow to delete
+				bubblesetCanvas.addGroup(new Color(colorValues[0], colorValues[1],
+						colorValues[2]), outlineThickness, true);
+			}
+			else {
+				List<org.caleydo.core.util.color.Color> colorTable = (ColorManager.get())
+						.getColorList("qualitativeColors");
 				int colorID;
-				if(bbGroupID<colorTable.size()-2)//avoid the last two colors because they are close to orange (the selection color)
-					colorID=bbGroupID;
+				// avoid the last two colors because they are close to orange
+				// (the selection color)
+				if (bbGroupID < colorTable.size() - 2)
+					colorID = bbGroupID;
 				else
-					colorID=colorTable.size()-1;
-				org.caleydo.core.util.color.Color c=colorTable.get(colorID);
-				outlineThickness=1;
-				bubblesetCanvas.addGroup(new Color(c.r,c.g,c.b),outlineThickness,true); // bubble sets do not allow to delete	
+					colorID = colorTable.size() - 1;
+				org.caleydo.core.util.color.Color c = colorTable.get(colorID);
+				outlineThickness = 1;
+				// bubble sets do not allow to delete
+				bubblesetCanvas.addGroup(new Color(c.r, c.g, c.b), outlineThickness, true);
 			}
-			
+
 			DefaultEdge lastEdge = null;
 			for (DefaultEdge edge : path.getEdgeList()) {
 				PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
@@ -595,55 +601,54 @@ public class GLPathway
 			}
 			gl.glPopName();
 			//
-			
+
 		}
-		///////////////////////
+		// /////////////////////
 		//
-//		HashSet<PathwayVertexRep> otherNodes = new HashSet();
-//		HashSet<Rectangle2D> otherRects = new HashSet();
-//		Set<PathwayVertexRep> vSet = pathway.vertexSet();
-//		double bbItemW = 10;
-//		double bbItemH = 10;
-//        Iterator iter=vSet.iterator();
-//        while(iter.hasNext()){
-//        	PathwayVertexRep pathwayVertexRep=(PathwayVertexRep)iter.next();
-//        	if(!visitedNodes.contains(pathwayVertexRep)){
-//        		otherNodes.add(pathwayVertexRep);				
-//				double posX = pathwayVertexRep.getLowerLeftCornerX();
-//				double posY = pathwayVertexRep.getLowerLeftCornerY();
-//				bbItemW=pathwayVertexRep.getWidth();
-//				bbItemH=pathwayVertexRep.getHeight();
-//		        final double x = bubblesetCanvas.getXForScreen(posX);
-//		        final double y = bubblesetCanvas.getYForScreen(posY);
-//		        otherRects.add(new Rectangle2D.Double(x - bbItemW * 0.5, y - bbItemH * 0.5,bbItemW, bbItemH));
-//        	}
-//        }
-//		bubblesetCanvas.resolveEdgeIntersections(otherRects);
-//		// add all other vertices  
-//		bubblesetCanvas.addGroup(new Color(0f,0f,0f),1, false); // bubble sets do not allow to delete
-//		bbGroupID++;	
-//        Iterator otherNodesIter=otherNodes.iterator();
-//        while(otherNodesIter.hasNext()){
-//        	PathwayVertexRep pathwayVertexRep=(PathwayVertexRep)otherNodesIter.next();
-//			double posX = pathwayVertexRep.getLowerLeftCornerX();
-//			double posY = pathwayVertexRep.getLowerLeftCornerY();
-//			bbItemW=pathwayVertexRep.getWidth();
-//			bbItemH=pathwayVertexRep.getHeight();
-//			bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
-//		}
+		// HashSet<PathwayVertexRep> otherNodes = new HashSet();
+		// HashSet<Rectangle2D> otherRects = new HashSet();
+		// Set<PathwayVertexRep> vSet = pathway.vertexSet();
+		// double bbItemW = 10;
+		// double bbItemH = 10;
+		// Iterator iter=vSet.iterator();
+		// while(iter.hasNext()){
+		// PathwayVertexRep pathwayVertexRep=(PathwayVertexRep)iter.next();
+		// if(!visitedNodes.contains(pathwayVertexRep)){
+		// otherNodes.add(pathwayVertexRep);
+		// double posX = pathwayVertexRep.getLowerLeftCornerX();
+		// double posY = pathwayVertexRep.getLowerLeftCornerY();
+		// bbItemW=pathwayVertexRep.getWidth();
+		// bbItemH=pathwayVertexRep.getHeight();
+		// final double x = bubblesetCanvas.getXForScreen(posX);
+		// final double y = bubblesetCanvas.getYForScreen(posY);
+		// otherRects.add(new Rectangle2D.Double(x - bbItemW * 0.5, y - bbItemH
+		// * 0.5,bbItemW, bbItemH));
+		// }
+		// }
+		// bubblesetCanvas.resolveEdgeIntersections(otherRects);
+		// // add all other vertices
+		// bubblesetCanvas.addGroup(new Color(0f,0f,0f),1, false); // bubble
+		// sets do not allow to delete
+		// bbGroupID++;
+		// Iterator otherNodesIter=otherNodes.iterator();
+		// while(otherNodesIter.hasNext()){
+		// PathwayVertexRep
+		// pathwayVertexRep=(PathwayVertexRep)otherNodesIter.next();
+		// double posX = pathwayVertexRep.getLowerLeftCornerX();
+		// double posY = pathwayVertexRep.getLowerLeftCornerY();
+		// bbItemW=pathwayVertexRep.getWidth();
+		// bbItemH=pathwayVertexRep.getHeight();
+		// bubblesetCanvas.addItem(bbGroupID, posX, posY, bbItemW, bbItemH);
+		// }
 		//
-		///////////////////////
-		
-		
-		
+		// /////////////////////
+
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
 		Graphics2D g2d = texRenderer.createGraphics();
 		bubblesetCanvas.paint(g2d);
 
 		g2d.dispose();
 	}
-
-	
 
 	private void overlayBubbleSets(GL2 gl) {
 		if (allPaths == null)
@@ -712,12 +717,16 @@ public class GLPathway
 			PathwayVertexRep sourceVertexRep = pathway.getEdgeSource(edge);
 			PathwayVertexRep targetVertexRep = pathway.getEdgeTarget(edge);
 
-//			gl.glBegin(GL.GL_LINES);
-//			gl.glVertex3f(sourceVertexRep.getCenterX() * PathwayRenderStyle.SCALING_FACTOR_X,
-//					-sourceVertexRep.getCenterY() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-//			gl.glVertex3f(targetVertexRep.getCenterX() * PathwayRenderStyle.SCALING_FACTOR_X,
-//					-targetVertexRep.getCenterY() * PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
-//			gl.glEnd();
+			// gl.glBegin(GL.GL_LINES);
+			// gl.glVertex3f(sourceVertexRep.getCenterX() *
+			// PathwayRenderStyle.SCALING_FACTOR_X,
+			// -sourceVertexRep.getCenterY() *
+			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			// gl.glVertex3f(targetVertexRep.getCenterX() *
+			// PathwayRenderStyle.SCALING_FACTOR_X,
+			// -targetVertexRep.getCenterY() *
+			// PathwayRenderStyle.SCALING_FACTOR_Y, 0.1f);
+			// gl.glEnd();
 		}
 
 		gl.glPopName();
@@ -1225,8 +1234,7 @@ public class GLPathway
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
 
-		if (previouslySelectedVertexRep != null
-				&& (selectionType == SelectionType.SELECTION)) {// || selectionType == SelectionType.MOUSE_OVER)) {
+		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
 
 			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 					pathway, previouslySelectedVertexRep, MAX_PATHS);
@@ -1235,18 +1243,38 @@ public class GLPathway
 				allPaths = pathAlgo.getPaths(vertexRep);
 
 			if (allPaths != null && allPaths.size() > 0) {
-
-//				if (selectionType == SelectionType.MOUSE_OVER) {
-//					mouseOverPath = allPaths.get(0);
-//					allPaths.remove(mouseOverPath);
-//				}
-//				else {
-					selectedPath = allPaths.get(0);
-					//allPaths.remove(selectedPath);
-//				}
-
+				selectedPath = allPaths.get(0);
 				triggerPathUpdate();
 				isBubbleTextureDirty = true;
+			}
+		}
+		else if (previouslySelectedVertexRep != null
+				&& selectionType == SelectionType.MOUSE_OVER) {
+
+			// remove the old mouse over path when a new only is hovered
+			if (mouseOverPath != null && allPaths != null)
+				allPaths.remove(mouseOverPath);
+			
+			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+					pathway, previouslySelectedVertexRep, MAX_PATHS);
+
+			if (vertexRep != previouslySelectedVertexRep) {
+				List<GraphPath<PathwayVertexRep, DefaultEdge>> mouserOverPaths = pathAlgo
+						.getPaths(vertexRep);
+
+				if (mouserOverPaths != null && mouserOverPaths.size() > 0) {
+
+					// take shortest path and set it as mouse over
+					mouseOverPath = mouserOverPaths.get(0);
+					if (allPaths != null)
+						allPaths.add(mouseOverPath);
+					else {
+						mouserOverPaths.clear();
+						mouserOverPaths.add(mouseOverPath);
+						allPaths = mouserOverPaths;
+					}
+					isBubbleTextureDirty = true;
+				}
 			}
 		}
 

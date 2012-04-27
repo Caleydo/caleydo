@@ -84,7 +84,6 @@ public class JJDataXMLGenerator extends DataSetDescriptionSerializer {
 
 		dataSetDescriptionCollection.add(setUpXMLGLU2GeneExpressionData());
 		// dataSetDescriptions.add(setUpXMLGLU2BiClusterData());
-
 	}
 
 	private DataSetDescription setUpXMLGLU2GeneExpressionData() {
@@ -94,7 +93,7 @@ public class JJDataXMLGenerator extends DataSetDescriptionSerializer {
 
 		mrnaData.setDataSourcePath(MGLU2_GENE_EXPRESSION_DATA);
 		mrnaData.setNumberOfHeaderLines(1);
-
+		
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(1);
 		parsingRule.setParseUntilEnd(true);
@@ -107,7 +106,6 @@ public class JJDataXMLGenerator extends DataSetDescriptionSerializer {
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
 		mrnaData.setRowIDSpecification(geneIDSpecification);
-		mrnaData.setContainsColumnIDs(true);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification clustering = new GroupingParseSpecification(
