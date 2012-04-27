@@ -23,6 +23,8 @@ import gleem.linalg.Vec3f;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.Point;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 import java.awt.event.MouseWheelEvent;
 import java.awt.event.MouseWheelListener;
 import java.awt.geom.Rectangle2D;
@@ -97,6 +99,7 @@ import org.caleydo.view.pathway.listener.LinearizedPathwayPathEventListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.alg.KShortestPaths;
@@ -185,6 +188,8 @@ public class GLPathway
 	Texture bubbleSetsTexture;
 	private boolean isBubbleTextureDirty;
 
+	private boolean isControlKeyDown = false;
+
 	/**
 	 * Constructor.
 	 */
@@ -213,7 +218,8 @@ public class GLPathway
 
 		registerPickingListeners();
 		registerMouseListeners();
-		
+		registeKeyListeners();
+
 		// ///////////////////////////////////////////////////
 		// / bubble sets
 		setOutline = new BubbleSet(100, 20, 3, 10.0, 7.0, 0.5, 2.5, 15.0, 8);
@@ -275,7 +281,7 @@ public class GLPathway
 
 	@Override
 	public void init(final GL2 gl) {
-		
+
 		displayListIndex = gl.glGenLists(1);
 		// Check if pathway exists or if it's already loaded
 		if (pathway == null || !pathwayManager.hasItem(pathway.getID()))
@@ -290,6 +296,23 @@ public class GLPathway
 			@Override
 			public void mouseWheelMoved(MouseWheelEvent e) {
 				System.out.println("HALLO DENIS :)");
+			}
+		});
+	}
+
+	protected void registeKeyListeners() {
+
+		parentGLCanvas.addKeyListener(new KeyAdapter() {
+
+			@Override
+			public void keyPressed(KeyEvent e) {
+				isControlKeyDown = e.isControlDown();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+
+				isControlKeyDown = e.isControlDown();
 			}
 		});
 	}
@@ -1238,19 +1261,34 @@ public class GLPathway
 
 		if (previouslySelectedVertexRep != null && selectionType == SelectionType.SELECTION) {
 
-			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-					pathway, previouslySelectedVertexRep, MAX_PATHS);
+			if (!isControlKeyDown) {
+				KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+						pathway, previouslySelectedVertexRep, MAX_PATHS);
 
-			if (vertexRep != previouslySelectedVertexRep)
-				allPaths = pathAlgo.getPaths(vertexRep);
+				if (vertexRep != previouslySelectedVertexRep)
+					allPaths = pathAlgo.getPaths(vertexRep);
 
-			if (allPaths != null && allPaths.size() > 0) {
-				selectedPath = allPaths.get(0);
-				allPaths.clear();
-				allPaths.add(selectedPath);
-				triggerPathUpdate();
-				isBubbleTextureDirty = true;
+				if (allPaths != null && allPaths.size() > 0) {
+					selectedPath = allPaths.get(0);
+					allPaths.clear();
+					allPaths.add(selectedPath);
+					triggerPathUpdate();
+					isBubbleTextureDirty = true;
+				}
 			}
+			else if (selectedPath != null){
+				KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+						pathway, selectedPath.getStartVertex(), MAX_PATHS);
+				allPaths = pathAlgo.getPaths(vertexRep);
+				if (allPaths != null && allPaths.size() > 0) {
+					selectedPath = allPaths.get(0);
+					allPaths.clear();
+					allPaths.add(selectedPath);
+					triggerPathUpdate();
+					isBubbleTextureDirty = true;
+				}
+			}
+
 		}
 		else if (previouslySelectedVertexRep != null
 				&& selectionType == SelectionType.MOUSE_OVER) {
@@ -1265,6 +1303,10 @@ public class GLPathway
 				if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
 
 					allPaths = mouseOverPaths;
+
+					if (selectedPath != null && isControlKeyDown)
+						allPaths.add(selectedPath);
+
 					isBubbleTextureDirty = true;
 				}
 			}
