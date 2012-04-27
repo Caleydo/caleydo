@@ -95,9 +95,4 @@ public class GeneNode extends ALinearizableNode  {
 		return new GeneNodePreviewMode(view);
 	}
 
-	@Override
-	protected void registerPickingListeners() {
-
-	}
-
 }

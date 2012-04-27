@@ -27,13 +27,13 @@ import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class Group extends AUniqueObject implements ILabelTextProvider {
+public class Group extends AUniqueObject implements ILabelProvider {
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -239,5 +239,10 @@ public class Group extends AUniqueObject implements ILabelTextProvider {
 
 	public String getPerspectiveID() {
 		return perspectiveID;
+	}
+
+	@Override
+	public String getSecondaryLabel() {
+		return null;
 	}
 }

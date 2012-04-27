@@ -11,7 +11,7 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ANodeAttributeRenderer;
@@ -25,7 +25,7 @@ import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer
  * 
  */
 public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
-		ILabelTextProvider {
+		ILabelProvider {
 
 	/**
 	 * @param view
@@ -148,6 +148,16 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 			attributeRenderer.render(gl);
 		}
 
+	}
+
+	@Override
+	public boolean isDefaultLabel() {
+		return false;
+	}
+
+	@Override
+	public String getSecondaryLabel() {
+		return null;
 	}
 
 }

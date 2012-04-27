@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutManager;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -54,13 +54,13 @@ import org.caleydo.view.linearizedpathway.node.layout.BranchNodeLabelRenderer;
  * @author Christian
  * 
  */
-public class BranchSummaryNode extends ANode implements ILabelTextProvider {
+public class BranchSummaryNode extends ANode implements ILabelProvider {
 
-	protected static final int MIN_NODE_WIDTH_PIXELS = 180;
+	protected static final int MIN_NODE_WIDTH_PIXELS = 90;
 	protected static final int SPACING_PIXELS = 2;
 	protected static final int COLLAPSE_BUTTON_SIZE_PIXELS = 12;
-	protected static final int LABEL_HEIGHT_PIXELS = 16;
-	protected static final int NUM_NODES_LABEL_WIDTH_PIXELS = 20;
+	protected static final int LABEL_HEIGHT_PIXELS = 14;
+	protected static final int NUM_NODES_LABEL_WIDTH_PIXELS = 16;
 	protected static final int BRANCH_NODE_SPACING = 20;
 	protected static final int BRANCH_AREA_SPACING = 8;
 
@@ -330,6 +330,16 @@ public class BranchSummaryNode extends ANode implements ILabelTextProvider {
 	@Override
 	public int getWidthPixels() {
 		return MIN_NODE_WIDTH_PIXELS;
+	}
+
+	@Override
+	public boolean isDefaultLabel() {
+		return false;
+	}
+
+	@Override
+	public String getSecondaryLabel() {
+		return null;
 	}
 
 }

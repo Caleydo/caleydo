@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.picking;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolTip;
 
@@ -43,6 +44,13 @@ public class ToolTipPickingListener extends APickingListener {
 	 * Message of the tooltip.
 	 */
 	private String toolTipMessage;
+
+	/**
+	 * Provider for the text in the tooltip. The message is taken from the
+	 * {@link ILabelProvider#getLabel()} and the title is taken from
+	 * {@link ILabelProvider#getSecondaryLabel()}.
+	 */
+	private ILabelProvider labelProvider;
 
 	/**
 	 * Thread that shows the tooltip.
@@ -90,6 +98,11 @@ public class ToolTipPickingListener extends APickingListener {
 		this.toolTipMessage = toolTipMessage;
 	}
 
+	public ToolTipPickingListener(AGLView view, ILabelProvider labelProvider) {
+		this.view = view;
+		this.labelProvider = labelProvider;
+	}
+
 	public ToolTipPickingListener(AGLView view, String toolTipTitle, String toolTipMessage) {
 		this.view = view;
 		this.toolTipTitle = toolTipTitle;
@@ -98,17 +111,18 @@ public class ToolTipPickingListener extends APickingListener {
 
 	@Override
 	public void mouseOver(Pick pick) {
-		
-		
-//		JToolTip tip = new JToolTip();
-//		tip.setTipText("test");
-//JButton button;
-//button.
-//		tip.setLocation(10, 10);
-//		tip.setVisible(true);
-		
-		
-		
+
+		// JToolTip tip = new JToolTip();
+		// tip.setTipText("test");
+		// JButton button;
+		// button.
+		// tip.setLocation(10, 10);
+		// tip.setVisible(true);
+		if(labelProvider != null) {
+			toolTipMessage = labelProvider.getLabel();
+			toolTipTitle = labelProvider.getSecondaryLabel();
+		}
+
 		thread = new ToolTipThread();
 		Runnable runnable = new Runnable() {
 
@@ -132,17 +146,17 @@ public class ToolTipPickingListener extends APickingListener {
 	public void mouseOut(Pick pick) {
 		hideToolTip();
 	}
-	
+
 	@Override
 	public void clicked(Pick pick) {
 		hideToolTip();
 	}
-	
+
 	@Override
 	public void rightClicked(Pick pick) {
 		hideToolTip();
 	}
-	
+
 	private void hideToolTip() {
 		System.out.println("hide picking");
 		view.getParentComposite().getDisplay().asyncExec(new Runnable() {
@@ -184,6 +198,14 @@ public class ToolTipPickingListener extends APickingListener {
 	 */
 	public String getToolTipMessage() {
 		return toolTipMessage;
+	}
+
+	/**
+	 * @param labelProvider
+	 *            setter, see {@link #labelProvider}
+	 */
+	public void setLabelProvider(ILabelProvider labelProvider) {
+		this.labelProvider = labelProvider;
 	}
 
 }

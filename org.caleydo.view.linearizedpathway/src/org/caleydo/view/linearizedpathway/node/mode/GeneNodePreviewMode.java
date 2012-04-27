@@ -19,7 +19,7 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -38,9 +38,9 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
  * @author Christian
  * 
  */
-public class GeneNodePreviewMode extends AGeneNodeMode implements ILabelTextProvider {
+public class GeneNodePreviewMode extends AGeneNodeMode {
 
-	protected static final int MIN_NODE_WIDTH_PIXELS = 150;
+	protected static final int MIN_NODE_WIDTH_PIXELS = 70;
 	protected static final int SPACING_PIXELS = 2;
 	protected static final int CAPTION_HEIGHT_PIXELS = 16;
 	protected static final int GENE_ROW_HEIGHT_PIXELS = 30;
@@ -309,11 +309,6 @@ public class GeneNodePreviewMode extends AGeneNodeMode implements ILabelTextProv
 		super.unregisterPickingListeners();
 		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
-	}
-
-	@Override
-	public String getLabel() {
-		return node.getCaption();
 	}
 
 }

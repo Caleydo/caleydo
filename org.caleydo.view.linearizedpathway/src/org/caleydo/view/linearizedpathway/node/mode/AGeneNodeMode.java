@@ -13,6 +13,7 @@ import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.layout.util.IColorProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.node.GeneNode;
 
@@ -23,7 +24,7 @@ import org.caleydo.view.linearizedpathway.node.GeneNode;
  * 
  */
 public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
-		IColorProvider {
+		IColorProvider, ILabelProvider {
 
 	/**
 	 * Second color that is used to show a color gradient made up of combined
@@ -93,6 +94,21 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 	@Override
 	public boolean isHorizontalGradient() {
 		return false;
+	}
+	
+	@Override
+	public String getLabel() {
+		return node.getCaption();
+	}
+
+	@Override
+	public boolean isDefaultLabel() {
+		return false;
+	}
+
+	@Override
+	public String getSecondaryLabel() {
+		return null;
 	}
 
 }

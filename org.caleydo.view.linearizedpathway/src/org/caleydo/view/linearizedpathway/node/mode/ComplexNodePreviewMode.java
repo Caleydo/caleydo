@@ -7,7 +7,7 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -24,9 +24,9 @@ import org.caleydo.view.linearizedpathway.node.ComplexNode;
  * 
  */
 public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
-		ILabelTextProvider {
+		ILabelProvider {
 
-	public static final int MIN_NODE_WIDTH_PIXELS = 150;
+	public static final int MIN_NODE_WIDTH_PIXELS = 70;
 
 	/**
 	 * @param view
@@ -111,6 +111,16 @@ public class ComplexNodePreviewMode extends ALayoutBasedNodeMode implements
 	@Override
 	public String getLabel() {
 		return node.getCaption();
+	}
+	
+	@Override
+	public boolean isDefaultLabel() {
+		return false;
+	}
+
+	@Override
+	public String getSecondaryLabel() {
+		return null;
 	}
 
 }

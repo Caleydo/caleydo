@@ -165,11 +165,6 @@ public class ComplexNode extends ALinearizableNode {
 	}
 
 	@Override
-	protected void registerPickingListeners() {
-
-	}
-
-	@Override
 	public String getCaption() {
 		return "Complex";
 	}

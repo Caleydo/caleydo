@@ -40,7 +40,7 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	public static final int ALIGN_RIGHT = 2;
 
 	private boolean isPickable;
-	private ILabelTextProvider labelProvider;
+	private ILabelProvider labelProvider;
 	private String label = "Not set";
 	/**
 	 * Specifies the alignment of the text.
@@ -57,7 +57,7 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	 * @param id
 	 *            ID for picking.
 	 */
-	public LabelRenderer(AGLView view, ILabelTextProvider labelProvider,
+	public LabelRenderer(AGLView view, ILabelProvider labelProvider,
 			String pickingType, int id) {
 		super(view, pickingType, id);
 
@@ -65,13 +65,13 @@ public class LabelRenderer extends APickableLayoutRenderer {
 		this.labelProvider = labelProvider;
 	}
 
-	public LabelRenderer(AGLView view, ILabelTextProvider labelProvider) {
+	public LabelRenderer(AGLView view, ILabelProvider labelProvider) {
 		this.view = view;
 		this.labelProvider = labelProvider;
 		this.isPickable = false;
 	}
 
-	public LabelRenderer(AGLView view, ILabelTextProvider labelProvider,
+	public LabelRenderer(AGLView view, ILabelProvider labelProvider,
 			List<Pair<String, Integer>> pickingIDs) {
 		super(view, pickingIDs);
 		this.isPickable = true;

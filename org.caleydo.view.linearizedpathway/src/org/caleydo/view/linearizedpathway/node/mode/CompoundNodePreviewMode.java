@@ -27,8 +27,8 @@ import org.caleydo.view.linearizedpathway.node.CompoundNode;
  */
 public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
-	protected static final int MIN_NODE_WIDTH_PIXELS = 150;
-	protected static final int TEXT_HEIGHT_PIXELS = 14;
+	protected static final int MIN_NODE_WIDTH_PIXELS = 70;
+	protected static final int TEXT_HEIGHT_PIXELS = 12;
 	protected static final int SPACING_PIXELS = 4;
 
 	/**
@@ -81,7 +81,8 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		gl.glEnd();
 
 		textRenderer.renderTextInBounds(gl, node.getCaption(), leftX + spacing, bottomY
-				+ spacing, nodePosition.z(), width - height, textHeight);
+				+ spacing + pixelGLConverter.getGLHeightForPixelHeight(2),
+				nodePosition.z(), width - height, textHeight);
 		gl.glPopName();
 
 		renderCircle(gl, glu, circlePosition, height - spacing);
@@ -105,7 +106,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 						.getGeneSelectionManager();
 				geneSelectionManager.clearSelection(SelectionType.MOUSE_OVER);
 				selectionManager.clearSelection(SelectionType.MOUSE_OVER);
-				
+
 				if (parent != null)
 					view.selectBranch(parent);
 				else
@@ -121,7 +122,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 				selectionManager.addToType(SelectionType.MOUSE_OVER, node
 						.getPathwayVertexRep().getName().hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
-				
+
 				node.setSelectionType(SelectionType.MOUSE_OVER);
 				// circleColor = SelectionType.MOUSE_OVER.getColor();
 				view.setDisplayListDirty();
@@ -129,13 +130,13 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 
 			@Override
 			public void mouseOut(Pick pick) {
-				
+
 				EventBasedSelectionManager selectionManager = view
 						.getMetaboliteSelectionManager();
 				selectionManager.removeFromType(SelectionType.MOUSE_OVER, node
 						.getPathwayVertexRep().getName().hashCode());
 				selectionManager.triggerSelectionUpdateEvent();
-				
+
 				node.setSelectionType(SelectionType.NORMAL);
 				// circleColor = DEFAULT_CIRCLE_COLOR;
 				view.setDisplayListDirty();

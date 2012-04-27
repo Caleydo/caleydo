@@ -97,7 +97,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		IEventBasedSelectionManagerUser {
 
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
-	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 200;
+	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
 	public final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
 	public final static int DATA_COLUMN_WIDTH_PIXELS = 350;
 	public final static int MIN_NODE_SPACING_PIXELS = 50;

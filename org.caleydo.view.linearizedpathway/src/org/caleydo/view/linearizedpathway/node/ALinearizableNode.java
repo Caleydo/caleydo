@@ -30,6 +30,8 @@ import javax.media.opengl.glu.GLU;
 
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
+import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
@@ -41,7 +43,7 @@ import org.caleydo.view.linearizedpathway.node.mode.ALinearizeableNodeMode;
  * @author Christian
  * 
  */
-public abstract class ALinearizableNode extends ANode {
+public abstract class ALinearizableNode extends ANode implements ILabelProvider {
 
 	/**
 	 * Determines whether the node shows a preview of its data.
@@ -91,12 +93,6 @@ public abstract class ALinearizableNode extends ANode {
 		super(pixelGLConverter, view, nodeId);
 		mode = getLinearizedMode();
 		mode.apply(this);
-	}
-
-	@Override
-	public void unregisterPickingListeners() {
-		view.removeAllIDPickingListeners(PickingType.GENE_NODE.name(), nodeId);
-		mode.unregisterPickingListeners();
 	}
 
 	@Override
@@ -227,5 +223,34 @@ public abstract class ALinearizableNode extends ANode {
 	// public int getMinRequiredWidthPixels() {
 	// return mode.getMinWidthPixels();
 	// }
+
+	@Override
+	protected void registerPickingListeners() {
+		ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(view, this);
+		view.addIDPickingListener(toolTipPickingListener,
+				PickingType.LINEARIZABLE_NODE.name(), nodeId);
+	}
+
+	@Override
+	public void unregisterPickingListeners() {
+		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(), nodeId);
+		mode.unregisterPickingListeners();
+	}
+	
+
+	@Override
+	public String getLabel() {
+		return pathwayVertexRep.getName();
+	}
+	
+	@Override
+	public boolean isDefaultLabel() {
+		return false;
+	}
+	
+	@Override
+	public String getSecondaryLabel() {
+		return null;
+	}
 
 }

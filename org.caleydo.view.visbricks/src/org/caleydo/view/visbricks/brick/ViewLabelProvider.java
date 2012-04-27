@@ -23,7 +23,7 @@
 package org.caleydo.view.visbricks.brick;
 
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 
 /**
  * Adapter for views to provide their labels.
@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
  * @author Christian
  * 
  */
-public class ViewLabelProvider implements ILabelTextProvider {
+public class ViewLabelProvider implements ILabelProvider {
 
 	private AGLView view;
 
@@ -42,6 +42,16 @@ public class ViewLabelProvider implements ILabelTextProvider {
 	@Override
 	public String getLabel() {
 		return view.getLabel();
+	}
+
+	@Override
+	public boolean isDefaultLabel() {
+		return false;
+	}
+
+	@Override
+	public String getSecondaryLabel() {
+		return null;
 	}
 
 }

@@ -80,9 +80,4 @@ public class CompoundNode extends ALinearizableNode {
 		return pathwayVertexRep.getName();
 	}
 
-	@Override
-	protected void registerPickingListeners() {
-
-	}
-
 }

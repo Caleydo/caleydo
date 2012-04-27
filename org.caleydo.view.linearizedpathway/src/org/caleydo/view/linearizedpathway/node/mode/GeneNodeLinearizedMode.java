@@ -9,7 +9,7 @@ import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
-import org.caleydo.core.view.opengl.layout.util.ILabelTextProvider;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
@@ -26,7 +26,7 @@ import org.caleydo.view.linearizedpathway.node.RemoveNodeButtonAttributeRenderer
  * @author Christian
  * 
  */
-public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelTextProvider {
+public class GeneNodeLinearizedMode extends AGeneNodeMode implements ILabelProvider {
 
 	protected ColorRenderer colorRenderer;
 

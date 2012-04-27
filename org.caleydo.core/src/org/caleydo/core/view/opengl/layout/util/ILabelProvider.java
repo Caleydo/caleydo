@@ -23,16 +23,30 @@
 package org.caleydo.core.view.opengl.layout.util;
 
 /**
- * Interface for classes that provide the text for a {@link LabelRenderer}.
+ * Interface for classes that provide a label. The {@link #getLabel()} method is
+ * used as callback to keep the text up-to-date for classes using this text.
  * 
  * @author Christian
  * 
  */
-public interface ILabelTextProvider {
+public interface ILabelProvider {
 
 	/**
-	 * @return The text that shall be displayed by a {@link LabelRenderer}.
+	 * Callback method that provides label.
+	 * 
+	 * @return
 	 */
 	public String getLabel();
-	
+
+	/**
+	 * @return True, if the label provided is a default label, false otherwise.
+	 */
+	public boolean isDefaultLabel();
+
+	/**
+	 * Callback method that provides a secondary label.
+	 * 
+	 * @return
+	 */
+	public String getSecondaryLabel();
 }
