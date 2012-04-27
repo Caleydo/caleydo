@@ -460,6 +460,8 @@ public class GLPathway
 					return;
 
 				//selectedPath = allPaths.get(pick.getObjectID());
+				if(allPaths.size()<=selectedPathID)
+					selectedPathID=0;
 				selectedPath = allPaths.get(selectedPathID);
 
 				setDisplayListDirty();
@@ -688,6 +690,8 @@ public class GLPathway
 		// }
 		//
 		// /////////////////////
+		if(allPaths.size()<=selectedPathID)
+			selectedPathID=0;
 		bubblesetCanvas.setSelection(selectedPathID); //the selected set will be rendered on top of all others 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
 		Graphics2D g2d = texRenderer.createGraphics();
@@ -1301,6 +1305,8 @@ public class GLPathway
 
 				if (allPaths != null && allPaths.size() > 0) {
 					//selectedPath = allPaths.get(0);
+					if(allPaths.size()<=selectedPathID)
+						selectedPathID=0;
 					selectedPath = allPaths.get(selectedPathID);
 					allPaths.clear();
 					selectedPathID=0;
@@ -1315,6 +1321,8 @@ public class GLPathway
 				allPaths = pathAlgo.getPaths(vertexRep);
 				if (allPaths != null && allPaths.size() > 0) {
 					//selectedPath = allPaths.get(0);
+					if(allPaths.size()<=selectedPathID)
+						selectedPathID=0;
 					selectedPath = allPaths.get(selectedPathID);
 					allPaths.clear();
 					selectedPathID=0;
@@ -1338,6 +1346,8 @@ public class GLPathway
 				if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
 
 					allPaths = mouseOverPaths;
+					if(allPaths.size()<=selectedPathID)
+						selectedPathID=0;
 					selectedPath = allPaths.get(selectedPathID);					
 					if (selectedPath != null && isControlKeyDown)
 						allPaths.add(selectedPath);
