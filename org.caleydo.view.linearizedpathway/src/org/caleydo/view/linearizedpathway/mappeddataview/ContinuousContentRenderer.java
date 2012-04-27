@@ -125,10 +125,10 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			if (geneID != null) {
 				value = dataDomain.getGeneValue(DataRepresentation.NORMALIZED, geneID,
 						sampleID);
-				Integer resolvedSampleID = sampleIDMappingManager.getID(
-						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
+
 				ArrayList<SelectionType> experimentSelectionTypes = parent.sampleSelectionManager
-						.getSelectionTypes(resolvedSampleID);
+						.getSelectionTypes(sampleIDType, sampleID);
+
 				calculateColors(Algorithms.mergeListsToUniqueList(
 						experimentSelectionTypes, geneSelectionTypes));
 
@@ -138,6 +138,8 @@ public class ContinuousContentRenderer extends ContentRenderer {
 				// gl.glPushName(parentView.getPickingManager().getPickingID(
 				// parentView.getID(), PickingType.GENE.name(), davidID));
 
+				Integer resolvedSampleID = sampleIDMappingManager.getID(
+						dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
 				if (resolvedSampleID != null) {
 					gl.glPushName(parentView.getPickingManager().getPickingID(
 							parentView.getID(), PickingType.SAMPLE.name(),

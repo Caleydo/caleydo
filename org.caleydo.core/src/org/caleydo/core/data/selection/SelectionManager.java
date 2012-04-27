@@ -692,6 +692,26 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	}
 
 	/**
+	 * Same as {@link #getSelectionTypes(int)} but including a sourceIDType
+	 * which is used to first convert the ID. If no id can be resolved an empty
+	 * ArrayList is returned
+	 * 
+	 * @param sourceIDType
+	 * @param elementID
+	 * @return the List of selection types or an empty list if ID could not be
+	 *         resolved
+	 */
+	public synchronized ArrayList<SelectionType> getSelectionTypes(IDType sourceIDType,
+			int elementID) {
+
+		Integer resolvedID = idMappingManager.getID(sourceIDType, this.idType, elementID);
+		if (resolvedID == null)
+			return new ArrayList<SelectionType>();
+
+		return getSelectionTypes(resolvedID);
+	}
+
+	/**
 	 * Returns a list of all currently registered selection types, sorted by
 	 * their Priority ({@link SelectionType#getPriority()})
 	 */
