@@ -242,7 +242,6 @@ public class GLPathway
 			if(selectedPathID>allPaths.size()-1)
 				selectedPathID=0;
 			
-			System.out.println("selectedPathID" + selectedPathID);
 			selectedPath = allPaths.get(selectedPathID);
 		}
 		isBubbleTextureDirty=true;
@@ -689,7 +688,7 @@ public class GLPathway
 		// }
 		//
 		// /////////////////////
-
+		bubblesetCanvas.setSelection(selectedPathID); //the selected set will be rendered on top of all others 
 		texRenderer.setSize(pathway.getWidth(), pathway.getHeight());
 		Graphics2D g2d = texRenderer.createGraphics();
 		bubblesetCanvas.paint(g2d);
