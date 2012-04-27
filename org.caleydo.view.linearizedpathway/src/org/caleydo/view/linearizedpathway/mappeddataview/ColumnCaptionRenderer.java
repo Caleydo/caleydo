@@ -23,6 +23,7 @@ import java.util.ArrayList;
 
 import javax.media.opengl.GL2;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.group.Group;
@@ -46,7 +47,8 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 	APickingListener groupPickingListener;
 
 	public ColumnCaptionRenderer(AGLView parentView, MappedDataRenderer parent,
-			Group group, ADataPerspective<?, ?, ?, ?> samplePerspective) {
+			Group group, ADataPerspective<?, ?, ?, ?> samplePerspective,
+			ATableBasedDataDomain dataDomain) {
 		super(parentView, parent);
 		this.textRenderer = parentView.getTextRenderer();
 		this.pixelGLConverter = parentView.getPixelGLConverter();
@@ -54,9 +56,10 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 		this.label = group.getLabel();
 		this.samplePerspective = samplePerspective;
 
-		topBarColor = MappedDataRenderer.CAPTION_BACKGROUND_COLOR;
+		topBarColor = dataDomain.getColor().getRGB();
 		bottomBarColor = topBarColor;
 		registerPickingListener();
+
 	}
 
 	@Override
@@ -81,14 +84,14 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 				PickingType.SAMPLE_GROUP.name(), group.getID()));
 
 		gl.glBegin(GL2.GL_QUADS);
-		gl.glColor4fv(bottomBarColor, 0);
+		gl.glColor3fv(bottomBarColor, 0);
 		gl.glVertex3f(0, 0, backgroundZ);
 		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
 				bottomBarColor[2] * 0.9f);
 		gl.glVertex3f(x, 0, backgroundZ);
 		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
 		gl.glVertex3f(x, y, backgroundZ);
-		gl.glColor4fv(topBarColor, 0);
+		gl.glColor3fv(topBarColor, 0);
 		gl.glVertex3f(0, y, backgroundZ);
 
 		gl.glEnd();

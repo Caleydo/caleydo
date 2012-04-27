@@ -422,7 +422,7 @@ public class MappedDataRenderer {
 						.get(0);
 			}
 		}
-		captionLayout.init(group, experimentPerspective);
+		captionLayout.init(group, experimentPerspective, dataDomain);
 
 		IDType geneIDTYpe = dataDomain.getGeneIDType();
 		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());

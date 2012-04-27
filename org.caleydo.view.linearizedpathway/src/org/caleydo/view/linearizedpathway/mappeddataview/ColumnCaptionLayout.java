@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -53,12 +54,13 @@ public class ColumnCaptionLayout extends Column {
 
 	}
 
-	public void init(Group group, ADataPerspective<?, ?, ?, ?> samplePerspective) {
+	public void init(Group group, ADataPerspective<?, ?, ?, ?> samplePerspective,
+			ATableBasedDataDomain dataDomain) {
 		this.group = group;
 		ElementLayout caption = new ElementLayout();
 		this.append(caption);
 		ColumnCaptionRenderer renderer = new ColumnCaptionRenderer(parentView, parent,
-				group, samplePerspective);
+				group, samplePerspective, dataDomain);
 		caption.setRenderer(renderer);
 
 		Button button = new Button(PickingType.SAMPLE_GROUP_VIEW_MODE.name(),
