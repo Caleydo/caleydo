@@ -222,6 +222,8 @@ public class CanvasComponent extends JComponent implements Canvas {
      */
     private double zoom;
 
+    
+    private int selectionID;
     /**
      * Creates a canvas component.
      * 
@@ -246,6 +248,7 @@ public class CanvasComponent extends JComponent implements Canvas {
         addMouseListener(mouse);
         addMouseMotionListener(mouse);
         addMouseWheelListener(mouse);
+        selectionID=0;
     }
 
     @Override
@@ -744,6 +747,11 @@ public class CanvasComponent extends JComponent implements Canvas {
         return infoText;
     }
 
+    public void setSelection(int id)
+    {
+    	selectionID=id;
+    }
+    
     @Override
     public void paint(final Graphics gfx) {
         boolean textChanged = false;
@@ -775,6 +783,8 @@ public class CanvasComponent extends JComponent implements Canvas {
         int controlPoints = 0;
         // draw the outlines
         for (int i = items.size()-1; i >=0 ; i--) {
+        	if(i==selectionID)
+        		continue;
         	if(!isVisibleList.get(i))
         		continue;
         //for (int i =0; i < items.size() ; ++i) {
@@ -808,6 +818,41 @@ public class CanvasComponent extends JComponent implements Canvas {
             hue += step;
             ++pos;
         }
+        
+        //render selected set
+     	if(isVisibleList.get(selectionID))
+     	{
+        	final Color c = colorList.get(selectionID);
+            final Color t = new Color(~0x80000000 & c.getRGB(), true);
+        	//final Color t = colorList.get(i);//new Color(~0x80000000 & c.getRGB(), true);
+        	
+       	
+            final Shape gs = groupShapes[selectionID];
+            if (gs != null) 
+            {
+                g2d.setColor(t);
+                g2d.fill(gs);
+                g2d.setColor(c);
+                g2d.setStroke(new BasicStroke(outlineThickness.get(selectionID)));
+                g2d.draw(gs);
+                if (drawPoints) 
+                {
+                    g2d.setColor(Color.BLACK);
+                    final PathIterator pi = gs
+                            .getPathIterator(new AffineTransform());
+                    final double[] coords = new double[6];
+                    while (!pi.isDone()) 
+                    {
+                        pi.currentSegment(coords);
+                        g2d.fill(new Rectangle2D.Double(coords[0] - 0.5,
+                                coords[1] - 0.5, 1, 1));
+                        pi.next();
+                        ++controlPoints;
+                    }
+                }
+            }
+        }
+        
 //        hue = 0f;
 //        pos = 0;
 //        int rects = 0;
