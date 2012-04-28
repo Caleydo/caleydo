@@ -59,6 +59,10 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		super(geneID, davidID, dataDomain, dataContainer, experimentPerspective,
 				parentView, parent, group);
 	}
+	
+	public CategoricalRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
+		super(contentRendererInitializor);
+	}
 
 	@Override
 	public void init() {

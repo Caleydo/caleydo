@@ -65,6 +65,11 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		init();
 	}
 
+	public ContinuousContentRenderer(
+			IContentRendererInitializor contentRendererInitializor) {
+		super(contentRendererInitializor);
+	}
+
 	public void init() {
 		if (geneID == null)
 			return;

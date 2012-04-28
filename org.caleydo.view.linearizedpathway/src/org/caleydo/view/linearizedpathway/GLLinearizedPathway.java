@@ -1320,5 +1320,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;
 	}
+	
+	/**
+	 * @return the mappedDataRenderer, see {@link #mappedDataRenderer}
+	 */
+	public MappedDataRenderer getMappedDataRenderer() {
+		return mappedDataRenderer;
+	}
 
 }

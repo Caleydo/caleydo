@@ -68,6 +68,25 @@ public abstract class ContentRenderer extends SelectableRenderer {
 		init();
 	}
 
+	public ContentRenderer(IContentRendererInitializor contentRendererInitializor) {
+		super(contentRendererInitializor.getView(), contentRendererInitializor
+				.getMappedDataRenderer());
+		this.davidID = contentRendererInitializor.getDavidID();
+		this.geneID = contentRendererInitializor.getGeneID();
+
+		topBarColor = MappedDataRenderer.BAR_COLOR;
+		bottomBarColor = topBarColor;
+		this.dataDomain = contentRendererInitializor.getDataDomain();
+		this.dataContainer = contentRendererInitializor.getDataContainer();
+		this.experimentPerspective = contentRendererInitializor
+				.getExperimentPerspective();
+		this.group = contentRendererInitializor.getGroup();
+		sampleIDMappingManager = IDMappingManagerRegistry.get().getIDMappingManager(
+				parent.sampleIDType.getIDCategory());
+		sampleIDType = experimentPerspective.getIdType();
+		init();
+	}
+
 	@Override
 	protected void finalize() throws Throwable {
 		super.finalize();

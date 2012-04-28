@@ -195,7 +195,8 @@ public class Row extends ALayoutContainer {
 
 				continue;
 			}
-			if (isYDynamic && !element.isHeightStatic() && element.ratioSizeY == 1)
+			if (isYDynamic
+					&& ((!element.isHeightStatic() && element.ratioSizeY == 1) || (element instanceof ALayoutContainer && ((ALayoutContainer) (element)).isYDynamic)))
 				throw new IllegalStateException("Specified column " + this
 						+ " as dynamic in y, but the sub-element " + element
 						+ " has a ratioSize of 1, which is illegal.");
