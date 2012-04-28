@@ -18,9 +18,11 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
+import org.caleydo.view.linearizedpathway.mappeddataview.CategoricalContentPreviewRenderer;
 import org.caleydo.view.linearizedpathway.mappeddataview.CategoricalRowContentRenderer;
 import org.caleydo.view.linearizedpathway.mappeddataview.ContentRenderer;
 import org.caleydo.view.linearizedpathway.mappeddataview.ContentRendererInitializor;
+import org.caleydo.view.linearizedpathway.mappeddataview.ContinuousContentPreviewRenderer;
 import org.caleydo.view.linearizedpathway.mappeddataview.ContinuousContentRenderer;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
@@ -104,8 +106,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		heightPixels += 2 * SPACING_PIXELS + CAPTION_HEIGHT_PIXELS;
 		if (previewRow != null) {
 			baseColumn.append(previewRow);
-			baseColumn.append(verticalSpacing);
-			heightPixels += SPACING_PIXELS;
+			// baseColumn.append(verticalSpacing);
+			// heightPixels += SPACING_PIXELS;
 		}
 
 		layoutManager.setBaseElementLayout(baseColumn);
@@ -114,7 +116,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 	private Column createPreviewRow(ElementLayout horizontalSpacing,
 			ElementLayout verticalSpacing) {
 
-		List<DataContainer> dataContainers = view.getDataContainers();
+		List<DataContainer> dataContainers = view.getResolvedDataContainers();
 		List<Integer> davidIds = node.getMappedDavidIDs();
 
 		// Row previewRow = new Row("previewRow");
@@ -125,12 +127,16 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		Column geneColumn = new Column("geneColumn");
 		geneColumn.append(verticalSpacing);
 		geneColumn.setYDynamic(true);
+		geneColumn.setBottomUp(false);
 
 		if (dataContainers == null || davidIds == null || davidIds.isEmpty())
 			return geneColumn;
 
 		// previewRow.append(geneColumn);
 		heightPixels += SPACING_PIXELS;
+
+		ElementLayout columnSpacingLayout = new ElementLayout("ColumnSpacing");
+		columnSpacingLayout.setDynamicSizeUnitsX(1);
 
 		for (Integer davidId : davidIds) {
 			Row geneRow = new Row("geneRow");
@@ -139,9 +145,12 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			geneRow.setRenderer(geneRowColorRenderer);
 			geneRow.setPixelSizeY(GENE_ROW_HEIGHT_PIXELS);
 			geneColumn.append(geneRow);
-			geneColumn.append(verticalSpacing);
-			heightPixels += GENE_ROW_HEIGHT_PIXELS + SPACING_PIXELS;
+			// geneColumn.append(verticalSpacing);
+			// geneColumn.append(verticalSpacing);
+			heightPixels += GENE_ROW_HEIGHT_PIXELS;
 			IDataDomain prevDataDomain = null;
+			geneRow.append(horizontalSpacing);
+			geneRow.append(columnSpacingLayout);
 
 			for (DataContainer dataContainer : dataContainers) {
 				IDataDomain currentDataDomain = dataContainer.getDataDomain();
@@ -154,27 +163,28 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 						dataContainer, davidId, view.getMappedDataRenderer(), view);
 				// FIXME: Bad hack to determine categorical data
 				if (currentDataDomain.getLabel().contains("Copy")) {
-					dataContainerPreviewRenderer = new CategoricalRowContentRenderer(
+					dataContainerPreviewRenderer = new CategoricalContentPreviewRenderer(
 							initializor);
 				} else {
-					dataContainerPreviewRenderer = new ContinuousContentRenderer(
+					dataContainerPreviewRenderer = new ContinuousContentPreviewRenderer(
 							initializor);
 				}
 
 				ElementLayout previewRendererLayout = new ElementLayout("prev");
 				// previewRendererLayout.setDebug(true);
 				// previewRendererLayout.setFrameColor(1, 0, 0, 1);
-				previewRendererLayout.setDynamicSizeUnitsX(1);
+				previewRendererLayout.setDynamicSizeUnitsX(3);
 
 				previewRendererLayout.setRenderer(dataContainerPreviewRenderer);
 				geneRow.append(previewRendererLayout);
 
 				prevDataDomain = currentDataDomain;
 			}
-
+			geneRow.append(horizontalSpacing);
+			geneRow.append(columnSpacingLayout);
 		}
 
-		geneColumn.append(verticalSpacing);
+		// geneColumn.append(verticalSpacing);
 
 		// PathwayVertexRep vertexRep = node.getPathwayVertexRep();
 		//

@@ -1327,5 +1327,9 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public MappedDataRenderer getMappedDataRenderer() {
 		return mappedDataRenderer;
 	}
+	
+	public List<DataContainer> getResolvedDataContainers() {
+		return mappedDataRenderer.getResolvedDataContainers();
+	}
 
 }

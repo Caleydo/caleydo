@@ -629,5 +629,12 @@ public class MappedDataRenderer {
 
 	public void unregisterPickingListeners() {
 	}
+	
+	/**
+	 * @return the resolvedDataContainers, see {@link #resolvedDataContainers}
+	 */
+	public ArrayList<DataContainer> getResolvedDataContainers() {
+		return resolvedDataContainers;
+	}
 
 }
