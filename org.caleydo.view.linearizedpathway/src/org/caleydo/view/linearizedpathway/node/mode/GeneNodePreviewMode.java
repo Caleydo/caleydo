@@ -137,6 +137,8 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 		ElementLayout columnSpacingLayout = new ElementLayout("ColumnSpacing");
 		columnSpacingLayout.setDynamicSizeUnitsX(1);
+		ElementLayout datasetSpacing = new ElementLayout();
+		datasetSpacing.setPixelSizeX(3);
 
 		for (Integer davidId : davidIds) {
 			Row geneRow = new Row("geneRow");
@@ -155,7 +157,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 			for (DataContainer dataContainer : dataContainers) {
 				IDataDomain currentDataDomain = dataContainer.getDataDomain();
 				if (currentDataDomain != prevDataDomain && prevDataDomain != null) {
-					geneRow.append(horizontalSpacing);
+					geneRow.append(datasetSpacing);
 				}
 
 				ContentRenderer dataContainerPreviewRenderer = null;

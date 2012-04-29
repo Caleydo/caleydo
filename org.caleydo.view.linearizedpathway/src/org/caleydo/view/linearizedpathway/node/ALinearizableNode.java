@@ -237,6 +237,12 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 		mode.unregisterPickingListeners();
 	}
 	
+	public void update() {
+		unregisterPickingListeners();
+		registerPickingListeners();
+		mode.apply(this);
+	}
+	
 
 	@Override
 	public String getLabel() {

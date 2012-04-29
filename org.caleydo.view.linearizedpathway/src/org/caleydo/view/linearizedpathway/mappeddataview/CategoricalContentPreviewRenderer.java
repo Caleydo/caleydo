@@ -78,7 +78,7 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 		float step = 0;
 		if (sumValues != 0)
-			step = 0.9f * y / (float) sumValues;
+			step = 0.85f * y / (float) sumValues;
 
 		float currentPositionY = 0;
 
@@ -112,7 +112,7 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 			gl.glVertex3d(0, currentPositionY + currentBarHeight, z);
 			gl.glEnd();
 
-			gl.glColor3f(0, 0, 0);
+			gl.glColor3f(0.2f, 0.2f, 0.2f);
 			gl.glLineWidth(0.1f);
 			gl.glBegin(GL2.GL_LINE_LOOP);
 			gl.glVertex3f(0, currentPositionY, z);

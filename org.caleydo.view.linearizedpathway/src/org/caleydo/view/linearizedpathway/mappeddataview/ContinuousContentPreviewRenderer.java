@@ -50,12 +50,12 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 				.getSelectionTypes(davidID);
 		ArrayList<SelectionType> selectionTypes = parent.sampleGroupSelectionManager
 				.getSelectionTypes(group.getID());
-		if (selectionTypes.size() > 0
-				&& selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
-			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
-			bottomBarColor = topBarColor;
-		}
-		
+		// if (selectionTypes.size() > 0
+		// && selectionTypes.contains(MappedDataRenderer.abstractGroupType)) {
+		topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
+		bottomBarColor = topBarColor;
+		// }
+
 		ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
 		selectionLists.add(geneSelectionTypes);
 
@@ -71,25 +71,49 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 		calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
 		// gl.glPushName(parentView.getPickingManager().getPickingID(parentView.getID(),
 		// PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID));
+
+		float[] color = MappedDataRenderer.EVEN_BACKGROUND_COLOR;
+
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glColor4fv(color, 0);
+		gl.glVertex3f(0, 0, z);
+		// gl.glColor3f(color[0] * 1.1f, color[1] * 1.1f, color[2] * 1.1f);
+		gl.glVertex3f(x, 0, z);
+		// gl.glColor4fv(color, 0);
+		gl.glVertex3d(x, 0.8f * y, z);
+		// gl.glColor3f(color[0] * 1.1f, color[1] * 1.1f, color[2] * 1.1f);
+		gl.glVertex3d(0, 0.8f * y, z);
+		gl.glEnd();
+
+		gl.glBegin(GL2.GL_LINE_LOOP);
+		gl.glVertex3f(0, 0, z);
+		// gl.glColor3f(color[0] * 1.1f, color[1] * 1.1f, color[2] * 1.1f);
+		gl.glVertex3f(x, 0, z);
+		// gl.glColor4fv(color, 0);
+		gl.glVertex3d(x, 0.8f * y, z);
+		// gl.glColor3f(color[0] * 1.1f, color[1] * 1.1f, color[2] * 1.1f);
+		gl.glVertex3d(0, 0.8f * y, z);
+		gl.glEnd();
+
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glColor4fv(topBarColor, 0);
 		gl.glVertex3f(0, 0, z);
 		gl.glColor4fv(bottomBarColor, 0);
 		gl.glVertex3f(x, 0, z);
-		gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
-				bottomBarColor[2] * 0.9f);
-		gl.glVertex3d(x, average.getArithmeticMean() * 0.9f * y, z);
-		gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f, topBarColor[2] * 0.9f);
-		gl.glVertex3d(0, average.getArithmeticMean() * 0.9f * y, z);
+		gl.glColor3f(bottomBarColor[0] * 0.8f, bottomBarColor[1] * 0.8f,
+				bottomBarColor[2] * 0.8f);
+		gl.glVertex3d(x, average.getArithmeticMean() * 0.8f * y, z);
+		gl.glColor3f(topBarColor[0] * 0.8f, topBarColor[1] * 0.8f, topBarColor[2] * 0.8f);
+		gl.glVertex3d(0, average.getArithmeticMean() * 0.8f * y, z);
 		gl.glEnd();
 
-		gl.glColor3f(0, 0, 0);
-		gl.glLineWidth(0.5f);
+		gl.glColor3f(0.2f, 0.2f, 0.2f);
+		gl.glLineWidth(0.1f);
 		gl.glBegin(GL2.GL_LINE_LOOP);
 		gl.glVertex3f(0, 0, z);
 		gl.glVertex3f(x, 0, z);
-		gl.glVertex3d(x, average.getArithmeticMean() * 0.9f * y, z);
-		gl.glVertex3d(0, average.getArithmeticMean() * 0.9f * y, z);
+		gl.glVertex3d(x, average.getArithmeticMean() * 0.8f * y, z);
+		gl.glVertex3d(0, average.getArithmeticMean() * 0.8f * y, z);
 		gl.glEnd();
 
 		// float lineZ = z + 0.01f;

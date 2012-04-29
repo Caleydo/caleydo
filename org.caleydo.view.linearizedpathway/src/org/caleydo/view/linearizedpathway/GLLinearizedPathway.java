@@ -1251,6 +1251,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (ANode node : branchNodes) {
 			if (node instanceof ALinearizableNode) {
 				setMappedDavidIds((ALinearizableNode) node);
+				((ALinearizableNode)node).update();
 			}
 		}
 		setMappedDataRendererGeometry();
@@ -1266,6 +1267,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (ANode node : branchNodes) {
 			if (node instanceof ALinearizableNode) {
 				setMappedDavidIds((ALinearizableNode) node);
+				((ALinearizableNode)node).update();
 			}
 		}
 		setMappedDataRendererGeometry();
