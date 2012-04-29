@@ -89,6 +89,8 @@ public class GLPathwayContentCreator {
 
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
+	private VirtualArray<?, ?, ?> selectedSamplesVA;
+	
 	/**
 	 * Constructor.
 	 */
@@ -141,6 +143,8 @@ public class GLPathwayContentCreator {
 			hashPathway2VerticesDisplayListId.put(pathway, iVerticesDisplayListId);
 		}
 
+		createSelectedSamplesVA();
+		
 		gl.glNewList(iVerticesDisplayListId, GL2.GL_COMPILE);
 		extractVertices(gl, containingView, pathway);
 		gl.glEndList();
@@ -160,6 +164,31 @@ public class GLPathwayContentCreator {
 		gl.glEndList();
 	}
 
+	private void createSelectedSamplesVA() {
+		Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager()
+				.getElements(SelectionType.SELECTION);
+		List<Integer> selectedSamplesArray = new ArrayList<Integer>();
+		selectedSamplesArray.addAll(selectedSamples);
+
+		// if no sample is currently selected, we add all samples for
+		// calculating the average
+		if (selectedSamplesArray.size() == 0) {
+			if (!geneticDataDomain.isGeneRecord())
+				selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+						.getRecordPerspective().getVirtualArray().getIDs());
+			else
+				selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+						.getDimensionPerspective().getVirtualArray().getIDs());
+		}
+
+		if (!geneticDataDomain.isGeneRecord())
+			selectedSamplesVA = new RecordVirtualArray(glPathwayView
+					.getSampleSelectionManager().getIDType(), selectedSamplesArray);
+		else
+			selectedSamplesVA = new DimensionVirtualArray(glPathwayView
+					.getSampleSelectionManager().getIDType(), selectedSamplesArray);
+	}
+	
 	public void performIdenticalNodeHighlighting(SelectionType selectionType) {
 		if (internalSelectionManager == null)
 			return;
@@ -787,37 +816,15 @@ public class GLPathwayContentCreator {
 
 	private Average getExpressionAverage(PathwayVertexRep vertexRep) {
 
+		if (selectedSamplesVA == null)
+			return null;
+		
 		int davidID = pathwayItemManager.getDavidIdByPathwayVertex((PathwayVertex) vertexRep
 				.getPathwayVertices().get(0));
 
 		if (davidID == -1 || davidID == 0)
 			return null;
 		else {
-
-			Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager()
-					.getElements(SelectionType.SELECTION);
-			List<Integer> selectedSamplesArray = new ArrayList<Integer>();
-			selectedSamplesArray.addAll(selectedSamples);
-
-			// if no sample is currently selected, we add all samples for
-			// calculating the average
-			if (selectedSamplesArray.size() == 0) {
-				if (!geneticDataDomain.isGeneRecord())
-					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
-							.getRecordPerspective().getVirtualArray().getIDs());
-				else
-					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
-							.getDimensionPerspective().getVirtualArray().getIDs());
-			}
-
-			VirtualArray<?, ?, ?> selectedSamplesVA;
-
-			if (!geneticDataDomain.isGeneRecord())
-				selectedSamplesVA = new RecordVirtualArray(glPathwayView
-						.getSampleSelectionManager().getIDType(), selectedSamplesArray);
-			else
-				selectedSamplesVA = new DimensionVirtualArray(glPathwayView
-						.getSampleSelectionManager().getIDType(), selectedSamplesArray);
 
 			Set<Integer> expressionIndices = idMappingManager.<Integer, Integer> getIDAsSet(
 					glPathwayView.getPathwayDataDomain().getDavidIDType(), glPathwayView
