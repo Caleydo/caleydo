@@ -122,7 +122,7 @@ public abstract class ADraggableDataGraphNode
 		view.addIDPickingListener(pickingListener, DATA_GRAPH_NODE_PICKING_TYPE, id);
 		view.addIDPickingListener(pickingListenerPenetrating,
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
-		view.addIDPickingListener(new ToolTipPickingListener(view, "Node", "Node in DVI"), DATA_GRAPH_NODE_PICKING_TYPE, id);
+//		view.addIDPickingListener(new ToolTipPickingListener(view, "Node", "Node in DVI"), DATA_GRAPH_NODE_PICKING_TYPE, id);
 	}
 
 	@Override

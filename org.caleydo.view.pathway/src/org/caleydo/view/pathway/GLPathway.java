@@ -1402,6 +1402,7 @@ public class GLPathway
 		allPaths = new ArrayList<GraphPath<PathwayVertexRep, DefaultEdge>>();
 		allPaths.add(selectedPath.getPath());
 
+		isBubbleTextureDirty = true;
 		setDisplayListDirty();
 	}
 
