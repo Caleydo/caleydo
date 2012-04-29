@@ -224,11 +224,15 @@ public class MappedDataRenderer {
 
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
+//		dataSetColumn.setDebug(true);
 		baseRow.append(dataSetColumn);
 		Column captionColumn = new Column("captionColumn");
 		captionColumn.setBottomUp(false);
 
 		captionColumn.setPixelSizeX(100);
+		ElementLayout columnCaptionSpacing = new ElementLayout();
+		columnCaptionSpacing.setPixelSizeY(50);
+		captionColumn.append(columnCaptionSpacing);
 		baseRow.append(captionColumn);
 
 		// dataSetColumn.setDebug(true);
@@ -236,7 +240,7 @@ public class MappedDataRenderer {
 		this.linearizedNodes = linearizedNodes;
 
 		int nodeCount = 0;
-		float previousNodePosition = viewFrustum.getHeight() + yOffset;
+		float previousNodePosition = viewFrustum.getHeight() + yOffset - parentView.getPixelGLConverter().getGLHeightForPixelHeight(50);
 		int previousNrDavids = 0;
 
 		/**
@@ -335,6 +339,7 @@ public class MappedDataRenderer {
 				// color);
 				// row.addBackgroundRenderer(rowBackgroundRenderer);
 				row.setAbsoluteSizeY(rowHeight);
+//				row.setDebug(true);
 				dataSetColumn.append(row);
 
 				for (int dataContainerCount = 0; dataContainerCount < usedDataContainers
@@ -375,30 +380,43 @@ public class MappedDataRenderer {
 		ySpacing.setPixelSizeY(5);
 		dataSetColumn.append(ySpacing);
 
-		Row captionRow = new Row("captionRow");
+		Row topCaptionRow = new Row("topCaptionRow");
 		// captionRow.setDebug(true);
-		captionRow.setPixelSizeY(50);
+		topCaptionRow.setPixelSizeY(50);
+//		topCaptionRow.setDebug(true);
 		// dataSetColumn.add(0, captionRow);
-		dataSetColumn.append(captionRow);
+		dataSetColumn.add(0, topCaptionRow);
+
+		Row bottomCaptionRow = new Row("captionRow");
+		// captionRow.setDebug(true);
+		bottomCaptionRow.setPixelSizeY(50);
+		// dataSetColumn.add(0, captionRow);
+		dataSetColumn.append(bottomCaptionRow);
 
 		for (int dataContainerCount = 0; dataContainerCount < usedDataContainers.size(); dataContainerCount++) {
 
-			ColumnCaptionLayout captionLayout = new ColumnCaptionLayout(parentView, this);
-			captionRow.append(captionLayout);
+			ColumnCaptionLayout topCaptionLayout = new ColumnCaptionLayout(parentView,
+					this);
+			topCaptionRow.append(topCaptionLayout);
+
+			ColumnCaptionLayout bottomCaptionLayout = new ColumnCaptionLayout(parentView,
+					this);
+			bottomCaptionRow.append(bottomCaptionLayout);
 			if (dataContainerCount != usedDataContainers.size() - 1) {
-				captionRow.append(xSpacing);
+				bottomCaptionRow.append(xSpacing);
+				topCaptionRow.append(xSpacing);
 			}
 			prepareData(usedDataContainers.get(dataContainerCount),
-					rowListForDataContainers.get(dataContainerCount), captionLayout,
-					davidIDs);
+					rowListForDataContainers.get(dataContainerCount), topCaptionLayout,
+					bottomCaptionLayout, davidIDs);
 		}
 
 	}
 
 	/** Fills the layout with data specific for the data containers */
 	private void prepareData(DataContainer dataContainer,
-			ArrayList<ElementLayout> rowLayouts, ColumnCaptionLayout captionLayout,
-			ArrayList<Integer> davidIDs) {
+			ArrayList<ElementLayout> rowLayouts, ColumnCaptionLayout topCaptionLayout,
+			ColumnCaptionLayout bottomCaptionLayout, ArrayList<Integer> davidIDs) {
 		GeneticDataDomain dataDomain = (GeneticDataDomain) dataContainer.getDataDomain();
 
 		ADataPerspective<?, ?, ?, ?> experimentPerspective;
@@ -422,7 +440,8 @@ public class MappedDataRenderer {
 						.get(0);
 			}
 		}
-		captionLayout.init(group, experimentPerspective, dataDomain);
+		topCaptionLayout.init(group, experimentPerspective, dataDomain);
+		bottomCaptionLayout.init(group, experimentPerspective, dataDomain);
 
 		IDType geneIDTYpe = dataDomain.getGeneIDType();
 		// ArrayList<Integer> geneIDs = new ArrayList<Integer>(davidIDs.size());
@@ -432,7 +451,7 @@ public class MappedDataRenderer {
 					IDType.getIDType("DAVID"), geneIDTYpe, davidID);
 			Integer geneID;
 			if (geneIDs == null) {
-//				System.out.println("No mapping for david: " + davidID);
+				// System.out.println("No mapping for david: " + davidID);
 				geneID = null;
 
 			} else {
@@ -451,13 +470,16 @@ public class MappedDataRenderer {
 
 			if (sampleGroupSelectionManager.checkStatus(abstractGroupType, group.getID())) {
 				dataContainerLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
-				captionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
+				bottomCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
+				topCaptionLayout.setPixelSizeX(ABSTRACT_GROUP_PIXEL_SIZE);
 			} else {
 				// float width = 1.0f / usedDataContainers.size();
 				// dataContainerLayout.setRatioSizeX(0.2);
 				dataContainerLayout.setDynamicSizeUnitsX(experimentPerspective
 						.getVirtualArray().size());
-				captionLayout.setDynamicSizeUnitsX(experimentPerspective
+				bottomCaptionLayout.setDynamicSizeUnitsX(experimentPerspective
+						.getVirtualArray().size());
+				topCaptionLayout.setDynamicSizeUnitsX(experimentPerspective
 						.getVirtualArray().size());
 			}
 
@@ -550,8 +572,6 @@ public class MappedDataRenderer {
 						pick.getObjectID());
 				geneSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
-				
-				
 
 			}
 
@@ -629,7 +649,7 @@ public class MappedDataRenderer {
 
 	public void unregisterPickingListeners() {
 	}
-	
+
 	/**
 	 * @return the resolvedDataContainers, see {@link #resolvedDataContainers}
 	 */

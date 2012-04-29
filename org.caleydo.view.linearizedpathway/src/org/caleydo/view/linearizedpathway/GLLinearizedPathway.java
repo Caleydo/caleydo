@@ -102,6 +102,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public final static int DATA_COLUMN_WIDTH_PIXELS = 350;
 	public final static int MIN_NODE_SPACING_PIXELS = 50;
 	public final static int TOP_SPACING_PIXELS = 60;
+	public final static int TOP_SPACING_MAPPED_DATA = 10;
+	public final static int SIDE_SPACING_MAPPED_DATA = 10;
 	public final static int BOTTOM_SPACING_PIXELS = 60;
 	public final static int PREVIEW_NODE_DATA_ROW_HEIGHT_PIXELS = 40;
 	public final static int BRANCH_SUMMARY_NODE_TO_LINEARIZED_NODE_VERTICAL_DISTANCE_PIXELS = 20;
@@ -540,7 +542,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 
-		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_PIXELS);
+		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		gl.glPushMatrix();
 
 		// TODO do this only when necessary - cause re-initialization
@@ -1026,7 +1028,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	private void setMappedDataRendererGeometry() {
 
-		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_PIXELS);
+		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_MAPPED_DATA);
 		float branchColumnWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
 		float pathwayColumnWidth = pixelGLConverter

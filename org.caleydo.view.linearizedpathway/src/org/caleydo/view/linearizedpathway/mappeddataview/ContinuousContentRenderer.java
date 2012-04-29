@@ -75,7 +75,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			return;
 		average = ContainerStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
-		if (experimentPerspective.getVirtualArray().size() > 100) {
+		if (experimentPerspective.getVirtualArray().size() > 80) {
 
 			useShading = false;
 		}
