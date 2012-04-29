@@ -224,7 +224,7 @@ public class MappedDataRenderer {
 
 		Column dataSetColumn = new Column("dataSetColumn");
 		dataSetColumn.setBottomUp(false);
-//		dataSetColumn.setDebug(true);
+		// dataSetColumn.setDebug(true);
 		baseRow.append(dataSetColumn);
 		Column captionColumn = new Column("captionColumn");
 		captionColumn.setBottomUp(false);
@@ -240,7 +240,8 @@ public class MappedDataRenderer {
 		this.linearizedNodes = linearizedNodes;
 
 		int nodeCount = 0;
-		float previousNodePosition = viewFrustum.getHeight() + yOffset - parentView.getPixelGLConverter().getGLHeightForPixelHeight(50);
+		float previousNodePosition = viewFrustum.getHeight() + yOffset
+				- parentView.getPixelGLConverter().getGLHeightForPixelHeight(50);
 		int previousNrDavids = 0;
 
 		/**
@@ -339,7 +340,7 @@ public class MappedDataRenderer {
 				// color);
 				// row.addBackgroundRenderer(rowBackgroundRenderer);
 				row.setAbsoluteSizeY(rowHeight);
-//				row.setDebug(true);
+				// row.setDebug(true);
 				dataSetColumn.append(row);
 
 				for (int dataContainerCount = 0; dataContainerCount < usedDataContainers
@@ -383,7 +384,7 @@ public class MappedDataRenderer {
 		Row topCaptionRow = new Row("topCaptionRow");
 		// captionRow.setDebug(true);
 		topCaptionRow.setPixelSizeY(50);
-//		topCaptionRow.setDebug(true);
+		// topCaptionRow.setDebug(true);
 		// dataSetColumn.add(0, captionRow);
 		dataSetColumn.add(0, topCaptionRow);
 
@@ -430,14 +431,16 @@ public class MappedDataRenderer {
 		if (dataDomain.isGeneRecord()) {
 			group = dataContainer.getDimensionGroup();
 			if (group == null) {
-				dataContainer.getDimensionPerspective().getVirtualArray().getGroupList()
-						.get(0);
+				group = dataContainer.getDimensionPerspective().getVirtualArray()
+						.getGroupList().get(0);
+				group.setLabel(dataContainer.getLabel());
 			}
 		} else {
 			group = dataContainer.getRecordGroup();
 			if (group == null) {
-				dataContainer.getRecordPerspective().getVirtualArray().getGroupList()
-						.get(0);
+				group = dataContainer.getRecordPerspective().getVirtualArray()
+						.getGroupList().get(0);
+				group.setLabel(dataContainer.getLabel());
 			}
 		}
 		topCaptionLayout.init(group, experimentPerspective, dataDomain);
@@ -547,10 +550,10 @@ public class MappedDataRenderer {
 			if (dataDomain.isGeneRecord()) {
 				newlyResovedDataContainers = dataContainer
 						.getDimensionSubDataContainers();
-
 			} else {
 				newlyResovedDataContainers = dataContainer.getRecordSubDataContainers();
 			}
+
 			if (newlyResovedDataContainers != null) {
 				resolvedDataContainers.addAll(newlyResovedDataContainers);
 
