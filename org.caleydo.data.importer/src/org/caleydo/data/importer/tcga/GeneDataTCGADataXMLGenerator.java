@@ -50,12 +50,19 @@ public class GeneDataTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 			+ System.getProperty("file.separator")
 			+ "Dropbox/TCGA GDAC/Omics Integration/testdata/20110728/gbm/";
 
-	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "GBM.medianexp.txt";
+
+//	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "GBM.medianexp.txt";
+	
+	public static final String MRNA = DROPBOX_BIOVIS_FOLDER + "sampled/GBM.medianexp.txt";
+	
+	
 	public static final String MRNA_GROUPING = DROPBOX_GBM_FOLDER
 			+ "mrna_cnmf/cnmf.membership.txt";
 
+//	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER
+//			+ "all_thresholded_by_genes.txt";
 	public static final String COPY_NUMBER = DROPBOX_BIOVIS_FOLDER
-			+ "all_thresholded_by_genes.txt";
+			+ "sampled/all_thresholded_by_genes.txt";
 
 	public static final String GROUND_TRUTH_GROUPING = DROPBOX_GBM_FOLDER
 			+ "ground_truth/2011_exp_assignments.txt";

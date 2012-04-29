@@ -75,15 +75,17 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			return;
 		average = ContainerStatistics.calculateAverage(
 				experimentPerspective.getVirtualArray(), dataDomain.getTable(), geneID);
-		if (experimentPerspective.getVirtualArray().size() > 80) {
-
-			useShading = false;
-		}
+		
 		registerPickingListener();
 	}
 
 	@Override
 	public void render(GL2 gl) {
+		if (x / experimentPerspective.getVirtualArray().size() < parentView
+				.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
+			useShading = false;
+		}
+		
 		if (geneID == null)
 			return;
 		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager

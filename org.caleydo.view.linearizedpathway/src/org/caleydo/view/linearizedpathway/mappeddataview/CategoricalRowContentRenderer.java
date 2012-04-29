@@ -47,6 +47,7 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 public class CategoricalRowContentRenderer extends ContentRenderer {
 
 	Histogram histogram;
+	boolean useShading = true;
 
 	/**
 	 * 
@@ -59,8 +60,9 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		super(geneID, davidID, dataDomain, dataContainer, experimentPerspective,
 				parentView, parent, group);
 	}
-	
-	public CategoricalRowContentRenderer(IContentRendererInitializor contentRendererInitializor) {
+
+	public CategoricalRowContentRenderer(
+			IContentRendererInitializor contentRendererInitializor) {
 		super(contentRendererInitializor);
 	}
 
@@ -113,6 +115,10 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 	@SuppressWarnings("unchecked")
 	private void renderAllBars(GL2 gl, ArrayList<SelectionType> geneSelectionTypes) {
+		if (x / experimentPerspective.getVirtualArray().size() < parentView
+				.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
+			useShading = false;
+		}
 		float xIncrement = x / experimentPerspective.getVirtualArray().size();
 		int experimentCount = 0;
 
@@ -161,11 +167,21 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				gl.glBegin(GL2.GL_QUADS);
 
 				gl.glVertex3f(leftEdge, 0.5f * y, z);
+				if (useShading) {
+					gl.glColor3f(bottomBarColor[0] * 0.9f, bottomBarColor[1] * 0.9f,
+							bottomBarColor[2] * 0.9f);
+				}
 				gl.glVertex3f(leftEdge + xIncrement, 0.5f * y, z);
 
+				if (useShading) {
+					gl.glColor3f(topBarColor[0] * 0.9f, topBarColor[1] * 0.9f,
+							topBarColor[2] * 0.9f);
+				} else {
+					gl.glColor3fv(topBarColor, 0);
+				}
+				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
 				gl.glColor3fv(topBarColor, 0);
 
-				gl.glVertex3f(leftEdge + xIncrement, upperEdge, z);
 				gl.glVertex3f(leftEdge, upperEdge, z);
 				// gl.glColor4fv(topBarColor, 0);
 				// gl.glBegin(GL2.GL_QUADS);
