@@ -23,6 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
+import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 
 /**
  * Renders connection bands between a block of rows and a node.
@@ -31,6 +32,8 @@ import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
  * 
  */
 public class RelationshipRenderer {
+	
+	GLLinearizedPathway view;
 
 	float[] topLeft = new float[3];
 	float[] bottomLeft = new float[3];
@@ -49,8 +52,9 @@ public class RelationshipRenderer {
 	 * @param color
 	 *            the color of the connection band
 	 */
-	public RelationshipRenderer(float[] color) {
+	public RelationshipRenderer(float[] color, GLLinearizedPathway view) {
 		this.color = color;
+		this.view = view;
 	}
 
 	/**
@@ -75,8 +79,10 @@ public class RelationshipRenderer {
 
 		bottomRight[0] = bottomRightLayout.getTranslateX();
 		bottomRight[1] = bottomRightLayout.getTranslateY()+lineWidthCompensation;
+		
+		float xOffset = view.getPixelGLConverter().getGLWidthForPixelWidth(20);
 
 		connectionBandRenderer.renderSingleBand(gl, topLeft, bottomLeft, topRight,
-				bottomRight, false, 0.07f, 0, color);
+				bottomRight, false, xOffset, 0, color);
 	}
 }

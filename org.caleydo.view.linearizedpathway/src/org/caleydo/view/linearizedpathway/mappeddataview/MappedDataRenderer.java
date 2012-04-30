@@ -312,7 +312,7 @@ public class MappedDataRenderer {
 			else
 				color = ODD_BACKGROUND_COLOR;
 
-			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color);
+			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color, parentView);
 			relationShipRenderers.add(relationShipRenderer);
 			float x = node.getPosition().x()
 					+ parentView.getPixelGLConverter().getGLWidthForPixelWidth(

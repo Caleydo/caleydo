@@ -449,6 +449,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public void display(GL2 gl) {
 
+//		setMappedDataRendererGeometry();
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -459,9 +460,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
-
+		
 		dataRowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
+		setMappedDataRendererGeometry();
 
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
