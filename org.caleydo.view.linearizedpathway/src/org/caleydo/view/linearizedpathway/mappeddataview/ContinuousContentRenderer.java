@@ -98,19 +98,19 @@ public class ContinuousContentRenderer extends ContentRenderer {
 			topBarColor = MappedDataRenderer.SUMMARY_BAR_COLOR;
 			bottomBarColor = topBarColor;
 
-			ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
-			selectionLists.add(geneSelectionTypes);
+//			ArrayList<ArrayList<SelectionType>> selectionLists = new ArrayList<ArrayList<SelectionType>>();
+//			selectionLists.add(geneSelectionTypes);
 
-			for (Integer sampleID : experimentPerspective.getVirtualArray()) {
-				// Integer resolvedSampleID = sampleIDMappingManager.getID(
-				// dataDomain.getSampleIDType(), parent.sampleIDType,
-				// experimentID);
+//			for (Integer sampleID : experimentPerspective.getVirtualArray()) {
+//				// Integer resolvedSampleID = sampleIDMappingManager.getID(
+//				// dataDomain.getSampleIDType(), parent.sampleIDType,
+//				// experimentID);
+//
+//				selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
+//						sampleIDType, sampleID));
+//			}
 
-				selectionLists.add(parent.sampleSelectionManager.getSelectionTypes(
-						sampleIDType, sampleID));
-			}
-
-			calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
+//			calculateColors(Algorithms.mergeListsToUniqueList(selectionLists));
 
 			renderAverageBar(gl);
 		} else {

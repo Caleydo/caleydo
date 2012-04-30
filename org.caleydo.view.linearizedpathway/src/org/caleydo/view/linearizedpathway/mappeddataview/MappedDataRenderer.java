@@ -126,6 +126,8 @@ public class MappedDataRenderer {
 	/** The mapping Type all samples understand */
 	IDType sampleIDType;
 
+	int selectedBucketID = 0;
+	
 	/**
 	 * Constructor with parent view as parameter.
 	 */

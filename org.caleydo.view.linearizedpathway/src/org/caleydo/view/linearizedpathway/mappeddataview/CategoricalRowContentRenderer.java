@@ -49,6 +49,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 	Histogram histogram;
 	boolean useShading = true;
 
+
 	/**
 	 * 
 	 */
@@ -148,6 +149,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 				topBarColor = dataDomain.getColorMapper().getColor(value);
 				bottomBarColor = topBarColor;
+
 				calculateColors(Algorithms.mergeListsToUniqueList(
 						experimentSelectionTypes, geneSelectionTypes));
 
@@ -218,19 +220,26 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 		float renderWith = x
 				- parentView.getPixelGLConverter().getGLWidthForPixelWidth(20);
 		for (int bucketNumber = 0; bucketNumber < histogram.size(); bucketNumber++) {
-			ArrayList<SelectionType> sampleSelectionTypes = new ArrayList<SelectionType>();
-			for (Integer sampleID : histogram.getIDsForBucket(bucketNumber)) {
-				// Integer resolvedSampleID = sampleIDMappingManager.getID(
-				// dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
-				sampleSelectionTypes.addAll(parent.sampleSelectionManager
-						.getSelectionTypes(sampleIDType, sampleID));
+			// ArrayList<SelectionType> sampleSelectionTypes = new
+			// ArrayList<SelectionType>();
+			// for (Integer sampleID : histogram.getIDsForBucket(bucketNumber))
+			// {
+			// // Integer resolvedSampleID = sampleIDMappingManager.getID(
+			// // dataDomain.getSampleIDType(), parent.sampleIDType, sampleID);
+			// sampleSelectionTypes.addAll(parent.sampleSelectionManager
+			// .getSelectionTypes(sampleIDType, sampleID));
+			// }
+
+			if (parent.selectedBucketID == histogram.getBucketID(bucketNumber)) {
+				selectionTypes.add(SelectionType.SELECTION);
 			}
 
 			topBarColor = dataDomain.getColorMapper().getColor(
 					(float) bucketCount / (histogram.size() - 1));
 			bottomBarColor = topBarColor;
-			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
-					sampleSelectionTypes));
+			// calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes,
+			// sampleSelectionTypes));
+			calculateColors(Algorithms.mergeListsToUniqueList(selectionTypes));
 			float lowerEdge = barWidth * bucketCount;
 			float value = 0;
 			int nrValues = histogram.get(bucketNumber);
@@ -271,6 +280,8 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			gl.glEnd();
 			gl.glPopName();
 			bucketCount++;
+		
+//			parent.selectedBucketID = 0;
 		}
 	}
 
@@ -279,7 +290,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 
 			@Override
 			public void clicked(Pick pick) {
-				System.out.println("Bucket: " + pick.getObjectID());
+//				System.out.println("Bucket: " + pick.getObjectID());
 
 				parent.sampleSelectionManager.clearSelection(SelectionType.SELECTION);
 				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
@@ -288,6 +299,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
 				parentView.setDisplayListDirty();
 
+				parent.selectedBucketID = pick.getObjectID();
 			}
 
 		};
