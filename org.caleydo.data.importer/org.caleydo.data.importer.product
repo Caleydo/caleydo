@@ -3,7 +3,6 @@
 
 <product name="Caleydo Data Importer" uid="org.caleydo.data.importer.product" id="org.caleydo.data.importer.product" application="org.caleydo.data.importer.application" useFeatures="false" includeLaunchers="true">
 
-
    <configIni use="default">
    </configIni>
 
@@ -15,7 +14,6 @@
 
    <windowImages/>
 
-
    <launcher name="caleydo_data_importer">
       <solaris/>
       <win useIco="false">
@@ -23,10 +21,8 @@
       </win>
    </launcher>
 
-
    <vm>
    </vm>
-
 
    <plugins>
       <plugin id="com.ibm.icu"/>

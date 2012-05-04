@@ -310,7 +310,7 @@ public class Application implements IApplication {
 			IDType sourceIDType, targetIDType;
 			if (dataSetDescription.isTransposeMatrix()) {
 				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
-				targetIDType = dataDomain.getHumanReadableRecordIDType();
+				targetIDType = dataDomain.getDimensionIDType();
 
 			} else {
 				sourceIDType = dataDomain.getHumanReadableRecordIDType();
@@ -318,7 +318,7 @@ public class Application implements IApplication {
 			}
 
 			ArrayList<PerspectiveInitializationData> rowPerspective = createPerspectivesForGroupings(
-					columnGroupingSpecifications, sourceIDType, targetIDType);
+					rowGroupingSpecifications, sourceIDType, targetIDType);
 
 			for (PerspectiveInitializationData data : rowPerspective) {
 				if (dataSetDescription.isTransposeMatrix()) {
