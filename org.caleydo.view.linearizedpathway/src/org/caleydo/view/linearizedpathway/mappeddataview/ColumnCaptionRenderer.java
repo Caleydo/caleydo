@@ -142,7 +142,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 				parent.sampleSelectionManager.addToType(SelectionType.SELECTION,
 						samplePerspective.getIdType(), samplePerspective
 								.getVirtualArray().getIDs());
-				parent.sampleGroupSelectionManager.triggerSelectionUpdateEvent();
+				parent.sampleSelectionManager.triggerSelectionUpdateEvent();
 
 				parentView.setDisplayListDirty();
 
