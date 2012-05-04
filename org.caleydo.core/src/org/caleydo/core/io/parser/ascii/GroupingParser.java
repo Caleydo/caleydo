@@ -112,11 +112,15 @@ public class GroupingParser extends ATextParser {
 				columnsToRead = new ArrayList<Integer>(data.length);
 				if (headerCells == null) {
 					headerCells = new String[data.length];
+					
+					// Assigning default group names
+					for (int columnCount = 1; columnCount < data.length; columnCount++) {
+						headerCells[columnCount] = "Group " + columnCount;
+					}
 				}
 
 				for (int columnCount = 1; columnCount < data.length; columnCount++) {
 					columnsToRead.add(columnCount);
-					headerCells[columnCount] = "Group " + columnCount;
 				}
 			}
 
