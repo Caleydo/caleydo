@@ -48,14 +48,15 @@ import org.caleydo.view.datagraph.layout.AGraphLayout;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
-public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
+public class MultiDataContainerViewNode
+	extends ViewNode
+	implements IDropArea {
 
 	protected DataContainerListRenderer dataContainerListRenderer;
 	protected List<DataContainer> dataContainers;
 
-	public MultiDataContainerViewNode(AGraphLayout graphLayout,
-			GLDataViewIntegrator view, DragAndDropController dragAndDropController,
-			Integer id, AGLView representedView) {
+	public MultiDataContainerViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
+			DragAndDropController dragAndDropController, Integer id, AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id, representedView);
 
 	}
@@ -70,8 +71,8 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 
 				DragAndDropController dragAndDropController = MultiDataContainerViewNode.this.dragAndDropController;
 				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode().equals(
-								"DimensionGroupDrag")) {
+						&& dragAndDropController.getDraggingMode()
+								.equals("DimensionGroupDrag")) {
 					dragAndDropController.setDropArea(MultiDataContainerViewNode.this);
 				}
 
@@ -134,8 +135,8 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
-			float mouseCoordinateX, float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
+			float mouseCoordinateY) {
 		// TODO Auto-generated method stub
 
 	}
@@ -167,11 +168,16 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 
+		// FIXME Christian: Check why this can happen. Reproduce by opening DVI
+		// and then enRoute without assigning data before.
+		if (containers == null)
+			return;
+
 		for (DataContainer container : containers) {
 			if (container instanceof PathwayDataContainer) {
-				dataDomains
-						.add(((PathwayDataContainer) container).getPathwayDataDomain());
-			} else {
+				dataDomains.add(((PathwayDataContainer) container).getPathwayDataDomain());
+			}
+			else {
 				dataDomains.add(container.getDataDomain());
 			}
 		}
@@ -181,8 +187,8 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 		for (IDataDomain dataDomain : dataDomains) {
 			ADataNode dataNode = view.getDataNode(dataDomain);
 			if (dataNode != null) {
-				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode
-						.getPosition().getX(), dataNode));
+				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode.getPosition()
+						.getX(), dataNode));
 			}
 		}
 
@@ -218,8 +224,7 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
 			System.out.println("Drop");
-			AddDataContainersEvent event = new AddDataContainersEvent(
-					dataContainers.get(0));
+			AddDataContainersEvent event = new AddDataContainersEvent(dataContainers.get(0));
 			event.setReceiver(representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);

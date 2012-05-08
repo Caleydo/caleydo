@@ -361,13 +361,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.grouper"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.view.info"
          download-size="0"
          install-size="0"
@@ -425,6 +418,27 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.view.heatmap"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.linearizedpathway"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.data.importer"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.util.bubblesets"
          download-size="0"
          install-size="0"
          version="0.0.0"
