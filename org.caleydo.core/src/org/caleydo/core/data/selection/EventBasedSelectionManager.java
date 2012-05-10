@@ -19,8 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.data.selection;
 
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ClearSelectionsListener;
 import org.caleydo.core.data.selection.events.ISelectionCommandHandler;
@@ -33,6 +31,8 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 
 /**

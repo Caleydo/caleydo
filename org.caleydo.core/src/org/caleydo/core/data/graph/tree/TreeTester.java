@@ -20,8 +20,8 @@
 package org.caleydo.core.data.graph.tree;
 
 import org.caleydo.core.data.collection.EColumnType;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 
 public class TreeTester {
 

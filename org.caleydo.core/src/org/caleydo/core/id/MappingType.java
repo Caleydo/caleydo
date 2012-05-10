@@ -17,10 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.mapping;
+package org.caleydo.core.id;
 
 import java.util.HashMap;
-import org.caleydo.core.data.id.IDType;
 import org.jgrapht.graph.DefaultWeightedEdge;
 
 /**

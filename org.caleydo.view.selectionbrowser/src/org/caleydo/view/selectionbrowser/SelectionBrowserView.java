@@ -20,8 +20,6 @@
 package org.caleydo.view.selectionbrowser;
 
 import java.util.ArrayList;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.DimensionSelectionManager;
 import org.caleydo.core.data.selection.RecordSelectionManager;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -44,6 +42,8 @@ import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;

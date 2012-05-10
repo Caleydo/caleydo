@@ -23,8 +23,8 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.graph.tree.ClusterNode;
-import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 

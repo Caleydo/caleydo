@@ -21,8 +21,8 @@ package org.caleydo.core.event.view.selection;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.id.IDType;
 
 /**
  * Event to signal that all selections for a specific {@link EIDType} should be deleted.

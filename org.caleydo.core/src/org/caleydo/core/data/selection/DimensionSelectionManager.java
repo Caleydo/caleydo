@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.selection;
 
-import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.id.IDType;
 
 public class DimensionSelectionManager extends SelectionManager {
 

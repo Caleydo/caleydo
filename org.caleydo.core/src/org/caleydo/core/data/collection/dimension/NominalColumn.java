@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
-import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 
 /**

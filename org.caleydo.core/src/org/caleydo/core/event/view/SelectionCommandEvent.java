@@ -21,10 +21,10 @@ package org.caleydo.core.event.view;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.id.IDCategory;
 
 /**
  * A SelectionCommandEvent holds a {@link SelectionCommand} which is used to

@@ -21,7 +21,7 @@ package org.caleydo.datadomain.pathway.contextmenu.container;
 
 import java.util.Set;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;

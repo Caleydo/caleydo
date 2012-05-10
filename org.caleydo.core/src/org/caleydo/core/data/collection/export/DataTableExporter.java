@@ -26,12 +26,12 @@ import java.io.PrintWriter;
 import java.util.ArrayList;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDType;
 
 /**
  * Exports data so a CSV file.

@@ -21,11 +21,11 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.ArrayList;
 import java.util.List;
-import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 
 /**
  * The similarity of one group in source VA1 to all groups in target VA2. You can get two types of information

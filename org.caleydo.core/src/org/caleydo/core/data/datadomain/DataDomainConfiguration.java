@@ -24,8 +24,8 @@ package org.caleydo.core.data.datadomain;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 
 /**
  * Configuration for {@link ATableBasedDataDomain}. This initializes the parts of the configuration of the

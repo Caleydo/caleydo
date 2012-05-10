@@ -22,9 +22,9 @@
  */
 package org.caleydo.view.visbricks;
 
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 
 /**

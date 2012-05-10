@@ -20,8 +20,8 @@
 package org.caleydo.core.view.contextmenu.item;
 
 import java.util.ArrayList;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.event.data.RemoveBookmarkEvent;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

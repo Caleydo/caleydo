@@ -24,8 +24,8 @@ import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
 import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.INumericalCContainer;
-import org.caleydo.core.data.id.ManagedObjectType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 
 /**

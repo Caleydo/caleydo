@@ -20,8 +20,8 @@
 package org.caleydo.view.browser;
 
 import java.util.ArrayList;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;

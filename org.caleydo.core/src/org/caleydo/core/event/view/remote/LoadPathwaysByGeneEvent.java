@@ -21,8 +21,8 @@ package org.caleydo.core.event.view.remote;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.event.AEvent;
+import org.caleydo.core.id.IDType;
 
 /**
  * Event to signal that pathways should be added to the bucket in which a certain gene is contained.

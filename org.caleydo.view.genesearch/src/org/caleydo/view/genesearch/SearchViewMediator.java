@@ -24,8 +24,6 @@ import java.util.List;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -38,6 +36,8 @@ import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.event.view.remote.LoadPathwayEvent;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 

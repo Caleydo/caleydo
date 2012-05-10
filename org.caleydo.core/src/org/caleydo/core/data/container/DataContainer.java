@@ -30,8 +30,6 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -42,6 +40,8 @@ import org.caleydo.core.data.virtualarray.group.DimensionGroupList;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 
 /**
  * <p>

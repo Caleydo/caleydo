@@ -21,7 +21,7 @@ package org.caleydo.datadomain.pathway.graph;
 
 import java.io.Serializable;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;

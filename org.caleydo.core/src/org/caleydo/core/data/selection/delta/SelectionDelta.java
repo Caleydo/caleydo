@@ -23,8 +23,8 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.id.IDType;
 
 /**
  * HashMap based implementation of IDelta for selections. All elements are unique and no ordering is

@@ -27,9 +27,6 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -40,6 +37,9 @@ import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveEvent;
 import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListener;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

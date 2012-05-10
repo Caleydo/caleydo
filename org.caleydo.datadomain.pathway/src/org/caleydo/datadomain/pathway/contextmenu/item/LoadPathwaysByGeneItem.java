@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.datadomain.pathway.contextmenu.item;
 
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.event.view.remote.LoadPathwaysByGeneEvent;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 /**

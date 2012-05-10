@@ -34,7 +34,6 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.graph.tree.ClusterTree;
 import org.caleydo.core.data.graph.tree.Tree;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
@@ -48,6 +47,7 @@ import org.caleydo.core.data.virtualarray.events.ReplaceDimensionPerspectiveEven
 import org.caleydo.core.event.view.ClusterNodeSelectionEvent;
 import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;

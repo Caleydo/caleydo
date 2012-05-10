@@ -20,7 +20,7 @@
 package org.caleydo.core.data.datadomain.graph;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.id.IDCategory;
+import org.caleydo.core.id.IDCategory;
 
 public class Edge {
 

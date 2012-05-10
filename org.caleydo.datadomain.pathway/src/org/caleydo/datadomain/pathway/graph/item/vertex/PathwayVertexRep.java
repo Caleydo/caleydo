@@ -23,7 +23,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import org.caleydo.core.data.IUniqueObject;
-import org.caleydo.core.data.id.ManagedObjectType;
+import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;

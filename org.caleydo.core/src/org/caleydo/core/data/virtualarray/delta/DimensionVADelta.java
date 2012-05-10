@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.virtualarray.delta;
 
-import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.id.IDType;
 
 public class DimensionVADelta
 	extends VirtualArrayDelta<DimensionVADelta> {

@@ -21,10 +21,10 @@ package org.caleydo.datadomain.pathway.parser;
 
 import java.util.ArrayList;
 import java.util.Set;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.parser.xml.AXmlParserHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;

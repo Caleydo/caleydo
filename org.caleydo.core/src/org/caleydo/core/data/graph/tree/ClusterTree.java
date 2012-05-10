@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.data.graph.tree;
 
-import org.caleydo.core.data.id.IDType;
+import org.caleydo.core.id.IDType;
 
 public class ClusterTree
 	extends Tree<ClusterNode> {

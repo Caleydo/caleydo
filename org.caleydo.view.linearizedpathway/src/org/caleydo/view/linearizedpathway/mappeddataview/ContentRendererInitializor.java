@@ -5,9 +5,9 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.Set;
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.virtualarray.group.Group;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
 

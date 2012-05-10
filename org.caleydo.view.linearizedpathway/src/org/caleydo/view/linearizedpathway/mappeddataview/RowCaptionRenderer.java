@@ -21,11 +21,11 @@ package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
 import javax.media.opengl.GL2;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.mapping.IDMappingManager;
-import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;

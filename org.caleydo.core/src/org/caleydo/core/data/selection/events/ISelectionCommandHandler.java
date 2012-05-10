@@ -19,9 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.data.selection.events;
 
-import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.IListenerOwner;
+import org.caleydo.core.id.IDCategory;
 
 /**
  * Interface for classes that handle {@link SelectionCommand}s.

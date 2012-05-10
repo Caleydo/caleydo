@@ -21,8 +21,6 @@ package org.caleydo.view.bookmark;
 
 import java.util.Iterator;
 import javax.media.opengl.GL2;
-import org.caleydo.core.data.id.IDCategory;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
@@ -30,6 +28,8 @@ import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.event.data.BookmarkEvent;
 import org.caleydo.core.event.data.RemoveBookmarkEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.UniqueList;
 import org.caleydo.core.view.contextmenu.item.RemoveBookmarkItem;

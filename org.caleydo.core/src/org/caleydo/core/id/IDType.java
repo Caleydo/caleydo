@@ -17,11 +17,10 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.id;
+package org.caleydo.core.id;
 
 import java.util.HashMap;
 import org.caleydo.core.data.collection.EColumnType;
-import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
