@@ -1,45 +1,36 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.clusterer.initialization;
+package org.caleydo.core.util.clusterer.algorithm.nominal;
 
-public enum EClustererAlgo {
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 
-	// hierarchical clusterer
-	TREE_CLUSTERER("Tree Clusterer"),
-	COBWEB_CLUSTERER("Cobweb Hierarchical Clusterer"),
+/**
+ * @author Alexander Lex
+ * 
+ */
+public class NominalClusterConfiguration extends AClusterConfiguration {
 
-	// partitional clusterer
-	AFFINITY_PROPAGATION("Affinity Propagation Clusterer"),
-	KMEANS_CLUSTERER("K-Means Clusterer"),
-
-	// custom clusterer
-	ALPHABETICAL("Alphabetical"),
-	OTHER("Other");
-
-	private String sName;
-
-	private EClustererAlgo(String sName) {
-		this.sName = sName;
-	}
-
-	public String getName() {
-		return sName;
+	/**
+	 * 
+	 */
+	public NominalClusterConfiguration() {
+		clusterAlgorithmName = "Nominal Clusterer";
 	}
 }

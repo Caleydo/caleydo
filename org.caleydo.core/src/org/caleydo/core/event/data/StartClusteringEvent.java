@@ -22,7 +22,7 @@ package org.caleydo.core.event.data;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 
 /**
  * Event that signals the start of a clustering algorithm. The parameters are specified in the ClusterState
@@ -35,12 +35,12 @@ import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 public class StartClusteringEvent
 	extends AEvent {
 
-	private ClusterConfiguration clusterConfiguration;
+	private AClusterConfiguration clusterConfiguration;
 
 	public StartClusteringEvent() {
 	}
 
-	public StartClusteringEvent(ClusterConfiguration state) {
+	public StartClusteringEvent(AClusterConfiguration state) {
 		this.clusterConfiguration = state;
 	}
 
@@ -48,11 +48,11 @@ public class StartClusteringEvent
 	 * @param clusterConfiguration
 	 *            setter, see {@link #clusterConfiguration}
 	 */
-	public void setClusterConfiguration(ClusterConfiguration clusterConfiguration) {
+	public void setClusterConfiguration(AClusterConfiguration clusterConfiguration) {
 		this.clusterConfiguration = clusterConfiguration;
 	}
 
-	public ClusterConfiguration getClusteConfiguration() {
+	public AClusterConfiguration getClusteConfiguration() {
 		return clusterConfiguration;
 	}
 

@@ -28,7 +28,7 @@ import org.caleydo.core.data.graph.tree.Tree;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
-import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.collection.Pair;
 
 /**
@@ -107,7 +107,7 @@ public class ClusterHelper {
 	// }
 
 	public static float[] calculateClusterAveragesRecursive(Tree<ClusterNode> tree, ClusterNode node,
-		ClustererType clustererType, DataTable table, DimensionVirtualArray dimensionVA,
+		EClustererTarget clustererType, DataTable table, DimensionVirtualArray dimensionVA,
 		RecordVirtualArray recordVA) {
 
 		float[] values;
@@ -118,7 +118,7 @@ public class ClusterHelper {
 			int numberOfElements = 0;
 			float[][] tempValues;
 
-			if (clustererType == ClustererType.RECORD_CLUSTERING) {
+			if (clustererType == EClustererTarget.RECORD_CLUSTERING) {
 				numberOfElements = dimensionVA.size();
 			}
 			else {
@@ -150,7 +150,7 @@ public class ClusterHelper {
 		// no children --> leaf node
 		else {
 
-			if (clustererType == ClustererType.RECORD_CLUSTERING) {
+			if (clustererType == EClustererTarget.RECORD_CLUSTERING) {
 				values = new float[dimensionVA.size()];
 
 				int isto = 0;
@@ -229,12 +229,12 @@ public class ClusterHelper {
 	 * @param eClustererType
 	 */
 	public static void sortClusters(DataTable table, RecordVirtualArray recordVA,
-		DimensionVirtualArray dimensionVA, ArrayList<Integer> examples, ClustererType eClustererType) {
+		DimensionVirtualArray dimensionVA, ArrayList<Integer> examples, EClustererTarget eClustererType) {
 
 		int iNrExamples = examples.size();
 		float[] fColorSum = null;
 
-		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+		if (eClustererType == EClustererTarget.RECORD_CLUSTERING) {
 
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];
@@ -253,7 +253,7 @@ public class ClusterHelper {
 				icontent++;
 			}
 		}
-		else if (eClustererType == ClustererType.DIMENSION_CLUSTERING) {
+		else if (eClustererType == EClustererTarget.DIMENSION_CLUSTERING) {
 
 			int icontent = 0;
 			fColorSum = new float[iNrExamples];

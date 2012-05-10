@@ -17,47 +17,37 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.clusterer.initialization;
+package org.caleydo.core.util.clusterer.algorithm.kmeans;
 
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 
-public enum EDistanceMeasure {
+/**
+ * @author Alexander Lex
+ * 
+ */
+public class KMeansClusterConfiguration extends AClusterConfiguration {
 
-	EUCLIDEAN_DISTANCE("Euclidean Distance"),
-	PEARSON_CORRELATION("Pearson Corrleation"),
-	MANHATTAN_DISTANCE("Manhattan Distance"),
-	CHEBYSHEV_DISTANCE("Chebyshev Distance");
-
-	private String name;
+	private int numberOfClusters = -1;
 
 	/**
 	 * 
 	 */
-	private EDistanceMeasure(String name) {
-		this.name = name;
+	public KMeansClusterConfiguration() {
+		clusterAlgorithmName = "K-Means";
 	}
-
-	public static EDistanceMeasure getTypeForName(String name) {
-		for (EDistanceMeasure type : EDistanceMeasure.values()) {
-			if (type.getName().equals(name))
-				return type;
-		}
-		return null;
-	}
-
-	public static String[] getNames() {
-		String[] names = new String[EDistanceMeasure.values().length];
-		int count = 0;
-		for (EDistanceMeasure type : EDistanceMeasure.values()) {
-			names[count] = type.getName();
-			count++;
-		}
-		return names;
+	
+	/**
+	 * @param numberOfClusters
+	 *            setter, see {@link #numberOfClusters}
+	 */
+	public void setNumberOfClusters(int numberOfClusters) {
+		this.numberOfClusters = numberOfClusters;
 	}
 
 	/**
-	 * @return the name, see {@link #name}
+	 * @return the numberOfClusters, see {@link #numberOfClusters}
 	 */
-	public String getName() {
-		return name;
+	public int getNumberOfClusters() {
+		return numberOfClusters;
 	}
 }

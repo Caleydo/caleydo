@@ -17,41 +17,21 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.util.clusterer.initialization;
+package org.caleydo.core.util.clusterer.algorithm.tree;
 
+public enum ETreeClustererAlgo {
 
-public enum EDistanceMeasure {
-
-	EUCLIDEAN_DISTANCE("Euclidean Distance"),
-	PEARSON_CORRELATION("Pearson Corrleation"),
-	MANHATTAN_DISTANCE("Manhattan Distance"),
-	CHEBYSHEV_DISTANCE("Chebyshev Distance");
+	AVERAGE_LINKAGE("Average Linkage"),
+	SINGLE_LINKAGE("Single Linkage"),
+	COMPLETE_LINKAGE("Complete Linkage");
 
 	private String name;
 
 	/**
 	 * 
 	 */
-	private EDistanceMeasure(String name) {
+	private ETreeClustererAlgo(String name) {
 		this.name = name;
-	}
-
-	public static EDistanceMeasure getTypeForName(String name) {
-		for (EDistanceMeasure type : EDistanceMeasure.values()) {
-			if (type.getName().equals(name))
-				return type;
-		}
-		return null;
-	}
-
-	public static String[] getNames() {
-		String[] names = new String[EDistanceMeasure.values().length];
-		int count = 0;
-		for (EDistanceMeasure type : EDistanceMeasure.values()) {
-			names[count] = type.getName();
-			count++;
-		}
-		return names;
 	}
 
 	/**
@@ -60,4 +40,23 @@ public enum EDistanceMeasure {
 	public String getName() {
 		return name;
 	}
+
+	public static ETreeClustererAlgo getTypeForName(String name) {
+		for (ETreeClustererAlgo algoType : ETreeClustererAlgo.values()) {
+			if (algoType.getName().equals(name))
+				return algoType;
+		}
+		return null;
+	}
+
+	public static String[] getNames() {
+		String[] names = new String[ETreeClustererAlgo.values().length];
+		int count = 0;
+		for (ETreeClustererAlgo algoType : ETreeClustererAlgo.values()) {
+			names[count] = algoType.getName();
+			count++;
+		}
+		return names;
+	}
+
 }

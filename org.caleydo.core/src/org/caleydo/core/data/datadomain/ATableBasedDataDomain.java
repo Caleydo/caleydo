@@ -23,10 +23,12 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
+
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -80,8 +82,8 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterManager;
 import org.caleydo.core.util.clusterer.ClusterResult;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 
@@ -596,7 +598,7 @@ public abstract class ATableBasedDataDomain
 	 * @param tableID ID of the set to cluster
 	 * @param clusterState
 	 */
-	public ClusterResult startClustering(ClusterConfiguration clusterState) {
+	public ClusterResult startClustering(AClusterConfiguration clusterState) {
 		// FIXME this should be re-designed so that the clustering is a separate
 		// thread and communicates via
 		// events
@@ -607,8 +609,7 @@ public abstract class ATableBasedDataDomain
 		if (result == null)
 			return null;
 
-		if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING
-				|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
+		if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING) {
 			PerspectiveInitializationData dimensionResult = result.getDimensionResult();
 			DimensionPerspective dimensionPerspective = clusterState
 					.getTargetDimensionPerspective();
@@ -618,8 +619,7 @@ public abstract class ATableBasedDataDomain
 					dimensionPerspective.getID(), this));
 		}
 
-		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING
-				|| clusterState.getClustererType() == ClustererType.BI_CLUSTERING) {
+		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 			PerspectiveInitializationData recordResult = result.getRecordResult();
 			RecordPerspective recordPerspective = clusterState.getTargetRecordPerspective();
 			recordPerspective.init(recordResult);

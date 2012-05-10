@@ -29,7 +29,7 @@ import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
@@ -49,8 +49,8 @@ public class StartClusteringAction
 
 		setText(TEXT);
 		setToolTipText(TEXT);
-		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(PlatformUI
-			.getWorkbench().getDisplay(), ICON)));
+		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
+				PlatformUI.getWorkbench().getDisplay(), ICON)));
 	}
 
 	@Override
@@ -73,7 +73,7 @@ public class StartClusteringAction
 		dialog.setRecordPerspective(config.getRecordPerspective());
 		
 		dialog.open();
-		ClusterConfiguration clusterState = dialog.getClusterState();
+		AClusterConfiguration clusterState = dialog.getClusterState();
 		if (clusterState == null)
 			return;
 
@@ -85,4 +85,5 @@ public class StartClusteringAction
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 
 	}
+	
 }

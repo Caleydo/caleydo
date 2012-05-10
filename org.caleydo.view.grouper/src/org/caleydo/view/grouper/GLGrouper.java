@@ -51,7 +51,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.clusterer.ClusterHelper;
-import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.view.contextmenu.item.SeparatorMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -273,7 +273,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
 		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
-				ClustererType.DIMENSION_CLUSTERING, dataDomain.getTable(), dataContainer
+				EClustererTarget.DIMENSION_CLUSTERING, dataDomain.getTable(), dataContainer
 						.getDimensionPerspective().getVirtualArray(), dataContainer
 						.getRecordPerspective().getVirtualArray());
 

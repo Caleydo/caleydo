@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,46 +24,41 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClustererType;
-import org.caleydo.core.util.clusterer.initialization.EClustererAlgo;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityTab;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansTab;
+import org.caleydo.core.util.clusterer.algorithm.tree.TreeTab;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.action.Action;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.HelpEvent;
 import org.eclipse.swt.events.HelpListener;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
-import org.eclipse.swt.layout.RowLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
-import org.eclipse.swt.widgets.MessageBox;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.TabFolder;
 import org.eclipse.swt.widgets.TabItem;
-import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.actions.ActionFactory;
 
 /**
- * Action responsible for starting clustering
+ * Action containing the gui for configuring the clustering algorithms.
  * 
+ * @author Alexander Lex
  * @author Bernhard Schlegl
+ * 
  */
-public class StartClusteringDialogAction
-	extends Action
-	implements ActionFactory.IWorkbenchAction {
+public class StartClusteringDialogAction extends Action implements
+		ActionFactory.IWorkbenchAction {
 
 	public final static String ID = "org.caleydo.core.util.clusterer.gui.StartClusteringAction";
 	public static final String TEXT = "Clustering";
@@ -71,34 +66,18 @@ public class StartClusteringDialogAction
 
 	private Composite parentComposite;
 
-	private String clusterType;
-	private String distmeasure;
-	private String treeClusterAlgo;
-	private int nrClustersRecords = 5;
-	private int nrClustersDimensions = 5;
-	private float fclusterFactorGenes = 1f;
-	private float fclusterFactorExperiments = 1f;
+	private String clusterTargetName;
+	private String distanceMeasureName;
 
-	private String[] typeOptions = { "DYNAMIC_RECORD", "DYNAMIC_EXPERIMENT", "Both dimensions" };
-	private String[] sArDistOptions = { "Euclidean distance", "Manhattan distance",
-			"Chebyshev distance", "Pearson correlation" };
-	private String[] sArDistOptionsWeka = { "Euclidean distance", "Manhattan distance" };// ,"Chebyshev distance"};
-	private String[] sArTreeClusterer = { "Complete Linkage", "Average Linkage",
-			"Single Linkage" };
+	private String[] typeOptions = { "DYNAMIC_RECORD", "DYNAMIC_EXPERIMENT" };
+	private String[] distanceMeasureOptions = EDistanceMeasure.getNames();
 
-	private ClusterConfiguration clusterState = new ClusterConfiguration();
-
-	private TabItem treeClusteringTab;
-	private TabItem affinityPropagationTab;
-	private TabItem kMeansTab;
-	private TabItem cobwebTab;
-	private OtherClusterersTab othersTab;
-
-	private Text clusterFactorGenes = null;
-	private Text clusterFactorExperiments = null;
+	private AClusterConfiguration clusterConfiguration;
 
 	private RecordPerspective recordPerspective = null;
 	private DimensionPerspective dimensionPerspective = null;
+
+	TabFolder tabFolder;
 
 	/**
 	 * Constructor.
@@ -117,6 +96,7 @@ public class StartClusteringDialogAction
 		this.recordPerspective = recordPerspective;
 		typeOptions[0] = dataDomain.getRecordDenomination(true, false);
 		typeOptions[1] = dataDomain.getDimensionDenomination(true, false);
+
 	}
 
 	@Override
@@ -128,9 +108,61 @@ public class StartClusteringDialogAction
 	private void createGUI() {
 
 		Composite composite = new Composite(parentComposite, SWT.OK);
-		// composite.setLayout(new FillLayout(SWT.VERTICAL));
+		composite.setLayout(new GridLayout(1, false));
 
-		final TabFolder tabFolder = new TabFolder(composite, SWT.BORDER);
+		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		clusterDimensionGroup.setText("Cluster:");
+		clusterDimensionGroup.setLayout(new GridLayout(1, false));
+
+		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
+		clusterTypeCombo.setItems(typeOptions);
+		clusterTypeCombo.select(0);
+		clusterTargetName = typeOptions[0];
+
+		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		distanceMeasureGroup.setText("Distance measure:");
+		distanceMeasureGroup.setLayout(new GridLayout(1, false));
+
+		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
+		distMeasureCombo.setItems(distanceMeasureOptions);
+		distMeasureCombo.setEnabled(true);
+		distMeasureCombo.select(0);
+		distanceMeasureName = distanceMeasureOptions[0];
+		distMeasureCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				distanceMeasureName = distMeasureCombo.getText();
+			}
+		});
+
+		tabFolder = new TabFolder(composite, SWT.BORDER);
+
+		// check whether the algorithm supports all distance measures
+		tabFolder.addSelectionListener(new SelectionListener() {
+
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+				int selectionIndex = tabFolder.getSelectionIndex();
+				AClusterTab tab = (AClusterTab) tabFolder.getItem(selectionIndex)
+						.getData();
+				int selectedMeasure = distMeasureCombo.getSelectionIndex();
+				String[] supportedMeasures = tab.getSupportedDistanceMeasures();
+				distMeasureCombo.setItems(supportedMeasures);
+				if (supportedMeasures.length - 1 < selectedMeasure)
+					distMeasureCombo.select(0);
+				else
+					distMeasureCombo.select(selectedMeasure);
+
+				distanceMeasureName = distMeasureCombo.getText();
+
+			}
+
+			@Override
+			public void widgetDefaultSelected(SelectionEvent e) {
+
+			}
+		});
 
 		composite.addHelpListener(new HelpListener() {
 
@@ -145,17 +177,15 @@ public class StartClusteringDialogAction
 					changeURLEvent.setSender(this);
 					changeURLEvent.setUrl(URL_HELP_CLUSTERING);
 					GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-				}
-				catch (PartInitException partInitException) {
+				} catch (PartInitException partInitException) {
 				}
 			}
 		});
 
-		createTreeClusteringTab(tabFolder);
-		createAffinityPropagationTab(tabFolder);
-		createKMeansTab(tabFolder);
-		createCobwebTab(tabFolder);
-		othersTab = new OtherClusterersTab(tabFolder);
+		new TreeTab(tabFolder);
+		new AffinityTab(tabFolder);
+		new KMeansTab(tabFolder);
+		// new OtherClusterersTab(tabFolder);
 
 		Button helpButton = new Button(composite, SWT.PUSH);
 		helpButton.setText("Help");
@@ -172,38 +202,9 @@ public class StartClusteringDialogAction
 					changeURLEvent.setSender(this);
 					changeURLEvent.setUrl(stHelp);
 					GeneralManager.get().getEventPublisher().triggerEvent(changeURLEvent);
-				}
-				catch (PartInitException e1) {
+				} catch (PartInitException e1) {
 					e1.printStackTrace();
 				}
-			}
-		});
-
-		// set default value for cluster algo
-		clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-
-		tabFolder.addSelectionListener(new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-
-				if (((TabItem) e.item) == treeClusteringTab) {
-					clusterState.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-				}
-				else if (((TabItem) e.item) == affinityPropagationTab) {
-					clusterState.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-				}
-				else if (((TabItem) e.item) == kMeansTab) {
-					clusterState.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
-				}
-				else if (((TabItem) e.item) == cobwebTab) {
-					clusterState.setClustererAlgo(EClustererAlgo.COBWEB_CLUSTERER);
-				}
-				else if (((TabItem) e.item) == othersTab.getTab()) {
-					clusterState.setClustererAlgo(EClustererAlgo.OTHER);
-				}
-				else
-					throw new IllegalStateException("Not implemented!");
 			}
 		});
 
@@ -211,376 +212,35 @@ public class StartClusteringDialogAction
 		composite.pack();
 	}
 
-	private void createCobwebTab(TabFolder tabFolder) {
-		cobwebTab = new TabItem(tabFolder, SWT.NONE);
-		cobwebTab.setText("Cobweb");
-
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		cobwebTab.setControl(composite);
-		composite.setLayout(new GridLayout(1, false));
-
-		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		clusterDimensionGroup.setText("Cluster:");
-		clusterDimensionGroup.setLayout(new GridLayout(1, false));
-
-		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(typeOptions);
-		clusterTypeCombo.setEnabled(true);
-		clusterTypeCombo.select(0);
-		clusterType = typeOptions[0];
-		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clusterType = clusterTypeCombo.getText();
-			}
-		});
-	}
-
-	private void createKMeansTab(TabFolder tabFolder) {
-		kMeansTab = new TabItem(tabFolder, SWT.NONE);
-		kMeansTab.setText("KMeans");
-
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		kMeansTab.setControl(composite);
-		composite.setLayout(new GridLayout(1, false));
-
-		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		clusterDimensionGroup.setText("Cluster:");
-		clusterDimensionGroup.setLayout(new GridLayout(1, false));
-
-		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(typeOptions);
-		clusterTypeCombo.select(0);
-		clusterType = typeOptions[0];
-
-		ModifyListener listenerIntGenes = new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				valueChangedInt((Text) e.widget, true);
-			}
-		};
-		ModifyListener listenerIntExperiments = new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				valueChangedInt((Text) e.widget, false);
-			}
-		};
-
-		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		distanceMeasureGroup.setText("Distance measure:");
-		distanceMeasureGroup.setLayout(new GridLayout(1, false));
-
-		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
-		distMeasureCombo.setItems(sArDistOptionsWeka);
-		distMeasureCombo.setEnabled(true);
-		distMeasureCombo.select(0);
-		distmeasure = sArDistOptionsWeka[0];
-		distMeasureCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				distmeasure = distMeasureCombo.getText();
-			}
-		});
-
-		final Label lblClusterCntGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
-		lblClusterCntGenes.setText("Number clusters for clustering genes");
-		lblClusterCntGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false,
-				false));
-
-		final Text clusterCntGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterCntGenes.addModifyListener(listenerIntGenes);
-		clusterCntGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterCntGenes.setText("5");
-		clusterCntGenes
-				.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
-
-		final Label lblClusterCntExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
-		lblClusterCntExperiments.setText("Number clusters for clustering experiments");
-		lblClusterCntExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER,
-				false, false));
-
-		final Text clusterCntExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterCntExperiments.addModifyListener(listenerIntExperiments);
-		clusterCntExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterCntExperiments.setText("5");
-		clusterCntExperiments
-				.setToolTipText("Positive integer value. Range: 1 up to the number of samples in data set");
-		clusterCntExperiments.setEnabled(false);
-
-		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clusterType = clusterTypeCombo.getText();
-				if (clusterType.equals(typeOptions[0])) {
-					clusterCntGenes.setEnabled(true);
-					clusterCntExperiments.setEnabled(false);
-				}
-				else if (clusterType.equals(typeOptions[1])) {
-					clusterCntGenes.setEnabled(false);
-					clusterCntExperiments.setEnabled(true);
-				}
-				else {
-					clusterCntGenes.setEnabled(true);
-					clusterCntExperiments.setEnabled(true);
-				}
-			}
-		});
-
-	}
-
-	private void createAffinityPropagationTab(TabFolder tabFolder) {
-		affinityPropagationTab = new TabItem(tabFolder, SWT.NONE);
-		affinityPropagationTab.setText("Affinity Propagation");
-
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		affinityPropagationTab.setControl(composite);
-		composite.setLayout(new GridLayout(1, false));
-
-		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		clusterDimensionGroup.setText("Cluster:");
-		clusterDimensionGroup.setLayout(new GridLayout(1, false));
-
-		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(typeOptions);
-		clusterTypeCombo.select(0);
-		clusterType = typeOptions[0];
-
-		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		distanceMeasureGroup.setText("Distance measure:");
-		distanceMeasureGroup.setLayout(new GridLayout(1, false));
-
-		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
-		distMeasureCombo.setItems(sArDistOptions);
-		distMeasureCombo.setEnabled(true);
-		distMeasureCombo.select(0);
-		distmeasure = sArDistOptions[0];
-		distMeasureCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				distmeasure = distMeasureCombo.getText();
-			}
-		});
-
-		ModifyListener listenerFloatGenes = new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				valueChangedFloat((Text) e.widget, true);
-			}
-		};
-
-		ModifyListener listenerFloatExperiments = new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				valueChangedFloat((Text) e.widget, false);
-			}
-		};
-
-		final Label lblClusterFactorGenes = new Label(composite, SWT.SHADOW_ETCHED_IN);
-		lblClusterFactorGenes.setText("Factor for clustering genes");
-		lblClusterFactorGenes.setLayoutData(new GridData(GridData.END, GridData.CENTER, false,
-				false));
-
-		clusterFactorGenes = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterFactorGenes.addModifyListener(listenerFloatGenes);
-		clusterFactorGenes.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterFactorGenes.setText("1.0");
-		clusterFactorGenes
-				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
-
-		final Label lblClusterFactorExperiments = new Label(composite, SWT.SHADOW_ETCHED_IN);
-		lblClusterFactorExperiments.setText("Factor for clustering experiments");
-		lblClusterFactorExperiments.setLayoutData(new GridData(GridData.END, GridData.CENTER,
-				false, false));
-
-		clusterFactorExperiments = new Text(composite, SWT.SHADOW_ETCHED_IN);
-		clusterFactorExperiments.addModifyListener(listenerFloatExperiments);
-		clusterFactorExperiments.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-		clusterFactorExperiments.setText("1.0");
-		clusterFactorExperiments
-				.setToolTipText("Float value. Range: 1 up to 10. The bigger the value the less clusters will be formed");
-		clusterFactorExperiments.setEnabled(false);
-
-		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clusterType = clusterTypeCombo.getText();
-				if (clusterType.equals(typeOptions[0])) {
-					clusterFactorGenes.setEnabled(true);
-					clusterFactorExperiments.setEnabled(false);
-				}
-				else if (clusterType.equals(typeOptions[1])) {
-					clusterFactorGenes.setEnabled(false);
-					clusterFactorExperiments.setEnabled(true);
-				}
-				else {
-					clusterFactorGenes.setEnabled(true);
-					clusterFactorExperiments.setEnabled(true);
-				}
-
-			}
-		});
-
-	}
-
-	private void createTreeClusteringTab(TabFolder tabFolder) {
-		treeClusteringTab = new TabItem(tabFolder, SWT.NONE);
-		treeClusteringTab.setText("Tree Clusterer");
-
-		Composite composite = new Composite(tabFolder, SWT.NONE);
-		treeClusteringTab.setControl(composite);
-		composite.setLayout(new GridLayout(1, false));
-
-		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		clusterDimensionGroup.setText("Cluster:");
-		clusterDimensionGroup.setLayout(new GridLayout(2, false));
-
-		Composite clusterComposite = new Composite(clusterDimensionGroup, SWT.NONE);
-		clusterComposite.setLayout(new RowLayout());
-
-		final Combo clusterTypeCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
-		clusterTypeCombo.setItems(typeOptions);
-		clusterTypeCombo.select(0);
-		clusterType = typeOptions[0];
-		clusterTypeCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				clusterType = clusterTypeCombo.getText();
-			}
-		});
-
-		final Combo treeClustererCombo = new Combo(clusterComposite, SWT.DROP_DOWN);
-		treeClustererCombo.setItems(sArTreeClusterer);
-		treeClustererCombo.select(0);
-		treeClusterAlgo = sArTreeClusterer[0];
-		treeClustererCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				treeClusterAlgo = treeClustererCombo.getText();
-			}
-		});
-
-		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		distanceMeasureGroup.setText("Distance measure:");
-		distanceMeasureGroup.setLayout(new GridLayout(1, false));
-
-		final Combo distMeasureCombo = new Combo(distanceMeasureGroup, SWT.DROP_DOWN);
-		distMeasureCombo.setItems(sArDistOptions);
-		distMeasureCombo.setEnabled(true);
-		distMeasureCombo.select(0);
-		distmeasure = sArDistOptions[0];
-		distMeasureCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				distmeasure = distMeasureCombo.getText();
-			}
-		});
-
-	}
-
-	private void valueChangedInt(Text text, boolean bGeneFactor) {
-		if (!text.isFocusControl())
-			return;
-
-		int temp = 0;
-
-		try {
-			temp = Integer.parseInt(text.getText());
-			if (temp > 0) {
-				if (bGeneFactor == true)
-					nrClustersRecords = temp;
-				else
-					nrClustersDimensions = temp;
-			}
-			else {
-				Shell shell = new Shell();
-				MessageBox messageBox = new MessageBox(shell, SWT.OK);
-				messageBox.setText("Start Clustering");
-				messageBox.setMessage("Number of clusters must be positive");
-				messageBox.open();
-			}
-		}
-		catch (NumberFormatException e) {
-			System.out.println("Invalid input");
-		}
-
-	}
-
-	private void valueChangedFloat(Text text, boolean bGeneFactor) {
-		if (!text.isFocusControl())
-			return;
-
-		float temp = 0;
-
-		try {
-			temp = Float.parseFloat(text.getText());
-			if (temp >= 1f && temp <= 10) {
-				if (bGeneFactor == true)
-					fclusterFactorGenes = temp;
-				else
-					fclusterFactorExperiments = temp;
-			}
-			else {
-				Shell shell = new Shell();
-				MessageBox messageBox = new MessageBox(shell, SWT.OK);
-				messageBox.setText("Start Clustering");
-				messageBox
-						.setMessage("Factor for affinity propagation has to be between 1.0 and 10.0");
-				messageBox.open();
-			}
-		}
-		catch (NumberFormatException e) {
-			System.out.println("Invalid input");
-		}
-
-	}
-
 	public void execute(boolean cancelPressed) {
 
 		if (cancelPressed) {
-			clusterState = null;
+			clusterConfiguration = null;
 			return;
 		}
+		int selectionIndex = tabFolder.getSelectionIndex();
+		TabItem tabItem = tabFolder.getItems()[selectionIndex];
+		AClusterTab clusterTab = (AClusterTab) tabItem.getData();
 
-		if (clusterType.equals(typeOptions[0]))
-			clusterState.setClustererType(ClustererType.RECORD_CLUSTERING);
-		else if (clusterType.equals(typeOptions[1]))
-			clusterState.setClustererType(ClustererType.DIMENSION_CLUSTERING);
-		else if (clusterType.equals(typeOptions[2]))
-			clusterState.setClustererType(ClustererType.BI_CLUSTERING);
+		clusterConfiguration = clusterTab.getClusterConfiguration();
 
-		if (distmeasure.equals(sArDistOptions[0]))
-			clusterState.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-		else if (distmeasure.equals(sArDistOptions[1]))
-			clusterState.setDistanceMeasure(EDistanceMeasure.MANHATTAHN_DISTANCE);
-		else if (distmeasure.equals(sArDistOptions[2]))
-			clusterState.setDistanceMeasure(EDistanceMeasure.CHEBYSHEV_DISTANCE);
-		else if (distmeasure.equals(sArDistOptions[3]))
-			clusterState.setDistanceMeasure(EDistanceMeasure.PEARSON_CORRELATION);
+		if (clusterTargetName.equals(typeOptions[0]))
+			clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
+		else if (clusterTargetName.equals(typeOptions[1]))
+			clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
+		else {
+			throw new IllegalStateException("Unkonwn Cluster Target: "
+					+ clusterTargetName);
+		}
 
-		if (treeClusterAlgo.equals(sArTreeClusterer[0]))
-			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.COMPLETE_LINKAGE);
-		else if (treeClusterAlgo.equals(sArTreeClusterer[1]))
-			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
-		else if (treeClusterAlgo.equals(sArTreeClusterer[2]))
-			clusterState.setTreeClustererAlgo(ETreeClustererAlgo.SINGLE_LINKAGE);
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure
+				.getTypeForName(distanceMeasureName));
 
-		clusterState.setAffinityPropClusterFactorGenes(fclusterFactorGenes);
-		clusterState.setAffinityPropClusterFactorExperiments(fclusterFactorExperiments);
-		clusterState.setkMeansNumberOfClustersForRecords(nrClustersRecords);
-		clusterState.setkMeansNumberOfClustersForDimensions(nrClustersDimensions);
-
-		if (clusterState.getClustererAlgo().equals(EClustererAlgo.OTHER))
-			clusterState = othersTab.getClusterState();
-
-		clusterState.setSourceDimensionPerspective(dimensionPerspective);
-		// clusterState.setDimensionIDType(dataDomain.getDimensionIDType());
-		clusterState.setSourceRecordPerspective(recordPerspective);
-		// clusterState.setRecordIDType(dataDomain.getRecordIDType());
-
-		// by default we use the main VAs for clustering
+		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
+		clusterConfiguration.setSourceRecordPerspective(recordPerspective);
 
 		ClusteringProgressBar progressBar = new ClusteringProgressBar(
-				clusterState.getClustererAlgo(), clusterState.getClustererType());
+				clusterConfiguration.getClusterAlgorithmName());
 		progressBar.run();
 
 	}
@@ -589,8 +249,8 @@ public class StartClusteringDialogAction
 	public void dispose() {
 	}
 
-	public ClusterConfiguration getClusterState() {
-		return clusterState;
+	public AClusterConfiguration getClusterState() {
+		return clusterConfiguration;
 	}
 
 }

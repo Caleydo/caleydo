@@ -153,6 +153,8 @@ public class DataSetDescription extends MatrixDefinition {
 	 * {@link #dataSourcePath}. Optional.
 	 */
 	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
+	
+	
 
 	/** Same as {@link #columnGroupingSpecifications} for rows. Optional. */
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;

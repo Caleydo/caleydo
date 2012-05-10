@@ -25,7 +25,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -285,7 +285,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						dialog.setDimensionPerspective(data.getDimensionPerspective());
 						dialog.setRecordPerspective(data.getRecordPerspective());
 						dialog.open();
-						ClusterConfiguration clusterState = dialog.getClusterState();
+						AClusterConfiguration clusterState = dialog.getClusterState();
 						if (clusterState == null)
 							return;
 

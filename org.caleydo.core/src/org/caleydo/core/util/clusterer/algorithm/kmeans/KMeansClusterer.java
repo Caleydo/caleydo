@@ -23,6 +23,7 @@ import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.HashMap;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -33,9 +34,10 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.ClusterHelper;
 import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
+
 import weka.clusterers.ClusterEvaluation;
 import weka.clusterers.SimpleKMeans;
 import weka.core.DistanceFunction;
@@ -59,7 +61,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 	}
 
 	private PerspectiveInitializationData cluster(DataTable table,
-			ClusterConfiguration clusterState) {
+			AClusterConfiguration clusterState) {
 
 		// Arraylist holding clustered indicess
 		ArrayList<Integer> indices = new ArrayList<Integer>();
@@ -70,14 +72,18 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 		DistanceFunction distanceMeasure;
 
-		// SimpleKMeans only supports Eudlidean and Manhattan at that time
+		// SimpleKMeans only supports Euclidean and Manhattan at that time
 		// if (clusterState.getDistanceMeasure() ==
 		// EDistanceMeasure.CHEBYSHEV_DISTANCE)
 		// distanceMeasure = new ChebyshevDistance();
-		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAHN_DISTANCE)
+		if (clusterState.getDistanceMeasure() == EDistanceMeasure.MANHATTAN_DISTANCE)
 			distanceMeasure = new ManhattanDistance();
-		else
+		else if (clusterState.getDistanceMeasure() == EDistanceMeasure.EUCLIDEAN_DISTANCE)
 			distanceMeasure = new EuclideanDistance();
+		else {
+			throw new IllegalStateException("Unsupported Distance Measure for K-Means: "
+					+ clusterState.getDistanceMeasure());
+		}
 
 		try {
 			clusterer.setNumClusters(numberOfCluster);
@@ -96,7 +102,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 		int percentage = 1;
 
-		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
+		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 
 			GeneralManager
 					.get()
@@ -199,7 +205,7 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 						new ClusterProgressEvent(25 * iProgressBarMultiplier
 								+ iProgressBarOffsetValue, true));
 
-		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
+		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING)
 			GeneralManager
 					.get()
 					.getEventPublisher()
@@ -303,9 +309,9 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 		// Sort cluster depending on their color values
 		// TODO find a better solution for sorting
 		ClusterHelper.sortClusters(table, recordVA, dimensionVA, sampleElements,
-				clusterState.getClustererType());
+				clusterState.getClusterTarget());
 
-		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
+		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 			for (int cluster : sampleElements) {
 				for (int i = 0; i < data.numInstances(); i++) {
 					if (ClusterAssignments[i] == hashExamples.get(cluster)) {
@@ -343,21 +349,20 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-			ClusterConfiguration clusterState, int iProgressBarOffsetValue,
+			AClusterConfiguration clusterConfiguration, int iProgressBarOffsetValue,
 			int iProgressBarMultiplier) {
 
 		this.iProgressBarMultiplier = iProgressBarMultiplier;
 		this.iProgressBarOffsetValue = iProgressBarOffsetValue;
 
-		if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING)
-			numberOfCluster = clusterState.getkMeansNumberOfClustersForRecords();
-		else
-			numberOfCluster = clusterState.getkMeansNumberOfClustersForDimensions();
+		KMeansClusterConfiguration kMeansClusterConfiguration = (KMeansClusterConfiguration) clusterConfiguration;
+
+		numberOfCluster = kMeansClusterConfiguration.getNumberOfClusters();
 		if (numberOfCluster < 1) {
 			throw new IllegalStateException("Illegal Number of clusters: "
 					+ numberOfCluster);
 		}
 
-		return cluster(dataDomain.getTable(), clusterState);
+		return cluster(dataDomain.getTable(), clusterConfiguration);
 	}
 }

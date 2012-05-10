@@ -19,45 +19,14 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.initialization;
 
+/**
+ * Specifies whether records or dimensions should be clustered.
+ * 
+ * @author Alexander Lex
+ * 
+ */
+public enum EClustererTarget {
 
-public enum EDistanceMeasure {
+	RECORD_CLUSTERING, DIMENSION_CLUSTERING,
 
-	EUCLIDEAN_DISTANCE("Euclidean Distance"),
-	PEARSON_CORRELATION("Pearson Corrleation"),
-	MANHATTAN_DISTANCE("Manhattan Distance"),
-	CHEBYSHEV_DISTANCE("Chebyshev Distance");
-
-	private String name;
-
-	/**
-	 * 
-	 */
-	private EDistanceMeasure(String name) {
-		this.name = name;
-	}
-
-	public static EDistanceMeasure getTypeForName(String name) {
-		for (EDistanceMeasure type : EDistanceMeasure.values()) {
-			if (type.getName().equals(name))
-				return type;
-		}
-		return null;
-	}
-
-	public static String[] getNames() {
-		String[] names = new String[EDistanceMeasure.values().length];
-		int count = 0;
-		for (EDistanceMeasure type : EDistanceMeasure.values()) {
-			names[count] = type.getName();
-			count++;
-		}
-		return names;
-	}
-
-	/**
-	 * @return the name, see {@link #name}
-	 */
-	public String getName() {
-		return name;
-	}
 }

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -35,10 +35,9 @@ import org.caleydo.core.util.clusterer.distancemeasures.EuclideanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.IDistanceMeasure;
 import org.caleydo.core.util.clusterer.distancemeasures.ManhattanDistance;
 import org.caleydo.core.util.clusterer.distancemeasures.PearsonCorrelation;
-import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.ClustererType;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
-import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
 
 /**
  * Tree clusterer
@@ -46,8 +45,7 @@ import org.caleydo.core.util.clusterer.initialization.ETreeClustererAlgo;
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class TreeClusterer
-	extends AClusterer {
+public class TreeClusterer extends AClusterer {
 
 	/**
 	 * Helper class needed in tree cluster algorithm.
@@ -79,35 +77,38 @@ public class TreeClusterer
 	private EDistanceMeasure eDistanceMeasure;
 
 	/**
-	 * Each node in the tree needs an unique number. Because of this we need a node counter
+	 * Each node in the tree needs an unique number. Because of this we need a
+	 * node counter
 	 */
 	private int iNodeCounter = (int) Math.floor(Integer.MAX_VALUE / 2);
 
-	// Hash maps needed for determine cluster names. The name of a cluster has to be unique.
-	// HashMap<String, Integer> hashedNodeNames = new HashMap<String, Integer>();
-	// HashMap<String, Integer> duplicatedNodes = new HashMap<String, Integer>();
+	// Hash maps needed for determine cluster names. The name of a cluster has
+	// to be unique.
+	// HashMap<String, Integer> hashedNodeNames = new HashMap<String,
+	// Integer>();
+	// HashMap<String, Integer> duplicatedNodes = new HashMap<String,
+	// Integer>();
 
 	@Override
-	public void setClusterState(ClusterConfiguration clusterState) {
+	public void setClusterState(AClusterConfiguration clusterState) {
 		super.setClusterState(clusterState);
 		try {
 
-			if (clusterState.getClustererType() == ClustererType.RECORD_CLUSTERING) {
+			if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 				tree = new ClusterTree();
 				// tree.setSortingStrategy(ESortingStrategy.AVERAGE_VALUE);
-				this.iNrSamples = clusterState.getSourceRecordPerspective().getVirtualArray().size();
-			}
-			else if (clusterState.getClustererType() == ClustererType.DIMENSION_CLUSTERING) {
+				this.iNrSamples = clusterState.getSourceRecordPerspective()
+						.getVirtualArray().size();
+			} else if (clusterState.getClusterTarget() == EClustererTarget.DIMENSION_CLUSTERING) {
 				tree = new ClusterTree();
-				this.iNrSamples = clusterState.getSourceDimensionPerspective().getVirtualArray().size();
-			}
-			else
+				this.iNrSamples = clusterState.getSourceDimensionPerspective()
+						.getVirtualArray().size();
+			} else
 				throw new IllegalArgumentException("Can not handle cluster type "
-					+ clusterState.getClustererType());
+						+ clusterState.getClusterTarget());
 
 			this.similarities = new float[this.iNrSamples][this.iNrSamples];
-		}
-		catch (OutOfMemoryError e) {
+		} catch (OutOfMemoryError e) {
 			throw new OutOfMemoryError();
 		}
 	}
@@ -119,11 +120,11 @@ public class TreeClusterer
 	 * @param eClustererType
 	 * @return in case of error a negative value will be returned.
 	 */
-	private int determineSimilarities(DataTable table, ClustererType eClustererType) {
+	private int determineSimilarities(DataTable table, EClustererTarget eClustererType) {
 
 		IDistanceMeasure distanceMeasure;
 
-		if (eDistanceMeasure == EDistanceMeasure.MANHATTAHN_DISTANCE)
+		if (eDistanceMeasure == EDistanceMeasure.MANHATTAN_DISTANCE)
 			distanceMeasure = new ManhattanDistance();
 		else if (eDistanceMeasure == EDistanceMeasure.CHEBYSHEV_DISTANCE)
 			distanceMeasure = new ChebyshevDistance();
@@ -135,10 +136,14 @@ public class TreeClusterer
 		int icnt1 = 0, icnt2 = 0, isto = 0;
 		int iPercentage = 1;
 
-		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+		if (eClustererType == EClustererTarget.RECORD_CLUSTERING) {
 
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for gene clustering"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Determine Similarities for gene clustering"));
 
 			float[] dArInstance1 = new float[dimensionVA.size()];
 			float[] dArInstance2 = new float[dimensionVA.size()];
@@ -149,15 +154,19 @@ public class TreeClusterer
 					int tempPercentage = (int) ((float) icnt1 / recordVA.size() * 100);
 
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
+						GeneralManager
+								.get()
+								.getEventPublisher()
+								.triggerEvent(
+										new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
 					isto = 0;
 					for (Integer iDimensionIndex1 : dimensionVA) {
-						dArInstance1[isto] =
-							table.getFloat(DataRepresentation.NORMALIZED, recordIndex1, iDimensionIndex1);
+						dArInstance1[isto] = table.getFloat(
+								DataRepresentation.NORMALIZED, recordIndex1,
+								iDimensionIndex1);
 						isto++;
 					}
 
@@ -168,31 +177,34 @@ public class TreeClusterer
 
 						if (icnt2 < icnt1) {
 							for (Integer iDimensionIndex2 : dimensionVA) {
-								dArInstance2[isto] =
-									table.getFloat(DataRepresentation.NORMALIZED, recordIndex2,
+								dArInstance2[isto] = table.getFloat(
+										DataRepresentation.NORMALIZED, recordIndex2,
 										iDimensionIndex2);
 								isto++;
 							}
 
-							similarities[recordVA.indexOf(recordIndex1)][recordVA.indexOf(recordIndex2)] =
-								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+							similarities[recordVA.indexOf(recordIndex1)][recordVA
+									.indexOf(recordIndex2)] = distanceMeasure.getMeasure(
+									dArInstance1, dArInstance2);
 						}
 						icnt2++;
 					}
 					icnt1++;
 					processEvents();
-				}
-				else {
+				} else {
 					GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(100, true));
+							.triggerEvent(new ClusterProgressEvent(100, true));
 					return -2;
 				}
 			}
-		}
-		else {
+		} else {
 
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Determine Similarities for experiment clustering"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Determine Similarities for experiment clustering"));
 
 			float[] dArInstance1 = new float[recordVA.size()];
 			float[] dArInstance2 = new float[recordVA.size()];
@@ -202,15 +214,19 @@ public class TreeClusterer
 				if (bClusteringCanceled == false) {
 					int tempPercentage = (int) ((float) icnt1 / dimensionVA.size() * 100);
 					if (iPercentage == tempPercentage) {
-						GeneralManager.get().getEventPublisher()
-							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
+						GeneralManager
+								.get()
+								.getEventPublisher()
+								.triggerEvent(
+										new ClusterProgressEvent(iPercentage, false));
 						iPercentage++;
 					}
 
 					isto = 0;
 					for (Integer recordIndex1 : recordVA) {
-						dArInstance1[isto] =
-							table.getFloat(DataRepresentation.NORMALIZED, recordIndex1, iDimensionIndex1);
+						dArInstance1[isto] = table.getFloat(
+								DataRepresentation.NORMALIZED, recordIndex1,
+								iDimensionIndex1);
 						isto++;
 					}
 
@@ -220,33 +236,33 @@ public class TreeClusterer
 
 						if (icnt2 < icnt1) {
 							for (Integer recordIndex2 : recordVA) {
-								dArInstance2[isto] =
-									table.getFloat(DataRepresentation.NORMALIZED, recordIndex2,
+								dArInstance2[isto] = table.getFloat(
+										DataRepresentation.NORMALIZED, recordIndex2,
 										iDimensionIndex2);
 								isto++;
 							}
 
 							similarities[dimensionVA.indexOf(iDimensionIndex1)][dimensionVA
-								.indexOf(iDimensionIndex2)] =
-								distanceMeasure.getMeasure(dArInstance1, dArInstance2);
+									.indexOf(iDimensionIndex2)] = distanceMeasure
+									.getMeasure(dArInstance1, dArInstance2);
 						}
 						icnt2++;
 					}
 					icnt1++;
 					processEvents();
-				}
-				else {
+				} else {
 					GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(100, true));
+							.triggerEvent(new ClusterProgressEvent(100, true));
 					return -2;
 				}
 			}
 		}
 		GeneralManager
-			.get()
-			.getEventPublisher()
-			.triggerEvent(
-				new ClusterProgressEvent(iProgressBarMultiplier * 25 + iProgressBarOffsetValue, true));
+				.get()
+				.getEventPublisher()
+				.triggerEvent(
+						new ClusterProgressEvent(iProgressBarMultiplier * 25
+								+ iProgressBarOffsetValue, true));
 		normalizeSimilarities();
 
 		return 0;
@@ -314,12 +330,13 @@ public class TreeClusterer
 	}
 
 	/**
-	 * The palcluster routine performs clustering using single linking on the given distance matrix.
+	 * The palcluster routine performs clustering using single linking on the
+	 * given distance matrix.
 	 * 
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private PerspectiveInitializationData pslcluster(ClustererType eClustererType) {
+	private PerspectiveInitializationData pslcluster(EClustererTarget eClustererType) {
 
 		int nnodes = iNrSamples - 1;
 		int[] vector = new int[nnodes];
@@ -332,8 +349,7 @@ public class TreeClusterer
 		try {
 			result = new Node[iNrSamples];
 			distmatrix = new float[iNrSamples][iNrSamples];
-		}
-		catch (OutOfMemoryError e) {
+		} catch (OutOfMemoryError e) {
 			return null;
 		}
 
@@ -351,8 +367,7 @@ public class TreeClusterer
 						temp[k] = result[j].getCorrelation();
 					result[j].setCorrelation(temp[j]);
 					vector[j] = i;
-				}
-				else if (temp[j] < temp[k])
+				} else if (temp[j] < temp[k])
 					temp[k] = temp[j];
 			}
 			for (int j = 0; j < i; j++) {
@@ -385,15 +400,17 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result2, result2.length - 1, eClustererType);
 
-		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState.getClustererType(),
-			dataDomain.getTable(), clusterState.getSourceDimensionPerspective().getVirtualArray(),
-			clusterState.getSourceRecordPerspective().getVirtualArray());
+		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState
+				.getClusterTarget(), dataDomain.getTable(), clusterState
+				.getSourceDimensionPerspective().getVirtualArray(), clusterState
+				.getSourceRecordPerspective().getVirtualArray());
 
 		GeneralManager
-			.get()
-			.getEventPublisher()
-			.triggerEvent(
-				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+				.get()
+				.getEventPublisher()
+				.triggerEvent(
+						new ClusterProgressEvent(iProgressBarMultiplier * 50
+								+ iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setData(tree);
@@ -401,12 +418,13 @@ public class TreeClusterer
 	}
 
 	/**
-	 * The palcluster routine performs clustering using pairwise average linking on the given distance matrix.
+	 * The palcluster routine performs clustering using pairwise average linking
+	 * on the given distance matrix.
 	 * 
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private PerspectiveInitializationData palcluster(ClustererType eClustererType) {
+	private PerspectiveInitializationData palcluster(EClustererTarget eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		int[] number = new int[iNrSamples];
@@ -425,8 +443,7 @@ public class TreeClusterer
 
 		try {
 			distmatrix = new float[iNrSamples][iNrSamples];
-		}
-		catch (OutOfMemoryError e) {
+		} catch (OutOfMemoryError e) {
 			return null;
 		}
 
@@ -434,12 +451,20 @@ public class TreeClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == ClustererType.RECORD_CLUSTERING)
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Tree clustering of genes in progress"));
+		if (eClustererType == EClustererTarget.RECORD_CLUSTERING)
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Tree clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Tree clustering of experiments in progress"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Tree clustering of experiments in progress"));
 
 		for (int n = iNrSamples; n > 1; n--) {
 			if (bClusteringCanceled == false) {
@@ -450,7 +475,7 @@ public class TreeClusterer
 				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
 				if (iPercentage == tempPercentage) {
 					GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(iPercentage, false));
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 					iPercentage++;
 				}
 
@@ -474,15 +499,18 @@ public class TreeClusterer
 				// Fix the distances
 				sum = number[is] + number[js];
 				for (j = 0; j < js; j++) {
-					distmatrix[js][j] = distmatrix[is][j] * number[is] + distmatrix[js][j] * number[js];
+					distmatrix[js][j] = distmatrix[is][j] * number[is]
+							+ distmatrix[js][j] * number[js];
 					distmatrix[js][j] /= sum;
 				}
 				for (j = js + 1; j < is; j++) {
-					distmatrix[j][js] = distmatrix[is][j] * number[is] + distmatrix[j][js] * number[js];
+					distmatrix[j][js] = distmatrix[is][j] * number[is]
+							+ distmatrix[j][js] * number[js];
 					distmatrix[j][js] /= sum;
 				}
 				for (j = is + 1; j < n; j++) {
-					distmatrix[j][js] = distmatrix[j][is] * number[is] + distmatrix[j][js] * number[js];
+					distmatrix[j][js] = distmatrix[j][is] * number[is]
+							+ distmatrix[j][js] * number[js];
 					distmatrix[j][js] /= sum;
 				}
 
@@ -499,9 +527,9 @@ public class TreeClusterer
 				clusterid[js] = n - iNrSamples - 1;
 				clusterid[is] = clusterid[n - 1];
 				processEvents();
-			}
-			else {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			} else {
+				GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
 				return null;
 			}
 		}
@@ -512,15 +540,17 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState.getClustererType(),
-			dataDomain.getTable(), clusterState.getSourceDimensionPerspective().getVirtualArray(),
-			clusterState.getSourceRecordPerspective().getVirtualArray());
+		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState
+				.getClusterTarget(), dataDomain.getTable(), clusterState
+				.getSourceDimensionPerspective().getVirtualArray(), clusterState
+				.getSourceRecordPerspective().getVirtualArray());
 
 		GeneralManager
-			.get()
-			.getEventPublisher()
-			.triggerEvent(
-				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+				.get()
+				.getEventPublisher()
+				.triggerEvent(
+						new ClusterProgressEvent(iProgressBarMultiplier * 50
+								+ iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setData(tree);
@@ -528,25 +558,30 @@ public class TreeClusterer
 	}
 
 	/**
-	 * The function is responsible for calculating the expression value in each node of the tree. To handle
-	 * this an other recursive function which does the whole work is called.
+	 * The function is responsible for calculating the expression value in each
+	 * node of the tree. To handle this an other recursive function which does
+	 * the whole work is called.
 	 * 
 	 * @param eClustererType
 	 */
-	// private void determineExpressionValue(Tree<ClusterNode> clusterTree, EClustererType eClustererType) {
+	// private void determineExpressionValue(Tree<ClusterNode> clusterTree,
+	// EClustererType eClustererType) {
 	//
-	// determineExpressionValueRec(clusterTree, clusterTree.getRoot(), eClustererType);
+	// determineExpressionValueRec(clusterTree, clusterTree.getRoot(),
+	// eClustererType);
 	// }
 
 	/**
-	 * Recursive function which determines the expression value in each node of the tree.
+	 * Recursive function which determines the expression value in each node of
+	 * the tree.
 	 * 
 	 * @param tree
 	 * @param node
 	 *            current node
 	 * @return depth of the current node
 	 */
-	// private float[] determineExpressionValueRec(Tree<ClusterNode> clusterTree, ClusterNode node,
+	// private float[] determineExpressionValueRec(Tree<ClusterNode>
+	// clusterTree, ClusterNode node,
 	// EClustererType eClustererType) {
 	//
 	// float[] fArExpressionValues;
@@ -571,7 +606,8 @@ public class TreeClusterer
 	// int cnt = 0;
 	//
 	// for (ClusterNode current : clusterTree.getChildren(node)) {
-	// fArTempValues[cnt] = determineExpressionValueRec(clusterTree, current, eClustererType);
+	// fArTempValues[cnt] = determineExpressionValueRec(clusterTree, current,
+	// eClustererType);
 	// cnt++;
 	// }
 	//
@@ -596,7 +632,8 @@ public class TreeClusterer
 	// int isto = 0;
 	// for (Integer iDimensionIndex : dimensionVA) {
 	// fArExpressionValues[isto] =
-	// table.get(iDimensionIndex).getFloat(EDataRepresentation.NORMALIZED, node.getLeaveID());
+	// table.get(iDimensionIndex).getFloat(EDataRepresentation.NORMALIZED,
+	// node.getLeaveID());
 	// isto++;
 	// }
 	//
@@ -608,15 +645,19 @@ public class TreeClusterer
 	// int icon = 0;
 	// for (Integer recordIndex : recordVA) {
 	// fArExpressionValues[icon] =
-	// table.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED, recordIndex);
+	// table.get(node.getLeaveID()).getFloat(EDataRepresentation.NORMALIZED,
+	// recordIndex);
 	// icon++;
 	// }
 	// }
 	// }
-	// float averageExpressionvalue = ClusterHelper.arithmeticMean(fArExpressionValues);
-	// float deviation = ClusterHelper.standardDeviation(fArExpressionValues, averageExpressionvalue);
+	// float averageExpressionvalue =
+	// ClusterHelper.arithmeticMean(fArExpressionValues);
+	// float deviation = ClusterHelper.standardDeviation(fArExpressionValues,
+	// averageExpressionvalue);
 	// node.setAverageExpressionValue(averageExpressionvalue);
-	// // Setting an float array for the representative element in each node causes a very big xml-file when
+	// // Setting an float array for the representative element in each node
+	// causes a very big xml-file when
 	// // exporting the tree
 	// // node.setRepresentativeElement(fArExpressionValues);
 	// node.setStandardDeviation(deviation);
@@ -625,13 +666,13 @@ public class TreeClusterer
 	// }
 
 	/**
-	 * The pmlcluster routine performs clustering using pairwise maximum- (complete-) linking on the given
-	 * distance matrix.
+	 * The pmlcluster routine performs clustering using pairwise maximum-
+	 * (complete-) linking on the given distance matrix.
 	 * 
 	 * @param eClustererType
 	 * @return virtual array with ordered indexes
 	 */
-	private PerspectiveInitializationData pmlcluster(ClustererType eClustererType) {
+	private PerspectiveInitializationData pmlcluster(EClustererTarget eClustererType) {
 
 		int[] clusterid = new int[iNrSamples];
 		Node[] result = new Node[iNrSamples - 1];
@@ -648,8 +689,7 @@ public class TreeClusterer
 
 		try {
 			distmatrix = new float[iNrSamples][iNrSamples];
-		}
-		catch (OutOfMemoryError e) {
+		} catch (OutOfMemoryError e) {
 			return null;
 		}
 
@@ -657,12 +697,20 @@ public class TreeClusterer
 
 		int iPercentage = 1;
 
-		if (eClustererType == ClustererType.RECORD_CLUSTERING)
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Tree clustering of genes in progress"));
+		if (eClustererType == EClustererTarget.RECORD_CLUSTERING)
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Tree clustering of genes in progress"));
 		else
-			GeneralManager.get().getEventPublisher()
-				.triggerEvent(new RenameProgressBarEvent("Tree clustering of experiments in progress"));
+			GeneralManager
+					.get()
+					.getEventPublisher()
+					.triggerEvent(
+							new RenameProgressBarEvent(
+									"Tree clustering of experiments in progress"));
 
 		for (int n = iNrSamples; n > 1; n--) {
 
@@ -670,7 +718,7 @@ public class TreeClusterer
 				int tempPercentage = (int) ((float) (iNrSamples - n) / iNrSamples * 100);
 				if (iPercentage == tempPercentage) {
 					GeneralManager.get().getEventPublisher()
-						.triggerEvent(new ClusterProgressEvent(iPercentage, false));
+							.triggerEvent(new ClusterProgressEvent(iPercentage, false));
 					iPercentage++;
 				}
 
@@ -709,9 +757,9 @@ public class TreeClusterer
 				clusterid[js] = n - iNrSamples - 1;
 				clusterid[is] = clusterid[n - 1];
 				processEvents();
-			}
-			else {
-				GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			} else {
+				GeneralManager.get().getEventPublisher()
+						.triggerEvent(new ClusterProgressEvent(100, true));
 				return null;
 			}
 		}
@@ -722,15 +770,17 @@ public class TreeClusterer
 		tree.setRootNode(node);
 		treeStructureToTree(node, result, result.length - 1, eClustererType);
 
-		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState.getClustererType(),
-			dataDomain.getTable(), clusterState.getSourceDimensionPerspective().getVirtualArray(),
-			clusterState.getSourceRecordPerspective().getVirtualArray());
+		ClusterHelper.calculateClusterAveragesRecursive(tree, node, clusterState
+				.getClusterTarget(), dataDomain.getTable(), clusterState
+				.getSourceDimensionPerspective().getVirtualArray(), clusterState
+				.getSourceRecordPerspective().getVirtualArray());
 
 		GeneralManager
-			.get()
-			.getEventPublisher()
-			.triggerEvent(
-				new ClusterProgressEvent(iProgressBarMultiplier * 50 + iProgressBarOffsetValue, true));
+				.get()
+				.getEventPublisher()
+				.triggerEvent(
+						new ClusterProgressEvent(iProgressBarMultiplier * 50
+								+ iProgressBarOffsetValue, true));
 
 		PerspectiveInitializationData tempResult = new PerspectiveInitializationData();
 		tempResult.setData(tree);
@@ -738,9 +788,11 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Function returns the name of the current node. Therefore we need an index of the gene/experiment in the
-	 * VA. To avoid problems with the tree all nodes in the tree must have unique names. Therefore we need to
-	 * take care of two hash maps holding the currently used names and their frequency of occurrence.
+	 * Function returns the name of the current node. Therefore we need an index
+	 * of the gene/experiment in the VA. To avoid problems with the tree all
+	 * nodes in the tree must have unique names. Therefore we need to take care
+	 * of two hash maps holding the currently used names and their frequency of
+	 * occurrence.
 	 * 
 	 * @param eClustererType
 	 *            either gene or expression clustering
@@ -748,17 +800,17 @@ public class TreeClusterer
 	 *            index of the current node in the VA
 	 * @return name of the current node
 	 */
-	private String getNodeName(ClustererType eClustererType, int index) {
+	private String getNodeName(EClustererTarget eClustererType, int index) {
 		String nodeName = null;
 
-		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+		if (eClustererType == EClustererTarget.RECORD_CLUSTERING) {
 			nodeName = dataDomain.getRecordLabel(recordVA.get(index));
-		}
-		else {
+		} else {
 			nodeName = dataDomain.getDimensionLabel(dimensionVA.get(index));
 		}
 
-		// // check if current node name was already used. If yes we add signs to make it unique.
+		// // check if current node name was already used. If yes we add signs
+		// to make it unique.
 		// if (hashedNodeNames.containsKey(nodeName)) {
 		// int iNr = 1;
 		// if (duplicatedNodes.containsKey(nodeName)) {
@@ -777,8 +829,8 @@ public class TreeClusterer
 	}
 
 	/**
-	 * Function returns the number of the current node. Therefore we need an index of the gene/experiment in
-	 * the VA.
+	 * Function returns the number of the current node. Therefore we need an
+	 * index of the gene/experiment in the VA.
 	 * 
 	 * @param eClustererType
 	 *            either gene or expression clustering
@@ -786,14 +838,13 @@ public class TreeClusterer
 	 *            index of the current node in the VA
 	 * @return number of the current node
 	 */
-	private int getNodeNr(ClustererType eClustererType, int index) {
+	private int getNodeNr(EClustererTarget eClustererType, int index) {
 
 		int nodeNr = 0;
 
-		if (eClustererType == ClustererType.RECORD_CLUSTERING) {
+		if (eClustererType == EClustererTarget.RECORD_CLUSTERING) {
 			nodeNr = recordVA.get(index);
-		}
-		else {
+		} else {
 			nodeNr = dimensionVA.get(index);
 		}
 
@@ -811,7 +862,7 @@ public class TreeClusterer
 	 * @param eClustererType
 	 */
 	private void treeStructureToTree(ClusterNode node, Node[] treeStructure, int index,
-		ClustererType eClustererType) {
+			EClustererTarget eClustererType) {
 
 		ClusterNode left = null;
 		ClusterNode right = null;
@@ -821,21 +872,22 @@ public class TreeClusterer
 			String nodeName = getNodeName(eClustererType, treeStructure[index].getLeft());
 			int LeaveID = getNodeNr(eClustererType, treeStructure[index].getLeft());
 
-			// this was in the constructor: treeStructure[index].getCorrelation(), 0
+			// this was in the constructor:
+			// treeStructure[index].getCorrelation(), 0
 			left = new ClusterNode(tree, nodeName, getNodeCounter(), false, LeaveID);
 
 			// left.setNrElements(1);
 
 			tree.addChild(node, left);
 
-		}
-		else {
+		} else {
 			int random = getNodeCounter();
 
-			left =
-				new ClusterNode(tree, "Node_" + (-(treeStructure[index].getLeft()) - 1), random, false, -1);
+			left = new ClusterNode(tree, "Node_"
+					+ (-(treeStructure[index].getLeft()) - 1), random, false, -1);
 			tree.addChild(node, left);
-			treeStructureToTree(left, treeStructure, -(treeStructure[index].getLeft()) - 1, eClustererType);
+			treeStructureToTree(left, treeStructure,
+					-(treeStructure[index].getLeft()) - 1, eClustererType);
 		}
 
 		if (treeStructure[index].getRight() >= 0) {
@@ -849,21 +901,22 @@ public class TreeClusterer
 
 			tree.addChild(node, right);
 
-		}
-		else {
+		} else {
 			int random = getNodeCounter();
 
-			right =
-				new ClusterNode(tree, "Node_" + (-(treeStructure[index].getRight()) - 1), random, false, -1);
+			right = new ClusterNode(tree, "Node_"
+					+ (-(treeStructure[index].getRight()) - 1), random, false, -1);
 			tree.addChild(node, right);
-			treeStructureToTree(right, treeStructure, -(treeStructure[index].getRight()) - 1, eClustererType);
+			treeStructureToTree(right, treeStructure,
+					-(treeStructure[index].getRight()) - 1, eClustererType);
 		}
 
 	}
 
 	@Override
 	public PerspectiveInitializationData getSortedVA(ATableBasedDataDomain dataDomain,
-		ClusterConfiguration clusterState, int iProgressBarOffsetValue, int iProgressBarMultiplier) {
+			AClusterConfiguration clusterState, int iProgressBarOffsetValue,
+			int iProgressBarMultiplier) {
 
 		this.dataDomain = dataDomain;
 
@@ -873,21 +926,34 @@ public class TreeClusterer
 
 		int iReturnValue = 0;
 
-		iReturnValue = determineSimilarities(dataDomain.getTable(), clusterState.getClustererType());
+		iReturnValue = determineSimilarities(dataDomain.getTable(),
+				clusterState.getClusterTarget());
 
 		if (iReturnValue < 0) {
-			GeneralManager.get().getEventPublisher().triggerEvent(new ClusterProgressEvent(100, true));
+			GeneralManager.get().getEventPublisher()
+					.triggerEvent(new ClusterProgressEvent(100, true));
 			return null;
 		}
 
 		PerspectiveInitializationData tempResult;
 
-		if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.COMPLETE_LINKAGE)
-			tempResult = pmlcluster(clusterState.getClustererType());
-		else if (clusterState.getTreeClustererAlgo() == ETreeClustererAlgo.AVERAGE_LINKAGE)
-			tempResult = palcluster(clusterState.getClustererType());
-		else
-			tempResult = pslcluster(clusterState.getClustererType());
+		TreeClusterConfiguration treeClusterConfiguration = (TreeClusterConfiguration) clusterState;
+
+		switch (treeClusterConfiguration.getTreeClustererAlgo()) {
+
+		case COMPLETE_LINKAGE:
+			tempResult = pmlcluster(clusterState.getClusterTarget());
+			break;
+		case AVERAGE_LINKAGE:
+			tempResult = palcluster(clusterState.getClusterTarget());
+			break;
+		case SINGLE_LINKAGE:
+			tempResult = pslcluster(clusterState.getClusterTarget());
+			break;
+		default:
+			throw new IllegalStateException("Unkonwn cluster type: "
+					+ treeClusterConfiguration.getClusterTarget());
+		}
 
 		return tempResult;
 
