@@ -21,6 +21,7 @@ package org.caleydo.datadomain.genetic;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
+import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -38,8 +39,10 @@ import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListene
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**
@@ -50,7 +53,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
  */
 @XmlType
 @XmlRootElement
-public class GeneticDataDomain extends ATableBasedDataDomain {
+public class GeneticDataDomain
+	extends ATableBasedDataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
 
@@ -62,15 +66,11 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	 */
 	private static int extensionID = 0;
 
-	/**
-	 * <code>TRUE</code>if only pathways can be displayed (no gene-expression
-	 * data), <code>FALSE</code> otherwise
-	 */
-	private boolean pathwayViewerMode;
-
 	private ReplaceRecordPerspectiveListener clinicalReplaceContentVirtualArrayListener;
 	private ForeignSelectionUpdateListener clinicalSelectionUpdateListener;
 	private ForeignSelectionCommandListener clinicalSelectionCommandListener;
+
+	private boolean isMappingCreated = false;
 
 	/**
 	 * Constructor. Do not create a {@link GeneticDataDomain} yourself, use
@@ -79,8 +79,16 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	public GeneticDataDomain() {
 		super(DATA_DOMAIN_TYPE, DATA_DOMAIN_TYPE
 				+ DataDomainManager.DATA_DOMAIN_INSTANCE_DELIMITER + extensionID++);
+	}
+
+	@Override
+	public void init() {
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
 
+		if (!isMappingCreated)
+			createIDTypesAndMapping();
+
+		super.init();
 	}
 
 	@Override
@@ -89,7 +97,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		configuration = new DataDomainConfiguration();
 		configuration.setDefaultConfiguration(true);
 
-		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 		configuration.setRecordIDCategory("GENE");
 		configuration.setDimensionIDCategory("SAMPLE");
 
@@ -104,9 +111,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		configuration.setDimensionDenominationPlural("samples");
 		configuration.setDimensionDenominationSingular("sample");
-
-		pathwayViewerMode = false;
-
 	}
 
 	@Override
@@ -114,7 +118,6 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		configuration = new DataDomainConfiguration();
 		configuration.setDefaultConfiguration(true);
-		configuration.setMappingFile("data/bootstrap/bootstrap.xml");
 
 		configuration.setRecordIDCategory("SAMPLE");
 		configuration.setDimensionIDCategory("GENE");
@@ -130,6 +133,67 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 
 		configuration.setDimensionDenominationPlural("genes");
 		configuration.setDimensionDenominationSingular("gene");
+	}
+
+	private void createIDTypesAndMapping() {
+
+		isMappingCreated = true;
+
+		IDCategory geneIDCategory = IDCategory.registerCategory("GENE");
+		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
+
+//		if (isColumnDimension()) {
+			dimensionIDCategory = geneIDCategory;
+			recordIDCategory = sampleIDCategory;
+//		}
+//		else {
+//			recordIDCategory = geneIDCategory;
+//			dimensionIDCategory = sampleIDCategory;
+//		}
+
+		IDType.registerType("DAVID", geneIDCategory, EColumnType.INT);
+		IDType.registerType("GENE_NAME", geneIDCategory, EColumnType.STRING);
+		IDType geneSymbol = IDType.registerType("GENE_SYMBOL", geneIDCategory,
+				EColumnType.STRING);
+		geneIDCategory.setHumanReadableIDType(geneSymbol);
+		IDType.registerType("BIOCARTA_GENE_ID", geneIDCategory, EColumnType.STRING);
+		IDType.registerType("REFSEQ_MRNA", geneIDCategory, EColumnType.STRING);
+		IDType.registerType("ENSEMBL_GENE_ID", geneIDCategory, EColumnType.STRING);
+		IDType.registerType("ENTREZ_GENE_ID", geneIDCategory, EColumnType.INT);
+		IDType.registerType("DAVID", geneIDCategory, EColumnType.INT);
+		IDType.registerType("PATHWAY_VERTEX", geneIDCategory, EColumnType.INT);
+		IDType.registerType("PATHWAY", geneIDCategory, EColumnType.INT);
+
+		String fileName = "data/genome/mapping/david/"
+				+ GeneralManager.get().getBasicInfo().getOrganism();
+
+		IDType.registerType("SAMPLE_INT", sampleIDCategory, EColumnType.INT);
+		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory, EColumnType.STRING);
+		sampleIDCategory.setHumanReadableIDType(sampleID);
+
+		IDMappingCreator idMappingCreator = new IDMappingCreator();
+
+		idMappingCreator.createMapping(fileName + "_DAVID2REFSEQ_MRNA.txt", 0, -1,
+				IDType.getIDType("DAVID"), IDType.getIDType("REFSEQ_MRNA"), "\t",
+				geneIDCategory, true, true, false, null, null);
+		idMappingCreator.createMapping(fileName + "_DAVID2ENTREZ_GENE_ID.txt", 0, -1,
+				IDType.getIDType("DAVID"), IDType.getIDType("ENTREZ_GENE_ID"), "\t",
+				geneIDCategory, false, true, false, null, null);
+		idMappingCreator.createMapping(fileName + "_DAVID2GENE_SYMBOL.txt", 0, -1,
+				IDType.getIDType("DAVID"), IDType.getIDType("GENE_SYMBOL"), "\t",
+				geneIDCategory, false, true, false, null, null);
+		idMappingCreator.createMapping(fileName + "_DAVID2GENE_NAME.txt", 0, -1,
+				IDType.getIDType("DAVID"), IDType.getIDType("GENE_NAME"), "\t",
+				geneIDCategory, false, true, false, null, null);
+		idMappingCreator.createMapping(fileName + "_DAVID2ENSEMBL_GENE_ID.txt", 0, -1,
+				IDType.getIDType("DAVID"), IDType.getIDType("ENSEMBL_GENE_ID"), "\t",
+				geneIDCategory, false, true, false, null, null);
+		idMappingCreator.createMapping("data/genome/mapping/"
+				+ GeneralManager.get().getBasicInfo().getOrganism()
+				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"), "\t",
+				geneIDCategory, true, true, true, IDType.getIDType("BIOCARTA_GENE_ID"),
+				IDType.getIDType("DAVID"));
 	}
 
 	@Override
@@ -234,8 +298,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		clinicalSelectionUpdateListener = new ForeignSelectionUpdateListener();
 		clinicalSelectionUpdateListener.setHandler(this);
 		clinicalSelectionUpdateListener.setExclusiveDataDomainID(clinicalDataDomainID);
-		eventPublisher.addListener(SelectionUpdateEvent.class,
-				clinicalSelectionUpdateListener);
+		eventPublisher
+				.addListener(SelectionUpdateEvent.class, clinicalSelectionUpdateListener);
 
 		clinicalSelectionCommandListener = new ForeignSelectionCommandListener();
 		clinicalSelectionCommandListener.setHandler(this);
@@ -280,8 +344,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			for (SelectionDeltaItem item : delta) {
 				SelectionDeltaItem convertedItem = new SelectionDeltaItem();
 				convertedItem.setSelectionType(item.getSelectionType());
-				Integer converteID = convertClinicalExperimentToGeneticExperiment(item
-						.getID());
+				Integer converteID = convertClinicalExperimentToGeneticExperiment(item.getID());
 				if (converteID == null)
 					continue;
 
@@ -293,7 +356,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 			resendEvent.setSelectionDelta((SelectionDelta) convertedDelta);
 
 			eventPublisher.triggerEvent(resendEvent);
-		} else
+		}
+		else
 			return;
 	}
 
@@ -321,8 +385,7 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	}
 
 	// FIXME its not clear which dimension va should be updated here
-	private Integer convertClinicalExperimentToGeneticExperiment(
-			Integer clinicalContentIndex) {
+	private Integer convertClinicalExperimentToGeneticExperiment(Integer clinicalContentIndex) {
 		return null;
 	}
 
@@ -354,11 +417,10 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 	// }
 
 	@Override
-	public void handleForeignSelectionCommand(String dataDomainType,
-			IDCategory idCategory, SelectionCommand selectionCommand) {
+	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 
-		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE
-				&& idCategory == dimensionIDCategory) {
+		if (dataDomainType == CLINICAL_DATADOMAIN_TYPE && idCategory == dimensionIDCategory) {
 			SelectionCommandEvent newCommandEvent = new SelectionCommandEvent();
 			newCommandEvent.setSelectionCommand(selectionCommand);
 			newCommandEvent.tableIDCategory(idCategory);
@@ -458,7 +520,8 @@ public class GeneticDataDomain extends ATableBasedDataDomain {
 		if (isGeneRecord()) {
 			recordID = geneID;
 			dimensionID = experimentID;
-		} else {
+		}
+		else {
 			recordID = experimentID;
 			dimensionID = geneID;
 		}

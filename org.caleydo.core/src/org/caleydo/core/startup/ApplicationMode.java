@@ -26,7 +26,6 @@ package org.caleydo.core.startup;
  */
 public enum ApplicationMode {
 
-	XML,
 	SERIALIZATION,
 	GUI,
 	GENERIC

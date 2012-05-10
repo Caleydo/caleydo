@@ -211,10 +211,7 @@ public class XmlParserManager
 
 	public void initHandlers() {
 		OpenExternalXmlFileSaxHandler externalFileHandler = new OpenExternalXmlFileSaxHandler();
-		CommandSaxHandler cmdHandler = new CommandSaxHandler();
-
 		registerAndInitSaxHandler(externalFileHandler);
-		registerAndInitSaxHandler(cmdHandler);
 	}
 
 	@Override

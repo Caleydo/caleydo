@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -38,12 +38,13 @@ import org.eclipse.swt.widgets.Shell;
 
 /**
  * <p>
- * Singleton that manages dataDomains based on their dataDomainType (the string plug-in id) and the concrete
- * object.
+ * Singleton that manages dataDomains based on their dataDomainType (the string
+ * plug-in id) and the concrete object.
  * </p>
  * <p>
- * The DataDomainManager holds the default {@link AssociationManager}, which stores associations between views
- * and dataDomains. Notice that it is legal to hold a private AssociationManager for special cases.
+ * The DataDomainManager holds the default {@link AssociationManager}, which
+ * stores associations between views and dataDomains. Notice that it is legal to
+ * hold a private AssociationManager for special cases.
  * </p>
  * 
  * @author Alexander Lex
@@ -54,9 +55,9 @@ public class DataDomainManager {
 	public final static String DATA_DOMAIN_INSTANCE_DELIMITER = "_";
 
 	private static DataDomainManager dataDomainManager;
-	private HashMap<String, IDataDomain> registeredDataDomainsByID = new HashMap<String, IDataDomain>(8);
-	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomainsByType =
-		new HashMap<String, ArrayList<IDataDomain>>();
+	private HashMap<String, IDataDomain> registeredDataDomainsByID = new HashMap<String, IDataDomain>(
+			8);
+	private HashMap<String, ArrayList<IDataDomain>> registeredDataDomainsByType = new HashMap<String, ArrayList<IDataDomain>>();
 
 	private AssociationManager associationManager = new AssociationManager();
 	private DataDomainGraph dataDomainGraph = new DataDomainGraph();;
@@ -70,23 +71,25 @@ public class DataDomainManager {
 
 	/**
 	 * <p>
-	 * Create a new {@link ADataDomain} of the type specified through <code>dataDomainType</code>. The created
-	 * dataDomain is also registered with the manager.
+	 * Create a new {@link ADataDomain} of the type specified through
+	 * <code>dataDomainType</code>. The created dataDomain is also registered
+	 * with the manager.
 	 * </p>
 	 * <p>
-	 * This method also specifies a boolean to determine whether the columns in a file corresponds to the
-	 * dimensions in the application. This is only relevant for {@link ATableBasedDataDomain}s. For other
-	 * DataDomains or the default (true) use {@link #createDataDomain(String)}.
+	 * This method also specifies a boolean to determine whether the columns in
+	 * a file corresponds to the dimensions in the application. This is only
+	 * relevant for {@link ATableBasedDataDomain}s. For other DataDomains or the
+	 * default (true) use {@link #createDataDomain(String)}.
 	 * </p>
 	 * 
-	 * @param dataDomainType
-	 *            the plug-in id of the data domain
-	 * @param isColumnDimension
-	 *            set to false if this dataDomain is of type {@link ATableBasedDataDomain} and you want to
-	 *            access the columns of the loaded files as records
+	 * @param dataDomainType the plug-in id of the data domain
+	 * @param isColumnDimension set to false if this dataDomain is of type
+	 *            {@link ATableBasedDataDomain} and you want to access the
+	 *            columns of the loaded files as records
 	 * @return the created {@link IDataDomain}
 	 */
-	public IDataDomain createDataDomain(String dataDomainType, DataDomainConfiguration dataDomainConfiguration) {
+	public IDataDomain createDataDomain(String dataDomainType,
+			DataDomainConfiguration dataDomainConfiguration) {
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 
@@ -97,7 +100,7 @@ public class DataDomainManager {
 		try {
 			ADataDomain dataDomain = (ADataDomain) ce[0].createExecutableExtension("class");
 			if (dataDomainConfiguration != null && dataDomain instanceof ATableBasedDataDomain)
-				((ATableBasedDataDomain) dataDomain).setDataDomaiConfiguration(dataDomainConfiguration);
+				((ATableBasedDataDomain) dataDomain).setConfiguration(dataDomainConfiguration);
 			dataDomain.init();
 			Thread thread = new Thread(dataDomain, dataDomainType);
 			thread.start();
@@ -106,16 +109,17 @@ public class DataDomainManager {
 			return dataDomain;
 		}
 		catch (Exception ex) {
-			throw new RuntimeException("Could not instantiate data domain " + dataDomainType, ex);
+			throw new RuntimeException("Could not instantiate data domain " + dataDomainType,
+					ex);
 		}
 	}
 
 	/**
-	 * Create a new {@link ADataDomain} of the type specified through <code>dataDomainType</code>. The created
-	 * dataDomain is also registered with the manager.
+	 * Create a new {@link ADataDomain} of the type specified through
+	 * <code>dataDomainType</code>. The created dataDomain is also registered
+	 * with the manager.
 	 * 
-	 * @param dataDomainType
-	 *            the plug-in id of the data domain
+	 * @param dataDomainType the plug-in id of the data domain
 	 * @return the created {@link IDataDomain}
 	 */
 	public IDataDomain createDataDomain(String dataDomainType) {
@@ -123,8 +127,8 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns all data domains. The collection is backed by the manager, so do NOT! modify it, otherwise you
-	 * will modify the manager contents.
+	 * Returns all data domains. The collection is backed by the manager, so do
+	 * NOT! modify it, otherwise you will modify the manager contents.
 	 * 
 	 * @return
 	 */
@@ -133,8 +137,8 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Get a concrete dataDomain object for the dataDomainID. Returns null if no dataDomain object is mapped
-	 * to the ID.
+	 * Get a concrete dataDomain object for the dataDomainID. Returns null if no
+	 * dataDomain object is mapped to the ID.
 	 * 
 	 * @param dataDomainID
 	 * @return
@@ -145,9 +149,10 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Get a concrete dataDomain object for the dataDomainType. Returns null if no dataDomain object is mapped
-	 * to the type. If more than one data domain object is registered for that ID, the chooser dialog is
-	 * opened where the user can determine the data domain.
+	 * Get a concrete dataDomain object for the dataDomainType. Returns null if
+	 * no dataDomain object is mapped to the type. If more than one data domain
+	 * object is registered for that ID, the chooser dialog is opened where the
+	 * user can determine the data domain.
 	 * 
 	 * @param dataDomainType
 	 * @return
@@ -155,15 +160,16 @@ public class DataDomainManager {
 	public IDataDomain getDataDomainByType(String dataDomainType) {
 
 		IDataDomain dataDomain = null;
-		ArrayList<IDataDomain> possibleDataDomains = registeredDataDomainsByType.get(dataDomainType);
+		ArrayList<IDataDomain> possibleDataDomains = registeredDataDomainsByType
+				.get(dataDomainType);
 
 		if (possibleDataDomains == null)
 			return null;
 		if (possibleDataDomains.size() == 1)
 			dataDomain = possibleDataDomains.get(0);
 		else {
-			ChooseDataConfigurationDialog chooseDataDomainDialog =
-				new ChooseDataConfigurationDialog(new Shell(), "DataDomainManager");
+			ChooseDataConfigurationDialog chooseDataDomainDialog = new ChooseDataConfigurationDialog(
+					new Shell(), "DataDomainManager");
 			chooseDataDomainDialog.setBlockOnOpen(true);
 			chooseDataDomainDialog.open();
 			dataDomain = chooseDataDomainDialog.getDataConfiguration().getDataDomain();
@@ -193,7 +199,8 @@ public class DataDomainManager {
 			registeredDataDomainsByType.get(dataDomain.getDataDomainType()).add(dataDomain);
 		}
 
-		Color color = ColorManager.get().getFirstMarkedColorOfList(ColorManager.QUALITATIVE_COLORS, false);
+		Color color = ColorManager.get().getFirstMarkedColorOfList(
+				ColorManager.QUALITATIVE_COLORS, false);
 		ColorManager.get().markColor(ColorManager.QUALITATIVE_COLORS, color, true);
 		dataDomain.setColor(color);
 
@@ -238,8 +245,8 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns a list of all data domains of this type registered or null if no such data domain is
-	 * regeisterd.
+	 * Returns a list of all data domains of this type registered or null if no
+	 * such data domain is regeisterd.
 	 * 
 	 * @param dataDomainType
 	 * @return
@@ -249,8 +256,8 @@ public class DataDomainManager {
 	}
 
 	/**
-	 * Returns a list containing all DataDomains that are of the type classType. If no type is registered the
-	 * list is returned empty.
+	 * Returns a list containing all DataDomains that are of the type classType.
+	 * If no type is registered the list is returned empty.
 	 * 
 	 * @param classType
 	 * @return
@@ -268,7 +275,8 @@ public class DataDomainManager {
 				result.add(typedDataDomain);
 			}
 			catch (ClassCastException e) {
-				// this is expected for every failed cast, i.e. the checked dataDomain is not an instance of
+				// this is expected for every failed cast, i.e. the checked
+				// dataDomain is not an instance of
 				// the specified class.
 			}
 		}

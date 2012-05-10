@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -38,7 +38,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Startup processor handles the creation of the startup procedure and its execution.
+ * Startup processor handles the creation of the startup procedure and its
+ * execution.
  * 
  * @author Marc Streit
  */
@@ -89,21 +90,21 @@ public class StartupProcessor {
 				// }
 				// else
 
-				// Application.initData = GroupwareUtils.startPlexClient(serverAddress);
+				// Application.initData =
+				// GroupwareUtils.startPlexClient(serverAddress);
 
-				if (element.contains(".xml")) {
-					startupProcedure = new XMLStartupProcedure();
-					((XMLStartupProcedure) startupProcedure).setXMLFileName(element);
-				}
-				else if (element.contains(".cal")) {
+				if (element.contains(".cal")) {
 					startupProcedure = new SerializationStartupProcedure();
-					((SerializationStartupProcedure) startupProcedure).setProjectLocation(element);
+					((SerializationStartupProcedure) startupProcedure)
+							.setProjectLocation(element);
 				}
 				else if (element.contains(":")) {
 					// Parse initial start views
 					int delimiterPos = element.indexOf(":");
-					String view = "org.caleydo.view." + element.substring(delimiterPos + 1, element.length());
-					String dataDomain = "org.caleydo.datadomain." + element.substring(0, delimiterPos);
+					String view = "org.caleydo.view."
+							+ element.substring(delimiterPos + 1, element.length());
+					String dataDomain = "org.caleydo.datadomain."
+							+ element.substring(0, delimiterPos);
 					appInitData.addStartView(view, dataDomain);
 				}
 			}
@@ -113,7 +114,8 @@ public class StartupProcessor {
 
 			if (startupProcedure == null) {
 				Shell shell = new Shell();
-				WizardDialog projectWizardDialog = new WizardDialog(shell, new CaleydoProjectWizard(shell));
+				WizardDialog projectWizardDialog = new WizardDialog(shell,
+						new CaleydoProjectWizard(shell));
 
 				if (projectWizardDialog.open() == Window.CANCEL) {
 					shutdown();
@@ -126,8 +128,8 @@ public class StartupProcessor {
 	}
 
 	/**
-	 * Changing the workspace location in order to be able to store and restore the workbench state (also in
-	 * combination with serialized projects).
+	 * Changing the workspace location in order to be able to store and restore
+	 * the workbench state (also in combination with serialized projects).
 	 */
 	private void changeWorkspaceLocation() {
 
@@ -139,14 +141,14 @@ public class StartupProcessor {
 			instanceLoc.set(workspaceURL, false);
 		}
 		catch (Exception e) {
-			//throw new IllegalStateException
+			// throw new IllegalStateException
 			System.err.println("Cannot set workspace location at " + workspacePath);
 		}
 	}
 
 	/**
-	 * Static method for initializing the Caleydo core. Called when initializing the workbench because XML
-	 * startup the progress bar is needed
+	 * Static method for initializing the Caleydo core. Called when initializing
+	 * the workbench because XML startup the progress bar is needed
 	 */
 	public void initCore() {
 
@@ -178,9 +180,6 @@ public class StartupProcessor {
 			case SERIALIZATION:
 				startupProcedure = new SerializationStartupProcedure();
 				break;
-			case XML:
-				startupProcedure = new XMLStartupProcedure();
-				break;
 			case GENERIC:
 				startupProcedure = new GenericGUIStartupProcedure();
 		}
@@ -197,12 +196,13 @@ public class StartupProcessor {
 		// Save preferences before shutdown
 		GeneralManager generalManager = GeneralManager.get();
 		try {
-			Logger.log(new Status(IStatus.WARNING, this.toString(), "Save Caleydo preferences..."));
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+					"Save Caleydo preferences..."));
 			generalManager.getPreferenceStore().save();
 		}
 		catch (IOException ioException) {
 			throw new IllegalStateException("Unable to save preference file at: "
-				+ PreferenceManager.getPreferencePath(), ioException);
+					+ PreferenceManager.getPreferencePath(), ioException);
 		}
 
 		IGroupwareManager groupwareManager = generalManager.getGroupwareManager();

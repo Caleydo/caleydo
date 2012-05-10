@@ -20,7 +20,6 @@
 package org.caleydo.core.manager;
 
 import java.io.File;
-import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.gui.SWTGUIManager;
@@ -31,6 +30,7 @@ import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
+import org.eclipse.core.commands.CommandManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -97,7 +97,6 @@ public class GeneralManager {
 
 		basicInfo = new BasicInformation();
 
-		commandManager = new CommandManager();
 		eventPublisher = new EventPublisher();
 		viewManager = new ViewManager();
 		swtGUIManager = new SWTGUIManager();
@@ -161,10 +160,6 @@ public class GeneralManager {
 
 	public XmlParserManager getXmlParserManager() {
 		return xmlParserManager;
-	}
-
-	public CommandManager getCommandManager() {
-		return commandManager;
 	}
 
 	/**

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -53,19 +53,22 @@ public class IDCategory {
 	 * previously registered IDCategory is returned.
 	 * </p>
 	 * 
-	 * @param categoryName
-	 *            the globally unique name of the category, may not be null
+	 * @param categoryName the globally unique name of the category, may not be
+	 *            null
 	 * @return the newly registered IDCategory, or a previously registered
 	 *         category of the same name.
 	 */
 	public static IDCategory registerCategory(String categoryName) {
+
 		if (categoryName == null)
 			throw new IllegalArgumentException("categoryName was null");
+
 		if (registeredCategories.containsKey(categoryName)) {
 			Logger.log(new Status(Status.INFO, "IDCategory", "IDCategory " + categoryName
 					+ " already registered previously."));
 			return registeredCategories.get(categoryName);
 		}
+
 		Logger.log(new Status(Status.INFO, "IDCategory", "Registered new IDCategory "
 				+ categoryName + "."));
 
@@ -78,19 +81,22 @@ public class IDCategory {
 	/**
 	 * Returns the IDCategory associated with the specified name.
 	 * 
-	 * @param categoryName
-	 *            the globally unique name of the category, may not be null
-	 * @throws Throws
-	 *             an IllegalArgumenteException if no category associated with
-	 *             the name is registered
+	 * @param categoryName the globally unique name of the category, may not be
+	 *            null
+	 * @throws Throws an IllegalArgumenteException if no category associated
+	 *             with the name is registered
 	 */
 	public static IDCategory getIDCategory(String categoryName) {
+
 		if (categoryName == null)
 			throw new IllegalArgumentException("categoryName was null");
+
 		IDCategory category = registeredCategories.get(categoryName);
+
 		if (category == null)
 			throw new IllegalStateException("No category with name " + categoryName
 					+ " registered.");
+
 		return category;
 	}
 
@@ -107,6 +113,12 @@ public class IDCategory {
 	 * {@link SelectionManager}s
 	 */
 	private IDType primaryMappingType;
+
+	/**
+	 * The id type that should be used if an ID from this category should be
+	 * printed human readable
+	 */
+	protected IDType humanReadableIDType;
 
 	/** Private constructor, created through the static insances */
 	private IDCategory(String categoryName) {
@@ -128,23 +140,26 @@ public class IDCategory {
 	/**
 	 * May be called more than once with the same IDType
 	 * 
-	 * @param primaryMappingType
-	 *            setter, see {@link #primaryMappingType}
+	 * @param primaryMappingType setter, see {@link #primaryMappingType}
 	 */
 	public void setPrimaryMappingType(IDType primaryMappingType) {
-		if (primaryMappingType == null
-				|| !primaryMappingType.getIDCategory().equals(this))
+		if (primaryMappingType == null || !primaryMappingType.getIDCategory().equals(this))
 			throw new IllegalArgumentException("Cannot set primaryMappingType "
 					+ primaryMappingType);
 		if (this.primaryMappingType != null) {
 			if (!this.primaryMappingType.equals(primaryMappingType))
-				throw new IllegalStateException(
-						"Primary mapping type was already set to "
-								+ this.primaryMappingType + ". Cannot set to "
-								+ primaryMappingType);
+				throw new IllegalStateException("Primary mapping type was already set to "
+						+ this.primaryMappingType + ". Cannot set to " + primaryMappingType);
 			return;
 		}
 		this.primaryMappingType = primaryMappingType;
+	}
+
+	/**
+	 * @param humanReadableIDType setter, see {@link #humanReadableIDType}
+	 */
+	public void setHumanReadableIDType(IDType humanReadableIDType) {
+		this.humanReadableIDType = humanReadableIDType;
 	}
 
 	/**
@@ -154,4 +169,10 @@ public class IDCategory {
 		return primaryMappingType;
 	}
 
+	/**
+	 * @return the humanReadableIDType, see {@link #humanReadableIDType}
+	 */
+	public IDType getHumanReadableIDType() {
+		return humanReadableIDType;
+	}
 }

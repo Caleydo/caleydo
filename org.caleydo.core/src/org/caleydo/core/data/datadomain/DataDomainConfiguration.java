@@ -48,8 +48,6 @@ public class DataDomainConfiguration {
 	boolean isDefaultConfiguration = false;
 
 	@XmlElement
-	String mappingFile;
-	@XmlElement
 	String recordIDCategory;
 	@XmlElement
 	String dimensionIDCategory;
@@ -167,13 +165,5 @@ public class DataDomainConfiguration {
 	 */
 	public void setDimensionDenominationSingular(String dimensionDenominationSingular) {
 		this.dimensionDenominationSingular = dimensionDenominationSingular;
-	}
-
-	/**
-	 * @param mappingFile
-	 *            setter, see {@link #mappingFile}
-	 */
-	public void setMappingFile(String mappingFile) {
-		this.mappingFile = mappingFile;
 	}
 }
