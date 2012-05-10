@@ -21,7 +21,6 @@ package org.caleydo.view.kaplanmeier;
 
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;

@@ -20,7 +20,6 @@
 package org.caleydo.core.util.statistics;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.container.DataContainer;
 
 public interface IStatisticsPerformer {

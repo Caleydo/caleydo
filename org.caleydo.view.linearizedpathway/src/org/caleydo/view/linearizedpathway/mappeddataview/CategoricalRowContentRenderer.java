@@ -20,14 +20,11 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.Histogram;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.container.ContainerStatistics;
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;

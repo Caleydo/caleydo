@@ -24,7 +24,6 @@ package org.caleydo.core.data.virtualarray;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.mapping.IDMappingManagerRegistry;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;

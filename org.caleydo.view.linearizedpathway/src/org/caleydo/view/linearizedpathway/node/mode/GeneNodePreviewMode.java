@@ -4,7 +4,6 @@
 package org.caleydo.view.linearizedpathway.node.mode;
 
 import java.util.List;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -19,11 +18,9 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;
 import org.caleydo.view.linearizedpathway.PickingType;
 import org.caleydo.view.linearizedpathway.mappeddataview.CategoricalContentPreviewRenderer;
-import org.caleydo.view.linearizedpathway.mappeddataview.CategoricalRowContentRenderer;
 import org.caleydo.view.linearizedpathway.mappeddataview.ContentRenderer;
 import org.caleydo.view.linearizedpathway.mappeddataview.ContentRendererInitializor;
 import org.caleydo.view.linearizedpathway.mappeddataview.ContinuousContentPreviewRenderer;
-import org.caleydo.view.linearizedpathway.mappeddataview.ContinuousContentRenderer;
 import org.caleydo.view.linearizedpathway.node.ALinearizableNode;
 import org.caleydo.view.linearizedpathway.node.ComplexNode;
 import org.caleydo.view.linearizedpathway.node.GeneNode;

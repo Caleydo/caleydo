@@ -21,7 +21,6 @@ package org.caleydo.core.data.collection.dimension;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ccontainer.NominalCContainer;
 import org.caleydo.core.data.id.ManagedObjectType;

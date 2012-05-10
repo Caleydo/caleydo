@@ -4,9 +4,7 @@
 package org.caleydo.view.linearizedpathway.node.layout;
 
 import java.util.List;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.linearizedpathway.GLLinearizedPathway;

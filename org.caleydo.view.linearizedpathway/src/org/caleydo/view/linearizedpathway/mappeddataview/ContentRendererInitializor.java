@@ -4,7 +4,6 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.Set;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.perspective.ADataPerspective;

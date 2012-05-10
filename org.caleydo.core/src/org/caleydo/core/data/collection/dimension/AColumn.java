@@ -21,7 +21,6 @@ package org.caleydo.core.data.collection.dimension;
 
 import java.util.EnumMap;
 import java.util.Iterator;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ICollection;

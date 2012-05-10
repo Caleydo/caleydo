@@ -21,16 +21,13 @@ package org.caleydo.core.view.opengl.canvas;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.EDataFilterLevel;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.selection.DimensionSelectionManager;

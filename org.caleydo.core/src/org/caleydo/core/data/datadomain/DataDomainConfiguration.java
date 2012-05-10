@@ -24,7 +24,6 @@ package org.caleydo.core.data.datadomain;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 

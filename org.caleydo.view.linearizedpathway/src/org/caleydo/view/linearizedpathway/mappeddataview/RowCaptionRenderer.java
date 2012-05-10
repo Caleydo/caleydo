@@ -20,9 +20,7 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;

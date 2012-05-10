@@ -20,13 +20,9 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.id.IDType;
-import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.Row;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
 
 /**
  * @author alexsb

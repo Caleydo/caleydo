@@ -30,8 +30,6 @@ import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.io.parser.ascii.TabularDataParser;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.util.logging.Logger;
-import org.eclipse.core.runtime.Status;
 
 /**
  * <p>

@@ -21,7 +21,6 @@ package org.caleydo.core.startup;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.caleydo.core.util.collection.Pair;
 
 /**

@@ -20,9 +20,6 @@
 package org.caleydo.core.data.collection;
 
 import java.util.ArrayList;
-import java.util.Iterator;
-
-import org.caleydo.core.util.collection.Pair;
 
 /**
  * Histogram holds the data structure of a histogram. It is based on an

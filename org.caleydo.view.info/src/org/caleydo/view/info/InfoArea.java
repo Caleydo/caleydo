@@ -139,11 +139,6 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		dimensionTree.setData(-1);
 		dimensionTree.setText(dataDomain.getDimensionDenomination(true, true));
 
-		// pathwayTree = new TreeItem(selectionTree, SWT.NONE);
-		// pathwayTree.setText("Pathways");
-		// pathwayTree.setExpanded(false);
-		// pathwayTree.setData(-1);
-
 		lblViewInfoContent = new Label(parent, SWT.WRAP);
 		lblViewInfoContent.setText("");
 		gridData = new GridData(GridData.FILL_BOTH);
@@ -189,10 +184,6 @@ public class InfoArea implements IDataDomainBasedView<ATableBasedDataDomain>,
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-
-//				if (info != null) {
-//					lblViewInfoContent.setText(info);
-//				}
 
 				// Flush old items from this selection type
 				for (TreeItem item : tree.getItems()) {

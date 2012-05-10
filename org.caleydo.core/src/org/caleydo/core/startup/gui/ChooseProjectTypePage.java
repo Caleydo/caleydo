@@ -20,10 +20,8 @@
 package org.caleydo.core.startup.gui;
 
 import java.io.File;
-import java.lang.reflect.Method;
 import java.text.DateFormat;
 import java.util.Date;
-
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;

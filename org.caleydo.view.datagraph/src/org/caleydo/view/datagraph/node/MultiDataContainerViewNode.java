@@ -45,8 +45,6 @@ import org.caleydo.view.datagraph.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.datagraph.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.datagraph.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.datagraph.layout.AGraphLayout;
-import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
 
 public class MultiDataContainerViewNode
 	extends ViewNode

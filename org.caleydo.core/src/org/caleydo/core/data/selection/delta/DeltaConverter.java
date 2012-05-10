@@ -20,7 +20,6 @@
 package org.caleydo.core.data.selection.delta;
 
 import java.util.Set;
-
 import org.caleydo.core.data.id.IDType;
 import org.caleydo.core.data.mapping.IDMappingManager;
 import org.caleydo.core.data.virtualarray.delta.VirtualArrayDelta;

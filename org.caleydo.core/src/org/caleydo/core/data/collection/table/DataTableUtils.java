@@ -24,7 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
-
 import org.caleydo.core.command.CommandType;
 import org.caleydo.core.command.data.parser.CmdParseIDMapping;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;

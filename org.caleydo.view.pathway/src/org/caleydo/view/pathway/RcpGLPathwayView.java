@@ -21,7 +21,6 @@ package org.caleydo.view.pathway;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;

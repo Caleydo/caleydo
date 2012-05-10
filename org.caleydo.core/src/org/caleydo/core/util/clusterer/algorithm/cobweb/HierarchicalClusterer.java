@@ -22,7 +22,6 @@ package org.caleydo.core.util.clusterer.algorithm.cobweb;
 import java.io.IOException;
 import java.io.StringReader;
 import java.util.ArrayList;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -36,7 +35,6 @@ import org.caleydo.core.util.clusterer.IClusterer;
 import org.caleydo.core.util.clusterer.algorithm.AClusterer;
 import org.caleydo.core.util.clusterer.initialization.ClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.ClustererType;
-
 import weka.clusterers.ClusterEvaluation;
 import weka.core.Instances;
 

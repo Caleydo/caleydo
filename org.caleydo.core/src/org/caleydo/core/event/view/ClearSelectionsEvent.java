@@ -21,13 +21,13 @@ package org.caleydo.core.event.view;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.event.AEvent;
 
 /**
  * Clears all selections in a receiving view
  * 
  * @author Werner Puff
+ * @deprecated Selection command should be used!
  */
 @XmlRootElement
 @XmlType

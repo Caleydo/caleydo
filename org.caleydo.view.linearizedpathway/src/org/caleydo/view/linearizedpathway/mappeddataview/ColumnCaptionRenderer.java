@@ -20,9 +20,7 @@
 package org.caleydo.view.linearizedpathway.mappeddataview;
 
 import java.util.ArrayList;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
 import org.caleydo.core.data.selection.SelectionType;

@@ -20,7 +20,6 @@
 package org.caleydo.core.manager;
 
 import java.io.File;
-
 import org.caleydo.core.command.CommandManager;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.id.IDCreator;

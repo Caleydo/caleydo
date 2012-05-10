@@ -21,7 +21,6 @@ package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-
 import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.id.ManagedObjectType;

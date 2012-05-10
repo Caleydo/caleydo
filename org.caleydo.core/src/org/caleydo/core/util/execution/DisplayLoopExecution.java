@@ -22,18 +22,15 @@ package org.caleydo.core.util.execution;
 import java.awt.Frame;
 import java.util.ArrayList;
 import java.util.List;
-
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLCapabilities;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.awt.SWT_AWT;
 import org.eclipse.swt.graphics.Region;
 import org.eclipse.swt.widgets.Shell;
-
 import com.jogamp.opengl.util.FPSAnimator;
 
 /**

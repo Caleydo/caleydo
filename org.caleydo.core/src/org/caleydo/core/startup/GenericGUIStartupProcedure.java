@@ -20,7 +20,6 @@
 package org.caleydo.core.startup;
 
 import java.util.List;
-
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.io.gui.ImportDataDialog;

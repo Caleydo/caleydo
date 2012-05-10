@@ -23,7 +23,6 @@
 package org.caleydo.core.io;
 
 import javax.xml.bind.annotation.XmlElement;
-
 import org.caleydo.core.data.id.IDCategory;
 import org.caleydo.core.data.id.IDType;
 

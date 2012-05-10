@@ -29,6 +29,7 @@ import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
  * Listener for clear selection events. This listener calls a related {@link IViewCommandHandler}.
  * 
  * @author Werner Puff
+ * @deprecated Selection command should be used!
  */
 public class ClearSelectionsListener
 	extends AEventListener<IViewCommandHandler> {

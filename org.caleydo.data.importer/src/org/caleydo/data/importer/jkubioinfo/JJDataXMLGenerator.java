@@ -19,14 +19,8 @@
  *******************************************************************************/
 package org.caleydo.data.importer.jkubioinfo;
 
-import java.io.File;
-import java.util.ArrayList;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
-import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.ParsingRule;

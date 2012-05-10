@@ -20,7 +20,6 @@
 package org.caleydo.core.data.filter;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 

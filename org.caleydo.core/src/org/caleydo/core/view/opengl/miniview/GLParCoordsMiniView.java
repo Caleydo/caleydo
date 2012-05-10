@@ -20,7 +20,6 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 
 public class GLParCoordsMiniView

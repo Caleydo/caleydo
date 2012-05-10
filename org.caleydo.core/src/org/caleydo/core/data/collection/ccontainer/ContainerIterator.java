@@ -20,7 +20,6 @@
 package org.caleydo.core.data.collection.ccontainer;
 
 import java.util.ListIterator;
-
 import org.caleydo.core.data.virtualarray.VirtualArray;
 
 /**

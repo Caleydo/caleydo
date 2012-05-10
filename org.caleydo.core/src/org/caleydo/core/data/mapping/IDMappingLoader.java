@@ -20,7 +20,6 @@
 package org.caleydo.core.data.mapping;
 
 import java.util.ArrayList;
-
 import org.caleydo.core.manager.GeneralManager;
 
 /**

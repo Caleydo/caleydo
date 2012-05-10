@@ -20,10 +20,8 @@
 package org.caleydo.view.visbricks.event;
 
 import java.util.List;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.visbricks.brick.configurer.NumericalDataConfigurer;

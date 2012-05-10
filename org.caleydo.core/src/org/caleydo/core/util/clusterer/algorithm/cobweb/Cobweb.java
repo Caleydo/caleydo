@@ -21,7 +21,6 @@
 package org.caleydo.core.util.clusterer.algorithm.cobweb;
 
 import java.util.Random;
-
 import weka.clusterers.RandomizableClusterer;
 import weka.clusterers.UpdateableClusterer;
 import weka.core.Capabilities;
