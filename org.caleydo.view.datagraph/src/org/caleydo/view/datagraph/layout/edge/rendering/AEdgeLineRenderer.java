@@ -31,32 +31,25 @@ import org.caleydo.view.datagraph.Edge;
 import org.caleydo.view.datagraph.GLDataViewIntegrator;
 import org.caleydo.view.datagraph.node.IDVINode;
 
-public abstract class AEdgeLineRenderer
-	extends AEdgeRenderer
-{
+public abstract class AEdgeLineRenderer extends AEdgeRenderer {
 
 	private String label;
 
-	public AEdgeLineRenderer(Edge edge, GLDataViewIntegrator view, String label)
-	{
+	public AEdgeLineRenderer(Edge edge, GLDataViewIntegrator view, String label) {
 		super(edge, view);
 		this.label = label;
 	}
 
 	@Override
 	public void renderEdge(GL2 gl, ConnectionBandRenderer connectionBandRenderer,
-			boolean highlight)
-	{
+			boolean highlight) {
 
 		if (!view.isShowDataConnections() && !highlight)
 			return;
 		gl.glPushAttrib(GL2.GL_LINE_BIT | GL2.GL_COLOR_BUFFER_BIT);
-		if (highlight)
-		{
+		if (highlight) {
 			gl.glColor3f(0.5f, 0.5f, 0.5f);
-		}
-		else
-		{
+		} else {
 			gl.glColor3f(0.8f, 0.8f, 0.8f);
 		}
 		// gl.glLineWidth(2);
@@ -84,8 +77,7 @@ public abstract class AEdgeLineRenderer
 			ConnectionBandRenderer connectionBandRenderer, Point2D position1,
 			Point2D position2, boolean highlight);
 
-	protected void renderLabel(GL2 gl, Vec3f centerPoint)
-	{
+	protected void renderLabel(GL2 gl, Vec3f centerPoint) {
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
@@ -93,9 +85,10 @@ public abstract class AEdgeLineRenderer
 		float height = pixelGLConverter.getGLHeightForPixelHeight(14);
 		float requiredWidth = textRenderer.getRequiredTextWidth(label, height);
 
-		textRenderer.renderTextInBounds(gl, label, centerPoint.x() - (requiredWidth / 2.0f),
-				centerPoint.y() - (height / 2.0f), centerPoint.z() + 0.1f, requiredWidth,
-				height);
+		textRenderer.renderTextInBounds(gl, label, centerPoint.x()
+				- (requiredWidth / 2.0f), centerPoint.y() - (height / 2.0f),
+				centerPoint.z() + 0.1f,
+				requiredWidth + pixelGLConverter.getGLWidthForPixelWidth(1), height);
 	}
 
 }
