@@ -21,11 +21,14 @@ package org.caleydo.view.datagraph.node;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
@@ -342,12 +345,11 @@ public class TableBasedDataNode
 			dataContainers = new ArrayList<DataContainer>();
 			return;
 		}
-		// List<Pair<String, DataContainer>> sortedParentDataContainers = new
-		// ArrayList<Pair<String, DataContainer>>();
-		// for (DataContainer container : containerCollection) {
-		// sortedParentDataContainers.add(new Pair<String, DataContainer>(
-		// container.getLabel(), container));
-		// }
+//		List<Pair<String, DataContainer>> sortedParentDataContainers = new ArrayList<Pair<String, DataContainer>>();
+//		for (DataContainer container : containerCollection) {
+//			sortedParentDataContainers.add(new Pair<String, DataContainer>(container
+//					.getLabel(), container));
+//		}
 
 		Set<String> recordPerspectiveIDs = dataDomain.getRecordPerspectiveIDs();
 
@@ -388,7 +390,7 @@ public class TableBasedDataNode
 
 		}
 
-//		Collections.sort(parentRecordPerspectives);
+		Collections.sort(parentRecordPerspectives);
 
 		List<RecordPerspective> sortedRecordPerspectives = new ArrayList<RecordPerspective>();
 
@@ -444,7 +446,7 @@ public class TableBasedDataNode
 
 		}
 
-//		Collections.sort(parentDimensionPerspectives);
+		Collections.sort(parentDimensionPerspectives);
 
 		List<DimensionPerspective> sortedDimensionPerspectives = new ArrayList<DimensionPerspective>();
 
@@ -473,9 +475,9 @@ public class TableBasedDataNode
 			}
 		}
 
-		// for (Pair<String, DataContainer> pair : sortedParentDataContainers) {
-		// dataContainers.add(pair.getSecond());
-		// }
+//		for (Pair<String, DataContainer> pair : sortedParentDataContainers) {
+//			dataContainers.add(pair.getSecond());
+//		}
 	}
 
 	@Override

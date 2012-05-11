@@ -22,11 +22,14 @@ package org.caleydo.view.datagraph.datacontainer.matrix;
 import java.awt.Point;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -418,7 +421,7 @@ public class DataContainerMatrixRenderer
 			}
 		}
 
-//		Collections.sort(parentContainers);
+		Collections.sort(parentContainers);
 
 		for (CellContainer row : parentContainers) {
 			rows.add(row);
