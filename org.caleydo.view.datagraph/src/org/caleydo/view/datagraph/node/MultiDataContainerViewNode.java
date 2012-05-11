@@ -163,13 +163,10 @@ public class MultiDataContainerViewNode
 
 		List<DataContainer> containers = ((IDataContainerBasedView) representedView)
 				.getDataContainers();
+		if(containers == null)
+			return;
 
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
-
-		// FIXME Christian: Check why this can happen. Reproduce by opening DVI
-		// and then enRoute without assigning data before.
-		if (containers == null)
-			return;
 
 		for (DataContainer container : containers) {
 			if (container instanceof PathwayDataContainer) {

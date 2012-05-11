@@ -1079,6 +1079,9 @@ public class GLPathway
 
 	@Override
 	public void broadcastElements(EVAOperation type) {
+		
+		if(pathway == null)
+			return;
 
 		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective().getID(),
 				pathwayDataDomain.getDavidIDType());

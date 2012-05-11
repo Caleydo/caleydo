@@ -24,11 +24,14 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Marshaller;
+
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -47,6 +50,7 @@ import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.MultiStatus;
 import org.eclipse.core.runtime.Platform;
 import org.eclipse.core.runtime.Status;
+import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.MessageBox;
 import org.eclipse.ui.IMemento;
@@ -369,8 +373,7 @@ public class ProjectSaver {
 		saveMementoToFile(memento);
 
 		try {
-			FileOperations.copyFolder(new File(ProjectSaver.WORKBENCH_MEMENTO_FOLDER
-					+ ProjectSaver.WORKBENCH_MEMENTO_FILE), new File(dirName
+			FileOperations.copyFolder(getWorkbenchStateFile(), new File(dirName
 					+ ProjectSaver.WORKBENCH_MEMENTO_FILE));
 		} catch (Exception e) {
 			throw new RuntimeException("Error saving workbench data (file access)", e);
@@ -433,6 +436,7 @@ public class ProjectSaver {
 	 */
 	private File getWorkbenchStateFile() {
 		IPath path = WorkbenchPlugin.getDefault().getDataLocation();
+
 		if (path == null) {
 			return null;
 		}

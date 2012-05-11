@@ -68,8 +68,9 @@ public class GeneralManager {
 	public static final String USER_HOME = "user.home";
 	public static final String CALEYDO_FOLDER_TEMPLATE = "caleydo.folder";
 	public static final String CALEYDO_FOLDER = ".caleydo_" + VERSION;
-	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME) + File.separator
-		+ CALEYDO_FOLDER + File.separator;
+//	public static final String CALEYDO_HOME_PATH = Platform.getLocation().toOSString()+ File.separator;
+	public static final String CALEYDO_HOME_PATH = System.getProperty(USER_HOME)
+			+ File.separator + CALEYDO_FOLDER + File.separator;
 	public static final String CALEYDO_LOG_PATH = CALEYDO_HOME_PATH + "logs" + File.separator;
 
 	/**
