@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -61,8 +61,9 @@ import org.eclipse.swt.widgets.Display;
 @SuppressWarnings("unused")
 public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 		MouseMotionListener {
+	public static String VIEW_TYPE = "org.caleydo.view.datawindows";
 
-	public final static String VIEW_TYPE = "org.caleydo.view.datawindows";
+	public static String VIEW_NAME = "Data Windows";
 
 	private ArrayList<NodeSlerp> arSlerpActions;
 
@@ -131,8 +132,7 @@ public class GLDataWindows extends AGLView implements IGLRemoteRenderingView,
 	public GLDataWindows(GLCanvas glCanvas, final Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-		viewType = GLDataWindows.VIEW_TYPE;
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		containedGLViews = new ArrayList<AGLView>();
 		newViews = new ArrayList<ASerializedView>();

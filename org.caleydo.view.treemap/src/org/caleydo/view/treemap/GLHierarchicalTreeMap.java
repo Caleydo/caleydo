@@ -65,9 +65,11 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  */
 
 public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteRenderingView {
+	public static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
 
-	public final static String VIEW_TYPE = "org.caleydo.view.treemap.hierarchical";
+	public static String VIEW_NAME = "Hierarchical Treemap";
 
+	
 	private TreeMapRenderStyle renderStyle;
 
 	TreeMapRenderer painter;
@@ -108,9 +110,9 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements IGLRemoteR
 	 */
 	public GLHierarchicalTreeMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		viewType = GLHierarchicalTreeMap.VIEW_TYPE;
+		
 
 		parentGLCanvas.addMouseWheelListener(new MouseWheelListener() {
 			@Override

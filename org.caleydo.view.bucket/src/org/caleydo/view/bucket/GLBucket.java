@@ -118,9 +118,11 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 public class GLBucket extends AGLView implements
 		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
 		IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
+	public static String VIEW_TYPE = "org.caleydo.view.bucket";
 
-	public final static String VIEW_TYPE = "org.caleydo.view.bucket";
 
+	public static String VIEW_NAME = "Bucket";
+	
 	protected ATableBasedDataDomain dataDomain;
 	protected DataContainer dataContainer;
 
@@ -219,9 +221,8 @@ public class GLBucket extends AGLView implements
 	 */
 	public GLBucket(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-		viewType = GLBucket.VIEW_TYPE;
-
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	
 		layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
 		viewCamera.setCameraRotation(new Rotf());
@@ -550,7 +551,7 @@ public class GLBucket extends AGLView implements
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 
 		if (level == poolLevel) {
-			String sRenderText = glView.getViewLabel();
+			String sRenderText = glView.getViewName();
 
 			// Limit pathway name in length
 			int iMaxChars;
@@ -907,7 +908,7 @@ public class GLBucket extends AGLView implements
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getViewLabel();
+		String sText = element.getGLView().getViewName();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {

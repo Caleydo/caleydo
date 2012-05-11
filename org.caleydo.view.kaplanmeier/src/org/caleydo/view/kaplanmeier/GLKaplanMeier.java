@@ -57,8 +57,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 
 public class GLKaplanMeier extends ATableBasedView {
+	public static String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
 
-	public final static String VIEW_TYPE = "org.caleydo.view.kaplanmeier";
+	public static String VIEW_NAME = "Kaplan-Meier Plot";
 
 	private KaplanMeierRenderStyle renderStyle;
 
@@ -74,10 +75,8 @@ public class GLKaplanMeier extends ATableBasedView {
 	public GLKaplanMeier(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		viewType = GLKaplanMeier.VIEW_TYPE;
-		viewLabel = "Kaplan Meier";
 	}
 
 	@Override
@@ -189,7 +188,7 @@ public class GLKaplanMeier extends ATableBasedView {
 					.getFloat(DataRepresentation.NORMALIZED, recordIDs.get(recordID),
 							dimensionVA.get(0));
 			dataVector.add(normalizedValue);
-			
+
 			float rawValue = dataContainer
 					.getDataDomain()
 					.getTable()

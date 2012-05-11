@@ -39,7 +39,7 @@ import org.eclipse.ui.PlatformUI;
  * @author <INSERT_YOUR_NAME>
  */
 public class RcpGLFilterPipelineView extends ARcpGLViewPart implements IListenerOwner {
-	public static final String VIEW_TYPE = "org.caleydo.view.filterpipeline";
+	public static String VIEW_TYPE = "org.caleydo.view.filterpipeline";
 
 	/**
 	 * Constructor.

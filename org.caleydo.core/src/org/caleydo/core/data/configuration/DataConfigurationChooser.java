@@ -53,9 +53,9 @@ public class DataConfigurationChooser {
 	 */
 
 	public static DataConfiguration determineDataConfiguration(
-			ArrayList<IDataDomain> possibleDataDomains, String viewName, boolean letUserChoose) {
+			ArrayList<ATableBasedDataDomain> possibleDataDomains, String viewName, boolean letUserChoose) {
 		
-		IDataDomain chosenDataDomain = null;
+		ATableBasedDataDomain chosenDataDomain = null;
 		String recordPerspectiveID = null;
 		RecordPerspective recordPerspective = null;
 		String dimensionPerspectiveID = null;
@@ -89,7 +89,7 @@ public class DataConfigurationChooser {
 
 			Shell shell = new Shell(SWT.APPLICATION_MODAL);
 			ChooseDataConfigurationDialog dialog = new ChooseDataConfigurationDialog(shell,
-					viewName);
+					"Choose Data for " + viewName);
 			// dialog.setPossibleDataDomains(availableDomains);
 			dialog.setBlockOnOpen(true);
 			dialog.open();

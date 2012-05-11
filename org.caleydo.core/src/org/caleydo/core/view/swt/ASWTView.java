@@ -32,9 +32,11 @@ public abstract class ASWTView
 
 	/**
 	 * Constructor.
+	 * @param viewType TODO
+	 * @param viewName TODO
 	 */
-	public ASWTView(int viewID, Composite parentComposite) {
-		super(viewID, parentComposite);
+	public ASWTView(int viewID, Composite parentComposite, String viewType, String viewName) {
+		super(viewID, parentComposite, viewType, viewName);
 		GeneralManager.get().getViewManager().registerItem(this);
 	}
 

@@ -87,7 +87,7 @@ public class CollabView
 	 */
 	public CollabView(Composite parentComposite) {
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.VIEW_SWT_TABULAR_DATA_VIEWER),
-			parentComposite);
+			parentComposite, "COLLAB", "COLLAB");
 	}
 
 	@Override

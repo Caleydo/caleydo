@@ -101,7 +101,7 @@ public class ViewNode extends ADefaultTemplateNode {
 			IConfigurationElement[] elements = extension.getConfigurationElements();
 			for (IConfigurationElement element : elements) {
 				if (element.getAttribute("id").equals(viewID)) {
-					viewName = representedView.getViewLabel();
+					viewName = representedView.getViewName();
 					// element.getAttribute("name");
 					iconPath = element.getAttribute("icon");
 					viewNameObtained = true;
@@ -262,7 +262,7 @@ public class ViewNode extends ADefaultTemplateNode {
 	@Override
 	protected int getMinTitleBarWidthPixels() {
 		float textWidth = view.getTextRenderer().getRequiredTextWidthWithMax(
-				representedView.getViewLabel(),
+				representedView.getViewName(),
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 

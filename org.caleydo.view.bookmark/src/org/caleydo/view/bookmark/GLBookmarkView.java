@@ -62,7 +62,10 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class GLBookmarkView extends ATableBasedView {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.bookmark";
+	public static String VIEW_TYPE = "org.caleydo.view.bookmark";
+	
+	public static String VIEW_NAME = "Bookmarks";
+
 
 	// private ColorMapping colorMapper;
 
@@ -123,9 +126,8 @@ public class GLBookmarkView extends ATableBasedView {
 	public GLBookmarkView(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-		viewType = GLBookmarkView.VIEW_TYPE;
-
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	
 		renderStyle = new BookmarkRenderStyle(viewFrustum);
 
 		bookmarkContainers = new ArrayList<ABookmarkContainer<?>>();

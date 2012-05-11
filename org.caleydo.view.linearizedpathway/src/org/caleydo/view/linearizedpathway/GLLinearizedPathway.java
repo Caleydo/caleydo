@@ -98,6 +98,9 @@ import org.jgrapht.graph.GraphPathImpl;
 public class GLLinearizedPathway extends AGLView implements IMultiDataContainerBasedView,
 		IEventBasedSelectionManagerUser {
 
+	public static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
+	public static String VIEW_NAME = "enRoute";
+
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
 	public final static int BRANCH_COLUMN_WIDTH_PIXELS = 100;
 	public final static int PATHWAY_COLUMN_WIDTH_PIXELS = 150;
@@ -115,8 +118,6 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
 
 	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
-
-	public final static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
 
 	private TemplateRenderStyle renderStyle;
 
@@ -209,10 +210,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public GLLinearizedPathway(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-
-		viewType = GLLinearizedPathway.VIEW_TYPE;
-		viewLabel = "Linearized Pathway";
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		// List<IDataDomain> dataDomains =
 		// DataDomainManager.get().getDataDomainsByType(

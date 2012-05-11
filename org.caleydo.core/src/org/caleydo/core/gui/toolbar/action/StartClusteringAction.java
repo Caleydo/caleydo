@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -35,9 +35,7 @@ import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
-public class StartClusteringAction
-	extends AToolBarAction
-	implements IToolBarItem {
+public class StartClusteringAction extends AToolBarAction implements IToolBarItem {
 
 	public static final String TEXT = "Clustering";
 	public static final String ICON = "resources/icons/view/tablebased/clustering.png";
@@ -57,33 +55,11 @@ public class StartClusteringAction
 	public void run() {
 		super.run();
 
-		ArrayList<ATableBasedDataDomain> availableDomains = DataDomainManager.get()
-				.getDataDomainsByType(ATableBasedDataDomain.class);
+		StartClusteringDialog dialog = new StartClusteringDialog(new Shell());
 
-		ArrayList<IDataDomain> tableBasedDataDomains = new ArrayList<IDataDomain>();
-		for (ATableBasedDataDomain dataDomain : availableDomains) {
-			tableBasedDataDomains.add(dataDomain);
-		}
-		
-		DataConfiguration config = DataConfigurationChooser.determineDataConfiguration(
-				tableBasedDataDomains, TEXT, true);
-		
-		StartClusteringDialog dialog = new StartClusteringDialog(new Shell(), (ATableBasedDataDomain) config.getDataDomain());
-		dialog.setDimensionPerspective(config.getDimensionPerspective());
-		dialog.setRecordPerspective(config.getRecordPerspective());
-		
 		dialog.open();
-		AClusterConfiguration clusterState = dialog.getClusterState();
-		if (clusterState == null)
-			return;
-
-		StartClusteringEvent event = null;
-		// if (clusterState != null && set != null)
-
-		event = new StartClusteringEvent(clusterState);
-		event.setDataDomainID(config.getDataDomain().getDataDomainID());
-		GeneralManager.get().getEventPublisher().triggerEvent(event);
+		
 
 	}
-	
+
 }

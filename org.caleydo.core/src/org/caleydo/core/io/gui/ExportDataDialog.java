@@ -141,7 +141,7 @@ public class ExportDataDialog
 		});
 
 		dataChooserComposite = new DataChooserComposite(this, composite, SWT.NONE);
-		dataChooserComposite.initGui();
+		
 		GridData gridData = new GridData(GridData.FILL, GridData.FILL, true, false);
 		gridData.horizontalSpan = 2;
 		dataChooserComposite.setLayoutData(gridData);

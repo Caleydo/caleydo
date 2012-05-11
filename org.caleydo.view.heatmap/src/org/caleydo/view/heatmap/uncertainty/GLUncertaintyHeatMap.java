@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -69,7 +69,9 @@ import org.eclipse.swt.widgets.Composite;
 public class GLUncertaintyHeatMap extends ATableBasedView implements
 		IGLRemoteRenderingView {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.heatmap.uncertainty";
+	public static String VIEW_TYPE = "org.caleydo.view.heatmap.uncertainty";
+
+	public static String VIEW_NAME = "Uncertainty Heat Map";
 
 	public final static float[][] DATA_VALID = { { 0.90f, 0.90f, 0.90f, 1f },
 			{ 0.80f, 0.80f, 0.80f, 1f }, { 0.0f, 0.70f, 0.70f, 1f } };
@@ -118,8 +120,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	public GLUncertaintyHeatMap(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-		viewType = GLUncertaintyHeatMap.VIEW_TYPE;
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 	}
 
 	@Override
@@ -234,8 +235,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		RecordPerspective detailHMRecordPerspective = new RecordPerspective(dataDomain);
 		PerspectiveInitializationData data = new PerspectiveInitializationData();
-		data.setData(dataContainer.getRecordPerspective().getVirtualArray()
-				.getIDs());
+		data.setData(dataContainer.getRecordPerspective().getVirtualArray().getIDs());
 		detailHMRecordPerspective.init(data);
 
 		DataContainer detailHeatMapContainer = new DataContainer(dataDomain,

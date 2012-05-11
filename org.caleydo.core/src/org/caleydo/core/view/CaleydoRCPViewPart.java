@@ -235,13 +235,13 @@ public abstract class CaleydoRCPViewPart extends ViewPart implements IListenerOw
 
 		// ask the user to choose the data domain ID
 		if (dataDomainID == null) {
-			ArrayList<IDataDomain> availableDomains = DataDomainManager.get()
+			ArrayList<ATableBasedDataDomain> availableDomains = DataDomainManager.get()
 					.getAssociationManager()
-					.getAvailableDataDomainTypesForViewType(serializedView.getViewType());
+					.getTableBasedDataDomainsForView(serializedView.getViewType());
 
 			DataConfiguration config = DataConfigurationChooser
 					.determineDataConfiguration(availableDomains,
-							serializedView.getViewType(), letUserChoose);
+							serializedView.getViewLabel(), letUserChoose);
 
 			// for some views its ok if initially no data is set
 			if (config.getDataDomain() == null

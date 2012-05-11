@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -76,9 +76,8 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public abstract class AGLViewBrowser
-	extends AGLView
-	implements ISelectionUpdateHandler, IGLRemoteRenderingView, IDataDomainBasedView<IDataDomain> {
+public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdateHandler,
+		IGLRemoteRenderingView, IDataDomainBasedView<IDataDomain> {
 
 	protected IDataDomain dataDomain;
 
@@ -109,7 +108,10 @@ public abstract class AGLViewBrowser
 	 */
 	private int iSlerpFactor = 0;
 
-	/** LayoutRenderer for connection lines. A concrete instance has to be specified in sub-classes */
+	/**
+	 * LayoutRenderer for connection lines. A concrete instance has to be
+	 * specified in sub-classes
+	 */
 	protected AGLConnectionLineRenderer glConnectionLineRenderer;
 
 	private GLDragAndDrop dragAndDrop;
@@ -137,7 +139,8 @@ public abstract class AGLViewBrowser
 	// private GLInfoAreaManager infoAreaManager;
 
 	/**
-	 * Transformation utility object to transform and project view related coordinates
+	 * Transformation utility object to transform and project view related
+	 * coordinates
 	 */
 	protected RemoteRenderingTransformer selectionTransformer;
 
@@ -163,10 +166,14 @@ public abstract class AGLViewBrowser
 
 	/**
 	 * Constructor.
+	 * @param viewType
+	 *            TODO
+	 * @param viewName TODO
 	 */
-	public AGLViewBrowser(GLCanvas glCanvas, Composite parentComposite, final ViewFrustum viewFrustum) {
+	public AGLViewBrowser(GLCanvas glCanvas, Composite parentComposite,
+			final ViewFrustum viewFrustum, String viewType, String viewName) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
 
 		focusLevel = new RemoteLevel(1, "Focus Level", null, stackLevel);
 		stackLevel = new RemoteLevel(4, "Stack Level", focusLevel, poolLevel);
@@ -183,7 +190,8 @@ public abstract class AGLViewBrowser
 		initExternalSelectionLevel();
 
 		// this has to be done in implementing views
-		// glConnectionLineRenderer = new GLConnectionLineRendererBucket(focusLevel, stackLevel);
+		// glConnectionLineRenderer = new
+		// GLConnectionLineRendererBucket(focusLevel, stackLevel);
 
 		if (glMouseListener != null)
 			glMouseListener.addGLCanvas(this);
@@ -195,7 +203,8 @@ public abstract class AGLViewBrowser
 
 		dragAndDrop = new GLDragAndDrop();
 
-		iPoolLevelCommonID = generalManager.getIDCreator().createID(ManagedObjectType.REMOTE_LEVEL_ELEMENT);
+		iPoolLevelCommonID = generalManager.getIDCreator().createID(
+				ManagedObjectType.REMOTE_LEVEL_ELEMENT);
 	}
 
 	protected abstract void initFocusLevel();
@@ -217,7 +226,8 @@ public abstract class AGLViewBrowser
 		// TOP BUCKET WALL
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(0, yPos, 0f));
-		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+				fScalingFactorZoomedIn));
 		transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 
 		stackLevel.getElementByPositionIndex(0).setTransform(transform);
@@ -225,21 +235,24 @@ public abstract class AGLViewBrowser
 		// LEFT BUCKET WALL
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(1.6f, yPos, 0));
-		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+				fScalingFactorZoomedIn));
 		transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 		stackLevel.getElementByPositionIndex(1).setTransform(transform);
 
 		// BOTTOM BUCKET WALL
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(3.2f, yPos, 0));
-		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+				fScalingFactorZoomedIn));
 		transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 		stackLevel.getElementByPositionIndex(2).setTransform(transform);
 
 		// RIGHT BUCKET WALL
 		transform = new Transform();
 		transform.setTranslation(new Vec3f(4.8f, yPos, 0));
-		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn, fScalingFactorZoomedIn));
+		transform.setScale(new Vec3f(fScalingFactorZoomedIn, fScalingFactorZoomedIn,
+				fScalingFactorZoomedIn));
 		transform.setRotation(new Rotf(new Vec3f(0, 0, 0), 0));
 		stackLevel.getElementByPositionIndex(3).setTransform(transform);
 	}
@@ -250,7 +263,8 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	public void initRemote(final GL2 gl, final AGLView glParentView, final GLMouseListener glMouseListener) {
+	public void initRemote(final GL2 gl, final AGLView glParentView,
+			final GLMouseListener glMouseListener) {
 
 		// Register keyboard listener to GL2 canvas
 		// glParentView.getParentComposite().getDisplay().asyncExec(new
@@ -272,7 +286,8 @@ public abstract class AGLViewBrowser
 		remoteLevelElementWhiteList.addAll(focusLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(stackLevel.getAllElements());
 		remoteLevelElementWhiteList.addAll(poolLevel.getAllElements());
-		selectionTransformer = new RemoteRenderingTransformer(uniqueID, remoteLevelElementWhiteList);
+		selectionTransformer = new RemoteRenderingTransformer(uniqueID,
+				remoteLevelElementWhiteList);
 
 		addInitialViews();
 
@@ -319,8 +334,8 @@ public abstract class AGLViewBrowser
 		display(gl);
 		checkForHits(gl);
 
-		ConnectedElementRepresentationManager cerm =
-			GeneralManager.get().getViewManager().getConnectedElementRepresentationManager();
+		ConnectedElementRepresentationManager cerm = GeneralManager.get()
+				.getViewManager().getConnectedElementRepresentationManager();
 		cerm.doViewRelatedTransformation(gl, selectionTransformer);
 	}
 
@@ -331,7 +346,7 @@ public abstract class AGLViewBrowser
 		if (focusLevel.getElementByPositionIndex(0).isFree() && arSlerpActions.isEmpty()) {
 			renderSymbol(gl, viewSymbol, 3);
 			String text = "";
-			if (viewType.equals("org.caleydo.view.pathwabrowser"))
+			if (getViewType().equals("org.caleydo.view.pathwabrowser"))
 				text = "Trigger pathway loading first!";
 			else
 				text = "Filter below 20 patients";
@@ -392,21 +407,23 @@ public abstract class AGLViewBrowser
 
 			// Prevent user from dragging element onto selection level
 			if (!RemoteElementManager.get().hasItem(mouseOverObjectID)
-				|| !externalSelectionLevel.containsElement(RemoteElementManager.get().getItem(
-					mouseOverObjectID))) {
+					|| !externalSelectionLevel.containsElement(RemoteElementManager.get()
+							.getItem(mouseOverObjectID))) {
 				RemoteLevelElement mouseOverElement = null;
 
 				// Check if a drag and drop action is performed onto the pool
 				// level
 				if (mouseOverObjectID == iPoolLevelCommonID) {
 					mouseOverElement = poolLevel.getNextFree();
-				}
-				else if (mouseOverElement == null && mouseOverObjectID != iDraggedObjectId) {
-					mouseOverElement = RemoteElementManager.get().getItem(mouseOverObjectID);
+				} else if (mouseOverElement == null
+						&& mouseOverObjectID != iDraggedObjectId) {
+					mouseOverElement = RemoteElementManager.get().getItem(
+							mouseOverObjectID);
 				}
 
 				if (mouseOverElement != null) {
-					RemoteLevelElement originElement = RemoteElementManager.get().getItem(iDraggedObjectId);
+					RemoteLevelElement originElement = RemoteElementManager.get()
+							.getItem(iDraggedObjectId);
 
 					AGLView mouseOverView = mouseOverElement.getGLView();
 					AGLView originView = originElement.getGLView();
@@ -427,27 +444,30 @@ public abstract class AGLViewBrowser
 
 					if (mouseOverElement.getGLView() != null) {
 						if (poolLevel.containsElement(originElement)
-							&& (stackLevel.containsElement(mouseOverElement) || focusLevel
-								.containsElement(mouseOverElement))) {
-							mouseOverElement.getGLView().broadcastElements(EVAOperation.APPEND_UNIQUE);
+								&& (stackLevel.containsElement(mouseOverElement) || focusLevel
+										.containsElement(mouseOverElement))) {
+							mouseOverElement.getGLView().broadcastElements(
+									EVAOperation.APPEND_UNIQUE);
 						}
 
 						if (poolLevel.containsElement(mouseOverElement)
-							&& (stackLevel.containsElement(originElement) || focusLevel
-								.containsElement(originElement))) {
-							mouseOverElement.getGLView().broadcastElements(EVAOperation.REMOVE_ELEMENT);
+								&& (stackLevel.containsElement(originElement) || focusLevel
+										.containsElement(originElement))) {
+							mouseOverElement.getGLView().broadcastElements(
+									EVAOperation.REMOVE_ELEMENT);
 						}
 					}
 				}
 			}
 
 			generalManager.getViewManager().getConnectedElementRepresentationManager()
-				.clearTransformedConnections();
+					.clearTransformedConnections();
 			dragAndDrop.stopDragAction();
 		}
 	}
 
-	public void renderBucketWall(final GL2 gl, boolean bRenderBorder, RemoteLevelElement element) {
+	public void renderBucketWall(final GL2 gl, boolean bRenderBorder,
+			RemoteLevelElement element) {
 		// Highlight potential view drop destination
 		if (dragAndDrop.isDragActionRunning() && element.getID() == mouseOverObjectID) {
 			gl.glLineWidth(5);
@@ -462,8 +482,7 @@ public abstract class AGLViewBrowser
 
 		if (arSlerpActions.isEmpty()) {
 			gl.glColor4f(1f, 1f, 1f, 1.0f); // normal mode
-		}
-		else {
+		} else {
 			gl.glColor4f(1f, 1f, 1f, 0.3f);
 		}
 
@@ -495,7 +514,8 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
+	private void renderRemoteLevelElement(final GL2 gl, RemoteLevelElement element,
+			RemoteLevel level) {
 		// // Check if view is visible
 		// if (!level.getElementVisibilityById(viewID))
 		// return;
@@ -505,8 +525,10 @@ public abstract class AGLViewBrowser
 			return;
 		}
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
+				PickingType.REMOTE_VIEW_SELECTION, glView.getID()));
 
 		gl.glPushMatrix();
 
@@ -543,7 +565,7 @@ public abstract class AGLViewBrowser
 		}
 
 		if (level == poolLevel) {
-			String sRenderText = glView.getViewLabel();
+			String sRenderText = glView.getViewName();
 
 			// FIXME: after view plugin restructuring
 			// if (glView instanceof GLTissue)
@@ -566,17 +588,19 @@ public abstract class AGLViewBrowser
 			// fXShift = -0.8f;
 
 			if (element.getID() == mouseOverObjectID) {
-				renderPoolSelection(gl, translation.x() + fXShift, translation.y() * scale.y() + 5.2f,
+				renderPoolSelection(gl, translation.x() + fXShift, translation.y()
+						* scale.y() + 5.2f,
 
-				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f, element);
+				(float) textRenderer.getBounds(sRenderText).getWidth() * 0.06f + 23, 6f,
+						element);
 				gl.glTranslatef(0.8f, 1.3f, 0);
 
 				fTextScalingFactor = 0.075f;
 				fTextXPosition = 12f;
-			}
-			else {
+			} else {
 				// Render view background frame
-				Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND);
+				Texture tempTexture = textureManager.getIconTexture(gl,
+						EIconTextures.POOL_VIEW_BACKGROUND);
 				tempTexture.enable();
 				tempTexture.bind();
 
@@ -601,23 +625,25 @@ public abstract class AGLViewBrowser
 				fTextXPosition = 9.5f;
 			}
 
-			int iNumberOfGenesSelected = glView.getNumberOfSelections(SelectionType.SELECTION);
-			int iNumberOfGenesMouseOver = glView.getNumberOfSelections(SelectionType.MOUSE_OVER);
+			int iNumberOfGenesSelected = glView
+					.getNumberOfSelections(SelectionType.SELECTION);
+			int iNumberOfGenesMouseOver = glView
+					.getNumberOfSelections(SelectionType.MOUSE_OVER);
 
 			textRenderer.begin3DRendering();
 
 			if (element.getID() == mouseOverObjectID) {
 				textRenderer.setColor(1, 1, 1, 1);
-			}
-			else {
+			} else {
 				textRenderer.setColor(0, 0, 0, 1);
 			}
 
 			if (iNumberOfGenesMouseOver == 0 && iNumberOfGenesSelected == 0) {
-				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0.1f, fTextScalingFactor);
-			}
-			else {
-				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0.1f, fTextScalingFactor);
+				textRenderer.draw3D(sRenderText, fTextXPosition, 3f, 0.1f,
+						fTextScalingFactor);
+			} else {
+				textRenderer.draw3D(sRenderText, fTextXPosition, 4.5f, 0.1f,
+						fTextScalingFactor);
 			}
 
 			textRenderer.end3DRendering();
@@ -634,8 +660,8 @@ public abstract class AGLViewBrowser
 				}
 
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver), fTextXPosition + 9, 2.4f, 0,
-					fTextScalingFactor);
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesMouseOver),
+						fTextXPosition + 9, 2.4f, 0, fTextScalingFactor);
 				textRenderer.end3DRendering();
 
 				if (element.getID() == mouseOverObjectID) {
@@ -661,8 +687,8 @@ public abstract class AGLViewBrowser
 				}
 
 				textRenderer.begin3DRendering();
-				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected), fTextXPosition + 9, 2.5f, 0,
-					fTextScalingFactor);
+				textRenderer.draw3D(Integer.toString(iNumberOfGenesSelected),
+						fTextXPosition + 9, 2.5f, 0, fTextScalingFactor);
 				textRenderer.end3DRendering();
 
 				if (element.getID() == mouseOverObjectID) {
@@ -698,8 +724,7 @@ public abstract class AGLViewBrowser
 		if (level != externalSelectionLevel && level != poolLevel) {
 			if (level.equals(focusLevel)) {
 				renderBucketWall(gl, false, element);
-			}
-			else {
+			} else {
 				renderBucketWall(gl, true, element);
 			}
 		}
@@ -712,10 +737,12 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 	}
 
-	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element, RemoteLevel level) {
+	private void renderEmptyBucketWall(final GL2 gl, RemoteLevelElement element,
+			RemoteLevel level) {
 		gl.glPushMatrix();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
 
 		Transform transform = element.getTransform();
 		Vec3f translation = transform.getTranslation();
@@ -728,8 +755,8 @@ public abstract class AGLViewBrowser
 		gl.glScalef(scale.x(), scale.y(), scale.z());
 		gl.glRotatef(Vec3f.convertRadiant2Grad(fAngle), axis.x(), axis.y(), axis.z());
 
-		if (!level.equals(transitionLevel) && !level.equals(spawnLevel) && !level.equals(poolLevel)
-			&& !level.equals(externalSelectionLevel)) {
+		if (!level.equals(transitionLevel) && !level.equals(spawnLevel)
+				&& !level.equals(poolLevel) && !level.equals(externalSelectionLevel)) {
 			renderBucketWall(gl, true, element);
 		}
 
@@ -820,14 +847,14 @@ public abstract class AGLViewBrowser
 			scale = transform.getScale();
 
 			gl.glTranslatef(translation.x(), translation.y() - 2 * 0.075f + fYCorrection,
-				translation.z() + 0.001f);
+					translation.z() + 0.001f);
 
 			gl.glScalef(scale.x() * 4, scale.y() * 4, scale.z());
 			renderNavigationHandleBar(gl, element, 2, 0.075f, false, 2);
 			gl.glScalef(1 / (scale.x() * 4), 1 / (scale.y() * 4), 1 / scale.z());
 
-			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f - fYCorrection,
-				-translation.z() - 0.001f);
+			gl.glTranslatef(-translation.x(), -translation.y() + 2 * 0.075f
+					- fYCorrection, -translation.z() - 0.001f);
 		}
 	}
 
@@ -856,31 +883,33 @@ public abstract class AGLViewBrowser
 	// -translation.z() - 0.001f);
 	// }
 
-	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element, float fHandleWidth,
-		float fHandleHeight, boolean bUpsideDown, float fScalingFactor) {
+	private void renderNavigationHandleBar(final GL2 gl, RemoteLevelElement element,
+			float fHandleWidth, float fHandleHeight, boolean bUpsideDown,
+			float fScalingFactor) {
 
 		// Render icons
 		gl.glTranslatef(0, 2 + fHandleHeight, 0);
 		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
-			EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
+				EIconTextures.NAVIGATION_DRAG_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(fHandleWidth - 2 * fHandleHeight, 0, 0);
 		if (bUpsideDown) {
 			gl.glRotatef(180, 1, 0, 0);
 			gl.glTranslatef(0, fHandleHeight, 0);
 		}
 		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_LOCK,
-			EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
+				EIconTextures.NAVIGATION_LOCK_VIEW, fHandleHeight, fHandleHeight);
 		if (bUpsideDown) {
 			gl.glTranslatef(0, -fHandleHeight, 0);
 			gl.glRotatef(-180, 1, 0, 0);
 		}
 		gl.glTranslatef(fHandleHeight, 0, 0);
 		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
-			EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
+				EIconTextures.NAVIGATION_REMOVE_VIEW, fHandleHeight, fHandleHeight);
 		gl.glTranslatef(-fHandleWidth + fHandleHeight, -2 - fHandleHeight, 0);
 
 		// Render background (also draggable)
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_DRAG,
+				element.getID()));
 		gl.glColor3f(0.25f, 0.25f, 0.25f);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex3f(0 + fHandleHeight, 2 + fHandleHeight, 0);
@@ -892,7 +921,7 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getViewLabel();
+		String sText = element.getGLView().getViewName();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {
@@ -909,8 +938,8 @@ public abstract class AGLViewBrowser
 		textRenderer.setColor(0.7f, 0.7f, 0.7f, 1);
 		textRenderer.begin3DRendering();
 		textRenderer.draw3D(sText, fHandleWidth / fScalingFactor
-			- (float) textRenderer.getBounds(sText).getWidth() / 2f * fTextScalingFactor, 2.02f, 0f,
-			fTextScalingFactor);
+				- (float) textRenderer.getBounds(sText).getWidth() / 2f
+				* fTextScalingFactor, 2.02f, 0f, fTextScalingFactor);
 		textRenderer.end3DRendering();
 
 		if (bUpsideDown) {
@@ -919,9 +948,11 @@ public abstract class AGLViewBrowser
 		}
 	}
 
-	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID, PickingType ePickingType,
-		EIconTextures eIconTexture, float fWidth, float fHeight) {
-		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType, iRemoteLevelElementID));
+	private void renderSingleHandle(final GL2 gl, int iRemoteLevelElementID,
+			PickingType ePickingType, EIconTextures eIconTexture, float fWidth,
+			float fHeight) {
+		gl.glPushName(pickingManager.getPickingID(uniqueID, ePickingType,
+				iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
 		tempTexture.enable();
@@ -945,8 +976,8 @@ public abstract class AGLViewBrowser
 		gl.glPopName();
 	}
 
-	private void renderPoolSelection(final GL2 gl, float fXOrigin, float fYOrigin, float fWidth,
-		float fHeight, RemoteLevelElement element) {
+	private void renderPoolSelection(final GL2 gl, float fXOrigin, float fYOrigin,
+			float fWidth, float fHeight, RemoteLevelElement element) {
 		float fPanelSideWidth = 11f;
 
 		float z = 0.06f;
@@ -959,7 +990,8 @@ public abstract class AGLViewBrowser
 		gl.glVertex3f(fXOrigin + 10.2f, fYOrigin - fHeight / 2f, z);
 		gl.glEnd();
 
-		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
+		Texture tempTexture = textureManager.getIconTexture(gl,
+				EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
 		tempTexture.enable();
 		tempTexture.bind();
 
@@ -986,13 +1018,14 @@ public abstract class AGLViewBrowser
 		int fHandleScaleFactor = 18;
 		gl.glTranslatef(fXOrigin - 1.2f, fYOrigin - fHeight / 2f + fHeight - 1f, 1.8f);
 		gl.glScalef(fHandleScaleFactor, fHandleScaleFactor, fHandleScaleFactor);
-		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG, EIconTextures.POOL_DRAG_VIEW,
-			0.1f, 0.1f);
+		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_DRAG,
+				EIconTextures.POOL_DRAG_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, -0.2f, 0);
 		renderSingleHandle(gl, element.getID(), PickingType.REMOTE_VIEW_REMOVE,
-			EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
+				EIconTextures.POOL_REMOVE_VIEW, 0.1f, 0.1f);
 		gl.glTranslatef(0, 0.2f, 0);
-		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor, 1f / fHandleScaleFactor);
+		gl.glScalef(1f / fHandleScaleFactor, 1f / fHandleScaleFactor,
+				1f / fHandleScaleFactor);
 		gl.glTranslatef(-fXOrigin + 1.2f, -fYOrigin + fHeight / 2f - fHeight + 1f, -1.8f);
 
 		// gl.glColor3f(0.25f, 0.25f, 0.25f);
@@ -1005,9 +1038,10 @@ public abstract class AGLViewBrowser
 		// gl.glVertex3f(fXOrigin + 3f, fYOrigin- fHeight / 2f + 1.5f , 0f);
 		// gl.glEnd();
 
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
-		gl.glPushName(pickingManager.getPickingID(uniqueID, PickingType.REMOTE_VIEW_SELECTION,
-			element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
+				PickingType.REMOTE_LEVEL_ELEMENT, element.getID()));
+		gl.glPushName(pickingManager.getPickingID(uniqueID,
+				PickingType.REMOTE_VIEW_SELECTION, element.getID()));
 	}
 
 	private void doSlerpActions(final GL2 gl) {
@@ -1043,9 +1077,10 @@ public abstract class AGLViewBrowser
 			slerpMod.playSlerpSound();
 		}
 
-		Transform transform =
-			slerpMod.interpolate(slerpAction.getOriginRemoteLevelElement().getTransform(), slerpAction
-				.getDestinationRemoteLevelElement().getTransform(), (float) iSlerpFactor / SLERP_RANGE);
+		Transform transform = slerpMod.interpolate(slerpAction
+				.getOriginRemoteLevelElement().getTransform(), slerpAction
+				.getDestinationRemoteLevelElement().getTransform(), (float) iSlerpFactor
+				/ SLERP_RANGE);
 
 		gl.glPushMatrix();
 
@@ -1060,7 +1095,8 @@ public abstract class AGLViewBrowser
 			arSlerpActions.remove(slerpAction);
 			iSlerpFactor = 0;
 			slerpAction.finished();
-			RemoteLevelElement destinationElement = slerpAction.getDestinationRemoteLevelElement();
+			RemoteLevelElement destinationElement = slerpAction
+					.getDestinationRemoteLevelElement();
 			updateViewDetailLevels(destinationElement);
 		}
 
@@ -1073,7 +1109,7 @@ public abstract class AGLViewBrowser
 
 			// generalManager.getViewGLCanvasManager().getInfoAreaManager().enable(!bEnableNavigationOverlay);
 			generalManager.getViewManager().getConnectedElementRepresentationManager()
-				.clearTransformedConnections();
+					.clearTransformedConnections();
 		}
 	}
 
@@ -1089,11 +1125,10 @@ public abstract class AGLViewBrowser
 		// Update detail level of moved view when slerp action is finished;
 		if (destinationLevel == focusLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.MEDIUM);
-		}
-		else if (destinationLevel == stackLevel) {
+		} else if (destinationLevel == stackLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.LOW);
-		}
-		else if (destinationLevel == poolLevel || destinationLevel == externalSelectionLevel) {
+		} else if (destinationLevel == poolLevel
+				|| destinationLevel == externalSelectionLevel) {
 			glActiveSubView.setDetailLevel(EDetailLevel.VERY_LOW);
 		}
 
@@ -1101,7 +1136,8 @@ public abstract class AGLViewBrowser
 	}
 
 	private void loadViewToFocusLevel(final int iRemoteLevelElementID) {
-		RemoteLevelElement element = RemoteElementManager.get().getItem(iRemoteLevelElementID);
+		RemoteLevelElement element = RemoteElementManager.get().getItem(
+				iRemoteLevelElementID);
 
 		// Check if other slerp action is currently running
 		// if (iSlerpFactor > 0 && iSlerpFactor < SLERP_RANGE)
@@ -1113,12 +1149,13 @@ public abstract class AGLViewBrowser
 			return;
 
 		// Slerp focus view to pool
-		SlerpAction makePlaceSlerpActionTransition =
-			new SlerpAction(focusLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
+		SlerpAction makePlaceSlerpActionTransition = new SlerpAction(
+				focusLevel.getElementByPositionIndex(0), poolLevel.getNextFree());
 		arSlerpActions.add(makePlaceSlerpActionTransition);
 
 		// Slerp selected view to focus position
-		SlerpAction slerpActionTransition = new SlerpAction(element, focusLevel.getElementByPositionIndex(0));
+		SlerpAction slerpActionTransition = new SlerpAction(element,
+				focusLevel.getElementByPositionIndex(0));
 		arSlerpActions.add(slerpActionTransition);
 
 		iSlerpFactor = 0;
@@ -1130,136 +1167,138 @@ public abstract class AGLViewBrowser
 	}
 
 	@Override
-	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode, int externalID,
-		Pick pick) {
+	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
+			int externalID, Pick pick) {
 
 		switch (pickingType) {
-			case REMOTE_VIEW_DRAG:
+		case REMOTE_VIEW_DRAG:
 
-				switch (pickingMode) {
-					case CLICKED:
+			switch (pickingMode) {
+			case CLICKED:
 
-						if (!dragAndDrop.isDragActionRunning()) {
-							// System.out.println("Start drag!");
-							dragAndDrop.startDragAction(externalID);
-						}
+				if (!dragAndDrop.isDragActionRunning()) {
+					// System.out.println("Start drag!");
+					dragAndDrop.startDragAction(externalID);
+				}
 
-						mouseOverObjectID = externalID;
+				mouseOverObjectID = externalID;
 
-						compactPoolLevel();
+				compactPoolLevel();
 
+				break;
+			}
+			break;
+
+		case REMOTE_VIEW_REMOVE:
+
+			switch (pickingMode) {
+			case CLICKED:
+
+				RemoteLevelElement element = RemoteElementManager.get().getItem(
+						externalID);
+
+				AGLView glView = element.getGLView();
+
+				// // Unregister all elements of the view that is
+				// removed
+				// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+
+				removeView(glView);
+				element.setGLView(null);
+				containedGLViews.remove(glView);
+
+				if (element.getRemoteLevel() == poolLevel) {
+					compactPoolLevel();
+				}
+
+				// FIXME: after view plugin restructuring
+				// if (glView instanceof GLTissue)
+				// removeSelection(((GLTissue) glView)
+				// .getExperimentIndex());
+
+				setDisplayListDirty();
+
+				break;
+			}
+			break;
+
+		case REMOTE_VIEW_LOCK:
+
+			switch (pickingMode) {
+			case CLICKED:
+
+				RemoteLevelElement element = RemoteElementManager.get().getItem(
+						externalID);
+
+				// Toggle lock flag
+				element.lock(!element.isLocked());
+
+				break;
+			}
+			break;
+
+		case REMOTE_LEVEL_ELEMENT:
+
+			switch (pickingMode) {
+			case MOUSE_OVER:
+			case DRAGGED:
+				mouseOverObjectID = externalID;
+				break;
+			case CLICKED:
+
+				// Do not handle click if element is dragged
+				if (dragAndDrop.isDragActionRunning()) {
+					break;
+				}
+
+				// Check if view is contained in pool level
+				for (RemoteLevelElement element : poolLevel.getAllElements()) {
+					if (element.getID() == externalID) {
+						loadViewToFocusLevel(externalID);
 						break;
+					}
 				}
 				break;
+			}
+			break;
 
-			case REMOTE_VIEW_REMOVE:
+		case REMOTE_VIEW_SELECTION:
 
-				switch (pickingMode) {
-					case CLICKED:
+			switch (pickingMode) {
+			case MOUSE_OVER:
 
-						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
+				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+				// .setDataAboutView(externalID);
 
-						AGLView glView = element.getGLView();
-
-						// // Unregister all elements of the view that is
-						// removed
-						// glEventListener.broadcastElements(EVAOperation.REMOVE_ELEMENT);
-
-						removeView(glView);
-						element.setGLView(null);
-						containedGLViews.remove(glView);
-
-						if (element.getRemoteLevel() == poolLevel) {
-							compactPoolLevel();
-						}
-
-						// FIXME: after view plugin restructuring
-						// if (glView instanceof GLTissue)
-						// removeSelection(((GLTissue) glView)
-						// .getExperimentIndex());
-
-						setDisplayListDirty();
-
-						break;
+				// Prevent update flood when moving mouse over view
+				if (iActiveViewID == externalID) {
+					break;
 				}
+
+				iActiveViewID = externalID;
+
+				setDisplayListDirty();
+
+				// TODO
+				// generalManager.getEventPublisher().triggerEvent(
+				// EMediatorType.VIEW_SELECTION,
+				// generalManager.getViewGLCanvasManager().getGLEventListener(
+				// externalID), );
+
 				break;
 
-			case REMOTE_VIEW_LOCK:
+			case CLICKED:
 
-				switch (pickingMode) {
-					case CLICKED:
+				// generalManager.getViewGLCanvasManager().getInfoAreaManager()
+				// .setDataAboutView(externalID);
 
-						RemoteLevelElement element = RemoteElementManager.get().getItem(externalID);
+				break;
+			case RIGHT_CLICKED:
 
-						// Toggle lock flag
-						element.lock(!element.isLocked());
-
-						break;
-				}
 				break;
 
-			case REMOTE_LEVEL_ELEMENT:
-
-				switch (pickingMode) {
-					case MOUSE_OVER:
-					case DRAGGED:
-						mouseOverObjectID = externalID;
-						break;
-					case CLICKED:
-
-						// Do not handle click if element is dragged
-						if (dragAndDrop.isDragActionRunning()) {
-							break;
-						}
-
-						// Check if view is contained in pool level
-						for (RemoteLevelElement element : poolLevel.getAllElements()) {
-							if (element.getID() == externalID) {
-								loadViewToFocusLevel(externalID);
-								break;
-							}
-						}
-						break;
-				}
-				break;
-
-			case REMOTE_VIEW_SELECTION:
-
-				switch (pickingMode) {
-					case MOUSE_OVER:
-
-						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-						// .setDataAboutView(externalID);
-
-						// Prevent update flood when moving mouse over view
-						if (iActiveViewID == externalID) {
-							break;
-						}
-
-						iActiveViewID = externalID;
-
-						setDisplayListDirty();
-
-						// TODO
-						// generalManager.getEventPublisher().triggerEvent(
-						// EMediatorType.VIEW_SELECTION,
-						// generalManager.getViewGLCanvasManager().getGLEventListener(
-						// externalID), );
-
-						break;
-
-					case CLICKED:
-
-						// generalManager.getViewGLCanvasManager().getInfoAreaManager()
-						// .setDataAboutView(externalID);
-
-						break;
-					case RIGHT_CLICKED:
-
-						break;
-
-				}
-				break;
+			}
+			break;
 		}
 	}
 
@@ -1285,14 +1324,13 @@ public abstract class AGLViewBrowser
 		if (reinitialize) {
 			ArrayList<ASerializedView> removeNewViews = new ArrayList<ASerializedView>();
 			for (ASerializedView view : newViews) {
-				if (!(view.getViewType().equals("org.caleydo.view.parcoords") || view.getViewType().equals(
-					"org.caleydo.view.heatmap"))) {
+				if (!(view.getViewType().equals("org.caleydo.view.parcoords") || view
+						.getViewType().equals("org.caleydo.view.heatmap"))) {
 					removeNewViews.add(view);
 				}
 			}
 			newViews.removeAll(removeNewViews);
-		}
-		else {
+		} else {
 			newViews.clear();
 		}
 
@@ -1301,20 +1339,20 @@ public abstract class AGLViewBrowser
 		if (reinitialize) {
 			ArrayList<AGLView> removeView = new ArrayList<AGLView>();
 			for (AGLView glView : containedGLViews) {
-				if (!(glView.viewType.equals("org.caleydo.view.parcoords") || glView.viewType
-					.equals("org.caleydo.view.heatmap"))) {
+				if (!(glView.getViewType().equals("org.caleydo.view.parcoords") || glView
+						.getViewType().equals("org.caleydo.view.heatmap"))) {
 					removeView.add(glView);
 				}
 			}
 			containedGLViews.removeAll(removeView);
-		}
-		else {
+		} else {
 			containedGLViews.clear();
 		}
 
 		// Send out remove broadcast for views that are currently slerped
 		for (SlerpAction slerpAction : arSlerpActions) {
-			viewManager.getGLView(slerpAction.getElementId()).broadcastElements(EVAOperation.REMOVE_ELEMENT);
+			viewManager.getGLView(slerpAction.getElementId()).broadcastElements(
+					EVAOperation.REMOVE_ELEMENT);
 		}
 		arSlerpActions.clear();
 
@@ -1330,15 +1368,15 @@ public abstract class AGLViewBrowser
 				if (view.getViewType().equals("org.caleydo.view.parcoords")) {
 					stackLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(stackLevel.getElementByPositionIndex(0));
-				}
-				else if (view.getViewType().equals("org.caleydo.view.heatmap")) {
+				} else if (view.getViewType().equals("org.caleydo.view.heatmap")) {
 					focusLevel.getElementByPositionIndex(0).setGLView(view);
 					view.setRemoteLevelElement(focusLevel.getElementByPositionIndex(0));
 				}
 			}
 		}
 
-		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
+		generalManager.getViewManager().getConnectedElementRepresentationManager()
+				.clearAll();
 	}
 
 	@Override
@@ -1357,15 +1395,14 @@ public abstract class AGLViewBrowser
 			glView = element.getGLView();
 
 			if (glView.getViewType().equals("org.caleydo.view.heatmap")
-				|| glView.getViewType().equals("org.caleydo.view.parcoords")) {
+					|| glView.getViewType().equals("org.caleydo.view.parcoords")) {
 				// Remove all elements from heatmap and parallel coordinates
 				((ATableBasedView) glView).resetView();
 
 				if (!glView.isRenderedRemote()) {
 					glView.enableBusyMode(false);
 				}
-			}
-			else {
+			} else {
 				removeView(glView);
 				glView.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 			}
@@ -1512,8 +1549,9 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * Adds new remote-rendered-views that have been queued for displaying to this view. Only one view is
-	 * taken from the list and added for remote rendering per call to this method.
+	 * Adds new remote-rendered-views that have been queued for displaying to
+	 * this view. Only one view is taken from the list and added for remote
+	 * rendering per call to this method.
 	 * 
 	 * @param GL
 	 */
@@ -1550,8 +1588,7 @@ public abstract class AGLViewBrowser
 				// }
 
 				containedGLViews.add(view);
-			}
-			else {
+			} else {
 				newViews.clear();
 			}
 			if (newViews.isEmpty()) {
@@ -1566,7 +1603,8 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * Triggers a toolbar update by sending an event similar to the view activation
+	 * Triggers a toolbar update by sending an event similar to the view
+	 * activation
 	 * 
 	 * @TODO: Move to remote rendering base class
 	 */
@@ -1590,23 +1628,26 @@ public abstract class AGLViewBrowser
 	/**
 	 * Checks if this view has some space left to add at least 1 view
 	 * 
-	 * @return <code>true</code> if some space is left, <code>false</code> otherwise
+	 * @return <code>true</code> if some space is left, <code>false</code>
+	 *         otherwise
 	 */
 	public boolean hasFreeViewPosition() {
 		return focusLevel.hasFreePosition()
-			|| (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
-			|| poolLevel.hasFreePosition();
+				|| (stackLevel.hasFreePosition() && !(layoutRenderStyle instanceof ListLayoutRenderStyle))
+				|| poolLevel.hasFreePosition();
 	}
 
 	/**
-	 * Adds a Slerp-Transition for a view. Usually this is used when a new view is added to the bucket or 2
-	 * views change its position in the bucket. The operation does not always succeed. A reason for this is
-	 * when no more space is left to slerp the given view to.
+	 * Adds a Slerp-Transition for a view. Usually this is used when a new view
+	 * is added to the bucket or 2 views change its position in the bucket. The
+	 * operation does not always succeed. A reason for this is when no more
+	 * space is left to slerp the given view to.
 	 * 
 	 * @param gl
 	 * @param view
 	 *            the view for which the slerp transition should be added
-	 * @return <code>true</code> if adding the slerp action was successfull, <code>false</code> otherwise
+	 * @return <code>true</code> if adding the slerp action was successfull,
+	 *         <code>false</code> otherwise
 	 */
 	private boolean addSlerpActionForView(GL2 gl, AGLView view) {
 
@@ -1624,9 +1665,9 @@ public abstract class AGLViewBrowser
 		// }
 		else if (poolLevel.hasFreePosition()) {
 			destination = poolLevel.getNextFree();
-		}
-		else {
-			Logger.log(new Status(IStatus.WARNING, this.toString(), "No empty space left to add new view!"));
+		} else {
+			Logger.log(new Status(IStatus.WARNING, this.toString(),
+					"No empty space left to add new view!"));
 			newViews.clear();
 			return false;
 		}
@@ -1642,8 +1683,8 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * Creates and initializes a new view based on its serialized form. The view is already added to the list
-	 * of event receivers and senders.
+	 * Creates and initializes a new view based on its serialized form. The view
+	 * is already added to the list of event receivers and senders.
 	 * 
 	 * @param gl
 	 * @param serView
@@ -1657,19 +1698,19 @@ public abstract class AGLViewBrowser
 		Class viewClass;
 		try {
 			viewClass = Class.forName(serView.getViewClassType());
-		}
-		catch (ClassNotFoundException e) {
-			throw new IllegalStateException("Cannot find class for view " + serView.getViewType());
+		} catch (ClassNotFoundException e) {
+			throw new IllegalStateException("Cannot find class for view "
+					+ serView.getViewType());
 		}
 
-		AGLView glView =
-			GeneralManager.get().getViewManager()
+		AGLView glView = GeneralManager.get().getViewManager()
 				.createGLView(viewClass, parentGLCanvas, parentComposite, viewFrustum);
 		glView.setRemoteRenderingGLView(this);
 
 		if (glView instanceof IDataDomainBasedView<?>) {
-			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager.get()
-				.getDataDomainByID(((ASerializedTopLevelDataView) serView).getDataDomainID()));
+			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
+					.get().getDataDomainByID(
+							((ASerializedTopLevelDataView) serView).getDataDomainID()));
 		}
 
 		glView.initialize();
@@ -1693,8 +1734,9 @@ public abstract class AGLViewBrowser
 	// }
 
 	/**
-	 * Triggers the most recent user selection to the views. This is especially needed to initialize new added
-	 * views with the current selection information.
+	 * Triggers the most recent user selection to the views. This is especially
+	 * needed to initialize new added views with the current selection
+	 * information.
 	 */
 	private void triggerMostRecentDelta() {
 		// Trigger last delta to new views
@@ -1758,7 +1800,8 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
+	 * FIXME: should be moved to a bucket-mediator registers the event-listeners
+	 * to the event framework
 	 */
 	@Override
 	public void registerEventListeners() {
@@ -1766,7 +1809,8 @@ public abstract class AGLViewBrowser
 	}
 
 	/**
-	 * FIXME: should be moved to a bucket-mediator registers the event-listeners to the event framework
+	 * FIXME: should be moved to a bucket-mediator registers the event-listeners
+	 * to the event framework
 	 */
 	@Override
 	public void unregisterEventListeners() {

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -101,7 +101,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
+		layoutTemplate
+				.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -115,14 +116,15 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 
 		layoutTemplate.showFooterBar(true);
 	}
-	
+
 	@Override
 	public void configure(TitleOnlyHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
 		validViewTypes.add(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
 
 		layoutTemplate.setValidViewTypes(validViewTypes);
-		layoutTemplate.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
+		layoutTemplate
+				.setDefaultViewType(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT);
 
 		ArrayList<ElementLayout> headerBarElements = new ArrayList<ElementLayout>();
 
@@ -182,8 +184,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, new ViewLabelProvider(view),
-				pickingType.name(), pickingID);
+		LabelRenderer captionRenderer = new LabelRenderer(view, new ViewLabelProvider(
+				view), pickingType.name(), pickingID);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;
@@ -231,7 +233,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		// label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
 		// .getDataContainer()).getPathways().get(0).getTitle();
 
-		brick.setLabel(label);
+		brick.setCustomLabel(label);
 
 		LayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick,
 				label, PickingType.BRICK.name(), brick.getID());
@@ -242,8 +244,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 				brick, "TODO", PickingType.BRICK.name(), brick.getID());
 		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY,
 				kaplanMeierSummaryCompactRenderer);
-		
-		
+
 		// FIXME this is not really a comapct view
 		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT,
 				kaplanMeierSummaryRenderer);
@@ -278,12 +279,12 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	public void setSortingStrategy(ExternallyProvidedSortingStrategy sortingStrategy) {
 		this.sortingStrategy = sortingStrategy;
 	}
-	
+
 	@Override
 	public boolean useDefaultWidth() {
 		return true;
 	}
-	
+
 	@Override
 	public int getDefaultWidth() {
 		return 100;

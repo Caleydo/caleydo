@@ -105,8 +105,9 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView,
 		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
-
-	public final static String VIEW_TYPE = "org.caleydo.view.visbricks";
+	public static String VIEW_TYPE = "org.caleydo.view.visbricks";
+	
+	public static String VIEW_NAME = "StratomeX";
 
 	private final static int ARCH_PIXEL_HEIGHT = 100;
 	private final static float ARCH_BOTTOM_PERCENT = 1f;
@@ -212,10 +213,7 @@ public class GLVisBricks extends AGLView implements IMultiDataContainerBasedView
 	public GLVisBricks(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-
-		viewType = GLVisBricks.VIEW_TYPE;
-		viewLabel = "StratomeX ";
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		connectionRenderer = new ConnectionBandRenderer();
 

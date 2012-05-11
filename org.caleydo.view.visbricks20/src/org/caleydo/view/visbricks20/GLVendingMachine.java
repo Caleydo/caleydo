@@ -48,7 +48,9 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.vendingmachine";
+	public static String VIEW_TYPE = "org.caleydo.view.vendingmachine";
+
+	public static String VIEW_NAME = "Vending Machine";
 
 	private VisBricks20RenderStyle renderStyle;
 
@@ -82,10 +84,7 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 	public GLVendingMachine(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-
-		viewType = GLVendingMachine.VIEW_TYPE;
-		viewLabel = "Vending machine";
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		glKeyListener = new GLVendingMachineKeyListener(this);
 

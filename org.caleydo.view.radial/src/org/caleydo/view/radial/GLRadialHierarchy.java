@@ -76,7 +76,10 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class GLRadialHierarchy extends ATableBasedView {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.radial";
+	public static String VIEW_TYPE = "org.caleydo.view.radial";
+	
+		public static String VIEW_NAME = "Radial Hierarchy";
+
 
 	public static final int DISP_HIER_DEPTH_DEFAULT = 14;
 	private static final int MIN_PIXELS_PER_DISPLAYED_LEVEL = 10;
@@ -133,10 +136,9 @@ public class GLRadialHierarchy extends ATableBasedView {
 	public GLRadialHierarchy(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		viewType = VIEW_TYPE;
-
+	
 		ArrayList<SelectionType> alSelectionTypes = new ArrayList<SelectionType>();
 		alSelectionTypes.add(SelectionType.NORMAL);
 		alSelectionTypes.add(SelectionType.MOUSE_OVER);

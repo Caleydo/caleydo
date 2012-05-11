@@ -41,11 +41,11 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 
-public class GLVisBricks20
-	extends AGLView
-	implements IGLRemoteRenderingView {
+public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.visbricks20";
+	public static String VIEW_TYPE = "org.caleydo.view.visbricks20";
+
+	public static String VIEW_NAME = "VisBricks 2.0";
 
 	private VisBricks20RenderStyle renderStyle;
 
@@ -62,9 +62,9 @@ public class GLVisBricks20
 	private ElementLayout vendingMachineElementLayout;
 
 	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
-	
+
 	private OpenVendingMachineListener openVendingMachineListener;
-	
+
 	private DimensionGroup detailDimensionGroup;
 
 	/**
@@ -74,12 +74,11 @@ public class GLVisBricks20
 	 * @param viewLabel
 	 * @param viewFrustum
 	 */
-	public GLVisBricks20(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
+	public GLVisBricks20(GLCanvas glCanvas, Composite parentComposite,
+			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		viewType = GLVisBricks20.VIEW_TYPE;
-		viewLabel = "VisBricks 2.0";
 	}
 
 	@Override
@@ -148,17 +147,18 @@ public class GLVisBricks20
 		createDVI(dviElementLayout);
 
 		visBricksElementLayout = new Row("visBricksElementLayoutRow");
-		//visBricksElementLayout.setDebug(true);
+		// visBricksElementLayout.setDebug(true);
 		createVisBricks(visBricksElementLayout);
 
 		// Just for testing vending machine
-		//vendingMachineElementLayout = new Row("vendingMachineElementLayoutRow");
+		// vendingMachineElementLayout = new
+		// Row("vendingMachineElementLayoutRow");
 		// vendingMachineElementLayout.setDebug(true);
 		createVendingMachine(vendingMachineElementLayout);
 
 		mainColumn.append(dviElementLayout);
 		mainColumn.append(visBricksElementLayout);
-		//mainColumn.append(vendingMachineElementLayout);
+		// mainColumn.append(vendingMachineElementLayout);
 
 		layoutManager.updateLayout();
 	}
@@ -170,10 +170,13 @@ public class GLVisBricks20
 	 * @return
 	 */
 	private GLDataViewIntegrator createDVI(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-				-4, 4);
-		dvi = (GLDataViewIntegrator) GeneralManager.get().getViewManager()
-				.createGLView(GLDataViewIntegrator.class, parentGLCanvas, parentComposite, frustum);
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+				1, -4, 4);
+		dvi = (GLDataViewIntegrator) GeneralManager
+				.get()
+				.getViewManager()
+				.createGLView(GLDataViewIntegrator.class, parentGLCanvas,
+						parentComposite, frustum);
 
 		dvi.setVendingMachineMode(true);
 		dvi.setRemoteRenderingGLView(this);
@@ -193,9 +196,11 @@ public class GLVisBricks20
 	 * @return
 	 */
 	private GLVisBricks createVisBricks(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-				-4, 4);
-		visBricks = (GLVisBricks) GeneralManager.get().getViewManager()
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+				1, -4, 4);
+		visBricks = (GLVisBricks) GeneralManager
+				.get()
+				.getViewManager()
 				.createGLView(GLVisBricks.class, parentGLCanvas, parentComposite, frustum);
 
 		visBricks.setRemoteRenderingGLView(this);
@@ -203,7 +208,7 @@ public class GLVisBricks20
 
 		ViewLayoutRenderer visBricksRenderer = new ViewLayoutRenderer(visBricks);
 		wrappingLayout.setRenderer(visBricksRenderer);
-		
+
 		return visBricks;
 	}
 
@@ -214,22 +219,24 @@ public class GLVisBricks20
 	 * @return
 	 */
 	private GLVendingMachine createVendingMachine(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-				-4, 4);
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
+				1, -4, 4);
 		vendingMachine = (GLVendingMachine) GeneralManager
 				.get()
 				.getViewManager()
-				.createGLView(GLVendingMachine.class, parentGLCanvas, parentComposite, frustum);
+				.createGLView(GLVendingMachine.class, parentGLCanvas, parentComposite,
+						frustum);
 
 		vendingMachine.setRemoteRenderingGLView(this);
 		vendingMachine.initialize();
 		vendingMachine.setDimensionGroupManager(visBricks.getDimensionGroupManager());
 
-		//ViewLayoutRenderer vendingMachineRenderer = new ViewLayoutRenderer(vendingMachine);
-		//wrappingLayout.setRenderer(vendingMachineRenderer);
+		// ViewLayoutRenderer vendingMachineRenderer = new
+		// ViewLayoutRenderer(vendingMachine);
+		// wrappingLayout.setRenderer(vendingMachineRenderer);
 
-		//Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
-		//wrappingLayout.setZoomer(zoomer);
+		// Zoomer zoomer = new Zoomer(vendingMachine, wrappingLayout);
+		// wrappingLayout.setZoomer(zoomer);
 
 		return vendingMachine;
 	}
@@ -265,10 +272,11 @@ public class GLVisBricks20
 		addGroupsToVisBricksListener.setHandler(this);
 		eventPublisher.addListener(AddGroupsToVisBricksEvent.class,
 				addGroupsToVisBricksListener);
-		
+
 		openVendingMachineListener = new OpenVendingMachineListener();
 		openVendingMachineListener.setHandler(this);
-		eventPublisher.addListener(OpenVendingMachineEvent.class, openVendingMachineListener);
+		eventPublisher.addListener(OpenVendingMachineEvent.class,
+				openVendingMachineListener);
 	}
 
 	@Override
@@ -279,7 +287,7 @@ public class GLVisBricks20
 			eventPublisher.removeListener(addGroupsToVisBricksListener);
 			addGroupsToVisBricksListener = null;
 		}
-		
+
 		if (openVendingMachineListener != null) {
 			eventPublisher.removeListener(openVendingMachineListener);
 			openVendingMachineListener = null;
@@ -321,15 +329,15 @@ public class GLVisBricks20
 		dataContainerWrapper.add(dataContainer);
 		addDimensionGroups(dataContainerWrapper, null);
 		visBricks.addDataContainers(dataContainerWrapper, null);
-		
+
 		vendingMachine.setDataContainer(dataContainer);
 	}
-	
+
 	public void addDimensionGroups(List<DataContainer> dataContainers,
 			IBrickConfigurer dataConfigurer) {
 
 		visBricks.addDataContainers(dataContainers, dataConfigurer);
-		
+
 		// Show dimension group as detail brick
 		for (DimensionGroup dimGroup : visBricks.getDimensionGroupManager()
 				.getDimensionGroups()) {
@@ -345,9 +353,9 @@ public class GLVisBricks20
 	public void vendingMachineSelectionFinished() {
 
 		detailDimensionGroup.hideDetailedBrick();
-		visBricks.updateLayout();	
+		visBricks.updateLayout();
 	}
-	
+
 	/**
 	 * @return the visBricks, see {@link #visBricks}
 	 */

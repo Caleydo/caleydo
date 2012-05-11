@@ -60,7 +60,7 @@ import org.eclipse.ui.PlatformUI;
  */
 public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner {
 
-	public static final String VIEW_TYPE = "org.caleydo.view.filter";
+	public static String VIEW_TYPE = "org.caleydo.view.filter";
 
 	private ATableBasedDataDomain dataDomain;
 

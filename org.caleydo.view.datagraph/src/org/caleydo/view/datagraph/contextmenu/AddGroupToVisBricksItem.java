@@ -28,7 +28,7 @@ public class AddGroupToVisBricksItem extends AContextMenuItem {
 
 	public AddGroupToVisBricksItem(GLVisBricks view, DataContainer dataContainer) {
 
-		setLabel("Add to " + view.getViewLabel());
+		setLabel("Add to " + view.getViewName());
 
 		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainer);
 		event.setReceiver(view);

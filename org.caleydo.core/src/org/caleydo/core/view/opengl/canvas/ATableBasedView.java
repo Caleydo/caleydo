@@ -85,7 +85,7 @@ public abstract class ATableBasedView extends AGLView implements
 	protected ConnectedElementRepresentationManager connectedElementRepresentationManager;
 
 	/**
-	 * This manager is responsible for the selection states of the records. 
+	 * This manager is responsible for the selection states of the records.
 	 */
 	protected RecordSelectionManager recordSelectionManager;
 
@@ -129,12 +129,15 @@ public abstract class ATableBasedView extends AGLView implements
 	 * Constructor for dimension based views
 	 * 
 	 * @param glCanvas
-	 * @param label
 	 * @param viewFrustum
+	 * @param viewType
+	 *            TODO
+	 * @param viewName TODO
+	 * @param label
 	 */
 	protected ATableBasedView(GLCanvas glCanvas, Composite parentComposite,
-			final ViewFrustum viewFrustum) {
-		super(glCanvas, parentComposite, viewFrustum);
+			final ViewFrustum viewFrustum, String viewType, String viewName) {
+		super(glCanvas, parentComposite, viewFrustum, viewType, viewName);
 
 		connectedElementRepresentationManager = generalManager.getViewManager()
 				.getConnectedElementRepresentationManager();

@@ -19,10 +19,19 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.gui;
 
+import java.util.ArrayList;
+
+import org.caleydo.core.data.configuration.DataChooserComposite;
+import org.caleydo.core.data.configuration.DataConfiguration;
+import org.caleydo.core.data.configuration.DataConfigurationChooser;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.event.view.browser.ChangeURLEvent;
+import org.caleydo.core.io.gui.IDataOKListener;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityTab;
 import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansTab;
@@ -39,6 +48,7 @@ import org.eclipse.swt.events.HelpListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
@@ -58,7 +68,7 @@ import org.eclipse.ui.actions.ActionFactory;
  * 
  */
 public class StartClusteringDialogAction extends Action implements
-		ActionFactory.IWorkbenchAction {
+		ActionFactory.IWorkbenchAction, IDataOKListener {
 
 	public final static String ID = "org.caleydo.core.util.clusterer.gui.StartClusteringAction";
 	public static final String TEXT = "Clustering";
@@ -69,34 +79,62 @@ public class StartClusteringDialogAction extends Action implements
 	private String clusterTargetName;
 	private String distanceMeasureName;
 
-	private String[] typeOptions = { "DYNAMIC_RECORD", "DYNAMIC_EXPERIMENT" };
+	private String[] typeOptions = { "Choose Dataset First", "Invisible" };
+	private Combo clusterTypeCombo;
+
 	private String[] distanceMeasureOptions = EDistanceMeasure.getNames();
 
+	private ATableBasedDataDomain dataDomain;
 	private AClusterConfiguration clusterConfiguration;
 
 	private RecordPerspective recordPerspective = null;
 	private DimensionPerspective dimensionPerspective = null;
 
-	TabFolder tabFolder;
+	private TabFolder tabFolder;
+
+	private DataChooserComposite dataChooser;
+	private IDataOKListener parent;
 
 	/**
 	 * Constructor.
 	 */
-	public StartClusteringDialogAction(final Composite parentComposite,
-			ATableBasedDataDomain dataDomain, DimensionPerspective dimensionPerspective,
-			RecordPerspective recordPerspective) {
+	public StartClusteringDialogAction(IDataOKListener parent,
+			final Composite parentComposite, ATableBasedDataDomain dataDomain,
+			DimensionPerspective dimensionPerspective, RecordPerspective recordPerspective) {
 		super(TEXT);
 		setId(ID);
 		setToolTipText(TEXT);
 		setImageDescriptor(ImageDescriptor.createFromImage(new ResourceLoader().getImage(
 				PlatformUI.getWorkbench().getDisplay(), ICON)));
 
+		this.parent = parent;
 		this.parentComposite = parentComposite;
+
+		if (dataDomain == null) {
+			// here we check whether there is a unique set of configurations for
+			// the datadomain
+			ArrayList<ATableBasedDataDomain> availableDomains = DataDomainManager.get()
+					.getDataDomainsByType(ATableBasedDataDomain.class);
+
+			ArrayList<ATableBasedDataDomain> tableBasedDataDomains = new ArrayList<ATableBasedDataDomain>();
+			for (ATableBasedDataDomain tempDataDomain : availableDomains) {
+				tableBasedDataDomains.add(tempDataDomain);
+			}
+			DataConfiguration config = DataConfigurationChooser
+					.determineDataConfiguration(tableBasedDataDomains, "Clustering",
+							false);
+
+			this.dataDomain = config.getDataDomain();
+			dimensionPerspective = config.getDimensionPerspective();
+			recordPerspective = config.getRecordPerspective();
+		}
+
 		this.dimensionPerspective = dimensionPerspective;
 		this.recordPerspective = recordPerspective;
-		typeOptions[0] = dataDomain.getRecordDenomination(true, false);
-		typeOptions[1] = dataDomain.getDimensionDenomination(true, false);
-
+		if (this.dataDomain != null) {
+			typeOptions[0] = this.dataDomain.getRecordDenomination(true, false);
+			typeOptions[1] = this.dataDomain.getDimensionDenomination(true, false);
+		}
 	}
 
 	@Override
@@ -106,18 +144,36 @@ public class StartClusteringDialogAction extends Action implements
 	}
 
 	private void createGUI() {
+		Composite composite = new Composite(parentComposite, 0);
 
-		Composite composite = new Composite(parentComposite, SWT.OK);
 		composite.setLayout(new GridLayout(1, false));
+
+		
+		
+		if (dataDomain == null) {
+			Group dataChooserGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+			dataChooserGroup.setText("Choose Dataset:");
+			dataChooserGroup.setLayout(new GridLayout(1, false));
+			dataChooser = new DataChooserComposite(this, dataChooserGroup, SWT.NONE);
+			dataChooser.setLayout(new GridLayout(1, false));
+			GridData gridData = new GridData(SWT.BEGINNING, SWT.TOP, true, false);
+			// gridData.grabExcessHorizontalSpace = true;
+			gridData.minimumWidth = 300;
+			dataChooser.setLayoutData(gridData);
+		}
 
 		Group clusterDimensionGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		clusterDimensionGroup.setText("Cluster:");
 		clusterDimensionGroup.setLayout(new GridLayout(1, false));
 
-		final Combo clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
+		clusterTypeCombo = new Combo(clusterDimensionGroup, SWT.DROP_DOWN);
 		clusterTypeCombo.setItems(typeOptions);
 		clusterTypeCombo.select(0);
 		clusterTargetName = typeOptions[0];
+
+		if (dataDomain == null) {
+			clusterTypeCombo.setEnabled(false);
+		}
 
 		Group distanceMeasureGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		distanceMeasureGroup.setText("Distance measure:");
@@ -209,7 +265,7 @@ public class StartClusteringDialogAction extends Action implements
 		});
 
 		tabFolder.pack();
-		composite.pack();
+		// composite.pack();
 	}
 
 	public void execute(boolean cancelPressed) {
@@ -243,6 +299,16 @@ public class StartClusteringDialogAction extends Action implements
 				clusterConfiguration.getClusterAlgorithmName());
 		progressBar.run();
 
+		if (clusterConfiguration == null)
+			return;
+
+		StartClusteringEvent event = null;
+		// if (clusterState != null && set != null)
+
+		event = new StartClusteringEvent(clusterConfiguration);
+		event.setDataDomainID(dataDomain.getDataDomainID());
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+
 	}
 
 	@Override
@@ -251,6 +317,21 @@ public class StartClusteringDialogAction extends Action implements
 
 	public AClusterConfiguration getClusterState() {
 		return clusterConfiguration;
+	}
+
+	@Override
+	public void dataOK() {
+		dataDomain = dataChooser.getDataDomain();
+		recordPerspective = dataChooser.getRecordPerspective();
+		dimensionPerspective = dataChooser.getDimensionPerspective();
+
+		typeOptions[0] = dataDomain.getRecordDenomination(true, false);
+		typeOptions[1] = dataDomain.getDimensionDenomination(true, false);
+		clusterTypeCombo.setItems(typeOptions);
+		clusterTypeCombo.select(0);
+		clusterTypeCombo.setEnabled(true);
+		clusterTargetName = typeOptions[0];
+		parent.dataOK();
 	}
 
 }

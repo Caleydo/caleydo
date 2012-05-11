@@ -100,12 +100,6 @@ public abstract class AGLView
 	extends AView
 	implements GLEventListener, IResettableView, IMouseWheelHandler {
 
-	public final static String VIEW_TYPE = "unspecified";
-	/** The human readable view name used to identifying the type of the view */
-	protected String viewLabel = "Unspecified view name";
-	/** The caption of the view */
-	protected String label = "Not set";
-
 	public enum EBusyState {
 		SWITCH_OFF,
 		ON,
@@ -210,12 +204,14 @@ public abstract class AGLView
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered
 	 * remote.
+	 * @param viewType TODO
+	 * @param viewName TODO
 	 */
 	protected AGLView(GLCanvas glCanvas, Composite parentComposite,
-			final ViewFrustum viewFrustum) {
+			final ViewFrustum viewFrustum, String viewType, String viewName) {
 
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW),
-				parentComposite);
+				parentComposite, viewType, viewName);
 
 		GeneralManager.get().getViewManager().registerGLView(this);
 		parentGLCanvas = glCanvas;
@@ -295,19 +291,6 @@ public abstract class AGLView
 		initLocal(gl);
 	}
 
-	/**
-	 * @param label setter, see {@link #viewLabel}
-	 */
-	public void setViewLabel(String viewLabel) {
-		this.viewLabel = viewLabel;
-	}
-
-	/**
-	 * @return the label, see {@link #viewLabel}
-	 */
-	public String getViewLabel() {
-		return viewLabel;
-	}
 
 	@Override
 	public final void display(GLAutoDrawable drawable) {
@@ -1259,19 +1242,7 @@ public abstract class AGLView
 		return contextMenuCreator;
 	}
 
-	/** Returns the heading of the view, should be overriden in the subviews */
-	public String getLabel() {
-		return viewLabel;
-	}
 
-	/**
-	 * Set the heading of the view
-	 * 
-	 * @param label
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-	}
 
 	/**
 	 * Method recursively determines the top level GL view. Picking listeners

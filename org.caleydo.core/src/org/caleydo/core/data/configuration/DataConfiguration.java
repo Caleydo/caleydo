@@ -22,6 +22,7 @@
  */
 package org.caleydo.core.data.configuration;
 
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
@@ -34,7 +35,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
  */
 public class DataConfiguration {
 
-	private IDataDomain dataDomain;
+	private ATableBasedDataDomain dataDomain;
 	private RecordPerspective recordPerspective;
 	private DimensionPerspective dimensionPerspective;
 
@@ -47,7 +48,7 @@ public class DataConfiguration {
 	/**
 	 * @return the dataDomain, see {@link #dataDomain}
 	 */
-	public IDataDomain getDataDomain() {
+	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
 
@@ -55,7 +56,7 @@ public class DataConfiguration {
 	 * @param dataDomain
 	 *            setter, see {@link #dataDomain}
 	 */
-	public void setDataDomain(IDataDomain dataDomain) {
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
 

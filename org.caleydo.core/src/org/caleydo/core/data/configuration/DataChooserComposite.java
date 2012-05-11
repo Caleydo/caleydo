@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -36,16 +36,17 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 
 /**
- * Composite that lets a user determine which instance of {@link ATableBasedDataDomain} and the respective
- * {@link ADataPerspective}s to use.
+ * Composite that lets a user determine which instance of
+ * {@link ATableBasedDataDomain} and the respective {@link ADataPerspective}s to
+ * use.
  * 
  * @author Alexander Lex
  */
-public class DataChooserComposite
-	extends Composite {
+public class DataChooserComposite extends Composite {
 
 	public static int DATA_READY_EVENT = 1986;
 
@@ -79,36 +80,31 @@ public class DataChooserComposite
 	 * @param style
 	 *            the SWT style
 	 */
-	public DataChooserComposite(IDataOKListener dataOKListener, Composite parent, int style) {
+	public DataChooserComposite(IDataOKListener dataOKListener, Composite parent,
+			int style) {
 		super(parent, style);
 		this.dataOKListener = dataOKListener;
 		this.parent = parent;
+		initGui();
 	}
 
 	/** Creates the GUI for this composite */
 	public void initGui() {
-		// Composite composite = new Composite(parent, SWT.BORDER_DASH);
-		GridLayout layout = new GridLayout(2, false);
+		GridLayout layout = new GridLayout(1, false);
 		this.setLayout(layout);
-		// composite.setLayout(layout);
+		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+		gridData.grabExcessHorizontalSpace = true;
+		this.setLayoutData(gridData);
 
-		int labelWidth = 150;
-		Label dataDomainLabel = new Label(this, SWT.BORDER);
-		dataDomainLabel.setText("Data set:");
-		GridData data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		data.minimumWidth = labelWidth;
-		dataDomainLabel.setLayoutData(data);
+		Group dataDomainGroup = new Group(this, SWT.NONE);
+		dataDomainGroup.setText("Data set:");
+		dataDomainGroup.setLayout(new GridLayout(1, false));
 
-		dataDomainChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
+		dataDomainChooser = new Combo(dataDomainGroup, SWT.NONE);
 		dataDomainChooser.setText("Choose data set");
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		data.minimumWidth = 400;
-		dataDomainChooser.setLayoutData(data);
 
-		ArrayList<ATableBasedDataDomain> tDataDomains =
-			DataDomainManager.get().getDataDomainsByType(ATableBasedDataDomain.class);
+		ArrayList<ATableBasedDataDomain> tDataDomains = DataDomainManager.get()
+				.getDataDomainsByType(ATableBasedDataDomain.class);
 		possibleDataDomains = new String[tDataDomains.size()];
 		for (int count = 0; count < tDataDomains.size(); count++) {
 			possibleDataDomains[count] = tDataDomains.get(count).getDataDomainID();
@@ -117,36 +113,36 @@ public class DataChooserComposite
 		}
 		if (possibleDataDomains.length == 1) {
 			dataDomainChooser.select(0);
-			dataDomain =
-				(ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(possibleDataDomains[0]);
+			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+					.getDataDomainByID(possibleDataDomains[0]);
 		}
 
 		dataDomainChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
 
-				String dataDomainID = possibleDataDomains[dataDomainChooser.getSelectionIndex()];
+				String dataDomainID = possibleDataDomains[dataDomainChooser
+						.getSelectionIndex()];
 				System.out.println(dataDomainID);
-				dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(dataDomainID);
+				dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+						.getDataDomainByID(dataDomainID);
 				initDataPerspectiveChoosers(parent);
 				checkOK();
 			}
 		});
 
-		Label recordPerspectiveLabel = new Label(this, SWT.BORDER);
-		recordPerspectiveLabel.setText("Rows: ");
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		data.minimumWidth = labelWidth;
-		recordPerspectiveLabel.setLayoutData(data);
+		Group recordPerspectiveGroup = new Group(this, SWT.NONE);
+		recordPerspectiveGroup.setText("Rows:");
+		recordPerspectiveGroup.setLayout(new GridLayout(1, false));
 
-		recordPerspectiveChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
+		recordPerspectiveChooser = new Combo(recordPerspectiveGroup, SWT.DROP_DOWN
+				| SWT.BORDER);
 		recordPerspectiveChooser.setText("Choose record perspective");
 
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		data.minimumWidth = 400;
-		recordPerspectiveChooser.setLayoutData(data);
+		// data = new GridData(GridData.FILL_HORIZONTAL);
+		// data.horizontalSpan = 1;
+		// data.minimumWidth = 400;
+		// recordPerspectiveChooser.setLayoutData(data);
 
 		recordPerspectiveChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -156,25 +152,31 @@ public class DataChooserComposite
 			}
 		});
 
-		Label dimensionPerspectiveLabel = new Label(this, SWT.BORDER);
-		dimensionPerspectiveLabel.setText("Columns: ");
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		data.minimumWidth = labelWidth;
-		dimensionPerspectiveLabel.setLayoutData(data);
+		// Label dimensionPerspectiveLabel = new Label(this, SWT.BORDER);
+		// dimensionPerspectiveLabel.setText("Columns: ");
+		// data = new GridData(GridData.FILL_HORIZONTAL);
+		// data.horizontalSpan = 1;
+		// data.minimumWidth = labelWidth;
+		// dimensionPerspectiveLabel.setLayoutData(data);
 
-		dimensionPerspectiveChooser = new Combo(this, SWT.DROP_DOWN | SWT.BORDER);
-		dimensionPerspectiveChooser.setText("Choose dimension perspective");
+		Group dimensionPerspectiveGroup = new Group(this, SWT.NONE);
+		dimensionPerspectiveGroup.setText("Columns:");
+		dimensionPerspectiveGroup.setLayout(new GridLayout(1, false));
 
-		data = new GridData(GridData.FILL_HORIZONTAL);
-		data.horizontalSpan = 1;
-		data.minimumWidth = 400;
-		dimensionPerspectiveChooser.setLayoutData(data);
+		dimensionPerspectiveChooser = new Combo(dimensionPerspectiveGroup, SWT.DROP_DOWN
+				| SWT.BORDER);
+		dimensionPerspectiveChooser.setText("Choose columns:");
+		//
+		// data = new GridData(GridData.FILL_HORIZONTAL);
+		// data.horizontalSpan = 1;
+		// data.minimumWidth = 400;
+		// dimensionPerspectiveChooser.setLayoutData(data);
 
 		dimensionPerspectiveChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent event) {
-				selectDimensionPerspective(dimensionPerspectiveChooser.getSelectionIndex());
+				selectDimensionPerspective(dimensionPerspectiveChooser
+						.getSelectionIndex());
 				checkOK();
 			}
 		});
@@ -184,10 +186,11 @@ public class DataChooserComposite
 
 	private final void initDataPerspectiveChoosers(Composite parent) {
 		if (dataDomain != null) {
-			possibleRecordPerspectives = dataDomain.getRecordPerspectiveIDs().toArray(new String[0]);
-			possibleDimensionPerspectives = dataDomain.getDimensionPerspectiveIDs().toArray(new String[0]);
-		}
-		else {
+			possibleRecordPerspectives = dataDomain.getRecordPerspectiveIDs().toArray(
+					new String[0]);
+			possibleDimensionPerspectives = dataDomain.getDimensionPerspectiveIDs()
+					.toArray(new String[0]);
+		} else {
 			possibleRecordPerspectives = new String[] { "Choose data set first!" };
 			possibleDimensionPerspectives = new String[] { "Choose data set first!" };
 			return;
@@ -196,24 +199,23 @@ public class DataChooserComposite
 		recordPerspectiveChooser.removeAll();
 		for (int index = 0; index < possibleRecordPerspectives.length; index++) {
 			String possibleDataPerspective = possibleRecordPerspectives[index];
-			String recordPerspectiveLabel =
-				dataDomain.getTable().getRecordPerspective(possibleDataPerspective).getLabel();
+			String recordPerspectiveLabel = dataDomain.getTable()
+					.getRecordPerspective(possibleDataPerspective).getLabel();
 			recordPerspectiveChooser.add(recordPerspectiveLabel, index);
 		}
 
 		dimensionPerspectiveChooser.removeAll();
 		for (int index = 0; index < possibleDimensionPerspectives.length; index++) {
 			String possibleDataPerspective = possibleDimensionPerspectives[index];
-			String dimensionPerspectiveLabel =
-				dataDomain.getTable().getDimensionPerspective(possibleDataPerspective).getLabel();
+			String dimensionPerspectiveLabel = dataDomain.getTable()
+					.getDimensionPerspective(possibleDataPerspective).getLabel();
 			dimensionPerspectiveChooser.add(dimensionPerspectiveLabel, index);
 		}
 
 		if (dataDomain == null) {
 			recordPerspectiveChooser.setEnabled(false);
 			dimensionPerspectiveChooser.setEnabled(false);
-		}
-		else {
+		} else {
 			selectRecordPerspective(0);
 			recordPerspectiveChooser.select(0);
 			selectDimensionPerspective(0);
@@ -226,16 +228,19 @@ public class DataChooserComposite
 
 	private final void selectDimensionPerspective(int index) {
 		String dimensionPerspectiveID = possibleDimensionPerspectives[index];
-		dimensionPerspective = dataDomain.getTable().getDimensionPerspective(dimensionPerspectiveID);
+		dimensionPerspective = dataDomain.getTable().getDimensionPerspective(
+				dimensionPerspectiveID);
 	}
 
 	private final void selectRecordPerspective(int index) {
 		String recordPerspectiveID = possibleRecordPerspectives[index];
-		recordPerspective = dataDomain.getTable().getRecordPerspective(recordPerspectiveID);
+		recordPerspective = dataDomain.getTable().getRecordPerspective(
+				recordPerspectiveID);
 	}
 
 	private final boolean checkOK() {
-		if (dataDomain == null || recordPerspective == null || dimensionPerspective == null) {
+		if (dataDomain == null || recordPerspective == null
+				|| dimensionPerspective == null) {
 			return false;
 		}
 		dataOKListener.dataOK();
@@ -243,12 +248,14 @@ public class DataChooserComposite
 	}
 
 	/**
-	 * Tells the caller whether all the data has been correctly chosen by the user and is ready to be accessed
+	 * Tells the caller whether all the data has been correctly chosen by the
+	 * user and is ready to be accessed
 	 * 
 	 * @return true if the data is ready, else false.
 	 */
 	public final boolean isOK() {
-		if (dataDomain == null || recordPerspective == null || dimensionPerspective == null) {
+		if (dataDomain == null || recordPerspective == null
+				|| dimensionPerspective == null) {
 			return false;
 		}
 		return true;

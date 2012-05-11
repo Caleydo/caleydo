@@ -74,7 +74,7 @@ public class ExceptionHandler {
 					new MessageBox(glEventListener.getParentComposite().getShell(), SWT.OK);
 				messageBox.setText("Error in view");
 				messageBox.setMessage("An unexpected error occured in view "
-					+ glEventListener.getViewLabel()
+					+ glEventListener.getViewName()
 					+ ". The view will be closed now. See the error log for details. You can try to re-open it.");
 				messageBox.open();
 			}

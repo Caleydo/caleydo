@@ -76,7 +76,11 @@ import org.eclipse.swt.widgets.Display;
  */
 public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateListener {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.heatmap";
+	public static String VIEW_TYPE = "org.caleydo.view.heatmap";
+	
+	public static String VIEW_NAME = "Heatmap";
+
+
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden",
 			new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
 
@@ -113,9 +117,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	 */
 	public GLHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-		viewType = GLHeatMap.VIEW_TYPE;
-
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
+	
 		glKeyListener = new GLHeatMapKeyListener(this);
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 	}

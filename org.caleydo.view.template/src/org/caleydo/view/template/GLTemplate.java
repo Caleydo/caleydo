@@ -51,9 +51,11 @@ import org.eclipse.swt.widgets.Composite;
 
 public class GLTemplate extends ATableBasedView {
 
-	// TODO: RENAME
-	public final static String VIEW_TYPE = "org.caleydo.view.template";
-
+	
+	public static String VIEW_TYPE = "org.caleydo.view.template";
+	
+	public static String VIEW_NAME = "View Template";
+	
 	private TemplateRenderStyle renderStyle;
 
 	/**
@@ -66,11 +68,7 @@ public class GLTemplate extends ATableBasedView {
 	public GLTemplate(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-
-		viewType = GLTemplate.VIEW_TYPE;
-		// TODO: RENAME
-		viewLabel = "Template";
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 	}
 
 	@Override

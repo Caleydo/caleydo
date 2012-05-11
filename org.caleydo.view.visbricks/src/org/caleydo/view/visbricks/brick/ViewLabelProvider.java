@@ -41,7 +41,7 @@ public class ViewLabelProvider implements ILabelProvider {
 
 	@Override
 	public String getLabel() {
-		return view.getLabel();
+		return view.getCustomLabel();
 	}
 
 	@Override

@@ -66,8 +66,8 @@ public class ChooseDataConfigurationDialog
 
 	private void createGUI(Composite shell) {
 		shell.setLayout(new GridLayout(1, false));
-		dataChooserComposite = new DataChooserComposite(this, shell, SWT.BORDER);
-		dataChooserComposite.initGui();
+		dataChooserComposite = new DataChooserComposite(this, shell, SWT.NONE);
+	
 	}
 
 	@Override

@@ -53,9 +53,11 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  */
 public class GLHistogram extends ATableBasedView {
+	public static String VIEW_TYPE = "org.caleydo.view.histogram";
+	
+	public static String VIEW_NAME = "Histogram";
 
-	public final static String VIEW_TYPE = "org.caleydo.view.histogram";
-
+	
 	private boolean bUseDetailLevel = true;
 
 	private boolean useColor = true;
@@ -88,10 +90,7 @@ public class GLHistogram extends ATableBasedView {
 	public GLHistogram(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-
-		viewType = VIEW_TYPE;
-		viewLabel = "Histogram";
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		renderStyle = new HistogramRenderStyle(this, viewFrustum);
 

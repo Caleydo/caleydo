@@ -96,8 +96,12 @@ import com.jogamp.opengl.util.texture.TextureCoords;
 public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		IRemoteRenderingHandler, IPathwayLoader {
 
-	public final static String VIEW_TYPE = "org.caleydo.view.dataflipper";
+	public static String VIEW_TYPE = "org.caleydo.view.dataflipper";
+	
+	public static String VIEW_NAME = "Data Flipper";
+	
 
+	
 	public final static float[] GUIDANCE_COLOR = new float[] { 1f, 0, 0, 1 };
 	// public final static float[] MOUSE_OVER_INTERFACE_BACKGROUND_COLOR = new
 	// float[]{0.3f, 0.3f, 0.3f, 1};
@@ -196,9 +200,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 	public GLDataFlipper(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
-
-		viewType = GLDataFlipper.VIEW_TYPE;
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		viewCamera.setCameraRotation(new Rotf());
 		viewCamera.setCameraPosition(new Vec3f(0, 0, -8));
@@ -2020,7 +2022,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		gl.glPopName();
 
 		// Render view information
-		String sText = element.getGLView().getViewLabel();
+		String sText = element.getGLView().getViewName();
 
 		int iMaxChars = 50;
 		if (sText.length() > iMaxChars) {

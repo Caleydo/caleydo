@@ -113,7 +113,7 @@ public class SelectionBrowserView extends ASWTView implements ISelectionUpdateHa
 	 */
 	public SelectionBrowserView(Composite parentComposite) {
 
-		super(-1, parentComposite);
+		super(-1, parentComposite, "SelectionBrowser???", "Selection Browser");
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		registerEventListeners();

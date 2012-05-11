@@ -116,8 +116,11 @@ import org.eclipse.ui.PlatformUI;
  * @author Christian Partl
  */
 public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler {
+	public static String VIEW_TYPE = "org.caleydo.view.datagraph";
+	
+	public static String VIEW_NAME = "Data-View Integrator";
+	
 
-	public final static String VIEW_TYPE = "org.caleydo.view.datagraph";
 
 	public final static int BOUNDS_SPACING_PIXELS = 10;
 
@@ -173,11 +176,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	public GLDataViewIntegrator(GLCanvas glCanvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
 		connectionBandRenderer = new ConnectionBandRenderer();
-		viewType = GLDataViewIntegrator.VIEW_TYPE;
-		viewLabel = "Data-View Integrator";
+		VIEW_TYPE = GLDataViewIntegrator.VIEW_TYPE;
+		
 		
 		glKeyListener = new GLDataGraphKeyListener();
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);

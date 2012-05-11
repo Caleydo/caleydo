@@ -99,8 +99,10 @@ import org.eclipse.ui.PlatformUI;
  * @author Marc Streit
  */
 public class GLGrouper extends ATableBasedView implements IClusterNodeEventReceiver {
+	public static String VIEW_TYPE = "org.caleydo.view.grouper";
+	
+	public static String VIEW_NAME = "Grouper";
 
-	public final static String VIEW_TYPE = "org.caleydo.view.grouper";
 
 	boolean useDetailLevel = true;
 
@@ -146,9 +148,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	 */
 	public GLGrouper(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
-		super(glCanvas, parentComposite, viewFrustum);
+		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		viewType = VIEW_TYPE;
 		hashGroups = new HashMap<Integer, GroupRepresentation>();
 
 		dragAndDropController = new DragAndDropController(this);
