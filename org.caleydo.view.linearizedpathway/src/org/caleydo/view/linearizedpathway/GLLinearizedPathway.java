@@ -20,24 +20,29 @@
 package org.caleydo.view.linearizedpathway;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.IEventBasedSelectionManagerUser;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.event.SetMinViewSizeEvent;
+import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
@@ -154,10 +159,16 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	 */
 	private Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
 
+	// /**
+	// * All genetic data domains.
+	// */
+	// private List<GeneticDataDomain> geneticDataDomains = new
+	// ArrayList<GeneticDataDomain>();
+
 	/**
-	 * All genetic data domains.
+	 * The {@link IDataDomain}s for which data is displayed in this view.
 	 */
-	private List<GeneticDataDomain> geneticDataDomains = new ArrayList<GeneticDataDomain>();
+	private Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 
 	/**
 	 * The branch node that is currently expanded to show the possible branches.
@@ -203,11 +214,12 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		viewType = GLLinearizedPathway.VIEW_TYPE;
 		viewLabel = "Linearized Pathway";
 
-		List<IDataDomain> dataDomains = DataDomainManager.get().getDataDomainsByType(
-				"org.caleydo.datadomain.genetic");
-		for (IDataDomain dataDomain : dataDomains) {
-			geneticDataDomains.add((GeneticDataDomain) dataDomain);
-		}
+		// List<IDataDomain> dataDomains =
+		// DataDomainManager.get().getDataDomainsByType(
+		// "org.caleydo.datadomain.genetic");
+		// for (IDataDomain dataDomain : dataDomains) {
+		// geneticDataDomains.add((GeneticDataDomain) dataDomain);
+		// }
 		mappedDataRenderer = new MappedDataRenderer(this);
 
 		geneSelectionManager = new EventBasedSelectionManager(this,
@@ -446,7 +458,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	@Override
 	public void display(GL2 gl) {
 
-//		setMappedDataRendererGeometry();
+		// setMappedDataRendererGeometry();
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -457,7 +469,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	}
 
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
-		
+
 		dataRowHeight = pixelGLConverter
 				.getGLHeightForPixelHeight(DEFAULT_DATA_ROW_HEIGHT_PIXELS);
 		setMappedDataRendererGeometry();
@@ -541,7 +553,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 		float dataRowPositionX = branchColumnWidth + pathwayColumnWidth;
 
-		float topSpacing = pixelGLConverter.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
+		float topSpacing = pixelGLConverter
+				.getGLWidthForPixelWidth(TOP_SPACING_MAPPED_DATA);
 		gl.glPushMatrix();
 
 		// TODO do this only when necessary - cause re-initialization
@@ -1027,7 +1040,8 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 
 	private void setMappedDataRendererGeometry() {
 
-		float topSpacing = pixelGLConverter.getGLHeightForPixelHeight(TOP_SPACING_MAPPED_DATA);
+		float topSpacing = pixelGLConverter
+				.getGLHeightForPixelHeight(TOP_SPACING_MAPPED_DATA);
 		float branchColumnWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(BRANCH_COLUMN_WIDTH_PIXELS);
 		float pathwayColumnWidth = pixelGLConverter
@@ -1252,9 +1266,10 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (ANode node : branchNodes) {
 			if (node instanceof ALinearizableNode) {
 				setMappedDavidIds((ALinearizableNode) node);
-				((ALinearizableNode)node).update();
+				((ALinearizableNode) node).update();
 			}
 		}
+		dataDomains.add(newDataContainer.getDataDomain());
 		setMappedDataRendererGeometry();
 		setDisplayListDirty();
 	}
@@ -1268,10 +1283,18 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 		for (ANode node : branchNodes) {
 			if (node instanceof ALinearizableNode) {
 				setMappedDavidIds((ALinearizableNode) node);
-				((ALinearizableNode)node).update();
+				((ALinearizableNode) node).update();
 			}
 		}
+		for (DataContainer dataContainer : newDataContainers) {
+			dataDomains.add(dataContainer.getDataDomain());
+		}
+
 		setMappedDataRendererGeometry();
+
+		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
 		setDisplayListDirty();
 	}
 
@@ -1323,16 +1346,21 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	public EventBasedSelectionManager getMetaboliteSelectionManager() {
 		return metaboliteSelectionManager;
 	}
-	
+
 	/**
 	 * @return the mappedDataRenderer, see {@link #mappedDataRenderer}
 	 */
 	public MappedDataRenderer getMappedDataRenderer() {
 		return mappedDataRenderer;
 	}
-	
+
 	public List<DataContainer> getResolvedDataContainers() {
 		return mappedDataRenderer.getResolvedDataContainers();
+	}
+
+	@Override
+	public Set<IDataDomain> getDataDomains() {
+		return dataDomains;
 	}
 
 }
