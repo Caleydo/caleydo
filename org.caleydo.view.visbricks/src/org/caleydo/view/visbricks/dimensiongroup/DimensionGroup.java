@@ -272,10 +272,11 @@ public class DimensionGroup extends ATableBasedView implements
 	 * is rendered and no other bricks
 	 */
 	public void setCollapsed(boolean isCollapsed) {
-		this.isCollapsed = false;// isCollapsed;
-		// centerBrick.setBrickLayoutTemplate(new
-		// CompactBrickLayoutTemplate(centerBrick,
-		// glVisBricksView, this));
+		this.isCollapsed = isCollapsed;
+		// isCollapsed;
+//		 centerBrick.setBrickLayoutTemplate(new
+//		 CompactBrickLayoutTemplate(centerBrick,
+//		 glVisBricksView, this));
 
 		if (headerBrick == null || uninitializedBricks.contains(headerBrick))
 			return;
