@@ -24,9 +24,13 @@ package org.caleydo.core.view.opengl.util.connectionline;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
+
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
+import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**
@@ -36,11 +40,11 @@ import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
  * 
  */
 public class LineLabelRenderer extends ARelativeLinePositionRenderer {
-	
+
 	public static final int DEFAULT_TEXT_HEIGHT = 13;
 	public static final int DEFAULT_LINE_OFFSET = 0;
-	public static final float[] DEFAULT_TEXT_COLOR = {0,0,0,1};
-	public static final float[] DEFAULT_BACK_GROUND_COLOR = {1,1,1,1};
+	public static final float[] DEFAULT_TEXT_COLOR = { 0, 0, 0, 1 };
+	public static final float[] DEFAULT_BACK_GROUND_COLOR = { 1, 1, 1, 1 };
 
 	private CaleydoTextRenderer textRenderer;
 
@@ -59,21 +63,27 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 	 * label is rendered at the center of the line.
 	 */
 	private int lineOffsetPixels = DEFAULT_LINE_OFFSET;
-	
+
 	/**
 	 * RGBA color of the text.
 	 */
 	private float[] textColor = DEFAULT_TEXT_COLOR;
-	
+
 	/**
 	 * RGBA color of the text's background.
 	 */
 	private float[] backGroundColor = DEFAULT_BACK_GROUND_COLOR;
 
 	/**
-	 * @param linePositionProportion
-	 * @param pixelGLConverter
+	 * Specifies whether the text is centered at the position it is rendered.
 	 */
+	private boolean isCentered = false;
+
+	/**
+	 * Provider of the label text.
+	 */
+	private ILabelProvider labelProvider;
+
 	public LineLabelRenderer(float linePositionProportion,
 			PixelGLConverter pixelGLConverter, String text,
 			CaleydoTextRenderer textRenderer) {
@@ -82,33 +92,50 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 		this.text = text;
 	}
 
+	public LineLabelRenderer(float linePositionProportion,
+			PixelGLConverter pixelGLConverter, ILabelProvider labelProvider,
+			CaleydoTextRenderer textRenderer) {
+		super(linePositionProportion, pixelGLConverter);
+		this.textRenderer = textRenderer;
+	}
+
 	@Override
 	protected void render(GL2 gl, List<Vec3f> linePoints, Vec3f relativePositionOnLine,
 			Vec3f enclosingPoint1, Vec3f enclosingPoint2) {
 
+		if (labelProvider != null)
+			text = labelProvider.getLabel();
+
 		float height = pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels);
-		//Add some spacing because required width calculation is not always accurate
-		float width = textRenderer.getRequiredTextWidth(text, height) + pixelGLConverter.getGLWidthForPixelWidth(3);
+		// Add some spacing because required width calculation is not always
+		// accurate
+		float width = textRenderer.getRequiredTextWidth(text, height)
+				+ pixelGLConverter.getGLWidthForPixelWidth(3);
 		float lineOffset = pixelGLConverter.getGLWidthForPixelWidth(lineOffsetPixels);
 		float xPosition;
 		float yPosition;
 
 		if (lineOffsetPixels == 0) {
-			xPosition = relativePositionOnLine.x() - width / 2.0f;
-			yPosition = relativePositionOnLine.y() - height / 2.0f;
+			xPosition = relativePositionOnLine.x() - ((isCentered) ? width / 2.0f : 0);
+			yPosition = relativePositionOnLine.y() - ((isCentered) ? height / 2.0f : 0);
 		} else {
 			Vec3f direction = enclosingPoint2.minus(enclosingPoint1);
 			Vec2f normalVector = new Vec2f(-direction.y(), direction.x());
 			float scalingFactor = lineOffset / normalVector.length();
 			normalVector.scale(scalingFactor);
 			xPosition = relativePositionOnLine.x() + normalVector.x();
-			if (xPosition < relativePositionOnLine.x()) {
-				xPosition-= width;
-			}
-				
 			yPosition = relativePositionOnLine.y() + normalVector.y();
-			if (yPosition < relativePositionOnLine.y()) {
-				yPosition-= height;
+
+			if (isCentered) {
+				xPosition -= width / 2.0f;
+				yPosition -= height / 2.0f;
+			} else {
+				if (xPosition < relativePositionOnLine.x()) {
+					xPosition -= width;
+				}
+				if (yPosition < relativePositionOnLine.y()) {
+					yPosition -= height;
+				}
 			}
 		}
 
@@ -171,33 +198,65 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 	public int getLineOffsetPixels() {
 		return lineOffsetPixels;
 	}
-	
+
 	/**
-	 * @param textColor setter, see {@link #textColor}
+	 * @param textColor
+	 *            setter, see {@link #textColor}
 	 */
 	public void setTextColor(float[] textColor) {
 		this.textColor = textColor;
 	}
-	
+
 	/**
 	 * @return the textColor, see {@link #textColor}
 	 */
 	public float[] getTextColor() {
 		return textColor;
 	}
-	
+
 	/**
-	 * @param backGroundColor setter, see {@link #backGroundColor}
+	 * @param backGroundColor
+	 *            setter, see {@link #backGroundColor}
 	 */
 	public void setBackGroundColor(float[] backGroundColor) {
 		this.backGroundColor = backGroundColor;
 	}
-	
+
 	/**
 	 * @return the backGroundColor, see {@link #backGroundColor}
 	 */
 	public float[] getBackGroundColor() {
 		return backGroundColor;
+	}
+
+	/**
+	 * @param isCentered
+	 *            setter, see {@link #isCentered}
+	 */
+	public void setCentered(boolean isCentered) {
+		this.isCentered = isCentered;
+	}
+
+	/**
+	 * @return the isCentered, see {@link #isCentered}
+	 */
+	public boolean isCentered() {
+		return isCentered;
+	}
+
+	/**
+	 * @param labelProvider
+	 *            setter, see {@link #labelProvider}
+	 */
+	public void setLabelProvider(ILabelProvider labelProvider) {
+		this.labelProvider = labelProvider;
+	}
+
+	/**
+	 * @return the labelProvider, see {@link #labelProvider}
+	 */
+	public ILabelProvider getLabelProvider() {
+		return labelProvider;
 	}
 
 }

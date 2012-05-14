@@ -124,7 +124,8 @@ public class GLHistogram extends ATableBasedView {
 	@Override
 	public void initData() {
 		super.initData();
-		if (dataContainer.getDataDomain().getTable().isDataHomogeneous()) {
+		if ((dataContainer != null)
+				&& (dataContainer.getDataDomain().getTable().isDataHomogeneous())) {
 			if (histogram == null) {
 				histogram = dataContainer.getContainerStatistics().getHistogram();
 			}

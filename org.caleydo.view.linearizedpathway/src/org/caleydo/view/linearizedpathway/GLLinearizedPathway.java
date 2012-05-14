@@ -921,6 +921,7 @@ public class GLLinearizedPathway extends AGLView implements IMultiDataContainerB
 	private LineLabelRenderer createDefaultLabelOnLineRenderer(String text) {
 		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f,
 				pixelGLConverter, text, textRenderer);
+		lineLabelRenderer.setCentered(true);
 		lineLabelRenderer.setLineOffsetPixels(0);
 		return lineLabelRenderer;
 	}

@@ -218,6 +218,58 @@ public class CaleydoTextRenderer extends TextRenderer {
 	}
 
 	/**
+	 * Render the text at the position specified (lower left corner) with the
+	 * specified rotation within the bounding box. The height is scaled to fit,
+	 * the string is truncated to fit the width.
+	 * 
+	 * @param gl
+	 * @param text
+	 * @param xPosition
+	 *            x of lower left corner
+	 * @param yPosition
+	 *            y of lower left corner
+	 * @param zPositon
+	 * @param width
+	 *            width fo the bounding box
+	 * @param height
+	 *            height of the bounding box
+	 * @param rotationAngle
+	 *            rotation angle in degrees
+	 */
+	public void renderRotatedTextInBounds(GL2 gl, String text, float xPosition,
+			float yPosition, float zPositon, float width, float height,
+			float rotationAngle) {
+
+		// we use the height of a standard string so we don't have varying
+		// height
+		double scaling = height / super.getBounds("Sgfy").getHeight();
+
+		Rectangle2D boundsForWidth = super.getBounds(text);
+		double requiredWidth = boundsForWidth.getWidth() * scaling;
+		if (requiredWidth > width) {
+			double truncateFactor = width / requiredWidth;
+			int length = (int) (text.length() * truncateFactor);
+			if (length >= 0)
+				text = text.substring(0, length);
+
+			Rectangle2D checkedBounds = super.getBounds(text);
+			if (width < checkedBounds.getWidth() * scaling && text.length() > 0)
+				text = text.substring(0, length - 1);
+		}
+
+		gl.glPushMatrix();
+		gl.glTranslatef(xPosition, yPosition, zPositon);
+		gl.glRotatef(rotationAngle, 0, 0, 1);
+
+		begin3DRendering();
+		draw3D(text, 0, 0, 0, (float) scaling);
+		flush();
+		end3DRendering();
+
+		gl.glPopMatrix();
+	}
+
+	/**
 	 * Calculates the required width of a text with a specified height.
 	 * 
 	 * @param text
@@ -231,11 +283,11 @@ public class CaleydoTextRenderer extends TextRenderer {
 		double scaling = height / super.getBounds("Sgfy").getHeight();
 
 		Rectangle2D boundsForWidth = super.getBounds(text);
-//		double requiredWidth = boundsForWidth.getWidth() * scaling;
+		// double requiredWidth = boundsForWidth.getWidth() * scaling;
 
-//		Rectangle2D bounds = super.getBounds(text);
-//
-//		double scaling = height / bounds.getHeight();
+		// Rectangle2D bounds = super.getBounds(text);
+		//
+		// double scaling = height / bounds.getHeight();
 
 		return (float) (boundsForWidth.getWidth() * scaling);
 	}

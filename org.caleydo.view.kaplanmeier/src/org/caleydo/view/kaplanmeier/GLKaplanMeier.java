@@ -19,12 +19,16 @@
  *******************************************************************************/
 package org.caleydo.view.kaplanmeier;
 
+import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -42,6 +46,10 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
+import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
+import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.kaplanmeier.renderstyle.KaplanMeierRenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
@@ -61,6 +69,9 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	public static String VIEW_NAME = "Kaplan-Meier Plot";
 
+	protected static final int BOTTOM_LEFT_AXIS_SPACING_PIXELS = 50;
+	protected static final int TOP_RIGHT_AXIS_SPACING_PIXELS = 8;
+
 	private KaplanMeierRenderStyle renderStyle;
 
 	private SelectionManager recordGroupSelectionManager;
@@ -77,6 +88,7 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
+		textRenderer = new CaleydoTextRenderer(24);
 	}
 
 	@Override
@@ -168,6 +180,68 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex), fillCurve);
 		}
+
+		if (detailLevel == EDetailLevel.HIGH) {
+			renderAxes(gl);
+		}
+	}
+
+	private void renderAxes(GL2 gl) {
+
+		float plotHeight = viewFrustum.getHeight()
+				- pixelGLConverter
+						.getGLHeightForPixelHeight(BOTTOM_LEFT_AXIS_SPACING_PIXELS
+								+ TOP_RIGHT_AXIS_SPACING_PIXELS);
+		float plotWidth = viewFrustum.getWidth()
+				- pixelGLConverter
+						.getGLWidthForPixelWidth(BOTTOM_LEFT_AXIS_SPACING_PIXELS
+								+ TOP_RIGHT_AXIS_SPACING_PIXELS);
+		float originX = pixelGLConverter
+				.getGLWidthForPixelWidth(BOTTOM_LEFT_AXIS_SPACING_PIXELS);
+		float originY = pixelGLConverter
+				.getGLHeightForPixelHeight(BOTTOM_LEFT_AXIS_SPACING_PIXELS);
+
+		float axisLabelWidth = textRenderer.getRequiredTextWidthWithMax("Axis label 1",
+				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
+
+		textRenderer
+				.renderTextInBounds(gl, "Time (Days)", viewFrustum.getWidth() / 2.0f
+						- axisLabelWidth / 2.0f,
+						pixelGLConverter.getGLHeightForPixelHeight(5), 0,
+						viewFrustum.getWidth(),
+						pixelGLConverter.getGLHeightForPixelHeight(20));
+		
+		axisLabelWidth = textRenderer.getRequiredTextWidthWithMax("Number of Patients",
+				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
+
+		textRenderer.renderRotatedTextInBounds(gl, "Number of Patients",
+				pixelGLConverter.getGLHeightForPixelHeight(25), viewFrustum.getHeight()
+						/ 2.0f - axisLabelWidth / 2.0f, 0, viewFrustum.getWidth(),
+				pixelGLConverter.getGLHeightForPixelHeight(20), 90);
+
+		List<Vec3f> xAxisLinePoints = new ArrayList<Vec3f>();
+		xAxisLinePoints.add(new Vec3f(originX, originY, 0));
+		xAxisLinePoints.add(new Vec3f(originX + plotWidth, originY, 0));
+		ConnectionLineRenderer xAxis = new ConnectionLineRenderer();
+		LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(0.5f,
+				pixelGLConverter);
+		LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(0.5f,
+				pixelGLConverter, "200", textRenderer);
+		lineLabelRenderer.setLineOffsetPixels(-16);
+		lineLabelRenderer.setCentered(true);
+		lineCrossingRenderer.setLineWidth(2);
+		xAxis.addAttributeRenderer(lineCrossingRenderer);
+		xAxis.addAttributeRenderer(lineLabelRenderer);
+		xAxis.setLineWidth(2);
+		xAxis.renderLine(gl, xAxisLinePoints);
+
+		List<Vec3f> yAxisLinePoints = new ArrayList<Vec3f>();
+		yAxisLinePoints.add(new Vec3f(originX, originY, 0));
+		yAxisLinePoints.add(new Vec3f(originX, originY + plotHeight, 0));
+		ConnectionLineRenderer yAxis = new ConnectionLineRenderer();
+		yAxis.setLineWidth(2);
+		yAxis.renderLine(gl, yAxisLinePoints);
+
 	}
 
 	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs,
@@ -231,13 +305,24 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void drawFilledCurve(GL2 gl, float maxValue, ArrayList<Float> dataVector) {
 
+		float plotHeight = viewFrustum.getHeight()
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+						.getGLHeightForPixelHeight(BOTTOM_LEFT_AXIS_SPACING_PIXELS
+								+ TOP_RIGHT_AXIS_SPACING_PIXELS) : 0);
+		float plotWidth = viewFrustum.getWidth()
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+						.getGLWidthForPixelWidth(BOTTOM_LEFT_AXIS_SPACING_PIXELS
+								+ TOP_RIGHT_AXIS_SPACING_PIXELS) : 0);
+		float axisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+				.getGLWidthForPixelWidth(BOTTOM_LEFT_AXIS_SPACING_PIXELS) : 0);
+
 		float TIME_BINS = maxValue;
 
 		float timeBinStepSize = 1 / TIME_BINS;
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
-		float ySingleSampleSize = viewFrustum.getHeight() / dataVector.size();
+		float ySingleSampleSize = plotHeight / dataVector.size();
 
 		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
 
@@ -248,17 +333,29 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			float y = (float) remainingItemCount * ySingleSampleSize;
 			gl.glBegin(GL2.GL_LINE_STRIP);
-			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), 0, 0);
-			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), y, 0);
+			gl.glVertex3f(axisSpacing + currentTimeBin * plotWidth, axisSpacing, 0);
+			gl.glVertex3f(axisSpacing + currentTimeBin * plotWidth, axisSpacing + y, 0);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), y, 0);
-			gl.glVertex3f(0, y, 0);
+			gl.glVertex3f(axisSpacing + currentTimeBin * plotWidth, axisSpacing + y, 0);
+			gl.glVertex3f(axisSpacing, axisSpacing + y, 0);
 			gl.glEnd();
 		}
 
 	}
 
 	private void drawCurve(GL2 gl, float maxValue, ArrayList<Float> dataVector) {
+
+		float plotHeight = viewFrustum.getHeight()
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+						.getGLHeightForPixelHeight(BOTTOM_LEFT_AXIS_SPACING_PIXELS
+								+ TOP_RIGHT_AXIS_SPACING_PIXELS) : 0);
+		float plotWidth = viewFrustum.getWidth()
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+						.getGLWidthForPixelWidth(BOTTOM_LEFT_AXIS_SPACING_PIXELS
+								+ TOP_RIGHT_AXIS_SPACING_PIXELS) : 0);
+
+		float axisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+				.getGLWidthForPixelWidth(BOTTOM_LEFT_AXIS_SPACING_PIXELS) : 0);
 
 		float TIME_BINS = maxValue;
 		// float TIME_BINS = (float) dataContainer.getDataDomain().getTable()
@@ -268,10 +365,10 @@ public class GLKaplanMeier extends ATableBasedView {
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
-		float ySingleSampleSize = viewFrustum.getHeight() / dataVector.size();
+		float ySingleSampleSize = plotHeight / dataVector.size();
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
-		gl.glVertex3f(0, viewFrustum.getHeight(), 0);
+		gl.glVertex3f(axisSpacing, axisSpacing + plotHeight, 0);
 
 		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
 
@@ -282,9 +379,9 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			float y = (float) remainingItemCount * ySingleSampleSize;
 
-			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), y, 0);
+			gl.glVertex3f(axisSpacing + currentTimeBin * plotWidth, axisSpacing + y, 0);
 			currentTimeBin += timeBinStepSize;
-			gl.glVertex3f(currentTimeBin * viewFrustum.getWidth(), y, 0);
+			gl.glVertex3f(axisSpacing + currentTimeBin * plotWidth, axisSpacing + y, 0);
 		}
 
 		gl.glEnd();
