@@ -63,7 +63,7 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		} else {
 			if (loadRecentProject) {
 				loader.loadWorkbenchData(ProjectSaver.RECENT_PROJECT_FOLDER);
-			} else if (projectLocation != null || projectLocation.isEmpty()) {
+			} else if (projectLocation != null && !projectLocation.isEmpty()) {
 				loader.loadProjectFromZIP(projectLocation);
 				loader.loadWorkbenchData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
 			} else {

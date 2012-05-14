@@ -17,7 +17,7 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.texture;
+package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 import javax.media.opengl.GL2;
@@ -27,7 +27,6 @@ import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
-import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.PickingMode;
@@ -173,9 +172,7 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedTextureView serializedForm = new SerializedTextureView();
-		serializedForm.setViewID(this.getID());
-		return serializedForm;
+		return null;
 	}
 
 	public void setTexturePath(String texturePath) {
