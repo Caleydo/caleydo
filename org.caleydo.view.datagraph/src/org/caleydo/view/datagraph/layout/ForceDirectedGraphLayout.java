@@ -410,8 +410,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (nodesToLayout == null)
 			return;
 
-		// initializations
-		if (initializeNodes) {
+//		// initializations
+//		if (initializeNodes) {
 			initializeNodePositions();
 
 			calculateDistanceMatrix();
@@ -419,16 +419,16 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 			centering();
 
 			initializeNodes = false;
-		}
+//		}
 
 		if (!graph.hasEdges())
 			return;
 
-		if (initializeForces || !forcesWithoutError()) {
+//		if (initializeForces || !forcesWithoutError()) {
 			initializeForces();
 
 			initializeForces = false;
-		}
+//		}
 
 		running = true;
 
