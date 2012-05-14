@@ -151,17 +151,6 @@ public class DataContainerPickingListener
 			return;
 		DataContainer dataContainer = dimensionGroupRenderer.getDataContainer();
 
-		// for (DimensionGroupRenderer dimensionGroupRenderer :
-		// dimensionGroupRenderers) {
-		// if (dimensionGroupRenderer.getDataContainer().getID() ==
-		// dimensionGroupID) {
-		// dataContainer = dimensionGroupRenderer.getDataContainer();
-		// break;
-		// }
-		// }
-		// if (dataContainer == null)
-		// return;
-
 		IExtensionRegistry registry = Platform.getExtensionRegistry();
 
 		List<Pair<String, String>> viewTypes = new ArrayList<Pair<String, String>>();

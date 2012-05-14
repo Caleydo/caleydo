@@ -66,7 +66,7 @@ public class ViewNode extends ADefaultTemplateNode {
 
 		registerPickingListeners();
 		setRepresentedViewInfo();
-		setupLayout();
+//		setupLayout();
 	}
 
 	protected void registerPickingListeners() {

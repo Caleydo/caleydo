@@ -94,18 +94,10 @@ public class DataContainerListRenderer
 	{
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-		// CaleydoTextRenderer textRenderer = view.getTextRenderer();
-		// float dimensionGroupWidth = (x -
-		// pixelGLConverter.getGLWidthForPixelWidth(2
-		// * SIDE_SPACING_PIXELS + (node.getDataContainers().size() - 1)
-		// * SPACING_PIXELS))
-		// / (float) node.getDataContainers().size();
 
 		float dimensionGroupWidth = pixelGLConverter
 				.getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 
-		// float currentPosX =
-		// pixelGLConverter.getGLWidthForPixelWidth(SIDE_SPACING_PIXELS);
 		float currentPosX = (x / 2.0f)
 				- pixelGLConverter.getGLWidthForPixelWidth(getDimensionGroupsWidthPixels() / 2
 						- SIDE_SPACING_PIXELS);
@@ -117,8 +109,6 @@ public class DataContainerListRenderer
 
 		for (DimensionGroupRenderer dimensionGroupRenderer : dimensionGroupRenderers)
 		{
-			// float currentDimGroupWidth = pixelGLConverter
-			// .getGLWidthForPixelWidth(MIN_COMP_GROUP_WIDTH_PIXELS);
 
 			int pickingID = view.getPickingManager().getPickingID(view.getID(),
 					PickingType.DATA_CONTAINER.name() + node.getID(),

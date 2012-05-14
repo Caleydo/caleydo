@@ -135,7 +135,6 @@ public class MultiDataContainerViewNode
 	@Override
 	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
 			float mouseCoordinateY) {
-		// TODO Auto-generated method stub
 
 	}
 
@@ -146,16 +145,7 @@ public class MultiDataContainerViewNode
 			retrieveDataContainers();
 		}
 
-		// update();
-
-		// retrieveDataContainers();
-		// dataContainerListRenderer.setDataContainers(dataContainers);
-
-		// List<ADimensionGroupData> groups = representedView.get();
-		// if (groups == null) {
 		return dataContainers;
-		// }
-		// return new ArrayList<DataContainer>(groups);
 	}
 
 	protected void retrieveDataContainers() {
@@ -218,7 +208,7 @@ public class MultiDataContainerViewNode
 
 		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
-			System.out.println("Drop");
+//			System.out.println("Drop");
 			AddDataContainersEvent event = new AddDataContainersEvent(dataContainers.get(0));
 			event.setReceiver(representedView);
 			event.setSender(this);
@@ -233,6 +223,7 @@ public class MultiDataContainerViewNode
 	public void destroy() {
 		super.destroy();
 		// overviewDataContainerRenderer.destroy();
+		dataContainerListRenderer.destroy();
 		view.removeAllIDPickingListeners(DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 	}
 
@@ -247,8 +238,8 @@ public class MultiDataContainerViewNode
 
 	@Override
 	public void render(GL2 gl) {
-		retrieveDataContainers();
-		dataContainerListRenderer.setDataContainers(getDataContainers());
+//		retrieveDataContainers();
+//		dataContainerListRenderer.setDataContainers(getDataContainers());
 		super.render(gl);
 	}
 

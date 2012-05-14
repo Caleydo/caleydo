@@ -30,11 +30,9 @@ public abstract class ADraggableColorRenderer
 	implements IDraggable
 {
 
-
 	protected AGLView view;
 	protected float mousePositionDeltaX;
 	protected float mousePositionDeltaY;
-//	protected String text;
 	
 
 	public ADraggableColorRenderer(float[] color, float[] borderColor, int borderWidth, AGLView view)
@@ -46,86 +44,10 @@ public abstract class ADraggableColorRenderer
 	@Override
 	public void render(GL2 gl)
 	{
-//		CaleydoTextRenderer textRenderer = view.getTextRenderer();
-//		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, 0);
 		super.render(gl);
 		gl.glPopMatrix();
-
-//		if (showText)
-//		{
-//			float textPositionX = 0;
-//			switch (textRotation)
-//			{
-//				case TEXT_ROTATION_0:
-//					textRenderer.renderTextInBounds(
-//							gl,
-//							text,
-//							pixelGLConverter
-//							.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-//							pixelGLConverter
-//							.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-//							0.1f,
-//							x
-//									- 2
-//									* pixelGLConverter
-//											.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-//							pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
-//					break;
-//
-//				case TEXT_ROTATION_90:
-//
-//					gl.glPushMatrix();
-//					textPositionX = pixelGLConverter
-//							.getGLHeightForPixelHeight(textHeightPixels - 2)
-//							+ (x - pixelGLConverter
-//									.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
-//
-//					gl.glTranslatef(textPositionX,
-//							pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-//							0.1f);
-//					gl.glRotatef(90, 0, 0, 1);
-//					textRenderer.renderTextInBounds(
-//							gl,
-//							text,
-//							0,
-//							0,
-//							0,
-//							y
-//									- pixelGLConverter
-//											.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-//							pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
-//					gl.glPopMatrix();
-//					break;
-//				case TEXT_ROTATION_270:
-//					
-//					gl.glPushMatrix();
-//					textPositionX = (x - pixelGLConverter
-//							.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
-//					gl.glTranslatef(
-//							textPositionX,
-//							y
-//									- pixelGLConverter
-//											.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-//							0.1f);
-//					gl.glRotatef(-90, 0, 0, 1);
-//					textRenderer.renderTextInBounds(
-//							gl,
-//							text,
-//							0,
-//							0,
-//							0,
-//							y
-//									- pixelGLConverter
-//											.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-//							pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
-//					gl.glPopMatrix();
-//					break;
-//			};
-//
-//		}
 
 	}
 
