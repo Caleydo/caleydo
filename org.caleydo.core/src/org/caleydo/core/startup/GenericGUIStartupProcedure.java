@@ -20,8 +20,6 @@
 package org.caleydo.core.startup;
 
 import java.util.List;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;
@@ -45,10 +43,6 @@ public class GenericGUIStartupProcedure
 	@Override
 	public void init(ApplicationInitData appInitData) {
 
-		this.dataDomain =
-			(ATableBasedDataDomain) DataDomainManager.get()
-				.createDataDomain("org.caleydo.datadomain.generic");
-
 		super.init(appInitData);
 	}
 
@@ -57,7 +51,7 @@ public class GenericGUIStartupProcedure
 		super.execute();
 
 		ImportDataDialog dialog =
-			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+			new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell());
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();

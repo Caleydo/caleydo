@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.id;
 
+import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.logging.Logger;
@@ -76,6 +77,15 @@ public class IDCategory {
 		registeredCategories.put(categoryName, idCategory);
 
 		return idCategory;
+	}
+
+	/**
+	 * Returns all registered ID categories.
+	 * 
+	 * @return all registered ID categories
+	 */
+	public static Collection<IDCategory> getAllRegisteredIDCategories() {
+		return registeredCategories.values();
 	}
 
 	/**

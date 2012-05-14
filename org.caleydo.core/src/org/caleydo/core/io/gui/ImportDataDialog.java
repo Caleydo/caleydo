@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -30,9 +31,10 @@ import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.gui.util.LabelEditorDialog;
+import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
@@ -75,7 +77,8 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  */
-public class ImportDataDialog extends Dialog {
+public class ImportDataDialog
+	extends Dialog {
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 	private static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
@@ -96,9 +99,12 @@ public class ImportDataDialog extends Dialog {
 
 	private ArrayList<Button> skipColumn = new ArrayList<Button>();
 
-	private Combo idCombo;
+	private Combo recordIDCombo;
 
-	private ArrayList<IDType> idTypes;
+	private Combo dimensionIDCategoryCombo;
+	private Combo recordIDCategoryCombo;
+
+	private ArrayList<IDType> recordIDTypes;
 
 	private String inputFile = "";
 	private String filePath = "";
@@ -107,31 +113,16 @@ public class ImportDataDialog extends Dialog {
 
 	private String mathFilterMode = "Log2";
 
-	private ATableBasedDataDomain dataDomain = null;
+	private IDCategory recordIDCategory;
 
-	private boolean isGenetic = false;
-
-	IDMappingManager idMappingManager;
+	private IDCategory dimensionIDCategory;
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
-
-		this.dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-				.createDataDomain("org.caleydo.datadomain.genetic");
-
-		isGenetic = true;
 	}
 
-	public ImportDataDialog(Shell parentShell, IDataDomain dataDomain) {
-		super(parentShell);
-		this.dataDomain = (ATableBasedDataDomain) dataDomain;
-
-		if (dataDomain.getDataDomainType().equals("org.caleydo.datadomain.genetic"))
-			isGenetic = true;
-	}
-
-	public ImportDataDialog(Shell parentShell, String inputFile, IDataDomain dataDomain) {
-		this(parentShell, dataDomain);
+	public ImportDataDialog(Shell parentShell, String inputFile) {
+		this(parentShell);
 		this.inputFile = inputFile;
 	}
 
@@ -151,30 +142,26 @@ public class ImportDataDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 
-		// We have to call the init again in order to reinitialize the mappings
-		if (buttonSwapRowsWithColumns.getSelection()) {
-
-			// Unregister old IDTypes before creating the new ones
-			// IDType.unregisterType(dataDomain.getDimensionIDType());
-			// IDType.unregisterType(dataDomain.getHumanReadableDimensionIDType());
-			// IDType.unregisterType(dataDomain.getRecordIDType());
-			// IDType.unregisterType(dataDomain.getHumanReadableRecordIDType());
-
-			// dataDomain.createDefaultConfigurationWithSamplesAsRows();
-			dataDomain.init();
-		}
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
+				.createDataDomain("org.caleydo.datadomain.genetic");
 
 		fillLoadDataParameters();
+
+		IDSpecification recordIDSpecification = new IDSpecification();
+		recordIDSpecification.setIDTypeGene(true);
+		recordIDSpecification.setIdType("GENE_SYMBOL");
+
+		dataSetDescription.setRowIDSpecification(recordIDSpecification);
+
+		IDSpecification dimensionIDSpecification = new IDSpecification();
+		dimensionIDSpecification.setIdType("SAMPLE");
+
 		dataDomain.setDataSetDescription(dataSetDescription);
 
 		boolean success = readDimensionDefinition();
 		if (success) {
 			DataTableUtils.loadData(dataDomain, dataSetDescription, true, true);
 		}
-
-		// DataTable table = DataTableUtils.createData(dataDomain, true, true);
-		// if (table == null)
-		// throw new IllegalStateException("Problem while creating table!");
 
 		// Open default start view for the newly created data domain
 		try {
@@ -193,7 +180,8 @@ public class ImportDataDialog extends Dialog {
 								IWorkbenchPage.VIEW_ACTIVATE);
 
 			}
-		} catch (PartInitException e) {
+		}
+		catch (PartInitException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -204,16 +192,12 @@ public class ImportDataDialog extends Dialog {
 	@Override
 	protected void cancelPressed() {
 
-		DataDomainManager.get().unregister(dataDomain);
-
 		super.cancelPressed();
 	}
 
 	private void createGUI(Composite parent) {
 
-		idMappingManager = dataDomain.getRecordIDMappingManager();
-
-		int numGridCols = 5;
+		int numGridCols = 4;
 
 		composite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);
@@ -258,6 +242,10 @@ public class ImportDataDialog extends Dialog {
 			}
 		});
 
+		createRowIDCategoryGroup();
+		createColumnIDCategoryGroup();
+		createRecordIDTypeGroup();
+
 		Group dataSetLabelGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		dataSetLabelGroup.setText("Data set name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
@@ -284,42 +272,11 @@ public class ImportDataDialog extends Dialog {
 				// Add 1 because the number that the user enters is human
 				// readable and not array index
 				// (starting with 0).
-				dataSetDescription.setNumberOfHeaderLines(Integer
-						.valueOf(txtStartParseAtLine.getText()));
+				dataSetDescription.setNumberOfHeaderLines(Integer.valueOf(txtStartParseAtLine
+						.getText()));
 
 				createDataPreviewTable("\t");
 				composite.pack();
-			}
-		});
-
-		Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
-		idTypeGroup.setText("ID type");
-		idTypeGroup.setLayout(new RowLayout());
-
-		idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-		idTypes = new ArrayList<IDType>();
-
-		HashSet<IDType> tempIDTypes = idMappingManager.getIDTypes();
-
-		for (IDType idType : tempIDTypes) {
-			if (!idType.isInternalType())
-				idTypes.add(idType);
-		}
-
-		String[] idTypesAsString = new String[idTypes.size()];
-		int index = 0;
-		for (IDType idType : idTypes) {
-			idTypesAsString[index] = idType.getTypeName();
-			index++;
-		}
-		idCombo.setItems(idTypesAsString);
-		idCombo.setEnabled(true);
-		idCombo.select(0);
-		idCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				TableColumn idColumn = previewTable.getColumn(1);
-				idColumn.setText(idCombo.getText());
 			}
 		});
 
@@ -352,10 +309,102 @@ public class ImportDataDialog extends Dialog {
 		if (inputFile == null || inputFile.isEmpty())
 			return "<insert data set name>";
 
-		return inputFile.substring(inputFile.lastIndexOf("/") + 1,
-				inputFile.lastIndexOf("."));
+		return inputFile.substring(inputFile.lastIndexOf("/") + 1, inputFile.lastIndexOf("."));
 	}
 
+	private void createRowIDCategoryGroup() {
+		Group recordIDCategoryGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		recordIDCategoryGroup.setText("Row ID category");
+		recordIDCategoryGroup.setLayout(new RowLayout());
+		recordIDCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
+
+		Collection<IDCategory> allRegisteredIDCategories = IDCategory
+				.getAllRegisteredIDCategories();
+
+		String[] categories = new String[allRegisteredIDCategories.size()];
+		int index = 0;
+		for (IDCategory idCategory : allRegisteredIDCategories) {
+			categories[index] = idCategory.getCategoryName();
+			if (index == 0)
+				recordIDCategory = idCategory;
+
+			index++;
+		}
+		recordIDCategoryCombo.setItems(categories);
+		recordIDCategoryCombo.setEnabled(true);
+		recordIDCategoryCombo.select(0);
+		recordIDCategoryCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+			}
+		});
+	}
+
+	private void createColumnIDCategoryGroup() {
+		Group dimensionIDCategory = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		dimensionIDCategory.setText("Column ID category");
+		dimensionIDCategory.setLayout(new RowLayout());
+		dimensionIDCategoryCombo = new Combo(dimensionIDCategory, SWT.DROP_DOWN);
+
+		Collection<IDCategory> allRegisteredIDCategories = IDCategory
+				.getAllRegisteredIDCategories();
+
+		String[] categories = new String[allRegisteredIDCategories.size()];
+		int index = 0;
+		for (IDCategory idCategory : allRegisteredIDCategories) {
+			categories[index] = idCategory.getCategoryName();
+			index++;
+		}
+		dimensionIDCategoryCombo.setItems(categories);
+		dimensionIDCategoryCombo.setEnabled(true);
+		dimensionIDCategoryCombo.select(0);
+		dimensionIDCategoryCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+
+			}
+		});
+	}
+
+	private void createRecordIDTypeGroup() {
+		Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		idTypeGroup.setText("ID type");
+		idTypeGroup.setLayout(new RowLayout());
+		recordIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+		recordIDTypes = new ArrayList<IDType>();
+
+		fillRecordIDTypeCombo();
+	}
+
+	private void fillRecordIDTypeCombo() {
+		HashSet<IDType> tempIDTypes = IDMappingManagerRegistry.get()
+				.getIDMappingManager(recordIDCategory).getIDTypes();
+
+		recordIDTypes.clear();
+		for (IDType idType : tempIDTypes) {
+			if (!idType.isInternalType())
+				recordIDTypes.add(idType);
+		}
+
+		String[] idTypesAsString = new String[recordIDTypes.size()];
+		int index = 0;
+		for (IDType idType : recordIDTypes) {
+			idTypesAsString[index] = idType.getTypeName();
+			index++;
+		}
+
+		recordIDCombo.setItems(idTypesAsString);
+		recordIDCombo.setEnabled(true);
+		recordIDCombo.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent e) {
+				TableColumn idColumn = previewTable.getColumn(1);
+				idColumn.setText(recordIDCombo.getText());
+			}
+		});
+	}
+	
 	private void createDelimiterGroup() {
 		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");
@@ -694,9 +743,11 @@ public class ImportDataDialog extends Dialog {
 					if (nextToken.equals(sDelimiter) && !isCellFilled) {
 						item.setText(colIndex + 1, "");
 						colIndex++;
-					} else if (nextToken.equals(sDelimiter) && isCellFilled) {
+					}
+					else if (nextToken.equals(sDelimiter) && isCellFilled) {
 						isCellFilled = false; // reset
-					} else {
+					}
+					else {
 						isCellFilled = true;
 						item.setText(colIndex + 1, nextToken);
 						colIndex++;
@@ -719,14 +770,15 @@ public class ImportDataDialog extends Dialog {
 				nextToken = tokenizer.nextToken();
 			}
 
-		} catch (FileNotFoundException e) {
+		}
+		catch (FileNotFoundException e) {
 			throw new IllegalStateException("File not found!");
-		} catch (IOException ioe) {
+		}
+		catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
 
-		if (isGenetic)
-			determineFileIDType();
+		determineRowIDType();
 	}
 
 	private void createDataClassBar() {
@@ -749,15 +801,13 @@ public class ImportDataDialog extends Dialog {
 						bSkipColumn = !((Button) e.widget).getSelection();
 
 						if (bSkipColumn) {
-							textColor = Display.getCurrent().getSystemColor(
-									SWT.COLOR_GRAY);
-						} else {
-							textColor = Display.getCurrent().getSystemColor(
-									SWT.COLOR_BLACK);
+							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
+						}
+						else {
+							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
 						}
 
-						item.setForeground(((Integer) e.widget.getData("column")),
-								textColor);
+						item.setForeground(((Integer) e.widget.getData("column")), textColor);
 					}
 				}
 			});
@@ -787,12 +837,10 @@ public class ImportDataDialog extends Dialog {
 			}
 		}
 		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = idTypes.get(idCombo.getSelectionIndex());
+		IDType rowIDType = recordIDTypes.get(recordIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
 
-		
-		if(rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA"))
-		{
+		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignor the .1, etc.
 			rowIDSpecification.setSubStringExpression("\\.");
 		}
@@ -828,14 +876,14 @@ public class ImportDataDialog extends Dialog {
 			if (!skipColumn.get(columnIndex - 2).getSelection()) {
 				// do nothing
 				// inputPattern.append("SKIP;");
-			} else {
+			}
+			else {
 
 				// in uncertainty mode each second column is flagged with
 				// "CERTAINTY"
-				if (buttonUncertaintyDataProvided.getSelection()
-						&& (columnIndex % 2 != 0)) {
-					inputPattern
-							.add(new ColumnDescription(columnIndex - 1, "CERTAINTY", ColumnDescription.CONTINUOUS));
+				if (buttonUncertaintyDataProvided.getSelection() && (columnIndex % 2 != 0)) {
+					inputPattern.add(new ColumnDescription(columnIndex - 1, "CERTAINTY",
+							ColumnDescription.CONTINUOUS));
 					continue;
 				}
 
@@ -847,16 +895,18 @@ public class ImportDataDialog extends Dialog {
 					int testSize = previewTable.getItemCount()
 							- dataSetDescription.getNumberOfHeaderLines() - 1;
 					for (int rowCount = 1; rowCount < testSize; rowCount++) {
-						String testString = previewTable.getItem(rowCount).getText(
-								columnIndex);
+						String testString = previewTable.getItem(rowCount)
+								.getText(columnIndex);
 						if (!testString.isEmpty())
 							Float.parseFloat(testString);
 					}
-				} catch (NumberFormatException nfe) {
+				}
+				catch (NumberFormatException nfe) {
 					dataType = "STRING";
 				}
 				// fixme this does not work for categorical data
-				inputPattern.add(new ColumnDescription(columnIndex - 1, dataType, ColumnDescription.CONTINUOUS));
+				inputPattern.add(new ColumnDescription(columnIndex - 1, dataType,
+						ColumnDescription.CONTINUOUS));
 
 				String labelText = previewTable.getColumn(columnIndex).getText();
 				dimensionLabels.add(labelText);
@@ -865,7 +915,7 @@ public class ImportDataDialog extends Dialog {
 
 		dataSetDescription.setParsingPattern(inputPattern);
 		dataSetDescription.setDataSourcePath(txtFileName.getText());
-		// dataSetDescripton.setColumnLabels(dimensionLabels);
+		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
 
 		if (dataSetDescription.getDataSourcePath().equals("")) {
 			MessageDialog.openError(new Shell(), "Invalid filename", "Invalid filename");
@@ -883,8 +933,7 @@ public class ImportDataDialog extends Dialog {
 		this.dataSetDescription = dataSetDescripton;
 	}
 
-	private void determineFileIDType() {
-		// FIXME this should be moved to genetic data domain
+	private void determineRowIDType() {
 
 		TableItem[] items = previewTable.getItems();
 		ArrayList<String> idList = new ArrayList<String>();
@@ -894,61 +943,99 @@ public class ImportDataDialog extends Dialog {
 			idList.add(items[rowIndex].getText(1));
 			rowIndex++;
 		}
-		if (idTypes == null) {
-			idTypes = new ArrayList<IDType>();
-			HashSet<IDType> alIDTypesTemp = idMappingManager.getIDTypes();
-			for (IDType idType : alIDTypesTemp) {
-				if (!idType.isInternalType())
-					idTypes.add(idType);
-			}
-		}
 
 		int maxCorrectElements = 0;
 		IDType mostProbableIDType = null;
 
-		for (IDType idType : idTypes) {
+		Collection<IDCategory> allRegisteredIDCategories = IDCategory
+				.getAllRegisteredIDCategories();
 
-			int currentCorrectElements = 0;
+		for (IDCategory idCategory : allRegisteredIDCategories) {
 
-			for (String currentID : idList) {
+			recordIDTypes = new ArrayList<IDType>();
+			HashSet<IDType> alIDTypesTemp = IDMappingManagerRegistry.get()
+					.getIDMappingManager(idCategory).getIDTypes();
+			for (IDType idType : alIDTypesTemp) {
+				if (!idType.isInternalType())
+					recordIDTypes.add(idType);
+			}
 
-				if (idType.getColumnType().equals(EColumnType.INT)) {
-					try {
-						Integer idInt = Integer.valueOf(currentID);
-						if (idMappingManager.doesElementExist(idType, idInt)) {
+			IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+					.getIDMappingManager(idCategory);
+
+			for (IDType idType : recordIDTypes) {
+
+				int currentCorrectElements = 0;
+
+				for (String currentID : idList) {
+
+					if (idType.getColumnType().equals(EColumnType.INT)) {
+						try {
+							Integer idInt = Integer.valueOf(currentID);
+							if (idMappingManager.doesElementExist(idType, idInt)) {
+								currentCorrectElements++;
+							}
+						}
+						catch (NumberFormatException e) {
+						}
+					}
+					else if (idType.getColumnType().equals(EColumnType.STRING)) {
+						if (idMappingManager.doesElementExist(idType, currentID)) {
 							currentCorrectElements++;
 						}
-					} catch (NumberFormatException e) {
-					}
-				} else if (idType.getColumnType().equals(EColumnType.STRING)) {
-					if (idMappingManager.doesElementExist(idType, currentID)) {
-						currentCorrectElements++;
-					} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
-						if (currentID.contains(".")) {
-							if (idMappingManager.doesElementExist(idType,
-									currentID.substring(0, currentID.indexOf(".")))) {
-								currentCorrectElements++;
+						else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
+							if (currentID.contains(".")) {
+								if (idMappingManager.doesElementExist(idType,
+										currentID.substring(0, currentID.indexOf(".")))) {
+									currentCorrectElements++;
+								}
 							}
 						}
 					}
 				}
+
+				if (currentCorrectElements >= idList.size()) {		
+					
+					IDCategory[] idCategories = new IDCategory[0];
+					idCategories = allRegisteredIDCategories.toArray(idCategories);
+					for (int itemIndex = 0; itemIndex < allRegisteredIDCategories.size(); itemIndex++) {
+						if (idCategories[itemIndex].equals(mostProbableIDType.getIDCategory())) {
+							recordIDCategoryCombo.select(itemIndex);
+							recordIDCategory = mostProbableIDType.getIDCategory();
+							break;
+						}
+					}
+					
+					fillRecordIDTypeCombo();
+					recordIDCombo.select(recordIDTypes.indexOf(idType));
+					
+					TableColumn idColumn = previewTable.getColumn(1);
+					idColumn.setText(idType.getTypeName());
+					
+					return;
+				}
+				if (currentCorrectElements >= maxCorrectElements) {
+					maxCorrectElements = currentCorrectElements;
+					mostProbableIDType = idType;
+				}
 			}
 
-			if (currentCorrectElements >= idList.size()) {
-				idCombo.select(idTypes.indexOf(idType));
-				TableColumn idColumn = previewTable.getColumn(1);
-				idColumn.setText(idType.getTypeName());
-				return;
-			}
-			if (currentCorrectElements >= maxCorrectElements) {
-				maxCorrectElements = currentCorrectElements;
-				mostProbableIDType = idType;
-			}
 		}
 
-		idCombo.select(idTypes.indexOf(mostProbableIDType));
+		IDCategory[] idCategories = new IDCategory[0];
+		idCategories = allRegisteredIDCategories.toArray(idCategories);
+		for (int itemIndex = 0; itemIndex < allRegisteredIDCategories.size(); itemIndex++) {
+			if (idCategories[itemIndex] == mostProbableIDType.getIDCategory()) {
+				recordIDCategory = mostProbableIDType.getIDCategory();
+				recordIDCategoryCombo.select(itemIndex);
+				break;
+			}
+		}
+		
+		fillRecordIDTypeCombo();
+		recordIDCombo.select(recordIDTypes.indexOf(mostProbableIDType));
+
 		TableColumn idColumn = previewTable.getColumn(1);
 		idColumn.setText(mostProbableIDType.getTypeName());
-
 	}
 }

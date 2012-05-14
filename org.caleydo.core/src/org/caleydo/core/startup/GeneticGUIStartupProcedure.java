@@ -20,15 +20,16 @@
 package org.caleydo.core.startup;
 
 import java.util.List;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.system.FileOperations;
+import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.window.Window;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.BundleException;
 
 /**
  * Startup procedure for project wizard.
@@ -42,8 +43,6 @@ public class GeneticGUIStartupProcedure
 
 	// NOTE: change also organism when setting another dataset
 	private static String REAL_DATA_SAMPLE_FILE = "data/genome/microarray/sample/HCC_sample_dataset_4630_24_cluster.csv";
-
-	// "data/genome/microarray/kashofer/mouse/all_mice_plus_SN_only_with_mapping.csv";
 
 	public GeneticGUIStartupProcedure() {
 
@@ -65,9 +64,15 @@ public class GeneticGUIStartupProcedure
 
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
-
-		this.dataDomain = (ATableBasedDataDomain) DataDomainManager.get().createDataDomain(
-				"org.caleydo.datadomain.genetic");
+		
+		// Start the genetic plugin bundle to trigger mapping loading
+		try {
+			Bundle bundle = Platform.getBundle("org.caleydo.datadomain.genetic");
+			bundle.start();
+		}
+		catch (BundleException e) {
+			throw new IllegalStateException("Failed to initalize genetic data domain");
+		}
 
 		super.init(appInitData);
 	}
@@ -81,10 +86,10 @@ public class GeneticGUIStartupProcedure
 		if (loadSampleData)
 			dialog = new ImportDataDialog(
 					StartupProcessor.get().getDisplay().getActiveShell(),
-					REAL_DATA_SAMPLE_FILE, dataDomain);
+					REAL_DATA_SAMPLE_FILE);
 		else
 			dialog = new ImportDataDialog(
-					StartupProcessor.get().getDisplay().getActiveShell(), dataDomain);
+					StartupProcessor.get().getDisplay().getActiveShell());
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();
@@ -108,20 +113,5 @@ public class GeneticGUIStartupProcedure
 
 		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.datagraph",
 				"org.caleydo.datadomain.genetic"));
-		// startViewWithDataDomain.add(new Pair<String,
-		// String>("org.caleydo.view.heatmap.hierarchical",
-		// "org.caleydo.datadomain.genetic"));
-		// startViewWithDataDomain.add(new Pair<String,
-		// String>("org.caleydo.view.parcoords",
-		// "org.caleydo.datadomain.genetic"));
-		// startViewWithDataDomain.add(new Pair<String,
-		// String>("org.caleydo.view.browser",
-		// "org.caleydo.datadomain.genetic"));
-
-		// if (appInitData.isLoadPathways()) {
-		// startViewWithDataDomain.add(new Pair<String,
-		// String>("org.caleydo.view.bucket",
-		// "org.caleydo.datadomain.genetic"));
-		// }
 	}
 }

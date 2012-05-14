@@ -25,7 +25,7 @@ package org.caleydo.core.id;
 import java.util.HashMap;
 
 /**
- * Registry for {@link IDMappingManagers} . Each {@link IDMappingManager} is
+ * Registry for {@link IDMappingManagers}. Each {@link IDMappingManager} is
  * associated with an {@link IDCategory}, which summarizes which {@link IDType}s
  * can be mapped to each other.For each {@link IDCategory} there is exactly one
  * {@link IDMappingManager} which may only be accessed through this Registry.

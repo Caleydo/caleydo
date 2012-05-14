@@ -163,7 +163,7 @@ public class DataTableUtils {
 		idMappingCreator.createMapping(dataSetDescription.getDataSourcePath(),
 				dataSetDescription.getNumberOfHeaderLines(), -1,
 				IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType()),
-				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), true, true, false,
+				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), false, true, false,
 				null, null);
 
 		

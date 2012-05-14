@@ -55,6 +55,8 @@ public class Activator extends Plugin {
 		super.start(context);
 		plugin = this;
 
+		GeneticIDMappingCreator.createIDTypesAndMapping();
+		
 		SerializationManager.get().registerSerializableTypes(GeneticDataDomain.class);
 	}
 
