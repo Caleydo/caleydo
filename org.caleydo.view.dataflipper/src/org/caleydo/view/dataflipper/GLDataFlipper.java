@@ -83,8 +83,6 @@ import org.caleydo.view.pathwaybrowser.GLPathwayViewBrowser;
 import org.caleydo.view.pathwaybrowser.SerializedPathwayViewBrowserView;
 import org.caleydo.view.texture.GLTexture;
 import org.caleydo.view.texture.SerializedTextureView;
-import org.caleydo.view.tissuebrowser.GLTissueViewBrowser;
-import org.caleydo.view.tissuebrowser.SerializedTissueViewBrowserView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -800,17 +798,17 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 					// .setRenderConnectionState(renderConnectionsLeft);
 
 				}
-
-				if (glView instanceof GLTissueViewBrowser) {
-
-					boolean renderPoolLeft = false;
-					if (stackElementsLeft.contains(tmpSlerpAction
-							.getDestinationRemoteLevelElement()))
-						renderPoolLeft = true;
-
-					((GLTissueViewBrowser) glView).setPoolSide(renderPoolLeft);
-
-				}
+//
+//				if (glView instanceof GLTissueViewBrowser) {
+//
+//					boolean renderPoolLeft = false;
+//					if (stackElementsLeft.contains(tmpSlerpAction
+//							.getDestinationRemoteLevelElement()))
+//						renderPoolLeft = true;
+//
+//					((GLTissueViewBrowser) glView).setPoolSide(renderPoolLeft);
+//
+//				}
 			}
 
 			arSlerpActions.clear();
@@ -2279,7 +2277,7 @@ public class GLDataFlipper extends AGLView implements IGLRemoteRenderingView,
 		} else if (interfaceType.equals("org.caleydo.view.heatmap.hierarchical")) {
 			serView = new SerializedHierarchicalHeatMapView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.tissuebrowser")) {
-			serView = new SerializedTissueViewBrowserView(dataDomainType);
+			//serView = new SerializedTissueViewBrowserView(dataDomainType);
 		} else if (interfaceType.equals("org.caleydo.view.pathwaybrowser")) {
 			serView = new SerializedPathwayViewBrowserView();
 		}
