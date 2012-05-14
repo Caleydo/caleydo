@@ -159,13 +159,14 @@ public class DataTableUtils {
 			rowTargetIDType = dataDomain.getDimensionIDType();
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();
+		idMappingCreator.setIdSpecification(dataSetDescription.getRowIDSpecification());
 		idMappingCreator.createMapping(dataSetDescription.getDataSourcePath(),
 				dataSetDescription.getNumberOfHeaderLines(), -1,
 				IDType.getIDType(dataSetDescription.getRowIDSpecification().getIdType()),
 				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), true, true, false,
 				null, null);
 
-		idMappingCreator.setIdSpecification(dataSetDescription.getRowIDSpecification());
+		
 
 		// --------- data loading ---------------
 

@@ -106,10 +106,9 @@ import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
  */
 @XmlType
 @XmlRootElement
-public abstract class ATableBasedDataDomain
-	extends ADataDomain
-	implements IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
-	ISelectionCommandHandler {
+public abstract class ATableBasedDataDomain extends ADataDomain implements
+		IRecordVADeltaHandler, IDimensionChangeHandler, ISelectionUpdateHandler,
+		ISelectionCommandHandler {
 
 	/** The raw data for this data domain. */
 	protected DataTable table;
@@ -211,7 +210,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * @param configuration setter, see {@link #configuration}
+	 * @param configuration
+	 *            setter, see {@link #configuration}
 	 */
 	public void setConfiguration(DataDomainConfiguration configuration) {
 		this.configuration = configuration;
@@ -229,18 +229,19 @@ public abstract class ATableBasedDataDomain
 				}
 				createDefaultConfigurationWithColumnsAsRecords();
 
-			}
-			else
+			} else
 				createDefaultConfiguration();
 		}
 
 		recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
-		dimensionIDCategory = IDCategory.registerCategory(configuration.dimensionIDCategory);
+		dimensionIDCategory = IDCategory
+				.registerCategory(configuration.dimensionIDCategory);
 
 		// FIXME: for genetic this will be already registered and set as human
 		// readable
 		IDType humanReadableRecordIDType = IDType.registerType(
-				configuration.humanReadableRecordIDType, recordIDCategory, EColumnType.STRING);
+				configuration.humanReadableRecordIDType, recordIDCategory,
+				EColumnType.STRING);
 		IDType humanReadableDimensionIDType = IDType.registerType(
 				configuration.humanReadableDimensionIDType, dimensionIDCategory,
 				EColumnType.STRING);
@@ -251,20 +252,20 @@ public abstract class ATableBasedDataDomain
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
 				recordIDCategory, EColumnType.INT);
 		recordIDType.setInternalType(true);
-		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_" + hashCode(),
-				dimensionIDCategory, EColumnType.INT);
+		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_"
+				+ hashCode(), dimensionIDCategory, EColumnType.INT);
 		dimensionIDType.setInternalType(true);
 
-		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory.getCategoryName()
-				+ "_GROUP");
+		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory
+				.getCategoryName() + "_GROUP");
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
 				+ hashCode(), recordGroupIDCategory, EColumnType.INT);
 		recordGroupIDType.setInternalType(true);
 
 		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory
 				.getCategoryName() + "_GROUP");
-		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID + "_"
-				+ hashCode(), dimensionGroupIDCategory, EColumnType.INT);
+		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
+				+ "_" + hashCode(), dimensionGroupIDCategory, EColumnType.INT);
 
 		IDType primaryRecordMappingType;
 
@@ -272,8 +273,7 @@ public abstract class ATableBasedDataDomain
 			IDType.getIDType(configuration.primaryRecordMappingType);
 			primaryRecordMappingType = IDType
 					.getIDType(configuration.primaryRecordMappingType);
-		}
-		else
+		} else
 			primaryRecordMappingType = recordIDType;
 
 		recordIDCategory.setPrimaryMappingType(primaryRecordMappingType);
@@ -326,7 +326,8 @@ public abstract class ATableBasedDataDomain
 	 * Initializes {@link #recordPerspectiveIDs} and
 	 * {@link #dimensionPerspectiveIDs}.
 	 * 
-	 * @param table The new set which replaced the currently loaded one.
+	 * @param table
+	 *            The new set which replaced the currently loaded one.
 	 */
 	public void setTable(DataTable table) {
 		if (table == null)
@@ -396,7 +397,8 @@ public abstract class ATableBasedDataDomain
 	 * @param dimensionPerspectiveID
 	 * @return
 	 */
-	public boolean hasDataContainer(String recordPerspectiveID, String dimensionPerspectiveID) {
+	public boolean hasDataContainer(String recordPerspectiveID,
+			String dimensionPerspectiveID) {
 		return dataContainers.get(createKey(recordPerspectiveID, dimensionPerspectiveID)) != null;
 	}
 
@@ -521,7 +523,8 @@ public abstract class ATableBasedDataDomain
 	/**
 	 * Returns the virtual array for the type
 	 * 
-	 * @param recordPerspectiveID the type of VA requested
+	 * @param recordPerspectiveID
+	 *            the type of VA requested
 	 * @return
 	 */
 	public RecordVirtualArray getRecordVA(String recordPerspectiveID) {
@@ -533,7 +536,8 @@ public abstract class ATableBasedDataDomain
 	/**
 	 * Returns the virtual array for the type
 	 * 
-	 * @param dimensionPerspectiveID the type of VA requested
+	 * @param dimensionPerspectiveID
+	 *            the type of VA requested
 	 * @return
 	 */
 	public DimensionVirtualArray getDimensionVA(String dimensionPerspectiveID) {
@@ -567,7 +571,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	/**
-	 * @param colorMapper setter, see {@link #colorMapper}
+	 * @param colorMapper
+	 *            setter, see {@link #colorMapper}
 	 */
 	public void setColorMapper(ColorMapper colorMapper) {
 		this.colorMapper = colorMapper;
@@ -577,7 +582,8 @@ public abstract class ATableBasedDataDomain
 	 * Initiates clustering based on the parameters passed. Sends out an event
 	 * to all affected views upon positive completion to replace their VA.
 	 * 
-	 * @param tableID ID of the set to cluster
+	 * @param tableID
+	 *            ID of the set to cluster
 	 * @param clusterState
 	 */
 	public ClusterResult startClustering(AClusterConfiguration clusterState) {
@@ -603,7 +609,8 @@ public abstract class ATableBasedDataDomain
 
 		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
 			PerspectiveInitializationData recordResult = result.getRecordResult();
-			RecordPerspective recordPerspective = clusterState.getTargetRecordPerspective();
+			RecordPerspective recordPerspective = clusterState
+					.getTargetRecordPerspective();
 			recordPerspective.init(recordResult);
 
 			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID,
@@ -632,8 +639,8 @@ public abstract class ATableBasedDataDomain
 		RecordPerspective recordData = table.getRecordPerspective(vaDelta.getVAType());
 		recordData.setVADelta(vaDelta);
 
-		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID, recordData.getID(),
-				this);
+		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID,
+				recordData.getID(), this);
 
 		eventPublisher.triggerEvent(event);
 
@@ -686,8 +693,7 @@ public abstract class ATableBasedDataDomain
 		if (recordIDMappingManager.hasMapping(selectionDelta.getIDType(),
 				recordSelectionManager.getIDType())) {
 			recordSelectionManager.setDelta(selectionDelta);
-		}
-		else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
+		} else if (dimensionIDMappingManager.hasMapping(selectionDelta.getIDType(),
 				dimensionSelectionManager.getIDType())) {
 			dimensionSelectionManager.setDelta(selectionDelta);
 		}
@@ -698,7 +704,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	@Override
-	public void handleSelectionCommand(IDCategory idCategory, SelectionCommand selectionCommand) {
+	public void handleSelectionCommand(IDCategory idCategory,
+			SelectionCommand selectionCommand) {
 		// TODO Auto-generated method stub
 	}
 
@@ -708,8 +715,9 @@ public abstract class ATableBasedDataDomain
 	 * possible, it is converted to be compatible with the local dataDomain and
 	 * then sent out via a {@link SelectionUpdateEvent}.
 	 * 
-	 * @param dataDomainType the type of the dataDomain for which this
-	 *            selectionUpdate is intended
+	 * @param dataDomainType
+	 *            the type of the dataDomain for which this selectionUpdate is
+	 *            intended
 	 * @param delta
 	 * @param scrollToSelection
 	 * @param info
@@ -723,8 +731,8 @@ public abstract class ATableBasedDataDomain
 	 * foreign selection commands. Can be implemented in concrete classes, has
 	 * no functionality in base class.
 	 */
-	public void handleForeignSelectionCommand(String dataDomainType, IDCategory idCategory,
-			SelectionCommand selectionCommand) {
+	public void handleForeignSelectionCommand(String dataDomainType,
+			IDCategory idCategory, SelectionCommand selectionCommand) {
 		// may be interesting to implement in sub-class
 	}
 
@@ -747,10 +755,12 @@ public abstract class ATableBasedDataDomain
 	 * Returns the denomination for the records. For genetic data for example
 	 * this would be "Gene"
 	 * 
-	 * @param capitalized if true, the label is returned capitalized, e.g.,
-	 *            "Gene", if false it would be "gene"
-	 * @param plural if true, the label is returned in the plural form of the
-	 *            word, e.g., "genes" instead of the singular form, e.g., "gene"
+	 * @param capitalized
+	 *            if true, the label is returned capitalized, e.g., "Gene", if
+	 *            false it would be "gene"
+	 * @param plural
+	 *            if true, the label is returned in the plural form of the word,
+	 *            e.g., "genes" instead of the singular form, e.g., "gene"
 	 * @return the denomination formatted according to the parameters passed
 	 */
 	public String getRecordDenomination(boolean capitalized, boolean plural) {
@@ -789,7 +799,8 @@ public abstract class ATableBasedDataDomain
 	 * Get the human readable record label for the id, which is of the
 	 * {@link #recordIDType}.
 	 * 
-	 * @param id the id to convert to a human readable label
+	 * @param id
+	 *            the id to convert to a human readable label
 	 * @return the readable label
 	 */
 	public String getRecordLabel(Object id) {
@@ -800,7 +811,8 @@ public abstract class ATableBasedDataDomain
 	 * Get the human readable dimension label for the id, which is of the
 	 * {@link #dimensionIDType}.
 	 * 
-	 * @param id the id to convert to a human readable label
+	 * @param id
+	 *            the id to convert to a human readable label
 	 * @return the readable label
 	 */
 	public String getDimensionLabel(Object id) {
@@ -811,13 +823,14 @@ public abstract class ATableBasedDataDomain
 	 * Get the human readable record label for the id, which is of the type
 	 * specified.
 	 * 
-	 * @param idType the IDType of the id passed
+	 * @param idType
+	 *            the IDType of the id passed
 	 * @param id
 	 * @return the readable label
 	 */
 	public String getRecordLabel(IDType idType, Object id) {
-		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, idType.getIDCategory()
-				.getHumanReadableIDType(), id);
+		Set<String> ids = recordIDMappingManager.getIDAsSet(idType, idType
+				.getIDCategory().getHumanReadableIDType(), id);
 		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
 			label = ids.iterator().next();
@@ -827,8 +840,8 @@ public abstract class ATableBasedDataDomain
 
 	/** Same as {@link #getRecordLabel(IDType, Object)} for dimensions */
 	public String getDimensionLabel(IDType idType, Object id) {
-		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, idType.getIDCategory()
-				.getHumanReadableIDType(), id);
+		Set<String> ids = dimensionIDMappingManager.getIDAsSet(idType, idType
+				.getIDCategory().getHumanReadableIDType(), id);
 		String label = "No Mapping";
 		if (ids != null && ids.size() > 0) {
 			label = ids.iterator().next();
@@ -837,7 +850,8 @@ public abstract class ATableBasedDataDomain
 	}
 
 	public void aggregateGroups(java.util.Set<Integer> groups) {
-		System.out.println("Received command to aggregate experiments, not implemented yet");
+		System.out
+				.println("Received command to aggregate experiments, not implemented yet");
 	}
 
 	// FIXME CONTEXT MENU
@@ -1003,16 +1017,18 @@ public abstract class ATableBasedDataDomain
 
 		int count = 0;
 		for (Integer foreignVAID : foreignRecordVA) {
-			Integer localVAID = recordIDMappingManager.getID(foreignRecordVA.getIdType(),
-					recordIDType, foreignVAID);
-			if (localVAID == null)
-				continue;
-			indices.add(localVAID);
-			int groupIndex = recordGroupList.getGroupOfVAIndex(
-					foreignRecordVA.indexOf(foreignVAID)).getGroupIndex();
-			groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
-			sampleElements.set(groupIndex, count);
-			count++;
+			Set<Integer> localVAIDS = recordIDMappingManager.getIDAsSet(
+					foreignRecordVA.getIdType(), recordIDType, foreignVAID);
+			for (Integer localVAID : localVAIDS) {
+				if (localVAID == null)
+					continue;
+				indices.add(localVAID);
+				int groupIndex = recordGroupList.getGroupOfVAIndex(
+						foreignRecordVA.indexOf(foreignVAID)).getGroupIndex();
+				groupSizes.set(groupIndex, groupSizes.get(groupIndex) + 1);
+				sampleElements.set(groupIndex, count);
+				count++;
+			}
 
 		}
 

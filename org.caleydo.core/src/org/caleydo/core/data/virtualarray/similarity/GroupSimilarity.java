@@ -21,6 +21,8 @@ package org.caleydo.core.data.virtualarray.similarity;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
+
 import org.caleydo.core.data.virtualarray.VirtualArray;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.GroupList;
@@ -142,11 +144,15 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
 
 			Integer id = va1.get(vaIndex);
-			Integer origianlID = id;
 			if (va1.getIdType() != va2.getIdType()) {
 				IDMappingManager idMappingManager =
 					IDMappingManagerRegistry.get().getIDMappingManager(va1.getIdType().getIDCategory());
-				id = idMappingManager.getID(va1.getIdType(), va2.getIdType(), id);
+				Set<Integer> ids = idMappingManager.getIDAsSet(va1.getIdType(), va2.getIdType(), id);
+				id = ids.iterator().next();
+				if(ids.size()>2)
+				{
+					System.out.println("Multi-Mapping");
+				}
 			}
 			List<Group> groups2 = va2.getGroupOf(id);
 

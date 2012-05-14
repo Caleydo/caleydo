@@ -54,10 +54,9 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class GLHistogram extends ATableBasedView {
 	public static String VIEW_TYPE = "org.caleydo.view.histogram";
-	
+
 	public static String VIEW_NAME = "Histogram";
 
-	
 	private boolean bUseDetailLevel = true;
 
 	private boolean useColor = true;
@@ -125,9 +124,12 @@ public class GLHistogram extends ATableBasedView {
 	@Override
 	public void initData() {
 		super.initData();
-		if (histogram == null) {
-			histogram = dataContainer.getContainerStatistics().getHistogram();
+		if (dataContainer.getDataDomain().getTable().isDataHomogeneous()) {
+			if (histogram == null) {
+				histogram = dataContainer.getContainerStatistics().getHistogram();
+			}
 		}
+
 	}
 
 	public void setHistogram(Histogram histogram) {
@@ -190,6 +192,8 @@ public class GLHistogram extends ATableBasedView {
 	 * @param gl
 	 */
 	private void renderHistogram(GL2 gl) {
+		if (histogram == null)
+			return;
 
 		float fSpacing = (viewFrustum.getWidth() - 2 * sideSpacing) / histogram.size();
 		float continuousColorDistance = 1.0f / histogram.size();

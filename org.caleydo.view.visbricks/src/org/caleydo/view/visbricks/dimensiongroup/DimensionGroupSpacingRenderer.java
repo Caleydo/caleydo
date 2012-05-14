@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -37,6 +37,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -48,6 +49,7 @@ import org.caleydo.view.visbricks.GLVisBricks;
 import org.caleydo.view.visbricks.PickingType;
 import org.caleydo.view.visbricks.brick.GLBrick;
 import org.caleydo.view.visbricks.brick.ui.RectangleCoordinates;
+import org.eclipse.core.runtime.Status;
 
 /**
  * 
@@ -110,11 +112,11 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	protected void finalize() throws Throwable {
 		super.finalize();
 		// remove the brick connections from visbricks
-//		HashMap<Integer, BrickConnection> brickConnections = glVisBricks
-//				.getHashConnectionBandIDToRecordVA();
-//		for (Integer ribbonID : ribbonIDs) {
-//			brickConnections.remove(ribbonID);
-//		}
+		// HashMap<Integer, BrickConnection> brickConnections = glVisBricks
+		// .getHashConnectionBandIDToRecordVA();
+		// for (Integer ribbonID : ribbonIDs) {
+		// brickConnections.remove(ribbonID);
+		// }
 	}
 
 	public void init() {
@@ -277,9 +279,13 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 				if (recordVA.getIdType() != recordSelectionManager.getIDType()) {
 					IDType destIDType = recordSelectionManager.getIDType();
 
-					recordID = mappingManager.getID(recordVA.getIdType(), destIDType,
-							recordID);
-
+					Set<Integer> recordIDs = mappingManager.getIDAsSet(
+							recordVA.getIdType(), destIDType, recordID);
+					recordID = recordIDs.iterator().next();
+					if (recordIDs.size() > 1) {
+						Logger.log(new Status(Status.WARNING, this.toString(),
+								"Multi-Mapping, not handled"));
+					}
 				}
 
 				if (recordID != null && selectedByGroupSelections.contains(recordID))
@@ -658,8 +664,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			if (draggable == this)
 				break;
 
-			if(!(draggable instanceof DimensionGroup))
-			{
+			if (!(draggable instanceof DimensionGroup)) {
 				System.out.println("CHRISTIAN HEEEEELP!!");
 				break;
 			}
@@ -691,9 +696,8 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	}
 
 	@Override
-	public void handleDropAreaReplaced()
-	{
+	public void handleDropAreaReplaced() {
 		// TODO Auto-generated method stub
-		
+
 	}
 }

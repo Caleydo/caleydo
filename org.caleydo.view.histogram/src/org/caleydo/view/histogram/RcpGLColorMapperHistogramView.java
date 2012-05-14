@@ -97,6 +97,8 @@ public class RcpGLColorMapperHistogramView extends RcpGLHistogramView {
 
 	private void updateColorMappingPreview() {
 
+		if(!dataDomain.getTable().isDataHomogeneous())
+			return;
 		ArrayList<ColorMarkerPoint> markerPoints = dataDomain.getColorMapper()
 				.getMarkerPoints();
 

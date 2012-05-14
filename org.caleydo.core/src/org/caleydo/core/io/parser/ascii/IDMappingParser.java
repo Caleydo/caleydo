@@ -140,11 +140,12 @@ public class IDMappingParser extends ATextParser {
 					while (textTokens.hasMoreTokens() && maintainLoop) {
 						String token = textTokens.nextToken();
 						// Special case for creating dynamic IDs for rows
+						if (idSpecification != null) {
+							token = convertID(token, idSpecification);
+						}
 						if (mappingType.getToIDType().isInternalType()) {
 
-							if (idSpecification != null) {
-								token = convertID(token, idSpecification);
-							}
+							
 
 							// TODO check that we don't need this!
 							// Check for integer values that must be ignored

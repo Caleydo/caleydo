@@ -420,8 +420,10 @@ public class IDMappingManager {
 	 * @param sourceID
 	 *            ID for which the mapping shall be found
 	 * @return If no mapping is found, null, otherwise the corresponding ID, or Set of IDs.
+	 * @deprecated use {@link #getIDAsSet(IDType, IDType, Object)} instead
 	 */
 	@SuppressWarnings("unchecked")
+	@Deprecated
 	public <K, V> V getID(IDType source, IDType destination, K sourceID) {
 
 		if (source.equals(destination))
