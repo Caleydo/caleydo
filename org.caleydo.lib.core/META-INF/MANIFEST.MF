@@ -5,7 +5,6 @@ Bundle-SymbolicName: org.caleydo.lib.core
 Bundle-Version: 2.0
 Bundle-ClassPath: lib/tagsoup/tagsoup-1.1.3.jar,
  lib/weka/weka.jar,
- lib/wii/wiiusej.jar,
  lib/jgrapht/jgrapht-jdk1.6.jar
 Export-Package: org.ccil.cowan.tagsoup;uses:="org.xml.sax.ext,org.xml.sax.helpers,org.xml.sax",
  org.ccil.cowan.tagsoup.jaxp;uses:="org.ccil.cowan.tagsoup,javax.xml.parsers,org.xml.sax",
@@ -37,11 +36,6 @@ Export-Package: org.ccil.cowan.tagsoup;uses:="org.xml.sax.ext,org.xml.sax.helper
    weka.clusterers,
    weka.filters,
    weka.core,
-   weka.core.stemmers",
- wiiusej;uses:="wiiusej.wiiusejevents.utils,wiiusej.wiiusejevents.wiiuseapievents",
- wiiusej.values,
- wiiusej.wiiusejevents.physicalevents;uses:="wiiusej.values,wiiusej.wiiusejevents",
- wiiusej.wiiusejevents.utils;uses:="wiiusej.wiiusejevents.physicalevents,wiiusej.wiiusejevents.wiiuseapievents",
- wiiusej.wiiusejevents.wiiuseapievents;uses:="wiiusej.wiiusejevents.physicalevents,wiiusej.wiiusejevents"
+   weka.core.stemmers"
 Bundle-Vendor: www.caleydo.org
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
