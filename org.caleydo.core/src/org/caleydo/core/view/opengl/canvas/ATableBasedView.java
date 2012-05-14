@@ -192,11 +192,6 @@ public abstract class ATableBasedView extends AGLView implements
 		super.initData();
 	}
 
-	/**
-	 * View specific data initialization
-	 */
-	// protected abstract void initLists();
-
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
 		if (serialzedView instanceof ASerializedTopLevelDataView) {

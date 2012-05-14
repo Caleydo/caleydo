@@ -50,6 +50,7 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.selection.ESelectionCommandType;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionCommand;
@@ -238,8 +239,6 @@ public class GLScatterPlot extends ATableBasedView {
 		// alSelectionTypes.add(SelectionType.MOUSE_OVER);
 		// alSelectionTypes.add(SelectionType.SELECTION);
 
-		colorMapper = dataDomain.getColorMapper();
-
 		fAlXDistances = new ArrayList<Float>();
 
 		glKeyListener = new GLScatterPlotKeyListener(this);
@@ -249,6 +248,13 @@ public class GLScatterPlot extends ATableBasedView {
 
 	}
 
+	@Override
+	public void setDataDomain(ATableBasedDataDomain dataDomain) {
+		super.setDataDomain(dataDomain);
+
+		colorMapper = dataDomain.getColorMapper();
+	}
+	
 	@Override
 	public void init(GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);

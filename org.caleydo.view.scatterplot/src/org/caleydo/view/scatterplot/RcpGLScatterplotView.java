@@ -21,10 +21,6 @@ package org.caleydo.view.scatterplot;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -51,16 +47,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 
 		view = new GLScatterPlot(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
-		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-
-		view.initialize();
+		initializeViewWithData();
 		createPartControlGL();
 	}
 

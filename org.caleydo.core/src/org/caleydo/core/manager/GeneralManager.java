@@ -30,7 +30,6 @@ import org.caleydo.core.serialize.SerializationManager;
 import org.caleydo.core.util.statistics.IStatisticsPerformer;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.data.loader.ResourceLoader;
-import org.eclipse.core.commands.CommandManager;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
@@ -48,7 +47,7 @@ public class GeneralManager {
 	/**
 	 * In release mode non-stable or student views are automatically removed from the workbench.
 	 */
-	public static final boolean RELEASE_MODE = true;
+	public static final boolean RELEASE_MODE = false;
 
 	/**
 	 * This is the current version of Caleydo. The value must be the same as specified in the plugin/bundle.
@@ -58,8 +57,6 @@ public class GeneralManager {
 	public static final String VERSION = "2.0";
 
 	public static final String PLUGIN_ID = "org.caleydo.core";
-
-	// public static final String PREFERENCE_FILE_NAME = "caleydo.prefs";
 
 	/**
 	 * The template for the concrete Caleydo folder, ie CALEYDO_FOLDER. This is used for example in XML files
@@ -80,7 +77,6 @@ public class GeneralManager {
 
 	private BasicInformation basicInfo;
 
-	private CommandManager commandManager;
 	private SWTGUIManager swtGUIManager;
 	private ViewManager viewManager;
 	private EventPublisher eventPublisher;
