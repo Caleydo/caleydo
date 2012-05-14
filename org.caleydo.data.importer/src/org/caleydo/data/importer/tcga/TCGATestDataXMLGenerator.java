@@ -177,11 +177,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		mirnaIDSpecification.setIdType("miRNA");
 		mirnaData.setRowIDSpecification(mirnaIDSpecification);
 		mirnaData.setTransposeMatrix(true);
-
-		IDSpecification sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdType("SAMPLE");
-		sampleIDSpecification.setReplacementExpression("\\.", "-");
-		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 		mirnaData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
@@ -207,11 +202,6 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				ColumnDescription.CONTINUOUS));
 		methylationData.addParsingRule(parsingRule);
 		methylationData.setTransposeMatrix(true);
-
-		IDSpecification sampleIDSpecification = new IDSpecification();
-		sampleIDSpecification.setIdType("SAMPLE");
-		sampleIDSpecification.setReplacementExpression("\\.", "-");
-		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 
 		IDSpecification methylationIDSpecification = new IDSpecification();
 		methylationIDSpecification.setIdType("methylation");
