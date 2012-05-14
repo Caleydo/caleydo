@@ -119,16 +119,7 @@ public class XmlParserManager
 		else {
 			currentHandler = null;
 		}
-
-		/**
-		 * Clean up XmlParserHandler..
-		 */
-		if (buffer.isHandlerDestoryedAfterClosingTag()) {
-			unregisterSaxHandler(buffer.getXmlActivationTag());
-			buffer.destroyHandler();
-			buffer = null;
-		}
-
+		
 		return true;
 	}
 

@@ -50,22 +50,4 @@ public interface IXmlParserHandler
 	 * @return tag that enables this Handler inside the org.caleydo.core.manager.XmlParserManager
 	 */
 	public String getXmlActivationTag();
-
-	/**
-	 * TRUE if handler is destroyed after activation tag is closed.
-	 * 
-	 * @see org.caleydo.core.parser.xml.xml.parser.manager.IXmlParserHandler#setHandlerDestoryedAfterClosingTag(boolean)
-	 * @see org.caleydo.core.io.parser.xml.XmlParserManager
-	 * @return TRUE if handler is destroyed after activation tag is closed
-	 */
-	public boolean isHandlerDestoryedAfterClosingTag();
-
-	/**
-	 * TRUE if handler is destroyed after activation tag is closed.
-	 * 
-	 * @see org.caleydo.core.parser.xml.xml.parser.manager.IXmlParserHandler#isHandlerDestoryedAfterClosingTag()
-	 * @param setHandlerDestoryedAfterClosingTag
-	 */
-	public void setHandlerDestoryedAfterClosingTag(final boolean setHandlerDestoryedAfterClosingTag);
-
 }

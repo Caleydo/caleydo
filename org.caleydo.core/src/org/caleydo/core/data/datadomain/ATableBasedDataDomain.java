@@ -23,12 +23,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Set;
-
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
@@ -236,35 +234,19 @@ public abstract class ATableBasedDataDomain
 				createDefaultConfiguration();
 		}
 
-		// boolean externalMappingLoaded = false;
-		//
-		// if (externalMappingLoaded) {
-		// recordIDCategory =
-		// IDCategory.getIDCategory(configuration.recordIDCategory);
-		// dimensionIDCategory = IDCategory
-		// .getIDCategory(configuration.dimensionIDCategory);
-		// }
+		recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
+		dimensionIDCategory = IDCategory.registerCategory(configuration.dimensionIDCategory);
 
-		// else {
-//		if (recordIDCategory == null || dimensionIDCategory == null) {
-			// if we don't have an external mapping we create the mapping based
-			// on the first column / row. We create the ids for that here.
-			recordIDCategory = IDCategory.registerCategory(configuration.recordIDCategory);
-			dimensionIDCategory = IDCategory
-					.registerCategory(configuration.dimensionIDCategory);
-			
-			// FIXME: for genetic this will be already registered and set as human readable
-			IDType humanReadableRecordIDType = IDType.registerType(
-					configuration.humanReadableRecordIDType, recordIDCategory,
-					EColumnType.STRING);
-			IDType humanReadableDimensionIDType = IDType.registerType(
-					configuration.humanReadableDimensionIDType, dimensionIDCategory,
-					EColumnType.STRING);
+		// FIXME: for genetic this will be already registered and set as human
+		// readable
+		IDType humanReadableRecordIDType = IDType.registerType(
+				configuration.humanReadableRecordIDType, recordIDCategory, EColumnType.STRING);
+		IDType humanReadableDimensionIDType = IDType.registerType(
+				configuration.humanReadableDimensionIDType, dimensionIDCategory,
+				EColumnType.STRING);
 
-			recordIDCategory.setHumanReadableIDType(humanReadableRecordIDType);
-			dimensionIDCategory.setHumanReadableIDType(humanReadableDimensionIDType);
-			
-//		}
+		recordIDCategory.setHumanReadableIDType(humanReadableRecordIDType);
+		dimensionIDCategory.setHumanReadableIDType(humanReadableDimensionIDType);
 
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
 				recordIDCategory, EColumnType.INT);

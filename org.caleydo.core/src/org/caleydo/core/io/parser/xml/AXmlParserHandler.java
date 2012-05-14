@@ -30,8 +30,6 @@ public abstract class AXmlParserHandler
 	extends DefaultHandler
 	implements IXmlParserHandler {
 
-	private boolean bDestroyHandlerAfterClosingTag = false;
-
 	protected final GeneralManager generalManager;
 	protected final XmlParserManager xmlParserManager;
 
@@ -56,20 +54,6 @@ public abstract class AXmlParserHandler
 	public final String getXmlActivationTag() {
 
 		return openingTag;
-	}
-
-	@Override
-	public final boolean isHandlerDestoryedAfterClosingTag() {
-		if (bDestroyHandlerAfterClosingTag)
-			return true;
-
-		return false;
-	}
-
-	@Override
-	public final void setHandlerDestoryedAfterClosingTag(final boolean setHandlerDestoryedAfterClosingTag) {
-
-		this.bDestroyHandlerAfterClosingTag = setHandlerDestoryedAfterClosingTag;
 	}
 
 	/**
