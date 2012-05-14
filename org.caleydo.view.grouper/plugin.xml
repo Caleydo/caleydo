@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="false"
-            category="org.caleydo.rcp.views"
+            category="org.caleydo.core.views"
             class="org.caleydo.view.grouper.RcpGLGrouperView"
             icon="resources/icons/grouper.png"
             id="org.caleydo.view.grouper"

@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            category="org.caleydo.rcp.views"
+            category="org.caleydo.core.views"
             class="org.caleydo.view.bucket.RcpGLBucketView"
             icon="resources/icons/bucket.png"
             id="org.caleydo.view.bucket"

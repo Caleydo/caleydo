@@ -5,7 +5,7 @@
          point="org.eclipse.ui.views">
       <view
             allowMultiple="true"
-            category="org.caleydo.rcp.views"
+            category="org.caleydo.core.views"
             class="org.caleydo.view.histogram.RcpGLColorMapperHistogramView"
             icon="resources/icons/histogram.png"
             id="org.caleydo.view.histogram"

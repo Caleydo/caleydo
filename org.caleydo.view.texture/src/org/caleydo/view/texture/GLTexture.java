@@ -52,8 +52,6 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 
 	private SelectionType currentSelectionType = SelectionType.NORMAL;
 
-	private String info = "not set";
-
 	/**
 	 * Constructor.
 	 */
@@ -217,9 +215,4 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
-
-	public void setInfo(String info) {
-		this.info = info;
-	}
-
 }
