@@ -20,7 +20,6 @@
 package org.caleydo.view.enroute;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -28,12 +27,10 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 import javax.media.opengl.glu.GLU;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -80,7 +77,6 @@ import org.caleydo.view.enroute.node.BranchSummaryNode;
 import org.caleydo.view.enroute.node.ComplexNode;
 import org.caleydo.view.enroute.node.CompoundNode;
 import org.caleydo.view.enroute.node.GeneNode;
-import org.caleydo.view.enroute.renderstyle.EnRouteRenderStyle;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
@@ -118,8 +114,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	public final static int BRANCH_AREA_SIDE_SPACING_PIXELS = 8;
 
 	public final static int DEFAULT_MAX_BRANCH_SWITCHING_PATH_LENGTH = 5;
-
-	private EnRouteRenderStyle renderStyle;
 
 	private int lastNodeId = 0;
 
@@ -159,12 +153,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	 * Map that associates every node in a branch with a linearized node.
 	 */
 	private Map<ANode, ALinearizableNode> branchNodesToLinearizedNodesMap = new HashMap<ANode, ALinearizableNode>();
-
-	// /**
-	// * All genetic data domains.
-	// */
-	// private List<GeneticDataDomain> geneticDataDomains = new
-	// ArrayList<GeneticDataDomain>();
 
 	/**
 	 * The {@link IDataDomain}s for which data is displayed in this view.
@@ -212,12 +200,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
-		// List<IDataDomain> dataDomains =
-		// DataDomainManager.get().getDataDomainsByType(
-		// "org.caleydo.datadomain.genetic");
-		// for (IDataDomain dataDomain : dataDomains) {
-		// geneticDataDomains.add((GeneticDataDomain) dataDomain);
-		// }
 		mappedDataRenderer = new MappedDataRenderer(this);
 
 		geneSelectionManager = new EventBasedSelectionManager(this,
@@ -233,7 +215,6 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-		renderStyle = new EnRouteRenderStyle(viewFrustum);
 		textRenderer = new CaleydoTextRenderer(24);
 
 		super.renderStyle = renderStyle;

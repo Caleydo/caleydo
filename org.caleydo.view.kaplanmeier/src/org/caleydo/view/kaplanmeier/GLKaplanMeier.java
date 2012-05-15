@@ -20,15 +20,12 @@
 package org.caleydo.view.kaplanmeier;
 
 import gleem.linalg.Vec3f;
-
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.selection.ElementConnectionInformation;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -50,7 +47,6 @@ import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.kaplanmeier.renderstyle.KaplanMeierRenderStyle;
 import org.eclipse.swt.widgets.Composite;
 
 /**
@@ -71,8 +67,6 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	protected static final int BOTTOM_LEFT_AXIS_SPACING_PIXELS = 50;
 	protected static final int TOP_RIGHT_AXIS_SPACING_PIXELS = 8;
-
-	private KaplanMeierRenderStyle renderStyle;
 
 	private SelectionManager recordGroupSelectionManager;
 
@@ -100,7 +94,6 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public void init(GL2 gl) {
 		displayListIndex = gl.glGenLists(1);
-		renderStyle = new KaplanMeierRenderStyle(viewFrustum);
 
 		super.renderStyle = renderStyle;
 		detailLevel = EDetailLevel.HIGH;
