@@ -75,9 +75,16 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 	private float[] backGroundColor = DEFAULT_BACK_GROUND_COLOR;
 
 	/**
-	 * Specifies whether the text is centered at the position it is rendered.
+	 * Specifies whether the text is centered at the x coordinate it is
+	 * rendered.
 	 */
-	private boolean isCentered = false;
+	private boolean isXCentered = false;
+
+	/**
+	 * Specifies whether the text is centered at the y coordinate it is
+	 * rendered.
+	 */
+	private boolean isYCentered = false;
 
 	/**
 	 * Provider of the label text.
@@ -116,8 +123,8 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 		float yPosition;
 
 		if (lineOffsetPixels == 0) {
-			xPosition = relativePositionOnLine.x() - ((isCentered) ? width / 2.0f : 0);
-			yPosition = relativePositionOnLine.y() - ((isCentered) ? height / 2.0f : 0);
+			xPosition = relativePositionOnLine.x() - ((isXCentered) ? width / 2.0f : 0);
+			yPosition = relativePositionOnLine.y() - ((isYCentered) ? height / 2.0f : 0);
 		} else {
 			Vec3f direction = enclosingPoint2.minus(enclosingPoint1);
 			Vec2f normalVector = new Vec2f(-direction.y(), direction.x());
@@ -126,13 +133,16 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 			xPosition = relativePositionOnLine.x() + normalVector.x();
 			yPosition = relativePositionOnLine.y() + normalVector.y();
 
-			if (isCentered) {
+			if (isXCentered) {
 				xPosition -= width / 2.0f;
-				yPosition -= height / 2.0f;
 			} else {
 				if (xPosition < relativePositionOnLine.x()) {
 					xPosition -= width;
 				}
+			}
+			if (isYCentered) {
+				yPosition -= height / 2.0f;
+			} else {
 				if (yPosition < relativePositionOnLine.y()) {
 					yPosition -= height;
 				}
@@ -231,17 +241,17 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 
 	/**
 	 * @param isCentered
-	 *            setter, see {@link #isCentered}
+	 *            setter, see {@link #isXCentered}
 	 */
-	public void setCentered(boolean isCentered) {
-		this.isCentered = isCentered;
+	public void setXCentered(boolean isCentered) {
+		this.isXCentered = isCentered;
 	}
 
 	/**
-	 * @return the isCentered, see {@link #isCentered}
+	 * @return the isCentered, see {@link #isXCentered}
 	 */
-	public boolean isCentered() {
-		return isCentered;
+	public boolean isXCentered() {
+		return isXCentered;
 	}
 
 	/**
@@ -257,6 +267,21 @@ public class LineLabelRenderer extends ARelativeLinePositionRenderer {
 	 */
 	public ILabelProvider getLabelProvider() {
 		return labelProvider;
+	}
+
+	/**
+	 * @param isYCentered
+	 *            setter, see {@link #isYCentered}
+	 */
+	public void setYCentered(boolean isYCentered) {
+		this.isYCentered = isYCentered;
+	}
+
+	/**
+	 * @return the isYCentered, see {@link #isYCentered}
+	 */
+	public boolean isYCentered() {
+		return isYCentered;
 	}
 
 }

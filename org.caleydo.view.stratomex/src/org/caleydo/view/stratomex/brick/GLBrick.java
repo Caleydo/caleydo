@@ -28,6 +28,8 @@ import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
+import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -37,7 +39,9 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
+import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.data.RelationsUpdatedEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.gui.util.ChangeNameDialog;
@@ -110,8 +114,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		ILayoutedElement, IDraggable {
 
 	public static String VIEW_TYPE = "org.caleydo.view.brick";
-public static String VIEW_NAME = "Brick";
-
+	public static String VIEW_NAME = "Brick";
 
 	private LayoutManager layoutManager;
 	private ElementLayout wrappingLayout;
@@ -1176,18 +1179,47 @@ public static String VIEW_NAME = "Brick";
 								kaplanMeierDimensionGroupData);
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
+						dataConfigurer
+								.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						ExternallyProvidedSortingStrategy sortingStrategy = new ExternallyProvidedSortingStrategy();
 						sortingStrategy.setExternalBricks(dimensionGroup.getBricks());
 						sortingStrategy
 								.setHashConvertedRecordPerspectiveToOrginalRecordPerspective(dialog
 										.getHashConvertedRecordPerspectiveToOrginalRecordPerspective());
 						dataConfigurer.setSortingStrategy(sortingStrategy);
+						dataConfigurer
+								.setMaxTimeValue(calculateMaxTimeValue(kaplanMeierDimensionGroupData));
 						event.setDataConfigurer(dataConfigurer);
 						event.setSender(this);
 						event.setReceiver(stratomex);
 						eventPublisher.triggerEvent(event);
 					}
 				}
+			}
+
+			private float calculateMaxTimeValue(DataContainer dataContainer) {
+				RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+						.getVirtualArray();
+
+				DimensionVirtualArray dimensionVA = dataContainer
+						.getDimensionPerspective().getVirtualArray();
+
+				float maxTimeValue = Float.MIN_VALUE;
+				for (Group group : recordVA.getGroupList()) {
+					List<Integer> recordIDs = recordVA.getIDsOfGroup(group
+							.getGroupIndex());
+					for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
+
+						float rawValue = dataContainer
+								.getDataDomain()
+								.getTable()
+								.getFloat(DataRepresentation.RAW,
+										recordIDs.get(recordID), dimensionVA.get(0));
+						if (rawValue != Float.NaN && rawValue > maxTimeValue)
+							maxTimeValue = rawValue;
+					}
+				}
+				return maxTimeValue;
 			}
 		});
 	}

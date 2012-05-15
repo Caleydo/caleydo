@@ -27,7 +27,6 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.kaplanmeier.GLKaplanMeier;
 import org.caleydo.view.stratomex.brick.GLBrick;
-
 /**
  * Creator for a remote rendered {@link GLKaplanMeier}.
  * 
@@ -35,8 +34,14 @@ import org.caleydo.view.stratomex.brick.GLBrick;
  * 
  */
 public class KaplanMeierCreator implements IRemoteViewCreator {
+	
+	/**
+	 * The maximum time value that is mapped to the x axis of the Kaplan Meier plot.
+	 */
+	private float maxTimeValue;
 
-	public KaplanMeierCreator() {
+	public KaplanMeierCreator(float maxTimeValue) {
+		this.maxTimeValue = maxTimeValue;
 	}
 
 	@Override
@@ -56,6 +61,7 @@ public class KaplanMeierCreator implements IRemoteViewCreator {
 		kaplanMeier.setRemoteRenderingGLView(remoteRenderingView);
 		kaplanMeier.setDataContainer(remoteRenderingView.getDataContainer());
 		kaplanMeier.setDataDomain(remoteRenderingView.getDataDomain());
+		kaplanMeier.setMaxAxisTime(maxTimeValue);
 
 		kaplanMeier.initialize();
 		kaplanMeier.initRemote(gl, remoteRenderingView, glMouseListener);

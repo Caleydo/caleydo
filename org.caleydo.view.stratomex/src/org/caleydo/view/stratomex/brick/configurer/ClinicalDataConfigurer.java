@@ -58,6 +58,10 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	protected static final int SPACING_PIXELS = 4;
 
 	private ExternallyProvidedSortingStrategy sortingStrategy;
+	/**
+	 * The maximum time value that is mapped to the x axis of Kaplan Meier plots.
+	 */
+	private float maxTimeValue;
 
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
@@ -213,7 +217,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		HashMap<EContainedViewType, AGLView> views = new HashMap<EContainedViewType, AGLView>();
 		HashMap<EContainedViewType, LayoutRenderer> containedViewRenderers = new HashMap<EContainedViewType, LayoutRenderer>();
 
-		KaplanMeierCreator viewCreator = new KaplanMeierCreator();
+		KaplanMeierCreator viewCreator = new KaplanMeierCreator(maxTimeValue);
 		AGLView kaplanMeier = viewCreator.createRemoteView(brick, gl, glMouseListener);
 
 		LayoutRenderer kaplanMeierRenderer = new ViewLayoutRenderer(kaplanMeier);
@@ -288,5 +292,12 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 	@Override
 	public int getDefaultWidth() {
 		return 100;
+	}
+	
+	/**
+	 * @param maxTimeValue setter, see {@link #maxTimeValue}
+	 */
+	public void setMaxTimeValue(float maxTimeValue) {
+		this.maxTimeValue = maxTimeValue;
 	}
 }
