@@ -8,7 +8,7 @@
             category="org.caleydo.core.views"
             class="org.caleydo.view.stratomex.RcpGLStratomexView"
             icon="resources/icons/icon.png"
-            id="org.caleydo.view.visbricks"
+            id="org.caleydo.view.stratomex"
             name="StratomeX">
       </view>
    </extension>
@@ -20,7 +20,7 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.visbricks.command.openvisbricks"
+                  commandId="org.caleydo.view.stratomex.command.openstratomex"
                   icon="resources/icons/icon.png"
                   style="push">
             </command>
@@ -31,7 +31,7 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.stratomex.command.handler.OpenStratomexHandler"
-            id="org.caleydo.view.visbricks.command.openvisbricks"
+            id="org.caleydo.view.stratomex.command.openstratomex"
             name="StratomeX">
       </command>
    </extension>

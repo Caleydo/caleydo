@@ -8,7 +8,7 @@
             category="org.caleydo.core.views"
             class="org.caleydo.view.info.selection.RcpSelectionInfoView"
             icon="resources/icons/info.png"
-            id="org.caleydo.view.info"
+            id="org.caleydo.view.info.selection"
             name="Selection Info">
       </view>
    </extension>

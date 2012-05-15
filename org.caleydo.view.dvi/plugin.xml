@@ -5,7 +5,7 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.dvi.command.handler.OpenDVIHandler"
-            id="org.caleydo.view.datagraph.opendvi"
+            id="org.caleydo.view.dvi.opendvi"
             name="Data-View Integrator">
       </command>
    </extension>
@@ -33,7 +33,7 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.datagraph.opendatagraph"
+                  commandId="org.caleydo.view.dvi.opendvi"
                   icon="resources/icons/dataviewintegrator.png"
                   style="push">
             </command>
