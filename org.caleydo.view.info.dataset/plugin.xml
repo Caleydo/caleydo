@@ -6,9 +6,9 @@
       <view
             allowMultiple="false"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.datameta.RcpDataMetaView"
+            class="org.caleydo.view.info.dataset.RcpDatasetInfoView"
             icon="resources/icons/icon.png"
-            id="org.caleydo.view.datameta"
+            id="org.caleydo.view.info.dataset"
             name="Dataset Info">
       </view>
    </extension>
@@ -20,7 +20,7 @@
                id="org.caleydo.menu.view"
                label="View">
             <command
-                  commandId="org.caleydo.view.datameta.command.opendatameta"
+                  commandId="org.caleydo.view.info.dataset.command.opendatasetinfo"
                   icon="resources/icons/icon.png"
                   label="Dataset Info"
                   style="push">
@@ -31,8 +31,8 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.datameta.command.handler.OpenDataMetaHandler"
-            id="org.caleydo.view.datameta.command.opendatameta"
+            defaultHandler="org.caleydo.view.info.dataset.command.handler.OpenDatasetInfoHandler"
+            id="org.caleydo.view.info.dataset.command.opendatasetinfo"
             name="Dataset Info">
       </command>
    </extension>
@@ -42,7 +42,7 @@
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
-          name="DataMetaViewCreator"
-          class="org.caleydo.view.datameta.creator.ViewCreator" />
+          name="DatasetInfoViewCreator"
+          class="org.caleydo.view.info.dataset.creator.ViewCreator" />
    </extension>
 </plugin>

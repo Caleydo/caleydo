@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: StratomeX View
-Bundle-SymbolicName: org.caleydo.view.visbricks;singleton:=true
+Bundle-SymbolicName: org.caleydo.view.stratomex;singleton:=true
 Bundle-Version: 2.0
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.datadomain.genetic;bundle-version="2.0.0",
@@ -16,13 +16,13 @@ Import-Package: gleem.linalg,
  org.caleydo.data.loader,
  org.caleydo.datadomain.pathway.manager,
  org.caleydo.view.pathway
-Export-Package: org.caleydo.view.visbricks,
- org.caleydo.view.visbricks.brick,
- org.caleydo.view.visbricks.brick.configurer,
- org.caleydo.view.visbricks.brick.sorting,
- org.caleydo.view.visbricks.dimensiongroup,
- org.caleydo.view.visbricks.event,
- org.caleydo.view.visbricks.toolbar
+Export-Package: org.caleydo.view.stratomex,
+ org.caleydo.view.stratomex.brick,
+ org.caleydo.view.stratomex.brick.configurer,
+ org.caleydo.view.stratomex.brick.sorting,
+ org.caleydo.view.stratomex.dimensiongroup,
+ org.caleydo.view.stratomex.event,
+ org.caleydo.view.stratomex.toolbar
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.caleydo.view.visbricks.Activator
+Bundle-Activator: org.caleydo.view.stratomex.Activator

@@ -5,7 +5,7 @@
          point="org.eclipse.ui.commands">
       <command
             defaultHandler="org.caleydo.view.dvi.command.handler.OpenDVIHandler"
-            id="org.caleydo.view.datagraph.opendatagraph"
+            id="org.caleydo.view.datagraph.opendvi"
             name="Data-View Integrator">
       </command>
    </extension>
@@ -15,7 +15,7 @@
             category="org.caleydo.core.views"
             class="org.caleydo.view.dvi.RcpGLDVIView"
             icon="resources/icons/dataviewintegrator.png"
-            id="org.caleydo.view.datagraph"
+            id="org.caleydo.view.dvi"
             name="Data-View Integrator"
             restorable="true">
          <description>
@@ -46,14 +46,14 @@
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
-          name="DataGraphViewCreator"
-          class="org.caleydo.view.datagraph.creator.ViewCreator" />
+          name="DVIViewCreator"
+          class="org.caleydo.view.dvi.creator.ViewCreator" />
    </extension>
    <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"
-            viewID="org.caleydo.view.datagraph">
+            viewID="org.caleydo.view.dvi">
       </ViewCategory>
    </extension>
 

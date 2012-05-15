@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Search View for Genetic Data
-Bundle-SymbolicName: org.caleydo.view.genesearch;singleton:=true
+Bundle-Name: Search
+Bundle-SymbolicName: org.caleydo.view.search;singleton:=true
 Bundle-Version: 2.0
 Require-Bundle: org.caleydo.core;bundle-version="2.0.0",
  org.caleydo.datadomain.pathway;bundle-version="2.0.0",
@@ -10,8 +10,8 @@ Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Import-Package: gleem.linalg,
  javax.media.opengl,
  org.caleydo.data.loader
-Export-Package: org.caleydo.view.genesearch,
- org.caleydo.view.genesearch.toolbar
+Export-Package: org.caleydo.view.search,
+ org.caleydo.view.search.toolbar
 Bundle-Vendor: www.caleydo.org
 Bundle-ActivationPolicy: lazy
-Bundle-Activator: org.caleydo.view.genesearch.Activator
+Bundle-Activator: org.caleydo.view.search.Activator

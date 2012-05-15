@@ -30,9 +30,9 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
-import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroupManager;
+import org.caleydo.view.stratomex.GLStratomex;
+import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.visbricks20.listener.GLVendingMachineKeyListener;
 import org.caleydo.view.visbricks20.renderer.RankNumberRenderer;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
@@ -46,7 +46,9 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 
-public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView {
+public class GLVendingMachine
+	extends AGLView
+	implements IGLRemoteRenderingView {
 
 	public static String VIEW_TYPE = "org.caleydo.view.vendingmachine";
 
@@ -58,21 +60,21 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 
 	private Column mainColumn;
 
-	private ArrayList<GLVisBricks> visBricksStack = new ArrayList<GLVisBricks>();
+	private ArrayList<GLStratomex> visBricksStack = new ArrayList<GLStratomex>();
 
 	private List<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
 	private DimensionGroupManager dimGroupManager;
 
-	private Queue<GLVisBricks> uninitializedVisBrickViews = new LinkedList<GLVisBricks>();
+	private Queue<GLStratomex> uninitializedVisBrickViews = new LinkedList<GLStratomex>();
 
-	private GLVisBricks selectedVisBricksChoice;
+	private GLStratomex selectedVisBricksChoice;
 
 	/**
 	 * Hash that maps a GLVisBrick to the data container that is shown in
 	 * addition to the "fixed" data containers.
 	 */
-	private HashMap<GLVisBricks, DataContainer> hashVisBricks2DataContainerChoice = new HashMap<GLVisBricks, DataContainer>();
+	private HashMap<GLStratomex, DataContainer> hashVisBricks2DataContainerChoice = new HashMap<GLStratomex, DataContainer>();
 
 	/**
 	 * Constructor.
@@ -183,8 +185,8 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 						.adjustedRandIndex().getScore(fixedDataContainer, false);
 				scoreCount++;
 			}
-			score2DataContainerList.add(new Pair(scoreSum / scoreCount,
-					referenceDataContainer));
+			score2DataContainerList
+					.add(new Pair(scoreSum / scoreCount, referenceDataContainer));
 		}
 
 		Collections.sort(score2DataContainerList);
@@ -206,7 +208,7 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 			ElementLayout visBricksElementLayout = new ElementLayout(
 					"visBricksElementLayoutRow");
 
-			GLVisBricks visBricks = createVisBricks(visBricksElementLayout);
+			GLStratomex visBricks = createVisBricks(visBricksElementLayout);
 			visBricks.addDataContainer(dataContainer);
 
 			visBricksStack.add(0, visBricks);
@@ -236,13 +238,11 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLVisBricks createVisBricks(ElementLayout wrappingLayout) {
-		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
-				1, -4, 4);
-		GLVisBricks visBricks = (GLVisBricks) GeneralManager
-				.get()
-				.getViewManager()
-				.createGLView(GLVisBricks.class, parentGLCanvas, parentComposite, frustum);
+	private GLStratomex createVisBricks(ElementLayout wrappingLayout) {
+		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+				-4, 4);
+		GLStratomex visBricks = (GLStratomex) GeneralManager.get().getViewManager()
+				.createGLView(GLStratomex.class, parentGLCanvas, parentComposite, frustum);
 
 		visBricks.setVendingMachineMode(true);
 		visBricks.setRemoteRenderingGLView(this);
@@ -340,14 +340,13 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 			if (count > 2)
 				break;
 
-			RecordPerspective perspective = dataDomain.getTable()
-					.getRecordPerspective(id);
+			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
 
-			DataContainer newDataContainer = dataDomain.getDataContainer(id,
-					dataContainer.getDimensionPerspective().getID());
+			DataContainer newDataContainer = dataDomain.getDataContainer(id, dataContainer
+					.getDimensionPerspective().getID());
 			newDataContainer.setPrivate(true);
 
 			dataContainers.add(newDataContainer);
@@ -362,7 +361,7 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 
 	public void highlightNextPreviousVisBrick(boolean next) {
 
-		GLVisBricks previouslySelectedVisBricksChoice = selectedVisBricksChoice;
+		GLStratomex previouslySelectedVisBricksChoice = selectedVisBricksChoice;
 		DataContainer previouslySelectedDatacontainer = hashVisBricks2DataContainerChoice
 				.get(selectedVisBricksChoice);
 		previouslySelectedDatacontainer.setPrivate(true);
@@ -402,8 +401,7 @@ public class GLVendingMachine extends AGLView implements IGLRemoteRenderingView 
 			}
 		}
 		dimGroupManager.setCenterGroupStartIndex(0);
-		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups()
-				.size());
+		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups().size());
 
 		getVisBricks20View().getVisBricks().updateLayout();
 

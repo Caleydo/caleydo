@@ -5,8 +5,8 @@ Bundle-SymbolicName: org.caleydo.view.grouper;singleton:=true
 Bundle-Version: 2.0
 Require-Bundle: org.caleydo.datadomain.genetic;bundle-version="1.0.0",
  org.caleydo.core;bundle-version="2.0.0",
- org.caleydo.view.visbricks;bundle-version="2.0.0",
- org.caleydo.util.r;bundle-version="2.0.0";resolution:=optional
+ org.caleydo.util.r;bundle-version="2.0.0";resolution:=optional,
+ org.caleydo.view.stratomex;bundle-version="2.0.0"
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Export-Package: org.caleydo.view.grouper,
  org.caleydo.view.grouper.command.handler,

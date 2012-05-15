@@ -23,7 +23,7 @@ import java.util.ArrayList;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
 
 public class AddGroupsToVisBricksItem extends AContextMenuItem {
 

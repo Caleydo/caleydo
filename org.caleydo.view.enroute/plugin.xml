@@ -4,7 +4,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.linearizedpathway.command.handler.OpenLinearizedPathwayHandler"
+            defaultHandler="org.caleydo.view.enroute.command.handler.OpenEnRouteHandler"
             description="Path and Experimental Data View"
             id="org.caleydo.view.linearizedpathway.openlinearizedpathway"
             name="enRoute ">
@@ -14,9 +14,9 @@
          point="org.eclipse.ui.views">
       <view
             category="org.caleydo.core.views"
-            class="org.caleydo.view.linearizedpathway.RcpGLLinearizedPathwayView"
-            icon="resources/icons/linearizedpathway.png"
-            id="org.caleydo.view.linearizedpathway"
+            class="org.caleydo.view.enroute.RcpGLEnRoutePathwayView"
+            icon="resources/icons/enroute.png"
+            id="org.caleydo.view.enroute"
             name="enRoute"
             restorable="true">
          <description>
@@ -30,12 +30,12 @@
             allPopups="false"
             locationURI="menu:org.eclipse.ui.main.menu">
          <menu
-               icon="resources/icons/linearizedpathway.png"
+               icon="resources/icons/enroute.png"
                id="org.caleydo.menu.view"
                label="View">
             <command
                   commandId="org.caleydo.view.linearizedpathway.openlinearizedpathway"
-                  icon="resources/icons/linearizedpathway.png"
+                  icon="resources/icons/enroute.png"
                   label="enRoute - Pathway Path"
                   style="push">
             </command>
@@ -48,14 +48,14 @@
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
-          name="LinearizedPathwayViewCreator"
-          class="org.caleydo.view.linearizedpathway.creator.ViewCreator" />
+          name="enRoutePathwayViewCreator"
+          class="org.caleydo.view.enroute.creator.ViewCreator" />
    </extension>
    <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"
-            viewID="org.caleydo.view.linearizedpathway">
+            viewID="org.caleydo.view.enroute">
       </ViewCategory>
    </extension>
 

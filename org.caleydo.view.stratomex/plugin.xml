@@ -6,7 +6,7 @@
       <view
             allowMultiple="true"
             category="org.caleydo.core.views"
-            class="org.caleydo.view.visbricks.RcpGLVisBricksView"
+            class="org.caleydo.view.stratomex.RcpGLStratomexView"
             icon="resources/icons/icon.png"
             id="org.caleydo.view.visbricks"
             name="StratomeX">
@@ -30,7 +30,7 @@
    <extension
          point="org.eclipse.ui.commands">
       <command
-            defaultHandler="org.caleydo.view.visbricks.command.handler.OpenVisBricksHandler"
+            defaultHandler="org.caleydo.view.stratomex.command.handler.OpenStratomexHandler"
             id="org.caleydo.view.visbricks.command.openvisbricks"
             name="StratomeX">
       </command>
@@ -41,14 +41,14 @@
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"
-          name="VisBricksViewCreator"
-          class="org.caleydo.view.visbricks.creator.ViewCreator" />
+          name="StratomexViewCreator"
+          class="org.caleydo.view.stratomex.creator.ViewCreator" />
    </extension>
    <extension
          point="org.caleydo.view.ViewCategory">
       <ViewCategory
             isDataView="false"
-            viewID="org.caleydo.view.visbricks">
+            viewID="org.caleydo.view.stratomex">
       </ViewCategory>
    </extension>
 </plugin>

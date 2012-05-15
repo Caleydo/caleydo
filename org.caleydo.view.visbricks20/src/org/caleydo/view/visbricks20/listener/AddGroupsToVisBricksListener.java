@@ -2,7 +2,7 @@ package org.caleydo.view.visbricks20.listener;
 
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks20.GLVisBricks20;
 
 /**

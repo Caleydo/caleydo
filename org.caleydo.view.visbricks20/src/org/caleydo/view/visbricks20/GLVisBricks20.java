@@ -24,10 +24,10 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
-import org.caleydo.view.visbricks.GLVisBricks;
-import org.caleydo.view.visbricks.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.visbricks.dimensiongroup.DimensionGroup;
-import org.caleydo.view.visbricks.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.GLStratomex;
+import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
+import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
 import org.caleydo.view.visbricks20.listener.AddGroupsToVisBricksListener;
 import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
@@ -55,7 +55,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	private GLDataViewIntegrator dvi;
 	private ElementLayout dviElementLayout;
 
-	private GLVisBricks visBricks;
+	private GLStratomex visBricks;
 	private ElementLayout visBricksElementLayout;
 
 	private GLVendingMachine vendingMachine;
@@ -195,13 +195,13 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	 * @param wrappingLayout
 	 * @return
 	 */
-	private GLVisBricks createVisBricks(ElementLayout wrappingLayout) {
+	private GLStratomex createVisBricks(ElementLayout wrappingLayout) {
 		ViewFrustum frustum = new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0,
 				1, -4, 4);
-		visBricks = (GLVisBricks) GeneralManager
+		visBricks = (GLStratomex) GeneralManager
 				.get()
 				.getViewManager()
-				.createGLView(GLVisBricks.class, parentGLCanvas, parentComposite, frustum);
+				.createGLView(GLStratomex.class, parentGLCanvas, parentComposite, frustum);
 
 		visBricks.setRemoteRenderingGLView(this);
 		visBricks.initialize();
@@ -359,7 +359,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	/**
 	 * @return the visBricks, see {@link #visBricks}
 	 */
-	public GLVisBricks getVisBricks() {
+	public GLStratomex getVisBricks() {
 		return visBricks;
 	}
 }

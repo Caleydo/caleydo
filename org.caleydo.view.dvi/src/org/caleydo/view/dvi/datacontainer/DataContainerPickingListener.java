@@ -33,11 +33,11 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
-import org.caleydo.view.dvi.contextmenu.AddGroupToVisBricksItem;
+import org.caleydo.view.dvi.contextmenu.AddGroupToStratomexItem;
 import org.caleydo.view.dvi.contextmenu.CreateViewItem;
 import org.caleydo.view.dvi.contextmenu.ShowDataContainerInViewsItem;
 import org.caleydo.view.dvi.node.ViewNode;
-import org.caleydo.view.visbricks.GLVisBricks;
+import org.caleydo.view.stratomex.GLStratomex;
 import org.eclipse.core.runtime.IConfigurationElement;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
@@ -240,10 +240,10 @@ public class DataContainerPickingListener
 		{
 			for (ViewNode node : viewNodes)
 			{
-				if (node.getRepresentedView() instanceof GLVisBricks)
+				if (node.getRepresentedView() instanceof GLStratomex)
 				{
 					view.getContextMenuCreator().addContextMenuItem(
-							new AddGroupToVisBricksItem((GLVisBricks) node
+							new AddGroupToStratomexItem((GLStratomex) node
 									.getRepresentedView(), dataContainer));
 				}
 			}
