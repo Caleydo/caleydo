@@ -17,44 +17,39 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-/**
- * 
- */
-package org.caleydo.view.pathway.event;
+package org.caleydo.view.stratomex.listener;
 
 import org.caleydo.core.event.AEvent;
-import org.caleydo.datadomain.pathway.graph.PathwayPath;
+import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
+import org.caleydo.view.stratomex.GLStratomex;
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.KeyEvent;
 
-/**
- * Event that specifies a linearizable pathway path.
- * 
- * @author Christian Partl
- * 
- */
-public class LinearizedPathwayPathEvent extends AEvent {
+public class GLStratomexKeyListener extends GLKeyListener<GLStratomex> {
 
-	/**
-	 * Path object that specifies a path.
-	 */
-	private PathwayPath path;
+	private boolean isCtrlDown;
 
 	@Override
-	public boolean checkIntegrity() {
-		return true;
+	protected void handleKeyPressedEvent(KeyEvent event) {
+
+		if (event.keyCode == SWT.CTRL)
+			isCtrlDown = true;
+
 	}
 
-	/**
-	 * @param path
-	 *            setter, see {@link #path}
-	 */
-	public void setPath(PathwayPath path) {
-		this.path = path;
+	@Override
+	public void handleEvent(AEvent event) {
+		// TODO Auto-generated method stub
+
 	}
 
-	/**
-	 * @return the path, see {@link #path}
-	 */
-	public PathwayPath getPath() {
-		return path;
+	@Override
+	protected void handleKeyReleasedEvent(KeyEvent event) {
+		if (event.stateMask == SWT.CTRL)
+			isCtrlDown = false;
+	}
+
+	public boolean isCtrlDown() {
+		return isCtrlDown;
 	}
 }

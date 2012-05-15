@@ -46,11 +46,11 @@ public class GenomePerspective
 		topLeft.addView(RcpToolBarView.ID);
 
 		IFolderLayout middleLeft = layout.createFolder("middleLeft", IPageLayout.BOTTOM, 0.2f, "topLeft");
-		middleLeft.addView("org.caleydo.view.info");
+		middleLeft.addView("org.caleydo.view.info.selection");
 		// middleLeft.addPlaceholder("org.caleydo.view.statistics");
 
 		IFolderLayout bottomLeft = layout.createFolder("bottomLeft", IPageLayout.BOTTOM, 0.4f, "middleLeft");
-		bottomLeft.addView("org.caleydo.view.datameta");
+		bottomLeft.addView("org.caleydo.view.info.dataset");
 
 		IFolderLayout mainLayout =
 			layout.createFolder("main", IPageLayout.RIGHT, 0.3f, IPageLayout.ID_EDITOR_AREA);

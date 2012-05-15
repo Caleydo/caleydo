@@ -27,10 +27,10 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
+import org.caleydo.view.pathway.event.EnRoutePathEvent;
 
 /**
- * Listener for {@link LinearizedPathwayPathEvent}.
+ * Listener for {@link EnRoutePathEvent}.
  * 
  * @author Christian Partl
  * 
@@ -42,8 +42,8 @@ public class EnRoutePathEventListener extends
 	public void handleEvent(AEvent event) {
 		if (event.getSender() == handler)
 			return;
-		if (event instanceof LinearizedPathwayPathEvent) {
-			LinearizedPathwayPathEvent e = (LinearizedPathwayPathEvent) event;
+		if (event instanceof EnRoutePathEvent) {
+			EnRoutePathEvent e = (EnRoutePathEvent) event;
 			PathwayPath path = e.getPath();
 			if (path != null && path.getPath() != null) {
 				PathwayGraph pathway = (PathwayGraph) path.getPath().getGraph();

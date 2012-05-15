@@ -55,9 +55,9 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		GLStratomex glVisBricks = new GLStratomex(glCanvas, parentComposite,
+		GLStratomex stratomex = new GLStratomex(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
-		view = glVisBricks;
+		view = stratomex;
 		view.initFromSerializableRepresentation(serializedView);
 		// view.initFromSerializableRepresentation(serializedView);
 		if (view instanceof IDataDomainBasedView<?>) {
@@ -67,13 +67,13 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 
-			SerializedStratomexView serializedVisBricksView = (SerializedStratomexView) serializedView;
+			SerializedStratomexView serializedStratomexView = (SerializedStratomexView) serializedView;
 
-			if (serializedVisBricksView.getSerializedDataContainers() != null) {
+			if (serializedStratomexView.getSerializedDataContainers() != null) {
 
-				List<DataContainer> dataContainers = serializedVisBricksView
+				List<DataContainer> dataContainers = serializedStratomexView
 						.getSerializedDataContainers();
-				glVisBricks.addDataContainers(dataContainers, null);
+				stratomex.addDataContainers(dataContainers, null);
 			}
 
 		}

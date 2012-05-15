@@ -54,14 +54,14 @@ public class BrickSpacingRenderer
 		this.id = id;
 		this.setLowerBrick(lowerBrick);
 
-		final GLStratomex visBricks = dimensionGroup.getVisBricksView();
+		final GLStratomex stratomex = dimensionGroup.getStratomexView();
 
-		visBricks.addIDPickingListener(new APickingListener()
+		stratomex.addIDPickingListener(new APickingListener()
 		{
 			@Override
 			public void dragged(Pick pick)
 			{
-				DragAndDropController dragAndDropController = visBricks
+				DragAndDropController dragAndDropController = stratomex
 						.getDragAndDropController();
 				if (dragAndDropController.isDragging()
 						&& dragAndDropController.getDraggingMode() != null
@@ -81,8 +81,8 @@ public class BrickSpacingRenderer
 	{
 
 		float width = dimensionGroup.getGroupColumn().getSizeScaledX();
-		GLStratomex visBricks = dimensionGroup.getVisBricksView();
-		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
+		GLStratomex stratomex = dimensionGroup.getStratomexView();
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				PickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
 
 		gl.glColor4f(1, 0, 0, 0);

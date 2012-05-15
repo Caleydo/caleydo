@@ -87,11 +87,11 @@ import org.caleydo.view.stratomex.brick.contextmenu.SplitBrickItem;
 import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
 import org.caleydo.view.stratomex.dimensiongroup.DimensionGroupManager;
 import org.caleydo.view.stratomex.dimensiongroup.DimensionGroupSpacingRenderer;
-import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
-import org.caleydo.view.stratomex.listener.AddGroupsToVisBricksListener;
+import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.stratomex.listener.ConnectionsModeListener;
-import org.caleydo.view.stratomex.listener.GLVisBricksKeyListener;
+import org.caleydo.view.stratomex.listener.GLStratomexKeyListener;
 import org.caleydo.view.stratomex.listener.SplitBrickListener;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
@@ -118,7 +118,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	public final static float[] ARCH_COLOR = { 0f, 0f, 0f, 0.1f };
 
-	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
+	private AddGroupsToStratomexListener addGroupsToStratomexListener;
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 	private SplitBrickListener splitBrickListener;
@@ -221,7 +221,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		dimensionGroupManager = new DimensionGroupManager();
 
-		glKeyListener = new GLVisBricksKeyListener();
+		glKeyListener = new GLStratomexKeyListener();
 
 		relationAnalyzer = new RelationAnalyzer();
 
@@ -1070,12 +1070,12 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
-		addGroupsToVisBricksListener.setHandler(this);
-		eventPublisher.addListener(AddGroupsToVisBricksEvent.class,
-				addGroupsToVisBricksListener);
+		addGroupsToStratomexListener = new AddGroupsToStratomexListener();
+		addGroupsToStratomexListener.setHandler(this);
+		eventPublisher.addListener(AddGroupsToStratomexEvent.class,
+				addGroupsToStratomexListener);
 		eventPublisher.addListener(AddDataContainersEvent.class,
-				addGroupsToVisBricksListener);
+				addGroupsToStratomexListener);
 
 		clearSelectionsListener = new ClearSelectionsListener();
 		clearSelectionsListener.setHandler(this);
@@ -1096,9 +1096,9 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	public void unregisterEventListeners() {
 		super.unregisterEventListeners();
 
-		if (addGroupsToVisBricksListener != null) {
-			eventPublisher.removeListener(addGroupsToVisBricksListener);
-			addGroupsToVisBricksListener = null;
+		if (addGroupsToStratomexListener != null) {
+			eventPublisher.removeListener(addGroupsToStratomexListener);
+			addGroupsToStratomexListener = null;
 		}
 
 		if (clearSelectionsListener != null) {
@@ -1167,7 +1167,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 * Creates a column for each DataContainer supplied
 	 * </p>
 	 * <p>
-	 * As VisBricks can only map between data sets that share a mapping between
+	 * As StratomeX can only map between data sets that share a mapping between
 	 * records, the imprinting of the IDType and IDCategory for the records is
 	 * done here if there is no data set yet.
 	 * </p>
@@ -1187,7 +1187,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			return;
 		}
 
-		// if this is the first data container set, we imprint VisBricks
+		// if this is the first data container set, we imprint StratomeX
 		if (recordIDCategory == null) {
 			ATableBasedDataDomain dataDomain = newDataContainers.get(0).getDataDomain();
 			imprintVisBricks(dataDomain);
@@ -1245,7 +1245,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				dimensionGroup.setDataDomain(dataContainer.getDataDomain());
 				dimensionGroup.setDataContainer(dataContainer);
 				dimensionGroup.setRemoteRenderingGLView(this);
-				dimensionGroup.setVisBricksView(this);
+				dimensionGroup.setStratomex(this);
 				dimensionGroup.initialize();
 
 				dimensionGroups.add(dimensionGroup);
@@ -1467,8 +1467,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		return recordSelectionManager;
 	}
 
-	public GLVisBricksKeyListener getKeyListener() {
-		return (GLVisBricksKeyListener) glKeyListener;
+	public GLStratomexKeyListener getKeyListener() {
+		return (GLStratomexKeyListener) glKeyListener;
 	}
 
 	public void handleTrendHighlightMode(boolean connectionsOn,

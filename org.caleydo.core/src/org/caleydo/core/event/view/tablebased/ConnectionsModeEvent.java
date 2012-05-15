@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.event.AEvent;
 
 /**
- * Event that changes the trend highlight mode for VisBricks.
+ * Event that changes the trend highlight mode for StratomeX.
  * 
  * @author Marc Streit
  */

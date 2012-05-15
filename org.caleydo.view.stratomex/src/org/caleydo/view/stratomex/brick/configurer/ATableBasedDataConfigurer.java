@@ -84,7 +84,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
 				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
@@ -106,7 +106,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
 				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
@@ -127,7 +127,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
 				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
@@ -155,7 +155,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getVisBricksView(), new ViewLabelProvider(
+				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
 				layoutTemplate.getBrick()), PickingType.BRICK.name(), layoutTemplate
 				.getBrick().getID());
 

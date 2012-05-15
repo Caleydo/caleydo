@@ -73,7 +73,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
 				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
 				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getVisBricksView()));
+				.getStratomexView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -109,7 +109,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
 				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
 				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getVisBricksView()));
+				.getStratomexView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -131,7 +131,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
 				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
 				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getVisBricksView()));
+				.getStratomexView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);

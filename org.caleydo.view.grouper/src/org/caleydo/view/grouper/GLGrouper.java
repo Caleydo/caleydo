@@ -67,7 +67,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
 import org.caleydo.view.grouper.compositegraphic.ICompositeGraphic;
-import org.caleydo.view.grouper.contextmenu.AddGroupsToVisBricksItem;
+import org.caleydo.view.grouper.contextmenu.AddGroupsToStratomexItem;
 import org.caleydo.view.grouper.contextmenu.AggregateGroupItem;
 import org.caleydo.view.grouper.contextmenu.CopyGroupsItem;
 import org.caleydo.view.grouper.contextmenu.CreateGroupItem;
@@ -611,10 +611,10 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						ArrayList<DataContainer> dataContainers = makeDataContainers(selectedNodes);
 
-						AddGroupsToVisBricksItem addGroupsToVisBricksItem = new AddGroupsToVisBricksItem(
+						AddGroupsToStratomexItem addGroupsToStratomexItem = new AddGroupsToStratomexItem(
 								dataDomain, dataContainer, dataContainers);
 
-						contextMenuCreator.addContextMenuItem(addGroupsToVisBricksItem);
+						contextMenuCreator.addContextMenuItem(addGroupsToStratomexItem);
 
 						contextMenuCreator.addContextMenuItem(new SeparatorMenuItem());
 

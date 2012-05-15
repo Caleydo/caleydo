@@ -23,21 +23,21 @@ import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
 /**
- * Listener for the event {@link AddGroupsToVisBricksEvent}.
+ * Listener for the event {@link AddGroupsToStratomexEvent}.
  * 
  * @author Christian Partl
  * @auhtor Alexander Lex
  * 
  */
-public class AddGroupsToVisBricksListener extends AEventListener<GLStratomex> {
+public class AddGroupsToStratomexListener extends AEventListener<GLStratomex> {
 
 	@Override
 	public void handleEvent(AEvent event) {
-		if (event instanceof AddGroupsToVisBricksEvent) {
-			AddGroupsToVisBricksEvent addGroupsToVisBricksEvent = (AddGroupsToVisBricksEvent) event;
+		if (event instanceof AddGroupsToStratomexEvent) {
+			AddGroupsToStratomexEvent addGroupsToVisBricksEvent = (AddGroupsToStratomexEvent) event;
 			if (addGroupsToVisBricksEvent.getReceiver() == handler) {
 				handler.addDataContainers(addGroupsToVisBricksEvent.getDataContainers(),
 						addGroupsToVisBricksEvent.getDataConfigurer());

@@ -30,19 +30,19 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.visbricks.PickingType;
-import org.caleydo.view.visbricks.brick.EContainedViewType;
-import org.caleydo.view.visbricks.brick.GLBrick;
-import org.caleydo.view.visbricks.brick.layout.ABrickLayoutConfiguration;
-import org.caleydo.view.visbricks.brick.layout.CollapsedBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.CompactHeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.DefaultBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.DetailBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.HeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
-import org.caleydo.view.visbricks.brick.ui.BrickViewSwitchingButton;
-import org.caleydo.view.visbricks.brick.viewcreation.ParCoordsCreator;
-import org.caleydo.view.visbricks.brick.viewcreation.TagCloudCreator;
+import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.brick.EContainedViewType;
+import org.caleydo.view.stratomex.brick.GLBrick;
+import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
+import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.HeaderBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.ui.BrickViewSwitchingButton;
+import org.caleydo.view.stratomex.brick.viewcreation.ParCoordsCreator;
+import org.caleydo.view.stratomex.brick.viewcreation.TagCloudCreator;
 
 /**
  * Configurer for bricks to display nominal data.

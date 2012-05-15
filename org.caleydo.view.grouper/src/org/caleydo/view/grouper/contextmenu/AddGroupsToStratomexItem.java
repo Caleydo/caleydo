@@ -17,39 +17,24 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex.listener;
+package org.caleydo.view.grouper.contextmenu;
 
-import org.caleydo.core.event.AEvent;
-import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
-import org.caleydo.view.stratomex.GLStratomex;
-import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.KeyEvent;
+import java.util.ArrayList;
+import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
-public class GLVisBricksKeyListener extends GLKeyListener<GLStratomex> {
+public class AddGroupsToStratomexItem extends AContextMenuItem {
 
-	private boolean isCtrlDown;
+	public AddGroupsToStratomexItem(ATableBasedDataDomain dataDomain,
+			DataContainer dataContainer, ArrayList<DataContainer> dataContainers) {
 
-	@Override
-	protected void handleKeyPressedEvent(KeyEvent event) {
+		setLabel("Show Groups In StratomeX");
 
-		if (event.keyCode == SWT.CTRL)
-			isCtrlDown = true;
+		AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(dataContainers);
+		event.setSender(this);
 
-	}
-
-	@Override
-	public void handleEvent(AEvent event) {
-		// TODO Auto-generated method stub
-
-	}
-
-	@Override
-	protected void handleKeyReleasedEvent(KeyEvent event) {
-		if (event.stateMask == SWT.CTRL)
-			isCtrlDown = false;
-	}
-
-	public boolean isCtrlDown() {
-		return isCtrlDown;
+		registerEvent(event);
 	}
 }

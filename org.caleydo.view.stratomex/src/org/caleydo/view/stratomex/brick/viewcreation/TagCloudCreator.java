@@ -20,11 +20,7 @@
 package org.caleydo.view.stratomex.brick.viewcreation;
 
 import javax.media.opengl.GL2;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
-import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
@@ -43,24 +39,26 @@ public class TagCloudCreator implements IRemoteViewCreator {
 	@Override
 	public AGLView createRemoteView(GLBrick remoteRenderingView, GL2 gl,
 			GLMouseListener glMouseListener) {
-		GLTagCloud tagCloud = (GLTagCloud) GeneralManager
-				.get()
-				.getViewManager()
-				.createGLView(
-						GLTagCloud.class,
-						remoteRenderingView.getParentGLCanvas(),
-						remoteRenderingView.getParentComposite(),
-						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
-								-1, 1));
+//		GLTagCloud tagCloud = (GLTagCloud) GeneralManager
+//				.get()
+//				.getViewManager()
+//				.createGLView(
+//						GLTagCloud.class,
+//						remoteRenderingView.getParentGLCanvas(),
+//						remoteRenderingView.getParentComposite(),
+//						new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1, 0, 1,
+//								-1, 1));
+//
+//		tagCloud.setRemoteRenderingGLView(remoteRenderingView);
+//		tagCloud.setDataContainer(remoteRenderingView.getDataContainer());
+//		tagCloud.setDataDomain(remoteRenderingView.getDataDomain());
+//		tagCloud.initialize();
+//		tagCloud.initRemote(gl, remoteRenderingView, glMouseListener);
+//		tagCloud.setDetailLevel(EDetailLevel.LOW);
 
-		tagCloud.setRemoteRenderingGLView(remoteRenderingView);
-		tagCloud.setDataContainer(remoteRenderingView.getDataContainer());
-		tagCloud.setDataDomain(remoteRenderingView.getDataDomain());
-		tagCloud.initialize();
-		tagCloud.initRemote(gl, remoteRenderingView, glMouseListener);
-		tagCloud.setDetailLevel(EDetailLevel.LOW);
-
-		return tagCloud;
+//		return tagCloud;
+		
+		return null;
 	}
 
 }

@@ -27,8 +27,8 @@ import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
-import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
-import org.caleydo.view.visbricks20.listener.AddGroupsToVisBricksListener;
+import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
+import org.caleydo.view.visbricks20.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
 import org.eclipse.swt.widgets.Composite;
@@ -61,7 +61,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	private GLVendingMachine vendingMachine;
 	private ElementLayout vendingMachineElementLayout;
 
-	private AddGroupsToVisBricksListener addGroupsToVisBricksListener;
+	private AddGroupsToStratomexListener addGroupsToVisBricksListener;
 
 	private OpenVendingMachineListener openVendingMachineListener;
 
@@ -268,9 +268,9 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	public void registerEventListeners() {
 		super.registerEventListeners();
 
-		addGroupsToVisBricksListener = new AddGroupsToVisBricksListener();
+		addGroupsToVisBricksListener = new AddGroupsToStratomexListener();
 		addGroupsToVisBricksListener.setHandler(this);
-		eventPublisher.addListener(AddGroupsToVisBricksEvent.class,
+		eventPublisher.addListener(AddGroupsToStratomexEvent.class,
 				addGroupsToVisBricksListener);
 
 		openVendingMachineListener = new OpenVendingMachineListener();

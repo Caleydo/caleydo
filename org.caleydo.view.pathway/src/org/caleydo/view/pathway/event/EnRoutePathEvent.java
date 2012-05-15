@@ -17,24 +17,44 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.grouper.contextmenu;
+/**
+ * 
+ */
+package org.caleydo.view.pathway.event;
 
-import java.util.ArrayList;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.view.contextmenu.AContextMenuItem;
-import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.datadomain.pathway.graph.PathwayPath;
 
-public class AddGroupsToVisBricksItem extends AContextMenuItem {
+/**
+ * Event that specifies a linearizable pathway path.
+ * 
+ * @author Christian Partl
+ * 
+ */
+public class EnRoutePathEvent extends AEvent {
 
-	public AddGroupsToVisBricksItem(ATableBasedDataDomain dataDomain,
-			DataContainer dataContainer, ArrayList<DataContainer> dataContainers) {
+	/**
+	 * Path object that specifies a path.
+	 */
+	private PathwayPath path;
 
-		setLabel("Show Groups In VisBricks");
+	@Override
+	public boolean checkIntegrity() {
+		return true;
+	}
 
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainers);
-		event.setSender(this);
+	/**
+	 * @param path
+	 *            setter, see {@link #path}
+	 */
+	public void setPath(PathwayPath path) {
+		this.path = path;
+	}
 
-		registerEvent(event);
+	/**
+	 * @return the path, see {@link #path}
+	 */
+	public PathwayPath getPath() {
+		return path;
 	}
 }

@@ -88,10 +88,10 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
-import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
+import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.caleydo.view.pathway.listener.DisableGeneMappingListener;
+import org.caleydo.view.pathway.listener.EnRoutePathEventListener;
 import org.caleydo.view.pathway.listener.EnableGeneMappingListener;
-import org.caleydo.view.pathway.listener.LinearizedPathwayPathEventListener;
 import org.caleydo.view.pathway.listener.SwitchDataRepresentationListener;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -164,7 +164,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	protected EnableGeneMappingListener enableGeneMappingListener;
 	protected DisableGeneMappingListener disableGeneMappingListener;
 	protected SwitchDataRepresentationListener switchDataRepresentationListener;
-	protected LinearizedPathwayPathEventListener linearizedPathwayPathEventListener;
+	protected EnRoutePathEventListener enRoutePathEventListener;
 
 	private IPickingListener pathwayElementPickingListener;
 
@@ -354,7 +354,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					return;
 				}
 
-				// We do not handle picking events in pathways for visbricks
+				// We do not handle picking events in pathways for StratomeX
 				if (glRemoteRenderingView != null
 						&& glRemoteRenderingView.getViewType().equals(
 								"org.caleydo.view.brick"))
@@ -1146,10 +1146,10 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		eventPublisher.addListener(SwitchDataRepresentationEvent.class,
 				switchDataRepresentationListener);
 
-		linearizedPathwayPathEventListener = new LinearizedPathwayPathEventListener();
-		linearizedPathwayPathEventListener.setHandler(this);
-		eventPublisher.addListener(LinearizedPathwayPathEvent.class,
-				linearizedPathwayPathEventListener);
+		enRoutePathEventListener = new EnRoutePathEventListener();
+		enRoutePathEventListener.setHandler(this);
+		eventPublisher.addListener(EnRoutePathEvent.class,
+				enRoutePathEventListener);
 	}
 
 	@Override
@@ -1172,9 +1172,9 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			switchDataRepresentationListener = null;
 		}
 
-		if (linearizedPathwayPathEventListener != null) {
-			eventPublisher.removeListener(linearizedPathwayPathEventListener);
-			linearizedPathwayPathEventListener = null;
+		if (enRoutePathEventListener != null) {
+			eventPublisher.removeListener(enRoutePathEventListener);
+			enRoutePathEventListener = null;
 		}
 
 		metaboliteSelectionManager.unregisterEventListeners();
@@ -1388,7 +1388,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	private void triggerPathUpdate() {
-		LinearizedPathwayPathEvent pathEvent = new LinearizedPathwayPathEvent();
+		EnRoutePathEvent pathEvent = new EnRoutePathEvent();
 		pathEvent.setPath(new PathwayPath(selectedPath));
 		pathEvent.setDataDomainID(dataDomain.getDataDomainID());
 		pathEvent.setSender(this);

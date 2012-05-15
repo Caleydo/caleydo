@@ -85,22 +85,22 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	/** Same as {@link #showToolBar} for footer bar */
 	protected boolean showFooterBar;
 
-	protected GLStratomex visBricks;
+	protected GLStratomex stratomex;
 	protected RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public DefaultBrickLayoutTemplate(GLBrick brick, GLStratomex visBricks,
+	public DefaultBrickLayoutTemplate(GLBrick brick, GLStratomex stratomex,
 			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
-		this.visBricks = visBricks;
+		this.stratomex = stratomex;
 		toolBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 
 		if (!brick.isHeaderBrick()) {
 			leftRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-					visBricks, true);
+					stratomex, true);
 			rightRelationIndicatorRenderer = new RelationIndicatorRenderer(brick,
-					visBricks, false);
+					stratomex, false);
 
 			brick.setRightRelationIndicatorRenderer(rightRelationIndicatorRenderer);
 			brick.setLeftRelationIndicatorRenderer(leftRelationIndicatorRenderer);
@@ -174,7 +174,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setFrameColor(1, 0, 0, 1);
 			viewLayout
 					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
-			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
+			Zoomer zoomer = new Zoomer(stratomex, viewLayout);
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
@@ -361,7 +361,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-		return new CollapsedBrickLayoutTemplate(brick, visBricks, dimensionGroup,
+		return new CollapsedBrickLayoutTemplate(brick, stratomex, dimensionGroup,
 				brick.getBrickConfigurer());
 	}
 

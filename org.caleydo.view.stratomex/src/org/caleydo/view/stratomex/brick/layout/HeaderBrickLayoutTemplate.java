@@ -70,7 +70,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected ArrayList<ElementLayout> toolBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
 
-	protected GLStratomex visBricks;
+	protected GLStratomex stratomex;
 
 	// protected Button heatMapButton;
 	// protected Button parCoordsButton;
@@ -88,10 +88,10 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected Row footerBar;
 
 	public HeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
-			GLStratomex visBricks, IBrickConfigurer configurer) {
+			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
-		this.visBricks = visBricks;
+		this.stratomex = stratomex;
 
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
@@ -159,7 +159,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			viewLayout.setFrameColor(1, 0, 0, 1);
 			viewLayout
 					.addBackgroundRenderer(new ColorRenderer(new float[] { 1, 1, 1, 1 }));
-			Zoomer zoomer = new Zoomer(visBricks, viewLayout);
+			Zoomer zoomer = new Zoomer(stratomex, viewLayout);
 			viewLayout.setZoomer(zoomer);
 		}
 		viewLayout.setRenderer(viewRenderer);
@@ -374,7 +374,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getCollapsedLayoutTemplate() {
-		return new CompactHeaderBrickLayoutTemplate(brick, dimensionGroup, visBricks,
+		return new CompactHeaderBrickLayoutTemplate(brick, dimensionGroup, stratomex,
 				brick.getBrickConfigurer());
 	}
 

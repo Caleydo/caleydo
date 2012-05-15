@@ -85,7 +85,7 @@ import org.caleydo.view.stratomex.dialog.CreateKaplanMeierSmallMultiplesGroupDia
 import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
 import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
-import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwaySmallMultiplesGroupDialogEvent;
@@ -101,7 +101,7 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Individual Brick for VisBricks
+ * Individual Brick for StratomeX
  * 
  * @author Alexander Lex
  * 
@@ -226,7 +226,7 @@ public static String VIEW_NAME = "Brick";
 
 	private boolean isInitialized = false;
 
-	private GLStratomex visBricks;
+	private GLStratomex stratomex;
 
 	private ABrickLayoutConfiguration brickLayoutConfiguration;
 	private IBrickConfigurer brickConfigurer;
@@ -260,7 +260,7 @@ public static String VIEW_NAME = "Brick";
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
 
 		if (brickLayoutConfiguration == null) {
-			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, visBricks,
+			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, stratomex,
 					dimensionGroup, brickConfigurer);
 		}
 
@@ -275,7 +275,7 @@ public static String VIEW_NAME = "Brick";
 				.get(currentViewType));
 		currentRemoteView = views.get(currentViewType);
 		if (brickLayoutConfiguration.getViewRenderer() instanceof IMouseWheelHandler) {
-			visBricks
+			stratomex
 					.registerMouseWheelListener((IMouseWheelHandler) brickLayoutConfiguration
 							.getViewRenderer());
 		}
@@ -322,12 +322,12 @@ public static String VIEW_NAME = "Brick";
 
 		// Select all elements in group with special type
 
-		RecordSelectionManager recordSelectionManager = visBricks
+		RecordSelectionManager recordSelectionManager = stratomex
 				.getRecordSelectionManager();
 		SelectionType selectedByGroupSelectionType = recordSelectionManager
 				.getSelectionType();
 
-		if (!visBricks.getKeyListener().isCtrlDown()) {
+		if (!stratomex.getKeyListener().isCtrlDown()) {
 			recordSelectionManager.clearSelection(selectedByGroupSelectionType);
 
 		}
@@ -373,8 +373,8 @@ public static String VIEW_NAME = "Brick";
 		if (isBaseDisplayListDirty)
 			buildBaseDisplayList(gl);
 
-		GLStratomex visBricks = getDimensionGroup().getVisBricksView();
-		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
+		GLStratomex stratomex = getDimensionGroup().getStratomexView();
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				PickingType.BRICK.name(), getID()));
 		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK.name(),
 				getID()));
@@ -506,9 +506,9 @@ public static String VIEW_NAME = "Brick";
 
 		// centerBrick.getLayout().updateSubLayout();
 
-		visBricks.setLastResizeDirectionWasToLeft(false);
-		visBricks.setLayoutDirty();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.setLastResizeDirectionWasToLeft(false);
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 
@@ -516,10 +516,10 @@ public static String VIEW_NAME = "Brick";
 	 * Set the {@link GLStratomex} view managing this brick, which is needed for
 	 * environment information.
 	 * 
-	 * @param visBricks
+	 * @param stratomex
 	 */
-	public void setVisBricks(GLStratomex visBricks) {
-		this.visBricks = visBricks;
+	public void setStratomex(GLStratomex stratomex) {
+		this.stratomex = stratomex;
 	}
 
 	/**
@@ -568,7 +568,7 @@ public static String VIEW_NAME = "Brick";
 		if (brickLayoutConfiguration instanceof CompactHeaderBrickLayoutTemplate) {
 			brickHeigthMode = EBrickHeightMode.VIEW_DEPENDENT;
 			brickWidthMode = EBrickWidthMode.CONTEXT_MODE;
-			staticBrickWidth = visBricks.getSideArchWidthPixels();
+			staticBrickWidth = stratomex.getSideArchWidthPixels();
 		} else {
 			if (brickHeigthMode != null && brickHeigthMode != EBrickHeightMode.STATIC)
 				brickHeigthMode = null;
@@ -641,8 +641,8 @@ public static String VIEW_NAME = "Brick";
 		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 		layoutManager.updateLayout();
 
-		visBricks.setLayoutDirty();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 
@@ -807,7 +807,7 @@ public static String VIEW_NAME = "Brick";
 
 				if (!isHeaderBrick) {
 					Point point = pick.getPickedPoint();
-					DragAndDropController dragAndDropController = visBricks
+					DragAndDropController dragAndDropController = stratomex
 							.getDragAndDropController();
 
 					dragAndDropController.clearDraggables();
@@ -816,13 +816,13 @@ public static String VIEW_NAME = "Brick";
 					dragAndDropController.addDraggable(GLBrick.this);
 					dragAndDropController.setDraggingMode("BrickDrag"
 							+ dimensionGroup.getID());
-					visBricks.setDisplayListDirty();
+					stratomex.setDisplayListDirty();
 				}
 			}
 
 			@Override
 			public void dragged(Pick pick) {
-				DragAndDropController dragAndDropController = visBricks
+				DragAndDropController dragAndDropController = stratomex
 						.getDragAndDropController();
 				String draggingMode = dragAndDropController.getDraggingMode();
 				if (!dragAndDropController.isDragging()
@@ -941,7 +941,7 @@ public static String VIEW_NAME = "Brick";
 					dataContainer.getID())) {
 				// brickLayout.setShowHandles(true);
 				brickLayoutConfiguration.setSelected(true);
-				visBricks.updateConnectionLinesBetweenDimensionGroups();
+				stratomex.updateConnectionLinesBetweenDimensionGroups();
 			} else {
 				brickLayoutConfiguration.setSelected(false);
 				// brickLayout.setShowHandles(false);
@@ -991,8 +991,8 @@ public static String VIEW_NAME = "Brick";
 		// wrappingLayout.setAbsoluteSizeY(minHeight);
 		// wrappingLayout.setAbsoluteSizeX(minWidth);
 
-		visBricks.setLayoutDirty();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 
@@ -1018,8 +1018,8 @@ public static String VIEW_NAME = "Brick";
 		isInOverviewMode = false;
 		brickLayoutConfiguration.setLockResizing(true);
 		// dimensionGroup.updateLayout();
-		visBricks.setLayoutDirty();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
 	}
 
 	public boolean isInOverviewMode() {
@@ -1134,11 +1134,11 @@ public static String VIEW_NAME = "Brick";
 
 					for (PathwayDataContainer pathwayDataContainer : pathwayDataContainers) {
 
-						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(
 								pathwayDataContainer);
 						event.setDataConfigurer(new PathwayDataConfigurer());
 						event.setSender(this);
-						event.setReceiver(visBricks);
+						event.setReceiver(stratomex);
 						eventPublisher.triggerEvent(event);
 					}
 				}
@@ -1172,7 +1172,7 @@ public static String VIEW_NAME = "Brick";
 
 					for (DataContainer kaplanMeierDimensionGroupData : kaplanMeierDimensionGroupDataList) {
 
-						AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+						AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(
 								kaplanMeierDimensionGroupData);
 
 						ClinicalDataConfigurer dataConfigurer = new ClinicalDataConfigurer();
@@ -1184,7 +1184,7 @@ public static String VIEW_NAME = "Brick";
 						dataConfigurer.setSortingStrategy(sortingStrategy);
 						event.setDataConfigurer(dataConfigurer);
 						event.setSender(this);
-						event.setReceiver(visBricks);
+						event.setReceiver(stratomex);
 						eventPublisher.triggerEvent(event);
 					}
 				}
@@ -1222,9 +1222,9 @@ public static String VIEW_NAME = "Brick";
 					PathwayDimensionGroupData pathwayDimensionGroupData = dialog
 							.getPathwayDimensionGroupData();
 
-					AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(
+					AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(
 							pathwayDimensionGroupData);
-					event.setSender(visBricks);
+					event.setSender(stratomex);
 					eventPublisher.triggerEvent(event);
 				}
 			}
@@ -1323,7 +1323,7 @@ public static String VIEW_NAME = "Brick";
 				- draggingMousePositionDeltaY + wrappingLayout.getSizeScaledY(), 2);
 		gl.glEnd();
 
-		visBricks.setDisplayListDirty();
+		stratomex.setDisplayListDirty();
 
 	}
 

@@ -529,7 +529,7 @@ public class GLPathwayContentCreator {
 						}
 						else {
 							// Upscaled version of pathway node needed for e.g.
-							// VisBricks
+							// StratomeX
 							gl.glCallList(upscaledFilledEnzymeNodeDisplayListId);
 
 							// Handle selection highlighting of element

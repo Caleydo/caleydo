@@ -162,7 +162,7 @@ public enum EIconTextures {
 	HISTOGRAM_ICON("resources/icons/view/histogram/histogram.png"),
 
 	/** Linearized Pathway */
-	ABSTRACT_BAR_ICON("resources/icons/view/linearizedpathway/abstract_mode.png"),
+	ABSTRACT_BAR_ICON("resources/icons/view/enroute/abstract_mode.png"),
 	
 	TAGCLOUD_ICON("resources/icons/view/tagclouds/icon.png"),
 	NAVIGATION_BACKGROUND("resources/icons/general/navigation.png"),

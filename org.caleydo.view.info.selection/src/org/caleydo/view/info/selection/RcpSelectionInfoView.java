@@ -39,7 +39,7 @@ import org.eclipse.swt.widgets.Composite;
 public class RcpSelectionInfoView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<ATableBasedDataDomain> {
 
-public static String VIEW_TYPE = "org.caleydo.view.info";
+public static String VIEW_TYPE = "org.caleydo.view.info.selection";
 
 	private ATableBasedDataDomain dataDomain;
 

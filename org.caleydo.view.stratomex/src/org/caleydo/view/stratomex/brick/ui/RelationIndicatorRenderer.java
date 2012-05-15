@@ -55,7 +55,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	private RelationAnalyzer relationAnalyzer;
 	String perspectiveID;
 	int groupID;
-	GLStratomex visBricks;
+	GLStratomex stratomex;
 	String neighborPerspectiveID = null;
 	List<GLBrick> neighborBrickOrder;
 	boolean isLeft;
@@ -64,14 +64,14 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 	int[] scores;
 
-	public RelationIndicatorRenderer(GLBrick brick, GLStratomex visBricks, boolean isLeft) {
+	public RelationIndicatorRenderer(GLBrick brick, GLStratomex stratomex, boolean isLeft) {
 		this.brick = brick;
 		// this.dataDomain = brick.getDataDomain();
-		this.relationAnalyzer = visBricks.getRelationAnalyzer();
+		this.relationAnalyzer = stratomex.getRelationAnalyzer();
 		perspectiveID = brick.getDimensionGroup().getDataContainer()
 				.getRecordPerspective().getID();
 		groupID = brick.getDataContainer().getRecordGroup().getGroupIndex();
-		this.visBricks = visBricks;
+		this.stratomex = stratomex;
 		this.isLeft = isLeft;
 	}
 
@@ -86,7 +86,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		neighborBrickOrder = null;
 		neighborPerspectiveID = null;
 		similarities = null;
-		ArrayList<DimensionGroup> dimensionGroups = visBricks.getDimensionGroupManager()
+		ArrayList<DimensionGroup> dimensionGroups = stratomex.getDimensionGroupManager()
 				.getDimensionGroups();
 
 		String currentID;

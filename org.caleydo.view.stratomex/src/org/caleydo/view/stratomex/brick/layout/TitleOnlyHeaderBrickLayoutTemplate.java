@@ -38,16 +38,16 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 
 	protected static final int HEADER_BAR_HEIGHT_PIXELS = 10;
 
-	private GLStratomex visBricks;
+	private GLStratomex stratomex;
 
 	protected ArrayList<ElementLayout> headerBarElements;
 	
 	protected int guiElementsHeight = 0;
 
 	public TitleOnlyHeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
-			GLStratomex visBricks, IBrickConfigurer configurer) {
+			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
-		this.visBricks = visBricks;
+		this.stratomex = stratomex;
 		headerBarElements = new ArrayList<ElementLayout>();
 
 		configurer.configure(this);
@@ -117,7 +117,7 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 	@Override
 	public int getMinWidthPixels() {
 		// TODO: maybe something different
-		return visBricks.getSideArchWidthPixels();
+		return stratomex.getSideArchWidthPixels();
 	}
 
 
@@ -133,7 +133,7 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new HeaderBrickLayoutTemplate(brick, dimensionGroup, visBricks,
+		return new HeaderBrickLayoutTemplate(brick, dimensionGroup, stratomex,
 				brick.getBrickConfigurer());
 	}
 

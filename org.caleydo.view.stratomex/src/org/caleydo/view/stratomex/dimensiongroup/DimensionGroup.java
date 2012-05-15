@@ -157,7 +157,7 @@ public class DimensionGroup extends ATableBasedView implements
 
 	private Queue<GLBrick> uninitializedBricks = new LinkedList<GLBrick>();
 
-	protected GLStratomex visBricks;
+	protected GLStratomex stratomex;
 
 	// Stuff for dragging up and down
 	private boolean isVerticalMoveDraggingActive = false;
@@ -281,7 +281,7 @@ public class DimensionGroup extends ATableBasedView implements
 		if (headerBrick == null || uninitializedBricks.contains(headerBrick))
 			return;
 
-		headerBrick.setStaticBrickHeight(visBricks.getArchHeight());
+		headerBrick.setStaticBrickHeight(stratomex.getArchHeight());
 		if (isCollapsed) {
 			headerBrick.setBrickHeigthMode(EBrickHeightMode.VIEW_DEPENDENT);
 			headerBrick.collapse();
@@ -329,12 +329,12 @@ public class DimensionGroup extends ATableBasedView implements
 
 		if (isCollapsed) {
 			layoutTemplate = new CompactHeaderBrickLayoutTemplate(headerBrick, this,
-					visBricks, headerBrick.getBrickConfigurer());
-		} else if (visBricks.isVendingMachineMode()) {
+					stratomex, headerBrick.getBrickConfigurer());
+		} else if (stratomex.isVendingMachineMode()) {
 			layoutTemplate = new TitleOnlyHeaderBrickLayoutTemplate(headerBrick, this,
-					visBricks, headerBrick.getBrickConfigurer());
+					stratomex, headerBrick.getBrickConfigurer());
 		} else {
-			layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, visBricks,
+			layoutTemplate = new HeaderBrickLayoutTemplate(headerBrick, this, stratomex,
 					headerBrick.getBrickConfigurer());
 		}
 		headerBrick.setBrickLayoutTemplate(layoutTemplate,
@@ -365,7 +365,7 @@ public class DimensionGroup extends ATableBasedView implements
 			// segmentBrick.setBrickConfigurer(dimensionGroupData.getBrickConfigurer());
 
 			ABrickLayoutConfiguration layoutTemplate = new DefaultBrickLayoutTemplate(
-					segmentBrick, visBricks, this, segmentBrick.getBrickConfigurer());
+					segmentBrick, stratomex, this, segmentBrick.getBrickConfigurer());
 
 			segmentBrick.setBrickLayoutTemplate(layoutTemplate,
 					layoutTemplate.getDefaultViewType());
@@ -378,7 +378,7 @@ public class DimensionGroup extends ATableBasedView implements
 
 		addSortedBricks(sortedBricks);
 
-		visBricks.getRelationAnalyzer().updateRelations(
+		stratomex.getRelationAnalyzer().updateRelations(
 				dataContainer.getRecordPerspective().getID(),
 				dataContainer.getRecordPerspective().getVirtualArray());
 
@@ -454,8 +454,8 @@ public class DimensionGroup extends ATableBasedView implements
 		clusterBricks.clear();
 
 		addSortedBricks(sortedBricks);
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
-		visBricks.setLayoutDirty();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.setLayoutDirty();
 
 	}
 
@@ -478,7 +478,7 @@ public class DimensionGroup extends ATableBasedView implements
 		brick.setDataContainer(dataContainer);
 		brick.setBrickConfigurer(brickConfigurer);
 		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
-		brick.setVisBricks(visBricks);
+		brick.setStratomex(stratomex);
 		brick.setLayout(wrappingLayout);
 		brick.setDimensionGroup(this);
 		brick.initialize();
@@ -574,7 +574,7 @@ public class DimensionGroup extends ATableBasedView implements
 		clusterBrickColumn.clear();
 		clusterBricks.clear();
 		createClusterBricks();
-		visBricks.setLayoutDirty();
+		stratomex.setLayoutDirty();
 		// mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
 		// visBricks.updateConnectionLinesBetweenDimensionGroups();
@@ -615,19 +615,19 @@ public class DimensionGroup extends ATableBasedView implements
 				mainRow.append(detailBrickLayout);
 				mainRow.append(overviewDetailGapLayout);
 				mainRow.append(mainColumn);
-				visBricks.switchToDetailModeLeft(this);
+				stratomex.switchToDetailModeLeft(this);
 
 			} else {
 				mainRow.append(mainColumn);
 				mainRow.append(overviewDetailGapLayout);
 				mainRow.append(detailBrickLayout);
-				visBricks.switchToDetailModeRight(this);
+				stratomex.switchToDetailModeRight(this);
 			}
 
 			mainRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
-			visBricks.setLayoutDirty();
-			visBricks.updateConnectionLinesBetweenDimensionGroups();
+			stratomex.setLayoutDirty();
+			stratomex.updateConnectionLinesBetweenDimensionGroups();
 			showDetailBrick = false;
 			isDetailBrickShown = true;
 		}
@@ -645,24 +645,24 @@ public class DimensionGroup extends ATableBasedView implements
 			isDetailBrickShown = false;
 
 			if (hideDetailBrick && expandLeft) {
-				visBricks.switchToOverviewModeLeft();
+				stratomex.switchToOverviewModeLeft();
 			}
 			if (hideDetailBrick && !expandLeft) {
-				visBricks.switchToOverviewModeRight();
+				stratomex.switchToOverviewModeRight();
 			}
 
 			hideDetailBrick = false;
 
 			mainRow.updateSubLayout();
 			// visBricks.setLastResizeDirectionWasToLeft(false);
-			visBricks.setLayoutDirty();
-			visBricks.updateConnectionLinesBetweenDimensionGroups();
+			stratomex.setLayoutDirty();
+			stratomex.updateConnectionLinesBetweenDimensionGroups();
 		}
 
 		while (!uninitializedBricks.isEmpty()) {
 			uninitializedBricks.poll().initRemote(gl, this, glMouseListener);
-			visBricks.setLayoutDirty();
-			visBricks.updateConnectionLinesBetweenDimensionGroups();
+			stratomex.setLayoutDirty();
+			stratomex.updateConnectionLinesBetweenDimensionGroups();
 		}
 		handleVerticalMoveDragging(gl);
 		checkForHits(gl);
@@ -745,7 +745,7 @@ public class DimensionGroup extends ATableBasedView implements
 		// headerBrickLayout.updateSubLayout();
 		mainRow.updateSubLayout();
 		// groupColumn.updateSubLayout();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
 
 	}
 
@@ -755,7 +755,7 @@ public class DimensionGroup extends ATableBasedView implements
 	public void updateLayout() {
 
 		mainRow.updateSubLayout();
-		visBricks.updateConnectionLinesBetweenDimensionGroups();
+		stratomex.updateConnectionLinesBetweenDimensionGroups();
 
 		for (GLBrick clusterBrick : clusterBricks) {
 			clusterBrick.updateLayout();
@@ -792,8 +792,8 @@ public class DimensionGroup extends ATableBasedView implements
 	 * that the GLVisBricks view can gets the events
 	 * 
 	 */
-	public void setVisBricksView(GLStratomex glVisBricksView) {
-		this.visBricks = glVisBricksView;
+	public void setStratomex(GLStratomex stratomex) {
+		this.stratomex = stratomex;
 	}
 
 	/**
@@ -801,8 +801,8 @@ public class DimensionGroup extends ATableBasedView implements
 	 * that the GLVisBricks view can gets the events
 	 * 
 	 */
-	public GLStratomex getVisBricksView() {
-		return visBricks;
+	public GLStratomex getStratomexView() {
+		return stratomex;
 	}
 
 	/**
@@ -1030,7 +1030,7 @@ public class DimensionGroup extends ATableBasedView implements
 		detailBrick.setStaticBrickHeight(getDetailBrickHeightPixels());
 
 		detailBrick.setBrickLayoutTemplate(new DetailBrickLayoutTemplate(detailBrick,
-				this, visBricks, detailBrick.getBrickConfigurer()), brick
+				this, stratomex, detailBrick.getBrickConfigurer()), brick
 				.getCurrentViewType());
 
 		overviewDetailGapLayout = new ElementLayout("brickSpacingLayout");
@@ -1131,7 +1131,7 @@ public class DimensionGroup extends ATableBasedView implements
 	private DimensionGroup getOtherDetailDimensionGroup(
 			boolean isCurrentDimensionGroupLeft) {
 
-		DimensionGroupManager dimensionGroupManager = visBricks
+		DimensionGroupManager dimensionGroupManager = stratomex
 				.getDimensionGroupManager();
 
 		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
@@ -1159,7 +1159,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @return True if this dimension group is the leftmost dimension group.
 	 */
 	public boolean isLeftmost() {
-		DimensionGroupManager dimensionGroupManager = visBricks
+		DimensionGroupManager dimensionGroupManager = stratomex
 				.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfDimensionGroup(this);
 		return (index == dimensionGroupManager.getCenterGroupStartIndex());
@@ -1169,7 +1169,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @return True if this dimension group is the rightmost dimension group.
 	 */
 	public boolean isRightmost() {
-		DimensionGroupManager dimensionGroupManager = visBricks
+		DimensionGroupManager dimensionGroupManager = stratomex
 				.getDimensionGroupManager();
 		int index = dimensionGroupManager.indexOfDimensionGroup(this);
 		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);

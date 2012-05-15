@@ -81,7 +81,7 @@ import org.caleydo.view.enroute.node.ComplexNode;
 import org.caleydo.view.enroute.node.CompoundNode;
 import org.caleydo.view.enroute.node.GeneNode;
 import org.caleydo.view.enroute.renderstyle.EnRouteRenderStyle;
-import org.caleydo.view.pathway.event.LinearizedPathwayPathEvent;
+import org.caleydo.view.pathway.event.EnRoutePathEvent;
 import org.eclipse.swt.widgets.Composite;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;
@@ -98,7 +98,7 @@ import org.jgrapht.graph.GraphPathImpl;
 public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBasedView,
 		IEventBasedSelectionManagerUser {
 
-	public static String VIEW_TYPE = "org.caleydo.view.linearizedpathway";
+	public static String VIEW_TYPE = "org.caleydo.view.enroute";
 	public static String VIEW_NAME = "enRoute";
 
 	public final static int DEFAULT_DATA_ROW_HEIGHT_PIXELS = 60;
@@ -965,7 +965,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 
 		linearizePathwayPathEventListener = new EnRoutePathEventListener();
 		linearizePathwayPathEventListener.setHandler(this);
-		eventPublisher.addListener(LinearizedPathwayPathEvent.class,
+		eventPublisher.addListener(EnRoutePathEvent.class,
 				linearizePathwayPathEventListener);
 
 		addDataContainersListener = new AddDataContainersListener();
@@ -1228,7 +1228,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 
 			pathwayPath = new PathwayPath(graphPath);
 		}
-		LinearizedPathwayPathEvent event = new LinearizedPathwayPathEvent();
+		EnRoutePathEvent event = new EnRoutePathEvent();
 		event.setPath(pathwayPath);
 		event.setSender(this);
 		eventPublisher.triggerEvent(event);

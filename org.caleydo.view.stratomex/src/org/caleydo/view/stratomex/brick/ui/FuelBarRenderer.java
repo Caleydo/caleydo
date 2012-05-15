@@ -65,9 +65,9 @@ public class FuelBarRenderer extends LayoutRenderer {
 
 		float fuelWidth = (float) x / totalNumElements * currentNumElements;
 
-		GLStratomex visBricks = brick.getDimensionGroup().getVisBricksView();
+		GLStratomex stratomex = brick.getDimensionGroup().getStratomexView();
 
-		gl.glPushName(visBricks.getPickingManager().getPickingID(visBricks.getID(),
+		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				PickingType.BRICK.name(), brick.getID()));
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// PickingType.BRICK, brick.getID()));

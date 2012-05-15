@@ -79,7 +79,7 @@ public class RcpSearchView extends CaleydoRCPViewPart {
 	// private GeneticDataDomain dataDomain;
 	private ArrayList<GeneticDataDomain> geneticDataDomains;
 
-	public static String VIEW_TYPE = "org.caleydo.view.genesearch";
+	public static String VIEW_TYPE = "org.caleydo.view.search";
 
 	public static boolean bHorizontal = false;
 

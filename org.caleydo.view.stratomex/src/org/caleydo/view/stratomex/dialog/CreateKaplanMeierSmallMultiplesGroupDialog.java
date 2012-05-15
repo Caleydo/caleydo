@@ -44,7 +44,7 @@ import org.eclipse.swt.widgets.TableItem;
 /**
  * Dialog where the user can specify the data vectors to be visualized as a
  * Kaplan Meier plot. Each data vector will be a dimension group with small
- * multiples in Visbricks.
+ * multiples in StratomeX.
  * 
  * @author Marc Streit
  * 

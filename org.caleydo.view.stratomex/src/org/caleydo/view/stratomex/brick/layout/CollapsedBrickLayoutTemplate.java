@@ -51,7 +51,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	private static final int EXPAND_BUTTON_ID = 0;
 
-	private GLStratomex visBricks;
+	private GLStratomex stratomex;
 
 	protected ArrayList<ElementLayout> footerBarElements;
 	protected boolean showFooterBar;
@@ -62,10 +62,10 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	// private RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public CollapsedBrickLayoutTemplate(GLBrick brick, GLStratomex visBricks,
+	public CollapsedBrickLayoutTemplate(GLBrick brick, GLStratomex stratomex,
 			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
-		this.visBricks = visBricks;
+		this.stratomex = stratomex;
 		footerBarElements = new ArrayList<ElementLayout>();
 		footerBar = new Row();
 		configurer.configure(this);
@@ -257,7 +257,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new DefaultBrickLayoutTemplate(brick, visBricks, dimensionGroup,
+		return new DefaultBrickLayoutTemplate(brick, stratomex, dimensionGroup,
 				brick.getBrickConfigurer());
 	}
 

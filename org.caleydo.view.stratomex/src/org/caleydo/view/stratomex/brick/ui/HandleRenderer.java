@@ -97,7 +97,7 @@ public class HandleRenderer extends LayoutRenderer {
 			}
 		};
 
-		brick.getDimensionGroup().getVisBricksView()
+		brick.getDimensionGroup().getStratomexView()
 				.addTypePickingListener(brickPickingListener, PickingType.BRICK.name());
 
 	}
@@ -200,7 +200,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & MOVE_HORIZONTALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(
-					brick.getDimensionGroup().getVisBricksView().getID(),
+					brick.getDimensionGroup().getStratomexView().getID(),
 					PickingType.MOVE_HORIZONTALLY_HANDLE.name(),
 					brick.getDimensionGroup().getID()));
 			

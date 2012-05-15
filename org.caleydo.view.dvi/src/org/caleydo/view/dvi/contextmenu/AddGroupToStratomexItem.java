@@ -22,7 +22,7 @@ package org.caleydo.view.dvi.contextmenu;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.event.AddGroupsToVisBricksEvent;
+import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 
 public class AddGroupToStratomexItem extends AContextMenuItem {
 
@@ -30,7 +30,7 @@ public class AddGroupToStratomexItem extends AContextMenuItem {
 
 		setLabel("Add to " + view.getViewName());
 
-		AddGroupsToVisBricksEvent event = new AddGroupsToVisBricksEvent(dataContainer);
+		AddGroupsToStratomexEvent event = new AddGroupsToStratomexEvent(dataContainer);
 		event.setReceiver(view);
 		event.setSender(this);
 		registerEvent(event);

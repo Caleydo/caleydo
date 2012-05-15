@@ -30,7 +30,7 @@ import org.osgi.framework.BundleContext;
 public class Activator extends AbstractUIPlugin {
 
 	// The plug-in ID
-	public static final String PLUGIN_ID = "org.caleydo.view.linearizedpathway"; //$NON-NLS-1$
+	public static final String PLUGIN_ID = "org.caleydo.view.enroute"; //$NON-NLS-1$
 
 	// The shared instance
 	private static Activator plugin;

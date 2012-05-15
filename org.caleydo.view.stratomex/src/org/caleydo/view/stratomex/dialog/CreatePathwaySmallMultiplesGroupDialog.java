@@ -53,7 +53,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * Dialog where the user can specify the pathway that shall be displayed as a
- * dimension group with small multiples in Visbricks.
+ * dimension group with small multiples in StratomeX.
  * 
  * @author Marc Streit
  * 

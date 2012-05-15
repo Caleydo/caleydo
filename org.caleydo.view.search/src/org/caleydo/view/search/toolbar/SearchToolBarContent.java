@@ -32,7 +32,7 @@ import org.caleydo.view.search.RcpSearchView;
  * 
  * @author <INSERT YOUR NAME>
  */
-public class GeneSearchToolBarContent extends AToolBarContent {
+public class SearchToolBarContent extends AToolBarContent {
 
 	public static final String IMAGE_PATH = "resources/icons/search.png";
 

@@ -41,7 +41,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	protected static final int FOOTER_BAR_HEIGHT_PIXELS = 12;
 	protected static final int LINE_SEPARATOR_HEIGHT_PIXELS = 3;
 
-	private GLStratomex visBricks;
+	private GLStratomex stratomex;
 
 	protected ArrayList<ElementLayout> headerBarElements;
 	protected ArrayList<ElementLayout> footerBarElements;
@@ -54,9 +54,9 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	protected int guiElementsHeight = 0;
 
 	public CompactHeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
-			GLStratomex visBricks, IBrickConfigurer configurer) {
+			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
-		this.visBricks = visBricks;
+		this.stratomex = stratomex;
 		headerBarElements = new ArrayList<ElementLayout>();
 		footerBarElements = new ArrayList<ElementLayout>();
 		// headerBar = new Row();
@@ -155,7 +155,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 	@Override
 	public int getMinWidthPixels() {
 		// TODO: maybe something different
-		return visBricks.getSideArchWidthPixels();
+		return stratomex.getSideArchWidthPixels();
 	}
 
 
@@ -171,7 +171,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	@Override
 	public ABrickLayoutConfiguration getExpandedLayoutTemplate() {
-		return new HeaderBrickLayoutTemplate(brick, dimensionGroup, visBricks,
+		return new HeaderBrickLayoutTemplate(brick, dimensionGroup, stratomex,
 				brick.getBrickConfigurer());
 	}
 

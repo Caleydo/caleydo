@@ -74,7 +74,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
 				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
 				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getVisBricksView()));
+				.getStratomexView()));
 
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
@@ -108,7 +108,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
 				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
 				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getVisBricksView()));
+				.getStratomexView()));
 		headerBarElements.add(createSpacingLayout(layoutTemplate, true));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
@@ -129,7 +129,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		headerBarElements.add(createCaptionLayout(layoutTemplate, layoutTemplate
 				.getBrick(), PickingType.DIMENSION_GROUP, layoutTemplate
 				.getDimensionGroup().getID(), layoutTemplate.getDimensionGroup()
-				.getVisBricksView()));
+				.getStratomexView()));
 
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 	}

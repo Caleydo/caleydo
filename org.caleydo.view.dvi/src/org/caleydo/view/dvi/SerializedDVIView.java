@@ -24,7 +24,7 @@ import javax.xml.bind.annotation.XmlType;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
- * Serialized VisBricks view.
+ * Serialized DVI view.
  * 
  * @author Alexander Lex
  * @author Marc Streit

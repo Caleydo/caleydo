@@ -28,7 +28,7 @@ import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
 
 /**
  * <p>
- * The {@link AddGroupsToVisBricksEvent} is an event that signals to add one or
+ * The {@link AddGroupsToStratomexEvent} is an event that signals to add one or
  * several {@link DataContainer}s as DimensionGroups to {@link GLStratomex}.
  * </p>
  * <p>
@@ -42,7 +42,7 @@ import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
  * @author Alexander Lex
  * 
  */
-public class AddGroupsToVisBricksEvent extends AddDataContainersEvent {
+public class AddGroupsToStratomexEvent extends AddDataContainersEvent {
 
 	/**
 	 * Optional member for determining a specialized data configurer that will
@@ -51,13 +51,13 @@ public class AddGroupsToVisBricksEvent extends AddDataContainersEvent {
 	 */
 	private IBrickConfigurer dataConfigurer;
 
-	public AddGroupsToVisBricksEvent() {
+	public AddGroupsToStratomexEvent() {
 	}
 
 	/**
 	 * Initialize event with a single data container
 	 */
-	public AddGroupsToVisBricksEvent(DataContainer dataContainer) {
+	public AddGroupsToStratomexEvent(DataContainer dataContainer) {
 		super(dataContainer);
 	}
 
@@ -67,7 +67,7 @@ public class AddGroupsToVisBricksEvent extends AddDataContainersEvent {
 	 * 
 	 * @param dataContainers
 	 */
-	public AddGroupsToVisBricksEvent(List<DataContainer> dataContainers) {
+	public AddGroupsToStratomexEvent(List<DataContainer> dataContainers) {
 		super(dataContainers);
 	}
 

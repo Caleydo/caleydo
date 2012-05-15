@@ -51,7 +51,7 @@ import org.eclipse.swt.widgets.TableItem;
 
 /**
  * Dialog where the user can specify the pathways that shall be displayed as a
- * dimension group in Visbricks.
+ * dimension group in StratomeX.
  * 
  * @author Christian Partl
  * @author Marc Streit
