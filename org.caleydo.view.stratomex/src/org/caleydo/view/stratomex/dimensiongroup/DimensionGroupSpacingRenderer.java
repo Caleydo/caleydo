@@ -46,7 +46,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.spline.ConnectionBandRenderer;
 import org.caleydo.view.stratomex.BrickConnection;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.eclipse.core.runtime.Status;
@@ -311,7 +311,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	private void renderBackground(GL2 gl) {
 
 		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
-				PickingType.DIMENSION_GROUP_SPACER.name(), ID);
+				EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
 
 		gl.glPushName(pickingID);
 		gl.glColor4f(1, 1, 0, 0f);
@@ -497,7 +497,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 						- rightDimGroup.getLayout().getTranslateX();
 
 				gl.glPushName(glVisBricks.getPickingManager().getPickingID(
-						glVisBricks.getID(), PickingType.BRICK_CONNECTION_BAND.name(),
+						glVisBricks.getID(), EPickingType.BRICK_CONNECTION_BAND.name(),
 						subGroupMatch.getConnectionBandID()));
 
 				// Render selected portion

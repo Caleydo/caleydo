@@ -17,37 +17,23 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.view.stratomex;
-
 /**
  * 
- * Picking Types for VisBricks
+ */
+package org.caleydo.view.enroute;
+
+/**
+ * Picking types for the linearized pathway view.
  * 
- * @author Alexander Lex
+ * @author Christian
  * 
  */
-public enum PickingType {
-
-	BRICK,
-	BRICK_EXPAND_BUTTON,
-	BRICK_COLLAPSE_BUTTON,
-	BRICK_CLOSE_BUTTON,
-	BRICK_DETAIL_MODE_BUTTON,
-	BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS,
-	BRICK_VIEW_SWITCHING_MODE_BUTTON,
-	BRICK_LOCK_RESIZING_BUTTON,
-	BRICK_CONNECTION_BAND,
-	BRICK_SPACER,
-	RESIZE_HANDLE_UPPER_LEFT,
-	RESIZE_HANDLE_UPPER_RIGHT,
-	RESIZE_HANDLE_LOWER_LEFT,
-	RESIZE_HANDLE_LOWER_RIGHT,
-	MOVE_VERTICALLY_HANDLE,
-	MOVE_HORIZONTALLY_HANDLE,
-	EXPAND_LEFT_HANDLE,
-	EXPAND_RIGHT_HANDLE,
-
-	DIMENSION_GROUP_CLUSTER_BUTTON,
-	DIMENSION_GROUP,
-	DIMENSION_GROUP_SPACER;
+public enum EPickingType {
+	BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON,
+	BRANCH_SUMMARY_NODE,
+	GENE_NODE,
+	COMPOUND_NODE,
+	LINEARIZABLE_NODE,
+	REMOVABLE_NODE,
+	REMOVE_NODE_BUTTON
 }

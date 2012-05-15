@@ -11,7 +11,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ANodeAttributeRenderer;
 import org.caleydo.view.enroute.node.ComplexNode;
@@ -61,7 +61,7 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 		determineBackgroundColor(view.getMetaboliteSelectionManager());
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(),
-				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
+				EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
 		gl.glColor4fv(backgroundColor, 0);
 		gl.glBegin(GL2.GL_QUADS);
 		gl.glVertex3f(leftX, bottomY, nodePosition.z());
@@ -139,13 +139,13 @@ public class CompoundNodePreviewMode extends ACompoundNodeMode {
 				// circleColor = DEFAULT_CIRCLE_COLOR;
 				view.setDisplayListDirty();
 			}
-		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
 		super.unregisterPickingListeners();
-		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
 
 	}

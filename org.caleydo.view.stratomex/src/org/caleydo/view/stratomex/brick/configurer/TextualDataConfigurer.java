@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -63,10 +63,10 @@ public class TextualDataConfigurer
 	@Override
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
 				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
@@ -111,10 +111,10 @@ public class TextualDataConfigurer
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
 				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();
@@ -145,10 +145,10 @@ public class TextualDataConfigurer
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), PARCOORDS_BUTTON_ID,
 				EIconTextures.PAR_COORDS_ICON, EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton tagCloudButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(), TAGCLOUD_BUTTON_ID,
 				EIconTextures.TAGCLOUD_ICON, EContainedViewType.TAGCLOUD_VIEW);
 
 		ArrayList<BrickViewSwitchingButton> viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();

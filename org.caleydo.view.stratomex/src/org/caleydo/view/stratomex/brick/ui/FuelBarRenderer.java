@@ -24,7 +24,7 @@ import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
@@ -68,7 +68,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 		GLStratomex stratomex = brick.getDimensionGroup().getStratomexView();
 
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-				PickingType.BRICK.name(), brick.getID()));
+				EPickingType.BRICK.name(), brick.getID()));
 		// gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
 		// PickingType.BRICK, brick.getID()));
 		gl.glBegin(GL2.GL_QUADS);

@@ -122,18 +122,20 @@ public class ToolTipPickingListener extends APickingListener {
 			toolTipMessage = labelProvider.getLabel();
 			toolTipTitle = labelProvider.getSecondaryLabel();
 		}
+		
+		System.out.println("over");
 
 		thread = new ToolTipThread();
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
-				try {
-					Thread.sleep(500);
+//				try {
+//					Thread.sleep(500);
 					view.getParentComposite().getDisplay().asyncExec(thread);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
+//				} catch (InterruptedException e) {
+//					e.printStackTrace();
+//				}
 			}
 		};
 
@@ -144,6 +146,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 	@Override
 	public void mouseOut(Pick pick) {
+		System.out.println("out");
 		hideToolTip();
 	}
 

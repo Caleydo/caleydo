@@ -996,7 +996,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 						.getObjectID(), false));
 			}
 
-		}, PickingType.BRICK_CONNECTION_BAND.name());
+		}, EPickingType.BRICK_CONNECTION_BAND.name());
 
 		addTypePickingListener(new APickingListener() {
 			@Override
@@ -1023,7 +1023,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 			}
 
-		}, PickingType.DIMENSION_GROUP.name());
+		}, EPickingType.DIMENSION_GROUP.name());
 
 		addTypePickingListener(new APickingListener() {
 			@Override
@@ -1042,7 +1042,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				}
 			};
 
-		}, PickingType.DIMENSION_GROUP_SPACER.name());
+		}, EPickingType.DIMENSION_GROUP_SPACER.name());
 
 		addTypePickingListener(new APickingListener() {
 			@Override
@@ -1051,7 +1051,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				movedDimensionGroup = pick.getObjectID();
 			};
 
-		}, PickingType.MOVE_HORIZONTALLY_HANDLE.name());
+		}, EPickingType.MOVE_HORIZONTALLY_HANDLE.name());
 	}
 
 	@Override

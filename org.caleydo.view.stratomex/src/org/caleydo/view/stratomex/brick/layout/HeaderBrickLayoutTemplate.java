@@ -38,7 +38,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
@@ -247,7 +247,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		toolBar.append(greedyXLayout);
 
 		Button clusterButton = new Button(
-				PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
+				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
 				EIconTextures.CLUSTER_ICON);
 		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
 		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
@@ -310,7 +310,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 					}
 				});
 			}
-		}, PickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
+		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
 
 		return toolBar;
 	}
@@ -327,14 +327,14 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				// lockResizingButton.setSelected(isResizingLocked);
 			}
 
-		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, false);
 			}
-		}, PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -342,7 +342,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, true);
 			}
-		}, PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override
@@ -469,7 +469,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
-		brick.removeAllIDPickingListeners(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 	}
 

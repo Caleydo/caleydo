@@ -32,7 +32,7 @@ import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.node.mode.ALinearizeableNodeMode;
 
 /**
@@ -226,12 +226,12 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	protected void registerPickingListeners() {
 		ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(view, this);
 		view.addIDPickingListener(toolTipPickingListener,
-				PickingType.LINEARIZABLE_NODE.name(), nodeId);
+				EPickingType.LINEARIZABLE_NODE.name(), nodeId);
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
-		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(), nodeId);
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(), nodeId);
 		mode.unregisterPickingListeners();
 	}
 	

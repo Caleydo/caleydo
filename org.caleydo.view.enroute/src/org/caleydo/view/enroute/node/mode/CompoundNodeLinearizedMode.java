@@ -10,7 +10,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ANode;
 import org.caleydo.view.enroute.node.ANodeAttributeRenderer;
@@ -111,13 +111,13 @@ public class CompoundNodeLinearizedMode extends ACompoundNodeMode {
 				// circleColor = DEFAULT_CIRCLE_COLOR;
 				view.setDisplayListDirty();
 			}
-		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
 		super.unregisterPickingListeners();
-		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
 	}
 

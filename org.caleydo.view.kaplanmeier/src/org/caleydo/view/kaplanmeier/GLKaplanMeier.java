@@ -46,6 +46,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineLabelRenderer;
@@ -131,8 +132,22 @@ public class GLKaplanMeier extends ATableBasedView {
 		if (!isMaxAxisTimeSetExternally) {
 			calculateMaxAxisTime();
 		}
+		createPickingListeners();
 
 		detailLevel = EDetailLevel.HIGH;
+	}
+
+	private void createPickingListeners() {
+
+		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
+				.getVirtualArray();
+		
+		for (Group group : recordVA.getGroupList()) {
+			ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(
+					this, "test");
+			addIDPickingListener(toolTipPickingListener, EPickingType.KM_CURVE.name(),
+					group.getID());
+		}
 	}
 
 	private void calculateMaxAxisTime() {
@@ -189,10 +204,10 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public void display(GL2 gl) {
 
-		if (isDisplayListDirty) {
+//		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
-		}
+//		}
 		gl.glCallList(displayListIndex);
 
 		checkForHits(gl);
@@ -236,7 +251,8 @@ public class GLKaplanMeier extends ATableBasedView {
 
 			gl.glLineWidth(lineWidth);
 
-			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex), fillCurve);
+			renderSingleKaplanMeierCurve(gl, recordIDs, colors.get(colorIndex),
+					fillCurve, group.getID());
 		}
 
 		if (detailLevel == EDetailLevel.HIGH) {
@@ -321,7 +337,7 @@ public class GLKaplanMeier extends ATableBasedView {
 	}
 
 	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs,
-			Color color, boolean fillCurve) {
+			Color color, boolean fillCurve, int groupID) {
 
 		// if (recordIDs.size() == 0)
 		// return;
@@ -351,7 +367,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		}
 
 		if (fillCurve) {
-			// We cannot use transparency here because of artefacts. Hence, we
+			// We cannot use transparency here because of artifacts. Hence, we
 			// need
 			// to brighten the color by multiplying it with a factor
 			gl.glColor3f(color.r * 1.3f, color.g * 1.3f, color.b * 1.3f);
@@ -363,13 +379,18 @@ public class GLKaplanMeier extends ATableBasedView {
 			for (int index = 0; index < recordIDs.size(); index++) {
 				dataVector.add(sortedDataVector[index]);
 			}
-
-			gl.glColor3fv(color.getRGB(), 0);
-			drawCurve(gl, dataVector);
-		} else {
-			gl.glColor3fv(color.getRGB(), 0);
-			drawCurve(gl, dataVector);
 		}
+
+		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
+			gl.glPushName(pickingManager.getPickingID(getID(),
+					EPickingType.KM_CURVE.name(), groupID));
+		}
+		gl.glColor3fv(color.getRGB(), 0);
+		drawCurve(gl, dataVector);
+		if (!fillCurve && detailLevel == EDetailLevel.HIGH) {
+			gl.glPopName();
+		}
+
 	}
 
 	private void drawFilledCurve(GL2 gl, ArrayList<Float> dataVector) {
@@ -434,7 +455,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
 		gl.glBegin(GL2.GL_LINE_STRIP);
-		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 0);
+		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 1);
 
 		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
 
@@ -446,10 +467,10 @@ public class GLKaplanMeier extends ATableBasedView {
 			float y = (float) remainingItemCount * ySingleSampleSize;
 
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
-					+ y, 0);
+					+ y, 1);
 			currentTimeBin += timeBinStepSize;
 			gl.glVertex3f(leftAxisSpacing + currentTimeBin * plotWidth, bottomAxisSpacing
-					+ y, 0);
+					+ y, 1);
 		}
 
 		gl.glEnd();
@@ -562,5 +583,16 @@ public class GLKaplanMeier extends ATableBasedView {
 	 */
 	public String getyAxisLabel() {
 		return yAxisLabel;
+	}
+
+	@Override
+	public void registerEventListeners() {
+		super.registerEventListeners();
+	}
+
+	@Override
+	public void unregisterEventListeners() {
+		super.unregisterEventListeners();
+		removeAllPickingListeners();
 	}
 }

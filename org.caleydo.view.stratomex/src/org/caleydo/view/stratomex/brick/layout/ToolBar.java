@@ -23,7 +23,7 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ui.ToolBarBackgroundRenderer;
 
@@ -66,7 +66,7 @@ public class ToolBar extends Row {
 		};
 
 		brick.getDimensionGroup().getStratomexView()
-				.addTypePickingListener(brickPickingListener, PickingType.BRICK.name());
+				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 
 	}
 
@@ -86,7 +86,7 @@ public class ToolBar extends Row {
 	public void destroy() {
 		brick.getDimensionGroup()
 				.getStratomexView()
-				.removeTypePickingListener(brickPickingListener, PickingType.BRICK.name());
+				.removeTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 		super.destroy();
 	}
 }

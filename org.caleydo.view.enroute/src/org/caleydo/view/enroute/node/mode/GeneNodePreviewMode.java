@@ -16,7 +16,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.mappeddataview.CategoricalContentPreviewRenderer;
 import org.caleydo.view.enroute.mappeddataview.ContentRenderer;
 import org.caleydo.view.enroute.mappeddataview.ContentRendererInitializor;
@@ -71,7 +71,7 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 		colorRenderer.setView(view);
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer
-				.addPickingID(PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+				.addPickingID(EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 		baseColumn.addBackgroundRenderer(colorRenderer);
 
 		ElementLayout labelLayout = new ElementLayout("label");
@@ -374,14 +374,14 @@ public class GeneNodePreviewMode extends AGeneNodeMode {
 
 				view.setDisplayListDirty();
 			}
-		}, PickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
+		}, EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId());
 
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
 		super.unregisterPickingListeners();
-		view.removeAllIDPickingListeners(PickingType.LINEARIZABLE_NODE.name(),
+		view.removeAllIDPickingListeners(EPickingType.LINEARIZABLE_NODE.name(),
 				node.getNodeId());
 	}
 

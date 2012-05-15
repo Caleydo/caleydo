@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -67,15 +67,15 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	public void configure(HeaderBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
 				EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
 				EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 
@@ -124,19 +124,19 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	public void configure(DefaultBrickLayoutTemplate layoutTemplate) {
 
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.HEATMAP_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
 				EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
 				EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 
@@ -173,19 +173,19 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 	@Override
 	public void configure(DetailBrickLayoutTemplate layoutTemplate) {
 		BrickViewSwitchingButton heatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.HEATMAP_VIEW);
 		BrickViewSwitchingButton parCoordsButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				PARCOORDS_BUTTON_ID, EIconTextures.PAR_COORDS_ICON,
 				EContainedViewType.PARCOORDS_VIEW);
 		BrickViewSwitchingButton histogramButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				HISTOGRAM_BUTTON_ID, EIconTextures.HISTOGRAM_ICON,
 				EContainedViewType.HISTOGRAM_VIEW);
 		BrickViewSwitchingButton overviewHeatMapButton = new BrickViewSwitchingButton(
-				PickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
+				EPickingType.BRICK_TOOLBAR_VIEW_SWITCHING_BUTTONS.name(),
 				OVERVIEW_HEATMAP_BUTTON_ID, EIconTextures.HEAT_MAP_ICON,
 				EContainedViewType.OVERVIEW_HEATMAP);
 

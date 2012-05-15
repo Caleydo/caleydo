@@ -70,7 +70,7 @@ import org.caleydo.datadomain.genetic.GeneticDataDomain;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.data.PathwayDimensionGroupData;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.configurer.ClinicalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
@@ -378,8 +378,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 		GLStratomex stratomex = getDimensionGroup().getStratomexView();
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-				PickingType.BRICK.name(), getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), PickingType.BRICK.name(),
+				EPickingType.BRICK.name(), getID()));
+		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(),
 				getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
@@ -861,14 +861,14 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
 			}
 
-		}, PickingType.BRICK.name(), getID());
+		}, EPickingType.BRICK.name(), getID());
 
 		addIDPickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
 				isBrickResizeActive = true;
 			}
-		}, PickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
+		}, EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1);
 	}
 
 	/**

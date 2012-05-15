@@ -14,7 +14,7 @@ import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.event.RemoveEnRouteNodeEvent;
 
 /**
@@ -63,9 +63,9 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			// gl.glPushAttrib(GL2.GL_COLOR);
 			for (Integer nodeId : nodeIds) {
 				gl.glPushName(pickingManager.getPickingID(view.getID(),
-						PickingType.REMOVABLE_NODE.name(), nodeId));
+						EPickingType.REMOVABLE_NODE.name(), nodeId));
 				gl.glPushName(pickingManager.getPickingID(view.getID(),
-						PickingType.REMOVE_NODE_BUTTON.name(), nodeId));
+						EPickingType.REMOVE_NODE_BUTTON.name(), nodeId));
 			}
 			// ALinearizableNode currentNode =
 			Vec3f position = node.getPosition();
@@ -133,9 +133,9 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			};
 
 			view.addIDPickingListener(showButtonPickingListener,
-					PickingType.LINEARIZABLE_NODE.name(), nodeId);
+					EPickingType.LINEARIZABLE_NODE.name(), nodeId);
 			view.addIDPickingListener(showButtonPickingListener,
-					PickingType.REMOVABLE_NODE.name(), nodeId);
+					EPickingType.REMOVABLE_NODE.name(), nodeId);
 
 			buttonPickingListener = new APickingListener() {
 
@@ -150,7 +150,7 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 			};
 
 			view.addIDPickingListener(buttonPickingListener,
-					PickingType.REMOVE_NODE_BUTTON.name(), nodeId);
+					EPickingType.REMOVE_NODE_BUTTON.name(), nodeId);
 		}
 	}
 
@@ -158,11 +158,11 @@ public class RemoveNodeButtonAttributeRenderer extends ANodeAttributeRenderer {
 	public void unregisterPickingListeners() {
 		for (Integer nodeId : nodeIds) {
 			view.removeIDPickingListener(showButtonPickingListener,
-					PickingType.LINEARIZABLE_NODE.name(), nodeId);
+					EPickingType.LINEARIZABLE_NODE.name(), nodeId);
 			view.removeIDPickingListener(showButtonPickingListener,
-					PickingType.REMOVABLE_NODE.name(), nodeId);
+					EPickingType.REMOVABLE_NODE.name(), nodeId);
 			view.removeIDPickingListener(buttonPickingListener,
-					PickingType.REMOVE_NODE_BUTTON.name(), nodeId);
+					EPickingType.REMOVE_NODE_BUTTON.name(), nodeId);
 		}
 	}
 

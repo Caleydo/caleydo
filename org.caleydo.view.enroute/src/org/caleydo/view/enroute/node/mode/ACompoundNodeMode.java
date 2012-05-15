@@ -13,7 +13,7 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.GLPrimitives;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.node.ANode;
 import org.caleydo.view.enroute.node.CompoundNode;
 
@@ -38,7 +38,7 @@ public abstract class ACompoundNodeMode extends ALinearizeableNodeMode {
 	protected void renderCircle(GL2 gl, GLU glu, Vec3f position, float radius) {
 
 		gl.glPushName(pickingManager.getPickingID(view.getID(),
-				PickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
+				EPickingType.LINEARIZABLE_NODE.name(), node.getNodeId()));
 		gl.glPushMatrix();
 		gl.glTranslatef(position.x(), position.y(), position.z());
 		gl.glColor4fv(backgroundColor, 0);

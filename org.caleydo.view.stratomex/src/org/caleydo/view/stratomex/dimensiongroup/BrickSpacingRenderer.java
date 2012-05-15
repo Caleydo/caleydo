@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
 import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
@@ -73,7 +73,7 @@ public class BrickSpacingRenderer
 				}
 			}
 
-		}, PickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);
+		}, EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id);
 	}
 
 	@Override
@@ -83,7 +83,7 @@ public class BrickSpacingRenderer
 		float width = dimensionGroup.getGroupColumn().getSizeScaledX();
 		GLStratomex stratomex = dimensionGroup.getStratomexView();
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
-				PickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
+				EPickingType.BRICK_SPACER.name() + dimensionGroup.getID(), id));
 
 		gl.glColor4f(1, 0, 0, 0);
 		gl.glBegin(GL2.GL_QUADS);

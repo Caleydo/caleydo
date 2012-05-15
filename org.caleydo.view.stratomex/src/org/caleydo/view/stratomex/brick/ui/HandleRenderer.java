@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
@@ -85,7 +85,7 @@ public class HandleRenderer extends LayoutRenderer {
 				brick.getDimensionGroup().setVerticalMoveDraggingActive(true);
 			}
 
-		}, PickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID());
+		}, EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID());
 
 		brickPickingListener = new APickingListener() {
 			@Override
@@ -98,7 +98,7 @@ public class HandleRenderer extends LayoutRenderer {
 		};
 
 		brick.getDimensionGroup().getStratomexView()
-				.addTypePickingListener(brickPickingListener, PickingType.BRICK.name());
+				.addTypePickingListener(brickPickingListener, EPickingType.BRICK.name());
 
 	}
 
@@ -117,7 +117,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
+					EPickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(0, 0, BUTTON_Z);
 			gl.glVertex3f(glHandleWidth, 0, BUTTON_Z);
@@ -129,7 +129,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
+					EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x, 0, BUTTON_Z);
 			gl.glVertex3f(x - glHandleWidth, 0, BUTTON_Z);
@@ -141,7 +141,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
+					EPickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(x, y, BUTTON_Z);
 			gl.glVertex3f(x - glHandleWidth, y, BUTTON_Z);
@@ -153,7 +153,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
+					EPickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
 			gl.glBegin(GL2.GL_LINES);
 			gl.glVertex3f(0, y, BUTTON_Z);
 			gl.glVertex3f(glHandleWidth, y, BUTTON_Z);
@@ -165,7 +165,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & MOVE_VERTICALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
+					EPickingType.MOVE_VERTICALLY_HANDLE.name(), brick.getID()));
 			// gl.glColor4f(1f, 1f, 1f, 1);
 			Vec3f lowerLeftCorner = new Vec3f(-glHandleWidth, y / 2.0f - glHandleHeight,
 					BUTTON_Z);
@@ -201,7 +201,7 @@ public class HandleRenderer extends LayoutRenderer {
 		if ((handles & MOVE_HORIZONTALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(
 					brick.getDimensionGroup().getStratomexView().getID(),
-					PickingType.MOVE_HORIZONTALLY_HANDLE.name(),
+					EPickingType.MOVE_HORIZONTALLY_HANDLE.name(),
 					brick.getDimensionGroup().getID()));
 			
 			Vec3f lowerLeftCorner = new Vec3f(x / 2f - glHandleWidth, y ,
@@ -229,7 +229,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & EXPAND_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID()));
+					EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID()));
 
 			// gl.glBegin(GL2.GL_QUADS);
 			// gl.glVertex3f(-glHandleWidth, y, 1);
@@ -252,7 +252,7 @@ public class HandleRenderer extends LayoutRenderer {
 
 		if ((handles & EXPAND_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
+					EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID()));
 
 			Vec3f lowerLeftCorner = new Vec3f(x, y, BUTTON_Z);
 			Vec3f lowerRightCorner = new Vec3f(x + glHandleWidth, y, BUTTON_Z);

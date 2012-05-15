@@ -31,7 +31,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.ATableBasedDataConfigurer;
@@ -108,11 +108,11 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			System.out.println("Shouldn't happen");
 		}
 
-		lockResizingButton = new Button(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+		lockResizingButton = new Button(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID, EIconTextures.PIN);
 
 		viewSwitchingModeButton = new Button(
-				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID, EIconTextures.LOCK);
 		viewSwitchingModeButton.setSelected(dimensionGroup.isGlobalViewSwitching());
 
@@ -245,7 +245,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		collapseButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
 		collapseButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		collapseButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID,
+				EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID,
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_90, BUTTON_Z));
 
@@ -290,7 +290,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				// brick.setBrickWidthMode(EBrickWidthMode.STATIC);
 				// lockResizingButton.setSelected(isResizingLocked);
 			}
-		}, PickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
+		}, EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(), LOCK_RESIZING_BUTTON_ID);
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -300,7 +300,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				dimensionGroup.setGlobalViewSwitching(isGlobalViewSwitching);
 				viewSwitchingModeButton.setSelected(isGlobalViewSwitching);
 			}
-		}, PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+		}, EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
 		brick.addIDPickingListener(new APickingListener() {
@@ -310,7 +310,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brick.collapse();
 				dimensionGroup.updateLayout();
 			}
-		}, PickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
+		}, EPickingType.BRICK_COLLAPSE_BUTTON.name(), COLLAPSE_BUTTON_ID);
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -318,7 +318,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, false);
 			}
-		}, PickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
+		}, EPickingType.EXPAND_RIGHT_HANDLE.name(), brick.getID());
 
 		brick.addIDPickingListener(new APickingListener() {
 
@@ -326,7 +326,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 			public void clicked(Pick pick) {
 				dimensionGroup.showDetailedBrick(brick, true);
 			}
-		}, PickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
+		}, EPickingType.EXPAND_LEFT_HANDLE.name(), brick.getID());
 	}
 
 	@Override
@@ -426,20 +426,20 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		System.out.println("Destroy " + brick.getID());
-		brick.removeAllIDPickingListeners(PickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_LOCK_RESIZING_BUTTON.name(),
 				LOCK_RESIZING_BUTTON_ID);
 
 		brick.removeAllIDPickingListeners(
-				PickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
+				EPickingType.BRICK_VIEW_SWITCHING_MODE_BUTTON.name(),
 				VIEW_SWITCHING_MODE_BUTTON_ID);
 
-		brick.removeAllIDPickingListeners(PickingType.BRICK_COLLAPSE_BUTTON.name(),
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_COLLAPSE_BUTTON.name(),
 				COLLAPSE_BUTTON_ID);
 
-		brick.removeAllIDPickingListeners(PickingType.EXPAND_RIGHT_HANDLE.name(),
+		brick.removeAllIDPickingListeners(EPickingType.EXPAND_RIGHT_HANDLE.name(),
 				brick.getID());
 
-		brick.removeAllIDPickingListeners(PickingType.EXPAND_LEFT_HANDLE.name(),
+		brick.removeAllIDPickingListeners(EPickingType.EXPAND_LEFT_HANDLE.name(),
 				brick.getID());
 		// toolBar.destroy();
 		super.destroy();

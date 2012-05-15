@@ -42,7 +42,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.enroute.GLEnRoutePathway;
-import org.caleydo.view.enroute.PickingType;
+import org.caleydo.view.enroute.EPickingType;
 import org.caleydo.view.enroute.node.layout.BranchNodeLabelRenderer;
 
 /**
@@ -155,14 +155,14 @@ public class BranchSummaryNode extends ANode implements ILabelProvider {
 				}
 				view.setDisplayListDirty();
 			}
-		}, PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
+		}, EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
 
 	}
 
 	@Override
 	public void unregisterPickingListeners() {
 		view.removeAllIDPickingListeners(
-				PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
+				EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId);
 	}
 
 	/**
@@ -190,7 +190,7 @@ public class BranchSummaryNode extends ANode implements ILabelProvider {
 		colorRenderer.setBorderColor(new float[] { 0, 0, 0, 1 });
 		colorRenderer.setColor(new float[] { 0.9f, 0.9f, 0.9f, 1 });
 		colorRenderer.setView(view);
-		colorRenderer.addPickingID(PickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
+		colorRenderer.addPickingID(EPickingType.BRANCH_SUMMARY_NODE.name(), nodeId);
 		baseColumn.addBackgroundRenderer(colorRenderer);
 		baseColumn.setBottomUp(false);
 
@@ -201,7 +201,7 @@ public class BranchSummaryNode extends ANode implements ILabelProvider {
 
 		ElementLayout collapseButtonLayout = new ElementLayout("collapseButton");
 		collapseButton = new Button(
-				PickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
+				EPickingType.BRANCH_SUMMARY_NODE_COLLAPSE_BUTTON.name(), nodeId,
 				EIconTextures.GROUPER_COLLAPSE_PLUS);
 		ButtonRenderer collapseButtonRenderer = new ButtonRenderer(collapseButton, view);
 		collapseButtonLayout.setRenderer(collapseButtonRenderer);

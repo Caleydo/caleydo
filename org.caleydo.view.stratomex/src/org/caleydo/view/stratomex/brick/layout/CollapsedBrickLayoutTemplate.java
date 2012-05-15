@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
@@ -149,7 +149,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		// expandButtonLayout.setRatioSizeX(0.2f);
 		expandButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
 		expandButtonLayout.setRenderer(new ButtonRenderer(new Button(
-				PickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID,
+				EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID,
 				EIconTextures.NAVIGATION_NEXT_BIG_MIDDLE), brick, brick
 				.getTextureManager(), ButtonRenderer.TEXTURE_ROTATION_180));
 
@@ -204,7 +204,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 				brick.expand();
 
 			}
-		}, PickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
+		}, EPickingType.BRICK_EXPAND_BUTTON.name(), EXPAND_BUTTON_ID);
 
 	}
 
@@ -283,7 +283,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	public void destroy() {
 		super.destroy();
-		brick.removeAllIDPickingListeners(PickingType.BRICK_EXPAND_BUTTON.name(),
+		brick.removeAllIDPickingListeners(EPickingType.BRICK_EXPAND_BUTTON.name(),
 				EXPAND_BUTTON_ID);
 	}
 

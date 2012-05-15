@@ -835,6 +835,15 @@ public abstract class AGLView
 		}
 		pickingListeners.clear();
 	}
+	
+	/**
+	 * Removes all picking listeners.
+	 */
+	public void removeAllPickingListeners() {
+		idPickingListeners.clear();
+		typePickingListeners.clear();
+	}
+	
 
 	/**
 	 * Removes all type picking listeners for a specific picking type.

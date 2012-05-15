@@ -26,7 +26,7 @@ import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
-import org.caleydo.view.stratomex.PickingType;
+import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.ViewLabelProvider;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
@@ -85,7 +85,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
+				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -107,7 +107,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
+				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -128,7 +128,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), PickingType.DIMENSION_GROUP.name(),
+				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);
 
@@ -156,7 +156,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
 				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), PickingType.BRICK.name(), layoutTemplate
+				layoutTemplate.getBrick()), EPickingType.BRICK.name(), layoutTemplate
 				.getBrick().getID());
 
 		captionLayout.setRenderer(captionRenderer);
