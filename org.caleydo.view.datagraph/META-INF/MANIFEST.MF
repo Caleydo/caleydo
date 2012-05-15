@@ -1,9 +1,9 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Data-View Integrator View
-Bundle-SymbolicName: org.caleydo.view.datagraph;singleton:=true
+Bundle-SymbolicName: org.caleydo.view.dvi;singleton:=true
 Bundle-Version: 2.0
-Bundle-Activator: org.caleydo.view.datagraph.Activator
+Bundle-Activator: org.caleydo.view.dvi.Activator
 Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.caleydo.core;bundle-version="2.0.0",
@@ -12,5 +12,5 @@ Require-Bundle: org.eclipse.ui,
 Bundle-ActivationPolicy: lazy
 Bundle-RequiredExecutionEnvironment: JavaSE-1.6
 Bundle-Vendor: www.caleydo.org
-Export-Package: org.caleydo.view.datagraph,
- org.caleydo.view.datagraph.event
+Export-Package: org.caleydo.view.dvi,
+ org.caleydo.view.dvi.event

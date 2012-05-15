@@ -111,7 +111,7 @@ public class GeneticGUIStartupProcedure
 		if (!startViewWithDataDomain.isEmpty())
 			return;
 
-		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.datagraph",
+		startViewWithDataDomain.add(new Pair<String, String>("org.caleydo.view.dvi",
 				"org.caleydo.datadomain.genetic"));
 	}
 }

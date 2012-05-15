@@ -752,7 +752,7 @@ public class RcpGeneSearchView extends CaleydoRCPViewPart {
 				// Switch to browser view
 				try {
 					PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-							.showView("org.caleydo.view.datagraph");
+							.showView("org.caleydo.view.dvi");
 				} catch (PartInitException e1) {
 					e1.printStackTrace();
 				}
