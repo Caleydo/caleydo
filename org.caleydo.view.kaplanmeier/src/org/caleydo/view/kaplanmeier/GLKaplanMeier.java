@@ -76,6 +76,9 @@ public class GLKaplanMeier extends ATableBasedView {
 	protected static final int BOTTOM_AXIS_SPACING_PIXELS = 50;
 	protected static final int TOP_AXIS_SPACING_PIXELS = 8;
 	protected static final int RIGHT_AXIS_SPACING_PIXELS = 20;
+	protected static final int AXIS_LABEL_TEXT_HEIGHT_PIXELS = 20;
+	protected static final int AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS = 5;
+	protected static final int AXIS_TICK_LABEL_SPACING_PIXELS = 12;
 
 	private SelectionManager recordGroupSelectionManager;
 
@@ -245,12 +248,6 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void renderAxes(GL2 gl) {
 
-		float plotHeight = viewFrustum.getHeight()
-				- pixelGLConverter.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS
-						+ TOP_AXIS_SPACING_PIXELS);
-		float plotWidth = viewFrustum.getWidth()
-				- pixelGLConverter.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS
-						+ RIGHT_AXIS_SPACING_PIXELS);
 		float originX = pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS);
 		float originY = pixelGLConverter
@@ -259,62 +256,68 @@ public class GLKaplanMeier extends ATableBasedView {
 		float axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(xAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
-		textRenderer
-				.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f
-						- axisLabelWidth / 2.0f,
-						pixelGLConverter.getGLHeightForPixelHeight(5), 0,
-						viewFrustum.getWidth(),
-						pixelGLConverter.getGLHeightForPixelHeight(20));
+		textRenderer.renderTextInBounds(gl, xAxisLabel, viewFrustum.getWidth() / 2.0f
+				- axisLabelWidth / 2.0f, pixelGLConverter
+				.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS), 0,
+				viewFrustum.getWidth(), pixelGLConverter
+						.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS));
 
 		axisLabelWidth = textRenderer.getRequiredTextWidthWithMax(yAxisLabel,
 				pixelGLConverter.getGLHeightForPixelHeight(20), viewFrustum.getWidth());
 
-		textRenderer.renderRotatedTextInBounds(gl, yAxisLabel,
-				pixelGLConverter.getGLHeightForPixelHeight(25), viewFrustum.getHeight()
-						/ 2.0f - axisLabelWidth / 2.0f, 0, viewFrustum.getWidth(),
-				pixelGLConverter.getGLHeightForPixelHeight(20), 90);
+		textRenderer.renderRotatedTextInBounds(gl, yAxisLabel, pixelGLConverter
+				.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_SIDE_SPACING_PIXELS
+						+ AXIS_LABEL_TEXT_HEIGHT_PIXELS), viewFrustum.getHeight() / 2.0f
+				- axisLabelWidth / 2.0f, 0, viewFrustum.getWidth(), pixelGLConverter
+				.getGLHeightForPixelHeight(AXIS_LABEL_TEXT_HEIGHT_PIXELS), 90);
 
+		renderSingleAxis(gl, originX, originY, true, 6, maxAxisTime);
+		renderSingleAxis(gl, originX, originY, false, 6, 100);
+	}
+
+	private void renderSingleAxis(GL2 gl, float originX, float originY, boolean isXAxis,
+			int numTicks, float maxTickValue) {
 		List<Vec3f> xAxisLinePoints = new ArrayList<Vec3f>();
 		xAxisLinePoints.add(new Vec3f(originX, originY, 0));
-		xAxisLinePoints.add(new Vec3f(originX + plotWidth, originY, 0));
-		ConnectionLineRenderer xAxis = new ConnectionLineRenderer();
-		float step = maxAxisTime / 5.0f;
+		xAxisLinePoints.add(new Vec3f(originX + ((isXAxis) ? getPlotWidth() : 0), originY
+				+ ((isXAxis) ? 0 : getPlotHeight()), 0));
 
-		for (int i = 0; i < 6; i++) {
+		ConnectionLineRenderer axis = new ConnectionLineRenderer();
+		float step = maxTickValue / (float) (numTicks - 1);
+
+		for (int i = 0; i < numTicks; i++) {
 			LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(
 					(float) i / 5.0f, pixelGLConverter);
-			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer((float) i / 5.0f,
-					pixelGLConverter, new Integer(i * (int) step).toString(),
-					textRenderer);
-			lineLabelRenderer.setLineOffsetPixels(-12);
-			lineLabelRenderer.setXCentered(true);
+			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer((float) i
+					/ (float) (numTicks - 1), pixelGLConverter, new Integer(i
+					* (int) step).toString(), textRenderer);
+			if (isXAxis) {
+				lineLabelRenderer.setLineOffsetPixels(-AXIS_TICK_LABEL_SPACING_PIXELS);
+				lineLabelRenderer.setXCentered(true);
+			} else {
+				lineLabelRenderer.setLineOffsetPixels(AXIS_TICK_LABEL_SPACING_PIXELS);
+				lineLabelRenderer.setYCentered(true);
+			}
 			lineCrossingRenderer.setLineWidth(2);
-			xAxis.addAttributeRenderer(lineCrossingRenderer);
-			xAxis.addAttributeRenderer(lineLabelRenderer);
+			axis.addAttributeRenderer(lineCrossingRenderer);
+			axis.addAttributeRenderer(lineLabelRenderer);
 		}
-		xAxis.setLineWidth(2);
-		xAxis.renderLine(gl, xAxisLinePoints);
+		axis.setLineWidth(2);
+		axis.renderLine(gl, xAxisLinePoints);
+	}
 
-		List<Vec3f> yAxisLinePoints = new ArrayList<Vec3f>();
-		yAxisLinePoints.add(new Vec3f(originX, originY, 0));
-		yAxisLinePoints.add(new Vec3f(originX, originY + plotHeight, 0));
-		ConnectionLineRenderer yAxis = new ConnectionLineRenderer();
+	private float getPlotHeight() {
+		return viewFrustum.getHeight()
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+						.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS
+								+ TOP_AXIS_SPACING_PIXELS) : 0);
+	}
 
-		for (int i = 0; i <= 100; i += 20) {
-			LineCrossingRenderer lineCrossingRenderer = new LineCrossingRenderer(
-					(float) i / 100.0f, pixelGLConverter);
-			LineLabelRenderer lineLabelRenderer = new LineLabelRenderer(
-					(float) i / 100.0f, pixelGLConverter, new Integer(i).toString(),
-					textRenderer);
-			lineLabelRenderer.setLineOffsetPixels(12);
-			lineLabelRenderer.setYCentered(true);
-			lineCrossingRenderer.setLineWidth(2);
-			yAxis.addAttributeRenderer(lineCrossingRenderer);
-			yAxis.addAttributeRenderer(lineLabelRenderer);
-		}
-		yAxis.setLineWidth(2);
-		yAxis.renderLine(gl, yAxisLinePoints);
-
+	private float getPlotWidth() {
+		return viewFrustum.getWidth()
+				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
+						.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS
+								+ RIGHT_AXIS_SPACING_PIXELS) : 0);
 	}
 
 	private void renderSingleKaplanMeierCurve(GL2 gl, List<Integer> recordIDs,
@@ -371,14 +374,8 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void drawFilledCurve(GL2 gl, ArrayList<Float> dataVector) {
 
-		float plotHeight = viewFrustum.getHeight()
-				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
-						.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS
-								+ TOP_AXIS_SPACING_PIXELS) : 0);
-		float plotWidth = viewFrustum.getWidth()
-				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
-						.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS
-								+ RIGHT_AXIS_SPACING_PIXELS) : 0);
+		float plotHeight = getPlotHeight();
+		float plotWidth = getPlotWidth();
 		float bottomAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(BOTTOM_AXIS_SPACING_PIXELS) : 0);
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
@@ -417,14 +414,8 @@ public class GLKaplanMeier extends ATableBasedView {
 
 	private void drawCurve(GL2 gl, ArrayList<Float> dataVector) {
 
-		float plotHeight = viewFrustum.getHeight()
-				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
-						.getGLHeightForPixelHeight(BOTTOM_AXIS_SPACING_PIXELS
-								+ TOP_AXIS_SPACING_PIXELS) : 0);
-		float plotWidth = viewFrustum.getWidth()
-				- (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
-						.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS
-								+ RIGHT_AXIS_SPACING_PIXELS) : 0);
+		float plotHeight = getPlotHeight();
+		float plotWidth = getPlotWidth();
 
 		float bottomAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(BOTTOM_AXIS_SPACING_PIXELS) : 0);
