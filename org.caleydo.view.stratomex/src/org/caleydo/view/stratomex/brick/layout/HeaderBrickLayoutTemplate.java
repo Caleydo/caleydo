@@ -229,6 +229,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @return
 	 */
 	protected Row createToolBar() {
+		System.out.println(this.toString());
 		Row toolBar = new ToolBar("ToolBarRow", brick);
 		toolBar.setPixelSizeY(0);
 
@@ -274,7 +275,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 			@Override
 			public void clicked(Pick pick) {
-				System.out.println("cluster");
+				System.out.println("cluster " + this);
 
 				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
 					@Override

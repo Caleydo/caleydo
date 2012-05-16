@@ -536,7 +536,10 @@ public class DimensionGroup extends ATableBasedView implements
 	 */
 	public void setArchHeight(int archHeight) {
 		if (headerBrick != null)
+		{
 			headerBrick.setStaticBrickHeight(archHeight);
+			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
+		}
 	}
 
 	@Override

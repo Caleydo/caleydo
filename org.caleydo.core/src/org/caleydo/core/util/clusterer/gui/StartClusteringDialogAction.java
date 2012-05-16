@@ -127,6 +127,9 @@ public class StartClusteringDialogAction extends Action implements
 			this.dataDomain = config.getDataDomain();
 			dimensionPerspective = config.getDimensionPerspective();
 			recordPerspective = config.getRecordPerspective();
+		} else {
+			this.dataDomain = dataDomain;
+
 		}
 
 		this.dimensionPerspective = dimensionPerspective;
@@ -148,8 +151,6 @@ public class StartClusteringDialogAction extends Action implements
 
 		composite.setLayout(new GridLayout(1, false));
 
-		
-		
 		if (dataDomain == null) {
 			Group dataChooserGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 			dataChooserGroup.setText("Choose Dataset:");
@@ -265,6 +266,9 @@ public class StartClusteringDialogAction extends Action implements
 		});
 
 		tabFolder.pack();
+//		if (dataDomain != null) {
+//			setDataDependendStuff();
+//		}
 		// composite.pack();
 	}
 
@@ -325,6 +329,10 @@ public class StartClusteringDialogAction extends Action implements
 		recordPerspective = dataChooser.getRecordPerspective();
 		dimensionPerspective = dataChooser.getDimensionPerspective();
 
+		setDataDependendStuff();
+	}
+
+	private void setDataDependendStuff() {
 		typeOptions[0] = dataDomain.getRecordDenomination(true, false);
 		typeOptions[1] = dataDomain.getDimensionDenomination(true, false);
 		clusterTypeCombo.setItems(typeOptions);

@@ -283,7 +283,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 							.getViewRenderer());
 		}
 
-		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
+//		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 
 		dimensionGroup.updateLayout();
 
@@ -674,7 +674,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			isInOverviewMode = false;
 
 		if (layoutManager != null) {
-			layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
+//			layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 			if (brickLayoutConfiguration.isViewTypeValid(viewType)) {
 				setBrickViewTypeAndConfigureSize(viewType);
 			} else {

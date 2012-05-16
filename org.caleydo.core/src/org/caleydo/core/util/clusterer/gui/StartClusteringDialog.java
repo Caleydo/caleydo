@@ -36,7 +36,7 @@ import org.eclipse.swt.widgets.Shell;
  * 
  * @author Bernhard Schlegl
  */
-public class StartClusteringDialog extends TrayDialog implements IDataOKListener{
+public class StartClusteringDialog extends TrayDialog implements IDataOKListener {
 
 	private StartClusteringDialogAction startClusteringAction;
 
@@ -47,7 +47,7 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 
 	public StartClusteringDialog(Shell parentShell) {
 		super(parentShell);
-	
+
 	}
 
 	/**
@@ -57,7 +57,7 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 		super(parentShell);
 
 		this.dataDomain = dataDomain;
-		
+
 	}
 
 	/**
@@ -92,20 +92,21 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
-		
+
 		startClusteringAction = new StartClusteringDialogAction(this, parent, dataDomain,
 				dimensionPerspective, recordPerspective);
 		startClusteringAction.run();
-		
+
 		return parent;
 	}
-	
+
 	@Override
-	protected Control createContents(Composite parent) {		
+	protected Control createContents(Composite parent) {
 		Control control = super.createContents(parent);
-		getButton(IDialogConstants.OK_ID).setEnabled(false);
+		if (dataDomain == null)
+			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		return control;
-		
+
 	}
 
 	@Override
@@ -130,7 +131,7 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 	 */
 	public AClusterConfiguration getClusterState() {
 		return startClusteringAction.getClusterState();
-		
+
 	}
 
 	@Override

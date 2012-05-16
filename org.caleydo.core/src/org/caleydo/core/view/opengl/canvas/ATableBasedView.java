@@ -255,7 +255,7 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (dataContainer.hasRecordPerspective(recordPerspectiveID)) {
+		if (dataContainer != null && dataContainer.hasRecordPerspective(recordPerspectiveID)) {
 
 			reactOnRecordVAChanges();
 			// reactOnExternalSelection();
