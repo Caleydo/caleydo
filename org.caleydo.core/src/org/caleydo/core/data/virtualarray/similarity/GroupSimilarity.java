@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,19 +30,22 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 
 /**
- * The similarity of one group in source VA1 to all groups in target VA2. You can get two types of information
- * from this class:
+ * The similarity of one group in source VA1 to all groups in target VA2. You
+ * can get two types of information from this class:
  * <ol>
- * <li>The <b>score</b> (accessible via {@link #getScore(int)}), which tells you how many elements this group
- * shares with the group of the other VA in this GroupSimilarity.</li>
- * <li>The <b>similarity</b> (accessible via {@link #getSimilarity(int)} and in bulk via
- * {@link #getSimilarities()}) which tells you how similar this group is to the other group or groups. The
- * contract here is that if all elements of this group are contained in the foreign group as well, the
- * similarity will be 1, if none are contained 0.
+ * <li>The <b>score</b> (accessible via {@link #getScore(int)}), which tells you
+ * how many elements this group shares with the group of the other VA in this
+ * GroupSimilarity.</li>
+ * <li>The <b>similarity</b> (accessible via {@link #getSimilarity(int)} and in
+ * bulk via {@link #getSimilarities()}) which tells you how similar this group
+ * is to the other group or groups. The contract here is that if all elements of
+ * this group are contained in the foreign group as well, the similarity will be
+ * 1, if none are contained 0.
  * </ol>
  * <p>
- * Notice that the score of two groups for each other in two VAs will be identical, the similarities however
- * not, since the similarities also consider the size of the group.
+ * Notice that the score of two groups for each other in two VAs will be
+ * identical, the similarities however not, since the similarities also consider
+ * the size of the group.
  * </p>
  * 
  * @author Alexander Lex
@@ -56,7 +59,8 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	}
 
 	/**
-	 * Get the number of shared elements between this group and the group of va2 specified through the groupID
+	 * Get the number of shared elements between this group and the group of va2
+	 * specified through the groupID
 	 * 
 	 * @param groupID
 	 * @return
@@ -68,8 +72,8 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	}
 
 	/**
-	 * Returns the similarity of this group to the group specified via the groupID in a rate normalized
-	 * between 0 and 1
+	 * Returns the similarity of this group to the group specified via the
+	 * groupID in a rate normalized between 0 and 1
 	 * 
 	 * @param groupID
 	 * @return
@@ -79,7 +83,8 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	}
 
 	/**
-	 * Returns the similarity of this group to all other groups, normalized between 0 and 1
+	 * Returns the similarity of this group to all other groups, normalized
+	 * between 0 and 1
 	 * 
 	 * @param groupID
 	 * @return
@@ -93,8 +98,9 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 	}
 
 	/**
-	 * Returns a new virtual array containing all elements which occur in the primary group of this group
-	 * similarity and an external group specified through the foreign group ID.
+	 * Returns a new virtual array containing all elements which occur in the
+	 * primary group of this group similarity and an external group specified
+	 * through the foreign group ID.
 	 * 
 	 * @param foreignGroupID
 	 *            Returns null if createSimilarity flag is false.
@@ -113,7 +119,8 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		return "Gr. Sim.: src.: " + group + " to: " + scores.length + " groups";
 	}
 
-	// -------------------- END OF PUBLIC INTERFACE ----------------------------------
+	// -------------------- END OF PUBLIC INTERFACE
+	// ----------------------------------
 
 	private int[] scores;
 	private Group group;
@@ -141,17 +148,20 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 
 	void calculateSimilarity() {
 
-		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex() + group.getSize(); vaIndex++) {
+		for (int vaIndex = group.getStartIndex(); vaIndex < group.getStartIndex()
+				+ group.getSize(); vaIndex++) {
 
 			Integer id = va1.get(vaIndex);
 			if (va1.getIdType() != va2.getIdType()) {
-				IDMappingManager idMappingManager =
-					IDMappingManagerRegistry.get().getIDMappingManager(va1.getIdType().getIDCategory());
-				Set<Integer> ids = idMappingManager.getIDAsSet(va1.getIdType(), va2.getIdType(), id);
-				id = ids.iterator().next();
-				if(ids.size()>2)
-				{
-					System.out.println("Multi-Mapping");
+				IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
+						.getIDMappingManager(va1.getIdType().getIDCategory());
+				Set<Integer> ids = idMappingManager.getIDAsSet(va1.getIdType(),
+						va2.getIdType(), id);
+				if (ids != null) {
+					id = ids.iterator().next();
+					if (ids.size() > 2) {
+						System.out.println("Multi-Mapping");
+					}
 				}
 			}
 			List<Group> groups2 = va2.getGroupOf(id);
@@ -177,7 +187,8 @@ public class GroupSimilarity<VAType extends VirtualArray<VAType, ?, GroupListTyp
 		}
 
 		if (sum != group.getSize()) {
-			System.out.println("Similarity size sum " + sum + "!= group sum " + group.getSize());
+			System.out.println("Similarity size sum " + sum + "!= group sum "
+					+ group.getSize());
 		}
 	}
 
