@@ -25,8 +25,6 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.AUniqueObject;
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.data.collection.dimension.AColumn;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -36,6 +34,8 @@ import org.caleydo.core.data.virtualarray.group.GroupList;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.base.AUniqueObject;
+import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 

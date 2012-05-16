@@ -21,7 +21,6 @@ package org.caleydo.core.data.collection.dimension;
 
 import java.util.EnumMap;
 import java.util.Iterator;
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.collection.ExternalDataRepresentation;
 import org.caleydo.core.data.collection.ICollection;
 import org.caleydo.core.data.collection.ccontainer.FloatCContainer;
@@ -30,6 +29,7 @@ import org.caleydo.core.data.collection.ccontainer.ICContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainer;
 import org.caleydo.core.data.collection.ccontainer.IntCContainerIterator;
 import org.caleydo.core.data.collection.ccontainer.NumericalCContainer;
+import org.caleydo.core.util.base.AUniqueObject;
 
 /**
  * Interface for Dimensions A Dimension is a container that holds various representations of a particular data

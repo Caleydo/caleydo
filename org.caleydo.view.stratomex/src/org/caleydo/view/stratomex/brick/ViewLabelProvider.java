@@ -22,8 +22,8 @@
  */
 package org.caleydo.view.stratomex.brick;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 
 /**
  * Adapter for views to provide their labels.
@@ -41,17 +41,11 @@ public class ViewLabelProvider implements ILabelProvider {
 
 	@Override
 	public String getLabel() {
-		return view.getCustomLabel();
+		return view.getLabel();
 	}
 
 	@Override
-	public boolean isDefaultLabel() {
+	public boolean isLabelDefault() {
 		return false;
 	}
-
-	@Override
-	public String getSecondaryLabel() {
-		return null;
-	}
-
 }

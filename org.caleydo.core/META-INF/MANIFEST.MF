@@ -3,7 +3,7 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Caleydo Core Plug-in
 Bundle-SymbolicName: org.caleydo.core;singleton:=true
 Bundle-Version: 2.0
-Export-Package: org.caleydo.core.data,
+Export-Package: 
  org.caleydo.core.data.collection,
  org.caleydo.core.data.collection.ccontainer;uses:="org.caleydo.core.data.virtualarray",
  org.caleydo.core.data.collection.dimension;
@@ -167,6 +167,7 @@ Export-Package: org.caleydo.core.data,
  org.caleydo.core.serialize;uses:="org.caleydo.core.data.datadomain,org.caleydo.core.view.opengl.camera,javax.xml.bind",
  org.caleydo.core.specialized,
  org.caleydo.core.util,
+ org.caleydo.core.util.base,
  org.caleydo.core.util.clusterer;
   uses:="org.caleydo.core.data.perspective,
    org.caleydo.core.data.collection.table,

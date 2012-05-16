@@ -237,7 +237,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		// label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
 		// .getDataContainer()).getPathways().get(0).getTitle();
 
-		brick.setCustomLabel(label);
+		brick.setLabel(label, true);
 
 		LayoutRenderer kaplanMeierSummaryRenderer = new KaplanMeierSummaryRenderer(brick,
 				label, EPickingType.BRICK.name(), brick.getID());

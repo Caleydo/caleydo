@@ -27,8 +27,8 @@ import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
-import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.caleydo.view.enroute.GLEnRoutePathway;
@@ -248,13 +248,8 @@ public abstract class ALinearizableNode extends ANode implements ILabelProvider 
 	}
 	
 	@Override
-	public boolean isDefaultLabel() {
+	public boolean isLabelDefault() {
 		return false;
-	}
-	
-	@Override
-	public String getSecondaryLabel() {
-		return null;
 	}
 
 }

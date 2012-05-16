@@ -349,15 +349,15 @@ public class DataContainer {
 		RecordGroupList groupList = recordVA.getGroupList();
 		groupList.updateGroupInfo();
 
+		
 		for (Group group : groupList) {
-			// fixme should check for default label
-			if (groupList.size() == 1)
-				group.setLabel(getLabel());
+			if (groupList.size() == 1 && group.isLabelDefault())
+				group.setLabel(getLabel(), isDefaultLabel());
 
 			List<Integer> indices = recordVA.getIDsOfGroup(group.getGroupIndex());
 
 			RecordPerspective recordPerspective = new RecordPerspective(dataDomain);
-			recordPerspective.setLabel(group.getLabel(), group.isDefaultLabel());
+			recordPerspective.setLabel(group.getLabel(), group.isLabelDefault());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			recordPerspective.init(data);
@@ -396,13 +396,13 @@ public class DataContainer {
 		groupList.updateGroupInfo();
 
 		for (Group group : groupList) {
-			if (groupList.size() == 1)
-				group.setLabel(getLabel());
+			if (groupList.size() == 1 && group.isLabelDefault())
+				group.setLabel(getLabel(), isDefaultLabel());
 			List<Integer> indices = dimensionVA.getIDsOfGroup(group.getGroupIndex());
 
 			DimensionPerspective dimensionPerspective = new DimensionPerspective(
 					dataDomain);
-			dimensionPerspective.setLabel(group.getLabel(), group.isDefaultLabel());
+			dimensionPerspective.setLabel(group.getLabel(), group.isLabelDefault());
 			PerspectiveInitializationData data = new PerspectiveInitializationData();
 			data.setData(indices);
 			dimensionPerspective.init(data);
@@ -410,7 +410,7 @@ public class DataContainer {
 			DataContainer subDataContainer = new DataContainer(dataDomain,
 					recordPerspective, dimensionPerspective);
 			subDataContainer.setDimensionGroup(group);
-			subDataContainer.setLabel(group.getLabel(), group.isDefaultLabel());
+			subDataContainer.setLabel(group.getLabel(), group.isLabelDefault());
 			dimensionSubDataContainers.add(subDataContainer);
 
 		}

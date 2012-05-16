@@ -494,7 +494,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 			// node.setDefaultLabel(isDefaultLabel);
 			Group tempGroup = new Group(groupSize, data.getSampleElements().get(
 					groupCounter));
-			tempGroup.setLabel(groupName);
+			tempGroup.setLabel(groupName, isDefaultLabel);
 			// tree.addChild(root, node);
 			groupList.append(tempGroup);
 			groupCounter++;

@@ -20,7 +20,8 @@
 package org.caleydo.core.manager;
 
 import java.util.Collection;
-import org.caleydo.core.data.IUniqueObject;
+
+import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * Interface for all managers that allow classes to access managed objects.

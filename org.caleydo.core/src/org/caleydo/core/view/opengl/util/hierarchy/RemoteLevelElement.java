@@ -20,10 +20,10 @@
 package org.caleydo.core.view.opengl.util.hierarchy;
 
 import gleem.linalg.open.Transform;
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.base.AUniqueObject;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
 public class RemoteLevelElement

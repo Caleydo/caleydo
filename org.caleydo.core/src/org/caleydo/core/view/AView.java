@@ -20,13 +20,13 @@
 package org.caleydo.core.view;
 
 import java.util.Set;
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.SelectionCommand;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.util.base.AUniqueObject;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.eclipse.swt.widgets.Composite;
 
@@ -52,7 +52,12 @@ public abstract class AView extends AUniqueObject implements IView {
 	 * shows, e.g. "Glioma Pathway" for a view that shows a glioma pathway.
 	 * Defaults to {@link #viewName}.
 	 */
-	protected String customLabel = null;
+	protected String label = null;
+
+	/**
+	 * Flag setting whether the label is default or was manually specified
+	 */
+	protected boolean isLabelDefault = true;
 
 	public static EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
 
@@ -64,20 +69,22 @@ public abstract class AView extends AUniqueObject implements IView {
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param viewType
 	 *            TODO
-	 * @param viewName TODO
+	 * @param viewName
+	 *            TODO
 	 */
 	public AView(int viewID, Composite parentComposite, String viewType, String viewName) {
 		super(viewID);
-		
+
 		this.viewType = viewType;
 		this.viewName = viewName;
 		if (viewType == null || viewName == null) {
 			throw new IllegalStateException("One of these was not defined: viewType: "
 					+ viewType + " viewName: " + viewName);
 		}
-		customLabel = viewName;
+		label = viewName;
 		generalManager = GeneralManager.get();
 		eventPublisher = generalManager.getEventPublisher();
 		this.parentComposite = parentComposite;
@@ -137,23 +144,25 @@ public abstract class AView extends AUniqueObject implements IView {
 		return viewName;
 	}
 
-	/**
-	 * @param customLabel
-	 *            setter, see {@link #customLabel}
-	 */
-	public void setCustomLabel(String customLabel) {
-		this.customLabel = customLabel;
-	}
-
-	/**
-	 * @return the customLabel, see {@link #customLabel}
-	 */
-	public String getCustomLabel() {
-		return customLabel;
-	}
-
 	@Override
 	public String getViewType() {
 		return viewType;
+	}
+
+	@Override
+	public void setLabel(String label, boolean isLabelDefault) {
+		this.label = label;
+		this.isLabelDefault = isLabelDefault;
+
+	}
+
+	@Override
+	public String getLabel() {
+		return label;
+	}
+		
+	@Override
+	public boolean isLabelDefault() {
+		return isLabelDefault;
 	}
 }

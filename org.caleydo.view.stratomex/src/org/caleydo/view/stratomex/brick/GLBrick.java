@@ -307,9 +307,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 			@Override
 			public void run() {
 				ChangeNameDialog dialog = new ChangeNameDialog();
-				dialog.run(PlatformUI.getWorkbench().getDisplay(), customLabel);
-				customLabel = dialog.getResultingName();
-				dataContainer.setLabel(customLabel, false);
+				dialog.run(PlatformUI.getWorkbench().getDisplay(), label);
+				label = dialog.getResultingName();
+				dataContainer.setLabel(label, false);
 				setDisplayListDirty();
 
 				if (brickLayoutConfiguration instanceof DefaultBrickLayoutTemplate)
@@ -379,8 +379,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		GLStratomex stratomex = getDimensionGroup().getStratomexView();
 		gl.glPushName(stratomex.getPickingManager().getPickingID(stratomex.getID(),
 				EPickingType.BRICK.name(), getID()));
-		gl.glPushName(getPickingManager().getPickingID(getID(), EPickingType.BRICK.name(),
-				getID()));
+		gl.glPushName(getPickingManager().getPickingID(getID(),
+				EPickingType.BRICK.name(), getID()));
 		gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
 		gl.glTranslatef(0, 0, 0.1f);
 		gl.glBegin(GL2.GL_QUADS);
@@ -1273,7 +1273,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	/**
 	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
 	 */
-	public boolean isDefaultLabel() {
+	public boolean isLabelDefault() {
 		return dataContainer.isDefaultLabel();
 	}
 
@@ -1376,5 +1376,10 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		}
 
 		wrappingLayout.updateSubLayout();
+	}
+
+	@Override
+	public String getLabel() {
+		return dataContainer.getLabel();
 	}
 }

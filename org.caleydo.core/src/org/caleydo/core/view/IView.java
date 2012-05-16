@@ -19,8 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
-import org.caleydo.core.data.IUniqueObject;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.base.IUniqueObject;
 
 /**
  * Interface for the view representations.
@@ -29,7 +30,7 @@ import org.caleydo.core.serialize.ASerializedView;
  * @author Alexander Lex
  */
 public interface IView
-	extends IUniqueObject {
+	extends IUniqueObject, ILabelHolder {
 
 	/**
 	 * Initializes the view after setting all required parameters.

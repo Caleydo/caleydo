@@ -19,8 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolTip;
 
@@ -120,7 +120,7 @@ public class ToolTipPickingListener extends APickingListener {
 		// tip.setVisible(true);
 		if(labelProvider != null) {
 			toolTipMessage = labelProvider.getLabel();
-			toolTipTitle = labelProvider.getSecondaryLabel();
+//			toolTipTitle = labelProvider.getSecondaryLabel();
 		}
 		
 		System.out.println("over");

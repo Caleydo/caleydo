@@ -10,8 +10,8 @@ import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.layout.util.IColorProvider;
-import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.GeneNode;
 
@@ -100,13 +100,8 @@ public abstract class AGeneNodeMode extends ALayoutBasedNodeMode implements
 	}
 
 	@Override
-	public boolean isDefaultLabel() {
+	public boolean isLabelDefault() {
 		return false;
-	}
-
-	@Override
-	public String getSecondaryLabel() {
-		return null;
 	}
 
 }

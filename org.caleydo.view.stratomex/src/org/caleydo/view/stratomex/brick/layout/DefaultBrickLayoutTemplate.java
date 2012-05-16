@@ -193,7 +193,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	
 
 		headerRow = new Row("headerRow");
-		if (brick.isDefaultLabel())
+		if (brick.isLabelDefault())
 			headerRow.setHidden(true);
 		headerRow.setYDynamic(true);
 
@@ -465,7 +465,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	public int getOverheadHeight() {
 		int pixelHeight = SPACING_PIXELS * 2
 				+ (showFooterBar ? FOOTER_BAR_HEIGHT_PIXELS + SPACING_PIXELS : 0)
-				+ (brick.isDefaultLabel() ? 0
+				+ (brick.isLabelDefault() ? 0
 						: ATableBasedDataConfigurer.CAPTION_HEIGHT_PIXELS);
 		return pixelHeight;
 

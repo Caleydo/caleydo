@@ -22,7 +22,9 @@ package org.caleydo.view.enroute.mappeddataview;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.ADataPerspective;
@@ -77,7 +79,7 @@ public class MappedDataRenderer {
 
 	private GLEnRoutePathway parentView;
 
-	private List<ALinearizableNode> linearizedNodes;
+//	private List<ALinearizableNode> linearizedNodes;
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
 
@@ -235,9 +237,7 @@ public class MappedDataRenderer {
 		captionColumn.append(columnCaptionSpacing);
 		baseRow.append(captionColumn);
 
-		// dataSetColumn.setDebug(true);
 
-		this.linearizedNodes = linearizedNodes;
 
 		int nodeCount = 0;
 		float previousNodePosition = viewFrustum.getHeight() + yOffset
@@ -252,7 +252,7 @@ public class MappedDataRenderer {
 		ArrayList<ArrayList<ElementLayout>> rowListForDataContainers = new ArrayList<ArrayList<ElementLayout>>(
 				(int) (usedDataContainers.size() * 1.6));
 
-		for (DataContainer dataContainer : usedDataContainers) {
+		for (int count = 0; count < usedDataContainers.size(); count++) {
 			rowListForDataContainers.add(new ArrayList<ElementLayout>(linearizedNodes
 					.size() * 2));
 		}
@@ -433,14 +433,14 @@ public class MappedDataRenderer {
 			if (group == null) {
 				group = dataContainer.getDimensionPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(dataContainer.getLabel());
+				group.setLabel(dataContainer.getLabel(), dataContainer.isDefaultLabel());
 			}
 		} else {
 			group = dataContainer.getRecordGroup();
 			if (group == null) {
 				group = dataContainer.getRecordPerspective().getVirtualArray()
 						.getGroupList().get(0);
-				group.setLabel(dataContainer.getLabel());
+				group.setLabel(dataContainer.getLabel(), dataContainer.isDefaultLabel());
 			}
 		}
 		topCaptionLayout.init(group, experimentPerspective, dataDomain);

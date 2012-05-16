@@ -21,18 +21,19 @@ package org.caleydo.core.data.virtualarray.group;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlTransient;
-import org.caleydo.core.data.AUniqueObject;
 import org.caleydo.core.data.graph.tree.ClusterNode;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
+import org.caleydo.core.util.base.AUniqueObject;
+import org.caleydo.core.util.base.ILabelHolder;
+import org.caleydo.core.util.base.ILabelProvider;
 
 /**
  * @author Bernhard Schlegl
  * @author Alexander Lex
  */
-public class Group extends AUniqueObject implements ILabelProvider {
+public class Group extends AUniqueObject implements ILabelHolder {
 
 	/** number of elements in the group/cluster */
 	private int size = 0;
@@ -74,6 +75,7 @@ public class Group extends AUniqueObject implements ILabelProvider {
 	 */
 	private float[] meanValuesRepresentativeElement;
 
+	@XmlElement
 	private String label;
 	@XmlElement
 	private boolean isDefaultLabel = true;
@@ -125,15 +127,6 @@ public class Group extends AUniqueObject implements ILabelProvider {
 		this.setClusterNode(clusterNode);
 	}
 
-	/**
-	 * @param label
-	 *            setter, see {@link #label}
-	 */
-	public void setLabel(String label) {
-		this.label = label;
-		isDefaultLabel = false;
-	}
-
 	@Override
 	public String getLabel() {
 		return label;
@@ -142,7 +135,7 @@ public class Group extends AUniqueObject implements ILabelProvider {
 	/**
 	 * @return the isDefaultLabel, see {@link #isDefaultLabel}
 	 */
-	public boolean isDefaultLabel() {
+	public boolean isLabelDefault() {
 		return isDefaultLabel;
 	}
 
@@ -240,8 +233,11 @@ public class Group extends AUniqueObject implements ILabelProvider {
 		return perspectiveID;
 	}
 
+
 	@Override
-	public String getSecondaryLabel() {
-		return null;
+	public void setLabel(String label, boolean isDefaultLabel) {
+		this.label = label;
+		this.isDefaultLabel = isDefaultLabel;
+
 	}
 }

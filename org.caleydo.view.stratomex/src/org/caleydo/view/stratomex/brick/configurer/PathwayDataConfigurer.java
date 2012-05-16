@@ -234,7 +234,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		// label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
 		// .getDataContainer()).getPathways().get(0).getTitle();
 
-		brick.setCustomLabel(label);
+		brick.setLabel(label, false);
 
 		LayoutRenderer pathwaysSummaryRenderer = new PathwaysSummaryRenderer(brick,
 				label, EPickingType.BRICK.name(), brick.getID());

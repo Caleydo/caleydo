@@ -8,7 +8,8 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
-import org.caleydo.core.view.opengl.layout.util.ILabelProvider;
+
+import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ANodeAttributeRenderer;
@@ -148,13 +149,8 @@ public class ComplexNodeLinearizedMode extends ALinearizeableNodeMode implements
 	}
 
 	@Override
-	public boolean isDefaultLabel() {
+	public boolean isLabelDefault() {
 		return false;
-	}
-
-	@Override
-	public String getSecondaryLabel() {
-		return null;
 	}
 
 }
