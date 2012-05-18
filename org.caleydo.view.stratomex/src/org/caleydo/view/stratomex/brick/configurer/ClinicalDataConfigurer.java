@@ -22,7 +22,9 @@ package org.caleydo.view.stratomex.brick.configurer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
@@ -32,7 +34,6 @@ import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.brick.ViewLabelProvider;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -188,8 +189,8 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(view, new ViewLabelProvider(
-				layoutTemplate.getBrick()), pickingType.name(), pickingID);
+		LabelRenderer captionRenderer = new LabelRenderer(view, 
+				layoutTemplate.getBrick(), pickingType.name(), pickingID);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;

@@ -1,25 +1,26 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.view.stratomex.brick.configurer;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
@@ -28,7 +29,6 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.brick.ViewLabelProvider;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
@@ -84,9 +84,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
-				layoutTemplate.getDimensionGroup().getID());
+				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
+				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
+						.getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -106,9 +106,9 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
-				layoutTemplate.getDimensionGroup().getID());
+				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
+				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
+						.getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -126,10 +126,10 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
-		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
-				layoutTemplate.getDimensionGroup().getID());
+		LabelRenderer captionRenderer = new LabelRenderer(
+				layoutTemplate.getDimensionGroup(), layoutTemplate.getBrick(),
+				EPickingType.DIMENSION_GROUP.name(), layoutTemplate.getDimensionGroup()
+						.getID());
 		captionLayout.setRenderer(captionRenderer);
 
 		headerBarElements.add(captionLayout);
@@ -155,9 +155,8 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
-				layoutTemplate.getBrick()), EPickingType.BRICK.name(), layoutTemplate
-				.getBrick().getID());
+				.getDimensionGroup().getStratomexView(), layoutTemplate.getBrick(),
+				EPickingType.BRICK.name(), layoutTemplate.getBrick().getID());
 
 		captionLayout.setRenderer(captionRenderer);
 
