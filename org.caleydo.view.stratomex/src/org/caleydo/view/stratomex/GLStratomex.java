@@ -106,7 +106,7 @@ import org.eclipse.swt.widgets.Composite;
 public class GLStratomex extends AGLView implements IMultiDataContainerBasedView,
 		IGLRemoteRenderingView, IViewCommandHandler, ISelectionUpdateHandler {
 	public static String VIEW_TYPE = "org.caleydo.view.stratomex";
-	
+
 	public static String VIEW_NAME = "StratomeX";
 
 	private final static int ARCH_PIXEL_HEIGHT = 100;
@@ -188,7 +188,18 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private boolean isHorizontalMoveDraggingActive = false;
 	private int movedDimensionGroup = -1;
 
+	/**
+	 * The position of the mouse in the previous render cycle when dragging
+	 * columns
+	 */
 	private float previousXCoordinate = Float.NaN;
+	/**
+	 * If the mouse is dragged further out to the left than possible, this is
+	 * set to where it was
+	 */
+	private float leftLimitXCoordinate = Float.NaN;
+	/** Same as {@link #leftLimitXCoordinate} for the right side */
+	private float rightLimitXCoordinate = Float.NaN;
 
 	/** Needed for selecting the elements when a connection band is picked **/
 	private HashMap<Integer, BrickConnection> hashConnectionBandIDToRecordVA = new HashMap<Integer, BrickConnection>();
@@ -514,7 +525,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			group.processEvents();
 		}
 
-		handleHorizontalMoveDragging(gl);
+		handleHorizontalColumnMove(gl);
 		if (isLayoutDirty) {
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
@@ -534,53 +545,54 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		}
 
 		if (resizeNecessary) {
-			int size = centerRowLayout.size();
-			if (size >= 3) {
-				if (lastResizeDirectionWasToLeft) {
-					dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
-							.getCenterGroupStartIndex() + 1);
-
-					float width = centerRowLayout.getElements().get(0).getSizeScaledX()
-							+ centerRowLayout.getElements().get(1).getSizeScaledX()
-							+ centerRowLayout.getElements().get(2).getSizeScaledX();
-					centerRowLayout.remove(0);
-					centerRowLayout.remove(0);
-					leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
-
-					leftDimensionGroupSpacing.setAbsoluteSizeX(width);
-					((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
-							.getRenderer()).setLeftDimGroup(null);
-					initLeftLayout();
-
-					// if (size == 3)
-					// leftDimensionGroupSpacing.setGrabX(true);
-
-				} else {
-					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
-							.getRightGroupStartIndex() - 1);
-
-					// float width = centerRowLayout.getElements().get(size - 1)
-					// .getSizeScaledX()
-					// + centerRowLayout.getElements().get(size - 2)
-					// .getSizeScaledX()
-					// + centerRowLayout.getElements().get(size - 3)
-					// .getSizeScaledX();
-					centerRowLayout.remove(centerRowLayout.size() - 1);
-					centerRowLayout.remove(centerRowLayout.size() - 1);
-					rightDimensionGroupSpacing = centerRowLayout.getElements().get(
-							centerRowLayout.size() - 1);
-					// rightDimensionGroupSpacing.setAbsoluteSizeX(width);
-					rightDimensionGroupSpacing.setGrabX(true);
-					((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
-							.getRenderer()).setRightDimGroup(null);
-					initRightLayout();
-
-					// if (size == 3)
-					// rightDimensionGroupSpacing.setGrabX(true);
-
-				}
-			}
-			centerLayoutManager.updateLayout();
+			// int size = centerRowLayout.size();
+			// if (size >= 3) {
+			// if (lastResizeDirectionWasToLeft) {
+			// dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
+			// .getCenterGroupStartIndex() + 1);
+			//
+			// float width =
+			// centerRowLayout.getElements().get(0).getSizeScaledX()
+			// + centerRowLayout.getElements().get(1).getSizeScaledX()
+			// + centerRowLayout.getElements().get(2).getSizeScaledX();
+			// centerRowLayout.remove(0);
+			// centerRowLayout.remove(0);
+			// leftDimensionGroupSpacing = centerRowLayout.getElements().get(0);
+			//
+			// leftDimensionGroupSpacing.setAbsoluteSizeX(width);
+			// ((DimensionGroupSpacingRenderer) leftDimensionGroupSpacing
+			// .getRenderer()).setLeftDimGroup(null);
+			// initLeftLayout();
+			//
+			// // if (size == 3)
+			// // leftDimensionGroupSpacing.setGrabX(true);
+			//
+			// } else {
+			// dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+			// .getRightGroupStartIndex() - 1);
+			//
+			// // float width = centerRowLayout.getElements().get(size - 1)
+			// // .getSizeScaledX()
+			// // + centerRowLayout.getElements().get(size - 2)
+			// // .getSizeScaledX()
+			// // + centerRowLayout.getElements().get(size - 3)
+			// // .getSizeScaledX();
+			// centerRowLayout.remove(centerRowLayout.size() - 1);
+			// centerRowLayout.remove(centerRowLayout.size() - 1);
+			// rightDimensionGroupSpacing = centerRowLayout.getElements().get(
+			// centerRowLayout.size() - 1);
+			// // rightDimensionGroupSpacing.setAbsoluteSizeX(width);
+			// rightDimensionGroupSpacing.setGrabX(true);
+			// ((DimensionGroupSpacingRenderer) rightDimensionGroupSpacing
+			// .getRenderer()).setRightDimGroup(null);
+			// initRightLayout();
+			//
+			// // if (size == 3)
+			// // rightDimensionGroupSpacing.setGrabX(true);
+			//
+			// }
+			// }
+			// centerLayoutManager.updateLayout();
 			resizeNecessary = false;
 		}
 		// float angle = 70f;
@@ -843,12 +855,14 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 * 
 	 * @param gl
 	 */
-	private void handleHorizontalMoveDragging(GL2 gl) {
+	private void handleHorizontalColumnMove(GL2 gl) {
 		if (!isHorizontalMoveDraggingActive)
 			return;
 		if (glMouseListener.wasMouseReleased()) {
 			isHorizontalMoveDraggingActive = false;
 			previousXCoordinate = Float.NaN;
+			leftLimitXCoordinate = Float.NaN;
+			rightLimitXCoordinate = Float.NaN;
 			return;
 		}
 
@@ -867,16 +881,38 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		// float change = -0.1f;
 		// isHorizontalMoveDraggingActive = false;
-		if (change > 0)
+		if (change > 0) {
+			if (change < 0.01f)
+				return;
 			lastResizeDirectionWasToLeft = false;
-		else
+		} else {
+			// ignore tiny changes
+			if (change > -0.01f)
+				return;
 			lastResizeDirectionWasToLeft = true;
+		}
+
+		if (!Float.isNaN(leftLimitXCoordinate)) {
+			if (leftLimitXCoordinate >= currentPoint.x)
+				return;
+			else
+				leftLimitXCoordinate = Float.NaN;
+		}
+
+		if (!Float.isNaN(rightLimitXCoordinate)) {
+			if (rightLimitXCoordinate <= currentPoint.x)
+				return;
+			else
+				rightLimitXCoordinate = Float.NaN;
+		}
 		previousXCoordinate = pointCordinates[0];
 
+		// the spacing left of the moved element
 		ElementLayout leftSpacing = null;
+		// the spacing right of the moved element
+		ElementLayout rightSpacing = null;
 		int leftIndex = 0;
 		int rightIndex = 0;
-		ElementLayout rightSpacing = null;
 
 		DimensionGroupSpacingRenderer spacingRenderer;
 		int count = 0;
@@ -915,64 +951,86 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
 
 		if (change > 0) {
+			// moved to the right, change is positive
 			if (rightSizeX - change > minWidth) {
+				// there is space, we adapt the spacings left and right
 				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
+				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
+
 			} else {
+				// the immediate neighbor doesn't have space, check for the
+				// following
 				rightSpacing.setAbsoluteSizeX(minWidth);
+
 				float savedSize = rightSizeX - minWidth;
 				float remainingChange = change - savedSize;
 
 				while (remainingChange > 0) {
-					if (centerRowLayout.size() < rightIndex + 2)
+					if (centerRowLayout.size() < rightIndex + 2) {
+						rightLimitXCoordinate = currentPoint.x;
 						break;
-
+					}
 					rightIndex += 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(rightIndex);
 					if (spacing.getSizeScaledX() - remainingChange > minWidth + 0.001f) {
 						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
 								- remainingChange);
-						remainingChange = -1;
+						remainingChange = 0;
+						break;
 					} else {
 						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange -= savedSize;
-						if (rightIndex == centerRowLayout.size() - 1)
-							spacing.setAbsoluteSizeX(0f);
-						else
-							spacing.setAbsoluteSizeX(minWidth);
+						if (rightIndex == centerRowLayout.size() - 1) {
+							rightLimitXCoordinate = currentPoint.x;
+						}
+						spacing.setAbsoluteSizeX(minWidth);
 					}
 				}
+				leftSpacing.setAbsoluteSizeX(leftSizeX + change - remainingChange);
 			}
-			leftSpacing.setAbsoluteSizeX(leftSizeX + change);
-		} else {
 
+		} else {
+			// moved to the left, change is negative
 			if (leftSizeX + change > minWidth) {
+				// there is space, we adapt the spacings left and right
 				leftSpacing.setAbsoluteSizeX(leftSizeX + change);
+				rightSpacing.setAbsoluteSizeX(rightSizeX - change);
 			} else {
+				// the immediate neighbor doesn't have space, check for the
+				// following
 				leftSpacing.setAbsoluteSizeX(minWidth);
 				float savedSize = leftSizeX - minWidth;
 				float remainingChange = change + savedSize;
 
 				while (remainingChange < 0) {
-					if (leftIndex < 2)
+					if (leftIndex < 2) {
+						// if (leftIndex == 0) {
+						leftLimitXCoordinate = currentPoint.x;
+						// }
 						break;
-
+					}
 					leftIndex -= 2;
 					ElementLayout spacing = centerRowLayout.getElements().get(leftIndex);
 					if (spacing.getSizeScaledX() + remainingChange > minWidth + 0.001f) {
+						// the whole change fits in the first spacing left of
+						// the source
 						spacing.setAbsoluteSizeX(spacing.getSizeScaledX()
 								+ remainingChange);
-						remainingChange = 1;
+						remainingChange = 0;
+						break;
 					} else {
-						savedSize = spacing.getSizeScaledX() + minWidth;
+						savedSize = spacing.getSizeScaledX() - minWidth;
 						remainingChange += savedSize;
-						if (leftIndex == 0)
-							spacing.setAbsoluteSizeX(0);
-						else
-							spacing.setAbsoluteSizeX(minWidth);
+						if (leftIndex == 0) {
+							leftLimitXCoordinate = currentPoint.x;
+						}
+
+						spacing.setAbsoluteSizeX(minWidth);
 					}
 				}
+				rightSpacing.setAbsoluteSizeX(rightSizeX - change + remainingChange);
 			}
-			rightSpacing.setAbsoluteSizeX(rightSizeX - change);
+
 		}
 
 		setLayoutDirty();

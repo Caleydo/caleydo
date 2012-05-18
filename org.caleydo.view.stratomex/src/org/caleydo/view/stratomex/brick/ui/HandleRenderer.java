@@ -115,53 +115,53 @@ public class HandleRenderer extends LayoutRenderer {
 		gl.glLineWidth(3);
 		gl.glColor3f(0.6f, 0.6f, 0.6f);
 
-		if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(0, 0, BUTTON_Z);
-			gl.glVertex3f(glHandleWidth, 0, BUTTON_Z);
-			gl.glVertex3f(0, 0, BUTTON_Z);
-			gl.glVertex3f(0, glHandleHeight, BUTTON_Z);
-			gl.glEnd();
-			gl.glPopName();
-		}
+//		if ((handles & RESIZE_HANDLE_LOWER_LEFT) > 0) {
+//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+//					EPickingType.RESIZE_HANDLE_LOWER_LEFT.name(), 1));
+//			gl.glBegin(GL2.GL_LINES);
+//			gl.glVertex3f(0, 0, BUTTON_Z);
+//			gl.glVertex3f(glHandleWidth, 0, BUTTON_Z);
+//			gl.glVertex3f(0, 0, BUTTON_Z);
+//			gl.glVertex3f(0, glHandleHeight, BUTTON_Z);
+//			gl.glEnd();
+//			gl.glPopName();
+//		}
+//
+//		if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
+//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+//					EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
+//			gl.glBegin(GL2.GL_LINES);
+//			gl.glVertex3f(x, 0, BUTTON_Z);
+//			gl.glVertex3f(x - glHandleWidth, 0, BUTTON_Z);
+//			gl.glVertex3f(x, 0, 0);
+//			gl.glVertex3f(x, glHandleHeight, BUTTON_Z);
+//			gl.glEnd();
+//			gl.glPopName();
+//		}
 
-		if ((handles & RESIZE_HANDLE_LOWER_RIGHT) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_LOWER_RIGHT.name(), 1));
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(x, 0, BUTTON_Z);
-			gl.glVertex3f(x - glHandleWidth, 0, BUTTON_Z);
-			gl.glVertex3f(x, 0, 0);
-			gl.glVertex3f(x, glHandleHeight, BUTTON_Z);
-			gl.glEnd();
-			gl.glPopName();
-		}
+//		if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
+//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+//					EPickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
+//			gl.glBegin(GL2.GL_LINES);
+//			gl.glVertex3f(x, y, BUTTON_Z);
+//			gl.glVertex3f(x - glHandleWidth, y, BUTTON_Z);
+//			gl.glVertex3f(x, y, BUTTON_Z);
+//			gl.glVertex3f(x, y - glHandleHeight, BUTTON_Z);
+//			gl.glEnd();
+//			gl.glPopName();
+//		}
 
-		if ((handles & RESIZE_HANDLE_UPPER_RIGHT) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_UPPER_RIGHT.name(), 1));
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(x, y, BUTTON_Z);
-			gl.glVertex3f(x - glHandleWidth, y, BUTTON_Z);
-			gl.glVertex3f(x, y, BUTTON_Z);
-			gl.glVertex3f(x, y - glHandleHeight, BUTTON_Z);
-			gl.glEnd();
-			gl.glPopName();
-		}
-
-		if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
-			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
-					EPickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
-			gl.glBegin(GL2.GL_LINES);
-			gl.glVertex3f(0, y, BUTTON_Z);
-			gl.glVertex3f(glHandleWidth, y, BUTTON_Z);
-			gl.glVertex3f(0, y, 0);
-			gl.glVertex3f(0, y - glHandleHeight, BUTTON_Z);
-			gl.glEnd();
-			gl.glPopName();
-		}
+//		if ((handles & RESIZE_HANDLE_UPPER_LEFT) > 0) {
+//			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
+//					EPickingType.RESIZE_HANDLE_UPPER_LEFT.name(), 1));
+//			gl.glBegin(GL2.GL_LINES);
+//			gl.glVertex3f(0, y, BUTTON_Z);
+//			gl.glVertex3f(glHandleWidth, y, BUTTON_Z);
+//			gl.glVertex3f(0, y, 0);
+//			gl.glVertex3f(0, y - glHandleHeight, BUTTON_Z);
+//			gl.glEnd();
+//			gl.glPopName();
+//		}
 
 		if ((handles & MOVE_VERTICALLY_HANDLE) > 0) {
 			gl.glPushName(brick.getPickingManager().getPickingID(brick.getID(),
