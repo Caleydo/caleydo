@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,9 +21,12 @@ package org.caleydo.view.stratomex.brick.ui;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.data.virtualarray.group.RecordGroupList;
 import org.caleydo.core.data.virtualarray.similarity.GroupSimilarity;
 import org.caleydo.core.data.virtualarray.similarity.RelationAnalyzer;
@@ -144,7 +147,14 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		float yOffset = 0;
 		for (GLBrick brick : neighborBrickOrder) {
 
-			int foreignGroupID = brick.getDataContainer().getRecordGroup().getGroupIndex();
+			Group recordGroup = brick.getDataContainer().getRecordGroup();
+			if (recordGroup == null) {
+				// this is true for header bricks
+				continue;
+				// TODO this could be improved if we define groups for header
+				// bricks
+			}
+			int foreignGroupID = recordGroup.getGroupIndex();
 			float similarity = similarities[foreignGroupID];
 			float height = similarity * y;
 			gl.glBegin(GL2.GL_POLYGON);

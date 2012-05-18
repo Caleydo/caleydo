@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -283,8 +283,9 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						StartClusteringDialog dialog = new StartClusteringDialog(
 								new Shell(), brick.getDataDomain());
 						DataContainer data = brick.getDimensionGroup().getDataContainer();
-						dialog.setDimensionPerspective(data.getDimensionPerspective());
-						dialog.setRecordPerspective(data.getRecordPerspective());
+						dialog.setSourceDimensionPerspective(data
+								.getDimensionPerspective());
+						dialog.setSourceRecordPerspective(data.getRecordPerspective());
 						dialog.open();
 						AClusterConfiguration clusterState = dialog.getClusterState();
 						if (clusterState == null)
@@ -296,18 +297,18 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						// complete
 						RecordPerspective newRecordPerspective = new RecordPerspective(
 								data.getDataDomain());
+
 						// we temporarily set the old va to the new
 						// perspective,
 						// to avoid empty bricks
 						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
 								.getVirtualArray());
+						
+						data.getDataDomain().getTable()
+								.registerRecordPerspective(newRecordPerspective);						
 						data.setRecordPerspective(newRecordPerspective);
-						clusterState.setOptionalTargetRecordPerspective(newRecordPerspective);
-
-						StartClusteringEvent event = new StartClusteringEvent(
-								clusterState);
-						event.setDataDomainID(brick.getDataDomain().getDataDomainID());
-						GeneralManager.get().getEventPublisher().triggerEvent(event);
+						clusterState
+								.setOptionalTargetRecordPerspective(newRecordPerspective);
 					}
 				});
 			}

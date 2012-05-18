@@ -42,8 +42,26 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 
 	private ATableBasedDataDomain dataDomain;
 
-	private RecordPerspective recordPerspective;
-	private DimensionPerspective dimensionPerspective;
+	/**
+	 * source for the clustering, used for
+	 * {@link AClusterConfiguration#setSourceRecordPerspective(RecordPerspective)}
+	 */
+	private RecordPerspective sourceRecordPerspective;
+	/**
+	 * source for the clustering, used for
+	 * {@link AClusterConfiguration#setSourceDimensionPerspective(DimensionPerspective)}
+	 */
+	private DimensionPerspective sourceDimensionPerspective;
+	/**
+	 * Optional target perspective, if null, the source is overridden. Used for
+	 * {@link AClusterConfiguration#setOptionalTargetRecordPerspective(RecordPerspective)}
+	 */
+	private RecordPerspective targetRecordPerspective;
+	/**
+	 * Optional target perspective, if null, the source is overridden. Used for
+	 * {@link AClusterConfiguration#setOptionalTargetDimensionPerspective(DimensionPerspective)}
+	 */
+	private DimensionPerspective targetDimensionPerspective;
 
 	public StartClusteringDialog(Shell parentShell) {
 		super(parentShell);
@@ -61,21 +79,39 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 	}
 
 	/**
-	 * @param recordPerspective
-	 *            setter, see {@link #recordPerspective}
+	 * @param sourceRcordPerspective
+	 *            setter, see {@link #sourceRecordPerspective}
 	 */
-	public void setRecordPerspective(RecordPerspective recordPerspective) {
-		this.recordPerspective = recordPerspective;
+	public void setSourceRecordPerspective(RecordPerspective sourceRecordPerspective) {
+		this.sourceRecordPerspective = sourceRecordPerspective;
 
 	}
 
 	/**
-	 * @param dimensionPerspective
-	 *            setter, see {@link #dimensionPerspective}
+	 * @param sourceDimensionPerspective
+	 *            setter, see {@link #sourceDimensionPerspective}
 	 */
-	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
-		this.dimensionPerspective = dimensionPerspective;
+	public void setSourceDimensionPerspective(
+			DimensionPerspective sourceDimensionPerspective) {
+		this.sourceDimensionPerspective = sourceDimensionPerspective;
 
+	}
+
+	/**
+	 * @param targetRecordPerspective
+	 *            setter, see {@link #targetRecordPerspective}
+	 */
+	public void setTargetRecordPerspective(RecordPerspective targetRecordPerspective) {
+		this.targetRecordPerspective = targetRecordPerspective;
+	}
+
+	/**
+	 * @param targetDimensionPerspective
+	 *            setter, see {@link #targetDimensionPerspective}
+	 */
+	public void setTargetDimensionPerspective(
+			DimensionPerspective targetDimensionPerspective) {
+		this.targetDimensionPerspective = targetDimensionPerspective;
 	}
 
 	@Override
@@ -94,7 +130,7 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 	protected Control createDialogArea(Composite parent) {
 
 		startClusteringAction = new StartClusteringDialogAction(this, parent, dataDomain,
-				dimensionPerspective, recordPerspective);
+				sourceDimensionPerspective, sourceRecordPerspective);
 		startClusteringAction.run();
 
 		return parent;
@@ -138,6 +174,21 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 	public void dataOK() {
 		getButton(OK).setEnabled(true);
 		getButton(IDialogConstants.OK_ID).setEnabled(true);
+	}
+
+	/**
+	 * @return the targetRecordPerspective, see {@link #targetRecordPerspective}
+	 */
+	RecordPerspective getTargetRecordPerspective() {
+		return targetRecordPerspective;
+	}
+
+	/**
+	 * @return the targetDimensionPerspective, see
+	 *         {@link #targetDimensionPerspective}
+	 */
+	DimensionPerspective getTargetDimensionPerspective() {
+		return targetDimensionPerspective;
 	}
 
 }

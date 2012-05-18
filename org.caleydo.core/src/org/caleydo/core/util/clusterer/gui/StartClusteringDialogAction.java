@@ -93,12 +93,12 @@ public class StartClusteringDialogAction extends Action implements
 	private TabFolder tabFolder;
 
 	private DataChooserComposite dataChooser;
-	private IDataOKListener parent;
+	private StartClusteringDialog parent;
 
 	/**
 	 * Constructor.
 	 */
-	public StartClusteringDialogAction(IDataOKListener parent,
+	public StartClusteringDialogAction(StartClusteringDialog parent,
 			final Composite parentComposite, ATableBasedDataDomain dataDomain,
 			DimensionPerspective dimensionPerspective, RecordPerspective recordPerspective) {
 		super(TEXT);
@@ -266,9 +266,9 @@ public class StartClusteringDialogAction extends Action implements
 		});
 
 		tabFolder.pack();
-//		if (dataDomain != null) {
-//			setDataDependendStuff();
-//		}
+		// if (dataDomain != null) {
+		// setDataDependendStuff();
+		// }
 		// composite.pack();
 	}
 
@@ -296,8 +296,13 @@ public class StartClusteringDialogAction extends Action implements
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure
 				.getTypeForName(distanceMeasureName));
 
-		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
 		clusterConfiguration.setSourceRecordPerspective(recordPerspective);
+		clusterConfiguration.setSourceDimensionPerspective(dimensionPerspective);
+
+		clusterConfiguration.setOptionalTargetRecordPerspective(parent
+				.getTargetRecordPerspective());
+		clusterConfiguration.setOptionalTargetDimensionPerspective(parent
+				.getTargetDimensionPerspective());
 
 		ClusteringProgressBar progressBar = new ClusteringProgressBar(
 				clusterConfiguration.getClusterAlgorithmName());
