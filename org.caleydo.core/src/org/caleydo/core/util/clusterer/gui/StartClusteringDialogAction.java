@@ -203,6 +203,8 @@ public class StartClusteringDialogAction extends Action implements
 				int selectionIndex = tabFolder.getSelectionIndex();
 				AClusterTab tab = (AClusterTab) tabFolder.getItem(selectionIndex)
 						.getData();
+				if (tab == null)
+					return;
 				int selectedMeasure = distMeasureCombo.getSelectionIndex();
 				String[] supportedMeasures = tab.getSupportedDistanceMeasures();
 				distMeasureCombo.setItems(supportedMeasures);

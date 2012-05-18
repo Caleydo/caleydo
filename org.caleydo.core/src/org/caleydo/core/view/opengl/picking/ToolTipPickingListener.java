@@ -68,12 +68,6 @@ public class ToolTipPickingListener extends APickingListener {
 	private class ToolTipThread implements Runnable {
 		private ToolTip toolTip;
 		private boolean hideToolTip = false;
-		private Point toolTipPosition;
-
-		public ToolTipThread(Point toolTipPosition) {
-			super();
-			this.toolTipPosition = toolTipPosition;
-		}
 
 		@Override
 		public void run() {
@@ -83,7 +77,7 @@ public class ToolTipPickingListener extends APickingListener {
 		public synchronized void hideToolTip() {
 			hideToolTip = true;
 			if (toolTip != null) {
-				System.out.println("hide method");
+//				System.out.println("hide method");
 				toolTip.setVisible(false);
 			}
 		}
@@ -91,7 +85,7 @@ public class ToolTipPickingListener extends APickingListener {
 		private synchronized void createToolTip() {
 			if (hideToolTip)
 				return;
-			System.out.println("create");
+//			System.out.println("create");
 			toolTip = new ToolTip(new Shell(), 0);
 			toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
 			toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
@@ -140,10 +134,9 @@ public class ToolTipPickingListener extends APickingListener {
 			// toolTipTitle = labelProvider.getSecondaryLabel();
 		}
 
-		System.out.println("over");
+//		System.out.println("over");
 
-		thread = new ToolTipThread(new Point(pick.getPickedPoint().x,
-				pick.getPickedPoint().y));
+		thread = new ToolTipThread();
 		Runnable runnable = new Runnable() {
 
 			@Override
@@ -164,7 +157,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 	@Override
 	public void mouseOut(Pick pick) {
-		System.out.println("out");
+//		System.out.println("out");
 		hideToolTip();
 	}
 
@@ -179,12 +172,12 @@ public class ToolTipPickingListener extends APickingListener {
 	}
 
 	private void hideToolTip() {
-		System.out.println("hide picking");
+//		System.out.println("hide picking");
 		view.getParentComposite().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
-				System.out.println("hide thread");
+//				System.out.println("hide thread");
 				if (thread != null)
 					thread.hideToolTip();
 			}

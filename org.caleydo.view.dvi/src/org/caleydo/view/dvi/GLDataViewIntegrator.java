@@ -46,6 +46,8 @@ import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.EVAOperation;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
+import org.caleydo.core.data.virtualarray.events.DimensionVAUpdateEvent;
+import org.caleydo.core.data.virtualarray.events.RecordVAUpdateEvent;
 import org.caleydo.core.data.virtualarray.group.Group;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.MinSizeAppliedEvent;
@@ -88,11 +90,13 @@ import org.caleydo.view.dvi.listener.ApplySpecificGraphLayoutEventListener;
 import org.caleydo.view.dvi.listener.CreateViewFromDataContainerEventListener;
 import org.caleydo.view.dvi.listener.DataContainersCangedListener;
 import org.caleydo.view.dvi.listener.DimensionGroupsChangedEventListener;
+import org.caleydo.view.dvi.listener.DimensionVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.GLDVIKeyListener;
 import org.caleydo.view.dvi.listener.MinSizeAppliedEventListener;
 import org.caleydo.view.dvi.listener.NewDataDomainEventListener;
 import org.caleydo.view.dvi.listener.NewViewEventListener;
 import org.caleydo.view.dvi.listener.OpenViewEventListener;
+import org.caleydo.view.dvi.listener.RecordVAUpdateEventListener;
 import org.caleydo.view.dvi.listener.ShowDataConnectionsEventListener;
 import org.caleydo.view.dvi.listener.ViewClosedEventListener;
 import org.caleydo.view.dvi.node.ADataNode;
@@ -155,6 +159,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private ApplySpecificGraphLayoutEventListener applySpecificGraphLayoutEventListener;
 	private MinSizeAppliedEventListener minSizeAppliedEventListener;
 	private ShowDataConnectionsEventListener showDataConnectionsEventListener;
+	private RecordVAUpdateEventListener recordVAUpdateEventListener;
+	private DimensionVAUpdateEventListener dimensionVAUpdateEventListener;
 
 	private IDVINode currentMouseOverNode;
 
@@ -624,6 +630,16 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		showDataConnectionsEventListener.setHandler(this);
 		eventPublisher.addListener(ShowDataConnectionsEvent.class,
 				showDataConnectionsEventListener);
+		
+		recordVAUpdateEventListener = new RecordVAUpdateEventListener();
+		recordVAUpdateEventListener.setHandler(this);
+		eventPublisher.addListener(RecordVAUpdateEvent.class,
+				recordVAUpdateEventListener);
+		
+		dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
+		dimensionVAUpdateEventListener.setHandler(this);
+		eventPublisher.addListener(DimensionVAUpdateEvent.class,
+				dimensionVAUpdateEventListener);
 	}
 
 	@Override
@@ -683,6 +699,16 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		if (showDataConnectionsEventListener != null) {
 			eventPublisher.removeListener(showDataConnectionsEventListener);
 			showDataConnectionsEventListener = null;
+		}
+		
+		if (recordVAUpdateEventListener != null) {
+			eventPublisher.removeListener(recordVAUpdateEventListener);
+			recordVAUpdateEventListener = null;
+		}
+		
+		if (dimensionVAUpdateEventListener != null) {
+			eventPublisher.removeListener(dimensionVAUpdateEventListener);
+			dimensionVAUpdateEventListener = null;
 		}
 	}
 
