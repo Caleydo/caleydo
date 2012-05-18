@@ -52,7 +52,7 @@ import org.caleydo.view.stratomex.brick.viewcreation.PathwayCreator;
 /**
  * Configurer for bricks to display pathway data.
  * 
- * @author Partl
+ * @author Christian Partl
  * 
  */
 public class PathwayDataConfigurer implements IBrickConfigurer {
@@ -225,14 +225,6 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		else
 			throw new IllegalStateException(
 					"Not implemented yet for multiple pathways in a single dim group");
-		// int numPathways = ((PathwayDataContainer) brick.getDimensionGroup()
-		// .getDataContainer()).getPathways().size();
-
-		// if (numPathways > 1)
-		// label = "Pathways: " + numPathways;
-		// else
-		// label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-		// .getDataContainer()).getPathways().get(0).getTitle();
 
 		brick.setLabel(label, false);
 

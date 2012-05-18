@@ -226,16 +226,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_VIEW,
 				kaplanMeierRenderer);
 
-		// int numPathways = ((PathwayDimensionGroupData)
-		// brick.getDimensionGroup()
-		// .getDataContainer()).getPathways().size();
-		//
 		String label = "TODO";
-		// if (numPathways > 1)
-		// label = "Pathways: " + numPathways;
-		// else
-		// label = ((PathwayDimensionGroupData) brick.getDimensionGroup()
-		// .getDataContainer()).getPathways().get(0).getTitle();
 
 		brick.setLabel(label, true);
 
@@ -252,19 +243,6 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		// FIXME this is not really a comapct view
 		containedViewRenderers.put(EContainedViewType.KAPLAN_MEIER_SUMMARY_COMPACT,
 				kaplanMeierSummaryRenderer);
-
-		// PathwayDataContainer brickData = (PathwayDataContainer) brick
-		// .getDataContainer();
-		// if (brickData.getPathway() != null) {
-		//
-		// LayoutRenderer compactPathwayRenderer = new
-		// CompactPathwayRenderer(brick,
-		// brick.getDataContainer().getLabel(), PickingType.BRICK.name(),
-		// brick.getID(), brick.getTextureManager(), texture);
-		//
-		// containedViewRenderers.put(EContainedViewType.PATHWAY_VIEW_COMPACT,
-		// compactPathwayRenderer);
-		// }
 
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);

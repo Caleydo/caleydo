@@ -840,7 +840,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				if (dimensionGroup.getDataContainer() == dataContainer) {
 
-					if (dataDomain instanceof GeneticDataDomain) {
+					if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
 						contextMenuCreator
 								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
 										dimensionGroup.getDataContainer(), dimensionGroup
