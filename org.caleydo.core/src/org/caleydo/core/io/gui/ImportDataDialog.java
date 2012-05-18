@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.util.UUID;
@@ -115,6 +114,8 @@ public class ImportDataDialog
 
 	private String mathFilterMode = "Log2";
 
+	private ArrayList<IDCategory> allRegisteredIDCategories = new ArrayList<IDCategory>();
+
 	private IDCategory recordIDCategory;
 
 	private IDCategory dimensionIDCategory;
@@ -145,7 +146,8 @@ public class ImportDataDialog
 	protected void okPressed() {
 
 		if (txtFileName.getText().isEmpty()) {
-			MessageDialog.openError(new Shell(), "Invalid filename", "Please specify a file to load");
+			MessageDialog.openError(new Shell(), "Invalid filename",
+					"Please specify a file to load");
 			return;
 		}
 
@@ -261,6 +263,9 @@ public class ImportDataDialog
 			}
 		});
 
+		allRegisteredIDCategories.clear();
+		allRegisteredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
+
 		createRowIDCategoryGroup();
 		createRecordIDTypeGroup();
 		createColumnIDCategoryGroup();
@@ -338,9 +343,6 @@ public class ImportDataDialog
 		recordIDCategoryGroup.setLayout(new RowLayout());
 		recordIDCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
 
-		Collection<IDCategory> allRegisteredIDCategories = IDCategory
-				.getAllRegisteredIDCategories();
-
 		int index = 0;
 		for (IDCategory idCategory : allRegisteredIDCategories) {
 
@@ -368,9 +370,6 @@ public class ImportDataDialog
 		dimensionIDCategoryGroup.setText("Column ID category");
 		dimensionIDCategoryGroup.setLayout(new RowLayout());
 		dimensionIDCategoryCombo = new Combo(dimensionIDCategoryGroup, SWT.DROP_DOWN);
-
-		Collection<IDCategory> allRegisteredIDCategories = IDCategory
-				.getAllRegisteredIDCategories();
 
 		int index = 0;
 		for (IDCategory idCategory : allRegisteredIDCategories) {
@@ -450,7 +449,7 @@ public class ImportDataDialog
 			if (!idType.isInternalType())
 				dimensionIDTypes.add(idType);
 		}
-		
+
 		String[] idTypesAsString = new String[dimensionIDTypes.size()];
 		int index = 0;
 		for (IDType idType : dimensionIDTypes) {
@@ -902,12 +901,12 @@ public class ImportDataDialog
 			// for REFSEQ_MRNA we ignore the .1, etc.
 			rowIDSpecification.setSubStringExpression("\\.");
 		}
-		
+
 		IDSpecification columnIDSpecification = new IDSpecification();
 		IDType columnIDType = dimensionIDTypes.get(dimensionIDCombo.getSelectionIndex());
 		columnIDSpecification.setIdType(columnIDType.toString());
 		columnIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
-		
+
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 		dataSetDescription.setMathFilterMode(mathFilterMode);
 		dataSetDescription.setDataHomogeneous(buttonHomogeneous.getSelection());
@@ -1003,9 +1002,6 @@ public class ImportDataDialog
 		int maxCorrectElements = 0;
 		IDType mostProbableIDType = null;
 
-		Collection<IDCategory> allRegisteredIDCategories = IDCategory
-				.getAllRegisteredIDCategories();
-
 		for (IDCategory idCategory : allRegisteredIDCategories) {
 
 			recordIDTypes = new ArrayList<IDType>();
@@ -1052,22 +1048,7 @@ public class ImportDataDialog
 
 				if (currentCorrectElements >= idList.size()) {
 
-					IDCategory[] idCategories = new IDCategory[0];
-					idCategories = allRegisteredIDCategories.toArray(idCategories);
-					for (int itemIndex = 0; itemIndex < allRegisteredIDCategories.size(); itemIndex++) {
-						if (idCategories[itemIndex].equals(mostProbableIDType.getIDCategory())) {
-							recordIDCategoryCombo.select(itemIndex);
-							recordIDCategory = mostProbableIDType.getIDCategory();
-
-							break;
-						}
-					}
-
-					fillRecordIDTypeCombo();
-					recordIDCombo.select(recordIDTypes.indexOf(idType));
-
-					TableColumn idColumn = previewTable.getColumn(1);
-					idColumn.setText(idType.getTypeName());
+					setMostProbableRecordIDType(mostProbableIDType);
 
 					return;
 				}
@@ -1079,20 +1060,38 @@ public class ImportDataDialog
 
 		}
 
-		IDCategory[] idCategories = new IDCategory[0];
-		idCategories = allRegisteredIDCategories.toArray(idCategories);
+		setMostProbableRecordIDType(mostProbableIDType);
+	}
+
+	private void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
+
 		for (int itemIndex = 0; itemIndex < allRegisteredIDCategories.size(); itemIndex++) {
-			if (idCategories[itemIndex] == mostProbableIDType.getIDCategory()) {
-				recordIDCategory = mostProbableIDType.getIDCategory();
+			if (allRegisteredIDCategories.get(itemIndex) == mostProbableRecordIDType
+					.getIDCategory()) {
 				recordIDCategoryCombo.select(itemIndex);
+				recordIDCategory = mostProbableRecordIDType.getIDCategory();
+
+				// If a genetic ID type is detected for the rows,
+				// then SAMPLE is chosen for the columns
+				if (recordIDCategory == IDCategory.getIDCategory("GENE")) {
+					dimensionIDCategory = IDCategory.getIDCategory("SAMPLE");
+					dimensionIDCategoryCombo.select(allRegisteredIDCategories
+							.indexOf(dimensionIDCategory));
+
+					fillDimensionIDTypeCombo();
+					
+					dimensionIDCombo.select(dimensionIDTypes.indexOf(IDType
+							.getIDType("SAMPLE")));
+				}
+
 				break;
 			}
 		}
 
 		fillRecordIDTypeCombo();
-		recordIDCombo.select(recordIDTypes.indexOf(mostProbableIDType));
+		recordIDCombo.select(recordIDTypes.indexOf(mostProbableRecordIDType));
 
 		TableColumn idColumn = previewTable.getColumn(1);
-		idColumn.setText(mostProbableIDType.getTypeName());
+		idColumn.setText(mostProbableRecordIDType.getTypeName());
 	}
 }
