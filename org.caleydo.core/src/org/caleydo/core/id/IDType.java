@@ -105,12 +105,9 @@ public class IDType {
 	 * registered and the new one match, and if they do, the previously
 	 * registered type is returned. Else an exception is thrown.
 	 * 
-	 * @param typeName
-	 *            see {@link #typeName}
-	 * @param idCategory
-	 *            see {@link #idCategory}
-	 * @param columnType
-	 *            see {@link #columnType}
+	 * @param typeName see {@link #typeName}
+	 * @param idCategory see {@link #idCategory}
+	 * @param columnType see {@link #columnType}
 	 * @return the created ID Type
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory,
@@ -127,11 +124,12 @@ public class IDType {
 						+ ", Category: " + idCategory + ", ColumnType: " + columnType
 						+ "\n but was already registered with conflicting parameters. \n"
 						+ "Previously registered type: " + idType + ", Category: "
-						+ idType.getIDCategory() + ", ColumnType: "
-						+ idType.getColumnType());
-		} else {
+						+ idType.getIDCategory() + ", ColumnType: " + idType.getColumnType());
+		}
+		else {
 			idType = new IDType(typeName, idCategory, columnType);
 			registeredTypes.put(typeName, idType);
+			idCategory.addIDType(idType);
 			Logger.log(new Status(Status.INFO, "IDType", "Registering IDType " + typeName));
 		}
 		return idType;
@@ -140,8 +138,7 @@ public class IDType {
 	/**
 	 * Unregister an IDType. Checks whether the IDType is registered.
 	 * 
-	 * @param idType
-	 *            see {@link #idType}
+	 * @param idType see {@link #idType}
 	 */
 	public static void unregisterType(IDType idType) {
 		if (idType == null)
@@ -151,7 +148,9 @@ public class IDType {
 					+ idType.getTypeName()));
 			registeredTypes.remove(idType.getTypeName());
 			idType.setTypeName("INVALID");
-		} else {
+			idType.getIDCategory().removeIDType(idType);
+		}
+		else {
 			Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType "
 					+ idType.getTypeName() + " because it does not exist."));
 		}
@@ -177,8 +176,7 @@ public class IDType {
 	}
 
 	/**
-	 * @param typeName
-	 *            setter, see {@link #typeName}
+	 * @param typeName setter, see {@link #typeName}
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
@@ -199,8 +197,7 @@ public class IDType {
 	}
 
 	/**
-	 * @param isInternalType
-	 *            setter, see {@link #isInternalType}
+	 * @param isInternalType setter, see {@link #isInternalType}
 	 */
 	public void setInternalType(boolean isInternalType) {
 		this.isInternalType = isInternalType;

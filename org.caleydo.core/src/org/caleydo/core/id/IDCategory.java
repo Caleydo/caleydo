@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.id;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import org.caleydo.core.data.selection.SelectionManager;
@@ -128,7 +129,12 @@ public class IDCategory {
 	 * The id type that should be used if an ID from this category should be
 	 * printed human readable
 	 */
-	protected IDType humanReadableIDType;
+	private IDType humanReadableIDType;
+
+	/**
+	 * All registered IDTypes for this category.
+	 */
+	private ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
 	/** Private constructor, created through the static insances */
 	private IDCategory(String categoryName) {
@@ -184,5 +190,32 @@ public class IDCategory {
 	 */
 	public IDType getHumanReadableIDType() {
 		return humanReadableIDType;
+	}
+
+	/**
+	 * Add an ID type to the category. 
+	 * 
+	 * @param idType the IDType to add
+	 */
+	public void addIDType(IDType idType) {
+		idTypes.add(idType);
+	}
+
+	/**
+	 * Remove an ID type from the category. 
+	 * 
+	 * @param idType the IDType to remove
+	 */
+	public void removeIDType(IDType idType) {
+		idTypes.remove(idType);
+	}
+	
+	/**
+	 * Returns all ID types that are associated to this category.
+	 * 
+	 * @return the idTypes, see {@link #idTypes}
+	 */
+	public ArrayList<IDType> getIdTypes() {
+		return idTypes;
 	}
 }

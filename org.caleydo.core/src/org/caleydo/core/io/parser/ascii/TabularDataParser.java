@@ -124,11 +124,11 @@ public class TabularDataParser extends ATextParser {
 		if (!dataDomain.getDataSetDescription().isTransposeMatrix()) {
 			columnIDMappingManager = dataDomain.getDimensionIDMappingManager();
 			columnIDType = dataDomain.getDimensionIDType();
-			hrColumnIDType = dataDomain.getHumanReadableDimensionIDType();
+			hrColumnIDType = columnIDType.getIDCategory().getHumanReadableIDType();
 		} else {
 			columnIDMappingManager = dataDomain.getRecordIDMappingManager();
 			columnIDType = dataDomain.getRecordIDType();
-			hrColumnIDType = dataDomain.getHumanReadableRecordIDType();
+			hrColumnIDType = columnIDType.getIDCategory().getHumanReadableIDType();
 		}
 
 		MappingType mappingType = columnIDMappingManager.createMap(columnIDType,

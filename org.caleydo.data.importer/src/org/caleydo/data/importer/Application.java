@@ -217,7 +217,6 @@ public class Application implements IApplication {
 
 			recordIDType = dataSetDescription.getRowIDSpecification().getIdType();
 			recordIDCategory = dataSetDescription.getRowIDSpecification().getIdCategory();
-
 		}
 
 		if (dimensionIDCategory == null)

@@ -38,9 +38,11 @@ public class GeneticIDMappingCreator {
 		String fileName = "data/genome/mapping/david/"
 				+ GeneralManager.get().getBasicInfo().getOrganism();
 
-		IDType.registerType("SAMPLE_INT", sampleIDCategory, EColumnType.INT);
-		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory, EColumnType.STRING);
-		sampleIDCategory.setHumanReadableIDType(sampleID);
+		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory, EColumnType.INT);
+		sampleIntIDType.setInternalType(true);
+		
+		IDType sampleIDType = IDType.registerType("SAMPLE", sampleIDCategory, EColumnType.STRING);
+		sampleIDCategory.setHumanReadableIDType(sampleIDType);
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();
 

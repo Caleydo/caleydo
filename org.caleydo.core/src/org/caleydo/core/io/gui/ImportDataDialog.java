@@ -71,7 +71,6 @@ import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
-import org.eclipse.ui.part.EditorInputTransfer.EditorInputData;
 
 /**
  * File dialog for opening raw text data files.
@@ -145,6 +144,23 @@ public class ImportDataDialog
 	@Override
 	protected void okPressed() {
 
+		if (txtFileName.getText().isEmpty()) {
+			MessageDialog.openError(new Shell(), "Invalid filename", "Please specify a file to load");
+			return;
+		}
+
+		if (recordIDCombo.getSelectionIndex() == -1) {
+			MessageDialog.openError(new Shell(), "Invalid row ID type",
+					"Please select the ID type of the rows");
+			return;
+		}
+
+		if (dimensionIDCombo.getSelectionIndex() == -1) {
+			MessageDialog.openError(new Shell(), "Invalid column ID type",
+					"Please select the ID type of the columns");
+			return;
+		}
+
 		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 				.createDataDomain("org.caleydo.datadomain.genetic");
 
@@ -164,32 +180,32 @@ public class ImportDataDialog
 		boolean success = readDimensionDefinition();
 		if (success) {
 			DataTableUtils.loadData(dataDomain, dataSetDescription, true, true);
-		}
 
-		// Open default start view for the newly created data domain
-		try {
+			// Open default start view for the newly created data domain
+			try {
 
-			String secondaryID = UUID.randomUUID().toString();
-			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
-			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
-			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
+				String secondaryID = UUID.randomUUID().toString();
+				RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
+				rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
+				RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
 
-			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-				PlatformUI
-						.getWorkbench()
-						.getActiveWorkbenchWindow()
-						.getActivePage()
-						.showView(dataDomain.getDefaultStartViewType(), secondaryID,
-								IWorkbenchPage.VIEW_ACTIVATE);
+				if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
+					PlatformUI
+							.getWorkbench()
+							.getActiveWorkbenchWindow()
+							.getActivePage()
+							.showView(dataDomain.getDefaultStartViewType(), secondaryID,
+									IWorkbenchPage.VIEW_ACTIVATE);
 
+				}
 			}
-		}
-		catch (PartInitException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+			catch (PartInitException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 
-		super.okPressed();
+			super.okPressed();
+		}
 	}
 
 	@Override
@@ -399,8 +415,7 @@ public class ImportDataDialog
 	}
 
 	private void fillRecordIDTypeCombo() {
-		HashSet<IDType> tempIDTypes = IDMappingManagerRegistry.get()
-				.getIDMappingManager(recordIDCategory).getIDTypes();
+		ArrayList<IDType> tempIDTypes = recordIDCategory.getIdTypes();
 
 		recordIDTypes.clear();
 		for (IDType idType : tempIDTypes) {
@@ -428,15 +443,14 @@ public class ImportDataDialog
 	}
 
 	private void fillDimensionIDTypeCombo() {
-		HashSet<IDType> tempIDTypes = IDMappingManagerRegistry.get()
-				.getIDMappingManager(dimensionIDCategory).getIDTypes();
+		ArrayList<IDType> tempIDTypes = dimensionIDCategory.getIdTypes();
 
 		dimensionIDTypes.clear();
 		for (IDType idType : tempIDTypes) {
 			if (!idType.isInternalType())
 				dimensionIDTypes.add(idType);
 		}
-
+		
 		String[] idTypesAsString = new String[dimensionIDTypes.size()];
 		int index = 0;
 		for (IDType idType : dimensionIDTypes) {
@@ -447,13 +461,6 @@ public class ImportDataDialog
 		dimensionIDCombo.setItems(idTypesAsString);
 		dimensionIDCombo.setEnabled(true);
 		dimensionIDCombo.select(0);
-		// dimensionIDCombo.addSelectionListener(new SelectionAdapter() {
-		// @Override
-		// public void widgetSelected(SelectionEvent e) {
-		// TableColumn idColumn = previewTable.getColumn(1);
-		// idColumn.setText(dimensionIDCombo.getText());
-		// }
-		// });
 	}
 
 	private void createDelimiterGroup() {
@@ -890,15 +897,18 @@ public class ImportDataDialog
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = recordIDTypes.get(recordIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
-
+		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
 		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
-			// for REFSEQ_MRNA we ignor the .1, etc.
+			// for REFSEQ_MRNA we ignore the .1, etc.
 			rowIDSpecification.setSubStringExpression("\\.");
 		}
+		
+		IDSpecification columnIDSpecification = new IDSpecification();
+		IDType columnIDType = dimensionIDTypes.get(dimensionIDCombo.getSelectionIndex());
+		columnIDSpecification.setIdType(columnIDType.toString());
+		columnIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
+		
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
-		// else
-		// dataSetDescripton.setFileIDType(dataDomain.getHumanReadableRecordIDType());
-
 		dataSetDescription.setMathFilterMode(mathFilterMode);
 		dataSetDescription.setDataHomogeneous(buttonHomogeneous.getSelection());
 		dataSetDescription.setTransposeMatrix(buttonSwapRowsWithColumns.getSelection());
@@ -967,11 +977,6 @@ public class ImportDataDialog
 		dataSetDescription.setParsingPattern(inputPattern);
 		dataSetDescription.setDataSourcePath(txtFileName.getText());
 		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
-
-		if (dataSetDescription.getDataSourcePath().equals("")) {
-			MessageDialog.openError(new Shell(), "Invalid filename", "Invalid filename");
-			return false;
-		}
 
 		return true;
 	}

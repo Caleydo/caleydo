@@ -166,8 +166,6 @@ public class DataTableUtils {
 				rowTargetIDType, "\t", rowTargetIDType.getIDCategory(), false, true, false,
 				null, null);
 
-		
-
 		// --------- data loading ---------------
 
 		TabularDataParser parser = new TabularDataParser(dataDomain, dataSetDescription);
