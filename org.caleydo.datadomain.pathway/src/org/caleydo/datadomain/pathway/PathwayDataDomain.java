@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -27,7 +27,6 @@ import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
@@ -48,7 +47,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayManager;
  */
 @XmlType
 @XmlRootElement
-public class PathwayDataDomain extends ADataDomain {
+public class PathwayDataDomain
+	extends ADataDomain {
 
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.pathway";
 
@@ -113,27 +113,15 @@ public class PathwayDataDomain extends ADataDomain {
 	@Override
 	public void run() {
 
-		String pathwayDataSources = GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
+		PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
+				PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
 
-		dataSetDescription.setDataSetName(pathwayDataSources);
+		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 
-		if (pathwayDataSources.contains(PathwayDatabaseType.BIOCARTA.getName())) {
+		pathwayDatabase = PathwayManager.get().createPathwayDatabase(PathwayDatabaseType.KEGG,
+				"data/xml/", "data/images/", "");
 
-			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
-					PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/",
-					"data/html");
-
-			PathwayManager.get().loadPathwaysByType(pathwayDatabase);
-		}
-
-		if (pathwayDataSources.contains(PathwayDatabaseType.KEGG.getName())) {
-
-			PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
-					PathwayDatabaseType.KEGG, "data/xml/", "data/images/", "");
-
-			PathwayManager.get().loadPathwaysByType(pathwayDatabase);
-		}
+		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 
 		PathwayManager.get().notifyPathwayLoadingFinished(true);
 

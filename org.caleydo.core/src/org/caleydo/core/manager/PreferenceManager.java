@@ -141,9 +141,7 @@ public class PreferenceManager {
 
 		store.setDefault(PreferenceConstants.VERSION, GeneralManager.VERSION);
 		store.setDefault(PreferenceConstants.FIRST_START, true);
-		store.setDefault(PreferenceConstants.PATHWAY_DATA_OK, "");
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
-		store.setDefault(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES, "KEGG;BioCarta");
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);
 		store.setDefault(PreferenceConstants.BROWSER_QUERY_DATABASE, "GeneCards");

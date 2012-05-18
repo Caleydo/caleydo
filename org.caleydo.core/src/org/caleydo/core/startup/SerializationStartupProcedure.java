@@ -81,8 +81,6 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		this.appInitData = appInitData;
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
 
-		// FIXME: remove when TCGA data sets can store the pathway data domain
-		appInitData.setLoadPathways(true);
 
 		if (loadSampleProject) {
 			serializationDataList = loader

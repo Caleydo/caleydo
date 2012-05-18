@@ -20,7 +20,6 @@
 package org.caleydo.core.startup;
 
 import java.util.List;
-import org.caleydo.core.gui.preferences.PreferenceConstants;
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.specialized.Organism;
@@ -54,17 +53,10 @@ public class GeneticGUIStartupProcedure
 	public void init(ApplicationInitData appInitData) {
 
 		if (loadSampleData) {
-			appInitData.setLoadPathways(true);
-
-			GeneralManager
-					.get()
-					.getPreferenceStore()
-					.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
-							"KEGG;BioCarta");
 
 			GeneralManager.get().getBasicInfo().setOrganism(Organism.HOMO_SAPIENS);
 		}
-		
+
 		// Start the genetic plugin bundle to trigger mapping loading
 		try {
 			Bundle bundle = Platform.getBundle("org.caleydo.datadomain.genetic");
@@ -88,8 +80,7 @@ public class GeneticGUIStartupProcedure
 					StartupProcessor.get().getDisplay().getActiveShell(),
 					REAL_DATA_SAMPLE_FILE);
 		else
-			dialog = new ImportDataDialog(
-					StartupProcessor.get().getDisplay().getActiveShell());
+			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell());
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();

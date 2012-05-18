@@ -72,9 +72,6 @@ public class StartupProcessor {
 		if (runConfigParameters != null) {
 			for (String element : runConfigParameters) {
 
-				if (element.equals("load_pathways")) {
-					appInitData.setLoadPathways(true);
-				}
 				// else if (element.startsWith("plexclient")) {
 				// if (xmlInputFile != null && !xmlInputFile.isEmpty()) {
 				// throw new IllegalArgumentException(

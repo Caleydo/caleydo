@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
+import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.serialize.SerializationManager;
 import org.eclipse.core.runtime.Plugin;
 import org.osgi.framework.BundleContext;
@@ -56,6 +57,9 @@ public class Activator extends Plugin {
 		plugin = this;
 
 		GeneticIDMappingCreator.createIDTypesAndMapping();
+		
+		// Trigger pathway loading
+		DataDomainManager.get().createDataDomain("org.caleydo.datadomain.pathway");
 		
 		SerializationManager.get().registerSerializableTypes(GeneticDataDomain.class);
 	}

@@ -27,10 +27,6 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.specialized.Organism;
 import org.caleydo.core.util.link.LinkHandler;
-import org.eclipse.core.runtime.IExtension;
-import org.eclipse.core.runtime.IExtensionPoint;
-import org.eclipse.core.runtime.IExtensionRegistry;
-import org.eclipse.core.runtime.Platform;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.wizard.Wizard;
 import org.eclipse.jface.wizard.WizardPage;
@@ -59,7 +55,8 @@ import org.eclipse.swt.widgets.Text;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ChooseProjectTypePage extends WizardPage {
+public class ChooseProjectTypePage
+	extends WizardPage {
 
 	public static final String PAGE_NAME = "Project Wizard";
 
@@ -77,7 +74,8 @@ public class ChooseProjectTypePage extends WizardPage {
 	 * this enum specifies the options we have.
 	 */
 	public enum EProjectLoadType {
-		RECENT, SPECIFIED
+		RECENT,
+		SPECIFIED
 	}
 
 	private ProjectMode projectMode = ProjectMode.SAMPLE_PROJECT;
@@ -109,7 +107,6 @@ public class ChooseProjectTypePage extends WizardPage {
 	/** text field to enter the file-name to load a project from */
 	private Text projectFileName;
 
-	private Button btnLoadPathwayData;
 	private Button btnSampleProject;
 
 	/**
@@ -118,8 +115,8 @@ public class ChooseProjectTypePage extends WizardPage {
 	public ChooseProjectTypePage() {
 		super(PAGE_NAME, PAGE_NAME, null);
 
-		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass()
-				.getClassLoader().getResource("resources/wizard/wizard.png")));
+		this.setImageDescriptor(ImageDescriptor.createFromURL(this.getClass().getClassLoader()
+				.getResource("resources/wizard/wizard.png")));
 
 		this.setDescription("Which data do you want to analyze?");
 
@@ -130,7 +127,6 @@ public class ChooseProjectTypePage extends WizardPage {
 
 	/*
 	 * (non-Javadoc)
-	 * 
 	 * @see
 	 * org.eclipse.jface.dialogs.IDialogPage#createControl(org.eclipse.swt.widgets
 	 * .Composite)
@@ -158,20 +154,26 @@ public class ChooseProjectTypePage extends WizardPage {
 		// restore the previously selected tab
 		if (projectMode == null || projectMode.equals(ProjectMode.SAMPLE_PROJECT)) {
 			tabFolder.setSelection(0);
-		} else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
+		}
+		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_SAMPLE_DATA)) {
 			tabFolder.setSelection(0);
-		} else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
+		}
+		else if (projectMode.equals(ProjectMode.GENE_EXPRESSION_NEW_DATA)) {
 			tabFolder.setSelection(1);
-		} else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
+		}
+		else if (projectMode.equals(ProjectMode.UNSPECIFIED_NEW_DATA)) {
 			tabFolder.setSelection(2);
-		} else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
+		}
+		else if (projectMode.equals(ProjectMode.LOAD_PROJECT)) {
 			tabFolder.setSelection(3);
-		} else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
+		}
+		else if (projectMode.equals(ProjectMode.COLLABORATION_CLIENT)) {
 			// if we are in release mode we don't have the collab client
 			if (GeneralManager.RELEASE_MODE) {
 				tabFolder.setSelection(0);
 				projectMode = ProjectMode.SAMPLE_PROJECT;
-			} else {
+			}
+			else {
 				tabFolder.setSelection(4);
 			}
 		}
@@ -182,19 +184,24 @@ public class ChooseProjectTypePage extends WizardPage {
 			public void widgetSelected(SelectionEvent e) {
 				if (((TabItem) e.item) == generalDataUseCaseTab) {
 					projectMode = ProjectMode.UNSPECIFIED_NEW_DATA;
-				} else if (((TabItem) e.item) == sampleTab) {
+				}
+				else if (((TabItem) e.item) == sampleTab) {
 					if (btnSampleProject.getSelection())
 						projectMode = ProjectMode.SAMPLE_PROJECT;
 					else
 						projectMode = ProjectMode.GENE_EXPRESSION_SAMPLE_DATA;
-				} else if (((TabItem) e.item) == geneticDataUseCaseTab) {
+				}
+				else if (((TabItem) e.item) == geneticDataUseCaseTab) {
 					projectMode = ProjectMode.GENE_EXPRESSION_NEW_DATA;
-				} else if (((TabItem) e.item) == loadProjectTab) {
+				}
+				else if (((TabItem) e.item) == loadProjectTab) {
 					projectMode = ProjectMode.LOAD_PROJECT;
 
-				} else if (((TabItem) e.item) == collaborationClientTab) {
+				}
+				else if (((TabItem) e.item) == collaborationClientTab) {
 					projectMode = ProjectMode.COLLABORATION_CLIENT;
-				} else
+				}
+				else
 					throw new IllegalStateException("Not implemented!");
 			}
 		});
@@ -354,122 +361,15 @@ public class ChooseProjectTypePage extends WizardPage {
 		});
 
 		// Set organism which was used in last session
-		Organism lastChosenOrganism = Organism
-				.valueOf(GeneralManager.get().getPreferenceStore()
-						.getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
+		Organism lastChosenOrganism = Organism.valueOf(GeneralManager.get()
+				.getPreferenceStore().getString(PreferenceConstants.LAST_CHOSEN_ORGANISM));
 		if (lastChosenOrganism == Organism.HOMO_SAPIENS) {
 			btnOrganismHuman.setSelection(true);
 			organism = Organism.HOMO_SAPIENS;
-		} else {
+		}
+		else {
 			btnOrganismMouse.setSelection(true);
 			organism = Organism.MUS_MUSCULUS;
-		}
-		btnLoadPathwayData = new Button(composite, SWT.CHECK);
-		btnLoadPathwayData.setText("Load pathway data");
-		btnLoadPathwayData.setEnabled(true);
-		btnLoadPathwayData.setLayoutData(gridData);
-		// btnLoadPathwayData.setLayoutData(new GridData(GridData.FILL_BOTH));
-
-		// Set if pathways were loaded in last session
-		String sLastChosenPathwayDataSources = GeneralManager.get().getPreferenceStore()
-				.getString(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES);
-
-		if (sLastChosenPathwayDataSources.isEmpty())
-			btnLoadPathwayData.setSelection(false);
-		else
-			btnLoadPathwayData.setSelection(true);
-
-		final Group groupPathways = new Group(composite, SWT.None);
-		groupPathways.setText("Select pathway database");
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		groupPathways.setLayoutData(gridData);
-		groupPathways.setLayout(new RowLayout(SWT.VERTICAL));
-
-		final Button btnLoadKEGGPathwayData = new Button(groupPathways, SWT.CHECK);
-		btnLoadKEGGPathwayData.setText("KEGG");
-
-		final Button btnLoadBioCartaPathwayData = new Button(groupPathways, SWT.CHECK);
-		btnLoadBioCartaPathwayData.setText("BioCarta");
-
-		// Set pathway databases which was used in last session
-		if (sLastChosenPathwayDataSources.contains("KEGG")) {
-			btnLoadKEGGPathwayData.setSelection(true);
-			btnLoadKEGGPathwayData.setEnabled(true);
-		} else {
-			btnLoadKEGGPathwayData.setSelection(false);
-			bLoadKEGGPathwayData = false;
-		}
-
-		if (sLastChosenPathwayDataSources.contains("BioCarta")) {
-			btnLoadBioCartaPathwayData.setSelection(true);
-			bLoadBioCartaPathwayData = true;
-		} else {
-			btnLoadBioCartaPathwayData.setSelection(false);
-			bLoadBioCartaPathwayData = false;
-		}
-
-		btnLoadKEGGPathwayData.setEnabled(btnLoadPathwayData.getSelection());
-		btnLoadBioCartaPathwayData.setEnabled(btnLoadPathwayData.getSelection());
-
-		btnLoadPathwayData.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				boolean bLoadPathwayData = ((Button) e.widget).getSelection();
-				groupPathways.setEnabled(bLoadPathwayData);
-				btnLoadKEGGPathwayData.setEnabled(bLoadPathwayData);
-				btnLoadBioCartaPathwayData.setEnabled(bLoadPathwayData);
-			}
-		});
-
-		IExtensionRegistry reg = Platform.getExtensionRegistry();
-		IExtension ext = null;
-		IExtensionPoint ep = null;
-		if (reg != null) {
-			ep = reg.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
-			ext = ep.getExtension("org.caleydo.data.pathway.kegg.KEGGPathwayResourceLoader");
-		}
-		if (ext != null) {
-
-			btnLoadKEGGPathwayData.setEnabled(true);
-			bLoadKEGGPathwayData = true;
-			btnLoadKEGGPathwayData.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					bLoadKEGGPathwayData = ((Button) e.widget).getSelection();
-
-					if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
-						btnLoadPathwayData.setSelection(false);
-						btnLoadKEGGPathwayData.setEnabled(false);
-						btnLoadBioCartaPathwayData.setEnabled(false);
-					}
-				}
-			});
-		} else {
-			bLoadKEGGPathwayData = false;
-			btnLoadKEGGPathwayData.setEnabled(false);
-		}
-
-		if (ep != null)
-			ext = ep.getExtension("org.caleydo.data.pathway.biocarta.BioCartaPathwayResourceLoader");
-		if (ext != null) {
-
-			btnLoadBioCartaPathwayData.setEnabled(true);
-			bLoadBioCartaPathwayData = true;
-			btnLoadBioCartaPathwayData.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					bLoadBioCartaPathwayData = ((Button) e.widget).getSelection();
-
-					if (!bLoadKEGGPathwayData && !bLoadBioCartaPathwayData) {
-						btnLoadPathwayData.setSelection(false);
-						btnLoadKEGGPathwayData.setEnabled(false);
-						btnLoadBioCartaPathwayData.setEnabled(false);
-					}
-				}
-			});
-		} else {
-			bLoadBioCartaPathwayData = false;
-			btnLoadBioCartaPathwayData.setEnabled(false);
 		}
 
 		buttonNewProject.addSelectionListener(new SelectionAdapter() {
@@ -546,20 +446,22 @@ public class ChooseProjectTypePage extends WizardPage {
 			projectLoadType = EProjectLoadType.valueOf(GeneralManager.get()
 					.getPreferenceStore()
 					.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE));
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			// this happens when no preference value exists jet (legal
 			// situation) or when the value could not
 			// be matched to the enum
 		}
-		if ((projectLoadType != null && projectLoadType
-				.equals(EProjectLoadType.SPECIFIED)) || !recentProjectFile.exists()) {
+		if ((projectLoadType != null && projectLoadType.equals(EProjectLoadType.SPECIFIED))
+				|| !recentProjectFile.exists()) {
 			recentProject.setEnabled(false);
 			loadProject.setSelection(true);
 
 			projectLoadType = EProjectLoadType.SPECIFIED;
 			projectFileName.setEnabled(true);
 			chooseProjectFile.setEnabled(true);
-		} else {
+		}
+		else {
 			Date date = new Date(recentProjectFile.lastModified());
 			DateFormat dataformat = DateFormat.getDateTimeInstance(DateFormat.FULL,
 					DateFormat.FULL);
@@ -589,10 +491,10 @@ public class ChooseProjectTypePage extends WizardPage {
 				projectLoadType = EProjectLoadType.SPECIFIED;
 				projectFileName.setEnabled(true);
 				chooseProjectFile.setEnabled(true);
-				if (projectFileName.getText() != null
-						&& !projectFileName.getText().isEmpty()) {
+				if (projectFileName.getText() != null && !projectFileName.getText().isEmpty()) {
 					setPageComplete(true);
-				} else {
+				}
+				else {
 					setPageComplete(false);
 				}
 			}
@@ -619,8 +521,7 @@ public class ChooseProjectTypePage extends WizardPage {
 	 * Creates the tab for connecting a client to a already running
 	 * caleydo-server-application to get the use case and basic data from.
 	 * 
-	 * @param tabFolder
-	 *            tab-widget to create the new tab-item in
+	 * @param tabFolder tab-widget to create the new tab-item in
 	 */
 	private void createCollaborationClientTab(TabFolder tabFolder) {
 		collaborationClientTab = new TabItem(tabFolder, SWT.NONE);
@@ -651,14 +552,6 @@ public class ChooseProjectTypePage extends WizardPage {
 
 	public ProjectMode getProjectMode() {
 		return projectMode;
-	}
-
-	public boolean isKEGGPathwayDataLoadingRequested() {
-		return bLoadKEGGPathwayData && btnLoadPathwayData.getSelection();
-	}
-
-	public boolean isBioCartaPathwayLoadingRequested() {
-		return bLoadBioCartaPathwayData && btnLoadPathwayData.getSelection();
 	}
 
 	/**

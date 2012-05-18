@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -67,7 +67,8 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean performFinish() {
-		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).isPageComplete()) {
+		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
+				.isPageComplete()) {
 			ChooseProjectTypePage page = (ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME);
 
 			PreferenceStore prefStore = GeneralManager.get().getPreferenceStore();
@@ -75,17 +76,18 @@ public class CaleydoProjectWizard
 			// ProjectMode previousProjectMode =
 			// ProjectMode.valueOf(prefStore.getString(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE));
 
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism().name());
+			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_ORGANISM, page.getOrganism()
+					.name());
 
 			ProjectMode projectMode = page.getProjectMode();
 			if (projectMode == ProjectMode.LOAD_PROJECT) {
 
-				SerializationStartupProcedure startupProcedure =
-					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
-						ApplicationMode.SERIALIZATION);
+				SerializationStartupProcedure startupProcedure = (SerializationStartupProcedure) StartupProcessor
+						.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
 				EProjectLoadType projectLoadType = page.getProjectLoadType();
 
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE, projectLoadType.name());
+				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_LOAD_TYPE,
+						projectLoadType.name());
 
 				if (projectLoadType.equals(EProjectLoadType.RECENT)) {
 					startupProcedure.setLoadRecentProject(true);
@@ -94,43 +96,26 @@ public class CaleydoProjectWizard
 					startupProcedure.setLoadRecentProject(false);
 					String projectFileName = page.getProjectFileName();
 					startupProcedure.setProjectLocation(page.getProjectFileName());
-					prefStore.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT, projectFileName);
+					prefStore.setValue(PreferenceConstants.LAST_MANUALLY_CHOSEN_PROJECT,
+							projectFileName);
 
 				}
 			}
 			else if (projectMode == ProjectMode.SAMPLE_PROJECT) {
-				SerializationStartupProcedure startupProcedure =
-					(SerializationStartupProcedure) StartupProcessor.get().createStartupProcedure(
-						ApplicationMode.SERIALIZATION);
+				SerializationStartupProcedure startupProcedure = (SerializationStartupProcedure) StartupProcessor
+						.get().createStartupProcedure(ApplicationMode.SERIALIZATION);
 				startupProcedure.loadSampleProject(true);
 
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_SAMPLE_DATA) {
 
-				GeneticGUIStartupProcedure startupProcedure =
-					(GeneticGUIStartupProcedure) StartupProcessor.get().createStartupProcedure(
-						ApplicationMode.GUI);
+				GeneticGUIStartupProcedure startupProcedure = (GeneticGUIStartupProcedure) StartupProcessor
+						.get().createStartupProcedure(ApplicationMode.GUI);
 				startupProcedure.setLoadSampleData(true);
 			}
 			else if (projectMode == ProjectMode.GENE_EXPRESSION_NEW_DATA) {
 
-				boolean loadPathways = false;
-
-				String sNewPathwayDataSources = "";
-				if (page.isKEGGPathwayDataLoadingRequested()) {
-					loadPathways = true;
-					sNewPathwayDataSources += "KEGG" + ";";
-				}
-				if (page.isBioCartaPathwayLoadingRequested()) {
-					loadPathways = true;
-					sNewPathwayDataSources += "BioCarta" + ";";
-				}
-
-				prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PATHWAY_DATA_SOURCES,
-					sNewPathwayDataSources);
-
 				StartupProcessor.get().createStartupProcedure(ApplicationMode.GUI);
-				StartupProcessor.get().getAppInitData().setLoadPathways(loadPathways);
 
 				GeneralManager.get().getBasicInfo().setOrganism(page.getOrganism());
 			}
@@ -151,7 +136,8 @@ public class CaleydoProjectWizard
 				throw new IllegalStateException("Not implemented!");
 			}
 
-			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, projectMode.name());
+			prefStore.setValue(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE,
+					projectMode.name());
 
 			try {
 				prefStore.save();
@@ -175,7 +161,8 @@ public class CaleydoProjectWizard
 
 	@Override
 	public boolean canFinish() {
-		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME)).isPageComplete())
+		if (((ChooseProjectTypePage) getPage(ChooseProjectTypePage.PAGE_NAME))
+				.isPageComplete())
 			return true;
 
 		return false;
