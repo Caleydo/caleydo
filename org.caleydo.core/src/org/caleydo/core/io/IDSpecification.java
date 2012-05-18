@@ -28,27 +28,37 @@ import org.caleydo.core.id.IDType;
 
 /**
  * <p>
- * This class specifies an id type used for resolving relationships in Caleydo.
- * They are typically used in headers of matrix files.
+ * This class specifies an ID category and an ID type used for resolving
+ * relationships in Caleydo. These IDs are typically specified in the headers of
+ * the data matrices files.
  * </p>
  * <p>
- * Multi-dataset relationships and mappings are based on the same definition of
- * the id type. That means, if two datasets containing shared IDs from two
- * different files are loaded, they can be mapped if the respective type is
- * identical.
+ * Multi-dataset relationships and mappings are based on <b>definied
+ * relationships between id types</b> (see {@link #idType} and {@link IDType}).
+ * All ID types that can be <b>resolved to each other belong to the same id
+ * category</b> (see {@link IDSpecification#idCategory} and {@link IDCategory}
+ * ).That means, if two datasets containing shared IDs from two different files
+ * are loaded, they can be mapped if the respective type is identical.
+ * Alternatively, they can also be mapped if they do not have the same ID type
+ * but the same ID category. This, however, requires that a mapping between the
+ * ID types of the category was specified. An example for a mapping based on ID
+ * categories are the genetic ID types defined in caleydo. As all genetic ID
+ * types share the same ID category and a mapping between the ID types is
+ * available, all genetic ID types can be mapped to each other.
  * </p>
  * <p>
- * This class also provides the ability to transform ID Types using regular
- * expressions by defining substrings and replacements.
- * </p>
- * <p>
- * Caleydo provides special types for gene identifiers, i.e. if the rows or
- * columns contain gene identifiers, this needs to be specified using the
+ * Caleydo provides special types for gene identifiers using the ID category
+ * "GENE". That means that if the rows or columns of the data matrix contain
+ * gene identifiers, this needs to be specified using the
  * {@link #isColumnDataTypeGene} resp. the {@link #isRowTypeGene} members.
- * Additionally, the string for {@link #columnType} resp. {@link #rowType} can
- * not be arbitrarily chosen. Caleydo uses the DAVID Bioinformatics Resources
- * (see http://david.abcc.ncifcrf.gov/) for ID Mapping. The supported ID Strings
- * for the respective types are the following:
+ * Additionally, the string for {@link #idType} can not be arbitrarily chosen,
+ * but must be one of those listed below. Also, the ID category is automatically
+ * considered to be "GENE" if this flag is true.
+ * </p>
+ * <p>
+ * Caleydo uses the DAVID Bioinformatics Resources (see
+ * http://david.abcc.ncifcrf.gov/) for ID Mapping. The supported ID Strings for
+ * the respective types are the following:
  * </p>
  * <ul>
  * <li><code>DAVID</code></li>
@@ -60,13 +70,32 @@ import org.caleydo.core.id.IDType;
  * <li><code>BIOCARTA_GENE_ID</code></li>
  * </ul>
  * 
+ * <p>
+ * This IDSpecification also provides the ability to transform ID Types using
+ * regular expressions by defining substrings and replacements (see
+ * {@link #replacementString} and {@link #subStringExpression}.
+ * </p>
+ * 
+ * 
  * @author Alexander Lex
  * 
  */
 public class IDSpecification {
 
 	/**
-	 * The {@link IDCategory},
+	 * <p>
+	 * The category of an ID on which resolution of idTypes is based. If this is
+	 * set, the {@link #idType} is considered a member of this idCategory.
+	 * </p>
+	 * <p>
+	 * This is optional. If it is not set it is assumed that the id type is not
+	 * part of a complex multi-ID type mapping and an idCategory with a name
+	 * identical to the ID type is created.
+	 * </p>
+	 * <p>
+	 * The value of this member is ignored if {@link #isIDTypeGene} is true, in
+	 * which case the ID category is automatically "GENE".
+	 * </p>
 	 */
 	private String idCategory;
 
@@ -91,11 +120,8 @@ public class IDSpecification {
 	 * The {@link IDType} and the denominations are created based on this.
 	 * </p>
 	 * <p>
-	 * This is optional
+	 * This is mandatory.
 	 * </p>
-	 * This is only necessary if the {@link #dataDomainType} is not
-	 * {@link GeneticDataDomain#DATA_DOMAIN_TYPE}
-	 * <p>
 	 */
 	private String idType;
 
@@ -177,7 +203,7 @@ public class IDSpecification {
 	 */
 	public IDSpecification() {
 	}
-	
+
 	/**
 	 * @param idCategory
 	 *            setter, see {@link #idCategory}
