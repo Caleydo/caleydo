@@ -19,8 +19,12 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import java.awt.MouseInfo;
+import java.awt.PointerInfo;
+
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolTip;
 
@@ -32,6 +36,9 @@ import org.eclipse.swt.widgets.ToolTip;
  * 
  */
 public class ToolTipPickingListener extends APickingListener {
+
+	private static final int MOUSE_POSITION_TOOLTIP_SPACING_PIXELS = 20;
+
 	private AGLView view;
 	private ToolTipThread thread;
 
@@ -61,6 +68,12 @@ public class ToolTipPickingListener extends APickingListener {
 	private class ToolTipThread implements Runnable {
 		private ToolTip toolTip;
 		private boolean hideToolTip = false;
+		private Point toolTipPosition;
+
+		public ToolTipThread(Point toolTipPosition) {
+			super();
+			this.toolTipPosition = toolTipPosition;
+		}
 
 		@Override
 		public void run() {
@@ -82,6 +95,10 @@ public class ToolTipPickingListener extends APickingListener {
 			toolTip = new ToolTip(new Shell(), 0);
 			toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
 			toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
+
+			PointerInfo pointerInfo = MouseInfo.getPointerInfo();
+			toolTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
+					+ MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
 			toolTip.setAutoHide(true);
 
 			toolTip.setVisible(true);
@@ -118,24 +135,25 @@ public class ToolTipPickingListener extends APickingListener {
 		// button.
 		// tip.setLocation(10, 10);
 		// tip.setVisible(true);
-		if(labelProvider != null) {
+		if (labelProvider != null) {
 			toolTipMessage = labelProvider.getLabel();
-//			toolTipTitle = labelProvider.getSecondaryLabel();
+			// toolTipTitle = labelProvider.getSecondaryLabel();
 		}
-		
+
 		System.out.println("over");
 
-		thread = new ToolTipThread();
+		thread = new ToolTipThread(new Point(pick.getPickedPoint().x,
+				pick.getPickedPoint().y));
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
-//				try {
-//					Thread.sleep(500);
-					view.getParentComposite().getDisplay().asyncExec(thread);
-//				} catch (InterruptedException e) {
-//					e.printStackTrace();
-//				}
+				// try {
+				// Thread.sleep(500);
+				view.getParentComposite().getDisplay().asyncExec(thread);
+				// } catch (InterruptedException e) {
+				// e.printStackTrace();
+				// }
 			}
 		};
 

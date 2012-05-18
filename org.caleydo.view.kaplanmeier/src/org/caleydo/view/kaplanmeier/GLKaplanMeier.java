@@ -144,7 +144,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		
 		for (Group group : recordVA.getGroupList()) {
 			ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(
-					this, "test");
+					this, group.getLabel());
 			addIDPickingListener(toolTipPickingListener, EPickingType.KM_CURVE.name(),
 					group.getID());
 		}
