@@ -19,13 +19,17 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import java.awt.FlowLayout;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
+import java.awt.SystemColor;
+
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JWindow;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.eclipse.swt.graphics.Point;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.ToolTip;
 
 /**
@@ -59,6 +63,20 @@ public class ToolTipPickingListener extends APickingListener {
 	 */
 	private ILabelProvider labelProvider;
 
+	private class ToolTipp extends JWindow {
+		
+		private static final long serialVersionUID = 1L;
+
+		public ToolTipp(String message, JFrame frame) {
+			super(frame);
+			setLayout(new FlowLayout(FlowLayout.CENTER));
+			getContentPane().add(new JLabel(message));
+			getContentPane().setBackground(SystemColor.info);
+			getContentPane().setFocusable(false);
+			pack();
+		}
+	}
+
 	/**
 	 * Thread that shows the tooltip.
 	 * 
@@ -66,7 +84,8 @@ public class ToolTipPickingListener extends APickingListener {
 	 * 
 	 */
 	private class ToolTipThread implements Runnable {
-		private ToolTip toolTip;
+		private ToolTipp swingTip;
+//		private ToolTip toolTip;
 		private boolean hideToolTip = false;
 
 		@Override
@@ -76,26 +95,37 @@ public class ToolTipPickingListener extends APickingListener {
 
 		public synchronized void hideToolTip() {
 			hideToolTip = true;
-			if (toolTip != null) {
-//				System.out.println("hide method");
-				toolTip.setVisible(false);
+			// if (toolTip != null) {
+			// // System.out.println("hide method");
+			// toolTip.setVisible(false);
+			//
+			// }
+
+			if (swingTip != null) {
+				swingTip.setVisible(false);
 			}
 		}
 
 		private synchronized void createToolTip() {
 			if (hideToolTip)
 				return;
-//			System.out.println("create");
-			toolTip = new ToolTip(new Shell(), 0);
-			toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
-			toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
+
+			// System.out.println("create");
+//			toolTip = new ToolTip(new Shell(), 0);
+//			toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
+//			toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
 
 			PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-			toolTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
-					+ MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
-			toolTip.setAutoHide(true);
+//			toolTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
+//					+ MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
+//			toolTip.setAutoHide(true);
+//
+//			toolTip.setVisible(true);
 
-			toolTip.setVisible(true);
+			swingTip = new ToolTipp(toolTipMessage, new JFrame());
+			swingTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
+					+ MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
+			swingTip.setVisible(true);
 		}
 
 	}
@@ -134,7 +164,7 @@ public class ToolTipPickingListener extends APickingListener {
 			// toolTipTitle = labelProvider.getSecondaryLabel();
 		}
 
-//		System.out.println("over");
+		// System.out.println("over");
 
 		thread = new ToolTipThread();
 		Runnable runnable = new Runnable() {
@@ -157,7 +187,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 	@Override
 	public void mouseOut(Pick pick) {
-//		System.out.println("out");
+		// System.out.println("out");
 		hideToolTip();
 	}
 
@@ -172,12 +202,12 @@ public class ToolTipPickingListener extends APickingListener {
 	}
 
 	private void hideToolTip() {
-//		System.out.println("hide picking");
+		// System.out.println("hide picking");
 		view.getParentComposite().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
-//				System.out.println("hide thread");
+				// System.out.println("hide thread");
 				if (thread != null)
 					thread.hideToolTip();
 			}
