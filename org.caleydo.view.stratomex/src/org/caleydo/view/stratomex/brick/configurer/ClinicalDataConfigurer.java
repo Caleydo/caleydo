@@ -189,7 +189,7 @@ public class ClinicalDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(view, new ViewLabelProvider(
-				view), pickingType.name(), pickingID);
+				layoutTemplate.getBrick()), pickingType.name(), pickingID);
 		captionLayout.setRenderer(captionRenderer);
 
 		return captionLayout;

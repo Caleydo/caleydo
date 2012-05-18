@@ -127,7 +127,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 		captionLayout.setFrameColor(0, 0, 1, 1);
 
 		LabelRenderer captionRenderer = new LabelRenderer(layoutTemplate
-				.getDimensionGroup().getStratomexView(), new ViewLabelProvider(
+				.getDimensionGroup(), new ViewLabelProvider(
 				layoutTemplate.getBrick()), EPickingType.DIMENSION_GROUP.name(),
 				layoutTemplate.getDimensionGroup().getID());
 		captionLayout.setRenderer(captionRenderer);

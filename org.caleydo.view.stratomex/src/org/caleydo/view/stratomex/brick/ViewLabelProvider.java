@@ -29,8 +29,9 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * Adapter for views to provide their labels.
  * 
  * @author Christian
- * 
+ * @deprecated - what's the point of this class? 
  */
+@Deprecated
 public class ViewLabelProvider implements ILabelProvider {
 
 	private AGLView view;
