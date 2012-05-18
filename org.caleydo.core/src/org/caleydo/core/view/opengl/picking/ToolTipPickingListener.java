@@ -19,10 +19,10 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.picking;
 
+import java.awt.Color;
 import java.awt.FlowLayout;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
-import java.awt.SystemColor;
 
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -30,7 +30,6 @@ import javax.swing.JWindow;
 
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.AGLView;
-import org.eclipse.swt.widgets.ToolTip;
 
 /**
  * The ToolTipPickingListener automatically displays a tooltip with specified
@@ -64,15 +63,21 @@ public class ToolTipPickingListener extends APickingListener {
 	private ILabelProvider labelProvider;
 
 	private class ToolTipp extends JWindow {
-		
+
 		private static final long serialVersionUID = 1L;
 
 		public ToolTipp(String message, JFrame frame) {
 			super(frame);
 			setLayout(new FlowLayout(FlowLayout.CENTER));
-			getContentPane().add(new JLabel(message));
-			getContentPane().setBackground(SystemColor.info);
+//			JToolTip swingToolTip = new JToolTip();
+			JLabel label = new JLabel(message);
+//			label.setBackground(SystemColor.info);
+//			swingToolTip.setTipText(message);
+			// getContentPane().add(swingToolTip);
+			getContentPane().add(label);
+			 getContentPane().setBackground(new Color(225,225,225));
 			getContentPane().setFocusable(false);
+
 			pack();
 		}
 	}
@@ -85,7 +90,7 @@ public class ToolTipPickingListener extends APickingListener {
 	 */
 	private class ToolTipThread implements Runnable {
 		private ToolTipp swingTip;
-//		private ToolTip toolTip;
+		// private ToolTip toolTip;
 		private boolean hideToolTip = false;
 
 		@Override
@@ -111,16 +116,17 @@ public class ToolTipPickingListener extends APickingListener {
 				return;
 
 			// System.out.println("create");
-//			toolTip = new ToolTip(new Shell(), 0);
-//			toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
-//			toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
+			// toolTip = new ToolTip(new Shell(), 0);
+			// toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
+			// toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
 
 			PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-//			toolTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
-//					+ MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
-//			toolTip.setAutoHide(true);
-//
-//			toolTip.setVisible(true);
+			// toolTip.setLocation(pointerInfo.getLocation().x,
+			// pointerInfo.getLocation().y
+			// + MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
+			// toolTip.setAutoHide(true);
+			//
+			// toolTip.setVisible(true);
 
 			swingTip = new ToolTipp(toolTipMessage, new JFrame());
 			swingTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
