@@ -102,8 +102,8 @@ public class TreePorter {
 			treeFileReader = GeneralManager.get().getResourceLoader()
 					.getResource(fileName);
 		} catch (FileNotFoundException fnfe) {
-			Logger.log(new Status(Status.INFO, "TreePorter", "No tree available for "
-					+ fileName));
+//			Logger.log(new Status(Status.INFO, "TreePorter", "No tree available for "
+//					+ fileName));
 			return null;
 		}
 		treePorter = (TreePorter) unmarshaller.unmarshal(treeFileReader);
