@@ -271,7 +271,9 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		// toolBar.append(lockResizingButtonLayout);
 		// headerBarElements.add(spacingLayoutX);
 
-		brick.addIDPickingListener(new APickingListener() {
+		brick.removeAllTypePickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON
+				.name());
+		brick.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
@@ -303,16 +305,16 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 						// to avoid empty bricks
 						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
 								.getVirtualArray());
-						
+
 						data.getDataDomain().getTable()
-								.registerRecordPerspective(newRecordPerspective);						
+								.registerRecordPerspective(newRecordPerspective);
 						data.setRecordPerspective(newRecordPerspective);
 						clusterState
 								.setOptionalTargetRecordPerspective(newRecordPerspective);
 					}
 				});
 			}
-		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID);
+		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
 
 		return toolBar;
 	}
@@ -320,6 +322,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	protected void registerPickingListeners() {
 
+//		brick.removeAllIDPickingListeners(pickingType, pickedObjectID)
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override

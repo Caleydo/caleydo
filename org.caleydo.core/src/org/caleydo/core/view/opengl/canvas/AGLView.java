@@ -580,12 +580,12 @@ public abstract class AGLView
 	 * @param gl
 	 */
 	protected final void checkForHits(final GL2 gl) {
-
+		contextMenuCreator.clear();
 		Set<String> hitTypes = pickingManager.getHitTypes(uniqueID);
 		if (hitTypes == null)
 			return;
 
-		contextMenuCreator.clear();
+	
 
 		for (String pickingType : hitTypes) {
 
