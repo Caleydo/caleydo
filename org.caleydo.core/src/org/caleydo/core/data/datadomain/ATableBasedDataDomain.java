@@ -237,7 +237,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		dimensionIDCategory = IDCategory
 				.registerCategory(configuration.dimensionIDCategory);
 
-		// FIXME: for genetic this will be already registered and set as human
+		// For genetic this will be already registered and set as human
 		// readable
 		IDType humanReadableRecordIDType = IDType.registerType(
 				configuration.humanReadableRecordIDType, recordIDCategory,

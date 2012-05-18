@@ -41,8 +41,8 @@ public class GeneticIDMappingCreator {
 		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory, EColumnType.INT);
 		sampleIntIDType.setInternalType(true);
 		
-		IDType sampleIDType = IDType.registerType("SAMPLE", sampleIDCategory, EColumnType.STRING);
-		sampleIDCategory.setHumanReadableIDType(sampleIDType);
+		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory, EColumnType.STRING);
+		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();
 

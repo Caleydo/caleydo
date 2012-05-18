@@ -1235,9 +1235,6 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			geneSelectionManager = dataDomain.getDimensionSelectionManager();
 		}
 
-		// selectedSampleIndex =
-		// dataContainer.getDimensionPerspective().getVirtualArray().get(0);
-
 		sampleSelectionManager = new EventBasedSelectionManager(this,
 				((GeneticDataDomain) dataDomain).getSampleIDType());
 
