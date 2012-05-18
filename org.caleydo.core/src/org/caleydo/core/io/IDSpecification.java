@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -66,6 +66,11 @@ import org.caleydo.core.id.IDType;
 public class IDSpecification {
 
 	/**
+	 * The {@link IDCategory},
+	 */
+	private String idCategory;
+
+	/**
 	 * <p>
 	 * The name of the data type of the dimensions. For example, if the
 	 * dimensions contain samples this should be <i>sample</i>.
@@ -83,8 +88,7 @@ public class IDSpecification {
 	 * string <i>sample</i> so that they can be resolved.
 	 * </p>
 	 * <p>
-	 * The {@link IDCategory}, {@link IDType} and the denominations are created
-	 * based on this.
+	 * The {@link IDType} and the denominations are created based on this.
 	 * </p>
 	 * <p>
 	 * This is optional
@@ -169,6 +173,27 @@ public class IDSpecification {
 	private String subStringExpression = null;
 
 	/**
+	 * 
+	 */
+	public IDSpecification() {
+	}
+	
+	/**
+	 * @param idCategory
+	 *            setter, see {@link #idCategory}
+	 */
+	public void setIdCategory(String idCategory) {
+		this.idCategory = idCategory;
+	}
+
+	/**
+	 * @return the idCategory, see {@link #idCategory}
+	 */
+	public String getIdCategory() {
+		return idCategory;
+	}
+
+	/**
 	 * @param idType
 	 *            setter, see {@link #idType}
 	 */
@@ -181,6 +206,18 @@ public class IDSpecification {
 	 */
 	public String getIdType() {
 		return idType;
+	}
+
+	/**
+	 * Setter for both, {@link #idCategory} and {@link #idType}
+	 * 
+	 * @param idCategory
+	 * @param idType
+	 */
+	public void setIDSpecification(String idCategory, String idType) {
+		this.idCategory = idCategory;
+		this.idType = idType;
+
 	}
 
 	/**

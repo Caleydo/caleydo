@@ -110,6 +110,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	protected void setUpDataSetDescriptions() {
 
 		sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdCategory("SAMPLE");
 		sampleIDSpecification.setIdType("SAMPLE");
 		sampleIDSpecification.setReplacementExpression("\\.", "-");
 		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
@@ -266,6 +267,7 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		clinicalData.addParsingRule(parsingRule);
 
 		IDSpecification clinicalIdSpecification = new IDSpecification();
+		clinicalIdSpecification.setIdCategory("CLINICAL");
 		clinicalIdSpecification.setIdType("clinical");
 
 		clinicalData.setColumnIDSpecification(clinicalIdSpecification);

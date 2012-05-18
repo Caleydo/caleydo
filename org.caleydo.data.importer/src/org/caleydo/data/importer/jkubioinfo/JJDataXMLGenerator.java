@@ -72,6 +72,7 @@ public class JJDataXMLGenerator extends DataSetDescriptionSerializer {
 	protected void setUpDataSetDescriptions() {
 
 		sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdCategory("SAMPLE");
 		sampleIDSpecification.setIdType("SAMPLE");
 		// sampleIDSpecification.setReplacementExpression("\\.", "-");
 		// sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);

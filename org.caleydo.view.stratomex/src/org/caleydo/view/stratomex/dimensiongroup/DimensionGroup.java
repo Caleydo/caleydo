@@ -167,8 +167,6 @@ public class DimensionGroup extends ATableBasedView implements
 
 	private float previousYCoordinate = Float.NaN;
 
-	/** The height of the header brick in pixel */
-	private int headerBrickPixelHeight = 80;
 
 	/** the minimal width of the brick */
 	private int minPixelWidth;

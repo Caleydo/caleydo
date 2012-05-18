@@ -74,6 +74,7 @@ public class JJDataXMLGeneratorScreenOnco extends DataSetDescriptionSerializer {
 
 		sampleIDSpecification = new IDSpecification();
 		sampleIDSpecification.setIdType("SAMPLE");
+		sampleIDSpecification.setIdCategory("SAMPLE");
 		// sampleIDSpecification.setReplacementExpression("\\.", "-");
 		// sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 

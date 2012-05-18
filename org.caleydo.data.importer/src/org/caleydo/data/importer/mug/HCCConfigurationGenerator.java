@@ -66,6 +66,7 @@ public class HCCConfigurationGenerator extends DataSetDescriptionSerializer {
 	protected void setUpDataSetDescriptions() {
 
 		sampleIDSpecification = new IDSpecification();
+		sampleIDSpecification.setIdCategory("SAMPLE");
 		sampleIDSpecification.setIdType("SAMPLE");
 
 		dataSetDescriptionCollection.add(setUpMRNAData());
