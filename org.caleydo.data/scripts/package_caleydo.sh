@@ -23,10 +23,10 @@
 
 mount_point="/mnt/webdav"
 download_folder=$mount_point"/htdocs/download"
-webstart_plugins_folder=$download_folder"/webstart/plugins"
+webstart_plugins_folder=$download_folder"/webstart_2.0/plugins"
 
 export_root=$HOME"/caleydo_export"
-webstart_export_path=$export_root"/webstart"
+webstart_export_path=$export_root"/webstart_2.0"
 
 mount_webdav()
 {
