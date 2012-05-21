@@ -24,8 +24,10 @@ import java.awt.FlowLayout;
 import java.awt.MouseInfo;
 import java.awt.PointerInfo;
 
+import javax.swing.BorderFactory;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JPanel;
 import javax.swing.JWindow;
 
 import org.caleydo.core.util.base.ILabelProvider;
@@ -68,14 +70,26 @@ public class ToolTipPickingListener extends APickingListener {
 
 		public ToolTipp(String message, JFrame frame) {
 			super(frame);
-			setLayout(new FlowLayout(FlowLayout.CENTER));
-//			JToolTip swingToolTip = new JToolTip();
+			setType(Type.POPUP);
+			FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
+			layout.setHgap(0);
+			layout.setVgap(0);
+			setLayout(layout);
+			// JToolTip swingToolTip = new JToolTip();
 			JLabel label = new JLabel(message);
-//			label.setBackground(SystemColor.info);
-//			swingToolTip.setTipText(message);
+//			label.setBorder(BorderFactory.createLineBorder(Color.black));
+			// label.setBackground(SystemColor.info);
+			// swingToolTip.setTipText(message);
 			// getContentPane().add(swingToolTip);
-			getContentPane().add(label);
-			 getContentPane().setBackground(new Color(225,225,225));
+			JPanel panel = new JPanel();
+			panel.setBorder(BorderFactory.createLineBorder(Color.black));
+			FlowLayout panelLayout = new FlowLayout(FlowLayout.CENTER);
+			panelLayout.setHgap(2);
+			panelLayout.setVgap(1);
+			panel.setLayout(panelLayout);
+			panel.add(label);
+			getContentPane().add(panel);
+			getContentPane().setBackground(new Color(225, 225, 225));
 			getContentPane().setFocusable(false);
 
 			pack();
@@ -115,7 +129,7 @@ public class ToolTipPickingListener extends APickingListener {
 			if (hideToolTip)
 				return;
 
-			// System.out.println("create");
+			 System.out.println("create");
 			// toolTip = new ToolTip(new Shell(), 0);
 			// toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
 			// toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
