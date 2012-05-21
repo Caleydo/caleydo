@@ -463,10 +463,10 @@ public class GLPathwayContentCreator {
 
 					if (tmpNodeColor != null) {
 
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2],
+								0.7f);
+						
 						if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
-
-							gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2],
-									0.7f);
 							
 							// gl.glEnable(GL2.GL_BLEND);
 							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
