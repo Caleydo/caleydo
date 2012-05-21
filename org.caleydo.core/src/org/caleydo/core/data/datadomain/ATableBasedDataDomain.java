@@ -270,12 +270,12 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		IDType primaryRecordMappingType;
 
 		if (configuration.primaryRecordMappingType != null) {
-			IDType.getIDType(configuration.primaryRecordMappingType);
+//			IDType.getIDType(configuration.primaryRecordMappingType);
 			primaryRecordMappingType = IDType
 					.getIDType(configuration.primaryRecordMappingType);
-		} else
+		} else {
 			primaryRecordMappingType = recordIDType;
-
+		}
 		recordIDCategory.setPrimaryMappingType(primaryRecordMappingType);
 
 		IDType primaryDimensionMappingType;

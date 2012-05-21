@@ -82,11 +82,7 @@ public class GeneticDataDomain
 	@Override
 	public void init() {
 		icon = EIconTextures.DATA_DOMAIN_GENETIC;
-
 		super.init();
-		
-		dimensionIDCategory = IDCategory.getIDCategory("GENE");
-		recordIDCategory = IDCategory.getIDCategory("SAMPLE");
 	}
 
 	@Override

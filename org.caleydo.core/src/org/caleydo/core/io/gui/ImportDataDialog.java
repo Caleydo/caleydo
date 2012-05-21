@@ -168,14 +168,14 @@ public class ImportDataDialog
 
 		fillLoadDataParameters();
 
-		IDSpecification recordIDSpecification = new IDSpecification();
-		recordIDSpecification.setIDTypeGene(true);
-		recordIDSpecification.setIdType("GENE_SYMBOL");
-
-		dataSetDescription.setRowIDSpecification(recordIDSpecification);
-
-		IDSpecification dimensionIDSpecification = new IDSpecification();
-		dimensionIDSpecification.setIdType("SAMPLE");
+//		IDSpecification recordIDSpecification = new IDSpecification();
+//		recordIDSpecification.setIDTypeGene(true);
+//		recordIDSpecification.setIdType("GENE_SYMBOL");
+//
+//		dataSetDescription.setRowIDSpecification(recordIDSpecification);
+//
+//		IDSpecification dimensionIDSpecification = new IDSpecification();
+//		dimensionIDSpecification.setIdType("SAMPLE");
 
 		dataDomain.setDataSetDescription(dataSetDescription);
 
@@ -896,6 +896,8 @@ public class ImportDataDialog
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = recordIDTypes.get(recordIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
+		if(rowIDType.getIDCategory().getCategoryName().equals("GENE"))
+			rowIDSpecification.setIDTypeGene(true);
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
 		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
 			// for REFSEQ_MRNA we ignore the .1, etc.
@@ -905,7 +907,9 @@ public class ImportDataDialog
 		IDSpecification columnIDSpecification = new IDSpecification();
 		IDType columnIDType = dimensionIDTypes.get(dimensionIDCombo.getSelectionIndex());
 		columnIDSpecification.setIdType(columnIDType.toString());
-		columnIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
+		if(columnIDType.getIDCategory().getCategoryName().equals("GENE"))
+			columnIDSpecification.setIDTypeGene(true);
+		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().toString());
 
 		dataSetDescription.setRowIDSpecification(rowIDSpecification);
 		dataSetDescription.setMathFilterMode(mathFilterMode);
@@ -935,7 +939,6 @@ public class ImportDataDialog
 
 			if (!skipColumn.get(columnIndex - 2).getSelection()) {
 				// do nothing
-				// inputPattern.append("SKIP;");
 			}
 			else {
 

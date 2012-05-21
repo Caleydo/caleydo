@@ -153,11 +153,15 @@ public class DataSetDescription extends MatrixDefinition {
 	 * {@link #dataSourcePath}. Optional.
 	 */
 	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications;
-	
-	
 
 	/** Same as {@link #columnGroupingSpecifications} for rows. Optional. */
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
+
+	/**
+	 * A list of descriptions on how to pre-process (e.g., cluster, filter) the
+	 * data
+	 */
+	private ArrayList<DataProcessingDescription> dataProcessingDescriptions;
 
 	/**
 	 * @param transposeMatrix
@@ -363,10 +367,10 @@ public class DataSetDescription extends MatrixDefinition {
 		int numberOfColumns = 0;
 
 		try {
-			
+
 			BufferedReader reader = GeneralManager.get().getResourceLoader()
 					.getResource(dataSourcePath);
-			
+
 			// move the reader to the first line that contains the actual data
 			for (int countHeaderLines = 0; countHeaderLines < numberOfHeaderLines; countHeaderLines++) {
 				reader.readLine();
@@ -377,9 +381,10 @@ public class DataSetDescription extends MatrixDefinition {
 			numberOfColumns = columns.length;
 
 		} catch (IOException e) {
-//			Logger.log(new Status(Status.ERROR, "Parsing", "Cannot read from: "
-//					+ dataSourcePath));
-//			System.out.println("Cannot read from: " + dataSourcePath);
+			// Logger.log(new Status(Status.ERROR, "Parsing",
+			// "Cannot read from: "
+			// + dataSourcePath));
+			// System.out.println("Cannot read from: " + dataSourcePath);
 			throw new IllegalStateException("Cannot read from: " + dataSourcePath);
 		}
 
@@ -455,6 +460,31 @@ public class DataSetDescription extends MatrixDefinition {
 					"Failed to create parsing pattern based on the parsing rule / input file / header line information.");
 		}
 		return parsingPattern;
+	}
+
+	/**
+	 * @param dataProcessingDescriptions
+	 *            setter, see {@link #dataProcessingDescriptions}
+	 */
+	public void setDataProcessingDescriptions(
+			ArrayList<DataProcessingDescription> dataProcessingDescriptions) {
+		this.dataProcessingDescriptions = dataProcessingDescriptions;
+	}
+
+	/**
+	 * @return the dataProcessingDescriptions, see
+	 *         {@link #dataProcessingDescriptions}
+	 */
+	public ArrayList<DataProcessingDescription> getDataProcessingDescriptions() {
+		return dataProcessingDescriptions;
+	}
+
+	public void addDataProcessingDescription(
+			DataProcessingDescription dataProcessingDescription) {
+		if (dataProcessingDescriptions == null) {
+			dataProcessingDescriptions = new ArrayList<DataProcessingDescription>(3);
+		}
+		dataProcessingDescriptions.add(dataProcessingDescription);
 	}
 
 	/**
