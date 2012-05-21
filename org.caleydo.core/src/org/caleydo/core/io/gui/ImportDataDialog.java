@@ -1044,20 +1044,19 @@ public class ImportDataDialog
 							}
 						}
 					}
-				}
 
-				if (currentCorrectElements >= idList.size()) {
+					if (currentCorrectElements >= idList.size()) {
 
-					setMostProbableRecordIDType(mostProbableIDType);
+						setMostProbableRecordIDType(mostProbableIDType);
 
-					return;
-				}
-				if (currentCorrectElements >= maxCorrectElements) {
-					maxCorrectElements = currentCorrectElements;
-					mostProbableIDType = idType;
+						return;
+					}
+					if (currentCorrectElements >= maxCorrectElements) {
+						maxCorrectElements = currentCorrectElements;
+						mostProbableIDType = idType;
+					}
 				}
 			}
-
 		}
 
 		setMostProbableRecordIDType(mostProbableIDType);
@@ -1079,7 +1078,7 @@ public class ImportDataDialog
 							.indexOf(dimensionIDCategory));
 
 					fillDimensionIDTypeCombo();
-					
+
 					dimensionIDCombo.select(dimensionIDTypes.indexOf(IDType
 							.getIDType("SAMPLE")));
 				}
