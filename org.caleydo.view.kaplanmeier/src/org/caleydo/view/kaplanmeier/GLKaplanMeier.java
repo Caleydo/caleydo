@@ -46,6 +46,8 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.connectionline.ConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.connectionline.LineCrossingRenderer;
@@ -105,6 +107,11 @@ public class GLKaplanMeier extends ATableBasedView {
 	private String yAxisLabel = DEFAULT_Y_AXIS_LABEL;
 
 	/**
+	 * The id of the group whose curve was mouse overed.
+	 */
+	private int mouseOverGroupID = -1;
+
+	/**
 	 * Constructor.
 	 * 
 	 * @param glCanvas
@@ -141,13 +148,34 @@ public class GLKaplanMeier extends ATableBasedView {
 
 		RecordVirtualArray recordVA = dataContainer.getRecordPerspective()
 				.getVirtualArray();
-		
+
 		for (Group group : recordVA.getGroupList()) {
 			ToolTipPickingListener toolTipPickingListener = new ToolTipPickingListener(
 					this, group.getLabel());
 			addIDPickingListener(toolTipPickingListener, EPickingType.KM_CURVE.name(),
 					group.getID());
 		}
+
+		addTypePickingListener(new APickingListener() {
+
+			@Override
+			public void mouseOver(Pick pick) {
+				if (mouseOverGroupID != pick.getObjectID()) {
+					mouseOverGroupID = pick.getObjectID();
+					setDisplayListDirty();
+				}
+			}
+
+			@Override
+			public void mouseOut(Pick pick) {
+				if (mouseOverGroupID == pick.getObjectID()) {
+					mouseOverGroupID = -1;
+					setDisplayListDirty();
+				}
+			}
+
+		}, EPickingType.KM_CURVE.name());
+
 	}
 
 	private void calculateMaxAxisTime() {
@@ -204,10 +232,10 @@ public class GLKaplanMeier extends ATableBasedView {
 	@Override
 	public void display(GL2 gl) {
 
-//		if (isDisplayListDirty) {
+		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
-//		}
+		}
 		gl.glCallList(displayListIndex);
 
 		checkForHits(gl);
@@ -238,9 +266,9 @@ public class GLKaplanMeier extends ATableBasedView {
 			colorIndex = colorIndex % 10;
 
 			int lineWidth = 1;
-			if (recordGroupSelectionManager.getElements(SelectionType.SELECTION).size() == 1
-					&& (Integer) recordGroupSelectionManager.getElements(
-							SelectionType.SELECTION).toArray()[0] == group.getID()) {
+			if ((recordGroupSelectionManager.getElements(SelectionType.SELECTION).size() == 1 && (Integer) recordGroupSelectionManager
+					.getElements(SelectionType.SELECTION).toArray()[0] == group.getID())
+					|| (group.getID() == mouseOverGroupID)) {
 				lineWidth = 2;
 			}
 			// else
@@ -402,15 +430,13 @@ public class GLKaplanMeier extends ATableBasedView {
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS) : 0);
 
-		float TIME_BINS = maxAxisTime;
-
-		float timeBinStepSize = 1 / TIME_BINS;
+		float timeBinStepSize = 1 / maxAxisTime;
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
-		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
+		for (int binIndex = 0; binIndex < maxAxisTime; binIndex++) {
 
 			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
 				dataVector.remove(0);
@@ -442,13 +468,11 @@ public class GLKaplanMeier extends ATableBasedView {
 				.getGLWidthForPixelWidth(BOTTOM_AXIS_SPACING_PIXELS) : 0);
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS) : 0);
-
-		float TIME_BINS = maxAxisTime;
 		// float TIME_BINS = 20;
 		// float TIME_BINS = (float) dataContainer.getDataDomain().getTable()
 		// .getRawForNormalized(1);
 
-		float timeBinStepSize = 1 / TIME_BINS;
+		float timeBinStepSize = 1 / maxAxisTime;
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
@@ -457,7 +481,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 1);
 
-		for (int binIndex = 0; binIndex < TIME_BINS; binIndex++) {
+		for (int binIndex = 0; binIndex < maxAxisTime; binIndex++) {
 
 			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
 				dataVector.remove(0);

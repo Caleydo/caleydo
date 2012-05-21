@@ -45,13 +45,8 @@ public class ToolTipPickingListener extends APickingListener {
 	private static final int MOUSE_POSITION_TOOLTIP_SPACING_PIXELS = 20;
 
 	private AGLView view;
-	private ToolTipThread thread;
+	private ToolTipThread toolTipThread;
 
-	/**
-	 * Title of the tooltip. It is recommended to use the title only in
-	 * conjunction with a message.
-	 */
-	private String toolTipTitle;
 	/**
 	 * Message of the tooltip.
 	 */
@@ -70,17 +65,11 @@ public class ToolTipPickingListener extends APickingListener {
 
 		public ToolTipp(String message, JFrame frame) {
 			super(frame);
-			setType(Type.POPUP);
 			FlowLayout layout = new FlowLayout(FlowLayout.CENTER);
 			layout.setHgap(0);
 			layout.setVgap(0);
 			setLayout(layout);
-			// JToolTip swingToolTip = new JToolTip();
 			JLabel label = new JLabel(message);
-//			label.setBorder(BorderFactory.createLineBorder(Color.black));
-			// label.setBackground(SystemColor.info);
-			// swingToolTip.setTipText(message);
-			// getContentPane().add(swingToolTip);
 			JPanel panel = new JPanel();
 			panel.setBorder(BorderFactory.createLineBorder(Color.black));
 			FlowLayout panelLayout = new FlowLayout(FlowLayout.CENTER);
@@ -103,7 +92,7 @@ public class ToolTipPickingListener extends APickingListener {
 	 * 
 	 */
 	private class ToolTipThread implements Runnable {
-		private ToolTipp swingTip;
+		private ToolTipp toolTip;
 		// private ToolTip toolTip;
 		private boolean hideToolTip = false;
 
@@ -112,40 +101,24 @@ public class ToolTipPickingListener extends APickingListener {
 			createToolTip();
 		}
 
-		public synchronized void hideToolTip() {
+		public void hide() {
 			hideToolTip = true;
-			// if (toolTip != null) {
-			// // System.out.println("hide method");
-			// toolTip.setVisible(false);
-			//
-			// }
 
-			if (swingTip != null) {
-				swingTip.setVisible(false);
+			if (toolTip != null) {
+				toolTip.setVisible(false);
 			}
 		}
 
-		private synchronized void createToolTip() {
-			if (hideToolTip)
-				return;
+		public void create() {
 
-			 System.out.println("create");
-			// toolTip = new ToolTip(new Shell(), 0);
-			// toolTip.setText(toolTipTitle == null ? "" : toolTipTitle);
-			// toolTip.setMessage(toolTipMessage == null ? "" : toolTipMessage);
+			// System.out.println("create");
 
 			PointerInfo pointerInfo = MouseInfo.getPointerInfo();
-			// toolTip.setLocation(pointerInfo.getLocation().x,
-			// pointerInfo.getLocation().y
-			// + MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
-			// toolTip.setAutoHide(true);
-			//
-			// toolTip.setVisible(true);
 
-			swingTip = new ToolTipp(toolTipMessage, new JFrame());
-			swingTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
+			toolTip = new ToolTipp(toolTipMessage, new JFrame());
+			toolTip.setLocation(pointerInfo.getLocation().x, pointerInfo.getLocation().y
 					+ MOUSE_POSITION_TOOLTIP_SPACING_PIXELS);
-			swingTip.setVisible(true);
+			toolTip.setVisible(true);
 		}
 
 	}
@@ -164,36 +137,33 @@ public class ToolTipPickingListener extends APickingListener {
 		this.labelProvider = labelProvider;
 	}
 
-	public ToolTipPickingListener(AGLView view, String toolTipTitle, String toolTipMessage) {
-		this.view = view;
-		this.toolTipTitle = toolTipTitle;
-		this.toolTipMessage = toolTipMessage;
+	private synchronized void createToolTip() {
+		if (toolTipThread.hideToolTip)
+			return;
+		toolTipThread.create();
 	}
 
-	@Override
-	public void mouseOver(Pick pick) {
-
-		// JToolTip tip = new JToolTip();
-		// tip.setTipText("test");
-		// JButton button;
-		// button.
-		// tip.setLocation(10, 10);
-		// tip.setVisible(true);
-		if (labelProvider != null) {
-			toolTipMessage = labelProvider.getLabel();
-			// toolTipTitle = labelProvider.getSecondaryLabel();
+	private synchronized void hideToolTip() {
+		if (toolTipThread != null) {
+			toolTipThread.hide();
 		}
+		toolTipThread = null;
+	}
+
+	private void triggerToolTipCreation() {
 
 		// System.out.println("over");
+		if(toolTipThread != null)
+			return;
 
-		thread = new ToolTipThread();
+		toolTipThread = new ToolTipThread();
 		Runnable runnable = new Runnable() {
 
 			@Override
 			public void run() {
 				// try {
 				// Thread.sleep(500);
-				view.getParentComposite().getDisplay().asyncExec(thread);
+				view.getParentComposite().getDisplay().asyncExec(toolTipThread);
 				// } catch (InterruptedException e) {
 				// e.printStackTrace();
 				// }
@@ -202,51 +172,43 @@ public class ToolTipPickingListener extends APickingListener {
 
 		Thread timerThread = new Thread(runnable);
 		timerThread.start();
+	}
 
+	@Override
+	public void mouseOver(Pick pick) {
+
+		if (labelProvider != null) {
+			toolTipMessage = labelProvider.getLabel();
+		}
+		triggerToolTipCreation();
 	}
 
 	@Override
 	public void mouseOut(Pick pick) {
 		// System.out.println("out");
-		hideToolTip();
+		triggerToolTipHide();
 	}
 
 	@Override
 	public void clicked(Pick pick) {
-		hideToolTip();
+		triggerToolTipHide();
 	}
 
 	@Override
 	public void rightClicked(Pick pick) {
-		hideToolTip();
+		triggerToolTipHide();
 	}
 
-	private void hideToolTip() {
+	private void triggerToolTipHide() {
 		// System.out.println("hide picking");
 		view.getParentComposite().getDisplay().asyncExec(new Runnable() {
 
 			@Override
 			public void run() {
 				// System.out.println("hide thread");
-				if (thread != null)
-					thread.hideToolTip();
+				hideToolTip();
 			}
 		});
-	}
-
-	/**
-	 * @param toolTipTitle
-	 *            setter, see {@link #toolTipTitle}
-	 */
-	public void setToolTipTitle(String toolTipTitle) {
-		this.toolTipTitle = toolTipTitle;
-	}
-
-	/**
-	 * @return the toolTipTitle, see {@link #toolTipTitle}
-	 */
-	public String getToolTipTitle() {
-		return toolTipTitle;
 	}
 
 	/**
