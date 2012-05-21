@@ -326,13 +326,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.datadomain.clinical"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.datadomain.generic"
          download-size="0"
          install-size="0"
@@ -354,42 +347,7 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.datameta"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.view.info"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.view.visbricks"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.view.kaplanmeier"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.view.datagraph"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
-         id="org.caleydo.view.genesearch"
          download-size="0"
          install-size="0"
          version="0.0.0"
@@ -424,13 +382,6 @@ All Rights Reserved.
          unpack="false"/>
 
    <plugin
-         id="org.caleydo.view.linearizedpathway"
-         download-size="0"
-         install-size="0"
-         version="0.0.0"
-         unpack="false"/>
-
-   <plugin
          id="org.caleydo.data.importer"
          download-size="0"
          install-size="0"
@@ -439,6 +390,41 @@ All Rights Reserved.
 
    <plugin
          id="org.caleydo.util.bubblesets"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.dvi"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.info.dataset"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.info.selection"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.search"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"
+         unpack="false"/>
+
+   <plugin
+         id="org.caleydo.view.stratomex"
          download-size="0"
          install-size="0"
          version="0.0.0"

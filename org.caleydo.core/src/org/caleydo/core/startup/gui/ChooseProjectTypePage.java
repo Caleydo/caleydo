@@ -82,9 +82,6 @@ public class ChooseProjectTypePage
 
 	private Organism organism;
 
-	private boolean bLoadKEGGPathwayData;
-	private boolean bLoadBioCartaPathwayData;
-
 	/** tab-page for loading sample data */
 	private TabItem sampleTab;
 	/** tab-page for loading genetic data */

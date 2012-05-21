@@ -40,7 +40,7 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * TODO The use case for pathway input data.
+ * The data domain for pathways triggers the loading of the pathways from KEGG and BioCarta.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -181,5 +181,10 @@ public class PathwayDataDomain
 		DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+	
+	@Override
+	public String getLabel() {
+		return "Pathways: KEGG & BioCarta";
 	}
 }

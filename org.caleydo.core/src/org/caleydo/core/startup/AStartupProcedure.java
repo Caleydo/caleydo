@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
-import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.ui.IFolderLayout;
