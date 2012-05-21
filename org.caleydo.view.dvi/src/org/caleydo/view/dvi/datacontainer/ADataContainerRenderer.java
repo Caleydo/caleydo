@@ -101,4 +101,8 @@ public abstract class ADataContainerRenderer extends LayoutRenderer {
 
 	protected abstract Collection<DimensionGroupRenderer> getDimensionGroupRenderers();
 
+	public boolean arePickingListenersRegistered() {
+		return arePickingListenersRegistered;
+	}
+
 }
