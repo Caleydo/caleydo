@@ -82,7 +82,7 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 
 		layoutTemplate.showFooterBar(false);
-		layoutTemplate.showToolBar(false);
+		layoutTemplate.showToolBar(true);
 	}
 
 	@Override

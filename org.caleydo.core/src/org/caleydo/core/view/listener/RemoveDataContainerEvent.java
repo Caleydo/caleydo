@@ -17,33 +17,52 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-/**
- * 
- */
-package org.caleydo.core.view;
+package org.caleydo.core.view.listener;
 
-import java.util.List;
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.event.AEvent;
 
 /**
- * <p>
- * Base interface for views that use a single or multiple {@link DataContainer}
- * s.
- * </p>
- * <p>
- * Generally it's preferred to use {@link ISingleDataContainerBasedView} or
- * {@link IMultiDataContainerBasedView} instead of this interface.
- * </p>
+ * Event that triggers the removal of a data container with the specified
+ * dataContainerID.
  * 
  * @author Alexander Lex
+ * 
  */
-public interface IDataContainerBasedView {
+public class RemoveDataContainerEvent extends AEvent {
+
+	/** The ID of the data container to be removed */
+	int dataContainerID = -1;
 
 	/**
-	 * Returns all {@link DataContainer}s that this view and all of its possible
-	 * remote views contain.
 	 * 
-	 * @return
 	 */
-	public List<DataContainer> getDataContainers();
+	public RemoveDataContainerEvent() {
+	}
+
+	public RemoveDataContainerEvent(int dataContainerID) {
+		this.dataContainerID = dataContainerID;
+	}
+
+	/**
+	 * @param dataContainerID
+	 *            setter, see {@link #dataContainerID}
+	 */
+	public void setDataContainerID(int dataContainerID) {
+		this.dataContainerID = dataContainerID;
+	}
+
+	/**
+	 * @return the dataContainerID, see {@link #dataContainerID}
+	 */
+	public int getDataContainerID() {
+		return dataContainerID;
+	}
+
+	@Override
+	public boolean checkIntegrity() {
+		if (dataContainerID < 0)
+			return false;
+		return true;
+	}
+
 }

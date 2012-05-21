@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.view;
 
+import java.util.List;
+
 import org.caleydo.core.data.container.DataContainer;
 
 /**
@@ -34,4 +36,10 @@ public interface ISingleDataContainerBasedView extends IDataContainerBasedView {
 	 */
 	public void setDataContainer(DataContainer dataContainer);
 
+	/** Returns the data container of this view */
+	public DataContainer getDataContainer();
+
+	/** Returns the data container of this view as the only element in a list. */
+	@Override
+	public List<DataContainer> getDataContainers();
 }

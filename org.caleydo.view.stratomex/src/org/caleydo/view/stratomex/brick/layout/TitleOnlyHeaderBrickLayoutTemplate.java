@@ -79,6 +79,7 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 		spacingLayoutY.setPixelSizeX(0);
 
 		Row headerBar = createHeaderBar();
+		
 
 		baseColumn.append(spacingLayoutY);
 		guiElementsHeight += SPACING_PIXELS;
@@ -146,4 +147,5 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 	public void setHeaderBarElements(ArrayList<ElementLayout> headerBarElements) {
 		this.headerBarElements = headerBarElements;
 	}
+	
 }

@@ -22,10 +22,12 @@ package org.caleydo.view.stratomex.brick.layout;
 import java.util.ArrayList;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.view.listener.RemoveDataContainerEvent;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.Row;
@@ -64,6 +66,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 
 	protected static final int CLUSTER_BUTTON_ID = 0;
 	protected static final int LOCK_RESIZING_BUTTON_ID = 1;
+	protected static final int REMOVE_COLUMN_BUTTON_ID = 2;
 
 	// protected ArrayList<BrickViewSwitchingButton> viewSwitchingButtons;
 	protected ArrayList<ElementLayout> headerBarElements;
@@ -77,10 +80,11 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	// protected Button histogramButton;
 	// protected Button overviewHeatMapButton;
 
-	protected Button clusterButton;
+	// protected Button clusterButton;
 	protected Button lockResizingButton;
 	protected boolean showToolBar;
 	protected boolean showFooterBar;
+	protected boolean showClusterButton = false;
 
 	protected int guiElementsHeight = 0;
 	protected Row headerBar;
@@ -229,7 +233,6 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 * @return
 	 */
 	protected Row createToolBar() {
-		System.out.println(this.toString());
 		Row toolBar = new ToolBar("ToolBarRow", brick);
 		toolBar.setPixelSizeY(0);
 
@@ -247,74 +250,93 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 		greedyXLayout.setRatioSizeY(0);
 		toolBar.append(greedyXLayout);
 
-		Button clusterButton = new Button(
-				EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(), CLUSTER_BUTTON_ID,
-				EIconTextures.CLUSTER_ICON);
-		ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
-		clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick, brick
-				.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
+		if (showClusterButton) {
+			Button clusterButton = new Button(
+					EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name(),
+					CLUSTER_BUTTON_ID, EIconTextures.CLUSTER_ICON);
+			ElementLayout clusterButtonLayout = new ElementLayout("clusterButton");
+			clusterButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+			clusterButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+			clusterButtonLayout.setRenderer(new ButtonRenderer(clusterButton, brick,
+					brick.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
 
-		toolBar.append(clusterButtonLayout);
+			toolBar.append(clusterButtonLayout);
+			toolBar.append(spacingLayoutX);
+
+			brick.removeAllTypePickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON
+					.name());
+			brick.addTypePickingListener(new APickingListener() {
+
+				@Override
+				public void clicked(Pick pick) {
+
+					brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
+						@Override
+						public void run() {
+							StartClusteringDialog dialog = new StartClusteringDialog(
+									new Shell(), brick.getDataDomain());
+							DataContainer data = brick.getDimensionGroup()
+									.getDataContainer();
+							dialog.setSourceDimensionPerspective(data
+									.getDimensionPerspective());
+							dialog.setSourceRecordPerspective(data.getRecordPerspective());
+							dialog.open();
+							AClusterConfiguration clusterState = dialog.getClusterState();
+							if (clusterState == null)
+								return;
+
+							// here we create the new record perspective
+							// which is
+							// intended to be used once the clustering is
+							// complete
+							RecordPerspective newRecordPerspective = new RecordPerspective(
+									data.getDataDomain());
+
+							// we temporarily set the old va to the new
+							// perspective,
+							// to avoid empty bricks
+							newRecordPerspective.setVirtualArray(data
+									.getRecordPerspective().getVirtualArray());
+
+							data.getDataDomain().getTable()
+									.registerRecordPerspective(newRecordPerspective);
+							data.setRecordPerspective(newRecordPerspective);
+							clusterState
+									.setOptionalTargetRecordPerspective(newRecordPerspective);
+						}
+					});
+				}
+			}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
+		}
+
+		Button removeColumnButton = new Button(EPickingType.REMOVE_COLUMN_BUTTON.name(),
+				REMOVE_COLUMN_BUTTON_ID, EIconTextures.REMOVE);
+		ElementLayout removeColumnButtonLayout = new ElementLayout("removeColumnButton");
+		removeColumnButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
+		removeColumnButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
+		removeColumnButtonLayout.setRenderer(new ButtonRenderer(removeColumnButton,
+				brick, brick.getTextureManager(), DefaultBrickLayoutTemplate.BUTTON_Z));
+
+		toolBar.append(removeColumnButtonLayout);
 		toolBar.append(spacingLayoutX);
 
-		// ElementLayout lockResizingButtonLayout = new
-		// ElementLayout("lockResizingButton");
-		// lockResizingButtonLayout.setPixelSizeX(BUTTON_WIDTH_PIXELS);
-		// lockResizingButtonLayout.setPixelSizeY(BUTTON_HEIGHT_PIXELS);
-		// lockResizingButtonLayout.setRenderer(new
-		// ButtonRenderer(lockResizingButton,
-		// brick, brick.getTextureManager(),
-		// DefaultBrickLayoutTemplate.BUTTON_Z));
-		//
-		// toolBar.append(lockResizingButtonLayout);
-		// headerBarElements.add(spacingLayoutX);
-
-		brick.removeAllTypePickingListeners(EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON
-				.name());
+		brick.removeAllTypePickingListeners(EPickingType.REMOVE_COLUMN_BUTTON.name());
 		brick.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void clicked(Pick pick) {
-				System.out.println("cluster " + this);
 
 				brick.getParentComposite().getDisplay().asyncExec(new Runnable() {
 					@Override
 					public void run() {
-						StartClusteringDialog dialog = new StartClusteringDialog(
-								new Shell(), brick.getDataDomain());
-						DataContainer data = brick.getDimensionGroup().getDataContainer();
-						dialog.setSourceDimensionPerspective(data
-								.getDimensionPerspective());
-						dialog.setSourceRecordPerspective(data.getRecordPerspective());
-						dialog.open();
-						AClusterConfiguration clusterState = dialog.getClusterState();
-						if (clusterState == null)
-							return;
-
-						// here we create the new record perspective
-						// which is
-						// intended to be used once the clustering is
-						// complete
-						RecordPerspective newRecordPerspective = new RecordPerspective(
-								data.getDataDomain());
-
-						// we temporarily set the old va to the new
-						// perspective,
-						// to avoid empty bricks
-						newRecordPerspective.setVirtualArray(data.getRecordPerspective()
-								.getVirtualArray());
-
-						data.getDataDomain().getTable()
-								.registerRecordPerspective(newRecordPerspective);
-						data.setRecordPerspective(newRecordPerspective);
-						clusterState
-								.setOptionalTargetRecordPerspective(newRecordPerspective);
+						RemoveDataContainerEvent event = new RemoveDataContainerEvent(
+								brick.getDimensionGroup().getDataContainer().getID());
+						event.setSender(this);
+						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
 				});
 			}
-		}, EPickingType.DIMENSION_GROUP_CLUSTER_BUTTON.name());
+		}, EPickingType.REMOVE_COLUMN_BUTTON.name());
 
 		return toolBar;
 	}
@@ -322,7 +344,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	@Override
 	protected void registerPickingListeners() {
 
-//		brick.removeAllIDPickingListeners(pickingType, pickedObjectID)
+		// brick.removeAllIDPickingListeners(pickingType, pickedObjectID)
 		brick.addIDPickingListener(new APickingListener() {
 
 			@Override
@@ -469,6 +491,10 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	 */
 	public void showFooterBar(boolean showFooterBar) {
 		this.showFooterBar = showFooterBar;
+	}
+
+	public void showClusterButton(boolean showClusterButton) {
+		this.showClusterButton = showClusterButton;
 	}
 
 	@Override

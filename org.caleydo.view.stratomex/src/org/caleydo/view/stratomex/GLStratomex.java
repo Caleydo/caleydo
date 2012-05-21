@@ -61,6 +61,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
+import org.caleydo.core.view.listener.RemoveDataContainerEvent;
+import org.caleydo.core.view.listener.RemoveDataContainerListener;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
@@ -122,6 +124,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private ClearSelectionsListener clearSelectionsListener;
 	private ConnectionsModeListener trendHighlightModeListener;
 	private SplitBrickListener splitBrickListener;
+	private RemoveDataContainerListener removeDataContainerListener;
 
 	private DimensionGroupManager dimensionGroupManager;
 
@@ -1148,6 +1151,11 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		splitBrickListener.setHandler(this);
 		eventPublisher.addListener(SplitBrickEvent.class, splitBrickListener);
 
+		removeDataContainerListener = new RemoveDataContainerListener();
+		removeDataContainerListener.setHandler(this);
+		eventPublisher.addListener(RemoveDataContainerEvent.class,
+				removeDataContainerListener);
+
 	}
 
 	@Override
@@ -1172,6 +1180,11 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		if (splitBrickListener != null) {
 			eventPublisher.removeListener(splitBrickListener);
 			splitBrickListener = null;
+		}
+
+		if (removeDataContainerListener != null) {
+			eventPublisher.removeListener(removeDataContainerListener);
+			removeDataContainerListener = null;
 		}
 	}
 
@@ -1213,6 +1226,14 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
 		return null;
+	}
+
+	// /** Adds the specified data container to the view */
+	@Override
+	public void addDataContainer(DataContainer dataContainer) {
+		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
+		dataContainerWrapper.add(dataContainer);
+		addDataContainers(dataContainerWrapper, null);
 	}
 
 	@Override
@@ -1325,6 +1346,30 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	@Override
+	public void removeDataContainer(int dataContainerID) {
+
+		Iterator<DataContainer> dataContainerIterator = dataContainers.iterator();
+
+		while (dataContainerIterator.hasNext()) {
+			DataContainer container = dataContainerIterator.next();
+			if (container.getID() == dataContainerID) {
+				dataContainerIterator.remove();
+			}
+		}
+
+		dimensionGroupManager.removeDimensionGroup(dataContainerID);
+		initLayouts();
+		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
+		event.setSender(this);
+		GeneralManager.get().getEventPublisher().triggerEvent(event);
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		return dataContainers;
 	}
 
 	/**
@@ -1736,19 +1781,6 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		return true;
 	}
 
-	// /** Adds the specified data container to the view */
-	@Override
-	public void addDataContainer(DataContainer dataContainer) {
-		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
-		dataContainerWrapper.add(dataContainer);
-		addDataContainers(dataContainerWrapper, null);
-	}
-
-	@Override
-	public List<DataContainer> getDataContainers() {
-		return dataContainers;
-	}
-
 	public int getArchHeight() {
 		return ARCH_PIXEL_HEIGHT;
 	}
@@ -1772,4 +1804,5 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	public boolean isVendingMachineMode() {
 		return isVendingMachineMode;
 	}
+
 }

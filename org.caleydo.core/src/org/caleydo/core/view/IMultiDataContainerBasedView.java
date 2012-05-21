@@ -37,8 +37,7 @@ import org.caleydo.core.view.listener.AddDataContainersListener;
  * 
  * @author Alexander Lex
  */
-public interface IMultiDataContainerBasedView extends IDataContainerBasedView,
-		IListenerOwner {
+public interface IMultiDataContainerBasedView extends IDataContainerBasedView, IListenerOwner {
 
 	/** Adds a single data container to the view */
 	public void addDataContainer(DataContainer newDataContainer);
@@ -49,4 +48,14 @@ public interface IMultiDataContainerBasedView extends IDataContainerBasedView,
 	 * @param newDataContainers
 	 */
 	public void addDataContainers(List<DataContainer> newDataContainers);
+
+	/** Returns all {@link DataContainer}s of this view */
+	public List<DataContainer> getDataContainers();
+
+	/**
+	 * Removes the data container that has the specified id from the view
+	 * 
+	 * @param dataContainer
+	 */
+	public void removeDataContainer(int dataContainerID);
 }

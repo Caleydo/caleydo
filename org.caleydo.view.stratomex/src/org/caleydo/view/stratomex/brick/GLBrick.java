@@ -48,6 +48,7 @@ import org.caleydo.core.gui.util.ChangeNameDialog;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.contextmenu.ContextMenuCreator;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
@@ -77,6 +78,7 @@ import org.caleydo.view.stratomex.brick.configurer.PathwayDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.CreateKaplanMeierSmallMultiplesGroupItem;
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwayGroupFromDataItem;
 import org.caleydo.view.stratomex.brick.contextmenu.CreatePathwaySmallMultiplesGroupItem;
+import org.caleydo.view.stratomex.brick.contextmenu.RemoveColumnItem;
 import org.caleydo.view.stratomex.brick.contextmenu.RenameBrickItem;
 import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
@@ -283,7 +285,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 							.getViewRenderer());
 		}
 
-//		layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
+		// layoutManager.setStaticLayoutConfiguration(brickLayoutConfiguration);
 
 		dimensionGroup.updateLayout();
 
@@ -840,7 +842,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				if (dimensionGroup.getDataContainer() == dataContainer) {
 
-					if (dataDomain instanceof GeneticDataDomain && !dataDomain.isColumnDimension()) {
+					if (dataDomain instanceof GeneticDataDomain
+							&& !dataDomain.isColumnDimension()) {
 						contextMenuCreator
 								.addContextMenuItem(new CreatePathwaySmallMultiplesGroupItem(
 										dimensionGroup.getDataContainer(), dimensionGroup
@@ -859,6 +862,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 											.getDataContainer().getDimensionPerspective()));
 
 				contextMenuCreator.addContextMenuItem(new RenameBrickItem(getID()));
+
+				contextMenuCreator.addContextMenuItem(new RemoveColumnItem(
+						getDimensionGroup().getDataContainer().getID()));
 			}
 
 		}, EPickingType.BRICK.name(), getID());

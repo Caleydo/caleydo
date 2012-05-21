@@ -44,6 +44,8 @@ import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
 import org.caleydo.core.view.listener.AddDataContainersListener;
+import org.caleydo.core.view.listener.RemoveDataContainerEvent;
+import org.caleydo.core.view.listener.RemoveDataContainerListener;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.EDetailLevel;
@@ -187,6 +189,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	private EnRoutePathEventListener linearizePathwayPathEventListener;
 	private AddDataContainersListener addDataContainersListener;
 	private RemoveEnRouteNodeEventListener removeLinearizedNodeEventListener;
+	private RemoveDataContainerListener removeDataContainerListener;
 
 	/**
 	 * Constructor.
@@ -959,6 +962,12 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		removeLinearizedNodeEventListener.setHandler(this);
 		eventPublisher.addListener(RemoveEnRouteNodeEvent.class,
 				removeLinearizedNodeEventListener);
+		
+		removeDataContainerListener = new RemoveDataContainerListener();
+		removeDataContainerListener.setHandler(this);
+		eventPublisher.addListener(RemoveDataContainerEvent.class,
+				removeDataContainerListener);
+
 	}
 
 	@Override
@@ -978,6 +987,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		if (removeLinearizedNodeEventListener != null) {
 			eventPublisher.removeListener(removeLinearizedNodeEventListener);
 			removeLinearizedNodeEventListener = null;
+		}
+		
+		if (removeDataContainerListener != null) {
+			eventPublisher.removeListener(removeDataContainerListener);
+			removeDataContainerListener = null;
 		}
 
 		geneSelectionManager.unregisterEventListeners();
@@ -1342,6 +1356,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	@Override
 	public Set<IDataDomain> getDataDomains() {
 		return dataDomains;
+	}
+
+	@Override
+	public void removeDataContainer(int dataContainerID) {
+		mappedDataRenderer.removeDataContainer(dataContainerID);
 	}
 
 }

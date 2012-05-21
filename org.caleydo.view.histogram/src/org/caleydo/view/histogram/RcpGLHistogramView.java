@@ -200,6 +200,11 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	}
 
 	@Override
+	public DataContainer getDataContainer() {
+		return ((ITableBasedDataDomainView) view).getDataContainer();
+	}
+
+	@Override
 	public void handleClearSelections() {
 		// TODO Auto-generated method stub
 

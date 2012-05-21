@@ -17,33 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-/**
- * 
- */
-package org.caleydo.core.view;
+package org.caleydo.core.view.listener;
 
-import java.util.List;
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.event.AEvent;
+import org.caleydo.core.event.AEventListener;
+import org.caleydo.core.view.IMultiDataContainerBasedView;
 
 /**
- * <p>
- * Base interface for views that use a single or multiple {@link DataContainer}
- * s.
- * </p>
- * <p>
- * Generally it's preferred to use {@link ISingleDataContainerBasedView} or
- * {@link IMultiDataContainerBasedView} instead of this interface.
- * </p>
+ * Listener for {@link RemoveDataContainerEvent}s.
  * 
  * @author Alexander Lex
+ * 
  */
-public interface IDataContainerBasedView {
+public class RemoveDataContainerListener extends
+		AEventListener<IMultiDataContainerBasedView> {
 
-	/**
-	 * Returns all {@link DataContainer}s that this view and all of its possible
-	 * remote views contain.
-	 * 
-	 * @return
-	 */
-	public List<DataContainer> getDataContainers();
+	@Override
+	public void handleEvent(AEvent event) {
+		if (event instanceof RemoveDataContainerEvent) {
+			RemoveDataContainerEvent rEvent = (RemoveDataContainerEvent) event;
+			handler.removeDataContainer(rEvent.getDataContainerID());
+		}
+	}
+
 }

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,13 +22,22 @@ package org.caleydo.view.stratomex.brick.configurer;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.perspective.RecordPerspective;
+import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
+import org.caleydo.core.view.opengl.picking.APickingListener;
+import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.util.button.Button;
+import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
@@ -45,6 +54,7 @@ import org.caleydo.view.stratomex.brick.ui.OverviewHeatMapRenderer;
 import org.caleydo.view.stratomex.brick.viewcreation.HeatMapCreator;
 import org.caleydo.view.stratomex.brick.viewcreation.HistogramCreator;
 import org.caleydo.view.stratomex.brick.viewcreation.ParCoordsCreator;
+import org.eclipse.swt.widgets.Shell;
 
 /**
  * Configurer for bricks to display numerical data.
@@ -103,6 +113,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 
 		layoutTemplate.showFooterBar(false);
 		layoutTemplate.showToolBar(true);
+		layoutTemplate.showClusterButton(true);
 
 	}
 
@@ -214,7 +225,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		layoutTemplate.showFooterBar(true);
 
 	}
-	
+
 	@Override
 	public void configure(CompactHeaderBrickLayoutTemplate layoutTemplate) {
 		HashSet<EContainedViewType> validViewTypes = new HashSet<EContainedViewType>();
@@ -242,7 +253,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		ArrayList<ElementLayout> headerBarElements = createHeaderBarElements(layoutTemplate);
 		layoutTemplate.setHeaderBarElements(headerBarElements);
 	}
-	
+
 	@Override
 	public void setBrickViews(GLBrick brick, GL2 gl, GLMouseListener glMouseListener,
 			ABrickLayoutConfiguration brickLayout) {
@@ -285,7 +296,7 @@ public class NumericalDataConfigurer extends ATableBasedDataConfigurer {
 		brick.setViews(views);
 		brick.setContainedViewRenderers(containedViewRenderers);
 	}
-	
+
 	@Override
 	public boolean useDefaultWidth() {
 		return true;

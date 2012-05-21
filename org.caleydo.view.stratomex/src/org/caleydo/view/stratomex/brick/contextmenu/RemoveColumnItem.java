@@ -17,33 +17,27 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-/**
- * 
- */
-package org.caleydo.core.view;
+package org.caleydo.view.stratomex.brick.contextmenu;
 
-import java.util.List;
-import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.view.contextmenu.AContextMenuItem;
+import org.caleydo.core.view.listener.RemoveDataContainerEvent;
 
 /**
- * <p>
- * Base interface for views that use a single or multiple {@link DataContainer}
- * s.
- * </p>
- * <p>
- * Generally it's preferred to use {@link ISingleDataContainerBasedView} or
- * {@link IMultiDataContainerBasedView} instead of this interface.
- * </p>
- * 
  * @author Alexander Lex
+ * 
  */
-public interface IDataContainerBasedView {
+public class RemoveColumnItem extends AContextMenuItem {
 
 	/**
-	 * Returns all {@link DataContainer}s that this view and all of its possible
-	 * remote views contain.
 	 * 
-	 * @return
 	 */
-	public List<DataContainer> getDataContainers();
+	public RemoveColumnItem(int dataContainerID) {
+
+		setLabel("Remove column");
+
+		RemoveDataContainerEvent event = new RemoveDataContainerEvent(dataContainerID);
+		event.setSender(this);
+		registerEvent(event);
+	}
+
 }

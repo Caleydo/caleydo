@@ -20,6 +20,7 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -79,7 +80,7 @@ public class MappedDataRenderer {
 
 	private GLEnRoutePathway parentView;
 
-//	private List<ALinearizableNode> linearizedNodes;
+	// private List<ALinearizableNode> linearizedNodes;
 
 	private ArrayList<RelationshipRenderer> relationShipRenderers;
 
@@ -127,7 +128,7 @@ public class MappedDataRenderer {
 	IDType sampleIDType;
 
 	int selectedBucketID = 0;
-	
+
 	/**
 	 * Constructor with parent view as parameter.
 	 */
@@ -237,8 +238,6 @@ public class MappedDataRenderer {
 		captionColumn.append(columnCaptionSpacing);
 		baseRow.append(captionColumn);
 
-
-
 		int nodeCount = 0;
 		float previousNodePosition = viewFrustum.getHeight() + yOffset
 				- parentView.getPixelGLConverter().getGLHeightForPixelHeight(50);
@@ -310,7 +309,8 @@ public class MappedDataRenderer {
 			else
 				color = ODD_BACKGROUND_COLOR;
 
-			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color, parentView);
+			RelationshipRenderer relationShipRenderer = new RelationshipRenderer(color,
+					parentView);
 			relationShipRenderers.add(relationShipRenderer);
 			float x = node.getPosition().x()
 					+ parentView.getPixelGLConverter().getGLWidthForPixelWidth(
@@ -517,7 +517,6 @@ public class MappedDataRenderer {
 		ArrayList<DataContainer> newDataContainers = new ArrayList<DataContainer>(1);
 		newDataContainers.add(newDataContainer);
 		resolveSubDataContainers(newDataContainers);
-
 	}
 
 	/**
@@ -534,6 +533,21 @@ public class MappedDataRenderer {
 	 */
 	public ArrayList<DataContainer> getDataContainers() {
 		return dataContainers;
+	}
+
+	public void removeDataContainer(int dataContainerID) {
+		Iterator<DataContainer> dataContainerIterator = dataContainers.iterator();
+
+		while (dataContainerIterator.hasNext()) {
+			DataContainer container = dataContainerIterator.next();
+			if (container.getID() == dataContainerID) {
+				dataContainerIterator.remove();
+			}
+		}
+		resolvedDataContainers.clear();
+		// TODO - this is maybe not the most elegant way to remove the resolved
+		// sub-data containers
+		resolveSubDataContainers(dataContainers);
 	}
 
 	/**
