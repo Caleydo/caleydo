@@ -89,6 +89,32 @@ public class Graph {
 		nodes.add(node);
 	}
 
+	/**
+	 * Removes the edge specified by the nodes.
+	 * 
+	 * @param node1
+	 * @param node2
+	 * @return True, if the edge was removed, false, if no edge was found.
+	 */
+	public boolean removeEdge(IDVINode node1, IDVINode node2) {
+		if (!nodes.contains(node1))
+			return false;
+		if (!nodes.contains(node2))
+			return false;
+
+		boolean edgeRemoved = false;
+		Set<Edge> edgesCopy = new HashSet<Edge>(edges);
+		
+		for (Edge edge : edgesCopy) {
+			if ((edge.getNode1() == node1 && edge.getNode2() == node2)
+					|| (edge.getNode1() == node2 && edge.getNode2() == node1)) {
+				edges.remove(edge);
+				edgeRemoved = true;
+			}
+		}
+		return edgeRemoved;
+	}
+
 	public Edge addEdge(IDVINode node1, IDVINode node2) {
 		if (!nodes.contains(node1))
 			nodes.add(node1);
@@ -141,8 +167,8 @@ public class Graph {
 
 		if (nodeEdges != null) {
 			for (Edge edge : nodeEdges) {
-				IDVINode neighbor = edge.getNode1() == node ? edge.getNode2()
-						: edge.getNode1();
+				IDVINode neighbor = edge.getNode1() == node ? edge.getNode2() : edge
+						.getNode1();
 				Set<Edge> neighborEdges = nodeConnections.get(neighbor);
 				if (neighborEdges != null) {
 					neighborEdges.remove(edge);

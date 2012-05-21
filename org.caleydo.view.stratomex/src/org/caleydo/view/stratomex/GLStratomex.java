@@ -213,7 +213,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	private boolean isConnectionLinesDirty = true;
 
-	private Set<IDataDomain> dataDomains;
+//	private Set<IDataDomain> dataDomains;
 	private List<DataContainer> dataContainers;
 
 	private boolean isVendingMachineMode = false;
@@ -239,7 +239,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		relationAnalyzer = new RelationAnalyzer();
 
-		dataDomains = new HashSet<IDataDomain>();
+//		dataDomains = new HashSet<IDataDomain>();
 		dataContainers = new ArrayList<DataContainer>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
@@ -1331,12 +1331,12 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				dataContainers.add(dataContainer);
 
 				uninitializedDimensionGroups.add(dimensionGroup);
-				if (dataContainer instanceof PathwayDataContainer) {
-					dataDomains.add(((PathwayDataContainer) dataContainer)
-							.getPathwayDataDomain());
-				} else {
-					dataDomains.add(dataContainer.getDataDomain());
-				}
+//				if (dataContainer instanceof PathwayDataContainer) {
+//					dataDomains.add(((PathwayDataContainer) dataContainer)
+//							.getPathwayDataDomain());
+//				} else {
+//					dataDomains.add(dataContainer.getDataDomain());
+//				}
 
 				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
 						.getRightGroupStartIndex() + 1);
@@ -1773,6 +1773,15 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	@Override
 	public Set<IDataDomain> getDataDomains() {
+		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
+		for (DataContainer dataContainer : dataContainers) {
+			if (dataContainer instanceof PathwayDataContainer) {
+				dataDomains.add(((PathwayDataContainer) dataContainer)
+						.getPathwayDataDomain());
+			} else {
+				dataDomains.add(dataContainer.getDataDomain());
+			}
+		}
 		return dataDomains;
 	}
 

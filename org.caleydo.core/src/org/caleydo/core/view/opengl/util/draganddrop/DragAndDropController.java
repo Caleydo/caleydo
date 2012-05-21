@@ -22,7 +22,9 @@ package org.caleydo.core.view.opengl.util.draganddrop;
 import java.awt.Point;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
@@ -42,6 +44,29 @@ public class DragAndDropController {
 		isDragging = false;
 		isDraggingFirstTime = false;
 		this.view = view;
+//		view.getParentGLCanvas().addMouseListener(new MouseListener() {
+//			
+//			@Override
+//			public void mouseReleased(MouseEvent e) {
+//			}
+//			
+//			@Override
+//			public void mousePressed(MouseEvent e) {
+//			}
+//			
+//			@Override
+//			public void mouseExited(MouseEvent e) {
+//			}
+//			
+//			@Override
+//			public void mouseEntered(MouseEvent e) {
+//			}
+//			
+//			@Override
+//			public void mouseClicked(MouseEvent arg0) {
+//			}
+//		});
+		
 	}
 
 	public void addDraggable(IDraggable draggable) {
@@ -56,6 +81,10 @@ public class DragAndDropController {
 //	public void startDragging(String draggingMode) {
 //		this.draggingMode = draggingMode;
 //		startDragging();
+//	}
+	
+//	public void setDraggingProperties(Point draggingStartPosition, String draggingMode) {
+//		
 //	}
 
 	public void startDragging() {

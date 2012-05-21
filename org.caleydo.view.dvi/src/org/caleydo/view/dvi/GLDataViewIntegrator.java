@@ -31,9 +31,11 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -818,24 +820,37 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		if (viewNode == null)
 			return;
 
-		Set<IDataDomain> dataDomains = view.getDataDomains();
-		if (dataDomains != null && !dataDomains.isEmpty()) {
-			viewNode.setDataDomains(dataDomains);
-			for (IDataDomain dataDomain : dataDomains) {
+		Set<IDataDomain> dataDomainsOfView = view.getDataDomains();
+		if (dataDomainsOfView != null) {
+			viewNode.setDataDomains(dataDomainsOfView);
+			
+			for (IDataDomain dataDomain : dataNodesOfDataDomains.keySet()) {
+				
 				Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
-				if (viewNodes == null) {
-					viewNodes = new HashSet<ViewNode>();
-				}
-				viewNodes.add(viewNode);
-				viewNodesOfDataDomains.put(dataDomain, viewNodes);
-				ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
-				if (dataNode != null) {
-					Edge edge = dataGraph.addEdge(dataNode, viewNode);
-					AEdgeRenderer edgeRenderer = graphLayout
-							.getLayoutSpecificEdgeRenderer(edge);
-					edge.setEdgeRenderer(edgeRenderer);
+				if(dataDomainsOfView.contains(dataDomain)) {
+					if (viewNodes == null) {
+						viewNodes = new HashSet<ViewNode>();
+					}
+					viewNodes.add(viewNode);
+					viewNodesOfDataDomains.put(dataDomain, viewNodes);
+					ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+					if (dataNode != null) {
+						Edge edge = dataGraph.addEdge(dataNode, viewNode);
+						AEdgeRenderer edgeRenderer = graphLayout
+								.getLayoutSpecificEdgeRenderer(edge);
+						edge.setEdgeRenderer(edgeRenderer);
+					}
+				} else {
+					if(viewNodes != null) {
+						viewNodes.remove(viewNode);
+					}
+					ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
+					if (dataNode != null) {
+						dataGraph.removeEdge(dataNode, viewNode);
+					}
 				}
 			}
+			
 
 			viewNode.update();
 		}
