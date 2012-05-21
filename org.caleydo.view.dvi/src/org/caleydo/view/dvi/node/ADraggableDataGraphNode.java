@@ -73,22 +73,22 @@ public abstract class ADraggableDataGraphNode
 			public void clicked(Pick pick)
 			{
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "NodeDrag");
 				dragAndDropController.addDraggable(ADraggableDataGraphNode.this);
-				dragAndDropController.setDraggingMode("NodeDrag");
+//				dragAndDropController.setDraggingMode("NodeDrag");
 			}
 
-			@Override
-			public void dragged(Pick pick)
-			{
-				String draggingMode = dragAndDropController.getDraggingMode();
-				if (!dragAndDropController.isDragging()
-						&& dragAndDropController.hasDraggables() && draggingMode != null
-						&& draggingMode.equals("NodeDrag"))
-				{
-					dragAndDropController.startDragging();
-				}
-			}
+//			@Override
+//			public void dragged(Pick pick)
+//			{
+//				String draggingMode = dragAndDropController.getDraggingMode();
+//				if (!dragAndDropController.isDragging()
+//						&& dragAndDropController.hasDraggables() && draggingMode != null
+//						&& draggingMode.equals("NodeDrag"))
+//				{
+//					dragAndDropController.startDragging();
+//				}
+//			}
 
 		};
 

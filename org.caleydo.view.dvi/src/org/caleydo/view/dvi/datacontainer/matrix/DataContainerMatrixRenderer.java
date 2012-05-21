@@ -272,23 +272,24 @@ public class DataContainerMatrixRenderer
 				// .setSelectionType(SelectionType.SELECTION);
 				Point point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
+				dragAndDropController.setDraggingProperties(new Point(point.x, point.y), "PerspectiveDrag");
+//				dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
 				dragAndDropController.addDraggable(perspectiveRenderer);
-				dragAndDropController.setDraggingMode("PerspectiveDrag");
+//				dragAndDropController.setDraggingMode("PerspectiveDrag");
 				view.setDisplayListDirty();
 			}
 
-			@Override
-			public void dragged(Pick pick) {
-
-				String draggingMode = dragAndDropController.getDraggingMode();
-
-				if (!dragAndDropController.isDragging()
-						&& dragAndDropController.hasDraggables() && draggingMode != null
-						&& draggingMode.equals("PerspectiveDrag")) {
-					dragAndDropController.startDragging();
-				}
-			}
+//			@Override
+//			public void dragged(Pick pick) {
+//
+//				String draggingMode = dragAndDropController.getDraggingMode();
+//
+//				if (!dragAndDropController.isDragging()
+//						&& dragAndDropController.hasDraggables() && draggingMode != null
+//						&& draggingMode.equals("PerspectiveDrag")) {
+//					dragAndDropController.startDragging();
+//				}
+//			}
 
 			private PerspectiveRenderer getPerspectiveRenderer(int id) {
 				CellContainer container = getCellContainerWithHashID(id);

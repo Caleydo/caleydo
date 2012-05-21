@@ -1070,19 +1070,19 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 			}
 
-			@Override
-			public void dragged(Pick pick) {
-				if (dragAndDropController.hasDraggables()) {
-					String draggingMode = dragAndDropController.getDraggingMode();
-
-					if (glMouseListener.wasRightMouseButtonPressed())
-						dragAndDropController.clearDraggables();
-					else if (!dragAndDropController.isDragging() && draggingMode != null
-							&& draggingMode.equals("DimensionGroupDrag"))
-						dragAndDropController.startDragging();
-				}
-
-			}
+//			@Override
+//			public void dragged(Pick pick) {
+//				if (dragAndDropController.hasDraggables()) {
+//					String draggingMode = dragAndDropController.getDraggingMode();
+//
+//					if (glMouseListener.wasRightMouseButtonPressed())
+//						dragAndDropController.clearDraggables();
+//					else if (!dragAndDropController.isDragging() && draggingMode != null
+//							&& draggingMode.equals("DimensionGroupDrag"))
+//						dragAndDropController.startDragging();
+//				}
+//
+//			}
 
 		}, EPickingType.DIMENSION_GROUP.name());
 

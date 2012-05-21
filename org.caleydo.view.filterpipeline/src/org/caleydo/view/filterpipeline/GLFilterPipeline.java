@@ -443,8 +443,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 				if (dragAndDropController.hasDraggables()) {
 					if (glMouseListener.wasRightMouseButtonPressed())
 						dragAndDropController.clearDraggables();
-					else if (!dragAndDropController.isDragging())
-						dragAndDropController.startDragging();
+//					else if (!dragAndDropController.isDragging())
+//						dragAndDropController.startDragging();
 				}
 				dragAndDropController.setDropArea(filterList.get(externalID));
 				break;

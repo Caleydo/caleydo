@@ -75,7 +75,7 @@ public class ScrollBarRenderer
 			@Override
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
+				dragAndDropController.setDraggingProperties(pick.getPickedPoint(), "ScrollbarDrag");
 				dragAndDropController.addDraggable(ScrollBarRenderer.this);
 			}
 
@@ -83,12 +83,12 @@ public class ScrollBarRenderer
 			public void mouseOver(Pick pick) {
 			}
 
-			@Override
-			public void dragged(Pick pick) {
-				if (!dragAndDropController.isDragging()) {
-					dragAndDropController.startDragging();
-				}
-			}
+//			@Override
+//			public void dragged(Pick pick) {
+//				if (!dragAndDropController.isDragging()) {
+//					dragAndDropController.startDragging();
+//				}
+//			}
 
 		}, scrollBar.getPickingType().name(), scrollBar.getID());
 	}

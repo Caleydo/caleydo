@@ -825,17 +825,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				}
 			}
 
-			@Override
-			public void dragged(Pick pick) {
-				DragAndDropController dragAndDropController = stratomex
-						.getDragAndDropController();
-				String draggingMode = dragAndDropController.getDraggingMode();
-				if (!dragAndDropController.isDragging()
-						&& dragAndDropController.hasDraggables() && draggingMode != null
-						&& draggingMode.equals("BrickDrag" + dimensionGroup.getID())) {
-					dragAndDropController.startDragging();
-				}
-			}
+//			@Override
+//			public void dragged(Pick pick) {
+//				DragAndDropController dragAndDropController = stratomex
+//						.getDragAndDropController();
+//				String draggingMode = dragAndDropController.getDraggingMode();
+//				if (!dragAndDropController.isDragging()
+//						&& dragAndDropController.hasDraggables() && draggingMode != null
+//						&& draggingMode.equals("BrickDrag" + dimensionGroup.getID())) {
+//					dragAndDropController.startDragging();
+//				}
+//			}
 
 			@Override
 			public void rightClicked(Pick pick) {

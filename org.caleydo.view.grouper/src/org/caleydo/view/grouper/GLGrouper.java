@@ -522,7 +522,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 					if (!dragAndDropController.isDragging()) {
 						if (dragAndDropController.containsDraggable(groupRep)) {
 							potentialNewSelection = false;
-							dragAndDropController.startDragging();
+//							dragAndDropController.startDragging();
 						}
 
 					}

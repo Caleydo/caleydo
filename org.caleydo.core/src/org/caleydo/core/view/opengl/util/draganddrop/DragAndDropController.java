@@ -44,29 +44,6 @@ public class DragAndDropController {
 		isDragging = false;
 		isDraggingFirstTime = false;
 		this.view = view;
-//		view.getParentGLCanvas().addMouseListener(new MouseListener() {
-//			
-//			@Override
-//			public void mouseReleased(MouseEvent e) {
-//			}
-//			
-//			@Override
-//			public void mousePressed(MouseEvent e) {
-//			}
-//			
-//			@Override
-//			public void mouseExited(MouseEvent e) {
-//			}
-//			
-//			@Override
-//			public void mouseEntered(MouseEvent e) {
-//			}
-//			
-//			@Override
-//			public void mouseClicked(MouseEvent arg0) {
-//			}
-//		});
-		
 	}
 
 	public void addDraggable(IDraggable draggable) {
@@ -78,28 +55,24 @@ public class DragAndDropController {
 		draggables.remove(draggable);
 	}
 
-//	public void startDragging(String draggingMode) {
-//		this.draggingMode = draggingMode;
-//		startDragging();
-//	}
-	
-//	public void setDraggingProperties(Point draggingStartPosition, String draggingMode) {
-//		
-//	}
+	public void setDraggingProperties(Point draggingStartPosition, String draggingMode) {
+		this.draggingMode = draggingMode;
+		this.startDraggingWindowCoords = draggingStartPosition;
+	}
 
-	public void startDragging() {
+	private void startDragging() {
 		isDragging = true;
 		isDraggingFirstTime = true;
 		dropArea = null;
 	}
 
 	public void setDropArea(IDropArea dropArea) {
-		if(dropArea == this.dropArea)
+		if (dropArea == this.dropArea)
 			return;
-		if(this.dropArea != null)
+		if (this.dropArea != null)
 			this.dropArea.handleDropAreaReplaced();
 		this.dropArea = dropArea;
-		
+
 	}
 
 	public void clearDraggables() {
@@ -108,22 +81,31 @@ public class DragAndDropController {
 
 	public void handleDragging(GL2 gl, GLMouseListener glMouseListener) {
 
+		if (!isDragging) {
+			if (glMouseListener.wasMouseDragged() && startDraggingWindowCoords != null
+					&& hasDraggables()) {
+				startDragging();
+			}
+		}
+
 		if (isDragging) {
 			Point mouseWinCoords = glMouseListener.getPickedPoint();
 
 			float[] fArTargetWorldCoordinates = new float[] { 0, 0 };
 
 			PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
-			// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl, mouseWinCoords.x,
+			// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
+			// mouseWinCoords.x,
 			// mouseWinCoords.y);
-			fArTargetWorldCoordinates[0] = pixelGLConverter.getGLWidthForPixelWidth(mouseWinCoords.x);
-			fArTargetWorldCoordinates[1] =
-				pixelGLConverter.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()
-					- mouseWinCoords.y);
+			fArTargetWorldCoordinates[0] = pixelGLConverter
+					.getGLWidthForPixelWidth(mouseWinCoords.x);
+			fArTargetWorldCoordinates[1] = pixelGLConverter
+					.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()
+							- mouseWinCoords.y);
 
 			if (dropArea != null) {
 				dropArea.handleDragOver(gl, draggables, fArTargetWorldCoordinates[0],
-					fArTargetWorldCoordinates[1]);
+						fArTargetWorldCoordinates[1]);
 			}
 
 			for (IDraggable draggable : draggables) {
@@ -131,30 +113,34 @@ public class DragAndDropController {
 
 					float[] fArStartDraggingWorldCoordinates = new float[] { 0, 0 };
 					// GLCoordinateUtils.convertWindowCoordinatesToWorldCoordinates(gl,
-					// startDraggingWindowCoords.x, startDraggingWindowCoords.y);
-					fArStartDraggingWorldCoordinates[0] =
-						pixelGLConverter.getGLWidthForPixelWidth(startDraggingWindowCoords.x);
-					fArStartDraggingWorldCoordinates[1] =
-						pixelGLConverter.getGLHeightForPixelHeight(view.getParentGLCanvas().getHeight()
-							- startDraggingWindowCoords.y);
+					// startDraggingWindowCoords.x,
+					// startDraggingWindowCoords.y);
+					fArStartDraggingWorldCoordinates[0] = pixelGLConverter
+							.getGLWidthForPixelWidth(startDraggingWindowCoords.x);
+					fArStartDraggingWorldCoordinates[1] = pixelGLConverter
+							.getGLHeightForPixelHeight(view.getParentGLCanvas()
+									.getHeight() - startDraggingWindowCoords.y);
 					draggable.setDraggingStartPoint(fArStartDraggingWorldCoordinates[0],
-						fArStartDraggingWorldCoordinates[1]);
+							fArStartDraggingWorldCoordinates[1]);
 				}
-				draggable.handleDragging(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
+				draggable.handleDragging(gl, fArTargetWorldCoordinates[0],
+						fArTargetWorldCoordinates[1]);
 			}
 
 			if (glMouseListener.wasMouseReleased()) {
 				isDragging = false;
 				for (IDraggable draggable : draggables) {
-					draggable.handleDrop(gl, fArTargetWorldCoordinates[0], fArTargetWorldCoordinates[1]);
+					draggable.handleDrop(gl, fArTargetWorldCoordinates[0],
+							fArTargetWorldCoordinates[1]);
 				}
 				if (dropArea != null) {
 					dropArea.handleDrop(gl, draggables, fArTargetWorldCoordinates[0],
-						fArTargetWorldCoordinates[1], this);
+							fArTargetWorldCoordinates[1], this);
 
 				}
 				clearDraggables();
 				draggingMode = null;
+				startDraggingWindowCoords = null;
 				view.setDisplayListDirty();
 			}
 
@@ -186,8 +172,15 @@ public class DragAndDropController {
 		return draggingMode;
 	}
 
-	public void setDraggingMode(String draggingMode)
-	{
+	public void setDraggingMode(String draggingMode) {
 		this.draggingMode = draggingMode;
+	}
+
+	/**
+	 * @param draggables
+	 *            setter, see {@link #draggables}
+	 */
+	public void setDraggables(Set<IDraggable> draggables) {
+		this.draggables = draggables;
 	}
 }
