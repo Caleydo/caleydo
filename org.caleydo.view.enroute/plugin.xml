@@ -38,6 +38,14 @@
                   icon="resources/icons/enroute.png"
                   label="enRoute - Pathway Path"
                   style="push">
+               <visibleWhen checkEnabled="false">
+                  <with
+                        variable="org.caleydo.core.isReleaseState">
+                     <equals
+                           value="releaseVersion">
+                     </equals>
+                  </with>
+               </visibleWhen>                  
             </command>
          </menu>
       </menuContribution>
