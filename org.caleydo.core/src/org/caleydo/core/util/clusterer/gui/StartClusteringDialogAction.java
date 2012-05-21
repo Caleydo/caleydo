@@ -241,9 +241,9 @@ public class StartClusteringDialogAction extends Action implements
 			}
 		});
 
-		new TreeTab(tabFolder);
+		new KMeansTab(tabFolder);		
 		new AffinityTab(tabFolder);
-		new KMeansTab(tabFolder);
+		new TreeTab(tabFolder);
 		// new OtherClusterersTab(tabFolder);
 
 		Button helpButton = new Button(composite, SWT.PUSH);
