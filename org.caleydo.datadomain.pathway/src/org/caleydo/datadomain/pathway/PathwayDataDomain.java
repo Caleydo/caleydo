@@ -40,7 +40,8 @@ import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
- * The data domain for pathways triggers the loading of the pathways from KEGG and BioCarta.
+ * The data domain for pathways triggers the loading of the pathways from KEGG
+ * and BioCarta.
  * 
  * @author Marc Streit
  * @author Alexander Lex
@@ -88,6 +89,10 @@ public class PathwayDataDomain
 		icon = EIconTextures.DATA_DOMAIN_PATHWAY;
 
 		this.dataSetDescription = new DataSetDescription();
+
+		// Pathways should not be serialized, as they are automatically loaded
+		// when genetic data get loaded.
+		isSerializeable = false;
 	}
 
 	@Override
@@ -182,7 +187,7 @@ public class PathwayDataDomain
 		event.setSender(this);
 		GeneralManager.get().getEventPublisher().triggerEvent(event);
 	}
-	
+
 	@Override
 	public String getLabel() {
 		return "Pathways: KEGG & BioCarta";

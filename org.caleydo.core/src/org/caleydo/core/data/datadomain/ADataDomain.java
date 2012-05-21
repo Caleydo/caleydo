@@ -68,6 +68,9 @@ public abstract class ADataDomain
 
 	/** determines which view will be opened after a DataDomain is created */
 	protected String defaultStartViewType;
+	
+	/** determines whether a data domain should be serialized **/
+	protected boolean isSerializeable = true;
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
@@ -189,5 +192,12 @@ public abstract class ADataDomain
 	@Override
 	public void addIDCategory(IDCategory category) {
 		idCategories.add(category);
+	}
+	
+	/**
+	 * @return the isSerializeable, see {@link #isSerializeable}
+	 */
+	public boolean isSerializeable() {
+		return isSerializeable;
 	}
 }

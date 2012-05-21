@@ -112,4 +112,9 @@ public interface IDataDomain {
 	public void addIDCategory(IDCategory category);
 
 	public String getLabel();
+	
+	/**
+	 * @return Returns if a data domain should be serialized
+	 */
+	public boolean isSerializeable();
 }
