@@ -123,10 +123,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler {
 	public static String VIEW_TYPE = "org.caleydo.view.dvi";
-	
-	public static String VIEW_NAME = "Data-View Integrator";
-	
 
+	public static String VIEW_NAME = "Data-View Integrator";
 
 	public final static int BOUNDS_SPACING_PIXELS = 10;
 
@@ -188,8 +186,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		connectionBandRenderer = new ConnectionBandRenderer();
 		VIEW_TYPE = GLDataViewIntegrator.VIEW_TYPE;
-		
-		
+
 		glKeyListener = new GLDVIKeyListener();
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
 		relativeNodePositions = new HashMap<IDVINode, Pair<Float, Float>>();
@@ -632,12 +629,12 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		showDataConnectionsEventListener.setHandler(this);
 		eventPublisher.addListener(ShowDataConnectionsEvent.class,
 				showDataConnectionsEventListener);
-		
+
 		recordVAUpdateEventListener = new RecordVAUpdateEventListener();
 		recordVAUpdateEventListener.setHandler(this);
-		eventPublisher.addListener(RecordVAUpdateEvent.class,
-				recordVAUpdateEventListener);
-		
+		eventPublisher
+				.addListener(RecordVAUpdateEvent.class, recordVAUpdateEventListener);
+
 		dimensionVAUpdateEventListener = new DimensionVAUpdateEventListener();
 		dimensionVAUpdateEventListener.setHandler(this);
 		eventPublisher.addListener(DimensionVAUpdateEvent.class,
@@ -702,12 +699,12 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			eventPublisher.removeListener(showDataConnectionsEventListener);
 			showDataConnectionsEventListener = null;
 		}
-		
+
 		if (recordVAUpdateEventListener != null) {
 			eventPublisher.removeListener(recordVAUpdateEventListener);
 			recordVAUpdateEventListener = null;
 		}
-		
+
 		if (dimensionVAUpdateEventListener != null) {
 			eventPublisher.removeListener(dimensionVAUpdateEventListener);
 			dimensionVAUpdateEventListener = null;
@@ -823,11 +820,11 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		Set<IDataDomain> dataDomainsOfView = view.getDataDomains();
 		if (dataDomainsOfView != null) {
 			viewNode.setDataDomains(dataDomainsOfView);
-			
+
 			for (IDataDomain dataDomain : dataNodesOfDataDomains.keySet()) {
-				
+
 				Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
-				if(dataDomainsOfView.contains(dataDomain)) {
+				if (dataDomainsOfView.contains(dataDomain)) {
 					if (viewNodes == null) {
 						viewNodes = new HashSet<ViewNode>();
 					}
@@ -841,7 +838,7 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 						edge.setEdgeRenderer(edgeRenderer);
 					}
 				} else {
-					if(viewNodes != null) {
+					if (viewNodes != null) {
 						viewNodes.remove(viewNode);
 					}
 					ADataNode dataNode = dataNodesOfDataDomains.get(dataDomain);
@@ -850,7 +847,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 					}
 				}
 			}
-			
 
 			viewNode.update();
 		}
@@ -919,9 +915,9 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		setDisplayListDirty();
 	}
 
-//	public TextureManager getTextureManager() {
-//		return textureManager;
-//	}
+	// public TextureManager getTextureManager() {
+	// return textureManager;
+	// }
 
 	public int getMaxDataAmount() {
 		return maxDataAmount;
@@ -931,8 +927,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		DataDomainGraph dataDomainGraph = DataDomainManager.get().getDataDomainGraph();
 
-		Set<org.caleydo.core.data.datadomain.graph.Edge> edges = dataDomainGraph.getEdges(
-				node1.getDataDomain(), node2.getDataDomain());
+		Set<org.caleydo.core.data.datadomain.graph.Edge> edges = dataDomainGraph
+				.getEdges(node1.getDataDomain(), node2.getDataDomain());
 
 		StringBuffer stringBuffer = new StringBuffer();
 
@@ -1190,27 +1186,25 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	public void reshape(GLAutoDrawable drawable, int x, int y, int width, int height) {
 		super.reshape(drawable, x, y, width, height);
 
-		// if (!waitForMinSizeApplication && isRendered) {
-		//
-		// int drawingAreaWidth = pixelGLConverter
-		// .getPixelWidthForGLWidth(viewFrustum.getWidth())
-		// - 2
-		// * BOUNDS_SPACING_PIXELS;
-		// int drawingAreaHeight = pixelGLConverter
-		// .getPixelHeightForGLHeight(viewFrustum.getHeight())
-		// - 2
-		// * BOUNDS_SPACING_PIXELS;
-		//
-		// for (IDataGraphNode node : dataGraph.getNodes()) {
-		// Pair<Float, Float> relativePosition = relativeNodePositions
-		// .get(node);
-		// graphLayout.setNodePosition(node, new Point2D.Double(
-		// relativePosition.getFirst() * drawingAreaWidth,
-		// relativePosition.getSecond() * drawingAreaHeight));
-		// }
-		//
-		// // updateMinWindowSize(false);
-		// }
+		if (!waitForMinSizeApplication && isRendered) {
+
+			int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
+					.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
+			int drawingAreaHeight = pixelGLConverter
+					.getPixelHeightForGLHeight(viewFrustum.getHeight())
+					- 2
+					* BOUNDS_SPACING_PIXELS;
+
+			for (IDVINode node : dataGraph.getNodes()) {
+				Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
+				graphLayout.setNodePosition(node,
+						new Point2D.Double(
+								relativePosition.getFirst() * drawingAreaWidth,
+								relativePosition.getSecond() * drawingAreaHeight));
+			}
+
+//			updateMinWindowSize(true);
+		}
 	}
 
 	public ADataNode getDataNode(IDataDomain dataDomain) {
