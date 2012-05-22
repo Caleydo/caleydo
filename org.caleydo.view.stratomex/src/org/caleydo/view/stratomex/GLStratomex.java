@@ -1101,7 +1101,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 							.getDimensionGroupSpacers().get(pick.getObjectID()));
 				} else {
 					if (dragAndDropController.isDragging()) {
-						int i = 0;
+						
 					}
 				}
 			};

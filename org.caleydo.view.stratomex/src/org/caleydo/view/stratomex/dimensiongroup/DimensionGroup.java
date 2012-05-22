@@ -72,7 +72,6 @@ import org.caleydo.view.stratomex.brick.layout.TitleOnlyHeaderBrickLayoutTemplat
 import org.caleydo.view.stratomex.brick.ui.OverviewDetailBandRenderer;
 import org.eclipse.swt.widgets.Composite;
 
-
 /**
  * Container for a group of dimensions. Manages layouts as well as brick views
  * for the whole dimension group.
@@ -166,7 +165,6 @@ public class DimensionGroup extends ATableBasedView implements
 	private boolean isVerticalMoveDraggingActive = false;
 
 	private float previousYCoordinate = Float.NaN;
-
 
 	/** the minimal width of the brick */
 	private int minPixelWidth;
@@ -275,9 +273,9 @@ public class DimensionGroup extends ATableBasedView implements
 	public void setCollapsed(boolean isCollapsed) {
 		this.isCollapsed = isCollapsed;
 		// isCollapsed;
-//		 centerBrick.setBrickLayoutTemplate(new
-//		 CompactBrickLayoutTemplate(centerBrick,
-//		 glVisBricksView, this));
+		// centerBrick.setBrickLayoutTemplate(new
+		// CompactBrickLayoutTemplate(centerBrick,
+		// glVisBricksView, this));
 
 		if (headerBrick == null || uninitializedBricks.contains(headerBrick))
 			return;
@@ -533,8 +531,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 *            the pixel height of the arch
 	 */
 	public void setArchHeight(int archHeight) {
-		if (headerBrick != null)
-		{
+		if (headerBrick != null) {
 			headerBrick.setStaticBrickHeight(archHeight);
 			headerBrick.setBrickHeigthMode(EBrickHeightMode.STATIC);
 		}
@@ -1017,6 +1014,13 @@ public class DimensionGroup extends ATableBasedView implements
 			detailBrick.unregisterEventListeners();
 			detailBrick.destroy();
 			detailBrick = null;
+			// if we previously had an open detail brick we close it now
+			if (this.expandLeft != expandLeft) {
+				if (this.isDetailBrickShown && this.expandLeft)
+					stratomex.switchToOverviewModeLeft();
+				else if (this.isDetailBrickShown && !this.expandLeft)
+					stratomex.switchToOverviewModeRight();
+			}
 		}
 
 		detailBrickLayout = new Column("detailBrickWrappingLayout");
