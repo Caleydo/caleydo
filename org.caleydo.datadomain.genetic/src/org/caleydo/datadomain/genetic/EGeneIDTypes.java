@@ -17,27 +17,50 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.collection;
+package org.caleydo.datadomain.genetic;
+
+import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 
 /**
- * Collection of different types of dimensions.
+ * List of names of {@link IDType}s that belong to the gene {@link IDCategory}.
+ * These values should not be used as enums, but with the {@link #name()}
+ * accessor for its string equivalent.
  * 
- * @author Marc Streit
  * @author Alexander Lex
+ * 
  */
-public enum EColumnType {
-	// Needed by the parser
-	// ABORT(null),
-	// SKIP(null),
+public enum EGeneIDTypes {
+	/** The gene ID Category */
+	GENE,
 
-	INT(Integer.class),
-	FLOAT(Float.class),
-	STRING(String.class);
+	DAVID(EColumnType.INT),
+	GENE_SYMBOL(EColumnType.STRING),
+	GENE_NAME(EColumnType.STRING),
+	BIOCARTA_GENE_ID(EColumnType.STRING),
+	REFSEQ_MRNA(EColumnType.STRING),
+	ENSEMBL_GENE_ID(EColumnType.STRING),
+	ENTREZ_GENE_ID(EColumnType.INT),
+	PATHWAY_VERTEX(EColumnType.INT),
+	PATHWAY(EColumnType.INT);
 
-	// CERTAINTY(Float.class);
+	private EColumnType columnType;
 
-	private <T> EColumnType(Class<T> dimensionClass) {
-
+	/**
+	 * 
+	 */
+	private EGeneIDTypes() {
 	}
 
+	private EGeneIDTypes(EColumnType columnType) {
+		this.columnType = columnType;
+	}
+
+	/**
+	 * @return the columnType, see {@link #columnType}
+	 */
+	public EColumnType getColumnType() {
+		return columnType;
+	}
 }

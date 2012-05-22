@@ -10,38 +10,47 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
 
 /**
- * Class that triggers the creation of all genetic {@link IDType}s and mappings. 
+ * Class that triggers the creation of all genetic {@link IDType}s and mappings.
  * 
  * @author Marc Streit
- *
+ * 
  */
 public class GeneticIDMappingCreator {
-	
+
 	public static void createIDTypesAndMapping() {
-		
-		IDCategory geneIDCategory = IDCategory.registerCategory("GENE");
+
+		IDCategory geneIDCategory = IDCategory.registerCategory(EGeneIDTypes.GENE.name());
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
-		
-		IDType.registerType("DAVID", geneIDCategory, EColumnType.INT);
-		IDType.registerType("GENE_NAME", geneIDCategory, EColumnType.STRING);
-		IDType geneSymbol = IDType.registerType("GENE_SYMBOL", geneIDCategory,
-				EColumnType.STRING);
+
+		IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
+				EGeneIDTypes.DAVID.getColumnType());
+		IDType.registerType(EGeneIDTypes.GENE_NAME.name(), geneIDCategory,
+				EGeneIDTypes.GENE_NAME.getColumnType());
+		IDType geneSymbol = IDType.registerType(EGeneIDTypes.GENE_SYMBOL.name(),
+				geneIDCategory, EGeneIDTypes.GENE_SYMBOL.getColumnType());
 		geneIDCategory.setHumanReadableIDType(geneSymbol);
-		IDType.registerType("BIOCARTA_GENE_ID", geneIDCategory, EColumnType.STRING);
-		IDType.registerType("REFSEQ_MRNA", geneIDCategory, EColumnType.STRING);
-		IDType.registerType("ENSEMBL_GENE_ID", geneIDCategory, EColumnType.STRING);
-		IDType.registerType("ENTREZ_GENE_ID", geneIDCategory, EColumnType.INT);
-		IDType.registerType("DAVID", geneIDCategory, EColumnType.INT);
-		IDType.registerType("PATHWAY_VERTEX", geneIDCategory, EColumnType.INT);
-		IDType.registerType("PATHWAY", geneIDCategory, EColumnType.INT);
+		IDType.registerType(EGeneIDTypes.BIOCARTA_GENE_ID.name(), geneIDCategory,
+				EGeneIDTypes.BIOCARTA_GENE_ID.getColumnType());
+		IDType.registerType(EGeneIDTypes.REFSEQ_MRNA.name(), geneIDCategory,
+				EGeneIDTypes.REFSEQ_MRNA.getColumnType());
+		IDType.registerType(EGeneIDTypes.ENSEMBL_GENE_ID.name(), geneIDCategory,
+				EGeneIDTypes.ENSEMBL_GENE_ID.getColumnType());
+		IDType.registerType(EGeneIDTypes.ENTREZ_GENE_ID.name(), geneIDCategory,
+				EGeneIDTypes.ENTREZ_GENE_ID.getColumnType());
+		IDType.registerType(EGeneIDTypes.PATHWAY_VERTEX.name(), geneIDCategory,
+				EGeneIDTypes.PATHWAY_VERTEX.getColumnType());
+		IDType.registerType(EGeneIDTypes.PATHWAY.name(), geneIDCategory,
+				EGeneIDTypes.PATHWAY.getColumnType());
 
 		String fileName = "data/genome/mapping/david/"
 				+ GeneralManager.get().getBasicInfo().getOrganism();
 
-		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory, EColumnType.INT);
+		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory,
+				EColumnType.INT);
 		sampleIntIDType.setInternalType(true);
-		
-		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory, EColumnType.STRING);
+
+		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
+				EColumnType.STRING);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();
@@ -64,8 +73,8 @@ public class GeneticIDMappingCreator {
 		idMappingCreator.createMapping("data/genome/mapping/"
 				+ GeneralManager.get().getBasicInfo().getOrganism()
 				+ "_BIOCARTA_GENE_ID_2_REFSEQ_MRNA.txt", 0, -1,
-				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"), "\t",
-				geneIDCategory, true, true, true, IDType.getIDType("BIOCARTA_GENE_ID"),
-				IDType.getIDType("DAVID"));
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("REFSEQ_MRNA"),
+				"\t", geneIDCategory, true, true, true,
+				IDType.getIDType("BIOCARTA_GENE_ID"), IDType.getIDType("DAVID"));
 	}
 }

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,7 +21,6 @@ package org.caleydo.view.browser;
 
 import java.util.Set;
 
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.delta.SelectionDeltaItem;
@@ -29,12 +28,14 @@ import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
 import org.caleydo.core.data.selection.events.SelectionUpdateListener;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.gui.preferences.PreferenceConstants;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.specialized.Organism;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.caleydo.datadomain.genetic.EGeneIDTypes;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
@@ -47,10 +48,9 @@ import org.eclipse.swt.widgets.Display;
  * 
  * @author Marc Streit
  */
-public class GenomeHTMLBrowser extends HTMLBrowser implements
-		IDataDomainBasedView<GeneticDataDomain>, ISelectionUpdateHandler {
+public class GenomeHTMLBrowser extends HTMLBrowser implements ISelectionUpdateHandler {
 
-	private GeneticDataDomain dataDomain;
+	// private GeneticDataDomain dataDomain;
 
 	private BrowserQueryType browserQueryType = BrowserQueryType.KEGG_HomoSapiens;
 
@@ -60,6 +60,7 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 	private IDType sourceIDType;
 	private Integer sourceID;
+	private IDCategory geneIDCategory;
 
 	/**
 	 * Constructor.
@@ -68,6 +69,10 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		super(GeneralManager.get().getIDCreator()
 				.createID(ManagedObjectType.VIEW_SWT_BROWSER_GENOME), parentComposite);
+
+		geneIDCategory = IDCategory.getIDCategory(EGeneIDTypes.GENE.name());
+		registerEventListeners();
+
 	}
 
 	@Override
@@ -151,9 +156,6 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 	@Override
 	public void handleSelectionUpdate(final SelectionDelta selectionDelta) {
-		if (selectionDelta.getIDType().getIDCategory() != dataDomain
-				.getRecordIDCategory())
-			return;
 
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
@@ -199,9 +201,12 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 	}
 
 	private void updateURL(IDType targetIDType) {
+		if (!sourceIDType.getIDCategory().equals(geneIDCategory))
+			return;
 
-		Set<Object> queryIDs = dataDomain.getGeneIDMappingManager().getIDAsSet(
-				sourceIDType, targetIDType, sourceID);
+		Set<Object> queryIDs = IDMappingManagerRegistry.get()
+				.getIDMappingManager(targetIDType)
+				.getIDAsSet(sourceIDType, targetIDType, sourceID);
 
 		String sURL = "";
 
@@ -230,7 +235,6 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 
 		selectionUpdateListener = new SelectionUpdateListener();
 		selectionUpdateListener.setHandler(this);
-		selectionUpdateListener.setExclusiveDataDomainID(dataDomain.getDataDomainID());
 		eventPublisher.addListener(SelectionUpdateEvent.class, selectionUpdateListener);
 	}
 
@@ -253,15 +257,15 @@ public class GenomeHTMLBrowser extends HTMLBrowser implements
 		return serializedForm;
 	}
 
-	@Override
-	public void setDataDomain(GeneticDataDomain dataDomain) {
-		this.dataDomain = dataDomain;
-
-		registerEventListeners();
-	}
-
-	@Override
-	public GeneticDataDomain getDataDomain() {
-		return dataDomain;
-	}
+	// @Override
+	// public void setDataDomain(GeneticDataDomain dataDomain) {
+	// this.dataDomain = dataDomain;
+	//
+	// registerEventListeners();
+	// }
+	//
+	// @Override
+	// public GeneticDataDomain getDataDomain() {
+	// return dataDomain;
+	// }
 }

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -30,8 +30,7 @@ import org.eclipse.swt.browser.Browser;
 import org.eclipse.swt.browser.LocationAdapter;
 import org.eclipse.swt.browser.LocationEvent;
 
-public class IDExtractionLocationListener
-	extends LocationAdapter {
+public class IDExtractionLocationListener extends LocationAdapter {
 	// private GeneralManager generalManager;
 	private IDMappingManager idManager;
 
@@ -40,8 +39,8 @@ public class IDExtractionLocationListener
 	/**
 	 * Constructor.
 	 */
-	public IDExtractionLocationListener(IDMappingManager idManager, final Browser browser,
-			final int iBrowserId, final int iSelectionSetId) {
+	public IDExtractionLocationListener(IDMappingManager idManager,
+			final Browser browser, final int iBrowserId, final int iSelectionSetId) {
 		this.idManager = idManager;
 	}
 
@@ -70,16 +69,17 @@ public class IDExtractionLocationListener
 		ArrayList<Integer> iAlSelectionId = null;
 		ArrayList<Integer> iAlSelectionDepth = null;
 		if (event.location.contains(sSearchPhrase_NCBIGeneId)) {
-			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId.length());
+			String sExtractedID = event.location.substring(sSearchPhrase_NCBIGeneId
+					.length());
 
-			Integer iDavidId = idManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
+			Integer davidID = idManager.getID(IDType.getIDType("ENTREZ_GENE_ID"),
 					IDType.getIDType("DAVID"), Integer.valueOf(sExtractedID));
 
-			if (iDavidId == null || iDavidId == -1)
+			if (davidID == null || davidID == -1)
 				return;
 
-			PathwayVertex vertex = PathwayItemManager.get()
-					.getPathwayVertexByDavidId(iDavidId);
+			PathwayVertex vertex = PathwayItemManager.get().getPathwayVertexByDavidId(
+					davidID);
 
 			if (vertex == null)
 				return;
@@ -92,8 +92,7 @@ public class IDExtractionLocationListener
 				iAlSelectionDepth.add(0);
 			}
 
-		}
-		else if (event.location.contains(sSearchPhrase_Pathway)) {
+		} else if (event.location.contains(sSearchPhrase_Pathway)) {
 			// Prevent loading of clicked pathway URL
 			event.doit = false;
 
@@ -102,32 +101,17 @@ public class IDExtractionLocationListener
 			// Extract clicked pathway ID
 			if (event.location.contains("map0")) {
 				iPathwayIdIndex = event.location.lastIndexOf("map0") + 4;
-			}
-			else if (event.location.contains("hsa0")) {
+			} else if (event.location.contains("hsa0")) {
 				iPathwayIdIndex = event.location.lastIndexOf("hsa0") + 4;
-			}
-			else
+			} else
 				return;
 
 			Integer.valueOf(
-					event.location.substring(iPathwayIdIndex, event.location.lastIndexOf('+')))
-					.intValue();
-
-			// iArSelectionId = new int[0];
-			// iArSelectionDepth = new int[0];
-
-			// iAlOptional.add(iPathwayId);
-		}
-		else
+					event.location.substring(iPathwayIdIndex,
+							event.location.lastIndexOf('+'))).intValue();
+		} else
 			return;
 
-		// TODO reimplement
-		// Selection tmpSelectionSet = (Selection)
-		// generalManager.getTableManager().getItem(
-		// iSelectionSetId);
-		// tmpSelectionSet.updateSelectionSet(iBrowserId, iAlSelectionId,
-		// iAlSelectionDepth,
-		// iAlOptional);
 	}
 
 	public void updateSkipNextChangeEvent(boolean bSkipNextChangeEvent) {

@@ -54,6 +54,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 public class GeneticDataDomain
 	extends ATableBasedDataDomain {
 
+	
+		
 	public final static String DATA_DOMAIN_TYPE = "org.caleydo.datadomain.genetic";
 
 	private static final String CLINICAL_DATADOMAIN_TYPE = "org.caleydo.datadomain.clinical";
