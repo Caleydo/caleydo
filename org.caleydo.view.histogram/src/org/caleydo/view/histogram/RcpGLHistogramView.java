@@ -21,31 +21,29 @@ package org.caleydo.view.histogram;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.selection.events.ClearSelectionsListener;
-import org.caleydo.core.event.view.ClearSelectionsEvent;
 import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.mapping.color.UpdateColorMappingListener;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.ITableBasedDataDomainView;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
-import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.eclipse.jface.action.IAction;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHandler,
+public class RcpGLHistogramView extends ARcpGLViewPart implements  
 		ITableBasedDataDomainView {
 
-	protected UpdateColorMappingListener updateViewListener;
-	protected ClearSelectionsListener clearSelectionsListener;
+	
+//	protected SelectionCommandListener clearSelectionsListener;
 
 	protected Composite histoComposite;
 
@@ -101,30 +99,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		alToolbar = new ArrayList<IAction>();
 	}
 
-	@Override
-	public void registerEventListeners() {
-
-		super.registerEventListeners();
-
-		clearSelectionsListener = new ClearSelectionsListener();
-		clearSelectionsListener.setHandler(this);
-		eventPublisher.addListener(ClearSelectionsEvent.class, clearSelectionsListener);
-	}
-
-	@Override
-	public void unregisterEventListeners() {
-
-		super.unregisterEventListeners();
-
-		if (updateViewListener != null) {
-			eventPublisher.removeListener(updateViewListener);
-			updateViewListener = null;
-		}
-		if (clearSelectionsListener != null) {
-			eventPublisher.removeListener(clearSelectionsListener);
-			clearSelectionsListener = null;
-		}
-	}
+	
 
 	@Override
 	public void createDefaultSerializedView() {
@@ -189,10 +164,6 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		return dataDomain;
 	}
 
-	@Override
-	public void handleRedrawView() {
-
-	}
 
 	@Override
 	public List<DataContainer> getDataContainers() {
@@ -204,11 +175,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 		return ((ITableBasedDataDomainView) view).getDataContainer();
 	}
 
-	@Override
-	public void handleClearSelections() {
-		// TODO Auto-generated method stub
-
-	}
+	
 
 	@Override
 	public void setLabel(String label, boolean isLabelDefault) {
@@ -225,5 +192,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements IViewCommandHa
 	public boolean isLabelDefault() {
 		return view.isLabelDefault();
 	}
+
+	
 
 }

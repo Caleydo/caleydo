@@ -126,10 +126,7 @@ public enum PickingType {
 	// tissue viewer
 	TISSUE_SELECTION,
 
-	// histogram
-	HISTOGRAM_COLOR_LINE,
-	HISTOGRAM_LEFT_SPREAD_COLOR_LINE,
-	HISTOGRAM_RIGHT_SPREAD_COLOR_LINE,
+
 
 	// scatterplot
 

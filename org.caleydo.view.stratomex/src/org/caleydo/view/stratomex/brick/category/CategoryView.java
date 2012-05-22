@@ -45,9 +45,8 @@ import org.eclipse.swt.widgets.Composite;
  */
 public class CategoryView extends ATableBasedView {
 	public static String VIEW_TYPE = "org.caleydo.view.histogram";
-	
-	public static String VIEW_NAME = "Categorical View";
 
+	public static String VIEW_NAME = "Categorical View";
 
 	float renderWidth;
 
@@ -115,27 +114,7 @@ public class CategoryView extends ATableBasedView {
 	@Override
 	protected void handlePickingEvents(PickingType pickingType, PickingMode pickingMode,
 			int externalID, Pick pick) {
-		if (detailLevel == EDetailLevel.VERY_LOW) {
-			return;
-		}
-		switch (pickingType) {
-
-		case HISTOGRAM_COLOR_LINE:
-
-			switch (pickingMode) {
-			case CLICKED:
-
-				break;
-			case MOUSE_OVER:
-
-				break;
-			default:
-				return;
-			}
-			setDisplayListDirty();
-			break;
-
-		}
+	
 	}
 
 	@Override
