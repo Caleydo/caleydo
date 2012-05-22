@@ -212,7 +212,7 @@ public abstract class AGLView
 	 * @param viewType TODO
 	 * @param viewName TODO
 	 */
-	protected AGLView(GLCanvas glCanvas, Composite parentComposite,
+	protected AGLView(GLCanvas glCanvas, final Composite parentComposite,
 			final ViewFrustum viewFrustum, String viewType, String viewName) {
 
 		super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.GL_VIEW),
@@ -223,8 +223,6 @@ public abstract class AGLView
 
 		glMouseListener = new GLMouseListener();
 		glMouseListener.setNavigationModes(false, false, false);
-
-		parentComposite.addKeyListener(new GLFPSKeyListener(this));
 		
 		// Register mouse listener to GL2 canvas
 		glCanvas.addMouseListener(glMouseListener);
@@ -260,6 +258,14 @@ public abstract class AGLView
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
+		glKeyListener = new GLFPSKeyListener(this);
+		parentComposite.getDisplay().asyncExec(new Runnable() {
+			@Override
+			public void run() {
+				parentComposite.addKeyListener(glKeyListener);
+			}
+		});
+		
 		GL2 gl = drawable.getGL().getGL2();
 
 		// This is specially important for Windows. Otherwise JOGL2 internally
