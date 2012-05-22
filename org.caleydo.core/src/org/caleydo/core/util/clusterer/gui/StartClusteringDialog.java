@@ -132,6 +132,7 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 		startClusteringAction = new StartClusteringDialogAction(this, parent, dataDomain,
 				sourceDimensionPerspective, sourceRecordPerspective);
 		startClusteringAction.run();
+	
 
 		return parent;
 	}
@@ -139,7 +140,7 @@ public class StartClusteringDialog extends TrayDialog implements IDataOKListener
 	@Override
 	protected Control createContents(Composite parent) {
 		Control control = super.createContents(parent);
-		if (dataDomain == null)
+		if (!startClusteringAction.isDataOK())
 			getButton(IDialogConstants.OK_ID).setEnabled(false);
 		return control;
 

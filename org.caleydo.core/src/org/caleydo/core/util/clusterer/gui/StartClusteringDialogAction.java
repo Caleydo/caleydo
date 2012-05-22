@@ -126,6 +126,7 @@ public class StartClusteringDialogAction extends Action implements
 			this.dataDomain = config.getDataDomain();
 			dimensionPerspective = config.getDimensionPerspective();
 			recordPerspective = config.getRecordPerspective();
+
 		} else {
 			this.dataDomain = dataDomain;
 
@@ -136,6 +137,7 @@ public class StartClusteringDialogAction extends Action implements
 		if (this.dataDomain != null) {
 			typeOptions[0] = this.dataDomain.getRecordDenomination(true, false);
 			typeOptions[1] = this.dataDomain.getDimensionDenomination(true, false);
+			// parent.dataOK();
 		}
 	}
 
@@ -240,7 +242,7 @@ public class StartClusteringDialogAction extends Action implements
 			}
 		});
 
-		new KMeansTab(tabFolder);		
+		new KMeansTab(tabFolder);
 		new AffinityTab(tabFolder);
 		new TreeTab(tabFolder);
 		// new OtherClusterersTab(tabFolder);
@@ -346,6 +348,15 @@ public class StartClusteringDialogAction extends Action implements
 		clusterTypeCombo.setEnabled(true);
 		clusterTargetName = typeOptions[0];
 		parent.dataOK();
+	}
+
+	/** Returns true if the data is fully initalized, else false */
+	public boolean isDataOK() {
+		if (dataDomain != null && recordPerspective != null
+				&& dimensionPerspective != null)
+			return true;
+
+		return false;
 	}
 
 }
