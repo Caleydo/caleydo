@@ -20,6 +20,7 @@
 package org.caleydo.datadomain.pathway.contextmenu.container;
 
 import java.util.List;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.view.contextmenu.AContextMenuItemContainer;

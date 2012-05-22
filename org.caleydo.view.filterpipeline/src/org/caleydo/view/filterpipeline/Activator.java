@@ -20,6 +20,7 @@
 package org.caleydo.view.filterpipeline;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.view.filterpipeline.toolbar.FilterPipelineToolBarContent;

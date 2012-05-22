@@ -20,7 +20,9 @@
 package org.caleydo.core.view.opengl.miniview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.dimension.AColumn;
 
 /**

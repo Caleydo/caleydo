@@ -20,7 +20,9 @@
 package org.caleydo.view.parcoords;
 
 import static org.caleydo.view.parcoords.PCRenderStyle.GATE_TIP_HEIGHT;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;

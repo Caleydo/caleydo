@@ -4,14 +4,16 @@
 package org.caleydo.view.enroute.node.mode;
 
 import gleem.linalg.Vec3f;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.ALinearizableNode;
 import org.caleydo.view.enroute.node.ANodeAttributeRenderer;
 import org.caleydo.view.enroute.node.ComplexNode;

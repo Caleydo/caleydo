@@ -20,6 +20,7 @@
 package org.caleydo.core.view.opengl.util.scrollbar;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;

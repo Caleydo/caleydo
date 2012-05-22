@@ -20,11 +20,12 @@
 package org.caleydo.view.stratomex.brick.ui;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
-import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.EPickingType;
+import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**

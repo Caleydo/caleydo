@@ -23,6 +23,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.IDCategory;

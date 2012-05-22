@@ -23,8 +23,10 @@
 package org.caleydo.view.enroute.node;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
 
@@ -42,8 +44,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.layout.BranchNodeLabelRenderer;
 
 /**

@@ -20,6 +20,7 @@
 package org.caleydo.view.heatmap.heatmap.renderer;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 import org.caleydo.view.heatmap.HeatMapRenderStyle;

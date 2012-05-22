@@ -35,6 +35,7 @@ import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_MOUSE_OVER_LINE_WI
 import static org.caleydo.view.parcoords.PCRenderStyle.Y_AXIS_SELECTED_LINE_WIDTH;
 import gleem.linalg.Rotf;
 import gleem.linalg.Vec3f;
+
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
@@ -43,9 +44,11 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
+
 import javax.management.InvalidAttributeValueException;
 import javax.media.opengl.GL2;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.dimension.RawDataType;
 import org.caleydo.core.data.collection.table.DataTable;
@@ -79,7 +82,6 @@ import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.format.Formatter;
-import org.caleydo.core.view.AView;
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 import org.caleydo.core.view.contextmenu.item.BookmarkMenuItem;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -105,8 +107,6 @@ import org.caleydo.view.parcoords.listener.BookmarkButtonListener;
 import org.caleydo.view.parcoords.listener.ResetAxisSpacingListener;
 import org.caleydo.view.parcoords.listener.UseRandomSamplingListener;
 import org.eclipse.swt.widgets.Composite;
-
-import weka.filters.SupervisedFilter;
 
 /**
  * This class is responsible for rendering the parallel coordinates

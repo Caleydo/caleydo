@@ -20,6 +20,7 @@
 package org.caleydo.view.filterpipeline.renderstyle;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
 

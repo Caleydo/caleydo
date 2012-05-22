@@ -20,6 +20,7 @@
 package org.caleydo.core.id;
 
 import java.util.HashMap;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;

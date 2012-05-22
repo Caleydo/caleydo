@@ -4,17 +4,20 @@
 package org.caleydo.view.enroute.node;
 
 import gleem.linalg.Vec3f;
+
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.ATimedMouseOutPickingListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.event.RemoveEnRouteNodeEvent;
 
 /**

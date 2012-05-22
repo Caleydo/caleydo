@@ -20,6 +20,7 @@
 package org.caleydo.core.startup;
 
 import java.util.Map;
+
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ADataDomain;

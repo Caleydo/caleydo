@@ -20,6 +20,7 @@
 package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
+
 import javax.media.opengl.GL2;
 
 /**

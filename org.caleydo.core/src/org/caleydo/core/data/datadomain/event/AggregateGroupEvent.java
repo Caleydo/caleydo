@@ -20,6 +20,7 @@
 package org.caleydo.core.data.datadomain.event;
 
 import java.util.Set;
+
 import org.caleydo.core.event.AEvent;
 
 /**

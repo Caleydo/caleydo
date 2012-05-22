@@ -19,17 +19,8 @@
  *******************************************************************************/
 package org.caleydo.core.gui.toolbar.action;
 
-import java.util.ArrayList;
-import org.caleydo.core.data.configuration.DataConfiguration;
-import org.caleydo.core.data.configuration.DataConfigurationChooser;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.data.loader.ResourceLoader;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.swt.widgets.Shell;

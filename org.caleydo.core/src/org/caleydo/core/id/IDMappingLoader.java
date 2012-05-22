@@ -20,6 +20,7 @@
 package org.caleydo.core.id;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.manager.GeneralManager;
 
 /**

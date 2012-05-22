@@ -21,6 +21,7 @@ package org.caleydo.view.stratomex.dimensiongroup;
 
 import java.util.Collection;
 import java.util.HashMap;
+
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**

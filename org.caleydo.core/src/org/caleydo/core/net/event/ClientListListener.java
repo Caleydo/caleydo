@@ -20,6 +20,7 @@
 package org.caleydo.core.net.event;
 
 import java.util.List;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.net.NetworkManager;

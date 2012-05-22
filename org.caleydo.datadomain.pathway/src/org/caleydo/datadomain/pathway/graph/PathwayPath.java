@@ -20,6 +20,7 @@
 package org.caleydo.datadomain.pathway.graph;
 
 import java.util.List;
+
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
 import org.jgrapht.GraphPath;
 import org.jgrapht.Graphs;

@@ -24,15 +24,17 @@ package org.caleydo.view.enroute.node;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.glu.GLU;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.util.base.ILabelProvider;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.node.mode.ALinearizeableNodeMode;
 
 /**

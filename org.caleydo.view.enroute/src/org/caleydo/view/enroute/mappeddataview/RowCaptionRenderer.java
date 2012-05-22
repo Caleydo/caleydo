@@ -20,7 +20,9 @@
 package org.caleydo.view.enroute.mappeddataview;
 
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;

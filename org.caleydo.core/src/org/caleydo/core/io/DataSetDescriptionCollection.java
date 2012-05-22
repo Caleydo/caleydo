@@ -23,6 +23,7 @@
 package org.caleydo.core.io;
 
 import java.util.ArrayList;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 

@@ -24,6 +24,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.caleydo.view.dvi.GeometryUtil;
 import org.caleydo.view.dvi.Graph;
 import org.caleydo.view.dvi.node.IDVINode;

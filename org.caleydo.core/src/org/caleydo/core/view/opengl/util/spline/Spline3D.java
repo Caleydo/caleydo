@@ -20,6 +20,7 @@ package org.caleydo.core.view.opengl.util.spline;
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 import gleem.linalg.Vec3f;
+
 import java.util.HashMap;
 import java.util.Map;
 

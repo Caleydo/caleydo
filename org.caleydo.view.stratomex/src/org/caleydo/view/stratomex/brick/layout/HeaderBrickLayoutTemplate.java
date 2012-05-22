@@ -20,10 +20,9 @@
 package org.caleydo.view.stratomex.brick.layout;
 
 import java.util.ArrayList;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.event.EventPublisher;
-import org.caleydo.core.event.data.StartClusteringEvent;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
@@ -39,8 +38,8 @@ import org.caleydo.core.view.opengl.picking.Pick;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
-import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.EPickingType;
+import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;

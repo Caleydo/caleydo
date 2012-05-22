@@ -20,6 +20,7 @@
 package org.caleydo.view.bucket;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.canvas.remote.AGLConnectionLineRenderer;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevel;
 

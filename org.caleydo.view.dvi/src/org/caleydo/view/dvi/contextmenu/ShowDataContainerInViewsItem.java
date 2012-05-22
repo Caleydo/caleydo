@@ -20,6 +20,7 @@
 package org.caleydo.view.dvi.contextmenu;
 
 import java.util.List;
+
 import org.caleydo.core.view.contextmenu.AContextMenuItem;
 
 public class ShowDataContainerInViewsItem extends AContextMenuItem {

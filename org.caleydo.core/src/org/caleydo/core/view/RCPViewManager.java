@@ -20,6 +20,7 @@
 package org.caleydo.core.view;
 
 import java.util.HashMap;
+
 import org.caleydo.core.event.AEvent;
 import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.IListenerOwner;

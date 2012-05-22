@@ -20,6 +20,7 @@
 package org.caleydo.view.treemap.layout;
 
 import java.util.List;
+
 import org.caleydo.core.data.graph.tree.AHierarchyElement;
 import org.caleydo.core.data.graph.tree.Tree;
 

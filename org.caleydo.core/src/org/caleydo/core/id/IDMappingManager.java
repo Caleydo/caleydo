@@ -26,6 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
 import org.caleydo.core.data.collection.EColumnType;
 import org.caleydo.core.util.collection.MultiHashMap;
 import org.caleydo.core.util.logging.Logger;

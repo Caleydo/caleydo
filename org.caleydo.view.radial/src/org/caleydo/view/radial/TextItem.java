@@ -20,7 +20,9 @@
 package org.caleydo.view.radial;
 
 import java.awt.geom.Rectangle2D;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 
 /**

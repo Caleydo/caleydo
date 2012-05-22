@@ -20,6 +20,7 @@
 package org.caleydo.core.startup;
 
 import java.util.List;
+
 import org.caleydo.core.io.gui.ImportDataDialog;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.collection.Pair;

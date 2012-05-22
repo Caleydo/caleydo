@@ -20,6 +20,7 @@
 package org.caleydo.core.data.filter.event;
 
 import java.util.Collection;
+
 import org.caleydo.core.data.filter.Filter;
 import org.caleydo.core.data.filter.FilterManager;
 import org.caleydo.core.data.filter.RecordFilter;

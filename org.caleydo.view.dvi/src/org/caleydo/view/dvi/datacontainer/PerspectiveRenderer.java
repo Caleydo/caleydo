@@ -20,6 +20,7 @@
 package org.caleydo.view.dvi.datacontainer;
 
 import java.awt.geom.Point2D;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 

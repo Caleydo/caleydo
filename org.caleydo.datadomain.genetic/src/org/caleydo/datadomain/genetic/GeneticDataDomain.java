@@ -21,7 +21,7 @@ package org.caleydo.datadomain.genetic;
 
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
-import org.caleydo.core.data.collection.EColumnType;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
@@ -39,10 +39,8 @@ import org.caleydo.core.data.virtualarray.events.ReplaceRecordPerspectiveListene
 import org.caleydo.core.event.view.SelectionCommandEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDMappingCreator;
 import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 
 /**

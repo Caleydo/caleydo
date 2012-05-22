@@ -26,18 +26,11 @@ import java.util.HashSet;
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.perspective.RecordPerspective;
-import org.caleydo.core.util.clusterer.gui.StartClusteringDialog;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
-import org.caleydo.core.view.opengl.picking.APickingListener;
-import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.core.view.opengl.util.button.Button;
-import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
@@ -54,7 +47,6 @@ import org.caleydo.view.stratomex.brick.ui.OverviewHeatMapRenderer;
 import org.caleydo.view.stratomex.brick.viewcreation.HeatMapCreator;
 import org.caleydo.view.stratomex.brick.viewcreation.HistogramCreator;
 import org.caleydo.view.stratomex.brick.viewcreation.ParCoordsCreator;
-import org.eclipse.swt.widgets.Shell;
 
 /**
  * Configurer for bricks to display numerical data.

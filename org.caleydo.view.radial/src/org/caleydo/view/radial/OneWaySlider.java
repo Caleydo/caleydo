@@ -21,10 +21,13 @@ package org.caleydo.view.radial;
 
 import gleem.linalg.Vec2f;
 import gleem.linalg.Vec3f;
+
 import java.awt.Font;
 import java.awt.Point;
 import java.awt.geom.Rectangle2D;
+
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
@@ -32,6 +35,7 @@ import org.caleydo.core.view.opengl.util.AGLGUIElement;
 import org.caleydo.core.view.opengl.util.GLCoordinateUtils;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
+
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 /**

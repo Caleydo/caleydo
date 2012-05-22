@@ -25,11 +25,11 @@ import java.util.Collections;
 import junit.framework.TestCase;
 
 import org.caleydo.core.data.collection.EColumnType;
-import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
+import org.caleydo.core.id.IDCategory;
+import org.caleydo.core.id.IDType;
 
 public class VirtualArrayTester extends TestCase {
 

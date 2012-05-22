@@ -4,6 +4,7 @@
 package org.caleydo.view.enroute.node.mode;
 
 import java.util.List;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.data.selection.EventBasedSelectionManager;
@@ -15,8 +16,8 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.layout.util.LabelRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
-import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.EPickingType;
+import org.caleydo.view.enroute.GLEnRoutePathway;
 import org.caleydo.view.enroute.mappeddataview.CategoricalContentPreviewRenderer;
 import org.caleydo.view.enroute.mappeddataview.ContentRenderer;
 import org.caleydo.view.enroute.mappeddataview.ContentRendererInitializor;

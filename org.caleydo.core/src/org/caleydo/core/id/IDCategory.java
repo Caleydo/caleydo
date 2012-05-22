@@ -22,6 +22,7 @@ package org.caleydo.core.id;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+
 import org.caleydo.core.data.selection.SelectionManager;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -21,12 +21,12 @@ package org.caleydo.view.heatmap.heatmap.renderer.texture;
 
 import java.nio.FloatBuffer;
 import java.util.ArrayList;
+
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLProfile;
+
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.collection.table.DataTable;
-import org.caleydo.core.data.container.DataContainer;
-import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.virtualarray.DimensionVirtualArray;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.manager.GeneralManager;
@@ -37,6 +37,7 @@ import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
 import org.caleydo.view.heatmap.heatmap.renderer.AHeatMapRenderer;
 import org.caleydo.view.heatmap.uncertainty.GLUncertaintyHeatMap;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 import com.jogamp.opengl.util.texture.TextureData;
@@ -64,18 +65,13 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 	private int numberOfDimensions;
 
-	private ATableBasedDataDomain dataDomain;
-	private DataContainer dataContainer;
-
 	private int groupIndex = -1;
 
 	private int viewID;
 
-	private ColorMapper colorMapper;
 
 	public HeatMapTextureRenderer(GLHeatMap heatMap) {
 		super(heatMap);
-		colorMapper = heatMap.getDataDomain().getColorMapper();
 	}
 
 	/**
@@ -83,7 +79,6 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	 */
 	public HeatMapTextureRenderer(GLUncertaintyHeatMap uncertaintyHeatMap) {
 		super(null);
-		colorMapper = uncertaintyHeatMap.getColorMapper();
 		viewID = uncertaintyHeatMap.getID();
 	}
 
@@ -172,6 +167,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		int textureCounter = 0;
 		float opacity = 1;
 
+		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 		for (Integer recordID : heatMap.getDataContainer().getRecordPerspective()
 				.getVirtualArray()) {
 

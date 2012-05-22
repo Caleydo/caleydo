@@ -21,8 +21,10 @@ package org.caleydo.core.util.mapping.color;
 
 import java.util.ArrayList;
 import java.util.Collections;
+
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
+
 import org.eclipse.swt.custom.CLabel;
 import org.eclipse.swt.graphics.Color;
 import org.eclipse.ui.PlatformUI;

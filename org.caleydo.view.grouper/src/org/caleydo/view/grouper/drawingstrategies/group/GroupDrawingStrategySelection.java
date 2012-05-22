@@ -20,11 +20,13 @@
 package org.caleydo.view.grouper.drawingstrategies.group;
 
 import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.view.grouper.GrouperRenderStyle;
 import org.caleydo.view.grouper.compositegraphic.GroupRepresentation;
+
 import com.jogamp.opengl.util.awt.TextRenderer;
 
 public class GroupDrawingStrategySelection extends AGroupDrawingStrategyRectangular {
