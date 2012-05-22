@@ -258,11 +258,11 @@ public abstract class AGLView
 	@Override
 	public void init(GLAutoDrawable drawable) {
 
-		glKeyListener = new GLFPSKeyListener(this);
+		final GLFPSKeyListener fpsKeyListener = new GLFPSKeyListener(this);
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
-				parentComposite.addKeyListener(glKeyListener);
+				parentComposite.addKeyListener(fpsKeyListener);
 			}
 		});
 		
