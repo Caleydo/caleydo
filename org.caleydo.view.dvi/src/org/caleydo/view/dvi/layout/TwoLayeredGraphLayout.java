@@ -27,6 +27,7 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import org.caleydo.core.util.collection.Pair;
@@ -45,8 +46,7 @@ import org.caleydo.view.dvi.node.ADataNode;
 import org.caleydo.view.dvi.node.IDVINode;
 import org.caleydo.view.dvi.node.ViewNode;
 
-public class TwoLayeredGraphLayout
-	extends AGraphLayout {
+public class TwoLayeredGraphLayout extends AGraphLayout {
 
 	protected static final int MIN_NODE_SPACING_PIXELS = 20;
 	protected static final int MAX_NODE_SPACING_PIXELS = 300;
@@ -54,12 +54,22 @@ public class TwoLayeredGraphLayout
 	protected static final int BARYCENTER_ITERATIONS_PHASE1 = 1;
 	protected static final int BARYCENTER_ITERATIONS_PHASE2 = 2;
 
-	private Rectangle2D layoutArea;
+	// private Rectangle2D layoutArea;
 	private IEdgeRoutingStrategy customEdgeRoutingStrategy;
 	private ArcRoutingStrategy insideLayerEdgeRoutingStrategy;
 	private int maxDataNodeHeightPixels;
 	private List<IDVINode> sortedDataNodes;
 	private List<IDVINode> sortedViewNodes;
+	/**
+	 * The x coordinates of the nodes relative to the current window.
+	 */
+	private Map<IDVINode, Float> relativeNodeXCoordinates = new HashMap<IDVINode, Float>();
+
+	/**
+	 * The offset between the bottom of a data node and the lowest bend point of
+	 * edges between data nodes.
+	 */
+	private int maxBendPointOffsetYPixels;
 
 	public int getMaxDataNodeHeightPixels() {
 		return maxDataNodeHeightPixels;
@@ -88,8 +98,7 @@ public class TwoLayeredGraphLayout
 	@Override
 	public void layout(Rectangle2D area) {
 
-		layoutArea = area;
-		if (layoutArea == null)
+		if (area == null)
 			return;
 
 		Set<IDVINode> dataNodes = new HashSet<IDVINode>();
@@ -108,8 +117,7 @@ public class TwoLayeredGraphLayout
 				summedDataNodesWidthPixels += node.getWidthPixels();
 				if (node.getHeightPixels() > maxDataNodeHeightPixels)
 					maxDataNodeHeightPixels = node.getHeightPixels();
-			}
-			else {
+			} else {
 				viewNodes.add(node);
 				summedViewNodesWidthPixels += node.getWidthPixels();
 				if (node.getHeightPixels() > maxViewNodeHeightPixels)
@@ -120,32 +128,36 @@ public class TwoLayeredGraphLayout
 		sortedDataNodes.clear();
 		sortedViewNodes.clear();
 		sortedViewNodes.addAll(viewNodes);
-		
-		List<Pair<String, IDVINode>> dataNodeSortingList = new ArrayList<Pair<String,IDVINode>>();
-		for(IDVINode dataNode : dataNodes) {
-			dataNodeSortingList.add(new Pair<String, IDVINode>(dataNode.getCaption().toUpperCase(), dataNode));
+
+		relativeNodeXCoordinates.clear();
+
+		List<Pair<String, IDVINode>> dataNodeSortingList = new ArrayList<Pair<String, IDVINode>>();
+		for (IDVINode dataNode : dataNodes) {
+			dataNodeSortingList.add(new Pair<String, IDVINode>(dataNode.getCaption()
+					.toUpperCase(), dataNode));
 		}
 		Collections.sort(dataNodeSortingList);
-		
-		for(Pair<String, IDVINode> pair : dataNodeSortingList) {
+
+		for (Pair<String, IDVINode> pair : dataNodeSortingList) {
 			sortedDataNodes.add(pair.getSecond());
 		}
 
 		applyBaryCenterReordering();
 
-		float dataNodeSpacingPixels = (float) (layoutArea.getWidth() - summedDataNodesWidthPixels)
+		float dataNodeSpacingPixels = (float) (area.getWidth() - summedDataNodesWidthPixels)
 				/ (float) (dataNodes.size() - 1);
 		dataNodeSpacingPixels = Math.max(dataNodeSpacingPixels, MIN_NODE_SPACING_PIXELS);
 		dataNodeSpacingPixels = Math.min(dataNodeSpacingPixels, MAX_NODE_SPACING_PIXELS);
 
-		float currentDataNodePositionX = (float) Math.max(
-				(float) (layoutArea.getMinX() + (layoutArea.getWidth()
+		float currentDataNodePositionX = (float) Math
+				.max((float) (area.getMinX() + (area.getWidth()
 						- summedDataNodesWidthPixels - (dataNodes.size() - 1)
-						* dataNodeSpacingPixels) / 2.0f), layoutArea.getMinX());
+						* dataNodeSpacingPixels) / 2.0f), area.getMinX());
 
-		int maxBendPointOffsetYPixels = Integer.MIN_VALUE;
+		maxBendPointOffsetYPixels = Integer.MIN_VALUE;
 		for (Edge edge : graph.getAllEdges()) {
-			if (edge.getNode1() instanceof ADataNode && edge.getNode2() instanceof ADataNode) {
+			if (edge.getNode1() instanceof ADataNode
+					&& edge.getNode2() instanceof ADataNode) {
 				int bendPointOffsetYPixels = insideLayerEdgeRoutingStrategy
 						.calcEdgeBendPointYOffsetPixels(edge.getNode1(), edge.getNode2());
 				if (bendPointOffsetYPixels > maxBendPointOffsetYPixels) {
@@ -157,27 +169,30 @@ public class TwoLayeredGraphLayout
 
 		boolean isUpsideDown = false;
 		float dataNodesBottomY = 0;
-		// expand direction factor determines if node is expanded to the top or to the bottom
+		// expand direction factor determines if node is expanded to the top or
+		// to the bottom
 		float expandDirectorFactor = 1;
 
 		if (view.isRenderedRemote()) {
-			// VisBricks 2.0 case where data nodes will be rendered on top and expand to the bottom
+			// VisBricks 2.0 case where data nodes will be rendered on top and
+			// expand to the bottom
 			isUpsideDown = false;
-			dataNodesBottomY = (float) layoutArea.getMaxY();
+			dataNodesBottomY = (float) area.getMaxY();
 			expandDirectorFactor = -1;
-		}
-		else {
+		} else {
 			isUpsideDown = true;
-			dataNodesBottomY = (float) layoutArea.getMinY() + maxBendPointOffsetYPixels;
+			dataNodesBottomY = (float) area.getMinY() + maxBendPointOffsetYPixels;
 		}
 
 		for (IDVINode node : sortedDataNodes) {
 
 			if (!node.isCustomPosition()) {
-				
-				setNodePosition(node,
-						new Point2D.Float(currentDataNodePositionX + node.getWidthPixels()
-								/ 2.0f, dataNodesBottomY + node.getHeightPixels() / 2.0f * expandDirectorFactor));
+
+				setNodePosition(
+						node,
+						new Point2D.Float(currentDataNodePositionX
+								+ node.getWidthPixels() / 2.0f, dataNodesBottomY
+								+ node.getHeightPixels() / 2.0f * expandDirectorFactor));
 			}
 
 			currentDataNodePositionX += node.getWidthPixels() + dataNodeSpacingPixels;
@@ -185,26 +200,35 @@ public class TwoLayeredGraphLayout
 			node.setUpsideDown(isUpsideDown);
 		}
 
-		float viewNodeSpacingPixels = (float) (layoutArea.getWidth() - summedViewNodesWidthPixels)
+		float viewNodeSpacingPixels = (float) (area.getWidth() - summedViewNodesWidthPixels)
 				/ (float) (viewNodes.size() - 1);
 		viewNodeSpacingPixels = Math.max(viewNodeSpacingPixels, MIN_NODE_SPACING_PIXELS);
 		viewNodeSpacingPixels = Math.min(viewNodeSpacingPixels, MAX_NODE_SPACING_PIXELS);
 
-		float currentViewNodePositionX = (float) Math.max(
-				(float) (layoutArea.getMinX() + (layoutArea.getWidth()
+		float currentViewNodePositionX = (float) Math
+				.max((float) (area.getMinX() + (area.getWidth()
 						- summedViewNodesWidthPixels - (viewNodes.size() - 1)
-						* viewNodeSpacingPixels) / 2.0f), layoutArea.getMinX());
+						* viewNodeSpacingPixels) / 2.0f), area.getMinX());
 
-		float viewNodesTopY = (float) layoutArea.getHeight() + (float) layoutArea.getMinY();
+		float viewNodesTopY = (float) area.getHeight() + (float) area.getMinY();
 
 		for (IDVINode node : sortedViewNodes) {
 			if (!node.isCustomPosition()) {
-				setNodePosition(node,
-						new Point2D.Float(currentViewNodePositionX + node.getWidthPixels()
-								/ 2.0f, viewNodesTopY - node.getHeightPixels() / 2.0f));
+				setNodePosition(
+						node,
+						new Point2D.Float(currentViewNodePositionX
+								+ node.getWidthPixels() / 2.0f, viewNodesTopY
+								- node.getHeightPixels() / 2.0f));
 			}
 
 			currentViewNodePositionX += node.getWidthPixels() + viewNodeSpacingPixels;
+		}
+
+		for (IDVINode node : graph.getNodes()) {
+			Point2D position = getNodePosition(node);
+
+			float relativePosX = (float) position.getX() / (float) area.getWidth();
+			relativeNodeXCoordinates.put(node, relativePosX);
 		}
 
 	}
@@ -346,10 +370,9 @@ public class TwoLayeredGraphLayout
 	// }
 
 	private void applyBaryCenterReordering() {
-		
-		List<IDVINode> viewNodesCopy = new ArrayList<IDVINode>(
-				sortedViewNodes);
-		
+
+		List<IDVINode> viewNodesCopy = new ArrayList<IDVINode>(sortedViewNodes);
+
 		int numCrossings = calcNumCrossings(sortedViewNodes, sortedDataNodes);
 		sortAccordingToBaryCenter(viewNodesCopy, sortedDataNodes);
 
@@ -358,92 +381,92 @@ public class TwoLayeredGraphLayout
 			sortedViewNodes = viewNodesCopy;
 			numCrossings = currentNumCrossings;
 		}
-		viewNodesCopy = new ArrayList<IDVINode>(
-				sortedViewNodes);
-		
+		viewNodesCopy = new ArrayList<IDVINode>(sortedViewNodes);
+
 		boolean wasReversed = reverseOrderOfNodesWithEqualBaryCenters(viewNodesCopy,
 				sortedDataNodes);
-		
-		if(wasReversed) {
+
+		if (wasReversed) {
 			currentNumCrossings = calcNumCrossings(viewNodesCopy, sortedDataNodes);
 			if (currentNumCrossings <= numCrossings) {
 				sortedViewNodes = viewNodesCopy;
 				numCrossings = currentNumCrossings;
 			}
 		}
-		
-		
-		
-		//This version of the sugiyama 1981 barycenter edge crossing minimization algorithm is untested and unfinished.
-//		int numCrossings = calcNumCrossings(sortedViewNodes, sortedDataNodes);
-//
-//		List<IDataGraphNode> viewNodesCopy = new ArrayList<IDataGraphNode>(
-//				sortedViewNodes);
-//		List<IDataGraphNode> dataNodesCopy = new ArrayList<IDataGraphNode>(
-//				sortedDataNodes);
-//		
-//		reorderAccordingToBaryCenters(numCrossings);
-//
-//		for (int i = 0; i < BARYCENTER_ITERATIONS_PHASE2; i++) {
-//
-//			viewNodesCopy = new ArrayList<IDataGraphNode>(sortedViewNodes);
-//			dataNodesCopy = new ArrayList<IDataGraphNode>(sortedDataNodes);
-//			boolean wasReversed = reverseOrderOfNodesWithEqualBaryCenters(viewNodesCopy,
-//					dataNodesCopy);
-//
-//			if (wasReversed) {
-//				if(!areBaryCentersAscending(dataNodesCopy, viewNodesCopy)) {
-//					reorderAccordingToBaryCenters(numCrossings);
-//				}
-//			}
-//
-//		}
+
+		// This version of the sugiyama 1981 barycenter edge crossing
+		// minimization algorithm is untested and unfinished.
+		// int numCrossings = calcNumCrossings(sortedViewNodes,
+		// sortedDataNodes);
+		//
+		// List<IDataGraphNode> viewNodesCopy = new ArrayList<IDataGraphNode>(
+		// sortedViewNodes);
+		// List<IDataGraphNode> dataNodesCopy = new ArrayList<IDataGraphNode>(
+		// sortedDataNodes);
+		//
+		// reorderAccordingToBaryCenters(numCrossings);
+		//
+		// for (int i = 0; i < BARYCENTER_ITERATIONS_PHASE2; i++) {
+		//
+		// viewNodesCopy = new ArrayList<IDataGraphNode>(sortedViewNodes);
+		// dataNodesCopy = new ArrayList<IDataGraphNode>(sortedDataNodes);
+		// boolean wasReversed =
+		// reverseOrderOfNodesWithEqualBaryCenters(viewNodesCopy,
+		// dataNodesCopy);
+		//
+		// if (wasReversed) {
+		// if(!areBaryCentersAscending(dataNodesCopy, viewNodesCopy)) {
+		// reorderAccordingToBaryCenters(numCrossings);
+		// }
+		// }
+		//
+		// }
 
 	}
 
-//	private void reorderAccordingToBaryCenters(int numCrossings) {
-//
-//		for (int j = 0; j < BARYCENTER_ITERATIONS_PHASE1; j++) {
-//
-//			List<IDataGraphNode> viewNodesCopy = new ArrayList<IDataGraphNode>(
-//					sortedViewNodes);
-//			List<IDataGraphNode> dataNodesCopy = new ArrayList<IDataGraphNode>(
-//					sortedDataNodes);
-//			sortAccordingToBaryCenter(viewNodesCopy, dataNodesCopy);
-//
-//			int currentNumCrossings = calcNumCrossings(viewNodesCopy, dataNodesCopy);
-//			if (currentNumCrossings <= numCrossings) {
-//				sortedViewNodes = viewNodesCopy;
-//				sortedDataNodes = dataNodesCopy;
-//				numCrossings = currentNumCrossings;
-//			}
-//
-//			viewNodesCopy = new ArrayList<IDataGraphNode>(sortedViewNodes);
-//			dataNodesCopy = new ArrayList<IDataGraphNode>(sortedDataNodes);
-//			sortAccordingToBaryCenter(sortedDataNodes, sortedViewNodes);
-//
-//			currentNumCrossings = calcNumCrossings(viewNodesCopy, dataNodesCopy);
-//			if (currentNumCrossings <= numCrossings) {
-//				sortedViewNodes = viewNodesCopy;
-//				sortedDataNodes = dataNodesCopy;
-//				numCrossings = currentNumCrossings;
-//			}
-//		}
-//	}
-//
-//	private boolean areBaryCentersAscending(List<IDataGraphNode> nodesToTest,
-//			List<IDataGraphNode> otherLevelNodes) {
-//
-//		float prevBaryCenter = -1;
-//		for (IDataGraphNode node : nodesToTest) {
-//			float baryCenter = calcBaryCenter(node, otherLevelNodes);
-//			if (baryCenter < prevBaryCenter)
-//				return false;
-//			prevBaryCenter = baryCenter;
-//		}
-//
-//		return true;
-//	}
+	// private void reorderAccordingToBaryCenters(int numCrossings) {
+	//
+	// for (int j = 0; j < BARYCENTER_ITERATIONS_PHASE1; j++) {
+	//
+	// List<IDataGraphNode> viewNodesCopy = new ArrayList<IDataGraphNode>(
+	// sortedViewNodes);
+	// List<IDataGraphNode> dataNodesCopy = new ArrayList<IDataGraphNode>(
+	// sortedDataNodes);
+	// sortAccordingToBaryCenter(viewNodesCopy, dataNodesCopy);
+	//
+	// int currentNumCrossings = calcNumCrossings(viewNodesCopy, dataNodesCopy);
+	// if (currentNumCrossings <= numCrossings) {
+	// sortedViewNodes = viewNodesCopy;
+	// sortedDataNodes = dataNodesCopy;
+	// numCrossings = currentNumCrossings;
+	// }
+	//
+	// viewNodesCopy = new ArrayList<IDataGraphNode>(sortedViewNodes);
+	// dataNodesCopy = new ArrayList<IDataGraphNode>(sortedDataNodes);
+	// sortAccordingToBaryCenter(sortedDataNodes, sortedViewNodes);
+	//
+	// currentNumCrossings = calcNumCrossings(viewNodesCopy, dataNodesCopy);
+	// if (currentNumCrossings <= numCrossings) {
+	// sortedViewNodes = viewNodesCopy;
+	// sortedDataNodes = dataNodesCopy;
+	// numCrossings = currentNumCrossings;
+	// }
+	// }
+	// }
+	//
+	// private boolean areBaryCentersAscending(List<IDataGraphNode> nodesToTest,
+	// List<IDataGraphNode> otherLevelNodes) {
+	//
+	// float prevBaryCenter = -1;
+	// for (IDataGraphNode node : nodesToTest) {
+	// float baryCenter = calcBaryCenter(node, otherLevelNodes);
+	// if (baryCenter < prevBaryCenter)
+	// return false;
+	// prevBaryCenter = baryCenter;
+	// }
+	//
+	// return true;
+	// }
 
 	/**
 	 * @param nodesToSort
@@ -452,8 +475,8 @@ public class TwoLayeredGraphLayout
 	 * @param nodesOtherLevel
 	 * @return
 	 */
-	private boolean reverseOrderOfNodesWithEqualBaryCenters(
-			List<IDVINode> nodesToSort, List<IDVINode> otherLevelNodes) {
+	private boolean reverseOrderOfNodesWithEqualBaryCenters(List<IDVINode> nodesToSort,
+			List<IDVINode> otherLevelNodes) {
 
 		List<IDVINode> sortedList = new ArrayList<IDVINode>();
 		List<IDVINode> currentSubList = new ArrayList<IDVINode>();
@@ -498,8 +521,7 @@ public class TwoLayeredGraphLayout
 		return nodesReversed;
 	}
 
-	private int calcNumCrossings(List<IDVINode> level1Nodes,
-			List<IDVINode> level2Nodes) {
+	private int calcNumCrossings(List<IDVINode> level1Nodes, List<IDVINode> level2Nodes) {
 
 		int numCrossings = 0;
 
@@ -562,8 +584,8 @@ public class TwoLayeredGraphLayout
 	}
 
 	@Override
-	public void updateNodePositions() {
-		layout(layoutArea);
+	public void fitNodesToDrawingArea(Rectangle2D area) {
+		layout(area);
 		view.setNodePositionsUpdated(true);
 	}
 
@@ -584,8 +606,7 @@ public class TwoLayeredGraphLayout
 			edgeRenderer = new TwoLayeredEdgeBandRenderer(edge, view);
 			edgeRenderer.setEdgeRoutingStrategy(customEdgeRoutingStrategy);
 
-		}
-		else {
+		} else {
 			edgeRenderer = new TwoLayeredEdgeLineRenderer(edge, view, view.getEdgeLabel(
 					(ADataNode) node1, (ADataNode) node2));
 			edgeRenderer.setEdgeRoutingStrategy(insideLayerEdgeRoutingStrategy);
@@ -604,8 +625,7 @@ public class TwoLayeredGraphLayout
 		if (node1 instanceof ViewNode || node2 instanceof ViewNode) {
 			edgeRenderer = new FreeLayoutEdgeBandRenderer(edge, view);
 
-		}
-		else {
+		} else {
 			edgeRenderer = new FreeLayoutEdgeLineRenderer(edge, view, view.getEdgeLabel(
 					(ADataNode) node1, (ADataNode) node2));
 		}
@@ -623,4 +643,26 @@ public class TwoLayeredGraphLayout
 		return Math.abs(index1 - index2);
 	}
 
+	@Override
+	public void applyIncrementalLayout(Rectangle2D area) {
+		for (IDVINode node : sortedDataNodes) {
+			Float relativePositionX = relativeNodeXCoordinates.get(node);
+			setNodePosition(
+					node,
+					new Point2D.Double(relativePositionX * (float) area.getWidth(), area
+							.getMinY()
+							+ maxBendPointOffsetYPixels
+							+ node.getHeightPixels()
+							/ 2.0f
+							* (view.isRenderedRemote() ? -1 : 1)));
+		}
+
+		for (IDVINode node : sortedViewNodes) {
+			Float relativePositionX = relativeNodeXCoordinates.get(node);
+			setNodePosition(
+					node,
+					new Point2D.Double(relativePositionX * (float) area.getWidth(), area
+							.getMaxY() - node.getHeightPixels() / 2.0f));
+		}
+	}
 }

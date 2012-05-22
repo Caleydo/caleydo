@@ -25,6 +25,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.view.dvi.Edge;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.Graph;
@@ -48,7 +49,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 	protected Map<Object, Point2D> centeredPositions = null;
 
-	protected Rectangle2D layoutingArea = null;
+	// protected Rectangle2D layoutingArea = null;
 
 	protected Collection<IDVINode> nodesToLayout = null;
 
@@ -79,11 +80,15 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 
 	protected boolean initializeConstraints = false;
 
+	/**
+	 * The positions of the nodes relative to the window.
+	 */
+	private Map<IDVINode, Pair<Float, Float>> relativeNodePositions = new HashMap<IDVINode, Pair<Float, Float>>();
+
 	protected IEdgeRoutingStrategy edgeRoutingStrategy;
 
 	public ForceDirectedGraphLayout(GLDataViewIntegrator view, Graph graph) {
 		super(view, graph);
-
 		edgeRoutingStrategy = new CollisionAvoidanceRoutingStrategy(graph);
 	}
 
@@ -398,8 +403,6 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (area == null)
 			return;
 
-		boolean equalAreas = area.equals(layoutingArea);
-		layoutingArea = area;
 		running = false;
 
 		if (graph == null)
@@ -411,25 +414,25 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		if (nodesToLayout == null)
 			return;
 
-//		// initializations
-//		if (initializeNodes) {
-			initializeNodePositions();
+		// // initializations
+		// if (initializeNodes) {
+		initializeNodePositions(area);
 
-			calculateDistanceMatrix();
+		calculateDistanceMatrix();
 
-			centering();
+		centering(area);
 
-			initializeNodes = false;
-//		}
+		initializeNodes = false;
+		// }
 
 		if (!graph.hasEdges())
 			return;
 
-//		if (initializeForces || !forcesWithoutError()) {
-			initializeForces();
+		// if (initializeForces || !forcesWithoutError()) {
+		initializeForces();
 
-			initializeForces = false;
-//		}
+		initializeForces = false;
+		// }
 
 		running = true;
 
@@ -488,8 +491,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 			}
 		}
 
-		if (nodeSet || !equalAreas) {
-			centering();
+		if (nodeSet) {
+			centering(area);
 		}
 
 		if (forceMax <= 1) {
@@ -500,11 +503,22 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 			node.setUpsideDown(false);
 		}
 
-		updateNodePositions();
+		fitNodesToDrawingArea(area);
+
+		relativeNodePositions.clear();
+
+		for (IDVINode node : nodesToLayout) {
+			Point2D position = getNodePosition(node);
+
+			float relativePosX = (float) position.getX() / (float) area.getWidth();
+			float relativePosY = (float) position.getY() / (float) area.getHeight();
+			relativeNodePositions.put(node, new Pair<Float, Float>(relativePosX,
+					relativePosY));
+		}
 	}
 
 	@Override
-	public void updateNodePositions() {
+	public void fitNodesToDrawingArea(Rectangle2D area) {
 		if (nodesToLayout == null)
 			return;
 
@@ -515,19 +529,17 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 				continue;
 
 			double nodePositionX = nodePosition.getX();
-			if (nodePositionX + node.getWidthPixels() / 2.0f > layoutingArea.getMaxX()) {
-				nodePositionX = layoutingArea.getMaxX() - node.getWidthPixels() / 2.0f;
-			} else if (nodePositionX - node.getWidthPixels() / 2.0f < layoutingArea
-					.getMinX()) {
-				nodePositionX = layoutingArea.getMinX() + node.getWidthPixels() / 2.0f;
+			if (nodePositionX + node.getWidthPixels() / 2.0f > area.getMaxX()) {
+				nodePositionX = area.getMaxX() - node.getWidthPixels() / 2.0f;
+			} else if (nodePositionX - node.getWidthPixels() / 2.0f < area.getMinX()) {
+				nodePositionX = area.getMinX() + node.getWidthPixels() / 2.0f;
 			}
 
 			double nodePositionY = getNodePosition(node).getY();
-			if (nodePositionY + node.getHeightPixels() / 2.0f > layoutingArea.getMaxY()) {
-				nodePositionY = layoutingArea.getMaxY() - node.getHeightPixels() / 2.0f;
-			} else if (nodePositionY - node.getHeightPixels() / 2.0f < layoutingArea
-					.getMinY()) {
-				nodePositionY = layoutingArea.getMinY() + node.getHeightPixels() / 2.0f;
+			if (nodePositionY + node.getHeightPixels() / 2.0f > area.getMaxY()) {
+				nodePositionY = area.getMaxY() - node.getHeightPixels() / 2.0f;
+			} else if (nodePositionY - node.getHeightPixels() / 2.0f < area.getMinY()) {
+				nodePositionY = area.getMinY() + node.getHeightPixels() / 2.0f;
 			}
 
 			setNodePosition(node, new Point2D.Float((float) nodePositionX,
@@ -541,7 +553,7 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		return graph.getNodes();
 	}
 
-	protected void initializeNodePositions() {
+	protected void initializeNodePositions(Rectangle2D area) {
 		if (graph == null)
 			return;
 		if (graph.getNumberOfNodes() == 0)
@@ -558,9 +570,9 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		Point2D point;
 		double arc = 0;
 		double arcStep = 2 * Math.PI / graph.getNumberOfNodes();
-		double radius = Math.min(layoutingArea.getWidth(), layoutingArea.getHeight()) / 2.5;
-		double centerX = layoutingArea.getWidth() / 2.0;
-		double centerY = layoutingArea.getHeight() / 2.0;
+		double radius = Math.min(area.getWidth(), area.getHeight()) / 2.5;
+		double centerX = area.getWidth() / 2.0;
+		double centerY = area.getHeight() / 2.0;
 
 		for (Object node : graph.getNodes()) {
 			if (!isPositionAvailable(node)) {
@@ -635,11 +647,11 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		}
 	}
 
-	protected void centering() {
+	protected void centering(Rectangle2D area) {
 		if (nodesToLayout.size() == 1) {
 			for (Object node : nodesToLayout) {
-				centeredPositions.put(node, new Point2D.Double(
-						layoutingArea.getCenterX(), layoutingArea.getCenterY()));
+				centeredPositions.put(node,
+						new Point2D.Double(area.getCenterX(), area.getCenterY()));
 			}
 
 			return;
@@ -662,11 +674,11 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 		}
 
 		// update scaling
-		double fx = maxX == minX ? 1 : (layoutingArea.getWidth()) / (maxX - minX);
-		double fy = maxY == minY ? 1 : (layoutingArea.getHeight()) / (maxY - minY);
+		double fx = maxX == minX ? 1 : (area.getWidth()) / (maxX - minX);
+		double fy = maxY == minY ? 1 : (area.getHeight()) / (maxY - minY);
 
-		double offsetX = layoutingArea.getMinX();
-		double offsetY = layoutingArea.getMinY();
+		double offsetX = area.getMinX();
+		double offsetY = area.getMinY();
 
 		// double factor = 1.0;
 		// if (fx < fy) {
@@ -743,8 +755,8 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 			edgeRenderer = new FreeLayoutEdgeBandRenderer(edge, view);
 
 		} else {
-			edgeRenderer = new FreeLayoutEdgeLineRenderer(edge, view,
-					view.getEdgeLabel((ADataNode) node1, (ADataNode) node2));
+			edgeRenderer = new FreeLayoutEdgeLineRenderer(edge, view, view.getEdgeLabel(
+					(ADataNode) node1, (ADataNode) node2));
 		}
 
 		edgeRenderer.setEdgeRoutingStrategy(edgeRoutingStrategy);
@@ -754,5 +766,16 @@ public class ForceDirectedGraphLayout extends AGraphLayout {
 	@Override
 	public AEdgeRenderer getCustomLayoutEdgeRenderer(Edge edge) {
 		return getLayoutSpecificEdgeRenderer(edge);
+	}
+
+	@Override
+	public void applyIncrementalLayout(Rectangle2D area) {
+		for (IDVINode node : nodesToLayout) {
+			Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
+			setNodePosition(node, new Point2D.Double(relativePosition.getFirst()
+					* (float) area.getWidth(), relativePosition.getSecond()
+					* (float) area.getHeight()));
+		}
+
 	}
 }

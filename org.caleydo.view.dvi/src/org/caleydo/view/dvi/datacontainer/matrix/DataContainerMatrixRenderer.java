@@ -55,8 +55,7 @@ import org.caleydo.view.dvi.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.dvi.event.AddDataContainerEvent;
 import org.caleydo.view.dvi.node.IDVINode;
 
-public class DataContainerMatrixRenderer
-	extends ADataContainerRenderer {
+public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 
 	protected ATableBasedDataDomain dataDomain;
 	// private List<ADimensionGroupData> dimensionGroupDatas;
@@ -75,8 +74,9 @@ public class DataContainerMatrixRenderer
 
 	protected ADataContainerMatrixRenderingStrategy renderingStrategy;
 
-	public DataContainerMatrixRenderer(ATableBasedDataDomain dataDomain, GLDataViewIntegrator view,
-			IDVINode node, DragAndDropController dragAndDropController) {
+	public DataContainerMatrixRenderer(ATableBasedDataDomain dataDomain,
+			GLDataViewIntegrator view, IDVINode node,
+			DragAndDropController dragAndDropController) {
 		super(node, view, dragAndDropController);
 
 		this.dataDomain = dataDomain;
@@ -95,13 +95,15 @@ public class DataContainerMatrixRenderer
 			return;
 
 		view.addTypePickingListener(new DataContainerPickingListener(view,
-				dragAndDropController, this), PickingType.DATA_CONTAINER.name() + node.getID());
+				dragAndDropController, this),
+				PickingType.DATA_CONTAINER.name() + node.getID());
 
 		view.addTypePickingListener(new APickingListener() {
 
 			@Override
 			public void mouseOver(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
+						.getObjectID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -112,7 +114,8 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void mouseOut(Pick pick) {
-				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick.getObjectID());
+				EmptyCellRenderer emptyCellRenderer = getEmptyCellRenderer(pick
+						.getObjectID());
 				if (emptyCellRenderer == null)
 					return;
 
@@ -149,7 +152,8 @@ public class DataContainerMatrixRenderer
 					RecordVirtualArray recordVA = null;
 					boolean createRecordPerspective = false;
 
-					if (!dataDomain.getTable().containsRecordPerspective(recordPerspectiveID)) {
+					if (!dataDomain.getTable().containsRecordPerspective(
+							recordPerspectiveID)) {
 						// FIXME: Check additionally if the group has a
 						// dimensionperspective
 
@@ -198,14 +202,13 @@ public class DataContainerMatrixRenderer
 					}
 
 					AddDataContainerEvent event = new AddDataContainerEvent(dataDomain,
-							recordPerspectiveID, createRecordPerspective, recordVA, rowGroup,
-							dimensionPerspectiveID, createDimensionPerspective, dimensionVA,
-							columnGroup);
+							recordPerspectiveID, createRecordPerspective, recordVA,
+							rowGroup, dimensionPerspectiveID, createDimensionPerspective,
+							dimensionVA, columnGroup);
 					if (useContextMenu) {
 						view.getContextMenuCreator().addContextMenuItem(
 								new AddDataContainerItem(event));
-					}
-					else {
+					} else {
 						event.setSender(this);
 						GeneralManager.get().getEventPublisher().triggerEvent(event);
 					}
@@ -255,7 +258,8 @@ public class DataContainerMatrixRenderer
 
 				// graphLayout.updateNodePositions();
 				node.recalculateNodeSize();
-				view.getGraphLayout().updateNodePositions();
+				view.getGraphLayout().fitNodesToDrawingArea(
+						view.calculateGraphDrawingArea());
 				view.setDisplayListDirty();
 			}
 
@@ -264,7 +268,8 @@ public class DataContainerMatrixRenderer
 		view.addTypePickingListener(new APickingListener() {
 			@Override
 			public void clicked(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
+						.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 				//
@@ -272,24 +277,26 @@ public class DataContainerMatrixRenderer
 				// .setSelectionType(SelectionType.SELECTION);
 				Point point = pick.getPickedPoint();
 				dragAndDropController.clearDraggables();
-				dragAndDropController.setDraggingProperties(new Point(point.x, point.y), "PerspectiveDrag");
-//				dragAndDropController.setDraggingStartPosition(new Point(point.x, point.y));
+				dragAndDropController.setDraggingProperties(new Point(point.x, point.y),
+						"PerspectiveDrag");
+				// dragAndDropController.setDraggingStartPosition(new
+				// Point(point.x, point.y));
 				dragAndDropController.addDraggable(perspectiveRenderer);
-//				dragAndDropController.setDraggingMode("PerspectiveDrag");
+				// dragAndDropController.setDraggingMode("PerspectiveDrag");
 				view.setDisplayListDirty();
 			}
 
-//			@Override
-//			public void dragged(Pick pick) {
-//
-//				String draggingMode = dragAndDropController.getDraggingMode();
-//
-//				if (!dragAndDropController.isDragging()
-//						&& dragAndDropController.hasDraggables() && draggingMode != null
-//						&& draggingMode.equals("PerspectiveDrag")) {
-//					dragAndDropController.startDragging();
-//				}
-//			}
+			// @Override
+			// public void dragged(Pick pick) {
+			//
+			// String draggingMode = dragAndDropController.getDraggingMode();
+			//
+			// if (!dragAndDropController.isDragging()
+			// && dragAndDropController.hasDraggables() && draggingMode != null
+			// && draggingMode.equals("PerspectiveDrag")) {
+			// dragAndDropController.startDragging();
+			// }
+			// }
 
 			private PerspectiveRenderer getPerspectiveRenderer(int id) {
 				CellContainer container = getCellContainerWithHashID(id);
@@ -307,19 +314,21 @@ public class DataContainerMatrixRenderer
 
 			@Override
 			public void mouseOver(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
+						.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 				float[] color = renderingStrategy.getPerspectiveColor();
 
-				perspectiveRenderer.setColor(new float[] { color[0] - 0.2f, color[1] - 0.2f,
-						color[2] - 0.2f, 1f });
+				perspectiveRenderer.setColor(new float[] { color[0] - 0.2f,
+						color[1] - 0.2f, color[2] - 0.2f, 1f });
 				view.setDisplayListDirty();
 			}
 
 			@Override
 			public void mouseOut(Pick pick) {
-				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick.getObjectID());
+				PerspectiveRenderer perspectiveRenderer = getPerspectiveRenderer(pick
+						.getObjectID());
 				if (perspectiveRenderer == null)
 					return;
 
@@ -361,7 +370,8 @@ public class DataContainerMatrixRenderer
 
 		for (String id : rowIDs) {
 
-			RecordPerspective perspective = dataDomain.getTable().getRecordPerspective(id);
+			RecordPerspective perspective = dataDomain.getTable()
+					.getRecordPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
@@ -387,7 +397,8 @@ public class DataContainerMatrixRenderer
 			RecordGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
-				List<CellContainer> childList = new ArrayList<CellContainer>(groupList.size());
+				List<CellContainer> childList = new ArrayList<CellContainer>(
+						groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
@@ -412,7 +423,7 @@ public class DataContainerMatrixRenderer
 
 				}
 
-//				Collections.sort(childList);
+				// Collections.sort(childList);
 				childContainerLists.put(row, childList);
 			}
 		}
@@ -432,8 +443,8 @@ public class DataContainerMatrixRenderer
 
 		for (String id : columnIDs) {
 
-			DimensionPerspective perspective = dataDomain.getTable().getDimensionPerspective(
-					id);
+			DimensionPerspective perspective = dataDomain.getTable()
+					.getDimensionPerspective(id);
 			if (perspective.isPrivate()) {
 				continue;
 			}
@@ -461,7 +472,8 @@ public class DataContainerMatrixRenderer
 			DimensionGroupList groupList = perspective.getVirtualArray().getGroupList();
 
 			if (groupList != null && groupList.size() > 1) {
-				List<CellContainer> childList = new ArrayList<CellContainer>(groupList.size());
+				List<CellContainer> childList = new ArrayList<CellContainer>(
+						groupList.size());
 				for (int i = 0; i < groupList.size(); i++) {
 
 					Group group = groupList.get(i);
@@ -486,12 +498,12 @@ public class DataContainerMatrixRenderer
 
 				}
 
-//				Collections.sort(childList);
+				// Collections.sort(childList);
 				childContainerLists.put(column, childList);
 			}
 		}
 
-//		Collections.sort(parentContainers);
+		// Collections.sort(parentContainers);
 
 		for (CellContainer column : parentContainers) {
 			columns.add(column);
@@ -512,8 +524,8 @@ public class DataContainerMatrixRenderer
 			for (CellContainer row : rows) {
 				boolean dimensionGroupExists = false;
 				for (DataContainer dataContainer : dataContainers) {
-					
-					if(dataContainer.isPrivate())
+
+					if (dataContainer.isPrivate())
 						continue;
 
 					String recordPerspectiveID = row.id;
@@ -529,7 +541,8 @@ public class DataContainerMatrixRenderer
 						}
 						dimensionGroupExists = true;
 						DimensionGroupRenderer dimensionGroupRenderer = new DimensionGroupRenderer(
-								dataContainer, view, node, dataDomain.getColor().getRGBA());
+								dataContainer, view, node, dataDomain.getColor()
+										.getRGBA());
 						dimensionGroupRenderer.setShowText(false);
 						cells.put(row.id + column.id, dimensionGroupRenderer);
 						dimensionGroupRenderers.put(dimensionGroupRenderer,
@@ -540,7 +553,8 @@ public class DataContainerMatrixRenderer
 					}
 				}
 				if (!dimensionGroupExists) {
-					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(emptyCellId++);
+					EmptyCellRenderer emptyCellRenderer = new EmptyCellRenderer(
+							emptyCellId++);
 					cells.put(row.id + column.id, emptyCellRenderer);
 					emptyCellRenderers.put(emptyCellRenderer,
 							new Pair<CellContainer, CellContainer>(row, column));
@@ -591,8 +605,10 @@ public class DataContainerMatrixRenderer
 	@Override
 	public void removePickingListeners() {
 		view.removeAllTypePickingListeners(PickingType.EMPTY_CELL.name() + node.getID());
-		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name() + node.getID());
-		view.removeAllTypePickingListeners(PickingType.COLLAPSE_BUTTON.name() + node.getID());
+		view.removeAllTypePickingListeners(PickingType.DATA_CONTAINER.name()
+				+ node.getID());
+		view.removeAllTypePickingListeners(PickingType.COLLAPSE_BUTTON.name()
+				+ node.getID());
 		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE.name() + node.getID());
 		view.removeAllTypePickingListeners(PickingType.PERSPECTIVE_PENETRATING.name()
 				+ node.getID());

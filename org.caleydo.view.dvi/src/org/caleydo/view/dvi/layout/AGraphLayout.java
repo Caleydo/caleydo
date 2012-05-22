@@ -47,7 +47,13 @@ public abstract class AGraphLayout {
 
 	public abstract void layout(Rectangle2D area);
 
-	public abstract void updateNodePositions();
+	/**
+	 * Updates the psotions of the nodes so that they do not exceed the
+	 * boundaries of the drawing area.
+	 * 
+	 * @param area
+	 */
+	public abstract void fitNodesToDrawingArea(Rectangle2D area);
 
 	public abstract void clearNodePositions();
 
@@ -58,5 +64,16 @@ public abstract class AGraphLayout {
 	public Graph getGraph() {
 		return graph;
 	}
+
+	/**
+	 * In this method the nodes are layouted in a computationally less expensive
+	 * way. However, {@link #layout(Rectangle2D)} has to be called before and
+	 * every time the graph structure changes.
+	 * 
+	 * @param area
+	 *            The area the where the graph shall be layouted, specified in
+	 *            pixels.
+	 */
+	public abstract void applyIncrementalLayout(Rectangle2D area);
 
 }

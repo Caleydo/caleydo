@@ -62,7 +62,6 @@ import org.caleydo.core.event.view.ViewClosedEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedView;
-import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.RCPViewInitializationData;
@@ -137,7 +136,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private int maxNodeHeightPixels;
 	private DragAndDropController dragAndDropController;
 	private boolean applyAutomaticLayout;
-	private Map<IDVINode, Pair<Float, Float>> relativeNodePositions;
 	private int lastNodeID = 0;
 	private Set<ADataNode> dataNodes;
 	private Set<ViewNode> viewNodes;
@@ -189,7 +187,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		glKeyListener = new GLDVIKeyListener();
 		// graphLayout = new ForceDirectedGraphLayout(this, dataGraph);
-		relativeNodePositions = new HashMap<IDVINode, Pair<Float, Float>>();
 		dragAndDropController = new DragAndDropController(this);
 		dataNodes = new HashSet<ADataNode>();
 		viewNodes = new HashSet<ViewNode>();
@@ -323,10 +320,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	private void buildDisplayList(final GL2 gl, int iGLDisplayListIndex) {
 		gl.glNewList(iGLDisplayListIndex, GL2.GL_COMPILE);
 
-		int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
-				.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
-		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
-				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS;
+		Rectangle2D drawingArea = calculateGraphDrawingArea();
+		
 		if (applyAutomaticLayout) {
 			for (IDVINode node : dataGraph.getNodes()) {
 				node.setCustomPosition(false);
@@ -337,25 +332,22 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 				edge.setEdgeRenderer(edgeRenderer);
 			}
 			// graphLayout.setGraph(dataGraph);
-			Rectangle2D rect = new Rectangle();
 
-			rect.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS, drawingAreaWidth,
-					drawingAreaHeight);
 			graphLayout.clearNodePositions();
-			graphLayout.layout(rect);
+			graphLayout.layout(drawingArea);
 			updateMinWindowSize(true);
 		} else {
 
 		}
 		for (IDVINode node : dataGraph.getNodes()) {
-			Point2D position = graphLayout.getNodePosition(node);
+			// Point2D position = graphLayout.getNodePosition(node);
 
 			node.render(gl);
-
-			float relativePosX = (float) position.getX() / drawingAreaWidth;
-			float relativePosY = (float) position.getY() / drawingAreaHeight;
-			relativeNodePositions.put(node, new Pair<Float, Float>(relativePosX,
-					relativePosY));
+			// float relativePosX = (float) position.getX() / drawingAreaWidth;
+			// float relativePosY = (float) position.getY() / drawingAreaHeight;
+			// relativeNodePositions.put(node, new Pair<Float,
+			// Float>(relativePosX,
+			// relativePosY));
 		}
 
 		renderEdges(gl);
@@ -371,6 +363,20 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		applyAutomaticLayout = false;
 		nodePositionsUpdated = false;
 
+	}
+	
+	public Rectangle2D calculateGraphDrawingArea() {
+		int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
+				.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
+		int drawingAreaHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+				.getHeight()) - 2 * BOUNDS_SPACING_PIXELS;
+
+		Rectangle2D drawingArea = new Rectangle();
+
+		drawingArea.setFrame(BOUNDS_SPACING_PIXELS, BOUNDS_SPACING_PIXELS, drawingAreaWidth,
+				drawingAreaHeight);
+		
+		return drawingArea;
 	}
 
 	public void updateMinWindowSize(boolean waitForMinSizeApplication) {
@@ -456,84 +462,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		}
 		edge.getEdgeRenderer().renderEdge(gl, connectionBandRenderer, highlight);
 	}
-
-	// private void renderLabeledCurve(GL2 gl, List<Point2D> edgePoints,
-	// Pair<IDataGraphNode, IDataGraphNode> edge) {
-	// gl.glPushMatrix();
-	// gl.glTranslatef(0, 0, -0.1f);
-	// List<Vec3f> curvePoints = connectionBandRenderer.calcInterpolatedCurve(
-	// gl, edgePoints);
-	//
-	// Vec3f startPoint = curvePoints.get(0);
-	// Vec3f endPoint = curvePoints.get(curvePoints.size() - 1);
-	// Vec3f centerPoint = startPoint;
-	// float distanceDelta = centerPoint.minus(endPoint).lengthSquared();
-	//
-	// gl.glBegin(GL2.GL_LINE_STRIP);
-	// for (Vec3f point : curvePoints) {
-	// gl.glVertex3f(point.x(), point.y(), point.z());
-	// float distanceStart = point.minus(startPoint).lengthSquared();
-	// float dinstanceEnd = point.minus(endPoint).lengthSquared();
-	// float currentDistanceDelta = Math.abs(distanceStart - dinstanceEnd);
-	// if (currentDistanceDelta < distanceDelta) {
-	// distanceDelta = currentDistanceDelta;
-	// centerPoint = point;
-	// }
-	// }
-	// gl.glEnd();
-	//
-	// gl.glPopMatrix();
-	//
-	// ADataNode node1 = (ADataNode) edge.getFirst();
-	// ADataNode node2 = (ADataNode) edge.getSecond();
-	//
-	// DataDomainGraph dataDomainGraph = DataDomainManager.get()
-	// .getDataDomainGraph();
-	//
-	// Set<Edge> edges = dataDomainGraph.getEdges(node1.getDataDomain(),
-	// node2.getDataDomain());
-	//
-	// StringBuffer stringBuffer = new StringBuffer();
-	//
-	// Iterator<Edge> iterator = edges.iterator();
-	// while (iterator.hasNext()) {
-	// Edge e = iterator.next();
-	// IDCategory category = e.getIdCategory();
-	// if (category != null) {
-	// stringBuffer.append(e.getIdCategory().getCategoryName());
-	// } else {
-	// stringBuffer.append("Unknown Mapping");
-	// }
-	// if (iterator.hasNext()) {
-	// stringBuffer.append(", ");
-	// }
-	// }
-	//
-	// String edgeLabel = stringBuffer.toString();
-	//
-	// float height = pixelGLConverter.getGLHeightForPixelHeight(14);
-	// float requiredWidth = textRenderer.getRequiredTextWidth(edgeLabel,
-	// height);
-	//
-	// textRenderer.renderTextInBounds(gl, edgeLabel, centerPoint.x()
-	// - (requiredWidth / 2.0f), centerPoint.y() - (height / 2.0f),
-	// centerPoint.z() + 0.1f, requiredWidth, height);
-	// }
-
-	// private void renderConnectionBands(GL2 gl, IDataGraphNode node1,
-	// IDataGraphNode node2) {
-	//
-	// CustomLayoutEdgeBandRenderer bandRenderer = new
-	// CustomLayoutEdgeBandRenderer(
-	// node1, node2, pixelGLConverter, viewFrustum, maxDataAmount);
-	//
-	// bandRenderer
-	// .renderEdgeBand(
-	// gl,
-	// new SimpleEdgeRoutingStrategy(dataGraph),
-	// (node1 == getCurrentMouseOverNode() || node2 ==
-	// getCurrentMouseOverNode()));
-	// }
 
 	private void calcMaxDataAmount() {
 		for (ADataNode dataNode : dataNodes) {
@@ -1188,22 +1116,19 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		if (!waitForMinSizeApplication && isRendered) {
 
-			int drawingAreaWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum
-					.getWidth()) - 2 * BOUNDS_SPACING_PIXELS;
-			int drawingAreaHeight = pixelGLConverter
-					.getPixelHeightForGLHeight(viewFrustum.getHeight())
-					- 2
-					* BOUNDS_SPACING_PIXELS;
+			Rectangle2D drawingArea = calculateGraphDrawingArea();
+			
+			graphLayout.applyIncrementalLayout(drawingArea);
 
-			for (IDVINode node : dataGraph.getNodes()) {
-				Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
-				graphLayout.setNodePosition(node,
-						new Point2D.Double(
-								relativePosition.getFirst() * drawingAreaWidth,
-								relativePosition.getSecond() * drawingAreaHeight));
-			}
+//			for (IDVINode node : dataGraph.getNodes()) {
+//				Pair<Float, Float> relativePosition = relativeNodePositions.get(node);
+//				graphLayout.setNodePosition(node,
+//						new Point2D.Double(
+//								relativePosition.getFirst() * drawingAreaWidth,
+//								relativePosition.getSecond() * drawingAreaHeight));
+//			}
 
-//			updateMinWindowSize(true);
+			// updateMinWindowSize(true);
 		}
 	}
 

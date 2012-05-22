@@ -234,7 +234,7 @@ public class MultiDataContainerViewNode
 		retrieveDataContainers();
 		dataContainerListRenderer.setDataContainers(getDataContainers());
 		recalculateNodeSize();
-		graphLayout.updateNodePositions();
+		graphLayout.fitNodesToDrawingArea(view.calculateGraphDrawingArea());
 		view.setDisplayListDirty();
 	}
 

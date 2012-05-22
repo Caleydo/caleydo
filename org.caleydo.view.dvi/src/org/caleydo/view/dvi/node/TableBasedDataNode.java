@@ -98,7 +98,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 			dataContainerRenderer.unregisterPickingListeners();
 			dataContainerRenderer.registerPickingListeners();
 			recalculateNodeSize();
-			graphLayout.updateNodePositions();
+			graphLayout.fitNodesToDrawingArea(view.calculateGraphDrawingArea());
 		}
 
 		public abstract ALayoutState getNextState();
@@ -308,7 +308,7 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		currentState.apply();
 		// recalculateNodeSize();
-		graphLayout.updateNodePositions();
+		graphLayout.fitNodesToDrawingArea(view.calculateGraphDrawingArea());
 
 		return baseRow;
 	}
