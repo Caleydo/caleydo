@@ -57,6 +57,7 @@ public abstract class ARcpGLViewPart
 	protected void createGLCanvas() {
 		GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
 		glCapabilities.setStencilBits(1);
+		glCapabilities.setDoubleBuffered(true);
 
 		glCanvas = new GLCanvas(glCapabilities);
 		GeneralManager.get().getViewManager().registerGLCanvasToAnimator(glCanvas);

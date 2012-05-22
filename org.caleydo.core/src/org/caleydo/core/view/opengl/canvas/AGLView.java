@@ -66,6 +66,7 @@ import org.caleydo.core.view.opengl.picking.PickingManager;
 import org.caleydo.core.view.opengl.picking.PickingMode;
 import org.caleydo.core.view.opengl.picking.PickingType;
 import org.caleydo.core.view.opengl.renderstyle.GeneralRenderStyle;
+import org.caleydo.core.view.opengl.util.FPSCounter;
 import org.caleydo.core.view.opengl.util.hierarchy.RemoteLevelElement;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
@@ -129,7 +130,7 @@ public abstract class AGLView
 
 	protected IViewCamera viewCamera;
 
-	// private FPSCounter fpsCounter;
+	private FPSCounter fpsCounter;
 
 	protected PixelGLConverter pixelGLConverter = null;
 
@@ -261,10 +262,10 @@ public abstract class AGLView
 
 		// This is specially important for Windows. Otherwise JOGL2 internally
 		// slows down dramatically (factor of 10).
-		gl.setSwapInterval(0);
+		//gl.setSwapInterval(0);
 
-		// fpsCounter = new FPSCounter(drawable, 16);
-		// fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
+		fpsCounter = new FPSCounter(drawable, 16);
+		fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
 
 		gl.glShadeModel(GL2.GL_SMOOTH); // Enables Smooth Shading
 		gl.glClearColor(1.0f, 1.0f, 1.0f, 1.0f); // white Background
@@ -321,7 +322,7 @@ public abstract class AGLView
 
 			displayLocal(gl);
 
-			// fpsCounter.draw();
+			fpsCounter.draw();
 		}
 		catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);

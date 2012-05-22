@@ -239,7 +239,7 @@ public class ViewManager
 	public void startAnimator() {
 
 		if (fpsAnimator == null)
-			fpsAnimator = new FPSAnimator(60);
+			fpsAnimator = new FPSAnimator(30);
 		
 		if (!fpsAnimator.isAnimating())
 			fpsAnimator.start();
