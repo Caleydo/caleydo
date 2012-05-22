@@ -36,6 +36,9 @@ import org.eclipse.jface.wizard.WizardDialog;
 import org.eclipse.osgi.service.datalocation.Location;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IEditorReference;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 /**
@@ -162,8 +165,6 @@ public class StartupProcessor {
 			display = PlatformUI.createDisplay();
 			applicationWorkbenchAdvisor = new ApplicationWorkbenchAdvisor();
 			PlatformUI.createAndRunWorkbench(display, applicationWorkbenchAdvisor);
-
-			GeneralManager.get().getPreferenceStore().setValue("firstStart", false);
 		}
 		finally {
 			shutdown();

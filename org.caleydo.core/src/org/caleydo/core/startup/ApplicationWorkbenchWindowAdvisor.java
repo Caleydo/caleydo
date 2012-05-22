@@ -25,6 +25,9 @@ import org.caleydo.core.manager.GeneralManager;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.PartInitException;
+import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
 import org.eclipse.ui.application.IActionBarConfigurer;
 import org.eclipse.ui.application.IWorkbenchWindowConfigurer;
@@ -72,13 +75,20 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		getWindowConfigurer().getWindow().getShell().setMaximized(true);
 
+		removeNonCaleydoMenuEntries();
+
+		initializeViews();
+	}
+
+	/**
+	 * Removing all non Caleydo menus. Especially useful for Eclipse contributed
+	 * plugins when starting Caleydo from Eclipses
+	 */
+	private void removeNonCaleydoMenuEntries() {
 		IMenuManager menuManager = getWindowConfigurer().getActionBarConfigurer()
 				.getMenuManager();
 		for (IContributionItem item : menuManager.getItems()) {
 
-			// Removing all non Caleydo menus.
-			// Especially useful for Eclipse contributed plugins when starting
-			// Caleydo from Eclipses
 			if (!item.getId().contains("org.caleydo")) {
 				menuManager.remove(item);
 			}
@@ -102,6 +112,25 @@ public class ApplicationWorkbenchWindowAdvisor
 					if (itemToRemove != null)
 						itemToRemove.setVisible(false);
 				}
+			}
+		}
+	}
+
+	/**
+	 * Make sure that all views get initialized (i.e., constructor and
+	 * createPartControl created) Otherwise views will not show up
+	 */
+	private void initializeViews() {
+
+		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().getViewReferences();
+		for (int viewIndex = views.length - 1; viewIndex >= 0; viewIndex--) {
+			try {
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView(views[viewIndex].getId());
+			}
+			catch (PartInitException e) {
+				throw new IllegalStateException();
 			}
 		}
 	}

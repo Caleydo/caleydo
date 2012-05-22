@@ -125,7 +125,6 @@ public class PreferenceManager {
 		store.setDefault(PreferenceConstants.PERFORMANCE_LEVEL, "low");
 
 		store.setDefault(PreferenceConstants.VERSION, GeneralManager.VERSION);
-		store.setDefault(PreferenceConstants.FIRST_START, true);
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_ORGANISM, Organism.HOMO_SAPIENS.name());
 		store.setDefault(PreferenceConstants.LAST_CHOSEN_PROJECT_MODE, "SAMPLE_PROJECT");
 		store.setDefault(PreferenceConstants.USE_PROXY, false);

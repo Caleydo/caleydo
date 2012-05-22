@@ -32,7 +32,6 @@ public class PreferenceConstants {
 	public static final String P_STRING = "stringPreference";
 
 	// General
-	public static final String FIRST_START = "firstStart";
 	public static final String VERSION = "version";
 
 	public static final String LAST_CHOSEN_ORGANISM = "lastLoadedOrganism";
