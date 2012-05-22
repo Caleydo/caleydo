@@ -26,7 +26,7 @@ import org.caleydo.core.id.IDType;
 /**
  * List of names of {@link IDType}s that belong to the gene {@link IDCategory}.
  * These values should not be used as enums, but with the {@link #name()}
- * accessor for its string equivalent.
+ * method to retreive its string representation.
  * 
  * @author Alexander Lex
  * 
