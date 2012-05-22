@@ -1,26 +1,25 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
-
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.util.ArrayList;
@@ -29,13 +28,11 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
-
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
-
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -58,6 +55,7 @@ import org.caleydo.core.view.opengl.canvas.listener.GLMouseWheelListener;
 import org.caleydo.core.view.opengl.canvas.listener.IMouseWheelHandler;
 import org.caleydo.core.view.opengl.canvas.listener.IResettableView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
+import org.caleydo.core.view.opengl.keyboard.GLFPSKeyListener;
 import org.caleydo.core.view.opengl.keyboard.GLKeyListener;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.picking.IPickingListener;
@@ -73,7 +71,6 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
@@ -131,6 +128,8 @@ public abstract class AGLView
 	protected IViewCamera viewCamera;
 
 	private FPSCounter fpsCounter;
+
+	private boolean showFPSCounter;
 
 	protected PixelGLConverter pixelGLConverter = null;
 
@@ -209,6 +208,7 @@ public abstract class AGLView
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered
 	 * remote.
+	 * 
 	 * @param viewType TODO
 	 * @param viewName TODO
 	 */
@@ -224,6 +224,8 @@ public abstract class AGLView
 		glMouseListener = new GLMouseListener();
 		glMouseListener.setNavigationModes(false, false, false);
 
+		parentComposite.addKeyListener(new GLFPSKeyListener(this));
+		
 		// Register mouse listener to GL2 canvas
 		glCanvas.addMouseListener(glMouseListener);
 		glCanvas.addMouseMotionListener(glMouseListener);
@@ -239,7 +241,7 @@ public abstract class AGLView
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
-
+		
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
@@ -262,7 +264,7 @@ public abstract class AGLView
 
 		// This is specially important for Windows. Otherwise JOGL2 internally
 		// slows down dramatically (factor of 10).
-		//gl.setSwapInterval(0);
+		// gl.setSwapInterval(0);
 
 		fpsCounter = new FPSCounter(drawable, 16);
 		fpsCounter.setColor(0.5f, 0.5f, 0.5f, 1);
@@ -296,7 +298,6 @@ public abstract class AGLView
 		initLocal(gl);
 	}
 
-
 	@Override
 	public final void display(GLAutoDrawable drawable) {
 		try {
@@ -322,7 +323,8 @@ public abstract class AGLView
 
 			displayLocal(gl);
 
-			fpsCounter.draw();
+			if (showFPSCounter)
+				fpsCounter.draw();
 		}
 		catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);
@@ -590,23 +592,25 @@ public abstract class AGLView
 		if (hitTypes == null)
 			return;
 
-	
-
 		for (String pickingType : hitTypes) {
 
 			ArrayList<Pick> alHits = null;
-			
+
 			alHits = pickingManager.getHits(uniqueID, pickingType);
-			
-			//This is a try to fix MOUSE_OUT in remote rendered views, not successful yet
-//			if(isRenderedRemote() && (alHits == null || alHits.size() == 0)) {
-//				AGLView remoteRenderingView = this;
-//				while(remoteRenderingView.isRenderedRemote()) {
-//					remoteRenderingView = (AGLView)(remoteRenderingView.getRemoteRenderingGLView());
-//				}
-//				alHits = pickingManager.getHits(remoteRenderingView.getID(), pickingType);
-//			}
-			
+
+			// This is a try to fix MOUSE_OUT in remote rendered views, not
+			// successful yet
+			// if(isRenderedRemote() && (alHits == null || alHits.size() == 0))
+			// {
+			// AGLView remoteRenderingView = this;
+			// while(remoteRenderingView.isRenderedRemote()) {
+			// remoteRenderingView =
+			// (AGLView)(remoteRenderingView.getRemoteRenderingGLView());
+			// }
+			// alHits = pickingManager.getHits(remoteRenderingView.getID(),
+			// pickingType);
+			// }
+
 			if (alHits != null && alHits.size() != 0) {
 
 				for (int iCount = 0; iCount < alHits.size(); iCount++) {
@@ -840,7 +844,7 @@ public abstract class AGLView
 		}
 		pickingListeners.clear();
 	}
-	
+
 	/**
 	 * Removes all picking listeners.
 	 */
@@ -848,7 +852,6 @@ public abstract class AGLView
 		idPickingListeners.clear();
 		typePickingListeners.clear();
 	}
-	
 
 	/**
 	 * Removes all type picking listeners for a specific picking type.
@@ -1256,8 +1259,6 @@ public abstract class AGLView
 		return contextMenuCreator;
 	}
 
-
-
 	/**
 	 * Method recursively determines the top level GL view. Picking listeners
 	 * for instance need to be registered to the top level GL view.
@@ -1270,11 +1271,18 @@ public abstract class AGLView
 
 		return this;
 	}
-	
+
 	/**
 	 * @return the textureManager, see {@link #textureManager}
 	 */
 	public TextureManager getTextureManager() {
 		return textureManager;
+	}
+
+	/**
+	 * Turn on/off the rendering of the FPS counter
+	 */
+	public void toggleFPSCounter() {
+		this.showFPSCounter = !showFPSCounter;
 	}
 }
