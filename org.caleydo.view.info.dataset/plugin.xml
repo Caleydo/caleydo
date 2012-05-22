@@ -37,8 +37,8 @@
       </command>
    </extension>
    <extension
-         id="org.caleydo.view.datameta"
-         name="DataMetaViewCreator"
+         id="org.caleydo.view.info.dataset"
+         name="InfoDataSetViewCreator"
          point="org.caleydo.view.ViewCreator">
          <ViewCreator
           id="org.caleydo.view.ViewCreator"

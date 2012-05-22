@@ -124,6 +124,8 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().getViewReferences();
+		
+		// iterate from back to front to get the same view order in the end
 		for (int viewIndex = views.length - 1; viewIndex >= 0; viewIndex--) {
 			try {
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()

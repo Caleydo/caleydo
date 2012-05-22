@@ -47,7 +47,7 @@ import org.eclipse.swt.widgets.Label;
 public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<ATableBasedDataDomain> {
 
-	public static String VIEW_TYPE = "org.caleydo.view.datameta";
+	public static String VIEW_TYPE = "org.caleydo.view.info.dataset";
 
 	private ATableBasedDataDomain dataDomain;
 
