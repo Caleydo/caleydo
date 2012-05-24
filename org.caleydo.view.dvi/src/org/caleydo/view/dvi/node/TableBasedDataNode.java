@@ -279,8 +279,13 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
 		toggleDataContainerButtonLayout.setRenderer(toggleDataContainerButtonRenderer);
-		titleRow.append(spacingLayoutX);
-		titleRow.append(toggleDataContainerButtonLayout);
+		
+		//FIXME: Very bad hack
+		if ((!dataDomain.getLabel().contains("Copy"))
+				&& (!dataDomain.getLabel().contains("Clinical"))) {
+			titleRow.append(spacingLayoutX);
+			titleRow.append(toggleDataContainerButtonLayout);
+		}
 
 		bodyRow = new Row("bodyRow");
 
