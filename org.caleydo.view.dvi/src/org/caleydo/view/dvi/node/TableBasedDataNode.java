@@ -53,12 +53,16 @@ import org.caleydo.core.view.opengl.util.draganddrop.IDraggable;
 import org.caleydo.core.view.opengl.util.draganddrop.IDropArea;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.view.dvi.GLDataViewIntegrator;
+import org.caleydo.view.dvi.contextmenu.ShowViewWithoutDataItem;
 import org.caleydo.view.dvi.datacontainer.ADataContainerRenderer;
 import org.caleydo.view.dvi.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.dvi.datacontainer.PerspectiveRenderer;
 import org.caleydo.view.dvi.datacontainer.matrix.DataContainerMatrixRenderer;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
 import org.caleydo.view.dvi.layout.AGraphLayout;
+import org.eclipse.core.runtime.IConfigurationElement;
+import org.eclipse.core.runtime.IExtensionRegistry;
+import org.eclipse.core.runtime.Platform;
 
 public class TableBasedDataNode extends ADataNode implements IDropArea {
 
@@ -226,11 +230,38 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 					new ToolTipPickingListener(view,
 							"To create a copy number categorization for one gene use the Search view."),
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+
+			view.addIDPickingListener(new APickingListener() {
+
+				@Override
+				public void rightClicked(Pick pick) {
+
+					IExtensionRegistry registry = Platform.getExtensionRegistry();
+					IConfigurationElement[] viewElements = registry
+							.getConfigurationElementsFor("org.eclipse.ui.views");
+					String viewName = null;
+					for (IConfigurationElement element : viewElements) {
+
+						String bundleID = element.getAttribute("id");
+						if (bundleID.startsWith("org.caleydo.view.search")) {
+							viewName = element.getAttribute("name");
+							break;
+						}
+
+					}
+					if (viewName != null) {
+						view.getContextMenuCreator().addContextMenuItem(
+								new ShowViewWithoutDataItem("org.caleydo.view.search",
+										viewName));
+
+					}
+
+				}
+			}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		}
 		if (dataDomain.getLabel().contains("Clinical")) {
 			view.addIDPickingListener(
-					new ToolTipPickingListener(
-							view,
+					new ToolTipPickingListener(view,
 							"To add clinical data to StratomeX use context menu of a data column in StratomeX."),
 					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		}
