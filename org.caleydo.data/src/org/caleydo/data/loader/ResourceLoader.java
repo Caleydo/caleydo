@@ -44,84 +44,84 @@ import com.jogamp.opengl.util.texture.TextureIO;
  * @author Marc Streit
  */
 public class ResourceLoader {
-	public BufferedReader getResource(String sFileName) throws FileNotFoundException {
+	public BufferedReader getResource(String fileName) throws FileNotFoundException {
 		BufferedReader file;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			file = new BufferedReader(new InputStreamReader(
-					loadResourceAsInputStream(sFileName)));
+					loadResourceAsInputStream(fileName)));
 		} else {
-			file = new BufferedReader(new FileReader(sFileName));
+			file = new BufferedReader(new FileReader(fileName));
 		}
 
 		return file;
 	}
 
-	public InputSource getInputSource(String sFileName) throws FileNotFoundException {
+	public InputSource getInputSource(String fileName) throws FileNotFoundException {
 
 		InputSource inputSource;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
-			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
+		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
+			inputSource = new InputSource(loadResourceAsInputStream(fileName));
 		} else {
 			inputSource = new InputSource(new BufferedInputStream(new FileInputStream(
-					sFileName)));
+					fileName)));
 		}
 
 		return inputSource;
 	}
 
-	public Image getImage(Display display, String sFileName) {
+	public Image getImage(Display display, String fileName) {
 		Image image;
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			image = new Image(display, this.getClass().getClassLoader()
-					.getResourceAsStream(sFileName));
+					.getResourceAsStream(fileName));
 		} else {
-			image = new Image(display, sFileName);
+			image = new Image(display, fileName);
 		}
 
 		return image;
 	}
 
-	public URL getResourceURL(String sFileName) {
-		URL url = this.getClass().getClassLoader().getResource(sFileName);
+	public URL getResourceURL(String fileName) {
+		URL url = this.getClass().getClassLoader().getResource(fileName);
 
 		if (url == null)
-			throw new IllegalStateException("Cannot load resource URL: " + sFileName);
+			throw new IllegalStateException("Cannot load resource URL: " + fileName);
 
 		return url;
 	}
 
-	public Texture getTexture(String sFileName) {
+	public Texture getTexture(String fileName) {
 		Texture texture;
 
 		try {
-			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+			if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						GLProfile.getDefault(), loadResourceAsInputStream(sFileName),
+						GLProfile.getDefault(), loadResourceAsInputStream(fileName),
 						true, "GIF"));
 			} else {
 
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						GLProfile.getDefault(), new File(sFileName), true, "GIF"));
+						GLProfile.getDefault(), new File(fileName), true, "GIF"));
 			}
 		} catch (Exception e) {
-			throw new IllegalStateException("Cannot load texture: " + sFileName);
+			throw new IllegalStateException("Cannot load texture: " + fileName);
 		}
 
 		if (texture == null)
-			throw new IllegalStateException("Cannot load texture: " + sFileName);
+			throw new IllegalStateException("Cannot load texture: " + fileName);
 
 		return texture;
 	}
 
-	private InputStream loadResourceAsInputStream(String sFileName) {
+	private InputStream loadResourceAsInputStream(String fileName) {
 		InputStream file;
 
-		file = this.getClass().getClassLoader().getResourceAsStream(sFileName);
+		file = this.getClass().getClassLoader().getResourceAsStream(fileName);
 
 		if (file == null)
-			throw new IllegalStateException("Cannot load resource: " + sFileName);
+			throw new IllegalStateException("Cannot load resource: " + fileName);
 
 		return file;
 	}

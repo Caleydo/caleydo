@@ -22,10 +22,12 @@ package org.caleydo.core.startup;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.PartListener;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.application.ActionBarAdvisor;
@@ -124,16 +126,24 @@ public class ApplicationWorkbenchWindowAdvisor
 
 		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().getViewReferences();
-		
-		// iterate from back to front to get the same view order in the end
-		for (int viewIndex = views.length - 1; viewIndex >= 0; viewIndex--) {
-			try {
+
+		IWorkbenchPart activeView = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
+				.getActivePage().getActivePart();
+
+		try {
+			for (IViewReference view : views) {
+
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView(views[viewIndex].getId());
+						.showView(view.getId());
 			}
-			catch (PartInitException e) {
-				throw new IllegalStateException();
-			}
+
+			// Make sure that the active part will remain active
+			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+					.showView(((CaleydoRCPViewPart) activeView).getSite().getId());
 		}
+		catch (PartInitException e) {
+			throw new IllegalStateException();
+		}
+
 	}
 }
