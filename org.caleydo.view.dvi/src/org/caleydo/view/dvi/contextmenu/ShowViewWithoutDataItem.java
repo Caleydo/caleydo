@@ -18,12 +18,12 @@ public class ShowViewWithoutDataItem extends AContextMenuItem {
 	/**
 	 * @param viewID
 	 *            ID of the view to show
-	 * @param viewName
-	 *            View name that is displayed in the context menu.
+	 * @param text
+	 *            Text that is displayed in the context menu.
 	 */
-	public ShowViewWithoutDataItem(String viewID, String viewName) {
+	public ShowViewWithoutDataItem(String viewID, String text) {
 
-		setLabel("Show " + viewName);
+		setLabel(text);
 		ShowViewWithoutDataEvent event = new ShowViewWithoutDataEvent(viewID);
 		event.setSender(this);
 		registerEvent(event);

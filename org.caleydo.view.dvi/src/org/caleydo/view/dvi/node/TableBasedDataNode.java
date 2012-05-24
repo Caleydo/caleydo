@@ -239,20 +239,22 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 					IExtensionRegistry registry = Platform.getExtensionRegistry();
 					IConfigurationElement[] viewElements = registry
 							.getConfigurationElementsFor("org.eclipse.ui.views");
-					String viewName = null;
+					boolean viewExists = false;
 					for (IConfigurationElement element : viewElements) {
 
 						String bundleID = element.getAttribute("id");
 						if (bundleID.startsWith("org.caleydo.view.search")) {
-							viewName = element.getAttribute("name");
+							viewExists = true;
 							break;
 						}
 
 					}
-					if (viewName != null) {
-						view.getContextMenuCreator().addContextMenuItem(
-								new ShowViewWithoutDataItem("org.caleydo.view.search",
-										viewName));
+					if (viewExists) {
+						view.getContextMenuCreator()
+								.addContextMenuItem(
+										new ShowViewWithoutDataItem(
+												"org.caleydo.view.search",
+												"Create Categorization of a Gene's Copy-Number Status"));
 
 					}
 
