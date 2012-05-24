@@ -185,10 +185,10 @@ public class GLKaplanMeier extends ATableBasedView {
 		DimensionVirtualArray dimensionVA = dataContainer.getDimensionPerspective()
 				.getVirtualArray();
 
-		maxAxisTime = Float.MIN_VALUE;
+		maxAxisTime = 0;
 		boolean containsNegativeValues = false;
 		boolean containsPositiveValues = false;
-		
+
 		for (Group group : recordVA.getGroupList()) {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 			for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
@@ -198,7 +198,7 @@ public class GLKaplanMeier extends ATableBasedView {
 						.getTable()
 						.getFloat(DataRepresentation.RAW, recordIDs.get(recordID),
 								dimensionVA.get(0));
-				
+
 				if (rawValue > 0)
 					containsPositiveValues = true;
 				if (rawValue < 0)
@@ -208,8 +208,8 @@ public class GLKaplanMeier extends ATableBasedView {
 					throw new IllegalStateException(
 							"Data contains positive and negative values. KM plot cannot handle this data.");
 				}
-				if (rawValue != Float.NaN && Math.abs(rawValue) > maxAxisTime)
-					maxAxisTime = Math.abs(rawValue);
+				if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxAxisTime))
+					maxAxisTime = rawValue;
 			}
 		}
 	}
@@ -443,13 +443,13 @@ public class GLKaplanMeier extends ATableBasedView {
 		float leftAxisSpacing = (detailLevel == EDetailLevel.HIGH ? pixelGLConverter
 				.getGLWidthForPixelWidth(LEFT_AXIS_SPACING_PIXELS) : 0);
 
-		float timeBinStepSize = 1 / maxAxisTime;
+		float timeBinStepSize = 1 / Math.abs(maxAxisTime);
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
 		float ySingleSampleSize = plotHeight / dataVector.size();
 
-		for (int binIndex = 0; binIndex < maxAxisTime; binIndex++) {
+		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
 			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
 				dataVector.remove(0);
@@ -485,7 +485,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		// float TIME_BINS = (float) dataContainer.getDataDomain().getTable()
 		// .getRawForNormalized(1);
 
-		float timeBinStepSize = 1 / maxAxisTime;
+		float timeBinStepSize = 1 / Math.abs(maxAxisTime);
 		float currentTimeBin = 0;
 
 		int remainingItemCount = dataVector.size();
@@ -494,7 +494,7 @@ public class GLKaplanMeier extends ATableBasedView {
 		gl.glBegin(GL2.GL_LINE_STRIP);
 		gl.glVertex3f(leftAxisSpacing, bottomAxisSpacing + plotHeight, 1);
 
-		for (int binIndex = 0; binIndex < maxAxisTime; binIndex++) {
+		for (int binIndex = 0; binIndex < Math.abs(maxAxisTime); binIndex++) {
 
 			while (dataVector.size() > 0 && dataVector.get(0) <= currentTimeBin) {
 				dataVector.remove(0);

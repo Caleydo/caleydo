@@ -1210,7 +1210,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				DimensionVirtualArray dimensionVA = dataContainer
 						.getDimensionPerspective().getVirtualArray();
 
-				float maxTimeValue = Float.MIN_VALUE;
+				float maxTimeValue = 0;
 				boolean containsNegativeValues = false;
 				boolean containsPositiveValues = false;
 
@@ -1234,8 +1234,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 									"Data contains positive and negative values. KM plot cannot handle this data.");
 						}
 
-						if (rawValue != Float.NaN && Math.abs(rawValue) > maxTimeValue)
-							maxTimeValue = Math.abs(rawValue);
+						if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxTimeValue))
+							maxTimeValue = rawValue;
 					}
 				}
 				return maxTimeValue;
