@@ -137,9 +137,11 @@ public class ApplicationWorkbenchWindowAdvisor
 						.showView(view.getId());
 			}
 
-			// Make sure that the active part will remain active
-			PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-					.showView(((CaleydoRCPViewPart) activeView).getSite().getId());
+			if (activeView instanceof CaleydoRCPViewPart) {
+				// Make sure that the active part will remain active
+				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+						.showView(((CaleydoRCPViewPart) activeView).getSite().getId());
+			}
 		}
 		catch (PartInitException e) {
 			throw new IllegalStateException();

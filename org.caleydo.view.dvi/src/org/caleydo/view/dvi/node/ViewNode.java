@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,7 +25,6 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.IDataContainerBasedView;
@@ -49,8 +48,11 @@ import org.eclipse.core.runtime.IExtension;
 import org.eclipse.core.runtime.IExtensionPoint;
 import org.eclipse.core.runtime.IExtensionRegistry;
 import org.eclipse.core.runtime.Platform;
+import org.osgi.framework.Bundle;
+import org.osgi.framework.FrameworkUtil;
 
-public class ViewNode extends ADefaultTemplateNode {
+public class ViewNode
+	extends ADefaultTemplateNode {
 
 	// private DataContainerListRenderer overviewDataContainerRenderer;
 	protected AGLView representedView;
@@ -59,15 +61,14 @@ public class ViewNode extends ADefaultTemplateNode {
 	protected String iconPath;
 
 	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id,
-			AGLView representedView) {
+			DragAndDropController dragAndDropController, Integer id, AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
 
 		registerPickingListeners();
 		setRepresentedViewInfo();
-//		setupLayout();
+		// setupLayout();
 	}
 
 	protected void registerPickingListeners() {
@@ -119,17 +120,15 @@ public class ViewNode extends ADefaultTemplateNode {
 			iconPath = null;
 		}
 		if (iconPath != null) {
+			Bundle viewPlugin = FrameworkUtil.getBundle(representedView.getClass());
 
-			// FIXME: we need to find a solution that works in the export
-			// version as well
-			ClassLoader classLoader = representedView.getClass().getClassLoader();
-			URL url = classLoader.getResource(iconPath);
+			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
-				url = FileLocator.resolve(url);
-			} catch (IOException e) {
-				e.printStackTrace();
+				iconPath = FileLocator.toFileURL(iconURL).getPath();
 			}
-			iconPath = new File(url.getFile()).getAbsolutePath();
+			catch (IOException e) {
+				new IllegalStateException("Cannot load view icon texture");
+			}
 		}
 	}
 
@@ -152,8 +151,7 @@ public class ViewNode extends ADefaultTemplateNode {
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout
-					.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
+			iconLayout.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -165,8 +163,8 @@ public class ViewNode extends ADefaultTemplateNode {
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
-				1, 1 }, iconPath, view.getTextureManager()));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
+				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager()));
 
 		bodyColumn = new Column("bodyColumn");
 
@@ -267,8 +265,8 @@ public class ViewNode extends ADefaultTemplateNode {
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 
-		return pixelGLConverter.getPixelWidthForGLWidth(textWidth)
-				+ CAPTION_HEIGHT_PIXELS + SPACING_PIXELS;
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
+				+ SPACING_PIXELS;
 	}
 
 	@Override

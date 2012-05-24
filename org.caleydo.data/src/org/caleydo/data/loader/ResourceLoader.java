@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,16 +25,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
-
+import javax.media.opengl.GLException;
 import javax.media.opengl.GLProfile;
-
+import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.widgets.Display;
 import org.xml.sax.InputSource;
-
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureIO;
 
@@ -50,7 +50,8 @@ public class ResourceLoader {
 		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			file = new BufferedReader(new InputStreamReader(
 					loadResourceAsInputStream(fileName)));
-		} else {
+		}
+		else {
 			file = new BufferedReader(new FileReader(fileName));
 		}
 
@@ -63,9 +64,10 @@ public class ResourceLoader {
 
 		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			inputSource = new InputSource(loadResourceAsInputStream(fileName));
-		} else {
-			inputSource = new InputSource(new BufferedInputStream(new FileInputStream(
-					fileName)));
+		}
+		else {
+			inputSource = new InputSource(new BufferedInputStream(
+					new FileInputStream(fileName)));
 		}
 
 		return inputSource;
@@ -76,20 +78,12 @@ public class ResourceLoader {
 		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			image = new Image(display, this.getClass().getClassLoader()
 					.getResourceAsStream(fileName));
-		} else {
+		}
+		else {
 			image = new Image(display, fileName);
 		}
 
 		return image;
-	}
-
-	public URL getResourceURL(String fileName) {
-		URL url = this.getClass().getClassLoader().getResource(fileName);
-
-		if (url == null)
-			throw new IllegalStateException("Cannot load resource URL: " + fileName);
-
-		return url;
 	}
 
 	public Texture getTexture(String fileName) {
@@ -98,14 +92,16 @@ public class ResourceLoader {
 		try {
 			if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						GLProfile.getDefault(), loadResourceAsInputStream(fileName),
-						true, "GIF"));
-			} else {
+						GLProfile.getDefault(), loadResourceAsInputStream(fileName), true,
+						"GIF"));
+			}
+			else {
 
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
 						GLProfile.getDefault(), new File(fileName), true, "GIF"));
 			}
-		} catch (Exception e) {
+		}
+		catch (Exception e) {
 			throw new IllegalStateException("Cannot load texture: " + fileName);
 		}
 
