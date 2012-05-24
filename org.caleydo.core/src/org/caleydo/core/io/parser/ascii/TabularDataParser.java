@@ -207,6 +207,10 @@ public class TabularDataParser extends ATextParser {
 				.getParsingPattern();
 
 		int lineCounter = 0;
+		String numberParsingErrorMessage = "Could not parse a number in file"
+				+ dataSetDescription.getDataSetName() + " at path " + fileName
+				+ "\n at the following locations: \n";
+		boolean parsingErrorOccured = false;
 		while ((line = reader.readLine()) != null) {
 			// && lineInFile <= stopParsingAtLine) {
 
@@ -222,22 +226,21 @@ public class TabularDataParser extends ATextParser {
 					try {
 						value = Float.parseFloat(cellContent);
 					} catch (NumberFormatException nfe) {
-
-						String errorMessage = "Could not parse a number. \""
-								+ cellContent
-								+ "\" at ["
+						parsingErrorOccured = true;
+						numberParsingErrorMessage += "column "
 								+ (column.getColumn())
-								+ ", "
+								+ ", line "
 								+ (lineCounter + dataSetDescription
-										.getNumberOfHeaderLines()) + "]. Assigning NaN";
-						Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
-								errorMessage));
+										.getNumberOfHeaderLines())
+								+ ". Cell content was: " + cellContent + "\n";
+
 						value = Float.NaN;
 					}
 					if (lineCounter < targetColumn.length) {
 						targetColumn[lineCounter] = value;
 					} else {
-						System.out.println("Index out of bounds at line: " + lineCounter + " for column " + count);
+						System.out.println("Index out of bounds at line: " + lineCounter
+								+ " for column " + count);
 					}
 				} else if (column.getDataType().equalsIgnoreCase("string")) {
 					@SuppressWarnings("unchecked")
@@ -251,6 +254,11 @@ public class TabularDataParser extends ATextParser {
 				}
 			}
 			lineCounter++;
+		}
+
+		if (parsingErrorOccured) {
+			Logger.log(new Status(IStatus.ERROR, GeneralManager.PLUGIN_ID,
+					numberParsingErrorMessage));
 		}
 
 	}
