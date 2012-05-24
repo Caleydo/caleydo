@@ -23,9 +23,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Set;
-
 import javax.media.opengl.GL2;
-
 import org.caleydo.core.data.collection.dimension.DataRepresentation;
 import org.caleydo.core.data.container.Average;
 import org.caleydo.core.data.container.ContainerStatistics;
@@ -92,7 +90,7 @@ public class GLPathwayContentCreator {
 	private DataRepresentation dimensionDataRepresentation = DataRepresentation.NORMALIZED;
 
 	private VirtualArray<?, ?, ?> selectedSamplesVA;
-	
+
 	/**
 	 * Constructor.
 	 */
@@ -146,7 +144,7 @@ public class GLPathwayContentCreator {
 		}
 
 		createSelectedSamplesVA();
-		
+
 		gl.glNewList(iVerticesDisplayListId, GL2.GL_COMPILE);
 		extractVertices(gl, containingView, pathway);
 		gl.glEndList();
@@ -167,20 +165,25 @@ public class GLPathwayContentCreator {
 	}
 
 	private void createSelectedSamplesVA() {
-		Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager()
-				.getElements(SelectionType.SELECTION);
+		Set<Integer> selectedSamples = glPathwayView.getSampleSelectionManager().getElements(
+				SelectionType.SELECTION);
 		List<Integer> selectedSamplesArray = new ArrayList<Integer>();
-		selectedSamplesArray.addAll(selectedSamples);
 
-		// if no sample is currently selected, we add all samples for
-		// calculating the average
-		if (selectedSamplesArray.size() == 0) {
-			if (!geneticDataDomain.isGeneRecord())
-				selectedSamplesArray.addAll(glPathwayView.getDataContainer()
-						.getRecordPerspective().getVirtualArray().getIDs());
-			else
-				selectedSamplesArray.addAll(glPathwayView.getDataContainer()
-						.getDimensionPerspective().getVirtualArray().getIDs());
+		// Only add selected samples for single pathway
+		if (!glPathwayView.isRenderedRemote()) {
+			selectedSamplesArray.addAll(selectedSamples);
+		}
+		else {
+			// if no sample is currently selected, we add all samples for
+			// calculating the average
+			if (selectedSamplesArray.size() == 0) {
+				if (!geneticDataDomain.isGeneRecord())
+					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+							.getRecordPerspective().getVirtualArray().getIDs());
+				else
+					selectedSamplesArray.addAll(glPathwayView.getDataContainer()
+							.getDimensionPerspective().getVirtualArray().getIDs());
+			}
 		}
 
 		if (!geneticDataDomain.isGeneRecord())
@@ -190,7 +193,7 @@ public class GLPathwayContentCreator {
 			selectedSamplesVA = new DimensionVirtualArray(glPathwayView
 					.getSampleSelectionManager().getIDType(), selectedSamplesArray);
 	}
-	
+
 	public void performIdenticalNodeHighlighting(SelectionType selectionType) {
 		if (internalSelectionManager == null)
 			return;
@@ -465,11 +468,10 @@ public class GLPathwayContentCreator {
 
 					if (tmpNodeColor != null) {
 
-						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2],
-								0.7f);
-						
+						gl.glColor4f(tmpNodeColor[0], tmpNodeColor[1], tmpNodeColor[2], 0.7f);
+
 						if (glPathwayView.getDetailLevel() == EDetailLevel.HIGH) {
-							
+
 							// gl.glEnable(GL2.GL_BLEND);
 							gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 							gl.glCallList(enzymeNodeDisplayListId);
@@ -820,7 +822,7 @@ public class GLPathwayContentCreator {
 
 		if (selectedSamplesVA == null)
 			return null;
-		
+
 		int davidID = pathwayItemManager.getDavidIdByPathwayVertex((PathwayVertex) vertexRep
 				.getPathwayVertices().get(0));
 
