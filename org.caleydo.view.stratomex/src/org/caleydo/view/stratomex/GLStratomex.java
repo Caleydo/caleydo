@@ -330,8 +330,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		// float centerLayoutWidth = viewFrustum.getWidth();
 
 		centerRowLayout = new Row("centerRowLayout");
-		centerRowLayout.setDebug(false);
-
+	
 		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(0, 0, 1, 1);
 
@@ -369,6 +368,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			group.setCollapsed(false);
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
+		
 
 			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
 				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
@@ -1394,6 +1394,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		super.reshape(drawable, x, y, width, height);
 
 		initLayouts();
+		updateLayout();
 		setLayoutDirty();
 	}
 
