@@ -825,17 +825,17 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 				}
 			}
 
-//			@Override
-//			public void dragged(Pick pick) {
-//				DragAndDropController dragAndDropController = stratomex
-//						.getDragAndDropController();
-//				String draggingMode = dragAndDropController.getDraggingMode();
-//				if (!dragAndDropController.isDragging()
-//						&& dragAndDropController.hasDraggables() && draggingMode != null
-//						&& draggingMode.equals("BrickDrag" + dimensionGroup.getID())) {
-//					dragAndDropController.startDragging();
-//				}
-//			}
+			// @Override
+			// public void dragged(Pick pick) {
+			// DragAndDropController dragAndDropController = stratomex
+			// .getDragAndDropController();
+			// String draggingMode = dragAndDropController.getDraggingMode();
+			// if (!dragAndDropController.isDragging()
+			// && dragAndDropController.hasDraggables() && draggingMode != null
+			// && draggingMode.equals("BrickDrag" + dimensionGroup.getID())) {
+			// dragAndDropController.startDragging();
+			// }
+			// }
 
 			@Override
 			public void rightClicked(Pick pick) {
@@ -1211,6 +1211,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 						.getDimensionPerspective().getVirtualArray();
 
 				float maxTimeValue = Float.MIN_VALUE;
+				boolean containsNegativeValues = false;
+				boolean containsPositiveValues = false;
+
 				for (Group group : recordVA.getGroupList()) {
 					List<Integer> recordIDs = recordVA.getIDsOfGroup(group
 							.getGroupIndex());
@@ -1221,8 +1224,18 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 								.getTable()
 								.getFloat(DataRepresentation.RAW,
 										recordIDs.get(recordID), dimensionVA.get(0));
-						if (rawValue != Float.NaN && rawValue > maxTimeValue)
-							maxTimeValue = rawValue;
+						if (rawValue > 0)
+							containsPositiveValues = true;
+						if (rawValue < 0)
+							containsNegativeValues = true;
+
+						if (containsPositiveValues && containsNegativeValues) {
+							throw new IllegalStateException(
+									"Data contains positive and negative values. KM plot cannot handle this data.");
+						}
+
+						if (rawValue != Float.NaN && Math.abs(rawValue) > maxTimeValue)
+							maxTimeValue = Math.abs(rawValue);
 					}
 				}
 				return maxTimeValue;

@@ -186,6 +186,9 @@ public class GLKaplanMeier extends ATableBasedView {
 				.getVirtualArray();
 
 		maxAxisTime = Float.MIN_VALUE;
+		boolean containsNegativeValues = false;
+		boolean containsPositiveValues = false;
+		
 		for (Group group : recordVA.getGroupList()) {
 			List<Integer> recordIDs = recordVA.getIDsOfGroup(group.getGroupIndex());
 			for (int recordID = 0; recordID < recordIDs.size(); recordID++) {
@@ -195,8 +198,18 @@ public class GLKaplanMeier extends ATableBasedView {
 						.getTable()
 						.getFloat(DataRepresentation.RAW, recordIDs.get(recordID),
 								dimensionVA.get(0));
-				if (rawValue != Float.NaN && rawValue > maxAxisTime)
-					maxAxisTime = rawValue;
+				
+				if (rawValue > 0)
+					containsPositiveValues = true;
+				if (rawValue < 0)
+					containsNegativeValues = true;
+
+				if (containsPositiveValues && containsNegativeValues) {
+					throw new IllegalStateException(
+							"Data contains positive and negative values. KM plot cannot handle this data.");
+				}
+				if (rawValue != Float.NaN && Math.abs(rawValue) > maxAxisTime)
+					maxAxisTime = Math.abs(rawValue);
 			}
 		}
 	}
