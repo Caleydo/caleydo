@@ -45,6 +45,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.core.view.opengl.picking.APickingListener;
 import org.caleydo.core.view.opengl.picking.Pick;
+import org.caleydo.core.view.opengl.picking.ToolTipPickingListener;
 import org.caleydo.core.view.opengl.util.button.Button;
 import org.caleydo.core.view.opengl.util.button.ButtonRenderer;
 import org.caleydo.core.view.opengl.util.draganddrop.DragAndDropController;
@@ -218,6 +219,21 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 			}
 		}, DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+
+		// FIXME: Bad hack
+		if (dataDomain.getLabel().contains("Copy")) {
+			view.addIDPickingListener(
+					new ToolTipPickingListener(view,
+							"To create a copy number categorization for one gene use the Search view."),
+					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+		}
+		if (dataDomain.getLabel().contains("Clinical")) {
+			view.addIDPickingListener(
+					new ToolTipPickingListener(
+							view,
+							"To add clinical data to StratomeX use context menu of a data column in StratomeX."),
+					DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
+		}
 	}
 
 	@Override
@@ -279,8 +295,8 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 				DATA_GRAPH_NODE_PENETRATING_PICKING_TYPE, id);
 		toggleDataContainerButtonRenderer.setZCoordinate(1);
 		toggleDataContainerButtonLayout.setRenderer(toggleDataContainerButtonRenderer);
-		
-		//FIXME: Very bad hack
+
+		// FIXME: Very bad hack
 		if ((!dataDomain.getLabel().contains("Copy"))
 				&& (!dataDomain.getLabel().contains("Clinical"))) {
 			titleRow.append(spacingLayoutX);

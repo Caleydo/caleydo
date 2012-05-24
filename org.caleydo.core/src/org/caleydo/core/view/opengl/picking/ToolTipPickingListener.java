@@ -111,7 +111,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 		public void create() {
 
-			// System.out.println("create");
+			 System.out.println("create");
 
 			PointerInfo pointerInfo = MouseInfo.getPointerInfo();
 
@@ -152,7 +152,7 @@ public class ToolTipPickingListener extends APickingListener {
 
 	private void triggerToolTipCreation() {
 
-		// System.out.println("over");
+		 System.out.println("over");
 		if(toolTipThread != null)
 			return;
 
