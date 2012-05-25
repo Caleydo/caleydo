@@ -46,6 +46,7 @@ import org.eclipse.core.runtime.Status;
 public class GroupingParser extends ATextParser {
 
 	private GroupingParseSpecification groupingSpecifications;
+	private static final String DEFAULT_GROUP_NAME = "DEFAULT_GROUP_NAME";
 
 	public GroupingParser(GroupingParseSpecification groupingSpecifications) {
 		super(groupingSpecifications.getDataSourcePath());
@@ -111,10 +112,10 @@ public class GroupingParser extends ATextParser {
 				columnsToRead = new ArrayList<Integer>(data.length);
 				if (headerCells == null) {
 					headerCells = new String[data.length];
-					
+
 					// Assigning default group names
 					for (int columnCount = 1; columnCount < data.length; columnCount++) {
-						headerCells[columnCount] = "Group " + columnCount;
+						headerCells[columnCount] = DEFAULT_GROUP_NAME;
 					}
 				}
 
@@ -209,7 +210,10 @@ public class GroupingParser extends ATextParser {
 
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				data.setData(sortedIDs, clusterSizes, sampleElements, clusterNames);
-				data.setLabel(listOfGroupNames.get(groupListCount));
+				String groupLabel = listOfGroupNames.get(groupListCount);
+				if (groupLabel.equals(DEFAULT_GROUP_NAME))
+					groupLabel = clusterSizes.size() + " Clusters";
+				data.setLabel(groupLabel);
 				perspectiveInitializationDatas.add(data);
 			}
 
