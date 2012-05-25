@@ -412,7 +412,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * 
 	 * @return the number of elements
 	 */
-	public int getNumberOfElements() {
+	public synchronized int getNumberOfElements() {
 		int iNumElements = 0;
 		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
 			iNumElements += hashSelectionTypes.get(selectionType).size();
@@ -735,7 +735,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * Removes a custom selection type from the selection manager. Should only
 	 * be called via a {@link SelectionTypeEvent}
 	 */
-	void removeSelectionType(SelectionType selectionType) {
+	synchronized void removeSelectionType(SelectionType selectionType) {
 		hashSelectionTypes.remove(selectionType);
 		selectionTypes.remove(selectionType);
 	}
@@ -777,7 +777,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	}
 
 	@Override
-	public void registerEventListeners() {
+	public synchronized void registerEventListeners() {
 
 		addSelectionTypeListener = new SelectionTypeListener();
 
@@ -797,7 +797,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	}
 
 	@Override
-	public void unregisterEventListeners() {
+	public synchronized void unregisterEventListeners() {
 		if (addSelectionTypeListener != null) {
 			GeneralManager.get().getEventPublisher()
 					.removeListener(addSelectionTypeListener);
@@ -812,7 +812,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	}
 
 	@Override
-	public String toString() {
+	public synchronized String toString() {
 		String result = "IDType: " + idType + " ";
 		for (SelectionType selectionType : hashSelectionTypes.keySet()) {
 			result = result + "[" + selectionType + ": "
@@ -837,7 +837,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 */
 	@Override
 	@SuppressWarnings("unchecked")
-	public SelectionManager clone() {
+	public synchronized SelectionManager clone() {
 		SelectionManager clone;
 		try {
 			clone = (SelectionManager) super.clone();
@@ -883,7 +883,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * 
 	 * @return
 	 */
-	public SelectionType getSelectionType() {
+	public synchronized SelectionType getSelectionType() {
 		return selectionType;
 	}
 
@@ -894,7 +894,7 @@ public class SelectionManager implements IListenerOwner, Cloneable {
 	 * 
 	 * @param selectionType
 	 */
-	public void setSelectionType(SelectionType selectionType) {
+	public synchronized void setSelectionType(SelectionType selectionType) {
 		this.selectionType = selectionType;
 	}
 }
