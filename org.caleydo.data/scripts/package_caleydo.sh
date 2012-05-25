@@ -22,7 +22,7 @@
 #
 
 mount_point="/mnt/webdav"
-download_folder=$mount_point"/htdocs/download"
+download_folder=$mount_point"/download"
 webstart_plugins_folder=$download_folder"/webstart_2.0/plugins"
 
 export_root=$HOME"/caleydo_export"
@@ -39,7 +39,7 @@ mount_webdav()
   done
 
   if [ "$already_mounted" = "false" ]; then
-    sudo mount -t davfs https://caleydo.icg.tugraz.at/dav/ $mount_point
+    sudo mount -t davfs https://data.icg.tugraz.at/caleydo/dav/ $mount_point
   fi
 }
 
