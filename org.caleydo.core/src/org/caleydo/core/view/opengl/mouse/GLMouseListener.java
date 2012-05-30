@@ -92,7 +92,7 @@ public class GLMouseListener
 
 		if (mouseEvent.getClickCount() > 1) {
 			mouseDoubleClick = true;
-			// System.out.println("Double click!");
+//			 System.out.println("Double click!");
 			return;
 		}
 
@@ -256,7 +256,9 @@ public class GLMouseListener
 	}
 
 	public final boolean wasMouseDoubleClicked() {
-		return mouseDoubleClick;
+		boolean bTmp = mouseDoubleClick;
+		mouseDoubleClick = false;
+		return bTmp;
 	}
 
 	public final boolean wasRightMouseButtonPressed() {

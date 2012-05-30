@@ -22,6 +22,8 @@ package org.caleydo.core.view.opengl.canvas;
 import gleem.linalg.Vec3f;
 import java.awt.Point;
 import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -71,6 +73,8 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.ui.PlatformUI;
+
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
 
@@ -204,6 +208,8 @@ public abstract class AGLView
 	private HashSet<IMouseWheelHandler> mouseWheelListeners;
 
 	protected GLMouseWheelListener glMouseWheelListener;
+	
+	private boolean focusGained = false;
 
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered
@@ -228,6 +234,19 @@ public abstract class AGLView
 		glCanvas.addMouseListener(glMouseListener);
 		glCanvas.addMouseMotionListener(glMouseListener);
 		glCanvas.addMouseWheelListener(glMouseListener);
+		
+		glCanvas.addFocusListener(new FocusListener() {
+			
+			@Override
+			public void focusLost(FocusEvent e) {
+//				focusGained=false;
+			}
+			
+			@Override
+			public void focusGained(FocusEvent e) {
+				focusGained = true;
+			}
+		});
 
 		idPickingListeners = new HashMap<String, HashMap<Integer, Set<IPickingListener>>>();
 		typePickingListeners = new HashMap<String, Set<IPickingListener>>();
@@ -310,9 +329,27 @@ public abstract class AGLView
 			processEvents();
 			if (!isVisible())
 				return;
-
+			
+			if(!focusGained) {
+				parentGLCanvas.requestFocus();
+			}
+			
+//			parentComposite.getDisplay().asyncExec(new Runnable() {
+//				@Override
+//				public void run() {
+//
+//					parentComposite.setFocus();
+//					parentComposite.set
+////					viewPart.setFocus();
+////					viewPart.getSWTComposite().setFocus();
+//
+//				}
+//			});
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
+			
+//			System.out.println("focus owner " + parentGLCanvas.isFocusOwner());
+//			System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
 
@@ -1086,6 +1123,9 @@ public abstract class AGLView
 	 */
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
+		if(!isVisible){
+			focusGained = false;
+		}
 	}
 
 	/**

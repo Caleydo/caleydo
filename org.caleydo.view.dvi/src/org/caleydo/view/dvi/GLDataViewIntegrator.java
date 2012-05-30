@@ -1042,15 +1042,21 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 		});
 	}
 
-	public void openView(AGLView view) {
+	public void openView(final AGLView view) {
 		final ARcpGLViewPart viewPart = GeneralManager.get().getViewManager()
 				.getViewPartFromView(view);
 
 		parentComposite.getDisplay().asyncExec(new Runnable() {
 			@Override
 			public void run() {
+
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
 						.activate(viewPart);
+//				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+//				.activate(viewPart);
+//				viewPart.setFocus();
+//				viewPart.getSWTComposite().setFocus();
+
 			}
 		});
 

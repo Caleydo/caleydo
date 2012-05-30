@@ -41,12 +41,14 @@ import org.eclipse.ui.IWorkbenchPartReference;
 import org.eclipse.ui.PlatformUI;
 
 /**
- * Listener for events that are related to view changes (detach, visible, hide, activate, etc.)
+ * Listener for events that are related to view changes (detach, visible, hide,
+ * activate, etc.)
  * 
  * @author Marc Streit
  */
-public class PartListener
-	implements IPartListener2 {
+public class PartListener implements IPartListener2 {
+
+	boolean redoActivation = true;
 
 	@Override
 	public void partOpened(IWorkbenchPartReference partRef) {
@@ -86,11 +88,11 @@ public class PartListener
 
 	@Override
 	public void partDeactivated(IWorkbenchPartReference partRef) {
-
 	}
 
 	@Override
 	public void partHidden(IWorkbenchPartReference partRef) {
+
 		IWorkbenchPart activePart = partRef.getPart(false);
 
 		if (!(activePart instanceof CaleydoRCPViewPart)) {
@@ -123,21 +125,35 @@ public class PartListener
 
 		CaleydoRCPViewPart viewPart = (CaleydoRCPViewPart) activePart;
 
-		// Make sure that keyboard listener gets the events
-		if (viewPart.getSWTComposite() != null)
-			viewPart.getSWTComposite().forceFocus();
-
 		drawInlineToolBar(viewPart);
 		updateSupportViews(viewPart);
+
+		// Make sure that keyboard listener gets the events
+		if (viewPart.getSWTComposite() != null) {
+			viewPart.getSWTComposite().forceFocus();
+		}
+
+	}
+
+	private void redoActivation(IWorkbenchPartReference partRef) {
+		partDeactivated(partRef);
+		redoActivation = false;
+		partActivated(partRef);
+		partActivated(partRef);
+		partActivated(partRef);
+		partActivated(partRef);
+		partActivated(partRef);
+		redoActivation = true;
 	}
 
 	@SuppressWarnings({ "deprecation", "unchecked", "rawtypes" })
 	private void updateSupportViews(CaleydoRCPViewPart viewPart) {
 		if (viewPart.getView() instanceof IDataDomainBasedView) {
-			IDataDomain dataDomain = ((IDataDomainBasedView<?>) viewPart.getView()).getDataDomain();
+			IDataDomain dataDomain = ((IDataDomainBasedView<?>) viewPart
+					.getView()).getDataDomain();
 
-			for (IViewPart rcpViewPart : PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-				.getViews()) {
+			for (IViewPart rcpViewPart : PlatformUI.getWorkbench()
+					.getActiveWorkbenchWindow().getActivePage().getViews()) {
 
 				if (!(rcpViewPart instanceof CaleydoRCPViewPart))
 					continue;
@@ -146,11 +162,12 @@ public class PartListener
 
 				if (caleydoRCPViewPart.isSupportView()) {
 					if (caleydoRCPViewPart instanceof IDataDomainBasedView) {
-						((IDataDomainBasedView) caleydoRCPViewPart).setDataDomain(dataDomain);
+						((IDataDomainBasedView) caleydoRCPViewPart)
+								.setDataDomain(dataDomain);
 
-					}
-					else if (caleydoRCPViewPart.getView() instanceof IDataDomainBasedView) {
-						((IDataDomainBasedView) (caleydoRCPViewPart.getView())).setDataDomain(dataDomain);
+					} else if (caleydoRCPViewPart.getView() instanceof IDataDomainBasedView) {
+						((IDataDomainBasedView) (caleydoRCPViewPart.getView()))
+								.setDataDomain(dataDomain);
 					}
 				}
 			}
@@ -171,9 +188,11 @@ public class PartListener
 		List<IView> views = getAllViews(viewPart);
 
 		ToolBarContentFactory contentFactory = ToolBarContentFactory.get();
-		List<AToolBarContent> toolBarContents = contentFactory.getToolBarContent(views);
+		List<AToolBarContent> toolBarContents = contentFactory
+				.getToolBarContent(views);
 
-		final IToolBarManager toolBarManager = viewPart.getViewSite().getActionBars().getToolBarManager();
+		final IToolBarManager toolBarManager = viewPart.getViewSite()
+				.getActionBars().getToolBarManager();
 
 		toolBarManager.removeAll();
 		for (AToolBarContent toolBarContent : toolBarContents) {
@@ -181,8 +200,7 @@ public class PartListener
 				for (IToolBarItem item : container.getToolBarItems()) {
 					if (item instanceof IAction) {
 						toolBarManager.add((IAction) item);
-					}
-					else if (item instanceof ControlContribution) {
+					} else if (item instanceof ControlContribution) {
 						toolBarManager.add((ControlContribution) item);
 					}
 				}
