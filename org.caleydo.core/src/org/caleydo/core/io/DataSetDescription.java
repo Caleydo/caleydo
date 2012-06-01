@@ -160,10 +160,9 @@ public class DataSetDescription extends MatrixDefinition {
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications;
 
 	/**
-	 * A list of descriptions on how to pre-process (e.g., cluster, filter) the
-	 * data
+	 * A description on how to pre-process (e.g., cluster, filter) the data. Optional.
 	 */
-	private ArrayList<DataProcessingDescription> dataProcessingDescriptions;
+	private DataProcessingDescription dataProcessingDescription;
 
 	/**
 	 * @param transposeMatrix
@@ -465,28 +464,20 @@ public class DataSetDescription extends MatrixDefinition {
 	}
 
 	/**
-	 * @param dataProcessingDescriptions
-	 *            setter, see {@link #dataProcessingDescriptions}
+	 * @param dataProcessingDescription
+	 *            setter, see {@link #dataProcessingDescription}
 	 */
-	public void setDataProcessingDescriptions(
-			ArrayList<DataProcessingDescription> dataProcessingDescriptions) {
-		this.dataProcessingDescriptions = dataProcessingDescriptions;
+	public void setDataProcessingDescription(
+			DataProcessingDescription dataProcessingDescription) {
+		this.dataProcessingDescription = dataProcessingDescription;
 	}
 
 	/**
 	 * @return the dataProcessingDescriptions, see
 	 *         {@link #dataProcessingDescriptions}
 	 */
-	public ArrayList<DataProcessingDescription> getDataProcessingDescriptions() {
-		return dataProcessingDescriptions;
-	}
-
-	public void addDataProcessingDescription(
-			DataProcessingDescription dataProcessingDescription) {
-		if (dataProcessingDescriptions == null) {
-			dataProcessingDescriptions = new ArrayList<DataProcessingDescription>(3);
-		}
-		dataProcessingDescriptions.add(dataProcessingDescription);
+	public DataProcessingDescription getDataProcessingDescription() {
+		return dataProcessingDescription;
 	}
 
 	/**

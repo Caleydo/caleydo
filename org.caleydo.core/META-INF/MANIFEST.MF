@@ -179,6 +179,7 @@ Export-Package:
    gleem.linalg,
    org.caleydo.core.data.selection,
    org.caleydo.core.data.id",
+ org.caleydo.core.util.clusterer.algorithm.kmeans,
  org.caleydo.core.util.clusterer.gui;
   uses:="org.eclipse.jface.action,
    org.caleydo.core.data.datadomain,

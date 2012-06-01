@@ -20,11 +20,16 @@
 package org.caleydo.data.importer.tcga;
 
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.ParsingRule;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.*;
 
 /**
  * Generator class that writes the loading information of a series of TCGA data
@@ -120,9 +125,8 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		dataSetDescriptionCollection.add(setUpMethylationData());
 		dataSetDescriptionCollection.add(setUpCopyNumberData());
 		dataSetDescriptionCollection.add(setUpClinicalData());
-//		dataSetDescriptionCollection.add(setUpMutationData());
-		
-		
+		// dataSetDescriptionCollection.add(setUpMutationData());
+
 	}
 
 	private DataSetDescription setUpMRNAData() {
@@ -152,11 +156,19 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(firehoseClustering);
 
-//		GroupingParseSpecification groundTruthGrouping = new GroupingParseSpecification();
-//		groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
-//		groundTruthGrouping.addColum(2);
-//		groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
-//		mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
+		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		mrnaData.setDataProcessingDescription(dataProcessingDescription);
+
+		// GroupingParseSpecification groundTruthGrouping = new
+		// GroupingParseSpecification();
+		// groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
+		// groundTruthGrouping.addColum(2);
+		// groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
+		// mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
 
 		return mrnaData;
 	}
@@ -186,6 +198,14 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mirnaData.addColumnGroupingSpecification(firehoseClustering);
+		
+		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		mirnaData.setDataProcessingDescription(dataProcessingDescription);
+
 
 		return mirnaData;
 	}
@@ -215,6 +235,14 @@ public class SampleTCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setContainsColumnIDs(false);
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		methylationData.addColumnGroupingSpecification(firehoseClustering);
+		
+		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		methylationData.setDataProcessingDescription(dataProcessingDescription);
+
 
 		return methylationData;
 	}

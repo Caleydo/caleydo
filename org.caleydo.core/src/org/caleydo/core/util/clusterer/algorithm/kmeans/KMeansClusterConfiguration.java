@@ -35,7 +35,7 @@ public class KMeansClusterConfiguration extends AClusterConfiguration {
 	public KMeansClusterConfiguration() {
 		clusterAlgorithmName = "K-Means";
 	}
-	
+
 	/**
 	 * @param numberOfClusters
 	 *            setter, see {@link #numberOfClusters}
@@ -49,5 +49,10 @@ public class KMeansClusterConfiguration extends AClusterConfiguration {
 	 */
 	public int getNumberOfClusters() {
 		return numberOfClusters;
+	}
+
+	@Override
+	public String toString() {
+		return clusterAlgorithmName + " " + numberOfClusters + " Clusters";
 	}
 }

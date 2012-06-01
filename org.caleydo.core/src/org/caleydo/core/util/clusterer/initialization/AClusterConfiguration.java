@@ -19,11 +19,17 @@
  *******************************************************************************/
 package org.caleydo.core.util.clusterer.initialization;
 
+import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.affinity.AffinityClusterer;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.nominal.NominalClusterConfiguration;
+import org.caleydo.core.util.clusterer.algorithm.tree.TreeClusterConfiguration;
 
 /**
  * <p>
@@ -53,6 +59,8 @@ import org.caleydo.core.gui.toolbar.action.StartClusteringAction;
  * @author Alexander Lex
  */
 @XmlType
+@XmlSeeAlso({ KMeansClusterConfiguration.class, AffinityClusterConfiguration.class,
+		TreeClusterConfiguration.class, NominalClusterConfiguration.class })
 public abstract class AClusterConfiguration {
 
 	/**
@@ -62,8 +70,6 @@ public abstract class AClusterConfiguration {
 	protected String clusterAlgorithmName = "Unlabeled Clustering Algorithm";
 	private EClustererTarget clusterTarget;
 	private EDistanceMeasure distanceMeasure;
-	
-	
 
 	/**
 	 * The record perspective which provides the source information on what to
@@ -200,7 +206,7 @@ public abstract class AClusterConfiguration {
 
 	@Override
 	public String toString() {
-		return "Algorithm: " + clusterAlgorithmName;
+		return clusterAlgorithmName;
 	}
 
 	/**

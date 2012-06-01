@@ -44,12 +44,15 @@ import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
 import org.caleydo.core.id.IDType;
+import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
+import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 import org.caleydo.datadomain.generic.GenericDataDomain;
@@ -148,6 +151,8 @@ public class Application implements IApplication {
 
 		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
 		loadGroupings(dataDomain, dataSetDescription);
+
+		runDataProcessing(dataDomain, dataSetDescription);
 
 		// if (dataSetDescription.areAllColumnTypesContinuous()
 		// && dataSetDescription.getRowGroupingSpecifications() == null
@@ -362,133 +367,75 @@ public class Application implements IApplication {
 		return perspectiveDatas;
 	}
 
-	/**
-	 * Running this once with true creates a new dimension perspective with
-	 * k-means. Running this with false creates another dimensionPerspective
-	 * using affinity propagation
-	 * 
-	 * @param useKMeans
-	 * @return
-	 */
-	// private ClusterResult runClusteringOnDimensions(ATableBasedDataDomain
-	// dataDomain,
-	// boolean useKMeans, int numClusters) {
-	// AClusterConfiguration clusterConfiguration = new AClusterConfiguration();
-	// clusterConfiguration.setClustererType(EClustererTarget.DIMENSION_CLUSTERING);
-	// clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-	//
-	// String recordPerspectiveID =
-	// dataDomain.getTable().getDefaultRecordPerspective()
-	// .getID();
-	// String dimensionPerspectiveID = dataDomain.getTable()
-	// .getDefaultDimensionPerspective().getID();
-	//
-	// DimensionPerspective sourceDimensionPerspective = dataDomain.getTable()
-	// .getDimensionPerspective(dimensionPerspectiveID);
-	//
-	// if (useKMeans) {
-	// clusterConfiguration.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
-	// clusterConfiguration.setkMeansNumberOfClustersForDimensions(numClusters);
-	//
-	// DimensionPerspective targetDimensionPerspective = new
-	// DimensionPerspective(
-	// dataDomain);
-	// dataDomain.getTable()
-	// .registerDimensionPerspective(targetDimensionPerspective);
-	//
-	// targetDimensionPerspective.setLabel("K-Means, " + numClusters +
-	// " Cluster",
-	// false);
-	//
-	// clusterConfiguration
-	// .setOptionalTargetDimensionPerspective(targetDimensionPerspective);
-	// } else {
-	// // here we create another dimensionPerspective which uses average
-	// // linkage hierarchical clustering
-	// clusterConfiguration.setClustererAlgo(EClustererAlgo.TREE_CLUSTERER);
-	// clusterConfiguration.setTreeClustererAlgo(ETreeClustererAlgo.AVERAGE_LINKAGE);
-	//
-	// sourceDimensionPerspective.setLabel("Average Linkage", false);
-	// }
-	//
-	// clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-	// .getRecordPerspective(recordPerspectiveID));
-	// clusterConfiguration.setSourceDimensionPerspective(sourceDimensionPerspective);
-	//
-	// return dataDomain.startClustering(clusterConfiguration);
-	//
-	// // dimensionPerspective.init(result.getDimensionResult());
-	// // dimensionPerspective.setLabel("All genes clustered, size: "
-	// // + dimensionPerspective.getVirtualArray().size(), false);
-	// //
-	// // return result.getDimensionResult();
-	// }
+	private void runDataProcessing(ATableBasedDataDomain dataDomain,
+			DataSetDescription dataSetDescription) {
+		DataProcessingDescription dataProcessingDescription = dataSetDescription
+				.getDataProcessingDescription();
+		if (dataProcessingDescription == null)
+			return;
 
-	/**
-	 * Running this once with true creates a new dimension perspective with
-	 * k-means. Running this with false creates another dimensionPerspective
-	 * using affinity propagation
-	 * 
-	 * @param useKMeans
-	 * @return
-	 */
-	// private ClusterResult runClusteringOnRecords(ATableBasedDataDomain
-	// dataDomain,
-	// boolean useKMeans, int numClusters) {
-	// AClusterConfiguration clusterConfiguration = new AClusterConfiguration();
-	// clusterConfiguration.setClustererType(EClustererTarget.RECORD_CLUSTERING);
-	// clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
-	//
-	// String recordPerspectiveID =
-	// dataDomain.getTable().getDefaultRecordPerspective()
-	// .getID();
-	// String dimensionPerspectiveID = dataDomain.getTable()
-	// .getDefaultDimensionPerspective().getID();
-	//
-	// RecordPerspective sourceRecordPerspective = dataDomain.getTable()
-	// .getRecordPerspective(recordPerspectiveID);
-	//
-	// if (useKMeans) {
-	// clusterConfiguration.setClustererAlgo(EClustererAlgo.KMEANS_CLUSTERER);
-	// clusterConfiguration.setkMeansNumberOfClustersForRecords(numClusters);
-	//
-	// RecordPerspective targetRecordPerspective = new
-	// RecordPerspective(dataDomain);
-	// dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
-	//
-	// targetRecordPerspective.setLabel("K-Means, " + numClusters + " Cluster",
-	// false);
-	//
-	// clusterConfiguration
-	// .setOptionalTargetRecordPerspective(targetRecordPerspective);
-	// } else {
-	// // here we create another dimensionPerspective which uses average
-	// // linkage hierarchical clustering
-	// clusterConfiguration.setClustererAlgo(EClustererAlgo.AFFINITY_PROPAGATION);
-	// clusterConfiguration.setAffinityPropClusterFactorGenes(9);
-	//
-	// RecordPerspective targetRecordPerspective = new
-	// RecordPerspective(dataDomain);
-	// dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
-	//
-	// targetRecordPerspective.setLabel("Affinity", false);
-	//
-	// clusterConfiguration
-	// .setOptionalTargetRecordPerspective(targetRecordPerspective);
-	//
-	// }
-	//
-	// clusterConfiguration.setSourceRecordPerspective(sourceRecordPerspective);
-	// clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-	// .getDimensionPerspective(dimensionPerspectiveID));
-	// return dataDomain.startClustering(clusterConfiguration);
-	//
-	// // dimensionPerspective.init(result.getDimensionResult());
-	// // dimensionPerspective.setLabel("All genes clustered, size: "
-	// // + dimensionPerspective.getVirtualArray().size(), false);
-	// //
-	// return result.getDimensionResult();
-	// }
+		ArrayList<AClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
+				.getRowClusterConfigurations();
+		if (rowClusterConfigurations != null) {
+			for (AClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
+				if (dataSetDescription.isTransposeMatrix()) {
+					setUpDimensionClustering(clusterConfiguration, dataDomain);
+				} else {
+					setUpRecordClustering(clusterConfiguration, dataDomain);
+				}
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+						.getDefaultDimensionPerspective());
+				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
+						.getDefaultRecordPerspective());
+
+				dataDomain.startClustering(clusterConfiguration);
+			}
+
+		}
+
+		ArrayList<AClusterConfiguration> columnClusterConfigurations = dataProcessingDescription
+				.getColumnClusterConfigurations();
+		if (columnClusterConfigurations != null) {
+			for (AClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
+				if (!dataSetDescription.isTransposeMatrix()) {
+					setUpDimensionClustering(clusterConfiguration, dataDomain);
+				} else {
+					setUpRecordClustering(clusterConfiguration, dataDomain);
+				}
+				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
+						.getDefaultDimensionPerspective());
+				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
+						.getDefaultRecordPerspective());
+
+				dataDomain.startClustering(clusterConfiguration);
+			}
+
+		}
+
+	}
+
+	private void setUpDimensionClustering(AClusterConfiguration clusterConfiguration,
+			ATableBasedDataDomain dataDomain) {
+		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
+		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
+				dataDomain);
+		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
+
+		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
+		clusterConfiguration
+				.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
+	}
+
+	private void setUpRecordClustering(AClusterConfiguration clusterConfiguration,
+			ATableBasedDataDomain dataDomain) {
+		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
+		RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
+		dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
+		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
+		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
+	}
+
+	
 
 	private void createSampleOfGenes(ATableBasedDataDomain dataDomain,
 			PerspectiveInitializationData clusterResult) {

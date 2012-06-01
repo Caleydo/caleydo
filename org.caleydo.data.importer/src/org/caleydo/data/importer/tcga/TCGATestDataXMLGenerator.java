@@ -20,11 +20,14 @@
 package org.caleydo.data.importer.tcga;
 
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.ParsingRule;
+import org.caleydo.core.util.clusterer.algorithm.kmeans.KMeansClusterConfiguration;
+import org.caleydo.core.util.clusterer.initialization.EDistanceMeasure;
 import org.caleydo.data.importer.setupgenerator.DataSetDescriptionSerializer;
 
 /**
@@ -155,7 +158,21 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		groundTruthGrouping.addColum(2);
 		groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
-
+		
+		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		
+		
+		KMeansClusterConfiguration sampleClusterConfiguration = new KMeansClusterConfiguration();
+		sampleClusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		sampleClusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addColumnClusterConfiguration(sampleClusterConfiguration);
+		
+		mrnaData.setDataProcessingDescription(dataProcessingDescription);
+	
 		return mrnaData;
 	}
 
@@ -185,6 +202,13 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mirnaData.addColumnGroupingSpecification(firehoseClustering);
 
+		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		mirnaData.setDataProcessingDescription(dataProcessingDescription);
+		
 		return mirnaData;
 	}
 
@@ -214,6 +238,13 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		methylationData.addColumnGroupingSpecification(firehoseClustering);
 
+		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
+		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
+		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		clusterConfiguration.setNumberOfClusters(5);
+		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
+		methylationData.setDataProcessingDescription(dataProcessingDescription);
+		
 		return methylationData;
 	}
 

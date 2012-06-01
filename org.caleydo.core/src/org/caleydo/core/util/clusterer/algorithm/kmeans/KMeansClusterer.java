@@ -365,4 +365,6 @@ public class KMeansClusterer extends AClusterer implements IClusterer {
 
 		return cluster(dataDomain.getTable(), clusterConfiguration);
 	}
+	
+
 }
