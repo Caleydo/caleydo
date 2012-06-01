@@ -19,11 +19,15 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.browser.command.openbrowser"
-                  icon="resources/icons/browser.png"
-                  style="push">
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.browser.command.openbrowser"
+                     icon="resources/icons/browser.png"
+                     style="push">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

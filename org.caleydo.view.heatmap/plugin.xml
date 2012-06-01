@@ -36,32 +36,24 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.heatmap.command.openheatmap"
-                  icon="resources/icons/heatmap.png"
-                  style="push">
-              <visibleWhen checkEnabled="false">
-                  <with
-                        variable="org.caleydo.core.isReleaseState">
-                     <equals
-                           value="releaseVersion">
-                     </equals>
-                  </with>
-               </visibleWhen>
-            </command>
-            <command
-                  commandId="org.caleydo.view.heatmap.command.openuncertaintyheatmap"
-                  icon="resources/icons/heatmap.png"
-                  style="push">
-                <visibleWhen checkEnabled="false">
-                  <with
-                        variable="org.caleydo.core.isReleaseState">
-                     <equals
-                           value="releaseVersion">
-                     </equals>
-                  </with>
-               </visibleWhen>
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.legacy"
+                  label="Legacy">
+               <command
+                     commandId="org.caleydo.view.heatmap.command.openheatmap"
+                     icon="resources/icons/heatmap.png"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

@@ -32,11 +32,15 @@
                icon="resources/icons/dataviewintegrator.png"
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.dvi.opendvi"
-                  icon="resources/icons/dataviewintegrator.png"
-                  style="push">
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.dvi.opendvi"
+                     icon="resources/icons/dataviewintegrator.png"
+                     style="push">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

@@ -36,11 +36,15 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.pathway.command.openpathway"
-                  icon="resources/icons/pathway.png"
-                  style="push">
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.pathway.command.openpathway"
+                     icon="resources/icons/pathway.png"
+                     style="push">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

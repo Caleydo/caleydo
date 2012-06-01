@@ -156,6 +156,11 @@
             id="org.caleydo.core.util.clusterer.gui.cluster"
             name="Cluster">
       </command>
+      <command
+            defaultHandler="org.caleydo.core.gui.toolbar.OpenGeneralToolbarHandler"
+            id="org.caleydo.view.generaltoolbar.command.opengeneraltoolbar"
+            name="Tool Bar">
+      </command>
       		
    </extension>
    <extension
@@ -286,6 +291,31 @@
                   label="About Caleydo"
                   style="push">
             </command>
+         </menu>
+         <menu
+               id="org.caleydo.menu.view"
+               label="View">
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+            </menu>
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.generaltoolbar.command.opengeneraltoolbar"
+                     icon="resources/icons/view/general.png"
+                     style="push">
+               </command>
+            </menu>
+            <menu
+                  id="org.caleydo.menu.view.experimental"
+                  label="Experimental">
+            </menu>
+            <menu
+                  id="org.caleydo.menu.view.legacy"
+                  label="Legacy">
+            </menu>
          </menu>
       </menuContribution>
    </extension>

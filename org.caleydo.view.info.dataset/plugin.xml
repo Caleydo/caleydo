@@ -19,12 +19,16 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.info.dataset.command.opendatasetinfo"
-                  icon="resources/icons/icon.png"
-                  label="Dataset Info"
-                  style="push">
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.info.dataset.command.opendatasetinfo"
+                     icon="resources/icons/icon.png"
+                     label="Dataset Info"
+                     style="push">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

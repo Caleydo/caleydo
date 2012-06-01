@@ -33,20 +33,25 @@
                icon="resources/icons/enroute.png"
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.linearizedpathway.openlinearizedpathway"
-                  icon="resources/icons/enroute.png"
-                  label="enRoute - Pathway Path"
-                  style="push">
-               <visibleWhen checkEnabled="false">
-                  <with
-                        variable="org.caleydo.core.isReleaseState">
-                     <equals
-                           value="releaseVersion">
-                     </equals>
-                  </with>
-               </visibleWhen>                  
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.visualization"
+                  label="Visualizations">
+               <command
+                     commandId="org.caleydo.view.linearizedpathway.openlinearizedpathway"
+                     icon="resources/icons/enroute.png"
+                     label="enRoute - Pathway Path"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

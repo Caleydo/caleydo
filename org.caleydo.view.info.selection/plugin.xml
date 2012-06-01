@@ -19,11 +19,15 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.info.selection.command.openselectioninfo"
-                  icon="resources/icons/info.png"
-                  style="push">
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.info.selection.command.openselectioninfo"
+                     icon="resources/icons/info.png"
+                     style="push">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

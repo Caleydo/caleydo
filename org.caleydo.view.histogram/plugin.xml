@@ -20,13 +20,17 @@
                id="org.caleydo.menu.view"
                label="View"
                tooltip="Test">
-            <command
-                  commandId="org.caleydo.view.histogram.command.openhistogram"
-                  icon="resources/icons/histogram.png"
-                  label="Histogram, Color Legend"
-                  style="push"
-                  tooltip="test2">
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.tool"
+                  label="Tools">
+               <command
+                     commandId="org.caleydo.view.histogram.command.openhistogram"
+                     icon="resources/icons/histogram.png"
+                     label="Histogram, Color Legend"
+                     style="push"
+                     tooltip="test2">
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>

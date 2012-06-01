@@ -19,19 +19,24 @@
          <menu
                id="org.caleydo.menu.view"
                label="View">
-            <command
-                  commandId="org.caleydo.view.bucket.command.openbucket"
-                  icon="resources/icons/bucket.png"
-                  style="push">
-               <visibleWhen checkEnabled="false">
-                  <with
-                        variable="org.caleydo.core.isReleaseState">
-                     <equals
-                           value="releaseVersion">
-                     </equals>
-                  </with>
-               </visibleWhen>                  
-            </command>
+            <menu
+                  id="org.caleydo.menu.view.experimental"
+                  label="Experimental">
+               <command
+                     commandId="org.caleydo.view.bucket.command.openbucket"
+                     icon="resources/icons/bucket.png"
+                     style="push">
+                  <visibleWhen
+                        checkEnabled="false">
+                     <with
+                           variable="org.caleydo.core.isReleaseState">
+                        <equals
+                              value="releaseVersion">
+                        </equals>
+                     </with>
+                  </visibleWhen>
+               </command>
+            </menu>
          </menu>
       </menuContribution>
    </extension>
