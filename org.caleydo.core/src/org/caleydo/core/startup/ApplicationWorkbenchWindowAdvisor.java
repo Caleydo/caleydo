@@ -63,8 +63,8 @@ public class ApplicationWorkbenchWindowAdvisor
 		configurer.setShowStatusLine(false);
 		// configurer.setShowProgressIndicator(true);
 
-		if (!GeneralManager.RELEASE_MODE)
-			configurer.setShowPerspectiveBar(true);
+		//if (!GeneralManager.RELEASE_MODE)
+		//	configurer.setShowPerspectiveBar(true);
 
 		configurer.setTitle("Caleydo");
 
