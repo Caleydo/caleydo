@@ -1020,6 +1020,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		for (Integer foreignVAID : foreignRecordVA) {
 			Set<Integer> localVAIDS = recordIDMappingManager.getIDAsSet(
 					foreignRecordVA.getIdType(), recordIDType, foreignVAID);
+			if(localVAIDS == null)
+				continue;
 			for (Integer localVAID : localVAIDS) {
 				if (localVAID == null)
 					continue;
