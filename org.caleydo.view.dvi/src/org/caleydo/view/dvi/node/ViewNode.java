@@ -19,12 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.dvi.node;
 
-import java.io.File;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.IDataDomain;
 import org.caleydo.core.view.IDataContainerBasedView;
@@ -51,17 +52,17 @@ import org.eclipse.core.runtime.Platform;
 import org.osgi.framework.Bundle;
 import org.osgi.framework.FrameworkUtil;
 
-public class ViewNode
-	extends ADefaultTemplateNode {
+public class ViewNode extends ADefaultTemplateNode {
 
 	// private DataContainerListRenderer overviewDataContainerRenderer;
 	protected AGLView representedView;
-	protected Set<IDataDomain> dataDomains;
+	protected Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 	protected String viewName;
 	protected String iconPath;
 
 	public ViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id, AGLView representedView) {
+			DragAndDropController dragAndDropController, Integer id,
+			AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
@@ -125,8 +126,7 @@ public class ViewNode
 			URL iconURL = viewPlugin.getEntry(iconPath);
 			try {
 				iconPath = FileLocator.toFileURL(iconURL).getPath();
-			}
-			catch (IOException e) {
+			} catch (IOException e) {
 				new IllegalStateException("Cannot load view icon texture");
 			}
 		}
@@ -151,7 +151,8 @@ public class ViewNode
 			ElementLayout iconLayout = new ElementLayout("icon");
 			iconLayout.setPixelSizeX(CAPTION_HEIGHT_PIXELS);
 			iconLayout.setPixelSizeY(CAPTION_HEIGHT_PIXELS);
-			iconLayout.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
+			iconLayout
+					.setRenderer(new TextureRenderer(iconPath, view.getTextureManager()));
 			titleRow.append(iconLayout);
 			titleRow.append(spacingLayoutX);
 		}
@@ -163,8 +164,8 @@ public class ViewNode
 		ElementLayout lineSeparatorLayout = createDefaultLineSeparatorLayout();
 
 		Row bodyRow = new Row("bodyRow");
-		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(
-				new float[] { 1, 1, 1, 1 }, iconPath, view.getTextureManager()));
+		bodyRow.addBackgroundRenderer(new ViewNodeBackGroundRenderer(new float[] { 1, 1,
+				1, 1 }, iconPath, view.getTextureManager()));
 
 		bodyColumn = new Column("bodyColumn");
 
@@ -218,7 +219,8 @@ public class ViewNode
 	}
 
 	public void setDataDomains(Set<IDataDomain> dataDomains) {
-		this.dataDomains = dataDomains;
+		if (dataDomains != null)
+			this.dataDomains = dataDomains;
 	}
 
 	public Set<IDataDomain> getDataDomains() {
@@ -265,8 +267,8 @@ public class ViewNode
 				pixelGLConverter.getGLHeightForPixelHeight(CAPTION_HEIGHT_PIXELS),
 				MIN_TITLE_BAR_WIDTH_PIXELS);
 
-		return pixelGLConverter.getPixelWidthForGLWidth(textWidth) + CAPTION_HEIGHT_PIXELS
-				+ SPACING_PIXELS;
+		return pixelGLConverter.getPixelWidthForGLWidth(textWidth)
+				+ CAPTION_HEIGHT_PIXELS + SPACING_PIXELS;
 	}
 
 	@Override

@@ -211,10 +211,19 @@ public class MultiDataContainerViewNode
 		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
 //			System.out.println("Drop");
-			AddDataContainersEvent event = new AddDataContainersEvent(dataContainers.get(0));
+			DataContainer dataContainer = dataContainers.get(0);
+			AddDataContainersEvent event = new AddDataContainersEvent(dataContainer);
 			event.setReceiver(representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
+			
+			getDataContainers().add(dataContainer);
+			dataDomains.add(dataContainer.getDataDomain());
+			dataContainerListRenderer.setDataContainers(getDataContainers());
+			view.updateGraphEdgesOfViewNode(this);
+			recalculateNodeSize();
+			graphLayout.fitNodesToDrawingArea(view.calculateGraphDrawingArea());
+			view.setDisplayListDirty();
 		}
 
 		// dragAndDropController.clearDraggables();
