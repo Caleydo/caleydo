@@ -48,15 +48,14 @@ import org.caleydo.view.dvi.datacontainer.DataContainerListRenderer;
 import org.caleydo.view.dvi.datacontainer.DimensionGroupRenderer;
 import org.caleydo.view.dvi.layout.AGraphLayout;
 
-public class MultiDataContainerViewNode
-	extends ViewNode
-	implements IDropArea {
+public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 
 	protected DataContainerListRenderer dataContainerListRenderer;
 	protected List<DataContainer> dataContainers;
 
-	public MultiDataContainerViewNode(AGraphLayout graphLayout, GLDataViewIntegrator view,
-			DragAndDropController dragAndDropController, Integer id, AGLView representedView) {
+	public MultiDataContainerViewNode(AGraphLayout graphLayout,
+			GLDataViewIntegrator view, DragAndDropController dragAndDropController,
+			Integer id, AGLView representedView) {
 		super(graphLayout, view, dragAndDropController, id, representedView);
 
 	}
@@ -71,8 +70,8 @@ public class MultiDataContainerViewNode
 
 				DragAndDropController dragAndDropController = MultiDataContainerViewNode.this.dragAndDropController;
 				if (dragAndDropController.isDragging()
-						&& dragAndDropController.getDraggingMode()
-								.equals("DimensionGroupDrag")) {
+						&& dragAndDropController.getDraggingMode().equals(
+								"DimensionGroupDrag")) {
 					dragAndDropController.setDropArea(MultiDataContainerViewNode.this);
 				}
 
@@ -135,8 +134,8 @@ public class MultiDataContainerViewNode
 	}
 
 	@Override
-	public void handleDragOver(GL2 gl, Set<IDraggable> draggables, float mouseCoordinateX,
-			float mouseCoordinateY) {
+	public void handleDragOver(GL2 gl, Set<IDraggable> draggables,
+			float mouseCoordinateX, float mouseCoordinateY) {
 
 	}
 
@@ -151,35 +150,44 @@ public class MultiDataContainerViewNode
 	}
 
 	protected void retrieveDataContainers() {
-		dataContainers = new ArrayList<DataContainer>();
 
-		List<DataContainer> containers = ((IDataContainerBasedView) representedView)
-				.getDataContainers();
-		if(containers == null)
+		dataContainers = new ArrayList<DataContainer>(
+				((IDataContainerBasedView) representedView).getDataContainers());
+		if (dataContainers == null) {
+			dataContainers = new ArrayList<DataContainer>();
 			return;
+		}
 
 		Set<IDataDomain> dataDomains = new HashSet<IDataDomain>();
 
-		for (DataContainer container : containers) {
+		for (DataContainer container : dataContainers) {
 			if (container instanceof PathwayDataContainer) {
-				dataDomains.add(((PathwayDataContainer) container).getPathwayDataDomain());
-			}
-			else {
+				dataDomains
+						.add(((PathwayDataContainer) container).getPathwayDataDomain());
+			} else {
 				dataDomains.add(container.getDataDomain());
 			}
 		}
+
+		sortDataContainers();
+
+	}
+
+	private void sortDataContainers() {
+		List<DataContainer> containers = new ArrayList<DataContainer>(dataContainers);
 
 		List<Pair<Float, ADataNode>> sortedDataNodes = new ArrayList<Pair<Float, ADataNode>>();
 
 		for (IDataDomain dataDomain : dataDomains) {
 			ADataNode dataNode = view.getDataNode(dataDomain);
 			if (dataNode != null) {
-				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode.getPosition()
-						.getX(), dataNode));
+				sortedDataNodes.add(new Pair<Float, ADataNode>((float) dataNode
+						.getPosition().getX(), dataNode));
 			}
 		}
 
 		Collections.sort(sortedDataNodes);
+		dataContainers.clear();
 
 		for (Pair<Float, ADataNode> dataNodePair : sortedDataNodes) {
 			ADataNode dataNode = dataNodePair.getSecond();
@@ -187,12 +195,16 @@ public class MultiDataContainerViewNode
 			List<DataContainer> sortedNodeDataContainers = dataNode.getDataContainers();
 
 			for (DataContainer nodeContainer : sortedNodeDataContainers) {
+				DataContainer addedContainer = null;
 				for (DataContainer container : containers) {
 					if (nodeContainer == container) {
 						dataContainers.add(container);
+						addedContainer = container;
 						break;
 					}
 				}
+				if (addedContainer != null)
+					containers.remove(addedContainer);
 			}
 		}
 	}
@@ -210,15 +222,21 @@ public class MultiDataContainerViewNode
 
 		if (!dataContainers.isEmpty()) {
 			// FIXME: this needs to be looked at again
-//			System.out.println("Drop");
+			// System.out.println("Drop");
 			DataContainer dataContainer = dataContainers.get(0);
 			AddDataContainersEvent event = new AddDataContainersEvent(dataContainer);
 			event.setReceiver(representedView);
 			event.setSender(this);
 			GeneralManager.get().getEventPublisher().triggerEvent(event);
-			
+
+			if (dataContainer instanceof PathwayDataContainer) {
+				dataDomains.add(((PathwayDataContainer) dataContainer)
+						.getPathwayDataDomain());
+			} else {
+				dataDomains.add(dataContainer.getDataDomain());
+			}
 			getDataContainers().add(dataContainer);
-			dataDomains.add(dataContainer.getDataDomain());
+			sortDataContainers();
 			dataContainerListRenderer.setDataContainers(getDataContainers());
 			view.updateGraphEdgesOfViewNode(this);
 			recalculateNodeSize();
@@ -249,8 +267,8 @@ public class MultiDataContainerViewNode
 
 	@Override
 	public void render(GL2 gl) {
-//		retrieveDataContainers();
-//		dataContainerListRenderer.setDataContainers(getDataContainers());
+		// retrieveDataContainers();
+		// dataContainerListRenderer.setDataContainers(getDataContainers());
 		super.render(gl);
 	}
 
