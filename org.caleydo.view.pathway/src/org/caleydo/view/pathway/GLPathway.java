@@ -191,6 +191,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	private boolean isBubbleTextureDirty;
 
 	private boolean isControlKeyDown = false;
+	private boolean isShiftKeyDown = false;
 	private int selectedPathID;
 
 	/**
@@ -327,12 +328,14 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			@Override
 			public void keyPressed(KeyEvent e) {
 				isControlKeyDown = e.isControlDown();
+				isShiftKeyDown = e.isShiftDown();
 			}
 
 			@Override
 			public void keyReleased(KeyEvent e) {
 
 				isControlKeyDown = e.isControlDown();
+				isShiftKeyDown = e.isShiftDown();
 			}
 		});
 	}
@@ -1306,68 +1309,72 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					.hashCode());
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
-
-		if (previouslySelectedVertexRep != null
-				&& selectionType == SelectionType.SELECTION) {
-
-			if (!isControlKeyDown) {
+		if (isShiftKeyDown)
+		{
+			if (previouslySelectedVertexRep != null
+					&& selectionType == SelectionType.SELECTION) {
+	
+					if (!isControlKeyDown) {
+						System.out.println("!isControlKeyDown");
+						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+								pathway, previouslySelectedVertexRep, MAX_PATHS);
+		
+						if (vertexRep != previouslySelectedVertexRep)
+							allPaths = pathAlgo.getPaths(vertexRep);
+		
+						if (allPaths != null && allPaths.size() > 0) {
+							// selectedPath = allPaths.get(0);
+							if (allPaths.size() <= selectedPathID)
+								selectedPathID = 0;
+							selectedPath = allPaths.get(selectedPathID);
+							// allPaths.clear();
+							selectedPathID = 0;
+							allPaths.add(selectedPath);
+							triggerPathUpdate();
+							isBubbleTextureDirty = true;
+						}
+					} else if (selectedPath != null) {
+						System.out.println("isControlKeyDown");
+						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+								pathway, selectedPath.getStartVertex(), MAX_PATHS);
+						allPaths = pathAlgo.getPaths(vertexRep);
+						if (allPaths != null && allPaths.size() > 0) {
+							// selectedPath = allPaths.get(0);
+							if (allPaths.size() <= selectedPathID)
+								selectedPathID = 0;
+							selectedPath = allPaths.get(selectedPathID);
+							allPaths.clear();
+							selectedPathID = 0;
+							allPaths.add(selectedPath);
+							triggerPathUpdate();
+							isBubbleTextureDirty = true;
+						}
+					}			
+	
+			} else if (previouslySelectedVertexRep != null
+					&& selectionType == SelectionType.MOUSE_OVER) {
+	
 				KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 						pathway, previouslySelectedVertexRep, MAX_PATHS);
-
-				if (vertexRep != previouslySelectedVertexRep)
-					allPaths = pathAlgo.getPaths(vertexRep);
-
-				if (allPaths != null && allPaths.size() > 0) {
-					// selectedPath = allPaths.get(0);
-					if (allPaths.size() <= selectedPathID)
-						selectedPathID = 0;
-					selectedPath = allPaths.get(selectedPathID);
-					// allPaths.clear();
-					selectedPathID = 0;
-					allPaths.add(selectedPath);
-					triggerPathUpdate();
-					isBubbleTextureDirty = true;
-				}
-			} else if (selectedPath != null) {
-				KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-						pathway, selectedPath.getStartVertex(), MAX_PATHS);
-				allPaths = pathAlgo.getPaths(vertexRep);
-				if (allPaths != null && allPaths.size() > 0) {
-					// selectedPath = allPaths.get(0);
-					if (allPaths.size() <= selectedPathID)
-						selectedPathID = 0;
-					selectedPath = allPaths.get(selectedPathID);
-					allPaths.clear();
-					selectedPathID = 0;
-					allPaths.add(selectedPath);
-					triggerPathUpdate();
-					isBubbleTextureDirty = true;
+	
+				if (vertexRep != previouslySelectedVertexRep) {
+					List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths = pathAlgo
+							.getPaths(vertexRep);
+	
+					if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
+	
+						allPaths = mouseOverPaths;
+						if (allPaths.size() <= selectedPathID)
+							selectedPathID = 0;
+						selectedPath = allPaths.get(selectedPathID);
+						if (selectedPath != null && isControlKeyDown)
+							allPaths.add(selectedPath);
+	
+						isBubbleTextureDirty = true;
+					}
 				}
 			}
-
-		} else if (previouslySelectedVertexRep != null
-				&& selectionType == SelectionType.MOUSE_OVER) {
-
-			KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-					pathway, previouslySelectedVertexRep, MAX_PATHS);
-
-			if (vertexRep != previouslySelectedVertexRep) {
-				List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths = pathAlgo
-						.getPaths(vertexRep);
-
-				if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
-
-					allPaths = mouseOverPaths;
-					if (allPaths.size() <= selectedPathID)
-						selectedPathID = 0;
-					selectedPath = allPaths.get(selectedPathID);
-					if (selectedPath != null && isControlKeyDown)
-						allPaths.add(selectedPath);
-
-					isBubbleTextureDirty = true;
-				}
-			}
-		}
+		}//END if (isShiftKey)
 
 		// Add new vertex to internal selection manager
 		geneSelectionManager.addToType(selectionType, vertexRep.getID());
