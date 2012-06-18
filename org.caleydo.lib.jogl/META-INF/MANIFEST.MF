@@ -9,6 +9,7 @@ Bundle-NativeCode:
  lib/jogl/macosx/libgluegen-rt.jnilib;
  lib/jogl/macosx/libjogl_desktop.jnilib;
  lib/jogl/macosx/libnativewindow_awt.jnilib;
+ lib/jogl/macosx/libnativewindow_macosx.jnilib;
  osname=macosx;
  osname=mac;
  osname=macos;
