@@ -67,7 +67,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		orientation = tr;
 	}
 
-	public void initTextures(ArrayList<Float> uncertaintyVA) {
+	public void initTextures(GL2 gl, ArrayList<Float> uncertaintyVA) {
 
 		if (dimensionVA == null || recordVA == null)
 			return;
@@ -151,7 +151,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
-				tempTexture.updateImage(texData);
+				tempTexture.updateImage(gl, texData);
 
 				textures.add(tempTexture);
 
@@ -162,7 +162,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 	}
 
-	public void init(GLUncertaintyHeatMap glUncHeatmap, DataTable set,
+	public void init(GL2 gl, GLUncertaintyHeatMap glUncHeatmap, DataTable set,
 			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
 			ColorMapper colorMapper) {
 
@@ -170,7 +170,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 		this.dimensionVA = dimensionVA;
 		this.recordVA = recordVA;
 
-		initTextures(null);
+		initTextures(gl, null);
 	}
 
 	@Override
@@ -188,8 +188,8 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 
 			step = elementHeight * numberSamples.get(numberOfTextures - i - 1);
 
-			textures.get(numberOfTextures - i - 1).enable();
-			textures.get(numberOfTextures - i - 1).bind();
+			textures.get(numberOfTextures - i - 1).enable(gl);
+			textures.get(numberOfTextures - i - 1).bind(gl);
 			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
@@ -226,7 +226,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 			// gl.glPopName();
 
 			yOffset += step;
-			textures.get(numberOfTextures - i - 1).disable();
+			textures.get(numberOfTextures - i - 1).disable(gl);
 		}
 	}
 

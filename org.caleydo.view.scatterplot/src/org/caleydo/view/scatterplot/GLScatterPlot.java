@@ -121,7 +121,7 @@ import com.jogamp.opengl.util.texture.TextureIO;
 public class GLScatterPlot extends ATableBasedView {
 
 	public static String VIEW_TYPE = "org.caleydo.view.scatterplot";
-	
+
 	public static String VIEW_NAME = "Scatterplot";
 
 	private ScatterPlotRenderStyle renderStyle;
@@ -226,6 +226,8 @@ public class GLScatterPlot extends ATableBasedView {
 
 	private int iDisplayEveryNthPoint = 1;
 
+	private boolean initTextures = false;
+
 	/**
 	 * Constructor.
 	 * 
@@ -258,7 +260,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		colorMapper = dataDomain.getColorMapper();
 	}
-	
+
 	@Override
 	public void init(GL2 gl) {
 		textRenderer = new CaleydoTextRenderer(24);
@@ -271,8 +273,8 @@ public class GLScatterPlot extends ATableBasedView {
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
 		resetSelectionTextures();
-		initTextures();
-		initSelectionTextures();
+		initTextures(gl);
+		initSelectionTextures(gl);
 		selectAxesfromExternal();
 		clearAllSelections();
 
@@ -487,6 +489,12 @@ public class GLScatterPlot extends ATableBasedView {
 		// gl.glEnable(GL2.GL_DEPTH_TEST);
 		// clipToFrustum(gl);
 
+		if (initTextures) {
+			initTextures(gl);
+			initSelectionTextures(gl);
+			initTextures = false;
+		}
+
 		if (bRenderMatrix) {
 
 			gl.glCallList(iGLDisplayListIndexMatrixFull);
@@ -570,7 +578,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 		if (bUpdateFullTexures) {
 			bUpdateFullTexures = false;
-			initTextures();
+			initTextures(gl);
 		}
 
 		if (this.bRedrawTextures) {
@@ -586,7 +594,7 @@ public class GLScatterPlot extends ATableBasedView {
 		if ((bUpdateMainView || bUpdateSelection)) {
 
 			if (bUpdateSelectionTexures) {
-				initSelectionTextures();
+				initSelectionTextures(gl);
 				bUpdateSelectionTexures = false;
 			}
 			buildDisplayListSelection(gl, iGLDisplayListIndexSelection);
@@ -1197,7 +1205,7 @@ public class GLScatterPlot extends ATableBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void initTextures() {
+	private void initTextures(GL2 gl) {
 
 		int ix = 0;
 		int iy = 0;
@@ -1343,7 +1351,7 @@ public class GLScatterPlot extends ATableBasedView {
 						true /* mustFlipVertically */, FbTemp, null);
 
 				tempTextur = TextureIO.newTexture(0);
-				tempTextur.updateImage(texData);
+				tempTextur.updateImage(gl, texData);
 
 				AlFullTextures.add(tempTextur);
 			}
@@ -1356,7 +1364,7 @@ public class GLScatterPlot extends ATableBasedView {
 	 * 
 	 * @param gl
 	 */
-	private void initSelectionTextures() {
+	private void initSelectionTextures(GL2 gl) {
 
 		int ix = 0;
 		int iy = 0;
@@ -1488,7 +1496,7 @@ public class GLScatterPlot extends ATableBasedView {
 						true /* mustFlipVertically */, FbTemp, null);
 
 				tempTextur = TextureIO.newTexture(0);
-				tempTextur.updateImage(texData);
+				tempTextur.updateImage(gl, texData);
 				AlSelectionTextures.add(tempTextur);
 
 			}
@@ -1751,11 +1759,11 @@ public class GLScatterPlot extends ATableBasedView {
 					if (i != j) {
 						gl.glColor4f(1.0F, 1.0F, 1.0F, 1.0F);
 						if (bIsSelection) {
-							((Texture) this.AlSelectionTextures.get(icounter)).enable();
-							((Texture) this.AlSelectionTextures.get(icounter)).bind();
+							((Texture) this.AlSelectionTextures.get(icounter)).enable(gl);
+							((Texture) this.AlSelectionTextures.get(icounter)).bind(gl);
 						} else {
-							((Texture) this.AlFullTextures.get(icounter)).enable();
-							((Texture) this.AlFullTextures.get(icounter)).bind();
+							((Texture) this.AlFullTextures.get(icounter)).enable(gl);
+							((Texture) this.AlFullTextures.get(icounter)).bind(gl);
 						}
 						gl.glTexParameteri(3553, 10242, 10496);
 						gl.glTexParameteri(3553, 10243, 10496);
@@ -1808,9 +1816,10 @@ public class GLScatterPlot extends ATableBasedView {
 						}
 
 						if (bIsSelection)
-							((Texture) this.AlSelectionTextures.get(icounter)).disable();
+							((Texture) this.AlSelectionTextures.get(icounter))
+									.disable(gl);
 						else
-							((Texture) this.AlFullTextures.get(icounter)).disable();
+							((Texture) this.AlFullTextures.get(icounter)).disable(gl);
 					} else if (!(bIsSelection)) {
 						renderHistogram(gl, fxOffset + fExtraOffsetX, fyOffset
 								+ fExtraOffsetY, fStepX, fStepY, i);
@@ -3209,8 +3218,7 @@ public class GLScatterPlot extends ATableBasedView {
 		renderStyle.setTextureNr(MAX_AXES, MAX_AXES);
 		resetFullTextures();
 		resetSelectionTextures();
-		initTextures();
-		initSelectionTextures();
+		initTextures = true;
 		selectAxesfromExternal();
 	}
 

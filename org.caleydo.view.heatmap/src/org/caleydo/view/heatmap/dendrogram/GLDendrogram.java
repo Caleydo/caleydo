@@ -310,8 +310,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 			Texture tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.SLIDER_ENDING);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -326,10 +326,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			gl.glVertex3f(fPosCut + fWidthCutOf / 2, fHeight, CUT_OFF_Z);
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_MIDDLE);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			gl.glBegin(GL2.GL_QUADS);
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -341,14 +341,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
 			gl.glVertex3f(fPosCut + fWidthCutOf / 2, 0, CUT_OFF_Z);
 			gl.glEnd();
-			tempTexture.disable();
+			tempTexture.disable(gl);
 
 			float fSizeDendrogramArrow = renderStyle.getSizeDendrogramArrow();
 
 			Texture textureArrow = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_ARROW);
-			textureArrow.enable();
-			textureArrow.bind();
+			textureArrow.enable(gl);
+			textureArrow.bind(gl);
 
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
@@ -377,7 +377,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			gl.glEnd();
 			gl.glPopName();
 
-			textureArrow.disable();
+			textureArrow.disable(gl);
 
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -390,8 +390,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 
 			Texture tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.SLIDER_ENDING);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 			gl.glBegin(GL2.GL_QUADS);
@@ -405,10 +405,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			gl.glVertex3f(-0.1f, fPosCut + fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			tempTexture = textureManager.getIconTexture(gl, EIconTextures.SLIDER_MIDDLE);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 			texCoords = tempTexture.getImageTexCoords();
 
 			gl.glBegin(GL2.GL_QUADS);
@@ -421,14 +421,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(0, fPosCut + fWidthCutOf / 2, CUT_OFF_Z);
 			gl.glEnd();
-			tempTexture.disable();
+			tempTexture.disable(gl);
 
 			float fSizeDendrogramArrow = renderStyle.getSizeDendrogramArrow();
 
 			Texture textureArrow = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_ARROW);
-			textureArrow.enable();
-			textureArrow.bind();
+			textureArrow.enable(gl);
+			textureArrow.bind(gl);
 
 			TextureCoords texCoordsArrow = textureArrow.getImageTexCoords();
 
@@ -459,7 +459,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			gl.glEnd();
 			gl.glPopName();
 
-			textureArrow.disable();
+			textureArrow.disable(gl);
 
 			if (fPosCut > fLevelHeight)
 				gl.glTranslatef(0, +fLevelHeight, 0);
@@ -486,8 +486,8 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 			tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.DENDROGRAM_VERTICAL_SYMBOL);
 
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -505,7 +505,7 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		gl.glVertex3f(fXButtonOrigin * 2, fYButtonOrigin, 0.01f);
 		gl.glEnd();
 		gl.glPopAttrib();
-		tempTexture.disable();
+		tempTexture.disable(gl);
 	}
 
 	/**

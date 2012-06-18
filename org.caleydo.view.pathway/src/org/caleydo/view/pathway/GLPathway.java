@@ -122,10 +122,8 @@ import com.jogamp.opengl.util.texture.Texture;
 public class GLPathway extends ATableBasedView implements ISelectionUpdateHandler,
 		IViewCommandHandler, ISelectionCommandHandler, IEventBasedSelectionManagerUser {
 	public static String VIEW_TYPE = "org.caleydo.view.pathway";
-	
+
 	public static String VIEW_NAME = "Pathway";
-	
-	
 
 	/**
 	 * The maximal number of paths in the pathway that are looked up. The user
@@ -199,7 +197,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	 */
 	public GLPathway(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-	
+
 		pathwayManager = PathwayManager.get();
 		pathwayItemManager = PathwayItemManager.get();
 
@@ -723,8 +721,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glEnable(GL2.GL_BLEND);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-		bubbleSetsTexture.enable();
-		bubbleSetsTexture.bind();
+		bubbleSetsTexture.enable(gl);
+		bubbleSetsTexture.bind(gl);
 		gl.glBegin(GL2.GL_QUADS);
 
 		gl.glTexCoord2f(0, 1);
@@ -737,7 +735,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		gl.glVertex3f(0.0f, textureHeight, 0.0f);
 
 		gl.glEnd();
-		bubbleSetsTexture.disable();
+		bubbleSetsTexture.disable(gl);
 
 	}
 
@@ -1094,8 +1092,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 	@Override
 	public void broadcastElements(EVAOperation type) {
-		
-		if(pathway == null)
+
+		if (pathway == null)
 			return;
 
 		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective()
@@ -1156,8 +1154,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 		enRoutePathEventListener = new EnRoutePathEventListener();
 		enRoutePathEventListener.setHandler(this);
-		eventPublisher.addListener(EnRoutePathEvent.class,
-				enRoutePathEventListener);
+		eventPublisher.addListener(EnRoutePathEvent.class, enRoutePathEventListener);
 	}
 
 	@Override

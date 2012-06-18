@@ -200,8 +200,8 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 
 		Texture tempTexture = textureManager.getIconTexture(gl, icon);
 
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 		gl.glColor4f(1, 1, 1, 1);
@@ -220,7 +220,7 @@ public abstract class AGroupDrawingStrategyRectangular extends AGLGUIElement imp
 				- fCollapseButtonSize, vecPosition.z() + 0.01f);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		endGUIElement(gl);
 

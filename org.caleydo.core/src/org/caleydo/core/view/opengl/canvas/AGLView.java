@@ -102,14 +102,11 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public abstract class AGLView
-	extends AView
-	implements GLEventListener, IResettableView, IMouseWheelHandler {
+public abstract class AGLView extends AView implements GLEventListener, IResettableView,
+		IMouseWheelHandler {
 
 	public enum EBusyState {
-		SWITCH_OFF,
-		ON,
-		OFF
+		SWITCH_OFF, ON, OFF
 	}
 
 	/**
@@ -208,15 +205,17 @@ public abstract class AGLView
 	private HashSet<IMouseWheelHandler> mouseWheelListeners;
 
 	protected GLMouseWheelListener glMouseWheelListener;
-	
+
 	private boolean focusGained = false;
 
 	/**
 	 * Constructor. If the glCanvas object is null - then the view is rendered
 	 * remote.
 	 * 
-	 * @param viewType TODO
-	 * @param viewName TODO
+	 * @param viewType
+	 *            TODO
+	 * @param viewName
+	 *            TODO
 	 */
 	protected AGLView(GLCanvas glCanvas, final Composite parentComposite,
 			final ViewFrustum viewFrustum, String viewType, String viewName) {
@@ -229,19 +228,19 @@ public abstract class AGLView
 
 		glMouseListener = new GLMouseListener();
 		glMouseListener.setNavigationModes(false, false, false);
-		
+
 		// Register mouse listener to GL2 canvas
 		glCanvas.addMouseListener(glMouseListener);
 		glCanvas.addMouseMotionListener(glMouseListener);
 		glCanvas.addMouseWheelListener(glMouseListener);
-		
+
 		glCanvas.addFocusListener(new FocusListener() {
-			
+
 			@Override
 			public void focusLost(FocusEvent e) {
-//				focusGained=false;
+				// focusGained=false;
 			}
-			
+
 			@Override
 			public void focusGained(FocusEvent e) {
 				focusGained = true;
@@ -258,7 +257,7 @@ public abstract class AGLView
 		textureManager = new TextureManager();
 
 		glMouseWheelListener = new GLMouseWheelListener(this);
-		
+
 		pixelGLConverter = new PixelGLConverter(viewFrustum, parentGLCanvas);
 
 		mouseWheelListeners = new HashSet<IMouseWheelHandler>();
@@ -284,7 +283,7 @@ public abstract class AGLView
 				parentComposite.addKeyListener(fpsKeyListener);
 			}
 		});
-		
+
 		GL2 gl = drawable.getGL().getGL2();
 
 		// This is specially important for Windows. Otherwise JOGL2 internally
@@ -329,27 +328,28 @@ public abstract class AGLView
 			processEvents();
 			if (!isVisible())
 				return;
-			
-			if(!focusGained) {
+
+			if (!focusGained) {
 				parentGLCanvas.requestFocus();
 			}
-			
-//			parentComposite.getDisplay().asyncExec(new Runnable() {
-//				@Override
-//				public void run() {
-//
-//					parentComposite.setFocus();
-//					parentComposite.set
-////					viewPart.setFocus();
-////					viewPart.getSWTComposite().setFocus();
-//
-//				}
-//			});
+
+			// parentComposite.getDisplay().asyncExec(new Runnable() {
+			// @Override
+			// public void run() {
+			//
+			// parentComposite.setFocus();
+			// parentComposite.set
+			// // viewPart.setFocus();
+			// // viewPart.getSWTComposite().setFocus();
+			//
+			// }
+			// });
 			final Vec3f rot_Vec3f = new Vec3f();
 			final Vec3f position = viewCamera.getCameraPosition();
-			
-//			System.out.println("focus owner " + parentGLCanvas.isFocusOwner());
-//			System.out.println("focusable " + parentGLCanvas.isFocusable());
+
+			// System.out.println("focus owner " +
+			// parentGLCanvas.isFocusOwner());
+			// System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
 
@@ -368,8 +368,7 @@ public abstract class AGLView
 
 			if (showFPSCounter)
 				fpsCounter.draw();
-		}
-		catch (RuntimeException exception) {
+		} catch (RuntimeException exception) {
 			ExceptionHandler.get().handleViewException(exception, this);
 		}
 	}
@@ -381,8 +380,7 @@ public abstract class AGLView
 				|| this.getViewType().equals("org.caleydo.view.bucket")
 				|| this.getViewType().equals("org.caleydo.view.dataflipper")) {
 			viewFrustum.considerAspectRatio(true);
-		}
-		else {
+		} else {
 			// normalize between 0 and 8
 			Rectangle frame = parentGLCanvas.getBounds();
 			viewFrustum.setLeft(0);
@@ -518,7 +516,8 @@ public abstract class AGLView
 	@Override
 	public final synchronized void queueEvent(
 			AEventListener<? extends IListenerOwner> listener, AEvent event) {
-		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener, event));
+		queue.add(new Pair<AEventListener<? extends IListenerOwner>, AEvent>(listener,
+				event));
 	}
 
 	/**
@@ -609,16 +608,15 @@ public abstract class AGLView
 	private void updateDetailMode() {
 		EDetailLevel newDetailLevel;
 		int pixelWidth = pixelGLConverter.getPixelWidthForGLWidth(viewFrustum.getWidth());
-		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum.getHeight());
+		int pixelHeight = pixelGLConverter.getPixelHeightForGLHeight(viewFrustum
+				.getHeight());
 		if (pixelHeight > getMinPixelHeight(EDetailLevel.HIGH)
 				&& pixelWidth > getMinPixelWidth(EDetailLevel.HIGH)) {
 			newDetailLevel = EDetailLevel.HIGH;
-		}
-		else if (pixelHeight > getMinPixelHeight(EDetailLevel.MEDIUM)
+		} else if (pixelHeight > getMinPixelHeight(EDetailLevel.MEDIUM)
 				&& pixelWidth > getMinPixelWidth(EDetailLevel.MEDIUM)) {
 			newDetailLevel = EDetailLevel.MEDIUM;
-		}
-		else {
+		} else {
 			newDetailLevel = EDetailLevel.LOW;
 		}
 		setDetailLevel(newDetailLevel);
@@ -672,14 +670,13 @@ public abstract class AGLView
 					try {
 						PickingType type = PickingType.valueOf(pickingType);
 						try {
-							handlePickingEvents(type, ePickingMode, pickedObjectID, tempPick);
-						}
-						catch (Exception e) {
+							handlePickingEvents(type, ePickingMode, pickedObjectID,
+									tempPick);
+						} catch (Exception e) {
 							Logger.log(new Status(Status.ERROR, this.toString(),
 									"Caught exception when picking", e));
 						}
-					}
-					catch (IllegalArgumentException e) {
+					} catch (IllegalArgumentException e) {
 					}
 
 				}
@@ -721,24 +718,24 @@ public abstract class AGLView
 			return;
 
 		switch (pickingMode) {
-			case CLICKED:
-				pickingListener.clicked(pick);
-				break;
-			case DOUBLE_CLICKED:
-				pickingListener.doubleClicked(pick);
-				break;
-			case RIGHT_CLICKED:
-				pickingListener.rightClicked(pick);
-				break;
-			case MOUSE_OVER:
-				pickingListener.mouseOver(pick);
-				break;
-			case DRAGGED:
-				pickingListener.dragged(pick);
-				break;
-			case MOUSE_OUT:
-				pickingListener.mouseOut(pick);
-				break;
+		case CLICKED:
+			pickingListener.clicked(pick);
+			break;
+		case DOUBLE_CLICKED:
+			pickingListener.doubleClicked(pick);
+			break;
+		case RIGHT_CLICKED:
+			pickingListener.rightClicked(pick);
+			break;
+		case MOUSE_OVER:
+			pickingListener.mouseOver(pick);
+			break;
+		case DRAGGED:
+			pickingListener.dragged(pick);
+			break;
+		case MOUSE_OUT:
+			pickingListener.mouseOut(pick);
+			break;
 		}
 	}
 
@@ -746,14 +743,16 @@ public abstract class AGLView
 	 * Registers a {@link IPickingListener} for this view that is called when
 	 * objects with the specified pickingType <b>and</b> ID are picked.
 	 * 
-	 * @param pickingListener the picking listener that should be called on
-	 *            picking event
-	 * @param pickingType the picking type. Take care that the type is unique
-	 *            for a view.
-	 * @param pickedObjectID the id identifying the picked object
+	 * @param pickingListener
+	 *            the picking listener that should be called on picking event
+	 * @param pickingType
+	 *            the picking type. Take care that the type is unique for a
+	 *            view.
+	 * @param pickedObjectID
+	 *            the id identifying the picked object
 	 */
-	public void addIDPickingListener(IPickingListener pickingListener, String pickingType,
-			int pickedObjectID) {
+	public void addIDPickingListener(IPickingListener pickingListener,
+			String pickingType, int pickedObjectID) {
 		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			map = new HashMap<Integer, Set<IPickingListener>>();
@@ -781,12 +780,14 @@ public abstract class AGLView
 	 * 
 	 * @see AGLView#addIDPickingListener(IPickingListener, String, int) for
 	 *      picking id dependent
-	 * @param pickingListener the picking listener that should be called on
-	 *            picking event
-	 * @param pickingType the picking type. Take care that the type is unique
-	 *            for a view.
+	 * @param pickingListener
+	 *            the picking listener that should be called on picking event
+	 * @param pickingType
+	 *            the picking type. Take care that the type is unique for a
+	 *            view.
 	 */
-	public void addTypePickingListener(IPickingListener pickingListener, String pickingType) {
+	public void addTypePickingListener(IPickingListener pickingListener,
+			String pickingType) {
 		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			pickingListeners = new HashSet<IPickingListener>();
@@ -809,8 +810,8 @@ public abstract class AGLView
 	 * @param pickingType
 	 * @param pickedObjectID
 	 */
-	public void removeIDPickingListener(IPickingListener pickingListener, String pickingType,
-			int pickedObjectID) {
+	public void removeIDPickingListener(IPickingListener pickingListener,
+			String pickingType, int pickedObjectID) {
 		HashMap<Integer, Set<IPickingListener>> map = idPickingListeners.get(pickingType);
 		if (map == null) {
 			return;
@@ -830,7 +831,8 @@ public abstract class AGLView
 	 * @param pickingListener
 	 * @param pickingType
 	 */
-	public void removeTypePickingListener(IPickingListener pickingListener, String pickingType) {
+	public void removeTypePickingListener(IPickingListener pickingListener,
+			String pickingType) {
 		Set<IPickingListener> pickingListeners = typePickingListeners.get(pickingType);
 		if (pickingListeners == null) {
 			return;
@@ -914,10 +916,14 @@ public abstract class AGLView
 	 * This method is called every time a method occurs. It should take care of
 	 * reacting appropriately to the events.
 	 * 
-	 * @param pickingType the Picking type, held in EPickingType
-	 * @param pickingMode the Picking mode (clicked, dragged etc.)
-	 * @param pickingID the name specified for an element with glPushName
-	 * @param pick the pick object which can be useful to retrieve for example
+	 * @param pickingType
+	 *            the Picking type, held in EPickingType
+	 * @param pickingMode
+	 *            the Picking mode (clicked, dragged etc.)
+	 * @param pickingID
+	 *            the name specified for an element with glPushName
+	 * @param pick
+	 *            the pick object which can be useful to retrieve for example
 	 *            the mouse position when the pick occurred
 	 * @deprecated replaced by picking listeners. No longer abstract since it's
 	 *             not necessary for views to implement
@@ -951,7 +957,8 @@ public abstract class AGLView
 		return glRemoteRenderingView != null;
 	}
 
-	public final void setRemoteRenderingGLView(IGLRemoteRenderingView glRemoteRenderingView) {
+	public final void setRemoteRenderingGLView(
+			IGLRemoteRenderingView glRemoteRenderingView) {
 		this.glRemoteRenderingView = glRemoteRenderingView;
 		pixelGLConverter = glRemoteRenderingView.getPixelGLConverter();
 		// pixelGLConverter = new
@@ -969,8 +976,7 @@ public abstract class AGLView
 
 		if (busyState == EBusyState.ON && frameCounter < NUMBER_OF_FRAMES) {
 			frameCounter++;
-		}
-		else if (busyState == EBusyState.SWITCH_OFF) {
+		} else if (busyState == EBusyState.SWITCH_OFF) {
 			frameCounter--;
 		}
 
@@ -986,8 +992,7 @@ public abstract class AGLView
 		if (this instanceof IGLRemoteRenderingView) {
 			fXCenter = 0;
 			fYCenter = 0;
-		}
-		else {
+		} else {
 			fXCenter = (viewFrustum.getRight() - viewFrustum.getLeft()) / 2;
 			fYCenter = (viewFrustum.getTop() - viewFrustum.getBottom()) / 2;
 		}
@@ -995,8 +1000,8 @@ public abstract class AGLView
 		// TODO bad hack here, frustum wrong or renderStyle null
 
 		Texture tempTexture = textureManager.getIconTexture(gl, EIconTextures.LOADING);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1020,13 +1025,13 @@ public abstract class AGLView
 				- GeneralRenderStyle.LOADING_BOX_HALF_HEIGHT, 4.21f);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		// gl.glColor4f(1.0f, 0.0f, 0.0f, 0.5f);
-		Texture circleTexture = textureManager
-				.getIconTexture(gl, EIconTextures.LOADING_CIRCLE);
-		circleTexture.enable();
-		circleTexture.bind();
+		Texture circleTexture = textureManager.getIconTexture(gl,
+				EIconTextures.LOADING_CIRCLE);
+		circleTexture.enable(gl);
+		circleTexture.bind(gl);
 		texCoords = circleTexture.getImageTexCoords();
 
 		gl.glTranslatef(fXCenter - 0.6f, fYCenter, 0);
@@ -1048,7 +1053,7 @@ public abstract class AGLView
 		rotationFrameCounter += 3;
 		gl.glPopAttrib();
 
-		circleTexture.disable();
+		circleTexture.disable(gl);
 
 		if (busyState == EBusyState.SWITCH_OFF && frameCounter <= 0) {
 			pickingManager.enablePicking(true);
@@ -1062,15 +1067,15 @@ public abstract class AGLView
 	 * Enables the busy mode, which renders the loading dialog and disables the
 	 * picking. This method may be overridden if different behaviour is desired.
 	 * 
-	 * @param bBusyMode true if the busy mode should be enabled, false if it
-	 *            should be disabled
+	 * @param bBusyMode
+	 *            true if the busy mode should be enabled, false if it should be
+	 *            disabled
 	 */
 	public void enableBusyMode(final boolean bBusyMode) {
 		if (!bBusyMode && busyState == EBusyState.ON) {
 			busyState = EBusyState.SWITCH_OFF;
 			pickingManager.enablePicking(true);
-		}
-		else if (bBusyMode) {
+		} else if (bBusyMode) {
 			pickingManager.enablePicking(false);
 			busyState = EBusyState.ON;
 		}
@@ -1093,7 +1098,8 @@ public abstract class AGLView
 
 		pickingManager.removeViewSpecificData(uniqueID);
 
-		generalManager.getViewManager().getConnectedElementRepresentationManager().clearAll();
+		generalManager.getViewManager().getConnectedElementRepresentationManager()
+				.clearAll();
 		generalManager.getViewManager().unregisterGLView(this);
 		unregisterEventListeners();
 	}
@@ -1119,11 +1125,12 @@ public abstract class AGLView
 	/**
 	 * Set whether this view is visible.
 	 * 
-	 * @param isVisible true if the view is visible
+	 * @param isVisible
+	 *            true if the view is visible
 	 */
 	public void setVisible(boolean isVisible) {
 		this.isVisible = isVisible;
-		if(!isVisible){
+		if (!isVisible) {
 			focusGained = false;
 		}
 	}
@@ -1141,17 +1148,18 @@ public abstract class AGLView
 	/**
 	 * Renders the symbol of a view. (Called when there's nothing to display.)
 	 * 
-	 * @param gl GL2 Object that shall be used for rendering.
+	 * @param gl
+	 *            GL2 Object that shall be used for rendering.
 	 */
 	protected void renderSymbol(GL2 gl, EIconTextures texture, float buttonSize) {
 
-		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2 - buttonSize
-				/ 2;
+		float xButtonOrigin = viewFrustum.getLeft() + viewFrustum.getWidth() / 2
+				- buttonSize / 2;
 		float yButtonOrigin = viewFrustum.getBottom() + viewFrustum.getHeight() / 2
 				- buttonSize / 2;
 		Texture tempTexture = textureManager.getIconTexture(gl, texture);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1169,7 +1177,7 @@ public abstract class AGLView
 		gl.glVertex3f(xButtonOrigin + buttonSize, yButtonOrigin, 0.01f);
 		gl.glEnd();
 		gl.glPopAttrib();
-		tempTexture.disable();
+		tempTexture.disable(gl);
 	}
 
 	@Override

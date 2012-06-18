@@ -93,8 +93,8 @@ public class RadialMenu {
 					entryDistance * Math.sin(i * angle), 0);
 
 			if (entryBackground != null) {
-				entryBackground.enable();
-				entryBackground.bind();
+				entryBackground.enable(gl);
+				entryBackground.bind(gl);
 				TextureCoords texCoords = entryBackground.getImageTexCoords();
 
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -120,15 +120,15 @@ public class RadialMenu {
 				}
 				gl.glEnd();
 
-				entryBackground.disable();
+				entryBackground.disable(gl);
 			}
 
 			Texture texture = entries.get(i);
 			TextureCoords texCoords = new TextureCoords(0, 0, 1, 1);
 
 			if (texture != null) {
-				texture.enable();
-				texture.bind();
+				texture.enable(gl);
+				texture.bind(gl);
 				texCoords = texture.getImageTexCoords();
 
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
@@ -163,7 +163,7 @@ public class RadialMenu {
 			gl.glEnd();
 
 			if (texture != null)
-				texture.disable();
+				texture.disable(gl);
 
 			gl.glPopMatrix();
 		}

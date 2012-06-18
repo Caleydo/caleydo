@@ -3,9 +3,8 @@ Bundle-ManifestVersion: 2
 Bundle-Name: Jogl Plug-in
 Bundle-SymbolicName: org.caleydo.lib.jogl;singleton:=true
 Bundle-Version: 2.0
-Bundle-ClassPath: lib/jogl/gluegen-rt.jar,
- lib/jogl/jogl.jar,
- lib/jogl/nativewindow.jar
+Bundle-ClassPath: lib/jogl/jogl.all.jar,
+ lib/jogl/gluegen-rt.jar
 Bundle-NativeCode: 
  lib/jogl/macosx/libgluegen-rt.jnilib;
  lib/jogl/macosx/libjogl_desktop.jnilib;
@@ -64,14 +63,8 @@ Export-Package: com.jogamp.common,
  com.jogamp.opengl.util.texture.awt,
  com.jogamp.opengl.util.texture.spi,
  com.jogamp.opengl.util.texture.spi.awt,
- com.jogamp.openmax,
  javax.media.nativewindow,
- javax.media.nativewindow.awt,
- javax.media.nativewindow.egl,
- javax.media.nativewindow.macosx,
  javax.media.nativewindow.util,
- javax.media.nativewindow.windows,
- javax.media.nativewindow.x11,
  javax.media.opengl,
  javax.media.opengl.awt,
  javax.media.opengl.fixedfunc,

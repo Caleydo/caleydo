@@ -50,7 +50,7 @@ public class HeatMapUtil {
 
 	public static int MAX_SAMPLES_PER_TEXTURE = 2000;
 
-	public static ArrayList<Texture> createHeatMapTextures(DataTable table,
+	public static ArrayList<Texture> createHeatMapTextures(GL2 gl, DataTable table,
 			RecordVirtualArray recordVA, DimensionVirtualArray dimensionVA,
 			RecordSelectionManager contentSelectionManager) {
 
@@ -105,7 +105,7 @@ public class HeatMapUtil {
 							false /* mustFlipVertically */, textureBuffer, null);
 
 					Texture texture = TextureIO.newTexture(0);
-					texture.updateImage(texData);
+					texture.updateImage(gl, texData);
 
 					textures.add(texture);
 					isNewTexture = true;
@@ -137,8 +137,8 @@ public class HeatMapUtil {
 		for (int i = 0; i < textures.size(); i++) {
 			Texture texture = textures.get(textures.size() - i - 1);
 			textureDrawingHeight = elementHeight * texture.getHeight();
-			texture.enable();
-			texture.bind();
+			texture.enable(gl);
+			texture.bind(gl);
 			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
@@ -158,7 +158,7 @@ public class HeatMapUtil {
 			gl.glVertex3f(width, yOffset, 0);
 			gl.glEnd();
 			yOffset += textureDrawingHeight;
-			texture.disable();
+			texture.disable(gl);
 		}
 	}
 

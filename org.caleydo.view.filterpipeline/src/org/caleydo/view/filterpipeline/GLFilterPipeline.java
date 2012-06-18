@@ -351,8 +351,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 
 		Texture arrowTexture = textureManager.getIconTexture(gl,
 				EIconTextures.HEAT_MAP_ARROW);
-		arrowTexture.enable();
-		arrowTexture.bind();
+		arrowTexture.enable(gl);
+		arrowTexture.bind(gl);
 		TextureCoords texCoords = arrowTexture.getImageTexCoords();
 
 		gl.glPushName(iPickingID);
@@ -385,7 +385,7 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		gl.glPopMatrix();
 		gl.glPopName();
 
-		arrowTexture.disable();
+		arrowTexture.disable(gl);
 
 		gl.glPopAttrib();
 	}
@@ -447,8 +447,8 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 				if (dragAndDropController.hasDraggables()) {
 					if (glMouseListener.wasRightMouseButtonPressed())
 						dragAndDropController.clearDraggables();
-//					else if (!dragAndDropController.isDragging())
-//						dragAndDropController.startDragging();
+					// else if (!dragAndDropController.isDragging())
+					// dragAndDropController.startDragging();
 				}
 				dragAndDropController.setDropArea(filterList.get(externalID));
 				break;

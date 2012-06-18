@@ -19,6 +19,8 @@
  *******************************************************************************/
 package org.caleydo.view.heatmap.heatmap.template;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -82,10 +84,10 @@ public abstract class AHeatMapLayoutConfiguration extends LayoutConfiguration {
 		captionCageRenderer.setRecordSpacing(recordSpacing);
 	}
 
-	public void initRendererData() {
+	public void initRendererData(GL2 gl) {
 
 		if (renderAsTexture) {
-			((HeatMapTextureRenderer) heatMapRenderer).initialize();
+			((HeatMapTextureRenderer) heatMapRenderer).initialize(gl);
 		}
 	}
 

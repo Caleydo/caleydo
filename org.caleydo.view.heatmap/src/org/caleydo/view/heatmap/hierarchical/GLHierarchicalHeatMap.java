@@ -128,7 +128,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		IClusterNodeEventReceiver, INewContentGroupInfoHandler, IGLRemoteRenderingView,
 		IColorMappingUpdateListener {
 	public static String VIEW_TYPE = "org.caleydo.view.heatmap.hierarchical";
-	
+
 	public static String VIEW_NAME = "Hierarchical Heat Map";
 
 	private HeatMapRenderStyle renderStyle;
@@ -584,7 +584,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 					false /* mustFlipVertically */, FbTemp, null);
 
 			tempTextur = TextureIO.newTexture(0);
-			tempTextur.updateImage(texData);
+			tempTextur.updateImage(gl, texData);
 
 			textures.add(tempTextur);
 			numberSamples.add(iSamplesPerTexture);
@@ -660,7 +660,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 							FbTemp[iTextureCounter], null);
 
 					tempTextur = TextureIO.newTexture(0);
-					tempTextur.updateImage(texData);
+					tempTextur.updateImage(gl, texData);
 
 					textures.add(tempTextur);
 
@@ -1016,8 +1016,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glColor4f(1, 1, 1, 1);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-		TextureMask.enable();
-		TextureMask.bind();
+		TextureMask.enable(gl);
+		TextureMask.bind(gl);
 
 		TextureCoords texCoordsMask = TextureMask.getImageTexCoords();
 
@@ -1062,10 +1062,10 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glEnd();
 		}
 
-		TextureMask.disable();
+		TextureMask.disable(gl);
 
-		TextureMaskNeg.enable();
-		TextureMaskNeg.bind();
+		TextureMaskNeg.enable(gl);
+		TextureMaskNeg.bind(gl);
 
 		TextureCoords texCoordsMaskNeg = TextureMaskNeg.getImageTexCoords();
 
@@ -1112,7 +1112,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glEnd();
 		}
 
-		TextureMaskNeg.disable();
+		TextureMaskNeg.disable(gl);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
 	}
@@ -1162,8 +1162,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
 
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1178,7 +1178,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glVertex3f(fxpos + classWidth, 0, FIELD_Z);
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopName();
 
@@ -1245,8 +1245,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HIER_HEAT_MAP_DIMENSION_GROUP, i));
 
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1261,7 +1261,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glVertex3f(fxpos + classWidth, 0, FIELD_Z);
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopName();
 
@@ -1327,8 +1327,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPushName(pickingManager.getPickingID(uniqueID,
 					PickingType.HEAT_MAP_RECORD_GROUP, i));
 
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1343,7 +1343,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glVertex3f(0, fyPos - classHeight, FIELD_Z);
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopName();
 
@@ -1419,8 +1419,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
-				tempTexture.enable();
-				tempTexture.bind();
+				tempTexture.enable(gl);
+				tempTexture.bind(gl);
 
 				TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1436,7 +1436,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(0, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glEnd();
 
-				tempTexture.disable();
+				tempTexture.disable(gl);
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 				gl.glPopName();
 
@@ -1476,8 +1476,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1492,7 +1492,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glVertex3f(0, 0, FIELD_Z);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopName();
 
@@ -1558,8 +1558,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glPushName(pickingManager.getPickingID(uniqueID,
 						PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
-				tempTexture.enable();
-				tempTexture.bind();
+				tempTexture.enable(gl);
+				tempTexture.bind(gl);
 
 				TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1575,7 +1575,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthEHM, fHeight - fHeightSamples * iCnt, FIELD_Z);
 				gl.glEnd();
 
-				tempTexture.disable();
+				tempTexture.disable(gl);
 				gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 				gl.glPopName();
 
@@ -1613,8 +1613,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glPushName(pickingManager.getPickingID(uniqueID,
 				PickingType.HEAT_MAP_RECORD_GROUP, iIdxCluster));
 
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1629,7 +1629,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glVertex3f(fWidthEHM, 0, FIELD_Z);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopName();
 	}
@@ -1657,8 +1657,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			fStep = fHeightElem * numberSamples.get(iNrTextures - i - 1);
 
-			textures.get(iNrTextures - i - 1).enable();
-			textures.get(iNrTextures - i - 1).bind();
+			textures.get(iNrTextures - i - 1).enable(gl);
+			textures.get(iNrTextures - i - 1).bind(gl);
 			gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
 			gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_T, GL2.GL_CLAMP);
@@ -1684,7 +1684,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glPopName();
 
 			fyOffset += fStep;
-			textures.get(iNrTextures - i - 1).disable();
+			textures.get(iNrTextures - i - 1).disable(gl);
 		}
 	}
 
@@ -1834,8 +1834,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		if (bSkipLevel1) {
 			Texture TexTemp1 = textures.get(0);
-			TexTemp1.enable();
-			TexTemp1.bind();
+			TexTemp1.enable(gl);
+			TexTemp1.bind(gl);
 			TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
 
 			gl.glBegin(GL2.GL_QUADS);
@@ -1849,7 +1849,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glVertex3f(fWidthLevel2, 0, 0);
 			gl.glEnd();
 
-			TexTemp1.disable();
+			TexTemp1.disable(gl);
 		} else {
 
 			while (numberSamples.get(iFirstTexture) < iFirstElementFirstTexture) {
@@ -1878,8 +1878,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						/ numberSamples.get(iFirstTexture);
 
 				Texture TexTemp1 = textures.get(iFirstTexture);
-				TexTemp1.enable();
-				TexTemp1.bind();
+				TexTemp1.enable(gl);
+				TexTemp1.bind(gl);
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -1896,7 +1896,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthLevel2, 0, 0);
 				gl.glEnd();
 
-				TexTemp1.disable();
+				TexTemp1.disable(gl);
 
 			} else if (iNrTexturesInUse == 2) {
 
@@ -1909,8 +1909,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						/ numberSamples.get(iLastTexture);
 
 				Texture TexTemp1 = textures.get(iFirstTexture);
-				TexTemp1.enable();
-				TexTemp1.bind();
+				TexTemp1.enable(gl);
+				TexTemp1.bind(gl);
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -1926,7 +1926,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthLevel2, fHeight * fScalingLastTexture, 0);
 				gl.glEnd();
 
-				TexTemp1.disable();
+				TexTemp1.disable(gl);
 
 				// gl.glBegin(GL2.GL_LINES);
 				// gl.glVertex3f(viewFrustum.getWidth(), fHeight *
@@ -1935,8 +1935,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// gl.glEnd();
 
 				Texture TexTemp2 = textures.get(iLastTexture);
-				TexTemp2.enable();
-				TexTemp2.bind();
+				TexTemp2.enable(gl);
+				TexTemp2.bind(gl);
 				TextureCoords texCoords2 = TexTemp2.getImageTexCoords();
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -1950,7 +1950,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthLevel2, 0, 0);
 				gl.glEnd();
 
-				TexTemp2.disable();
+				TexTemp2.disable(gl);
 			} else if (iNrTexturesInUse == 3) {
 
 				float fScalingFirstTexture = (float) (iSamplesPerTexture - iFirstElementFirstTexture)
@@ -1964,8 +1964,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 						/ numberSamples.get(iLastTexture);
 
 				Texture TexTemp1 = textures.get(iFirstTexture);
-				TexTemp1.enable();
-				TexTemp1.bind();
+				TexTemp1.enable(gl);
+				TexTemp1.bind(gl);
 				TextureCoords texCoords1 = TexTemp1.getImageTexCoords();
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -1981,7 +1981,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthLevel2, fHeight * (1 - fScalingFirstTexture), 0);
 				gl.glEnd();
 
-				TexTemp1.disable();
+				TexTemp1.disable(gl);
 
 				// gl.glBegin(GL2.GL_LINES);
 				// gl.glVertex3f(viewFrustum.getWidth(), fHeight * (1 -
@@ -1990,8 +1990,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// gl.glEnd();
 
 				Texture TexTemp2 = textures.get(iFirstTexture + 1);
-				TexTemp2.enable();
-				TexTemp2.bind();
+				TexTemp2.enable(gl);
+				TexTemp2.bind(gl);
 				TextureCoords texCoords2 = TexTemp2.getImageTexCoords();
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -2005,7 +2005,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthLevel2, fHeight * fScalingLastTexture, 0);
 				gl.glEnd();
 
-				TexTemp2.disable();
+				TexTemp2.disable(gl);
 
 				// gl.glBegin(GL2.GL_LINES);
 				// gl.glVertex3f(viewFrustum.getWidth(), fHeight *
@@ -2014,8 +2014,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				// gl.glEnd();
 
 				Texture TexTemp3 = textures.get(iLastTexture);
-				TexTemp3.enable();
-				TexTemp3.bind();
+				TexTemp3.enable(gl);
+				TexTemp3.bind(gl);
 				TextureCoords texCoords3 = TexTemp3.getImageTexCoords();
 
 				gl.glBegin(GL2.GL_QUADS);
@@ -2029,7 +2029,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 				gl.glVertex3f(fWidthLevel2, 0, 0);
 				gl.glEnd();
 
-				TexTemp3.disable();
+				TexTemp3.disable(gl);
 
 			} else {
 				throw new IllegalStateException(
@@ -2165,8 +2165,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_ARROW);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -2201,7 +2201,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 			gl.glPopName();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 		}
 
 		if (bRenderCaption == true) {
@@ -2355,8 +2355,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		Texture tempTexture = textureManager.getIconTexture(gl,
 				EIconTextures.HEAT_MAP_ARROW);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -2393,7 +2393,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glEnd();
 		gl.glPopName();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		// gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -2430,8 +2430,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		Texture tempTexture = textureManager.getIconTexture(gl,
 				EIconTextures.HEAT_MAP_ARROW);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -2467,7 +2467,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		gl.glEnd();
 		gl.glPopName();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 		gl.glPopAttrib();
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
@@ -3137,8 +3137,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture textureMaskNeg = textureManager.getIconTexture(gl,
 					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
-			textureMaskNeg.enable();
-			textureMaskNeg.bind();
+			textureMaskNeg.enable(gl);
+			textureMaskNeg.bind(gl);
 
 			TextureCoords texCoordsMaskNeg = textureMaskNeg.getImageTexCoords();
 
@@ -3165,7 +3165,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 			gl.glVertex3f(-fWidthGeneDendrogram + fWidthCurveTexture, 0, 0);
 			gl.glEnd();
-			textureMaskNeg.disable();
+			textureMaskNeg.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopAttrib();
 		}
@@ -3176,8 +3176,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_ARROW);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -3210,7 +3210,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 			gl.glPopName();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}
@@ -3255,8 +3255,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture textureMaskNeg = textureManager.getIconTexture(gl,
 					EIconTextures.NAVIGATION_MASK_CURVE_NEG_WHITE);
-			textureMaskNeg.enable();
-			textureMaskNeg.bind();
+			textureMaskNeg.enable(gl);
+			textureMaskNeg.bind(gl);
 
 			TextureCoords texCoordsMaskNeg = textureMaskNeg.getImageTexCoords();
 
@@ -3282,7 +3282,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			gl.glTexCoord2f(texCoordsMaskNeg.right(), texCoordsMaskNeg.top());
 			gl.glVertex3f(fWidthLevel3 - fWidthCurveTexture, fHeight, 0);
 			gl.glEnd();
-			textureMaskNeg.disable();
+			textureMaskNeg.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 			gl.glPopAttrib();
 		}
@@ -3293,8 +3293,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 			Texture tempTexture = textureManager.getIconTexture(gl,
 					EIconTextures.HEAT_MAP_ARROW);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -3327,7 +3327,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 			}
 			gl.glPopName();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		}
 	}

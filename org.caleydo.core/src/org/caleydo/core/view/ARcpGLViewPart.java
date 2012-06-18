@@ -55,7 +55,8 @@ public abstract class ARcpGLViewPart
 	}
 
 	protected void createGLCanvas() {
-		GLCapabilities glCapabilities = new GLCapabilities(GLProfile.get(GLProfile.GL2));
+		GLProfile profile = GLProfile.get(GLProfile.GL2);
+		GLCapabilities glCapabilities = new GLCapabilities(profile);
 		glCapabilities.setStencilBits(1);
 		glCapabilities.setDoubleBuffered(true);
 

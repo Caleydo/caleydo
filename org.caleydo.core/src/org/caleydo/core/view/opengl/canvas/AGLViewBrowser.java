@@ -170,9 +170,11 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 
 	/**
 	 * Constructor.
+	 * 
 	 * @param viewType
 	 *            TODO
-	 * @param viewName TODO
+	 * @param viewName
+	 *            TODO
 	 */
 	public AGLViewBrowser(GLCanvas glCanvas, Composite parentComposite,
 			final ViewFrustum viewFrustum, String viewType, String viewName) {
@@ -605,8 +607,8 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 				// Render view background frame
 				Texture tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.POOL_VIEW_BACKGROUND);
-				tempTexture.enable();
-				tempTexture.bind();
+				tempTexture.enable(gl);
+				tempTexture.bind(gl);
 
 				float fFrameWidth = 9.5f;
 				TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -624,7 +626,7 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 				gl.glVertex3f(-0.7f, -0.6f, -0.01f);
 				gl.glEnd();
 
-				tempTexture.disable();
+				tempTexture.disable(gl);
 
 				fTextXPosition = 9.5f;
 			}
@@ -959,8 +961,8 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 				iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		gl.glColor3f(1, 1, 1);
@@ -975,7 +977,7 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 		gl.glVertex3f(fWidth, -fHeight, 0f);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		gl.glPopName();
 	}
@@ -996,8 +998,8 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 
 		Texture tempTexture = textureManager.getIconTexture(gl,
 				EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1014,7 +1016,7 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 		gl.glVertex3f(fXOrigin, fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		gl.glPopName();
 		gl.glPopName();

@@ -79,9 +79,8 @@ import org.eclipse.swt.widgets.Display;
 public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateListener {
 
 	public static String VIEW_TYPE = "org.caleydo.view.heatmap";
-	
-	public static String VIEW_NAME = "Heatmap";
 
+	public static String VIEW_NAME = "Heatmap";
 
 	public static final SelectionType SELECTION_HIDDEN = new SelectionType("Hidden",
 			new float[] { 0f, 0f, 0f, 1f }, 1, false, false, 0.2f);
@@ -113,6 +112,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	private UpdateColorMappingListener updateColorMappingListener;
 
+	private boolean updateColorMapping = false;
+
 	/**
 	 * Constructor.
 	 * 
@@ -120,7 +121,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	public GLHeatMap(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-	
+
 		glKeyListener = new GLHeatMapKeyListener(this);
 		renderStyle = new HeatMapRenderStyle(this, viewFrustum);
 	}
@@ -135,7 +136,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		textRenderer = new CaleydoTextRenderer(24);
 
-		textureTemplate = new TextureHeatLayoutConfiguration(this);
+		textureTemplate = new TextureHeatLayoutConfiguration(gl, this);
 
 		layoutManager = new LayoutManager(this.viewFrustum, pixelGLConverter);
 		if (detailedRenderingTemplate == null)
@@ -192,12 +193,12 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 		if (detailLevel.equals(this.detailLevel))
 			return;
 		super.setDetailLevel(detailLevel);
-		if (dataContainer.getNrDimensions() >1 && (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM)) {
+		if (dataContainer.getNrDimensions() > 1
+				&& (detailLevel == EDetailLevel.HIGH || detailLevel == EDetailLevel.MEDIUM)) {
 			layoutManager.setStaticLayoutConfiguration(detailedRenderingTemplate);
 			detailedRenderingTemplate.setStaticLayouts();
 			showCaptions = true;
-		}
-		else {
+		} else {
 			layoutManager.setStaticLayoutConfiguration(textureTemplate);
 			showCaptions = false;
 		}
@@ -229,6 +230,11 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 		if (dataContainer == null)
 			return;
+		if (updateColorMapping) {
+			textureTemplate.updateColorMapping(gl);
+			updateColorMapping = false;
+		}
+
 		if (isDisplayListDirty) {
 			buildDisplayList(gl, displayListIndex);
 			isDisplayListDirty = false;
@@ -808,7 +814,6 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 
 	@Override
 	public void updateColorMapping() {
-		textureTemplate.updateColorMapping();
-
+		updateColorMapping = true;
 	}
 }

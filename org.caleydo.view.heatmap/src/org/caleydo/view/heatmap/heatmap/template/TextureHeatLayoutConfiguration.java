@@ -22,6 +22,8 @@
  */
 package org.caleydo.view.heatmap.heatmap.template;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.view.opengl.layout.ElementLayout;
 import org.caleydo.core.view.opengl.layout.LayoutConfiguration;
 import org.caleydo.view.heatmap.heatmap.GLHeatMap;
@@ -39,8 +41,9 @@ public class TextureHeatLayoutConfiguration extends LayoutConfiguration {
 	/**
 	 * 
 	 */
-	public TextureHeatLayoutConfiguration(GLHeatMap heatMap) {
+	public TextureHeatLayoutConfiguration(GL2 gl, GLHeatMap heatMap) {
 		heatMapRenderer = new HeatMapTextureRenderer(heatMap);
+		heatMapRenderer.initialize(gl);
 	}
 
 	@Override
@@ -50,12 +53,12 @@ public class TextureHeatLayoutConfiguration extends LayoutConfiguration {
 		mainLayout.setRatioSizeX(1);
 		mainLayout.setRatioSizeY(1);
 		mainLayout.setRenderer(heatMapRenderer);
-		heatMapRenderer.initialize();
+		
 	}
 	
-	public void updateColorMapping()
+	public void updateColorMapping(GL2 gl)
 	{
-		heatMapRenderer.initialize();
+		heatMapRenderer.initialize(gl);
 	}
 
 }

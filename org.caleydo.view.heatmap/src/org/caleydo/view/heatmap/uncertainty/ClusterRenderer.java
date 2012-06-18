@@ -83,7 +83,7 @@ public class ClusterRenderer extends LayoutRenderer {
 		this.clusterIndex = clusterIndex;
 	}
 
-	public void init() {
+	public void init(GL2 gl) {
 
 		DimensionVirtualArray dimensionVA = uncertaintyHeatMap.getDataContainer()
 				.getDimensionPerspective().getVirtualArray();
@@ -116,16 +116,16 @@ public class ClusterRenderer extends LayoutRenderer {
 
 			clusterLayout.append(clusterDataUncBarLayout);
 
-			dataUncBarTextureRenderer.init(uncertaintyHeatMap, table, clusterVA,
+			dataUncBarTextureRenderer.init(gl, uncertaintyHeatMap, table, clusterVA,
 					dimensionVA, uncertaintyHeatMap.getColorMapper());
 		}
 
 		clusterLayout.append(clusterHeatMapLayout);
 
-		textureRenderer.initialize();
+		textureRenderer.initialize(gl);
 		textureRenderer.setGroupIndex(clusterIndex);
 
-		visUncBarTextureRenderer.init(uncertaintyHeatMap, table, clusterVA, dimensionVA,
+		visUncBarTextureRenderer.init(gl, uncertaintyHeatMap, table, clusterVA, dimensionVA,
 				uncertaintyHeatMap.getColorMapper());
 
 		visUncBarTextureRenderer.setLightCertainColor(GLUncertaintyHeatMap.VIS_UNC);
@@ -188,7 +188,7 @@ public class ClusterRenderer extends LayoutRenderer {
 			final PixelGLConverter pixelGLConverter) {
 		if (textureRenderer != null && visUncBarTextureRenderer != null) {
 
-			visUncBarTextureRenderer.initTextures(calcVisualUncertainty(gl,
+			visUncBarTextureRenderer.initTextures(gl, calcVisualUncertainty(gl,
 					pixelGLConverter, textureRenderer));
 		}
 	}

@@ -68,6 +68,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	private int groupIndex = -1;
 
 	private int viewID;
+	
+	private boolean isInitialized = false;
 
 
 	public HeatMapTextureRenderer(GLHeatMap heatMap) {
@@ -123,7 +125,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	/**
 	 * Init textures, build array of textures used for holding the whole samples
 	 */
-	public void initialize() {
+	public void initialize(GL2 gl) {
 		DataRepresentation dataRepresentation = heatMap.getRenderingRepresentation();
 		int textureHeight = numberOfRecords = heatMap.getDataContainer()
 				.getRecordPerspective().getVirtualArray().size();
@@ -204,7 +206,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 						false /* mustFlipVertically */, floatBuffer[textureCounter], null);
 
 				tempTexture = TextureIO.newTexture(0);
-				tempTexture.updateImage(texData);
+				tempTexture.updateImage(gl, texData);
 
 				textures.add(tempTexture);
 
@@ -212,10 +214,15 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 				recordCount = 0;
 			}
 		}
+		isInitialized = true;
 	}
 
 	@Override
 	public void render(GL2 gl) {
+		
+		if(!isInitialized) {
+			initialize(gl);
+		}
 
 		float yOffset = 0.0f;
 
@@ -241,8 +248,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	private void renderTexture(GL2 gl, Texture texture, float x, float y, float width,
 			float height) {
 
-		texture.enable();
-		texture.bind();
+		texture.enable(gl);
+		texture.bind(gl);
 
 		gl.glTexEnvi(GL2.GL_TEXTURE_ENV, GL2.GL_TEXTURE_ENV_MODE, GL2.GL_REPLACE);
 		gl.glTexParameteri(GL2.GL_TEXTURE_2D, GL2.GL_TEXTURE_WRAP_S, GL2.GL_CLAMP);
@@ -269,7 +276,7 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 		if (groupIndex != -1)
 			gl.glPopName();
 
-		texture.disable();
+		texture.disable(gl);
 	}
 
 	public float getVisualUncertaintyForLine(int imageLine, int width, int height) {
@@ -327,5 +334,19 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 
 	public void setGroupIndex(int groupIndex) {
 		this.groupIndex = groupIndex;
+	}
+	
+	/**
+	 * @param isInitialized setter, see {@link #isInitialized}
+	 */
+	public void setInitialized(boolean isInitialized) {
+		this.isInitialized = isInitialized;
+	}
+	
+	/**
+	 * @return the isInitialized, see {@link #isInitialized}
+	 */
+	public boolean isInitialized() {
+		return isInitialized;
 	}
 }

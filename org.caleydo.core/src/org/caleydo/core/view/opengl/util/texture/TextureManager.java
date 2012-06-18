@@ -62,7 +62,8 @@ public class TextureManager {
 	}
 
 	public void renewTexture(String texturePath) {
-		Texture tmpTexture = GeneralManager.get().getResourceLoader().getTexture(texturePath);
+		Texture tmpTexture = GeneralManager.get().getResourceLoader()
+				.getTexture(texturePath);
 		mapPathToTexture.put(texturePath, tmpTexture);
 	}
 
@@ -80,20 +81,30 @@ public class TextureManager {
 	/**
 	 * Convenience method for rendering textures on a rectangle.
 	 * 
-	 * @param gl GL2 Context.
-	 * @param eIconTextures Texture that should be rendered.
-	 * @param lowerLeftCorner Lower left corner of the texture.
-	 * @param lowerRightCorner Lower right corner of the texture.
-	 * @param upperRightCorner Upper right corner of the texture.
-	 * @param upperLeftCorner Upper left corner of the texture.
-	 * @param colorR Red portion of the color the Polygon should have where the
+	 * @param gl
+	 *            GL2 Context.
+	 * @param eIconTextures
+	 *            Texture that should be rendered.
+	 * @param lowerLeftCorner
+	 *            Lower left corner of the texture.
+	 * @param lowerRightCorner
+	 *            Lower right corner of the texture.
+	 * @param upperRightCorner
+	 *            Upper right corner of the texture.
+	 * @param upperLeftCorner
+	 *            Upper left corner of the texture.
+	 * @param colorR
+	 *            Red portion of the color the Polygon should have where the
 	 *            texture is drawn on.
-	 * @param colorG Green portion of the color the Polygon should have where
-	 *            the texture is drawn on.
-	 * @param colorB Blue portion of the color the Polygon should have where the
+	 * @param colorG
+	 *            Green portion of the color the Polygon should have where the
 	 *            texture is drawn on.
-	 * @param alpha Alpha value the Polygon should have where the texture is
-	 *            drawn on.
+	 * @param colorB
+	 *            Blue portion of the color the Polygon should have where the
+	 *            texture is drawn on.
+	 * @param alpha
+	 *            Alpha value the Polygon should have where the texture is drawn
+	 *            on.
 	 */
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures,
 			Vec3f lowerLeftCorner, Vec3f lowerRightCorner, Vec3f upperRightCorner,
@@ -106,30 +117,42 @@ public class TextureManager {
 	public void renderTexture(GL2 gl, final EIconTextures eIconTextures,
 			Vec3f lowerLeftCorner, Vec3f lowerRightCorner, Vec3f upperRightCorner,
 			Vec3f upperLeftCorner, float[] color) {
-		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner, upperRightCorner,
-				upperLeftCorner, color[0], color[1], color[2], color[3]);
+		renderTexture(gl, eIconTextures, lowerLeftCorner, lowerRightCorner,
+				upperRightCorner, upperLeftCorner, color[0], color[1], color[2], color[3]);
 	}
 
 	/**
 	 * Renders a texture on a rectangle with the specified minimum size.
 	 * 
-	 * @param gl GL2 Context.
-	 * @param eIconTextures Texture that should be rendered.
-	 * @param lowerLeftCorner Lower left corner of the texture.
-	 * @param lowerRightCorner Lower right corner of the texture.
-	 * @param upperRightCorner Upper right corner of the texture.
-	 * @param upperLeftCorner Upper left corner of the texture.
-	 * @param scalingPivot Pivot that is used when scaling the texture to the
-	 *            minimum size.
-	 * @param colorR Red portion of the color the Polygon should have where the
+	 * @param gl
+	 *            GL2 Context.
+	 * @param eIconTextures
+	 *            Texture that should be rendered.
+	 * @param lowerLeftCorner
+	 *            Lower left corner of the texture.
+	 * @param lowerRightCorner
+	 *            Lower right corner of the texture.
+	 * @param upperRightCorner
+	 *            Upper right corner of the texture.
+	 * @param upperLeftCorner
+	 *            Upper left corner of the texture.
+	 * @param scalingPivot
+	 *            Pivot that is used when scaling the texture to the minimum
+	 *            size.
+	 * @param colorR
+	 *            Red portion of the color the Polygon should have where the
 	 *            texture is drawn on.
-	 * @param colorG Green portion of the color the Polygon should have where
-	 *            the texture is drawn on.
-	 * @param colorB Blue portion of the color the Polygon should have where the
+	 * @param colorG
+	 *            Green portion of the color the Polygon should have where the
 	 *            texture is drawn on.
-	 * @param alpha Alpha value the Polygon should have where the texture is
-	 *            drawn on.
-	 * @param minSize Minimum size the texture should have.
+	 * @param colorB
+	 *            Blue portion of the color the Polygon should have where the
+	 *            texture is drawn on.
+	 * @param alpha
+	 *            Alpha value the Polygon should have where the texture is drawn
+	 *            on.
+	 * @param minSize
+	 *            Minimum size the texture should have.
 	 */
 	public void renderGUITexture(GL2 gl, final EIconTextures eIconTextures,
 			Vec3f lowerLeftCorner, Vec3f lowerRightCorner, Vec3f upperRightCorner,
@@ -139,8 +162,8 @@ public class TextureManager {
 		try {
 
 			Texture tempTexture = getIconTexture(gl, eIconTextures.getFileName());
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			IntBuffer buffer = IntBuffer.allocate(4);
 			gl.glGetIntegerv(GL2.GL_VIEWPORT, buffer);
@@ -164,7 +187,8 @@ public class TextureManager {
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
+			gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(),
+					lowerRightCorner.z());
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
 			gl.glVertex3f(upperRightCorner.x(), upperLeftCorner.y(), upperRightCorner.z());
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
@@ -172,33 +196,42 @@ public class TextureManager {
 
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 
 			gl.glPopMatrix();
-		}
-		catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, this.toString(), "Unable to load texture "
-					+ eIconTextures));
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(),
+					"Unable to load texture " + eIconTextures));
 		}
 	}
 
 	/**
 	 * Convenience method for rendering textures on a rectangle.
 	 * 
-	 * @param gl GL2 Context.
-	 * @param texturePath Path to the image.
-	 * @param lowerLeftCorner Lower left corner of the texture.
-	 * @param lowerRightCorner Lower right corner of the texture.
-	 * @param upperRightCorner Upper right corner of the texture.
-	 * @param upperLeftCorner Upper left corner of the texture.
-	 * @param colorR Red portion of the color the Polygon should have where the
+	 * @param gl
+	 *            GL2 Context.
+	 * @param texturePath
+	 *            Path to the image.
+	 * @param lowerLeftCorner
+	 *            Lower left corner of the texture.
+	 * @param lowerRightCorner
+	 *            Lower right corner of the texture.
+	 * @param upperRightCorner
+	 *            Upper right corner of the texture.
+	 * @param upperLeftCorner
+	 *            Upper left corner of the texture.
+	 * @param colorR
+	 *            Red portion of the color the Polygon should have where the
 	 *            texture is drawn on.
-	 * @param colorG Green portion of the color the Polygon should have where
-	 *            the texture is drawn on.
-	 * @param colorB Blue portion of the color the Polygon should have where the
+	 * @param colorG
+	 *            Green portion of the color the Polygon should have where the
 	 *            texture is drawn on.
-	 * @param alpha Alpha value the Polygon should have where the texture is
-	 *            drawn on.
+	 * @param colorB
+	 *            Blue portion of the color the Polygon should have where the
+	 *            texture is drawn on.
+	 * @param alpha
+	 *            Alpha value the Polygon should have where the texture is drawn
+	 *            on.
 	 */
 	public void renderTexture(GL2 gl, final String texturePath, Vec3f lowerLeftCorner,
 			Vec3f lowerRightCorner, Vec3f upperRightCorner, Vec3f upperLeftCorner,
@@ -207,8 +240,8 @@ public class TextureManager {
 		try {
 
 			Texture tempTexture = getIconTexture(gl, texturePath);
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -217,20 +250,21 @@ public class TextureManager {
 			gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
 			gl.glVertex3f(lowerLeftCorner.x(), lowerLeftCorner.y(), lowerLeftCorner.z());
 			gl.glTexCoord2f(texCoords.right(), texCoords.bottom());
-			gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(), lowerRightCorner.z());
+			gl.glVertex3f(lowerRightCorner.x(), lowerRightCorner.y(),
+					lowerRightCorner.z());
 			gl.glTexCoord2f(texCoords.right(), texCoords.top());
-			gl.glVertex3f(upperRightCorner.x(), upperRightCorner.y(), upperRightCorner.z());
+			gl.glVertex3f(upperRightCorner.x(), upperRightCorner.y(),
+					upperRightCorner.z());
 			gl.glTexCoord2f(texCoords.left(), texCoords.top());
 			gl.glVertex3f(upperLeftCorner.x(), upperLeftCorner.y(), upperLeftCorner.z());
 
 			gl.glEnd();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 
-		}
-		catch (Exception e) {
-			Logger.log(new Status(IStatus.ERROR, this.toString(), "Unable to load texture "
-					+ texturePath));
+		} catch (Exception e) {
+			Logger.log(new Status(IStatus.ERROR, this.toString(),
+					"Unable to load texture " + texturePath));
 		}
 	}
 }

@@ -124,9 +124,8 @@ public class GLBucket extends AGLView implements
 		IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
 	public static String VIEW_TYPE = "org.caleydo.view.bucket";
 
-
 	public static String VIEW_NAME = "Bucket";
-	
+
 	protected ATableBasedDataDomain dataDomain;
 	protected DataContainer dataContainer;
 
@@ -226,7 +225,7 @@ public class GLBucket extends AGLView implements
 	public GLBucket(GLCanvas glCanvas, Composite parentComposite, ViewFrustum viewFrustum) {
 
 		super(glCanvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
-	
+
 		layoutMode = ARemoteViewLayoutRenderStyle.LayoutMode.BUCKET;
 
 		viewCamera.setCameraRotation(new Rotf());
@@ -597,8 +596,8 @@ public class GLBucket extends AGLView implements
 				// Render view background frame
 				Texture tempTexture = textureManager.getIconTexture(gl,
 						EIconTextures.POOL_VIEW_BACKGROUND);
-				tempTexture.enable();
-				tempTexture.bind();
+				tempTexture.enable(gl);
+				tempTexture.bind(gl);
 
 				float fFrameWidth = 9.5f;
 				TextureCoords texCoords = tempTexture.getImageTexCoords();
@@ -616,7 +615,7 @@ public class GLBucket extends AGLView implements
 				gl.glVertex3f(-0.7f, -0.6f, -0.01f);
 				gl.glEnd();
 
-				tempTexture.disable();
+				tempTexture.disable(gl);
 
 				fTextXPosition = 9.5f;
 			}
@@ -946,8 +945,8 @@ public class GLBucket extends AGLView implements
 				iRemoteLevelElementID));
 
 		Texture tempTexture = textureManager.getIconTexture(gl, eIconTexture);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 		gl.glColor3f(1, 1, 1);
@@ -962,7 +961,7 @@ public class GLBucket extends AGLView implements
 		gl.glVertex3f(fWidth, -fHeight, 0f);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		gl.glPopName();
 	}
@@ -1229,8 +1228,8 @@ public class GLBucket extends AGLView implements
 		gl.glColor4f(tmpColor_lock.x(), tmpColor_lock.y(), tmpColor_lock.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		textureViewSymbol.enable();
-		textureViewSymbol.bind();
+		textureViewSymbol.enable(gl);
+		textureViewSymbol.bind(gl);
 
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glTexCoord2f(texCoords.left(), texCoords.bottom());
@@ -1243,7 +1242,7 @@ public class GLBucket extends AGLView implements
 		gl.glVertex3f(5.33f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
-		textureViewSymbol.disable();
+		textureViewSymbol.disable(gl);
 
 		// gl.glPopName();
 
@@ -1262,8 +1261,8 @@ public class GLBucket extends AGLView implements
 		gl.glColor4f(tmpColor_in.x(), tmpColor_in.y(), tmpColor_in.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		textureMoveIn.enable();
-		textureMoveIn.bind();
+		textureMoveIn.enable(gl);
+		textureMoveIn.bind(gl);
 		// texCoords = textureMoveIn.getImageTexCoords();
 		// gl.glColor4f(1,0.3f,0.3f,0.9f);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -1277,7 +1276,7 @@ public class GLBucket extends AGLView implements
 		gl.glVertex3f(5.33f, 0.05f, fNavigationZValue);
 		gl.glEnd();
 
-		textureMoveIn.disable();
+		textureMoveIn.disable(gl);
 
 		gl.glPopName();
 
@@ -1296,8 +1295,8 @@ public class GLBucket extends AGLView implements
 		gl.glColor4f(tmpColor_right.x(), tmpColor_right.y(), tmpColor_right.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		textureMoveRight.enable();
-		textureMoveRight.bind();
+		textureMoveRight.enable(gl);
+		textureMoveRight.bind(gl);
 
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -1311,7 +1310,7 @@ public class GLBucket extends AGLView implements
 		gl.glVertex3f(7.95f, 5.33f, fNavigationZValue);
 		gl.glEnd();
 
-		textureMoveRight.disable();
+		textureMoveRight.disable(gl);
 
 		gl.glPopName();
 
@@ -1330,8 +1329,8 @@ public class GLBucket extends AGLView implements
 		gl.glColor4f(tmpColor_left.x(), tmpColor_left.y(), tmpColor_left.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		textureMoveLeft.enable();
-		textureMoveLeft.bind();
+		textureMoveLeft.enable(gl);
+		textureMoveLeft.bind(gl);
 
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -1345,7 +1344,7 @@ public class GLBucket extends AGLView implements
 		gl.glVertex3f(2.66f, 2.66f, fNavigationZValue);
 		gl.glEnd();
 
-		textureMoveLeft.disable();
+		textureMoveLeft.disable(gl);
 
 		gl.glPopName();
 
@@ -1364,8 +1363,8 @@ public class GLBucket extends AGLView implements
 		gl.glColor4f(tmpColor_out.x(), tmpColor_out.y(), tmpColor_out.z(),
 				ARemoteViewLayoutRenderStyle.NAVIGATION_OVERLAY_TRANSPARENCY);
 
-		textureMoveOut.enable();
-		textureMoveOut.bind();
+		textureMoveOut.enable(gl);
+		textureMoveOut.bind(gl);
 
 		// gl.glColor4f(0,1,0,1);
 		gl.glBegin(GL2.GL_POLYGON);
@@ -1379,7 +1378,7 @@ public class GLBucket extends AGLView implements
 		gl.glVertex3f(2.66f, 5.33f, fNavigationZValue);
 		gl.glEnd();
 
-		textureMoveOut.disable();
+		textureMoveOut.disable(gl);
 
 		gl.glPopName();
 	}
@@ -1409,8 +1408,8 @@ public class GLBucket extends AGLView implements
 
 		Texture tempTexture = textureManager.getIconTexture(gl,
 				EIconTextures.POOL_VIEW_BACKGROUND_SELECTION);
-		tempTexture.enable();
-		tempTexture.bind();
+		tempTexture.enable(gl);
+		tempTexture.bind(gl);
 
 		TextureCoords texCoords = tempTexture.getImageTexCoords();
 
@@ -1431,7 +1430,7 @@ public class GLBucket extends AGLView implements
 				fYOrigin - fHeight, -0.01f);
 		gl.glEnd();
 
-		tempTexture.disable();
+		tempTexture.disable(gl);
 
 		gl.glPopName();
 		gl.glPopName();

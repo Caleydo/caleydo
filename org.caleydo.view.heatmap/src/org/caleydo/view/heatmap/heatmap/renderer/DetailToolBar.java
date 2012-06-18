@@ -88,8 +88,8 @@ public class DetailToolBar extends LayoutRenderer {
 			tempTexture = iconManager.getIconTexture(gl,
 					EIconTextures.COMPARER_SHOW_HIDDEN);
 
-			tempTexture.enable();
-			tempTexture.bind();
+			tempTexture.enable(gl);
+			tempTexture.bind(gl);
 			TextureCoords texCoords = tempTexture.getImageTexCoords();
 
 			gl.glColor4f(1, 1, 1, 1);
@@ -108,7 +108,7 @@ public class DetailToolBar extends LayoutRenderer {
 			gl.glEnd();
 			gl.glPopName();
 
-			tempTexture.disable();
+			tempTexture.disable(gl);
 			gl.glTranslatef(-sideSpacing, -spacing, 0);
 		}
 		float secondButtonOffset = 2 * sideSpacing + buttonSize;

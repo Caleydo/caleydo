@@ -78,7 +78,7 @@ public class OverviewRenderer extends LayoutRenderer {
 		this.overviewLayout.setZoomer(zoomer);
 	}
 
-	public void init() {
+	public void init(GL2 gl) {
 
 		// overviewLayout.clear();
 		clusterLayoutList.clear();
@@ -120,7 +120,7 @@ public class OverviewRenderer extends LayoutRenderer {
 
 				overviewLayout.add(lastLayoutElement, clusterLayout);
 
-				clusterRenderer.init();
+				clusterRenderer.init(gl);
 				counter++;
 
 				if (clusterIndex < (clusterList.size() - 1)) {
@@ -149,7 +149,7 @@ public class OverviewRenderer extends LayoutRenderer {
 			clusterRenderer = new ClusterRenderer(uncertaintyHeatMap, clusterLayout,
 					recordVA, 0);
 			clusterLayout.setRenderer(clusterRenderer);
-			clusterRenderer.init();
+			clusterRenderer.init(gl);
 			overviewLayout.add(lastLayoutElement, clusterLayout);
 		}
 

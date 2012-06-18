@@ -112,6 +112,8 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 	private ArrayList<double[]> multiLevelUncertainty = new ArrayList<double[]>();
 	private double[] aggregatedUncertainty;
 
+	private boolean initOverviewRenderer = false;
+
 	/**
 	 * Constructor.
 	 * 
@@ -219,7 +221,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 		overviewHeatMap = new OverviewRenderer(this, overviewLayout);
 		overviewLayout.setRenderer(overviewHeatMap);
-		overviewHeatMap.init();
+		overviewHeatMap.init(gl);
 	}
 
 	private void createDetailHeatMap(GL2 gl) {
@@ -275,6 +277,12 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 
 	@Override
 	public void display(GL2 gl) {
+
+		if (initOverviewRenderer) {
+			overviewHeatMap.init(gl);
+			initOverviewRenderer = false;
+		}
+
 		layoutManager.render(gl);
 		if (updateVisualUncertainty) {
 
@@ -390,7 +398,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		setDisplayListDirty();
 		initMultiLevelUncertainty();
 		updateVisualUncertainty = true;
-		overviewHeatMap.init();
+		initOverviewRenderer = true;
 
 	}
 

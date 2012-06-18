@@ -91,8 +91,8 @@ public class GLPathwayTextureManager {
 
 		Texture tmpPathwayTexture = loadPathwayTexture(pathway);
 
-		tmpPathwayTexture.enable();
-		tmpPathwayTexture.bind();
+		tmpPathwayTexture.enable(gl);
+		tmpPathwayTexture.bind(gl);
 
 		if (bHighlight) {
 			gl.glColor4f(1f, 0.85f, 0.85f, fTextureTransparency);
@@ -121,7 +121,7 @@ public class GLPathwayTextureManager {
 		gl.glVertex3f(0.0f, textureHeight, 0.0f);
 		gl.glEnd();
 
-		tmpPathwayTexture.disable();
+		tmpPathwayTexture.disable(gl);
 
 		if (bHighlight) {
 			gl.glColor4f(1, 0, 0, 1);
@@ -158,7 +158,7 @@ public class GLPathwayTextureManager {
 		return hashPathwayToTexture.get(pathway);
 	}
 
-	public void unloadUnusedTextures(LinkedList<Integer> iLLVisiblePathways) {
+	public void unloadUnusedTextures(GL2 gl, LinkedList<Integer> iLLVisiblePathways) {
 
 		int iTmpPathwayId = 0;
 		Integer[] iArPathwayId = hashPathwayToTexture.keySet().toArray(
@@ -169,7 +169,7 @@ public class GLPathwayTextureManager {
 
 			if (!iLLVisiblePathways.contains(iTmpPathwayId)) {
 				// Remove and dispose texture
-				hashPathwayToTexture.remove(iTmpPathwayId).dispose();
+				hashPathwayToTexture.remove(iTmpPathwayId).dispose(gl);
 
 				// generalManager.logMsg(
 				// this.getClass().getSimpleName()

@@ -170,8 +170,8 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		gl.glColor4f(1, 1, 1, 1);
 		gl.glBlendFunc(GL2.GL_ONE, GL2.GL_ONE_MINUS_SRC_ALPHA);
 
-		textureMask.enable();
-		textureMask.bind();
+		textureMask.enable(gl);
+		textureMask.bind(gl);
 
 		TextureCoords texCoordsMask = textureMask.getImageTexCoords();
 
@@ -216,10 +216,10 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 			gl.glEnd();
 		}
 
-		textureMask.disable();
+		textureMask.disable(gl);
 
-		textureMaskNeg.enable();
-		textureMaskNeg.bind();
+		textureMaskNeg.enable(gl);
+		textureMaskNeg.bind(gl);
 
 		TextureCoords texCoordsMaskNeg = textureMaskNeg.getImageTexCoords();
 
@@ -266,7 +266,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 			gl.glEnd();
 		}
 
-		textureMaskNeg.disable();
+		textureMaskNeg.disable(gl);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
 	}
