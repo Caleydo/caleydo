@@ -96,7 +96,7 @@ public class GeneralManager {
 		basicInfo = new BasicInformation();
 
 		eventPublisher = new EventPublisher();
-		viewManager = new ViewManager();
+		viewManager = ViewManager.get();
 		swtGUIManager = new SWTGUIManager();
 		xmlParserManager = new XmlParserManager();
 		idCreator = new IDCreator();

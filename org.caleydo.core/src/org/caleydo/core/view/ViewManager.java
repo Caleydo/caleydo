@@ -93,12 +93,24 @@ public class ViewManager
 	 * managers to avoid access conflicts with views.
 	 */
 	private DisplayLoopExecution displayLoopExecution;
+	
+	private volatile static ViewManager instance;
 
 	/**
 	 * Constructor.
 	 */
-	public ViewManager() {
+	private ViewManager() {
 		registerEventListeners();
+	}
+	
+	public static ViewManager get() {
+		if(instance == null) {
+			synchronized(ViewManager.class) {
+				if(instance == null)
+					instance = new ViewManager();
+			}
+		}
+		return instance;
 	}
 
 	@Override
