@@ -330,7 +330,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 				return;
 
 			if (!focusGained) {
-				parentGLCanvas.requestFocus();
+//				parentGLCanvas.requestFocus();
 			}
 
 			// parentComposite.getDisplay().asyncExec(new Runnable() {

@@ -106,8 +106,9 @@ public class ViewManager
 	public static ViewManager get() {
 		if(instance == null) {
 			synchronized(ViewManager.class) {
-				if(instance == null)
+				if(instance == null) {
 					instance = new ViewManager();
+				}
 			}
 		}
 		return instance;
@@ -124,11 +125,11 @@ public class ViewManager
 		return false;
 	}
 
-	public synchronized AGLView getGLView(int iItemID) {
+	public AGLView getGLView(int iItemID) {
 		return hashGLViewID2GLView.get(iItemID);
 	}
 
-	public synchronized boolean unregisterGLCanvas(final GLCanvas glCanvas) {
+	public boolean unregisterGLCanvas(final GLCanvas glCanvas) {
 
 		if (glCanvas == null)
 			return false;
@@ -139,7 +140,7 @@ public class ViewManager
 		return true;
 	}
 
-	public synchronized void registerGLView(AGLView glView) {
+	public void registerGLView(AGLView glView) {
 		hashGLViewID2GLView.put(glView.getID(), glView);
 
 		NewViewEvent event = new NewViewEvent(glView);
@@ -147,7 +148,7 @@ public class ViewManager
 		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
-	public synchronized void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas, final AGLView glView) {
+	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas, final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -168,7 +169,7 @@ public class ViewManager
 	 * @param rcpView
 	 * @param view
 	 */
-	public synchronized void registerRCPView(final ARcpGLViewPart rcpView, final IView view) {
+	public void registerRCPView(final ARcpGLViewPart rcpView, final IView view) {
 		if (!hashRCP2View.containsKey(rcpView))
 			hashRCP2View.put(rcpView, view);
 
@@ -183,7 +184,7 @@ public class ViewManager
 	 * @param rcpView
 	 * @param view
 	 */
-	public synchronized void unregisterRCPView(final ARcpGLViewPart rcpView, final IView view) {
+	public void unregisterRCPView(final ARcpGLViewPart rcpView, final IView view) {
 
 		if (hashRCP2View.containsKey(rcpView))
 			hashRCP2View.remove(rcpView);
@@ -192,25 +193,25 @@ public class ViewManager
 			hashView2RCP.remove(view);
 	}
 
-	public synchronized ARcpGLViewPart getViewPartFromView(IView view) {
+	public ARcpGLViewPart getViewPartFromView(IView view) {
 		return hashView2RCP.get(view);
 	}
 
-	public synchronized IView getViewFromViewPart(ARcpGLViewPart viewPart) {
+	public IView getViewFromViewPart(ARcpGLViewPart viewPart) {
 		return hashRCP2View.get(viewPart);
 	}
 
 	/**
 	 * Removes all views, canvas and GL2 event listeners
 	 */
-	public synchronized void cleanup() {
+	public void cleanup() {
 
 		hashGLCanvas2GLView.clear();
 		hashGLViewID2GLView.clear();
 		hashItems.clear();
 	}
 
-	public synchronized void unregisterGLView(final AGLView glView) {
+	public void unregisterGLView(final AGLView glView) {
 
 		if (glView == null)
 			return;
@@ -232,23 +233,23 @@ public class ViewManager
 		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
-	public synchronized Collection<AGLView> getAllGLViews() {
+	public Collection<AGLView> getAllGLViews() {
 		return hashGLViewID2GLView.values();
 	}
 
-	public synchronized PickingManager getPickingManager() {
+	public PickingManager getPickingManager() {
 		return pickingManager;
 	}
 
-	public synchronized ConnectedElementRepresentationManager getConnectedElementRepresentationManager() {
+	public ConnectedElementRepresentationManager getConnectedElementRepresentationManager() {
 		return connectedElementRepManager;
 	}
 
-	public synchronized GLInfoAreaManager getInfoAreaManager() {
+	public GLInfoAreaManager getInfoAreaManager() {
 		return infoAreaManager;
 	}
 
-	public synchronized void startAnimator() {
+	public void startAnimator() {
 
 		if (fpsAnimator == null)
 			fpsAnimator = new FPSAnimator(30);
@@ -263,7 +264,7 @@ public class ViewManager
 				"Start animator"));
 	}
 
-	public synchronized void stopAnimator() {
+	public void stopAnimator() {
 		if (fpsAnimator != null && fpsAnimator.isAnimating())
 			fpsAnimator.stop();
 		
@@ -271,7 +272,7 @@ public class ViewManager
 				"Stop animator"));
 	}
 
-	public synchronized void registerGLCanvasToAnimator(final GLCanvas glCaleydoCanvas) {
+	public void registerGLCanvasToAnimator(final GLCanvas glCaleydoCanvas) {
 
 		// Lazy creation of animator
 		if (fpsAnimator == null) {
@@ -284,7 +285,7 @@ public class ViewManager
 				"Add canvas to animator"));
 	}
 
-	public synchronized void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
+	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
 		fpsAnimator.remove(glCanvas);
 	}
 
@@ -297,7 +298,7 @@ public class ViewManager
 	 * 
 	 * @param requestInstance object that wants to request busy mode
 	 */
-	public synchronized void requestBusyMode(Object requestInstance) {
+	public void requestBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
 			throw new IllegalArgumentException("requestInstance must not be null");
 		}
@@ -321,7 +322,7 @@ public class ViewManager
 	 * 
 	 * @param requestInstance the object that requested the busy mode
 	 */
-	public synchronized void releaseBusyMode(Object requestInstance) {
+	public void releaseBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
 			throw new IllegalArgumentException("requestInstance must not be null");
 		}
@@ -339,7 +340,7 @@ public class ViewManager
 		}
 	}
 
-	public synchronized void createSWTView(final ASerializedView serializedView) {
+	public void createSWTView(final ASerializedView serializedView) {
 		Display.getDefault().asyncExec(new Runnable() {
 			@Override
 			public void run() {
@@ -362,7 +363,7 @@ public class ViewManager
 	}
 
 	@SuppressWarnings("rawtypes")
-	public synchronized AGLView createGLView(Class<? extends AGLView> viewClass, GLCanvas glCanvas,
+	public AGLView createGLView(Class<? extends AGLView> viewClass, GLCanvas glCanvas,
 			Composite parentComposite, ViewFrustum viewFrustum) {
 
 		AGLView view;
@@ -418,7 +419,7 @@ public class ViewManager
 	 * @return {@link DisplayLoopExecution} for executing code in the display
 	 *         loop
 	 */
-	public synchronized DisplayLoopExecution getDisplayLoopExecution() {
+	public DisplayLoopExecution getDisplayLoopExecution() {
 
 		// lazy creation of animator and display loop
 		if (displayLoopExecution == null) {
