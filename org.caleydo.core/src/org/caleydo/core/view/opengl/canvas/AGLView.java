@@ -20,6 +20,8 @@
 package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
+
+import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
@@ -73,6 +75,7 @@ import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
@@ -330,7 +333,13 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 				return;
 
 			if (!focusGained) {
-//				parentGLCanvas.requestFocus();
+				Display.getDefault().asyncExec(new Runnable() {
+					@Override
+					public void run() {
+						parentGLCanvas.requestFocus();
+					}
+				});
+
 			}
 
 			// parentComposite.getDisplay().asyncExec(new Runnable() {
