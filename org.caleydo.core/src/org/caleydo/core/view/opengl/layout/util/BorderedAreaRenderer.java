@@ -31,8 +31,7 @@ import org.caleydo.core.view.opengl.canvas.AGLView;
  * 
  * @author Christian Partl
  */
-public class BorderedAreaRenderer
-	extends APickableLayoutRenderer {
+public class BorderedAreaRenderer extends APickableLayoutRenderer {
 
 	public final static float[] DEFAULT_COLOR = { 0.5f, 0.5f, 0.5f, 1.0f };
 
@@ -54,9 +53,21 @@ public class BorderedAreaRenderer
 
 	}
 
-	@Override
-	public void render(GL2 gl) {
+	/**
+	 * @param color
+	 *            Color with rgba values.
+	 */
+	public void setColor(float[] color) {
+		this.color = color;
+		setDisplayListDirty();
+	}
 
+	public float[] getColor() {
+		return color;
+	}
+
+	@Override
+	protected void renderContent(GL2 gl) {
 		pushNames(gl);
 		gl.glColor4f(color[0] - 0.15f, color[1] - 0.15f, color[2] - 0.15f, color[3]);
 		gl.glBegin(GL2.GL_QUADS);
@@ -128,16 +139,9 @@ public class BorderedAreaRenderer
 		popNames(gl);
 	}
 
-	/**
-	 * @param color
-	 *            Color with rgba values.
-	 */
-	public void setColor(float[] color) {
-		this.color = color;
-	}
-
-	public float[] getColor() {
-		return color;
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

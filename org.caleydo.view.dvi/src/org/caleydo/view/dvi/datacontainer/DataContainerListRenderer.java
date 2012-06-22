@@ -92,7 +92,7 @@ public class DataContainerListRenderer
 	}
 
 	@Override
-	public void render(GL2 gl)
+	public void renderContent(GL2 gl)
 	{
 
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
@@ -221,6 +221,11 @@ public class DataContainerListRenderer
 	protected Collection<DimensionGroupRenderer> getDimensionGroupRenderers()
 	{
 		return dimensionGroupRenderers;
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

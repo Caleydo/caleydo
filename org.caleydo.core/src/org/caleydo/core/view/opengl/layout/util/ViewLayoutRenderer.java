@@ -48,15 +48,6 @@ public class ViewLayoutRenderer
 		this.view = view;
 	}
 
-	/**
-	 * Calls the displayRemote of the view to be rendered.
-	 */
-	@Override
-	public void render(GL2 gl) {
-		super.render(gl);
-		view.displayRemote(gl);
-	}
-
 	@Override
 	public void setLimits(float x, float y) {
 		super.setLimits(x, y);
@@ -97,6 +88,16 @@ public class ViewLayoutRenderer
 	@Override
 	public int getMinWidthPixels() {
 		return view.getMinPixelWidth();
+	}
+
+	@Override
+	protected void renderContent(GL2 gl) {
+		view.displayRemote(gl);
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

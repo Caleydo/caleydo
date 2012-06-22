@@ -53,7 +53,7 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 
 	@SuppressWarnings("unchecked")
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		if (geneID == null)
 			return;
 
@@ -124,5 +124,10 @@ public class CategoricalContentPreviewRenderer extends ContentRenderer {
 			currentPositionY += currentBarHeight;
 			bucketCount++;
 		}
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

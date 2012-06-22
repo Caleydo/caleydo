@@ -695,7 +695,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			viewNodes.add(node);
 			Set<IDataDomain> dataDomains = view.getDataDomains();
 			if (dataDomains != null && !dataDomains.isEmpty()) {
-				node.setDataDomains(dataDomains);
 				for (IDataDomain dataDomain : dataDomains) {
 					Set<ViewNode> viewNodes = viewNodesOfDataDomains.get(dataDomain);
 					if (viewNodes == null) {
@@ -767,7 +766,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		Set<IDataDomain> dataDomainsOfView = view.getDataDomains();
 		if (dataDomainsOfView != null) {
-			viewNode.setDataDomains(dataDomainsOfView);
 			updateGraphEdgesOfViewNode(viewNode);
 			viewNode.update();
 		}

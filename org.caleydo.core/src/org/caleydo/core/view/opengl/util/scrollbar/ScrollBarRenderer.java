@@ -95,42 +95,6 @@ public class ScrollBarRenderer
 	}
 
 	@Override
-	public void render(GL2 gl) {
-
-		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
-		float relativePageSize = (float) scrollBar.getPageSize() / (float) scrollBarSize;
-		float relativeSelection =
-			((float) scrollBar.getSelection() - (float) scrollBar.getMinValue()) / (float) scrollBarSize;
-
-		if (isHorizontal) {
-			scrollBarHeight = y;
-			scrollBarWidth = relativePageSize * x;
-			positionX = relativeSelection * (x - scrollBarWidth);
-			positionY = 0;
-		}
-		else {
-			scrollBarHeight = relativePageSize * y;
-			scrollBarWidth = x;
-			positionX = 0;
-			positionY = relativeSelection * (y - scrollBarHeight);
-		}
-
-		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), scrollBar.getPickingType(),
-			scrollBar.getID()));
-
-		gl.glColor3f(0, 0, 0);
-		gl.glBegin(GL2.GL_QUADS);
-		gl.glVertex3f(positionX, positionY, 1);
-		gl.glVertex3f(positionX + scrollBarWidth, positionY, 1);
-		gl.glVertex3f(positionX + scrollBarWidth, positionY + scrollBarHeight, 1);
-		gl.glVertex3f(positionX, positionY + scrollBarHeight, 1);
-		gl.glEnd();
-
-		gl.glPopName();
-
-	}
-
-	@Override
 	public void setDraggingStartPoint(float mouseCoordinateX, float mouseCoordinateY) {
 		prevDraggingMouseX = mouseCoordinateX;
 		prevDraggingMouseY = mouseCoordinateY;
@@ -210,5 +174,48 @@ public class ScrollBarRenderer
 		// prevDraggingMouseX = mouseCoordinateX;
 		// prevDraggingMouseY = mouseCoordinateY;
 
+	}
+
+
+	@Override
+	protected void renderContent(GL2 gl) {
+		int scrollBarSize = scrollBar.getMaxValue() - scrollBar.getMinValue();
+		float relativePageSize = (float) scrollBar.getPageSize() / (float) scrollBarSize;
+		float relativeSelection =
+			((float) scrollBar.getSelection() - (float) scrollBar.getMinValue()) / (float) scrollBarSize;
+
+		if (isHorizontal) {
+			scrollBarHeight = y;
+			scrollBarWidth = relativePageSize * x;
+			positionX = relativeSelection * (x - scrollBarWidth);
+			positionY = 0;
+		}
+		else {
+			scrollBarHeight = relativePageSize * y;
+			scrollBarWidth = x;
+			positionX = 0;
+			positionY = relativeSelection * (y - scrollBarHeight);
+		}
+
+		gl.glPushName(view.getPickingManager().getPickingID(view.getID(), scrollBar.getPickingType(),
+			scrollBar.getID()));
+
+		gl.glColor3f(0, 0, 0);
+		gl.glBegin(GL2.GL_QUADS);
+		gl.glVertex3f(positionX, positionY, 1);
+		gl.glVertex3f(positionX + scrollBarWidth, positionY, 1);
+		gl.glVertex3f(positionX + scrollBarWidth, positionY + scrollBarHeight, 1);
+		gl.glVertex3f(positionX, positionY + scrollBarHeight, 1);
+		gl.glEnd();
+
+		gl.glPopName();
+
+		
+	}
+
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

@@ -53,22 +53,93 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
  * 
  * @author Alexander Lex
  */
-public class LayoutRenderer {
+public abstract class LayoutRenderer {
 	protected float x;
 	protected float y;
 	protected boolean debugMode = true;
 
 	protected ElementLayout elementLayout;
-	protected LayoutManager layoutManger;
+	protected LayoutManager layoutManager;
+	/**
+	 * Determines whether a display list index has been generated for this
+	 * renderer.
+	 */
+	protected boolean hasDisplayListIndex = false;
+	/**
+	 * The index of the display list for this renderer.
+	 */
+	protected int displayListIndex;
+	/**
+	 * Determines whether the display list for this renderer should be rebuilt.
+	 */
+	protected boolean isDisplayListDirty = true;
 
 	// protected PixelGLConverter pixelGLConverter;
 
+	public LayoutRenderer() {
+
+	}
+
 	/**
-	 * To be overridden in a sub-class.
+	 * Rendering method.
 	 * 
 	 * @param gl
 	 */
 	public void render(GL2 gl) {
+		boolean displayListsAllowedByLayoutManager = false;
+		if (layoutManager != null) {
+			displayListsAllowedByLayoutManager = layoutManager.isUseDisplayLists();
+		}
+
+		if (displayListsAllowedByLayoutManager && !hasDisplayListIndex
+				&& permitsDisplayLists()) {
+			displayListIndex = gl.glGenLists(1);
+			hasDisplayListIndex = true;
+		}
+
+		prepare();
+
+		if (isDisplayListDirty && permitsDisplayLists()
+				&& displayListsAllowedByLayoutManager) {
+			gl.glNewList(displayListIndex, GL2.GL_COMPILE);
+			renderContent(gl);
+			gl.glEndList();
+			isDisplayListDirty = false;
+		}
+
+		if (permitsDisplayLists() && displayListsAllowedByLayoutManager) {
+			gl.glCallList(displayListIndex);
+		} else {
+			renderContent(gl);
+		}
+
+	}
+
+	/**
+	 * Renders the content. This content is rendered in a display list, if this
+	 * renderer uses display lists ({@link #permitsDisplayLists()}) and and the
+	 * {@link LayoutManager} grants display list rendering (
+	 * {@link LayoutManager#isUseDisplayLists()}).
+	 * 
+	 * @param gl
+	 */
+	protected abstract void renderContent(GL2 gl);
+
+	/**
+	 * @return True, if the renderer makes use of display lists, false
+	 *         otherwise.
+	 */
+	protected abstract boolean permitsDisplayLists();
+
+	/**
+	 * Method that is called in every render cycle before
+	 * {@link #renderContent(GL2)} is invoked. This method is intended to be
+	 * overridden for renderers that need to do some processing in every render
+	 * cycle, which can not be done in {@link #renderContent(GL2)} if display
+	 * lists are used.
+	 */
+	protected void prepare() {
+
 	}
 
 	/**
@@ -81,6 +152,7 @@ public class LayoutRenderer {
 	public void setLimits(float x, float y) {
 		this.x = x;
 		this.y = y;
+		setDisplayListDirty();
 	}
 
 	/** Calculate spacing if required */
@@ -90,7 +162,7 @@ public class LayoutRenderer {
 
 	public void setElementLayout(ElementLayout elementLayout) {
 		this.elementLayout = elementLayout;
-		layoutManger = elementLayout.getLayoutManager();
+		layoutManager = elementLayout.getLayoutManager();
 		// pixelGLConverter = layoutManger.getPixelGLConverter();
 	}
 
@@ -113,7 +185,21 @@ public class LayoutRenderer {
 	}
 
 	protected PixelGLConverter getPixelGLConverter() {
-		return layoutManger.getPixelGLConverter();
+		return layoutManager.getPixelGLConverter();
+	}
+
+	/**
+	 * Sets the display list of this renderer dirty.
+	 */
+	public void setDisplayListDirty() {
+		this.isDisplayListDirty = true;
+	}
+
+	@Override
+	protected void finalize() throws Throwable {
+		if (layoutManager != null && hasDisplayListIndex)
+			layoutManager.addDisplayListToDelete(displayListIndex);
+		super.finalize();
 	}
 
 }

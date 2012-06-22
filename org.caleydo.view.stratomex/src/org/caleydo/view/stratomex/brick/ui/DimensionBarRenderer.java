@@ -50,7 +50,7 @@ public class DimensionBarRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		// DimensionVirtualArray overallDimensionVA = brick.getDataDomain()
 		// .getDimensionVA(Set.STORAGE);
@@ -120,4 +120,9 @@ public class DimensionBarRenderer extends LayoutRenderer {
 
 	}
 
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
+	}
 }

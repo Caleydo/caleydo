@@ -359,6 +359,8 @@ public abstract class ADefaultTemplateNode
 		// -1, 20));
 		layoutManager.setViewFrustum(new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0,
 				width, 0, height, -1, 20));
+		
+		
 
 		layoutManager.render(gl);
 		gl.glPopMatrix();

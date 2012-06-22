@@ -23,8 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
-public class SpacerRenderer
-	extends LayoutRenderer {
+public class SpacerRenderer extends LayoutRenderer {
 
 	private boolean isVertical;
 
@@ -33,8 +32,7 @@ public class SpacerRenderer
 	}
 
 	@Override
-	public void render(GL2 gl) {
-
+	protected void renderContent(GL2 gl) {
 		// gl.glColor3f(0.3f, 0.3f, 0.3f);
 		// gl.glLineWidth(1);
 		// gl.glBegin(GL2.GL_LINES);
@@ -49,6 +47,10 @@ public class SpacerRenderer
 		// }
 		//
 		// gl.glEnd();
+	}
 
+	@Override
+	protected boolean permitsDisplayLists() {
+		return true;
 	}
 }

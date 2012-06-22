@@ -36,7 +36,7 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		float yPosition = y;
 		float fieldHeight = 0;
@@ -90,6 +90,11 @@ public class RecordCaptionRenderer extends AHeatMapRenderer {
 
 		heatMap.getTextRenderer().renderTextInBounds(gl, label, xOrigin, yOrigin, 0, x,
 				spacing);
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

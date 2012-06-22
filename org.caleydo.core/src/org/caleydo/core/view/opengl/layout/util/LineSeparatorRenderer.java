@@ -23,8 +23,7 @@ import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 
-public class LineSeparatorRenderer
-	extends LayoutRenderer {
+public class LineSeparatorRenderer extends LayoutRenderer {
 
 	private boolean isVertical;
 
@@ -33,8 +32,7 @@ public class LineSeparatorRenderer
 	}
 
 	@Override
-	public void render(GL2 gl) {
-
+	protected void renderContent(GL2 gl) {
 		gl.glColor3f(0.3f, 0.3f, 0.3f);
 		gl.glLineWidth(1);
 		gl.glBegin(GL2.GL_LINES);
@@ -43,13 +41,17 @@ public class LineSeparatorRenderer
 			gl.glVertex3f(x / 2.0f, 0, 0);
 			gl.glVertex3f(x / 2.0f, y, 0);
 
-		}
-		else {
+		} else {
 			gl.glVertex3f(0, y / 2.0f, 0);
 			gl.glVertex3f(x, y / 2.0f, 0);
 		}
 
 		gl.glEnd();
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return true;
 	}
 }

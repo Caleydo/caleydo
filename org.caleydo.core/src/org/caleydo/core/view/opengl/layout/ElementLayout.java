@@ -142,12 +142,12 @@ public class ElementLayout {
 	protected int renderingPriority = 0;
 
 	public ElementLayout() {
-		renderer = new LayoutRenderer();
+		// renderer = new LayoutRenderer();
 		layoutName = "";
 	}
 
 	public ElementLayout(String layoutName) {
-		renderer = new LayoutRenderer();
+		// renderer = new LayoutRenderer();
 		this.layoutName = layoutName;
 	}
 
@@ -429,20 +429,24 @@ public class ElementLayout {
 	}
 
 	public void setRenderer(LayoutRenderer renderer) {
-		if (renderer != null)
+		if (renderer != null) {
 			this.renderer = renderer;
+			renderer.setElementLayout(this);
+		}
 	}
 
 	public void addBackgroundRenderer(LayoutRenderer renderer) {
 		if (backgroundRenderers == null)
 			backgroundRenderers = new ArrayList<LayoutRenderer>(3);
 		backgroundRenderers.add(renderer);
+		renderer.setElementLayout(this);
 	}
 
 	public void addForeGroundRenderer(LayoutRenderer renderer) {
 		if (foregroundRenderers == null)
 			foregroundRenderers = new ArrayList<LayoutRenderer>(3);
 		foregroundRenderers.add(renderer);
+		renderer.setElementLayout(this);
 	}
 
 	public void clearBackgroundRenderers() {
@@ -570,7 +574,8 @@ public class ElementLayout {
 				backgroundRenderer.render(gl);
 			}
 		}
-		renderer.render(gl);
+		if (renderer != null)
+			renderer.render(gl);
 		if (foregroundRenderers != null) {
 			for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
 				foregroundRenderer.render(gl);
@@ -625,8 +630,7 @@ public class ElementLayout {
 			return;
 		// LayoutRenderer renderer = ((RenderableLayoutElement)
 		// layout).getRenderer();
-		if (renderer == null)
-			return;
+
 		if (foregroundRenderers != null) {
 			for (LayoutRenderer renderer : foregroundRenderers) {
 				renderer.setElementLayout(this);
@@ -639,12 +643,15 @@ public class ElementLayout {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());
 			}
 		}
-		renderer.setElementLayout(this);
-		renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+		if (renderer != null) {
+			renderer.setElementLayout(this);
+			renderer.setLimits(getSizeScaledX(), getSizeScaledY());
+		}
 		if (zoomer != null)
 			zoomer.setLimits(getSizeScaledX(), getSizeScaledY());
 
-		renderer.updateSpacing();
+		if (renderer != null)
+			renderer.updateSpacing();
 		if (backgroundRenderers != null) {
 			for (LayoutRenderer renderer : backgroundRenderers) {
 				renderer.setLimits(getSizeScaledX(), getSizeScaledY());

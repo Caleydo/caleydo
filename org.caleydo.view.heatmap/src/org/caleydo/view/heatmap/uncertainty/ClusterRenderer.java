@@ -134,7 +134,7 @@ public class ClusterRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		renderSelectedElementsLevel1(gl);
 	}
 
@@ -212,5 +212,10 @@ public class ClusterRenderer extends LayoutRenderer {
 		}
 
 		return visualUncertainty;
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

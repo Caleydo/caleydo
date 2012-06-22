@@ -103,7 +103,7 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		if (heatMapValuesMean.size() <= 0)
 			return;
@@ -276,6 +276,11 @@ public class OverviewHeatMapRenderer extends LayoutRenderer {
 	public int getMinWidthPixels() {
 		return 150;
 		// return Math.max(150, 16 * heatMapValuesMean.size());
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

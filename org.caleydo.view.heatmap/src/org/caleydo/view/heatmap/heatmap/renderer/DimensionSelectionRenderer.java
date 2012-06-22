@@ -89,8 +89,13 @@ public class DimensionSelectionRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		renderSelection(gl, SelectionType.SELECTION);
 		renderSelection(gl, SelectionType.MOUSE_OVER);
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

@@ -59,9 +59,9 @@ class DimensionBookmark extends ABookmark {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
-		super.render(gl);
+		super.renderContent(gl);
 		String label = manager.getDataDomain().getDimensionLabel(id);
 		gl.glPushName(manager.getBookmarkPickingIDManager().getPickingID(parentContainer,
 				id));
@@ -69,6 +69,11 @@ class DimensionBookmark extends ABookmark {
 				0 + ySpacing, 0, x - xSpacing, y - 2 * ySpacing);
 		gl.glPopName();
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

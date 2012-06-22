@@ -31,8 +31,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
  * 
  * @author Partl
  */
-public class TextureRenderer
-	extends LayoutRenderer {
+public class TextureRenderer extends LayoutRenderer {
 
 	private String imagePath;
 	private TextureManager textureManager;
@@ -40,7 +39,8 @@ public class TextureRenderer
 	/**
 	 * Constructor.
 	 * 
-	 * @param imagePath Path to the image that shall be used as texture.
+	 * @param imagePath
+	 *            Path to the image that shall be used as texture.
 	 * @param textureManager
 	 */
 	public TextureRenderer(String imagePath, TextureManager textureManager) {
@@ -49,8 +49,7 @@ public class TextureRenderer
 	}
 
 	@Override
-	public void render(GL2 gl) {
-
+	protected void renderContent(GL2 gl) {
 		Vec3f lowerLeftCorner = new Vec3f(0, 0, 0);
 		Vec3f lowerRightCorner = new Vec3f(x, 0, 0);
 		Vec3f upperRightCorner = new Vec3f(x, y, 0);
@@ -58,6 +57,11 @@ public class TextureRenderer
 
 		textureManager.renderTexture(gl, imagePath, lowerLeftCorner, lowerRightCorner,
 				upperRightCorner, upperLeftCorner, 1, 1, 1, 1);
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return true;
 	}
 
 }

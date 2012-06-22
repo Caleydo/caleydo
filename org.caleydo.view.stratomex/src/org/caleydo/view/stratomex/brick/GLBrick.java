@@ -263,6 +263,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 		baseDisplayListIndex = gl.glGenLists(1);
 
 		layoutManager = new LayoutManager(viewFrustum, pixelGLConverter);
+		layoutManager.setUseDisplayLists(true);
 
 		if (brickLayoutConfiguration == null) {
 			brickLayoutConfiguration = new DefaultBrickLayoutTemplate(this, stratomex,

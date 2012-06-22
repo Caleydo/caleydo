@@ -47,7 +47,7 @@ public class DetailToolBar extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		pickingManager = heatMap.getPickingManager();
 		gl.glColor4f(0.0f, 0.0f, 0.0f, 0.4f);
 
@@ -156,5 +156,10 @@ public class DetailToolBar extends LayoutRenderer {
 
 		gl.glTranslatef(-secondButtonOffset, -spacing * 2, 0);
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

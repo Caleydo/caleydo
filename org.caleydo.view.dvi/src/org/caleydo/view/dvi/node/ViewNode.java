@@ -66,6 +66,7 @@ public class ViewNode extends ADefaultTemplateNode {
 		super(graphLayout, view, dragAndDropController, id);
 
 		this.representedView = representedView;
+		dataDomains = representedView.getDataDomains();
 
 		registerPickingListeners();
 		setRepresentedViewInfo();
@@ -218,10 +219,6 @@ public class ViewNode extends ADefaultTemplateNode {
 		// return new ArrayList<DataContainer>(groups);
 	}
 
-	public void setDataDomains(Set<IDataDomain> dataDomains) {
-		if (dataDomains != null)
-			this.dataDomains = dataDomains;
-	}
 
 	public Set<IDataDomain> getDataDomains() {
 		return dataDomains;

@@ -56,7 +56,7 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		// gl.glColor4fv(GLUncertaintyHeatMap.BACKGROUND, 0);
 
@@ -269,6 +269,11 @@ public class OverviewDetailConnectorRenderer extends LayoutRenderer {
 		textureMaskNeg.disable(gl);
 		gl.glBlendFunc(GL2.GL_SRC_ALPHA, GL2.GL_ONE_MINUS_SRC_ALPHA);
 		gl.glPopAttrib();
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

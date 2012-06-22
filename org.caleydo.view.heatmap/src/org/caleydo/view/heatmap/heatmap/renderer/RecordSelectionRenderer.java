@@ -83,8 +83,13 @@ public class RecordSelectionRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		renderSelection(gl, SelectionType.MOUSE_OVER);
 		renderSelection(gl, SelectionType.SELECTION);
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

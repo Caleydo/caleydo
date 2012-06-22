@@ -41,7 +41,7 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		DimensionVirtualArray dimensionVA = heatMap.getDataContainer()
 				.getDimensionPerspective().getVirtualArray();
@@ -74,5 +74,10 @@ public class DimensionCaptionRenderer extends AHeatMapRenderer {
 			xPosition += fieldWidth;
 
 		}
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

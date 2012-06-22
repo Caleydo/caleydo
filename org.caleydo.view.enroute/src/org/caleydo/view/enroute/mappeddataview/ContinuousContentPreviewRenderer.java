@@ -43,7 +43,7 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		if (geneID == null)
 			return;
 		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
@@ -146,6 +146,11 @@ public class ContinuousContentPreviewRenderer extends ContentRenderer {
 		//
 		// gl.glEnd();
 		// gl.glPopName();
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

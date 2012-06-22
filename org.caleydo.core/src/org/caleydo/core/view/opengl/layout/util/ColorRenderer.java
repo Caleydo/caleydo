@@ -95,9 +95,93 @@ public class ColorRenderer extends APickableLayoutRenderer {
 		this.colorProvider = colorProvider;
 	}
 
-	@Override
-	public void render(GL2 gl) {
+	public float[] getColor() {
+		return color;
+	}
 
+	public void setColor(float[] color) {
+		this.color = color;
+		setDisplayListDirty();
+	}
+
+	public void setBorderColor(float[] borderColor) {
+		this.borderColor = borderColor;
+		setDisplayListDirty();
+	}
+
+	public float[] getBorderColor() {
+		return borderColor;
+	}
+
+	public void setBorderWidth(int borderWidth) {
+		this.borderWidth = borderWidth;
+		setDisplayListDirty();
+	}
+
+	public int getBorderWidth() {
+		return borderWidth;
+	}
+
+	public void setDrawBorder(boolean drawBorder) {
+		this.drawBorder = drawBorder;
+		setDisplayListDirty();
+	}
+
+	public boolean isDrawBorder() {
+		return drawBorder;
+	}
+
+	/**
+	 * @param gradientColor
+	 *            setter, see {@link #gradientColor}
+	 */
+	public void setGradientColor(float[] gradientColor) {
+		this.gradientColor = gradientColor;
+		setDisplayListDirty();
+	}
+
+	/**
+	 * @return the gradientColor, see {@link #gradientColor}
+	 */
+	public float[] getGradientColor() {
+		return gradientColor;
+	}
+
+	/**
+	 * @param isHorizontalGradient
+	 *            setter, see {@link #isHorizontalGradient}
+	 */
+	public void setHorizontalGradient(boolean isHorizontalGradient) {
+		this.isHorizontalGradient = isHorizontalGradient;
+		setDisplayListDirty();
+	}
+
+	/**
+	 * @return the isHorizontalGradient, see {@link #isHorizontalGradient}
+	 */
+	public boolean isHorizontalGradient() {
+		return isHorizontalGradient;
+	}
+
+	/**
+	 * @param showGradient
+	 *            setter, see {@link #useGradient}
+	 */
+	public void setUseGradient(boolean useGradient) {
+		this.useGradient = useGradient;
+		setDisplayListDirty();
+	}
+
+	/**
+	 * @return the showGradient, see {@link #useGradient}
+	 */
+	public boolean useGradient() {
+		return useGradient;
+	}
+
+	@Override
+	protected void renderContent(GL2 gl) {
+		// TODO: make display lists usable.
 		if (colorProvider != null) {
 			color = colorProvider.getColor();
 			useGradient = colorProvider.useGradient();
@@ -146,83 +230,10 @@ public class ColorRenderer extends APickableLayoutRenderer {
 		gl.glPopAttrib();
 
 		popNames(gl);
-
 	}
 
-	public float[] getColor() {
-		return color;
-	}
-
-	public void setColor(float[] color) {
-		this.color = color;
-	}
-
-	public void setBorderColor(float[] borderColor) {
-		this.borderColor = borderColor;
-	}
-
-	public float[] getBorderColor() {
-		return borderColor;
-	}
-
-	public void setBorderWidth(int borderWidth) {
-		this.borderWidth = borderWidth;
-	}
-
-	public int getBorderWidth() {
-		return borderWidth;
-	}
-
-	public void setDrawBorder(boolean drawBorder) {
-		this.drawBorder = drawBorder;
-	}
-
-	public boolean isDrawBorder() {
-		return drawBorder;
-	}
-
-	/**
-	 * @param gradientColor
-	 *            setter, see {@link #gradientColor}
-	 */
-	public void setGradientColor(float[] gradientColor) {
-		this.gradientColor = gradientColor;
-	}
-
-	/**
-	 * @return the gradientColor, see {@link #gradientColor}
-	 */
-	public float[] getGradientColor() {
-		return gradientColor;
-	}
-
-	/**
-	 * @param isHorizontalGradient
-	 *            setter, see {@link #isHorizontalGradient}
-	 */
-	public void setHorizontalGradient(boolean isHorizontalGradient) {
-		this.isHorizontalGradient = isHorizontalGradient;
-	}
-
-	/**
-	 * @return the isHorizontalGradient, see {@link #isHorizontalGradient}
-	 */
-	public boolean isHorizontalGradient() {
-		return isHorizontalGradient;
-	}
-
-	/**
-	 * @param showGradient
-	 *            setter, see {@link #useGradient}
-	 */
-	public void setUseGradient(boolean useGradient) {
-		this.useGradient = useGradient;
-	}
-
-	/**
-	 * @return the showGradient, see {@link #useGradient}
-	 */
-	public boolean useGradient() {
-		return useGradient;
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

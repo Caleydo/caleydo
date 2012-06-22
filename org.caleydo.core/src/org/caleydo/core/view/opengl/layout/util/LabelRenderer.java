@@ -44,6 +44,11 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	private ILabelProvider labelProvider;
 	private String label = "Not set";
 	/**
+	 * The text of the label that was rendered in the last frame. This variable
+	 * is used to detect whether a new display list has to be built.
+	 */
+	private String prevLabel = "";
+	/**
 	 * Specifies the alignment of the text.
 	 */
 	private int alignment = ALIGN_LEFT;
@@ -58,8 +63,8 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	 * @param id
 	 *            ID for picking.
 	 */
-	public LabelRenderer(AGLView view, ILabelProvider labelProvider,
-			String pickingType, int id) {
+	public LabelRenderer(AGLView view, ILabelProvider labelProvider, String pickingType,
+			int id) {
 		super(view, pickingType, id);
 
 		this.isPickable = true;
@@ -92,47 +97,6 @@ public class LabelRenderer extends APickableLayoutRenderer {
 		this.label = label;
 	}
 
-	@Override
-	public void render(GL2 gl) {
-
-		if (isPickable) {
-			pushNames(gl);
-
-			gl.glColor4f(1, 1, 1, 0);
-			gl.glBegin(GL2.GL_POLYGON);
-			gl.glVertex3f(0, 0, 0.1f);
-			gl.glVertex3f(x, 0, 0.1f);
-			gl.glVertex3f(x, y, 0.1f);
-			gl.glVertex3f(0, y, 0.1f);
-			gl.glEnd();
-
-			popNames(gl);
-		}
-
-		CaleydoTextRenderer textRenderer = view.getTextRenderer();
-
-		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
-
-		if (labelProvider != null)
-			label = labelProvider.getLabel();
-		textRenderer.setColor(0, 0, 0, 1);
-		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2
-				* ySpacing, x);
-		switch (alignment) {
-		case ALIGN_CENTER:
-			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f +
-					ySpacing, 2*ySpacing, 0.1f, x, y - 2 * ySpacing);
-			break;
-		case ALIGN_RIGHT:
-			textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing,
-					ySpacing, 0.1f, x, y - 2 * ySpacing);
-			break;
-		default:
-			textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2
-					* ySpacing);
-		}
-
-	}
 
 	/**
 	 * @param label
@@ -155,5 +119,60 @@ public class LabelRenderer extends APickableLayoutRenderer {
 	 */
 	public void setAlignment(int alignment) {
 		this.alignment = alignment;
+	}
+	
+
+	@Override
+	protected void prepare() {
+		if(!prevLabel.equals(label)) {
+			setDisplayListDirty();
+		}
+		prevLabel = label;
+	}
+
+	@Override
+	protected void renderContent(GL2 gl) {
+		
+		if (labelProvider != null)
+			label = labelProvider.getLabel();
+
+		if (isPickable) {
+			pushNames(gl);
+
+			gl.glColor4f(1, 1, 1, 0);
+			gl.glBegin(GL2.GL_POLYGON);
+			gl.glVertex3f(0, 0, 0.05f);
+			gl.glVertex3f(x, 0, 0.05f);
+			gl.glVertex3f(x, y, 0.05f);
+			gl.glVertex3f(0, y, 0.05f);
+			gl.glEnd();
+
+			popNames(gl);
+		}
+		
+		CaleydoTextRenderer textRenderer = view.getTextRenderer();
+		float ySpacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
+		
+		textRenderer.setColor(0, 0, 0, 1);
+		float textWidth = textRenderer.getRequiredTextWidthWithMax(label, y - 2
+				* ySpacing, x);
+		switch (alignment) {
+		case ALIGN_CENTER:
+			textRenderer.renderTextInBounds(gl, label, x / 2.0f - textWidth / 2.0f
+					+ ySpacing, 2 * ySpacing, 0.1f, x, y - 2 * ySpacing);
+			break;
+		case ALIGN_RIGHT:
+			textRenderer.renderTextInBounds(gl, label, x - textWidth - 4 * ySpacing,
+					ySpacing, 0.1f, x, y - 2 * ySpacing);
+			break;
+		default:
+			textRenderer.renderTextInBounds(gl, label, 0, ySpacing, 0.1f, x, y - 2
+					* ySpacing);
+		}
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return true;
 	}
 }

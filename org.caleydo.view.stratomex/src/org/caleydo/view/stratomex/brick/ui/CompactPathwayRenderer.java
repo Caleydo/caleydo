@@ -59,7 +59,7 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		int pickingID = view.getPickingManager().getPickingID(view.getID(), pickingType,
 				id);
@@ -96,6 +96,11 @@ public class CompactPathwayRenderer extends LayoutRenderer {
 		textRenderer.renderTextInBounds(gl, caption, iconWidth + spacingWidth, ySpacing,
 				0, x - (iconWidth + spacingWidth), y - 2 * ySpacing);
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 	@Override

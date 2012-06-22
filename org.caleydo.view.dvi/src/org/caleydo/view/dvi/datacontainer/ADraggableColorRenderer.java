@@ -44,11 +44,11 @@ public abstract class ADraggableColorRenderer
 	}
 
 	@Override
-	public void render(GL2 gl)
+	public void renderContent(GL2 gl)
 	{
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, 0);
-		super.render(gl);
+		super.renderContent(gl);
 		gl.glPopMatrix();
 
 	}

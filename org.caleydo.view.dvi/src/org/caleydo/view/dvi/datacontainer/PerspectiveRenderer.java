@@ -21,6 +21,8 @@ package org.caleydo.view.dvi.datacontainer;
 
 import java.awt.geom.Point2D;
 
+import javax.media.opengl.GL2;
+
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 
@@ -41,6 +43,13 @@ public class PerspectiveRenderer
 		this.setDataDomain(dataDomain);
 		this.setRecordPerspective(isRecordPerspective);
 		this.setPerspectiveID(perspectiveID);
+	}
+	
+
+	@Override
+	public void render(GL2 gl) {
+		//This specific renderer is used not in a regular layout.
+		renderContent(gl);
 	}
 
 	public String getPerspectiveID()

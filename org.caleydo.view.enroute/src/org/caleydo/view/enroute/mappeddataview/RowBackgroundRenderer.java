@@ -43,7 +43,7 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		float backgroundZ = 0;
 		float frameZ = 0.3f;
@@ -66,6 +66,12 @@ public class RowBackgroundRenderer extends LayoutRenderer {
 		gl.glVertex3f(x, 0, frameZ);
 		gl.glEnd();
 
+	}
+
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

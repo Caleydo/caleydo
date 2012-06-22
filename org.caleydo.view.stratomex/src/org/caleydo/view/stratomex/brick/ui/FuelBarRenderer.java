@@ -44,7 +44,7 @@ public class FuelBarRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		RecordVirtualArray recordVA = brick.getDataContainer().getRecordPerspective()
 				.getVirtualArray();
@@ -102,5 +102,10 @@ public class FuelBarRenderer extends LayoutRenderer {
 		// gl.glPopName();
 		gl.glPopName();
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

@@ -89,7 +89,7 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		if (geneID == null)
 			return;
 		ArrayList<SelectionType> geneSelectionTypes = parent.geneSelectionManager
@@ -307,6 +307,11 @@ public class CategoricalRowContentRenderer extends ContentRenderer {
 			parentView.addIDPickingListener(pickingListener,
 					PickingType.HISTOGRAM_BAR.name(), histogram.getBucketID(bucketCount));
 		}
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

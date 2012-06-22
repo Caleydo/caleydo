@@ -75,8 +75,7 @@ public abstract class ABookmark extends LayoutRenderer implements ILayoutedEleme
 	}
 
 	@Override
-	public void render(GL2 gl) {
-		super.render(gl);
+	public void renderContent(GL2 gl) {
 
 		// this needs to be done only when the frustum has changed, but that's
 		// difficult to determine here

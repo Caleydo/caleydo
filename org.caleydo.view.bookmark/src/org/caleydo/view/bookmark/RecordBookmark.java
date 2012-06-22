@@ -63,9 +63,9 @@ class RecordBookmark extends ABookmark {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
-		super.render(gl);
+		super.renderContent(gl);
 
 		String label = manager.getDataDomain().getRecordLabel(idType, id);
 		textRenderer.setColor(0, 0, 0, 1);
@@ -76,6 +76,11 @@ class RecordBookmark extends ABookmark {
 				- xSpacing, y - 2 * ySpacing);
 		gl.glPopName();
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

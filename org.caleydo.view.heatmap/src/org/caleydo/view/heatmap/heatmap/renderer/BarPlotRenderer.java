@@ -67,7 +67,7 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(final GL2 gl) {
+	public void renderContent(final GL2 gl) {
 
 		recordSpacing.getYDistances().clear();
 		float yPosition = y;
@@ -204,6 +204,11 @@ public class BarPlotRenderer extends AHeatMapRenderer {
 	@Override
 	public String toString() {
 		return "BarPlotRenderer";
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

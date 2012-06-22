@@ -29,9 +29,7 @@ import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.dvi.node.IDVINode;
 
-public class DimensionGroupRenderer
-	extends ADraggableColorRenderer
-{
+public class DimensionGroupRenderer extends ADraggableColorRenderer {
 
 	private static final int TEXT_SPACING_PIXELS = 2;
 
@@ -48,9 +46,9 @@ public class DimensionGroupRenderer
 	protected int textHeightPixels;
 
 	public DimensionGroupRenderer(DataContainer dataContainer, AGLView view,
-			IDVINode node, float[] color)
-	{
-		super(color, new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2,
+			IDVINode node, float[] color) {
+		super(color,
+				new float[] { color[0] - 0.2f, color[1] - 0.2f, color[2] - 0.2f, 1f }, 2,
 				view);
 		this.setDataContainer(dataContainer);
 		this.view = view;
@@ -58,69 +56,80 @@ public class DimensionGroupRenderer
 	}
 
 	@Override
-	public void render(GL2 gl)
-	{
+	public void renderContent(GL2 gl) {
 		CaleydoTextRenderer textRenderer = view.getTextRenderer();
 		PixelGLConverter pixelGLConverter = view.getPixelGLConverter();
 
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, 0.1f);
-		super.render(gl);
+		super.renderContent(gl);
 		gl.glPopMatrix();
 
-		if (showText)
-		{
+		if (showText) {
 			float textPositionX = 0;
-			switch (textRotation)
-			{
-				case TEXT_ROTATION_0:
-					textRenderer.renderTextInBounds(
-							gl,
-							dataContainer.getLabel(),
-							pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-							pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-							0.1f,
-							x
-									- 2
-									* pixelGLConverter
-											.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
-							pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
-					break;
+			switch (textRotation) {
+			case TEXT_ROTATION_0:
+				textRenderer.renderTextInBounds(
+						gl,
+						dataContainer.getLabel(),
+						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
+						pixelGLConverter.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
+						0.1f,
+						x
+								- 2
+								* pixelGLConverter
+										.getGLWidthForPixelWidth(TEXT_SPACING_PIXELS),
+						pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
+				break;
 
-				case TEXT_ROTATION_90:
+			case TEXT_ROTATION_90:
 
-					gl.glPushMatrix();
-					textPositionX = pixelGLConverter
-							.getGLHeightForPixelHeight(textHeightPixels - 2)
-							+ (x - pixelGLConverter
-									.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
+				gl.glPushMatrix();
+				textPositionX = pixelGLConverter
+						.getGLHeightForPixelHeight(textHeightPixels - 2)
+						+ (x - pixelGLConverter
+								.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
 
-					gl.glTranslatef(textPositionX,
-							pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-							0.2f);
-					gl.glRotatef(90, 0, 0, 1);
-					textRenderer.renderTextInBounds(gl, dataContainer.getLabel(), 0, 0, 0, y
-							- pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-							pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
-					gl.glPopMatrix();
-					break;
-				case TEXT_ROTATION_270:
+				gl.glTranslatef(textPositionX,
+						pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+						0.2f);
+				gl.glRotatef(90, 0, 0, 1);
+				textRenderer.renderTextInBounds(
+						gl,
+						dataContainer.getLabel(),
+						0,
+						0,
+						0,
+						y
+								- pixelGLConverter
+										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+						pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
+				gl.glPopMatrix();
+				break;
+			case TEXT_ROTATION_270:
 
-					gl.glPushMatrix();
-					textPositionX = (x - pixelGLConverter
-							.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
-					gl.glTranslatef(
-							textPositionX,
-							y
-									- pixelGLConverter
-											.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-							0.2f);
-					gl.glRotatef(-90, 0, 0, 1);
-					textRenderer.renderTextInBounds(gl, dataContainer.getLabel(), 0, 0, 0, y
-							- pixelGLConverter.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
-							pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
-					gl.glPopMatrix();
-					break;
+				gl.glPushMatrix();
+				textPositionX = (x - pixelGLConverter
+						.getGLHeightForPixelHeight(textHeightPixels - 2)) / 2.0f;
+				gl.glTranslatef(
+						textPositionX,
+						y
+								- pixelGLConverter
+										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+						0.2f);
+				gl.glRotatef(-90, 0, 0, 1);
+				textRenderer.renderTextInBounds(
+						gl,
+						dataContainer.getLabel(),
+						0,
+						0,
+						0,
+						y
+								- pixelGLConverter
+										.getGLHeightForPixelHeight(TEXT_SPACING_PIXELS),
+						pixelGLConverter.getGLHeightForPixelHeight(textHeightPixels));
+				gl.glPopMatrix();
+				break;
 			}
 			;
 
@@ -128,50 +137,46 @@ public class DimensionGroupRenderer
 
 	}
 
-	public void setDataContainer(DataContainer dimensionGroupData)
-	{
+	public void setDataContainer(DataContainer dimensionGroupData) {
 		this.dataContainer = dimensionGroupData;
 	}
 
-	public DataContainer getDataContainer()
-	{
+	public DataContainer getDataContainer() {
 		return dataContainer;
 	}
 
 	@Override
-	protected Point2D getPosition()
-	{
+	protected Point2D getPosition() {
 		return node.getBottomDataContainerAnchorPoints(dataContainer).getFirst();
 	}
 
-	public boolean isShowText()
-	{
+	public boolean isShowText() {
 		return showText;
 	}
 
-	public void setShowText(boolean showText)
-	{
+	public void setShowText(boolean showText) {
 		this.showText = showText;
 	}
 
-	public int getTextRotation()
-	{
+	public int getTextRotation() {
 		return textRotation;
 	}
 
-	public void setTextRotation(int textRotation)
-	{
+	public void setTextRotation(int textRotation) {
 		this.textRotation = textRotation;
 	}
 
-	public int getTextHeightPixels()
-	{
+	public int getTextHeightPixels() {
 		return textHeightPixels;
 	}
 
-	public void setTextHeightPixels(int textHeightPixels)
-	{
+	public void setTextHeightPixels(int textHeightPixels) {
 		this.textHeightPixels = textHeightPixels;
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

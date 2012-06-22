@@ -174,7 +174,7 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		float yOffset = 0.0f;
 
@@ -238,6 +238,11 @@ public class BarplotTextureRenderer extends LayoutRenderer {
 	public void setLightCertainColor(float[] light) {
 		this.lightCertain = light;
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

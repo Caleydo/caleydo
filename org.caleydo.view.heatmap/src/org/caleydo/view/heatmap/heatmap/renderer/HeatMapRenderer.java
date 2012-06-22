@@ -60,7 +60,7 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(final GL2 gl) {
+	public void renderContent(final GL2 gl) {
 
 		ColorMapper colorMapper = heatMap.getDataDomain().getColorMapper();
 		recordSpacing.getYDistances().clear();
@@ -167,6 +167,11 @@ public class HeatMapRenderer extends AHeatMapRenderer {
 	@Override
 	public String toString() {
 		return "HeatMapRenderer";
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

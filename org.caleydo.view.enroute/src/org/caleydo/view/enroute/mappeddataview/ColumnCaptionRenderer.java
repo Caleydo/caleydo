@@ -68,7 +68,7 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		// float sideSpacing = pixelGLConverter.getGLWidthForPixelWidth(8);
 		float sideSpacing = 0;
 
@@ -175,5 +175,10 @@ public class ColumnCaptionRenderer extends SelectableRenderer {
 
 	private void unregisterPickingListener() {
 		parentView.removePickingListener(groupPickingListener);
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

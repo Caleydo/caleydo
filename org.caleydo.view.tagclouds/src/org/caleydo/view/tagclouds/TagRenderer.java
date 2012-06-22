@@ -85,7 +85,7 @@ public class TagRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		float sideSpacing = 0.1f;
 		float topSpacing = 0.03f;
@@ -112,6 +112,11 @@ public class TagRenderer extends LayoutRenderer {
 			textRenderer.renderTextInBounds(gl, text, sideSpacing, topSpacing / 2, 0, x
 					- 3 * sideSpacing, y - topSpacing);
 		}
-	};
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
+	}
 
 }

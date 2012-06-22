@@ -31,7 +31,7 @@ public class CaptionCageRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		float yPosition = y;
 		float xPosition = 0;
@@ -82,5 +82,10 @@ public class CaptionCageRenderer extends AHeatMapRenderer {
 
 		gl.glEnd();
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

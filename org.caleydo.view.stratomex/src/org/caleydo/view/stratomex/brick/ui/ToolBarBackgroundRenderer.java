@@ -37,7 +37,7 @@ import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
 public class ToolBarBackgroundRenderer extends LayoutRenderer {
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		float height = getPixelGLConverter().getGLHeightForPixelHeight(
 				DefaultBrickLayoutTemplate.BUTTON_HEIGHT_PIXELS + 2);
@@ -53,6 +53,11 @@ public class ToolBarBackgroundRenderer extends LayoutRenderer {
 
 		gl.glEnd();
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

@@ -128,9 +128,34 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 		this.zCoordinate = zCoordinate;
 	}
 
+	public int getTextureRotation() {
+		return textureRotation;
+	}
+
+	public void setTextureRotation(int textureRotation) {
+		this.textureRotation = textureRotation;
+		setDisplayListDirty();
+	}
+
+	/**
+	 * @param zCoordinate
+	 *            setter, see {@link #zCoordinate}
+	 */
+	public void setZCoordinate(float zCoordinate) {
+		this.zCoordinate = zCoordinate;
+		setDisplayListDirty();
+	}
+
+	/**
+	 * @return the zCoordinate, see {@link #zCoordinate}
+	 */
+	public float getZCoordinate() {
+		return zCoordinate;
+	}
+
+
 	@Override
-	public void render(GL2 gl) {
-		// GLHelperFunctions.drawAxis(gl);
+	protected void renderContent(GL2 gl) {
 		if (!button.isVisible())
 			return;
 
@@ -188,30 +213,13 @@ public class ButtonRenderer extends APickableLayoutRenderer {
 
 		popNames(gl);
 		gl.glPopName();
-
+		
 	}
 
-	public int getTextureRotation() {
-		return textureRotation;
-	}
-
-	public void setTextureRotation(int textureRotation) {
-		this.textureRotation = textureRotation;
-	}
-
-	/**
-	 * @param zCoordinate
-	 *            setter, see {@link #zCoordinate}
-	 */
-	public void setZCoordinate(float zCoordinate) {
-		this.zCoordinate = zCoordinate;
-	}
-
-	/**
-	 * @return the zCoordinate, see {@link #zCoordinate}
-	 */
-	public float getZCoordinate() {
-		return zCoordinate;
+	@Override
+	protected boolean permitsDisplayLists() {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }

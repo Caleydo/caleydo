@@ -79,7 +79,7 @@ public class ContinuousContentRenderer extends ContentRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		if (x / experimentPerspective.getVirtualArray().size() < parentView
 				.getPixelGLConverter().getGLWidthForPixelWidth(3)) {
 			useShading = false;
@@ -273,6 +273,11 @@ public class ContinuousContentRenderer extends ContentRenderer {
 		parentView.addIDPickingListener(pickingListener,
 				PickingType.SAMPLE_GROUP_RENDERER.name(), rendererID);
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

@@ -68,7 +68,7 @@ public class RowCaptionRenderer extends SelectableRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		ArrayList<SelectionType> selectionTypes = parent.geneSelectionManager
 				.getSelectionTypes(davidID);
 
@@ -116,6 +116,12 @@ public class RowCaptionRenderer extends SelectableRenderer {
 					0.1f, x, height);
 
 		gl.glPopName();
+	}
+
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

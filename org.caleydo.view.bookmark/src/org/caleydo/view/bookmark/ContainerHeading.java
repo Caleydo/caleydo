@@ -54,8 +54,7 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 	}
 
 	@Override
-	public void render(GL2 gl) {
-		super.render(gl);
+	protected void renderContent(GL2 gl) {
 
 		PixelGLConverter pixelGLConverter = manager.getPixelGLConverter();
 		float ySpacing = pixelGLConverter.getGLHeightForPixelHeight(Y_SPACING_PIXEL);
@@ -65,5 +64,10 @@ public class ContainerHeading extends LayoutRenderer implements ILayoutedElement
 		manager.getTextRenderer().renderTextInBounds(gl, caption, 0 + xSpacing,
 				0 + ySpacing, 0, x - xSpacing, y - 2 * ySpacing);
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

@@ -565,7 +565,7 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		String columnsCaption = dataDomain.getDimensionDenomination(true, true);
 		String rowsCaption = dataDomain.getRecordDenomination(true, true);
@@ -640,5 +640,10 @@ public class DataContainerMatrixRenderer extends ADataContainerRenderer {
 		}
 
 		return container;
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

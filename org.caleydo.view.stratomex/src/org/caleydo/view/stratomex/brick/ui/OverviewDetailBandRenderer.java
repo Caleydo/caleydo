@@ -51,7 +51,7 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		ElementLayout leftLayout = leftBrick.getLayout();
 		ElementLayout rightLayout = rightBrick.getLayout();
@@ -122,5 +122,10 @@ public class OverviewDetailBandRenderer extends LayoutRenderer {
 		// gl.glEnd();
 		gl.glTranslatef(elementLayout.getTranslateX(), elementLayout.getTranslateY(), 0);
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

@@ -79,7 +79,7 @@ public class BrickSpacingRenderer
 	}
 
 	@Override
-	public void render(GL2 gl)
+	public void renderContent(GL2 gl)
 	{
 
 		float width = dimensionGroup.getGroupColumn().getSizeScaledX();
@@ -152,6 +152,11 @@ public class BrickSpacingRenderer
 	public void setLowerBrick(GLBrick lowerBrick)
 	{
 		this.lowerBrick = lowerBrick;
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

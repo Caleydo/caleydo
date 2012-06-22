@@ -105,7 +105,7 @@ public class HandleRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		if (hide)
 			return;
@@ -268,5 +268,10 @@ public class HandleRenderer extends LayoutRenderer {
 			gl.glPopName();
 		}
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

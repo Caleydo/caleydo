@@ -36,10 +36,10 @@ public class EmptyCellRenderer extends ColorRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		gl.glPushMatrix();
 		gl.glTranslatef(0, 0, 0.1f);
-		super.render(gl);
+		super.renderContent(gl);
 		gl.glPopMatrix();
 
 		// float[] color = new float[] { 0.8f, 0.8f, 0.8f };
@@ -80,6 +80,11 @@ public class EmptyCellRenderer extends ColorRenderer {
 
 	public int getID() {
 		return id;
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

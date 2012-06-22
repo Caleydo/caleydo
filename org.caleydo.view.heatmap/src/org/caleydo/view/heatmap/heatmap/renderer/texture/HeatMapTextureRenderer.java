@@ -68,9 +68,8 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	private int groupIndex = -1;
 
 	private int viewID;
-	
-	private boolean isInitialized = false;
 
+	private boolean isInitialized = false;
 
 	public HeatMapTextureRenderer(GLHeatMap heatMap) {
 		super(heatMap);
@@ -218,9 +217,9 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
-		
-		if(!isInitialized) {
+	public void renderContent(GL2 gl) {
+
+		if (!isInitialized) {
 			initialize(gl);
 		}
 
@@ -335,18 +334,24 @@ public class HeatMapTextureRenderer extends AHeatMapRenderer {
 	public void setGroupIndex(int groupIndex) {
 		this.groupIndex = groupIndex;
 	}
-	
+
 	/**
-	 * @param isInitialized setter, see {@link #isInitialized}
+	 * @param isInitialized
+	 *            setter, see {@link #isInitialized}
 	 */
 	public void setInitialized(boolean isInitialized) {
 		this.isInitialized = isInitialized;
 	}
-	
+
 	/**
 	 * @return the isInitialized, see {@link #isInitialized}
 	 */
 	public boolean isInitialized() {
 		return isInitialized;
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

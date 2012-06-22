@@ -301,7 +301,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 
 		renderBackground(gl);
 
@@ -309,14 +309,20 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		renderDimensionGroupConnections(gl);
 		renderDragAndDropMarker(gl);
 	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
+	}
 
 	private void renderBackground(GL2 gl) {
 
 		int pickingID = glVisBricks.getPickingManager().getPickingID(glVisBricks.getID(),
 				EPickingType.DIMENSION_GROUP_SPACER.name(), ID);
+		
 
 		gl.glPushName(pickingID);
-		gl.glColor4f(1, 1, 0, 0f);
+		gl.glColor4f(1, 1, 1, 0);
 		gl.glBegin(GL2.GL_POLYGON);
 		gl.glVertex2f(0, 0);
 		gl.glVertex2f(x, 0);

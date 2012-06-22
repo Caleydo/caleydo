@@ -19,6 +19,9 @@
  *******************************************************************************/
 package org.caleydo.core.view.opengl.layout;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.media.opengl.GL2;
 
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -48,6 +51,21 @@ public class LayoutManager {
 	protected boolean isActive;
 
 	protected PixelGLConverter pixelGLConverter;
+
+	/**
+	 * List of display list indices that refer to display lists of @link
+	 * {@link LayoutRenderer}s that have been destroyed.
+	 */
+	protected List<Integer> displayListsToDelete = new ArrayList<Integer>();
+
+	/**
+	 * Determines whether the {@link LayoutRenderer}s called by this
+	 * {@link LayoutManager} should make use of display lists (if implemented).
+	 * Note that if {@link #useDisplayLists} is set to true, the
+	 * {@link #render(GL2)} method must not be part of any external display
+	 * list, otherwise the GL behavior is not defined.
+	 */
+	protected boolean useDisplayLists = false;
 
 	public LayoutManager(ViewFrustum viewFrustum, PixelGLConverter pixelGLConverter) {
 		if (viewFrustum == null || pixelGLConverter == null)
@@ -114,6 +132,13 @@ public class LayoutManager {
 	 */
 	public void render(GL2 gl) {
 		baseElementLayout.render(gl);
+
+		// Free display lists
+		for (int displayListIndex : displayListsToDelete) {
+			gl.glDeleteLists(displayListIndex, 1);
+		}
+
+		displayListsToDelete.clear();
 	}
 
 	/**
@@ -146,4 +171,29 @@ public class LayoutManager {
 		this.baseElementLayout = baseElementLayout;
 	}
 
+	/**
+	 * @param useDisplayLists
+	 *            setter, see {@link #useDisplayLists}
+	 */
+	public void setUseDisplayLists(boolean useDisplayLists) {
+		this.useDisplayLists = useDisplayLists;
+	}
+
+	/**
+	 * @return the useDisplayLists, see {@link #useDisplayLists}
+	 */
+	public boolean isUseDisplayLists() {
+		return useDisplayLists;
+	}
+
+	/**
+	 * Adds the index of a display list that shall be deleted in the next render
+	 * cycle. This method is intended to be used by {@link LayoutRenderer}s that
+	 * will be destroyed only.
+	 * 
+	 * @param displayListIndex
+	 */
+	protected void addDisplayListToDelete(int displayListIndex) {
+		displayListsToDelete.add(displayListIndex);
+	}
 }

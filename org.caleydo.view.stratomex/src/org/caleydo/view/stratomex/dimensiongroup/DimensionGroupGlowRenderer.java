@@ -40,7 +40,7 @@ public class DimensionGroupGlowRenderer
 	}
 
 	@Override
-	public void render(GL2 gl)
+	public void renderContent(GL2 gl)
 	{
 
 		if (dimensionGroup.isCollapsed() != renderWhenDimensionGroupIsCollapsed)
@@ -110,6 +110,11 @@ public class DimensionGroupGlowRenderer
 			gl.glEnd();
 		}
 
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }

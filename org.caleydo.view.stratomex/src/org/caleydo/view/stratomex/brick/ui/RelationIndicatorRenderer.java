@@ -139,7 +139,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public synchronized void render(GL2 gl) {
+	public synchronized void renderContent(GL2 gl) {
 		if (neighborPerspectiveID == null || similarities == null)
 			return;
 
@@ -191,5 +191,10 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 				GLHelperFunctions.drawSmallPointAt(gl, x, yOffset, 0);
 			}
 		}
+	}
+	
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 }

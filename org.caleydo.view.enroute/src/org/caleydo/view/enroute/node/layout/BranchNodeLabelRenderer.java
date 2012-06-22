@@ -42,7 +42,7 @@ public class BranchNodeLabelRenderer extends LayoutRenderer {
 	}
 
 	@Override
-	public void render(GL2 gl) {
+	public void renderContent(GL2 gl) {
 		List<ALinearizableNode> branchNodes = node.getBranchNodes();
 
 		float spacing = view.getPixelGLConverter().getGLHeightForPixelHeight(1);
@@ -81,6 +81,11 @@ public class BranchNodeLabelRenderer extends LayoutRenderer {
 		textRenderer.renderTextInBounds(gl, buffer.toString(), 0, spacing, 0.1f, x,
 				textHeight);
 
+	}
+
+	@Override
+	protected boolean permitsDisplayLists() {
+		return false;
 	}
 
 }
