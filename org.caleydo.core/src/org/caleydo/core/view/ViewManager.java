@@ -63,9 +63,7 @@ import com.jogamp.opengl.util.FPSAnimator;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public class ViewManager
-	extends AManager<IView>
-	implements IListenerOwner {
+public class ViewManager extends AManager<IView> implements IListenerOwner {
 
 	private HashMap<GLCanvas, ArrayList<AGLView>> hashGLCanvas2GLView = new HashMap<GLCanvas, ArrayList<AGLView>>();
 
@@ -93,7 +91,7 @@ public class ViewManager
 	 * managers to avoid access conflicts with views.
 	 */
 	private DisplayLoopExecution displayLoopExecution;
-	
+
 	private volatile static ViewManager instance;
 
 	/**
@@ -102,11 +100,11 @@ public class ViewManager
 	private ViewManager() {
 		registerEventListeners();
 	}
-	
+
 	public static ViewManager get() {
-		if(instance == null) {
-			synchronized(ViewManager.class) {
-				if(instance == null) {
+		if (instance == null) {
+			synchronized (ViewManager.class) {
+				if (instance == null) {
 					instance = new ViewManager();
 				}
 			}
@@ -142,13 +140,14 @@ public class ViewManager
 
 	public void registerGLView(AGLView glView) {
 		hashGLViewID2GLView.put(glView.getID(), glView);
-
+		Logger.log(new Status(Status.INFO, this.toString(), "Registering view: " + glView));
 		NewViewEvent event = new NewViewEvent(glView);
 		event.setSender(this);
 		generalManager.getEventPublisher().triggerEvent(event);
 	}
 
-	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas, final AGLView glView) {
+	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas,
+			final AGLView glView) {
 
 		// This is the case when a view is rendered remote
 		if (glCanvas == null)
@@ -253,36 +252,34 @@ public class ViewManager
 
 		if (fpsAnimator == null)
 			fpsAnimator = new FPSAnimator(30);
-		
+
 		if (!fpsAnimator.isAnimating())
 			fpsAnimator.start();
-		
+
 		fpsAnimator.setIgnoreExceptions(true);
 		fpsAnimator.setPrintExceptions(true);
-		
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-				"Start animator"));
+
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Start animator"));
 	}
 
 	public void stopAnimator() {
 		if (fpsAnimator != null && fpsAnimator.isAnimating())
 			fpsAnimator.stop();
-		
-		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-				"Stop animator"));
+
+		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID, "Stop animator"));
 	}
 
-	public void registerGLCanvasToAnimator(final GLCanvas glCaleydoCanvas) {
+	public void registerGLCanvasToAnimator(final GLCanvas glCanvas) {
 
 		// Lazy creation of animator
 		if (fpsAnimator == null) {
 			startAnimator();
 		}
 
-		fpsAnimator.add(glCaleydoCanvas);
-		
+		fpsAnimator.add(glCanvas);
+
 		Logger.log(new Status(IStatus.INFO, GeneralManager.PLUGIN_ID,
-				"Add canvas to animator"));
+				"Add canvas to animator" + glCanvas.getName()));
 	}
 
 	public void unregisterGLCanvasFromAnimator(final GLCanvas glCanvas) {
@@ -296,7 +293,8 @@ public class ViewManager
 	 * Usually this should result disabling user events and showing a loading
 	 * screen animation.
 	 * 
-	 * @param requestInstance object that wants to request busy mode
+	 * @param requestInstance
+	 *            object that wants to request busy mode
 	 */
 	public void requestBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -320,7 +318,8 @@ public class ViewManager
 	 * Releases a previously requested busy mode. Releases are only performed by
 	 * passing the originally requesting object to this method.
 	 * 
-	 * @param requestInstance the object that requested the busy mode
+	 * @param requestInstance
+	 *            the object that requested the busy mode
 	 */
 	public void releaseBusyMode(Object requestInstance) {
 		if (requestInstance == null) {
@@ -345,16 +344,15 @@ public class ViewManager
 			@Override
 			public void run() {
 				try {
-					IWorkbenchPage page = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-							.getActivePage();
-					ARcpGLViewPart viewPart = (ARcpGLViewPart) page.showView(serializedView
-							.getViewType());
+					IWorkbenchPage page = PlatformUI.getWorkbench()
+							.getActiveWorkbenchWindow().getActivePage();
+					ARcpGLViewPart viewPart = (ARcpGLViewPart) page
+							.showView(serializedView.getViewType());
 					AGLView view = viewPart.getGLView();
 					view.initFromSerializableRepresentation(serializedView);
 					// TODO re-init view with its serializedView
 
-				}
-				catch (PartInitException ex) {
+				} catch (PartInitException ex) {
 					throw new RuntimeException("could not create view with gui-id="
 							+ serializedView.getViewType(), ex);
 				}
@@ -370,9 +368,9 @@ public class ViewManager
 		try {
 			Class[] argTypes = { GLCanvas.class, Composite.class, ViewFrustum.class };
 			Constructor aConstructor = viewClass.getConstructor(argTypes);
-			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite, viewFrustum);
-		}
-		catch (Exception e) {
+			view = (AGLView) aConstructor.newInstance(glCanvas, parentComposite,
+					viewFrustum);
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new IllegalStateException("Cannot create GL view " + viewClass);
 		}

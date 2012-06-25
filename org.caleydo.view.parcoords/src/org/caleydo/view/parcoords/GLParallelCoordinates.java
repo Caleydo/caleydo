@@ -2072,14 +2072,18 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public String toString() {
-		int iNumElements = (recordSelectionManager.getNumberOfElements() - recordSelectionManager
-				.getNumberOfElements(SelectionType.DESELECTED));
-		String renderMode = "standalone";
-		if (isRenderedRemote())
-			renderMode = "remote";
-		return ("PCs, " + renderMode + ", " + iNumElements + " elements" + " Axis DT: "
-				+ dimensionSelectionManager.getIDType() + " Polyline DT:" + recordSelectionManager
-					.getIDType());
+		if (recordSelectionManager != null && dimensionSelectionManager != null) {
+			int iNumElements = (recordSelectionManager.getNumberOfElements() - recordSelectionManager
+					.getNumberOfElements(SelectionType.DESELECTED));
+			String renderMode = "standalone";
+			if (isRenderedRemote())
+				renderMode = "remote";
+			return ("PCs, " + renderMode + ", " + iNumElements + " elements"
+					+ " Axis DT: " + dimensionSelectionManager.getIDType()
+					+ " Polyline DT:" + recordSelectionManager.getIDType());
+		}
+		else
+			return super.toString();
 	}
 
 	@Override

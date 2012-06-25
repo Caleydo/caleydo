@@ -497,7 +497,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * 
 	 * @return a clone of the record selection manager
 	 */
-	public synchronized RecordSelectionManager getRecordSelectionManager() {
+	public RecordSelectionManager getRecordSelectionManager() {
 		return (RecordSelectionManager) recordSelectionManager.clone();
 	}
 
@@ -507,7 +507,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * 
 	 * @return a clone of the dimension selection manager
 	 */
-	public synchronized DimensionSelectionManager getDimensionSelectionManager() {
+	public DimensionSelectionManager getDimensionSelectionManager() {
 		return (DimensionSelectionManager) dimensionSelectionManager.clone();
 	}
 
