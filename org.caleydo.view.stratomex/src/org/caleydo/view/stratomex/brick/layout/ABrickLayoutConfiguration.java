@@ -30,7 +30,7 @@ import org.caleydo.core.view.opengl.layout.util.BorderedAreaRenderer;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Base class are intended to specify the elements and their
@@ -47,13 +47,13 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 	protected GLBrick brick;
 	protected LayoutRenderer viewRenderer;
 	protected ElementLayout viewLayout;
-	protected DimensionGroup dimensionGroup;
+	protected BrickColumn dimensionGroup;
 	protected HashSet<EContainedViewType> validViewTypes;
 	protected EContainedViewType defaultViewType;
 	protected ArrayList<IViewTypeChangeListener> viewTypeChangeListeners;
 	protected BorderedAreaRenderer borderedAreaRenderer;
 
-	public ABrickLayoutConfiguration(GLBrick brick, DimensionGroup dimensionGroup) {
+	public ABrickLayoutConfiguration(GLBrick brick, BrickColumn dimensionGroup) {
 		this.brick = brick;
 		this.dimensionGroup = dimensionGroup;
 		validViewTypes = new HashSet<EContainedViewType>();
@@ -200,7 +200,7 @@ public abstract class ABrickLayoutConfiguration extends LayoutConfiguration {
 		return brick;
 	}
 
-	public DimensionGroup getDimensionGroup() {
+	public BrickColumn getDimensionGroup() {
 		return dimensionGroup;
 	}
 

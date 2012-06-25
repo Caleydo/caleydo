@@ -89,9 +89,9 @@ import org.caleydo.view.stratomex.brick.configurer.CategoricalDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.NumericalDataConfigurer;
 import org.caleydo.view.stratomex.brick.contextmenu.SplitBrickItem;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroupManager;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroupSpacingRenderer;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumnManager;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumnSpacingRenderer;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.SplitBrickEvent;
 import org.caleydo.view.stratomex.listener.AddGroupsToStratomexListener;
@@ -118,8 +118,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private final static float ARCH_BOTTOM_PERCENT = 1f;
 	private final static float ARCH_STAND_WIDTH_PERCENT = 0.05f;
 
-	private final static int DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH = 20;
-	public final static int DIMENSION_GROUP_SIDE_SPACING = 50;
+	private final static int BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH = 20;
+	public final static int BRICK_COLUMN_SIDE_SPACING = 50;
 
 	public final static float[] ARCH_COLOR = { 0f, 0f, 0f, 0.1f };
 
@@ -129,7 +129,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private SplitBrickListener splitBrickListener;
 	private RemoveDataContainerListener removeDataContainerListener;
 
-	private DimensionGroupManager dimensionGroupManager;
+	private BrickColumnManager brickColumnManager;
 
 	private ConnectionBandRenderer connectionRenderer;
 
@@ -159,14 +159,14 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	/** Same as {@link #isLeftDetailShown} for right */
 	private boolean isRightDetailShown = false;
 
-	private Queue<DimensionGroup> uninitializedDimensionGroups = new LinkedList<DimensionGroup>();
+	private Queue<BrickColumn> uninitializedBrickColumns = new LinkedList<BrickColumn>();
 
 	private DragAndDropController dragAndDropController;
 
 	private RelationAnalyzer relationAnalyzer;
 
-	private ElementLayout leftDimensionGroupSpacing;
-	private ElementLayout rightDimensionGroupSpacing;
+	private ElementLayout leftBrickColumnSpacing;
+	private ElementLayout rightBrickColumnSpacing;
 
 	/**
 	 * The id category used to map between the records of the dimension groups.
@@ -192,7 +192,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	private float connectionsFocusFactor;
 
 	private boolean isHorizontalMoveDraggingActive = false;
-	private int movedDimensionGroup = -1;
+	private int movedBrickColumn = -1;
 
 	/**
 	 * The position of the mouse in the previous render cycle when dragging
@@ -216,7 +216,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	private boolean isConnectionLinesDirty = true;
 
-//	private Set<IDataDomain> dataDomains;
+	// private Set<IDataDomain> dataDomains;
 	private List<DataContainer> dataContainers;
 
 	private boolean isVendingMachineMode = false;
@@ -236,13 +236,13 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		dragAndDropController = new DragAndDropController(this);
 
-		dimensionGroupManager = new DimensionGroupManager();
+		brickColumnManager = new BrickColumnManager();
 
 		glKeyListener = new GLStratomexKeyListener();
 
 		relationAnalyzer = new RelationAnalyzer();
 
-//		dataDomains = new HashSet<IDataDomain>();
+		// dataDomains = new HashSet<IDataDomain>();
 		dataContainers = new ArrayList<DataContainer>();
 
 		parentGLCanvas.removeMouseWheelListener(glMouseListener);
@@ -264,7 +264,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	public void initLayouts() {
 
-		dimensionGroupManager.getDimensionGroupSpacers().clear();
+		brickColumnManager.getBrickColumnSpacers().clear();
 
 		initCenterLayout();
 
@@ -283,7 +283,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		leftColumnLayout = new Column("leftArchColumn");
 
 		initSideLayout(leftColumnLayout, leftLayoutManager, 0,
-				dimensionGroupManager.getCenterGroupStartIndex());
+				brickColumnManager.getCenterGroupStartIndex());
 	}
 
 	private void initRightLayout() {
@@ -292,8 +292,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		rightColumnLayout = new Column("rightArchColumn");
 		rightLayoutManager = new LayoutManager(rightArchFrustum, pixelGLConverter);
 		initSideLayout(rightColumnLayout, rightLayoutManager,
-				dimensionGroupManager.getRightGroupStartIndex(), dimensionGroupManager
-						.getDimensionGroups().size());
+				brickColumnManager.getRightGroupStartIndex(), brickColumnManager
+						.getBrickColumns().size());
 	}
 
 	public int getSideArchWidthPixels() {
@@ -323,76 +323,73 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		archTopY = archBottomY + archHeight;
 
-		int dimensionGroupCountInCenter = dimensionGroupManager.getRightGroupStartIndex()
-				- dimensionGroupManager.getCenterGroupStartIndex();
+		int dimensionGroupCountInCenter = brickColumnManager.getRightGroupStartIndex()
+				- brickColumnManager.getCenterGroupStartIndex();
 
 		float centerLayoutWidth = viewFrustum.getWidth() - 2 * (archInnerWidth);
 		// float centerLayoutWidth = viewFrustum.getWidth();
 
 		centerRowLayout = new Row("centerRowLayout");
-	
+
 		centerRowLayout.setPriorityRendereing(true);
 		centerRowLayout.setFrameColor(0, 0, 1, 1);
 
-		leftDimensionGroupSpacing = new ElementLayout("firstCenterDimGrSpacing");
+		leftBrickColumnSpacing = new ElementLayout("firstCenterDimGrSpacing");
 
-		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
+		BrickColumnSpacingRenderer dimensionGroupSpacingRenderer = null;
 
 		// Handle special case where center contains no groups
 		if (dimensionGroupCountInCenter < 1) {
-			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
+			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 					connectionRenderer, null, null, this);
 		} else {
-			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
-					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
-							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
+			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
+					connectionRenderer, null, brickColumnManager.getBrickColumns().get(
+							brickColumnManager.getCenterGroupStartIndex()), this);
 		}
 
-		leftDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
+		leftBrickColumnSpacing.setRenderer(dimensionGroupSpacingRenderer);
 		// dimensionGroupSpacingRenderer.setLineLength(archHeight);
 
 		if (dimensionGroupCountInCenter > 1)
-			leftDimensionGroupSpacing.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
+			leftBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
 		else
-			leftDimensionGroupSpacing.setGrabX(true);
+			leftBrickColumnSpacing.setGrabX(true);
 
-		centerRowLayout.append(leftDimensionGroupSpacing);
+		centerRowLayout.append(leftBrickColumnSpacing);
 
-		for (int dimensionGroupIndex = dimensionGroupManager.getCenterGroupStartIndex(); dimensionGroupIndex < dimensionGroupManager
+		for (int dimensionGroupIndex = brickColumnManager.getCenterGroupStartIndex(); dimensionGroupIndex < brickColumnManager
 				.getRightGroupStartIndex(); dimensionGroupIndex++) {
 
 			ElementLayout dynamicDimensionGroupSpacing;
 
-			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
+			BrickColumn group = brickColumnManager.getBrickColumns().get(
 					dimensionGroupIndex);
 			group.setCollapsed(false);
 			group.setArchHeight(ARCH_PIXEL_HEIGHT);
 			centerRowLayout.append(group.getLayout());
-		
 
-			if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
+			if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
 				dynamicDimensionGroupSpacing = new ElementLayout("dynamicDimGrSpacing");
-				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(
-						relationAnalyzer, connectionRenderer, group,
-						dimensionGroupManager.getDimensionGroups().get(
-								dimensionGroupIndex + 1), this);
+				dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(
+						relationAnalyzer, connectionRenderer, group, brickColumnManager
+								.getBrickColumns().get(dimensionGroupIndex + 1), this);
 				dynamicDimensionGroupSpacing.setGrabX(true);
 				dynamicDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
 				centerRowLayout.append(dynamicDimensionGroupSpacing);
 
 			} else {
-				rightDimensionGroupSpacing = new ElementLayout("lastDimGrSpacing");
-				dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
+				rightBrickColumnSpacing = new ElementLayout("lastDimGrSpacing");
+				dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 						connectionRenderer, group, null, this);
 
 				if (dimensionGroupCountInCenter > 1)
-					rightDimensionGroupSpacing
-							.setPixelSizeX(DIMENSION_GROUP_SIDE_SPACING);
+					rightBrickColumnSpacing.setPixelSizeX(BRICK_COLUMN_SIDE_SPACING);
 				else
-					rightDimensionGroupSpacing.setGrabX(true);
+					rightBrickColumnSpacing.setGrabX(true);
 
-				rightDimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
-				centerRowLayout.append(rightDimensionGroupSpacing);
+				rightBrickColumnSpacing.setRenderer(dimensionGroupSpacingRenderer);
+				centerRowLayout.append(rightBrickColumnSpacing);
 			}
 
 			// dimensionGroupSpacingRenderer.setLineLength(archHeight);
@@ -427,17 +424,17 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		columnLayout.append(dimensionGroupSpacing);
 
-		DimensionGroupSpacingRenderer dimensionGroupSpacingRenderer = null;
+		BrickColumnSpacingRenderer dimensionGroupSpacingRenderer = null;
 
 		// Handle special case where arch stand contains no groups
 		if (dimensinoGroupStartIndex == 0
 				|| dimensinoGroupStartIndex == dimensionGroupEndIndex) {
-			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
+			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
 					connectionRenderer, null, null, this);
 		} else {
-			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null,
-					connectionRenderer, null, dimensionGroupManager.getDimensionGroups()
-							.get(dimensionGroupManager.getCenterGroupStartIndex()), this);
+			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null,
+					connectionRenderer, null, brickColumnManager.getBrickColumns().get(
+							brickColumnManager.getCenterGroupStartIndex()), this);
 		}
 
 		dimensionGroupSpacing.setRenderer(dimensionGroupSpacingRenderer);
@@ -447,7 +444,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		for (int dimensionGroupIndex = dimensinoGroupStartIndex; dimensionGroupIndex < dimensionGroupEndIndex; dimensionGroupIndex++) {
 
-			DimensionGroup group = dimensionGroupManager.getDimensionGroups().get(
+			BrickColumn group = brickColumnManager.getBrickColumns().get(
 					dimensionGroupIndex);
 
 			group.getLayout().setAbsoluteSizeY(archSideThickness);
@@ -459,7 +456,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			dimensionGroupSpacing = new ElementLayout("sideDimGrSpacing");
 			dimensionGroupSpacing.setGrabY(true);
 
-			dimensionGroupSpacingRenderer = new DimensionGroupSpacingRenderer(null, null,
+			dimensionGroupSpacingRenderer = new BrickColumnSpacingRenderer(null, null,
 					group, null, this);
 			columnLayout.append(dimensionGroupSpacing);
 
@@ -516,9 +513,9 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	@Override
 	public void display(GL2 gl) {
 
-		if (!uninitializedDimensionGroups.isEmpty()) {
-			while (uninitializedDimensionGroups.peek() != null) {
-				uninitializedDimensionGroups.poll().initRemote(gl, this, glMouseListener);
+		if (!uninitializedBrickColumns.isEmpty()) {
+			while (uninitializedBrickColumns.peek() != null) {
+				uninitializedBrickColumns.poll().initRemote(gl, this, glMouseListener);
 			}
 			initLayouts();
 		}
@@ -527,7 +524,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			isDisplayListDirty = false;
 		}
 
-		for (DimensionGroup group : dimensionGroupManager.getDimensionGroups()) {
+		for (BrickColumn group : brickColumnManager.getBrickColumns()) {
 			group.processEvents();
 		}
 
@@ -536,9 +533,9 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			isLayoutDirty = false;
 			centerLayoutManager.updateLayout();
 			float minWidth = pixelGLConverter
-					.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
+					.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
 			for (ElementLayout layout : centerRowLayout) {
-				if (!(layout.getRenderer() instanceof DimensionGroupSpacingRenderer))
+				if (!(layout.getRenderer() instanceof BrickColumnSpacingRenderer))
 					continue;
 				if (resizeNecessary)
 					break;
@@ -606,7 +603,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		// gl.glRotatef(angle, 1, 0, 0);
 
-		for (DimensionGroup dimensionGroup : dimensionGroupManager.getDimensionGroups()) {
+		for (BrickColumn dimensionGroup : brickColumnManager.getBrickColumns()) {
 			dimensionGroup.display(gl);
 		}
 
@@ -644,20 +641,19 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 * Switches to detail mode where the detail brick is on the right side of
 	 * the specified dimension group
 	 */
-	public void switchToDetailModeRight(DimensionGroup dimensionGroup) {
+	public void switchToDetailModeRight(BrickColumn dimensionGroup) {
 
-		int dimensionGroupIndex = dimensionGroupManager
-				.indexOfDimensionGroup(dimensionGroup);
+		int dimensionGroupIndex = brickColumnManager.indexOfBrickColumn(dimensionGroup);
 		// false only if this is the rightmost DimensionGroup. If true we
 		// move anything beyond the next dimension group out
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
-			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 2);
+		if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
+			brickColumnManager.setRightGroupStartIndex(dimensionGroupIndex + 2);
 
 		}
 		// false only if this is the leftmost DimensionGroup. If true we
 		// move anything further left out
-		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
-			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex);
+		if (dimensionGroupIndex != brickColumnManager.getCenterGroupStartIndex()) {
+			brickColumnManager.setCenterGroupStartIndex(dimensionGroupIndex);
 		}
 
 		isRightDetailShown = true;
@@ -671,19 +667,18 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 * Switches to detail mode where the detail brick is on the left side of the
 	 * specified dimension group
 	 */
-	public void switchToDetailModeLeft(DimensionGroup dimensionGroup) {
+	public void switchToDetailModeLeft(BrickColumn dimensionGroup) {
 
-		int dimensionGroupIndex = dimensionGroupManager
-				.indexOfDimensionGroup(dimensionGroup);
+		int dimensionGroupIndex = brickColumnManager.indexOfBrickColumn(dimensionGroup);
 
 		// false only if this is the left-most dimension group. If true we move
 		// out everything right of this dimension group
-		if (dimensionGroupIndex != dimensionGroupManager.getCenterGroupStartIndex()) {
-			dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
+		if (dimensionGroupIndex != brickColumnManager.getCenterGroupStartIndex()) {
+			brickColumnManager.setCenterGroupStartIndex(dimensionGroupIndex - 1);
 		}
 		// false only if this is the right-most dimension group
-		if (dimensionGroupIndex != dimensionGroupManager.getRightGroupStartIndex() - 1) {
-			dimensionGroupManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
+		if (dimensionGroupIndex != brickColumnManager.getRightGroupStartIndex() - 1) {
+			brickColumnManager.setRightGroupStartIndex(dimensionGroupIndex + 1);
 		}
 		isLeftDetailShown = true;
 
@@ -920,20 +915,20 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		int leftIndex = 0;
 		int rightIndex = 0;
 
-		DimensionGroupSpacingRenderer spacingRenderer;
+		BrickColumnSpacingRenderer spacingRenderer;
 		int count = 0;
 		for (ElementLayout layout : centerRowLayout) {
-			if (layout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
-				spacingRenderer = (DimensionGroupSpacingRenderer) layout.getRenderer();
+			if (layout.getRenderer() instanceof BrickColumnSpacingRenderer) {
+				spacingRenderer = (BrickColumnSpacingRenderer) layout.getRenderer();
 				if (spacingRenderer.getRightDimGroup() != null) {
-					if (spacingRenderer.getRightDimGroup().getID() == movedDimensionGroup) {
+					if (spacingRenderer.getRightDimGroup().getID() == movedBrickColumn) {
 						leftSpacing = layout;
 						leftIndex = count;
 
 					}
 				}
 				if (spacingRenderer.getLeftDimGroup() != null) {
-					if (spacingRenderer.getLeftDimGroup().getID() == movedDimensionGroup) {
+					if (spacingRenderer.getLeftDimGroup().getID() == movedBrickColumn) {
 						rightSpacing = layout;
 						rightIndex = count;
 
@@ -954,7 +949,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		float leftSizeX = leftSpacing.getSizeScaledX();
 		float rightSizeX = rightSpacing.getSizeScaledX();
 		float minWidth = pixelGLConverter
-				.getGLWidthForPixelWidth(DIMENSION_GROUP_SPACING_MIN_PIXEL_WIDTH);
+				.getGLWidthForPixelWidth(BRICK_COLUMN_SPACING_MIN_PIXEL_WIDTH);
 
 		if (change > 0) {
 			// moved to the right, change is positive
@@ -1067,25 +1062,26 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			public void clicked(Pick pick) {
 				dragAndDropController.clearDraggables();
 				dragAndDropController.setDraggingStartPosition(pick.getPickedPoint());
-				dragAndDropController.addDraggable((DimensionGroup) generalManager
+				dragAndDropController.addDraggable((BrickColumn) generalManager
 						.getViewManager().getGLView(pick.getObjectID()));
 				dragAndDropController.setDraggingMode("DimensionGroupDrag");
 
 			}
 
-//			@Override
-//			public void dragged(Pick pick) {
-//				if (dragAndDropController.hasDraggables()) {
-//					String draggingMode = dragAndDropController.getDraggingMode();
-//
-//					if (glMouseListener.wasRightMouseButtonPressed())
-//						dragAndDropController.clearDraggables();
-//					else if (!dragAndDropController.isDragging() && draggingMode != null
-//							&& draggingMode.equals("DimensionGroupDrag"))
-//						dragAndDropController.startDragging();
-//				}
-//
-//			}
+			// @Override
+			// public void dragged(Pick pick) {
+			// if (dragAndDropController.hasDraggables()) {
+			// String draggingMode = dragAndDropController.getDraggingMode();
+			//
+			// if (glMouseListener.wasRightMouseButtonPressed())
+			// dragAndDropController.clearDraggables();
+			// else if (!dragAndDropController.isDragging() && draggingMode !=
+			// null
+			// && draggingMode.equals("DimensionGroupDrag"))
+			// dragAndDropController.startDragging();
+			// }
+			//
+			// }
 
 		}, EPickingType.DIMENSION_GROUP.name());
 
@@ -1097,11 +1093,11 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 						&& dragAndDropController.getDraggingMode() != null
 						&& dragAndDropController.getDraggingMode().equals(
 								"DimensionGroupDrag")) {
-					dragAndDropController.setDropArea(dimensionGroupManager
-							.getDimensionGroupSpacers().get(pick.getObjectID()));
+					dragAndDropController.setDropArea(brickColumnManager
+							.getBrickColumnSpacers().get(pick.getObjectID()));
 				} else {
 					if (dragAndDropController.isDragging()) {
-						
+
 					}
 				}
 			};
@@ -1112,7 +1108,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			@Override
 			public void clicked(Pick pick) {
 				isHorizontalMoveDraggingActive = true;
-				movedDimensionGroup = pick.getObjectID();
+				movedBrickColumn = pick.getObjectID();
 			};
 
 		}, EPickingType.MOVE_HORIZONTALLY_HANDLE.name());
@@ -1228,7 +1224,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	@Override
 	public List<AGLView> getRemoteRenderedViews() {
-		return null;
+		return new ArrayList<AGLView>(brickColumnManager.getBrickColumns());
 	}
 
 	// /** Adds the specified data container to the view */
@@ -1275,8 +1271,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			imprintVisBricks(dataDomain);
 		}
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-				.getDimensionGroups();
+		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
 
 		for (DataContainer dataContainer : newDataContainers) {
 			if (!dataContainer.getDataDomain().getRecordIDCategory()
@@ -1289,19 +1284,19 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
 			}
 			boolean dimensionGroupExists = false;
-			for (DimensionGroup dimensionGroup : dimensionGroups) {
-				if (dimensionGroup.getDataContainer().getID() == dataContainer.getID()) {
+			for (BrickColumn brickColumn : brickColumns) {
+				if (brickColumn.getDataContainer().getID() == dataContainer.getID()) {
 					dimensionGroupExists = true;
 					break;
 				}
 			}
 
 			if (!dimensionGroupExists) {
-				DimensionGroup dimensionGroup = (DimensionGroup) GeneralManager
+				BrickColumn dimensionGroup = (BrickColumn) GeneralManager
 						.get()
 						.getViewManager()
 						.createGLView(
-								DimensionGroup.class,
+								BrickColumn.class,
 								getParentGLCanvas(),
 								parentComposite,
 								new ViewFrustum(CameraProjectionMode.ORTHOGRAPHIC, 0, 1,
@@ -1330,18 +1325,18 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 				dimensionGroup.setStratomex(this);
 				dimensionGroup.initialize();
 
-				dimensionGroups.add(dimensionGroup);
+				brickColumns.add(dimensionGroup);
 				dataContainers.add(dataContainer);
 
-				uninitializedDimensionGroups.add(dimensionGroup);
-//				if (dataContainer instanceof PathwayDataContainer) {
-//					dataDomains.add(((PathwayDataContainer) dataContainer)
-//							.getPathwayDataDomain());
-//				} else {
-//					dataDomains.add(dataContainer.getDataDomain());
-//				}
+				uninitializedBrickColumns.add(dimensionGroup);
+				// if (dataContainer instanceof PathwayDataContainer) {
+				// dataDomains.add(((PathwayDataContainer) dataContainer)
+				// .getPathwayDataDomain());
+				// } else {
+				// dataDomains.add(dataContainer.getDataDomain());
+				// }
 
-				dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+				brickColumnManager.setRightGroupStartIndex(brickColumnManager
 						.getRightGroupStartIndex() + 1);
 			}
 		}
@@ -1363,7 +1358,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			}
 		}
 
-		dimensionGroupManager.removeDimensionGroup(dataContainerID);
+		brickColumnManager.removeBrickColumn(dataContainerID);
 		initLayouts();
 		DataContainersChangedEvent event = new DataContainersChangedEvent(this);
 		event.setSender(this);
@@ -1403,8 +1398,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		super.setDisplayListDirty();
 	}
 
-	public void moveDimensionGroup(DimensionGroupSpacingRenderer spacer,
-			DimensionGroup movedDimGroup, DimensionGroup referenceDimGroup) {
+	public void moveDimensionGroup(BrickColumnSpacingRenderer spacer,
+			BrickColumn movedDimGroup, BrickColumn referenceDimGroup) {
 		movedDimGroup.getLayout().reset();
 		clearDimensionGroupSpacerHighlight();
 
@@ -1413,12 +1408,11 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		boolean insertComplete = false;
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-				.getDimensionGroups();
+		ArrayList<BrickColumn> dimensionGroups = brickColumnManager.getBrickColumns();
 		for (ElementLayout leftLayout : leftColumnLayout.getElements()) {
 			if (spacer == leftLayout.getRenderer()) {
 
-				dimensionGroupManager.setCenterGroupStartIndex(dimensionGroupManager
+				brickColumnManager.setCenterGroupStartIndex(brickColumnManager
 						.getCenterGroupStartIndex() + 1);
 
 				dimensionGroups.remove(movedDimGroup);
@@ -1438,7 +1432,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			for (ElementLayout rightLayout : rightColumnLayout.getElements()) {
 				if (spacer == rightLayout.getRenderer()) {
 
-					dimensionGroupManager.setRightGroupStartIndex(dimensionGroupManager
+					brickColumnManager.setRightGroupStartIndex(brickColumnManager
 							.getRightGroupStartIndex() - 1);
 
 					dimensionGroups.remove(movedDimGroup);
@@ -1460,21 +1454,19 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			for (ElementLayout centerLayout : centerRowLayout.getElements()) {
 				if (spacer == centerLayout.getRenderer()) {
 
-					if (dimensionGroups.indexOf(movedDimGroup) < dimensionGroupManager
+					if (dimensionGroups.indexOf(movedDimGroup) < brickColumnManager
 							.getCenterGroupStartIndex())
-						dimensionGroupManager
-								.setCenterGroupStartIndex(dimensionGroupManager
-										.getCenterGroupStartIndex() - 1);
-					else if (dimensionGroups.indexOf(movedDimGroup) >= dimensionGroupManager
+						brickColumnManager.setCenterGroupStartIndex(brickColumnManager
+								.getCenterGroupStartIndex() - 1);
+					else if (dimensionGroups.indexOf(movedDimGroup) >= brickColumnManager
 							.getRightGroupStartIndex())
-						dimensionGroupManager
-								.setRightGroupStartIndex(dimensionGroupManager
-										.getRightGroupStartIndex() + 1);
+						brickColumnManager.setRightGroupStartIndex(brickColumnManager
+								.getRightGroupStartIndex() + 1);
 
 					dimensionGroups.remove(movedDimGroup);
 					if (referenceDimGroup == null) {
 						dimensionGroups.add(
-								dimensionGroupManager.getCenterGroupStartIndex(),
+								brickColumnManager.getCenterGroupStartIndex(),
 								movedDimGroup);
 					} else {
 
@@ -1500,26 +1492,26 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	public void clearDimensionGroupSpacerHighlight() {
 		// Clear previous spacer highlights
 		for (ElementLayout element : centerRowLayout.getElements()) {
-			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer())
+			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
+				((BrickColumnSpacingRenderer) element.getRenderer())
 						.setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : leftColumnLayout.getElements()) {
-			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer())
+			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
+				((BrickColumnSpacingRenderer) element.getRenderer())
 						.setRenderSpacer(false);
 		}
 
 		for (ElementLayout element : rightColumnLayout.getElements()) {
-			if (element.getRenderer() instanceof DimensionGroupSpacingRenderer)
-				((DimensionGroupSpacingRenderer) element.getRenderer())
+			if (element.getRenderer() instanceof BrickColumnSpacingRenderer)
+				((BrickColumnSpacingRenderer) element.getRenderer())
 						.setRenderSpacer(false);
 		}
 	}
 
-	public DimensionGroupManager getDimensionGroupManager() {
-		return dimensionGroupManager;
+	public BrickColumnManager getDimensionGroupManager() {
+		return brickColumnManager;
 	}
 
 	public void updateConnectionLinesBetweenDimensionGroups() {
@@ -1532,8 +1524,8 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 		if (centerRowLayout != null) {
 			for (ElementLayout elementLayout : centerRowLayout.getElements()) {
-				if (elementLayout.getRenderer() instanceof DimensionGroupSpacingRenderer) {
-					((DimensionGroupSpacingRenderer) elementLayout.getRenderer()).init();
+				if (elementLayout.getRenderer() instanceof BrickColumnSpacingRenderer) {
+					((BrickColumnSpacingRenderer) elementLayout.getRenderer()).init();
 				}
 			}
 		}
@@ -1547,7 +1539,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	public void updateLayout() {
 
-		for (DimensionGroup dimGroup : dimensionGroupManager.getDimensionGroups()) {
+		for (BrickColumn dimGroup : brickColumnManager.getBrickColumns()) {
 			dimGroup.updateLayout();
 		}
 	}

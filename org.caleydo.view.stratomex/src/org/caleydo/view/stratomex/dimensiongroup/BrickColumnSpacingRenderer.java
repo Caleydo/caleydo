@@ -63,7 +63,7 @@ import org.eclipse.core.runtime.Status;
  * @author Alexander Lex
  * 
  */
-public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDropArea {
+public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropArea {
 
 	public static float[] DRAG_AND_DROP_MARKER_COLOR = { 0.5f, 0.5f, 0.5f };
 
@@ -74,9 +74,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	private boolean isVertical = true;
 
 	/** The DimensionGroup left of the spacer */
-	private DimensionGroup leftDimGroup;
+	private BrickColumn leftDimGroup;
 	/** The DimensionGroup right of the spacer */
-	private DimensionGroup rightDimGroup;
+	private BrickColumn rightDimGroup;
 
 	private RelationAnalyzer relationAnalyzer;
 
@@ -92,9 +92,9 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 	 */
 	ArrayList<Integer> ribbonIDs = new ArrayList<Integer>();
 
-	public DimensionGroupSpacingRenderer(RelationAnalyzer relationAnalyzer,
-			ConnectionBandRenderer connectionRenderer, DimensionGroup leftDimGroup,
-			DimensionGroup rightDimGroup, GLStratomex glVisBricksView) {
+	public BrickColumnSpacingRenderer(RelationAnalyzer relationAnalyzer,
+			ConnectionBandRenderer connectionRenderer, BrickColumn leftDimGroup,
+			BrickColumn rightDimGroup, GLStratomex glVisBricksView) {
 
 		this.relationAnalyzer = relationAnalyzer;
 		this.leftDimGroup = leftDimGroup;
@@ -102,7 +102,7 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		this.connectionRenderer = connectionRenderer;
 		this.glVisBricks = glVisBricksView;
 
-		glVisBricks.getDimensionGroupManager().getDimensionGroupSpacers().put(ID, this);
+		glVisBricks.getDimensionGroupManager().getBrickColumnSpacers().put(ID, this);
 	}
 
 	{
@@ -672,12 +672,12 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 			if (draggable == this)
 				break;
 
-			if (!(draggable instanceof DimensionGroup)) {
+			if (!(draggable instanceof BrickColumn)) {
 				System.out.println("CHRISTIAN HEEEEELP!!");
 				break;
 			}
 			glVisBricks
-					.moveDimensionGroup(this, (DimensionGroup) draggable, leftDimGroup);
+					.moveDimensionGroup(this, (BrickColumn) draggable, leftDimGroup);
 		}
 
 		draggables.clear();
@@ -687,19 +687,19 @@ public class DimensionGroupSpacingRenderer extends LayoutRenderer implements IDr
 		return ID;
 	}
 
-	public DimensionGroup getLeftDimGroup() {
+	public BrickColumn getLeftDimGroup() {
 		return leftDimGroup;
 	}
 
-	public DimensionGroup getRightDimGroup() {
+	public BrickColumn getRightDimGroup() {
 		return rightDimGroup;
 	}
 
-	public void setLeftDimGroup(DimensionGroup leftDimGroup) {
+	public void setLeftDimGroup(BrickColumn leftDimGroup) {
 		this.leftDimGroup = leftDimGroup;
 	}
 
-	public void setRightDimGroup(DimensionGroup rightDimGroup) {
+	public void setRightDimGroup(BrickColumn rightDimGroup) {
 		this.rightDimGroup = rightDimGroup;
 	}
 

@@ -35,7 +35,7 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Brick layout for a compact overview containing a view and a small fuel bar.
@@ -64,7 +64,7 @@ public class CollapsedBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	// private RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
 	public CollapsedBrickLayoutTemplate(GLBrick brick, GLStratomex stratomex,
-			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
+			BrickColumn dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.stratomex = stratomex;
 		footerBarElements = new ArrayList<ElementLayout>();

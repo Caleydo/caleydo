@@ -28,7 +28,7 @@ import org.caleydo.view.dvi.GLDataViewIntegrator;
 import org.caleydo.view.dvi.event.OpenVendingMachineEvent;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.visbricks20.listener.AddGroupsToStratomexListener;
 import org.caleydo.view.visbricks20.listener.OpenVendingMachineListener;
@@ -67,7 +67,7 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 
 	private OpenVendingMachineListener openVendingMachineListener;
 
-	private DimensionGroup detailDimensionGroup;
+	private BrickColumn detailDimensionGroup;
 
 	/**
 	 * Constructor.
@@ -341,8 +341,8 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 		visBricks.addDataContainers(dataContainers, dataConfigurer);
 
 		// Show dimension group as detail brick
-		for (DimensionGroup dimGroup : visBricks.getDimensionGroupManager()
-				.getDimensionGroups()) {
+		for (BrickColumn dimGroup : visBricks.getDimensionGroupManager()
+				.getBrickColumns()) {
 			if (dataContainers.get(0) == dimGroup.getDataContainer()) {
 				detailDimensionGroup = dimGroup;
 				detailDimensionGroup.showDetailedBrick(vendingMachine, false);

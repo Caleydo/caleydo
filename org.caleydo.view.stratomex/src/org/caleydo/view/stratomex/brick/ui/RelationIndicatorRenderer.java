@@ -37,7 +37,7 @@ import org.caleydo.core.view.opengl.layout.LayoutRenderer;
 import org.caleydo.core.view.opengl.util.GLHelperFunctions;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * <p>
@@ -89,14 +89,14 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		neighborBrickOrder = null;
 		neighborPerspectiveID = null;
 		similarities = null;
-		ArrayList<DimensionGroup> dimensionGroups = stratomex.getDimensionGroupManager()
-				.getDimensionGroups();
+		ArrayList<BrickColumn> dimensionGroups = stratomex.getDimensionGroupManager()
+				.getBrickColumns();
 
 		String currentID;
 		String previousID = null;
 
 		int count = 0;
-		for (DimensionGroup dimensionGroup : dimensionGroups) {
+		for (BrickColumn dimensionGroup : dimensionGroups) {
 			currentID = dimensionGroup.getDataContainer().getRecordPerspective().getID();
 			if (currentID.equals(perspectiveID) && isLeft) {
 				neighborPerspectiveID = previousID;

@@ -34,7 +34,7 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 
 /**
- * Renderer for spacings between bricks inside of a {@link DimensionGroup}. This
+ * Renderer for spacings between bricks inside of a {@link BrickColumn}. This
  * class is responsible for handling drops of bricks that shall be reordered.
  * 
  * @author Christian
@@ -44,12 +44,12 @@ public class BrickSpacingRenderer
 	extends LayoutRenderer
 	implements IDropArea
 {
-	private DimensionGroup dimensionGroup;
+	private BrickColumn dimensionGroup;
 	private int id;
 	private boolean renderDropIndicator = false;
 	private GLBrick lowerBrick;
 
-	public BrickSpacingRenderer(DimensionGroup dimensionGroup, int id, GLBrick lowerBrick)
+	public BrickSpacingRenderer(BrickColumn dimensionGroup, int id, GLBrick lowerBrick)
 	{
 		// super(new float[] { 1, 0, 0, 1 });
 		this.dimensionGroup = dimensionGroup;

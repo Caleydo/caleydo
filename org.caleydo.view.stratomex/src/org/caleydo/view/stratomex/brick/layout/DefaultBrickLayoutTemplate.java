@@ -39,7 +39,7 @@ import org.caleydo.view.stratomex.brick.configurer.ATableBasedDataConfigurer;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Default brick layout containing a toolbar, a view and a fuelbar.
@@ -91,7 +91,7 @@ public class DefaultBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
 	public DefaultBrickLayoutTemplate(GLBrick brick, GLStratomex stratomex,
-			DimensionGroup dimensionGroup, IBrickConfigurer configurer) {
+			BrickColumn dimensionGroup, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.stratomex = stratomex;
 		toolBarElements = new ArrayList<ElementLayout>();

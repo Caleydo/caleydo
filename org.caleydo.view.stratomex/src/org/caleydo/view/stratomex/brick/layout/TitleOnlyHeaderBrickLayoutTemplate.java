@@ -27,7 +27,7 @@ import org.caleydo.core.view.opengl.layout.Row;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Layout for header brick that shows only the title.
@@ -45,7 +45,7 @@ public class TitleOnlyHeaderBrickLayoutTemplate extends ABrickLayoutConfiguratio
 	
 	protected int guiElementsHeight = 0;
 
-	public TitleOnlyHeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+	public TitleOnlyHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn dimensionGroup,
 			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.stratomex = stratomex;

@@ -28,7 +28,7 @@ import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Layout for central brick that is displayed in the arch.
@@ -54,7 +54,7 @@ public class CompactHeaderBrickLayoutTemplate extends ABrickLayoutConfiguration 
 
 	protected int guiElementsHeight = 0;
 
-	public CompactHeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+	public CompactHeaderBrickLayoutTemplate(GLBrick brick, BrickColumn dimensionGroup,
 			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.stratomex = stratomex;

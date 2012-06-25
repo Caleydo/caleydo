@@ -90,7 +90,7 @@ import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
 import org.caleydo.view.stratomex.dialog.CreateKaplanMeierSmallMultiplesGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwayComparisonGroupDialog;
 import org.caleydo.view.stratomex.dialog.CreatePathwaySmallMultiplesGroupDialog;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 import org.caleydo.view.stratomex.event.AddGroupsToStratomexEvent;
 import org.caleydo.view.stratomex.event.OpenCreateKaplanMeierSmallMultiplesGroupDialogEvent;
 import org.caleydo.view.stratomex.event.OpenCreatePathwayGroupDialogEvent;
@@ -216,7 +216,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	private BrickState expandedBrickState;
 
-	private DimensionGroup dimensionGroup;
+	private BrickColumn dimensionGroup;
 
 	private SelectionManager dataContainerSelectionManager;
 	private SelectionManager recordGroupSelectionManager;
@@ -529,20 +529,20 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	}
 
 	/**
-	 * Set the {@link DimensionGroup} this brick belongs to.
+	 * Set the {@link BrickColumn} this brick belongs to.
 	 * 
 	 * @param dimensionGroup
 	 */
-	public void setDimensionGroup(DimensionGroup dimensionGroup) {
+	public void setDimensionGroup(BrickColumn dimensionGroup) {
 		this.dimensionGroup = dimensionGroup;
 	}
 
 	/**
-	 * Returns the {@link DimensionGroup} this brick belongs to.
+	 * Returns the {@link BrickColumn} this brick belongs to.
 	 * 
 	 * @return
 	 */
-	public DimensionGroup getDimensionGroup() {
+	public BrickColumn getDimensionGroup() {
 		return dimensionGroup;
 	}
 

@@ -24,6 +24,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
 import java.util.Set;
 
 import javax.media.opengl.GLAutoDrawable;
@@ -72,6 +73,12 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	private HashMap<ARcpGLViewPart, IView> hashRCP2View = new HashMap<ARcpGLViewPart, IView>();
 
 	private HashMap<IView, ARcpGLViewPart> hashView2RCP = new HashMap<IView, ARcpGLViewPart>();
+
+	/**
+	 * Map that maps from a remote rendering view to a list of its remote
+	 * rendered views.
+	 */
+	private Map<AGLView, Set<AGLView>> hashRemoteRenderingView2RemoteRenderedViews = new HashMap<AGLView, Set<AGLView>>();
 
 	private FPSAnimator fpsAnimator;
 
@@ -144,6 +151,29 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 		NewViewEvent event = new NewViewEvent(glView);
 		event.setSender(this);
 		generalManager.getEventPublisher().triggerEvent(event);
+	}
+
+	/**
+	 * Registers the dependency between a remote rendering and a remote rendered
+	 * view.
+	 * 
+	 * @param remoteRenderedView
+	 *            The remote rendered view.
+	 * @param remoteRenderingView
+	 *            The view that renders the remoteRenderedView.
+	 */
+	public void registerRemoteRenderedView(AGLView remoteRenderedView,
+			AGLView remoteRenderingView) {
+
+		Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews
+				.get(remoteRenderingView);
+
+		if (remoteRenderedViews == null) {
+			remoteRenderedViews = new HashSet<AGLView>();
+			hashRemoteRenderingView2RemoteRenderedViews.put(remoteRenderingView,
+					remoteRenderedViews);
+		}
+		remoteRenderedViews.add(remoteRenderedView);
 	}
 
 	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas,
@@ -226,6 +256,17 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 		}
 
 		hashGLViewID2GLView.remove(glView.getID());
+
+		Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews
+				.get(glView);
+
+		if (remoteRenderedViews != null) {
+			for (AGLView remoteRenderedView : remoteRenderedViews) {
+				remoteRenderedView.destroy();
+			}
+			remoteRenderedViews.clear();
+			hashRemoteRenderingView2RemoteRenderedViews.remove(glView);
+		}
 
 		ViewClosedEvent event = new ViewClosedEvent(glView);
 		event.setSender(this);

@@ -33,8 +33,8 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.text.CaleydoTextRenderer;
 import org.caleydo.view.stratomex.GLStratomex;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroupManager;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumnManager;
 import org.caleydo.view.visbricks20.listener.GLVendingMachineKeyListener;
 import org.caleydo.view.visbricks20.renderer.RankNumberRenderer;
 import org.caleydo.view.visbricks20.renderstyle.VisBricks20RenderStyle;
@@ -66,7 +66,7 @@ public class GLVendingMachine
 
 	private List<DataContainer> dataContainers = new ArrayList<DataContainer>();
 
-	private DimensionGroupManager dimGroupManager;
+	private BrickColumnManager dimGroupManager;
 
 	private Queue<GLStratomex> uninitializedVisBrickViews = new LinkedList<GLStratomex>();
 
@@ -166,7 +166,7 @@ public class GLVendingMachine
 
 		List<DataContainer> fixedDataContainers = new ArrayList<DataContainer>();
 
-		for (DimensionGroup dimGroup : dimGroupManager.getDimensionGroups()) {
+		for (BrickColumn dimGroup : dimGroupManager.getBrickColumns()) {
 
 			// Only add fixed data container if it is not contained in the
 			// options itself
@@ -264,7 +264,7 @@ public class GLVendingMachine
 	 * 
 	 * @param dimGroupManager
 	 */
-	public void setDimensionGroupManager(DimensionGroupManager dimGroupManager) {
+	public void setDimensionGroupManager(BrickColumnManager dimGroupManager) {
 		this.dimGroupManager = dimGroupManager;
 	}
 
@@ -392,7 +392,7 @@ public class GLVendingMachine
 
 		// Switch currently shown dim group data container in main VisBricks
 		// view
-		for (DimensionGroup dimGroup : dimGroupManager.getDimensionGroups()) {
+		for (BrickColumn dimGroup : dimGroupManager.getBrickColumns()) {
 
 			if (dimGroup.isDetailBrickShown()) {
 				dimGroup.setDataContainer(selectedDataContainer);
@@ -403,7 +403,7 @@ public class GLVendingMachine
 			}
 		}
 		dimGroupManager.setCenterGroupStartIndex(0);
-		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getDimensionGroups().size());
+		dimGroupManager.setRightGroupStartIndex(dimGroupManager.getBrickColumns().size());
 
 		getVisBricks20View().getVisBricks().updateLayout();
 

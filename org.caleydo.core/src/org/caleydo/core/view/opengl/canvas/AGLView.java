@@ -970,6 +970,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			IGLRemoteRenderingView glRemoteRenderingView) {
 		this.glRemoteRenderingView = glRemoteRenderingView;
 		pixelGLConverter = glRemoteRenderingView.getPixelGLConverter();
+		ViewManager.get().registerRemoteRenderedView(this,
+				(AGLView) glRemoteRenderingView);
 		// pixelGLConverter = new
 		// PixelGLConverter(glRemoteRenderingView.getViewFrustum(),
 		// parentGLCanvas);
@@ -1111,6 +1113,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 				.clearAll();
 		generalManager.getViewManager().unregisterGLView(this);
 		unregisterEventListeners();
+//		System.out.println("Destroying view: " + this.label);
 	}
 
 	// @Override
@@ -1192,6 +1195,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	@Override
 	public void dispose(GLAutoDrawable arg0) {
 		// TODO Auto-generated method stub
+		System.out.println("dispose");
 
 	}
 

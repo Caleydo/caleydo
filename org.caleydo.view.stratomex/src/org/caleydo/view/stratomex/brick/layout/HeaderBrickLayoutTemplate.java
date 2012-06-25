@@ -43,11 +43,11 @@ import org.caleydo.view.stratomex.GLStratomex;
 import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 import org.eclipse.swt.widgets.Shell;
 
 /**
- * Brick layout for central brick in {@link DimensionGroup} containing a caption
+ * Brick layout for central brick in {@link BrickColumn} containing a caption
  * bar, toolbar, footer bar and view.
  * 
  * @author Christian Partl
@@ -90,7 +90,7 @@ public class HeaderBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected Row toolBar;
 	protected Row footerBar;
 
-	public HeaderBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+	public HeaderBrickLayoutTemplate(GLBrick brick, BrickColumn dimensionGroup,
 			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		// viewSwitchingButtons = new ArrayList<BrickViewSwitchingButton>();

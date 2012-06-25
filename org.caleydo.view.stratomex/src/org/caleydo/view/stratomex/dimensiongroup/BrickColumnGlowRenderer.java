@@ -24,14 +24,14 @@ import javax.media.opengl.GL2;
 import org.caleydo.core.view.opengl.canvas.PixelGLConverter;
 import org.caleydo.core.view.opengl.layout.util.ColorRenderer;
 
-public class DimensionGroupGlowRenderer
+public class BrickColumnGlowRenderer
 	extends ColorRenderer
 {
 
-	private DimensionGroup dimensionGroup;
+	private BrickColumn dimensionGroup;
 	private boolean renderWhenDimensionGroupIsCollapsed;
 
-	public DimensionGroupGlowRenderer(float[] color, DimensionGroup dimensionGroup,
+	public BrickColumnGlowRenderer(float[] color, BrickColumn dimensionGroup,
 			boolean renderWhenDimensionGroupIsCollapsed)
 	{
 		super(color);

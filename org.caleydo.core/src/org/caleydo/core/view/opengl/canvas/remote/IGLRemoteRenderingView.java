@@ -34,24 +34,26 @@ import org.eclipse.swt.widgets.Composite;
  * 
  * @author Marc Streit
  */
-public interface IGLRemoteRenderingView
-	extends IView {
+public interface IGLRemoteRenderingView extends IView {
 
 	public GLCanvas getParentGLCanvas();
 
 	public Composite getParentComposite();
 
 	/**
-	 * Retrieves all the contained view-types from a given view.
+	 * Retrieves all the contained views from a given view. The correct
+	 * implementation of this method is essential for the destruction of remote
+	 * rendered views.
 	 * 
-	 * @return list of view-types contained in the given view
+	 * @return list of views contained in the given view.
 	 */
 	public List<AGLView> getRemoteRenderedViews();
 
 	public ViewFrustum getViewFrustum();
 
 	/**
-	 * Get the {@link PixelGLConverter} from the parent view, which needs the top-level's view frustum.
+	 * Get the {@link PixelGLConverter} from the parent view, which needs the
+	 * top-level's view frustum.
 	 * 
 	 * @return
 	 */

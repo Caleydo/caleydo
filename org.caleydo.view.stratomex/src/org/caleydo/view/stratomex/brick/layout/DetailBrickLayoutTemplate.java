@@ -37,7 +37,7 @@ import org.caleydo.view.stratomex.brick.GLBrick;
 import org.caleydo.view.stratomex.brick.configurer.IBrickConfigurer;
 import org.caleydo.view.stratomex.brick.ui.HandleRenderer;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Layout for the detailed inspection of a brick. Contains a tool bar, a view
@@ -78,7 +78,7 @@ public class DetailBrickLayoutTemplate extends ABrickLayoutConfiguration {
 	protected RelationIndicatorRenderer leftRelationIndicatorRenderer;
 	protected RelationIndicatorRenderer rightRelationIndicatorRenderer;
 
-	public DetailBrickLayoutTemplate(GLBrick brick, DimensionGroup dimensionGroup,
+	public DetailBrickLayoutTemplate(GLBrick brick, BrickColumn dimensionGroup,
 			GLStratomex stratomex, IBrickConfigurer configurer) {
 		super(brick, dimensionGroup);
 		this.stratomex = stratomex;

@@ -42,6 +42,7 @@ import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
+import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.caleydo.core.view.opengl.layout.Column;
 import org.caleydo.core.view.opengl.layout.Column.VAlign;
 import org.caleydo.core.view.opengl.layout.ElementLayout;
@@ -79,11 +80,11 @@ import org.eclipse.swt.widgets.Composite;
  * @author Alexander Lex
  * 
  */
-public class DimensionGroup extends ATableBasedView implements
-		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable {
+public class BrickColumn extends ATableBasedView implements
+		ILayoutSizeCollisionHandler, ILayoutedElement, IDraggable, IGLRemoteRenderingView {
 	public static String VIEW_TYPE = "org.caleydo.view.dimensiongroup";
 
-	public static String VIEW_NAME = "Dimension Group";
+	public static String VIEW_NAME = "Brick Column";
 
 	public final static int PIXEL_PER_DIMENSION = 30;
 	public final static int MIN_BRICK_WIDTH_PIXEL = 170;
@@ -186,7 +187,7 @@ public class DimensionGroup extends ATableBasedView implements
 
 	IBrickConfigurer brickConfigurer;
 
-	public DimensionGroup(GLCanvas canvas, Composite parentComposite,
+	public BrickColumn(GLCanvas canvas, Composite parentComposite,
 			ViewFrustum viewFrustum) {
 		super(canvas, parentComposite, viewFrustum, VIEW_TYPE, VIEW_NAME);
 
@@ -303,14 +304,14 @@ public class DimensionGroup extends ATableBasedView implements
 					.getColor().getRGBA();
 		}
 
-		mainColumn.addBackgroundRenderer(new DimensionGroupGlowRenderer(glowColor, this,
+		mainColumn.addBackgroundRenderer(new BrickColumnGlowRenderer(glowColor, this,
 				false));
 
 		ElementLayout innerHeaderBrickLayout = new ElementLayout();
 
 		// headerBrickLayout2.setRenderingPriority(1);
 
-		innerHeaderBrickLayout.addBackgroundRenderer(new DimensionGroupGlowRenderer(
+		innerHeaderBrickLayout.addBackgroundRenderer(new BrickColumnGlowRenderer(
 				glowColor, this, true));
 
 		ElementLayout brickSpacingLayout = new ElementLayout("brickSpacingLayout");
@@ -476,7 +477,7 @@ public class DimensionGroup extends ATableBasedView implements
 		brick.setDataDomain(dataDomain);
 		brick.setDataContainer(dataContainer);
 		brick.setBrickConfigurer(brickConfigurer);
-		brick.setRemoteRenderingGLView(getRemoteRenderingGLView());
+		brick.setRemoteRenderingGLView(this);
 		brick.setStratomex(stratomex);
 		brick.setLayout(wrappingLayout);
 		brick.setDimensionGroup(this);
@@ -987,7 +988,7 @@ public class DimensionGroup extends ATableBasedView implements
 		overviewDetailGapLayout.setPixelSizeX(OVERVIEW_DETAIL_GAP_PIXEL);
 		overviewDetailGapLayout.setRatioSizeY(1);
 
-		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
+		BrickColumn otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
 
 		if (otherDetailDimensionGroup != null
 				&& otherDetailDimensionGroup.isDetailBrickShown()) {
@@ -1053,7 +1054,7 @@ public class DimensionGroup extends ATableBasedView implements
 					detailBrick, true));
 		}
 
-		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
+		BrickColumn otherDetailDimensionGroup = getOtherDetailDimensionGroup(!expandLeft);
 
 		if (otherDetailDimensionGroup != null
 				&& otherDetailDimensionGroup.isDetailBrickShown()) {
@@ -1080,7 +1081,7 @@ public class DimensionGroup extends ATableBasedView implements
 	public void hideDetailedBrick() {
 		isDetailBrickShown = false;
 		hideDetailBrick = true;
-		DimensionGroup otherDetailDimensionGroup = getOtherDetailDimensionGroup(isLeftmost());
+		BrickColumn otherDetailDimensionGroup = getOtherDetailDimensionGroup(isLeftmost());
 		if (otherDetailDimensionGroup != null
 				&& otherDetailDimensionGroup.isDetailBrickShown()) {
 			otherDetailDimensionGroup.setDetailBrickWidth(otherDetailDimensionGroup
@@ -1101,7 +1102,7 @@ public class DimensionGroup extends ATableBasedView implements
 	 */
 	public int getDetailBrickWidthPixels(boolean isCurrentDimensionGroupLeft) {
 
-		DimensionGroup otherDimensionGroup = getOtherDetailDimensionGroup(isCurrentDimensionGroupLeft);
+		BrickColumn otherDimensionGroup = getOtherDetailDimensionGroup(isCurrentDimensionGroupLeft);
 		int otherDimensionGroupColumnWidth = 0;
 		boolean otherDimensionGroupShowsDetail = false;
 		if (otherDimensionGroup != null) {
@@ -1110,7 +1111,7 @@ public class DimensionGroup extends ATableBasedView implements
 					.getGroupColumnWidthPixels();
 		}
 		int detailAreaWidth = parentGLCanvas.getWidth() - 2 * OVERVIEW_DETAIL_GAP_PIXEL
-				- 2 * GLStratomex.DIMENSION_GROUP_SIDE_SPACING
+				- 2 * GLStratomex.BRICK_COLUMN_SIDE_SPACING
 				- getGroupColumnWidthPixels() - otherDimensionGroupColumnWidth;
 		int detailGapWidth = (int) (DETAIL_GAP_PORTION * detailAreaWidth);
 		detailGapWidth = (detailGapWidth < MIN_DETAIL_GAP_PIXEL) ? MIN_DETAIL_GAP_PIXEL
@@ -1123,7 +1124,7 @@ public class DimensionGroup extends ATableBasedView implements
 	}
 
 	/**
-	 * Returns the neighboring {@link DimensionGroup}, either the one to the
+	 * Returns the neighboring {@link BrickColumn}, either the one to the
 	 * right, if the parameter is true, or the one to the left, if the parameter
 	 * is false.
 	 * <p>
@@ -1136,14 +1137,14 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @return The other dimension group that is currently visible in the detail
 	 *         mode, or null if there is no other group
 	 */
-	private DimensionGroup getOtherDetailDimensionGroup(
+	private BrickColumn getOtherDetailDimensionGroup(
 			boolean isCurrentDimensionGroupLeft) {
 
-		DimensionGroupManager dimensionGroupManager = stratomex
+		BrickColumnManager dimensionGroupManager = stratomex
 				.getDimensionGroupManager();
 
-		ArrayList<DimensionGroup> dimensionGroups = dimensionGroupManager
-				.getDimensionGroups();
+		ArrayList<BrickColumn> dimensionGroups = dimensionGroupManager
+				.getBrickColumns();
 		int dimensionGroupIndex = dimensionGroups.indexOf(this);
 
 		if (isCurrentDimensionGroupLeft) {
@@ -1167,9 +1168,9 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @return True if this dimension group is the leftmost dimension group.
 	 */
 	public boolean isLeftmost() {
-		DimensionGroupManager dimensionGroupManager = stratomex
+		BrickColumnManager dimensionGroupManager = stratomex
 				.getDimensionGroupManager();
-		int index = dimensionGroupManager.indexOfDimensionGroup(this);
+		int index = dimensionGroupManager.indexOfBrickColumn(this);
 		return (index == dimensionGroupManager.getCenterGroupStartIndex());
 	}
 
@@ -1177,9 +1178,9 @@ public class DimensionGroup extends ATableBasedView implements
 	 * @return True if this dimension group is the rightmost dimension group.
 	 */
 	public boolean isRightmost() {
-		DimensionGroupManager dimensionGroupManager = stratomex
+		BrickColumnManager dimensionGroupManager = stratomex
 				.getDimensionGroupManager();
-		int index = dimensionGroupManager.indexOfDimensionGroup(this);
+		int index = dimensionGroupManager.indexOfBrickColumn(this);
 		return (index == dimensionGroupManager.getRightGroupStartIndex() - 1);
 	}
 
@@ -1234,5 +1235,12 @@ public class DimensionGroup extends ATableBasedView implements
 
 	public boolean isCollapsed() {
 		return isCollapsed;
+	}
+
+
+	@Override
+	public List<AGLView> getRemoteRenderedViews() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }

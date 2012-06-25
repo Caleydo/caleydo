@@ -41,7 +41,7 @@ import org.caleydo.view.stratomex.brick.sorting.NoSortingSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.BrickViewSwitchingButton;
 import org.caleydo.view.stratomex.brick.ui.DimensionBarRenderer;
 import org.caleydo.view.stratomex.brick.ui.FuelBarRenderer;
-import org.caleydo.view.stratomex.dimensiongroup.DimensionGroup;
+import org.caleydo.view.stratomex.dimensiongroup.BrickColumn;
 
 /**
  * Abstract base class for brick configurers for table based data that provides
@@ -168,7 +168,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 	protected void registerViewSwitchingButtons(
 			final ABrickLayoutConfiguration layoutTemplate,
 			final ArrayList<BrickViewSwitchingButton> viewSwitchingButtons,
-			final GLBrick brick, final DimensionGroup dimensionGroup) {
+			final GLBrick brick, final BrickColumn dimensionGroup) {
 
 		for (final BrickViewSwitchingButton button : viewSwitchingButtons) {
 
@@ -200,7 +200,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
 		final GLBrick brick = layoutTemplate.getBrick();
-		final DimensionGroup dimensionGroup = layoutTemplate.getDimensionGroup();
+		final BrickColumn dimensionGroup = layoutTemplate.getDimensionGroup();
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
@@ -297,7 +297,7 @@ public abstract class ATableBasedDataConfigurer implements IBrickConfigurer {
 			ArrayList<BrickViewSwitchingButton> viewSwitchingButtons) {
 
 		final GLBrick brick = layoutTemplate.getBrick();
-		final DimensionGroup dimensionGroup = layoutTemplate.getDimensionGroup();
+		final BrickColumn dimensionGroup = layoutTemplate.getDimensionGroup();
 
 		ArrayList<ElementLayout> toolBarElements = new ArrayList<ElementLayout>();
 
