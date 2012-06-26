@@ -3717,4 +3717,17 @@ public class GLScatterPlot extends ATableBasedView {
 		setDisplayListDirty();
 	}
 
+	/* (non-Javadoc)
+	 * @see org.caleydo.core.view.opengl.canvas.AGLView#destroyViewSpecificContent(javax.media.opengl.GL2)
+	 */
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+		gl.glDeleteLists(iGLDisplayListIndexCoord, 1);
+		gl.glDeleteLists(iGLDisplayListIndexMouseOver, 1);
+		gl.glDeleteLists(iGLDisplayListIndexSelection, 1);
+		gl.glDeleteLists(iGLDisplayListIndexMatrixFull, 1);
+		gl.glDeleteLists(iGLDisplayListIndexMatrixSelection, 1);
+	}
+
 }

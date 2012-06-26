@@ -133,12 +133,33 @@ public class LayoutManager {
 	public void render(GL2 gl) {
 		baseElementLayout.render(gl);
 
+		deleteDisplayListsOfDestroyedRenderers(gl);
+	}
+
+	/**
+	 * Deletes the display lists of {@link #displayListsToDelete}.
+	 * 
+	 * @param gl
+	 */
+	protected void deleteDisplayListsOfDestroyedRenderers(GL2 gl) {
 		// Free display lists
 		for (int displayListIndex : displayListsToDelete) {
 			gl.glDeleteLists(displayListIndex, 1);
 		}
 
 		displayListsToDelete.clear();
+	}
+
+	/**
+	 * Deletes the display lists of all {@link LayoutRenderer}s of this
+	 * LayoutManager.
+	 * 
+	 * @param gl
+	 */
+	public void destroy(GL2 gl) {
+		deleteDisplayListsOfDestroyedRenderers(gl);
+
+		baseElementLayout.destroy(gl);
 	}
 
 	/**

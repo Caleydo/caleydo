@@ -103,9 +103,8 @@ import org.eclipse.ui.PlatformUI;
  */
 public class GLGrouper extends ATableBasedView implements IClusterNodeEventReceiver {
 	public static String VIEW_TYPE = "org.caleydo.view.grouper";
-	
-	public static String VIEW_NAME = "Grouper";
 
+	public static String VIEW_NAME = "Grouper";
 
 	boolean useDetailLevel = true;
 
@@ -277,8 +276,8 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		buildTreeFromGroupHierarchy(tree, rootGroup.getClusterNode(), rootGroup);
 
 		ClusterHelper.calculateClusterAveragesRecursive(tree, tree.getRoot(),
-				EClustererTarget.DIMENSION_CLUSTERING, dataDomain.getTable(), dataContainer
-						.getDimensionPerspective().getVirtualArray(), dataContainer
+				EClustererTarget.DIMENSION_CLUSTERING, dataDomain.getTable(),
+				dataContainer.getDimensionPerspective().getVirtualArray(), dataContainer
 						.getRecordPerspective().getVirtualArray());
 
 		tree.setDirty();
@@ -525,7 +524,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 					if (!dragAndDropController.isDragging()) {
 						if (dragAndDropController.containsDraggable(groupRep)) {
 							potentialNewSelection = false;
-//							dragAndDropController.startDragging();
+							// dragAndDropController.startDragging();
 						}
 
 					}
@@ -625,29 +624,35 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 						if (Platform.getBundle("org.caleydo.util.r") != null) {
 
-//							// Lazy loading of R
+							// // Lazy loading of R
 							GeneralManager.get().getRStatisticsPerformer().performTest();
-//
-//							if (dataContainers.size() == 2) {
-//
-//								StatisticsFoldChangeReductionEvent event = new StatisticsFoldChangeReductionEvent(
-//										dataContainers.get(0), dataContainers.get(1),
-//										false);
-//
-//								StatisticsFoldChangeReductionItem foldChangeReductionItem = new StatisticsFoldChangeReductionItem(
-//										event);
-//								contextMenuCreator
-//										.addContextMenuItem(foldChangeReductionItem);
-//							}
-//
-//							StatisticsPValueReductionItem pValueReductionItem = new StatisticsPValueReductionItem(
-//									dataContainers);
-//							contextMenuCreator.addContextMenuItem(pValueReductionItem);
-//
-//							StatisticsTwoSidedTTestReductionItem twoSidedTTestReductionItem = new StatisticsTwoSidedTTestReductionItem(
-//									dataContainers);
-//							contextMenuCreator
-//									.addContextMenuItem(twoSidedTTestReductionItem);
+							//
+							// if (dataContainers.size() == 2) {
+							//
+							// StatisticsFoldChangeReductionEvent event = new
+							// StatisticsFoldChangeReductionEvent(
+							// dataContainers.get(0), dataContainers.get(1),
+							// false);
+							//
+							// StatisticsFoldChangeReductionItem
+							// foldChangeReductionItem = new
+							// StatisticsFoldChangeReductionItem(
+							// event);
+							// contextMenuCreator
+							// .addContextMenuItem(foldChangeReductionItem);
+							// }
+							//
+							// StatisticsPValueReductionItem pValueReductionItem
+							// = new StatisticsPValueReductionItem(
+							// dataContainers);
+							// contextMenuCreator.addContextMenuItem(pValueReductionItem);
+							//
+							// StatisticsTwoSidedTTestReductionItem
+							// twoSidedTTestReductionItem = new
+							// StatisticsTwoSidedTTestReductionItem(
+							// dataContainers);
+							// contextMenuCreator
+							// .addContextMenuItem(twoSidedTTestReductionItem);
 
 						}
 
@@ -1298,5 +1303,11 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	public List<DataContainer> getDataContainers() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+
 	}
 }

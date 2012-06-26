@@ -1123,7 +1123,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 
 	@Override
 	public String toString() {
-		return "TODO: ADD INFO THAT APPEARS IN THE LOG";
+		return "StratomeX";
 	}
 
 	@Override
@@ -1808,6 +1808,14 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 	 */
 	public boolean isVendingMachineMode() {
 		return isVendingMachineMode;
+	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+		centerLayoutManager.destroy(gl);
+		leftLayoutManager.destroy(gl);
+		rightLayoutManager.destroy(gl);
 	}
 
 }

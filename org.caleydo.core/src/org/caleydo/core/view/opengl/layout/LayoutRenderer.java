@@ -114,6 +114,12 @@ public abstract class LayoutRenderer {
 		}
 
 	}
+	
+	protected void deleteDisplayList(GL2 gl) {
+		if(hasDisplayListIndex) {
+			gl.glDeleteLists(displayListIndex, 1);
+		}
+	}
 
 	/**
 	 * Renders the content. This content is rendered in a display list, if this

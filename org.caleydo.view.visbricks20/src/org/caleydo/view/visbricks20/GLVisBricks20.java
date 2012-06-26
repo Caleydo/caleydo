@@ -364,4 +364,9 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 	public GLStratomex getVisBricks() {
 		return visBricks;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		layoutManager.destroy(gl);
+	}
 }

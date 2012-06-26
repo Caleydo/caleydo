@@ -650,9 +650,8 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyViewSpecificContent(GL2 gl) {
 		selectionTransformer.destroy();
-		super.destroy();
 	}
 
 	public void setRenderTemplate(AHeatMapLayoutConfiguration template) {

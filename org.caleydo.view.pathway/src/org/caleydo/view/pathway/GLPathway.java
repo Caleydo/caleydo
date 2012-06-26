@@ -1127,10 +1127,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyViewSpecificContent(GL2 gl) {
 		pathwayManager.setPathwayVisibilityState(pathway, false);
-
-		super.destroy();
 	}
 
 	@Override

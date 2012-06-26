@@ -1893,10 +1893,9 @@ public abstract class AGLViewBrowser extends AGLView implements ISelectionUpdate
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyViewSpecificContent(GL2 gl) {
 		selectionTransformer.destroy();
 		selectionTransformer = null;
-		super.destroy();
 	}
 
 	// public boolean isGeneMappingEnabled() {

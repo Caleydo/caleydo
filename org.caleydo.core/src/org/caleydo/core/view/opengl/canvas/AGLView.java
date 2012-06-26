@@ -21,7 +21,6 @@ package org.caleydo.core.view.opengl.canvas;
 
 import gleem.linalg.Vec3f;
 
-import java.awt.EventQueue;
 import java.awt.Point;
 import java.awt.Rectangle;
 import java.awt.event.FocusEvent;
@@ -32,11 +31,13 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+
 import javax.media.opengl.GL;
 import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.GLEventListener;
 import javax.media.opengl.awt.GLCanvas;
+
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.virtualarray.EVAOperation;
@@ -76,7 +77,6 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
-import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -361,6 +361,8 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			// System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
+			
+			ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
 			// load identity matrix
 			gl.glMatrixMode(GL2.GL_MODELVIEW);
@@ -1103,19 +1105,6 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 		return detailLevel;
 	}
 
-	public void destroy() {
-		// Propagate remove action of elements to other views
-		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
-
-		pickingManager.removeViewSpecificData(uniqueID);
-
-		generalManager.getViewManager().getConnectedElementRepresentationManager()
-				.clearAll();
-		generalManager.getViewManager().unregisterGLView(this);
-		unregisterEventListeners();
-//		System.out.println("Destroying view: " + this.label);
-	}
-
 	// @Override
 	// public synchronized Pair<AEventListener<? extends IListenerOwner>,
 	// AEvent> getEvent() {
@@ -1193,11 +1182,40 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	}
 
 	@Override
-	public void dispose(GLAutoDrawable arg0) {
-		// TODO Auto-generated method stub
-		System.out.println("dispose");
+	public void dispose(GLAutoDrawable drawable) {
+//		System.out.println("dispose " + label);
 
+		GL2 gl = drawable.getGL().getGL2();
+		ViewManager.get().destroyRemoteViews(gl, this);
+		ViewManager.get().unregisterGLView(this);
+		destroy(gl);
 	}
+
+	/**
+	 * Destroys this view by removing data common in all views and calling
+	 * {@link #destroyViewSpecificContent(GL2)}.
+	 * 
+	 * @param gl
+	 */
+	public final void destroy(GL2 gl) {
+//		System.out.println("destroy " + label);
+		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
+
+		pickingManager.removeViewSpecificData(uniqueID);
+		generalManager.getViewManager().getConnectedElementRepresentationManager()
+				.clearAll();
+		unregisterEventListeners();
+		destroyViewSpecificContent(gl);
+	}
+
+	/**
+	 * In this method subclasses should remove all view specific content,
+	 * especially GL resources such as display lists. Note that there is no need
+	 * to take care about remote rendered views.
+	 * 
+	 * @param gl
+	 */
+	protected abstract void destroyViewSpecificContent(GL2 gl);
 
 	/**
 	 * Returns the text renderer valid for the gl context of this view.

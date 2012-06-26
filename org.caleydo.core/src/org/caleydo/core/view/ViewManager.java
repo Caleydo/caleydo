@@ -27,6 +27,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.media.opengl.GL2;
 import javax.media.opengl.GLAutoDrawable;
 import javax.media.opengl.awt.GLCanvas;
 
@@ -79,6 +80,14 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 	 * rendered views.
 	 */
 	private Map<AGLView, Set<AGLView>> hashRemoteRenderingView2RemoteRenderedViews = new HashMap<AGLView, Set<AGLView>>();
+
+	/**
+	 * Map that maps from a top level remote rendering view to remote rendering
+	 * views that need to be destroyed. These views shall be destroyed via
+	 * {@link #executePendingRemoteViewDestruction(GL2, AGLView)} in a display
+	 * cycle.
+	 */
+	private Map<AGLView, Set<AGLView>> hashTopLevelView2ViewsToBeDestroyed = new HashMap<AGLView, Set<AGLView>>();
 
 	private FPSAnimator fpsAnimator;
 
@@ -176,6 +185,61 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 		remoteRenderedViews.add(remoteRenderedView);
 	}
 
+	/**
+	 * Destroys all remote views of topLevelRemoteRenderingView that have
+	 * previously been unregistered via {@link #unregisterGLView(AGLView)}.
+	 * 
+	 * @param gl
+	 * @param topLevelRemoteRenderingView
+	 */
+	public void executePendingRemoteViewDestruction(GL2 gl,
+			AGLView topLevelRemoteRenderingView) {
+
+		Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed
+				.get(topLevelRemoteRenderingView);
+
+		if (viewsToBeDestroyed != null) {
+			for (AGLView view : viewsToBeDestroyed) {
+				view.destroy(gl);
+			}
+			viewsToBeDestroyed.clear();
+		}
+	}
+
+	// /**
+	// * Destroys the specified view and all of its remote rendered views.
+	// *
+	// * @param gl
+	// * @param remoteRenderingView
+	// */
+	// public void destroyTopLevelGLView(GL2 gl, AGLView remoteRenderingView) {
+	//
+	// destroyRemoteViews(gl, remoteRenderingView);
+	//
+	// remoteRenderingView.destroy(gl);
+	// }
+
+	/**
+	 * Recursively destroys all remote views of the specified view.
+	 * 
+	 * @param gl
+	 * @param remoteRenderingView
+	 */
+	public void destroyRemoteViews(GL2 gl, AGLView remoteRenderingView) {
+		Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews
+				.get(remoteRenderingView);
+
+		if (remoteRenderedViews != null) {
+			Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(
+					remoteRenderedViews);
+			for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
+				destroyRemoteViews(gl, remoteRenderedView);
+				unregisterGLView(remoteRenderedView, false);
+				remoteRenderedView.destroy(gl);
+			}
+		}
+	}
+
 	public void registerGLEventListenerByGLCanvas(final GLCanvas glCanvas,
 			final AGLView glView) {
 
@@ -240,8 +304,28 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 		hashItems.clear();
 	}
 
+	/**
+	 * This method unregisters the specified view and also triggers the
+	 * destruction of that view and all remote rendered child views if it is
+	 * remotely rendered.
+	 * 
+	 * @param glView
+	 */
 	public void unregisterGLView(final AGLView glView) {
+		unregisterGLView(glView, glView.getTopLevelGLView() != glView);
+	}
 
+	/**
+	 * Unregisters the specified view from this manager.
+	 * 
+	 * @param glView
+	 * @param registerAtTopLevelViewForDestruction
+	 *            Specifies whether the view (if remote rendered) shall be
+	 *            destroyed in the next display cycle of its top level remote
+	 *            rendering view.
+	 */
+	private void unregisterGLView(final AGLView glView,
+			boolean registerAtTopLevelViewForDestruction) {
 		if (glView == null)
 			return;
 
@@ -257,16 +341,52 @@ public class ViewManager extends AManager<IView> implements IListenerOwner {
 
 		hashGLViewID2GLView.remove(glView.getID());
 
-		Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews
-				.get(glView);
+		AGLView parentView = (AGLView) glView.getRemoteRenderingGLView();
 
-		if (remoteRenderedViews != null) {
-			for (AGLView remoteRenderedView : remoteRenderedViews) {
-				remoteRenderedView.destroy();
-			}
-			remoteRenderedViews.clear();
-			hashRemoteRenderingView2RemoteRenderedViews.remove(glView);
+		// Remove this view from the parent's remote rendering list
+		if (parentView != null) {
+			Set<AGLView> parentRemoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews
+					.get(parentView);
+			if (parentRemoteRenderedViews != null)
+				parentRemoteRenderedViews.remove(glView);
 		}
+
+		AGLView topLevelGLView = glView.getTopLevelGLView();
+		if (topLevelGLView != glView) {
+			Set<AGLView> viewsToBeDestroyed = hashTopLevelView2ViewsToBeDestroyed
+					.get(topLevelGLView);
+
+			if (registerAtTopLevelViewForDestruction) {
+				if (viewsToBeDestroyed == null) {
+					viewsToBeDestroyed = new HashSet<AGLView>();
+					hashTopLevelView2ViewsToBeDestroyed.put(topLevelGLView,
+							viewsToBeDestroyed);
+				}
+				viewsToBeDestroyed.add(glView);
+			}
+			Set<AGLView> remoteRenderedViews = hashRemoteRenderingView2RemoteRenderedViews
+					.get(glView);
+
+			if (remoteRenderedViews != null) {
+				Set<AGLView> tempRemoteRenderedViews = new HashSet<AGLView>(
+						remoteRenderedViews);
+				for (AGLView remoteRenderedView : tempRemoteRenderedViews) {
+					// Unregister remote rendered views of glView
+					unregisterGLView(remoteRenderedView,
+							registerAtTopLevelViewForDestruction);
+					// Register them to be destroyed in the next display cycle
+					// of the top level remote rendering view
+					if (registerAtTopLevelViewForDestruction)
+						viewsToBeDestroyed.add(remoteRenderedView);
+				}
+				remoteRenderedViews.clear();
+			}
+		} else {
+			hashTopLevelView2ViewsToBeDestroyed.remove(glView);
+			unregisterGLCanvas(glView.getParentGLCanvas());
+		}
+
+		hashRemoteRenderingView2RemoteRenderedViews.remove(glView);
 
 		ViewClosedEvent event = new ViewClosedEvent(glView);
 		event.setSender(this);

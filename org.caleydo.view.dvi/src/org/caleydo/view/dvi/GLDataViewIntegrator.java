@@ -1218,4 +1218,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 	public boolean isVendingMachineMode() {
 		return isVendingMachineMode;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+		//TODO: delete layout managers
+	}
 }

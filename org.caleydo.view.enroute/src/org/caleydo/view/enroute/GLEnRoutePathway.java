@@ -1366,4 +1366,11 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		mappedDataRenderer.removeDataContainer(dataContainerID);
 	}
 
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+		// TODO: Destroy all the layoutManagers
+		
+	}
+
 }

@@ -1166,4 +1166,9 @@ public class GLRadialHierarchy extends ATableBasedView {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+	}
 }

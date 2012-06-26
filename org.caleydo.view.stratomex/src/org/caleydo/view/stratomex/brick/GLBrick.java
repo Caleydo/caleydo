@@ -1402,4 +1402,9 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 	public String getLabel() {
 		return dataContainer.getLabel();
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		layoutManager.destroy(gl);
+	}
 }

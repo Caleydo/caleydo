@@ -23,6 +23,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import org.caleydo.core.view.ViewManager;
+
 public class BrickColumnManager {
 
 	private final static int MAX_CENTER_BRICK_COLUMNS = 4;
@@ -111,7 +113,7 @@ public class BrickColumnManager {
 		while (brickColumnIterator.hasNext()) {
 			BrickColumn brickColumn = brickColumnIterator.next();
 			if (brickColumn.getDataContainer().getID() == dataContainerID) {
-				brickColumn.destroy();
+				ViewManager.get().unregisterGLView(brickColumn);
 				brickColumnIterator.remove();
 				if (count < centerGroupStartIndex) {
 					centerGroupStartIndex--;

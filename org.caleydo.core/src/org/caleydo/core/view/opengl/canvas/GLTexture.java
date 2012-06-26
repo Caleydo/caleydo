@@ -214,4 +214,10 @@ public class GLTexture extends AGLView implements IDataDomainBasedView<IDataDoma
 	public void setDataDomain(IDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		// TODO Auto-generated method stub
+		
+	}
 }

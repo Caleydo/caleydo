@@ -551,4 +551,11 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 		return null;
 	}
 
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

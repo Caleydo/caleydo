@@ -632,4 +632,10 @@ public class GLKaplanMeier extends ATableBasedView {
 		super.unregisterEventListeners();
 		removeAllPickingListeners();
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+		
+	}
 }

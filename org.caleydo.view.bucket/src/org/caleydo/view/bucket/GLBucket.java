@@ -2122,7 +2122,7 @@ public class GLBucket extends AGLView implements
 	 */
 	public void removeView(AGLView glEventListener) {
 		if (glEventListener != null) {
-			glEventListener.destroy();
+			ViewManager.get().unregisterGLView(glEventListener);
 		}
 	}
 
@@ -2775,12 +2775,11 @@ public class GLBucket extends AGLView implements
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyViewSpecificContent(GL2 gl) {
 		if (selectionTransformer != null) {
 			selectionTransformer.destroy();
 			selectionTransformer = null;
 		}
-		super.destroy();
 	}
 
 	public boolean isGeneMappingEnabled() {

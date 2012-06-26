@@ -494,4 +494,9 @@ public class GLTagCloud extends ATableBasedView {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		layoutManager.destroy(gl);
+	}
 }

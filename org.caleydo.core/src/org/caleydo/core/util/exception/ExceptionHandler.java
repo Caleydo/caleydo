@@ -92,6 +92,6 @@ public class ExceptionHandler {
 			}
 		});
 		GeneralManager.get().getViewManager().unregisterGLCanvas(glEventListener.getParentGLCanvas());
-		GeneralManager.get().getViewManager().unregisterGLView(glEventListener);
+//		GeneralManager.get().getViewManager().unregisterGLView(glEventListener);
 	}
 }

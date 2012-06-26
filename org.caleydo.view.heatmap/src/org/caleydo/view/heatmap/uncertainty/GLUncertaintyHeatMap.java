@@ -480,4 +480,10 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 		int l = level % DATA_UNCERTAIN.length;
 		return DATA_UNCERTAIN[l];
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		layoutManager.destroy(gl);
+		
+	}
 }

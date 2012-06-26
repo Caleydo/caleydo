@@ -270,5 +270,10 @@ public class TreeMapRenderer {
 		textRenderer.renderText(gl, text, x * viewFrustum.getWidth() + 0.03f + viewFrustum.getLeft(),
 				y * viewFrustum.getHeight() + 0.03f + viewFrustum.getBottom(), 0, GeneralRenderStyle.SMALL_FONT_SCALING_FACTOR * scaling, 20);
 	}
+	
+	public void destroy(GL2 gl) {
+		gl.glDeleteLists(treemapList, 1);
+		gl.glDeleteLists(highlightList, 1);
+	}
 
 }

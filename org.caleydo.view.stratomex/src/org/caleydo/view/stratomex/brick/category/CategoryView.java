@@ -194,4 +194,10 @@ public class CategoryView extends ATableBasedView {
 		return null;
 	}
 
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

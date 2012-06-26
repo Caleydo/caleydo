@@ -509,7 +509,6 @@ public class BrickColumn extends ATableBasedView implements
 		for (GLBrick brick : clusterBricks) {
 			GeneralManager.get().getViewManager().unregisterGLView(brick);
 			brick.unregisterEventListeners();
-			brick.destroy();
 		}
 	}
 
@@ -640,7 +639,6 @@ public class BrickColumn extends ATableBasedView implements
 			if (detailBrick != null) {
 				GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
 				detailBrick.unregisterEventListeners();
-				detailBrick.destroy();
 				detailBrick = null;
 			}
 
@@ -971,7 +969,6 @@ public class BrickColumn extends ATableBasedView implements
 		if (detailBrick != null) {
 			GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
 			detailBrick.unregisterEventListeners();
-			detailBrick.destroy();
 			detailBrick = null;
 		}
 
@@ -1013,7 +1010,6 @@ public class BrickColumn extends ATableBasedView implements
 		if (detailBrick != null) {
 			GeneralManager.get().getViewManager().unregisterGLView(detailBrick);
 			detailBrick.unregisterEventListeners();
-			detailBrick.destroy();
 			detailBrick = null;
 			// if we previously had an open detail brick we close it now
 			if (this.expandLeft != expandLeft) {
@@ -1242,5 +1238,11 @@ public class BrickColumn extends ATableBasedView implements
 	public List<AGLView> getRemoteRenderedViews() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		//Nothing to do here
 	}
 }

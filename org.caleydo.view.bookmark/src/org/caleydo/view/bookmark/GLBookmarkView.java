@@ -369,4 +369,11 @@ public class GLBookmarkView extends ATableBasedView {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		// TODO Auto-generated method stub
+		
+	}
 }

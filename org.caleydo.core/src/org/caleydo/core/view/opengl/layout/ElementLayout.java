@@ -174,6 +174,31 @@ public class ElementLayout {
 	}
 
 	/**
+	 * Calls {@link #destroy()} and deletes the display lists of all associated
+	 * {@link LayoutRenderer}s.
+	 * 
+	 * @param gl
+	 */
+	protected void destroy(GL2 gl) {
+		destroy();
+		if (renderer != null)
+			renderer.deleteDisplayList(gl);
+
+		if (foregroundRenderers != null) {
+			for (LayoutRenderer foregroundRenderer : foregroundRenderers) {
+				foregroundRenderer.deleteDisplayList(gl);
+			}
+		}
+
+		if (backgroundRenderers != null) {
+			for (LayoutRenderer foregroundRenderer : backgroundRenderers) {
+				foregroundRenderer.deleteDisplayList(gl);
+			}
+		}
+
+	}
+
+	/**
 	 * Set ids for the layout, which are used for events in case an element
 	 * doesn't fit into a {@link Container}
 	 * 

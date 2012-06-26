@@ -5155,4 +5155,9 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		super.switchDataRepresentation();
 	}
 
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+	}
+
 }

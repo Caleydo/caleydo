@@ -1805,4 +1805,10 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 	public boolean isDataView() {
 		return false;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		gl.glDeleteLists(displayListIndex, 1);
+		gl.glDeleteLists(iGLDisplayListCutOffValue, 1);
+	}
 }

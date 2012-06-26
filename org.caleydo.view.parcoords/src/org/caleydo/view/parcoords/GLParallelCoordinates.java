@@ -1990,9 +1990,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	}
 
 	@Override
-	public void destroy() {
+	public void destroyViewSpecificContent(GL2 gl) {
 		// selectionTransformer.destroy();
-		super.destroy();
 	}
 
 	@Override

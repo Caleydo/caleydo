@@ -425,4 +425,9 @@ public class GLVendingMachine
 	public GLVisBricks20 getVisBricks20View() {
 		return ((GLVisBricks20) getRemoteRenderingGLView());
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		layoutManager.destroy(gl);
+	}
 }

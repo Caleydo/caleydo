@@ -760,4 +760,10 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 		dataContainers.add(dataContainer);
 		return dataContainers;
 	}
+
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		// TODO Auto-generated method stub
+		
+	}
 }

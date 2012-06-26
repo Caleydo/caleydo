@@ -223,6 +223,15 @@ public abstract class ALayoutContainer
 			element.setLayoutManager(layoutManager);
 		}
 	}
+	
+	@Override
+	protected void destroy(GL2 gl) {
+		super.destroy(gl);
+		
+		for(ElementLayout elementLayout : elements) {
+			elementLayout.destroy(gl);
+		}
+	}
 
 	public ArrayList<ElementLayout> getElements() {
 		return elements;

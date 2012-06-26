@@ -584,4 +584,9 @@ public class GLTreeMap extends ATableBasedView {
 		return null;
 	}
 
+	@Override
+	protected void destroyViewSpecificContent(GL2 gl) {
+		renderer.destroy(gl);
+	}
+
 }
