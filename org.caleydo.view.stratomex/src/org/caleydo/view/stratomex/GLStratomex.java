@@ -1292,7 +1292,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 			}
 
 			if (!dimensionGroupExists) {
-				BrickColumn dimensionGroup = (BrickColumn) GeneralManager
+				BrickColumn brickColumn = (BrickColumn) GeneralManager
 						.get()
 						.getViewManager()
 						.createGLView(
@@ -1317,18 +1317,18 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 					}
 				}
 
-				dimensionGroup.setDetailLevel(this.getDetailLevel());
-				dimensionGroup.setBrickConfigurer(brickConfigurer);
-				dimensionGroup.setDataDomain(dataContainer.getDataDomain());
-				dimensionGroup.setDataContainer(dataContainer);
-				dimensionGroup.setRemoteRenderingGLView(this);
-				dimensionGroup.setStratomex(this);
-				dimensionGroup.initialize();
+				brickColumn.setDetailLevel(this.getDetailLevel());
+				brickColumn.setBrickConfigurer(brickConfigurer);
+				brickColumn.setDataDomain(dataContainer.getDataDomain());
+				brickColumn.setDataContainer(dataContainer);
+				brickColumn.setRemoteRenderingGLView(this);
+				brickColumn.setStratomex(this);
+				brickColumn.initialize();
 
-				brickColumns.add(dimensionGroup);
+				brickColumns.add(brickColumn);
 				dataContainers.add(dataContainer);
 
-				uninitializedBrickColumns.add(dimensionGroup);
+				uninitializedBrickColumns.add(brickColumn);
 				// if (dataContainer instanceof PathwayDataContainer) {
 				// dataDomains.add(((PathwayDataContainer) dataContainer)
 				// .getPathwayDataDomain());

@@ -237,6 +237,7 @@ public class ViewNode extends ADefaultTemplateNode {
 		// overviewDataContainerRenderer
 		// .setDataContainers(getDataContainers());
 		// }
+		dataDomains = representedView.getDataDomains();
 		recalculateNodeSize();
 	}
 

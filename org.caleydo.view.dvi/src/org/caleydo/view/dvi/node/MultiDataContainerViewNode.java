@@ -258,6 +258,7 @@ public class MultiDataContainerViewNode extends ViewNode implements IDropArea {
 
 	@Override
 	public void update() {
+		dataDomains = representedView.getDataDomains();
 		retrieveDataContainers();
 		dataContainerListRenderer.setDataContainers(getDataContainers());
 		recalculateNodeSize();

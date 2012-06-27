@@ -361,7 +361,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 			// System.out.println("focusable " + parentGLCanvas.isFocusable());
 
 			GL2 gl = drawable.getGL().getGL2();
-			
+
 			ViewManager.get().executePendingRemoteViewDestruction(gl, this);
 
 			// load identity matrix
@@ -1183,9 +1183,11 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-//		System.out.println("dispose " + label);
+		 System.out.println("dispose " + label);
 
 		GL2 gl = drawable.getGL().getGL2();
+		// First, destroy the remote views, then unregister, otherwise the
+		// remote view destruction would not work
 		ViewManager.get().destroyRemoteViews(gl, this);
 		ViewManager.get().unregisterGLView(this);
 		destroy(gl);
@@ -1198,7 +1200,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param gl
 	 */
 	public final void destroy(GL2 gl) {
-//		System.out.println("destroy " + label);
+		 System.out.println("destroy " + label);
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(uniqueID);

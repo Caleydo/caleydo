@@ -221,16 +221,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 			addDataDomain(dataDomain);
 		}
 
-		// Set<String> allowedViewTypes = new HashSet<String>();
-		// // TODO: Maybe add to AView isMetaView() instead?
-		// allowedViewTypes.add("org.caleydo.view.parcoords");
-		// allowedViewTypes.add("org.caleydo.view.heatmap");
-		// allowedViewTypes.add("org.caleydo.view.heatmap.hierarchical");
-		// allowedViewTypes.add("org.caleydo.view.visbricks");
-		// allowedViewTypes.add("org.caleydo.view.scatterplot");
-		// allowedViewTypes.add("org.caleydo.view.tabular");
-		// allowedViewTypes.add("org.caleydo.view.bucket");
-
 		Collection<AGLView> views = GeneralManager.get().getViewManager().getAllGLViews();
 
 		for (AGLView view : views) {
@@ -766,8 +756,8 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		Set<IDataDomain> dataDomainsOfView = view.getDataDomains();
 		if (dataDomainsOfView != null) {
-			updateGraphEdgesOfViewNode(viewNode);
 			viewNode.update();
+			updateGraphEdgesOfViewNode(viewNode);
 		}
 	}
 	
@@ -898,39 +888,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 		return stringBuffer.toString();
 	}
-
-	// public void createDataContainer(ATableBasedDataDomain dataDomain,
-	// String recordPerspectiveID, String dimensionPerspectiveID,
-	// boolean createDimensionPerspective, DimensionVirtualArray dimensionVA,
-	// Group group) {
-	//
-	// DimensionPerspective dimensionPerspective = null;
-	//
-	// if (createDimensionPerspective) {
-	// dimensionPerspective = new DimensionPerspective(dataDomain);
-	// List<Integer> indices = dimensionVA.getSubList(group.getStartIndex(),
-	// group.getEndIndex() + 1);
-	// PerspectiveInitializationData data = new PerspectiveInitializationData();
-	// data.setData(indices);
-	// dimensionPerspective.init(data);
-	// // TODO: Shall we really set it private?
-	// dimensionPerspective.setPrivate(true);
-	// group.setPerspectiveID(dimensionPerspective.getID());
-	// dataDomain.getTable().registerDimensionPerspective(dimensionPerspective);
-	// } else {
-	// dimensionPerspective = dataDomain.getTable().getDimensionPerspective(
-	// dimensionPerspectiveID);
-	// }
-	//
-	// // FIXME: This should only be a datacontainer in the future
-	// TableBasedDimensionGroupData data = new
-	// TableBasedDimensionGroupData(dataDomain,
-	// dataDomain.getTable().getRecordPerspective(recordPerspectiveID),
-	// dimensionPerspective);
-	// dataDomain.addDimensionGroup(data);
-	//
-	//
-	// }
 
 	/**
 	 * FIXME:
@@ -1107,7 +1064,6 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 
 					}
 				} catch (PartInitException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
 			}
