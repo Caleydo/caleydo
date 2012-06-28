@@ -22,7 +22,7 @@ package org.caleydo.view.grouper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -33,7 +33,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedGrouperView extends ASerializedTopLevelDataView {
+public class SerializedGrouperView extends ASerializedSingleDataContainerBasedView {
 
 	public SerializedGrouperView() {
 	}

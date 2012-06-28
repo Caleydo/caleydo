@@ -27,7 +27,7 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.ITableBasedDataDomainView;
@@ -109,7 +109,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 		if (dataDomain == null)
 			determineDataConfiguration(serializedView);
 		else
-			((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
+			((ASerializedSingleDataContainerBasedView) serializedView).setDataDomainID(dataDomain
 					.getDataDomainID());
 	}
 

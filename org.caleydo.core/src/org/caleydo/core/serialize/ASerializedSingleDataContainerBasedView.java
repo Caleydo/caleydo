@@ -34,19 +34,21 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
  */
 @XmlRootElement
 @XmlType
-public abstract class ASerializedTopLevelDataView
+public abstract class ASerializedSingleDataContainerBasedView
 	extends ASerializedView {
 
 	/**
 	 * DO NOT CALL THIS CONSTRUCTOR! ONLY USED FOR DESERIALIZATION.
 	 */
-	public ASerializedTopLevelDataView() {
+	public ASerializedSingleDataContainerBasedView() {
 	}
 
-	public ASerializedTopLevelDataView(String dataDomainID) {
+	public ASerializedSingleDataContainerBasedView(String dataDomainID) {
 		this.dataDomainID = dataDomainID;
 	}
 
+	
+	
 	/** The ID string of the data domain */
 	protected String dataDomainID;
 

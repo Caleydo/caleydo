@@ -22,7 +22,7 @@ package org.caleydo.view.info.selection;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 
 /**
  * Serialized form of a parallel-coordinates-view.
@@ -33,7 +33,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
 @Deprecated
 @XmlRootElement
 @XmlType
-public class SerializedSelectionInfoView extends ASerializedTopLevelDataView {
+public class SerializedSelectionInfoView extends ASerializedSingleDataContainerBasedView {
 
 	/**
 	 * Default constructor with default initialization

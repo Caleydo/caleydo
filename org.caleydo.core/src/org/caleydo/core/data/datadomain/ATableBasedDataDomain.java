@@ -25,6 +25,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -126,7 +127,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * {@link #createKey(String, String)},
 	 * </p>
 	 */
-	@XmlElement
 	protected HashMap<String, DataContainer> dataContainers = new HashMap<String, DataContainer>();
 
 	protected String recordDenominationSingular = "<not specified>";
@@ -193,6 +193,21 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public ATableBasedDataDomain() {
 		super();
+	}
+
+	/**
+	 * @return the dataContainers, see {@link #dataContainers}
+	 */
+	public HashMap<String, DataContainer> getDataContainers() {
+		return dataContainers;
+	}
+
+	/**
+	 * @param dataContainers
+	 *            setter, see {@link #dataContainers}
+	 */
+	public void setDataContainers(HashMap<String, DataContainer> dataContainers) {
+		this.dataContainers = dataContainers;
 	}
 
 	public ATableBasedDataDomain(String dataDomainType, String dataDomainID) {
@@ -271,7 +286,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		IDType primaryRecordMappingType;
 
 		if (configuration.primaryRecordMappingType != null) {
-//			IDType.getIDType(configuration.primaryRecordMappingType);
+			// IDType.getIDType(configuration.primaryRecordMappingType);
 			primaryRecordMappingType = IDType
 					.getIDType(configuration.primaryRecordMappingType);
 		} else {
@@ -1020,7 +1035,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		for (Integer foreignVAID : foreignRecordVA) {
 			Set<Integer> localVAIDS = recordIDMappingManager.getIDAsSet(
 					foreignRecordVA.getIdType(), recordIDType, foreignVAID);
-			if(localVAIDS == null)
+			if (localVAIDS == null)
 				continue;
 			for (Integer localVAID : localVAIDS) {
 				if (localVAID == null)

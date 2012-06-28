@@ -25,7 +25,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
@@ -71,7 +71,7 @@ public static String VIEW_TYPE = "org.caleydo.view.info.selection";
 		if (dataDomain == null) {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(
-							((ASerializedTopLevelDataView) serializedView)
+							((ASerializedSingleDataContainerBasedView) serializedView)
 									.getDataDomainID());
 			if (dataDomain == null)
 				return;
@@ -110,11 +110,11 @@ public static String VIEW_TYPE = "org.caleydo.view.info.selection";
 
 		this.dataDomain = dataDomain;
 
-		((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
+		((ASerializedSingleDataContainerBasedView) serializedView).setDataDomainID(dataDomain
 				.getDataDomainID());
-		((ASerializedTopLevelDataView) serializedView).setRecordPerspectiveID(dataDomain
+		((ASerializedSingleDataContainerBasedView) serializedView).setRecordPerspectiveID(dataDomain
 				.getTable().getDefaultRecordPerspective().getID());
-		((ASerializedTopLevelDataView) serializedView)
+		((ASerializedSingleDataContainerBasedView) serializedView)
 				.setDimensionPerspectiveID(dataDomain.getTable()
 						.getDefaultDimensionPerspective().getID());
 

@@ -37,7 +37,7 @@ import org.caleydo.core.event.AEventListener;
 import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.filter.listener.FilterUpdateListener;
 import org.eclipse.swt.SWT;
@@ -97,11 +97,11 @@ public class RcpFilterView extends CaleydoRCPViewPart implements IListenerOwner 
 	public void createPartControl(Composite parent) {
 
 		dataDomain = (ATableBasedDataDomain) DataDomainManager.get().getDataDomainByID(
-				((ASerializedTopLevelDataView) serializedView).getDataDomainID());
+				((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID());
 		// FIXME - that is probably null
-		recordPerspectiveID = ((ASerializedTopLevelDataView) serializedView)
+		recordPerspectiveID = ((ASerializedSingleDataContainerBasedView) serializedView)
 				.getRecordPerspectiveID();
-		dimensionPerspectiveID = ((ASerializedTopLevelDataView) serializedView)
+		dimensionPerspectiveID = ((ASerializedSingleDataContainerBasedView) serializedView)
 				.getDimensionPerspectiveID();
 
 		parentComposite = parent;

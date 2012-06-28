@@ -42,7 +42,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.listener.ExtendedSelectionUpdateListener;
 import org.caleydo.core.view.listener.IExtendedSelectionUpdateHandler;
@@ -148,7 +148,7 @@ public abstract class CaleydoRCPViewPart
 	protected void initializeViewWithData() {
 		if (view instanceof IDataDomainBasedView<?>) {
 			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedTopLevelDataView) serializedView).getDataDomainID());
+					((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID());
 			@SuppressWarnings("unchecked") IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
 			dataDomainBasedView.setDataDomain(dataDomain);
 		}
@@ -194,10 +194,10 @@ public abstract class CaleydoRCPViewPart
 	protected void determineDataConfiguration(ASerializedView serializedView,
 			boolean letUserChoose) {
 
-		if (!(serializedView instanceof ASerializedTopLevelDataView))
+		if (!(serializedView instanceof ASerializedSingleDataContainerBasedView))
 			return;
 
-		ASerializedTopLevelDataView serializedTopLevelDataView = (ASerializedTopLevelDataView) serializedView;
+		ASerializedSingleDataContainerBasedView serializedTopLevelDataView = (ASerializedSingleDataContainerBasedView) serializedView;
 
 		// then we check whether the serialization has a data domain already
 		String dataDomainID = serializedTopLevelDataView.getDataDomainID();
@@ -297,9 +297,9 @@ public abstract class CaleydoRCPViewPart
 			catch (JAXBException ex) {
 				throw new RuntimeException("could not deserialize view-xml", ex);
 			}
-			if (serializedView instanceof ASerializedTopLevelDataView
+			if (serializedView instanceof ASerializedSingleDataContainerBasedView
 					&& DataDomainManager.get().getDataDomainByID(
-							((ASerializedTopLevelDataView) serializedView).getDataDomainID()) == null)
+							((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID()) == null)
 				serializedView = null;
 		}
 		// this is the case if either the view has not been saved to a memento

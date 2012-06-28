@@ -22,7 +22,7 @@ package org.caleydo.view.heatmap.uncertainty;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -33,7 +33,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedUncertaintyHeatMapView extends ASerializedTopLevelDataView {
+public class SerializedUncertaintyHeatMapView extends ASerializedSingleDataContainerBasedView {
 
 	public SerializedUncertaintyHeatMapView() {
 	}

@@ -26,7 +26,7 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
@@ -75,7 +75,7 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 		if (dataDomain == null) {
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.getDataDomainByID(
-							((ASerializedTopLevelDataView) serializedView)
+							((ASerializedSingleDataContainerBasedView) serializedView)
 									.getDataDomainID());
 		}
 
@@ -147,10 +147,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			SerializedHistogramView serializedHistogramView = new SerializedHistogramView(
 					dataDomain.getDataDomainID());
 			serializedHistogramView
-					.setDimensionPerspectiveID(((ASerializedTopLevelDataView) serializedView)
+					.setDimensionPerspectiveID(((ASerializedSingleDataContainerBasedView) serializedView)
 							.getDimensionPerspectiveID());
 			serializedHistogramView
-					.setRecordPerspectiveID(((ASerializedTopLevelDataView) serializedView)
+					.setRecordPerspectiveID(((ASerializedSingleDataContainerBasedView) serializedView)
 							.getRecordPerspectiveID());
 
 			histogramView.setExternalSerializedView(serializedHistogramView);
@@ -184,11 +184,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 
 		this.dataDomain = dataDomain;
 
-		((ASerializedTopLevelDataView) serializedView).setDataDomainID(dataDomain
+		((ASerializedSingleDataContainerBasedView) serializedView).setDataDomainID(dataDomain
 				.getDataDomainID());
-		((ASerializedTopLevelDataView) serializedView).setRecordPerspectiveID(dataDomain
+		((ASerializedSingleDataContainerBasedView) serializedView).setRecordPerspectiveID(dataDomain
 				.getTable().getDefaultRecordPerspective().getID());
-		((ASerializedTopLevelDataView) serializedView)
+		((ASerializedSingleDataContainerBasedView) serializedView)
 				.setDimensionPerspectiveID(dataDomain.getTable()
 						.getDefaultDimensionPerspective().getID());
 

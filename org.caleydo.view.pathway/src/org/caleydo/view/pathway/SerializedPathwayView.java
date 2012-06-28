@@ -22,7 +22,7 @@ package org.caleydo.view.pathway;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -33,7 +33,7 @@ import org.caleydo.core.view.opengl.camera.ViewFrustum;
  */
 @XmlRootElement
 @XmlType
-public class SerializedPathwayView extends ASerializedTopLevelDataView {
+public class SerializedPathwayView extends ASerializedSingleDataContainerBasedView {
 
 	/** id of the pathway in caleydo's pathway library, -1 for unknown pathway */
 	private int pathwayID;

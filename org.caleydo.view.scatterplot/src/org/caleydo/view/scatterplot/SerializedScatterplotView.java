@@ -22,7 +22,7 @@ package org.caleydo.view.scatterplot;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 
 /**
  * Serialized form of a scatterplot-view.
@@ -31,7 +31,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedScatterplotView extends ASerializedTopLevelDataView {
+public class SerializedScatterplotView extends ASerializedSingleDataContainerBasedView {
 
 	/**
 	 * Default constructor with default initialization

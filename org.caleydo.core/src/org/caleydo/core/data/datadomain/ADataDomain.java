@@ -22,6 +22,7 @@ package org.caleydo.core.data.datadomain;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -53,11 +54,12 @@ public abstract class ADataDomain
 	@XmlTransient
 	protected Set<IDCategory> idCategories = new HashSet<IDCategory>();
 
-	/**
-	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
-	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
-	 * expression features are not available.
-	 */
+//	/**
+//	 * This mode determines whether the user can load and work with gene expression data or otherwise if an
+//	 * not further specified data set is loaded. In the case of the unspecified data set some specialized gene
+//	 * expression features are not available.
+//	 */
+	
 	protected String dataDomainID = "unspecified";
 
 	protected EIconTextures icon = EIconTextures.NO_ICON_AVAILABLE;
@@ -98,6 +100,7 @@ public abstract class ADataDomain
 	}
 
 	@Override
+	@XmlID
 	public String getDataDomainID() {
 		return dataDomainID;
 	}

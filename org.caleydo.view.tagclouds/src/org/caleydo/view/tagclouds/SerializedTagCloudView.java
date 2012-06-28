@@ -22,7 +22,7 @@ package org.caleydo.view.tagclouds;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
@@ -31,7 +31,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedTagCloudView extends ASerializedTopLevelDataView {
+public class SerializedTagCloudView extends ASerializedSingleDataContainerBasedView {
 
 	/**
 	 * Default constructor with default initialization

@@ -26,7 +26,7 @@ import javax.xml.bind.annotation.XmlElementWrapper;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -39,7 +39,7 @@ import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedBucketView extends ASerializedTopLevelDataView {
+public class SerializedBucketView extends ASerializedSingleDataContainerBasedView {
 
 	/** @see org.caleydo.core.org.caleydo.core.view.opengl.canvas.AGLViewBrowser.pathwayTexturesEnabled */
 	private boolean pathwayTexturesEnabled;

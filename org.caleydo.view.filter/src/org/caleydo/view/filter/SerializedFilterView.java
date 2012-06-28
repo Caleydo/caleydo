@@ -22,7 +22,7 @@ package org.caleydo.view.filter;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 
 /**
  * Serialized filter view view.
@@ -31,7 +31,7 @@ import org.caleydo.core.serialize.ASerializedTopLevelDataView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedFilterView extends ASerializedTopLevelDataView {
+public class SerializedFilterView extends ASerializedSingleDataContainerBasedView {
 
 	/**
 	 * Default constructor with default initialization

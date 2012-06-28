@@ -25,7 +25,9 @@ package org.caleydo.core.data.container;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -92,6 +94,8 @@ public class DataContainer {
 	/** The unique id of the data container */
 	private int id;
 
+	/** The data domain use in this data container */
+	@XmlIDREF
 	protected ATableBasedDataDomain dataDomain;
 
 	/**
@@ -177,6 +181,7 @@ public class DataContainer {
 		return id;
 	}
 
+	@XmlTransient
 	public ATableBasedDataDomain getDataDomain() {
 		return dataDomain;
 	}
@@ -351,7 +356,6 @@ public class DataContainer {
 		RecordGroupList groupList = recordVA.getGroupList();
 		groupList.updateGroupInfo();
 
-		
 		for (Group group : groupList) {
 			if (groupList.size() == 1 && group.isLabelDefault())
 				group.setLabel(getLabel(), isDefaultLabel());
@@ -420,4 +424,7 @@ public class DataContainer {
 		return dimensionSubDataContainers;
 	}
 
+//	public void afterUnmarshal(Unmarshaller u, Object parent) {
+//		this.dataDomain = (ATableBasedDataDomain) parent;
+//	}
 }

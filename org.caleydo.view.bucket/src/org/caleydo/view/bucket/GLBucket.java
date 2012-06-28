@@ -58,7 +58,7 @@ import org.caleydo.core.event.view.remote.ToggleZoomEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
@@ -2490,7 +2490,7 @@ public class GLBucket extends AGLView implements
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
-							((ASerializedTopLevelDataView) serView).getDataDomainID()));
+							((ASerializedSingleDataContainerBasedView) serView).getDataDomainID()));
 		}
 
 		if (glView instanceof ATableBasedView) {

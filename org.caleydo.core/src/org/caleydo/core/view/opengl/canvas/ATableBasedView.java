@@ -57,7 +57,7 @@ import org.caleydo.core.event.view.tablebased.RedrawViewEvent;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.ITableBasedDataDomainView;
@@ -196,8 +196,8 @@ public abstract class ATableBasedView extends AGLView implements
 
 	@Override
 	public void initFromSerializableRepresentation(ASerializedView serialzedView) {
-		if (serialzedView instanceof ASerializedTopLevelDataView) {
-			ASerializedTopLevelDataView topSerializedView = (ASerializedTopLevelDataView) serialzedView;
+		if (serialzedView instanceof ASerializedSingleDataContainerBasedView) {
+			ASerializedSingleDataContainerBasedView topSerializedView = (ASerializedSingleDataContainerBasedView) serialzedView;
 			dataContainer = dataDomain.getDataContainer(
 					topSerializedView.getRecordPerspectiveID(),
 					topSerializedView.getDimensionPerspectiveID());

@@ -19,14 +19,14 @@
  *******************************************************************************/
 package org.caleydo.view.tabular;
 
-import org.caleydo.core.serialize.ASerializedTopLevelDataView;
+import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 
 /**
  * Serialized form of a tabular-browser view.
  * 
  * @author Werner Puff
  */
-public class SerializedTabularDataView extends ASerializedTopLevelDataView {
+public class SerializedTabularDataView extends ASerializedSingleDataContainerBasedView {
 
 	public SerializedTabularDataView() {
 	}
