@@ -21,12 +21,11 @@ package org.caleydo.core.startup;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.gui.perspective.PartListener;
-import org.caleydo.core.manager.GeneralManager;
-import org.caleydo.core.view.CaleydoRCPViewPart;
 import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.MenuManager;
 import org.eclipse.ui.IViewReference;
+import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.IWorkbenchPart;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
@@ -127,20 +126,11 @@ public class ApplicationWorkbenchWindowAdvisor
 		IViewReference[] views = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
 				.getActivePage().getViewReferences();
 
-		IWorkbenchPart activeView = PlatformUI.getWorkbench().getActiveWorkbenchWindow()
-				.getActivePage().getActivePart();
-
 		try {
 			for (IViewReference view : views) {
-
+				
 				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView(view.getId());
-			}
-
-			if (activeView instanceof CaleydoRCPViewPart) {
-				// Make sure that the active part will remain active
-				PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-						.showView(((CaleydoRCPViewPart) activeView).getSite().getId());
+						.showView(view.getId(), view.getSecondaryId(), IWorkbenchPage.VIEW_VISIBLE);
 			}
 		}
 		catch (PartInitException e) {
