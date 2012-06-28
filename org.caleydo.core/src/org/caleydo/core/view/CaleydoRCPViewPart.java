@@ -42,6 +42,7 @@ import org.caleydo.core.event.EventPublisher;
 import org.caleydo.core.event.IListenerOwner;
 import org.caleydo.core.event.view.tablebased.SelectionUpdateEvent;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.listener.ExtendedSelectionUpdateListener;
@@ -300,7 +301,14 @@ public abstract class CaleydoRCPViewPart
 			if (serializedView instanceof ASerializedSingleDataContainerBasedView
 					&& DataDomainManager.get().getDataDomainByID(
 							((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID()) == null)
+			{
 				serializedView = null;
+			}
+			if(serializedView instanceof ASerializedMultiDataContainerBasedView)
+			{
+				ASerializedMultiDataContainerBasedView v = (ASerializedMultiDataContainerBasedView) serializedView;
+//				v.getDataDomainAndDataContainerKeys();
+			}
 		}
 		// this is the case if either the view has not been saved to a memento
 		// before, or the configuration
@@ -329,7 +337,7 @@ public abstract class CaleydoRCPViewPart
 
 		StringWriter xmlOutputWriter = new StringWriter();
 		try {
-			marshaller.marshal(serializedView, xmlOutputWriter);
+			marshaller.marshal(getSerializedView(), xmlOutputWriter);
 			String xmlOutput = xmlOutputWriter.getBuffer().toString();
 			memento.putString("serialized", xmlOutput);
 		}

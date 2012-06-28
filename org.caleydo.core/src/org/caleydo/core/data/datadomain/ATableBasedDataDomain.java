@@ -376,8 +376,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public DataContainer getDataContainer(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
-		DataContainer container = dataContainers.get(createKey(recordPerspectiveID,
-				dimensionPerspectiveID));
+		DataContainer container = dataContainers.get(DataContainer.createKey(
+				recordPerspectiveID, dimensionPerspectiveID));
 		if (container == null) {
 			RecordPerspective recordPerspective = table
 					.getRecordPerspective(recordPerspectiveID);
@@ -395,7 +395,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 
 			container = new DataContainer(this, recordPerspective, dimensionPerspective);
 
-			dataContainers.put(createKey(recordPerspectiveID, dimensionPerspectiveID),
+			dataContainers.put(
+					DataContainer.createKey(recordPerspectiveID, dimensionPerspectiveID),
 					container);
 			DataDomainUpdateEvent event = new DataDomainUpdateEvent(this);
 			event.setSender(this);
@@ -403,6 +404,16 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		}
 
 		return container;
+	}
+
+	/**
+	 * Returns a data container based on its key
+	 * 
+	 * @param dataContainerKey
+	 * @return
+	 */
+	public DataContainer getDataContainer(String dataContainerKey) {
+		return dataContainers.get(dataContainerKey);
 	}
 
 	/**
@@ -415,7 +426,8 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public boolean hasDataContainer(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
-		return dataContainers.get(createKey(recordPerspectiveID, dimensionPerspectiveID)) != null;
+		return dataContainers.get(DataContainer.createKey(recordPerspectiveID,
+				dimensionPerspectiveID)) != null;
 	}
 
 	/**
@@ -423,10 +435,6 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 */
 	public Collection<DataContainer> getAllDataContainers() {
 		return dataContainers.values();
-	}
-
-	private String createKey(String recordPerspectiveID, String dimensionPerspectiveID) {
-		return recordPerspectiveID + "_" + dimensionPerspectiveID;
 	}
 
 	/**

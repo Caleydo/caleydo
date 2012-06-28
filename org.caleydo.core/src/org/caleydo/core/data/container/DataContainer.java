@@ -25,7 +25,6 @@ package org.caleydo.core.data.container;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.Unmarshaller;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
 import javax.xml.bind.annotation.XmlTransient;
@@ -93,6 +92,8 @@ public class DataContainer {
 	private static int idCounter;
 	/** The unique id of the data container */
 	private int id;
+
+	private String dataContainerKey;
 
 	/** The data domain use in this data container */
 	@XmlIDREF
@@ -166,7 +167,7 @@ public class DataContainer {
 		this.dataDomain = dataDomain;
 		this.recordPerspective = recordPerspective;
 		this.dimensionPerspective = dimensionPerspective;
-
+		createKey();
 	}
 
 	{
@@ -179,6 +180,13 @@ public class DataContainer {
 	 */
 	public int getID() {
 		return id;
+	}
+
+	/**
+	 * @return the dataContainerKey, see {@link #dataContainerKey}
+	 */
+	public String getDataContainerKey() {
+		return dataContainerKey;
 	}
 
 	@XmlTransient
@@ -202,7 +210,11 @@ public class DataContainer {
 	 *            setter, see {@link #recordPerspective}
 	 */
 	public void setRecordPerspective(RecordPerspective recordPerspective) {
+		if (this.recordPerspective != null)
+			throw new IllegalStateException(
+					"Illegal to change perspectives of DataContainers.");
 		this.recordPerspective = recordPerspective;
+		createKey();
 	}
 
 	/**
@@ -217,7 +229,11 @@ public class DataContainer {
 	 *            setter, see {@link #dimensionPerspective}
 	 */
 	public void setDimensionPerspective(DimensionPerspective dimensionPerspective) {
+		if (this.dimensionPerspective != null)
+			throw new IllegalStateException(
+					"Illegal to change perspectives of DataContainers.");
 		this.dimensionPerspective = dimensionPerspective;
+		createKey();
 	}
 
 	/**
@@ -424,7 +440,21 @@ public class DataContainer {
 		return dimensionSubDataContainers;
 	}
 
-//	public void afterUnmarshal(Unmarshaller u, Object parent) {
-//		this.dataDomain = (ATableBasedDataDomain) parent;
-//	}
+	// public void afterUnmarshal(Unmarshaller u, Object parent) {
+	// this.dataDomain = (ATableBasedDataDomain) parent;
+	// }
+	/**
+	 * Creates the {@link #dataContainerKey} if both {@link #recordPerspective}
+	 * and {@link #dimensionPerspective} are already initialized.
+	 */
+	private void createKey() {
+		if (recordPerspective != null && dimensionPerspective != null)
+			dataContainerKey = createKey(recordPerspective.getID(),
+					dimensionPerspective.getID());
+	}
+
+	public static String createKey(String recordPerspectiveID,
+			String dimensionPerspectiveID) {
+		return recordPerspectiveID + "_" + dimensionPerspectiveID;
+	}
 }

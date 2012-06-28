@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -28,6 +28,7 @@ import javax.media.opengl.GLProfile;
 import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.caleydo.core.view.opengl.canvas.remote.IGLRemoteRenderingView;
 import org.eclipse.swt.SWT;
@@ -41,8 +42,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Werner Puff
  * @author Alexander Lex
  */
-public abstract class ARcpGLViewPart
-	extends CaleydoRCPViewPart {
+public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 
 	protected GLCanvas glCanvas;
 	protected MinimumSizeComposite minSizeComposite;
@@ -94,7 +94,7 @@ public abstract class ARcpGLViewPart
 	public void dispose() {
 		super.dispose();
 		GeneralManager.get().getViewManager().unregisterRCPView(this, view);
-//		getGLView().destroy();
+		// getGLView().destroy();
 	}
 
 	@Override
@@ -107,7 +107,8 @@ public abstract class ARcpGLViewPart
 		List<IView> views = new ArrayList<IView>();
 		views.add(getGLView());
 		if (getGLView() instanceof IGLRemoteRenderingView) {
-			List<AGLView> renderedViews = ((IGLRemoteRenderingView) getGLView()).getRemoteRenderedViews();
+			List<AGLView> renderedViews = ((IGLRemoteRenderingView) getGLView())
+					.getRemoteRenderedViews();
 			if (renderedViews != null) {
 				for (AGLView view : renderedViews) {
 					views.add(view);
@@ -132,4 +133,8 @@ public abstract class ARcpGLViewPart
 	 * @return rcp-ID of the view
 	 */
 	public abstract String getViewGUIID();
+
+	public ASerializedView getSerializedView() {
+		return getGLView().getSerializableRepresentation();
+	}
 }

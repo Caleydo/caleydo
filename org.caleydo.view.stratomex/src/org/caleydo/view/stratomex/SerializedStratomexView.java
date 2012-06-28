@@ -25,6 +25,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
@@ -34,9 +35,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedStratomexView extends ASerializedView {
-
-	private List<DataContainer> serializedDataContainers;
+public class SerializedStratomexView extends ASerializedMultiDataContainerBasedView {
 
 	/**
 	 * Default constructor with default initialization
@@ -47,8 +46,8 @@ public class SerializedStratomexView extends ASerializedView {
 	public SerializedStratomexView() {
 	}
 
-	public SerializedStratomexView(GLStratomex visBricks) {
-		serializedDataContainers = visBricks.getDataContainers();
+	public SerializedStratomexView(GLStratomex stratomeX) {
+		super(stratomeX);
 	}
 
 	@Override
@@ -59,21 +58,6 @@ public class SerializedStratomexView extends ASerializedView {
 	@Override
 	public String getViewClassType() {
 		return GLStratomex.class.getName();
-	}
-
-	/**
-	 * @return the serializedDataContainers, see
-	 *         {@link #serializedDataContainers}
-	 */
-	public List<DataContainer> getSerializedDataContainers() {
-		return serializedDataContainers;
-	}
-	
-	/**
-	 * @param serializedDataContainers setter, see {@link #serializedDataContainers}
-	 */
-	public void setSerializedDataContainers(List<DataContainer> serializedDataContainers) {
-		this.serializedDataContainers = serializedDataContainers;
 	}
 
 }

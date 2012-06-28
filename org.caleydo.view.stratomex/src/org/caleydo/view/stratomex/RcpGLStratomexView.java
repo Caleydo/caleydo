@@ -19,16 +19,13 @@
  *******************************************************************************/
 package org.caleydo.view.stratomex;
 
-import java.util.List;
-
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
-import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
 
@@ -62,23 +59,29 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 		view = stratomex;
 		view.initFromSerializableRepresentation(serializedView);
 		// view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
 
-			SerializedStratomexView serializedStratomexView = (SerializedStratomexView) serializedView;
+		// IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
+		// ((ASerializedSingleDataContainerBasedView) serializedView)
+		// .getDataDomainID());
+		// @SuppressWarnings("unchecked")
+		// IDataDomainBasedView<IDataDomain> dataDomainBasedView =
+		// (IDataDomainBasedView<IDataDomain>) view;
+		// dataDomainBasedView.setDataDomain(dataDomain);
 
-			if (serializedStratomexView.getSerializedDataContainers() != null) {
+		SerializedStratomexView serializedStratomexView = (SerializedStratomexView) serializedView;
 
-				List<DataContainer> dataContainers = serializedStratomexView
-						.getSerializedDataContainers();
-				stratomex.addDataContainers(dataContainers, null);
+		if (serializedStratomexView.getDataDomainAndDataContainerKeys() != null) {
+
+			for (Pair<String, String> data : serializedStratomexView
+					.getDataDomainAndDataContainerKeys()) {
+				ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+						.get().getDataDomainByID(data.getFirst());
+				DataContainer dataContainer = ((ATableBasedDataDomain) dataDomain)
+						.getDataContainer(data.getSecond());
+				stratomex.addDataContainer(dataContainer);
 			}
-
 		}
+
 		view.initialize();
 		createPartControlGL();
 	}

@@ -31,6 +31,7 @@ import org.caleydo.core.data.perspective.DimensionPerspective;
  * (In contrast to container views that hold multiple of those views).
  * 
  * @author Marc Streit
+ * @author Alexander Lex
  */
 @XmlRootElement
 @XmlType
