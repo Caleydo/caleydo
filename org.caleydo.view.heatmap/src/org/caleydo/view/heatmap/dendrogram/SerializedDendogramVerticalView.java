@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of a dengrogram view.
@@ -39,8 +40,8 @@ public class SerializedDendogramVerticalView extends ASerializedSingleDataContai
 	public SerializedDendogramVerticalView() {
 	}
 
-	public SerializedDendogramVerticalView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedDendogramVerticalView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

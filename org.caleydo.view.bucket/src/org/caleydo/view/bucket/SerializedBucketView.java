@@ -28,6 +28,7 @@ import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.view.heatmap.heatmap.SerializedHeatMapView;
@@ -64,19 +65,15 @@ public class SerializedBucketView extends ASerializedSingleDataContainerBasedVie
 	 * parameters.
 	 */
 	public SerializedBucketView() {
-	}
-
-	public SerializedBucketView(String dataDomainType) {
-		super(dataDomainType);
 		init();
 	}
 
-	@Override
-	public void setDataDomainID(String dataDomainType) {
-		super.setDataDomainID(dataDomainType);
+	public SerializedBucketView(ISingleDataContainerBasedView view) {
+		super(view);
 		init();
-
 	}
+
+
 
 	private void init() {
 		setPathwayTexturesEnabled(true);
@@ -86,7 +83,7 @@ public class SerializedBucketView extends ASerializedSingleDataContainerBasedVie
 
 		ArrayList<ASerializedView> remoteViews = new ArrayList<ASerializedView>();
 
-		SerializedHeatMapView heatMap = new SerializedHeatMapView(dataDomainID);
+		SerializedHeatMapView heatMap = new SerializedHeatMapView(-1, dataDomainID, dataContainerKey);
 		remoteViews.add(heatMap);
 
 		ArrayList<ASerializedView> focusLevel = new ArrayList<ASerializedView>();

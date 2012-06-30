@@ -47,7 +47,7 @@ public class RcpGLParCoordsView extends ARcpGLViewPart {
 		createGLCanvas();
 		view = new GLParallelCoordinates(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
-		initializeViewWithData();
+		initializeView();
 		createPartControlGL();
 	}
 

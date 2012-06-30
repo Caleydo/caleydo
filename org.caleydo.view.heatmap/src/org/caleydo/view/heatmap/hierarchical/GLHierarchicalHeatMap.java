@@ -877,7 +877,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!(dataContainer.getDimensionPerspective().getID()
+		if (!(dataContainer.getDimensionPerspective().getPerspectiveID()
 				.equals(dimensionPerspectiveID)))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
@@ -887,7 +887,8 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
-		if (!(dataContainer.getRecordPerspective().getID().equals(recordPerspectiveID)))
+		if (!(dataContainer.getRecordPerspective().getPerspectiveID()
+				.equals(recordPerspectiveID)))
 			return;
 		super.handleRecordVAUpdate(recordPerspectiveID);
 
@@ -3372,7 +3373,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 		data.setData(embeddedRecords);
 		glHeatMapView.getDataContainer().getRecordPerspective().init(data);
 		glHeatMapView.handleRecordVAUpdate(glHeatMapView.getDataContainer()
-				.getRecordPerspective().getID());
+				.getRecordPerspective().getPerspectiveID());
 
 	}
 
@@ -4527,8 +4528,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHierarchicalHeatMapView serializedForm = new SerializedHierarchicalHeatMapView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+				this);
 		return serializedForm;
 	}
 
@@ -4915,7 +4915,7 @@ public class GLHierarchicalHeatMap extends ATableBasedView implements
 
 		Tree<ClusterNode> tree = null;
 
-		if (perspectiveID.equals(dataContainer.getRecordPerspective().getID())) {
+		if (perspectiveID.equals(dataContainer.getRecordPerspective().getPerspectiveID())) {
 			dataContainer.getRecordPerspective().getVirtualArray()
 					.setGroupList(groupList);
 			tree = dataContainer.getRecordPerspective().getTree();

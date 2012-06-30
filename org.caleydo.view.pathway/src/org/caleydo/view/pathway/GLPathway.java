@@ -88,7 +88,7 @@ import org.caleydo.datadomain.pathway.graph.PathwayPath;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.pathway.event.EnRoutePathEvent;
@@ -381,8 +381,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 
 				// Load embedded pathway
 				if (vertexRep.getType() == EPathwayVertexType.map) {
-					PathwayGraph pathway = PathwayManager.get().searchPathwayByName(
-							vertexRep.getName(), PathwayDatabaseType.KEGG);
+					PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(
+							vertexRep.getName(), EPathwayDatabaseType.KEGG);
 
 					if (pathway != null) {
 						LoadPathwayEvent event = new LoadPathwayEvent();
@@ -428,8 +428,8 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 				if (vertexRep.getType() == EPathwayVertexType.map) {
 
 					LoadPathwaysByPathwayItem menuItem = new LoadPathwaysByPathwayItem(
-							PathwayManager.get().searchPathwayByName(vertexRep.getName(),
-									PathwayDatabaseType.KEGG), dataDomain
+							PathwayManager.get().getPathwayByTitle(vertexRep.getName(),
+									EPathwayDatabaseType.KEGG), dataDomain
 									.getDataDomainID());
 					contextMenuCreator.addContextMenuItem(menuItem);
 
@@ -957,7 +957,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 		float fPathwayScalingFactor = 0;
 		float fPadding = 0.98f;
 
-		if (pathway.getType().equals(PathwayDatabaseType.BIOCARTA)) {
+		if (pathway.getType().equals(EPathwayDatabaseType.BIOCARTA)) {
 			fPathwayScalingFactor = 5;
 		} else {
 			fPathwayScalingFactor = 3.2f;
@@ -1097,7 +1097,7 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 			return;
 
 		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective()
-				.getID(), pathwayDataDomain.getDavidIDType());
+				.getPerspectiveID(), pathwayDataDomain.getDavidIDType());
 
 		for (PathwayVertexRep vertexRep : pathway.vertexSet()) {
 			for (Integer davidID : vertexRep.getDavidIDs()) {
@@ -1187,11 +1187,13 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedPathwayView serializedForm = new SerializedPathwayView(
-				pathwayDataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
-
+				pathwayDataDomain.getDataDomainID(), this);
+		// FIXME this needs to be reviewed - what is the unique, serializable ID
+		// of the pathway here?
 		if (pathway != null)
 			serializedForm.setPathwayID(pathway.getID());
+
+		System.out.println("Serializing Pathway: review me!");
 
 		return serializedForm;
 	}
@@ -1304,72 +1306,71 @@ public class GLPathway extends ATableBasedView implements ISelectionUpdateHandle
 					.hashCode());
 			metaboliteSelectionManager.triggerSelectionUpdateEvent();
 		}
-		if (isShiftKeyDown)
-		{
+		if (isShiftKeyDown) {
 			if (previouslySelectedVertexRep != null
 					&& selectionType == SelectionType.SELECTION) {
-	
-					if (!isControlKeyDown) {
-						System.out.println("!isControlKeyDown");
-						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-								pathway, previouslySelectedVertexRep, MAX_PATHS);
-		
-						if (vertexRep != previouslySelectedVertexRep)
-							allPaths = pathAlgo.getPaths(vertexRep);
-		
-						if (allPaths != null && allPaths.size() > 0) {
-							// selectedPath = allPaths.get(0);
-							if (allPaths.size() <= selectedPathID)
-								selectedPathID = 0;
-							selectedPath = allPaths.get(selectedPathID);
-							// allPaths.clear();
-							selectedPathID = 0;
-							allPaths.add(selectedPath);
-							triggerPathUpdate();
-							isBubbleTextureDirty = true;
-						}
-					} else if (selectedPath != null) {
-						System.out.println("isControlKeyDown");
-						KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
-								pathway, selectedPath.getStartVertex(), MAX_PATHS);
+
+				if (!isControlKeyDown) {
+					System.out.println("!isControlKeyDown");
+					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+							pathway, previouslySelectedVertexRep, MAX_PATHS);
+
+					if (vertexRep != previouslySelectedVertexRep)
 						allPaths = pathAlgo.getPaths(vertexRep);
-						if (allPaths != null && allPaths.size() > 0) {
-							// selectedPath = allPaths.get(0);
-							if (allPaths.size() <= selectedPathID)
-								selectedPathID = 0;
-							selectedPath = allPaths.get(selectedPathID);
-							allPaths.clear();
+
+					if (allPaths != null && allPaths.size() > 0) {
+						// selectedPath = allPaths.get(0);
+						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
-							allPaths.add(selectedPath);
-							triggerPathUpdate();
-							isBubbleTextureDirty = true;
-						}
-					}			
-	
+						selectedPath = allPaths.get(selectedPathID);
+						// allPaths.clear();
+						selectedPathID = 0;
+						allPaths.add(selectedPath);
+						triggerPathUpdate();
+						isBubbleTextureDirty = true;
+					}
+				} else if (selectedPath != null) {
+					System.out.println("isControlKeyDown");
+					KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
+							pathway, selectedPath.getStartVertex(), MAX_PATHS);
+					allPaths = pathAlgo.getPaths(vertexRep);
+					if (allPaths != null && allPaths.size() > 0) {
+						// selectedPath = allPaths.get(0);
+						if (allPaths.size() <= selectedPathID)
+							selectedPathID = 0;
+						selectedPath = allPaths.get(selectedPathID);
+						allPaths.clear();
+						selectedPathID = 0;
+						allPaths.add(selectedPath);
+						triggerPathUpdate();
+						isBubbleTextureDirty = true;
+					}
+				}
+
 			} else if (previouslySelectedVertexRep != null
 					&& selectionType == SelectionType.MOUSE_OVER) {
-	
+
 				KShortestPaths<PathwayVertexRep, DefaultEdge> pathAlgo = new KShortestPaths<PathwayVertexRep, DefaultEdge>(
 						pathway, previouslySelectedVertexRep, MAX_PATHS);
-	
+
 				if (vertexRep != previouslySelectedVertexRep) {
 					List<GraphPath<PathwayVertexRep, DefaultEdge>> mouseOverPaths = pathAlgo
 							.getPaths(vertexRep);
-	
+
 					if (mouseOverPaths != null && mouseOverPaths.size() > 0) {
-	
+
 						allPaths = mouseOverPaths;
 						if (allPaths.size() <= selectedPathID)
 							selectedPathID = 0;
 						selectedPath = allPaths.get(selectedPathID);
 						if (selectedPath != null && isControlKeyDown)
 							allPaths.add(selectedPath);
-	
+
 						isBubbleTextureDirty = true;
 					}
 				}
 			}
-		}//END if (isShiftKey)
+		}// END if (isShiftKey)
 
 		// Add new vertex to internal selection manager
 		geneSelectionManager.addToType(selectionType, vertexRep.getID());

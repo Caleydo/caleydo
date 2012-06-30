@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.CameraProjectionMode;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 
@@ -38,8 +39,8 @@ public class SerializedUncertaintyHeatMapView extends ASerializedSingleDataConta
 	public SerializedUncertaintyHeatMapView() {
 	}
 
-	public SerializedUncertaintyHeatMapView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedUncertaintyHeatMapView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

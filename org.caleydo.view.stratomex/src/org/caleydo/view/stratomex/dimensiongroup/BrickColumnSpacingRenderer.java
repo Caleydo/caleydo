@@ -135,14 +135,14 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 			return;
 
 		SimilarityMap similarityMap = relationAnalyzer.getSimilarityMap(leftDimGroup
-				.getDataContainer().getRecordPerspective().getID());
+				.getDataContainer().getRecordPerspective().getPerspectiveID());
 
 		if (similarityMap == null)
 			return;
 
 		VASimilarity<RecordVirtualArray, RecordGroupList> vaSimilarityMap = similarityMap
 				.getVASimilarity(rightDimGroup.getDataContainer().getRecordPerspective()
-						.getID());
+						.getPerspectiveID());
 		if (vaSimilarityMap == null)
 			return;
 
@@ -158,7 +158,7 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> leftGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(leftDimGroup.getDataContainer()
-							.getRecordPerspective().getID(), leftBrick.getDataContainer()
+							.getRecordPerspective().getPerspectiveID(), leftBrick.getDataContainer()
 							.getRecordGroup().getGroupIndex());
 
 			float[] leftSimilarities = leftGroupSimilarity.getSimilarities();
@@ -210,7 +210,7 @@ public class BrickColumnSpacingRenderer extends LayoutRenderer implements IDropA
 
 			GroupSimilarity<RecordVirtualArray, RecordGroupList> rightGroupSimilarity = vaSimilarityMap
 					.getGroupSimilarity(rightDimGroup.getDataContainer()
-							.getRecordPerspective().getID(), rightBrick
+							.getRecordPerspective().getPerspectiveID(), rightBrick
 							.getDataContainer().getRecordGroup().getGroupIndex());
 
 			float[] rightSimilarities = rightGroupSimilarity.getSimilarities();

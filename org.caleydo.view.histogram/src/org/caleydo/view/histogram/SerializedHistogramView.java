@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -36,8 +37,8 @@ public class SerializedHistogramView extends ASerializedSingleDataContainerBased
 	public SerializedHistogramView() {
 	}
 
-	public SerializedHistogramView(String dataDomainID) {
-		super(dataDomainID);
+	public SerializedHistogramView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

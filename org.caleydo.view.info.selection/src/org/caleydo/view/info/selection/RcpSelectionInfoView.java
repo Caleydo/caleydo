@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -24,9 +24,9 @@ import javax.xml.bind.JAXBException;
 
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.IDataDomainBasedView;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
@@ -40,7 +40,7 @@ import org.eclipse.swt.widgets.Composite;
 public class RcpSelectionInfoView extends CaleydoRCPViewPart implements
 		IDataDomainBasedView<ATableBasedDataDomain> {
 
-public static String VIEW_TYPE = "org.caleydo.view.info.selection";
+	public static String VIEW_TYPE = "org.caleydo.view.info.selection";
 
 	private ATableBasedDataDomain dataDomain;
 
@@ -109,14 +109,11 @@ public static String VIEW_TYPE = "org.caleydo.view.info.selection";
 			return;
 
 		this.dataDomain = dataDomain;
+		ASerializedSingleDataContainerBasedView serializedSDView = ((ASerializedSingleDataContainerBasedView) serializedView);
 
-		((ASerializedSingleDataContainerBasedView) serializedView).setDataDomainID(dataDomain
-				.getDataDomainID());
-		((ASerializedSingleDataContainerBasedView) serializedView).setRecordPerspectiveID(dataDomain
-				.getTable().getDefaultRecordPerspective().getID());
-		((ASerializedSingleDataContainerBasedView) serializedView)
-				.setDimensionPerspectiveID(dataDomain.getTable()
-						.getDefaultDimensionPerspective().getID());
+		serializedSDView.setDataDomainID(dataDomain.getDataDomainID());
+		serializedSDView.setDataContainerKey(dataDomain.getDefaultDataContainer()
+				.getDataContainerKey());
 
 		parentComposite.dispose();
 		createPartControl(parent);

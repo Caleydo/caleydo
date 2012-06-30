@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized <INSERT VIEW NAME> view.
@@ -39,8 +40,8 @@ public class SerializedTagCloudView extends ASerializedSingleDataContainerBasedV
 	public SerializedTagCloudView() {
 	}
 
-	public SerializedTagCloudView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedTagCloudView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

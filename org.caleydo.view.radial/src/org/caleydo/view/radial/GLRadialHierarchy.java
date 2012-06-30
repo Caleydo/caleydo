@@ -777,8 +777,7 @@ public class GLRadialHierarchy extends ATableBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedRadialHierarchyView serializedForm = new SerializedRadialHierarchyView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+				this);
 		serializedForm.setMaxDisplayedHierarchyDepth(iMaxDisplayedHierarchyDepth);
 		serializedForm.setNewSelection(bIsNewSelection);
 		serializedForm.setDefaultDrawingStrategyType(drawingStrategyManager

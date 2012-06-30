@@ -203,8 +203,8 @@ public class CreateKaplanMeierSmallMultiplesGroupDialog
 				dataDomain.getTable().registerRecordPerspective(convertedRecordPerspective);
 
 				DataContainer kaplanMeierDimensionGroup = dataDomain
-						.getDataContainer(convertedRecordPerspective.getID(),
-								singleDimensionPerspective.getID());
+						.getDataContainer(convertedRecordPerspective.getPerspectiveID(),
+								singleDimensionPerspective.getPerspectiveID());
 
 				kaplanMeierDimensionGroupDataList.add(kaplanMeierDimensionGroup);
 				hashConvertedRecordPerspectiveToOrginalRecordPerspective.put(

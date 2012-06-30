@@ -28,7 +28,7 @@ import org.caleydo.core.data.perspective.RecordPerspective;
 
 /**
  * Bean holding a set of configuration for data properties, thereby specifying
- * excatly which data to use.
+ * exactly which data to use.
  * 
  * @author Alexander Lex
  */

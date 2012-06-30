@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of a bookmark view.
@@ -39,8 +40,8 @@ public class SerializedBookmarkView extends ASerializedSingleDataContainerBasedV
 	public SerializedBookmarkView() {
 	}
 
-	public SerializedBookmarkView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedBookmarkView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

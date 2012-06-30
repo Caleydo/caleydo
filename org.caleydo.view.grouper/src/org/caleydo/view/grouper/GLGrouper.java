@@ -287,7 +287,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		eventPublisher
 				.triggerEvent(new ReplaceDimensionPerspectiveEvent(dataDomain
 						.getDataDomainID(), dataContainer.getDimensionPerspective()
-						.getID(), data));
+						.getPerspectiveID(), data));
 
 		// UpdateViewEvent event = new UpdateViewEvent();
 		// event.setSender(this);
@@ -730,7 +730,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 
 			dataDomain.getTable().registerDimensionPerspective(subDimensionPerspective1);
 			DataContainer dataContainer1 = dataDomain.getDataContainer(dataContainer
-					.getRecordPerspective().getID(), subDimensionPerspective1.getID());
+					.getRecordPerspective().getPerspectiveID(), subDimensionPerspective1.getPerspectiveID());
 			dataContainers.add(dataContainer1);
 
 		}
@@ -783,8 +783,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedGrouperView serializedForm = new SerializedGrouperView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+				this);
 		return serializedForm;
 	}
 
@@ -1277,7 +1276,7 @@ public class GLGrouper extends ATableBasedView implements IClusterNodeEventRecei
 		super.initialize();
 
 		drawingStrategyManager = new DrawingStrategyManager(dataContainer
-				.getDimensionPerspective().getID(), pickingManager, uniqueID, renderStyle);
+				.getDimensionPerspective().getPerspectiveID(), pickingManager, uniqueID, renderStyle);
 		tree = dataContainer.getDimensionPerspective().getTree();
 		initHierarchy(tree);
 		selectionManager = new SelectionManager(tree.getNodeIDType());

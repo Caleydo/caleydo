@@ -70,7 +70,7 @@ import org.caleydo.datadomain.pathway.graph.item.edge.PathwayRelationEdgeRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.caleydo.view.enroute.event.RemoveEnRouteNodeEvent;
 import org.caleydo.view.enroute.listener.EnRoutePathEventListener;
@@ -229,7 +229,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 		path = new ArrayList<PathwayVertexRep>();
 
 		for (PathwayGraph graph : PathwayManager.get().getAllItems()) {
-			if (graph.getType() == PathwayDatabaseType.KEGG
+			if (graph.getType() == EPathwayDatabaseType.KEGG
 					&& graph.getTitle().startsWith("Glioma")) {
 				pathway = graph;
 				break;

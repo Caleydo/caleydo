@@ -954,10 +954,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 						dimensionPerspective.setLabel(dimensionPerspectiveLabel, true);
 						// TODO: Shall we really set it private?
 						dimensionPerspective.setPrivate(true);
-						dimensionGroup.setPerspectiveID(dimensionPerspective.getID());
+						dimensionGroup.setPerspectiveID(dimensionPerspective.getPerspectiveID());
 						dataDomain.getTable().registerDimensionPerspective(
 								dimensionPerspective);
-						currentDimensionPerspeciveID = dimensionPerspective.getID();
+						currentDimensionPerspeciveID = dimensionPerspective.getPerspectiveID();
 					} else {
 						dimensionPerspective = dataDomain.getTable()
 								.getDimensionPerspective(dimensionPerspectiveID);
@@ -975,10 +975,10 @@ public class GLDataViewIntegrator extends AGLView implements IViewCommandHandler
 						recordPerspective.setLabel(recordPerspectiveLabel, true);
 						// TODO: Shall we really set it private?
 						recordPerspective.setPrivate(true);
-						recordGroup.setPerspectiveID(recordPerspective.getID());
+						recordGroup.setPerspectiveID(recordPerspective.getPerspectiveID());
 						dataDomain.getTable()
 								.registerRecordPerspective(recordPerspective);
-						currentRecordPerspeciveID = recordPerspective.getID();
+						currentRecordPerspeciveID = recordPerspective.getPerspectiveID();
 					} else {
 						recordPerspective = dataDomain.getTable().getRecordPerspective(
 								recordPerspectiveID);

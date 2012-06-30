@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of a parallel-coordinates-view.
@@ -39,8 +40,8 @@ public class SerializedParallelCoordinatesView extends ASerializedSingleDataCont
 	public SerializedParallelCoordinatesView() {
 	}
 
-	public SerializedParallelCoordinatesView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedParallelCoordinatesView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

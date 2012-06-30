@@ -29,7 +29,7 @@ import org.caleydo.core.specialized.Organism;
  */
 public class PathwayDatabase {
 
-	private PathwayDatabaseType type;
+	private EPathwayDatabaseType type;
 
 	private String xmlPath;
 
@@ -40,7 +40,7 @@ public class PathwayDatabase {
 	/**
 	 * Constructor.
 	 */
-	public PathwayDatabase(final PathwayDatabaseType type, final String xmlPath,
+	public PathwayDatabase(final EPathwayDatabaseType type, final String xmlPath,
 			final String imagePath, final String imageMapPath) {
 		this.type = type;
 		this.xmlPath = xmlPath;
@@ -61,7 +61,7 @@ public class PathwayDatabase {
 		this.imageMapPath = this.imageMapPath.replace(
 				GeneralManager.CALEYDO_FOLDER_TEMPLATE, GeneralManager.CALEYDO_FOLDER);
 
-		if (type == PathwayDatabaseType.KEGG) {
+		if (type == EPathwayDatabaseType.KEGG) {
 			Organism eOrganism = GeneralManager.get().getBasicInfo().getOrganism();
 
 			if (eOrganism == Organism.HOMO_SAPIENS) {
@@ -74,7 +74,7 @@ public class PathwayDatabase {
 		}
 	}
 
-	public final PathwayDatabaseType getType() {
+	public final EPathwayDatabaseType getType() {
 		return type;
 	}
 

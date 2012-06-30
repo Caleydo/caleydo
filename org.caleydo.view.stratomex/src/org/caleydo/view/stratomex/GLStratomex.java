@@ -1274,6 +1274,11 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		ArrayList<BrickColumn> brickColumns = brickColumnManager.getBrickColumns();
 
 		for (DataContainer dataContainer : newDataContainers) {
+			if (dataContainer == null) {
+				Logger.log(new Status(Status.ERROR, this.toString(),
+						"Data container was null."));
+				continue;
+			}
 			if (!dataContainer.getDataDomain().getRecordIDCategory()
 					.equals(recordIDCategory)) {
 				Logger.log(new Status(
@@ -1282,6 +1287,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 						"Data container "
 								+ dataContainer
 								+ "does not match the recordIDCategory of Visbricks - no mapping possible."));
+				continue;
 			}
 			boolean dimensionGroupExists = false;
 			for (BrickColumn brickColumn : brickColumns) {
@@ -1749,7 +1755,7 @@ public class GLStratomex extends AGLView implements IMultiDataContainerBasedView
 		sourcePerspective.init(data);
 
 		RecordVAUpdateEvent event = new RecordVAUpdateEvent();
-		event.setPerspectiveID(sourcePerspective.getID());
+		event.setPerspectiveID(sourcePerspective.getPerspectiveID());
 
 		eventPublisher.triggerEvent(event);
 

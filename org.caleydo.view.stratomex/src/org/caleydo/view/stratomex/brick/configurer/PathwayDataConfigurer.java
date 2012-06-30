@@ -33,7 +33,7 @@ import org.caleydo.core.view.opengl.layout.util.ViewLayoutRenderer;
 import org.caleydo.core.view.opengl.mouse.GLMouseListener;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.view.stratomex.EPickingType;
 import org.caleydo.view.stratomex.brick.EContainedViewType;
 import org.caleydo.view.stratomex.brick.GLBrick;
@@ -243,9 +243,9 @@ public class PathwayDataConfigurer implements IBrickConfigurer {
 			PathwayDataContainer brickData = (PathwayDataContainer) brick
 					.getDataContainer();
 			if (brickData.getPathway() != null) {
-				PathwayDatabaseType dataBaseType = brickData.getPathway().getType();
+				EPathwayDatabaseType dataBaseType = brickData.getPathway().getType();
 				EIconTextures texture;
-				if (dataBaseType == PathwayDatabaseType.KEGG) {
+				if (dataBaseType == EPathwayDatabaseType.KEGG) {
 					texture = EIconTextures.CM_KEGG;
 				} else {
 					texture = EIconTextures.CM_BIOCARTA;

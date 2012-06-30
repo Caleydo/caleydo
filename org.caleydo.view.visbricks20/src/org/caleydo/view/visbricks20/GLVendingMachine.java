@@ -348,7 +348,7 @@ public class GLVendingMachine
 			}
 
 			DataContainer newDataContainer = dataDomain.getDataContainer(id, dataContainer
-					.getDimensionPerspective().getID());
+					.getDimensionPerspective().getPerspectiveID());
 			newDataContainer.setPrivate(true);
 
 			dataContainers.add(newDataContainer);

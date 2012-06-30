@@ -49,7 +49,7 @@ public class RcpGLGrouperView extends ARcpGLViewPart {
 		createGLCanvas();
 
 		view = new GLGrouper(glCanvas, parentComposite, serializedView.getViewFrustum());
-		initializeViewWithData();
+		initializeView();
 		view.initFromSerializableRepresentation(serializedView);
 		createPartControlGL();
 	}

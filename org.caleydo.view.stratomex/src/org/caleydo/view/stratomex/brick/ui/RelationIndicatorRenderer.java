@@ -72,7 +72,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 		// this.dataDomain = brick.getDataDomain();
 		this.relationAnalyzer = stratomex.getRelationAnalyzer();
 		perspectiveID = brick.getDimensionGroup().getDataContainer()
-				.getRecordPerspective().getID();
+				.getRecordPerspective().getPerspectiveID();
 		groupID = brick.getDataContainer().getRecordGroup().getGroupIndex();
 		this.stratomex = stratomex;
 		this.isLeft = isLeft;
@@ -97,7 +97,7 @@ public class RelationIndicatorRenderer extends LayoutRenderer {
 
 		int count = 0;
 		for (BrickColumn dimensionGroup : dimensionGroups) {
-			currentID = dimensionGroup.getDataContainer().getRecordPerspective().getID();
+			currentID = dimensionGroup.getDataContainer().getRecordPerspective().getPerspectiveID();
 			if (currentID.equals(perspectiveID) && isLeft) {
 				neighborPerspectiveID = previousID;
 				if (neighborPerspectiveID != null)

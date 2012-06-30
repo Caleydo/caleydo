@@ -74,7 +74,7 @@ public class PathwayManager
 
 	private HashMap<String, PathwayGraph> hashPathwayTitleToPathway;
 
-	private HashMap<PathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
+	private HashMap<EPathwayDatabaseType, PathwayDatabase> hashPathwayDatabase;
 
 	/**
 	 * Root pathway contains all nodes that are loaded into the system.
@@ -117,7 +117,7 @@ public class PathwayManager
 
 	private void init() {
 		hashPathwayTitleToPathway = new HashMap<String, PathwayGraph>();
-		hashPathwayDatabase = new HashMap<PathwayDatabaseType, PathwayDatabase>();
+		hashPathwayDatabase = new HashMap<EPathwayDatabaseType, PathwayDatabase>();
 		hashPathwayToVisibilityState = new HashMap<PathwayGraph, Boolean>();
 
 		xmlParserManager = new PathwayParserManager();
@@ -128,7 +128,7 @@ public class PathwayManager
 		xmlParserManager.registerAndInitSaxHandler(biocartaPathwayParser);
 	}
 
-	public PathwayDatabase createPathwayDatabase(final PathwayDatabaseType type,
+	public PathwayDatabase createPathwayDatabase(final EPathwayDatabaseType type,
 			final String XMLPath, final String imagePath, final String imageMapPath) {
 
 		// Check if requested pathway database is already loaded (e.g. using
@@ -150,7 +150,7 @@ public class PathwayManager
 		return pathwayDatabase;
 	}
 
-	public PathwayGraph createPathway(final PathwayDatabaseType type, final String sName,
+	public PathwayGraph createPathway(final EPathwayDatabaseType type, final String sName,
 			final String sTitle, final String sImageLink, final String sExternalLink) {
 		PathwayGraph pathway = new PathwayGraph(type, sName, sTitle, sImageLink, sExternalLink);
 
@@ -163,33 +163,31 @@ public class PathwayManager
 		return pathway;
 	}
 
-	public PathwayGraph searchPathwayByName(final String sPathwayName,
-			PathwayDatabaseType ePathwayDatabaseType) {
+	public PathwayGraph getPathwayByTitle(final String pathwayTitle,
+			EPathwayDatabaseType pathwayDatabaseType) {
+		
 		waitUntilPathwayLoadingIsFinished();
-
 		Iterator<String> iterPathwayName = hashPathwayTitleToPathway.keySet().iterator();
-		Pattern pattern = Pattern.compile(sPathwayName, Pattern.CASE_INSENSITIVE);
+		Pattern pattern = Pattern.compile(pathwayTitle, Pattern.CASE_INSENSITIVE);
 		Matcher regexMatcher;
-		String sTmpPathwayName;
+		String tempPathwayTitle;
 
 		while (iterPathwayName.hasNext()) {
-			sTmpPathwayName = iterPathwayName.next();
-			regexMatcher = pattern.matcher(sTmpPathwayName);
+			tempPathwayTitle = iterPathwayName.next();
+			regexMatcher = pattern.matcher(tempPathwayTitle);
 
 			if (regexMatcher.find()) {
-				PathwayGraph pathway = hashPathwayTitleToPathway.get(sTmpPathwayName);
+				PathwayGraph pathway = hashPathwayTitleToPathway.get(tempPathwayTitle);
 
 				// Ignore the found pathway if it has the same name but is
 				// contained
 				// in a different database
-				if (getItem(pathway.getID()).getType() != ePathwayDatabaseType) {
+				if (getItem(pathway.getID()).getType() != pathwayDatabaseType) {
 					continue;
 				}
-
 				return pathway;
 			}
 		}
-
 		return null;
 	}
 
@@ -233,7 +231,7 @@ public class PathwayManager
 		return currentPathwayImageMap;
 	}
 
-	public PathwayDatabase getPathwayDatabaseByType(PathwayDatabaseType type) {
+	public PathwayDatabase getPathwayDatabaseByType(EPathwayDatabaseType type) {
 		return hashPathwayDatabase.get(type);
 	}
 
@@ -257,11 +255,11 @@ public class PathwayManager
 		return pathwayLoadingFinished;
 	}
 
-	public void createPathwayResourceLoader(PathwayDatabaseType type) {
+	public void createPathwayResourceLoader(EPathwayDatabaseType type) {
 
 		IExtensionRegistry reg = Platform.getExtensionRegistry();
 		try {
-			if (type == PathwayDatabaseType.KEGG) {
+			if (type == EPathwayDatabaseType.KEGG) {
 				IExtensionPoint ep = reg
 						.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
 				IExtension ext = ep
@@ -272,7 +270,7 @@ public class PathwayManager
 						.createExecutableExtension("class");
 
 			}
-			else if (type == PathwayDatabaseType.BIOCARTA) {
+			else if (type == EPathwayDatabaseType.BIOCARTA) {
 
 				IExtensionPoint ep = reg
 						.getExtensionPoint("org.caleydo.data.pathway.PathwayResourceLoader");
@@ -293,12 +291,12 @@ public class PathwayManager
 		}
 	}
 
-	public IPathwayResourceLoader getPathwayResourceLoader(PathwayDatabaseType type) {
+	public IPathwayResourceLoader getPathwayResourceLoader(EPathwayDatabaseType type) {
 
-		if (type == PathwayDatabaseType.KEGG) {
+		if (type == EPathwayDatabaseType.KEGG) {
 			return keggPathwayResourceLoader;
 		}
-		else if (type == PathwayDatabaseType.BIOCARTA) {
+		else if (type == EPathwayDatabaseType.BIOCARTA) {
 			return biocartaPathwayResourceLoader;
 		}
 
@@ -327,7 +325,7 @@ public class PathwayManager
 		IPathwayResourceLoader pathwayResourceLoader = null;
 		Organism organism = GeneralManager.get().getBasicInfo().getOrganism();
 
-		if (pathwayDatabase.getType() == PathwayDatabaseType.KEGG) {
+		if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG) {
 
 			if (organism == Organism.HOMO_SAPIENS) {
 				fileName = "data/pathway_list_KEGG_homo_sapiens.txt";
@@ -343,7 +341,7 @@ public class PathwayManager
 			generalManager.getSWTGUIManager().setProgressBarTextFromExternalThread(
 					"Loading KEGG Pathways...");
 		}
-		else if (pathwayDatabase.getType() == PathwayDatabaseType.BIOCARTA) {
+		else if (pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA) {
 
 			if (organism == Organism.HOMO_SAPIENS) {
 				fileName = "data/pathway_list_BIOCARTA_homo_sapiens.txt";
@@ -369,8 +367,8 @@ public class PathwayManager
 
 		try {
 
-			if (pathwayDatabase.getType() == PathwayDatabaseType.KEGG
-					|| pathwayDatabase.getType() == PathwayDatabaseType.BIOCARTA)
+			if (pathwayDatabase.getType() == EPathwayDatabaseType.KEGG
+					|| pathwayDatabase.getType() == EPathwayDatabaseType.BIOCARTA)
 				file = pathwayResourceLoader.getResource(fileName);
 			else
 				file = GeneralManager.get().getResourceLoader().getResource(fileName);
@@ -481,7 +479,6 @@ public class PathwayManager
 							occurences++;
 							hashPathwaysToOccurences.put(pathwayGraph, occurences);
 						}
-
 					}
 				}
 			}

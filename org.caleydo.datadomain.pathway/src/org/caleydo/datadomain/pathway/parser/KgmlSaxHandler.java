@@ -40,7 +40,7 @@ import org.caleydo.datadomain.pathway.graph.item.vertex.EPathwayVertexType;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexGroupRep;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.xml.sax.Attributes;
@@ -201,7 +201,7 @@ public class KgmlSaxHandler
 		// PNGs
 		pathwayTexturePath = pathwayTexturePath.replace(".gif", ".png");
 
-		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.KEGG, name, title,
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.KEGG, name, title,
 				pathwayTexturePath, externalLink);
 
 		hashKgmlEntryIdToVertexRep.clear();

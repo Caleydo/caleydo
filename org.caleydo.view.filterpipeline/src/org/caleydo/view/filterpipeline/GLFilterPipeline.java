@@ -705,19 +705,19 @@ public class GLFilterPipeline extends ATableBasedView implements IRadialMenuList
 			return;
 
 		RecordFilter contentFilter = new RecordFilter(dataContainer
-				.getRecordPerspective().getID());
+				.getRecordPerspective().getPerspectiveID());
 		contentFilter.setDataDomain(dataDomain);
 		contentFilter.setLabel("Signal-To-Noise Ratio Filter");
 
 		table.getUncertainty().calculateRawAverageUncertainty(
-				dataContainer.getDimensionPerspective().getID());
+				dataContainer.getDimensionPerspective().getPerspectiveID());
 
 		Histogram histogram = HistogramCreator.createHistogram(table.getUncertainty()
 				.getRawUncertainty());
 
 		FilterRepresentationSNR filterRep = new FilterRepresentationSNR(dataContainer
-				.getRecordPerspective().getID(), dataContainer.getDimensionPerspective()
-				.getID());
+				.getRecordPerspective().getPerspectiveID(), dataContainer.getDimensionPerspective()
+				.getPerspectiveID());
 		filterRep.setFilter(contentFilter);
 		filterRep.setTable(table);
 		filterRep.setHistogram(histogram);

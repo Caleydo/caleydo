@@ -20,6 +20,7 @@
 package org.caleydo.view.tabular;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of a tabular-browser view.
@@ -31,8 +32,8 @@ public class SerializedTabularDataView extends ASerializedSingleDataContainerBas
 	public SerializedTabularDataView() {
 	}
 
-	public SerializedTabularDataView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedTabularDataView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -22,12 +22,13 @@ package org.caleydo.view.info.dataset;
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.view.histogram.RcpGLColorMapperHistogramView;
 import org.caleydo.view.histogram.SerializedHistogramView;
 import org.eclipse.swt.SWT;
@@ -107,7 +108,8 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 					+ dataDomain.getTable().getMetaData().size());
 
 			label = new Label(infoComposite, SWT.NONE);
-			label.setText("Source: " + dataDomain.getDataSetDescription().getDataSourcePath());
+			label.setText("Source: "
+					+ dataDomain.getDataSetDescription().getDataSourcePath());
 
 			// Tree<ClusterNode> dimensionTree =
 			// dataDomain.getTable().getDimensionData(DimensionVAType.STORAGE).getDimensionTree();
@@ -144,14 +146,11 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 
 			RcpGLColorMapperHistogramView histogramView = new RcpGLColorMapperHistogramView();
 			histogramView.setDataDomain(dataDomain);
-			SerializedHistogramView serializedHistogramView = new SerializedHistogramView(
-					dataDomain.getDataDomainID());
+			SerializedHistogramView serializedHistogramView = new SerializedHistogramView();
+			serializedHistogramView.setDataDomainID(dataDomain.getDataDomainID());
 			serializedHistogramView
-					.setDimensionPerspectiveID(((ASerializedSingleDataContainerBasedView) serializedView)
-							.getDimensionPerspectiveID());
-			serializedHistogramView
-					.setRecordPerspectiveID(((ASerializedSingleDataContainerBasedView) serializedView)
-							.getRecordPerspectiveID());
+					.setDataContainerKey(((ASerializedSingleDataContainerBasedView) serializedView)
+							.getDataContainerKey());
 
 			histogramView.setExternalSerializedView(serializedHistogramView);
 			histogramView.createPartControl(composite);
@@ -183,14 +182,10 @@ public class RcpDatasetInfoView extends CaleydoRCPViewPart implements
 			return;
 
 		this.dataDomain = dataDomain;
-
-		((ASerializedSingleDataContainerBasedView) serializedView).setDataDomainID(dataDomain
-				.getDataDomainID());
-		((ASerializedSingleDataContainerBasedView) serializedView).setRecordPerspectiveID(dataDomain
-				.getTable().getDefaultRecordPerspective().getID());
-		((ASerializedSingleDataContainerBasedView) serializedView)
-				.setDimensionPerspectiveID(dataDomain.getTable()
-						.getDefaultDimensionPerspective().getID());
+		ASerializedSingleDataContainerBasedView dcSerializedView = (ASerializedSingleDataContainerBasedView) serializedView;
+		dcSerializedView.setDataDomainID(dataDomain.getDataDomainID());
+		DataContainer container = dataDomain.getDefaultDataContainer();
+		dcSerializedView.setDataContainerKey(container.getDataContainerKey());
 
 		parentComposite.dispose();
 		createPartControl(parent);

@@ -25,6 +25,7 @@ package org.caleydo.core.view;
 import java.util.List;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 
 /**
  * <p>
@@ -38,7 +39,7 @@ import org.caleydo.core.data.container.DataContainer;
  * 
  * @author Alexander Lex
  */
-public interface IDataContainerBasedView {
+public interface IDataContainerBasedView extends IView {
 
 	/**
 	 * Returns all {@link DataContainer}s that this view and all of its possible

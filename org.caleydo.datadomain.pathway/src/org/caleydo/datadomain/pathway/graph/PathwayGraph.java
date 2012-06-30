@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -25,7 +25,7 @@ import org.caleydo.core.id.ManagedObjectType;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.base.IUniqueObject;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertexRep;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.jgrapht.graph.DefaultEdge;
 import org.jgrapht.graph.DirectedMultigraph;
 
@@ -34,14 +34,14 @@ import org.jgrapht.graph.DirectedMultigraph;
  * 
  * @author Marc Streit
  */
-public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEdge> implements IUniqueObject, Serializable,
-		Comparable<PathwayGraph> {
-	
+public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEdge>
+		implements IUniqueObject, Serializable, Comparable<PathwayGraph> {
+
 	private static final long serialVersionUID = 1L;
 
 	private int id;
-	
-	private PathwayDatabaseType type;
+
+	private EPathwayDatabaseType type;
 
 	private String name;
 
@@ -55,69 +55,60 @@ public class PathwayGraph extends DirectedMultigraph<PathwayVertexRep, DefaultEd
 
 	private int height = -1;
 
-	public PathwayGraph(final PathwayDatabaseType type, final String sName,
-			final String sTitle, final String sImageLink, final String sLink) {
-		
-		//super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY));
+	public PathwayGraph(final EPathwayDatabaseType type, final String name,
+			final String title, final String imageLink, final String link) {
+
+		// super(GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY));
 
 		super(DefaultEdge.class);
 
 		id = GeneralManager.get().getIDCreator().createID(ManagedObjectType.PATHWAY);
-		
+
 		this.type = type;
-		this.name = sName;
-		this.title = sTitle;
-		this.imageLink = sImageLink;
-		this.externalLink = sLink;
+		this.name = name;
+		this.title = title;
+		this.imageLink = imageLink;
+		this.externalLink = link;
 	}
-	
+
 	@Override
 	public int getID() {
 		return id;
 	}
 
 	public final String getName() {
-
 		return name;
 	}
 
 	public final String getTitle() {
-
 		return title;
 	}
 
 	public final String getImageLink() {
-
 		return imageLink;
 	}
 
 	public final String getExternalLink() {
-
 		return externalLink;
 	}
 
-	public final PathwayDatabaseType getType() {
-
+	public final EPathwayDatabaseType getType() {
 		return type;
 	}
 
 	public final int getWidth() {
-
 		return width;
 	}
 
 	public final int getHeight() {
-
 		return height;
 	}
 
 	public void setWidth(final int iWidth) {
-
 		this.width = iWidth;
 	}
 
 	public void setHeight(final int iHeight) {
-
 		this.height = iHeight;
 	}
 

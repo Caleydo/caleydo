@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of the remote-rendering view (bucket).
@@ -38,8 +39,8 @@ public class SerializedGrouperView extends ASerializedSingleDataContainerBasedVi
 	public SerializedGrouperView() {
 	}
 
-	public SerializedGrouperView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedGrouperView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

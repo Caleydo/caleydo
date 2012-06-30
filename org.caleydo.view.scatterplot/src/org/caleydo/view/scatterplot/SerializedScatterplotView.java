@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of a scatterplot-view.
@@ -39,8 +40,8 @@ public class SerializedScatterplotView extends ASerializedSingleDataContainerBas
 	public SerializedScatterplotView() {
 	}
 
-	public SerializedScatterplotView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedScatterplotView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

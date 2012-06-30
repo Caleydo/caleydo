@@ -33,12 +33,12 @@ public class PathwayParserManager extends XmlParserManager {
 		// pathways
 		if (fileName.contains("hsa") || fileName.contains("mmu")) {
 			inputSource = PathwayManager.get()
-					.getPathwayResourceLoader(PathwayDatabaseType.KEGG)
+					.getPathwayResourceLoader(EPathwayDatabaseType.KEGG)
 					.getInputSource(fileName);
 		} else if (fileName.contains("h_") || fileName.contains("m_")) {
 
 			inputSource = PathwayManager.get()
-					.getPathwayResourceLoader(PathwayDatabaseType.BIOCARTA)
+					.getPathwayResourceLoader(EPathwayDatabaseType.BIOCARTA)
 					.getInputSource(fileName);
 		}
 		return inputSource;

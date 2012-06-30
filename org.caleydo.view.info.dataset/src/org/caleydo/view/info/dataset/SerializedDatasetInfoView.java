@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized data meta view.
@@ -39,8 +40,8 @@ public class SerializedDatasetInfoView extends ASerializedSingleDataContainerBas
 	public SerializedDatasetInfoView() {
 	}
 
-	public SerializedDatasetInfoView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedDatasetInfoView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

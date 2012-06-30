@@ -22,13 +22,13 @@ package org.caleydo.core.gui.perspective;
 import java.util.List;
 
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.gui.toolbar.AToolBarContent;
 import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.toolbar.ToolBarContainer;
 import org.caleydo.core.gui.toolbar.ToolBarContentFactory;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.caleydo.core.view.CaleydoRCPViewPart;
+import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.IView;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.jface.action.IAction;

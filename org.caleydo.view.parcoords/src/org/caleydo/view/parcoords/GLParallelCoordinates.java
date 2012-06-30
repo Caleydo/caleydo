@@ -404,7 +404,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				.getElements(SelectionType.DESELECTED);
 
 		RecordVADelta delta = new RecordVADelta(dataContainer.getRecordPerspective()
-				.getID(), recordIDType);
+				.getPerspectiveID(), recordIDType);
 		for (Integer recordID : removedElements) {
 			delta.add(VADeltaItem.removeElement(recordID));
 		}
@@ -1216,7 +1216,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!dataContainer.getDimensionPerspective().getID()
+		if (!dataContainer.getDimensionPerspective().getPerspectiveID()
 				.equals(dimensionPerspectiveID))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
@@ -1481,7 +1481,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				}
 
 				DimensionVADelta vaDelta = new DimensionVADelta(dataContainer
-						.getDimensionPerspective().getID(), dimensionIDType);
+						.getDimensionPerspective().getPerspectiveID(), dimensionIDType);
 				vaDelta.add(VADeltaItem.remove(pickingID));
 
 				Integer dimensionID = dimensionVA.get(pickingID);
@@ -1518,7 +1518,8 @@ public class GLParallelCoordinates extends ATableBasedView implements
 				if (pickingID >= 0) {
 					// dimensionVA.copy(pickingID);
 					DimensionVADelta vaDelta = new DimensionVADelta(dataContainer
-							.getDimensionPerspective().getID(), dimensionIDType);
+							.getDimensionPerspective().getPerspectiveID(),
+							dimensionIDType);
 					vaDelta.add(VADeltaItem.copy(pickingID));
 					triggerDimensionFilterEvent(
 							vaDelta,
@@ -1629,7 +1630,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	private void triggerDimensionFilterEvent(DimensionVADelta delta, String label) {
 
 		DimensionFilter filter = new DimensionFilter(dataContainer
-				.getDimensionPerspective().getID());
+				.getDimensionPerspective().getPerspectiveID());
 
 		filter.setVADelta(delta);
 		filter.setLabel(label);
@@ -1646,7 +1647,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	private void triggerRecordFilterEvent(RecordVADelta delta, String label) {
 
 		RecordFilter filter = new RecordFilter(dataContainer.getRecordPerspective()
-				.getID());
+				.getPerspectiveID());
 		filter.setVADelta(delta);
 		filter.setLabel(label);
 		filter.setDataDomain(dataDomain);
@@ -1946,7 +1947,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			axisSpacings.add(iSwitchAxisWithThis, fWidth);
 
 			DimensionVADelta vaDelta = new DimensionVADelta(dataContainer
-					.getDimensionPerspective().getID(), dimensionIDType);
+					.getDimensionPerspective().getPerspectiveID(), dimensionIDType);
 			vaDelta.add(VADeltaItem.move(iMovedAxisPosition, iSwitchAxisWithThis));
 			triggerDimensionFilterEvent(
 					vaDelta,
@@ -1984,8 +1985,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedParallelCoordinatesView serializedForm = new SerializedParallelCoordinatesView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+				this);
 		return serializedForm;
 	}
 
@@ -2080,8 +2080,7 @@ public class GLParallelCoordinates extends ATableBasedView implements
 			return ("PCs, " + renderMode + ", " + iNumElements + " elements"
 					+ " Axis DT: " + dimensionSelectionManager.getIDType()
 					+ " Polyline DT:" + recordSelectionManager.getIDType());
-		}
-		else
+		} else
 			return super.toString();
 	}
 

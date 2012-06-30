@@ -24,7 +24,7 @@ package org.caleydo.datadomain.pathway.manager;
  * 
  * @author Marc Streit
  */
-public enum PathwayDatabaseType {
+public enum EPathwayDatabaseType {
 
 	KEGG("KEGG", "www.genome.jp/kegg"), BIOCARTA("BioCarta", "www.biocarta.com");
 
@@ -38,7 +38,7 @@ public enum PathwayDatabaseType {
 	 * @param name
 	 * @param url
 	 */
-	private PathwayDatabaseType(String name, String url) {
+	private EPathwayDatabaseType(String name, String url) {
 
 		this.name = name;
 		this.url = url;

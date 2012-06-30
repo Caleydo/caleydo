@@ -36,9 +36,6 @@ public class SerializedDummyView
 	public SerializedDummyView() {
 	}
 
-	public SerializedDummyView(String dataDomainType) {
-		super(dataDomainType);
-	}
 
 	@Override
 	public String getViewType() {

@@ -27,6 +27,7 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlIDREF;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
@@ -75,6 +76,10 @@ import org.caleydo.core.id.IDType;
  * and storage-wise expensive)
  * </p>
  * <p>
+ * The dataContainers are identified by a the {@link #dataContainerKey}, which
+ * is created as a function of the identifiers of the two perspectives.
+ * </p>
+ * <p>
  * Data containers can be hierarchically created based on {@link GroupList}s of
  * one of the {@link ADataPerspective}s using the
  * {@link #getRecordSubDataContainers()} and
@@ -86,6 +91,7 @@ import org.caleydo.core.id.IDType;
  * @author Alexander Lex
  */
 @XmlType
+@XmlRootElement
 public class DataContainer {
 
 	/** The static counter used to create unique ids */
@@ -93,18 +99,27 @@ public class DataContainer {
 	/** The unique id of the data container */
 	private int id;
 
+	/** The key, which is created by using a function of the perspective IDs */
 	private String dataContainerKey;
 
 	/** The data domain use in this data container */
 	@XmlIDREF
 	protected ATableBasedDataDomain dataDomain;
 
+	@XmlElement
+	private String recordPerspectiveID;
 	/**
 	 * The recordPerspective defines the properties of the records (occurrence,
 	 * order, groups, relationships)
 	 */
+	@XmlTransient
 	protected RecordPerspective recordPerspective;
+
+	@XmlElement
+	private String dimensionPerspectiveID;
+
 	/** Same as {@link #recordPerspective} for dimensions */
+	@XmlTransient
 	protected DimensionPerspective dimensionPerspective;
 
 	/** A human-readable label */
@@ -155,6 +170,7 @@ public class DataContainer {
 	 * Empty constructor, nothing initialized
 	 */
 	public DataContainer() {
+		System.out.println("S");
 	}
 
 	/**
@@ -166,7 +182,9 @@ public class DataContainer {
 			RecordPerspective recordPerspective, DimensionPerspective dimensionPerspective) {
 		this.dataDomain = dataDomain;
 		this.recordPerspective = recordPerspective;
+		recordPerspectiveID = recordPerspective.getPerspectiveID();
 		this.dimensionPerspective = dimensionPerspective;
+		dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
 		createKey();
 	}
 
@@ -201,6 +219,7 @@ public class DataContainer {
 	/**
 	 * @return the recordPerspective, see {@link #recordPerspective}
 	 */
+	@XmlTransient
 	public RecordPerspective getRecordPerspective() {
 		return recordPerspective;
 	}
@@ -214,12 +233,14 @@ public class DataContainer {
 			throw new IllegalStateException(
 					"Illegal to change perspectives of DataContainers.");
 		this.recordPerspective = recordPerspective;
+		this.recordPerspectiveID = recordPerspective.getPerspectiveID();
 		createKey();
 	}
 
 	/**
 	 * @return the dimensionPerspective, see {@link #dimensionPerspective}
 	 */
+	@XmlTransient
 	public DimensionPerspective getDimensionPerspective() {
 		return dimensionPerspective;
 	}
@@ -233,6 +254,7 @@ public class DataContainer {
 			throw new IllegalStateException(
 					"Illegal to change perspectives of DataContainers.");
 		this.dimensionPerspective = dimensionPerspective;
+		dimensionPerspectiveID = dimensionPerspective.getPerspectiveID();
 		createKey();
 	}
 
@@ -245,7 +267,7 @@ public class DataContainer {
 	 *         container
 	 */
 	public boolean hasRecordPerspective(String recordPerspectiveID) {
-		return recordPerspective.getID().equals(recordPerspectiveID);
+		return recordPerspective.getPerspectiveID().equals(recordPerspectiveID);
 	}
 
 	/**
@@ -256,7 +278,7 @@ public class DataContainer {
 	 *         container
 	 */
 	public boolean hasDimensionPerspective(String dimensionPerspectiveID) {
-		return dimensionPerspective.getID().equals(dimensionPerspectiveID);
+		return dimensionPerspective.getPerspectiveID().equals(dimensionPerspectiveID);
 	}
 
 	/**
@@ -449,12 +471,26 @@ public class DataContainer {
 	 */
 	private void createKey() {
 		if (recordPerspective != null && dimensionPerspective != null)
-			dataContainerKey = createKey(recordPerspective.getID(),
-					dimensionPerspective.getID());
+			dataContainerKey = createKey(recordPerspective.getPerspectiveID(),
+					dimensionPerspective.getPerspectiveID());
 	}
 
 	public static String createKey(String recordPerspectiveID,
 			String dimensionPerspectiveID) {
 		return recordPerspectiveID + "_" + dimensionPerspectiveID;
+	}
+
+	/**
+	 * This should be called after the rest of the data, specifically the
+	 * perspectives are sucessfully deserialized. Sets the perspectives based on
+	 * the serialized perspective IDs.
+	 */
+	public void postDesirialize() {
+		recordPerspective = dataDomain.getTable().getRecordPerspective(
+				recordPerspectiveID);
+		dimensionPerspective = dataDomain.getTable().getDimensionPerspective(
+				dimensionPerspectiveID);
+		createKey();
+
 	}
 }

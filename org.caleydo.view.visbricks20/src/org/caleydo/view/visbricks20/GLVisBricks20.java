@@ -324,8 +324,8 @@ public class GLVisBricks20 extends AGLView implements IGLRemoteRenderingView {
 		// For the vending machine it does not matter which record perspective
 		// we take
 		DataContainer dataContainer = tableBasedDataDomain.getDataContainer(
-				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getID(),
-				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getID());
+				tableBasedDataDomain.getTable().getDefaultRecordPerspective().getPerspectiveID(),
+				tableBasedDataDomain.getTable().getDefaultDimensionPerspective().getPerspectiveID());
 
 		List<DataContainer> dataContainerWrapper = new ArrayList<DataContainer>();
 		dataContainerWrapper.add(dataContainer);

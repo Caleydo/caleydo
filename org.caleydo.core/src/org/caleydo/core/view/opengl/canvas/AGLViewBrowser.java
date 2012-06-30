@@ -32,7 +32,6 @@ import javax.media.opengl.awt.GLCanvas;
 
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
 import org.caleydo.core.data.selection.events.ISelectionUpdateHandler;
@@ -46,6 +45,7 @@ import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
+import org.caleydo.core.view.IDataDomainBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;

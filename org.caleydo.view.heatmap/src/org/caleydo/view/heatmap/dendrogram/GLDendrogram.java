@@ -1341,14 +1341,14 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		if (bRenderContentTree) {
 			NewRecordGroupInfoEvent newGroupInfoEvent = new NewRecordGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(dataContainer.getRecordPerspective().getID());
+			newGroupInfoEvent.setVAType(dataContainer.getRecordPerspective().getPerspectiveID());
 			newGroupInfoEvent.setGroupList((RecordGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
 		} else {
 			NewDimensionGroupInfoEvent newGroupInfoEvent = new NewDimensionGroupInfoEvent();
 			newGroupInfoEvent.setSender(this);
-			newGroupInfoEvent.setVAType(dataContainer.getDimensionPerspective().getID());
+			newGroupInfoEvent.setVAType(dataContainer.getDimensionPerspective().getPerspectiveID());
 			newGroupInfoEvent.setGroupList((DimensionGroupList) groupList);
 			newGroupInfoEvent.setDeleteTree(false);
 			eventPublisher.triggerEvent(newGroupInfoEvent);
@@ -1603,11 +1603,11 @@ public class GLDendrogram<GroupType extends GroupList<?, ?, ?>> extends ATableBa
 		ASerializedView serializedForm;
 		if (bRenderContentTree) {
 			SerializedDendogramHorizontalView horizontal = new SerializedDendogramHorizontalView(
-					dataDomain.getDataDomainID());
+					this);
 			serializedForm = horizontal;
 		} else {
 			SerializedDendogramVerticalView vertical = new SerializedDendogramVerticalView(
-					dataDomain.getDataDomainID());
+					this);
 			serializedForm = vertical;
 		}
 		serializedForm.setViewID(this.getID());

@@ -124,7 +124,7 @@ public class FilterRepresentationTwoSidedTTest extends
 	private void createVADelta(RecordFilter subFilter) {
 
 		RecordVADelta recordVADelta = new RecordVADelta(dataContainer1
-				.getRecordPerspective().getID(), subFilter.getDataDomain()
+				.getRecordPerspective().getPerspectiveID(), subFilter.getDataDomain()
 				.getRecordIDType());
 		RecordVirtualArray recordVA = dataContainer1.getRecordPerspective()
 				.getVirtualArray();

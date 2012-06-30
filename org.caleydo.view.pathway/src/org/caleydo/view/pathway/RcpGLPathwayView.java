@@ -66,7 +66,7 @@ public class RcpGLPathwayView extends ARcpGLViewPart implements IListenerOwner,
 		createGLCanvas();
 
 		view = new GLPathway(glCanvas, parentComposite, serializedView.getViewFrustum());
-		initializeViewWithData();
+		initializeView();
 		createPartControlGL();
 	}
 

@@ -23,6 +23,7 @@ import java.util.Map;
 
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.collection.table.DataTableUtils;
+import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.DimensionPerspective;
@@ -82,7 +83,6 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 		this.appInitData = appInitData;
 		Logger.log(new Status(IStatus.INFO, this.toString(), "Load serialized project"));
 
-
 		if (loadSampleProject) {
 			serializationDataList = loader
 					.loadProjectData(ProjectLoader.TEMP_PROJECT_ZIP_FOLDER);
@@ -125,7 +125,11 @@ public class SerializationStartupProcedure extends AStartupProcedure {
 						.getDimensionPerspectiveMap().values()) {
 					table.registerDimensionPerspective(perspective);
 				}
+				for (DataContainer container : tDataDomain.getDataContainers().values()) {
+					container.postDesirialize();
+				}
 			}
+
 		}
 	}
 

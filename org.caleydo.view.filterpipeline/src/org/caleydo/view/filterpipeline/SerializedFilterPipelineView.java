@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized filter pipeline view.
@@ -39,8 +40,8 @@ public class SerializedFilterPipelineView extends ASerializedSingleDataContainer
 	public SerializedFilterPipelineView() {
 	}
 
-	public SerializedFilterPipelineView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedFilterPipelineView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

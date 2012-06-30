@@ -524,10 +524,10 @@ public class TableBasedDataNode extends ADataNode implements IDropArea {
 
 		for (DimensionPerspective dimensionPerspective : sortedDimensionPerspectives) {
 			for (RecordPerspective recordPerspective : sortedRecordPerspectives) {
-				if (dataDomain.hasDataContainer(recordPerspective.getID(),
-						dimensionPerspective.getID())) {
+				if (dataDomain.hasDataContainer(recordPerspective.getPerspectiveID(),
+						dimensionPerspective.getPerspectiveID())) {
 					dataContainers.add(dataDomain.getDataContainer(
-							recordPerspective.getID(), dimensionPerspective.getID()));
+							recordPerspective.getPerspectiveID(), dimensionPerspective.getPerspectiveID()));
 				}
 			}
 		}

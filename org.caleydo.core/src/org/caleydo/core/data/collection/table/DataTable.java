@@ -417,14 +417,14 @@ public class DataTable extends AUniqueObject {
 	 * @param recordPerspective
 	 */
 	public void registerRecordPerspective(RecordPerspective recordPerspective) {
-		if (recordPerspective.getID() == null)
+		if (recordPerspective.getPerspectiveID() == null)
 			throw new IllegalStateException(
 					"Record perspective not correctly initiaklized: " + recordPerspective);
 		if (!recordPerspective.getIdType().equals(dataDomain.getRecordIDType()))
 			throw new IllegalStateException(
 					"Invalid reocrd id type for this datadomain: "
 							+ recordPerspective.getIdType());
-		hashRecordPerspectives.put(recordPerspective.getID(), recordPerspective);
+		hashRecordPerspectives.put(recordPerspective.getPerspectiveID(), recordPerspective);
 
 		if (recordPerspective.isDefault()) {
 			if (defaultRecordPerspective != null)
@@ -474,11 +474,11 @@ public class DataTable extends AUniqueObject {
 	 * @param dimensionPerspective
 	 */
 	public void registerDimensionPerspective(DimensionPerspective dimensionPerspective) {
-		if (dimensionPerspective.getID() == null)
+		if (dimensionPerspective.getPerspectiveID() == null)
 			throw new IllegalStateException(
 					"Dimension perspective not correctly initiaklized: "
 							+ dimensionPerspective);
-		hashDimensionPerspectives.put(dimensionPerspective.getID(), dimensionPerspective);
+		hashDimensionPerspectives.put(dimensionPerspective.getPerspectiveID(), dimensionPerspective);
 
 		if (dimensionPerspective.isDefault()) {
 			if (defaultDimensionPerspective != null)
@@ -702,7 +702,7 @@ public class DataTable extends AUniqueObject {
 		defaultRecordPerspective.init(data);
 		defaultRecordPerspective.setLabel("Default", true);
 
-		hashRecordPerspectives.put(defaultRecordPerspective.getID(),
+		hashRecordPerspectives.put(defaultRecordPerspective.getPerspectiveID(),
 				defaultRecordPerspective);
 	}
 
@@ -719,7 +719,7 @@ public class DataTable extends AUniqueObject {
 
 		defaultDimensionPerspective.setLabel("Default", true);
 
-		hashDimensionPerspectives.put(defaultDimensionPerspective.getID(),
+		hashDimensionPerspectives.put(defaultDimensionPerspective.getPerspectiveID(),
 				defaultDimensionPerspective);
 	}
 }

@@ -134,6 +134,7 @@ public abstract class ARcpGLViewPart extends CaleydoRCPViewPart {
 	 */
 	public abstract String getViewGUIID();
 
+	/** Returns a current serializable snapshot of the view */
 	public ASerializedView getSerializedView() {
 		return getGLView().getSerializableRepresentation();
 	}

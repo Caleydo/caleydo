@@ -22,6 +22,7 @@ package org.caleydo.core.view;
 import java.util.List;
 
 import org.caleydo.core.data.container.DataContainer;
+import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 
 /**
  * Interface for views that use a single {@link DataContainer}
@@ -29,7 +30,7 @@ import org.caleydo.core.data.container.DataContainer;
  * @author Alexander Lex
  * 
  */
-public interface ISingleDataContainerBasedView extends IDataContainerBasedView {
+public interface ISingleDataContainerBasedView extends IDataContainerBasedView,  IDataDomainBasedView<ATableBasedDataDomain> {
 
 	/**
 	 * Set the data container for this view

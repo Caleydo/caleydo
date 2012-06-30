@@ -29,7 +29,7 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.parser.xml.AXmlParserHandler;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
 import org.caleydo.datadomain.pathway.graph.item.vertex.PathwayVertex;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayItemManager;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.xml.sax.Attributes;
@@ -156,7 +156,7 @@ public class BioCartaPathwayImageMapSaxHandler extends AXmlParserHandler {
 		sImageLink = sImageLink.substring(sImageLink.lastIndexOf('/') + 1,
 				sImageLink.length());
 
-		currentPathway = pathwayManager.createPathway(PathwayDatabaseType.BIOCARTA,
+		currentPathway = pathwayManager.createPathway(EPathwayDatabaseType.BIOCARTA,
 				"<name>", sTitle, sImageLink, BIOCARTA_EXTERNAL_URL_PATHWAY + sName);
 
 		sTitle = "";

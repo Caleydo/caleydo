@@ -26,7 +26,7 @@ import org.caleydo.core.gui.toolbar.IToolBarItem;
 import org.caleydo.core.gui.util.SearchBox;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.datadomain.pathway.graph.PathwayGraph;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 import org.eclipse.jface.action.ControlContribution;
 import org.eclipse.swt.SWT;
@@ -148,20 +148,20 @@ public class PathwaySearchBox
 	 * @return
 	 */
 	private boolean loadPathway(String entity) {
-		PathwayDatabaseType ePathwayDatabaseType;
+		EPathwayDatabaseType ePathwayDatabaseType;
 
-		if (entity.contains(PathwayDatabaseType.KEGG.getName())) {
-			ePathwayDatabaseType = PathwayDatabaseType.KEGG;
+		if (entity.contains(EPathwayDatabaseType.KEGG.getName())) {
+			ePathwayDatabaseType = EPathwayDatabaseType.KEGG;
 		}
-		else if (entity.contains(PathwayDatabaseType.BIOCARTA.getName())) {
-			ePathwayDatabaseType = PathwayDatabaseType.BIOCARTA;
+		else if (entity.contains(EPathwayDatabaseType.BIOCARTA.getName())) {
+			ePathwayDatabaseType = EPathwayDatabaseType.BIOCARTA;
 		}
 		else
 			return false;
 
 		entity = entity.substring(0, entity.indexOf(" ("));
 
-		PathwayGraph pathway = PathwayManager.get().searchPathwayByName(entity,
+		PathwayGraph pathway = PathwayManager.get().getPathwayByTitle(entity,
 				ePathwayDatabaseType);
 
 		if (pathway == null)

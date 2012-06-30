@@ -3209,7 +3209,7 @@ public class GLScatterPlot extends ATableBasedView {
 
 	@Override
 	public void handleDimensionVAUpdate(String dimensionPerspectiveID) {
-		if (!dataContainer.getDimensionPerspective().getID()
+		if (!dataContainer.getDimensionPerspective().getPerspectiveID()
 				.equals(dimensionPerspectiveID))
 			return;
 		super.handleDimensionVAUpdate(dimensionPerspectiveID);
@@ -3230,8 +3230,7 @@ public class GLScatterPlot extends ATableBasedView {
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedScatterplotView serializedForm = new SerializedScatterplotView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+				this);
 		return serializedForm;
 	}
 

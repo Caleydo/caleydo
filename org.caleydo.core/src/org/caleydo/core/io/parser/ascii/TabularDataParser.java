@@ -192,7 +192,7 @@ public class TabularDataParser extends ATextParser {
 		initializeDataContainers();
 
 		// Init progress bar
-		swtGuiManager.setProgressBarText("Load data file " + fileName);
+		swtGuiManager.setProgressBarText("Loading dataset: " + dataSetDescription.getDataSetName());
 
 		String line;
 

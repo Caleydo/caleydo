@@ -630,8 +630,7 @@ public class GLHeatMap extends ATableBasedView implements IColorMappingUpdateLis
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedHeatMapView serializedForm = new SerializedHeatMapView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+				this);
 		return serializedForm;
 	}
 

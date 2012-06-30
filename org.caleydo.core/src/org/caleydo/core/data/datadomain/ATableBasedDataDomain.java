@@ -25,7 +25,6 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.xml.bind.annotation.XmlElement;
-import javax.xml.bind.annotation.XmlID;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -123,7 +122,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 	 * </p>
 	 * <p>
 	 * The key in this hasMap is created as a concatenation of the
-	 * {@link ADataPerspective#getID()} s using
+	 * {@link ADataPerspective#getPerspectiveID()} s using
 	 * {@link #createKey(String, String)},
 	 * </p>
 	 */
@@ -416,6 +415,12 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		return dataContainers.get(dataContainerKey);
 	}
 
+	/** Returns the data container made up of the default perspectives */
+	public DataContainer getDefaultDataContainer() {
+		return getDataContainer(table.getDefaultRecordPerspective().getPerspectiveID(),
+				table.getDefaultDimensionPerspective().getPerspectiveID());
+	}
+
 	/**
 	 * Returns whether a {@link DataContainer} Object exists in this datadomain
 	 * for the given perspectiveIDs.
@@ -628,7 +633,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			dimensionPerspective.init(dimensionResult);
 
 			eventPublisher.triggerEvent(new DimensionVAUpdateEvent(dataDomainID,
-					dimensionPerspective.getID(), this));
+					dimensionPerspective.getPerspectiveID(), this));
 		}
 
 		if (clusterState.getClusterTarget() == EClustererTarget.RECORD_CLUSTERING) {
@@ -638,7 +643,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 			recordPerspective.init(recordResult);
 
 			eventPublisher.triggerEvent(new RecordVAUpdateEvent(dataDomainID,
-					recordPerspective.getID(), this));
+					recordPerspective.getPerspectiveID(), this));
 		}
 		return result;
 	}
@@ -664,7 +669,7 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		recordData.setVADelta(vaDelta);
 
 		RecordVAUpdateEvent event = new RecordVAUpdateEvent(dataDomainID,
-				recordData.getID(), this);
+				recordData.getPerspectiveID(), this);
 
 		eventPublisher.triggerEvent(event);
 

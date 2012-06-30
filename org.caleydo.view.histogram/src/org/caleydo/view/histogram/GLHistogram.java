@@ -564,9 +564,7 @@ public class GLHistogram extends ATableBasedView {
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedHistogramView serializedForm = new SerializedHistogramView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
+		SerializedHistogramView serializedForm = new SerializedHistogramView(this);
 		return serializedForm;
 	}
 
@@ -641,6 +639,6 @@ public class GLHistogram extends ATableBasedView {
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
-		gl.glDeleteLists(displayListIndex, 1);		
+		gl.glDeleteLists(displayListIndex, 1);
 	}
 }

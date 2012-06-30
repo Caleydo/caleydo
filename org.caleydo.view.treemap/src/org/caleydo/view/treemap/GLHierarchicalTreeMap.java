@@ -459,9 +459,8 @@ public class GLHierarchicalTreeMap extends ATableBasedView implements
 	@Override
 	public ASerializedView getSerializableRepresentation() {
 		SerializedTreeMapView serializedForm = new SerializedTreeMapView(
-				dataDomain.getDataDomainID());
-		serializedForm.setViewID(this.getID());
-		return serializedForm;
+				this);
+			return serializedForm;
 	}
 
 	@Override

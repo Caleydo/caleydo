@@ -48,7 +48,7 @@ public class RcpGLScatterplotView extends ARcpGLViewPart {
 
 		view = new GLScatterPlot(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
-		initializeViewWithData();
+		initializeView();
 		createPartControlGL();
 	}
 

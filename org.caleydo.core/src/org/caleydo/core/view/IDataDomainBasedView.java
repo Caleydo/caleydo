@@ -17,7 +17,9 @@
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
-package org.caleydo.core.data.datadomain;
+package org.caleydo.core.view;
+
+import org.caleydo.core.data.datadomain.IDataDomain;
 
 public interface IDataDomainBasedView<DataDomainType extends IDataDomain> {
 

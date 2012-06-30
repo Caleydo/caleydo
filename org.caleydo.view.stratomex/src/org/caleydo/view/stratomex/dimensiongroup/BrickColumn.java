@@ -379,7 +379,7 @@ public class BrickColumn extends ATableBasedView implements
 		addSortedBricks(sortedBricks);
 
 		stratomex.getRelationAnalyzer().updateRelations(
-				dataContainer.getRecordPerspective().getID(),
+				dataContainer.getRecordPerspective().getPerspectiveID(),
 				dataContainer.getRecordPerspective().getVirtualArray());
 
 	}
@@ -569,7 +569,7 @@ public class BrickColumn extends ATableBasedView implements
 	@Override
 	public void handleRecordVAUpdate(String recordPerspectiveID) {
 
-		if (!dataContainer.getRecordPerspective().getID().equals(recordPerspectiveID))
+		if (!dataContainer.getRecordPerspective().getPerspectiveID().equals(recordPerspectiveID))
 			return;
 
 		clusterBrickColumn.clear();

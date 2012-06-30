@@ -25,6 +25,7 @@ import javax.xml.bind.JAXBException;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
+import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
 import org.caleydo.core.util.collection.Pair;
 import org.caleydo.core.view.ARcpGLViewPart;
 import org.eclipse.swt.widgets.Composite;
@@ -57,32 +58,8 @@ public class RcpGLStratomexView extends ARcpGLViewPart {
 		GLStratomex stratomex = new GLStratomex(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
 		view = stratomex;
-		view.initFromSerializableRepresentation(serializedView);
-		// view.initFromSerializableRepresentation(serializedView);
+		initializeView();
 
-		// IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-		// ((ASerializedSingleDataContainerBasedView) serializedView)
-		// .getDataDomainID());
-		// @SuppressWarnings("unchecked")
-		// IDataDomainBasedView<IDataDomain> dataDomainBasedView =
-		// (IDataDomainBasedView<IDataDomain>) view;
-		// dataDomainBasedView.setDataDomain(dataDomain);
-
-		SerializedStratomexView serializedStratomexView = (SerializedStratomexView) serializedView;
-
-		if (serializedStratomexView.getDataDomainAndDataContainerKeys() != null) {
-
-			for (Pair<String, String> data : serializedStratomexView
-					.getDataDomainAndDataContainerKeys()) {
-				ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-						.get().getDataDomainByID(data.getFirst());
-				DataContainer dataContainer = ((ATableBasedDataDomain) dataDomain)
-						.getDataContainer(data.getSecond());
-				stratomex.addDataContainer(dataContainer);
-			}
-		}
-
-		view.initialize();
 		createPartControlGL();
 	}
 

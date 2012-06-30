@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -36,7 +36,6 @@ import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.datadomain.IDataDomain;
-import org.caleydo.core.data.datadomain.IDataDomainBasedView;
 import org.caleydo.core.data.perspective.RecordPerspective;
 import org.caleydo.core.data.selection.SelectionType;
 import org.caleydo.core.data.selection.delta.SelectionDelta;
@@ -62,6 +61,8 @@ import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.system.Time;
+import org.caleydo.core.view.IDataDomainBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 import org.caleydo.core.view.IView;
 import org.caleydo.core.view.ViewManager;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
@@ -119,9 +120,8 @@ import com.jogamp.opengl.util.texture.TextureCoords;
  * @author Alexander Lex
  * @author Werner Puff
  */
-public class GLBucket extends AGLView implements
-		IDataDomainBasedView<ATableBasedDataDomain>, ISelectionUpdateHandler,
-		IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
+public class GLBucket extends AGLView implements ISingleDataContainerBasedView,
+		ISelectionUpdateHandler, IGLBucketView, IRemoteRenderingHandler, IPathwayLoader {
 	public static String VIEW_TYPE = "org.caleydo.view.bucket";
 
 	public static String VIEW_NAME = "Bucket";
@@ -2490,7 +2490,8 @@ public class GLBucket extends AGLView implements
 		if (glView instanceof IDataDomainBasedView<?>) {
 			((IDataDomainBasedView<IDataDomain>) glView).setDataDomain(DataDomainManager
 					.get().getDataDomainByID(
-							((ASerializedSingleDataContainerBasedView) serView).getDataDomainID()));
+							((ASerializedSingleDataContainerBasedView) serView)
+									.getDataDomainID()));
 		}
 
 		if (glView instanceof ATableBasedView) {
@@ -2722,8 +2723,7 @@ public class GLBucket extends AGLView implements
 
 	@Override
 	public ASerializedView getSerializableRepresentation() {
-		SerializedBucketView serializedForm = new SerializedBucketView(
-				dataDomain.getDataDomainID());
+		SerializedBucketView serializedForm = new SerializedBucketView(this);
 		serializedForm.setViewID(this.getID());
 		serializedForm.setPathwayTexturesEnabled(pathwayTexturesEnabled);
 		serializedForm.setNeighborhoodEnabled(neighborhoodEnabled);
@@ -2848,12 +2848,30 @@ public class GLBucket extends AGLView implements
 		recordPerspective.setPrivate(true);
 		recordPerspective.init(null);
 		dataDomain.getTable().registerRecordPerspective(recordPerspective);
-		dataContainer = dataDomain.getDataContainer(recordPerspective.getID(), dataDomain
-				.getTable().getDefaultDimensionPerspective().getID());
+		dataContainer = dataDomain
+				.getDataContainer(recordPerspective.getPerspectiveID(), dataDomain
+						.getTable().getDefaultDimensionPerspective().getPerspectiveID());
 	}
 
 	@Override
 	public boolean isDataView() {
 		return true;
+	}
+
+	@Override
+	public void setDataContainer(DataContainer dataContainer) {
+		this.dataContainer = dataContainer;
+	}
+
+	@Override
+	public DataContainer getDataContainer() {
+		return dataContainer;
+	}
+
+	@Override
+	public List<DataContainer> getDataContainers() {
+		ArrayList<DataContainer> dataContainerList = new ArrayList<DataContainer>();
+		dataContainerList.add(dataContainer);
+		return dataContainerList;
 	}
 }

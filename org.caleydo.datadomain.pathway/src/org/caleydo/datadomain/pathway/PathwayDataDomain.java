@@ -38,7 +38,7 @@ import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.opengl.util.texture.EIconTextures;
 import org.caleydo.datadomain.pathway.data.PathwayDataContainer;
 import org.caleydo.datadomain.pathway.manager.PathwayDatabase;
-import org.caleydo.datadomain.pathway.manager.PathwayDatabaseType;
+import org.caleydo.datadomain.pathway.manager.EPathwayDatabaseType;
 import org.caleydo.datadomain.pathway.manager.PathwayManager;
 
 /**
@@ -121,11 +121,11 @@ public class PathwayDataDomain
 	public void run() {
 
 		PathwayDatabase pathwayDatabase = PathwayManager.get().createPathwayDatabase(
-				PathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
+				EPathwayDatabaseType.BIOCARTA, "data/html/", "data/images/", "data/html");
 
 		PathwayManager.get().loadPathwaysByType(pathwayDatabase);
 
-		pathwayDatabase = PathwayManager.get().createPathwayDatabase(PathwayDatabaseType.KEGG,
+		pathwayDatabase = PathwayManager.get().createPathwayDatabase(EPathwayDatabaseType.KEGG,
 				"data/xml/", "data/images/", "");
 
 		PathwayManager.get().loadPathwaysByType(pathwayDatabase);

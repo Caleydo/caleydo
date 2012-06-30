@@ -60,7 +60,8 @@ import org.caleydo.core.id.IDType;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.view.ITableBasedDataDomainView;
+import org.caleydo.core.view.IDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 import org.caleydo.core.view.opengl.camera.ViewFrustum;
 import org.caleydo.core.view.opengl.canvas.listener.IViewCommandHandler;
 import org.caleydo.core.view.opengl.canvas.listener.RedrawViewListener;
@@ -77,7 +78,7 @@ import org.eclipse.swt.widgets.Composite;
  * @author Marc Streit
  */
 public abstract class ATableBasedView extends AGLView implements
-		ITableBasedDataDomainView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
+		ISingleDataContainerBasedView, ISelectionUpdateHandler, IRecordVAUpdateHandler,
 		IDimensionVAUpdateHandler, ISelectionCommandHandler, IViewCommandHandler {
 
 	protected ATableBasedDataDomain dataDomain;
@@ -199,8 +200,7 @@ public abstract class ATableBasedView extends AGLView implements
 		if (serialzedView instanceof ASerializedSingleDataContainerBasedView) {
 			ASerializedSingleDataContainerBasedView topSerializedView = (ASerializedSingleDataContainerBasedView) serialzedView;
 			dataContainer = dataDomain.getDataContainer(
-					topSerializedView.getRecordPerspectiveID(),
-					topSerializedView.getDimensionPerspectiveID());
+					topSerializedView.getDataContainerKey());
 		}
 	}
 

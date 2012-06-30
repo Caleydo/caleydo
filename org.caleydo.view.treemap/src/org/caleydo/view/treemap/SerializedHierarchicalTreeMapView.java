@@ -23,6 +23,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
 
 /**
  * Serialized form of a hierarchical treemap view.
@@ -39,8 +40,8 @@ public class SerializedHierarchicalTreeMapView extends ASerializedSingleDataCont
 	public SerializedHierarchicalTreeMapView() {
 	}
 
-	public SerializedHierarchicalTreeMapView(String dataDomainType) {
-		super(dataDomainType);
+	public SerializedHierarchicalTreeMapView(ISingleDataContainerBasedView view) {
+		super(view);
 	}
 
 	@Override

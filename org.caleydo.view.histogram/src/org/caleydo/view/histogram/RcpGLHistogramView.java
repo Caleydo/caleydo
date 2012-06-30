@@ -30,7 +30,8 @@ import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.serialize.ASerializedSingleDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.ARcpGLViewPart;
-import org.caleydo.core.view.ITableBasedDataDomainView;
+import org.caleydo.core.view.ISingleDataContainerBasedView;
+import org.caleydo.core.view.IView;
 import org.caleydo.core.view.MinimumSizeComposite;
 import org.caleydo.core.view.opengl.canvas.ATableBasedView;
 import org.eclipse.jface.action.IAction;
@@ -39,8 +40,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
-public class RcpGLHistogramView extends ARcpGLViewPart implements  
-		ITableBasedDataDomainView {
+public class RcpGLHistogramView extends ARcpGLViewPart implements IView,   
+		ISingleDataContainerBasedView {
 
 	
 //	protected SelectionCommandListener clearSelectionsListener;
@@ -84,7 +85,7 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 
 		view = new GLHistogram(glCanvas, parentComposite, serializedView.getViewFrustum());
 		// ((GLHistogram) view).setRenderColorBars(false);
-		initializeViewWithData();
+		initializeView();
 		initialize();
 
 		createPartControlGL();
@@ -167,12 +168,12 @@ public class RcpGLHistogramView extends ARcpGLViewPart implements
 
 	@Override
 	public List<DataContainer> getDataContainers() {
-		return ((ITableBasedDataDomainView) view).getDataContainers();
+		return ((ISingleDataContainerBasedView) view).getDataContainers();
 	}
 
 	@Override
 	public DataContainer getDataContainer() {
-		return ((ITableBasedDataDomainView) view).getDataContainer();
+		return ((ISingleDataContainerBasedView) view).getDataContainer();
 	}
 
 	

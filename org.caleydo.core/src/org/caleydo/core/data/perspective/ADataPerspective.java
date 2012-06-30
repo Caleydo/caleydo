@@ -24,6 +24,8 @@ import java.util.List;
 
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlElementRef;
+import javax.xml.bind.annotation.XmlID;
+import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlSeeAlso;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
@@ -76,6 +78,7 @@ import org.eclipse.core.runtime.Status;
 @XmlType
 @XmlSeeAlso({ RecordPerspective.class, DimensionPerspective.class,
 		RecordVirtualArray.class, DimensionVirtualArray.class })
+@XmlRootElement
 public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, GroupType>, GroupType extends GroupList<GroupType, VA, DeltaType>, DeltaType extends VirtualArrayDelta<DeltaType>, FilterManagerType extends FilterManager<?, DeltaType, ?, VA>> {
 
 	/** The unique ID of the perspective */
@@ -146,11 +149,12 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	/** Only for serialization */
 	public ADataPerspective() {
-
+		System.out.println("Create Default");
 	}
 
 	public ADataPerspective(ATableBasedDataDomain dataDomain) {
 		this.dataDomain = dataDomain;
+		System.out.println("Create with datadomain");
 		init();
 	}
 
@@ -229,7 +233,7 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	 * 
 	 * @return
 	 */
-	public String getID() {
+	public String getPerspectiveID() {
 		return perspectiveID;
 	}
 
@@ -289,8 +293,8 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 	@XmlTransient
 	public ClusterTree getTree() {
 		// this should only happen when we de-serialize with a default tree.
-//		if (tree == null)
-//			createDefaultTreeAndGroupList();
+		// if (tree == null)
+		// createDefaultTreeAndGroupList();
 		return tree;
 	}
 
@@ -451,28 +455,27 @@ public abstract class ADataPerspective<VA extends VirtualArray<VA, DeltaType, Gr
 
 	/** Creates a default tree of depth 1 and a {@link GroupList} with one group */
 	private void createDefaultGroupList() {
-//		isTreeDefaultTree = true;
-//		tree = new ClusterTree(idType, virtualArray.size());
-//		ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
-//		tree.setRootNode(root);
-//		for (Integer id : virtualArray) {
-//			tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id, false, id));
-//		}
+		// isTreeDefaultTree = true;
+		// tree = new ClusterTree(idType, virtualArray.size());
+		// ClusterNode root = new ClusterNode(tree, "root", 0, true, -1);
+		// tree.setRootNode(root);
+		// for (Integer id : virtualArray) {
+		// tree.addChild(root, new ClusterNode(tree, getElementLabel(id), id,
+		// false, id));
+		// }
 		GroupType groupList = createGroupList();
 		Group group = new Group(virtualArray.size(), 0);
 		groupList.append(group);
 		virtualArray.setGroupList(groupList);
 
 	}
-	
-	
 
 	private void createGroupListAndDefaultTreeFromClusterSizes(
 			PerspectiveInitializationData data) {
 		GroupType groupList = createGroupList();
 		int groupCounter = 0;
 		isTreeDefaultTree = true;
-//		tree = new ClusterTree(idType, data.getIndices().size());
+		// tree = new ClusterTree(idType, data.getIndices().size());
 		int clusterNr = 0;
 		// ClusterNode root = new ClusterNode(tree, "Root", clusterNr++, true,
 		// -1);

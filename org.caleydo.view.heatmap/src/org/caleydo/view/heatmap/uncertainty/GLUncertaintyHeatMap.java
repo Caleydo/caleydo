@@ -329,7 +329,7 @@ public class GLUncertaintyHeatMap extends ATableBasedView implements
 				data.setData(embeddedRecords);
 				detailHeatMap.getDataContainer().getRecordPerspective().init(data);
 				detailHeatMap.handleRecordVAUpdate(detailHeatMap.getDataContainer()
-						.getRecordPerspective().getID());
+						.getRecordPerspective().getPerspectiveID());
 
 				// ArrayList<Integer> clusterElements =
 				// dataContainer.getRecordPerspective().getVirtualArray().getIDsOfGroup(groupList

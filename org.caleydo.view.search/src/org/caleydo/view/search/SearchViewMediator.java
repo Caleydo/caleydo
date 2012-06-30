@@ -168,7 +168,7 @@ public class SearchViewMediator {
 
 		if (binnedPerspective != null) {
 			DataContainer dataContainer = dataDomain.getDataContainer(
-					binnedPerspective.getID(), perspective.getID());
+					binnedPerspective.getPerspectiveID(), perspective.getPerspectiveID());
 			dataContainer.setLabel(label, false);
 			dataContainer.getContainerStatistics().setNumberOfBucketsForHistogram(
 					numberOfBins);
