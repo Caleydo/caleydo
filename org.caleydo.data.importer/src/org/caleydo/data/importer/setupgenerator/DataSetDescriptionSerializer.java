@@ -63,11 +63,21 @@ public abstract class DataSetDescriptionSerializer {
 	 * Triggers the loading of the <code>DataSetDescriptions</code> and the
 	 * serialization.
 	 */
+	protected void run( String outputFilePath ) {
+		this.outputFilePath = outputFilePath;
+		this.run();
+	}
+
+	/**
+	 * Triggers the loading of the <code>DataSetDescriptions</code> and the
+	 * serialization.
+	 */
 	protected void run() {
 		setUpDataSetDescriptions();
 		serialize();
 	}
-
+	
+	
 	/**
 	 * The <code>DataSetDescription</code> creation is triggered and all of them
 	 * are written into the {@link #dataSetDescriptionCollection}
