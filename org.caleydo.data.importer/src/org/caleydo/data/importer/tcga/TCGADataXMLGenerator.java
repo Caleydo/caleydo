@@ -76,7 +76,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		super(arguments);
 		
 		this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "GBM";
+		this.tumorAbbreviation = "BRCA";
 		this.runIdentifier = "20120525";
 		this.tempDirectory = "/Users/nils/Data/StratomeX/temp";
 		this.baseDirectory = "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
@@ -270,10 +270,16 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		// check if exactly one archive exists, if not return null
 		String[] archiveNames = new java.io.File( this.archiveDirectory ).list( new PipelineNameFilter( pipelineName ) );
 		
-		if ( archiveNames.length != 1 )
+		if ( archiveNames.length == 0 )
+		{
+			throw new RuntimeException( "No archive found for pipeline " + pipelineName + " in " + this.archiveDirectory );
+		}
+
+		if ( archiveNames.length > 1 )
 		{
 			throw new RuntimeException( "Multiple archives found for pipeline " + pipelineName + " in " + this.archiveDirectory );
 		}
+		
 		
 		String archiveName = archiveNames[0];
 		
@@ -299,22 +305,73 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		sampleIDSpecification.setReplacementExpression("\\.", "-");
 		sampleIDSpecification.setSubStringExpression(TCGA_ID_SUBSTRING_REGEX);
 
-		dataSetDescriptionCollection.add(setUpMRNAData());
-		dataSetDescriptionCollection.add(setUpMiRNAData());
-		dataSetDescriptionCollection.add(setUpCopyNumberData());
-		//dataSetDescriptionCollection.add(setUpClinicalData());
-		//dataSetDescriptionCollection.add(setUpMethylationData());
-		// dataSetDescriptionCollection.add(setUpMutationData());
+		try
+		{
+			dataSetDescriptionCollection.add(setUpMRNAData( "mRNA_Clustering_CNMF", "mRNA (CNMF)" ));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
 
+		try
+		{
+			dataSetDescriptionCollection.add(setUpMRNAData( "mRNA_Clustering_Consensus", "mRNA (Hierarchical)" ));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
+
+		try
+		{
+			dataSetDescriptionCollection.add(setUpMiRNAData( "miR_Clustering_CNMF", "microRNA (CNMF)" ));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
+
+		try
+		{
+			dataSetDescriptionCollection.add(setUpMiRNAData( "miRseq_Clustering_CNMF", "microRNA-Seq (CNMF)" ));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
+		
+		try
+		{
+			dataSetDescriptionCollection.add(setUpCopyNumberData( "CopyNumber_Gistic2", "Copy Number"));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
+		
+
+		try
+		{
+			dataSetDescriptionCollection.add(setUpMethylationData( "Methylation_Clustering_CNMF", "methylation (CNMF)"));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
+		
+		
+		//dataSetDescriptionCollection.add(setUpClinicalData());
+		// dataSetDescriptionCollection.add(setUpMutationData());
 	}
 
-	private DataSetDescription setUpMRNAData() {
-		String mRNAFile = this.extractFile( "outputprefix.expclu.gct", "mRNA_Clustering_CNMF" );
-		String mRNAGroupingFile = this.extractFile( "cnmf.membership.txt", "mRNA_Clustering_CNMF" );
+	private DataSetDescription setUpMRNAData(String archiveName, String dataType) {
+		String mRNAFile = this.extractFile( "outputprefix.expclu.gct", archiveName );
+		String mRNAGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
 		
 		
 		DataSetDescription mrnaData = new DataSetDescription();
-		mrnaData.setDataSetName("mRNA");
+		mrnaData.setDataSetName(dataType);
 
 		mrnaData.setDataSourcePath( mRNAFile );
 		mrnaData.setNumberOfHeaderLines(3);
@@ -362,12 +419,12 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		return mrnaData;
 	}
 
-	private DataSetDescription setUpMiRNAData() {
-		String miRNAFile = this.extractFile( "cnmf.normalized.gct", "miR_Clustering_CNMF" );
-		String miRNAGroupingFile = this.extractFile( "cnmf.membership.txt", "miR_Clustering_CNMF" );
+	private DataSetDescription setUpMiRNAData( String archiveName, String dataType ) {
+		String miRNAFile = this.extractFile( "cnmf.normalized.gct", archiveName );
+		String miRNAGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
 		
 		DataSetDescription mirnaData = new DataSetDescription();
-		mirnaData.setDataSetName("miRNA");
+		mirnaData.setDataSetName(dataType);
 
 		mirnaData.setDataSourcePath(miRNAFile);
 		mirnaData.setNumberOfHeaderLines(3);
@@ -380,7 +437,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		mirnaData.addParsingRule(parsingRule);
 
 		IDSpecification mirnaIDSpecification = new IDSpecification();
-		mirnaIDSpecification.setIdType("miRNA");
+		mirnaIDSpecification.setIdType(dataType);
 		mirnaData.setRowIDSpecification(mirnaIDSpecification);
 		mirnaData.setTransposeMatrix(true);
 		mirnaData.setColumnIDSpecification(sampleIDSpecification);
@@ -407,12 +464,12 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		return mirnaData;
 	}
 
-	private DataSetDescription setUpMethylationData() {
-		String methylationFile = this.extractFile( "cnmf.normalized.gct", "Methylation_Clustering_CNMF" );
-		String methylationGroupingFile = this.extractFile( "cnmf.membership.txt", "Methylation_Clustering_CNMF" );
+	private DataSetDescription setUpMethylationData( String archiveName, String dataType ) {
+		String methylationFile = this.extractFile( "cnmf.normalized.gct", archiveName );
+		String methylationGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
 		
 		DataSetDescription methylationData = new DataSetDescription();
-		methylationData.setDataSetName("Methylation");
+		methylationData.setDataSetName(dataType);
 
 		methylationData.setDataSourcePath(methylationFile);
 		methylationData.setNumberOfHeaderLines(3);
@@ -426,7 +483,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		methylationData.setTransposeMatrix(true);
 
 		IDSpecification methylationIDSpecification = new IDSpecification();
-		methylationIDSpecification.setIdType("methylation");
+		methylationIDSpecification.setIdType(dataType);
 		methylationData.setRowIDSpecification(methylationIDSpecification);
 		methylationData.setColumnIDSpecification(sampleIDSpecification);
 
@@ -452,11 +509,11 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		return methylationData;
 	}
 
-	private DataSetDescription setUpCopyNumberData() {
-		String copyNumberFile = this.extractFile( "all_thresholded.by_genes.txt", "CopyNumber_Gistic2" );
+	private DataSetDescription setUpCopyNumberData( String archiveName, String dataType ) {
+		String copyNumberFile = this.extractFile( "all_thresholded.by_genes.txt", archiveName );
 		
 		DataSetDescription copyNumberData = new DataSetDescription();
-		copyNumberData.setDataSetName("Copy number");
+		copyNumberData.setDataSetName(dataType);
 
 		copyNumberData.setDataSourcePath(copyNumberFile);
 		copyNumberData.setNumberOfHeaderLines(1);
@@ -488,6 +545,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 	//
 	private DataSetDescription setUpClinicalData() {
+		String CLINICAL = "";
 		DataSetDescription clinicalData = new DataSetDescription();
 		clinicalData.setDataSetName("Clinical");
 		clinicalData.setDataHomogeneous(false);
@@ -523,6 +581,8 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	}
 
 	private DataSetDescription setUpMutationData() {
+		String MUTATION = "";
+		
 		DataSetDescription mutationDataMetaInfo = new DataSetDescription();
 		mutationDataMetaInfo.setDataSetName("Mutation Status");
 		mutationDataMetaInfo.setDataSourcePath(MUTATION);
