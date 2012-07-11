@@ -24,8 +24,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.FilenameFilter;
 import java.util.zip.GZIPInputStream;
-import java.util.zip.ZipEntry;
-import java.util.zip.ZipInputStream;
 
 import org.apache.tools.tar.TarEntry;
 import org.apache.tools.tar.TarInputStream;
@@ -57,18 +55,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	protected String archiveDirectory;
 	protected String outputFilePath;
 	
-	protected boolean removeTemporaryFiles;
-
-	public String getOutputFilePath() {
-		return outputFilePath;
-	}
-
-
-	public void setOutputFilePath(String outputFilePath) {
-		this.outputFilePath = outputFilePath;
-	}
-
-
+	
 	/**
 	 * @param arguments
 	 */
@@ -76,7 +63,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		super(arguments);
 		
 		this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "BRCA";
+		this.tumorAbbreviation = "GBM";
 		this.runIdentifier = "20120525";
 		this.tempDirectory = "/Users/nils/Data/StratomeX/temp";
 		this.baseDirectory = "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
@@ -86,9 +73,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 				this.tumorAbbreviation + System.getProperty("file.separator") +
 				this.runIdentifier;
 		
-		this.outputFilePath = this.baseDirectory + System.getProperty("file.separator") + this.tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";
-		
-		this.removeTemporaryFiles = true;
+		this.outputFilePath = this.baseDirectory + System.getProperty("file.separator") + this.tumorAbbreviation + "_" + this.runIdentifier + "_caleydo.xml";		
 	}
 	
 
@@ -166,6 +151,19 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
                         break;
                 }
                 
+                outputDirectoryName += System.getProperty("file.separator") + this.runIdentifier + System.getProperty("file.separator") +
+                		this.tumorAbbreviation + System.getProperty("file.separator") +
+                		archiveName;
+                
+                if ( !(new File( outputDirectoryName ) ).exists() )
+                {
+                    if ( !(new File( outputDirectoryName ) ).mkdirs() )
+                    {
+                        // Directory creation failed
+                    	throw new RuntimeException( "Unable to create output directory " + outputDirectoryName + " for " + fileName + "." );
+                    }
+                }
+                
                 outputFileName = outputDirectoryName + System.getProperty("file.separator") + fileName;
                 
                 fileoutputstream = new FileOutputStream(
@@ -183,7 +181,6 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
         }
         catch (Exception e)
         {
-            e.printStackTrace();
         	throw new RuntimeException( "Unable to extract " + fileName + " from " + archiveName + "." );
         }
         
@@ -195,73 +192,6 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
         return outputFileName;
     }	
 	
-
-	// http://www.java-tips.org/java-se-tips/java.util.zip/how-to-extract-file-files-from-a-zip-file-3.html		
-	protected String extractFileFromZipArchive( String archiveName, String fileName, String outputDirectoryName )
-    {
-		String outputFileName = null;
-		
-        try
-        {
-            byte[] buf = new byte[1024];
-            ZipInputStream zipinputstream = null;
-            ZipEntry zipentry;
-            zipinputstream = new ZipInputStream(
-                new FileInputStream(archiveName));
-
-            zipentry = zipinputstream.getNextEntry();
-            while (zipentry != null) 
-            { 
-                //for each entry to be extracted
-                String entryName = zipentry.getName();
-                
-                // only continue if the this entry is the one we need to extract
-                if ( !entryName.endsWith( fileName ) )
-                {
-                	zipentry = zipinputstream.getNextEntry();
-                	continue;
-                }
-                
-                int n;
-                FileOutputStream fileoutputstream;
-                File newFile = new File(entryName);
-                String directory = newFile.getParent();
-                
-                if ( directory == null )
-                {
-                    if( newFile.isDirectory() )
-                    	
-                        break;
-                }
-                
-                outputFileName = outputDirectoryName+System.getProperty("file.separator")+ fileName;
-                
-                fileoutputstream = new FileOutputStream(
-                   outputFileName);             
-
-                while ((n = zipinputstream.read(buf, 0, 1024)) > -1)
-                    fileoutputstream.write(buf, 0, n);
-
-                fileoutputstream.close(); 
-                zipinputstream.closeEntry();
-                zipinputstream.close();
-                
-                break;
-            }//while
-
-        }
-        catch (Exception e)
-        {
-            throw new RuntimeException( "Unable to extract " + fileName + " from " + archiveName + "." );
-        }
-        
-        if ( outputFileName == null )
-        {	
-        	throw new RuntimeException( "File " + fileName + " not found in " + archiveName + "." );
-        }
-
-        return outputFileName;
-    }	
 	
 	// find Firehose archive in Firehose_get output directory and extract file from archive to temp directory
 	// return path to file in temp directory
@@ -307,7 +237,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		try
 		{
-			dataSetDescriptionCollection.add(setUpMRNAData( "mRNA_Clustering_CNMF", "mRNA (CNMF)" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA" ));
 		}
 		catch( Exception e )
 		{
@@ -316,7 +246,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		try
 		{
-			dataSetDescriptionCollection.add(setUpMRNAData( "mRNA_Clustering_Consensus", "mRNA (Hierarchical)" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miR_Clustering_CNMF", "miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA" ));
 		}
 		catch( Exception e )
 		{
@@ -325,16 +255,16 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		try
 		{
-			dataSetDescriptionCollection.add(setUpMiRNAData( "miR_Clustering_CNMF", "microRNA (CNMF)" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus", "cnmf.normalized.gct", "microRNA-seq" ));
 		}
 		catch( Exception e )
 		{
 			System.err.println( e.getMessage() );
 		}
-
+		
 		try
 		{
-			dataSetDescriptionCollection.add(setUpMiRNAData( "miRseq_Clustering_CNMF", "microRNA-Seq (CNMF)" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation" ));
 		}
 		catch( Exception e )
 		{
@@ -350,25 +280,13 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 			System.err.println( e.getMessage() );
 		}
 		
-
-		try
-		{
-			dataSetDescriptionCollection.add(setUpMethylationData( "Methylation_Clustering_CNMF", "methylation (CNMF)"));
-		}
-		catch( Exception e )
-		{
-			System.err.println( e.getMessage() );
-		}
-		
-		
 		//dataSetDescriptionCollection.add(setUpClinicalData());
 		// dataSetDescriptionCollection.add(setUpMutationData());
 	}
 
-	private DataSetDescription setUpMRNAData(String archiveName, String dataType) {
-		String mRNAFile = this.extractFile( "outputprefix.expclu.gct", archiveName );
-		String mRNAGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
-		
+	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName, String hierarchicalArchiveName, String matrixFileName, String dataType) {
+		String mRNAFile = this.extractFile( matrixFileName, cnmfArchiveName );
+		String mRNACnmfGroupingFile = this.extractFile( "cnmf.membership.txt", cnmfArchiveName );
 		
 		DataSetDescription mrnaData = new DataSetDescription();
 		mrnaData.setDataSetName(dataType);
@@ -390,35 +308,38 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		mrnaData.setRowIDSpecification(geneIDSpecification);
 		mrnaData.setColumnIDSpecification(sampleIDSpecification);
 
-		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
-				mRNAGroupingFile);
-		firehoseClustering.setContainsColumnIDs(false);
-		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
-		mrnaData.addColumnGroupingSpecification(firehoseClustering);
+		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(
+				mRNACnmfGroupingFile);
+		firehoseCnmfClustering.setContainsColumnIDs(false);
+		firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
+		mrnaData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
+		try
+		{
+			String mRNAHierarchicalGroupingFile = this.extractFile( this.tumorAbbreviation + ".allclusters.txt", hierarchicalArchiveName ); // e.g. GBM.allclusters.txt		
+			
+			GroupingParseSpecification firehoseHierarchicalClustering = new GroupingParseSpecification(
+					mRNAHierarchicalGroupingFile);
+			firehoseHierarchicalClustering.setContainsColumnIDs(false);
+			firehoseHierarchicalClustering.setRowIDSpecification(sampleIDSpecification);
+			mrnaData.addColumnGroupingSpecification(firehoseHierarchicalClustering);					
+		}
+		catch ( RuntimeException e )
+		{
+			System.err.println( e.getMessage() );
+		}
+		
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		mrnaData.setDataProcessingDescription(dataProcessingDescription);
-
-		// GroupingParseSpecification groundTruthGrouping = new
-		// GroupingParseSpecification();
-		// groundTruthGrouping.setDataSourcePath(GROUND_TRUTH_GROUPING);
-		// groundTruthGrouping.addColum(2);
-		// groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
-		// mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
 		
-		if ( this.removeTemporaryFiles )
-		{
-			removeFile( mRNAFile );
-			removeFile( mRNAGroupingFile );
-		}
-
 		return mrnaData;
 	}
 
+	
 	private DataSetDescription setUpMiRNAData( String archiveName, String dataType ) {
 		String miRNAFile = this.extractFile( "cnmf.normalized.gct", archiveName );
 		String miRNAGroupingFile = this.extractFile( "cnmf.membership.txt", archiveName );
@@ -454,12 +375,6 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		mirnaData.setDataProcessingDescription(dataProcessingDescription);
-
-		if ( this.removeTemporaryFiles )
-		{
-			removeFile( miRNAFile );
-			removeFile( miRNAGroupingFile );
-		}
 
 		return mirnaData;
 	}
@@ -499,12 +414,6 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		methylationData.setDataProcessingDescription(dataProcessingDescription);
-
-		if ( this.removeTemporaryFiles )
-		{
-			removeFile( methylationFile );
-			removeFile( methylationGroupingFile );
-		}
 		
 		return methylationData;
 	}
@@ -530,17 +439,8 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		geneIDSpecification.setIDTypeGene(true);
 		geneIDSpecification.setIdType("GENE_SYMBOL");
 		copyNumberData.setRowIDSpecification(geneIDSpecification);
-		copyNumberData.setColumnIDSpecification(sampleIDSpecification);
-		
-		if ( this.removeTemporaryFiles )
-		{
-			removeFile( copyNumberFile );
-		}		
 
 		return copyNumberData;
-
-		// copyNumberData.setColorScheme(EDefaultColorSchemes.RED_YELLOW_BLUE_DIVERGING
-		// .name());
 	}
 
 	//
@@ -605,5 +505,17 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		return mutationDataMetaInfo;
 	}
+
+	
+	public String getOutputFilePath() {
+		return outputFilePath;
+	}
+
+
+	public void setOutputFilePath(String outputFilePath) {
+		this.outputFilePath = outputFilePath;
+	}
+
+
 
 }
