@@ -1235,7 +1235,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 									"Data contains positive and negative values. KM plot cannot handle this data.");
 						}
 
-						if (rawValue != Float.NaN && Math.abs(rawValue) > Math.abs(maxTimeValue))
+						if (rawValue != Float.NaN
+								&& Math.abs(rawValue) > Math.abs(maxTimeValue))
 							maxTimeValue = rawValue;
 					}
 				}
@@ -1405,6 +1406,7 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 	@Override
 	protected void destroyViewSpecificContent(GL2 gl) {
-		layoutManager.destroy(gl);
+		if (layoutManager != null)
+			layoutManager.destroy(gl);
 	}
 }

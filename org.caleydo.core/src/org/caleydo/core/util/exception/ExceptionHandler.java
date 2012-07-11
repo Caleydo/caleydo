@@ -19,7 +19,6 @@
  *******************************************************************************/
 package org.caleydo.core.util.exception;
 
-import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.view.opengl.canvas.AGLView;
 import org.eclipse.core.runtime.IStatus;

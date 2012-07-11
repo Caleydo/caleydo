@@ -77,6 +77,7 @@ import org.caleydo.core.view.opengl.util.texture.TextureManager;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.PlatformUI;
 
 import com.jogamp.opengl.util.texture.Texture;
 import com.jogamp.opengl.util.texture.TextureCoords;
@@ -1183,7 +1184,9 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 
 	@Override
 	public void dispose(GLAutoDrawable drawable) {
-		 System.out.println("dispose " + label);
+		if (PlatformUI.getWorkbench().isClosing())
+			return;
+		System.out.println("dispose " + label);
 
 		GL2 gl = drawable.getGL().getGL2();
 		// First, destroy the remote views, then unregister, otherwise the
@@ -1200,7 +1203,7 @@ public abstract class AGLView extends AView implements GLEventListener, IResetta
 	 * @param gl
 	 */
 	public final void destroy(GL2 gl) {
-		 System.out.println("destroy " + label);
+		System.out.println("destroy " + label);
 		this.broadcastElements(EVAOperation.REMOVE_ELEMENT);
 
 		pickingManager.removeViewSpecificData(uniqueID);
