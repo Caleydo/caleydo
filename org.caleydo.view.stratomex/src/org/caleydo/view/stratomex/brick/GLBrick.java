@@ -84,6 +84,7 @@ import org.caleydo.view.stratomex.brick.layout.ABrickLayoutConfiguration;
 import org.caleydo.view.stratomex.brick.layout.CollapsedBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.CompactHeaderBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.layout.DefaultBrickLayoutTemplate;
+import org.caleydo.view.stratomex.brick.layout.DetailBrickLayoutTemplate;
 import org.caleydo.view.stratomex.brick.sorting.ExternallyProvidedSortingStrategy;
 import org.caleydo.view.stratomex.brick.ui.RectangleCoordinates;
 import org.caleydo.view.stratomex.brick.ui.RelationIndicatorRenderer;
@@ -811,7 +812,8 @@ public class GLBrick extends ATableBasedView implements IGLRemoteRenderingView,
 
 				selectElementsByGroup();
 
-				if (!isHeaderBrick) {
+				if (!isHeaderBrick
+						&& !(brickLayoutConfiguration instanceof DetailBrickLayoutTemplate)) {
 					Point point = pick.getPickedPoint();
 					DragAndDropController dragAndDropController = stratomex
 							.getDragAndDropController();

@@ -163,6 +163,12 @@ public class DataSetDescription extends MatrixDefinition {
 	 * A description on how to pre-process (e.g., cluster, filter) the data. Optional.
 	 */
 	private DataProcessingDescription dataProcessingDescription;
+	
+	/**
+	 * 
+	 */
+	public DataSetDescription() {
+	}
 
 	/**
 	 * @param transposeMatrix

@@ -62,6 +62,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
@@ -77,8 +78,7 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  */
-public class ImportDataDialog
-	extends Dialog {
+public class ImportDataDialog extends Dialog {
 
 	private static int MAX_PREVIEW_TABLE_ROWS = 50;
 	private static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
@@ -90,6 +90,9 @@ public class ImportDataDialog
 	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
+
+	private List listColumnGroupings;
+	private List listRowGroupings;
 
 	private Button buttonHomogeneous;
 	private Button buttonUncertaintyDataProvided;
@@ -164,19 +167,19 @@ public class ImportDataDialog
 			return;
 		}
 
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-				.createDataDomain("org.caleydo.datadomain.genetic");
+		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
+				.get().createDataDomain("org.caleydo.datadomain.genetic");
 
 		fillLoadDataParameters();
 
-//		IDSpecification recordIDSpecification = new IDSpecification();
-//		recordIDSpecification.setIDTypeGene(true);
-//		recordIDSpecification.setIdType("GENE_SYMBOL");
-//
-//		dataSetDescription.setRowIDSpecification(recordIDSpecification);
-//
-//		IDSpecification dimensionIDSpecification = new IDSpecification();
-//		dimensionIDSpecification.setIdType("SAMPLE");
+		// IDSpecification recordIDSpecification = new IDSpecification();
+		// recordIDSpecification.setIDTypeGene(true);
+		// recordIDSpecification.setIdType("GENE_SYMBOL");
+		//
+		// dataSetDescription.setRowIDSpecification(recordIDSpecification);
+		//
+		// IDSpecification dimensionIDSpecification = new IDSpecification();
+		// dimensionIDSpecification.setIdType("SAMPLE");
 
 		dataDomain.setDataSetDescription(dataSetDescription);
 
@@ -201,8 +204,7 @@ public class ImportDataDialog
 									IWorkbenchPage.VIEW_ACTIVATE);
 
 				}
-			}
-			catch (PartInitException e) {
+			} catch (PartInitException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
@@ -228,8 +230,8 @@ public class ImportDataDialog
 		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		inputFileGroup.setText("Input file");
 		inputFileGroup.setLayout(new GridLayout(2, false));
-		GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = numGridCols;
+		GridData gridData = new GridData(SWT.BEGINNING);
+		gridData.horizontalSpan = 2;
 		inputFileGroup.setLayoutData(gridData);
 
 		Button buttonFileChooser = new Button(inputFileGroup, SWT.PUSH);
@@ -264,19 +266,69 @@ public class ImportDataDialog
 			}
 		});
 
+		Composite groupingComposite = new Composite(composite, SWT.NONE);
+		groupingComposite.setLayout(new GridLayout(2, true));
+		groupingComposite
+				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3));
+
+		Group columnGroupingsGroup = new Group(groupingComposite, SWT.SHADOW_ETCHED_IN);
+		columnGroupingsGroup.setText("Column groupings");
+		columnGroupingsGroup.setLayout(new GridLayout(2, false));
+		columnGroupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		listColumnGroupings = new List(columnGroupingsGroup, SWT.SINGLE);
+		listColumnGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Button addColumnGroupingButton = new Button(columnGroupingsGroup, SWT.PUSH);
+		addColumnGroupingButton.setText("Add");
+		addColumnGroupingButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false,
+				false));
+		addColumnGroupingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				ImportGroupingDialog groupingDialog = new ImportGroupingDialog(
+						new Shell());
+				groupingDialog.open();
+			}
+		});
+
+		Group rowGroupingsGroup = new Group(groupingComposite, SWT.SHADOW_ETCHED_IN);
+		rowGroupingsGroup.setText("Row groupings");
+		rowGroupingsGroup.setLayout(new GridLayout(2, false));
+		rowGroupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		listRowGroupings = new List(rowGroupingsGroup, SWT.SINGLE);
+		listRowGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		Button addRowGroupingButton = new Button(rowGroupingsGroup, SWT.PUSH);
+		addRowGroupingButton.setText("Add");
+		addRowGroupingButton
+				.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false));
+		addRowGroupingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				ImportGroupingDialog groupingDialog = new ImportGroupingDialog(
+						new Shell());
+				groupingDialog.open();
+			}
+		});
+
 		allRegisteredIDCategories.clear();
 		allRegisteredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
 
-		createRowIDCategoryGroup();
-		createRecordIDTypeGroup();
-		createColumnIDCategoryGroup();
-		createDimensionIDTypeGroup();
+		Composite idComposite = new Composite(composite, SWT.NONE);
+		idComposite.setLayout(new GridLayout(4, false));
+		idComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
+
+		createRowIDCategoryGroup(idComposite);
+		createRecordIDTypeGroup(idComposite);
+		createColumnIDCategoryGroup(idComposite);
+		createDimensionIDTypeGroup(idComposite);
 
 		Group dataSetLabelGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		dataSetLabelGroup.setText("Data set name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
-		gridData = new GridData(GridData.FILL_HORIZONTAL);
-		gridData.horizontalSpan = numGridCols;
+		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		dataSetLabelGroup.setLayoutData(gridData);
 
 		txtDataSetLabel = new Text(dataSetLabelGroup, SWT.BORDER);
@@ -298,8 +350,8 @@ public class ImportDataDialog
 				// Add 1 because the number that the user enters is human
 				// readable and not array index
 				// (starting with 0).
-				dataSetDescription.setNumberOfHeaderLines(Integer.valueOf(txtStartParseAtLine
-						.getText()));
+				dataSetDescription.setNumberOfHeaderLines(Integer
+						.valueOf(txtStartParseAtLine.getText()));
 
 				createDataPreviewTable("\t");
 				composite.pack();
@@ -335,13 +387,15 @@ public class ImportDataDialog
 		if (inputFile == null || inputFile.isEmpty())
 			return "<insert data set name>";
 
-		return inputFile.substring(inputFile.lastIndexOf("/") + 1, inputFile.lastIndexOf("."));
+		return inputFile.substring(inputFile.lastIndexOf("/") + 1,
+				inputFile.lastIndexOf("."));
 	}
 
-	private void createRowIDCategoryGroup() {
-		Group recordIDCategoryGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+	private void createRowIDCategoryGroup(Composite parent) {
+		Group recordIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		recordIDCategoryGroup.setText("Row ID category");
 		recordIDCategoryGroup.setLayout(new RowLayout());
+		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
 		recordIDCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
 
 		int index = 0;
@@ -366,10 +420,11 @@ public class ImportDataDialog
 		});
 	}
 
-	private void createColumnIDCategoryGroup() {
-		Group dimensionIDCategoryGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+	private void createColumnIDCategoryGroup(Composite parent) {
+		Group dimensionIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		dimensionIDCategoryGroup.setText("Column ID category");
 		dimensionIDCategoryGroup.setLayout(new RowLayout());
+		dimensionIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
 		dimensionIDCategoryCombo = new Combo(dimensionIDCategoryGroup, SWT.DROP_DOWN);
 
 		int index = 0;
@@ -394,20 +449,22 @@ public class ImportDataDialog
 		});
 	}
 
-	private void createRecordIDTypeGroup() {
-		Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+	private void createRecordIDTypeGroup(Composite parent) {
+		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeGroup.setText("Row ID type");
 		idTypeGroup.setLayout(new RowLayout());
+		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
 		recordIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
 		recordIDTypes = new ArrayList<IDType>();
 
 		fillRecordIDTypeCombo();
 	}
 
-	private void createDimensionIDTypeGroup() {
-		Group idTypeGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+	private void createDimensionIDTypeGroup(Composite parent) {
+		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		idTypeGroup.setText("Column ID type");
 		idTypeGroup.setLayout(new RowLayout());
+		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
 		dimensionIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
 		dimensionIDTypes = new ArrayList<IDType>();
 
@@ -801,11 +858,9 @@ public class ImportDataDialog
 					if (nextToken.equals(sDelimiter) && !isCellFilled) {
 						item.setText(colIndex + 1, "");
 						colIndex++;
-					}
-					else if (nextToken.equals(sDelimiter) && isCellFilled) {
+					} else if (nextToken.equals(sDelimiter) && isCellFilled) {
 						isCellFilled = false; // reset
-					}
-					else {
+					} else {
 						isCellFilled = true;
 						item.setText(colIndex + 1, nextToken);
 						colIndex++;
@@ -828,11 +883,9 @@ public class ImportDataDialog
 				nextToken = tokenizer.nextToken();
 			}
 
-		}
-		catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			throw new IllegalStateException("File not found!");
-		}
-		catch (IOException ioe) {
+		} catch (IOException ioe) {
 			throw new IllegalStateException("Input/output problem!");
 		}
 
@@ -859,13 +912,15 @@ public class ImportDataDialog
 						bSkipColumn = !((Button) e.widget).getSelection();
 
 						if (bSkipColumn) {
-							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_GRAY);
-						}
-						else {
-							textColor = Display.getCurrent().getSystemColor(SWT.COLOR_BLACK);
+							textColor = Display.getCurrent().getSystemColor(
+									SWT.COLOR_GRAY);
+						} else {
+							textColor = Display.getCurrent().getSystemColor(
+									SWT.COLOR_BLACK);
 						}
 
-						item.setForeground(((Integer) e.widget.getData("column")), textColor);
+						item.setForeground(((Integer) e.widget.getData("column")),
+								textColor);
 					}
 				}
 			});
@@ -897,7 +952,7 @@ public class ImportDataDialog
 		IDSpecification rowIDSpecification = new IDSpecification();
 		IDType rowIDType = recordIDTypes.get(recordIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
-		if(rowIDType.getIDCategory().getCategoryName().equals("GENE"))
+		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
 		rowIDSpecification.setIdCategory(rowIDType.getIDCategory().toString());
 		if (rowIDType.getTypeName().equalsIgnoreCase("REFSEQ_MRNA")) {
@@ -908,7 +963,7 @@ public class ImportDataDialog
 		IDSpecification columnIDSpecification = new IDSpecification();
 		IDType columnIDType = dimensionIDTypes.get(dimensionIDCombo.getSelectionIndex());
 		columnIDSpecification.setIdType(columnIDType.toString());
-		if(columnIDType.getIDCategory().getCategoryName().equals("GENE"))
+		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
 			columnIDSpecification.setIDTypeGene(true);
 		columnIDSpecification.setIdCategory(columnIDType.getIDCategory().toString());
 
@@ -940,12 +995,12 @@ public class ImportDataDialog
 
 			if (!skipColumn.get(columnIndex - 2).getSelection()) {
 				// do nothing
-			}
-			else {
+			} else {
 
 				// in uncertainty mode each second column is flagged with
 				// "CERTAINTY"
-				if (buttonUncertaintyDataProvided.getSelection() && (columnIndex % 2 != 0)) {
+				if (buttonUncertaintyDataProvided.getSelection()
+						&& (columnIndex % 2 != 0)) {
 					inputPattern.add(new ColumnDescription(columnIndex - 1, "CERTAINTY",
 							ColumnDescription.CONTINUOUS));
 					continue;
@@ -959,13 +1014,12 @@ public class ImportDataDialog
 					int testSize = previewTable.getItemCount()
 							- dataSetDescription.getNumberOfHeaderLines() - 1;
 					for (int rowCount = 1; rowCount < testSize; rowCount++) {
-						String testString = previewTable.getItem(rowCount)
-								.getText(columnIndex);
+						String testString = previewTable.getItem(rowCount).getText(
+								columnIndex);
 						if (!testString.isEmpty())
 							Float.parseFloat(testString);
 					}
-				}
-				catch (NumberFormatException nfe) {
+				} catch (NumberFormatException nfe) {
 					dataType = "STRING";
 				}
 				// fixme this does not work for categorical data
@@ -1031,15 +1085,12 @@ public class ImportDataDialog
 							if (idMappingManager.doesElementExist(idType, idInt)) {
 								currentCorrectElements++;
 							}
+						} catch (NumberFormatException e) {
 						}
-						catch (NumberFormatException e) {
-						}
-					}
-					else if (idType.getColumnType().equals(EColumnType.STRING)) {
+					} else if (idType.getColumnType().equals(EColumnType.STRING)) {
 						if (idMappingManager.doesElementExist(idType, currentID)) {
 							currentCorrectElements++;
-						}
-						else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
+						} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
 							if (currentID.contains(".")) {
 								if (idMappingManager.doesElementExist(idType,
 										currentID.substring(0, currentID.indexOf(".")))) {
