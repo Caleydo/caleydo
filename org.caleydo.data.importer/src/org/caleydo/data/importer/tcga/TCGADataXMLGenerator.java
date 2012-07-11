@@ -63,7 +63,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		super(arguments);
 		
 		this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "OV";
+		this.tumorAbbreviation = "UCEC";
 		this.runIdentifier = "20120525";
 		this.tempDirectory = "/Users/nils/Data/StratomeX/temp";
 		this.baseDirectory = "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
@@ -97,8 +97,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 	  public PipelineNameFilter( String pipelineName )
 	  {
 		  this.pipelineName = pipelineName;
-	  }
-		
+	  }		
 	  
 	  public boolean accept( File directory, String fileName )
 	  {
@@ -237,7 +236,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		try
 		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "mRNA_Clustering_CNMF", "mRNA_Clustering_Consensus", "outputprefix.expclu.gct", "mRNA", true ));
 		}
 		catch( Exception e )
 		{
@@ -246,7 +245,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		try
 		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miR_Clustering_CNMF", "miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miR_Clustering_CNMF", "miR_Clustering_Consensus", "cnmf.normalized.gct", "microRNA", false ));
 		}
 		catch( Exception e )
 		{
@@ -255,7 +254,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 
 		try
 		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus", "cnmf.normalized.gct", "microRNA-seq" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "miRseq_Clustering_CNMF", "miRseq_Clustering_Consensus", "cnmf.normalized.gct", "microRNA-seq", false ));
 		}
 		catch( Exception e )
 		{
@@ -264,7 +263,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		
 		try
 		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation", true ));
 		}
 		catch( Exception e )
 		{
@@ -273,7 +272,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		
 		try
 		{
-			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA" ));
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA", false ));
 		}
 		catch( Exception e )
 		{
@@ -293,35 +292,39 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		// dataSetDescriptionCollection.add(setUpMutationData());
 	}
 
-	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName, String hierarchicalArchiveName, String matrixFileName, String dataType) {
+	private DataSetDescription setUpClusteredMatrixData(String cnmfArchiveName, String hierarchicalArchiveName, String matrixFileName, String dataType, boolean isGeneIdType ) {
 		String mRNAFile = this.extractFile( matrixFileName, cnmfArchiveName );
 		String mRNACnmfGroupingFile = this.extractFile( "cnmf.membership.txt", cnmfArchiveName );
 		
-		DataSetDescription mrnaData = new DataSetDescription();
-		mrnaData.setDataSetName(dataType);
+		DataSetDescription matrixData = new DataSetDescription();
+		matrixData.setDataSetName(dataType);
 
-		mrnaData.setDataSourcePath( mRNAFile );
-		mrnaData.setNumberOfHeaderLines(3);
+		matrixData.setDataSourcePath( mRNAFile );
+		matrixData.setNumberOfHeaderLines(3);
 
 		ParsingRule parsingRule = new ParsingRule();
 		parsingRule.setFromColumn(2);
 		parsingRule.setParseUntilEnd(true);
 		parsingRule.setColumnDescripton(new ColumnDescription("FLOAT",
 				ColumnDescription.CONTINUOUS));
-		mrnaData.addParsingRule(parsingRule);
-		mrnaData.setTransposeMatrix(true);
+		matrixData.addParsingRule(parsingRule);
+		matrixData.setTransposeMatrix(true);
 
-		IDSpecification geneIDSpecification = new IDSpecification();
-		geneIDSpecification.setIDTypeGene(true);
-		geneIDSpecification.setIdType("GENE_SYMBOL");
-		mrnaData.setRowIDSpecification(geneIDSpecification);
-		mrnaData.setColumnIDSpecification(sampleIDSpecification);
+		if ( isGeneIdType )
+		{	
+			IDSpecification geneIDSpecification = new IDSpecification();
+			geneIDSpecification.setIDTypeGene(true);
+			geneIDSpecification.setIdType("GENE_SYMBOL");
+			matrixData.setRowIDSpecification(geneIDSpecification);
+		}
+
+		matrixData.setColumnIDSpecification(sampleIDSpecification);
 
 		GroupingParseSpecification firehoseCnmfClustering = new GroupingParseSpecification(
 				mRNACnmfGroupingFile);
 		firehoseCnmfClustering.setContainsColumnIDs(false);
 		firehoseCnmfClustering.setRowIDSpecification(sampleIDSpecification);
-		mrnaData.addColumnGroupingSpecification(firehoseCnmfClustering);
+		matrixData.addColumnGroupingSpecification(firehoseCnmfClustering);
 
 		try
 		{
@@ -331,7 +334,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 					mRNAHierarchicalGroupingFile);
 			firehoseHierarchicalClustering.setContainsColumnIDs(false);
 			firehoseHierarchicalClustering.setRowIDSpecification(sampleIDSpecification);
-			mrnaData.addColumnGroupingSpecification(firehoseHierarchicalClustering);					
+			matrixData.addColumnGroupingSpecification(firehoseHierarchicalClustering);					
 		}
 		catch ( RuntimeException e )
 		{
@@ -343,9 +346,9 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		mrnaData.setDataProcessingDescription(dataProcessingDescription);
+		matrixData.setDataProcessingDescription(dataProcessingDescription);
 		
-		return mrnaData;
+		return matrixData;
 	}
 
 	
