@@ -63,7 +63,7 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		super(arguments);
 		
 		this.tumorName = "Glioblastoma Multiforme";
-		this.tumorAbbreviation = "GBM";
+		this.tumorAbbreviation = "OV";
 		this.runIdentifier = "20120525";
 		this.tempDirectory = "/Users/nils/Data/StratomeX/temp";
 		this.baseDirectory = "/Users/nils/Data/StratomeX/downloads/analyses__2012_05_25";
@@ -265,6 +265,15 @@ public class TCGADataXMLGenerator extends DataSetDescriptionSerializer {
 		try
 		{
 			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "Methylation_Clustering_CNMF", "Methylation_Clustering_Consensus", "cnmf.normalized.gct", "methylation" ));
+		}
+		catch( Exception e )
+		{
+			System.err.println( e.getMessage() );
+		}
+		
+		try
+		{
+			dataSetDescriptionCollection.add(setUpClusteredMatrixData( "RPPA_Clustering_CNMF", "RPPA_Clustering_Consensus", "cnmf.normalized.gct", "RPPA" ));
 		}
 		catch( Exception e )
 		{
