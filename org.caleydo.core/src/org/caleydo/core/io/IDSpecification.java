@@ -244,7 +244,6 @@ public class IDSpecification {
 	public void setIDSpecification(String idCategory, String idType) {
 		this.idCategory = idCategory;
 		this.idType = idType;
-
 	}
 
 	/**
@@ -301,4 +300,5 @@ public class IDSpecification {
 		return subStringExpression;
 	}
 
+	
 }

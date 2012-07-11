@@ -96,7 +96,7 @@ public class MatrixDefinition {
 	 */
 	protected Integer columnOfRowIds = 0;
 
-	/** The specification of the IDS for the rows. Defaults to null. Mandatory */
+	/** The specification of the IDS for the rows. Defaults to null. Optional */
 	private IDSpecification rowIDSpecification = null;
 
 	/**
