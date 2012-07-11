@@ -190,9 +190,9 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				ColumnDescription.CONTINUOUS));
 		mirnaData.addParsingRule(parsingRule);
 
-		IDSpecification mirnaIDSpecification = new IDSpecification();
-		mirnaIDSpecification.setIdType("miRNA");
-		mirnaData.setRowIDSpecification(mirnaIDSpecification);
+//		IDSpecification mirnaIDSpecification = new IDSpecification();
+//		mirnaIDSpecification.setIdType("miRNA");
+//		mirnaData.setRowIDSpecification(mirnaIDSpecification);
 		mirnaData.setTransposeMatrix(true);
 		mirnaData.setColumnIDSpecification(sampleIDSpecification);
 

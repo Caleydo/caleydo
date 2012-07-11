@@ -48,15 +48,18 @@ import org.caleydo.core.io.DataProcessingDescription;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
 import org.caleydo.core.io.GroupingParseSpecification;
+import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
 import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
 import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
+import org.caleydo.core.util.logging.Logger;
 import org.caleydo.core.util.mapping.color.ColorMapper;
 import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
 import org.caleydo.datadomain.generic.GenericDataDomain;
 import org.caleydo.datadomain.genetic.GeneticDataDomain;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -207,21 +210,41 @@ public class Application implements IApplication {
 		String recordIDCategory;
 		String recordIDType;
 
+		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
+		if (rowIDSpecification == null) {
+			rowIDSpecification = new IDSpecification();
+			rowIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
+					+ "_row", dataSetDescription.getDataSetName() + "_row");
+			dataSetDescription.setRowIDSpecification(rowIDSpecification);
+			Logger.log(new Status(Status.INFO, this.toString(),
+					"Automatically creating row ID specification for "
+							+ dataSetDescription.getDataSetName()));
+
+		}
+		IDSpecification columnIDSpecification = dataSetDescription
+				.getColumnIDSpecification();
+		if (columnIDSpecification == null) {
+			columnIDSpecification = new IDSpecification();
+			columnIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
+					+ "_column", dataSetDescription.getDataSetName() + "_column");
+			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
+			Logger.log(new Status(Status.INFO, this.toString(),
+					"Automatically creating column ID specification for "
+							+ dataSetDescription.getDataSetName()));
+		}
+
 		if (dataSetDescription.isTransposeMatrix()) {
-			dimensionIDType = dataSetDescription.getRowIDSpecification().getIdType();
-			dimensionIDCategory = dataSetDescription.getRowIDSpecification()
-					.getIdCategory();
+			dimensionIDType = rowIDSpecification.getIdType();
+			dimensionIDCategory = rowIDSpecification.getIdCategory();
 
-			recordIDType = dataSetDescription.getColumnIDSpecification().getIdType();
-			recordIDCategory = dataSetDescription.getColumnIDSpecification()
-					.getIdCategory();
+			recordIDType = columnIDSpecification.getIdType();
+			recordIDCategory = columnIDSpecification.getIdCategory();
 		} else {
-			dimensionIDType = dataSetDescription.getColumnIDSpecification().getIdType();
-			dimensionIDCategory = dataSetDescription.getColumnIDSpecification()
-					.getIdCategory();
+			dimensionIDType = columnIDSpecification.getIdType();
+			dimensionIDCategory = columnIDSpecification.getIdCategory();
 
-			recordIDType = dataSetDescription.getRowIDSpecification().getIdType();
-			recordIDCategory = dataSetDescription.getRowIDSpecification().getIdCategory();
+			recordIDType = rowIDSpecification.getIdType();
+			recordIDCategory = rowIDSpecification.getIdCategory();
 		}
 
 		if (dimensionIDCategory == null)
@@ -230,8 +253,7 @@ public class Application implements IApplication {
 			recordIDCategory = recordIDType;
 
 		ATableBasedDataDomain dataDomain;
-		if (dataSetDescription.getColumnIDSpecification().isIDTypeGene()
-				|| dataSetDescription.getRowIDSpecification().isIDTypeGene()) {
+		if (columnIDSpecification.isIDTypeGene() || rowIDSpecification.isIDTypeGene()) {
 			// we use the default provided by the data domain
 			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
 					.createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
@@ -434,8 +456,6 @@ public class Application implements IApplication {
 		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
 		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
 	}
-
-	
 
 	private void createSampleOfGenes(ATableBasedDataDomain dataDomain,
 			PerspectiveInitializationData clusterResult) {
