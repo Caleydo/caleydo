@@ -19,6 +19,7 @@
  *******************************************************************************/
 package org.caleydo.core.startup;
 
+import java.io.File;
 import java.util.List;
 
 import org.caleydo.core.io.gui.ImportDataDialog;
@@ -36,8 +37,7 @@ import org.osgi.framework.BundleException;
  * 
  * @author Marc Streit
  */
-public class GeneticGUIStartupProcedure
-	extends AStartupProcedure {
+public class GeneticGUIStartupProcedure extends AStartupProcedure {
 
 	private boolean loadSampleData = false;
 
@@ -62,8 +62,7 @@ public class GeneticGUIStartupProcedure
 		try {
 			Bundle bundle = Platform.getBundle("org.caleydo.datadomain.genetic");
 			bundle.start();
-		}
-		catch (BundleException e) {
+		} catch (BundleException e) {
 			throw new IllegalStateException("Failed to initalize genetic data domain");
 		}
 
@@ -77,11 +76,11 @@ public class GeneticGUIStartupProcedure
 		ImportDataDialog dialog;
 
 		if (loadSampleData)
-			dialog = new ImportDataDialog(
-					StartupProcessor.get().getDisplay().getActiveShell(),
-					REAL_DATA_SAMPLE_FILE);
+			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay()
+					.getActiveShell(), REAL_DATA_SAMPLE_FILE.replace("/", File.separator));
 		else
-			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay().getActiveShell());
+			dialog = new ImportDataDialog(StartupProcessor.get().getDisplay()
+					.getActiveShell());
 
 		if (Window.CANCEL == dialog.open())
 			StartupProcessor.get().shutdown();

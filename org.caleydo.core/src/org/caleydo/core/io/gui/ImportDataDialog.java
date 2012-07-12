@@ -20,6 +20,7 @@
 package org.caleydo.core.io.gui;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -38,6 +39,7 @@ import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataSetDescription;
+import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.view.RCPViewInitializationData;
@@ -119,6 +121,15 @@ public class ImportDataDialog extends Dialog {
 	private String mathFilterMode = "Log2";
 
 	private ArrayList<IDCategory> allRegisteredIDCategories = new ArrayList<IDCategory>();
+
+	/**
+	 * {@link GroupingParseSpecification}s for column groupings of the data.
+	 */
+	private ArrayList<GroupingParseSpecification> columnGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
+	/**
+	 * {@link GroupingParseSpecification}s for row groupings of the data.
+	 */
+	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
 
 	private IDCategory recordIDCategory;
 
@@ -271,47 +282,10 @@ public class ImportDataDialog extends Dialog {
 		groupingComposite
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3));
 
-		Group columnGroupingsGroup = new Group(groupingComposite, SWT.SHADOW_ETCHED_IN);
-		columnGroupingsGroup.setText("Column groupings");
-		columnGroupingsGroup.setLayout(new GridLayout(2, false));
-		columnGroupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		listColumnGroupings = new List(columnGroupingsGroup, SWT.SINGLE);
-		listColumnGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		Button addColumnGroupingButton = new Button(columnGroupingsGroup, SWT.PUSH);
-		addColumnGroupingButton.setText("Add");
-		addColumnGroupingButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false,
-				false));
-		addColumnGroupingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				ImportGroupingDialog groupingDialog = new ImportGroupingDialog(
-						new Shell());
-				groupingDialog.open();
-			}
-		});
-
-		Group rowGroupingsGroup = new Group(groupingComposite, SWT.SHADOW_ETCHED_IN);
-		rowGroupingsGroup.setText("Row groupings");
-		rowGroupingsGroup.setLayout(new GridLayout(2, false));
-		rowGroupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-
-		listRowGroupings = new List(rowGroupingsGroup, SWT.SINGLE);
-		listRowGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-		Button addRowGroupingButton = new Button(rowGroupingsGroup, SWT.PUSH);
-		addRowGroupingButton.setText("Add");
-		addRowGroupingButton
-				.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false));
-		addRowGroupingButton.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent event) {
-
-				ImportGroupingDialog groupingDialog = new ImportGroupingDialog(
-						new Shell());
-				groupingDialog.open();
-			}
-		});
+		createGroupingGroup(groupingComposite, "Column Groupings",
+				columnGroupingSpecifications, true);
+		createGroupingGroup(groupingComposite, "Row Groupings",
+				rowGroupingSpecifications, false);
 
 		allRegisteredIDCategories.clear();
 		allRegisteredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
@@ -358,7 +332,7 @@ public class ImportDataDialog extends Dialog {
 			}
 		});
 
-		createDelimiterGroup();
+		createDelimiterGroup(composite);
 		createFilterGroup();
 		createDataPropertiesGroup();
 
@@ -382,12 +356,68 @@ public class ImportDataDialog extends Dialog {
 		}
 	}
 
+	private void createGroupingGroup(Composite parent, String groupLabel,
+			final ArrayList<GroupingParseSpecification> groupingParseSpecifications,
+			final boolean isColumnGrouping) {
+
+		Group groupingsGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		groupingsGroup.setText(groupLabel);
+		groupingsGroup.setLayout(new GridLayout(2, false));
+		groupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+
+		if (isColumnGrouping) {
+			listColumnGroupings = new List(groupingsGroup, SWT.SINGLE);
+			listColumnGroupings
+					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		} else {
+			listRowGroupings = new List(groupingsGroup, SWT.SINGLE);
+			listRowGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+		}
+		Button addGroupingButton = new Button(groupingsGroup, SWT.PUSH);
+		addGroupingButton.setText("Add");
+		addGroupingButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false));
+
+		addGroupingButton.addSelectionListener(new SelectionAdapter() {
+			@Override
+			public void widgetSelected(SelectionEvent event) {
+
+				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
+						new Shell());
+
+				importGroupingDialog
+						.setRowIDCategory(isColumnGrouping ? dimensionIDCategory
+								: recordIDCategory);
+
+				int status = importGroupingDialog.open();
+
+				GroupingParseSpecification groupingParseSpecification = importGroupingDialog
+						.getGroupingParseSpecification();
+
+				if (status == Dialog.OK && groupingParseSpecification != null) {
+					groupingParseSpecifications.add(groupingParseSpecification);
+
+					String groupingDataSetName = groupingParseSpecification
+							.getDataSourcePath().substring(
+									groupingParseSpecification.getDataSourcePath()
+											.lastIndexOf(File.separator) + 1,
+									groupingParseSpecification.getDataSourcePath()
+											.lastIndexOf("."));
+					if (isColumnGrouping) {
+						listColumnGroupings.add(groupingDataSetName);
+					} else {
+						listRowGroupings.add(groupingDataSetName);
+					}
+				}
+			}
+		});
+	}
+
 	private String determineDataSetLabel() {
 
 		if (inputFile == null || inputFile.isEmpty())
 			return "<insert data set name>";
 
-		return inputFile.substring(inputFile.lastIndexOf("/") + 1,
+		return inputFile.substring(inputFile.lastIndexOf(File.separator) + 1,
 				inputFile.lastIndexOf("."));
 	}
 
@@ -520,151 +550,75 @@ public class ImportDataDialog extends Dialog {
 		dimensionIDCombo.select(0);
 	}
 
-	private void createDelimiterGroup() {
-		Group delimiterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+	private void createDelimiterGroup(Composite parent) {
+		Group delimiterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
 		delimiterGroup.setText("Separated by (delimiter)");
 		delimiterGroup.setLayout(new RowLayout());
 
-		final Button[] buttonDelimiter = new Button[6];
+		final Button[] delimiterButtons = new Button[6];
 
-		buttonDelimiter[0] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[0].setSelection(true);
-		buttonDelimiter[0].setText("TAB");
-		buttonDelimiter[0].setBounds(10, 5, 75, 30);
+		delimiterButtons[0] = new Button(delimiterGroup, SWT.RADIO);
+		delimiterButtons[0].setSelection(true);
+		delimiterButtons[0].setText("TAB");
+		delimiterButtons[0].setData("\t");
+		delimiterButtons[0].setBounds(10, 5, 75, 30);
 
-		buttonDelimiter[1] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[1].setText(";");
-		buttonDelimiter[1].setBounds(10, 30, 75, 30);
+		delimiterButtons[1] = new Button(delimiterGroup, SWT.RADIO);
+		delimiterButtons[1].setText(";");
+		delimiterButtons[1].setData(";");
+		delimiterButtons[1].setBounds(10, 30, 75, 30);
 
-		buttonDelimiter[2] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[2].setText(",");
-		buttonDelimiter[2].setBounds(10, 55, 75, 30);
+		delimiterButtons[2] = new Button(delimiterGroup, SWT.RADIO);
+		delimiterButtons[2].setText(",");
+		delimiterButtons[2].setData(",");
+		delimiterButtons[2].setBounds(10, 55, 75, 30);
 
-		buttonDelimiter[3] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[3].setText(".");
-		buttonDelimiter[3].setBounds(10, 55, 75, 30);
+		delimiterButtons[3] = new Button(delimiterGroup, SWT.RADIO);
+		delimiterButtons[3].setText(".");
+		delimiterButtons[3].setData(".");
+		delimiterButtons[3].setBounds(10, 55, 75, 30);
 
-		buttonDelimiter[4] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[4].setText("SPACE");
-		buttonDelimiter[4].setBounds(10, 55, 75, 30);
+		delimiterButtons[4] = new Button(delimiterGroup, SWT.RADIO);
+		delimiterButtons[4].setText("SPACE");
+		delimiterButtons[4].setData(" ");
+		delimiterButtons[4].setBounds(10, 55, 75, 30);
 
-		buttonDelimiter[5] = new Button(delimiterGroup, SWT.CHECK);
-		buttonDelimiter[5].setText("Other");
-		buttonDelimiter[5].setBounds(10, 55, 75, 30);
+		delimiterButtons[5] = new Button(delimiterGroup, SWT.RADIO);
+		delimiterButtons[5].setText("Other");
+		delimiterButtons[5].setBounds(10, 55, 75, 30);
 
-		final Text txtCustomizedDelimiter = new Text(delimiterGroup, SWT.BORDER);
-		txtCustomizedDelimiter.setBounds(0, 0, 75, 30);
-		txtCustomizedDelimiter.setTextLimit(1);
-		txtCustomizedDelimiter.setEnabled(false);
-		txtCustomizedDelimiter.addModifyListener(new ModifyListener() {
+		final Text customizedDelimiterTextField = new Text(delimiterGroup, SWT.BORDER);
+		customizedDelimiterTextField.setBounds(0, 0, 75, 30);
+		customizedDelimiterTextField.setTextLimit(1);
+		customizedDelimiterTextField.setEnabled(false);
+		customizedDelimiterTextField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
-				createDataPreviewTable(txtCustomizedDelimiter.getText());
+				createDataPreviewTable(customizedDelimiterTextField.getText());
 				// composite.pack();
 			}
 
 		});
 
-		buttonDelimiter[0].addSelectionListener(new SelectionAdapter() {
+		SelectionAdapter radioGroupSelectionListener = new SelectionAdapter() {
+
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-
-				if (dataSetDescription.getDataSourcePath().isEmpty())
-					return;
-
-				createDataPreviewTable("\t");
+				Button selectedButton = (Button) e.getSource();
+				if (selectedButton != delimiterButtons[5]) {
+					createDataPreviewTable((String) selectedButton.getData());
+					customizedDelimiterTextField.setEnabled(false);
+				} else {
+					customizedDelimiterTextField.setEnabled(true);
+					createDataPreviewTable(" ");
+				}
 			}
-		});
+		};
 
-		buttonDelimiter[1].addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-				txtCustomizedDelimiter.setEnabled(false);
+		for (int i = 0; i < delimiterButtons.length; i++) {
+			delimiterButtons[i].addSelectionListener(radioGroupSelectionListener);
+		}
 
-				if (dataSetDescription.getDataSourcePath().isEmpty())
-					return;
-
-				createDataPreviewTable(";");
-			}
-		});
-
-		buttonDelimiter[2].addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-				txtCustomizedDelimiter.setEnabled(false);
-
-				if (dataSetDescription.getDataSourcePath().isEmpty())
-					return;
-
-				createDataPreviewTable(",");
-			}
-		});
-
-		buttonDelimiter[3].addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-				txtCustomizedDelimiter.setEnabled(false);
-
-				if (dataSetDescription.getDataSourcePath().isEmpty())
-					return;
-
-				createDataPreviewTable(".");
-			}
-		});
-
-		buttonDelimiter[4].addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[5].setSelection(false);
-				txtCustomizedDelimiter.setEnabled(false);
-
-				if (dataSetDescription.getDataSourcePath().isEmpty())
-					return;
-
-				createDataPreviewTable(" ");
-			}
-		});
-
-		buttonDelimiter[5].addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				buttonDelimiter[0].setSelection(false);
-				buttonDelimiter[1].setSelection(false);
-				buttonDelimiter[2].setSelection(false);
-				buttonDelimiter[3].setSelection(false);
-				buttonDelimiter[4].setSelection(false);
-				txtCustomizedDelimiter.setEnabled(true);
-
-				if (dataSetDescription.getDataSourcePath().isEmpty())
-					return;
-
-				createDataPreviewTable(" ");
-			}
-		});
 	}
 
 	private void createFilterGroup() {
@@ -972,6 +926,8 @@ public class ImportDataDialog extends Dialog {
 		dataSetDescription.setDataHomogeneous(buttonHomogeneous.getSelection());
 		dataSetDescription.setTransposeMatrix(buttonSwapRowsWithColumns.getSelection());
 		dataSetDescription.setDataSetName(txtDataSetLabel.getText());
+		dataSetDescription.setColumnGroupingSpecifications(columnGroupingSpecifications);
+		dataSetDescription.setRowGroupingSpecifications(rowGroupingSpecifications);
 	}
 
 	/**
