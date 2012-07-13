@@ -31,9 +31,9 @@ public class RcpGLVisBricks20View extends ARcpGLViewPart {
 		super.createPartControl(parent);
 
 		createGLCanvas();
-		view = new GLVisBricks20(glCanvas, parentComposite, serializedView.getViewFrustum());
-		view.initFromSerializableRepresentation(serializedView);
-		view.initialize();
+		view = new GLVisBricks20(glCanvas, parentComposite,
+				serializedView.getViewFrustum());
+		initializeView();
 		createPartControlGL();
 	}
 

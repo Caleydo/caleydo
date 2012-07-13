@@ -55,17 +55,7 @@ public class RcpGLTagCloudView extends ARcpGLViewPart {
 
 		createGLCanvas();
 		view = new GLTagCloud(glCanvas, parentComposite, serializedView.getViewFrustum());
-		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID());
-			if (dataDomain == null)
-				throw new IllegalStateException("DataDomain null");
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-		view.initialize();
+		initializeView();
 		createPartControlGL();
 	}
 

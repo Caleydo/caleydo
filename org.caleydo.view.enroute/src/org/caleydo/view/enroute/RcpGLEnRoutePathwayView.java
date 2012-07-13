@@ -53,8 +53,6 @@ public class RcpGLEnRoutePathwayView extends ARcpGLViewPart {
 		createGLCanvas();
 		view = new GLEnRoutePathway(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeView();
-		view.initFromSerializableRepresentation(serializedView);
-//		view.initialize();
 		minSizeComposite.setView((AGLView) view);
 		createPartControlGL();
 	}

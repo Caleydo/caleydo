@@ -51,9 +51,6 @@ public class RcpGLHierarchicalHeatMapView extends ARcpGLViewPart {
 				serializedView.getViewFrustum());
 
 		initializeView();
-		view.initFromSerializableRepresentation(serializedView);
-		view.initialize();
-
 		createPartControlGL();
 	}
 

@@ -52,8 +52,6 @@ public class RcpGLTemplateView extends ARcpGLViewPart {
 		createGLCanvas();
 		view = new GLTemplate(glCanvas, parentComposite, serializedView.getViewFrustum());
 		initializeView();
-		view.initFromSerializableRepresentation(serializedView);
-		view.initialize();
 		createPartControlGL();
 	}
 

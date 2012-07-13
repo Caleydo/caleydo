@@ -67,16 +67,7 @@ public class RcpGLFilterPipelineView extends ARcpGLViewPart implements IListener
 
 		view = new GLFilterPipeline(glCanvas, parentComposite,
 				serializedView.getViewFrustum());
-		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-		view.initialize();
-
+		initializeView();
 		createPartControlGL();
 	}
 

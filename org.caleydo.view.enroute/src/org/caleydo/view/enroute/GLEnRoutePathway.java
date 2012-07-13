@@ -43,6 +43,7 @@ import org.caleydo.core.event.SetMinViewSizeEvent;
 import org.caleydo.core.event.view.DataContainersChangedEvent;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 import org.caleydo.core.view.IMultiDataContainerBasedView;
 import org.caleydo.core.view.listener.AddDataContainersEvent;
@@ -936,7 +937,7 @@ public class GLEnRoutePathway extends AGLView implements IMultiDataContainerBase
 	}
 
 	@Override
-	public ASerializedView getSerializableRepresentation() {
+	public ASerializedMultiDataContainerBasedView getSerializableRepresentation() {
 		SerializedEnRoutePathwayView serializedForm = new SerializedEnRoutePathwayView();
 		serializedForm.setViewID(this.getID());
 		return serializedForm;

@@ -51,16 +51,7 @@ public class RcpBookmarkView extends ARcpGLViewPart {
 		createGLCanvas();
 
 		view = new GLBookmarkView(glCanvas, parent, serializedView.getViewFrustum());
-		view.initFromSerializableRepresentation(serializedView);
-		if (view instanceof IDataDomainBasedView<?>) {
-			IDataDomain dataDomain = DataDomainManager.get().getDataDomainByID(
-					((ASerializedSingleDataContainerBasedView) serializedView).getDataDomainID());
-			@SuppressWarnings("unchecked")
-			IDataDomainBasedView<IDataDomain> dataDomainBasedView = (IDataDomainBasedView<IDataDomain>) view;
-			dataDomainBasedView.setDataDomain(dataDomain);
-		}
-
-		view.initialize();
+		initializeView();
 		createPartControlGL();
 	}
 

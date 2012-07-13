@@ -55,7 +55,7 @@ public class SaveProjectAction
 		fileDialog.setFilterExtensions(filterExt);
 
 		String filePath =
-			"caleydo_project" + new SimpleDateFormat("yyyyMMdd_HHmm").format(new Date()) + ".cal";
+			"caleydo-project_" + new SimpleDateFormat("yyyy.MM.dd_HH.mm").format(new Date()) + ".cal";
 
 		fileDialog.setFileName(filePath);
 		String fileName = fileDialog.open();

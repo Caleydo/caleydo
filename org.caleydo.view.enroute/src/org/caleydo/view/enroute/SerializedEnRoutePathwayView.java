@@ -22,6 +22,7 @@ package org.caleydo.view.enroute;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
+import org.caleydo.core.serialize.ASerializedMultiDataContainerBasedView;
 import org.caleydo.core.serialize.ASerializedView;
 
 /**
@@ -31,7 +32,7 @@ import org.caleydo.core.serialize.ASerializedView;
  */
 @XmlRootElement
 @XmlType
-public class SerializedEnRoutePathwayView extends ASerializedView {
+public class SerializedEnRoutePathwayView extends ASerializedMultiDataContainerBasedView {
 
 	/**
 	 * Default constructor with default initialization
