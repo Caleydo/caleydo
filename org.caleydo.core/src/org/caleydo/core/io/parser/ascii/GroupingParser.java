@@ -211,8 +211,14 @@ public class GroupingParser extends ATextParser {
 				PerspectiveInitializationData data = new PerspectiveInitializationData();
 				data.setData(sortedIDs, clusterSizes, sampleElements, clusterNames);
 				String groupLabel = listOfGroupNames.get(groupListCount);
-				if (groupLabel.equals(DEFAULT_GROUP_NAME))
-					groupLabel = clusterSizes.size() + " Clusters";
+				if (groupLabel.equals(DEFAULT_GROUP_NAME)) {
+					if (groupingSpecifications.getGroupingName() != null) {
+						groupLabel = clusterSizes.size() + "_"
+								+ groupingSpecifications.getGroupingName();
+					} else {
+						groupLabel = clusterSizes.size() + " Clusters";
+					}
+				}
 				data.setLabel(groupLabel);
 				perspectiveInitializationDatas.add(data);
 			}

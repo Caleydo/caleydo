@@ -1,19 +1,19 @@
 /*******************************************************************************
  * Caleydo - visualization for molecular biology - http://caleydo.org
- *  
+ * 
  * Copyright(C) 2005, 2012 Graz University of Technology, Marc Streit, Alexander
  * Lex, Christian Partl, Johannes Kepler University Linz </p>
- *
+ * 
  * This program is free software: you can redistribute it and/or modify it under
  * the terms of the GNU General Public License as published by the Free Software
  * Foundation, either version 3 of the License, or (at your option) any later
  * version.
- *  
+ * 
  * This program is distributed in the hope that it will be useful, but WITHOUT
  * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
  * FOR A PARTICULAR PURPOSE. See the GNU General Public License for more
  * details.
- *  
+ * 
  * You should have received a copy of the GNU General Public License along with
  * this program. If not, see <http://www.gnu.org/licenses/>
  *******************************************************************************/
@@ -34,18 +34,28 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * </p>
  * <p>
  * The data is assumed to be available in a delimited text file and follow the
- * contract specified in the base class {@link MatrixDefinition}
+ * contract specified in the base class {@link MatrixDefinition}. Here is an
+ * example for a valid grouping file, with a header line:
+ * 
+ * <pre>
+ * {@code 
+ * ID    g1 g2
+ * id_1  a  b
+ * id_2  a  b
+ * id_3  b  a
+ *  }
+ * </pre>
+ * 
  * </p>
  * <p>
  * Groupings are based on the following assumptions:
  * </p>
  * <ul>
- * <li>Groupings are based on an identifier-group relationship, where one group
- * is defined in a column.</li>
- * <li>One column contains an identifier of the ID to be grouped.</li>
- * <li>Other columns contain a key specifying the group the ID belongs to. The
- * key can be an arbitrary string (except for the delimiter).</li>
- * <li>If the keys for two IDs are identical (according to
+ * <li>One column of the source file contains an identifier of the ID to be
+ * grouped (the first column in the above example).</li>
+ * <li>Other columns contain a group association for every line. Group
+ * associations are arbitrary strings (except for the delimiter).</li>
+ * <li>If the group association for two IDs are identical (according to
  * {@link String#equals(Object)}), they belong to the same group</li>
  * </ul>
  * 
@@ -65,6 +75,19 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
  * {@link #columns} parameter.
  * </p>
  * 
+ * <p>
+ * By default, it is assumed that the groupings contain a header inkluding a
+ * name for the group (see the {@link MatrixDefinition} for details. This can be
+ * changed by setting {@link #setContainsColumnIDs(boolean)} to false. In this
+ * case the group names area automatically generated based on the number of
+ * groups.
+ * </p>
+ * 
+ * <p>
+ * In case of automatically created grouping names a global name can be
+ * specified using
+ * </p>
+ * 
  * @author Alexander Lex
  * 
  */
@@ -72,10 +95,18 @@ import org.caleydo.core.io.parser.ascii.GroupingParser;
 public class GroupingParseSpecification extends MatrixDefinition {
 
 	/**
-	 * Optional parameter to specify the column of the grouping in the delimited
+	 * Optional parameter to specify the columns of the grouping in the delimited
 	 * file. If no value is set, all columns are loaded.
 	 */
 	private ArrayList<Integer> columns;
+
+	/**
+	 * Optional name for all groupings in the specification. Only has an effect
+	 * if {@link #isContainsColumnIDs()} is false. In this case the name of a
+	 * grouping is this name supplemented by the number of groups (eg
+	 * "myName_8");
+	 */
+	private String groupingName;
 
 	/**
 	 * Default Constructor, use setters to specify data
@@ -113,6 +144,21 @@ public class GroupingParseSpecification extends MatrixDefinition {
 	 */
 	public ArrayList<Integer> getColumns() {
 		return columns;
+	}
+
+	/**
+	 * @param groupingName
+	 *            setter, see {@link #groupingName}
+	 */
+	public void setGroupingName(String groupingName) {
+		this.groupingName = groupingName;
+	}
+
+	/**
+	 * @return the groupingName, see {@link #groupingName}
+	 */
+	public String getGroupingName() {
+		return groupingName;
 	}
 
 }

@@ -150,6 +150,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		GroupingParseSpecification firehoseClustering = new GroupingParseSpecification(
 				MRNA_GROUPING);
 		firehoseClustering.setContainsColumnIDs(false);
+		firehoseClustering.setGroupingName("hierarchical");
 		firehoseClustering.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(firehoseClustering);
 
@@ -158,21 +159,22 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		groundTruthGrouping.addColum(2);
 		groundTruthGrouping.setRowIDSpecification(sampleIDSpecification);
 		mrnaData.addColumnGroupingSpecification(groundTruthGrouping);
-		
+
 		DataProcessingDescription dataProcessingDescription = new DataProcessingDescription();
 		KMeansClusterConfiguration clusterConfiguration = new KMeansClusterConfiguration();
 		clusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
-		
-		
+
 		KMeansClusterConfiguration sampleClusterConfiguration = new KMeansClusterConfiguration();
-		sampleClusterConfiguration.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
+		sampleClusterConfiguration
+				.setDistanceMeasure(EDistanceMeasure.EUCLIDEAN_DISTANCE);
 		sampleClusterConfiguration.setNumberOfClusters(5);
-		dataProcessingDescription.addColumnClusterConfiguration(sampleClusterConfiguration);
-		
+		dataProcessingDescription
+				.addColumnClusterConfiguration(sampleClusterConfiguration);
+
 		mrnaData.setDataProcessingDescription(dataProcessingDescription);
-	
+
 		return mrnaData;
 	}
 
@@ -190,9 +192,9 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 				ColumnDescription.CONTINUOUS));
 		mirnaData.addParsingRule(parsingRule);
 
-//		IDSpecification mirnaIDSpecification = new IDSpecification();
-//		mirnaIDSpecification.setIdType("miRNA");
-//		mirnaData.setRowIDSpecification(mirnaIDSpecification);
+		// IDSpecification mirnaIDSpecification = new IDSpecification();
+		// mirnaIDSpecification.setIdType("miRNA");
+		// mirnaData.setRowIDSpecification(mirnaIDSpecification);
 		mirnaData.setTransposeMatrix(true);
 		mirnaData.setColumnIDSpecification(sampleIDSpecification);
 
@@ -208,7 +210,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		mirnaData.setDataProcessingDescription(dataProcessingDescription);
-		
+
 		return mirnaData;
 	}
 
@@ -244,7 +246,7 @@ public class TCGATestDataXMLGenerator extends DataSetDescriptionSerializer {
 		clusterConfiguration.setNumberOfClusters(5);
 		dataProcessingDescription.addRowClusterConfiguration(clusterConfiguration);
 		methylationData.setDataProcessingDescription(dataProcessingDescription);
-		
+
 		return methylationData;
 	}
 
