@@ -100,19 +100,27 @@ public class ImportDataDialog extends Dialog {
 	private Button buttonHomogeneous;
 	private Button buttonUncertaintyDataProvided;
 	private Button buttonSwapRowsWithColumns;
+	/**
+	 * Button for adding {@link GroupingParseSpecification} for columns.
+	 */
+	private Button addColumnGroupingSpecificationButton;
+	/**
+	 * Button for adding {@link GroupingParseSpecification} for rows.
+	 */
+	private Button addRowGroupingSpecificationButton;
 
 	private Table previewTable;
 
 	private ArrayList<Button> skipColumn = new ArrayList<Button>();
 
-	private Combo recordIDCombo;
-	private Combo dimensionIDCombo;
+	private Combo rowIDCombo;
+	private Combo columnIDCombo;
 
-	private Combo dimensionIDCategoryCombo;
-	private Combo recordIDCategoryCombo;
+	private Combo columnIDCategoryCombo;
+	private Combo rowIDCategoryCombo;
 
-	private ArrayList<IDType> recordIDTypes;
-	private ArrayList<IDType> dimensionIDTypes;
+	private ArrayList<IDType> rowIDTypes;
+	private ArrayList<IDType> columnIDTypes;
 
 	private String inputFile = "";
 	private String filePath = "";
@@ -132,9 +140,9 @@ public class ImportDataDialog extends Dialog {
 	 */
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
 
-	private IDCategory recordIDCategory;
+	private IDCategory rowIDCategory;
 
-	private IDCategory dimensionIDCategory;
+	private IDCategory columnIDCategory;
 
 	public ImportDataDialog(Shell parentShell) {
 		super(parentShell);
@@ -167,20 +175,20 @@ public class ImportDataDialog extends Dialog {
 			return;
 		}
 
-		if (recordIDCombo.getSelectionIndex() == -1) {
+		if (rowIDCombo.getSelectionIndex() == -1) {
 			MessageDialog.openError(new Shell(), "Invalid row ID type",
 					"Please select the ID type of the rows");
 			return;
 		}
 
-		if (dimensionIDCombo.getSelectionIndex() == -1) {
+		if (columnIDCombo.getSelectionIndex() == -1) {
 			MessageDialog.openError(new Shell(), "Invalid column ID type",
 					"Please select the ID type of the columns");
 			return;
 		}
 
 	
-		fillLoadDataParameters();
+		fillDatasetDescription();
 
 	
 		ATableBasedDataDomain dataDomain;
@@ -293,10 +301,10 @@ public class ImportDataDialog extends Dialog {
 		idComposite.setLayout(new GridLayout(4, false));
 		idComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
-		createRowIDCategoryGroup(idComposite);
-		createRecordIDTypeGroup(idComposite);
-		createColumnIDCategoryGroup(idComposite);
-		createDimensionIDTypeGroup(idComposite);
+		createIDCategoryGroup(idComposite, "Row ID category", false);
+		createIDTypeGroup(idComposite, false);
+		createIDCategoryGroup(idComposite, "Column ID category", true);
+		createIDTypeGroup(idComposite, true);
 
 		Group dataSetLabelGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
 		dataSetLabelGroup.setText("Data set name");
@@ -364,15 +372,18 @@ public class ImportDataDialog extends Dialog {
 		groupingsGroup.setLayout(new GridLayout(2, false));
 		groupingsGroup.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 
+		Button addGroupingButton = new Button(groupingsGroup, SWT.PUSH);
 		if (isColumnGrouping) {
 			listColumnGroupings = new List(groupingsGroup, SWT.SINGLE);
 			listColumnGroupings
 					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			addColumnGroupingSpecificationButton = addGroupingButton;
 		} else {
 			listRowGroupings = new List(groupingsGroup, SWT.SINGLE);
 			listRowGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			addRowGroupingSpecificationButton = addGroupingButton;
 		}
-		Button addGroupingButton = new Button(groupingsGroup, SWT.PUSH);
+
 		addGroupingButton.setText("Add");
 		addGroupingButton.setLayoutData(new GridData(SWT.CENTER, SWT.TOP, false, false));
 
@@ -383,9 +394,8 @@ public class ImportDataDialog extends Dialog {
 				ImportGroupingDialog importGroupingDialog = new ImportGroupingDialog(
 						new Shell());
 
-				importGroupingDialog
-						.setRowIDCategory(isColumnGrouping ? dimensionIDCategory
-								: recordIDCategory);
+				importGroupingDialog.setRowIDCategory(isColumnGrouping ? columnIDCategory
+						: rowIDCategory);
 
 				int status = importGroupingDialog.open();
 
@@ -420,134 +430,171 @@ public class ImportDataDialog extends Dialog {
 				inputFile.lastIndexOf("."));
 	}
 
-	private void createRowIDCategoryGroup(Composite parent) {
+	private void createIDCategoryGroup(Composite parent, String groupLabel,
+			final boolean isColumnCategory) {
 		Group recordIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		recordIDCategoryGroup.setText("Row ID category");
+		recordIDCategoryGroup.setText(groupLabel);
 		recordIDCategoryGroup.setLayout(new RowLayout());
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
-		recordIDCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
+		Combo idCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
+		idCategoryCombo.setText("Please select...");
+
+		if (isColumnCategory) {
+			columnIDCategoryCombo = idCategoryCombo;
+		} else {
+			rowIDCategoryCombo = idCategoryCombo;
+		}
 
 		int index = 0;
 		for (IDCategory idCategory : allRegisteredIDCategories) {
 
-			recordIDCategoryCombo.add(idCategory.getCategoryName());
+			idCategoryCombo.add(idCategory.getCategoryName());
 
-			if (index == 0)
-				recordIDCategory = idCategory;
+			if (index == 0) {
+				if (isColumnCategory) {
+					columnIDCategory = idCategory;
+				} else {
+					rowIDCategory = idCategory;
+				}
+
+			}
 			index++;
 		}
 
-		recordIDCategoryCombo.setEnabled(true);
-		recordIDCategoryCombo.select(0);
-		recordIDCategoryCombo.addSelectionListener(new SelectionAdapter() {
+		idCategoryCombo.setEnabled(true);
+		idCategoryCombo.select(0);
+		idCategoryCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				recordIDCategory = IDCategory.getIDCategory(recordIDCategoryCombo
-						.getItem(recordIDCategoryCombo.getSelectionIndex()));
-				fillRecordIDTypeCombo();
+				if (isColumnCategory) {
+					columnIDCategory = IDCategory.getIDCategory(columnIDCategoryCombo
+							.getItem(columnIDCategoryCombo.getSelectionIndex()));
+					fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
+				} else {
+					rowIDCategory = IDCategory.getIDCategory(rowIDCategoryCombo
+							.getItem(rowIDCategoryCombo.getSelectionIndex()));
+					fillIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+				}
+
 			}
 		});
 	}
 
-	private void createColumnIDCategoryGroup(Composite parent) {
-		Group dimensionIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		dimensionIDCategoryGroup.setText("Column ID category");
-		dimensionIDCategoryGroup.setLayout(new RowLayout());
-		dimensionIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
-		dimensionIDCategoryCombo = new Combo(dimensionIDCategoryGroup, SWT.DROP_DOWN);
+	// private void createIDCategoryGroup(Composite parent) {
+	// Group dimensionIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+	// dimensionIDCategoryGroup.setText("Column ID category");
+	// dimensionIDCategoryGroup.setLayout(new RowLayout());
+	// dimensionIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
+	// columnIDCategoryCombo = new Combo(dimensionIDCategoryGroup,
+	// SWT.DROP_DOWN);
+	//
+	// int index = 0;
+	// for (IDCategory idCategory : allRegisteredIDCategories) {
+	//
+	// columnIDCategoryCombo.add(idCategory.getCategoryName());
+	//
+	// if (index == 0)
+	// columnIDCategory = idCategory;
+	// index++;
+	// }
+	//
+	// columnIDCategoryCombo.setEnabled(true);
+	// columnIDCategoryCombo.select(0);
+	// columnIDCategoryCombo.addSelectionListener(new SelectionAdapter() {
+	// @Override
+	// public void widgetSelected(SelectionEvent e) {
+	// columnIDCategory = IDCategory.getIDCategory(columnIDCategoryCombo
+	// .getItem(columnIDCategoryCombo.getSelectionIndex()));
+	// fillColumnIDTypeCombo();
+	// }
+	// });
+	// }
 
-		int index = 0;
-		for (IDCategory idCategory : allRegisteredIDCategories) {
+	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
+		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+		idTypeGroup.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
+		idTypeGroup.setLayout(new RowLayout());
+		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
+		Combo idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+		ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
-			dimensionIDCategoryCombo.add(idCategory.getCategoryName());
-
-			if (index == 0)
-				dimensionIDCategory = idCategory;
-			index++;
+		if (isColumnIDTypeGroup) {
+			columnIDCombo = idCombo;
+			columnIDTypes = idTypes;
+		} else {
+			rowIDCombo = idCombo;
+			rowIDTypes = idTypes;
 		}
 
-		dimensionIDCategoryCombo.setEnabled(true);
-		dimensionIDCategoryCombo.select(0);
-		dimensionIDCategoryCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				dimensionIDCategory = IDCategory.getIDCategory(dimensionIDCategoryCombo
-						.getItem(dimensionIDCategoryCombo.getSelectionIndex()));
-				fillDimensionIDTypeCombo();
-			}
-		});
+		fillIDTypeCombo(isColumnIDTypeGroup ? columnIDCategory : rowIDCategory, idTypes,
+				idCombo);
+
+		if (!isColumnIDTypeGroup) {
+			rowIDCombo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					TableColumn idColumn = previewTable.getColumn(1);
+					idColumn.setText(rowIDCombo.getText());
+				}
+			});
+		}
 	}
 
-	private void createRecordIDTypeGroup(Composite parent) {
-		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeGroup.setText("Row ID type");
-		idTypeGroup.setLayout(new RowLayout());
-		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-		recordIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-		recordIDTypes = new ArrayList<IDType>();
+	// private void createDimensionIDTypeGroup(Composite parent) {
+	// Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+	// idTypeGroup.setText("Column ID type");
+	// idTypeGroup.setLayout(new RowLayout());
+	// idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
+	// columnIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+	// columnIDTypes = new ArrayList<IDType>();
+	//
+	// fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
+	// }
 
-		fillRecordIDTypeCombo();
-	}
+	private void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
+			Combo idTypeCombo) {
 
-	private void createDimensionIDTypeGroup(Composite parent) {
-		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeGroup.setText("Column ID type");
-		idTypeGroup.setLayout(new RowLayout());
-		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-		dimensionIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-		dimensionIDTypes = new ArrayList<IDType>();
+		ArrayList<IDType> tempIDTypes = idCategory.getIdTypes();
 
-		fillDimensionIDTypeCombo();
-	}
-
-	private void fillRecordIDTypeCombo() {
-		ArrayList<IDType> tempIDTypes = recordIDCategory.getIdTypes();
-
-		recordIDTypes.clear();
+		idTypes.clear();
 		for (IDType idType : tempIDTypes) {
 			if (!idType.isInternalType())
-				recordIDTypes.add(idType);
+				idTypes.add(idType);
 		}
 
-		String[] idTypesAsString = new String[recordIDTypes.size()];
+		String[] idTypesAsString = new String[idTypes.size()];
 		int index = 0;
-		for (IDType idType : recordIDTypes) {
+		for (IDType idType : idTypes) {
 			idTypesAsString[index] = idType.getTypeName();
 			index++;
 		}
 
-		recordIDCombo.setItems(idTypesAsString);
-		recordIDCombo.setEnabled(true);
-		recordIDCombo.select(0);
-		recordIDCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				TableColumn idColumn = previewTable.getColumn(1);
-				idColumn.setText(recordIDCombo.getText());
-			}
-		});
+		idTypeCombo.setItems(idTypesAsString);
+		idTypeCombo.setEnabled(true);
+		idTypeCombo.select(0);
+
 	}
 
-	private void fillDimensionIDTypeCombo() {
-		ArrayList<IDType> tempIDTypes = dimensionIDCategory.getIdTypes();
-
-		dimensionIDTypes.clear();
-		for (IDType idType : tempIDTypes) {
-			if (!idType.isInternalType())
-				dimensionIDTypes.add(idType);
-		}
-
-		String[] idTypesAsString = new String[dimensionIDTypes.size()];
-		int index = 0;
-		for (IDType idType : dimensionIDTypes) {
-			idTypesAsString[index] = idType.getTypeName();
-			index++;
-		}
-
-		dimensionIDCombo.setItems(idTypesAsString);
-		dimensionIDCombo.setEnabled(true);
-		dimensionIDCombo.select(0);
-	}
+	// private void fillColumnIDTypeCombo() {
+	// ArrayList<IDType> tempIDTypes = columnIDCategory.getIdTypes();
+	//
+	// dimensionIDTypes.clear();
+	// for (IDType idType : tempIDTypes) {
+	// if (!idType.isInternalType())
+	// dimensionIDTypes.add(idType);
+	// }
+	//
+	// String[] idTypesAsString = new String[dimensionIDTypes.size()];
+	// int index = 0;
+	// for (IDType idType : dimensionIDTypes) {
+	// idTypesAsString[index] = idType.getTypeName();
+	// index++;
+	// }
+	//
+	// dimensionIDCombo.setItems(idTypesAsString);
+	// dimensionIDCombo.setEnabled(true);
+	// dimensionIDCombo.select(0);
+	// }
 
 	private void createDelimiterGroup(Composite parent) {
 		Group delimiterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
@@ -889,7 +936,7 @@ public class ImportDataDialog extends Dialog {
 	/**
 	 * Reads the min and max values (if set) from the dialog
 	 */
-	private void fillLoadDataParameters() {
+	private void fillDatasetDescription() {
 		if (txtMin.getEnabled() && !txtMin.getText().isEmpty()) {
 			float fMin = Float.parseFloat(txtMin.getText());
 			if (!Float.isNaN(fMin)) {
@@ -903,7 +950,7 @@ public class ImportDataDialog extends Dialog {
 			}
 		}
 		IDSpecification rowIDSpecification = new IDSpecification();
-		IDType rowIDType = recordIDTypes.get(recordIDCombo.getSelectionIndex());
+		IDType rowIDType = rowIDTypes.get(rowIDCombo.getSelectionIndex());
 		rowIDSpecification.setIdType(rowIDType.toString());
 		if (rowIDType.getIDCategory().getCategoryName().equals("GENE"))
 			rowIDSpecification.setIDTypeGene(true);
@@ -914,7 +961,7 @@ public class ImportDataDialog extends Dialog {
 		}
 
 		IDSpecification columnIDSpecification = new IDSpecification();
-		IDType columnIDType = dimensionIDTypes.get(dimensionIDCombo.getSelectionIndex());
+		IDType columnIDType = columnIDTypes.get(columnIDCombo.getSelectionIndex());
 		columnIDSpecification.setIdType(columnIDType.toString());
 		if (columnIDType.getIDCategory().getCategoryName().equals("GENE"))
 			columnIDSpecification.setIDTypeGene(true);
@@ -1018,18 +1065,18 @@ public class ImportDataDialog extends Dialog {
 
 		for (IDCategory idCategory : allRegisteredIDCategories) {
 
-			recordIDTypes = new ArrayList<IDType>();
+			rowIDTypes = new ArrayList<IDType>();
 			HashSet<IDType> alIDTypesTemp = IDMappingManagerRegistry.get()
 					.getIDMappingManager(idCategory).getIDTypes();
 			for (IDType idType : alIDTypesTemp) {
 				if (!idType.isInternalType())
-					recordIDTypes.add(idType);
+					rowIDTypes.add(idType);
 			}
 
 			IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
 					.getIDMappingManager(idCategory);
 
-			for (IDType idType : recordIDTypes) {
+			for (IDType idType : rowIDTypes) {
 
 				int currentCorrectElements = 0;
 
@@ -1078,28 +1125,28 @@ public class ImportDataDialog extends Dialog {
 		for (int itemIndex = 0; itemIndex < allRegisteredIDCategories.size(); itemIndex++) {
 			if (allRegisteredIDCategories.get(itemIndex) == mostProbableRecordIDType
 					.getIDCategory()) {
-				recordIDCategoryCombo.select(itemIndex);
-				recordIDCategory = mostProbableRecordIDType.getIDCategory();
+				rowIDCategoryCombo.select(itemIndex);
+				rowIDCategory = mostProbableRecordIDType.getIDCategory();
 
 				// If a genetic ID type is detected for the rows,
 				// then SAMPLE is chosen for the columns
-				if (recordIDCategory == IDCategory.getIDCategory("GENE")) {
-					dimensionIDCategory = IDCategory.getIDCategory("SAMPLE");
-					dimensionIDCategoryCombo.select(allRegisteredIDCategories
-							.indexOf(dimensionIDCategory));
+				if (rowIDCategory == IDCategory.getIDCategory("GENE")) {
+					columnIDCategory = IDCategory.getIDCategory("SAMPLE");
+					columnIDCategoryCombo.select(allRegisteredIDCategories
+							.indexOf(columnIDCategory));
 
-					fillDimensionIDTypeCombo();
+					fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
 
-					dimensionIDCombo.select(dimensionIDTypes.indexOf(IDType
-							.getIDType("SAMPLE")));
+					columnIDCombo
+							.select(columnIDTypes.indexOf(IDType.getIDType("SAMPLE")));
 				}
 
 				break;
 			}
 		}
 
-		fillRecordIDTypeCombo();
-		recordIDCombo.select(recordIDTypes.indexOf(mostProbableRecordIDType));
+		fillIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+		rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
 
 		TableColumn idColumn = previewTable.getColumn(1);
 		idColumn.setText(mostProbableRecordIDType.getTypeName());
