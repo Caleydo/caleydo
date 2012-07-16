@@ -105,22 +105,23 @@ public class GroupingParser extends ATextParser {
 			// if this was not specified we read all columns, the row IDs are
 			// guaranteed to be in the first column
 			String firstDataLine = null;
-			if (columnsToRead == null) {
+			if (columnsToRead == null || headerCells == null) {
 				firstDataLine = reader.readLine();
 				String[] data = firstDataLine
 						.split(groupingSpecifications.getDelimiter());
-				columnsToRead = new ArrayList<Integer>(data.length);
-				if (headerCells == null) {
-					headerCells = new String[data.length];
+				if (columnsToRead == null) {
+					columnsToRead = new ArrayList<Integer>(data.length);
 
-					// Assigning default group names
 					for (int columnCount = 1; columnCount < data.length; columnCount++) {
-						headerCells[columnCount] = DEFAULT_GROUP_NAME;
+						columnsToRead.add(columnCount);
 					}
 				}
-
-				for (int columnCount = 1; columnCount < data.length; columnCount++) {
-					columnsToRead.add(columnCount);
+				// Assigning default group names
+				if (headerCells == null) {
+					headerCells = new String[data.length];
+					for (int columnCount = 0; columnCount < data.length; columnCount++) {
+						headerCells[columnCount] = DEFAULT_GROUP_NAME;
+					}
 				}
 			}
 
@@ -131,10 +132,10 @@ public class GroupingParser extends ATextParser {
 
 			ArrayList<Pair<String, ArrayList<Integer>>> currentGroupList;
 			// initialize for every column
-			for (Integer columnCount : columnsToRead) {
+			for (Integer columnNumber : columnsToRead) {
 				currentGroupList = new ArrayList<Pair<String, ArrayList<Integer>>>();
 				listOfGroupLists.add(currentGroupList);
-				listOfGroupNames.add(headerCells[columnCount]);
+				listOfGroupNames.add(headerCells[columnNumber]);
 			}
 			// the actual parsing
 			while (true) {
