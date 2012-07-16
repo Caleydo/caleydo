@@ -19,41 +19,30 @@
  *******************************************************************************/
 package org.caleydo.core.io.gui;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.StringTokenizer;
 import java.util.UUID;
 
-import org.caleydo.core.data.collection.EDataType;
-import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainManager;
-import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.id.IDCategory;
-import org.caleydo.core.id.IDMappingManager;
-import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
 import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
-import org.caleydo.core.manager.GeneralManager;
+import org.caleydo.core.io.MatrixDefinition;
 import org.caleydo.core.view.RCPViewInitializationData;
 import org.caleydo.core.view.RCPViewManager;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.custom.TableEditor;
 import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
-import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -61,7 +50,6 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
@@ -70,7 +58,6 @@ import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
-import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -81,16 +68,9 @@ import org.eclipse.ui.PlatformUI;
  * 
  * @author Marc Streit
  */
-public class ImportDataDialog extends Dialog {
-
-	private static int MAX_PREVIEW_TABLE_ROWS = 50;
-	private static int MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION = 10;
-
-	private Composite composite;
+public class ImportDataDialog extends AImportDialog {
 
 	private Text txtDataSetLabel;
-	private Text txtFileName;
-	private Text txtStartParseAtLine;
 	private Text txtMin;
 	private Text txtMax;
 
@@ -100,36 +80,20 @@ public class ImportDataDialog extends Dialog {
 	private Button buttonHomogeneous;
 	private Button buttonUncertaintyDataProvided;
 	private Button buttonSwapRowsWithColumns;
-	/**
-	 * Button for adding {@link GroupingParseSpecification} for columns.
-	 */
-	private Button addColumnGroupingSpecificationButton;
-	/**
-	 * Button for adding {@link GroupingParseSpecification} for rows.
-	 */
-	private Button addRowGroupingSpecificationButton;
-
-	private Table previewTable;
-
-	private ArrayList<Button> skipColumn = new ArrayList<Button>();
-
-	private Combo rowIDCombo;
-	private Combo columnIDCombo;
 
 	private Combo columnIDCategoryCombo;
 	private Combo rowIDCategoryCombo;
 
-	private ArrayList<IDType> rowIDTypes;
-	private ArrayList<IDType> columnIDTypes;
-
-	private String inputFile = "";
 	private String filePath = "";
 
-	private DataSetDescription dataSetDescription = new DataSetDescription();
+	private DataSetDescription dataSetDescription;
 
 	private String mathFilterMode = "Log2";
 
-	private ArrayList<IDCategory> allRegisteredIDCategories = new ArrayList<IDCategory>();
+	/**
+	 * All registered id categories.
+	 */
+	private ArrayList<IDCategory> registeredIDCategories;
 
 	/**
 	 * {@link GroupingParseSpecification}s for column groupings of the data.
@@ -140,8 +104,6 @@ public class ImportDataDialog extends Dialog {
 	 */
 	private ArrayList<GroupingParseSpecification> rowGroupingSpecifications = new ArrayList<GroupingParseSpecification>();
 
-	private IDCategory rowIDCategory;
-
 	private IDCategory columnIDCategory;
 
 	public ImportDataDialog(Shell parentShell) {
@@ -150,18 +112,22 @@ public class ImportDataDialog extends Dialog {
 
 	public ImportDataDialog(Shell parentShell, String inputFile) {
 		this(parentShell);
-		this.inputFile = inputFile;
+		this.inputFileName = inputFile;
 	}
 
 	@Override
 	protected void configureShell(Shell newShell) {
 		super.configureShell(newShell);
-		newShell.setText("Open Text Data File");
+		newShell.setText("Open Data File");
 	}
 
 	@Override
 	protected Control createDialogArea(Composite parent) {
 
+		dataSetDescription.setDelimiter("\t");
+		dataSetDescription.setNumberOfHeaderLines(1);
+		registeredIDCategories = new ArrayList<IDCategory>();
+		registeredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
 		createGUI(parent);
 		return parent;
 	}
@@ -169,7 +135,7 @@ public class ImportDataDialog extends Dialog {
 	@Override
 	protected void okPressed() {
 
-		if (txtFileName.getText().isEmpty()) {
+		if (fileNameTextField.getText().isEmpty()) {
 			MessageDialog.openError(new Shell(), "Invalid filename",
 					"Please specify a file to load");
 			return;
@@ -187,10 +153,8 @@ public class ImportDataDialog extends Dialog {
 			return;
 		}
 
-	
 		fillDatasetDescription();
 
-	
 		ATableBasedDataDomain dataDomain;
 		try {
 			dataDomain = DataLoader.loadData(dataSetDescription);
@@ -204,7 +168,7 @@ public class ImportDataDialog extends Dialog {
 			e1.printStackTrace();
 			throw new IllegalStateException();
 		}
-	
+
 		// Open default start view for the newly created data domain
 		try {
 
@@ -241,11 +205,11 @@ public class ImportDataDialog extends Dialog {
 
 		int numGridCols = 4;
 
-		composite = new Composite(parent, SWT.NONE);
+		parentComposite = new Composite(parent, SWT.NONE);
 		GridLayout layout = new GridLayout(numGridCols, false);
-		composite.setLayout(layout);
+		parentComposite.setLayout(layout);
 
-		Group inputFileGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		Group inputFileGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		inputFileGroup.setText("Input file");
 		inputFileGroup.setLayout(new GridLayout(2, false));
 		GridData gridData = new GridData(SWT.BEGINNING);
@@ -257,8 +221,9 @@ public class ImportDataDialog extends Dialog {
 		// buttonFileChooser.setLayoutData(new
 		// GridData(GridData.FILL_HORIZONTAL));
 
-		txtFileName = new Text(inputFileGroup, SWT.BORDER);
-		txtFileName.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		fileNameTextField = new Text(inputFileGroup, SWT.BORDER);
+		fileNameTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		fileNameTextField.setEnabled(false);
 
 		buttonFileChooser.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -270,21 +235,23 @@ public class ImportDataDialog extends Dialog {
 				String[] filterExt = { "*.csv", "*.txt", "*.*" };
 				fileDialog.setFilterExtensions(filterExt);
 
-				inputFile = fileDialog.open();
+				inputFileName = fileDialog.open();
 
-				if (inputFile == null)
+				if (inputFileName == null)
 					return;
 
-				dataSetDescription.setDataSourcePath(inputFile);
-				txtFileName.setText(inputFile);
+				dataSetDescription.setDataSourcePath(inputFileName);
+				fileNameTextField.setText(inputFileName);
 
 				txtDataSetLabel.setText(determineDataSetLabel());
+				columnIDCategoryCombo.setEnabled(true);
+				rowIDCategoryCombo.setEnabled(true);
 
-				createDataPreviewTable("\t");
+				createDataPreviewTable();
 			}
 		});
 
-		Composite groupingComposite = new Composite(composite, SWT.NONE);
+		Composite groupingComposite = new Composite(parentComposite, SWT.NONE);
 		groupingComposite.setLayout(new GridLayout(2, true));
 		groupingComposite
 				.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 3));
@@ -294,10 +261,7 @@ public class ImportDataDialog extends Dialog {
 		createGroupingGroup(groupingComposite, "Row Groupings",
 				rowGroupingSpecifications, false);
 
-		allRegisteredIDCategories.clear();
-		allRegisteredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
-
-		Composite idComposite = new Composite(composite, SWT.NONE);
+		Composite idComposite = new Composite(parentComposite, SWT.NONE);
 		idComposite.setLayout(new GridLayout(4, false));
 		idComposite.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
 
@@ -306,7 +270,7 @@ public class ImportDataDialog extends Dialog {
 		createIDCategoryGroup(idComposite, "Column ID category", true);
 		createIDTypeGroup(idComposite, true);
 
-		Group dataSetLabelGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		Group dataSetLabelGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		dataSetLabelGroup.setText("Data set name");
 		dataSetLabelGroup.setLayout(new GridLayout(1, false));
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
@@ -316,15 +280,15 @@ public class ImportDataDialog extends Dialog {
 		txtDataSetLabel.setText(determineDataSetLabel());
 		txtDataSetLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
-		Group startParseAtLineGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		Group startParseAtLineGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		startParseAtLineGroup.setText("Ignore lines in header");
 		startParseAtLineGroup.setLayout(new GridLayout(1, false));
 
-		txtStartParseAtLine = new Text(startParseAtLineGroup, SWT.BORDER);
-		txtStartParseAtLine.setLayoutData(new GridData(50, 15));
-		txtStartParseAtLine.setText("1");
-		txtStartParseAtLine.setTextLimit(2);
-		txtStartParseAtLine.addModifyListener(new ModifyListener() {
+		linesToSkipTextField = new Text(startParseAtLineGroup, SWT.BORDER);
+		linesToSkipTextField.setLayoutData(new GridData(50, 15));
+		linesToSkipTextField.setText("1");
+		linesToSkipTextField.setTextLimit(2);
+		linesToSkipTextField.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
 
@@ -332,18 +296,19 @@ public class ImportDataDialog extends Dialog {
 				// readable and not array index
 				// (starting with 0).
 				dataSetDescription.setNumberOfHeaderLines(Integer
-						.valueOf(txtStartParseAtLine.getText()));
+						.valueOf(linesToSkipTextField.getText()));
 
-				createDataPreviewTable("\t");
-				composite.pack();
+				createDataPreviewTable();
+				// composite.pack();
 			}
 		});
 
-		createDelimiterGroup(composite);
+		createDelimiterGroup(parentComposite);
 		createFilterGroup();
 		createDataPropertiesGroup();
 
-		previewTable = new Table(composite, SWT.MULTI | SWT.BORDER | SWT.FULL_SELECTION);
+		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
+				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
 		previewTable.setHeaderVisible(true);
 		gridData = new GridData(GridData.FILL_BOTH);
@@ -353,13 +318,13 @@ public class ImportDataDialog extends Dialog {
 		previewTable.setLayoutData(gridData);
 
 		// Check if an external file name is given to the action
-		if (!inputFile.isEmpty()) {
-			txtFileName.setText(inputFile);
-			dataSetDescription.setDataSourcePath(inputFile);
+		if (!inputFileName.isEmpty()) {
+			fileNameTextField.setText(inputFileName);
+			dataSetDescription.setDataSourcePath(inputFileName);
 			mathFilterMode = "Log10";
 			// mathFilterCombo.select(1);
 
-			createDataPreviewTable("\t");
+			createDataPreviewTable();
 		}
 	}
 
@@ -377,11 +342,9 @@ public class ImportDataDialog extends Dialog {
 			listColumnGroupings = new List(groupingsGroup, SWT.SINGLE);
 			listColumnGroupings
 					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			addColumnGroupingSpecificationButton = addGroupingButton;
 		} else {
 			listRowGroupings = new List(groupingsGroup, SWT.SINGLE);
 			listRowGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-			addRowGroupingSpecificationButton = addGroupingButton;
 		}
 
 		addGroupingButton.setText("Add");
@@ -423,11 +386,11 @@ public class ImportDataDialog extends Dialog {
 
 	private String determineDataSetLabel() {
 
-		if (inputFile == null || inputFile.isEmpty())
-			return "<insert data set name>";
+		if (inputFileName == null || inputFileName.isEmpty())
+			return "<Insert data set name>";
 
-		return inputFile.substring(inputFile.lastIndexOf(File.separator) + 1,
-				inputFile.lastIndexOf("."));
+		return inputFileName.substring(inputFileName.lastIndexOf(File.separator) + 1,
+				inputFileName.lastIndexOf("."));
 	}
 
 	private void createIDCategoryGroup(Composite parent, String groupLabel,
@@ -437,7 +400,7 @@ public class ImportDataDialog extends Dialog {
 		recordIDCategoryGroup.setLayout(new RowLayout());
 		recordIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
 		Combo idCategoryCombo = new Combo(recordIDCategoryGroup, SWT.DROP_DOWN);
-		idCategoryCombo.setText("Please select...");
+		idCategoryCombo.setText("<Please select>");
 
 		if (isColumnCategory) {
 			columnIDCategoryCombo = idCategoryCombo;
@@ -445,24 +408,24 @@ public class ImportDataDialog extends Dialog {
 			rowIDCategoryCombo = idCategoryCombo;
 		}
 
-		int index = 0;
-		for (IDCategory idCategory : allRegisteredIDCategories) {
+		// int index = 0;
+		for (IDCategory idCategory : registeredIDCategories) {
 
 			idCategoryCombo.add(idCategory.getCategoryName());
 
-			if (index == 0) {
-				if (isColumnCategory) {
-					columnIDCategory = idCategory;
-				} else {
-					rowIDCategory = idCategory;
-				}
-
-			}
-			index++;
+			// if (index == 0) {
+			// if (isColumnCategory) {
+			// columnIDCategory = idCategory;
+			// } else {
+			// rowIDCategory = idCategory;
+			// }
+			//
+			// }
+			// index++;
 		}
 
-		idCategoryCombo.setEnabled(true);
-		idCategoryCombo.select(0);
+//		idCategoryCombo.setEnabled(false);
+		// idCategoryCombo.deselect(0);
 		idCategoryCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
@@ -480,195 +443,8 @@ public class ImportDataDialog extends Dialog {
 		});
 	}
 
-	// private void createIDCategoryGroup(Composite parent) {
-	// Group dimensionIDCategoryGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-	// dimensionIDCategoryGroup.setText("Column ID category");
-	// dimensionIDCategoryGroup.setLayout(new RowLayout());
-	// dimensionIDCategoryGroup.setLayoutData(new GridData(SWT.LEFT));
-	// columnIDCategoryCombo = new Combo(dimensionIDCategoryGroup,
-	// SWT.DROP_DOWN);
-	//
-	// int index = 0;
-	// for (IDCategory idCategory : allRegisteredIDCategories) {
-	//
-	// columnIDCategoryCombo.add(idCategory.getCategoryName());
-	//
-	// if (index == 0)
-	// columnIDCategory = idCategory;
-	// index++;
-	// }
-	//
-	// columnIDCategoryCombo.setEnabled(true);
-	// columnIDCategoryCombo.select(0);
-	// columnIDCategoryCombo.addSelectionListener(new SelectionAdapter() {
-	// @Override
-	// public void widgetSelected(SelectionEvent e) {
-	// columnIDCategory = IDCategory.getIDCategory(columnIDCategoryCombo
-	// .getItem(columnIDCategoryCombo.getSelectionIndex()));
-	// fillColumnIDTypeCombo();
-	// }
-	// });
-	// }
-
-	private void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
-		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeGroup.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
-		idTypeGroup.setLayout(new RowLayout());
-		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-		Combo idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-		ArrayList<IDType> idTypes = new ArrayList<IDType>();
-
-		if (isColumnIDTypeGroup) {
-			columnIDCombo = idCombo;
-			columnIDTypes = idTypes;
-		} else {
-			rowIDCombo = idCombo;
-			rowIDTypes = idTypes;
-		}
-
-		fillIDTypeCombo(isColumnIDTypeGroup ? columnIDCategory : rowIDCategory, idTypes,
-				idCombo);
-
-		if (!isColumnIDTypeGroup) {
-			rowIDCombo.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					TableColumn idColumn = previewTable.getColumn(1);
-					idColumn.setText(rowIDCombo.getText());
-				}
-			});
-		}
-	}
-
-	// private void createDimensionIDTypeGroup(Composite parent) {
-	// Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-	// idTypeGroup.setText("Column ID type");
-	// idTypeGroup.setLayout(new RowLayout());
-	// idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-	// columnIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-	// columnIDTypes = new ArrayList<IDType>();
-	//
-	// fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
-	// }
-
-	private void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
-			Combo idTypeCombo) {
-
-		ArrayList<IDType> tempIDTypes = idCategory.getIdTypes();
-
-		idTypes.clear();
-		for (IDType idType : tempIDTypes) {
-			if (!idType.isInternalType())
-				idTypes.add(idType);
-		}
-
-		String[] idTypesAsString = new String[idTypes.size()];
-		int index = 0;
-		for (IDType idType : idTypes) {
-			idTypesAsString[index] = idType.getTypeName();
-			index++;
-		}
-
-		idTypeCombo.setItems(idTypesAsString);
-		idTypeCombo.setEnabled(true);
-		idTypeCombo.select(0);
-
-	}
-
-	// private void fillColumnIDTypeCombo() {
-	// ArrayList<IDType> tempIDTypes = columnIDCategory.getIdTypes();
-	//
-	// dimensionIDTypes.clear();
-	// for (IDType idType : tempIDTypes) {
-	// if (!idType.isInternalType())
-	// dimensionIDTypes.add(idType);
-	// }
-	//
-	// String[] idTypesAsString = new String[dimensionIDTypes.size()];
-	// int index = 0;
-	// for (IDType idType : dimensionIDTypes) {
-	// idTypesAsString[index] = idType.getTypeName();
-	// index++;
-	// }
-	//
-	// dimensionIDCombo.setItems(idTypesAsString);
-	// dimensionIDCombo.setEnabled(true);
-	// dimensionIDCombo.select(0);
-	// }
-
-	private void createDelimiterGroup(Composite parent) {
-		Group delimiterGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		delimiterGroup.setText("Separated by (delimiter)");
-		delimiterGroup.setLayout(new RowLayout());
-
-		final Button[] delimiterButtons = new Button[6];
-
-		delimiterButtons[0] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[0].setSelection(true);
-		delimiterButtons[0].setText("TAB");
-		delimiterButtons[0].setData("\t");
-		delimiterButtons[0].setBounds(10, 5, 75, 30);
-
-		delimiterButtons[1] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[1].setText(";");
-		delimiterButtons[1].setData(";");
-		delimiterButtons[1].setBounds(10, 30, 75, 30);
-
-		delimiterButtons[2] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[2].setText(",");
-		delimiterButtons[2].setData(",");
-		delimiterButtons[2].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[3] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[3].setText(".");
-		delimiterButtons[3].setData(".");
-		delimiterButtons[3].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[4] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[4].setText("SPACE");
-		delimiterButtons[4].setData(" ");
-		delimiterButtons[4].setBounds(10, 55, 75, 30);
-
-		delimiterButtons[5] = new Button(delimiterGroup, SWT.RADIO);
-		delimiterButtons[5].setText("Other");
-		delimiterButtons[5].setBounds(10, 55, 75, 30);
-
-		final Text customizedDelimiterTextField = new Text(delimiterGroup, SWT.BORDER);
-		customizedDelimiterTextField.setBounds(0, 0, 75, 30);
-		customizedDelimiterTextField.setTextLimit(1);
-		customizedDelimiterTextField.setEnabled(false);
-		customizedDelimiterTextField.addModifyListener(new ModifyListener() {
-			@Override
-			public void modifyText(ModifyEvent e) {
-				createDataPreviewTable(customizedDelimiterTextField.getText());
-				// composite.pack();
-			}
-
-		});
-
-		SelectionAdapter radioGroupSelectionListener = new SelectionAdapter() {
-
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				Button selectedButton = (Button) e.getSource();
-				if (selectedButton != delimiterButtons[5]) {
-					createDataPreviewTable((String) selectedButton.getData());
-					customizedDelimiterTextField.setEnabled(false);
-				} else {
-					customizedDelimiterTextField.setEnabled(true);
-					createDataPreviewTable(" ");
-				}
-			}
-		};
-
-		for (int i = 0; i < delimiterButtons.length; i++) {
-			delimiterButtons[i].addSelectionListener(radioGroupSelectionListener);
-		}
-
-	}
-
 	private void createFilterGroup() {
-		Group filterGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		Group filterGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		filterGroup.setText("Apply filter");
 		filterGroup.setLayout(new RowLayout());
 		filterGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -750,7 +526,7 @@ public class ImportDataDialog extends Dialog {
 	}
 
 	private void createDataPropertiesGroup() {
-		Group dataPropertiesGroup = new Group(composite, SWT.SHADOW_ETCHED_IN);
+		Group dataPropertiesGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		dataPropertiesGroup.setText("Data properties");
 		dataPropertiesGroup.setLayout(new RowLayout());
 		dataPropertiesGroup.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
@@ -768,169 +544,6 @@ public class ImportDataDialog extends Dialog {
 		buttonSwapRowsWithColumns.setText("Swap rows and columns");
 		buttonSwapRowsWithColumns.setEnabled(true);
 		buttonSwapRowsWithColumns.setSelection(false);
-	}
-
-	private void createDataPreviewTable(final String sDelimiter) {
-
-		this.dataSetDescription.setDelimiter(sDelimiter);
-
-		// boolean clusterInfo = false;
-
-		// Clear table if not empty
-		previewTable.removeAll();
-
-		for (TableColumn tmpColumn : previewTable.getColumns()) {
-			tmpColumn.dispose();
-		}
-
-		final TableEditor editor = new TableEditor(previewTable);
-		editor.horizontalAlignment = SWT.LEFT;
-		editor.grabHorizontal = true;
-
-		// Read preview table
-		BufferedReader file;
-		try {
-			file = GeneralManager.get().getResourceLoader()
-					.getResource(dataSetDescription.getDataSourcePath());
-
-			String line = "";
-
-			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < dataSetDescription
-					.getNumberOfHeaderLines() - 1; iIgnoreLineIndex++) {
-				file.readLine();
-			}
-
-			String nextToken = "";
-			StringTokenizer tokenizer;
-			TableColumn column;
-			TableItem item;
-			int colIndex = 0;
-
-			// Read labels
-			if ((line = file.readLine()) != null) {
-				tokenizer = new StringTokenizer(line, sDelimiter, false);
-				column = new TableColumn(previewTable, SWT.NONE);
-				column.setWidth(100);
-				column.setText("");
-
-				while (tokenizer.hasMoreTokens()) {
-					nextToken = tokenizer.nextToken();
-
-					final TableColumn dataColumn = new TableColumn(previewTable, SWT.NONE);
-					dataColumn.setWidth(100);
-					dataColumn.setText(nextToken);
-
-					dataColumn.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
-							LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
-							String sLabel = dialog.open(dataColumn.getText());
-
-							if (sLabel != null && !sLabel.isEmpty()) {
-								dataColumn.setText(sLabel);
-							}
-						}
-					});
-
-					colIndex++;
-				}
-			}
-
-			createDataClassBar();
-
-			int rowCount = 0;
-			boolean isCellFilled = false;
-
-			// Read raw data
-			while ((line = file.readLine()) != null && rowCount < MAX_PREVIEW_TABLE_ROWS) {
-				// last flag triggers return of delimiter itself
-				tokenizer = new StringTokenizer(line, sDelimiter, true);
-				item = new TableItem(previewTable, SWT.NONE);
-				item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for
-														// a non programmer :)
-				colIndex = 0;
-
-				while (tokenizer.hasMoreTokens()) {
-					nextToken = tokenizer.nextToken();
-
-					// Check for empty cells
-					if (nextToken.equals(sDelimiter) && !isCellFilled) {
-						item.setText(colIndex + 1, "");
-						colIndex++;
-					} else if (nextToken.equals(sDelimiter) && isCellFilled) {
-						isCellFilled = false; // reset
-					} else {
-						isCellFilled = true;
-						item.setText(colIndex + 1, nextToken);
-						colIndex++;
-					}
-				}
-
-				isCellFilled = false; // reset
-
-				rowCount++;
-			}
-
-			// check for experiment cluster info in the rest of the file
-			while ((line = file.readLine()) != null) {
-
-				tokenizer = new StringTokenizer(line, sDelimiter, true);
-
-				if (!tokenizer.hasMoreTokens())
-					continue;
-
-				nextToken = tokenizer.nextToken();
-			}
-
-		} catch (FileNotFoundException e) {
-			throw new IllegalStateException("File not found!");
-		} catch (IOException ioe) {
-			throw new IllegalStateException("Input/output problem!");
-		}
-
-		determineRowIDType();
-	}
-
-	private void createDataClassBar() {
-
-		TableItem tmpItem = new TableItem(previewTable, SWT.NONE);
-		tmpItem.setText("Use column");
-
-		Button skipButton;
-		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
-			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
-			skipButton.setSelection(true);
-			skipButton.setData("column", iColIndex);
-			skipButton.addSelectionListener(new SelectionAdapter() {
-				@Override
-				public void widgetSelected(SelectionEvent e) {
-					Color textColor = null;
-					boolean bSkipColumn = false;
-
-					for (TableItem item : previewTable.getItems()) {
-						bSkipColumn = !((Button) e.widget).getSelection();
-
-						if (bSkipColumn) {
-							textColor = Display.getCurrent().getSystemColor(
-									SWT.COLOR_GRAY);
-						} else {
-							textColor = Display.getCurrent().getSystemColor(
-									SWT.COLOR_BLACK);
-						}
-
-						item.setForeground(((Integer) e.widget.getData("column")),
-								textColor);
-					}
-				}
-			});
-
-			skipColumn.add(skipButton);
-
-			TableEditor editor = new TableEditor(previewTable);
-			editor.grabHorizontal = editor.grabVertical = true;
-			editor.setEditor(skipButton, tmpItem, iColIndex);
-		}
 	}
 
 	/**
@@ -997,7 +610,7 @@ public class ImportDataDialog extends Dialog {
 		// different by one from the index in the source csv.
 		for (int columnIndex = 2; columnIndex < previewTable.getColumnCount(); columnIndex++) {
 
-			if (!skipColumn.get(columnIndex - 2).getSelection()) {
+			if (!selectedColumnButtons.get(columnIndex - 2).getSelection()) {
 				// do nothing
 			} else {
 
@@ -1036,7 +649,7 @@ public class ImportDataDialog extends Dialog {
 		}
 
 		dataSetDescription.setParsingPattern(inputPattern);
-		dataSetDescription.setDataSourcePath(txtFileName.getText());
+		dataSetDescription.setDataSourcePath(fileNameTextField.getText());
 		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
 
 	}
@@ -1049,106 +662,54 @@ public class ImportDataDialog extends Dialog {
 		this.dataSetDescription = dataSetDescripton;
 	}
 
-	private void determineRowIDType() {
+	protected void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
 
-		TableItem[] items = previewTable.getItems();
-		ArrayList<String> idList = new ArrayList<String>();
-		int rowIndex = 1;
-		while (rowIndex < items.length
-				&& rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
-			idList.add(items[rowIndex].getText(1));
-			rowIndex++;
-		}
+		if (mostProbableRecordIDType == null) {
+			rowIDTypes.clear();
+			rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
+			rowIDCombo.clearSelection();
+			rowIDCombo.setText("<Please select>");
+		} else {
+			for (int itemIndex = 0; itemIndex < registeredIDCategories.size(); itemIndex++) {
+				if (registeredIDCategories.get(itemIndex) == mostProbableRecordIDType
+						.getIDCategory()) {
+					rowIDCategoryCombo.select(itemIndex);
+					rowIDCategory = mostProbableRecordIDType.getIDCategory();
 
-		int maxCorrectElements = 0;
-		IDType mostProbableIDType = null;
+					// If a genetic ID type is detected for the rows,
+					// then SAMPLE is chosen for the columns
+					if (rowIDCategory == IDCategory.getIDCategory("GENE")) {
+						columnIDCategory = IDCategory.getIDCategory("SAMPLE");
+						columnIDCategoryCombo.select(registeredIDCategories
+								.indexOf(columnIDCategory));
 
-		for (IDCategory idCategory : allRegisteredIDCategories) {
+						fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
 
-			rowIDTypes = new ArrayList<IDType>();
-			HashSet<IDType> alIDTypesTemp = IDMappingManagerRegistry.get()
-					.getIDMappingManager(idCategory).getIDTypes();
-			for (IDType idType : alIDTypesTemp) {
-				if (!idType.isInternalType())
-					rowIDTypes.add(idType);
-			}
-
-			IDMappingManager idMappingManager = IDMappingManagerRegistry.get()
-					.getIDMappingManager(idCategory);
-
-			for (IDType idType : rowIDTypes) {
-
-				int currentCorrectElements = 0;
-
-				for (String currentID : idList) {
-
-					if (idType.getColumnType().equals(EDataType.INT)) {
-						try {
-							Integer idInt = Integer.valueOf(currentID);
-							if (idMappingManager.doesElementExist(idType, idInt)) {
-								currentCorrectElements++;
-							}
-						} catch (NumberFormatException e) {
-						}
-					} else if (idType.getColumnType().equals(EDataType.STRING)) {
-						if (idMappingManager.doesElementExist(idType, currentID)) {
-							currentCorrectElements++;
-						} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {
-							if (currentID.contains(".")) {
-								if (idMappingManager.doesElementExist(idType,
-										currentID.substring(0, currentID.indexOf(".")))) {
-									currentCorrectElements++;
-								}
-							}
-						}
+						columnIDCombo.select(columnIDTypes.indexOf(IDType
+								.getIDType("SAMPLE")));
 					}
 
-					if (currentCorrectElements >= idList.size()) {
-
-						setMostProbableRecordIDType(mostProbableIDType);
-
-						return;
-					}
-					if (currentCorrectElements >= maxCorrectElements) {
-						maxCorrectElements = currentCorrectElements;
-						mostProbableIDType = idType;
-					}
+					break;
 				}
 			}
-		}
 
-		setMostProbableRecordIDType(mostProbableIDType);
+			fillIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+			rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
+
+			TableColumn idColumn = previewTable.getColumn(1);
+			idColumn.setText(mostProbableRecordIDType.getTypeName());
+		}
 	}
 
-	private void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
-
-		for (int itemIndex = 0; itemIndex < allRegisteredIDCategories.size(); itemIndex++) {
-			if (allRegisteredIDCategories.get(itemIndex) == mostProbableRecordIDType
-					.getIDCategory()) {
-				rowIDCategoryCombo.select(itemIndex);
-				rowIDCategory = mostProbableRecordIDType.getIDCategory();
-
-				// If a genetic ID type is detected for the rows,
-				// then SAMPLE is chosen for the columns
-				if (rowIDCategory == IDCategory.getIDCategory("GENE")) {
-					columnIDCategory = IDCategory.getIDCategory("SAMPLE");
-					columnIDCategoryCombo.select(allRegisteredIDCategories
-							.indexOf(columnIDCategory));
-
-					fillIDTypeCombo(columnIDCategory, columnIDTypes, columnIDCombo);
-
-					columnIDCombo
-							.select(columnIDTypes.indexOf(IDType.getIDType("SAMPLE")));
-				}
-
-				break;
-			}
-		}
-
-		fillIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
-		rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
-
-		TableColumn idColumn = previewTable.getColumn(1);
-		idColumn.setText(mostProbableRecordIDType.getTypeName());
+	@Override
+	protected MatrixDefinition createConcreteMatrixDefinition() {
+		dataSetDescription = new DataSetDescription();
+		return dataSetDescription;
 	}
+
+	@Override
+	protected ArrayList<IDCategory> getAvailableIDCategories() {
+		return registeredIDCategories;
+	}
+
 }

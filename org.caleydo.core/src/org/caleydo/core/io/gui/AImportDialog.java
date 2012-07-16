@@ -78,7 +78,7 @@ public abstract class AImportDialog extends Dialog {
 	/**
 	 * File name of the input file.
 	 */
-	protected String inputFileName;
+	protected String inputFileName = "";
 
 	/**
 	 * Table that displays a preview of the data of the file specified by
@@ -92,14 +92,29 @@ public abstract class AImportDialog extends Dialog {
 	protected IDCategory rowIDCategory;
 
 	/**
-	 * Combo box to specify the row ID Type.s
+	 * The current column id category.
+	 */
+	protected IDCategory columnIDCategory;
+
+	/**
+	 * Combo box to specify the row ID Type.
 	 */
 	protected Combo rowIDCombo;
+
+	/**
+	 * Combo box to specify the column ID Type.
+	 */
+	protected Combo columnIDCombo;
 
 	/**
 	 * The IDTypes available for {@link #rowIDCategory}.
 	 */
 	protected ArrayList<IDType> rowIDTypes;
+
+	/**
+	 * The IDTypes available for {@link #columnIDCategory}.
+	 */
+	protected ArrayList<IDType> columnIDTypes;
 
 	/**
 	 * List of buttons, each created for one column to specify whether this
@@ -128,44 +143,104 @@ public abstract class AImportDialog extends Dialog {
 	 */
 	protected abstract MatrixDefinition createConcreteMatrixDefinition();
 
-	protected void createRowIDTypeGroup(Composite parent) {
+//	protected void createRowIDTypeGroup(Composite parent) {
+//		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+//		idTypeGroup.setText("Row ID type");
+//		idTypeGroup.setLayout(new RowLayout());
+//		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
+//		rowIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+//		rowIDTypes = new ArrayList<IDType>();
+//
+//		fillRowIDTypeCombo();
+//
+//		rowIDCombo.addSelectionListener(new SelectionAdapter() {
+//			@Override
+//			public void widgetSelected(SelectionEvent e) {
+//				TableColumn idColumn = previewTable.getColumn(1);
+//				idColumn.setText(rowIDCombo.getText());
+//			}
+//		});
+//	}
+//
+//	protected void fillRowIDTypeCombo() {
+//		ArrayList<IDType> tempIDTypes = rowIDCategory.getIdTypes();
+//
+//		rowIDTypes.clear();
+//		for (IDType idType : tempIDTypes) {
+//			if (!idType.isInternalType())
+//				rowIDTypes.add(idType);
+//		}
+//
+//		String[] idTypesAsString = new String[rowIDTypes.size()];
+//		int index = 0;
+//		for (IDType idType : rowIDTypes) {
+//			idTypesAsString[index] = idType.getTypeName();
+//			index++;
+//		}
+//
+//		rowIDCombo.setItems(idTypesAsString);
+//		rowIDCombo.setEnabled(true);
+//		rowIDCombo.select(0);
+//
+//	}
+
+	protected void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
 		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-		idTypeGroup.setText("Row ID type");
+		idTypeGroup.setText(isColumnIDTypeGroup ? "Column ID type" : "Row ID type");
 		idTypeGroup.setLayout(new RowLayout());
 		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-		rowIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-		rowIDTypes = new ArrayList<IDType>();
+		Combo idCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+		ArrayList<IDType> idTypes = new ArrayList<IDType>();
 
-		fillRowIDTypeCombo();
-
-		rowIDCombo.addSelectionListener(new SelectionAdapter() {
-			@Override
-			public void widgetSelected(SelectionEvent e) {
-				TableColumn idColumn = previewTable.getColumn(1);
-				idColumn.setText(rowIDCombo.getText());
-			}
-		});
-	}
-
-	protected void fillRowIDTypeCombo() {
-		ArrayList<IDType> tempIDTypes = rowIDCategory.getIdTypes();
-
-		rowIDTypes.clear();
-		for (IDType idType : tempIDTypes) {
-			if (!idType.isInternalType())
-				rowIDTypes.add(idType);
+		if (isColumnIDTypeGroup) {
+			columnIDCombo = idCombo;
+			columnIDTypes = idTypes;
+		} else {
+			rowIDCombo = idCombo;
+			rowIDTypes = idTypes;
 		}
 
-		String[] idTypesAsString = new String[rowIDTypes.size()];
+		fillIDTypeCombo(isColumnIDTypeGroup ? columnIDCategory : rowIDCategory, idTypes,
+				idCombo);
+
+		if (!isColumnIDTypeGroup) {
+			rowIDCombo.addSelectionListener(new SelectionAdapter() {
+				@Override
+				public void widgetSelected(SelectionEvent e) {
+					TableColumn idColumn = previewTable.getColumn(1);
+					idColumn.setText(rowIDCombo.getText());
+				}
+			});
+		}
+	}
+
+	protected void fillIDTypeCombo(IDCategory idCategory, ArrayList<IDType> idTypes,
+			Combo idTypeCombo) {
+
+		if (idCategory == null) {
+			idTypeCombo.setEnabled(false);
+			return;
+		}
+
+		ArrayList<IDType> tempIDTypes = idCategory.getIdTypes();
+
+		idTypes.clear();
+		for (IDType idType : tempIDTypes) {
+			if (!idType.isInternalType())
+				idTypes.add(idType);
+		}
+
+		String[] idTypesAsString = new String[idTypes.size()];
 		int index = 0;
-		for (IDType idType : rowIDTypes) {
+		for (IDType idType : idTypes) {
 			idTypesAsString[index] = idType.getTypeName();
 			index++;
 		}
 
-		rowIDCombo.setItems(idTypesAsString);
-		rowIDCombo.setEnabled(true);
-		rowIDCombo.select(0);
+		idTypeCombo.setItems(idTypesAsString);
+		idTypeCombo.setEnabled(true);
+		idTypeCombo.setText("<Please select>");
+		// idTypeCombo.select(0);
 
 	}
 
@@ -464,12 +539,7 @@ public abstract class AImportDialog extends Dialog {
 
 					if (currentCorrectElements >= idList.size()) {
 
-						if (mostProbableIDType != null) {
-							setMostProbableRecordIDType(mostProbableIDType);
-						} else {
-							rowIDTypes.clear();
-							rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
-						}
+						setMostProbableRecordIDType(mostProbableIDType);
 
 						return;
 					}
@@ -480,12 +550,7 @@ public abstract class AImportDialog extends Dialog {
 				}
 			}
 		}
-		if (mostProbableIDType != null) {
-			setMostProbableRecordIDType(mostProbableIDType);
-		} else {
-			rowIDTypes.clear();
-			rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
-		}
+		setMostProbableRecordIDType(mostProbableIDType);
 	}
 
 	/**
@@ -499,6 +564,8 @@ public abstract class AImportDialog extends Dialog {
 	 * the data was determined.
 	 * 
 	 * @param mostProbableIDType
+	 *            The most probable id type. Null if no id type could be
+	 *            determined.
 	 */
 	protected abstract void setMostProbableRecordIDType(IDType mostProbableIDType);
 

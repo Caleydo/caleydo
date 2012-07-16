@@ -147,7 +147,7 @@ public class ImportGroupingDialog extends AImportDialog {
 		Label categoryIDLabel = new Label(idCategoryGroup, SWT.NONE);
 		categoryIDLabel.setText(rowIDCategory.getCategoryName());
 
-		createRowIDTypeGroup(parentComposite);
+		createIDTypeGroup(parentComposite, false);
 
 		Group linesToSkipGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
 		linesToSkipGroup.setText("Ignore lines in header");
@@ -190,11 +190,19 @@ public class ImportGroupingDialog extends AImportDialog {
 
 	@Override
 	protected void setMostProbableRecordIDType(IDType mostProbableRecordIDType) {
-		fillRowIDTypeCombo();
-		rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
 
-		TableColumn idColumn = previewTable.getColumn(1);
-		idColumn.setText(mostProbableRecordIDType.getTypeName());
+		if (mostProbableRecordIDType == null) {
+			rowIDTypes.clear();
+			rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
+			rowIDCombo.clearSelection();
+			rowIDCombo.setText("<Please select>");
+		} else {
+			fillIDTypeCombo(rowIDCategory, rowIDTypes, rowIDCombo);
+			rowIDCombo.select(rowIDTypes.indexOf(mostProbableRecordIDType));
+
+			TableColumn idColumn = previewTable.getColumn(1);
+			idColumn.setText(mostProbableRecordIDType.getTypeName());
+		}
 	}
 
 	/**
