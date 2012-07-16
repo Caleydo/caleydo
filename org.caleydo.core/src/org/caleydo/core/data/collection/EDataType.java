@@ -25,10 +25,8 @@ package org.caleydo.core.data.collection;
  * @author Marc Streit
  * @author Alexander Lex
  */
-public enum EColumnType {
-	// Needed by the parser
-	// ABORT(null),
-	// SKIP(null),
+public enum EDataType {
+	
 
 	INT(Integer.class),
 	FLOAT(Float.class),
@@ -36,7 +34,7 @@ public enum EColumnType {
 
 	// CERTAINTY(Float.class);
 
-	private <T> EColumnType(Class<T> dimensionClass) {
+	private <T> EDataType(Class<T> dimensionClass) {
 
 	}
 

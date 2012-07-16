@@ -21,7 +21,7 @@ package org.caleydo.core.id;
 
 import java.util.HashMap;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
@@ -74,9 +74,9 @@ public class IDType {
 
 	/**
 	 * Specifies the data type of the IDType. Allowed values are
-	 * {@link EColumnType#INT} and {@link EColumnType#STRING}
+	 * {@link EDataType#INT} and {@link EDataType#STRING}
 	 */
-	private EColumnType columnType;
+	private EDataType columnType;
 	/**
 	 * flag determining whether a type is internal only, meaning that it is
 	 * dynamically generated using a running number (true), or publicly known
@@ -89,7 +89,7 @@ public class IDType {
 	 */
 	private IDTypeParsingRules idTypeParsingRules = null;
 
-	private IDType(String typeName, IDCategory idCategory, EColumnType dimensionType) {
+	private IDType(String typeName, IDCategory idCategory, EDataType dimensionType) {
 		this.typeName = typeName;
 		this.idCategory = idCategory;
 		this.columnType = dimensionType;
@@ -109,7 +109,7 @@ public class IDType {
 	 * 
 	 * @param idCategory
 	 */
-	public void setDimensionType(EColumnType dimensionType) {
+	public void setDimensionType(EDataType dimensionType) {
 		this.columnType = dimensionType;
 	}
 
@@ -143,8 +143,8 @@ public class IDType {
 	 * @return the created ID Type
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory,
-			EColumnType columnType) {
-		if (!(columnType == EColumnType.STRING || columnType == EColumnType.INT))
+			EDataType columnType) {
+		if (!(columnType == EDataType.STRING || columnType == EDataType.INT))
 			throw new IllegalStateException(
 					"IDTypes are allowed to be only either of type STRING or INT, but was: "
 							+ columnType);
@@ -218,7 +218,7 @@ public class IDType {
 	/**
 	 * @return the columnType, see {@link #columnType}
 	 */
-	public EColumnType getColumnType() {
+	public EDataType getColumnType() {
 		return columnType;
 	}
 

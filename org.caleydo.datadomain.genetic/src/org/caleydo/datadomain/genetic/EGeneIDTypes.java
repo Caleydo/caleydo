@@ -19,7 +19,7 @@
  *******************************************************************************/
 package org.caleydo.datadomain.genetic;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 
@@ -35,17 +35,17 @@ public enum EGeneIDTypes {
 	/** The gene ID Category */
 	GENE,
 
-	DAVID(EColumnType.INT),
-	GENE_SYMBOL(EColumnType.STRING),
-	GENE_NAME(EColumnType.STRING),
-	BIOCARTA_GENE_ID(EColumnType.STRING),
-	REFSEQ_MRNA(EColumnType.STRING),
-	ENSEMBL_GENE_ID(EColumnType.STRING),
-	ENTREZ_GENE_ID(EColumnType.INT),
-	PATHWAY_VERTEX(EColumnType.INT),
-	PATHWAY(EColumnType.INT);
+	DAVID(EDataType.INT),
+	GENE_SYMBOL(EDataType.STRING),
+	GENE_NAME(EDataType.STRING),
+	BIOCARTA_GENE_ID(EDataType.STRING),
+	REFSEQ_MRNA(EDataType.STRING),
+	ENSEMBL_GENE_ID(EDataType.STRING),
+	ENTREZ_GENE_ID(EDataType.INT),
+	PATHWAY_VERTEX(EDataType.INT),
+	PATHWAY(EDataType.INT);
 
-	private EColumnType columnType;
+	private EDataType columnType;
 
 	/**
 	 * 
@@ -53,14 +53,14 @@ public enum EGeneIDTypes {
 	private EGeneIDTypes() {
 	}
 
-	private EGeneIDTypes(EColumnType columnType) {
+	private EGeneIDTypes(EDataType columnType) {
 		this.columnType = columnType;
 	}
 
 	/**
 	 * @return the columnType, see {@link #columnType}
 	 */
-	public EColumnType getColumnType() {
+	public EDataType getColumnType() {
 		return columnType;
 	}
 }

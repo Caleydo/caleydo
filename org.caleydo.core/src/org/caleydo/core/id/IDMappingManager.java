@@ -27,7 +27,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.util.collection.MultiHashMap;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.IStatus;
@@ -208,8 +208,8 @@ public class IDMappingManager {
 
 		if (originKeyType == destKeyType) {
 			if (originValueType != destValueType) {
-				if (originKeyType.getColumnType() == EColumnType.INT
-					&& destValueType.getColumnType() == EColumnType.INT) {
+				if (originKeyType.getColumnType() == EDataType.INT
+					&& destValueType.getColumnType() == EDataType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					if (!mappingType.isMultiMap()) {
@@ -240,20 +240,20 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (originKeyType.getColumnType() == EColumnType.INT
-					&& destValueType.getColumnType() == EColumnType.STRING) {
+				else if (originKeyType.getColumnType() == EDataType.INT
+					&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getColumnType() == EColumnType.STRING
-					&& destValueType.getColumnType() == EColumnType.STRING) {
+				else if (originKeyType.getColumnType() == EDataType.STRING
+					&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (originKeyType.getColumnType() == EColumnType.STRING
-					&& destValueType.getColumnType() == EColumnType.INT) {
+				else if (originKeyType.getColumnType() == EDataType.STRING
+					&& destValueType.getColumnType() == EDataType.INT) {
 
 					if (!mappingType.isMultiMap()) {
 						codeResolvedMap = new HashMap<String, Integer>();
@@ -287,8 +287,8 @@ public class IDMappingManager {
 		}
 		else {
 			if (originValueType == destValueType) {
-				if (destKeyType.getColumnType() == EColumnType.INT
-					&& destValueType.getColumnType() == EColumnType.INT) {
+				if (destKeyType.getColumnType() == EDataType.INT
+					&& destValueType.getColumnType() == EDataType.INT) {
 					codeResolvedMap = new HashMap<Integer, Integer>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -329,8 +329,8 @@ public class IDMappingManager {
 						}
 					}
 				}
-				else if (destKeyType.getColumnType() == EColumnType.INT
-					&& destValueType.getColumnType() == EColumnType.STRING) {
+				else if (destKeyType.getColumnType() == EDataType.INT
+					&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<Integer, String>();
 
 					MappingType conversionType = mappingType;// MappingType.valueOf(originKeyType + "_2_" +
@@ -342,14 +342,14 @@ public class IDMappingManager {
 							srcMap.get(key));
 					}
 				}
-				else if (destKeyType.getColumnType() == EColumnType.STRING
-					&& destValueType.getColumnType() == EColumnType.STRING) {
+				else if (destKeyType.getColumnType() == EDataType.STRING
+					&& destValueType.getColumnType() == EDataType.STRING) {
 					codeResolvedMap = new HashMap<String, String>();
 
 					throw new RuntimeException("Not implemented!");
 				}
-				else if (destKeyType.getColumnType() == EColumnType.STRING
-					&& destValueType.getColumnType() == EColumnType.INT) {
+				else if (destKeyType.getColumnType() == EDataType.STRING
+					&& destValueType.getColumnType() == EDataType.INT) {
 					codeResolvedMap = new HashMap<String, Integer>();
 
 					throw new RuntimeException("Not implemented!");

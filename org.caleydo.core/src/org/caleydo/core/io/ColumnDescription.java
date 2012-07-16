@@ -24,7 +24,7 @@ package org.caleydo.core.io;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 
 /**
  * A parsing specification for a single column containing the number of the
@@ -45,7 +45,7 @@ public class ColumnDescription {
 
 	/**
 	 * The dataType of the column, must be one equivalent to those listed in
-	 * {@link EColumnType}. Defaults to float.
+	 * {@link EDataType}. Defaults to float.
 	 */
 	private String dataType = "FLOAT";
 

@@ -25,7 +25,7 @@ import java.util.List;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.datadomain.ADataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.event.data.DataDomainUpdateEvent;
@@ -111,7 +111,7 @@ public class PathwayDataDomain
 
 		metaboliteIDCategory = IDCategory.registerCategory("METABOLITE");
 		metaboliteIDType = IDType.registerType("METABOLITE", metaboliteIDCategory,
-				EColumnType.INT);
+				EDataType.INT);
 
 		addIDCategory(metaboliteIDCategory);
 

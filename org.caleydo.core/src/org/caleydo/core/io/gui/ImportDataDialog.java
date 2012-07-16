@@ -28,7 +28,7 @@ import java.util.HashSet;
 import java.util.StringTokenizer;
 import java.util.UUID;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.datadomain.DataDomainManager;
@@ -1082,7 +1082,7 @@ public class ImportDataDialog extends Dialog {
 
 				for (String currentID : idList) {
 
-					if (idType.getColumnType().equals(EColumnType.INT)) {
+					if (idType.getColumnType().equals(EDataType.INT)) {
 						try {
 							Integer idInt = Integer.valueOf(currentID);
 							if (idMappingManager.doesElementExist(idType, idInt)) {
@@ -1090,7 +1090,7 @@ public class ImportDataDialog extends Dialog {
 							}
 						} catch (NumberFormatException e) {
 						}
-					} else if (idType.getColumnType().equals(EColumnType.STRING)) {
+					} else if (idType.getColumnType().equals(EDataType.STRING)) {
 						if (idMappingManager.doesElementExist(idType, currentID)) {
 							currentCorrectElements++;
 						} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {

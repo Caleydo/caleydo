@@ -29,7 +29,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.container.DataContainer;
 import org.caleydo.core.data.datadomain.event.AggregateGroupEvent;
@@ -256,31 +256,31 @@ public abstract class ATableBasedDataDomain extends ADataDomain implements
 		// readable
 		IDType humanReadableRecordIDType = IDType.registerType(
 				configuration.humanReadableRecordIDType, recordIDCategory,
-				EColumnType.STRING);
+				EDataType.STRING);
 		IDType humanReadableDimensionIDType = IDType.registerType(
 				configuration.humanReadableDimensionIDType, dimensionIDCategory,
-				EColumnType.STRING);
+				EDataType.STRING);
 
 		recordIDCategory.setHumanReadableIDType(humanReadableRecordIDType);
 		dimensionIDCategory.setHumanReadableIDType(humanReadableDimensionIDType);
 
 		recordIDType = IDType.registerType("record_" + dataDomainID + "_" + hashCode(),
-				recordIDCategory, EColumnType.INT);
+				recordIDCategory, EDataType.INT);
 		recordIDType.setInternalType(true);
 		dimensionIDType = IDType.registerType("dimension_" + dataDomainID + "_"
-				+ hashCode(), dimensionIDCategory, EColumnType.INT);
+				+ hashCode(), dimensionIDCategory, EDataType.INT);
 		dimensionIDType.setInternalType(true);
 
 		recordGroupIDCategory = IDCategory.registerCategory(recordIDCategory
 				.getCategoryName() + "_GROUP");
 		recordGroupIDType = IDType.registerType("group_record_" + dataDomainID + "_"
-				+ hashCode(), recordGroupIDCategory, EColumnType.INT);
+				+ hashCode(), recordGroupIDCategory, EDataType.INT);
 		recordGroupIDType.setInternalType(true);
 
 		dimensionGroupIDCategory = IDCategory.registerCategory(dimensionIDCategory
 				.getCategoryName() + "_GROUP");
 		dimensionGroupIDType = IDType.registerType("group_dimension_" + dataDomainID
-				+ "_" + hashCode(), dimensionGroupIDCategory, EColumnType.INT);
+				+ "_" + hashCode(), dimensionGroupIDCategory, EDataType.INT);
 
 		IDType primaryRecordMappingType;
 

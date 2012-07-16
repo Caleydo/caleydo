@@ -24,7 +24,7 @@ import java.util.Collections;
 
 import junit.framework.TestCase;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.delta.RecordVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
@@ -40,7 +40,7 @@ public class VirtualArrayTester extends TestCase {
 	protected void setUp() throws Exception {
 		super.setUp();
 		virtualArray = new RecordVirtualArray(IDType.registerType("Test",
-				IDCategory.registerCategory("Test"), EColumnType.FLOAT));
+				IDCategory.registerCategory("Test"), EDataType.FLOAT));
 		for (int count = 0; count < size; count++)
 			virtualArray.append(count);
 	}

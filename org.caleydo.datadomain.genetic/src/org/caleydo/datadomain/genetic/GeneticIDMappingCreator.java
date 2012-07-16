@@ -3,7 +3,7 @@
  */
 package org.caleydo.datadomain.genetic;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingCreator;
 import org.caleydo.core.id.IDType;
@@ -46,11 +46,11 @@ public class GeneticIDMappingCreator {
 				+ GeneralManager.get().getBasicInfo().getOrganism();
 
 		IDType sampleIntIDType = IDType.registerType("SAMPLE_INT", sampleIDCategory,
-				EColumnType.INT);
+				EDataType.INT);
 		sampleIntIDType.setInternalType(true);
 
 		IDType sampleID = IDType.registerType("SAMPLE", sampleIDCategory,
-				EColumnType.STRING);
+				EDataType.STRING);
 		sampleIDCategory.setHumanReadableIDType(sampleID);
 
 		IDMappingCreator idMappingCreator = new IDMappingCreator();

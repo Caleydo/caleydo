@@ -24,7 +24,7 @@ import java.io.IOException;
 import java.util.NoSuchElementException;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.gui.SWTGUIManager;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
@@ -176,23 +176,23 @@ public class IDMappingParser extends ATextParser {
 							break;
 						} else {
 							try {
-								if (mappingType.getFromIDType().getColumnType() == EColumnType.INT) {
-									if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
+								if (mappingType.getFromIDType().getColumnType() == EDataType.INT) {
+									if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
 										idMappingManager.getMap(mappingType).put(
 												Integer.valueOf(token),
 												Integer.valueOf(textTokens.nextToken()));
-									} else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+									} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
 										idMappingManager.getMap(mappingType).put(
 												Integer.valueOf(token),
 												textTokens.nextToken());
 									} else
 										throw new IllegalStateException(
 												"Unsupported data type!");
-								} else if (mappingType.getFromIDType().getColumnType() == EColumnType.STRING) {
-									if (mappingType.getToIDType().getColumnType() == EColumnType.INT) {
+								} else if (mappingType.getFromIDType().getColumnType() == EDataType.STRING) {
+									if (mappingType.getToIDType().getColumnType() == EDataType.INT) {
 										idMappingManager.getMap(mappingType).put(token,
 												Integer.valueOf(textTokens.nextToken()));
-									} else if (mappingType.getToIDType().getColumnType() == EColumnType.STRING) {
+									} else if (mappingType.getToIDType().getColumnType() == EDataType.STRING) {
 										idMappingManager.getMap(mappingType).put(token,
 												textTokens.nextToken());
 									} else

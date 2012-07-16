@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.StringTokenizer;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.gui.util.LabelEditorDialog;
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDMappingManager;
@@ -441,7 +441,7 @@ public abstract class AImportDialog extends Dialog {
 
 				for (String currentID : idList) {
 
-					if (idType.getColumnType().equals(EColumnType.INT)) {
+					if (idType.getColumnType().equals(EDataType.INT)) {
 						try {
 							Integer idInt = Integer.valueOf(currentID);
 							if (idMappingManager.doesElementExist(idType, idInt)) {
@@ -449,7 +449,7 @@ public abstract class AImportDialog extends Dialog {
 							}
 						} catch (NumberFormatException e) {
 						}
-					} else if (idType.getColumnType().equals(EColumnType.STRING)) {
+					} else if (idType.getColumnType().equals(EDataType.STRING)) {
 						if (idMappingManager.doesElementExist(idType, currentID)) {
 							currentCorrectElements++;
 						} else if (idType.getTypeName().equals("REFSEQ_MRNA")) {

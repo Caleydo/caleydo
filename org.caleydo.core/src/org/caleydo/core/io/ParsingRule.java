@@ -24,7 +24,7 @@ package org.caleydo.core.io;
 
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 
 /**
  * <p>
@@ -45,7 +45,7 @@ import org.caleydo.core.data.collection.EColumnType;
  * <p>
  * The {@link #dataType} specified defines the data type for the internal
  * storage. Legal data types are "INT", "STRING" and "FLOAT", as listed in
- * {@link EColumnType}.
+ * {@link EDataType}.
  * </p>
  * <p>
  * It is often necessary to define multiple ParsingRules for a single source

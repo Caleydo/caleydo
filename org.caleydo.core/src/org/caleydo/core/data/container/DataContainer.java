@@ -31,7 +31,7 @@ import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlTransient;
 import javax.xml.bind.annotation.XmlType;
 
-import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.data.collection.EDataType;
 import org.caleydo.core.data.collection.table.DataTable;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
 import org.caleydo.core.data.perspective.ADataPerspective;
@@ -144,7 +144,7 @@ public class DataContainer {
 	public static IDCategory DATA_CONTAINER = IDCategory
 			.registerCategory("DATA_CONTAINER");
 	public static IDType DATA_CONTAINER_IDTYPE = IDType.registerType("DataConatiners",
-			DATA_CONTAINER, EColumnType.INT);
+			DATA_CONTAINER, EDataType.INT);
 
 	/**
 	 * A group containing all elements of the {@link #recordPerspective}'s
