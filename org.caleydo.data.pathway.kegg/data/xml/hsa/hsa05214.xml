@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 19, 2011 09:12:13 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 11, 2012 11:26:42 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05214" org="hsa" number="05214"
          title="Glioma"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05214.png"
@@ -32,7 +32,7 @@
     </entry>
     <entry id="6" name="hsa:5156 hsa:5159" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5156+hsa:5159">
-        <graphics name="PDGFRA, CD140A, MGC74795, PDGFR2, RHEPDGFRA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDGFRA, CD140A, MGC74795, PDGFR-2, PDGFR2, RHEPDGFRA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="279" y="246" width="46" height="17"/>
     </entry>
     <entry id="7" name="hsa:3480" type="gene"
@@ -67,7 +67,7 @@
     </entry>
     <entry id="13" name="hsa:5156 hsa:5159" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5156+hsa:5159">
-        <graphics name="PDGFRA, CD140A, MGC74795, PDGFR2, RHEPDGFRA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PDGFRA, CD140A, MGC74795, PDGFR-2, PDGFR2, RHEPDGFRA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="280" y="663" width="46" height="17"/>
     </entry>
     <entry id="14" name="hsa:3480" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503">
-        <graphics name="PIK3R5, F730038I15Rik, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIK3R5, F730038I15Rik, FLJ26116, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="546" y="294" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:10000 hsa:207 hsa:208" type="gene"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="28" name="hsa:4193" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4193">
-        <graphics name="MDM2, HDMX, MGC5370, MGC71221, hdm2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MDM2, ACTFS, HDMX, MGC5370, MGC71221, hdm2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="943" y="287" width="44" height="18"/>
     </entry>
     <entry id="29" name="hsa:1029" type="gene"
@@ -232,7 +232,7 @@
     </entry>
     <entry id="46" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503">
-        <graphics name="PIK3R5, F730038I15Rik, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIK3R5, F730038I15Rik, FLJ26116, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="544" y="711" width="46" height="17"/>
     </entry>
     <entry id="47" name="hsa:10000 hsa:207 hsa:208" type="gene"

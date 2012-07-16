@@ -43,17 +43,17 @@ import com.jogamp.opengl.util.texture.TextureIO;
 public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 
 	@Override
-	public BufferedReader getResource(String sFileName) {
+	public BufferedReader getResource(String fileName) {
 		BufferedReader file;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 			file = new BufferedReader(new InputStreamReader(
-					loadResourceAsInputStream(sFileName)));
+					loadResourceAsInputStream(fileName)));
 		} else {
 			try {
-				file = new BufferedReader(new FileReader(sFileName));
+				file = new BufferedReader(new FileReader(fileName));
 			} catch (FileNotFoundException e) {
-				throw new IllegalStateException("Cannot load resource: " + sFileName);
+				throw new IllegalStateException("Cannot load resource: " + fileName);
 			}
 		}
 
@@ -61,52 +61,52 @@ public class KEGGPathwayResourceLoader implements IPathwayResourceLoader {
 	}
 
 	@Override
-	public InputSource getInputSource(String sFileName) {
+	public InputSource getInputSource(String fileName) {
 		InputSource inputSource;
 
-		if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
-			inputSource = new InputSource(loadResourceAsInputStream(sFileName));
+		if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
+			inputSource = new InputSource(loadResourceAsInputStream(fileName));
 		} else {
 			try {
-				inputSource = new InputSource(new FileReader(new File(sFileName)));
+				inputSource = new InputSource(new FileReader(new File(fileName)));
 			} catch (IOException e) {
-				throw new IllegalStateException("Cannot load resource: " + sFileName);
+				throw new IllegalStateException("Cannot load resource: " + fileName);
 			}
 		}
 
 		return inputSource;
 	}
 
-	private InputStream loadResourceAsInputStream(String sFileName) {
+	private InputStream loadResourceAsInputStream(String fileName) {
 		InputStream file;
 
-		file = this.getClass().getClassLoader().getResourceAsStream(sFileName);
+		file = this.getClass().getClassLoader().getResourceAsStream(fileName);
 
 		if (file == null)
-			throw new IllegalStateException("Cannot load resource: " + sFileName);
+			throw new IllegalStateException("Cannot load resource: " + fileName);
 
 		return file;
 	}
 
 	@Override
-	public Texture getTexture(String sFileName) {
+	public Texture getTexture(String fileName) {
 		Texture texture;
 
 		try {
-			if (this.getClass().getClassLoader().getResourceAsStream(sFileName) != null) {
+			if (this.getClass().getClassLoader().getResourceAsStream(fileName) != null) {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						GLProfile.getDefault(), loadResourceAsInputStream(sFileName),
+						GLProfile.getDefault(), loadResourceAsInputStream(fileName),
 						true, "GIF"));
 			} else {
 				texture = TextureIO.newTexture(TextureIO.newTextureData(
-						GLProfile.getDefault(), new File(sFileName), true, "GIF"));
+						GLProfile.getDefault(), new File(fileName), true, "GIF"));
 			}
 		} catch (Exception e) {
-			throw new IllegalStateException("Cannot load texture: " + sFileName);
+			throw new IllegalStateException("Cannot load texture: " + fileName);
 		}
 
 		if (texture == null)
-			throw new IllegalStateException("Cannot load texture: " + sFileName);
+			throw new IllegalStateException("Cannot load texture: " + fileName);
 
 		return texture;
 	}

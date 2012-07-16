@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 27, 2011 17:37:45 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 6, 2012 14:20:25 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00620" org="mmu" number="00620"
          title="Pyruvate metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00620.png"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="90" name="mmu:109264 mmu:17436" type="gene" reaction="rn:R00216"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109264+mmu:17436">
-        <graphics name="Me3, 1700020C08Rik, B230207H15Rik, MGC107389..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Me3, 1700020C08Rik, B230207H15Rik..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="243" y="493" width="46" height="17"/>
     </entry>
     <entry id="92" name="ko:K00169 ko:K00170 ko:K00172 ko:K00171" type="ortholog" reaction="rn:R01196"
@@ -180,8 +180,8 @@
         <graphics name="K00101" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="616" y="363" width="46" height="17"/>
     </entry>
-    <entry id="100" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833 mmu:433229" type="gene" reaction="rn:R00703"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833+mmu:433229">
+    <entry id="100" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833" type="gene" reaction="rn:R00703"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833">
         <graphics name="Ldhal6b, 4933402O15Rik, AI326310, LDHL, Ldhal..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="664" y="375" width="46" height="17"/>
     </entry>
@@ -260,9 +260,9 @@
         <graphics name="Synthesis and degradation of ketone bodies" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="157" y="776" width="140" height="34"/>
     </entry>
-    <entry id="122" name="ko:K01655" type="ortholog" reaction="rn:R00271"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01655">
-        <graphics name="K01655" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="122" name="ko:K01655 ko:K02594 ko:K10977" type="ortholog" reaction="rn:R00271"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01655+K02594+K10977">
+        <graphics name="K01655..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="491" y="755" width="46" height="17"/>
     </entry>
     <entry id="123" name="mmu:100705 mmu:107476" type="gene" reaction="rn:R00742"
@@ -856,8 +856,8 @@
         <product id="151" name="cpd:C05125"/>
     </reaction>
     <reaction id="132" name="rn:R02569" type="reversible">
-        <substrate id="161" name="cpd:C00024"/>
         <substrate id="148" name="cpd:C15973"/>
+        <substrate id="161" name="cpd:C00024"/>
         <product id="150" name="cpd:C16255"/>
     </reaction>
     <reaction id="133" name="rn:R07618" type="reversible">

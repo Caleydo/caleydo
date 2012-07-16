@@ -85,19 +85,19 @@
         <graphics name="C00696" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="1215" y="419" width="8" height="8"/>
     </entry>
-    <entry id="17" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="17" name="hsa:100132941 hsa:100291917" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132941+hsa:100291917">
+        <graphics name="100132941..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="242" width="46" height="17"/>
     </entry>
-    <entry id="18" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="18" name="hsa:100132941 hsa:100291917" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100132941+hsa:100291917">
+        <graphics name="100132941..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="262" width="46" height="17"/>
     </entry>
     <entry id="19" name="hsa:3586" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3586">
-        <graphics name="IL10, CSIF, IL-10, IL10A, MGC126450, MGC126451, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL10, CSIF, GVHDS, IL-10, IL10A, MGC126450, MGC126451, TGIF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="574" y="141" width="46" height="17"/>
     </entry>
     <entry id="20" name="ko:K01404" type="ortholog"
@@ -165,9 +165,9 @@
         <graphics name="APOA1, MGC117399" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="205" y="516" width="46" height="17"/>
     </entry>
-    <entry id="34" name="hsa:3039 hsa:3040 hsa:3043 hsa:3045" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3039+hsa:3040+hsa:3043+hsa:3045">
-        <graphics name="HBA1, CD31, MGC126895, MGC126897..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="34" name="hsa:3039 hsa:3040 hsa:3043" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3039+hsa:3040+hsa:3043">
+        <graphics name="HBA1, CD31, HBH, MGC126895, MGC126897..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="180" y="450" width="46" height="17"/>
     </entry>
     <entry id="35" name="hsa:169355 hsa:3620" type="gene"

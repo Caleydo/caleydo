@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="hsa:9570" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9570">
-        <graphics name="GOSR2, Bos1, GS27" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GOSR2, Bos1, EPM6, GS27" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="246" y="486" width="46" height="17"/>
     </entry>
     <entry id="11" name="hsa:6811" type="gene"

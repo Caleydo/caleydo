@@ -72,7 +72,7 @@
     </entry>
     <entry id="14" name="mmu:14362 mmu:14365 mmu:14366 mmu:14367 mmu:14368 mmu:14369 mmu:14370 mmu:14371 mmu:57265 mmu:93897" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14362+mmu:14365+mmu:14366+mmu:14367+mmu:14368+mmu:14369+mmu:14370+mmu:14371+mmu:57265+mmu:93897">
-        <graphics name="Fzd1, AW227548, FZ-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fzd1, AW227548, FZ-1, Fz1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="211" y="493" width="46" height="17"/>
     </entry>
     <entry id="15" name="path:mmu05217" type="map"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="20" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="477" y="494" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:56637" type="gene"

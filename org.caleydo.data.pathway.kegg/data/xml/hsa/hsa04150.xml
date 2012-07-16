@@ -87,7 +87,7 @@
     </entry>
     <entry id="17" name="hsa:6194" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6194">
-        <graphics name="RPS6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RPS6, S6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="699" y="373" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:1975" type="gene"

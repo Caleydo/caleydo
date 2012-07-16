@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 8, 2011 15:38:40 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 16:13:21 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00062" org="mmu" number="00062"
          title="Fatty acid elongation"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00062.png"
@@ -290,8 +290,8 @@
         <graphics name="C00249" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="835" y="582" width="8" height="8"/>
     </entry>
-    <entry id="106" name="mmu:12686 mmu:170439 mmu:171210 mmu:171281 mmu:171282 mmu:217698 mmu:26897 mmu:54326 mmu:68801 mmu:70025 mmu:74559 mmu:83603" type="gene" reaction="rn:R09419"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12686+mmu:170439+mmu:171210+mmu:171281+mmu:171282+mmu:217698+mmu:26897+mmu:54326+mmu:68801+mmu:70025+mmu:74559+mmu:83603">
+    <entry id="106" name="mmu:12686 mmu:170439 mmu:54325 mmu:54326 mmu:68801 mmu:74559 mmu:83603" type="gene" reaction="rn:R09419"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12686+mmu:170439+mmu:54325+mmu:54326+mmu:68801+mmu:74559+mmu:83603">
         <graphics name="Elovl3, CIN-2, Cig30..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="526" y="767" width="46" height="17"/>
     </entry>
@@ -681,18 +681,14 @@
         <substrate id="129" name="cpd:C00264"/>
         <product id="128" name="cpd:C00640"/>
     </reaction>
-    <reaction id="133" name="rn:R07162" type="reversible">
-    </reaction>
     <reaction id="123" name="rn:R00391" type="irreversible">
-        <substrate id="124" name="cpd:C00024"/>
         <substrate id="125" name="cpd:C00040"/>
+        <substrate id="124" name="cpd:C00024"/>
         <product id="129" name="cpd:C00264"/>
     </reaction>
     <reaction id="122" name="rn:R01778" type="reversible">
         <substrate id="129" name="cpd:C00264"/>
         <product id="128" name="cpd:C00640"/>
-    </reaction>
-    <reaction id="121" name="rn:R02685" type="reversible">
     </reaction>
     <reaction id="116" name="rn:R02685" type="irreversible">
         <substrate id="111" name="cpd:C00640"/>
@@ -710,8 +706,6 @@
         <substrate id="108" name="cpd:C00083"/>
         <substrate id="107" name="cpd:C00040"/>
         <product id="112" name="cpd:C00264"/>
-    </reaction>
-    <reaction id="139" name="rn:R01274" type="reversible">
     </reaction>
     <reaction id="143" name="rn:R09450" type="irreversible">
         <substrate id="109" name="cpd:C02843"/>

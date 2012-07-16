@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 2, 2009 10:15:41 +0900 (JST) -->
+<!-- Creation date: Jun 6, 2012 14:03:12 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00603" org="mmu" number="00603"
          title="Glycosphingolipid biosynthesis - globo series"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00603.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu00603">
     <entry id="3" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05967"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="221" y="420" width="46" height="17"/>
     </entry>
     <entry id="22" name="gl:G00181" type="compound"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="49" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R05968"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fut1, H..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="162" y="375" width="46" height="17"/>
     </entry>
     <entry id="50" name="mmu:11605" type="gene" reaction="rn:R05961"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="52" name="mmu:227671" type="gene" reaction="rn:R05965"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:227671">
-        <graphics name="Gbgt1, Fgs, Fs, MGC123927" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gbgt1, Fgs, Fs" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="162" y="294" width="46" height="17"/>
     </entry>
     <entry id="53" name="path:mmu00603" type="map"
@@ -162,12 +162,12 @@
     </entry>
     <entry id="59" name="mmu:14343 mmu:14344 mmu:56546" type="gene" reaction="rn:R05968"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14343+mmu:14344+mmu:56546">
-        <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Fut1, H..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="174,729,189,714"/>
     </entry>
     <entry id="61" name="mmu:227671" type="gene" reaction="rn:R05965"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:227671">
-        <graphics name="Gbgt1, Fgs, Fs, MGC123927" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Gbgt1, Fgs, Fs" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="219,651,249,651"/>
     </entry>
     <entry id="63" name="mmu:93961" type="gene" reaction="rn:R05964"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="65" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05967"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="157,701,187,701"/>
     </entry>
     <entry id="66" name="mmu:26879" type="gene" reaction="rn:R05962"

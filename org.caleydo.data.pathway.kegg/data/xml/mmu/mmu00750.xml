@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jan 8, 2010 17:18:15 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 13:40:06 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00750" org="mmu" number="00750"
          title="Vitamin B6 metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00750.png"
@@ -59,11 +59,6 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00650">
         <graphics name="Butanoate metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="241" y="148" width="126" height="25"/>
-    </entry>
-    <entry id="15" name="ko:K00159" type="ortholog" reaction="rn:R01709"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00159">
-        <graphics name="K00159" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="498" y="223" width="46" height="17"/>
     </entry>
     <entry id="16" name="mmu:11761 mmu:213043" type="gene" reaction="rn:R01709"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11761+mmu:213043">

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 27, 2011 16:52:46 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 15:46:40 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00040" org="mmu" number="00040"
          title="Pentose and glucuronate interconversions"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00040.png"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="99" name="mmu:216558" type="gene" reaction="rn:R00289"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:216558">
-        <graphics name="Ugp2, MGC38262" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ugp2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="358" y="432" width="46" height="17"/>
     </entry>
     <entry id="100" name="ko:K01625" type="ortholog" reaction="rn:R05605"

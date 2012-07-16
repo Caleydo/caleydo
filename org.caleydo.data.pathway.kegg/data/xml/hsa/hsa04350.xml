@@ -87,7 +87,7 @@
     </entry>
     <entry id="17" name="hsa:4838" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4838">
-        <graphics name="NODAL, MGC138230" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NODAL, HTX5, MGC138230" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="153" y="697" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:4091 hsa:4092" type="gene"
@@ -210,9 +210,9 @@
         <graphics name="SMAD2, JV18, JV18-1, MADH2, MADR2, MGC22139, MGC34440, hMAD-2, hSMAD2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="402" y="324" width="46" height="17"/>
     </entry>
-    <entry id="42" name="hsa:100506332 hsa:6500" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100506332+hsa:6500">
-        <graphics name="100506332..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="42" name="hsa:6500" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6500">
+        <graphics name="SKP1, EMC19, MGC34403, OCP-II, OCP2, SKP1A, TCEB1L, p19A" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="466" y="283" width="46" height="17"/>
     </entry>
     <entry id="43" name="hsa:5594 hsa:5595" type="gene"
@@ -227,7 +227,7 @@
     </entry>
     <entry id="45" name="hsa:4086 hsa:4090 hsa:4093" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4086+hsa:4090+hsa:4093">
-        <graphics name="SMAD1, BSP1, JV4-1, JV41, MADH1, MADR1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SMAD1, BSP-1, BSP1, JV4-1, JV41, MADH1, MADR1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="517" y="134" width="46" height="17"/>
     </entry>
     <entry id="46" name="hsa:4091 hsa:4092" type="gene"
@@ -292,7 +292,7 @@
     </entry>
     <entry id="59" name="hsa:4086 hsa:4090 hsa:4093" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4086+hsa:4090+hsa:4093">
-        <graphics name="SMAD1, BSP1, JV4-1, JV41, MADH1, MADR1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SMAD1, BSP-1, BSP1, JV4-1, JV41, MADH1, MADR1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="402" y="142" width="46" height="17"/>
     </entry>
     <entry id="60" name="hsa:8646" type="gene"

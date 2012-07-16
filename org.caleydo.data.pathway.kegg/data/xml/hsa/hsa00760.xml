@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 21, 2011 17:25:41 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 20, 2012 14:59:34 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00760" org="hsa" number="00760"
          title="Nicotinate and nicotinamide metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00760.png"
@@ -90,9 +90,9 @@
         <graphics name="ENPP1, ARHR2, M6S1, NPP1, NPPS, PC-1, PCA1, PDNP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="807" y="404" width="46" height="17"/>
     </entry>
-    <entry id="77" name="hsa:22978 hsa:30833 hsa:4907 hsa:51251 hsa:56953 hsa:84618 hsa:93034" type="gene" reaction="rn:R03346"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:22978+hsa:30833+hsa:4907+hsa:51251+hsa:56953+hsa:84618+hsa:93034">
-        <graphics name="NT5C2, GMP, NT5B, PNT5, cN-II..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="77" name="hsa:115024 hsa:22978 hsa:30833 hsa:4907 hsa:51251 hsa:56953 hsa:84618 hsa:93034" type="gene" reaction="rn:R03346"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:115024+hsa:22978+hsa:30833+hsa:4907+hsa:51251+hsa:56953+hsa:84618+hsa:93034">
+        <graphics name="NT5C3L, MGC20781, MGC21375..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="663" y="410" width="46" height="17"/>
     </entry>
     <entry id="78" name="hsa:27231 hsa:54981" type="gene" reaction="rn:R03347"
@@ -155,9 +155,9 @@
         <graphics name="NMNAT2, C1orf15, KIAA0479, MGC2756, PNAT2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="805" y="225" width="46" height="17"/>
     </entry>
-    <entry id="93" name="hsa:22978 hsa:30833 hsa:4907 hsa:51251 hsa:56953 hsa:84618 hsa:93034" type="gene" reaction="rn:R02323"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:22978+hsa:30833+hsa:4907+hsa:51251+hsa:56953+hsa:84618+hsa:93034">
-        <graphics name="NT5C2, GMP, NT5B, PNT5, cN-II..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="93" name="hsa:115024 hsa:22978 hsa:30833 hsa:4907 hsa:51251 hsa:56953 hsa:84618 hsa:93034" type="gene" reaction="rn:R02323"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:115024+hsa:22978+hsa:30833+hsa:4907+hsa:51251+hsa:56953+hsa:84618+hsa:93034">
+        <graphics name="NT5C3L, MGC20781, MGC21375..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="667" y="293" width="46" height="17"/>
     </entry>
     <entry id="94" name="hsa:27231 hsa:54981" type="gene" reaction="rn:R02324"
@@ -788,7 +788,7 @@
         <substrate id="151" name="cpd:C00857"/>
         <product id="153" name="cpd:C01185"/>
     </reaction>
-    <reaction id="77" name="rn:R03346" type="reversible">
+    <reaction id="77" name="rn:R03346" type="irreversible">
         <substrate id="153" name="cpd:C01185"/>
         <product id="167" name="cpd:C05841"/>
     </reaction>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 31, 2009 10:45:40 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:09:16 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04012" org="hsa" number="04012"
          title="ErbB signaling pathway"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04012.png"
@@ -172,7 +172,7 @@
     </entry>
     <entry id="34" name="hsa:5609 hsa:6416" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5609+hsa:6416">
-        <graphics name="MAP2K7, Jnkk2, MAPKK7, MKK7, PRKMK7..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAP2K7, Jnkk2, MAPKK7, MKK7, PRKMK7, SAPKK-4, SAPKK4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="653" y="369" width="46" height="17"/>
     </entry>
     <entry id="35" name="hsa:23624 hsa:867 hsa:868" type="gene"
@@ -207,17 +207,17 @@
     </entry>
     <entry id="41" name="hsa:5599 hsa:5601 hsa:5602" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5599+hsa:5601+hsa:5602">
-        <graphics name="MAPK8, JNK, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAPK8, JNK, JNK-46, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1, SAPK1c..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="758" y="369" width="46" height="17"/>
     </entry>
     <entry id="42" name="hsa:1398 hsa:1399" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1398+hsa:1399">
-        <graphics name="CRK, CRKII..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CRK, CRKII, FLJ38130, p38..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="473" y="335" width="46" height="17"/>
     </entry>
     <entry id="43" name="hsa:5747" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5747">
-        <graphics name="PTK2, FADK, FAK, FAK1, FRNK, pp125FAK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PTK2, FADK, FAK, FAK1, FRNK, PPP1R71, p125FAK, pp125FAK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="584" y="299" width="46" height="17"/>
     </entry>
     <entry id="44" name="hsa:6654 hsa:6655" type="gene"
@@ -292,7 +292,7 @@
     </entry>
     <entry id="58" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503">
-        <graphics name="PIK3R5, F730038I15Rik, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIK3R5, F730038I15Rik, FLJ26116, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="322" y="650" width="46" height="17"/>
     </entry>
     <entry id="59" name="hsa:10000 hsa:207 hsa:208" type="gene"
@@ -330,9 +330,9 @@
         <graphics name="MYC, MRTL, bHLHe39, c-Myc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="869" y="464" width="46" height="17"/>
     </entry>
-    <entry id="66" name="hsa:374" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:374">
-        <graphics name="AREG, AR, AREGB, CRDGF, MGC13647, SDGF" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="66" name="hsa:374 hsa:727738" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:374+hsa:727738">
+        <graphics name="AREG, AR, AREGB, CRDGF, MGC13647, SDGF..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="69" y="265" width="46" height="17"/>
     </entry>
     <entry id="67" name="hsa:1950" type="gene"
@@ -407,13 +407,13 @@
         <component id="9"/>
     </entry>
     <relation entry1="49" entry2="48" type="PPrel">
-        <subtype name="compound" value="19"/>
+        <subtype name="compound" value="20"/>
     </relation>
     <relation entry1="49" entry2="47" type="PPrel">
-        <subtype name="compound" value="18"/>
+        <subtype name="compound" value="19"/>
     </relation>
     <relation entry1="58" entry2="59" type="PPrel">
-        <subtype name="compound" value="54"/>
+        <subtype name="compound" value="55"/>
     </relation>
     <relation entry1="67" entry2="74" type="PPrel">
         <subtype name="activation" value="--&gt;"/>

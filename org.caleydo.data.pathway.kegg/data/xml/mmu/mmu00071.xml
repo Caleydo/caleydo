@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 8, 2011 17:08:27 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 16:18:29 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00071" org="mmu" number="00071"
          title="Fatty acid metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00071.png"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="42" name="mmu:11409" type="gene" reaction="rn:R01175"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11409">
-        <graphics name="Acads, AI196007, Bcd-1, Bcd1, SCAD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acads, AI196007, Bcd-1, Bcd1, Hdlq8, SCAD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="873" y="308" width="46" height="17"/>
     </entry>
     <entry id="43" name="mmu:15107 mmu:74147" type="gene" reaction="rn:R01975"
@@ -87,7 +87,7 @@
     </entry>
     <entry id="51" name="mmu:113868 mmu:231086 mmu:235674 mmu:52538" type="gene" reaction="rn:R01177"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:231086+mmu:235674+mmu:52538">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="808" y="560" width="46" height="17"/>
     </entry>
     <entry id="52" name="mmu:15107 mmu:74147" type="gene" reaction="rn:R04748"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="54" name="mmu:11409" type="gene" reaction="rn:R04751"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11409">
-        <graphics name="Acads, AI196007, Bcd-1, Bcd1, SCAD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acads, AI196007, Bcd-1, Bcd1, Hdlq8, SCAD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="747" y="276" width="46" height="17"/>
     </entry>
     <entry id="55" name="mmu:11364" type="gene" reaction="rn:R04751"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="59" name="mmu:113868 mmu:231086 mmu:235674 mmu:52538" type="gene" reaction="rn:R04747"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:231086+mmu:235674+mmu:52538">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="683" y="550" width="46" height="17"/>
     </entry>
     <entry id="60" name="mmu:15107 mmu:74147" type="gene" reaction="rn:R04745"
@@ -152,7 +152,7 @@
     </entry>
     <entry id="66" name="mmu:113868 mmu:231086 mmu:235674 mmu:52538" type="gene" reaction="rn:R03778"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:231086+mmu:235674+mmu:52538">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="556" y="550" width="46" height="17"/>
     </entry>
     <entry id="67" name="mmu:15107 mmu:74147" type="gene" reaction="rn:R04743"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="76" name="mmu:113868 mmu:231086 mmu:235674 mmu:52538" type="gene" reaction="rn:R04742"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:231086+mmu:235674+mmu:52538">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="429" y="549" width="46" height="17"/>
     </entry>
     <entry id="77" name="mmu:15107 mmu:74147" type="gene" reaction="rn:R04741"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="91" name="mmu:113868 mmu:231086 mmu:235674 mmu:52538" type="gene" reaction="rn:R03858"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:231086+mmu:235674+mmu:52538">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="304" y="549" width="46" height="17"/>
     </entry>
     <entry id="92" name="mmu:74147 mmu:93747 mmu:97212" type="gene" reaction="rn:R04740"
@@ -295,8 +295,8 @@
         <graphics name="Acadl, AA960361, AU018452, C79855, LCAD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="293" y="309" width="46" height="17"/>
     </entry>
-    <entry id="101" name="mmu:100040843 mmu:13117 mmu:13118 mmu:13119 mmu:230639 mmu:277753 mmu:435802 mmu:640109 mmu:666168" type="gene" reaction="rn:R01347 rn:R01348"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100040843+mmu:13117+mmu:13118+mmu:13119+mmu:230639+mmu:277753+mmu:435802+mmu:640109+mmu:666168">
+    <entry id="101" name="mmu:100040843 mmu:13117 mmu:13118 mmu:13119 mmu:230639 mmu:277753 mmu:435802 mmu:666168" type="gene" reaction="rn:R01347 rn:R01348"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100040843+mmu:13117+mmu:13118+mmu:13119+mmu:230639+mmu:277753+mmu:435802+mmu:666168">
         <graphics name="Cyp4a32, OTTMUSG00000008689..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="654" y="778" width="46" height="17"/>
     </entry>
@@ -307,7 +307,7 @@
     </entry>
     <entry id="103" name="mmu:113868 mmu:231086 mmu:235674 mmu:52538" type="gene" reaction="rn:R03991"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:113868+mmu:231086+mmu:235674+mmu:52538">
-        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, MGC7090, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acaa1a, Acaa, Acaa1, D9Ertd25e, PTL..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="178" y="550" width="46" height="17"/>
     </entry>
     <entry id="104" name="mmu:15107 mmu:74147" type="gene" reaction="rn:R04737"
@@ -1133,8 +1133,8 @@
         <product id="133" name="cpd:C05271"/>
     </reaction>
     <reaction id="59" name="rn:R04747" type="reversible">
-        <substrate id="195" name="cpd:C00024"/>
         <substrate id="136" name="cpd:C05270"/>
+        <substrate id="195" name="cpd:C00024"/>
         <product id="141" name="cpd:C05267"/>
         <product id="140" name="cpd:C00010"/>
     </reaction>
@@ -1159,8 +1159,8 @@
         <product id="143" name="cpd:C05276"/>
     </reaction>
     <reaction id="66" name="rn:R03778" type="reversible">
-        <substrate id="195" name="cpd:C00024"/>
         <substrate id="144" name="cpd:C01944"/>
+        <substrate id="195" name="cpd:C00024"/>
         <product id="151" name="cpd:C05265"/>
         <product id="150" name="cpd:C00010"/>
     </reaction>
@@ -1185,10 +1185,10 @@
         <product id="151" name="cpd:C05265"/>
     </reaction>
     <reaction id="76" name="rn:R04742" type="reversible">
-        <substrate id="195" name="cpd:C00024"/>
         <substrate id="148" name="cpd:C05274"/>
-        <product id="157" name="cpd:C05263"/>
+        <substrate id="195" name="cpd:C00024"/>
         <product id="156" name="cpd:C00010"/>
+        <product id="157" name="cpd:C05263"/>
     </reaction>
     <reaction id="77" name="rn:R04741" type="reversible">
         <substrate id="154" name="cpd:C05262"/>
@@ -1219,8 +1219,8 @@
         <product id="158" name="cpd:C03221"/>
     </reaction>
     <reaction id="91" name="rn:R03858" type="reversible">
-        <substrate id="195" name="cpd:C00024"/>
         <substrate id="155" name="cpd:C01832"/>
+        <substrate id="195" name="cpd:C00024"/>
         <product id="163" name="cpd:C05261"/>
         <product id="160" name="cpd:C00010"/>
     </reaction>

@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 28, 2011 09:22:10 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 11, 2012 10:40:14 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00920" org="mmu" number="00920"
          title="Sulfur metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00920.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu00920">
-    <entry id="6" name="mmu:23827" type="gene" reaction="rn:R00508"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23827">
-        <graphics name="Bpnt1, BPntase" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="6" name="mmu:23827 mmu:242291" type="gene" reaction="rn:R00508"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23827+mmu:242291">
+        <graphics name="Bpnt1, BPntase..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="526" y="164" width="46" height="17"/>
     </entry>
     <entry id="24" name="ko:K10150" type="ortholog" reaction="rn:R00897"
@@ -47,7 +47,7 @@
     </entry>
     <entry id="32" name="mmu:20860" type="gene" reaction="rn:R02350"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20860">
-        <graphics name="Sult1e1, ST1E1, Ste" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Sult1e1, EST, ST1E1, Ste" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="729" y="201" width="46" height="17"/>
     </entry>
     <entry id="34" name="mmu:54200" type="gene" reaction="rn:R00629"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="51" name="path:map00720" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?map00720">
-        <graphics name="Reductive carboxylate cycle (CO2 fixation)" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Carbon fixation pathways in prokaryotes" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="70" y="478" width="102" height="34"/>
     </entry>
     <entry id="52" name="path:mmu00260" type="map"

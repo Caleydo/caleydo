@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 2, 2011 17:30:29 +0900 (GMT+09:00) -->
+<!-- Creation date: Mar 21, 2012 11:40:20 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04910" org="mmu" number="04910"
          title="Insulin signaling pathway"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04910.png"
@@ -15,9 +15,9 @@
         <graphics name="Inpp5k, C62, Pps, SKIP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="334" y="241" width="46" height="17"/>
     </entry>
-    <entry id="3" name="mmu:16331" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16331">
-        <graphics name="Inpp5d, AI323613, MGC117680, SHIP, SHIP-1, SHIP1, s-SHIP" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="3" name="mmu:16332" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16332">
+        <graphics name="Inppl1, 51C, SHIP2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="334" y="220" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:16150" type="gene"
@@ -130,9 +130,9 @@
         <graphics name="Eif4ebp1, 4e-bp1, AA959816, PHAS-I" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="616" y="645" width="46" height="17"/>
     </entry>
-    <entry id="26" name="mmu:20104" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20104">
-        <graphics name="Rps6, MGC102571, MGC103209" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="26" name="mmu:20104 mmu:667739" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20104+mmu:667739">
+        <graphics name="Rps6, MGC102571, MGC103209, S6R..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="770" y="609" width="46" height="17"/>
     </entry>
     <entry id="27" name="mmu:110078 mmu:110095 mmu:19309" type="gene"
@@ -147,7 +147,7 @@
     </entry>
     <entry id="29" name="mmu:74370" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:74370">
-        <graphics name="Rptor, 4932417H02Rik, Raptor, mKIAA1303" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rptor, 4932417H02Rik, Rap, Raptor, mKIAA1303" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="511" y="626" width="46" height="17"/>
     </entry>
     <entry id="30" name="mmu:20662 mmu:20663" type="gene"
@@ -242,7 +242,7 @@
     </entry>
     <entry id="48" name="mmu:19017" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19017">
-        <graphics name="Ppargc1a, A830037N07Rik, PGC-1, PGC-1v, Pgc-1alpha, Pgc1, Pgco1, Ppargc1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ppargc1a, A830037N07Rik, Gm11133, PGC-1, PGC-1v, Pgc-1alpha, Pgc1, Pgco1, Ppargc1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="844" y="286" width="46" height="17"/>
     </entry>
     <entry id="49" name="mmu:20411" type="gene"

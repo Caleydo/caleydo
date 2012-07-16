@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 4, 2011 15:59:45 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 14:53:24 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00010" org="hsa" number="00010"
          title="Glycolysis / Gluconeogenesis"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00010.png"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="58" name="hsa:7167" type="gene" reaction="rn:R01015"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7167">
-        <graphics name="TPI1, MGC88108, TPI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TPI1, MGC88108, TIM, TPI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="403" y="450" width="46" height="17"/>
     </entry>
     <entry id="59" name="hsa:5211 hsa:5213 hsa:5214" type="gene" reaction="rn:R04779"
@@ -437,12 +437,12 @@
     </entry>
     <entry id="130" name="hsa:669" type="gene" reaction="rn:R01516"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:669">
-        <graphics name="BPGM" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BPGM, DPGM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="437" y="586" width="46" height="17"/>
     </entry>
     <entry id="131" name="hsa:669" type="gene" reaction="rn:R01662"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:669">
-        <graphics name="BPGM" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BPGM, DPGM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="438" y="522" width="46" height="17"/>
     </entry>
     <entry id="132" name="cpd:C00118" type="compound"
@@ -756,8 +756,8 @@
     <reaction id="48" name="rn:R03270" type="irreversible">
         <substrate id="100" name="cpd:C05125"/>
         <substrate id="97" name="cpd:C15972"/>
-        <product id="103" name="cpd:C16255"/>
         <product id="138" name="cpd:C00068"/>
+        <product id="103" name="cpd:C16255"/>
     </reaction>
     <reaction id="49" name="rn:R02569" type="reversible">
         <substrate id="101" name="cpd:C00024"/>
@@ -790,8 +790,8 @@
     </reaction>
     <reaction id="13" name="rn:R01070" type="reversible">
         <substrate id="105" name="cpd:C05378"/>
-        <product id="89" name="cpd:C00111"/>
         <product id="132" name="cpd:C00118"/>
+        <product id="89" name="cpd:C00111"/>
     </reaction>
     <reaction id="59" name="rn:R04779" type="irreversible">
         <substrate id="92" name="cpd:C05345"/>

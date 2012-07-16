@@ -67,7 +67,7 @@
     </entry>
     <entry id="13" name="hsa:1910" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1910">
-        <graphics name="EDNRB, ABCDS, ETB, ETBR, ETRB, HSCR, HSCR2, WS4A" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="EDNRB, ABCDS, ET-B, ET-BR, ETB, ETBR, ETRB, HSCR, HSCR2, WS4A" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="139" y="452" width="46" height="17"/>
     </entry>
     <entry id="14" name="hsa:3815" type="gene"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="18" name="hsa:4254" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4254">
-        <graphics name="KITLG, DKFZp686F2250, FPH2, KL-1, Kitl, MGF, SCF, SF, SHEP7" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="KITLG, DKFZp686F2250, FPH2, KL-1, Kitl, MGF, SCF, SF, SHEP7, kit-ligand" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="66" y="363" width="46" height="17"/>
     </entry>
     <entry id="19" name="cpd:C00076" type="compound"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="hsa:51176 hsa:6932 hsa:6934 hsa:83439" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51176+hsa:6932+hsa:6934+hsa:83439">
-        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF1ALPHA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF10, TCF1ALPHA, TCF7L3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="681" y="274" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:2778" type="gene"

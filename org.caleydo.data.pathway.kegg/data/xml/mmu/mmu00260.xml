@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 2, 2011 11:38:34 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 27, 2012 09:17:03 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00260" org="mmu" number="00260"
          title="Glycine, serine and threonine metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00260.png"
@@ -115,9 +115,9 @@
         <graphics name="Phgdh, 3-PGDH, 3PGDH, 4930479N23, A10, MGC113796, MGC117966, PGAD, PGD, PGDH, SERA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="403" y="193" width="46" height="17"/>
     </entry>
-    <entry id="73" name="ko:K00018" type="ortholog" reaction="rn:R01388"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00018">
-        <graphics name="K00018" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="73" name="ko:K00018 ko:K15893 ko:K15919" type="ortholog" reaction="rn:R01388"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00018+K15893+K15919">
+        <graphics name="K00018..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="139" y="182" width="46" height="17"/>
     </entry>
     <entry id="74" name="mmu:74129" type="gene" reaction="rn:R01565"
@@ -132,7 +132,7 @@
     </entry>
     <entry id="76" name="mmu:107869" type="gene" reaction="rn:R01001"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:107869">
-        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, CSE, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="460" y="393" width="46" height="17"/>
     </entry>
     <entry id="77" name="mmu:71776" type="gene" reaction="rn:R06171"
@@ -205,6 +205,11 @@
         <graphics name="K01733" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="598" y="764" width="46" height="17"/>
     </entry>
+    <entry id="91" name="ko:K14272" type="ortholog" reaction="rn:R00372"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K14272">
+        <graphics name="K14272" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="663" y="495" width="46" height="17"/>
+    </entry>
     <entry id="92" name="mmu:58865" type="gene" reaction="rn:R01465"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:58865">
         <graphics name="Tdh" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -238,7 +243,7 @@
     <entry id="99" name="path:mmu00300" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00300">
         <graphics name="Lysine biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="596" y="985" width="80" height="34"/>
+             type="roundrectangle" x="596" y="993" width="80" height="34"/>
     </entry>
     <entry id="100" name="path:mmu00460" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00460">
@@ -285,9 +290,9 @@
         <graphics name="Maob, 6330414K01Rik, MAO-B..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="807" y="683" width="46" height="17"/>
     </entry>
-    <entry id="110" name="ko:K00050 ko:K12972" type="ortholog" reaction="rn:R01388 rn:R01392"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00050+K12972">
-        <graphics name="K00050..." fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="110" name="mmu:76238" type="gene" reaction="rn:R01388 rn:R01392"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:76238">
+        <graphics name="Grhpr, 1110059D05Rik, 6430629L09Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="139" y="203" width="46" height="17"/>
     </entry>
     <entry id="111" name="mmu:11754 mmu:237940" type="gene" reaction="rn:R02529"
@@ -543,7 +548,7 @@
     <entry id="170" name="path:mmu00010" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00010">
         <graphics name="Glycolysis / Gluconeogenesis" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="342" y="124" width="105" height="34"/>
+             type="roundrectangle" x="439" y="135" width="105" height="34"/>
     </entry>
     <entry id="171" name="path:mmu00564" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00564">
@@ -613,18 +618,64 @@
     <entry id="188" name="cpd:C00986" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00986">
         <graphics name="C00986" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="circle" x="734" y="976" width="8" height="8"/>
+             type="circle" x="734" y="826" width="8" height="8"/>
     </entry>
     <entry id="189" name="ko:K13745" type="ortholog" reaction="rn:R07650"
         link="http://www.kegg.jp/dbget-bin/www_bget?K13745">
         <graphics name="K13745" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="734" y="938" width="46" height="17"/>
+             type="rectangle" x="735" y="864" width="46" height="17"/>
     </entry>
     <entry id="190" name="path:mmu00330" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00330">
         <graphics name="Arginine and proline metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="870" y="976" width="118" height="34"/>
+             type="roundrectangle" x="870" y="826" width="118" height="34"/>
     </entry>
+    <entry id="192" name="cpd:C00631" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C00631">
+        <graphics name="C00631" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="195" y="135" width="8" height="8"/>
+    </entry>
+    <entry id="194" name="ko:K11529" type="ortholog" reaction="rn:R08572"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K11529">
+        <graphics name="K11529" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="195" y="169" width="46" height="17"/>
+    </entry>
+    <entry id="195" name="mmu:12183 mmu:18648 mmu:56012" type="gene" reaction="rn:R01518"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12183+mmu:18648+mmu:56012">
+        <graphics name="Bpgm, AI323730, AL022789, C86192..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="260" y="136" width="46" height="17"/>
+    </entry>
+    <entry id="197" name="ko:K15783" type="ortholog" reaction="rn:R09800"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15783">
+        <graphics name="K15783" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="915" y="956" width="46" height="17"/>
+    </entry>
+    <entry id="198" name="cpd:C19929" type="compound"
+        link="http://www.kegg.jp/dbget-bin/www_bget?C19929">
+        <graphics name="C19929" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="circle" x="861" y="955" width="8" height="8"/>
+    </entry>
+    <entry id="200" name="ko:K15784" type="ortholog" reaction="rn:R09801"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15784">
+        <graphics name="K15784" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="792" y="956" width="46" height="17"/>
+    </entry>
+    <entry id="202" name="ko:K15785" type="ortholog" reaction="rn:R06977"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15785">
+        <graphics name="K15785" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="663" y="956" width="46" height="17"/>
+    </entry>
+    <entry id="204" name="ko:K15786" type="ortholog" reaction="rn:R09805"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15786">
+        <graphics name="K15786" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="456" y="956" width="46" height="17"/>
+    </entry>
+    <relation entry1="63" entry2="110" type="ECrel">
+        <subtype name="compound" value="124"/>
+    </relation>
+    <relation entry1="69" entry2="110" type="ECrel">
+        <subtype name="compound" value="153"/>
+    </relation>
     <relation entry1="63" entry2="72" type="ECrel">
         <subtype name="compound" value="128"/>
     </relation>
@@ -735,6 +786,9 @@
     </relation>
     <relation entry1="98" entry2="49" type="ECrel">
         <subtype name="compound" value="143"/>
+    </relation>
+    <relation entry1="110" entry2="80" type="maplink">
+        <subtype name="compound" value="153"/>
     </relation>
     <relation entry1="69" entry2="80" type="maplink">
         <subtype name="compound" value="153"/>
@@ -1198,6 +1252,15 @@
     <relation entry1="186" entry2="104" type="ECrel">
         <subtype name="compound" value="139"/>
     </relation>
+    <relation entry1="72" entry2="195" type="ECrel">
+        <subtype name="compound" value="128"/>
+    </relation>
+    <relation entry1="170" entry2="195" type="maplink">
+        <subtype name="compound" value="128"/>
+    </relation>
+    <relation entry1="63" entry2="195" type="ECrel">
+        <subtype name="compound" value="128"/>
+    </relation>
     <reaction id="49" name="rn:R00589" type="reversible">
         <substrate id="143" name="cpd:C00065"/>
         <product id="149" name="cpd:C00740"/>
@@ -1298,8 +1361,8 @@
     <reaction id="104" name="rn:R03425" type="irreversible">
         <substrate id="123" name="cpd:C02051"/>
         <substrate id="139" name="cpd:C00037"/>
-        <product id="151" name="cpd:C00011"/>
         <product id="161" name="cpd:C01242"/>
+        <product id="151" name="cpd:C00011"/>
     </reaction>
     <reaction id="105" name="rn:R00830" type="irreversible">
         <substrate id="139" name="cpd:C00037"/>
@@ -1309,6 +1372,10 @@
         <substrate id="157" name="cpd:C01888"/>
         <product id="158" name="cpd:C00546"/>
     </reaction>
+    <reaction id="110" name="rn:R01388 rn:R01392" type="reversible">
+        <substrate id="124" name="cpd:C00258"/>
+        <product id="153" name="cpd:C00168"/>
+    </reaction>
     <reaction id="111" name="rn:R02529" type="irreversible">
         <substrate id="157" name="cpd:C01888"/>
         <product id="158" name="cpd:C00546"/>
@@ -1316,8 +1383,8 @@
     <reaction id="114" name="rn:R04125" type="irreversible">
         <substrate id="155" name="cpd:C00101"/>
         <substrate id="161" name="cpd:C01242"/>
-        <product id="122" name="cpd:C02972"/>
         <product id="160" name="cpd:C00143"/>
+        <product id="122" name="cpd:C02972"/>
         <product id="154" name="cpd:C00014"/>
     </reaction>
     <reaction id="117" name="rn:R03815" type="irreversible">
@@ -1339,5 +1406,9 @@
     <reaction id="186" name="rn:R00372" type="reversible">
         <substrate id="139" name="cpd:C00037"/>
         <product id="144" name="cpd:C00048"/>
+    </reaction>
+    <reaction id="195" name="rn:R01518" type="irreversible">
+        <substrate id="192" name="cpd:C00631"/>
+        <product id="128" name="cpd:C00197"/>
     </reaction>
 </pathway>

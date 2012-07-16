@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 11, 2011 16:39:37 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 20, 2012 14:41:00 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00450" org="hsa" number="00450"
          title="Selenocompound metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00450.png"
@@ -152,7 +152,7 @@
     </entry>
     <entry id="50" name="hsa:51091" type="gene" reaction="rn:R08224"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51091">
-        <graphics name="SEPSECS, DKFZp434B1417, LP, MGC161491, SLA, SLA/LP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SEPSECS, DKFZp434B1417, LP, MGC161491, PCH2D, SLA, SLA/LP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="118" y="469" width="46" height="17"/>
     </entry>
     <entry id="51" name="cpd:C06481" type="compound"
@@ -233,7 +233,7 @@
     <entry id="82" name="hsa:4548" type="gene" reaction="rn:R09365"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4548">
         <graphics name="MTR, FLJ33168, FLJ43216, FLJ45386, MS, cblG" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="198" y="219" width="46" height="17"/>
+             type="rectangle" x="199" y="219" width="46" height="17"/>
     </entry>
     <entry id="89" name="hsa:10587 hsa:114112 hsa:7296" type="gene" reaction="rn:R09372"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10587+hsa:114112+hsa:7296">
@@ -278,6 +278,9 @@
     <relation entry1="50" entry2="48" type="ECrel">
         <subtype name="compound" value="46"/>
     </relation>
+    <relation entry1="44" entry2="75" type="ECrel">
+        <subtype name="compound" value="22"/>
+    </relation>
     <reaction id="11" name="rn:R03596" type="irreversible">
         <substrate id="18" name="cpd:C05684"/>
         <product id="16" name="cpd:C01528"/>
@@ -288,8 +291,8 @@
     </reaction>
     <reaction id="60" name="rn:R03599" type="reversible">
         <substrate id="24" name="cpd:C05688"/>
-        <product id="78" name="cpd:C00041"/>
         <product id="16" name="cpd:C01528"/>
+        <product id="78" name="cpd:C00041"/>
     </reaction>
     <reaction id="15" name="rn:R04773" type="irreversible">
         <substrate id="27" name="cpd:C05335"/>
@@ -329,5 +332,7 @@
         <product id="38" name="cpd:C05703"/>
     </reaction>
     <reaction id="90" name="rn:R09370" type="reversible">
+        <substrate id="40" name="cpd:C02535"/>
+        <product id="61" name="cpd:C18872"/>
     </reaction>
 </pathway>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 22, 2011 15:37:17 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 6, 2012 11:50:51 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00592" org="hsa" number="00592"
          title="alpha-Linolenic acid metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00592.png"
@@ -35,14 +35,14 @@
         <graphics name="ACOX1, ACOX, MGC1198, PALMCOX, SCOX..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="403" y="610" width="46" height="17"/>
     </entry>
-    <entry id="30" name="ko:K00632" type="ortholog" reaction="rn:R07899"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00632">
-        <graphics name="K00632" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="30" name="hsa:30" type="gene" reaction="rn:R07899"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:30">
+        <graphics name="ACAA1, ACAA, PTHIO, THIO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="299" y="681" width="46" height="17"/>
     </entry>
-    <entry id="31" name="ko:K00632" type="ortholog" reaction="rn:R07895"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00632">
-        <graphics name="K00632" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="31" name="hsa:30" type="gene" reaction="rn:R07895"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:30">
+        <graphics name="ACAA1, ACAA, PTHIO, THIO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="191" y="610" width="46" height="17"/>
     </entry>
     <entry id="32" name="ko:K01723" type="ortholog" reaction="rn:R07863"
@@ -185,9 +185,9 @@
         <graphics name="C16316" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="353" y="413" width="8" height="8"/>
     </entry>
-    <entry id="61" name="ko:K00632" type="ortholog" reaction="rn:R07891"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00632">
-        <graphics name="K00632" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="61" name="hsa:30" type="gene" reaction="rn:R07891"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:30">
+        <graphics name="ACAA1, ACAA, PTHIO, THIO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="505" y="610" width="46" height="17"/>
     </entry>
     <entry id="62" name="hsa:51 hsa:8310" type="gene" reaction="rn:R07888"
@@ -328,6 +328,12 @@
     <relation entry1="68" entry2="71" type="ECrel">
         <subtype name="compound" value="85"/>
     </relation>
+    <relation entry1="29" entry2="61" type="ECrel">
+        <subtype name="compound" value="44"/>
+    </relation>
+    <relation entry1="28" entry2="31" type="ECrel">
+        <subtype name="compound" value="41"/>
+    </relation>
     <reaction id="28" name="rn:R07896" type="irreversible">
         <substrate id="41" name="cpd:C16335"/>
         <product id="40" name="cpd:C16336"/>
@@ -335,6 +341,18 @@
     <reaction id="29" name="rn:R07892" type="irreversible">
         <substrate id="44" name="cpd:C16331"/>
         <product id="43" name="cpd:C16332"/>
+    </reaction>
+    <reaction id="30" name="rn:R07899" type="irreversible">
+        <substrate id="39" name="cpd:C16338"/>
+        <product id="38" name="cpd:C16339"/>
+    </reaction>
+    <reaction id="31" name="rn:R07895" type="irreversible">
+        <substrate id="42" name="cpd:C16334"/>
+        <product id="41" name="cpd:C16335"/>
+    </reaction>
+    <reaction id="61" name="rn:R07891" type="irreversible">
+        <substrate id="45" name="cpd:C16330"/>
+        <product id="44" name="cpd:C16331"/>
     </reaction>
     <reaction id="62" name="rn:R07888" type="irreversible">
         <substrate id="50" name="cpd:C16327"/>

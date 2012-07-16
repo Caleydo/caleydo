@@ -80,9 +80,9 @@
         <graphics name="TITLE:Circadian rhythm - mammal" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="124" y="58" width="167" height="25"/>
     </entry>
-    <entry id="16" name="mmu:21402 mmu:26965 mmu:56438" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:21402+mmu:26965+mmu:56438">
-        <graphics name="Skp1a, 15kDa, 2610043E24Rik, 2610206H23Rik, EMC19, OCP-II, OCP2, SKP1, Tceb1l, p19A, p19Skp1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="16" name="mmu:100043674 mmu:21402 mmu:26965 mmu:56438" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043674+mmu:21402+mmu:26965+mmu:56438">
+        <graphics name="Gm9840..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="331" y="172" width="46" height="17"/>
     </entry>
     <entry id="17" name="mmu:103583 mmu:12234" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="22" name="mmu:19883 mmu:19885 mmu:225998" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19883+mmu:19885+mmu:225998">
-        <graphics name="Rora, 9530021D13Rik, Nr1f1, ROR1, ROR2, ROR3, nmf267, sg, staggerer..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Rora, 9530021D13Rik, Nr1f1, ROR1, ROR2, ROR3, nmf267, sg, staggerer, tmgc26..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="864" y="261" width="46" height="17"/>
     </entry>
     <entry id="23" name="path:mmu04010" type="map"

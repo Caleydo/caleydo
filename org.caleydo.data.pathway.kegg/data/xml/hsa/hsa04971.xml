@@ -277,7 +277,7 @@
     </entry>
     <entry id="55" name="hsa:4638 hsa:85366 hsa:91807" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4638+hsa:85366+hsa:91807">
-        <graphics name="MYLK, DKFZp686I10125, FLJ12216, KRP, MLCK, MLCK1, MLCK108, MLCK210, MSTP083, MYLK1, smMLCK..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MYLK, AAT7, DKFZp686I10125, FLJ12216, KRP, MLCK, MLCK1, MLCK108, MLCK210, MSTP083, MYLK1, smMLCK..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="479" y="462" width="46" height="17"/>
     </entry>
     <entry id="56" name="hsa:815 hsa:816 hsa:817 hsa:818" type="gene"

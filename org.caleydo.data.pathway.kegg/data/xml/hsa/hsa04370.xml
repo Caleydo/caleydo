@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Nov 17, 2009 10:35:55 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:11:46 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04370" org="hsa" number="04370"
          title="VEGF signaling pathway"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04370.png"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="hsa:56848 hsa:8877" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:56848+hsa:8877">
-        <graphics name="SPHK2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SPHK2, SK_2, SK-2, SPK_2, SPK-2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="506" y="117" width="46" height="17"/>
     </entry>
     <entry id="13" name="cpd:C05981" type="compound"
@@ -92,12 +92,12 @@
     </entry>
     <entry id="18" name="hsa:7867 hsa:9261" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7867+hsa:9261">
-        <graphics name="MAPKAPK3, 3PK, MAPKAP3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAPKAPK3, 3PK, MAPKAP-K3, MAPKAP3, MAPKAPK-3, MK-3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="519" y="366" width="46" height="17"/>
     </entry>
     <entry id="19" name="hsa:11261 hsa:5530 hsa:5532 hsa:5533 hsa:5534 hsa:5535 hsa:63928" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11261+hsa:5530+hsa:5532+hsa:5533+hsa:5534+hsa:5535+hsa:63928">
-        <graphics name="CHP, SLC9A1BP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CHP, FLJ20350, SLC9A1BP, CHP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="520" y="231" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:10000 hsa:207 hsa:208" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503">
-        <graphics name="PIK3R5, F730038I15Rik, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIK3R5, F730038I15Rik, FLJ26116, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="270" y="419" width="46" height="17"/>
     </entry>
     <entry id="22" name="hsa:10725 hsa:4772 hsa:4773 hsa:4775 hsa:4776" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:5747" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5747">
-        <graphics name="PTK2, FADK, FAK, FAK1, FRNK, pp125FAK" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PTK2, FADK, FAK, FAK1, FRNK, PPP1R71, p125FAK, pp125FAK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="518" y="299" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:1432 hsa:5600 hsa:5603 hsa:6300" type="gene"
@@ -192,7 +192,7 @@
     </entry>
     <entry id="38" name="hsa:842" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:842">
-        <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6, PPP1R56" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="491" y="511" width="46" height="17"/>
     </entry>
     <entry id="39" name="hsa:572" type="gene"
@@ -202,7 +202,7 @@
     </entry>
     <entry id="40" name="hsa:5879 hsa:5880 hsa:5881" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5879+hsa:5880+hsa:5881">
-        <graphics name="RAC1, MGC111543, TC-25, p21-Rac1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAC1, MGC111543, Rac-1, TC-25, p21-Rac1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="554" y="420" width="46" height="17"/>
     </entry>
     <relation entry1="11" entry2="19" type="PPrel">

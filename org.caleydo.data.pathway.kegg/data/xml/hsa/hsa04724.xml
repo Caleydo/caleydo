@@ -262,7 +262,7 @@
     </entry>
     <entry id="52" name="hsa:773" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="623" y="512" width="46" height="17"/>
     </entry>
     <entry id="53" name="cpd:C00076" type="compound"
@@ -362,7 +362,7 @@
     </entry>
     <entry id="72" name="hsa:9229" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9229">
-        <graphics name="DLGAP1, DAP-1, DAP-1-ALPHA, DAP-1-BETA, GKAP, MGC88156, SAPAP1, hGKAP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DLGAP1, DAP-1, DAP-1-ALPHA, DAP-1-BETA, FLJ38442, GKAP, MGC88156, SAPAP1, hGKAP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="866" y="571" width="46" height="17"/>
     </entry>
     <entry id="73" name="hsa:22941 hsa:50944 hsa:85358" type="gene"

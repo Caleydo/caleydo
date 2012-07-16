@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="mmu:16866" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16866">
-        <graphics name="Lhb, LH, leutropin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Lhb, LH, LH-B, LSH-B, LSH-beta" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="986" y="310" width="46" height="17"/>
     </entry>
     <entry id="6" name="cpd:C00416" type="compound"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="mmu:16438 mmu:16439 mmu:16440" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16438+mmu:16439+mmu:16440">
-        <graphics name="Itpr1, D6Pas2, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Itpr1, D6Pas2, Gm10429, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="459" y="180" width="46" height="17"/>
     </entry>
     <entry id="22" name="mmu:12313 mmu:12314 mmu:12315 mmu:494124 mmu:70405 mmu:80796" type="gene"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="mmu:14683" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14683">
-        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Galphas, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="362" y="117" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:14714" type="gene"

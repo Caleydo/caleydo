@@ -92,12 +92,12 @@
     </entry>
     <entry id="18" name="hsa:9187" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9187">
-        <graphics name="SLC24A1, HsT17412, KIAA0702, NCKX, NCKX1, RODX" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC24A1, CSNB1D, HsT17412, KIAA0702, NCKX, NCKX1, RODX" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="740" y="314" width="46" height="17"/>
     </entry>
     <entry id="19" name="hsa:9187" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9187">
-        <graphics name="SLC24A1, HsT17412, KIAA0702, NCKX, NCKX1, RODX" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC24A1, CSNB1D, HsT17412, KIAA0702, NCKX, NCKX1, RODX" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="740" y="797" width="46" height="17"/>
     </entry>
     <entry id="20" name="cpd:C00238" type="compound"

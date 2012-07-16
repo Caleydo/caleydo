@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 8, 2011 13:52:38 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 4, 2012 15:07:46 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00512" org="mmu" number="00512"
          title="Mucin type O-Glycan biosynthesis"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00512.png"
@@ -70,11 +70,6 @@
         <graphics name="G00035" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="204" y="116" width="8" height="8"/>
     </entry>
-    <entry id="27" name="ko:K00740" type="ortholog" reaction="rn:R05910"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00740">
-        <graphics name="K00740" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="267" y="380" width="46" height="17"/>
-    </entry>
     <entry id="28" name="mmu:72077" type="gene" reaction="rn:R05915"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:72077">
         <graphics name="Gcnt3, 2010013H22Rik, 2210021I22Rik, 2210401J11Rik" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -102,7 +97,7 @@
     </entry>
     <entry id="35" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05913"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="402" y="116" width="46" height="17"/>
     </entry>
     <entry id="37" name="mmu:272411" type="gene" reaction="rn:R05909"
@@ -152,7 +147,7 @@
     </entry>
     <entry id="48" name="mmu:20442 mmu:20444" type="gene" reaction="rn:R05913"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20442+mmu:20444">
-        <graphics name="St3gal1, 5330418N22Rik, AI467004, MGC90735, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="St3gal1, 5330418N22Rik, AI467004, ST3GalI, Siat4, Siat4a, St3gal-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="134,792,154,792"/>
     </entry>
     <entry id="49" name="mmu:272411" type="gene" reaction="rn:R05909"

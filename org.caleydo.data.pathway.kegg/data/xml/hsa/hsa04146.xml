@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 3, 2010 15:51:00 +0900 (JST) -->
+<!-- Creation date: Nov 8, 2011 14:15:09 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04146" org="hsa" number="04146"
          title="Peroxisome"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04146.png"
@@ -252,7 +252,7 @@
     </entry>
     <entry id="50" name="hsa:10455" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10455">
-        <graphics name="PECI, ACBD2, DRS1, HCA88, KIAA0536, dJ1013A10.3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ECI2, ACBD2, DRS-1, DRS1, HCA88, KIAA0536, PECI, dJ1013A10.3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="123" y="894" width="46" height="17"/>
     </entry>
     <entry id="51" name="hsa:83594" type="gene"
@@ -327,7 +327,7 @@
     </entry>
     <entry id="65" name="hsa:6647 hsa:6648" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6647+hsa:6648">
-        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, homodimer..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, hSod1, homodimer..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="684" y="609" width="46" height="17"/>
     </entry>
     <entry id="66" name="hsa:373156" type="gene"

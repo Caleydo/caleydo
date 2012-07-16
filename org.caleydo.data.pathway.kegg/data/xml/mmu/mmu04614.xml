@@ -87,12 +87,12 @@
     </entry>
     <entry id="17" name="mmu:17380" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17380">
-        <graphics name="Mme, 6030454K05Rik, C85356, CALLA, CD10, NEP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mme, 6030454K05Rik, C85356, CALLA, CD10, NEP, SFE" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="366" y="265" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:16790" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16790">
-        <graphics name="Anpep, Apn, Cd13, Lap-1, Lap1, P150" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Anpep, AP-M, AP-N, Apn, Cd13, P150" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="430" y="428" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:13809" type="gene"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="mmu:17380" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17380">
-        <graphics name="Mme, 6030454K05Rik, C85356, CALLA, CD10, NEP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mme, 6030454K05Rik, C85356, CALLA, CD10, NEP, SFE" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="389" y="167" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:240028" type="gene"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="mmu:17228" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17228">
-        <graphics name="Cma1, MMCP-5, Mcp-5, Mcpt5" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cma1, MMCP-5, Mcp-5, Mcp5, Mcpt5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="328" y="319" width="46" height="17"/>
     </entry>
     <entry id="26" name="mmu:13035" type="gene"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="mmu:11606" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11606">
-        <graphics name="Agt, AI265500, AngII, Aogen, Serpina8" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agt, AI265500, AngI, AngII, Aogen, Serpina8" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="93" y="307" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:19701 mmu:19702" type="gene"

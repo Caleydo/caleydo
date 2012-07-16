@@ -12,7 +12,7 @@
     </entry>
     <entry id="2" name="hsa:773 hsa:774" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="656" y="698" width="46" height="17"/>
     </entry>
     <entry id="3" name="cpd:C00076" type="compound"
@@ -65,8 +65,8 @@
         <graphics name="C00080" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="1220" y="233" width="8" height="8"/>
     </entry>
-    <entry id="13" name="path:map04726" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map04726">
+    <entry id="13" name="path:hsa04726" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa04726">
         <graphics name="Serotonergic synapse" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="631" y="908" width="92" height="34"/>
     </entry>
@@ -75,8 +75,8 @@
         <graphics name="GABAergic synapse" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="926" y="909" width="92" height="34"/>
     </entry>
-    <entry id="15" name="path:map04728" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map04728">
+    <entry id="15" name="path:hsa04728" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa04728">
         <graphics name="Dopaminergic synapse" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1036" y="909" width="92" height="34"/>
     </entry>
@@ -162,7 +162,7 @@
     </entry>
     <entry id="32" name="hsa:10497 hsa:23025 hsa:440279" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10497+hsa:23025+hsa:440279">
-        <graphics name="UNC13B, MGC133279, MGC133280, MUNC13, UNC13, Unc13h2, hmunc13..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="UNC13B, MGC133279, MGC133280, MUNC13, UNC13, Unc13h2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="410" y="557" width="46" height="17"/>
     </entry>
     <entry id="33" name="cpd:C00080" type="compound"

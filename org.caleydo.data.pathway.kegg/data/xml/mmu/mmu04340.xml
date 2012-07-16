@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Apr 15, 2009 10:40:51 +0900 (JST) -->
+<!-- Creation date: May 15, 2012 11:47:57 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04340" org="mmu" number="04340"
          title="Hedgehog signaling pathway"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04340.png"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="mmu:269209" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:269209">
-        <graphics name="Stk36, 1700112N14Rik, B930045J24, FU, Fused, KIAA1278, MGC58023, mKIAA1278" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Stk36, 1700112N14Rik, B930045J24, FU, Fused, mKIAA1278" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="373" y="262" width="46" height="17"/>
     </entry>
     <entry id="16" name="ko:K06227" type="ortholog"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="mmu:13363 mmu:16147 mmu:20423" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13363+mmu:16147+mmu:20423">
-        <graphics name="Dhh, C78960, MGC73610..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Dhh, C78960..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="83" y="200" width="46" height="17"/>
     </entry>
     <entry id="24" name="undefined" type="group">

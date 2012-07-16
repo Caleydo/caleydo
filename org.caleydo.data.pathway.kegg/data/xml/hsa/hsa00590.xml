@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 7, 2011 16:18:05 +0900 (GMT+09:00) -->
+<!-- Creation date: Dec 6, 2011 12:17:58 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00590" org="hsa" number="00590"
          title="Arachidonic acid metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00590.png"
@@ -310,9 +310,9 @@
         <graphics name="CYP2U1, P450TEC" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="689" y="243" width="46" height="17"/>
     </entry>
-    <entry id="118" name="hsa:4051 hsa:57834 hsa:8529" type="gene" reaction="rn:R07041"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4051+hsa:57834+hsa:8529">
-        <graphics name="CYP4F3, CPF3, CYP4F, LTB4H..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="118" name="hsa:11283 hsa:126410 hsa:4051 hsa:57834 hsa:8529" type="gene" reaction="rn:R07041"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11283+hsa:126410+hsa:4051+hsa:57834+hsa:8529">
+        <graphics name="CYP4F8, CPF8, CYPIVF8..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="774" y="163" width="46" height="17"/>
     </entry>
     <entry id="119" name="hsa:1571" type="gene" reaction="rn:R07046"
@@ -375,9 +375,9 @@
         <graphics name="LTA4H" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="278" width="46" height="17"/>
     </entry>
-    <entry id="134" name="hsa:4051 hsa:57834 hsa:8529" type="gene" reaction="rn:R03866"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4051+hsa:57834+hsa:8529">
-        <graphics name="CYP4F3, CPF3, CYP4F, LTB4H..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="134" name="hsa:11283 hsa:126410 hsa:4051 hsa:57834 hsa:8529" type="gene" reaction="rn:R03866"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11283+hsa:126410+hsa:4051+hsa:57834+hsa:8529">
+        <graphics name="CYP4F8, CPF8, CYPIVF8..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="416" y="261" width="46" height="17"/>
     </entry>
     <entry id="135" name="hsa:4056" type="gene" reaction="rn:R03059"
@@ -400,14 +400,14 @@
         <graphics name="PTGIS, CYP8, CYP8A1, MGC126858, MGC126860, PGIS, PTGI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="431" width="46" height="17"/>
     </entry>
-    <entry id="139" name="hsa:80142 hsa:9536" type="gene" reaction="rn:R02265"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:80142+hsa:9536">
-        <graphics name="PTGES2, C9orf15, FLJ14038, GBF1, MGC11289, PGES2, mPGES-2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="139" name="hsa:10728 hsa:80142 hsa:9536" type="gene" reaction="rn:R02265"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10728+hsa:80142+hsa:9536">
+        <graphics name="PTGES3, P23, TEBP, cPGES..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="252" y="347" width="46" height="17"/>
     </entry>
     <entry id="140" name="hsa:6916" type="gene" reaction="rn:R02268"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6916">
-        <graphics name="TBXAS1, CYP5, CYP5A1, FLJ52771, GHOSAL, THAS, TS, TXAS, TXS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TBXAS1, BDPLT14, CYP5, CYP5A1, FLJ52771, GHOSAL, THAS, TS, TXAS, TXS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="319" y="318" width="46" height="17"/>
     </entry>
     <entry id="141" name="hsa:8644" type="gene" reaction="rn:R02799"
@@ -599,6 +599,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1573">
         <graphics name="CYP2J2, CPJ2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="714" y="222" width="46" height="17"/>
+    </entry>
+    <entry id="210" name="hsa:127281" type="gene" reaction="rn:R09506"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:127281">
+        <graphics name="C1orf93, DKFZp547M123, MGC26818, FAM213B" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="252" y="285" width="46" height="17"/>
     </entry>
     <relation entry1="139" entry2="144" type="ECrel">
         <subtype name="compound" value="156"/>
@@ -1197,6 +1202,27 @@
     <relation entry1="132" entry2="209" type="ECrel">
         <subtype name="compound" value="148"/>
     </relation>
+    <relation entry1="144" entry2="210" type="ECrel">
+        <subtype name="compound" value="157"/>
+    </relation>
+    <relation entry1="145" entry2="210" type="ECrel">
+        <subtype name="compound" value="157"/>
+    </relation>
+    <relation entry1="140" entry2="210" type="ECrel">
+        <subtype name="compound" value="158"/>
+    </relation>
+    <relation entry1="139" entry2="210" type="ECrel">
+        <subtype name="compound" value="158"/>
+    </relation>
+    <relation entry1="142" entry2="210" type="ECrel">
+        <subtype name="compound" value="158"/>
+    </relation>
+    <relation entry1="138" entry2="210" type="ECrel">
+        <subtype name="compound" value="158"/>
+    </relation>
+    <relation entry1="129" entry2="210" type="ECrel">
+        <subtype name="compound" value="158"/>
+    </relation>
     <reaction id="50" name="rn:R07111" type="irreversible">
         <substrate id="81" name="cpd:C14768"/>
         <product id="77" name="cpd:C14772"/>
@@ -1360,5 +1386,9 @@
     <reaction id="209" name="rn:R07046" type="irreversible">
         <substrate id="148" name="cpd:C00219"/>
         <product id="73" name="cpd:C14749"/>
+    </reaction>
+    <reaction id="210" name="rn:R09506" type="irreversible">
+        <substrate id="158" name="cpd:C00427"/>
+        <product id="157" name="cpd:C00639"/>
     </reaction>
 </pathway>

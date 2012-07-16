@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 28, 2011 17:21:09 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 14:52:44 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00020" org="mmu" number="00020"
          title="Citrate cycle (TCA cycle)"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00020.png"
@@ -22,12 +22,12 @@
     </entry>
     <entry id="30" name="mmu:18293 mmu:239017" type="gene" reaction="rn:R00621"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18293+mmu:239017">
-        <graphics name="Ogdh, 2210403E04Rik, 2210412K19Rik, AA409584, KIAA4192, d1401, mKIAA4192..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ogdh, 2210403E04Rik, 2210412K19Rik, AA409584, d1401, mKIAA4192..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="574" width="46" height="17"/>
     </entry>
     <entry id="31" name="mmu:18293 mmu:239017" type="gene" reaction="rn:R03316"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18293+mmu:239017">
-        <graphics name="Ogdh, 2210403E04Rik, 2210412K19Rik, AA409584, KIAA4192, d1401, mKIAA4192..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ogdh, 2210403E04Rik, 2210412K19Rik, AA409584, d1401, mKIAA4192..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="509" y="575" width="46" height="17"/>
     </entry>
     <entry id="32" name="mmu:78920" type="gene" reaction="rn:R02570"
@@ -47,7 +47,7 @@
     </entry>
     <entry id="35" name="mmu:15926 mmu:269951" type="gene" reaction="rn:R00268"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15926+mmu:269951">
-        <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc, MGC115782..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="697" y="505" width="46" height="17"/>
     </entry>
     <entry id="36" name="mmu:15929 mmu:170718 mmu:67834" type="gene" reaction="rn:R00709"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="37" name="mmu:15926 mmu:269951" type="gene" reaction="rn:R01899"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15926+mmu:269951">
-        <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc, MGC115782..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Idh1, AI314845, AI788952, E030024J03Rik, Id-1, Idh-1, Idpc..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="697" y="400" width="46" height="17"/>
     </entry>
     <entry id="38" name="mmu:104112" type="gene" reaction="rn:R00352"
@@ -67,7 +67,7 @@
     </entry>
     <entry id="39" name="mmu:66052 mmu:66925 mmu:66945 mmu:67680" type="gene" reaction="rn:R02164"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:66052+mmu:66925+mmu:66945+mmu:67680">
-        <graphics name="Sdhc, 0610010E03Rik, AI316496, AU019277, MGC103103..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Sdhc, 0610010E03Rik, AI316496, AU019277..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="194" y="530" width="46" height="17"/>
     </entry>
     <entry id="40" name="mmu:14194" type="gene" reaction="rn:R01082"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="49" name="path:mmu00062" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00062">
-        <graphics name="Fatty acid elongation in mitochondria" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Fatty acid elongation" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="108" y="181" width="194" height="25"/>
     </entry>
     <entry id="50" name="path:mmu00071" type="map"
@@ -585,8 +585,8 @@
         <product id="69" name="cpd:C15972"/>
     </reaction>
     <reaction id="30" name="rn:R00621" type="irreversible">
-        <substrate id="74" name="cpd:C00026"/>
         <substrate id="70" name="cpd:C00068"/>
+        <substrate id="74" name="cpd:C00026"/>
         <product id="75" name="cpd:C05381"/>
     </reaction>
     <reaction id="31" name="rn:R03316" type="irreversible">
@@ -660,8 +660,8 @@
         <product id="78" name="cpd:C05125"/>
     </reaction>
     <reaction id="81" name="rn:R03270" type="irreversible">
-        <substrate id="82" name="cpd:C15972"/>
         <substrate id="78" name="cpd:C05125"/>
+        <substrate id="82" name="cpd:C15972"/>
         <product id="85" name="cpd:C16255"/>
         <product id="80" name="cpd:C00068"/>
     </reaction>
@@ -670,8 +670,8 @@
         <product id="82" name="cpd:C15972"/>
     </reaction>
     <reaction id="86" name="rn:R02569" type="reversible">
-        <substrate id="95" name="cpd:C15973"/>
         <substrate id="63" name="cpd:C00024"/>
+        <substrate id="95" name="cpd:C15973"/>
         <product id="85" name="cpd:C16255"/>
     </reaction>
     <reaction id="94" name="rn:R00431 rn:R00726" type="irreversible">

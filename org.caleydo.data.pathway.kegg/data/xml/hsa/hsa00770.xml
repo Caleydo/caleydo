@@ -177,7 +177,7 @@
     </entry>
     <entry id="66" name="hsa:53354 hsa:55229 hsa:79646 hsa:80025" type="gene" reaction="rn:R02971"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:53354+hsa:55229+hsa:79646+hsa:80025">
-        <graphics name="PANK1, MGC24596, PANK, PANK1a, PANK1b..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PANK1, MGC24596, PANK..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="561" y="466" width="46" height="17"/>
     </entry>
     <entry id="67" name="hsa:60490" type="gene" reaction="rn:R03269"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="69" name="hsa:53354 hsa:55229 hsa:79646 hsa:80025" type="gene" reaction="rn:R04391"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:53354+hsa:55229+hsa:79646+hsa:80025">
-        <graphics name="PANK1, MGC24596, PANK, PANK1a, PANK1b..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PANK1, MGC24596, PANK..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="560" y="412" width="46" height="17"/>
     </entry>
     <entry id="70" name="hsa:79717" type="gene" reaction="rn:R04230 rn:R04231"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="71" name="hsa:53354 hsa:55229 hsa:79646 hsa:80025" type="gene" reaction="rn:R03018"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:53354+hsa:55229+hsa:79646+hsa:80025">
-        <graphics name="PANK1, MGC24596, PANK, PANK1a, PANK1b..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PANK1, MGC24596, PANK..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="519" y="339" width="46" height="17"/>
     </entry>
     <entry id="72" name="hsa:51733" type="gene" reaction="rn:R00905"

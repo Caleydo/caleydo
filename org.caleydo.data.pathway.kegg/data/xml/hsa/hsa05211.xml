@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 24, 2010 10:40:59 +0900 (GMT+09:00) -->
+<!-- Creation date: Oct 21, 2011 13:07:14 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05211" org="hsa" number="05211"
          title="Renal cell carcinoma"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05211.png"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="28" name="hsa:5879" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5879">
-        <graphics name="RAC1, MGC111543, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAC1, MGC111543, Rac-1, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="580" y="455" width="46" height="17"/>
     </entry>
     <entry id="29" name="hsa:1398 hsa:1399" type="gene"

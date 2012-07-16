@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 24, 2011 13:51:36 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 20, 2012 16:11:26 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00860" org="hsa" number="00860"
          title="Porphyrin and chlorophyll metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00860.png"
@@ -688,7 +688,7 @@
     <entry id="262" name="hsa:5498" type="gene" reaction="rn:R03222"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5498">
         <graphics name="PPOX, MGC8485, PPO, V290M, VP" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="574" y="244" width="46" height="17"/>
+             type="rectangle" x="574" y="234" width="46" height="17"/>
     </entry>
     <entry id="263" name="hsa:7389" type="gene" reaction="rn:R03197"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7389">
@@ -697,7 +697,7 @@
     </entry>
     <entry id="264" name="hsa:7390" type="gene" reaction="rn:R03165"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7390">
-        <graphics name="UROS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="UROS, UROIIIS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="348" y="244" width="46" height="17"/>
     </entry>
     <entry id="265" name="ko:K00589 ko:K02302 ko:K02303 ko:K02496 ko:K13542 ko:K13543" type="ortholog" reaction="rn:R03194"
@@ -743,12 +743,12 @@
     <entry id="274" name="ko:K02302 ko:K02304 ko:K03794" type="ortholog" reaction="rn:R02864"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02302+K02304+K03794">
         <graphics name="K02302..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="251" y="330" width="46" height="17"/>
+             type="rectangle" x="251" y="331" width="46" height="17"/>
     </entry>
     <entry id="275" name="ko:K02302 ko:K02304" type="ortholog" reaction="rn:R03947"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02302+K02304">
         <graphics name="K02302..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="362" y="330" width="46" height="17"/>
+             type="rectangle" x="362" y="331" width="46" height="17"/>
     </entry>
     <entry id="276" name="ko:K02190 ko:K03795" type="ortholog" reaction="rn:R05807"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02190+K03795">
@@ -763,27 +763,27 @@
     <entry id="278" name="ko:K05934 ko:K13540 ko:K13541" type="ortholog" reaction="rn:R05809"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05934+K13540+K13541">
         <graphics name="K05934..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="484" width="46" height="17"/>
+             type="rectangle" x="300" y="484" width="46" height="17"/>
     </entry>
     <entry id="279" name="ko:K05936" type="ortholog" reaction="rn:R05810"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05936">
         <graphics name="K05936" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="530" width="46" height="17"/>
+             type="rectangle" x="300" y="530" width="46" height="17"/>
     </entry>
     <entry id="280" name="ko:K05895" type="ortholog" reaction="rn:R05812"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05895">
         <graphics name="K05895" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="673" width="46" height="17"/>
+             type="rectangle" x="300" y="673" width="46" height="17"/>
     </entry>
     <entry id="281" name="ko:K03399" type="ortholog" reaction="rn:R07774"
         link="http://www.kegg.jp/dbget-bin/www_bget?K03399">
         <graphics name="K03399" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="722" width="46" height="17"/>
+             type="rectangle" x="300" y="722" width="46" height="17"/>
     </entry>
     <entry id="282" name="ko:K02191" type="ortholog" reaction="rn:R07775"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02191">
         <graphics name="K02191" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="772" width="46" height="17"/>
+             type="rectangle" x="300" y="772" width="46" height="17"/>
     </entry>
     <entry id="283" name="ko:K03394 ko:K13540" type="ortholog" reaction="rn:R03948"
         link="http://www.kegg.jp/dbget-bin/www_bget?K03394+K13540">
@@ -793,52 +793,52 @@
     <entry id="284" name="ko:K02229" type="ortholog" reaction="rn:R05217"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02229">
         <graphics name="K02229" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="441" width="46" height="17"/>
+             type="rectangle" x="444" y="441" width="46" height="17"/>
     </entry>
     <entry id="285" name="ko:K05934 ko:K13540 ko:K13541" type="ortholog" reaction="rn:R05180"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05934+K13540+K13541">
         <graphics name="K05934..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="484" width="46" height="17"/>
+             type="rectangle" x="444" y="484" width="46" height="17"/>
     </entry>
     <entry id="286" name="ko:K05936" type="ortholog" reaction="rn:R05181"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05936">
         <graphics name="K05936" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="530" width="46" height="17"/>
+             type="rectangle" x="444" y="530" width="46" height="17"/>
     </entry>
     <entry id="287" name="ko:K02228" type="ortholog" reaction="rn:R05219"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02228">
         <graphics name="K02228" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="600" width="46" height="17"/>
+             type="rectangle" x="444" y="600" width="46" height="17"/>
     </entry>
     <entry id="288" name="ko:K05895" type="ortholog" reaction="rn:R05150"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05895">
         <graphics name="K05895" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="673" width="46" height="17"/>
+             type="rectangle" x="444" y="673" width="46" height="17"/>
     </entry>
     <entry id="289" name="ko:K06042" type="ortholog" reaction="rn:R05177"
         link="http://www.kegg.jp/dbget-bin/www_bget?K06042">
         <graphics name="K06042" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="819" width="46" height="17"/>
+             type="rectangle" x="444" y="819" width="46" height="17"/>
     </entry>
     <entry id="290" name="ko:K02224" type="ortholog" reaction="rn:R05224"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02224">
         <graphics name="K02224" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="867" width="46" height="17"/>
+             type="rectangle" x="444" y="867" width="46" height="17"/>
     </entry>
     <entry id="291" name="ko:K02230 ko:K09882 ko:K09883" type="ortholog" reaction="rn:R05227"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02230+K09882+K09883">
         <graphics name="K02230..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="918" width="46" height="17"/>
+             type="rectangle" x="444" y="918" width="46" height="17"/>
     </entry>
     <entry id="292" name="ko:K06042" type="ortholog" reaction="rn:R05814"
         link="http://www.kegg.jp/dbget-bin/www_bget?K06042">
         <graphics name="K06042" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="819" width="46" height="17"/>
+             type="rectangle" x="300" y="819" width="46" height="17"/>
     </entry>
     <entry id="293" name="ko:K02224" type="ortholog" reaction="rn:R05815"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02224">
         <graphics name="K02224" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="867" width="46" height="17"/>
+             type="rectangle" x="300" y="867" width="46" height="17"/>
     </entry>
     <entry id="294" name="ko:K13786" type="ortholog" reaction="rn:R05218"
         link="http://www.kegg.jp/dbget-bin/www_bget?K13786">
@@ -918,17 +918,17 @@
     <entry id="311" name="ko:K00595" type="ortholog" reaction="rn:R05149"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00595">
         <graphics name="K00595" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="445" y="748" width="46" height="17"/>
+             type="rectangle" x="444" y="748" width="46" height="17"/>
     </entry>
     <entry id="312" name="ko:K02189 ko:K13541" type="ortholog" reaction="rn:R07772"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02189+K13541">
         <graphics name="K02189..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="577" width="46" height="17"/>
+             type="rectangle" x="300" y="577" width="46" height="17"/>
     </entry>
     <entry id="313" name="ko:K02188" type="ortholog" reaction="rn:R07773"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02188">
         <graphics name="K02188" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="301" y="625" width="46" height="17"/>
+             type="rectangle" x="300" y="625" width="46" height="17"/>
     </entry>
     <entry id="321" name="hsa:3162 hsa:3163" type="gene" reaction="rn:R03683"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3162+hsa:3163">
@@ -1159,6 +1159,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00740">
         <graphics name="Riboflavin metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="84" y="1248" width="74" height="34"/>
+    </entry>
+    <entry id="382" name="ko:K00230" type="ortholog" reaction="rn:R09489"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00230">
+        <graphics name="K00230" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="574" y="255" width="46" height="17"/>
     </entry>
     <relation entry1="271" entry2="268" type="ECrel">
         <subtype name="compound" value="108"/>

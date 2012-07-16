@@ -317,7 +317,7 @@
     </entry>
     <entry id="63" name="mmu:20778" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20778">
-        <graphics name="Scarb1, AI120173, CD36, Cd36l1, Cla-1, Cla1, D5Ertd460e, Hlb398, SR-B1, SR-BI, SRBI, Srb1, mSR-BI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Scarb1, AI120173, CD36, Cd36l1, Cla-1, Cla1, D5Ertd460e, Hdlq1, Hlb398, SR-B1, SR-BI, SRBI, Srb1, mSR-BI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="446" y="637" width="46" height="17"/>
     </entry>
     <entry id="64" name="cpd:C00162 cpd:C00187" type="compound"

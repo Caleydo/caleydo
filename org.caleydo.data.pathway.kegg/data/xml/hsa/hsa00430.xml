@@ -112,7 +112,7 @@
     </entry>
     <entry id="49" name="hsa:2571 hsa:2572" type="gene" reaction="rn:R01682"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="292" width="46" height="17"/>
     </entry>
     <entry id="52" name="hsa:1036" type="gene" reaction="rn:R00893"
@@ -132,7 +132,7 @@
     </entry>
     <entry id="55" name="hsa:2571 hsa:2572" type="gene" reaction="rn:R02466"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="300" y="183" width="46" height="17"/>
     </entry>
     <entry id="56" name="hsa:124975 hsa:2678 hsa:2686 hsa:2687" type="gene" reaction="rn:R01687"

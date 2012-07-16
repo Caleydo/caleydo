@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 31, 2011 17:33:38 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 09:43:49 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00640" org="hsa" number="00640"
          title="Propanoate metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00640.png"
@@ -25,9 +25,9 @@
         <graphics name="K01720" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="647" y="460" width="46" height="17"/>
     </entry>
-    <entry id="51" name="ko:K05608" type="ortholog" reaction="rn:R04425"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K05608">
-        <graphics name="K05608" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="51" name="ko:K01682" type="ortholog" reaction="rn:R04425"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01682">
+        <graphics name="K01682" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="599" y="494" width="46" height="17"/>
     </entry>
     <entry id="52" name="cpd:C04225" type="compound"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="92" name="hsa:31 hsa:32" type="gene" reaction="rn:R00742"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:31+hsa:32">
-        <graphics name="ACACA, ACAC, ACC, ACC1, ACCA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACACA, ACAC, ACACAD, ACC, ACC1, ACCA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="290" y="265" width="46" height="17"/>
     </entry>
     <entry id="94" name="hsa:23417" type="gene" reaction="rn:R00233"

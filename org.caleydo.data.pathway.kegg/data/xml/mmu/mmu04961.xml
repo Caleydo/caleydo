@@ -262,7 +262,7 @@
     </entry>
     <entry id="52" name="mmu:14683" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14683">
-        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Galphas, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="570" y="458" width="46" height="17"/>
     </entry>
     <entry id="53" name="mmu:11928 mmu:11931 mmu:11932 mmu:11933 mmu:11936 mmu:232975 mmu:27222 mmu:67821 mmu:98660" type="gene"

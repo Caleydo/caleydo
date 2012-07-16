@@ -87,12 +87,12 @@
     </entry>
     <entry id="17" name="mmu:74338" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:74338">
-        <graphics name="Slc6a19, 4632401C08Rik, B&lt;0&gt;AT1, MGC130422, MGC130423" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Slc6a19, 4632401C08Rik, B&lt;0&gt;AT1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="533" y="637" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:20514" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20514">
-        <graphics name="Slc1a5, AAAT, ASCT2, ATBO, M7V1, M7VS1, MGC46952, R16, RDRC, Slc1a7" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Slc1a5, AAAT, ASCT2, ATBO, M7V1, M7VS1, R16, RDRC, Slc1a7" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="621" y="570" width="46" height="17"/>
     </entry>
     <entry id="19" name="path:mmu04972" type="map"
@@ -100,9 +100,9 @@
         <graphics name="Pancreatic secretion" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="217" y="313" width="124" height="25"/>
     </entry>
-    <entry id="20" name="mmu:22072 mmu:436522 mmu:67373" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22072+mmu:436522+mmu:67373">
-        <graphics name="Prss2, TRY8, TRYP, Ta, Tesp4, Try2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="20" name="mmu:103964 mmu:22072 mmu:436522 mmu:67373" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:103964+mmu:22072+mmu:436522+mmu:67373">
+        <graphics name="Try5, 1810049H19Rik, Tc, Tesp4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="159" y="361" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:20532" type="gene"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="22" name="mmu:11928 mmu:11931 mmu:11932 mmu:11933 mmu:11936 mmu:232975 mmu:27222 mmu:67821 mmu:98660" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11928+mmu:11931+mmu:11932+mmu:11933+mmu:11936+mmu:232975+mmu:27222+mmu:67821+mmu:98660">
-        <graphics name="Atp1a1, Atpa-1, BC010319, MGC38419..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Atp1a1, Atpa-1, BC010319..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1008" y="308" width="47" height="17"/>
     </entry>
     <entry id="23" name="cpd:C00037 cpd:C00041 cpd:C00183 cpd:C00123 cpd:C00073 cpd:C00407 cpd:C00148 cpd:C00079 cpd:C00078 cpd:C00065 cpd:C00188 cpd:C00152 cpd:C00064" type="compound"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="32" name="mmu:109660" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109660">
-        <graphics name="Ctrl, 0910001G08Rik, 1810004D15Rik, AV005227, Ctra-1, Ctra1, FLJ00366, chymopasin, mFLJ00366" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctrl, 0910001G08Rik, 1810004D15Rik, AV005227, Ctra-1, Ctra1, chymopasin, mFLJ00366" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="269" y="361" width="46" height="17"/>
     </entry>
     <entry id="33" name="mmu:13706 mmu:67868" type="gene"
@@ -177,7 +177,7 @@
     </entry>
     <entry id="35" name="mmu:56373 mmu:76703" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56373+mmu:76703">
-        <graphics name="Cpb2, 1110032P04Rik, 4930405E17Rik, AI255929, CPR, Cpu, MGC107573, TAFI..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cpb2, 1110032P04Rik, 4930405E17Rik, AI255929, CPR, Cpu, TAFI..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="214" y="414" width="46" height="17"/>
     </entry>
     <entry id="36" name="mmu:58803" type="gene"
@@ -357,7 +357,7 @@
     </entry>
     <entry id="71" name="mmu:72472" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:72472">
-        <graphics name="Slc16a10, 2610103N14Rik, 9830169E08, PRO0813, TAT1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Slc16a10, 2610103N14Rik, 9830169E08, Mct10, PRO0813, TAT1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1007" y="699" width="46" height="17"/>
     </entry>
     <entry id="72" name="cpd:C00079 cpd:C00082 cpd:C00078" type="compound"

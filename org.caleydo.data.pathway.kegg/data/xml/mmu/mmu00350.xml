@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 20, 2011 14:23:46 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 21, 2012 15:46:22 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00350" org="mmu" number="00350"
          title="Tyrosine metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00350.png"
@@ -58,7 +58,7 @@
     <entry id="89" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689" type="gene" reaction="rn:R04891 rn:R04892"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689">
         <graphics name="Aldh3a1, Ahd-4, Ahd4, Aldh, Aldh3..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="1249" y="545" width="46" height="17"/>
+             type="rectangle" x="1251" y="545" width="46" height="17"/>
     </entry>
     <entry id="90" name="mmu:109731 mmu:17161" type="gene" reaction="rn:R02532"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109731+mmu:17161">
@@ -73,7 +73,7 @@
     <entry id="92" name="mmu:12846" type="gene" reaction="rn:R02920"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12846">
         <graphics name="Comt, Comt1, D16Wsu103e, D330014B15Rik" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="1250" y="298" width="46" height="17"/>
+             type="rectangle" x="1251" y="298" width="46" height="17"/>
     </entry>
     <entry id="93" name="mmu:12846" type="gene" reaction="rn:R04887"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12846">
@@ -88,17 +88,17 @@
     <entry id="95" name="mmu:11522 mmu:11529 mmu:11532 mmu:26876" type="gene" reaction="rn:R04880"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11522+mmu:11529+mmu:11532+mmu:26876">
         <graphics name="Adh1, ADH-AA, AI194826, Adh-1, Adh-1-t, Adh-1e, Adh-1t, Adh-3e, Adh1-e, Adh1-t, Adh1tl, Adh3-e..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="1025" y="428" width="46" height="17"/>
+             type="rectangle" x="1027" y="428" width="46" height="17"/>
     </entry>
     <entry id="96" name="mmu:12846" type="gene" reaction="rn:R04881"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12846">
         <graphics name="Comt, Comt1, D16Wsu103e, D330014B15Rik" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="1026" y="543" width="46" height="17"/>
+             type="rectangle" x="1027" y="544" width="46" height="17"/>
     </entry>
     <entry id="97" name="mmu:109731 mmu:17161" type="gene" reaction="rn:R04894"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109731+mmu:17161">
         <graphics name="Maob, 6330414K01Rik, MAO-B..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="1249" y="390" width="46" height="17"/>
+             type="rectangle" x="1251" y="390" width="46" height="17"/>
     </entry>
     <entry id="98" name="mmu:18948" type="gene" reaction="rn:R02533"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18948">
@@ -108,7 +108,7 @@
     <entry id="99" name="mmu:109731 mmu:17161" type="gene" reaction="rn:R02919"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109731+mmu:17161">
         <graphics name="Maob, 6330414K01Rik, MAO-B..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="1328" y="391" width="46" height="17"/>
+             type="rectangle" x="1328" y="390" width="46" height="17"/>
     </entry>
     <entry id="100" name="mmu:13166" type="gene" reaction="rn:R02535"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13166">
@@ -133,12 +133,12 @@
     <entry id="104" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689" type="gene" reaction="rn:R04888 rn:R04889"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689">
         <graphics name="Aldh3a1, Ahd-4, Ahd4, Aldh, Aldh3..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="869" y="544" width="46" height="17"/>
+             type="rectangle" x="870" y="544" width="46" height="17"/>
     </entry>
     <entry id="105" name="mmu:12846" type="gene" reaction="rn:R04301"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12846">
         <graphics name="Comt, Comt1, D16Wsu103e, D330014B15Rik" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="868" y="298" width="46" height="17"/>
+             type="rectangle" x="870" y="298" width="46" height="17"/>
     </entry>
     <entry id="106" name="mmu:109731 mmu:17161" type="gene" reaction="rn:R04890"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109731+mmu:17161">
@@ -158,7 +158,7 @@
     <entry id="109" name="mmu:22018" type="gene" reaction="rn:R03953"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22018">
         <graphics name="Tpo" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="103" y="293" width="46" height="17"/>
+             type="rectangle" x="103" y="292" width="46" height="17"/>
     </entry>
     <entry id="110" name="mmu:22018" type="gene" reaction="rn:R03973"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22018">
@@ -170,9 +170,9 @@
         <graphics name="Tpo" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="271" y="267" width="46" height="17"/>
     </entry>
-    <entry id="112" name="ko:K01557" type="ortholog" reaction="rn:R01085"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01557">
-        <graphics name="K01557" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="112" name="mmu:68636" type="gene" reaction="rn:R01085"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:68636">
+        <graphics name="Fahd1, 1110025H10Rik, AV002085" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="629" y="730" width="46" height="17"/>
     </entry>
     <entry id="113" name="ko:K01801" type="ortholog" reaction="rn:R03868"
@@ -198,7 +198,7 @@
     <entry id="120" name="ko:K00455" type="ortholog" reaction="rn:R03303"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00455">
         <graphics name="K00455" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="174" y="540" width="46" height="17"/>
+             type="rectangle" x="174" y="543" width="46" height="17"/>
     </entry>
     <entry id="121" name="ko:K00483 ko:K00484" type="ortholog" reaction="rn:R02698"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00483+K00484">
@@ -208,7 +208,7 @@
     <entry id="122" name="mmu:14718 mmu:14719 mmu:641049" type="gene" reaction="rn:R00734"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14718+mmu:14719+mmu:641049">
         <graphics name="Got1, AI789014, Got-1, cAspAT..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="475" y="323" width="46" height="17"/>
+             type="rectangle" x="475" y="309" width="46" height="17"/>
     </entry>
     <entry id="123" name="mmu:17319" type="gene" reaction="rn:R03342"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17319">
@@ -218,12 +218,12 @@
     <entry id="124" name="mmu:15445" type="gene" reaction="rn:R02521"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15445">
         <graphics name="Hpd, Fla, Flp, Hppd, Laf" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="499" y="453" width="46" height="17"/>
+             type="rectangle" x="500" y="453" width="46" height="17"/>
     </entry>
     <entry id="126" name="ko:K00680" type="ortholog" reaction="rn:R04777"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00680">
         <graphics name="K00680" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="359" y="647" width="46" height="17"/>
+             type="rectangle" x="360" y="647" width="46" height="17"/>
     </entry>
     <entry id="129" name="mmu:11670 mmu:56847 mmu:621603 mmu:67689" type="gene" reaction="rn:R02695 rn:R02697"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11670+mmu:56847+mmu:621603+mmu:67689">
@@ -263,12 +263,12 @@
     <entry id="138" name="mmu:100328588 mmu:100470 mmu:14204" type="gene" reaction="rn:R00729"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100328588+mmu:100470+mmu:14204">
         <graphics name="Nup62-il4i1..." fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="560" y="362" width="46" height="17"/>
+             type="rectangle" x="560" y="370" width="46" height="17"/>
     </entry>
     <entry id="139" name="mmu:234724" type="gene" reaction="rn:R00734"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:234724">
         <graphics name="Tat, MGC37772, MGC37789, MGC37790, MGC37819, MGC37828, MGC37842" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="525" y="323" width="46" height="17"/>
+             type="rectangle" x="525" y="309" width="46" height="17"/>
     </entry>
     <entry id="140" name="ko:K01668" type="ortholog" reaction="rn:R00728"
         link="http://www.kegg.jp/dbget-bin/www_bget?K01668">
@@ -298,12 +298,12 @@
     <entry id="146" name="ko:K01826" type="ortholog" reaction="rn:R04379"
         link="http://www.kegg.jp/dbget-bin/www_bget?K01826">
         <graphics name="K01826" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="172" y="665" width="46" height="17"/>
+             type="rectangle" x="174" y="665" width="46" height="17"/>
     </entry>
-    <entry id="147" name="ko:K01614 ko:K05921" type="ortholog" reaction="rn:R04380"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01614+K05921">
-        <graphics name="K01614..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="173" y="722" width="46" height="17"/>
+    <entry id="147" name="ko:K05921" type="ortholog" reaction="rn:R04380"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K05921">
+        <graphics name="K05921" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="174" y="722" width="46" height="17"/>
     </entry>
     <entry id="148" name="ko:K02509" type="ortholog" reaction="rn:R06897"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02509">
@@ -378,12 +378,12 @@
     <entry id="174" name="ko:K00817" type="ortholog" reaction="rn:R00734"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00817">
         <graphics name="K00817" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="475" y="342" width="46" height="17"/>
+             type="rectangle" x="475" y="328" width="46" height="17"/>
     </entry>
     <entry id="175" name="ko:K00832 ko:K00838" type="ortholog" reaction="rn:R00734"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00832+K00838">
         <graphics name="K00832..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="525" y="342" width="46" height="17"/>
+             type="rectangle" x="525" y="328" width="46" height="17"/>
     </entry>
     <entry id="176" name="ko:K02509" type="ortholog" reaction="rn:R04132"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02509">
@@ -743,7 +743,7 @@
     <entry id="252" name="mmu:14085" type="gene" reaction="rn:R01364"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14085">
         <graphics name="Fah" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="499" y="727" width="46" height="17"/>
+             type="rectangle" x="500" y="727" width="46" height="17"/>
     </entry>
     <entry id="257" name="path:mmu00620" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00620">
@@ -803,7 +803,7 @@
     <entry id="276" name="ko:K05821" type="ortholog" reaction="rn:R09254"
         link="http://www.kegg.jp/dbget-bin/www_bget?K05821">
         <graphics name="K05821" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="500" y="361" width="46" height="17"/>
+             type="rectangle" x="475" y="347" width="46" height="17"/>
     </entry>
     <entry id="278" name="cpd:C00544" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C00544">
@@ -814,6 +814,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?C10447">
         <graphics name="C10447" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="814" y="369" width="8" height="8"/>
+    </entry>
+    <entry id="280" name="ko:K00270" type="ortholog" reaction="rn:R09830"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00270">
+        <graphics name="K00270" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="525" y="347" width="46" height="17"/>
     </entry>
     <relation entry1="129" entry2="130" type="ECrel">
         <subtype name="compound" value="201"/>
@@ -1046,6 +1051,9 @@
     <relation entry1="92" entry2="99" type="ECrel">
         <subtype name="compound" value="227"/>
     </relation>
+    <relation entry1="112" entry2="257" type="maplink">
+        <subtype name="compound" value="195"/>
+    </relation>
     <relation entry1="252" entry2="258" type="maplink">
         <subtype name="compound" value="186"/>
     </relation>
@@ -1253,10 +1261,14 @@
         <substrate id="205" name="cpd:C00082"/>
         <product id="221" name="cpd:C02515"/>
     </reaction>
+    <reaction id="112" name="rn:R01085" type="irreversible">
+        <substrate id="196" name="cpd:C02514"/>
+        <product id="195" name="cpd:C00022"/>
+    </reaction>
     <reaction id="252" name="rn:R01364" type="irreversible">
         <substrate id="187" name="cpd:C01061"/>
-        <product id="185" name="cpd:C00164"/>
         <product id="186" name="cpd:C00122"/>
+        <product id="185" name="cpd:C00164"/>
     </reaction>
     <reaction id="118" name="rn:R03181" type="irreversible">
         <substrate id="193" name="cpd:C01036"/>

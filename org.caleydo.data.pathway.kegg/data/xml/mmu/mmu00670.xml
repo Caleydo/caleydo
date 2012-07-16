@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 28, 2011 09:07:59 +0900 (GMT+09:00) -->
+<!-- Creation date: Sep 13, 2011 11:38:34 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00670" org="mmu" number="00670"
          title="One carbon pool by folate"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00670.png"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="47" name="mmu:107747 mmu:216188" type="gene" reaction="rn:R00941"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:107747+mmu:216188">
-        <graphics name="Aldh1l1, 1810048F20Rik, Fthfd, Neut2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aldh1l1, 1810048F20Rik, FDH, Fthfd, Neut2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="284" y="373" width="46" height="17"/>
     </entry>
     <entry id="48" name="ko:K01433" type="ortholog" reaction="rn:R00944"

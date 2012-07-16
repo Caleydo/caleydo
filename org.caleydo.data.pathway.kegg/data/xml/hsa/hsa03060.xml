@@ -137,7 +137,7 @@
     </entry>
     <entry id="28" name="hsa:11231" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:11231">
-        <graphics name="SEC63, ERdj2, PRO2507, SEC63L" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SEC63, DNAJC23, ERdj2, PRO2507, SEC63L" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="181" width="46" height="17"/>
     </entry>
     <entry id="29" name="hsa:28972" type="gene"

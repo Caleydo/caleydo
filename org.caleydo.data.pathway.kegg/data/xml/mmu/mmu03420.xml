@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="mmu:23894" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23894">
-        <graphics name="Gtf2h2, 44kDa, BTF2_p44, Btf2p44, p44" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gtf2h2, 44kDa, BTF2_p44, BTF2-p44, Btf2p44, p44" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="668" y="854" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:14884" type="gene"
@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="mmu:13871" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13871">
-        <graphics name="Ercc2, AA407812, AU020867, AW240756, Ercc-2, XPD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ercc2, AA407812, AU020867, AW240756, CXPD, Ercc-2, XPD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="622" y="854" width="46" height="17"/>
     </entry>
     <entry id="6" name="mmu:66467" type="gene"
@@ -62,12 +62,12 @@
     </entry>
     <entry id="12" name="mmu:72584 mmu:99375" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:72584+mmu:99375">
-        <graphics name="Cul4b, 2700050M05Rik, AA409770, KIAA0695, mKIAA0695..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cul4b, 2700050M05Rik, AA409770, CUL-4B, KIAA0695, mKIAA0695..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="984" y="291" width="46" height="17"/>
     </entry>
-    <entry id="13" name="mmu:56438" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56438">
-        <graphics name="Rbx1, 1500002P15Rik, AA517855, ROC1" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="13" name="mmu:100043674 mmu:56438" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043674+mmu:56438">
+        <graphics name="Gm9840..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="984" y="274" width="46" height="17"/>
     </entry>
     <entry id="14" name="path:mmu03020" type="map"
@@ -177,7 +177,7 @@
     </entry>
     <entry id="35" name="mmu:23894" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23894">
-        <graphics name="Gtf2h2, 44kDa, BTF2_p44, Btf2p44, p44" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gtf2h2, 44kDa, BTF2_p44, BTF2-p44, Btf2p44, p44" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="858" y="480" width="46" height="17"/>
     </entry>
     <entry id="36" name="mmu:66467" type="gene"
@@ -202,12 +202,12 @@
     </entry>
     <entry id="40" name="mmu:72584 mmu:99375" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:72584+mmu:99375">
-        <graphics name="Cul4b, 2700050M05Rik, AA409770, KIAA0695, mKIAA0695..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cul4b, 2700050M05Rik, AA409770, CUL-4B, KIAA0695, mKIAA0695..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="744" y="288" width="46" height="17"/>
     </entry>
-    <entry id="41" name="mmu:56438" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56438">
-        <graphics name="Rbx1, 1500002P15Rik, AA517855, ROC1" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="41" name="mmu:100043674 mmu:56438" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043674+mmu:56438">
+        <graphics name="Gm9840..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="744" y="271" width="46" height="17"/>
     </entry>
     <entry id="42" name="ko:K03723" type="ortholog"
@@ -247,7 +247,7 @@
     </entry>
     <entry id="49" name="mmu:13871" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13871">
-        <graphics name="Ercc2, AA407812, AU020867, AW240756, Ercc-2, XPD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ercc2, AA407812, AU020867, AW240756, CXPD, Ercc-2, XPD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="812" y="480" width="46" height="17"/>
     </entry>
     <entry id="50" name="mmu:319955" type="gene"

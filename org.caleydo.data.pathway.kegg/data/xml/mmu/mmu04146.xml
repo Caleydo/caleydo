@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 3, 2010 15:51:00 +0900 (JST) -->
+<!-- Creation date: Nov 8, 2011 14:15:09 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04146" org="mmu" number="04146"
          title="Peroxisome"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04146.png"
@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="mmu:228061" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:228061">
-        <graphics name="Agps, 5832437L22, 9930035G10Rik, AW123847, Adaps, Adas, Adhaps, Adps, Aldhpsy" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agps, 5832437L22, 9930035G10Rik, AW123847, Adaps, Adas, Adhaps, Adps, Aldhpsy, bs2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="372" y="649" width="46" height="17"/>
     </entry>
     <entry id="20" name="mmu:16922" type="gene"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="mmu:15488" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15488">
-        <graphics name="Hsd17b4, 17[b]-HSD, AW208803, MFE-2, MFP2, MPF-2, Mfp-2, perMFE-2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Hsd17b4, 17-beta-HSD, 17[b]-HSD, 4, DBP, MFE-2, MFP2, MPF-2, Mfp-2, perMFE-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="73" y="694" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:12359" type="gene"
@@ -252,7 +252,7 @@
     </entry>
     <entry id="50" name="mmu:23986" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23986">
-        <graphics name="Peci, Acbd2, Drs1, Hca88" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Eci2, Acbd2, Drs1, Hca88, Peci" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="123" y="894" width="46" height="17"/>
     </entry>
     <entry id="51" name="mmu:67993" type="gene"

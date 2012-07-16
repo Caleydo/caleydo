@@ -57,12 +57,12 @@
     </entry>
     <entry id="11" name="hsa:5892" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5892">
-        <graphics name="RAD51L3, R51H3, RAD51D, TRAD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAD51D, R51H3, RAD51L3, TRAD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="747" y="375" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:5892" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5892">
-        <graphics name="RAD51L3, R51H3, RAD51D, TRAD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAD51D, R51H3, RAD51L3, TRAD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="593" y="358" width="46" height="17"/>
     </entry>
     <entry id="13" name="hsa:5889" type="gene"
@@ -72,7 +72,7 @@
     </entry>
     <entry id="14" name="hsa:5890" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5890">
-        <graphics name="RAD51L1, MGC34245, R51H2, RAD51B, REC2, hREC2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAD51B, MGC34245, R51H2, RAD51L1, REC2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="701" y="358" width="46" height="17"/>
     </entry>
     <entry id="15" name="hsa:5889" type="gene"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="37" name="hsa:5890" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5890">
-        <graphics name="RAD51L1, MGC34245, R51H2, RAD51B, REC2, hREC2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAD51B, MGC34245, R51H2, RAD51L1, REC2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="593" y="309" width="46" height="17"/>
     </entry>
     <entry id="38" name="hsa:4683" type="gene"

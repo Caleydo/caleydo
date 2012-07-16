@@ -165,9 +165,9 @@
         <graphics name="Lig3, D11Wsu78e, MGC78176" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="262" y="870" width="46" height="17"/>
     </entry>
-    <entry id="33" name="mmu:15289 mmu:385454 mmu:619937 mmu:637733" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15289+mmu:385454+mmu:619937+mmu:637733">
-        <graphics name="Hmgb1, DEF, HMG-1, Hmg1, MGC103168, MGC103169, MGC117896, MGC117897, SBP-1, amphoterin, p30..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="33" name="mmu:100862258 mmu:15289 mmu:385454 mmu:619937 mmu:637733" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862258+mmu:15289+mmu:385454+mmu:619937+mmu:637733">
+        <graphics name="100862258..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="411" y="627" width="46" height="17"/>
     </entry>
     <entry id="34" name="mmu:16881" type="gene"

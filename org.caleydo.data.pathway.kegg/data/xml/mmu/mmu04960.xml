@@ -80,9 +80,9 @@
         <graphics name="C00762" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="468" y="292" width="8" height="8"/>
     </entry>
-    <entry id="16" name="mmu:15483 mmu:15484" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15483+mmu:15484">
-        <graphics name="Hsd11b1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="16" name="mmu:15484" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15484">
+        <graphics name="Hsd11b2, 11HSD2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="529" y="278" width="46" height="17"/>
     </entry>
     <entry id="17" name="path:mmu00140" type="map"

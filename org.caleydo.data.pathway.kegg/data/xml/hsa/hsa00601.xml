@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 16, 2010 10:46:37 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 29, 2012 14:34:58 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00601" org="hsa" number="00601"
          title="Glycosphingolipid biosynthesis - lacto and neolacto series"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00601.png"
@@ -437,7 +437,7 @@
     </entry>
     <entry id="130" name="hsa:6489" type="gene" reaction="rn:R06032"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6489">
-        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8A, ST8SiaI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="693" y="220" width="46" height="17"/>
     </entry>
     <entry id="131" name="hsa:2525 hsa:2527 hsa:2528" type="gene" reaction="rn:R06075"
@@ -637,7 +637,7 @@
     </entry>
     <entry id="187" name="hsa:6487" type="gene" reaction="rn:R06153"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6487">
-        <graphics name="ST3GAL3, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ST3GAL3, MRT12, SIAT6, ST3GALII, ST3GalIII, ST3N" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="247" y="247" width="46" height="17"/>
     </entry>
     <entry id="188" name="hsa:6484" type="gene" reaction="rn:R06153"
@@ -747,7 +747,7 @@
     </entry>
     <entry id="214" name="hsa:6489" type="gene" reaction="rn:R06032"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6489">
-        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8A, ST8SiaI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="396,1441,426,1441"/>
     </entry>
     <entry id="216" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R06031"
@@ -1652,8 +1652,6 @@
         <substrate id="86" name="gl:G00074"/>
         <product id="85" name="gl:G00075"/>
     </reaction>
-    <reaction id="110" name="rn:R06085 rn:R06086 rn:R06089 rn:R06090" type="reversible">
-    </reaction>
     <reaction id="112" name="rn:R06038" type="irreversible">
         <substrate id="73" name="gl:G00067"/>
         <product id="69" name="gl:G00089"/>
@@ -1825,67 +1823,5 @@
     <reaction id="192" name="rn:R06165" type="irreversible">
         <substrate id="189" name="gl:G00047"/>
         <product id="191" name="gl:G00048"/>
-    </reaction>
-    <reaction id="193" name="rn:R06167" type="reversible">
-    </reaction>
-    <reaction id="194" name="rn:R06153" type="reversible">
-    </reaction>
-    <reaction id="195" name="rn:R06169 rn:R06168" type="reversible">
-    </reaction>
-    <reaction id="196" name="rn:R06163" type="reversible">
-    </reaction>
-    <reaction id="197" name="rn:R06156 rn:R06170" type="reversible">
-    </reaction>
-    <reaction id="198" name="rn:R06006" type="reversible">
-    </reaction>
-    <reaction id="199" name="rn:R06165 rn:R06155 rn:R06164 rn:R06163 rn:R06162" type="reversible">
-    </reaction>
-    <reaction id="200" name="rn:R05971" type="reversible">
-    </reaction>
-    <reaction id="203" name="rn:R06187" type="reversible">
-    </reaction>
-    <reaction id="204" name="rn:R05975" type="reversible">
-    </reaction>
-    <reaction id="205" name="rn:R06026" type="reversible">
-    </reaction>
-    <reaction id="206" name="rn:R06189" type="reversible">
-    </reaction>
-    <reaction id="207" name="rn:R06024 rn:R06027" type="reversible">
-    </reaction>
-    <reaction id="208" name="rn:R05977" type="reversible">
-    </reaction>
-    <reaction id="209" name="rn:R06025 rn:R06075 rn:R06095 rn:R06230 rn:R06221 rn:R06224 rn:R06227" type="reversible">
-    </reaction>
-    <reaction id="210" name="rn:R05971" type="reversible">
-    </reaction>
-    <reaction id="213" name="rn:R05978 rn:R06029" type="reversible">
-    </reaction>
-    <reaction id="214" name="rn:R06032" type="reversible">
-    </reaction>
-    <reaction id="216" name="rn:R06031" type="reversible">
-    </reaction>
-    <reaction id="217" name="rn:R06197" type="reversible">
-    </reaction>
-    <reaction id="218" name="rn:R06038 rn:R06222 rn:R06076" type="reversible">
-    </reaction>
-    <reaction id="219" name="rn:R06033" type="reversible">
-    </reaction>
-    <reaction id="220" name="rn:R06037 rn:R06232" type="reversible">
-    </reaction>
-    <reaction id="221" name="rn:R05974" type="reversible">
-    </reaction>
-    <reaction id="222" name="rn:R06039" type="reversible">
-    </reaction>
-    <reaction id="225" name="rn:R06193" type="reversible">
-    </reaction>
-    <reaction id="226" name="rn:R06190" type="reversible">
-    </reaction>
-    <reaction id="227" name="rn:R06035 rn:R06085 rn:R06090" type="reversible">
-    </reaction>
-    <reaction id="229" name="rn:R06041" type="reversible">
-    </reaction>
-    <reaction id="230" name="rn:R06191" type="reversible">
-    </reaction>
-    <reaction id="234" name="rn:R06086 rn:R06089" type="reversible">
     </reaction>
 </pathway>

@@ -35,8 +35,8 @@
         <graphics name="K02524" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="441" y="402" width="46" height="17"/>
     </entry>
-    <entry id="7" name="hsa:143689 hsa:440822 hsa:55124 hsa:652554 hsa:9271" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:143689+hsa:440822+hsa:55124+hsa:652554+hsa:9271">
+    <entry id="7" name="hsa:143689 hsa:440822 hsa:55124 hsa:9271" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:143689+hsa:440822+hsa:55124+hsa:9271">
         <graphics name="PIWIL4, DKFZp686P01248, FLJ36156, HIWI2, MIWI2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="216" y="527" width="46" height="17"/>
     </entry>

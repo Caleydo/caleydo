@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 14, 2011 17:42:39 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 1, 2012 10:40:28 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00250" org="mmu" number="00250"
          title="Alanine, aspartate and glutamate metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00250.png"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="51" name="mmu:11898" type="gene" reaction="rn:R01954"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11898">
-        <graphics name="Ass1, AA408052, ASS, Ass-1, MGC103151, fold" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ass1, AA408052, ASS, Ass-1, fold" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="401" y="333" width="46" height="17"/>
     </entry>
     <entry id="52" name="mmu:11565 mmu:11566" type="gene" reaction="rn:R01135"
@@ -372,7 +372,7 @@
     </entry>
     <entry id="119" name="mmu:231327" type="gene" reaction="rn:R01072"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:231327">
-        <graphics name="Ppat, 5730454C12Rik, AA408689, AA675351, AI507113, C79945, MGC38417" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ppat, 5730454C12Rik, AA408689, AA675351, AI507113, C79945" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="882" y="755" width="46" height="17"/>
     </entry>
     <entry id="120" name="cpd:C00352" type="compound"
@@ -410,8 +410,8 @@
         <graphics name="Histidine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="516" y="734" width="121" height="25"/>
     </entry>
-    <entry id="127" name="path:mmu00910" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu00910">
+    <entry id="127" name="path:map00910" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?map00910">
         <graphics name="Nitrogen metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="516" y="762" width="121" height="25"/>
     </entry>
@@ -1188,8 +1188,8 @@
     </reaction>
     <reaction id="87" name="rn:R00243 rn:R00248" type="reversible">
         <substrate id="82" name="cpd:C00025"/>
-        <product id="19" name="cpd:C00026"/>
         <product id="134" name="cpd:C00014"/>
+        <product id="19" name="cpd:C00026"/>
     </reaction>
     <reaction id="91" name="rn:R01648" type="reversible">
         <substrate id="89" name="cpd:C00334"/>

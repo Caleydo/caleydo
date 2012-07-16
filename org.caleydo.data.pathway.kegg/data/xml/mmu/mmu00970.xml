@@ -62,7 +62,7 @@
     </entry>
     <entry id="69" name="mmu:20226 mmu:71984" type="gene" reaction="rn:R03662"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20226+mmu:71984">
-        <graphics name="Sars, C78314, Sars1, Strs..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Sars, Sars1, Strs, serRS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="271" y="850" width="46" height="17"/>
     </entry>
     <entry id="70" name="mmu:212679 mmu:216443" type="gene" reaction="rn:R03659"
@@ -372,7 +372,7 @@
     </entry>
     <entry id="131" name="mmu:229487" type="gene" reaction="rn:R03905"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:229487">
-        <graphics name="Pet112l, 9430026F02Rik, MGC11629" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pet112l, 9430026F02Rik, MGC11629, Pet112" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="338" y="245" width="46" height="17"/>
     </entry>
     <entry id="132" name="ko:K09698" type="ortholog" reaction="rn:R03651"
@@ -387,7 +387,7 @@
     </entry>
     <entry id="134" name="mmu:229487" type="gene" reaction="rn:R04212"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:229487">
-        <graphics name="Pet112l, 9430026F02Rik, MGC11629" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pet112l, 9430026F02Rik, MGC11629, Pet112" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="337" y="548" width="46" height="17"/>
     </entry>
     <entry id="135" name="ko:K09759" type="ortholog" reaction="rn:R03647"
@@ -417,7 +417,7 @@
     </entry>
     <entry id="140" name="mmu:20226 mmu:71984" type="gene" reaction="rn:R08218"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20226+mmu:71984">
-        <graphics name="Sars, C78314, Sars1, Strs..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Sars, Sars1, Strs, serRS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="271" y="930" width="46" height="17"/>
     </entry>
     <entry id="141" name="cpd:C06481" type="compound"

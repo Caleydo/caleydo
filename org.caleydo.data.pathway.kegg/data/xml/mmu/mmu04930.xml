@@ -157,7 +157,7 @@
     </entry>
     <entry id="31" name="mmu:16514" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16514">
-        <graphics name="Kcnj11, AI842722, AW491124, Kir6.2, mBIR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Kcnj11, Kir6.2, mBIR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="266" y="728" width="46" height="17"/>
     </entry>
     <entry id="32" name="mmu:20927" type="gene"

@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="hsa:10193 hsa:11059 hsa:23327 hsa:23624 hsa:4193 hsa:4734 hsa:57154 hsa:64750 hsa:7189 hsa:83737 hsa:867 hsa:868" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10193+hsa:11059+hsa:23327+hsa:23624+hsa:4193+hsa:4734+hsa:57154+hsa:64750+hsa:7189+hsa:83737+hsa:867+hsa:868">
-        <graphics name="RNF41, MGC45228, NRDP1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RNF41, FLRF, MGC45228, NRDP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="253" y="273" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:3949" type="gene"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="hsa:89853 hsa:93343" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:89853+hsa:93343">
-        <graphics name="FAM125B, C9orf28, FLJ00001..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FAM125B, C9orf28, FLJ00001, MVB12B..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="532" y="723" width="46" height="17"/>
     </entry>
     <entry id="16" name="hsa:137492 hsa:155382 hsa:55048 hsa:79720" type="gene"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="27" name="hsa:57132" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:57132">
-        <graphics name="CHMP1B, C10orf2, C18-ORF2, C18orf2, CHMP1.5, Vps46-2, Vps46B" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CHMP1B, C10orf2, C18-ORF2, C18orf2, CHMP1.5, Vps46-2, Vps46B, hVps46-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="833" y="692" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:25978 hsa:27243" type="gene"
@@ -237,7 +237,7 @@
     </entry>
     <entry id="47" name="hsa:7037" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7037">
-        <graphics name="TFRC, CD71, TFR, TFR1, TRFR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TFRC, CD71, T9, TFR, TFR1, TR, TRFR, p90" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="128" y="151" width="46" height="17"/>
     </entry>
     <entry id="48" name="hsa:22905 hsa:29924 hsa:55040" type="gene"
@@ -430,8 +430,8 @@
         <graphics name="VPS45, H1, H1VPS45, VPS45A, VPS45B, VPS54A, VSP45, VSP45A" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="552" y="507" width="46" height="17"/>
     </entry>
-    <entry id="86" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:652614" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3105+hsa:3106+hsa:3107+hsa:3133+hsa:3134+hsa:3135+hsa:652614">
+    <entry id="86" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3105+hsa:3106+hsa:3107+hsa:3133+hsa:3134+hsa:3135">
         <graphics name="HLA-A, FLJ26655, HLAA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1072" y="152" width="46" height="17"/>
     </entry>
@@ -475,9 +475,9 @@
         <graphics name="TGF-beta signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="59" y="273" width="102" height="38"/>
     </entry>
-    <entry id="95" name="hsa:5371 hsa:652346" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5371+hsa:652346">
-        <graphics name="PML, MYL, PP8675, RNF71, TRIM19..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="95" name="hsa:5371" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5371">
+        <graphics name="PML, MYL, PP8675, RNF71, TRIM19" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="79" y="233" width="46" height="17"/>
     </entry>
     <entry id="96" name="hsa:7046 hsa:7048" type="gene"
@@ -497,7 +497,7 @@
     </entry>
     <entry id="99" name="hsa:857 hsa:858 hsa:859" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:857+hsa:858+hsa:859">
-        <graphics name="CAV1, BSCL3, CGL3, MSTP085, VIP21..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CAV1, BSCL3, CGL3, MSTP085, VIP21, CAV..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="902" y="212" width="46" height="17"/>
     </entry>
     <entry id="100" name="hsa:3559 hsa:3560 hsa:3561" type="gene"

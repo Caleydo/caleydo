@@ -112,7 +112,7 @@
     </entry>
     <entry id="22" name="hsa:2494" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2494">
-        <graphics name="NR5A2, B1F, B1F2, CPF, FTF, FTZ-F1, FTZ-F1beta, LRH-1, LRH1, hB1F, hB1F-2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NR5A2, B1F, B1F2, CPF, FTF, FTZ-F1, FTZ-F1beta, LRH-1, LRH1, hB1F-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="442" y="248" width="46" height="17"/>
     </entry>
     <entry id="23" name="hsa:50674" type="gene"

@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="hsa:4790 hsa:5970" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4790+hsa:5970">
-        <graphics name="NFKB1, DKFZp686C01211, EBP-1, KBF1, MGC54151, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NFKB1, DKFZp686C01211, EBP-1, KBF1, MGC54151, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, NFkappaB, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="391" y="247" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:4792 hsa:4793 hsa:4794" type="gene"
@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="hsa:9370" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9370">
-        <graphics name="ADIPOQ, ACDC, ACRP30, ADIPQTL1, ADPN, APM-1, APM1, GBP28, adiponectin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADIPOQ, ACDC, ACRP30, ADIPQTL1, ADPN, APM-1, APM1, GBP28" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="59" y="811" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:32" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:3953" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3953">
-        <graphics name="LEPR, CD295, DKFZp686B1731, OBR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LEPR, CD295, DKFZp686B1731, LEP-R, OB-R, OBR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="142" y="482" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:10645 hsa:6794 hsa:84254" type="gene"

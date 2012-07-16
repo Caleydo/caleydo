@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Nov 8, 2010 15:09:32 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 6, 2012 11:23:25 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00563" org="hsa" number="00563"
          title="Glycosylphosphatidylinositol(GPI)-anchor biosynthesis"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00563.png"
@@ -17,7 +17,7 @@
     </entry>
     <entry id="11" name="hsa:9091" type="gene" reaction="rn:R05916"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9091">
-        <graphics name="PIGQ, GPI1, MGC12693, c407A10.1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIGQ, FLJ56783, GPI1, MGC12693, c407A10.1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="129" y="206" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:51227" type="gene" reaction="rn:R05916"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="33" name="hsa:9487" type="gene" reaction="rn:R05917"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9487">
-        <graphics name="PIGL" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIGL, CHIME" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="273" y="188" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:10026" type="gene"
@@ -152,12 +152,12 @@
     </entry>
     <entry id="38" name="hsa:23556" type="gene" reaction="rn:R05920"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23556">
-        <graphics name="PIGN, MCD4, MDC4, MGC26427, PIG-N" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIGN, MCAHS, MCAHS1, MCD4, MDC4, MGC26427, PIG-N" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="221" y="344" width="46" height="17"/>
     </entry>
     <entry id="39" name="hsa:5277" type="gene" reaction="rn:R05916"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5277">
-        <graphics name="PIGA, GPI3, PIG-A" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIGA, GPI3, MCAHS2, PIG-A" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="129" y="172" width="46" height="17"/>
     </entry>
     <entry id="40" name="hsa:2822" type="gene" reaction="rn:R06623"
@@ -242,7 +242,7 @@
     </entry>
     <entry id="66" name="hsa:5277" type="gene" reaction="rn:R05916"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5277">
-        <graphics name="PIGA, GPI3, PIG-A" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="PIGA, GPI3, MCAHS2, PIG-A" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="385,619,415,619"/>
     </entry>
     <entry id="67" name="hsa:84720" type="gene" reaction="rn:R08107"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="69" name="hsa:23556" type="gene" reaction="rn:R05920"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23556">
-        <graphics name="PIGN, MCD4, MDC4, MGC26427, PIG-N" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="PIGN, MCAHS, MCAHS1, MCD4, MDC4, MGC26427, PIG-N" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="286,575,286,605"/>
     </entry>
     <entry id="70" name="hsa:10026" type="gene"
@@ -443,13 +443,13 @@
         <product id="23" name="gl:G00143"/>
     </reaction>
     <reaction id="15" name="rn:R05919" type="irreversible">
-        <substrate id="48" name="gl:G10617"/>
         <substrate id="22" name="gl:G00145"/>
+        <substrate id="48" name="gl:G10617"/>
         <product id="25" name="gl:G00146"/>
     </reaction>
     <reaction id="21" name="rn:R05919" type="irreversible">
-        <substrate id="48" name="gl:G10617"/>
         <substrate id="22" name="gl:G00145"/>
+        <substrate id="48" name="gl:G10617"/>
         <product id="25" name="gl:G00146"/>
     </reaction>
     <reaction id="32" name="rn:R08107" type="irreversible">
@@ -467,8 +467,8 @@
         <product id="30" name="gl:G00149"/>
     </reaction>
     <reaction id="38" name="rn:R05920" type="irreversible">
-        <substrate id="25" name="gl:G00146"/>
         <substrate id="47" name="cpd:C00350"/>
+        <substrate id="25" name="gl:G00146"/>
         <product id="27" name="gl:G00147"/>
     </reaction>
     <reaction id="39" name="rn:R05916" type="irreversible">
@@ -486,29 +486,13 @@
         <product id="29" name="gl:G13044"/>
     </reaction>
     <reaction id="42" name="rn:R05918" type="irreversible">
-        <substrate id="24" name="gl:G00144"/>
         <substrate id="49" name="cpd:C00154"/>
+        <substrate id="24" name="gl:G00144"/>
         <product id="22" name="gl:G00145"/>
     </reaction>
     <reaction id="43" name="rn:R05921" type="irreversible">
-        <substrate id="27" name="gl:G00147"/>
         <substrate id="48" name="gl:G10617"/>
+        <substrate id="27" name="gl:G00147"/>
         <product id="31" name="gl:G00148"/>
-    </reaction>
-    <reaction id="62" name="rn:R07129" type="irreversible">
-    </reaction>
-    <reaction id="63" name="rn:R05922" type="irreversible">
-    </reaction>
-    <reaction id="64" name="rn:R05921" type="reversible">
-    </reaction>
-    <reaction id="65" name="rn:R05919" type="reversible">
-    </reaction>
-    <reaction id="66" name="rn:R05916" type="reversible">
-    </reaction>
-    <reaction id="67" name="rn:R08107" type="reversible">
-    </reaction>
-    <reaction id="68" name="rn:R05924" type="reversible">
-    </reaction>
-    <reaction id="69" name="rn:R05920" type="reversible">
     </reaction>
 </pathway>

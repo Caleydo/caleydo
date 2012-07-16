@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="mmu:231329" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:231329">
-        <graphics name="Polr2b, MGC47046, Pol2rb, Rpb140, Rpb2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr2b, Pol2rb, Rpb140, Rpb2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="390" y="389" width="46" height="17"/>
     </entry>
     <entry id="17" name="mmu:20020" type="gene"
@@ -92,7 +92,7 @@
     </entry>
     <entry id="18" name="mmu:20021" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20021">
-        <graphics name="Polr2c, 33kDa, MGC118242, RPB3, Rpo2-3, mRBP31" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr2c, 33kDa, RPB3, Rpo2-3, mRBP31" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="389" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:69241" type="gene"
@@ -117,17 +117,17 @@
     </entry>
     <entry id="23" name="mmu:245841" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:245841">
-        <graphics name="Polr2h, MGC103049, MGC8248" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr2h" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="749" y="389" width="46" height="17"/>
     </entry>
     <entry id="24" name="mmu:69920" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:69920">
-        <graphics name="Polr2i, 2810002B19Rik, MGC73656" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr2i, 2810002B19Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="592" y="389" width="46" height="17"/>
     </entry>
-    <entry id="25" name="mmu:100043714 mmu:625405 mmu:66491" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043714+mmu:625405+mmu:66491">
-        <graphics name="Gm10774..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="25" name="mmu:66491" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:66491">
+        <graphics name="Polr2l, 2510029B14Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="730" y="406" width="46" height="17"/>
     </entry>
     <entry id="26" name="mmu:20022" type="gene"
@@ -135,9 +135,9 @@
         <graphics name="Polr2j, 14.5kDa, Polr2i, Rpb11a, Rpo2-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="406" width="46" height="17"/>
     </entry>
-    <entry id="27" name="mmu:100046796" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100046796">
-        <graphics name="100046796" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="27" name="ko:K03009" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03009">
+        <graphics name="K03009" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="684" y="406" width="46" height="17"/>
     </entry>
     <entry id="28" name="mmu:70428" type="gene"
@@ -147,7 +147,7 @@
     </entry>
     <entry id="29" name="mmu:218832" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:218832">
-        <graphics name="Polr3a, 9330175N20Rik, BC053071, MGC62420, RPC1, RPC155" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr3a, 9330175N20Rik, BC053071, RPC1, RPC155" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="390" y="501" width="46" height="17"/>
     </entry>
     <entry id="30" name="mmu:74414" type="gene"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="32" name="mmu:20016" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20016">
-        <graphics name="Polr1c, 40kDa, AA409007, AA959927, AL024089, MGC161175, Polr1e, RPA40, Rpo1-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr1c, 40kDa, AA409007, AA959927, AL024089, Polr1e, RPA40, Rpo1-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="501" width="46" height="17"/>
     </entry>
     <entry id="33" name="mmu:67005" type="gene"
@@ -172,7 +172,7 @@
     </entry>
     <entry id="34" name="mmu:20018" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20018">
-        <graphics name="Polr1d, 1110003G10Rik, 16kDa, AU018636, C81327, MGC107156, Rpo1-3, mRPA16" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr1d, 1110003G10Rik, 16kDa, AU018636, C81327, Rpo1-3, mRPA16" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="484" width="46" height="17"/>
     </entry>
     <entry id="35" name="mmu:78929" type="gene"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="37" name="mmu:70408" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:70408">
-        <graphics name="Polr3f, 2810411G20Rik, 3010019O03Rik, 3110032A07Rik, MGC11656, RPC39, RPC6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr3f, 2810411G20Rik, 3010019O03Rik, 3110032A07Rik, RPC39, RPC6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="592" y="501" width="46" height="17"/>
     </entry>
     <entry id="38" name="mmu:20017" type="gene"
@@ -242,12 +242,12 @@
     </entry>
     <entry id="48" name="mmu:20016" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20016">
-        <graphics name="Polr1c, 40kDa, AA409007, AA959927, AL024089, MGC161175, Polr1e, RPA40, Rpo1-1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr1c, 40kDa, AA409007, AA959927, AL024089, Polr1e, RPA40, Rpo1-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="588" width="46" height="17"/>
     </entry>
     <entry id="49" name="mmu:20018" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20018">
-        <graphics name="Polr1d, 1110003G10Rik, 16kDa, AU018636, C81327, MGC107156, Rpo1-3, mRPA16" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Polr1d, 1110003G10Rik, 16kDa, AU018636, C81327, Rpo1-3, mRPA16" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="436" y="571" width="46" height="17"/>
     </entry>
 </pathway>

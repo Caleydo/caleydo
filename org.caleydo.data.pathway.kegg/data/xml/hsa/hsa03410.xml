@@ -165,9 +165,9 @@
         <graphics name="LIG3, LIG2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="262" y="870" width="46" height="17"/>
     </entry>
-    <entry id="33" name="hsa:3146 hsa:645490" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3146+hsa:645490">
-        <graphics name="HMGB1, DKFZp686A04236, HMG1, HMG3, SBP-1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="33" name="hsa:3146" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3146">
+        <graphics name="HMGB1, DKFZp686A04236, HMG1, HMG3, SBP-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="411" y="627" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:3978" type="gene"

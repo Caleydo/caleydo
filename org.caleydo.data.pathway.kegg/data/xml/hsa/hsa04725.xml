@@ -32,7 +32,7 @@
     </entry>
     <entry id="6" name="hsa:43" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:43">
-        <graphics name="ACHE, ARACHE, N-ACHE, YT" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACHE, ACEE, ARACHE, N-ACHE, YT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="705" y="645" width="46" height="17"/>
     </entry>
     <entry id="7" name="hsa:6572" type="gene"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="hsa:773 hsa:774" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="631" y="392" width="46" height="17"/>
     </entry>
     <entry id="26" name="cpd:C00076" type="compound"
@@ -187,12 +187,12 @@
     </entry>
     <entry id="37" name="hsa:43" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:43">
-        <graphics name="ACHE, ARACHE, N-ACHE, YT" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACHE, ACEE, ARACHE, N-ACHE, YT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="261" y="526" width="46" height="17"/>
     </entry>
     <entry id="38" name="hsa:3759 hsa:3761 hsa:3768 hsa:3770 hsa:3784 hsa:3785 hsa:3786 hsa:56479 hsa:9132" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3759+hsa:3761+hsa:3768+hsa:3770+hsa:3784+hsa:3785+hsa:3786+hsa:56479+hsa:9132">
-        <graphics name="KCNJ2, HHBIRK1, HHIRK1, IRK1, KIR2.1, LQT7, SQT3..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="KCNJ2, ATFB9, HHBIRK1, HHIRK1, IRK1, KIR2.1, LQT7, SQT3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="781" y="476" width="46" height="17"/>
     </entry>
     <entry id="39" name="cpd:C00238" type="compound"
@@ -307,7 +307,7 @@
     </entry>
     <entry id="61" name="hsa:2353" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2353">
-        <graphics name="FOS, AP-1, C-FOS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FOS, AP-1, C-FOS, p55" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1265" y="564" width="46" height="17"/>
     </entry>
     <entry id="62" name="hsa:3717" type="gene"
@@ -317,7 +317,7 @@
     </entry>
     <entry id="63" name="hsa:2534" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2534">
-        <graphics name="FYN, MGC45350, SLK, SYN" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FYN, MGC45350, SLK, SYN, p59-FYN" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="908" y="709" width="46" height="17"/>
     </entry>
     <entry id="64" name="hsa:3760 hsa:3763" type="gene"

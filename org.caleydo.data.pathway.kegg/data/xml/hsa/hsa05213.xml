@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="hsa:51176 hsa:6932 hsa:6934 hsa:83439" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51176+hsa:6932+hsa:6934+hsa:83439">
-        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF1ALPHA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF10, TCF1ALPHA, TCF7L3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="800" y="365" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:5728" type="gene"

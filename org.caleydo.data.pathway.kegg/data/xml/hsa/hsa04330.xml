@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="hsa:5663 hsa:5664" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5663+hsa:5664">
-        <graphics name="PSEN1, AD3, FAD, PS1, S182..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PSEN1, AD3, FAD, PS-1, PS1, S182..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="309" y="273" width="46" height="17"/>
     </entry>
     <entry id="4" name="path:hsa04010" type="map"

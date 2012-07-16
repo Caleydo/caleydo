@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="hsa:23327" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23327">
-        <graphics name="NEDD4L, FLJ33870, KIAA0439, NEDD4-2, RSP5, hNedd4-2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NEDD4L, FLJ33870, KIAA0439, NEDD4-2, NEDD4.2, RSP5, hNEDD4-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="241" y="581" width="46" height="17"/>
     </entry>
     <entry id="11" name="cpd:C00238" type="compound"
@@ -80,9 +80,9 @@
         <graphics name="C00762" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="468" y="292" width="8" height="8"/>
     </entry>
-    <entry id="16" name="hsa:3290 hsa:3291" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3290+hsa:3291">
-        <graphics name="HSD11B1, 11-DH, 11-beta-HSD1, HDL, HSD11, HSD11B, HSD11L, MGC13539, SDR26C1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="16" name="hsa:3291" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3291">
+        <graphics name="HSD11B2, AME, AME1, HSD11K, HSD2, SDR9C3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="529" y="278" width="46" height="17"/>
     </entry>
     <entry id="17" name="path:hsa00140" type="map"

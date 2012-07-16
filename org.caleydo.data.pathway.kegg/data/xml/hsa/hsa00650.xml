@@ -102,7 +102,7 @@
     </entry>
     <entry id="70" name="hsa:2571 hsa:2572" type="gene" reaction="rn:R00261"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="169" y="401" width="46" height="17"/>
     </entry>
     <entry id="71" name="ko:K00169 ko:K00170 ko:K00172 ko:K00171" type="ortholog" reaction="rn:R01196"
@@ -135,9 +135,9 @@
         <graphics name="K00132..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="604" y="318" width="46" height="17"/>
     </entry>
-    <entry id="78" name="hsa:57016" type="gene" reaction="rn:R03544 rn:R03545"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:57016">
-        <graphics name="AKR1B10, AKR1B11, AKR1B12, ALDRLn, ARL-1, ARL1, HIS, HSI, MGC14103" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="78" name="ko:K00100" type="ortholog" reaction="rn:R03544 rn:R03545"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00100">
+        <graphics name="K00100" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="494" y="329" width="46" height="17"/>
     </entry>
     <entry id="79" name="hsa:7915" type="gene" reaction="rn:R00713"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="105" name="hsa:79944" type="gene" reaction="rn:R03534"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:79944">
-        <graphics name="L2HGDH, C14orf160, DURANIN, FLJ12618" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="L2HGDH, C14orf160, FLJ12618" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="859" y="497" width="46" height="17"/>
     </entry>
     <entry id="107" name="hsa:5160 hsa:5161 hsa:5162" type="gene" reaction="rn:R00014"
@@ -641,10 +641,6 @@
     <reaction id="74" name="rn:R01171" type="reversible">
         <substrate id="123" name="cpd:C00136"/>
         <product id="125" name="cpd:C00877"/>
-    </reaction>
-    <reaction id="78" name="rn:R03544 rn:R03545" type="reversible">
-        <substrate id="124" name="cpd:C01412"/>
-        <product id="144" name="cpd:C06142"/>
     </reaction>
     <reaction id="79" name="rn:R00713" type="irreversible">
         <substrate id="141" name="cpd:C00232"/>

@@ -182,7 +182,7 @@
     </entry>
     <entry id="36" name="hsa:5592 hsa:5593" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5592+hsa:5593">
-        <graphics name="PRKG1, CGKI, DKFZp686K042, FLJ36117, MGC71944, PGK, PKG, PRKG1B, PRKGR1B, cGKI-BETA, cGKI-alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PRKG1, 1, DKFZp686K042, FLJ36117, MGC71944, PKG, PRKG1B, PRKGR1B, cGK, cGK_1, cGK1, cGKI, cGKI-BETA, cGKI-alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="429" y="818" width="46" height="17"/>
     </entry>
     <entry id="37" name="hsa:683 hsa:952" type="gene"

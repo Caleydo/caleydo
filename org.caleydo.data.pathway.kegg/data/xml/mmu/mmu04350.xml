@@ -20,9 +20,9 @@
         <graphics name="Cul1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="466" y="266" width="46" height="17"/>
     </entry>
-    <entry id="4" name="mmu:56438" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56438">
-        <graphics name="Rbx1, 1500002P15Rik, AA517855" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="4" name="mmu:100043674 mmu:56438" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043674+mmu:56438">
+        <graphics name="Gm9840..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="466" y="249" width="46" height="17"/>
     </entry>
     <entry id="5" name="path:mmu04350" type="map"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="517" y="672" width="46" height="17"/>
     </entry>
     <entry id="12" name="mmu:17128" type="gene"
@@ -67,7 +67,7 @@
     </entry>
     <entry id="13" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="517" y="600" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:11480 mmu:11481" type="gene"
@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="402" y="681" width="46" height="17"/>
     </entry>
     <entry id="17" name="mmu:18119" type="gene"
@@ -97,12 +97,12 @@
     </entry>
     <entry id="19" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="402" y="608" width="46" height="17"/>
     </entry>
     <entry id="20" name="mmu:18741" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18741">
-        <graphics name="Pitx2, 9430085M16Rik, Brx1, Brx1a, Brx1b, Munc30, Otlx2, Pitx2a, Pitx2b, Pitx2c, Pitx2cbeta, Ptx2, Rieg, solurshin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pitx2, 9430085M16Rik, Brx1, Brx1a, Brx1b, Munc30, Otlx2, Pitx2a, Pitx2b, Pitx2c, Pitx2cbeta, Ptx2, Rieg" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="767" y="680" width="46" height="17"/>
     </entry>
     <entry id="21" name="mmu:20683" type="gene"
@@ -185,8 +185,8 @@
         <graphics name="Rock1, 1110055K06Rik, Rock-I..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="478" y="512" width="46" height="17"/>
     </entry>
-    <entry id="37" name="mmu:11848 mmu:433749" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:433749">
+    <entry id="37" name="mmu:11848 mmu:67653" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:67653">
         <graphics name="Rhoa, Arha, Arha1, Arha2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="352" y="512" width="46" height="17"/>
     </entry>
@@ -197,7 +197,7 @@
     </entry>
     <entry id="39" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="517" y="316" width="46" height="17"/>
     </entry>
     <entry id="40" name="mmu:218441 mmu:230597" type="gene"
@@ -207,7 +207,7 @@
     </entry>
     <entry id="41" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="402" y="324" width="46" height="17"/>
     </entry>
     <entry id="42" name="mmu:21402" type="gene"

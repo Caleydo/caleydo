@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="hsa:9370" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9370">
-        <graphics name="ADIPOQ, ACDC, ACRP30, ADIPQTL1, ADPN, APM-1, APM1, GBP28, adiponectin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADIPOQ, ACDC, ACRP30, ADIPQTL1, ADPN, APM-1, APM1, GBP28" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="183" y="144" width="46" height="17"/>
     </entry>
     <entry id="17" name="hsa:3551" type="gene"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="hsa:773 hsa:774 hsa:775 hsa:776 hsa:777 hsa:8913" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774+hsa:775+hsa:776+hsa:777+hsa:8913">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="266" y="658" width="46" height="17"/>
     </entry>
     <entry id="26" name="hsa:3630" type="gene"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="32" name="hsa:6833" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6833">
-        <graphics name="ABCC8, ABC36, HHF1, HI, HRINS, MRP8, PHHI, SUR, SUR1, TNDM2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABCC8, ABC36, HHF1, HI, HRINS, MRP8, PHHI, SUR, SUR1, SUR1delta2, TNDM2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="266" y="711" width="46" height="17"/>
     </entry>
     <entry id="33" name="path:hsa04930" type="map"

@@ -167,7 +167,7 @@
     </entry>
     <entry id="33" name="hsa:7018" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7018">
-        <graphics name="TF, DKFZp781D0156, PRO1557, PRO2086" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TF, DKFZp781D0156, PRO1557, PRO2086, TFQTL1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="940" y="659" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:55630" type="gene"
@@ -177,7 +177,7 @@
     </entry>
     <entry id="35" name="hsa:1317" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1317">
-        <graphics name="SLC31A1, COPT1, CTR1, MGC75487, hCTR1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC31A1, COPT1, CTR1, MGC75487" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="759" width="46" height="17"/>
     </entry>
     <entry id="36" name="hsa:7779" type="gene"

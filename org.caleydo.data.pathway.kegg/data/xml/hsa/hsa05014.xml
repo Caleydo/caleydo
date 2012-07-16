@@ -7,7 +7,7 @@
          link="http://www.genome.jp/kegg-bin/show_pathway?hsa05014">
     <entry id="1" name="hsa:6647" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6647">
-        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, hSod1, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="790" y="757" width="46" height="17"/>
     </entry>
     <entry id="2" name="hsa:6506" type="gene"
@@ -32,7 +32,7 @@
     </entry>
     <entry id="6" name="hsa:6647" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6647">
-        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, hSod1, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="556" y="276" width="46" height="17"/>
     </entry>
     <entry id="7" name="hsa:54205" type="gene"
@@ -177,17 +177,17 @@
     </entry>
     <entry id="35" name="hsa:6647" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6647">
-        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, hSod1, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="669" y="817" width="46" height="17"/>
     </entry>
     <entry id="36" name="hsa:6647" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6647">
-        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, hSod1, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="764" y="817" width="46" height="17"/>
     </entry>
     <entry id="37" name="hsa:2876" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2876">
-        <graphics name="GPX1, GSHPX1, MGC14399, MGC88245" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GPX1, GPXD, GSHPX1, MGC14399, MGC88245" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="759" y="849" width="46" height="17"/>
     </entry>
     <entry id="38" name="hsa:847" type="gene"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="52" name="hsa:5879" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5879">
-        <graphics name="RAC1, MGC111543, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAC1, MGC111543, Rac-1, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1020" y="874" width="46" height="17"/>
     </entry>
     <entry id="53" name="hsa:5868" type="gene"

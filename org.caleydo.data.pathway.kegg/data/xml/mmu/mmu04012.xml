@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 31, 2009 10:45:40 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:09:16 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04012" org="mmu" number="04012"
          title="ErbB signaling pathway"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04012.png"
@@ -22,12 +22,12 @@
     </entry>
     <entry id="4" name="mmu:13869" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13869">
-        <graphics name="Erbb4, Her4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Erbb4, Her4, c-erbB-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="200" y="693" width="46" height="17"/>
     </entry>
     <entry id="5" name="mmu:13869" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13869">
-        <graphics name="Erbb4, Her4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Erbb4, Her4, c-erbB-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="200" y="606" width="46" height="17"/>
     </entry>
     <entry id="6" name="mmu:13867" type="gene"
@@ -142,7 +142,7 @@
     </entry>
     <entry id="28" name="mmu:17973 mmu:17974" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17973+mmu:17974">
-        <graphics name="Nck1, 6330586M15Rik, D230010O13Rik, Nck..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Nck1, 6330586M15Rik, D230010O13Rik, Nck, Nck-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="454" y="369" width="46" height="17"/>
     </entry>
     <entry id="29" name="mmu:20850 mmu:20851" type="gene"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="36" name="mmu:13869" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13869">
-        <graphics name="Erbb4, Her4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Erbb4, Her4, c-erbB-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="200" y="589" width="46" height="17"/>
     </entry>
     <entry id="37" name="mmu:13867" type="gene"
@@ -217,7 +217,7 @@
     </entry>
     <entry id="43" name="mmu:14083" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14083">
-        <graphics name="Ptk2, FAK, FRNK, Fadk, KIAA4203, mKIAA4203" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ptk2, FAK, FRNK, Fadk, KIAA4203, mKIAA4203, p125FAK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="584" y="299" width="46" height="17"/>
     </entry>
     <entry id="44" name="mmu:20662 mmu:20663" type="gene"
@@ -267,7 +267,7 @@
     </entry>
     <entry id="53" name="mmu:12223" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12223">
-        <graphics name="Btc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Btc, Bcn" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="69" y="349" width="46" height="17"/>
     </entry>
     <entry id="54" name="path:mmu05214" type="map"
@@ -407,13 +407,13 @@
         <component id="9"/>
     </entry>
     <relation entry1="49" entry2="48" type="PPrel">
-        <subtype name="compound" value="19"/>
+        <subtype name="compound" value="20"/>
     </relation>
     <relation entry1="49" entry2="47" type="PPrel">
-        <subtype name="compound" value="18"/>
+        <subtype name="compound" value="19"/>
     </relation>
     <relation entry1="58" entry2="59" type="PPrel">
-        <subtype name="compound" value="54"/>
+        <subtype name="compound" value="55"/>
     </relation>
     <relation entry1="67" entry2="74" type="PPrel">
         <subtype name="activation" value="--&gt;"/>

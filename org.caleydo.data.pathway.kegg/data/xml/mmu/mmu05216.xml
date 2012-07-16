@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="490" y="683" width="46" height="17"/>
     </entry>
     <entry id="11" name="mmu:17869" type="gene"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="mmu:12550" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12550">
-        <graphics name="Cdh1, AA960649, Ecad, L-CAM, MGC107495, UVO, Um" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cdh1, AA960649, Ecad, L-CAM, UVO, Um" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="683" width="46" height="17"/>
     </entry>
     <entry id="13" name="path:mmu05216" type="map"
@@ -95,8 +95,8 @@
         <graphics name="Hras1, H-ras, Ha-ras, Harvey-ras, Hras-1, Kras2, c-H-ras, c-Ha-ras, c-rasHa, ras..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="150" width="46" height="17"/>
     </entry>
-    <entry id="19" name="mmu:19713 mmu:27057 mmu:627557 mmu:76551" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19713+mmu:27057+mmu:627557+mmu:76551">
+    <entry id="19" name="mmu:19713 mmu:27057 mmu:76551" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19713+mmu:27057+mmu:76551">
         <graphics name="Ret, PTC, RET51, RET9, c-Ret..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="278" y="118" width="46" height="17"/>
     </entry>

@@ -22,7 +22,7 @@
     </entry>
     <entry id="54" name="mmu:353371 mmu:64059 mmu:67041" type="gene" reaction="rn:R00410"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:353371+mmu:64059+mmu:67041">
-        <graphics name="Oxct2b, MGC130507, Scot-t2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Oxct2b, Scot-t2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="504" y="659" width="46" height="17"/>
     </entry>
     <entry id="55" name="mmu:78894" type="gene" reaction="rn:R01357"
@@ -35,9 +35,9 @@
         <graphics name="Hmgcl, AW476067, HL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="830" y="675" width="46" height="17"/>
     </entry>
-    <entry id="57" name="mmu:100040592 mmu:15360 mmu:208715" type="gene" reaction="rn:R01978"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100040592+mmu:15360+mmu:208715">
-        <graphics name="100040592..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="57" name="mmu:15360 mmu:208715" type="gene" reaction="rn:R01978"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15360+mmu:208715">
+        <graphics name="Hmgcs2, 1300002P16, mHS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="830" y="627" width="46" height="17"/>
     </entry>
     <entry id="58" name="mmu:110446 mmu:110460" type="gene" reaction="rn:R00238"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="74" name="mmu:11409" type="gene" reaction="rn:R01171"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11409">
-        <graphics name="Acads, AI196007, Bcd-1, Bcd1, SCAD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Acads, AI196007, Bcd-1, Bcd1, Hdlq8, SCAD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="367" width="46" height="17"/>
     </entry>
     <entry id="75" name="ko:K00634" type="ortholog" reaction="rn:R01174"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="105" name="mmu:217666" type="gene" reaction="rn:R03534"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:217666">
-        <graphics name="L2hgdh, BC016226, MGC28775" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="L2hgdh, BC016226" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="859" y="497" width="46" height="17"/>
     </entry>
     <entry id="107" name="mmu:18597 mmu:18598 mmu:68263" type="gene" reaction="rn:R00014"

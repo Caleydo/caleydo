@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 11, 2011 16:24:34 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 13:36:39 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00730" org="mmu" number="00730"
          title="Thiamine metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00730.png"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="71" name="mmu:66566" type="gene" reaction="rn:R00615"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:66566">
-        <graphics name="2310079N02Rik, AI449709" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ntpcr, 2310079N02Rik, AI449709" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="781" y="395" width="46" height="17"/>
     </entry>
     <entry id="72" name="ko:K00946" type="ortholog" reaction="rn:R00617"
@@ -294,8 +294,8 @@
         <subtype name="compound" value="19"/>
     </relation>
     <reaction id="84" name="rn:R07460" type="irreversible">
-        <substrate id="19" name="cpd:C00097"/>
         <substrate id="18" name="cpd:C15811"/>
+        <substrate id="19" name="cpd:C00097"/>
         <product id="17" name="cpd:C15812"/>
     </reaction>
     <reaction id="73" name="rn:R00619" type="irreversible">

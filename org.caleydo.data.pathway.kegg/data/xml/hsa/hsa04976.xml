@@ -177,7 +177,7 @@
     </entry>
     <entry id="35" name="hsa:2052" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2052">
-        <graphics name="EPHX1, EPHX, EPOX, MEH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="EPHX1, EPHX, EPOX, HYL1, MEH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="221" y="183" width="46" height="17"/>
     </entry>
     <entry id="36" name="hsa:6554" type="gene"
@@ -337,7 +337,7 @@
     </entry>
     <entry id="67" name="hsa:343" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:343">
-        <graphics name="AQP8" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AQP8, AQP-8" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="660" y="230" width="46" height="17"/>
     </entry>
     <entry id="68" name="cpd:C00001" type="compound"

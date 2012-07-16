@@ -7,7 +7,7 @@
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu00533">
     <entry id="1" name="path:mmu00512" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00512">
-        <graphics name="O-Glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Mucin type O-Glycan biosynthesis" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="552" y="357" width="127" height="25"/>
     </entry>
     <entry id="2" name="path:mmu00533" type="map"

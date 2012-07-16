@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 28, 2011 16:05:08 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 1, 2012 11:57:08 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00290" org="mmu" number="00290"
          title="Valine, leucine and isoleucine biosynthesis"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00290.png"

@@ -202,7 +202,7 @@
     </entry>
     <entry id="40" name="mmu:19017" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19017">
-        <graphics name="Ppargc1a, A830037N07Rik, PGC-1, PGC-1v, Pgc-1alpha, Pgc1, Pgco1, Ppargc1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ppargc1a, A830037N07Rik, Gm11133, PGC-1, PGC-1v, Pgc-1alpha, Pgc1, Pgco1, Ppargc1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="391" y="534" width="46" height="17"/>
     </entry>
     <entry id="41" name="mmu:71609" type="gene"

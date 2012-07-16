@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="hsa:6261" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6261">
-        <graphics name="RYR1, CCO, MHS, MHS1, RYDR, RYR, SKRR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RYR1, CCO, MHS, MHS1, RYDR, RYR, RYR-1, SKRR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="567" y="443" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:100137049 hsa:123745 hsa:26279 hsa:30814 hsa:391013 hsa:50487 hsa:5319 hsa:5320 hsa:5321 hsa:5322 hsa:64600 hsa:81579 hsa:8398 hsa:8399 hsa:84647 hsa:8681" type="gene"
@@ -182,17 +182,17 @@
     </entry>
     <entry id="36" name="hsa:5592 hsa:5593" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5592+hsa:5593">
-        <graphics name="PRKG1, CGKI, DKFZp686K042, FLJ36117, MGC71944, PGK, PKG, PRKG1B, PRKGR1B, cGKI-BETA, cGKI-alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PRKG1, 1, DKFZp686K042, FLJ36117, MGC71944, PKG, PRKG1B, PRKGR1B, cGK, cGK_1, cGK1, cGKI, cGKI-BETA, cGKI-alpha..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="495" y="155" width="46" height="17"/>
     </entry>
     <entry id="37" name="hsa:773" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="313" y="424" width="46" height="17"/>
     </entry>
     <entry id="38" name="hsa:10842" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10842">
-        <graphics name="C7orf16, GSBS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="C7orf16, GSBS, PPP1R17" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="578" y="132" width="46" height="17"/>
     </entry>
     <entry id="39" name="hsa:2890 hsa:2891 hsa:2892" type="gene"

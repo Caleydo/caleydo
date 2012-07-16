@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="hsa:6262" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6262">
-        <graphics name="RYR2, ARVC2, ARVD2, VTSIP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RYR2, ARVC2, ARVD2, RYR-2, RyR, VTSIP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="590" y="327" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:488" type="gene"
@@ -57,12 +57,12 @@
     </entry>
     <entry id="11" name="hsa:1605" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1605">
-        <graphics name="DAG1, 156DAG, A3a, AGRNR, DAG" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DAG1, 156DAG, A3a, AGRNR, DAG, MDDGC7" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="393" y="167" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:1605" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1605">
-        <graphics name="DAG1, 156DAG, A3a, AGRNR, DAG" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DAG1, 156DAG, A3a, AGRNR, DAG, MDDGC7" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="394" y="214" width="46" height="17"/>
     </entry>
     <entry id="13" name="hsa:3908" type="gene"
@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="hsa:4000" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4000">
-        <graphics name="LMNA, CDCD1, CDDC, CMD1A, CMT2B1, EMD2, FPL, FPLD, HGPS, IDC, LDP1, LFP, LGMD1B, LMN1, LMNC, LMNL1, PRO1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LMNA, CDCD1, CDDC, CMD1A, CMT2B1, EMD2, FPL, FPLD, FPLD2, HGPS, IDC, LDP1, LFP, LGMD1B, LMN1, LMNC, LMNL1, PRO1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="296" y="586" width="46" height="17"/>
     </entry>
     <entry id="17" name="hsa:1756" type="gene"
@@ -317,7 +317,7 @@
     </entry>
     <entry id="63" name="hsa:51176 hsa:6932 hsa:6934 hsa:83439" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51176+hsa:6932+hsa:6934+hsa:83439">
-        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF1ALPHA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF10, TCF1ALPHA, TCF7L3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="329" y="634" width="46" height="17"/>
     </entry>
     <entry id="64" name="hsa:1499" type="gene"
@@ -332,22 +332,22 @@
     </entry>
     <entry id="66" name="hsa:2697" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2697">
-        <graphics name="GJA1, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GJA1, AVSD3, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="833" y="713" width="46" height="17"/>
     </entry>
     <entry id="67" name="hsa:2697" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2697">
-        <graphics name="GJA1, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GJA1, AVSD3, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="918" y="713" width="46" height="17"/>
     </entry>
     <entry id="68" name="hsa:2697" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2697">
-        <graphics name="GJA1, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GJA1, AVSD3, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="833" y="753" width="46" height="17"/>
     </entry>
     <entry id="69" name="hsa:2697" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2697">
-        <graphics name="GJA1, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GJA1, AVSD3, CX43, DFNB38, GJAL, HSS, ODDD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="918" y="753" width="46" height="17"/>
     </entry>
     <relation entry1="13" entry2="11" type="PPrel">

@@ -65,9 +65,9 @@
         <graphics name="RAD50, NBSLD, RAD502, hRad50" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="553" y="343" width="46" height="17"/>
     </entry>
-    <entry id="13" name="hsa:5591 hsa:731751" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5591+hsa:731751">
-        <graphics name="PRKDC, DNA-PKcs, DNAPK, DNPK1, HYRC, HYRC1, XRCC7, p350..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="13" name="hsa:5591" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5591">
+        <graphics name="PRKDC, DNA-PKcs, DNAPK, DNPK1, HYRC, HYRC1, XRCC7, p350" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="819" y="362" width="46" height="17"/>
     </entry>
     <entry id="14" name="ko:K10868" type="ortholog"

@@ -80,14 +80,14 @@
         <graphics name="C00696" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="1215" y="419" width="8" height="8"/>
     </entry>
-    <entry id="17" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="17" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="242" width="46" height="17"/>
     </entry>
-    <entry id="18" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="18" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="482" y="262" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:16153" type="gene"
@@ -160,9 +160,9 @@
         <graphics name="Apoa1, Alp-1, Apoa-1, Brp-14, Ltw-1, Lvtw-1, MGC102525, Sep-1, Sep-2, Sep2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="205" y="516" width="46" height="17"/>
     </entry>
-    <entry id="34" name="mmu:110257 mmu:15129 mmu:15130" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:110257+mmu:15129+mmu:15130">
-        <graphics name="Hba-a2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="34" name="mmu:100503605 mmu:110257 mmu:15122 mmu:15129 mmu:15130" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100503605+mmu:110257+mmu:15122+mmu:15129+mmu:15130">
+        <graphics name="Beta-s, Hbbt1, Hbbt2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="180" y="450" width="46" height="17"/>
     </entry>
     <entry id="35" name="mmu:15930 mmu:209176" type="gene"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="41" name="mmu:14103" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14103">
-        <graphics name="Fasl, APT1LG1, CD178, CD95-L, CD95L, Fas-L, Fas-Ligand, Faslg, Tnfsf6, gld" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fasl, APT1LG1, CD178, CD95-L, CD95L, Fas-L, Faslg, Tnfsf6, gld" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="923" y="156" width="46" height="17"/>
     </entry>
     <entry id="42" name="path:mmu04210" type="map"

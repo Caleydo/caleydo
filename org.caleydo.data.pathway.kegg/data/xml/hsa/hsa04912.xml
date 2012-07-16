@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:4323" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4323">
-        <graphics name="MMP14, MMP-X1, MT1-MMP, MTMMP1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MMP14, 1, MMP-14, MMP-X1, MT-MMP, MT-MMP_1, MT1-MMP, MT1MMP, MTMMP1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="191" y="425" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:2798" type="gene"
@@ -237,7 +237,7 @@
     </entry>
     <entry id="47" name="hsa:4214" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4214">
-        <graphics name="MAP3K1, MAPKKK1, MEKK, MEKK1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAP3K1, MAPKKK1, MEKK, MEKK1, SRXY6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="717" y="423" width="46" height="17"/>
     </entry>
     <entry id="48" name="path:hsa04912" type="map"

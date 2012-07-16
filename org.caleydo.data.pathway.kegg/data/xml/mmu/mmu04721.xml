@@ -65,8 +65,8 @@
         <graphics name="C00080" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="1220" y="233" width="8" height="8"/>
     </entry>
-    <entry id="13" name="path:map04726" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map04726">
+    <entry id="13" name="path:mmu04726" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04726">
         <graphics name="Serotonergic synapse" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="631" y="908" width="92" height="34"/>
     </entry>
@@ -75,8 +75,8 @@
         <graphics name="GABAergic synapse" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="926" y="909" width="92" height="34"/>
     </entry>
-    <entry id="15" name="path:map04728" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?map04728">
+    <entry id="15" name="path:mmu04728" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu04728">
         <graphics name="Dopaminergic synapse" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1036" y="909" width="92" height="34"/>
     </entry>

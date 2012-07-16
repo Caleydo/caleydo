@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="mmu:14799 mmu:14800" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14799+mmu:14800">
-        <graphics name="Gria1, 2900051M01Rik, AI853806, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gria1, 2900051M01Rik, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1, gluR-K1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="317" y="175" width="46" height="17"/>
     </entry>
     <entry id="22" name="mmu:223864" type="gene"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="32" name="mmu:16438 mmu:16439 mmu:16440" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16438+mmu:16439+mmu:16440">
-        <graphics name="Itpr1, D6Pas2, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Itpr1, D6Pas2, Gm10429, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="582" y="529" width="46" height="17"/>
     </entry>
     <entry id="33" name="path:mmu04720" type="map"

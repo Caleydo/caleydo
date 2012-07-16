@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 2, 2009 10:19:26 +0900 (JST) -->
+<!-- Creation date: Jul 2, 2012 10:28:40 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00604" org="mmu" number="00604"
          title="Glycosphingolipid biosynthesis - ganglio series"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00604.png"
@@ -494,130 +494,108 @@
     <relation entry1="73" entry2="62" type="maplink">
         <subtype name="compound" value="92"/>
     </relation>
-    <reaction id="34" name="rn:R06010" type="reversible">
+    <reaction id="34" name="rn:R06010" type="irreversible">
         <substrate id="97" name="gl:G00110"/>
         <product id="98" name="gl:G00109"/>
     </reaction>
-    <reaction id="35" name="rn:R06004" type="reversible">
+    <reaction id="35" name="rn:R06004" type="irreversible">
         <substrate id="98" name="gl:G00109"/>
         <product id="99" name="gl:G00108"/>
     </reaction>
-    <reaction id="36" name="rn:R05947" type="reversible">
+    <reaction id="36" name="rn:R05947" type="irreversible">
         <substrate id="100" name="gl:G00113"/>
         <product id="48" name="gl:G00118"/>
     </reaction>
-    <reaction id="55" name="rn:R05947" type="reversible">
+    <reaction id="55" name="rn:R05947" type="irreversible">
         <substrate id="100" name="gl:G00113"/>
         <product id="48" name="gl:G00118"/>
     </reaction>
-    <reaction id="57" name="rn:R05953" type="reversible">
+    <reaction id="57" name="rn:R05953" type="irreversible">
         <substrate id="47" name="gl:G00119"/>
         <product id="46" name="gl:G00120"/>
     </reaction>
-    <reaction id="58" name="rn:R05952" type="reversible">
+    <reaction id="58" name="rn:R05952" type="irreversible">
         <substrate id="48" name="gl:G00118"/>
         <product id="47" name="gl:G00119"/>
     </reaction>
-    <reaction id="16" name="rn:R05949" type="reversible">
+    <reaction id="16" name="rn:R05949" type="irreversible">
         <substrate id="63" name="gl:G00115"/>
         <product id="102" name="gl:G00116"/>
     </reaction>
-    <reaction id="59" name="rn:R05950" type="reversible">
+    <reaction id="59" name="rn:R05950" type="irreversible">
         <substrate id="102" name="gl:G00116"/>
         <product id="103" name="gl:G00117"/>
     </reaction>
-    <reaction id="60" name="rn:R05951" type="reversible">
+    <reaction id="60" name="rn:R05951" type="irreversible">
         <substrate id="102" name="gl:G00116"/>
         <product id="37" name="gl:G00129"/>
     </reaction>
-    <reaction id="61" name="rn:R05945" type="reversible">
+    <reaction id="61" name="rn:R05945" type="irreversible">
         <substrate id="96" name="gl:G00111"/>
         <product id="38" name="gl:G00128"/>
     </reaction>
-    <reaction id="64" name="rn:R05958" type="reversible">
+    <reaction id="64" name="rn:R05958" type="irreversible">
         <substrate id="54" name="gl:G00125"/>
         <product id="52" name="gl:G00126"/>
     </reaction>
-    <reaction id="65" name="rn:R05959" type="reversible">
+    <reaction id="65" name="rn:R05959" type="irreversible">
         <substrate id="54" name="gl:G00125"/>
         <product id="39" name="gl:G00127"/>
     </reaction>
-    <reaction id="66" name="rn:R05940" type="reversible">
+    <reaction id="66" name="rn:R05940" type="irreversible">
         <substrate id="99" name="gl:G00108"/>
         <product id="100" name="gl:G00113"/>
     </reaction>
-    <reaction id="67" name="rn:R05959" type="reversible">
+    <reaction id="67" name="rn:R05959" type="irreversible">
         <substrate id="54" name="gl:G00125"/>
         <product id="39" name="gl:G00127"/>
     </reaction>
-    <reaction id="69" name="rn:R05943" type="reversible">
+    <reaction id="69" name="rn:R05943" type="irreversible">
         <substrate id="96" name="gl:G00111"/>
         <product id="95" name="gl:G00112"/>
     </reaction>
-    <reaction id="70" name="rn:R05948" type="reversible">
+    <reaction id="70" name="rn:R05948" type="irreversible">
         <substrate id="101" name="gl:G00114"/>
         <product id="63" name="gl:G00115"/>
     </reaction>
-    <reaction id="72" name="rn:R05942" type="reversible">
+    <reaction id="72" name="rn:R05942" type="irreversible">
         <substrate id="97" name="gl:G00110"/>
         <product id="96" name="gl:G00111"/>
     </reaction>
-    <reaction id="73" name="rn:R05937" type="reversible">
+    <reaction id="73" name="rn:R05937" type="irreversible">
         <substrate id="92" name="gl:G00092"/>
         <product id="99" name="gl:G00108"/>
     </reaction>
-    <reaction id="74" name="rn:R05938" type="reversible">
+    <reaction id="74" name="rn:R05938" type="irreversible">
         <substrate id="92" name="gl:G00092"/>
         <product id="93" name="gl:G00123"/>
     </reaction>
-    <reaction id="76" name="rn:R05956" type="reversible">
+    <reaction id="76" name="rn:R05956" type="irreversible">
         <substrate id="93" name="gl:G00123"/>
         <product id="94" name="gl:G00124"/>
     </reaction>
-    <reaction id="80" name="rn:R05941" type="reversible">
+    <reaction id="80" name="rn:R05941" type="irreversible">
         <substrate id="98" name="gl:G00109"/>
         <product id="97" name="gl:G00110"/>
     </reaction>
-    <reaction id="83" name="rn:R05939" type="reversible">
+    <reaction id="83" name="rn:R05939" type="irreversible">
         <substrate id="99" name="gl:G00108"/>
         <product id="98" name="gl:G00109"/>
     </reaction>
-    <reaction id="84" name="rn:R05957" type="reversible">
+    <reaction id="84" name="rn:R05957" type="irreversible">
         <substrate id="94" name="gl:G00124"/>
         <product id="54" name="gl:G00125"/>
     </reaction>
-    <reaction id="85" name="rn:R05946" type="reversible">
+    <reaction id="85" name="rn:R05946" type="irreversible">
         <substrate id="100" name="gl:G00113"/>
         <product id="101" name="gl:G00114"/>
     </reaction>
-    <reaction id="89" name="rn:R05959" type="reversible">
+    <reaction id="89" name="rn:R05959" type="irreversible">
         <substrate id="54" name="gl:G00125"/>
         <product id="39" name="gl:G00127"/>
     </reaction>
-    <reaction id="90" name="rn:R05959" type="reversible">
+    <reaction id="90" name="rn:R05959" type="irreversible">
         <substrate id="54" name="gl:G00125"/>
         <product id="39" name="gl:G00127"/>
-    </reaction>
-    <reaction id="106" name="rn:R05956 rn:R05941 rn:R05948 rn:R05953" type="reversible">
-    </reaction>
-    <reaction id="107" name="rn:R05958 rn:R05943 rn:R05950 rn:R05955" type="reversible">
-    </reaction>
-    <reaction id="108" name="rn:R05957 rn:R05942 rn:R05949 rn:R05954" type="reversible">
-    </reaction>
-    <reaction id="110" name="rn:R05959 rn:R05945 rn:R05951" type="reversible">
-    </reaction>
-    <reaction id="111" name="rn:R05947" type="reversible">
-        <substrate id="100" name="gl:G00113"/>
-        <product id="48" name="gl:G00118"/>
-    </reaction>
-    <reaction id="112" name="rn:R05940" type="reversible">
-        <substrate id="99" name="gl:G00108"/>
-        <product id="100" name="gl:G00113"/>
-    </reaction>
-    <reaction id="113" name="rn:R05938 rn:R05939 rn:R05946 rn:R05952" type="reversible">
-    </reaction>
-    <reaction id="114" name="rn:R05937" type="reversible">
-        <substrate id="92" name="gl:G00092"/>
-        <product id="99" name="gl:G00108"/>
     </reaction>
 </pathway>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 2, 2011 11:51:02 +0900 (GMT+09:00) -->
+<!-- Creation date: Sep 21, 2011 16:10:20 +0900 (GMT+09:00) -->
 <pathway name="path:hsa03013" org="hsa" number="03013"
          title="RNA transport"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa03013.png"
@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="hsa:7514" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7514">
-        <graphics name="XPO1, CRM1, DKFZp686B1823, emb" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="XPO1, CRM1, DKFZp686B1823, emb, exp1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="355" y="305" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:22916 hsa:4686" type="gene"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="hsa:8487" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8487">
-        <graphics name="SIP1, GEMIN2, SIP1-delta" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GEMIN2, SIP1, SIP1-delta" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="490" y="732" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:6606 hsa:6607" type="gene"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="33" name="hsa:5411" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5411">
-        <graphics name="PNN, DRS, SDK3, memA, pinin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PNN, DRS, DRSP, SDK3, memA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1037" y="732" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:10189" type="gene"
@@ -335,9 +335,9 @@
         <graphics name="RANGAP1, Fug1, KIAA1835, MGC20266, SD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="334" y="869" width="46" height="17"/>
     </entry>
-    <entry id="67" name="hsa:100130966 hsa:387082 hsa:6612 hsa:6613 hsa:7341" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100130966+hsa:387082+hsa:6612+hsa:6613+hsa:7341">
-        <graphics name="100130966..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="67" name="hsa:387082 hsa:6612 hsa:6613 hsa:7341" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:387082+hsa:6612+hsa:6613+hsa:7341">
+        <graphics name="SUMO4, IDDM5, SMT3H4, SUMO-4, dJ281H8.4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="380" y="869" width="46" height="17"/>
     </entry>
     <entry id="68" name="hsa:11097" type="gene"
@@ -362,7 +362,7 @@
     </entry>
     <entry id="72" name="hsa:57510" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:57510">
-        <graphics name="XPO5, FLJ14239, FLJ32057, FLJ45606, KIAA1291" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="XPO5, FLJ14239, FLJ32057, FLJ45606, KIAA1291, exp5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="276" y="305" width="46" height="17"/>
     </entry>
     <entry id="73" name="hsa:1915 hsa:1917" type="gene"
@@ -377,7 +377,7 @@
     </entry>
     <entry id="75" name="hsa:7514" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7514">
-        <graphics name="XPO1, CRM1, DKFZp686B1823, emb" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="XPO1, CRM1, DKFZp686B1823, emb, exp1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="715" y="315" width="46" height="19"/>
     </entry>
     <entry id="76" name="hsa:51068" type="gene"
@@ -387,7 +387,7 @@
     </entry>
     <entry id="77" name="hsa:5976" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5976">
-        <graphics name="UPF1, FLJ43809, FLJ46894, HUPF1, KIAA0221, NORF1, RENT1, pNORF1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="UPF1, FLJ43809, FLJ46894, HUPF1, KIAA0221, NORF1, RENT1, pNORF1, smg-2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="975" y="780" width="46" height="17"/>
     </entry>
     <entry id="78" name="hsa:7919" type="gene"
@@ -517,7 +517,7 @@
     </entry>
     <entry id="103" name="hsa:10460" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10460">
-        <graphics name="TACC3, ERIC1, MGC117382, MGC133242" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TACC3, ERIC-1, ERIC1, MGC117382, MGC133242" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="649" y="803" width="46" height="17"/>
     </entry>
     <entry id="104" name="cpd:C01647" type="compound"
@@ -594,6 +594,16 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa03008">
         <graphics name="Ribosome biogenesis in eukaryotes" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="779" y="178" width="110" height="34"/>
+    </entry>
+    <entry id="119" name="hsa:23191 hsa:26999" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23191+hsa:26999">
+        <graphics name="CYFIP1, FLJ45151, P140SRA-1, SHYC, SRA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="720" y="836" width="46" height="17"/>
+    </entry>
+    <entry id="120" name="hsa:2332 hsa:8087 hsa:9513" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2332+hsa:8087+hsa:9513">
+        <graphics name="FMR1, FMRP, FRAXA, MGC87458, POF, POF1..." fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="720" y="853" width="46" height="17"/>
     </entry>
     <relation entry1="3" entry2="2" type="PPrel">
         <subtype name="binding/association" value="---"/>
@@ -827,6 +837,13 @@
         <subtype name="binding/association" value="---"/>
     </relation>
     <relation entry1="75" entry2="63" type="PPrel">
+        <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="119" entry2="120" type="PPrel">
+        <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="119" entry2="96" type="PPrel">
+        <subtype name="inhibition" value="--|"/>
         <subtype name="binding/association" value="---"/>
     </relation>
 </pathway>

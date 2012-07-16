@@ -300,8 +300,8 @@
         <graphics name="Bid, 2700049M22Rik, AI875481, AU022477" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="811" y="138" width="46" height="17"/>
     </entry>
-    <entry id="60" name="mmu:13063 mmu:13067 mmu:672195" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13063+mmu:13067+mmu:672195">
+    <entry id="60" name="mmu:13063 mmu:13067" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13063+mmu:13067">
         <graphics name="Cycs..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1010" y="154" width="46" height="17"/>
     </entry>
@@ -345,9 +345,9 @@
         <graphics name="Cd74, CLIP, DHLAG, HLADG, Ia-GAMMA, Ii" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1182" y="279" width="46" height="17"/>
     </entry>
-    <entry id="69" name="mmu:14960 mmu:14961 mmu:14968 mmu:14969 mmu:14998 mmu:14999 mmu:15000 mmu:15001 mmu:15002" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14960+mmu:14961+mmu:14968+mmu:14969+mmu:14998+mmu:14999+mmu:15000+mmu:15001+mmu:15002">
-        <graphics name="H2-Aa, Aalpha, H-2Aa, H2Aa, I-Aalpha, IAalpha, Ia-1, Ia1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="69" name="mmu:100504404 mmu:14960 mmu:14961 mmu:14969 mmu:14998 mmu:14999 mmu:15000 mmu:15001 mmu:15002" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100504404+mmu:14960+mmu:14961+mmu:14969+mmu:14998+mmu:14999+mmu:15000+mmu:15001+mmu:15002">
+        <graphics name="H2-Ea-ps, AI323765, E-alpha-f, H-2Ea, H2-Ea, I-Ealpha, Ia-3, Ia3, MGC117888..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1182" y="257" width="46" height="17"/>
     </entry>
     <entry id="70" name="path:mmu04630" type="map"
@@ -355,9 +355,9 @@
         <graphics name="Jak-STAT signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="829" y="233" width="117" height="34"/>
     </entry>
-    <entry id="71" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="71" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="360" y="1181" width="46" height="17"/>
     </entry>
     <entry id="72" name="mmu:13040" type="gene"
@@ -420,8 +420,8 @@
         <graphics name="Arhgef12, 2310014B11Rik, AU019857, KIAA0380, Larg, mKIAA0382" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="537" y="752" width="46" height="17"/>
     </entry>
-    <entry id="84" name="mmu:11848 mmu:433749" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:433749">
+    <entry id="84" name="mmu:11848 mmu:67653" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:67653">
         <graphics name="Rhoa, Arha, Arha1, Arha2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="558" y="735" width="46" height="17"/>
     </entry>
@@ -457,7 +457,7 @@
     </entry>
     <entry id="91" name="mmu:16803" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16803">
-        <graphics name="Lbp, Ly88" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Lbp, Bpifd2, Ly88" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="360" y="537" width="46" height="17"/>
     </entry>
     <entry id="92" name="mmu:22337" type="gene"
@@ -522,7 +522,7 @@
     </entry>
     <entry id="104" name="mmu:20963" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20963">
-        <graphics name="Sykb, Syk" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Syk, Sykb" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="531" y="404" width="46" height="17"/>
     </entry>
     <entry id="105" name="mmu:20779" type="gene"
@@ -934,6 +934,9 @@
         <subtype name="activation" value="--&gt;"/>
     </relation>
     <relation entry1="66" entry2="16" type="PCrel">
+        <subtype name="activation" value="--&gt;"/>
+    </relation>
+    <relation entry1="71" entry2="20" type="PPrel">
         <subtype name="activation" value="--&gt;"/>
     </relation>
     <relation entry1="93" entry2="92" type="PPrel">

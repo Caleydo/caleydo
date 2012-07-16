@@ -47,7 +47,7 @@
     </entry>
     <entry id="9" name="hsa:1200" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1200">
-        <graphics name="TPP1, CLN2, LPIC, MGC21297" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TPP1, CLN2, LPIC, MGC21297, TPP-1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1237" y="126" width="46" height="17"/>
     </entry>
     <entry id="10" name="hsa:2717" type="gene"
@@ -222,7 +222,7 @@
     </entry>
     <entry id="44" name="hsa:950 hsa:967" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:950+hsa:967">
-        <graphics name="SCARB2, AMRF, CD36L2, HLGP85, LIMP-2, LIMPII, SR-BII..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SCARB2, AMRF, CD36L2, HLGP85, LGP85, LIMP-2, LIMPII, SR-BII..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1127" y="464" width="46" height="17"/>
     </entry>
     <entry id="45" name="hsa:1497" type="gene"
@@ -242,7 +242,7 @@
     </entry>
     <entry id="48" name="hsa:23457" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23457">
-        <graphics name="ABCB9, EST122234, KIAA1520, TAPL, hABCB9" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ABCB9, EST122234, KIAA1520, TAPL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1127" y="529" width="46" height="17"/>
     </entry>
     <entry id="49" name="hsa:20" type="gene"
@@ -357,12 +357,12 @@
     </entry>
     <entry id="71" name="hsa:54" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:54">
-        <graphics name="ACP5, MGC117378, TRAP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACP5, MGC117378, SPENCDI, TRAP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1292" y="298" width="46" height="17"/>
     </entry>
     <entry id="72" name="hsa:10717 hsa:11154 hsa:23431 hsa:9179" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10717+hsa:11154+hsa:23431+hsa:9179">
-        <graphics name="AP4B1, BETA-4..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AP4B1, BETA-4, CPSQ5..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="604" y="826" width="46" height="17"/>
     </entry>
     <entry id="73" name="path:hsa00511" type="map"

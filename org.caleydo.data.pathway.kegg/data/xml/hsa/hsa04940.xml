@@ -47,7 +47,7 @@
     </entry>
     <entry id="9" name="hsa:941 hsa:942" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:941+hsa:942">
-        <graphics name="CD80, B7, BB1, CD28LG, CD28LG1, LAB7..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CD80, B7, B7-1, B7.1, BB1, CD28LG, CD28LG1, LAB7..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="460" y="237" width="46" height="17"/>
     </entry>
     <entry id="10" name="hsa:5798 hsa:5799" type="gene"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="hsa:2571 hsa:2572" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="166" y="205" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:3329" type="gene"
@@ -90,13 +90,13 @@
         <graphics name="GZMB, CCPI, CGL-1, CGL1, CSP-B, CSPB, CTLA1, CTSGL1, HLP, SECT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="263" y="477" width="46" height="17"/>
     </entry>
-    <entry id="18" name="hsa:100133583 hsa:3108 hsa:3109 hsa:3111 hsa:3112 hsa:3113 hsa:3115 hsa:3117 hsa:3118 hsa:3119 hsa:3122 hsa:3123 hsa:3125 hsa:3126 hsa:3127" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100133583+hsa:3108+hsa:3109+hsa:3111+hsa:3112+hsa:3113+hsa:3115+hsa:3117+hsa:3118+hsa:3119+hsa:3122+hsa:3123+hsa:3125+hsa:3126+hsa:3127">
-        <graphics name="100133583..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="18" name="hsa:3108 hsa:3109 hsa:3111 hsa:3112 hsa:3113 hsa:3115 hsa:3117 hsa:3118 hsa:3119 hsa:3122 hsa:3123 hsa:3125 hsa:3126 hsa:3127" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3108+hsa:3109+hsa:3111+hsa:3112+hsa:3113+hsa:3115+hsa:3117+hsa:3118+hsa:3119+hsa:3122+hsa:3123+hsa:3125+hsa:3126+hsa:3127">
+        <graphics name="HLA-DMA, D6S222E, DMA, HLADM, RING6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="460" y="214" width="46" height="17"/>
     </entry>
-    <entry id="19" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135 hsa:652614" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3105+hsa:3106+hsa:3107+hsa:3133+hsa:3134+hsa:3135+hsa:652614">
+    <entry id="19" name="hsa:3105 hsa:3106 hsa:3107 hsa:3133 hsa:3134 hsa:3135" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3105+hsa:3106+hsa:3107+hsa:3133+hsa:3134+hsa:3135">
         <graphics name="HLA-A, FLJ26655, HLAA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="209" y="402" width="46" height="17"/>
     </entry>

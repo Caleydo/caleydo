@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 28, 2011 09:07:59 +0900 (GMT+09:00) -->
+<!-- Creation date: Sep 13, 2011 11:38:34 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00670" org="hsa" number="00670"
          title="One carbon pool by folate"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00670.png"
@@ -35,14 +35,14 @@
         <graphics name="MTHFD2, NMDMC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="554" y="353" width="46" height="17"/>
     </entry>
-    <entry id="23" name="hsa:1719" type="gene" reaction="rn:R00936 rn:R00939"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1719">
-        <graphics name="DHFR, DHFRP1, DYR" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="23" name="hsa:1719 hsa:200895" type="gene" reaction="rn:R00936 rn:R00939"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1719+hsa:200895">
+        <graphics name="DHFR, DHFRP1, DYR..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="158" y="298" width="46" height="17"/>
     </entry>
-    <entry id="24" name="hsa:1719" type="gene" reaction="rn:R02235 rn:R02236"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1719">
-        <graphics name="DHFR, DHFRP1, DYR" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="24" name="hsa:1719 hsa:200895" type="gene" reaction="rn:R02235 rn:R02236"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1719+hsa:200895">
+        <graphics name="DHFR, DHFRP1, DYR..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="121" y="266" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:10841" type="gene" reaction="rn:R03189"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="47" name="hsa:10840 hsa:160428" type="gene" reaction="rn:R00941"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10840+hsa:160428">
-        <graphics name="ALDH1L1, 10-fTHF, DKFZp781N0997, FTHFD..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ALDH1L1, 10-fTHF, DKFZp781N0997, FDH, FTHFD..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="284" y="373" width="46" height="17"/>
     </entry>
     <entry id="48" name="ko:K01433" type="ortholog" reaction="rn:R00944"
@@ -170,9 +170,9 @@
         <graphics name="C00445" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="489" y="301" width="8" height="8"/>
     </entry>
-    <entry id="68" name="hsa:1719" type="gene" reaction="rn:R00937 rn:R00940"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1719">
-        <graphics name="DHFR, DHFRP1, DYR" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="68" name="hsa:1719 hsa:200895" type="gene" reaction="rn:R00937 rn:R00940"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1719+hsa:200895">
+        <graphics name="DHFR, DHFRP1, DYR..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="152" y="243" width="46" height="17"/>
     </entry>
     <entry id="69" name="cpd:C00101" type="compound"

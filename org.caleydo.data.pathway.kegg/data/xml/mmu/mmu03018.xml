@@ -25,9 +25,9 @@
         <graphics name="K03732" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="426" y="663" width="46" height="17"/>
     </entry>
-    <entry id="5" name="mmu:100045967 mmu:13806 mmu:13807 mmu:13808 mmu:433182" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100045967+mmu:13806+mmu:13807+mmu:13808+mmu:433182">
-        <graphics name="100045967..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="5" name="mmu:13806 mmu:13807 mmu:13808 mmu:433182" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13806+mmu:13807+mmu:13808+mmu:433182">
+        <graphics name="Eno1, 0610008I15, AL022784, Eno-1, MBP-1, MGC103111, MGC107267..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="471" y="663" width="46" height="17"/>
     </entry>
     <entry id="6" name="mmu:71701" type="gene"
@@ -275,9 +275,9 @@
         <graphics name="Lsm6, 1500031N17Rik, 2410088K19Rik, AI747288, MGC117708" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="863" y="376" width="46" height="17"/>
     </entry>
-    <entry id="55" name="mmu:100041500" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100041500">
-        <graphics name="Gm10146" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="55" name="mmu:66094" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:66094">
+        <graphics name="Lsm7, 0910001B06Rik, 1110033F18Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="909" y="376" width="46" height="17"/>
     </entry>
     <entry id="56" name="mmu:76522" type="gene"
@@ -312,7 +312,7 @@
     </entry>
     <entry id="62" name="mmu:225929" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:225929">
-        <graphics name="Patl1, AV312086, D430024J04" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Patl1, AV312086, D430024J04, Pat1b" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="865" y="224" width="46" height="17"/>
     </entry>
     <entry id="63" name="mmu:74108" type="gene"

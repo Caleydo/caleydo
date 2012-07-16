@@ -242,7 +242,7 @@
     </entry>
     <entry id="48" name="hsa:6647" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6647">
-        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SOD1, ALS, ALS1, IPOA, SOD, hSod1, homodimer" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="461" y="248" width="46" height="17"/>
     </entry>
     <entry id="49" name="hsa:581" type="gene"
@@ -262,7 +262,7 @@
     </entry>
     <entry id="52" name="hsa:2534" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2534">
-        <graphics name="FYN, MGC45350, SLK, SYN" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FYN, MGC45350, SLK, SYN, p59-FYN" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="461" y="350" width="46" height="17"/>
     </entry>
     <entry id="53" name="path:hsa04210" type="map"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 28, 2011 16:05:08 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 1, 2012 11:57:08 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00290" org="hsa" number="00290"
          title="Valine, leucine and isoleucine biosynthesis"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00290.png"
@@ -62,12 +62,12 @@
     </entry>
     <entry id="31" name="hsa:586 hsa:587" type="gene" reaction="rn:R02199"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:586+hsa:587">
-        <graphics name="BCAT1, BCATC, BCT1, DKFZp686E12175, ECA39, MECA39, PNAS121, PP18..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCAT1, BCATC, BCT1, ECA39, MECA39, PNAS121, PP18..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="154" y="565" width="46" height="17"/>
     </entry>
     <entry id="33" name="hsa:586 hsa:587" type="gene" reaction="rn:R01090"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:586+hsa:587">
-        <graphics name="BCAT1, BCATC, BCT1, DKFZp686E12175, ECA39, MECA39, PNAS121, PP18..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCAT1, BCATC, BCT1, ECA39, MECA39, PNAS121, PP18..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="676" y="704" width="46" height="17"/>
     </entry>
     <entry id="34" name="ko:K00053" type="ortholog" reaction="rn:R05068"
@@ -102,7 +102,7 @@
     </entry>
     <entry id="40" name="hsa:586 hsa:587" type="gene" reaction="rn:R01214"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:586+hsa:587">
-        <graphics name="BCAT1, BCATC, BCT1, DKFZp686E12175, ECA39, MECA39, PNAS121, PP18..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCAT1, BCATC, BCT1, ECA39, MECA39, PNAS121, PP18..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="296" y="565" width="46" height="17"/>
     </entry>
     <entry id="41" name="ko:K01687" type="ortholog" reaction="rn:R04441"

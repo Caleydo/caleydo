@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 31, 2009 10:00:53 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 10:35:43 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05340" org="mmu" number="05340"
          title="Primary immunodeficiency"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05340.png"
@@ -37,17 +37,17 @@
     </entry>
     <entry id="7" name="mmu:21947" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:21947">
-        <graphics name="Cd40lg, CD154, Cd40l, HIGM1, IGM, IMD3, Ly-62, Ly62, T-BAM, TRAP, Tnfsf5, gp39" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cd40lg, CD154, CD40-L, Cd40l, HIGM1, IGM, IMD3, Ly-62, Ly62, T-BAM, TRAP, Tnfsf5, gp39" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1051" y="654" width="46" height="17"/>
     </entry>
-    <entry id="8" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="8" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="741" y="542" width="46" height="17"/>
     </entry>
-    <entry id="9" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="9" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="949" y="590" width="46" height="17"/>
     </entry>
     <entry id="10" name="mmu:12504" type="gene"
@@ -70,9 +70,9 @@
         <graphics name="Cd4, L3T4, Ly-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1096" y="229" width="46" height="17"/>
     </entry>
-    <entry id="14" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="14" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1120" y="541" width="46" height="17"/>
     </entry>
     <entry id="15" name="mmu:16151" type="gene"
@@ -90,9 +90,9 @@
         <graphics name="Ung, UNG1, UNG2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="998" y="677" width="46" height="17"/>
     </entry>
-    <entry id="18" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="18" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="303" y="653" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:12518" type="gene"
@@ -200,9 +200,9 @@
         <graphics name="Aire, MGC123374, MGC123375" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="874" y="222" width="46" height="17"/>
     </entry>
-    <entry id="41" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="41" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="904" y="542" width="46" height="17"/>
     </entry>
     <entry id="42" name="mmu:19373" type="gene"
@@ -240,14 +240,24 @@
         <graphics name="Ciita, C2ta, EG669998, Gm9475, MGC130299" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="977" y="307" width="46" height="17"/>
     </entry>
-    <entry id="49" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="49" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="417" y="545" width="46" height="17"/>
     </entry>
-    <entry id="50" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="50" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="576" y="543" width="46" height="17"/>
+    </entry>
+    <entry id="51" name="mmu:109305" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109305">
+        <graphics name="Orai1, D730049H07Rik, Tmem142a, orai-1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="1183" y="53" width="46" height="17"/>
+    </entry>
+    <entry id="52" name="mmu:109305" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:109305">
+        <graphics name="Orai1, D730049H07Rik, Tmem142a, orai-1" fgcolor="#000000" bgcolor="#BFFFBF"
+             type="rectangle" x="1183" y="310" width="46" height="17"/>
     </entry>
 </pathway>

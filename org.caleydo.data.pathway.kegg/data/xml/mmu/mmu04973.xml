@@ -160,9 +160,9 @@
         <graphics name="C00208" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="270" y="388" width="8" height="8"/>
     </entry>
-    <entry id="32" name="mmu:232714 mmu:638904" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:232714+mmu:638904">
-        <graphics name="Mgam, 6030407P20Rik, MGA..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="32" name="mmu:232714" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:232714">
+        <graphics name="Mgam, 6030407P20Rik, MGA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="507" y="443" width="46" height="17"/>
     </entry>
     <entry id="33" name="cpd:C00369" type="compound"
@@ -175,8 +175,8 @@
         <graphics name="Pancreatic secretion" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="141" y="235" width="115" height="25"/>
     </entry>
-    <entry id="35" name="mmu:100043684 mmu:11722" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043684+mmu:11722">
+    <entry id="35" name="mmu:100043684 mmu:100043686 mmu:100043688 mmu:109959 mmu:11722" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100043684+mmu:100043686+mmu:100043688+mmu:109959+mmu:11722">
         <graphics name="Amy2a4, OTTMUSG00000022433, mAmy2-3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="137" y="286" width="46" height="17"/>
     </entry>

@@ -1,10 +1,15 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 8, 2011 16:26:38 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 12, 2012 11:21:21 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00051" org="hsa" number="00051"
          title="Fructose and mannose metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00051.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?hsa00051">
+    <entry id="58" name="ko:K15856" type="ortholog" reaction="rn:R03397 rn:R03399"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15856">
+        <graphics name="K15856" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="401" y="535" width="46" height="17"/>
+    </entry>
     <entry id="59" name="ko:K02768 ko:K02769 ko:K02770" type="ortholog" reaction="rn:R03232"
         link="http://www.kegg.jp/dbget-bin/www_bget?K02768+K02769+K02770">
         <graphics name="K02768..." fgcolor="#000000" bgcolor="#FFFFFF"
@@ -20,9 +25,9 @@
         <graphics name="K08261" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="285" y="104" width="46" height="17"/>
     </entry>
-    <entry id="62" name="hsa:231" type="gene" reaction="rn:R01787"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:231">
-        <graphics name="AKR1B1, ADR, ALDR1, ALR2, AR, MGC1804" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="62" name="hsa:231 hsa:57016" type="gene" reaction="rn:R01787"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:231+hsa:57016">
+        <graphics name="AKR1B1, ADR, ALDR1, ALR2, AR, MGC1804..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="285" y="135" width="46" height="17"/>
     </entry>
     <entry id="63" name="hsa:6652" type="gene" reaction="rn:R00875"
@@ -120,11 +125,6 @@
         <graphics name="FPGT, GFPP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="279" y="559" width="46" height="17"/>
     </entry>
-    <entry id="88" name="ko:K00080" type="ortholog" reaction="rn:R03397 rn:R03399"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00080">
-        <graphics name="K00080" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="401" y="514" width="46" height="17"/>
-    </entry>
     <entry id="89" name="hsa:7264" type="gene" reaction="rn:R05692"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7264">
         <graphics name="TSTA3, FX, P35B, SDR4E1" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -139,11 +139,6 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:29925+hsa:29926">
         <graphics name="GMPPB, KIAA1851..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="488" y="418" width="46" height="17"/>
-    </entry>
-    <entry id="92" name="ko:K00971" type="ortholog" reaction="rn:R00883"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00971">
-        <graphics name="K00971" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="538" y="418" width="46" height="17"/>
     </entry>
     <entry id="93" name="ko:K00068" type="ortholog" reaction="rn:R05607"
         link="http://www.kegg.jp/dbget-bin/www_bget?K00068">
@@ -177,7 +172,7 @@
     </entry>
     <entry id="100" name="hsa:7167" type="gene" reaction="rn:R01015"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7167">
-        <graphics name="TPI1, MGC88108, TPI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TPI1, MGC88108, TIM, TPI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="401" y="840" width="46" height="17"/>
     </entry>
     <entry id="101" name="hsa:226 hsa:229 hsa:230" type="gene" reaction="rn:R02568"
@@ -260,9 +255,9 @@
         <graphics name="K01628" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="219" y="704" width="46" height="17"/>
     </entry>
-    <entry id="127" name="hsa:57016" type="gene" reaction="rn:R03234"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:57016">
-        <graphics name="AKR1B10, AKR1B11, AKR1B12, ALDRLn, ARL-1, ARL1, HIS, HSI, MGC14103" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="127" name="ko:K00100" type="ortholog" reaction="rn:R03234"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00100">
+        <graphics name="K00100" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="857" y="426" width="46" height="17"/>
     </entry>
     <entry id="128" name="ko:K02812 ko:K02813 ko:K02814 ko:K02815" type="ortholog" reaction="rn:R04076"
@@ -760,10 +755,6 @@
     <reaction id="113" name="rn:R04780" type="irreversible">
         <substrate id="168" name="cpd:C05378"/>
         <product id="157" name="cpd:C05345"/>
-    </reaction>
-    <reaction id="127" name="rn:R03234" type="reversible">
-        <substrate id="144" name="cpd:C01096"/>
-        <product id="178" name="cpd:C02888"/>
     </reaction>
     <reaction id="129" name="rn:R03161" type="irreversible">
         <substrate id="171" name="cpd:C01019"/>

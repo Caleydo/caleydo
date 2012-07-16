@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="hsa:4659 hsa:5499 hsa:5500 hsa:5501" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4659+hsa:5499+hsa:5500+hsa:5501">
-        <graphics name="PPP1R12A, MBS, MGC133042, MYPT1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PPP1R12A, M130, MBS, MGC133042, MYPT1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="542" y="332" width="46" height="17"/>
     </entry>
     <entry id="20" name="hsa:107 hsa:114" type="gene"

@@ -127,7 +127,7 @@
     </entry>
     <entry id="26" name="mmu:56208" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56208">
-        <graphics name="Becn1, 4921513J16Rik, 5430417M23Rik, MGC6843" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Becn1, 4921513J16Rik, 5430417M23Rik, Atg6, MGC6843" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="503" y="284" width="46" height="17"/>
     </entry>
     <entry id="27" name="mmu:225326" type="gene"

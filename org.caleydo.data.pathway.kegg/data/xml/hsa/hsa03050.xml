@@ -85,9 +85,9 @@
         <graphics name="PSMC1, MGC24583, MGC8541, P26S4, S4, p56" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="739" y="221" width="46" height="17"/>
     </entry>
-    <entry id="17" name="hsa:5704 hsa:652826" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5704+hsa:652826">
-        <graphics name="PSMC4, MGC13687, MGC23214, MGC8570, MIP224, S6, TBP7..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="17" name="hsa:5704" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5704">
+        <graphics name="PSMC4, MGC13687, MGC23214, MGC8570, MIP224, S6, TBP7" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="922" y="221" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:5706" type="gene"
@@ -207,7 +207,7 @@
     </entry>
     <entry id="41" name="hsa:5696" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5696">
-        <graphics name="PSMB8, D6S216, D6S216E, LMP7, MGC1491, PSMB5i, RING10" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PSMB8, D6S216, D6S216E, JMP, LMP7, MGC1491, PSMB5i, RING10" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="815" y="487" width="46" height="17"/>
     </entry>
     <entry id="42" name="hsa:122706" type="gene"
@@ -262,7 +262,7 @@
     </entry>
     <entry id="52" name="hsa:5696" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5696">
-        <graphics name="PSMB8, D6S216, D6S216E, LMP7, MGC1491, PSMB5i, RING10" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PSMB8, D6S216, D6S216E, JMP, LMP7, MGC1491, PSMB5i, RING10" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="393" y="693" width="46" height="17"/>
     </entry>
     <entry id="53" name="hsa:5720" type="gene"

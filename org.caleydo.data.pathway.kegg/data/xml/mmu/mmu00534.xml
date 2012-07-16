@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 8, 2010 14:45:22 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 6, 2012 10:13:04 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00534" org="mmu" number="00534"
          title="Glycosaminoglycan biosynthesis - heparan sulfate"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00534.png"
@@ -465,27 +465,5 @@
     <reaction id="3" name="rn:R05935" type="irreversible">
         <substrate id="8" name="gl:G00162"/>
         <product id="7" name="gl:G00163"/>
-    </reaction>
-    <reaction id="22" name="rn:R05936" type="reversible">
-    </reaction>
-    <reaction id="23" name="rn:R05935" type="reversible">
-    </reaction>
-    <reaction id="24" name="rn:R05930" type="reversible">
-    </reaction>
-    <reaction id="25" name="rn:R05928" type="reversible">
-    </reaction>
-    <reaction id="26" name="rn:R05927" type="reversible">
-    </reaction>
-    <reaction id="27" name="rn:R05926" type="reversible">
-    </reaction>
-    <reaction id="28" name="rn:R05925" type="reversible">
-    </reaction>
-    <reaction id="33" name="rn:R05928" type="reversible">
-    </reaction>
-    <reaction id="34" name="rn:R05927" type="reversible">
-    </reaction>
-    <reaction id="35" name="rn:R05926" type="reversible">
-    </reaction>
-    <reaction id="36" name="rn:R05925" type="reversible">
     </reaction>
 </pathway>

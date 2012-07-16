@@ -60,8 +60,8 @@
         <graphics name="Tcof1, AA408847, AW209012, treacle" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="301" y="164" width="46" height="17"/>
     </entry>
-    <entry id="12" name="mmu:100045968 mmu:100505330 mmu:20826 mmu:434401" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100045968+mmu:100505330+mmu:20826+mmu:434401">
+    <entry id="12" name="mmu:100045968 mmu:100862468 mmu:20826 mmu:434401" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100045968+mmu:100862468+mmu:20826+mmu:434401">
         <graphics name="100045968..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="378" y="238" width="46" height="17"/>
     </entry>
@@ -150,8 +150,8 @@
         <graphics name="Gtpbp4, 2610028C09Rik, Crfg, Gtpbp3, NGB, Nog1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="651" y="551" width="46" height="17"/>
     </entry>
-    <entry id="30" name="mmu:230737 mmu:237107 mmu:30877 mmu:633966" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:230737+mmu:237107+mmu:30877+mmu:633966">
+    <entry id="30" name="mmu:230737 mmu:237107 mmu:30877" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:230737+mmu:237107+mmu:30877">
         <graphics name="Gnl2, BC003262, HUMAUANTIG, MGC7863, Ngp-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="651" y="583" width="46" height="17"/>
     </entry>
@@ -165,9 +165,9 @@
         <graphics name="Nvl, 1200009I24Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="651" y="604" width="46" height="17"/>
     </entry>
-    <entry id="33" name="mmu:100503708 mmu:104444 mmu:434234 mmu:66932" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100503708+mmu:104444+mmu:434234+mmu:66932">
-        <graphics name="100503708..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="33" name="mmu:104444 mmu:434234 mmu:66932" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104444+mmu:434234+mmu:66932">
+        <graphics name="Rexo2, 1810038D15Rik, AW107347, Sfn, Smfn..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="505" y="591" width="46" height="17"/>
     </entry>
     <entry id="34" name="mmu:170722 mmu:245610 mmu:53319 mmu:83454" type="gene"

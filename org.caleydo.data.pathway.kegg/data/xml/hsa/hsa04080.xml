@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 27, 2011 17:05:16 +0900 (GMT+09:00) -->
+<!-- Creation date: Aug 30, 2011 17:50:17 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04080" org="hsa" number="04080"
          title="Neuroactive ligand-receptor interaction"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04080.png"
@@ -277,7 +277,7 @@
     </entry>
     <entry id="55" name="hsa:3953" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3953">
-        <graphics name="LEPR, CD295, DKFZp686B1731, OBR" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LEPR, CD295, DKFZp686B1731, LEP-R, OB-R, OBR" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1267" y="906" width="46" height="17"/>
     </entry>
     <entry id="56" name="hsa:7067 hsa:7068" type="gene"
@@ -452,7 +452,7 @@
     </entry>
     <entry id="92" name="hsa:7433 hsa:7434" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:7433+hsa:7434">
-        <graphics name="VIPR1, FLJ41949, HVR1, II, PACAP-R-2, RDC1, V1RG, VAPC1, VIPR, VIRG, VPAC1, VPCAP1R..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="VIPR1, FLJ41949, HVR1, II, PACAP-R-2, PACAP-R2, RDC1, V1RG, VAPC1, VIP-R-1, VIPR, VIRG, VPAC1, VPCAP1R..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1029" y="641" width="46" height="17"/>
     </entry>
     <entry id="93" name="hsa:6344" type="gene"
@@ -517,7 +517,7 @@
     </entry>
     <entry id="105" name="hsa:1901 hsa:1903 hsa:53637 hsa:8698 hsa:9294" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1901+hsa:1903+hsa:53637+hsa:8698+hsa:9294">
-        <graphics name="S1PR1, CHEDG1, D1S3362, ECGF1, EDG-1, EDG1, FLJ58121, S1P1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="S1PR1, CD363, CHEDG1, D1S3362, ECGF1, EDG-1, EDG1, FLJ58121, S1P1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="822" y="626" width="46" height="17"/>
     </entry>
     <entry id="106" name="hsa:1902 hsa:23566 hsa:2846 hsa:9170" type="gene"

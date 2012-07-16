@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 2, 2009 10:15:41 +0900 (JST) -->
+<!-- Creation date: Jun 6, 2012 14:03:12 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00603" org="hsa" number="00603"
          title="Glycosphingolipid biosynthesis - globo series"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00603.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?hsa00603">
     <entry id="3" name="hsa:6482 hsa:6483" type="gene" reaction="rn:R05967"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6482+hsa:6483">
-        <graphics name="ST3GAL1, DKFZp666E036, DKFZp779K2051, FLJ36548, Gal-NAc6S, MGC9183, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ST3GAL1, Gal-NAc6S, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="221" y="420" width="46" height="17"/>
     </entry>
     <entry id="22" name="gl:G00181" type="compound"
@@ -97,12 +97,12 @@
     </entry>
     <entry id="42" name="hsa:3073 hsa:3074" type="gene" reaction="rn:R05963"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3073+hsa:3074">
-        <graphics name="HEXA, MGC99608, TSD..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="HEXA, TSD..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="198" y="255" width="46" height="17"/>
     </entry>
     <entry id="46" name="hsa:6489" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6489">
-        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8A, ST8SiaI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="513" width="46" height="17"/>
     </entry>
     <entry id="48" name="hsa:10690" type="gene" reaction="rn:R05904"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="52" name="hsa:26301" type="gene" reaction="rn:R05965"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:26301">
-        <graphics name="GBGT1, A3GALNT, FS, MGC44848, UNQ2513" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GBGT1, A3GALNT, FS, UNQ2513" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="162" y="294" width="46" height="17"/>
     </entry>
     <entry id="53" name="path:hsa00603" type="map"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="58" name="hsa:6489" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6489">
-        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8A, ST8SiaI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST8SIA1, GD3S, SIAT8, SIAT8-A, SIAT8A, ST8SiaI" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="62,701,92,701"/>
     </entry>
     <entry id="59" name="hsa:2523 hsa:2524" type="gene" reaction="rn:R05968"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="61" name="hsa:26301" type="gene" reaction="rn:R05965"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:26301">
-        <graphics name="GBGT1, A3GALNT, FS, MGC44848, UNQ2513" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="GBGT1, A3GALNT, FS, UNQ2513" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="219,651,249,651"/>
     </entry>
     <entry id="63" name="hsa:10317" type="gene" reaction="rn:R05964"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="65" name="hsa:6482 hsa:6483" type="gene" reaction="rn:R05967"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6482+hsa:6483">
-        <graphics name="ST3GAL1, DKFZp666E036, DKFZp779K2051, FLJ36548, Gal-NAc6S, MGC9183, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ST3GAL1, Gal-NAc6S, SIAT4A, SIATFL, ST3GalA, ST3GalA.1, ST3GalIA, ST3GalIA,1, ST3O..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="157,701,187,701"/>
     </entry>
     <entry id="66" name="hsa:8706" type="gene" reaction="rn:R05962"

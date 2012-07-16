@@ -302,7 +302,7 @@
     </entry>
     <entry id="60" name="hsa:6262" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6262">
-        <graphics name="RYR2, ARVC2, ARVD2, VTSIP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RYR2, ARVC2, ARVD2, RYR-2, RyR, VTSIP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="525" y="501" width="46" height="17"/>
     </entry>
     <entry id="61" name="hsa:219931" type="gene"
@@ -477,7 +477,7 @@
     </entry>
     <entry id="95" name="hsa:5879" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5879">
-        <graphics name="RAC1, MGC111543, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAC1, MGC111543, Rac-1, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="655" y="373" width="46" height="17"/>
     </entry>
     <entry id="96" name="path:hsa04973" type="map"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Oct 13, 2010 16:25:46 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 4, 2012 09:49:02 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00340" org="mmu" number="00340"
          title="Histidine metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00340.png"
@@ -32,12 +32,12 @@
     </entry>
     <entry id="42" name="mmu:71761" type="gene" reaction="rn:R02288"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:71761">
-        <graphics name="Amdhd1, 1300019J08Rik, MGC148226" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Amdhd1, 1300019J08Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="829" y="518" width="46" height="17"/>
     </entry>
     <entry id="43" name="mmu:243537" type="gene" reaction="rn:R02914"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:243537">
-        <graphics name="Uroc1, AI265605, BC022133, MGC37818" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Uroc1, AI265605, BC022133" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="829" y="445" width="46" height="17"/>
     </entry>
     <entry id="44" name="mmu:15109" type="gene" reaction="rn:R01168"
@@ -45,9 +45,9 @@
         <graphics name="Hal, Hsd, his, histidase" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="829" y="373" width="46" height="17"/>
     </entry>
-    <entry id="47" name="ko:K01270" type="ortholog" reaction="rn:R01166"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K01270">
-        <graphics name="K01270" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="47" name="mmu:66054" type="gene" reaction="rn:R01166"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:66054">
+        <graphics name="Cndp2, 0610010E05Rik, C76600, Cn2, Dip-2, Pep-1, Pep1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="659" y="297" width="46" height="17"/>
     </entry>
     <entry id="48" name="mmu:107239" type="gene" reaction="rn:R01164"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="79" name="mmu:52686 mmu:66138 mmu:67011 mmu:69536" type="gene" reaction="rn:R01159"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:52686+mmu:66138+mmu:67011+mmu:69536">
-        <graphics name="Mettl2, 2810438F06Rik, AW493404, C130031G21Rik, D11Ertd768e, METL, MGC107608, PSENIP1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mettl2, 2810438F06Rik, AW493404, C130031G21Rik, D11Ertd768e, METL, PSENIP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="803" y="240" width="46" height="17"/>
     </entry>
     <entry id="82" name="cpd:C00119" type="compound"
@@ -425,6 +425,18 @@
     <relation entry1="48" entry2="79" type="ECrel">
         <subtype name="compound" value="105"/>
     </relation>
+    <relation entry1="44" entry2="47" type="ECrel">
+        <subtype name="compound" value="105"/>
+    </relation>
+    <relation entry1="47" entry2="49" type="ECrel">
+        <subtype name="compound" value="105"/>
+    </relation>
+    <relation entry1="47" entry2="50" type="ECrel">
+        <subtype name="compound" value="105"/>
+    </relation>
+    <relation entry1="47" entry2="79" type="ECrel">
+        <subtype name="compound" value="105"/>
+    </relation>
     <relation entry1="44" entry2="75" type="ECrel">
         <subtype name="compound" value="105"/>
     </relation>
@@ -491,6 +503,12 @@
     <relation entry1="41" entry2="66" type="maplink">
         <subtype name="compound" value="122"/>
     </relation>
+    <relation entry1="48" entry2="75" type="ECrel">
+        <subtype name="compound" value="104"/>
+    </relation>
+    <relation entry1="48" entry2="47" type="ECrel">
+        <subtype name="compound" value="104"/>
+    </relation>
     <reaction id="41" name="rn:R02287" type="reversible">
         <substrate id="122" name="cpd:C00025"/>
         <product id="119" name="cpd:C00439"/>
@@ -506,6 +524,10 @@
     <reaction id="44" name="rn:R01168" type="irreversible">
         <substrate id="105" name="cpd:C00135"/>
         <product id="113" name="cpd:C00785"/>
+    </reaction>
+    <reaction id="47" name="rn:R01166" type="irreversible">
+        <substrate id="104" name="cpd:C00386"/>
+        <product id="105" name="cpd:C00135"/>
     </reaction>
     <reaction id="48" name="rn:R01164" type="irreversible">
         <substrate id="105" name="cpd:C00135"/>

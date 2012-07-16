@@ -37,7 +37,7 @@
     </entry>
     <entry id="10" name="hsa:5346" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5346">
-        <graphics name="PLIN1, PERI, PLIN" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PLIN1, FPLD4, PERI, PLIN" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="886" y="626" width="46" height="17"/>
     </entry>
     <entry id="11" name="hsa:948" type="gene"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="13" name="hsa:2167 hsa:2168 hsa:2169 hsa:2170 hsa:2171 hsa:2172 hsa:2173" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2167+hsa:2168+hsa:2169+hsa:2170+hsa:2171+hsa:2172+hsa:2173">
-        <graphics name="FABP4, A-FABP, aP2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FABP4, A-FABP, AFABP, ALBP, aP2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="228" y="133" width="46" height="17"/>
     </entry>
     <entry id="14" name="hsa:5465" type="gene"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="40" name="hsa:2167" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2167">
-        <graphics name="FABP4, A-FABP, aP2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FABP4, A-FABP, AFABP, ALBP, aP2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="836" y="649" width="46" height="17"/>
     </entry>
     <entry id="41" name="hsa:51129" type="gene"
@@ -222,7 +222,7 @@
     </entry>
     <entry id="47" name="hsa:5360" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5360">
-        <graphics name="PLTP, HDLCQ9" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PLTP, BPIFE, HDLCQ9" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="886" y="189" width="46" height="17"/>
     </entry>
     <entry id="48" name="cpd:C14767 cpd:C14762" type="compound"
@@ -252,7 +252,7 @@
     </entry>
     <entry id="53" name="hsa:9370" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9370">
-        <graphics name="ADIPOQ, ACDC, ACRP30, ADIPQTL1, ADPN, APM-1, APM1, GBP28, adiponectin" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADIPOQ, ACDC, ACRP30, ADIPQTL1, ADPN, APM-1, APM1, GBP28" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="886" y="649" width="46" height="17"/>
     </entry>
     <entry id="55" name="hsa:6319 hsa:79966" type="gene"

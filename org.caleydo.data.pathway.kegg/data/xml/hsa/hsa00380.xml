@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jul 28, 2011 16:07:14 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 27, 2012 15:35:50 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00380" org="hsa" number="00380"
          title="Tryptophan metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00380.png"
@@ -8,7 +8,7 @@
     <entry id="12" name="hsa:847" type="gene" reaction="rn:R02670"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:847">
         <graphics name="CAT, MGC138422, MGC138424" fgcolor="#000000" bgcolor="#BFFFBF"
-             type="rectangle" x="750" y="769" width="46" height="17"/>
+             type="rectangle" x="750" y="759" width="46" height="17"/>
     </entry>
     <entry id="28" name="hsa:1962 hsa:3033" type="gene" reaction="rn:R01975"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1962+hsa:3033">
@@ -37,7 +37,7 @@
     </entry>
     <entry id="74" name="hsa:259307" type="gene" reaction="rn:R00677"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:259307">
-        <graphics name="IL4I1, FIG1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL4I1, FIG1, LAAO, LAO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="725" y="312" width="46" height="17"/>
     </entry>
     <entry id="75" name="hsa:169355 hsa:3620" type="gene" reaction="rn:R03628"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="79" name="hsa:15" type="gene" reaction="rn:R02911"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:15">
-        <graphics name="AANAT, SNAT" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AANAT, DSPS, SNAT" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="725" y="251" width="46" height="17"/>
     </entry>
     <entry id="80" name="hsa:169355 hsa:3620" type="gene" reaction="rn:R02909"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="106" name="hsa:6999" type="gene" reaction="rn:R00678"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6999">
-        <graphics name="TDO2, TDO, TPH2, TRPO" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TDO2, TDO, TO, TPH2, TRPO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="537" y="608" width="46" height="17"/>
     </entry>
     <entry id="107" name="ko:K01667" type="ortholog" reaction="rn:R00673"
@@ -744,6 +744,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?K11820">
         <graphics name="K11820" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="631" y="501" width="46" height="17"/>
+    </entry>
+    <entry id="266" name="ko:K03782" type="ortholog" reaction="rn:R02670"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K03782">
+        <graphics name="K03782" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="750" y="780" width="46" height="17"/>
     </entry>
     <relation entry1="82" entry2="83" type="ECrel">
         <subtype name="compound" value="153"/>

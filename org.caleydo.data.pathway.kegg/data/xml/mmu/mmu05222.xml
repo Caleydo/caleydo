@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Oct 19, 2010 14:16:12 +0900 (JST) -->
+<!-- Creation date: Jun 8, 2012 17:19:24 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05222" org="mmu" number="05222"
          title="Small cell lung cancer"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05222.png"
@@ -12,7 +12,7 @@
     </entry>
     <entry id="2" name="mmu:12447 mmu:12448" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12447+mmu:12448">
-        <graphics name="Ccne1, AW538188..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ccne1, AW538188, CycE1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="907" y="303" width="46" height="17"/>
     </entry>
     <entry id="3" name="mmu:12566" type="gene"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="8" name="mmu:16412" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16412">
-        <graphics name="Itgb1, 4633401G24Rik, AA409975, AA960159, CD29, Fnrb, gpIIa" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Itgb1, 4633401G24Rik, AA409975, AA960159, CD29, Fnrb, Gm9863, gpIIa" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="223" y="536" width="46" height="17"/>
     </entry>
     <entry id="9" name="mmu:16398 mmu:16399 mmu:16400 mmu:16403 mmu:16410" type="gene"
@@ -50,9 +50,9 @@
         <graphics name="Itga2, CD49B, DX5..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="223" y="519" width="46" height="17"/>
     </entry>
-    <entry id="10" name="mmu:17344 mmu:229615 mmu:56469 mmu:59004" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17344+mmu:229615+mmu:56469+mmu:59004">
-        <graphics name="Pias2, 6330408K17Rik, AI462206, ARIP3, AU018068, Dib, Miz1, PIASxalpha, PIASxb, PIASxbeta, SIZ2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="10" name="mmu:17344" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17344">
+        <graphics name="Pias2, 6330408K17Rik, AI462206, ARIP3, AU018068, Dib, Miz1, PIASxalpha, PIASxb, PIASxbeta, SIZ2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="759" y="364" width="46" height="17"/>
     </entry>
     <entry id="11" name="cpd:C05981" type="compound"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="mmu:14083" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14083">
-        <graphics name="Ptk2, FAK, FRNK, Fadk, KIAA4203, mKIAA4203" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ptk2, FAK, FRNK, Fadk, KIAA4203, mKIAA4203, p125FAK" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="295" y="528" width="46" height="17"/>
     </entry>
     <entry id="26" name="mmu:14198" type="gene"
@@ -135,8 +135,8 @@
         <graphics name="Fhit, AW045638, Fra14A2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="284" y="145" width="46" height="17"/>
     </entry>
-    <entry id="27" name="mmu:13063 mmu:13067 mmu:672195" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13063+mmu:13067+mmu:672195">
+    <entry id="27" name="mmu:13063 mmu:13067" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13063+mmu:13067">
         <graphics name="Cycs..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="484" y="277" width="46" height="17"/>
     </entry>
@@ -160,8 +160,8 @@
         <graphics name="Cell cycle" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="1079" y="272" width="102" height="34"/>
     </entry>
-    <entry id="32" name="mmu:11796 mmu:11797 mmu:11798" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11796+mmu:11797+mmu:11798">
+    <entry id="32" name="mmu:11796 mmu:11797 mmu:11798 mmu:329581" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11796+mmu:11797+mmu:11798+mmu:329581">
         <graphics name="Birc3, AW107670, Api1, Api2, Birc2, HIAP2, IAP1, IAP2, MIAP1, MIAP2, MIHB, MIHC, RNF49, cIAP-1, cIAP-2, cIAP1, cIAP2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="877" y="519" width="46" height="17"/>
     </entry>

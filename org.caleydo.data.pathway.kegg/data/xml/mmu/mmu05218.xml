@@ -70,9 +70,9 @@
         <graphics name="Egfr, 9030024J15Rik, AI552599, Erbb, Errp, Wa5, wa-2, wa2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="226" y="198" width="46" height="17"/>
     </entry>
-    <entry id="14" name="mmu:13645 mmu:14164 mmu:14165 mmu:14166 mmu:14167 mmu:14168 mmu:14169 mmu:14170 mmu:14171 mmu:14172 mmu:14173 mmu:14174 mmu:14175 mmu:14176 mmu:14177 mmu:14178 mmu:14179 mmu:14180 mmu:15234 mmu:16000 mmu:18590 mmu:18591 mmu:54635 mmu:56636 mmu:64654 mmu:67112 mmu:71785 mmu:80857 mmu:80903" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13645+mmu:14164+mmu:14165+mmu:14166+mmu:14167+mmu:14168+mmu:14169+mmu:14170+mmu:14171+mmu:14172+mmu:14173+mmu:14174+mmu:14175+mmu:14176+mmu:14177+mmu:14178+mmu:14179+mmu:14180+mmu:15234+mmu:16000+mmu:18590+mmu:18591+mmu:54635+mmu:56636+mmu:64654+mmu:67112+mmu:71785+mmu:80857+mmu:80903">
-        <graphics name="Egf, AI790464..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="14" name="mmu:100862558 mmu:13645 mmu:14164 mmu:14165 mmu:14166 mmu:14167 mmu:14168 mmu:14169 mmu:14170 mmu:14171 mmu:14172 mmu:14173 mmu:14174 mmu:14175 mmu:14176 mmu:14177 mmu:14178 mmu:14179 mmu:14180 mmu:15234 mmu:16000 mmu:18590 mmu:18591 mmu:54635 mmu:56636 mmu:64654 mmu:67112 mmu:71785 mmu:80857 mmu:80903" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100862558+mmu:13645+mmu:14164+mmu:14165+mmu:14166+mmu:14167+mmu:14168+mmu:14169+mmu:14170+mmu:14171+mmu:14172+mmu:14173+mmu:14174+mmu:14175+mmu:14176+mmu:14177+mmu:14178+mmu:14179+mmu:14180+mmu:15234+mmu:16000+mmu:18590+mmu:18591+mmu:54635+mmu:56636+mmu:64654+mmu:67112+mmu:71785+mmu:80857+mmu:80903">
+        <graphics name="100862558..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="148" y="198" width="46" height="17"/>
     </entry>
     <entry id="15" name="mmu:12015" type="gene"

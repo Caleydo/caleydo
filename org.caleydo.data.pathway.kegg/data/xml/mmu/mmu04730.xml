@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="mmu:14799 mmu:14800 mmu:53623" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14799+mmu:14800+mmu:53623">
-        <graphics name="Gria1, 2900051M01Rik, AI853806, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gria1, 2900051M01Rik, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1, gluR-K1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="313" y="486" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:20190" type="gene"
@@ -182,7 +182,7 @@
     </entry>
     <entry id="36" name="mmu:19091 mmu:19092" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19091+mmu:19092">
-        <graphics name="Prkg1, AW125416, CGKI, MGC132849, Prkg1b, Prkgr1b..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Prkg1, AW125416, CGKI, Gm19690, MGC132849, Prkg1b, Prkgr1b..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="495" y="155" width="46" height="17"/>
     </entry>
     <entry id="37" name="mmu:12286" type="gene"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="39" name="mmu:14799 mmu:14800 mmu:53623" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14799+mmu:14800+mmu:53623">
-        <graphics name="Gria1, 2900051M01Rik, AI853806, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gria1, 2900051M01Rik, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1, gluR-K1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="313" y="362" width="46" height="17"/>
     </entry>
     <entry id="40" name="mmu:26413 mmu:26417" type="gene"
@@ -237,7 +237,7 @@
     </entry>
     <entry id="47" name="mmu:16438 mmu:16439 mmu:16440" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16438+mmu:16439+mmu:16440">
-        <graphics name="Itpr1, D6Pas2, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Itpr1, D6Pas2, Gm10429, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="558" y="402" width="46" height="17"/>
     </entry>
     <entry id="48" name="path:mmu04730" type="map"

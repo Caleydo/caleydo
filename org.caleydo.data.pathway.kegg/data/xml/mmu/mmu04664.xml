@@ -1,18 +1,18 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 24, 2009 16:47:06 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:14:56 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04664" org="mmu" number="04664"
          title="Fc epsilon RI signaling pathway"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04664.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu04664">
-    <entry id="1" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="1" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="112" y="364" width="46" height="17"/>
     </entry>
-    <entry id="2" name="ko:K06856" type="ortholog"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K06856">
-        <graphics name="K06856" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="2" name="mmu:16061" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16061">
+        <graphics name="Igh-VJ558, AI893585, MGC118142, MGC6727" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="112" y="291" width="46" height="17"/>
     </entry>
     <entry id="3" name="mmu:14127" type="gene"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="22" name="mmu:16189" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16189">
-        <graphics name="Il4, Il-4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Il4, BSF-1, Il-4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="756" y="283" width="46" height="17"/>
     </entry>
     <entry id="23" name="mmu:11651 mmu:11652 mmu:23797" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="mmu:12981" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12981">
-        <graphics name="Csf2, Csfgm, Gm-CSf, MGC151255, MGC151257, MGI-IGM" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Csf2, Csfgm, GMCSF, Gm-CSf, MGC151255, MGC151257, MGI-IGM" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="783" y="342" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:19094 mmu:26415 mmu:26416 mmu:29857" type="gene"
@@ -172,12 +172,12 @@
     </entry>
     <entry id="34" name="mmu:20963" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20963">
-        <graphics name="Sykb, Syk" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Syk, Sykb" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="274" y="355" width="46" height="17"/>
     </entry>
     <entry id="35" name="mmu:17096 mmu:666513" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17096+mmu:666513">
-        <graphics name="Lyn, AA407514, Hck-2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Lyn, AA407514, Hck-2, p53Lyn, p56Lyn..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="251" y="237" width="46" height="17"/>
     </entry>
     <entry id="36" name="mmu:16797" type="gene"
@@ -280,14 +280,28 @@
         <graphics name="TITLE:Fc epsilon RI signaling pathway" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="147" y="58" width="214" height="25"/>
     </entry>
+    <entry id="56" name="undefined" type="group">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="179" y="307" width="46" height="51"/>
+        <component id="15"/>
+        <component id="16"/>
+        <component id="39"/>
+    </entry>
+    <entry id="57" name="undefined" type="group">
+        <graphics fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="179" y="381" width="46" height="51"/>
+        <component id="3"/>
+        <component id="4"/>
+        <component id="5"/>
+    </entry>
     <relation entry1="29" entry2="33" type="ECrel">
-        <subtype name="compound" value="18"/>
+        <subtype name="compound" value="19"/>
     </relation>
     <relation entry1="29" entry2="37" type="ECrel">
-        <subtype name="compound" value="18"/>
+        <subtype name="compound" value="19"/>
     </relation>
     <relation entry1="37" entry2="30" type="ECrel">
-        <subtype name="compound" value="13"/>
+        <subtype name="compound" value="14"/>
     </relation>
     <relation entry1="35" entry2="15" type="PPrel">
         <subtype name="activation" value="--&gt;"/>
@@ -390,5 +404,11 @@
     </relation>
     <relation entry1="34" entry2="39" type="PPrel">
         <subtype name="binding/association" value="---"/>
+    </relation>
+    <relation entry1="2" entry2="56" type="PPrel">
+        <subtype name="activation" value="--&gt;"/>
+    </relation>
+    <relation entry1="1" entry2="57" type="PPrel">
+        <subtype name="activation" value="--&gt;"/>
     </relation>
 </pathway>

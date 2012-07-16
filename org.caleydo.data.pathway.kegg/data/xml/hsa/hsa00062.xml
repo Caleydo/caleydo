@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 8, 2011 15:38:40 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 16:13:21 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00062" org="hsa" number="00062"
          title="Fatty acid elongation"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00062.png"
@@ -290,9 +290,9 @@
         <graphics name="C00249" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="835" y="582" width="8" height="8"/>
     </entry>
-    <entry id="106" name="hsa:10965 hsa:11332 hsa:122970 hsa:54898 hsa:60481 hsa:641371 hsa:6785 hsa:79071 hsa:79993 hsa:83401" type="gene" reaction="rn:R09419"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10965+hsa:11332+hsa:122970+hsa:54898+hsa:60481+hsa:641371+hsa:6785+hsa:79071+hsa:79993+hsa:83401">
-        <graphics name="ACOT2, CTE1A, MTE1, PTE2, PTE2A, ZAP128..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="106" name="hsa:54898 hsa:60481 hsa:64834 hsa:6785 hsa:79071 hsa:79993 hsa:83401" type="gene" reaction="rn:R09419"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:54898+hsa:60481+hsa:64834+hsa:6785+hsa:79071+hsa:79993+hsa:83401">
+        <graphics name="ELOVL2, FLJ20334, SSC2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="526" y="767" width="46" height="17"/>
     </entry>
     <entry id="107" name="cpd:C00040" type="compound"
@@ -332,7 +332,7 @@
     </entry>
     <entry id="115" name="hsa:9524" type="gene" reaction="rn:R09449"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9524">
-        <graphics name="TECR, GPSN2, SC2, TER" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TECR, GPSN2, MRT14, SC2, TER" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="553" y="1001" width="46" height="17"/>
     </entry>
     <entry id="116" name="hsa:201562 hsa:9200" type="gene" reaction="rn:R02685"
@@ -422,7 +422,7 @@
     </entry>
     <entry id="143" name="hsa:10965 hsa:11332 hsa:122970 hsa:641371" type="gene" reaction="rn:R09450"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10965+hsa:11332+hsa:122970+hsa:641371">
-        <graphics name="ACOT2, CTE1A, MTE1, PTE2, PTE2A, ZAP128..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACOT2, CTE-IA, CTE1A, MTE1, PTE2, PTE2A, ZAP128..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="551" y="1081" width="45" height="16"/>
     </entry>
     <entry id="144" name="cpd:C00638" type="compound"
@@ -681,18 +681,14 @@
         <substrate id="129" name="cpd:C00264"/>
         <product id="128" name="cpd:C00640"/>
     </reaction>
-    <reaction id="133" name="rn:R07162" type="reversible">
-    </reaction>
     <reaction id="123" name="rn:R00391" type="irreversible">
-        <substrate id="124" name="cpd:C00024"/>
         <substrate id="125" name="cpd:C00040"/>
+        <substrate id="124" name="cpd:C00024"/>
         <product id="129" name="cpd:C00264"/>
     </reaction>
     <reaction id="122" name="rn:R01778" type="reversible">
         <substrate id="129" name="cpd:C00264"/>
         <product id="128" name="cpd:C00640"/>
-    </reaction>
-    <reaction id="121" name="rn:R02685" type="reversible">
     </reaction>
     <reaction id="116" name="rn:R02685" type="irreversible">
         <substrate id="111" name="cpd:C00640"/>
@@ -710,8 +706,6 @@
         <substrate id="108" name="cpd:C00083"/>
         <substrate id="107" name="cpd:C00040"/>
         <product id="112" name="cpd:C00264"/>
-    </reaction>
-    <reaction id="139" name="rn:R01274" type="reversible">
     </reaction>
     <reaction id="143" name="rn:R09450" type="irreversible">
         <substrate id="109" name="cpd:C02843"/>

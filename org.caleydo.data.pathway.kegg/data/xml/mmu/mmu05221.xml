@@ -77,7 +77,7 @@
     </entry>
     <entry id="15" name="mmu:16480" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16480">
-        <graphics name="Jup, AL022715, AW545708, D930025P04Rik, PG" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Jup, D930025P04Rik, PG" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="774" y="775" width="46" height="17"/>
     </entry>
     <entry id="16" name="mmu:12427" type="gene"

@@ -27,7 +27,7 @@
     </entry>
     <entry id="5" name="hsa:6518" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6518">
-        <graphics name="SLC2A5, GLUT5" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC2A5, GLUT-5, GLUT5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="535" y="568" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:6514" type="gene"

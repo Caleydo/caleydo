@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: May 31, 2011 17:33:38 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 09:43:49 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00640" org="mmu" number="00640"
          title="Propanoate metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00640.png"
@@ -25,9 +25,9 @@
         <graphics name="K01720" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="647" y="460" width="46" height="17"/>
     </entry>
-    <entry id="51" name="ko:K05608" type="ortholog" reaction="rn:R04425"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K05608">
-        <graphics name="K05608" fgcolor="#000000" bgcolor="#FFFFFF"
+    <entry id="51" name="ko:K01682" type="ortholog" reaction="rn:R04425"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K01682">
+        <graphics name="K01682" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="599" y="494" width="46" height="17"/>
     </entry>
     <entry id="52" name="cpd:C04225" type="compound"
@@ -210,8 +210,8 @@
         <graphics name="K01505" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="599" y="90" width="46" height="17"/>
     </entry>
-    <entry id="96" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833 mmu:433229" type="gene" reaction="rn:R01000"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833+mmu:433229">
+    <entry id="96" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833" type="gene" reaction="rn:R01000"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833">
         <graphics name="Ldhal6b, 4933402O15Rik, AI326310, LDHL, Ldhal..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="599" y="117" width="46" height="17"/>
     </entry>

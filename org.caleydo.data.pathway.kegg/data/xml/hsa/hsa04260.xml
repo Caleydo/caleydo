@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="hsa:6262" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6262">
-        <graphics name="RYR2, ARVC2, ARVD2, VTSIP" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RYR2, ARVC2, ARVD2, RYR-2, RyR, VTSIP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="333" y="275" width="46" height="17"/>
     </entry>
     <entry id="4" name="hsa:6546" type="gene"
@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="hsa:4624 hsa:4625 hsa:4633 hsa:4634" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4624+hsa:4625+hsa:4633+hsa:4634">
-        <graphics name="MYH6, ASD3, CMD1EE, CMH14, MYHC, MYHCA, alpha-MHC..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MYH6, ASD3, CMD1EE, CMH14, MYHC, MYHCA, SSS3, alpha-MHC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="399" y="554" width="46" height="17"/>
     </entry>
     <entry id="20" name="path:hsa04020" type="map"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="hsa:4624 hsa:4625 hsa:4633 hsa:4634" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4624+hsa:4625+hsa:4633+hsa:4634">
-        <graphics name="MYH6, ASD3, CMD1EE, CMH14, MYHC, MYHCA, alpha-MHC..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MYH6, ASD3, CMD1EE, CMH14, MYHC, MYHCA, SSS3, alpha-MHC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="648" y="554" width="46" height="17"/>
     </entry>
     <entry id="26" name="cpd:C00076" type="compound"

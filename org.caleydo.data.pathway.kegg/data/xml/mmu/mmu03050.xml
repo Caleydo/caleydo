@@ -87,12 +87,12 @@
     </entry>
     <entry id="17" name="mmu:23996" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:23996">
-        <graphics name="Psmc4, CIP21, MGC103150, MIP224" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmc4, CIP21, MIP224" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="922" y="221" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:67089" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:67089">
-        <graphics name="Psmc6, 2300001E01Rik, AI451058, MGC151129" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmc6, 2300001E01Rik, AI451058" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="830" y="221" width="46" height="17"/>
     </entry>
     <entry id="19" name="mmu:19182" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="mmu:19186" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19186">
-        <graphics name="Psme1, AW413925, MGC113815, PA28a" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psme1, AW413925, PA28a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="971" y="122" width="46" height="17"/>
     </entry>
     <entry id="22" name="mmu:19188" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="mmu:103554" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:103554">
-        <graphics name="Psme4, AA409398, AU041366, KIAA0077, TEMO, mKIAA0077" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psme4, AA409398, AU041366, TEMO, mKIAA0077" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="993" y="220" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:26443" type="gene"
@@ -145,14 +145,14 @@
         <graphics name="Psma7, C6-I..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="837" y="403" width="46" height="17"/>
     </entry>
-    <entry id="29" name="mmu:26442 mmu:666974" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26442+mmu:666974">
-        <graphics name="Psma5, MGC102091, MGC118067, ZETA..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="29" name="mmu:26442" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26442">
+        <graphics name="Psma5, ZETA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="883" y="403" width="46" height="17"/>
     </entry>
     <entry id="30" name="mmu:26440" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26440">
-        <graphics name="Psma1, C2, alpha-type" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psma1, C2, HC2, Pros-30, alpha-type" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="929" y="403" width="46" height="17"/>
     </entry>
     <entry id="31" name="mmu:19167" type="gene"
@@ -172,17 +172,17 @@
     </entry>
     <entry id="34" name="mmu:26446" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26446">
-        <graphics name="Psmb3, AL033320, C10-II, MGC106850" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmb3, AL033320, C10-II" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="791" y="420" width="46" height="17"/>
     </entry>
     <entry id="35" name="mmu:26445" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26445">
-        <graphics name="Psmb2, AU045357, AW108089, C7-I, D4Wsu33e" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmb2, AU045357, AW108089, C7-I, D4Wsu33e, HC7-I" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="837" y="420" width="46" height="17"/>
     </entry>
     <entry id="36" name="mmu:19173" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19173">
-        <graphics name="Psmb5, MGC118075" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmb5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="883" y="420" width="46" height="17"/>
     </entry>
     <entry id="37" name="mmu:19170" type="gene"
@@ -192,7 +192,7 @@
     </entry>
     <entry id="38" name="mmu:19172" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19172">
-        <graphics name="Psmb4" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmb4, Pros-27" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="975" y="420" width="46" height="17"/>
     </entry>
     <entry id="39" name="mmu:16912" type="gene"
@@ -202,7 +202,7 @@
     </entry>
     <entry id="40" name="mmu:19171" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19171">
-        <graphics name="Psmb10, Mecl1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmb10, Mecl-1, Mecl1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="759" y="487" width="46" height="17"/>
     </entry>
     <entry id="41" name="mmu:16913" type="gene"
@@ -242,7 +242,7 @@
     </entry>
     <entry id="48" name="mmu:228769" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:228769">
-        <graphics name="Psmf1, AW048666, BC012260, MGC18784, PI31" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmf1, AW048666, BC012260, PI31" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="393" y="845" width="46" height="17"/>
     </entry>
     <entry id="49" name="mmu:66537" type="gene"
@@ -257,7 +257,7 @@
     </entry>
     <entry id="51" name="mmu:19171" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19171">
-        <graphics name="Psmb10, Mecl1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psmb10, Mecl-1, Mecl1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="693" width="46" height="17"/>
     </entry>
     <entry id="52" name="mmu:16913" type="gene"
@@ -267,7 +267,7 @@
     </entry>
     <entry id="53" name="mmu:19186" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:19186">
-        <graphics name="Psme1, AW413925, MGC113815, PA28a" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Psme1, AW413925, PA28a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="756" width="46" height="17"/>
     </entry>
     <entry id="54" name="mmu:19188" type="gene"

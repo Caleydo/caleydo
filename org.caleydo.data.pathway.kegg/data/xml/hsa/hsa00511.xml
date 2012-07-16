@@ -12,7 +12,7 @@
     </entry>
     <entry id="2" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="96,149,126,149"/>
     </entry>
     <entry id="3" name="hsa:2720" type="gene"
@@ -22,12 +22,12 @@
     </entry>
     <entry id="4" name="hsa:23324 hsa:4123 hsa:4125" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23324+hsa:4123+hsa:4125">
-        <graphics name="MAN2B2, KIAA0935..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="MAN2B2..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="335,152,365,182"/>
     </entry>
     <entry id="5" name="hsa:4123 hsa:4125" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4123+hsa:4125">
-        <graphics name="MAN2C1, DKFZp686E23167, MAN6A8, MANA, MANA1, MGC87979..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="MAN2C1, MAN6A8, MANA, MANA1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="334,238,364,208"/>
     </entry>
     <entry id="6" name="hsa:2517 hsa:2519" type="gene"
@@ -42,12 +42,12 @@
     </entry>
     <entry id="9" name="hsa:3073 hsa:3074" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3073+hsa:3074">
-        <graphics name="HEXA, MGC99608, TSD..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="HEXA, TSD..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="259,149,289,149"/>
     </entry>
     <entry id="10" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="96,240,126,240"/>
     </entry>
     <entry id="11" name="hsa:2720" type="gene"
@@ -57,12 +57,12 @@
     </entry>
     <entry id="12" name="hsa:284004 hsa:3073 hsa:3074" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:284004+hsa:3073+hsa:3074">
-        <graphics name="HEXDC, FLJ23825..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="HEXDC..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="259,240,289,240"/>
     </entry>
     <entry id="13" name="hsa:3073 hsa:3074" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3073+hsa:3074">
-        <graphics name="HEXA, MGC99608, TSD..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="HEXA, TSD..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="333,196,363,196"/>
     </entry>
     <entry id="14" name="hsa:4126" type="gene"
@@ -72,22 +72,22 @@
     </entry>
     <entry id="15" name="hsa:64772" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:64772">
-        <graphics name="ENGASE, DKFZp434P174, FLJ21865" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="ENGASE" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="500,196,530,196"/>
     </entry>
     <entry id="16" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="262,344,292,374"/>
     </entry>
     <entry id="17" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="97,420,127,420"/>
     </entry>
     <entry id="18" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="192,420,222,420"/>
     </entry>
     <entry id="19" name="hsa:2720" type="gene"
@@ -97,27 +97,27 @@
     </entry>
     <entry id="20" name="hsa:3073 hsa:3074" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3073+hsa:3074">
-        <graphics name="HEXA, MGC99608, TSD..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="HEXA, TSD..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="351,385,381,415"/>
     </entry>
     <entry id="21" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="349,464,379,434"/>
     </entry>
     <entry id="22" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="254,466,284,466"/>
     </entry>
     <entry id="23" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="160,466,190,466"/>
     </entry>
     <entry id="24" name="hsa:10825 hsa:129807 hsa:4758 hsa:4759" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10825+hsa:129807+hsa:4758+hsa:4759">
-        <graphics name="NEU3, FLJ12388, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="NEU3, SIAL3..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="167,343,197,343"/>
     </entry>
     <entry id="25" name="hsa:2720" type="gene"

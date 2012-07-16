@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 24, 2011 11:31:08 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 11, 2012 11:19:03 +0900 (GMT+09:00) -->
 <pathway name="path:mmu04722" org="mmu" number="04722"
          title="Neurotrophin signaling pathway"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu04722.png"
@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="mmu:18213" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:18213">
-        <graphics name="Ntrk3, AW125844, TrkC" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ntrk3, AW125844, Ntrk3_tv3, TrkC" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="178" y="394" width="46" height="17"/>
     </entry>
     <entry id="4" name="path:mmu04210" type="map"
@@ -250,8 +250,8 @@
         <graphics name="Mapk10, C230008H04Rik, JNK3, JNK3B1, JNK3B2, SAPK(beta), Serk2, p493F12, p54bSAPK..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="620" y="912" width="46" height="17"/>
     </entry>
-    <entry id="50" name="mmu:11848 mmu:433749" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:433749">
+    <entry id="50" name="mmu:11848 mmu:67653" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:67653">
         <graphics name="Rhoa, Arha, Arha1, Arha2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="562" y="622" width="46" height="17"/>
     </entry>
@@ -282,7 +282,7 @@
     </entry>
     <entry id="56" name="mmu:17164" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17164">
-        <graphics name="Mapkapk2, AA960234, MK2, Rps6kc1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mapkapk2, AA960234, MAPKAP-K2, MK-2, MK2, Rps6kc1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1001" y="168" width="46" height="17"/>
     </entry>
     <entry id="57" name="mmu:19094 mmu:26415 mmu:26416 mmu:29857" type="gene"
@@ -385,8 +385,8 @@
         <graphics name="Traf6, 2310003F17Rik, AI851288, C630032O20Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="410" y="1050" width="46" height="17"/>
     </entry>
-    <entry id="77" name="mmu:100039786 mmu:100503129 mmu:22627 mmu:22628 mmu:22629 mmu:22630 mmu:22631 mmu:54401" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100039786+mmu:100503129+mmu:22627+mmu:22628+mmu:22629+mmu:22630+mmu:22631+mmu:54401">
+    <entry id="77" name="mmu:100039786 mmu:22627 mmu:22628 mmu:22629 mmu:22630 mmu:22631 mmu:54401" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100039786+mmu:22627+mmu:22628+mmu:22629+mmu:22630+mmu:22631+mmu:54401">
         <graphics name="Gm2423..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="480" y="955" width="46" height="17"/>
     </entry>

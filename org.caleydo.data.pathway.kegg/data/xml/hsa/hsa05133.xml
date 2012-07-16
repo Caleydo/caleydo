@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="hsa:4790 hsa:5970" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4790+hsa:5970">
-        <graphics name="NFKB1, DKFZp686C01211, EBP-1, KBF1, MGC54151, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NFKB1, DKFZp686C01211, EBP-1, KBF1, MGC54151, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, NFkappaB, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1182" y="771" width="46" height="17"/>
     </entry>
     <entry id="25" name="hsa:4615" type="gene"
@@ -367,7 +367,7 @@
     </entry>
     <entry id="73" name="hsa:2353 hsa:3725" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2353+hsa:3725">
-        <graphics name="FOS, AP-1, C-FOS..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="FOS, AP-1, C-FOS, p55..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1182" y="894" width="46" height="17"/>
     </entry>
     <entry id="74" name="hsa:5599 hsa:5601 hsa:5602" type="gene"
@@ -467,7 +467,7 @@
     </entry>
     <entry id="93" name="hsa:114548" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:114548">
-        <graphics name="NLRP3, AGTAVPRL, AII, AII/AVP, AVP, C1orf7, CIAS1, CLR1.1, FCAS, FCU, FLJ95925, MWS, NALP3, PYPAF1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NLRP3, AGTAVPRL, AII, AVP, C1orf7, CIAS1, CLR1.1, FCAS, FCU, FLJ95925, MWS, NALP3, PYPAF1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="872" y="609" width="46" height="17"/>
     </entry>
     <entry id="94" name="hsa:3592 hsa:3593" type="gene"
@@ -487,7 +487,7 @@
     </entry>
     <entry id="97" name="hsa:51135" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51135">
-        <graphics name="IRAK4, IPD1, NY-REN-64, REN64" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IRAK4, IPD1, IRAK-4, NY-REN-64, REN64" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="833" y="764" width="46" height="17"/>
     </entry>
     <entry id="98" name="cpd:C05005" type="compound"

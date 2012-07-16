@@ -147,22 +147,22 @@
     </entry>
     <entry id="83" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08271"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="263" y="171" width="46" height="17"/>
     </entry>
     <entry id="84" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08274"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="263" y="217" width="46" height="17"/>
     </entry>
     <entry id="86" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08268"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="151" y="306" width="46" height="17"/>
     </entry>
     <entry id="87" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08269"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="156" y="405" width="46" height="17"/>
     </entry>
     <entry id="89" name="hsa:1565" type="gene" reaction="rn:R08267"
@@ -182,17 +182,17 @@
     </entry>
     <entry id="93" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08272"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="263" y="305" width="46" height="17"/>
     </entry>
     <entry id="94" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08293"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1000" y="559" width="46" height="17"/>
     </entry>
     <entry id="95" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08294"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="974" y="582" width="46" height="17"/>
     </entry>
     <entry id="96" name="hsa:1544" type="gene" reaction="rn:R08294"
@@ -207,37 +207,37 @@
     </entry>
     <entry id="100" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08277"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="687" y="221" width="46" height="17"/>
     </entry>
     <entry id="101" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08285"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="612" y="336" width="46" height="17"/>
     </entry>
     <entry id="102" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08276"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="558" y="221" width="46" height="17"/>
     </entry>
     <entry id="103" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08275"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="612" y="273" width="46" height="17"/>
     </entry>
     <entry id="104" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08286 rn:R08287"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="533" y="356" width="46" height="17"/>
     </entry>
     <entry id="105" name="hsa:1555" type="gene" reaction="rn:R08286 rn:R08287"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1555">
-        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, EFVM, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="583" y="356" width="46" height="17"/>
     </entry>
     <entry id="106" name="hsa:1555" type="gene" reaction="rn:R08275"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1555">
-        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, EFVM, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="612" y="254" width="46" height="17"/>
     </entry>
     <entry id="107" name="hsa:1557 hsa:1558 hsa:1559 hsa:1562" type="gene" reaction="rn:R08275"
@@ -247,12 +247,12 @@
     </entry>
     <entry id="108" name="hsa:1555" type="gene" reaction="rn:R08285"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1555">
-        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, EFVM, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="612" y="317" width="46" height="17"/>
     </entry>
-    <entry id="109" name="hsa:119391 hsa:221357 hsa:2938 hsa:2939 hsa:2940 hsa:2941 hsa:2944 hsa:2946 hsa:2947 hsa:2948 hsa:2949 hsa:2950 hsa:2952 hsa:2953 hsa:2954 hsa:373156 hsa:4257 hsa:4258 hsa:4259 hsa:9446" type="gene" reaction="rn:R08280"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:119391+hsa:221357+hsa:2938+hsa:2939+hsa:2940+hsa:2941+hsa:2944+hsa:2946+hsa:2947+hsa:2948+hsa:2949+hsa:2950+hsa:2952+hsa:2953+hsa:2954+hsa:373156+hsa:4257+hsa:4258+hsa:4259+hsa:9446">
-        <graphics name="GSTO2, bA127L20.1..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="109" name="hsa:119391 hsa:221357 hsa:2938 hsa:2939 hsa:2940 hsa:2941 hsa:2944 hsa:2946 hsa:2947 hsa:2948 hsa:2949 hsa:2950 hsa:2952 hsa:2953 hsa:373156 hsa:4257 hsa:4258 hsa:4259 hsa:653689 hsa:9446" type="gene" reaction="rn:R08280"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:119391+hsa:221357+hsa:2938+hsa:2939+hsa:2940+hsa:2941+hsa:2944+hsa:2946+hsa:2947+hsa:2948+hsa:2949+hsa:2950+hsa:2952+hsa:2953+hsa:373156+hsa:4257+hsa:4258+hsa:4259+hsa:653689+hsa:9446">
+        <graphics name="GSTO2, GSTO_2-2, bA127L20.1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="766" y="192" width="46" height="17"/>
     </entry>
     <entry id="110" name="hsa:124 hsa:125 hsa:126 hsa:127 hsa:128 hsa:130 hsa:131" type="gene" reaction="rn:R08281"
@@ -427,7 +427,7 @@
     </entry>
     <entry id="149" name="hsa:1555" type="gene" reaction="rn:R08324 rn:R08325 rn:R08326"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1555">
-        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, EFVM, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1096" y="903" width="46" height="17"/>
     </entry>
     <entry id="150" name="hsa:1557 hsa:1558 hsa:1559 hsa:1562" type="gene" reaction="rn:R08324 rn:R08325 rn:R08326"
@@ -437,7 +437,7 @@
     </entry>
     <entry id="151" name="hsa:1548 hsa:1549 hsa:1553" type="gene" reaction="rn:R08324 rn:R08325 rn:R08326"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1548+hsa:1549+hsa:1553">
-        <graphics name="CYP2A6, CPA6, CYP2A, CYP2A3, P450C2A, P450PB..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2A6, CPA6, CYP2A, CYP2A3, CYPIIA6, P450C2A, P450PB..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1146" y="903" width="46" height="17"/>
     </entry>
     <entry id="153" name="cpd:C16584" type="compound"
@@ -492,12 +492,12 @@
     </entry>
     <entry id="163" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08339"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="506" y="549" width="46" height="17"/>
     </entry>
     <entry id="164" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08341"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="504" y="628" width="46" height="17"/>
     </entry>
     <entry id="166" name="cpd:C16605" type="compound"
@@ -567,12 +567,12 @@
     </entry>
     <entry id="179" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08312"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="639" y="937" width="46" height="17"/>
     </entry>
     <entry id="180" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08343"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1220" y="264" width="46" height="17"/>
     </entry>
     <entry id="181" name="hsa:1565" type="gene" reaction="rn:R08345"
@@ -617,12 +617,12 @@
     </entry>
     <entry id="191" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08303"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="74" y="843" width="46" height="17"/>
     </entry>
     <entry id="192" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08304"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="74" y="898" width="46" height="17"/>
     </entry>
     <entry id="193" name="hsa:1571" type="gene" reaction="rn:R08304"
@@ -652,7 +652,7 @@
     </entry>
     <entry id="198" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08264"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="150" y="548" width="46" height="17"/>
     </entry>
     <entry id="199" name="cpd:C16643" type="compound"
@@ -677,12 +677,12 @@
     </entry>
     <entry id="206" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08313"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="639" y="892" width="46" height="17"/>
     </entry>
     <entry id="207" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08318"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="694" y="814" width="46" height="17"/>
     </entry>
     <entry id="208" name="cpd:C07493" type="compound"
@@ -692,7 +692,7 @@
     </entry>
     <entry id="209" name="hsa:1555" type="gene" reaction="rn:R08313"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1555">
-        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2B6, CPB6, CYP2B, CYP2B7, CYP2B7P, CYPIIB6, EFVM, IIB1, P450" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="639" y="913" width="46" height="17"/>
     </entry>
     <entry id="210" name="hsa:1557 hsa:1558 hsa:1559 hsa:1562" type="gene" reaction="rn:R08312"
@@ -702,17 +702,17 @@
     </entry>
     <entry id="211" name="hsa:1548 hsa:1549 hsa:1553" type="gene" reaction="rn:R08327"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1548+hsa:1549+hsa:1553">
-        <graphics name="CYP2A6, CPA6, CYP2A, CYP2A3, P450C2A, P450PB..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP2A6, CPA6, CYP2A, CYP2A3, CYPIIA6, P450C2A, P450PB..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1164" y="929" width="46" height="17"/>
     </entry>
     <entry id="226" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08342"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="627" y="629" width="46" height="17"/>
     </entry>
     <entry id="227" name="hsa:1551 hsa:1576 hsa:1577 hsa:64816" type="gene" reaction="rn:R08340"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1551+hsa:1576+hsa:1577+hsa:64816">
-        <graphics name="CYP3A7, CP37, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CYP3A7, CP37, CYPIIIA7, P450-HFLA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="625" y="549" width="46" height="17"/>
     </entry>
     <entry id="228" name="hsa:1565" type="gene" reaction="rn:R08343"
@@ -971,10 +971,6 @@
         <substrate id="127" name="cpd:C07888"/>
         <product id="114" name="cpd:C07643"/>
     </reaction>
-    <reaction id="104" name="rn:R08286 rn:R08287" type="reversible">
-    </reaction>
-    <reaction id="105" name="rn:R08286 rn:R08287" type="reversible">
-    </reaction>
     <reaction id="106" name="rn:R08275" type="irreversible">
         <substrate id="127" name="cpd:C07888"/>
         <product id="114" name="cpd:C07643"/>
@@ -1082,12 +1078,6 @@
     <reaction id="197" name="rn:R08307" type="irreversible">
         <substrate id="154" name="cpd:C16587"/>
         <product id="33" name="cpd:C16591"/>
-    </reaction>
-    <reaction id="151" name="rn:R08324 rn:R08325 rn:R08326" type="reversible">
-    </reaction>
-    <reaction id="149" name="rn:R08324 rn:R08325 rn:R08326" type="reversible">
-    </reaction>
-    <reaction id="150" name="rn:R08324 rn:R08325 rn:R08326" type="reversible">
     </reaction>
     <reaction id="198" name="rn:R08264" type="irreversible">
         <substrate id="237" name="cpd:C06174"/>

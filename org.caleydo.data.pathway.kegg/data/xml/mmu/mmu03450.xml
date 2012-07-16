@@ -85,9 +85,9 @@
         <graphics name="Xrcc5, AI314015, Ku80, Ku86" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="688" y="227" width="46" height="17"/>
     </entry>
-    <entry id="17" name="mmu:100044170" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100044170">
-        <graphics name="100044170" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="17" name="mmu:108138" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108138">
+        <graphics name="Xrcc4, 2310057B22Rik, AW413319, AW545101" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="819" y="594" width="46" height="17"/>
     </entry>
     <entry id="18" name="mmu:14375" type="gene"

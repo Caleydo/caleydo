@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Feb 4, 2011 15:59:45 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 14:53:24 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00010" org="mmu" number="00010"
          title="Glycolysis / Gluconeogenesis"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00010.png"
@@ -47,7 +47,7 @@
     </entry>
     <entry id="44" name="mmu:58810" type="gene" reaction="rn:R00746"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:58810">
-        <graphics name="Akr1a4, 2610201A18Rik, Akr1a1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Akr1a1, 2610201A18Rik, Akr1a4" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="487" y="943" width="46" height="17"/>
     </entry>
     <entry id="45" name="mmu:11522 mmu:11529 mmu:11532 mmu:26876" type="gene" reaction="rn:R00754"
@@ -75,8 +75,8 @@
         <graphics name="Dlat, 6332404G05Rik, DLTA, PDC-E2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="210" y="865" width="46" height="17"/>
     </entry>
-    <entry id="50" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833 mmu:433229" type="gene" reaction="rn:R00703"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833+mmu:433229">
+    <entry id="50" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833" type="gene" reaction="rn:R00703"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833">
         <graphics name="Ldhal6b, 4933402O15Rik, AI326310, LDHL, Ldhal..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="558" y="864" width="46" height="17"/>
     </entry>
@@ -95,9 +95,9 @@
         <graphics name="Citrate cycle (TCA cycle)" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="64" y="800" width="47" height="154"/>
     </entry>
-    <entry id="54" name="mmu:100045967 mmu:13806 mmu:13807 mmu:13808 mmu:433182" type="gene" reaction="rn:R00658"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100045967+mmu:13806+mmu:13807+mmu:13808+mmu:433182">
-        <graphics name="100045967..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="54" name="mmu:13806 mmu:13807 mmu:13808 mmu:433182" type="gene" reaction="rn:R00658"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13806+mmu:13807+mmu:13808+mmu:433182">
+        <graphics name="Eno1, 0610008I15, AL022784, Eno-1, MBP-1, MGC103111, MGC107267..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="483" y="701" width="46" height="17"/>
     </entry>
     <entry id="55" name="mmu:12183 mmu:18648 mmu:56012" type="gene" reaction="rn:R01518"
@@ -756,8 +756,8 @@
     <reaction id="48" name="rn:R03270" type="irreversible">
         <substrate id="100" name="cpd:C05125"/>
         <substrate id="97" name="cpd:C15972"/>
-        <product id="103" name="cpd:C16255"/>
         <product id="138" name="cpd:C00068"/>
+        <product id="103" name="cpd:C16255"/>
     </reaction>
     <reaction id="49" name="rn:R02569" type="reversible">
         <substrate id="101" name="cpd:C00024"/>
@@ -790,8 +790,8 @@
     </reaction>
     <reaction id="13" name="rn:R01070" type="reversible">
         <substrate id="105" name="cpd:C05378"/>
-        <product id="89" name="cpd:C00111"/>
         <product id="132" name="cpd:C00118"/>
+        <product id="89" name="cpd:C00111"/>
     </reaction>
     <reaction id="59" name="rn:R04779" type="irreversible">
         <substrate id="92" name="cpd:C05345"/>

@@ -12,7 +12,7 @@
     </entry>
     <entry id="2" name="mmu:58992" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:58992">
-        <graphics name="F12, FXII" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="F12, FXII, HAF" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="205" y="499" width="46" height="17"/>
     </entry>
     <entry id="3" name="mmu:14071" type="gene"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="39" name="mmu:12266" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12266">
-        <graphics name="C3, AI255234, ASP, Plp" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="C3, AI255234, ASP, HSE-MSF, Plp" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="265" y="685" width="46" height="17"/>
     </entry>
     <entry id="40" name="mmu:14962" type="gene"

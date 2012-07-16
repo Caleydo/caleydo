@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 26, 2009 10:25:28 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:27:48 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05223" org="hsa" number="05223"
          title="Non-small cell lung cancer"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05223.png"
@@ -42,7 +42,7 @@
     </entry>
     <entry id="8" name="hsa:842" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:842">
-        <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6, PPP1R56" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="678" y="324" width="46" height="17"/>
     </entry>
     <entry id="9" name="hsa:572" type="gene"
@@ -62,7 +62,7 @@
     </entry>
     <entry id="12" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503">
-        <graphics name="PIK3R5, F730038I15Rik, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIK3R5, F730038I15Rik, FLJ26116, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="445" y="324" width="46" height="17"/>
     </entry>
     <entry id="13" name="hsa:1019 hsa:1021" type="gene"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="hsa:842" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:842">
-        <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CASP9, APAF-3, APAF3, CASPASE-9c, ICE-LAP6, MCH6, PPP1R56" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="678" y="553" width="46" height="17"/>
     </entry>
     <entry id="24" name="hsa:6789" type="gene"
@@ -147,7 +147,7 @@
     </entry>
     <entry id="29" name="hsa:5915" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5915">
-        <graphics name="RARB, HAP, NR1B2, RRB2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RARB, HAP, MGC97363, NR1B2, RRB2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="901" y="134" width="46" height="17"/>
     </entry>
     <entry id="30" name="hsa:5170" type="gene"
@@ -289,27 +289,27 @@
         <component id="36"/>
     </entry>
     <relation entry1="12" entry2="10" type="PPrel">
-        <subtype name="compound" value="5"/>
+        <subtype name="compound" value="6"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="12" entry2="11" type="PPrel">
-        <subtype name="compound" value="5"/>
+        <subtype name="compound" value="6"/>
+        <subtype name="expression" value="--&gt;"/>
+    </relation>
+    <relation entry1="18" entry2="20" type="PPrel">
+        <subtype name="compound" value="4"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="18" entry2="20" type="PPrel">
         <subtype name="compound" value="3"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
-    <relation entry1="18" entry2="20" type="PPrel">
-        <subtype name="compound" value="2"/>
-        <subtype name="expression" value="--&gt;"/>
-    </relation>
     <relation entry1="40" entry2="39" type="PPrel">
-        <subtype name="compound" value="32"/>
+        <subtype name="compound" value="33"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="40" entry2="30" type="PPrel">
-        <subtype name="compound" value="32"/>
+        <subtype name="compound" value="33"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="46" entry2="35" type="PPrel">

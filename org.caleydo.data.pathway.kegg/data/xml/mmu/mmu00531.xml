@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 30, 2010 11:12:28 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 6, 2012 09:41:25 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00531" org="mmu" number="00531"
          title="Glycosaminoglycan degradation"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00531.png"
@@ -157,7 +157,7 @@
     </entry>
     <entry id="51" name="mmu:50917" type="gene" reaction="rn:R07806"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50917">
-        <graphics name="Galns, FLJ00319, mFLJ00319" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Galns, mFLJ00319" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="291" width="46" height="17"/>
     </entry>
     <entry id="52" name="mmu:15932" type="gene" reaction="rn:R07822"
@@ -252,7 +252,7 @@
     </entry>
     <entry id="74" name="mmu:50917" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50917">
-        <graphics name="Galns, FLJ00319, mFLJ00319" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Galns, mFLJ00319" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="801,213,801,243"/>
     </entry>
     <entry id="75" name="mmu:109685 mmu:15586 mmu:15587 mmu:20690 mmu:74409 mmu:74468 mmu:77042" type="gene" reaction="rn:R07824"
@@ -327,7 +327,7 @@
     </entry>
     <entry id="93" name="mmu:50917" type="gene" reaction="rn:R07806"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:50917">
-        <graphics name="Galns, FLJ00319, mFLJ00319" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Galns, mFLJ00319" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="621,624,621,654"/>
     </entry>
     <entry id="94" name="mmu:12091" type="gene" reaction="rn:R07807"

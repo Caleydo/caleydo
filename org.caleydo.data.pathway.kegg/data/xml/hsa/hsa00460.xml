@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 21, 2011 17:26:58 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 4, 2012 13:08:48 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00460" org="hsa" number="00460"
          title="Cyanoamino acid metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00460.png"
@@ -330,8 +330,8 @@
         <graphics name="K10814..." fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="635" y="429" width="46" height="17"/>
     </entry>
-    <entry id="103" name="path:hsa00910" type="map"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa00910">
+    <entry id="103" name="path:map00910" type="map"
+        link="http://www.kegg.jp/dbget-bin/www_bget?map00910">
         <graphics name="Nitrogen metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="389" y="429" width="69" height="34"/>
     </entry>
@@ -370,8 +370,6 @@
     <reaction id="34" name="rn:R03970" type="irreversible">
         <substrate id="64" name="cpd:C02512"/>
         <product id="60" name="cpd:C05711"/>
-    </reaction>
-    <reaction id="39" name="rn:R04949" type="reversible">
     </reaction>
     <reaction id="40" name="rn:R03971" type="irreversible">
         <substrate id="21" name="cpd:C05670"/>

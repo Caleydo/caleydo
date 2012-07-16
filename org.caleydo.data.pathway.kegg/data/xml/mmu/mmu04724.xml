@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="mmu:14799 mmu:14800 mmu:14802 mmu:53623" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14799+mmu:14800+mmu:14802+mmu:53623">
-        <graphics name="Gria1, 2900051M01Rik, AI853806, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gria1, 2900051M01Rik, Glr-1, Glr1, GluA1, GluR-A, GluRA, Glur-1, Glur1, HIPA1, gluR-K1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="774" y="480" width="46" height="17"/>
     </entry>
     <entry id="5" name="mmu:14810 mmu:14811 mmu:14812 mmu:14813 mmu:14814 mmu:170483 mmu:242443" type="gene"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="mmu:12288 mmu:12289" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12288+mmu:12289">
-        <graphics name="Cacna1c, Cav1.2, Cchl1a1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cacna1c, Cav1.2, Cchl1a1, MBC, MELC-CC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="922" y="321" width="46" height="17"/>
     </entry>
     <entry id="11" name="mmu:20511 mmu:20512" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="mmu:14683" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14683">
-        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Galphas, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="867" y="712" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:104110 mmu:104111 mmu:11512 mmu:11513 mmu:11514 mmu:11515 mmu:210044 mmu:224129 mmu:432530" type="gene"
@@ -167,7 +167,7 @@
     </entry>
     <entry id="33" name="mmu:16438 mmu:16439 mmu:16440" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:16438+mmu:16439+mmu:16440">
-        <graphics name="Itpr1, D6Pas2, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Itpr1, D6Pas2, Gm10429, IP3R1, InsP3R, Ip3r, Itpr-1, P400, Pcp-1, Pcp1, opt..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1102" y="580" width="46" height="17"/>
     </entry>
     <entry id="34" name="cpd:C00076" type="compound"
@@ -215,8 +215,8 @@
         <graphics name="Long-term potentiation" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="955" y="423" width="92" height="34"/>
     </entry>
-    <entry id="43" name="mmu:100042311 mmu:100043318 mmu:100043507 mmu:100503710 mmu:14677 mmu:14678 mmu:14679 mmu:14681 mmu:14688 mmu:14693 mmu:14695 mmu:14696 mmu:14697 mmu:14699 mmu:14700 mmu:14701 mmu:14702 mmu:14704 mmu:14706 mmu:14707 mmu:14708 mmu:14709 mmu:14710 mmu:436049 mmu:64337 mmu:66066" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100042311+mmu:100043318+mmu:100043507+mmu:100503710+mmu:14677+mmu:14678+mmu:14679+mmu:14681+mmu:14688+mmu:14693+mmu:14695+mmu:14696+mmu:14697+mmu:14699+mmu:14700+mmu:14701+mmu:14702+mmu:14704+mmu:14706+mmu:14707+mmu:14708+mmu:14709+mmu:14710+mmu:436049+mmu:64337+mmu:66066">
+    <entry id="43" name="mmu:100042311 mmu:100043507 mmu:100048410 mmu:100503710 mmu:14677 mmu:14678 mmu:14679 mmu:14681 mmu:14688 mmu:14693 mmu:14695 mmu:14696 mmu:14697 mmu:14699 mmu:14700 mmu:14701 mmu:14702 mmu:14704 mmu:14706 mmu:14707 mmu:14708 mmu:14709 mmu:14710 mmu:64337 mmu:66066" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100042311+mmu:100043507+mmu:100048410+mmu:100503710+mmu:14677+mmu:14678+mmu:14679+mmu:14681+mmu:14688+mmu:14693+mmu:14695+mmu:14696+mmu:14697+mmu:14699+mmu:14700+mmu:14701+mmu:14702+mmu:14704+mmu:14706+mmu:14707+mmu:14708+mmu:14709+mmu:14710+mmu:64337+mmu:66066">
         <graphics name="Gm3785..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="492" y="374" width="46" height="17"/>
     </entry>

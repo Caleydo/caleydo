@@ -137,7 +137,7 @@
     </entry>
     <entry id="60" name="mmu:228061" type="gene" reaction="rn:R04311"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:228061">
-        <graphics name="Agps, 5832437L22, 9930035G10Rik, AW123847, Adaps, Adas, Adhaps, Adps, Aldhpsy" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Agps, 5832437L22, 9930035G10Rik, AW123847, Adaps, Adas, Adhaps, Adps, Aldhpsy, bs2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="396" y="168" width="46" height="17"/>
     </entry>
     <entry id="62" name="mmu:19012 mmu:50784 mmu:67916" type="gene" reaction="rn:R04162"

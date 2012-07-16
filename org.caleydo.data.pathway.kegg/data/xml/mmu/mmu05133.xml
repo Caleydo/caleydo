@@ -225,14 +225,14 @@
         <graphics name="Itga5, Cd49e, Fnra, VLA5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="624" y="237" width="46" height="17"/>
     </entry>
-    <entry id="45" name="mmu:11848 mmu:433749" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:433749">
+    <entry id="45" name="mmu:11848 mmu:67653" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:67653">
         <graphics name="Rhoa, Arha, Arha1, Arha2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="950" y="428" width="46" height="17"/>
     </entry>
-    <entry id="46" name="mmu:100048522 mmu:12631 mmu:12632" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100048522+mmu:12631+mmu:12632">
-        <graphics name="100048522..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="46" name="mmu:12631 mmu:12632" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12631+mmu:12632">
+        <graphics name="Cfl1, AA959946, Cof..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1043" y="428" width="46" height="17"/>
     </entry>
     <entry id="47" name="mmu:12367" type="gene"

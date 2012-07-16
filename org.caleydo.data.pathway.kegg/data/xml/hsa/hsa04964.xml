@@ -27,17 +27,17 @@
     </entry>
     <entry id="5" name="hsa:6550" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6550">
-        <graphics name="SLC9A3, MGC126718, MGC126720, NHE3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC9A3, NHE3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="155" y="311" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:8671" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8671">
-        <graphics name="SLC4A4, DKFZp781H1314, HNBC1, KNBC, NBC1, NBC2, SLC4A5, hhNMC, pNBC" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC4A4, HNBC1, KNBC, NBC1, NBC2, SLC4A5, hhNMC, pNBC" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="613" y="312" width="46" height="17"/>
     </entry>
     <entry id="7" name="hsa:6550" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6550">
-        <graphics name="SLC9A3, MGC126718, MGC126720, NHE3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SLC9A3, NHE3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="155" y="606" width="46" height="17"/>
     </entry>
     <entry id="8" name="cpd:C00080" type="compound"
@@ -167,12 +167,12 @@
     </entry>
     <entry id="33" name="hsa:27165 hsa:2744" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27165+hsa:2744">
-        <graphics name="GLS2, GA, GLS, LGA, MGC71567, hLGA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GLS2, GA, GLS, LGA, hLGA..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="346" y="540" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:2746 hsa:2747" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2746+hsa:2747">
-        <graphics name="GLUD1, GDH, GDH1, GLUD, MGC132003..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GLUD1, GDH, GDH1, GLUD..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="346" y="597" width="46" height="17"/>
     </entry>
     <entry id="35" name="cpd:C00080" type="compound"
@@ -197,7 +197,7 @@
     </entry>
     <entry id="39" name="hsa:358" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:358">
-        <graphics name="AQP1, AQP-CHIP, CHIP28, CO, MGC26324" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AQP1, AQP-CHIP, CHIP28, CO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="155" y="486" width="46" height="17"/>
     </entry>
     <entry id="40" name="hsa:10991" type="gene"
@@ -252,7 +252,7 @@
     </entry>
     <entry id="50" name="hsa:5105 hsa:5106" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5105+hsa:5106">
-        <graphics name="PCK1, MGC22652, PEPCK-C, PEPCK1, PEPCKC..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PCK1, PEPCK-C, PEPCK1, PEPCKC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="416" y="784" width="46" height="17"/>
     </entry>
     <entry id="51" name="cpd:C01353" type="compound"

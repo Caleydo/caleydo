@@ -97,7 +97,7 @@
     </entry>
     <entry id="19" name="hsa:360" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:360">
-        <graphics name="AQP3, GIL" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AQP3, AQP-3, GIL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="580" y="547" width="46" height="17"/>
     </entry>
     <entry id="20" name="cpd:C00001" type="compound"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="23" name="hsa:360" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:360">
-        <graphics name="AQP3, GIL" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="AQP3, AQP-3, GIL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="465" y="718" width="46" height="17"/>
     </entry>
     <entry id="24" name="cpd:C00001" type="compound"

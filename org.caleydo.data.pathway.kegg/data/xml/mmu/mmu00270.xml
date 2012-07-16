@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jan 26, 2011 17:11:52 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 7, 2012 17:48:33 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00270" org="mmu" number="00270"
          title="Cysteine and methionine metabolism"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00270.png"
@@ -97,12 +97,12 @@
     </entry>
     <entry id="67" name="mmu:104923" type="gene" reaction="rn:R07364"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104923">
-        <graphics name="Adi1, AL024210, Ni-ARD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Adi1, AL024210, Fe-ARD, MTCBP-1, Ni-ARD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="576" y="1072" width="46" height="17"/>
     </entry>
     <entry id="68" name="mmu:104923" type="gene" reaction="rn:R07363"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:104923">
-        <graphics name="Adi1, AL024210, Ni-ARD" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Adi1, AL024210, Fe-ARD, MTCBP-1, Ni-ARD" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="620" y="1006" width="46" height="17"/>
     </entry>
     <entry id="69" name="ko:K08965" type="ortholog" reaction="rn:R07393"
@@ -162,7 +162,7 @@
     </entry>
     <entry id="81" name="mmu:107869" type="gene" reaction="rn:R01001"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:107869">
-        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, CSE, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="485" y="479" width="46" height="17"/>
     </entry>
     <entry id="82" name="ko:K01450" type="ortholog" reaction="rn:R00653"
@@ -205,8 +205,8 @@
         <graphics name="Ahcyl1, 1110034F20Rik, AA409031, AA414901, Ahcy-rs3, DCAL, Irbit..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="666" y="744" width="46" height="17"/>
     </entry>
-    <entry id="90" name="mmu:13433 mmu:13435 mmu:13436 mmu:54427 mmu:668932" type="gene" reaction="rn:R04858"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13433+mmu:13435+mmu:13436+mmu:54427+mmu:668932">
+    <entry id="90" name="mmu:13433 mmu:13435 mmu:13436 mmu:54427" type="gene" reaction="rn:R04858"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:13433+mmu:13435+mmu:13436+mmu:54427">
         <graphics name="Dnmt1, Cxxc9, Dnmt, Dnmt1o, MCMT, MTase, Met-1, Met1, MommeD2, m.MmuI..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="668" y="819" width="46" height="17"/>
     </entry>
@@ -214,11 +214,6 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu00270">
         <graphics name="TITLE:Cysteine and methionine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="202" y="58" width="323" height="25"/>
-    </entry>
-    <entry id="92" name="ko:K00388" type="ortholog" reaction="rn:R02025"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00388">
-        <graphics name="K00388" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="394" y="806" width="46" height="17"/>
     </entry>
     <entry id="93" name="mmu:100328588 mmu:100470 mmu:14204" type="gene" reaction="rn:R00648"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100328588+mmu:100470+mmu:14204">
@@ -472,7 +467,7 @@
     </entry>
     <entry id="170" name="mmu:107869" type="gene" reaction="rn:R02408"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:107869">
-        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, CSE, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="162" y="277" width="46" height="17"/>
     </entry>
     <entry id="171" name="path:mmu00260" type="map"
@@ -522,7 +517,7 @@
     </entry>
     <entry id="186" name="mmu:107869" type="gene" reaction="rn:R00782"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:107869">
-        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Cth, 0610010I13Rik, AI314617, BC019483, CSE, Cys3, MGC28655" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="228" y="445" width="46" height="17"/>
     </entry>
     <entry id="188" name="cpd:C00957" type="compound"
@@ -540,8 +535,8 @@
         <graphics name="Got1, AI789014, Got-1, cAspAT..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="77" y="445" width="46" height="17"/>
     </entry>
-    <entry id="193" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833 mmu:433229" type="gene" reaction="rn:R03104"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833+mmu:433229">
+    <entry id="193" name="mmu:106557 mmu:16828 mmu:16832 mmu:16833" type="gene" reaction="rn:R03104"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:106557+mmu:16828+mmu:16832+mmu:16833">
         <graphics name="Ldhal6b, 4933402O15Rik, AI326310, LDHL, Ldhal..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="102" y="605" width="46" height="17"/>
     </entry>
@@ -690,9 +685,9 @@
         <graphics name="C00320" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="181" y="572" width="8" height="8"/>
     </entry>
-    <entry id="231" name="mmu:20603" type="gene" reaction="rn:R02869"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20603">
-        <graphics name="Sms, AI427066, Gy, SPMSY, SpmST, gyro" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="231" name="mmu:20603 mmu:671878" type="gene" reaction="rn:R02869"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20603+mmu:671878">
+        <graphics name="Sms, AI427066, Gy, SPMSY, SpmST, gyro..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="910" y="869" width="46" height="17"/>
     </entry>
     <entry id="232" name="path:mmu00640" type="map"
@@ -998,10 +993,10 @@
         <product id="179" name="cpd:C00022"/>
     </reaction>
     <reaction id="189" name="rn:R03105" type="irreversible">
-        <substrate id="228" name="cpd:C00094"/>
         <substrate id="188" name="cpd:C00957"/>
-        <product id="230" name="cpd:C00320"/>
+        <substrate id="228" name="cpd:C00094"/>
         <product id="179" name="cpd:C00022"/>
+        <product id="230" name="cpd:C00320"/>
     </reaction>
     <reaction id="190" name="rn:R00896" type="reversible">
         <substrate id="123" name="cpd:C00097"/>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 30, 2011 09:57:15 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 15:20:37 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00790" org="mmu" number="00790"
          title="Folate biosynthesis"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00790.png"

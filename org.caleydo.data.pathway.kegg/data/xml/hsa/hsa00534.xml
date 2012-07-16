@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 8, 2010 14:45:22 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 6, 2012 10:13:04 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00534" org="hsa" number="00534"
          title="Glycosaminoglycan biosynthesis - heparan sulfate"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00534.png"
@@ -225,9 +225,9 @@
         <graphics name="GLCE, HSEPI, KIAA0836" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="96,406,96,426"/>
     </entry>
-    <entry id="55" name="hsa:266722 hsa:9394" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:266722+hsa:9394">
-        <graphics name="HS6ST3, DKFZp761K2315..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="55" name="hsa:100653112 hsa:266722 hsa:9394" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100653112+hsa:266722+hsa:9394">
+        <graphics name="100653112..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="175,387,175,417"/>
     </entry>
     <entry id="56" name="hsa:2131 hsa:2132" type="gene"
@@ -255,9 +255,9 @@
         <graphics name="GLCE, HSEPI, KIAA0836" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="313,406,313,426"/>
     </entry>
-    <entry id="61" name="hsa:266722 hsa:9394" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:266722+hsa:9394">
-        <graphics name="HS6ST3, DKFZp761K2315..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="61" name="hsa:100653112 hsa:266722 hsa:9394" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100653112+hsa:266722+hsa:9394">
+        <graphics name="100653112..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="392,387,392,417"/>
     </entry>
     <entry id="62" name="hsa:9653" type="gene"
@@ -380,9 +380,9 @@
         <graphics name="HS3ST5, 3-OST-5, 3OST5, HS3OST5, NBLA04021..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="398,524,398,554"/>
     </entry>
-    <entry id="86" name="hsa:266722 hsa:90161" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:266722+hsa:90161">
-        <graphics name="HS6ST3, DKFZp761K2315..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="86" name="hsa:100653112 hsa:266722 hsa:90161" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100653112+hsa:266722+hsa:90161">
+        <graphics name="100653112..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="386,524,386,554"/>
     </entry>
     <entry id="87" name="hsa:2131 hsa:2132" type="gene"
@@ -405,9 +405,9 @@
         <graphics name="NDST1, HSST, NST1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="609,587,609,617"/>
     </entry>
-    <entry id="91" name="hsa:266722 hsa:90161" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:266722+hsa:90161">
-        <graphics name="HS6ST3, DKFZp761K2315..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="91" name="hsa:100653112 hsa:266722 hsa:90161" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100653112+hsa:266722+hsa:90161">
+        <graphics name="100653112..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="609,524,609,554"/>
     </entry>
     <entry id="92" name="hsa:2131 hsa:2132" type="gene"
@@ -465,27 +465,5 @@
     <reaction id="3" name="rn:R05935" type="irreversible">
         <substrate id="8" name="gl:G00162"/>
         <product id="7" name="gl:G00163"/>
-    </reaction>
-    <reaction id="22" name="rn:R05936" type="reversible">
-    </reaction>
-    <reaction id="23" name="rn:R05935" type="reversible">
-    </reaction>
-    <reaction id="24" name="rn:R05930" type="reversible">
-    </reaction>
-    <reaction id="25" name="rn:R05928" type="reversible">
-    </reaction>
-    <reaction id="26" name="rn:R05927" type="reversible">
-    </reaction>
-    <reaction id="27" name="rn:R05926" type="reversible">
-    </reaction>
-    <reaction id="28" name="rn:R05925" type="reversible">
-    </reaction>
-    <reaction id="33" name="rn:R05928" type="reversible">
-    </reaction>
-    <reaction id="34" name="rn:R05927" type="reversible">
-    </reaction>
-    <reaction id="35" name="rn:R05926" type="reversible">
-    </reaction>
-    <reaction id="36" name="rn:R05925" type="reversible">
     </reaction>
 </pathway>

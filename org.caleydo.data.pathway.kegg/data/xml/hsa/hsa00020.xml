@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 28, 2011 17:21:09 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 14:52:44 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00020" org="hsa" number="00020"
          title="Citrate cycle (TCA cycle)"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00020.png"
@@ -67,7 +67,7 @@
     </entry>
     <entry id="39" name="hsa:6389 hsa:6390 hsa:6391 hsa:6392" type="gene" reaction="rn:R02164"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6389+hsa:6390+hsa:6391+hsa:6392">
-        <graphics name="SDHA, CMD1GG, FP, SDH1, SDH2, SDHF..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SDHA, CMD1GG, FP, PGL5, SDH1, SDH2, SDHF..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="194" y="530" width="46" height="17"/>
     </entry>
     <entry id="40" name="hsa:2271" type="gene" reaction="rn:R01082"
@@ -117,7 +117,7 @@
     </entry>
     <entry id="49" name="path:hsa00062" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00062">
-        <graphics name="Fatty acid elongation in mitochondria" fgcolor="#000000" bgcolor="#FFFFFF"
+        <graphics name="Fatty acid elongation" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="108" y="181" width="194" height="25"/>
     </entry>
     <entry id="50" name="path:hsa00071" type="map"
@@ -312,7 +312,7 @@
     </entry>
     <entry id="94" name="hsa:5105 hsa:5106" type="gene" reaction="rn:R00431 rn:R00726"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5105+hsa:5106">
-        <graphics name="PCK1, MGC22652, PEPCK-C, PEPCK1, PEPCKC..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PCK1, PEPCK-C, PEPCK1, PEPCKC..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="350" y="117" width="46" height="17"/>
     </entry>
     <entry id="95" name="cpd:C15973" type="compound"
@@ -585,8 +585,8 @@
         <product id="69" name="cpd:C15972"/>
     </reaction>
     <reaction id="30" name="rn:R00621" type="irreversible">
-        <substrate id="74" name="cpd:C00026"/>
         <substrate id="70" name="cpd:C00068"/>
+        <substrate id="74" name="cpd:C00026"/>
         <product id="75" name="cpd:C05381"/>
     </reaction>
     <reaction id="31" name="rn:R03316" type="irreversible">
@@ -660,8 +660,8 @@
         <product id="78" name="cpd:C05125"/>
     </reaction>
     <reaction id="81" name="rn:R03270" type="irreversible">
-        <substrate id="82" name="cpd:C15972"/>
         <substrate id="78" name="cpd:C05125"/>
+        <substrate id="82" name="cpd:C15972"/>
         <product id="85" name="cpd:C16255"/>
         <product id="80" name="cpd:C00068"/>
     </reaction>
@@ -670,8 +670,8 @@
         <product id="82" name="cpd:C15972"/>
     </reaction>
     <reaction id="86" name="rn:R02569" type="reversible">
-        <substrate id="95" name="cpd:C15973"/>
         <substrate id="63" name="cpd:C00024"/>
+        <substrate id="95" name="cpd:C15973"/>
         <product id="85" name="cpd:C16255"/>
     </reaction>
     <reaction id="94" name="rn:R00431 rn:R00726" type="irreversible">

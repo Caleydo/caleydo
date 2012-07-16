@@ -67,12 +67,12 @@
     </entry>
     <entry id="13" name="mmu:17126 mmu:17127" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17126+mmu:17127">
-        <graphics name="Smad2, Madh2, Madr2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Smad2, 7120426M23Rik, Madh2, Madr2, Smad-2, mMad2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="666" y="845" width="46" height="17"/>
     </entry>
     <entry id="14" name="mmu:22612" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:22612">
-        <graphics name="Yes1, AI323763, Yes" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Yes1, Yes, p61-Yes" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="467" y="742" width="46" height="17"/>
     </entry>
     <entry id="15" name="mmu:14360" type="gene"
@@ -107,7 +107,7 @@
     </entry>
     <entry id="21" name="mmu:14182" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14182">
-        <graphics name="Fgfr1, AW208770, FLG, Fgfr-1, Flt-2, Hspy" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fgfr1, AW208770, Eask, FLG, Fgfr-1, Flt-2, Hspy" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="280" y="812" width="46" height="17"/>
     </entry>
     <entry id="22" name="mmu:13649 mmu:13866" type="gene"
@@ -170,13 +170,13 @@
         <graphics name="Acp1, 4632432E04Rik, AI427468, Acp-1, LMW-PTP, MGC103115, MGC132904" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="280" y="407" width="46" height="17"/>
     </entry>
-    <entry id="34" name="mmu:11848 mmu:433749" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:433749">
+    <entry id="34" name="mmu:11848 mmu:67653" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:67653">
         <graphics name="Rhoa, Arha, Arha1, Arha2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="673" y="618" width="46" height="17"/>
     </entry>
-    <entry id="35" name="mmu:11848 mmu:433749" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:433749">
+    <entry id="35" name="mmu:11848 mmu:67653" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11848+mmu:67653">
         <graphics name="Rhoa, Arha, Arha1, Arha2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="640" y="385" width="46" height="17"/>
     </entry>
@@ -287,7 +287,7 @@
     </entry>
     <entry id="57" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="707" y="506" width="46" height="17"/>
     </entry>
     <entry id="58" name="mmu:12550" type="gene"
@@ -297,7 +297,7 @@
     </entry>
     <entry id="59" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="423" y="647" width="46" height="17"/>
     </entry>
     <entry id="60" name="mmu:29875" type="gene"
@@ -342,7 +342,7 @@
     </entry>
     <entry id="68" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="423" y="345" width="46" height="17"/>
     </entry>
     <entry id="69" name="mmu:29875" type="gene"
@@ -367,7 +367,7 @@
     </entry>
     <entry id="73" name="mmu:93742" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:93742">
-        <graphics name="Pard3, AA960621, AI256638, ASIP, D8Ertd580e, PAR-3, Par3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Pard3, AA960621, AI256638, ASIP, D8Ertd580e, PAR-3, Par3, Pard3a" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="350" y="174" width="46" height="17"/>
     </entry>
     <entry id="74" name="mmu:227377" type="gene"

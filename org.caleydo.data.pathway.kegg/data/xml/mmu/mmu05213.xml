@@ -7,12 +7,12 @@
          link="http://www.genome.jp/kegg-bin/show_pathway?mmu05213">
     <entry id="1" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="641" y="365" width="46" height="17"/>
     </entry>
     <entry id="2" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="469" y="403" width="46" height="17"/>
     </entry>
     <entry id="3" name="mmu:15461 mmu:16653 mmu:18176" type="gene"
@@ -47,7 +47,7 @@
     </entry>
     <entry id="9" name="mmu:12387" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:12387">
-        <graphics name="Ctnnb1, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Ctnnb1, Bfc, Catnb, Mesc" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="296" y="360" width="46" height="17"/>
     </entry>
     <entry id="10" name="path:mmu04110" type="map"

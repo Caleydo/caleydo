@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Nov 10, 2010 15:55:16 +0900 (JST) -->
+<!-- Creation date: May 28, 2012 09:20:52 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05160" org="mmu" number="05160"
          title="Hepatitis C"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05160.png"
@@ -17,7 +17,7 @@
     </entry>
     <entry id="3" name="mmu:228607" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:228607">
-        <graphics name="Mavs, D430028G21Rik, IPS-1, MGC25836, Visa" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Mavs, D430028G21Rik, IPS-1, MGC25836, Visa, cardif" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="438" y="394" width="46" height="17"/>
     </entry>
     <entry id="4" name="mmu:22031" type="gene"
@@ -122,7 +122,7 @@
     </entry>
     <entry id="24" name="mmu:20778" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20778">
-        <graphics name="Scarb1, AI120173, CD36, Cd36l1, Cla-1, Cla1, D5Ertd460e, Hlb398, SR-B1, SR-BI, SRBI, Srb1, mSR-BI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Scarb1, AI120173, CD36, Cd36l1, Cla-1, Cla1, D5Ertd460e, Hdlq1, Hlb398, SR-B1, SR-BI, SRBI, Srb1, mSR-BI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="177" y="169" width="46" height="17"/>
     </entry>
     <entry id="25" name="mmu:12520" type="gene"
@@ -165,9 +165,9 @@
         <graphics name="Ppp2ca, PP2A, R75353..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="395" y="771" width="46" height="17"/>
     </entry>
-    <entry id="33" name="mmu:17344 mmu:229615 mmu:56469 mmu:59004" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:17344+mmu:229615+mmu:56469+mmu:59004">
-        <graphics name="Pias2, 6330408K17Rik, AI462206, ARIP3, AU018068, Dib, Miz1, PIASxalpha, PIASxb, PIASxbeta, SIZ2..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="33" name="mmu:56469" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:56469">
+        <graphics name="Pias1, 2900068C24Rik, Ddxbp1, GBP" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="456" y="771" width="46" height="17"/>
     </entry>
     <entry id="34" name="ko:K10030" type="ortholog"

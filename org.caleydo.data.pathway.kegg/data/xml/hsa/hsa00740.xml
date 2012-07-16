@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 22, 2011 13:57:00 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 13:38:31 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00740" org="hsa" number="00740"
          title="Riboflavin metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00740.png"
@@ -188,19 +188,19 @@
     <entry id="63" name="cpd:C01847" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C01847">
         <graphics name="C01847" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="circle" x="685" y="393" width="8" height="8"/>
+             type="circle" x="683" y="393" width="8" height="8"/>
     </entry>
-    <entry id="64" name="ko:K00299 ko:K05368" type="ortholog" reaction="rn:R05705 rn:R05706"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00299+K05368">
-        <graphics name="K00299..." fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="686" y="353" width="46" height="17"/>
+    <entry id="64" name="ko:K00299" type="ortholog" reaction="rn:R05706"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K00299">
+        <graphics name="K00299" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="658" y="352" width="46" height="17"/>
     </entry>
     <entry id="66" name="cpd:C01352" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C01352">
         <graphics name="C01352" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="789" y="393" width="8" height="8"/>
     </entry>
-    <entry id="67" name="hsa:645" type="gene" reaction="rn:R05707"
+    <entry id="67" name="hsa:645" type="gene" reaction="rn:R09520"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:645">
         <graphics name="BLVRB, BVRB, FLR, MGC117413, SDR43U1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="790" y="353" width="46" height="17"/>
@@ -208,17 +208,17 @@
     <entry id="68" name="path:hsa00860" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00860">
         <graphics name="Porphyrin and chlorophyll metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="roundrectangle" x="686" y="526" width="146" height="34"/>
+             type="roundrectangle" x="684" y="526" width="146" height="34"/>
     </entry>
     <entry id="70" name="cpd:C03114" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C03114">
         <graphics name="C03114" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="circle" x="685" y="469" width="8" height="8"/>
+             type="circle" x="683" y="469" width="8" height="8"/>
     </entry>
     <entry id="71" name="ko:K04719" type="ortholog" reaction="rn:R09083"
         link="http://www.kegg.jp/dbget-bin/www_bget?K04719">
         <graphics name="K04719" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="686" y="428" width="46" height="17"/>
+             type="rectangle" x="684" y="428" width="46" height="17"/>
     </entry>
     <entry id="72" name="ko:K14655" type="ortholog" reaction="rn:R09377"
         link="http://www.kegg.jp/dbget-bin/www_bget?K14655">
@@ -245,6 +245,11 @@
         <graphics name="K14656" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="742" y="326" width="46" height="17"/>
     </entry>
+    <entry id="78" name="ko:K05368" type="ortholog" reaction="rn:R05705"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K05368">
+        <graphics name="K05368" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="708" y="352" width="46" height="17"/>
+    </entry>
     <relation entry1="49" entry2="46" type="ECrel">
         <subtype name="compound" value="57"/>
     </relation>
@@ -256,6 +261,12 @@
     </relation>
     <relation entry1="45" entry2="48" type="ECrel">
         <subtype name="compound" value="57"/>
+    </relation>
+    <relation entry1="67" entry2="46" type="ECrel">
+        <subtype name="compound" value="23"/>
+    </relation>
+    <relation entry1="67" entry2="45" type="ECrel">
+        <subtype name="compound" value="23"/>
     </relation>
     <reaction id="45" name="rn:R00160" type="irreversible">
         <substrate id="23" name="cpd:C00016"/>
@@ -270,8 +281,8 @@
         <product id="57" name="cpd:C00061"/>
     </reaction>
     <reaction id="42" name="rn:R02363" type="irreversible">
-        <substrate id="18" name="cpd:C00530"/>
         <substrate id="17" name="cpd:C00007"/>
+        <substrate id="18" name="cpd:C00530"/>
         <product id="15" name="cpd:C00472"/>
         <product id="16" name="cpd:C00001"/>
     </reaction>
@@ -279,6 +290,8 @@
         <substrate id="57" name="cpd:C00061"/>
         <product id="23" name="cpd:C00016"/>
     </reaction>
-    <reaction id="67" name="rn:R05707" type="reversible">
+    <reaction id="67" name="rn:R09520" type="irreversible">
+        <substrate id="23" name="cpd:C00016"/>
+        <product id="66" name="cpd:C01352"/>
     </reaction>
 </pathway>

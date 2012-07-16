@@ -92,7 +92,7 @@
     </entry>
     <entry id="18" name="hsa:6608" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6608">
-        <graphics name="SMO, Gx, SMOH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SMO, FZD11, Gx, SMOH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="210" y="339" width="46" height="17"/>
     </entry>
     <entry id="19" name="hsa:64399" type="gene"
@@ -112,7 +112,7 @@
     </entry>
     <entry id="22" name="hsa:51176 hsa:6932 hsa:6934 hsa:83439" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:51176+hsa:6932+hsa:6934+hsa:83439">
-        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF1ALPHA..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LEF1, DKFZp586H0919, FLJ46390, TCF10, TCF1ALPHA, TCF7L3..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="626" y="495" width="46" height="17"/>
     </entry>
     <entry id="23" name="path:hsa04340" type="map"

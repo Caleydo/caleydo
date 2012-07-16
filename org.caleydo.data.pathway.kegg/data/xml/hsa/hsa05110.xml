@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 2, 2010 10:30:28 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:20:27 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05110" org="hsa" number="05110"
          title="Vibrio cholerae infection"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05110.png"
@@ -187,7 +187,7 @@
     </entry>
     <entry id="38" name="hsa:9414" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9414">
-        <graphics name="TJP2, MGC26306, X104, ZO2" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TJP2, C9DUPq21.11, DFNA51, DUP9q21.11, MGC26306, X104, ZO2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="659" y="648" width="46" height="17"/>
     </entry>
     <entry id="39" name="hsa:7082" type="gene"
@@ -247,7 +247,7 @@
     </entry>
     <entry id="50" name="hsa:60 hsa:71" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:60+hsa:71">
-        <graphics name="ACTB, PS1TP5BP1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ACTB, BRWS1, PS1TP5BP1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="642" y="574" width="46" height="17"/>
     </entry>
     <entry id="51" name="hsa:9601" type="gene"

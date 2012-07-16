@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 23, 2010 10:16:58 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 16:22:35 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00072" org="mmu" number="00072"
          title="Synthesis and degradation of ketone bodies"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00072.png"
@@ -15,9 +15,9 @@
         <graphics name="Fatty acid metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="213" y="142" width="126" height="25"/>
     </entry>
-    <entry id="11" name="mmu:100040592 mmu:15360 mmu:208715" type="gene" reaction="rn:R01978"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:100040592+mmu:15360+mmu:208715">
-        <graphics name="100040592..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="11" name="mmu:15360 mmu:208715" type="gene" reaction="rn:R01978"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:15360+mmu:208715">
+        <graphics name="Hmgcs2, 1300002P16, mHS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="211" y="276" width="46" height="17"/>
     </entry>
     <entry id="12" name="mmu:15356" type="gene" reaction="rn:R01360"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="18" name="mmu:353371 mmu:64059 mmu:67041" type="gene" reaction="rn:R00410"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:353371+mmu:64059+mmu:67041">
-        <graphics name="Oxct2b, MGC130507, Scot-t2..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Oxct2b, Scot-t2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="73" y="316" width="46" height="17"/>
     </entry>
     <entry id="19" name="path:mmu00650" type="map"

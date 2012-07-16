@@ -17,7 +17,7 @@
     </entry>
     <entry id="4" name="hsa:55624" type="gene" reaction="rn:R07619"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55624">
-        <graphics name="POMGNT1, DKFZp761B182, FLJ20277, GNTI.2, MDDGA3, MDDGB3, MDDGC3, MEB, MGAT1.2" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="POMGNT1, DKFZp761B182, FLJ20277, GNTI.2, GnT_I.2, MDDGA3, MDDGB3, MDDGC3, MEB, MGAT1.2, gnT-I.2" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="299,292,329,292"/>
     </entry>
     <entry id="5" name="ko:K10970" type="ortholog"

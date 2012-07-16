@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 23, 2010 10:16:58 +0900 (GMT+09:00) -->
+<!-- Creation date: May 31, 2012 16:22:35 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00072" org="hsa" number="00072"
          title="Synthesis and degradation of ketone bodies"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00072.png"
@@ -17,7 +17,7 @@
     </entry>
     <entry id="11" name="hsa:3157 hsa:3158" type="gene" reaction="rn:R01978"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:3157+hsa:3158">
-        <graphics name="HMGCS1, HMGCS, MGC90332..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="HMGCS1, HMGCS..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="211" y="276" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:3155" type="gene" reaction="rn:R01360"
@@ -37,7 +37,7 @@
     </entry>
     <entry id="15" name="hsa:56898 hsa:622" type="gene" reaction="rn:R01361"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:56898+hsa:622">
-        <graphics name="BDH2, DHRS6, EFA6R, FLJ13261, PRO20933, SDR15C1, UCPA-OR, UNQ6308..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BDH2, DHRS6, EFA6R, PRO20933, SDR15C1, UCPA-OR, UNQ6308..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="290" y="463" width="46" height="17"/>
     </entry>
     <entry id="16" name="path:hsa00620" type="map"

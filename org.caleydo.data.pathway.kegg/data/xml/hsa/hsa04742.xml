@@ -22,7 +22,7 @@
     </entry>
     <entry id="4" name="hsa:773 hsa:774" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="746" y="575" width="46" height="17"/>
     </entry>
     <entry id="5" name="hsa:2782 hsa:2784 hsa:2785 hsa:51764" type="gene"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="25" name="hsa:773 hsa:774" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="746" y="329" width="46" height="17"/>
     </entry>
     <entry id="26" name="hsa:5566 hsa:5567 hsa:5568 hsa:5613" type="gene"

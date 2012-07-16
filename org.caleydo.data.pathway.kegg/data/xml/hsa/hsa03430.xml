@@ -120,14 +120,14 @@
         <graphics name="MSH3, DUP, MGC163306, MGC163308, MRP1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="624" y="306" width="46" height="17"/>
     </entry>
-    <entry id="24" name="hsa:100289811 hsa:5395" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100289811+hsa:5395">
-        <graphics name="100289811..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="24" name="hsa:5395" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5395">
+        <graphics name="PMS2, HNPCC4, PMS2CL, PMSL2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="624" y="289" width="46" height="17"/>
     </entry>
-    <entry id="25" name="hsa:100289811 hsa:5395" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:100289811+hsa:5395">
-        <graphics name="100289811..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="25" name="hsa:5395" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5395">
+        <graphics name="PMS2, HNPCC4, PMS2CL, PMSL2" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="578" y="233" width="46" height="17"/>
     </entry>
     <entry id="26" name="hsa:5981 hsa:5982 hsa:5983 hsa:5984 hsa:5985" type="gene"

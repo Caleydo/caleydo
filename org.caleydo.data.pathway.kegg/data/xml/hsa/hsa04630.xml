@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 31, 2009 10:11:12 +0900 (JST) -->
+<!-- Creation date: Jun 8, 2012 17:35:08 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04630" org="hsa" number="04630"
          title="Jak-STAT signaling pathway"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04630.png"
@@ -12,12 +12,12 @@
     </entry>
     <entry id="2" name="hsa:161742 hsa:200734" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:161742+hsa:200734">
-        <graphics name="SPRED1, FLJ33903, NFLS..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SPRED1, FLJ33903, NFLS, hSpred1, spred-1..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="802" y="400" width="46" height="17"/>
     </entry>
     <entry id="3" name="hsa:598" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:598">
-        <graphics name="BCL2L1, BCL-XL/S, BCL2L, BCLX, BCLXL, BCLXS, Bcl-X, DKFZp781P2092, bcl-xL, bcl-xS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="BCL2L1, BCL-XL/S, BCL2L, BCLX, BCLXL, BCLXS, Bcl-X, DKFZp781P2092, PPP1R52, bcl-xL, bcl-xS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="802" y="374" width="46" height="17"/>
     </entry>
     <entry id="4" name="hsa:595 hsa:894 hsa:896" type="gene"
@@ -37,7 +37,7 @@
     </entry>
     <entry id="7" name="hsa:23533 hsa:5290 hsa:5291 hsa:5293 hsa:5294 hsa:5295 hsa:5296 hsa:8503" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:23533+hsa:5290+hsa:5291+hsa:5293+hsa:5294+hsa:5295+hsa:5296+hsa:8503">
-        <graphics name="PIK3R5, F730038I15Rik, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PIK3R5, F730038I15Rik, FLJ26116, FOAP-2, P101-PI3K, p101..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="303" y="449" width="46" height="17"/>
     </entry>
     <entry id="8" name="hsa:6654 hsa:6655" type="gene"
@@ -57,7 +57,7 @@
     </entry>
     <entry id="11" name="hsa:1154" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1154">
-        <graphics name="CISH, CIS, CIS-1, G18, SOCS" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CISH, BACTS2, CIS, CIS-1, G18, SOCS" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="802" y="284" width="46" height="17"/>
     </entry>
     <entry id="12" name="hsa:5292" type="gene"
@@ -82,7 +82,7 @@
     </entry>
     <entry id="16" name="hsa:6772 hsa:6773 hsa:6774 hsa:6775 hsa:6776 hsa:6777 hsa:6778" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6772+hsa:6773+hsa:6774+hsa:6775+hsa:6776+hsa:6777+hsa:6778">
-        <graphics name="STAT1, DKFZp686B04100, ISGF-3, STAT91..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="STAT1, CANDF7, DKFZp686B04100, ISGF-3, STAT91..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="343" y="247" width="46" height="17"/>
     </entry>
     <entry id="17" name="hsa:10401 hsa:51588 hsa:8554 hsa:9063" type="gene"
@@ -132,7 +132,7 @@
     </entry>
     <entry id="27" name="hsa:1442 hsa:2056 hsa:2688 hsa:2689 hsa:5617 hsa:7173" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1442+hsa:2056+hsa:2688+hsa:2689+hsa:5617+hsa:7173">
-        <graphics name="CSH1, CSA, CSH2, CSMT, FLJ75407, PL..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CSH1, CS-1, CSA, CSMT, FLJ75407, PL, hCS-A..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="73" y="186" width="46" height="17"/>
     </entry>
     <entry id="28" name="path:hsa04630" type="map"

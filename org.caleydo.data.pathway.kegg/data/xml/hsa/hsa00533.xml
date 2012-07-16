@@ -67,7 +67,7 @@
     </entry>
     <entry id="20" name="hsa:8534" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8534">
-        <graphics name="CHST1, C6ST, KS6ST, KSGal6ST" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="CHST1, C6ST, GST-1, KS6ST, KSGal6ST, KSST" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="251,148,251,178"/>
     </entry>
     <entry id="21" name="hsa:4166" type="gene"
@@ -77,7 +77,7 @@
     </entry>
     <entry id="22" name="hsa:8534" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8534">
-        <graphics name="CHST1, C6ST, KS6ST, KSGal6ST" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="CHST1, C6ST, GST-1, KS6ST, KSGal6ST, KSST" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="61,148,61,178"/>
     </entry>
     <entry id="23" name="path:hsa00510" type="map"
@@ -137,7 +137,7 @@
     </entry>
     <entry id="37" name="hsa:8534" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:8534">
-        <graphics name="CHST1, C6ST, KS6ST, KSGal6ST" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="CHST1, C6ST, GST-1, KS6ST, KSGal6ST, KSST" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="155,393,155,423"/>
     </entry>
 </pathway>

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 16, 2010 10:46:37 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 29, 2012 14:34:58 +0900 (GMT+09:00) -->
 <pathway name="path:mmu00601" org="mmu" number="00601"
          title="Glycosphingolipid biosynthesis - lacto and neolacto series"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu00601.png"
@@ -87,7 +87,7 @@
     </entry>
     <entry id="53" name="mmu:231727 mmu:72297" type="gene" reaction="rn:R05975"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:231727+mmu:72297">
-        <graphics name="B3gnt4, 1010001G17Rik..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B3gnt4, 1010001G17Rik, BGnT-4..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="762" y="343" width="46" height="17"/>
     </entry>
     <entry id="54" name="mmu:14345" type="gene" reaction="rn:R06039"
@@ -485,9 +485,9 @@
         <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="694" y="376" width="46" height="17"/>
     </entry>
-    <entry id="141" name="mmu:108105 mmu:623370" type="gene" reaction="rn:R05971"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105+mmu:623370">
-        <graphics name="B3gnt5, beta3GnT5..." fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="141" name="mmu:108105" type="gene" reaction="rn:R05971"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="369" y="153" width="46" height="17"/>
     </entry>
     <entry id="142" name="mmu:14348" type="gene" reaction="rn:R06095"
@@ -537,7 +537,7 @@
     </entry>
     <entry id="157" name="mmu:26877" type="gene" reaction="rn:R06006"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26877">
-        <graphics name="B3galt1, 6330417G03Rik, beta3GalT-I, beta3GalT1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="B3galt1, 6330417G03Rik" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="222" y="182" width="46" height="17"/>
     </entry>
     <entry id="158" name="mmu:26878" type="gene" reaction="rn:R06006"
@@ -687,7 +687,7 @@
     </entry>
     <entry id="198" name="mmu:26877 mmu:26878 mmu:93961" type="gene" reaction="rn:R06006"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:26877+mmu:26878+mmu:93961">
-        <graphics name="B3galt1, 6330417G03Rik, beta3GalT-I, beta3GalT1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="B3galt1, 6330417G03Rik..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="333,1118,363,1118"/>
     </entry>
     <entry id="199" name="ko:K00716" type="ortholog" reaction="rn:R06165 rn:R06155 rn:R06164 rn:R06163 rn:R06162"
@@ -695,9 +695,9 @@
         <graphics name="K00716" fgcolor="#000000" bgcolor="#FFFFFF"
              type="line" coords="388,1102,388,1072"/>
     </entry>
-    <entry id="200" name="mmu:108105 mmu:623370" type="gene" reaction="rn:R05971"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105+mmu:623370">
-        <graphics name="B3gnt5, beta3GnT5..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="200" name="mmu:108105" type="gene" reaction="rn:R05971"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="421,1118,451,1118"/>
     </entry>
     <entry id="203" name="mmu:80908" type="gene" reaction="rn:R06187"
@@ -725,9 +725,9 @@
         <graphics name="Fut1, H, MGC129302, MGC129303..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="542,1412,542,1452"/>
     </entry>
-    <entry id="208" name="mmu:108105 mmu:623370" type="gene" reaction="rn:R05977"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105+mmu:623370">
-        <graphics name="B3gnt5, beta3GnT5..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="208" name="mmu:108105" type="gene" reaction="rn:R05977"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="558,1397,588,1397"/>
     </entry>
     <entry id="209" name="mmu:14345 mmu:14347 mmu:14348" type="gene" reaction="rn:R06025 rn:R06075 rn:R06095 rn:R06230 rn:R06221 rn:R06224 rn:R06227"
@@ -735,9 +735,9 @@
         <graphics name="Fut4, AI451562, CD15, FAL, FucT-IV, LeX, SSEA-1..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="619,1451,619,1411"/>
     </entry>
-    <entry id="210" name="mmu:108105 mmu:623370" type="gene" reaction="rn:R05971"
-        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105+mmu:623370">
-        <graphics name="B3gnt5, beta3GnT5..." fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+    <entry id="210" name="mmu:108105" type="gene" reaction="rn:R05971"
+        link="http://www.kegg.jp/dbget-bin/www_bget?mmu:108105">
+        <graphics name="B3gnt5, beta3GnT5" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="646,1397,676,1397"/>
     </entry>
     <entry id="213" name="mmu:14594 mmu:80908" type="gene" reaction="rn:R05978 rn:R06029"
@@ -1474,8 +1474,6 @@
         <substrate id="86" name="gl:G00074"/>
         <product id="85" name="gl:G00075"/>
     </reaction>
-    <reaction id="110" name="rn:R06085 rn:R06086 rn:R06089 rn:R06090" type="reversible">
-    </reaction>
     <reaction id="112" name="rn:R06038" type="irreversible">
         <substrate id="73" name="gl:G00067"/>
         <product id="69" name="gl:G00089"/>
@@ -1631,63 +1629,5 @@
     <reaction id="188" name="rn:R06153" type="irreversible">
         <substrate id="156" name="gl:G00037"/>
         <product id="189" name="gl:G00047"/>
-    </reaction>
-    <reaction id="193" name="rn:R06167" type="reversible">
-    </reaction>
-    <reaction id="194" name="rn:R06153" type="reversible">
-    </reaction>
-    <reaction id="195" name="rn:R06169 rn:R06168" type="reversible">
-    </reaction>
-    <reaction id="197" name="rn:R06156 rn:R06170" type="reversible">
-    </reaction>
-    <reaction id="198" name="rn:R06006" type="reversible">
-    </reaction>
-    <reaction id="200" name="rn:R05971" type="reversible">
-    </reaction>
-    <reaction id="203" name="rn:R06187" type="reversible">
-    </reaction>
-    <reaction id="204" name="rn:R05975" type="reversible">
-    </reaction>
-    <reaction id="205" name="rn:R06026" type="reversible">
-    </reaction>
-    <reaction id="206" name="rn:R06189" type="reversible">
-    </reaction>
-    <reaction id="207" name="rn:R06024 rn:R06027" type="reversible">
-    </reaction>
-    <reaction id="208" name="rn:R05977" type="reversible">
-    </reaction>
-    <reaction id="209" name="rn:R06025 rn:R06075 rn:R06095 rn:R06230 rn:R06221 rn:R06224 rn:R06227" type="reversible">
-    </reaction>
-    <reaction id="210" name="rn:R05971" type="reversible">
-    </reaction>
-    <reaction id="213" name="rn:R05978 rn:R06029" type="reversible">
-    </reaction>
-    <reaction id="214" name="rn:R06032" type="reversible">
-    </reaction>
-    <reaction id="216" name="rn:R06031" type="reversible">
-    </reaction>
-    <reaction id="217" name="rn:R06197" type="reversible">
-    </reaction>
-    <reaction id="218" name="rn:R06038 rn:R06222 rn:R06076" type="reversible">
-    </reaction>
-    <reaction id="219" name="rn:R06033" type="reversible">
-    </reaction>
-    <reaction id="220" name="rn:R06037 rn:R06232" type="reversible">
-    </reaction>
-    <reaction id="221" name="rn:R05974" type="reversible">
-    </reaction>
-    <reaction id="222" name="rn:R06039" type="reversible">
-    </reaction>
-    <reaction id="225" name="rn:R06193" type="reversible">
-    </reaction>
-    <reaction id="226" name="rn:R06190" type="reversible">
-    </reaction>
-    <reaction id="227" name="rn:R06035 rn:R06085 rn:R06090" type="reversible">
-    </reaction>
-    <reaction id="229" name="rn:R06041" type="reversible">
-    </reaction>
-    <reaction id="230" name="rn:R06191" type="reversible">
-    </reaction>
-    <reaction id="234" name="rn:R06086 rn:R06089" type="reversible">
     </reaction>
 </pathway>

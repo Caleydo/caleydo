@@ -112,7 +112,7 @@
     </entry>
     <entry id="22" name="mmu:14184" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14184">
-        <graphics name="Fgfr3, Fgfr-3, HBGFR, sam3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Fgfr3, CD333, FR3, Fgfr-3, Flg-2, HBGFR, Mfr3, sam3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="255" y="156" width="46" height="17"/>
     </entry>
     <entry id="23" name="mmu:12567 mmu:640611" type="gene"

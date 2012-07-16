@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Aug 1, 2011 15:55:25 +0900 (GMT+09:00) -->
+<!-- Creation date: Nov 24, 2011 17:29:05 +0900 (GMT+09:00) -->
 <pathway name="path:hsa04727" org="hsa" number="04727"
          title="GABAergic synapse"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa04727.png"
@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="hsa:2571 hsa:2572" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2571+hsa:2572">
-        <graphics name="GAD1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GAD1, CPSQ1, FLJ45882, GAD, SCP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="152" y="570" width="46" height="17"/>
     </entry>
     <entry id="11" name="hsa:6529" type="gene"
@@ -67,7 +67,7 @@
     </entry>
     <entry id="13" name="hsa:773 hsa:774" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="623" y="497" width="46" height="17"/>
     </entry>
     <entry id="14" name="cpd:C00076" type="compound"
@@ -212,7 +212,7 @@
     </entry>
     <entry id="42" name="hsa:66008" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:66008">
-        <graphics name="TRAK2, ALS2CR3, CALS-C, GRIF-1, GRIF1, KIAA0549, OIP98" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TRAK2, ALS2CR3, CALS-C, GRIF-1, GRIF1, KIAA0549, MILT2, OIP98" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="951" y="531" width="46" height="17"/>
     </entry>
     <entry id="43" name="hsa:5334" type="gene"
@@ -237,7 +237,7 @@
     </entry>
     <entry id="47" name="hsa:773 hsa:774 hsa:775 hsa:776 hsa:778 hsa:779" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:773+hsa:774+hsa:775+hsa:776+hsa:778+hsa:779">
-        <graphics name="CACNA1A, APCA, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="CACNA1A, APCA, BI, CACNL1A4, CAV2.1, EA2, FHM, HPCA, MHP, MHP1, SCA6..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="757" y="717" width="46" height="17"/>
     </entry>
     <entry id="48" name="cpd:C00076" type="compound"

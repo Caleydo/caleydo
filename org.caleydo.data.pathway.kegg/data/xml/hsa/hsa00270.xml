@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jan 26, 2011 17:11:52 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 7, 2012 17:48:33 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00270" org="hsa" number="00270"
          title="Cysteine and methionine metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00270.png"
@@ -97,12 +97,12 @@
     </entry>
     <entry id="67" name="hsa:55256" type="gene" reaction="rn:R07364"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55256">
-        <graphics name="ADI1, APL1, ARD, FLJ10913, MTCBP1, Ni-ARD, SIPL" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADI1, APL1, ARD, FLJ10913, Fe-ARD, MTCBP1, Ni-ARD, SIPL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="576" y="1072" width="46" height="17"/>
     </entry>
     <entry id="68" name="hsa:55256" type="gene" reaction="rn:R07363"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:55256">
-        <graphics name="ADI1, APL1, ARD, FLJ10913, MTCBP1, Ni-ARD, SIPL" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADI1, APL1, ARD, FLJ10913, Fe-ARD, MTCBP1, Ni-ARD, SIPL" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="620" y="1006" width="46" height="17"/>
     </entry>
     <entry id="69" name="ko:K08965" type="ortholog" reaction="rn:R07393"
@@ -127,7 +127,7 @@
     </entry>
     <entry id="73" name="hsa:4507" type="gene" reaction="rn:R01402"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4507">
-        <graphics name="MTAP, MSAP, c86fus" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MTAP, BDMF, DMSFH, DMSMFH, LGMBF, MSAP, c86fus" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="1031" y="946" width="46" height="17"/>
     </entry>
     <entry id="74" name="ko:K01244" type="ortholog" reaction="rn:R01401"
@@ -207,7 +207,7 @@
     </entry>
     <entry id="90" name="hsa:1786 hsa:1788 hsa:1789 hsa:29947" type="gene" reaction="rn:R04858"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1786+hsa:1788+hsa:1789+hsa:29947">
-        <graphics name="DNMT1, AIM, CXXC9, DNMT, FLJ16293, MCMT, MGC104992..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="DNMT1, AIM, CXXC9, DNMT, FLJ16293, HSN1E, MCMT, MGC104992..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="668" y="819" width="46" height="17"/>
     </entry>
     <entry id="91" name="path:hsa00270" type="map"
@@ -215,14 +215,9 @@
         <graphics name="TITLE:Cysteine and methionine metabolism" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="202" y="58" width="323" height="25"/>
     </entry>
-    <entry id="92" name="ko:K00388" type="ortholog" reaction="rn:R02025"
-        link="http://www.kegg.jp/dbget-bin/www_bget?K00388">
-        <graphics name="K00388" fgcolor="#000000" bgcolor="#FFFFFF"
-             type="rectangle" x="394" y="806" width="46" height="17"/>
-    </entry>
     <entry id="93" name="hsa:259307" type="gene" reaction="rn:R00648"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:259307">
-        <graphics name="IL4I1, FIG1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="IL4I1, FIG1, LAAO, LAO" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="548" y="992" width="46" height="17"/>
     </entry>
     <entry id="94" name="ko:K00547" type="ortholog" reaction="rn:R00650"
@@ -417,7 +412,7 @@
     </entry>
     <entry id="148" name="hsa:2805 hsa:2806" type="gene" reaction="rn:R02433"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2805+hsa:2806">
-        <graphics name="GOT1, GIG18..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GOT1, ASTQTL1, GIG18..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="757" y="388" width="46" height="17"/>
     </entry>
     <entry id="149" name="cpd:C05528" type="compound"
@@ -492,7 +487,7 @@
     </entry>
     <entry id="176" name="hsa:2805 hsa:2806" type="gene" reaction="rn:R02619"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2805+hsa:2806">
-        <graphics name="GOT1, GIG18..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GOT1, ASTQTL1, GIG18..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="332" y="533" width="46" height="17"/>
     </entry>
     <entry id="178" name="cpd:C05527" type="compound"
@@ -537,7 +532,7 @@
     </entry>
     <entry id="190" name="hsa:2805 hsa:2806" type="gene" reaction="rn:R00896"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:2805+hsa:2806">
-        <graphics name="GOT1, GIG18..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="GOT1, ASTQTL1, GIG18..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="77" y="445" width="46" height="17"/>
     </entry>
     <entry id="193" name="hsa:160287 hsa:3939 hsa:3945 hsa:3948 hsa:92483" type="gene" reaction="rn:R03104"
@@ -998,10 +993,10 @@
         <product id="179" name="cpd:C00022"/>
     </reaction>
     <reaction id="189" name="rn:R03105" type="irreversible">
-        <substrate id="228" name="cpd:C00094"/>
         <substrate id="188" name="cpd:C00957"/>
-        <product id="230" name="cpd:C00320"/>
+        <substrate id="228" name="cpd:C00094"/>
         <product id="179" name="cpd:C00022"/>
+        <product id="230" name="cpd:C00320"/>
     </reaction>
     <reaction id="190" name="rn:R00896" type="reversible">
         <substrate id="123" name="cpd:C00097"/>

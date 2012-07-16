@@ -52,7 +52,7 @@
     </entry>
     <entry id="10" name="hsa:9223" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:9223">
-        <graphics name="MAGI1, AIP3, BAIAP1, BAP1, MAGI-1, TNRC19, WWP3" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAGI1, AIP-3, AIP3, BAIAP1, BAP-1, BAP1, MAGI-1, TNRC19, WWP3" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="296" y="694" width="46" height="17"/>
     </entry>
     <entry id="11" name="hsa:7082" type="gene"

@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Mar 11, 2011 16:24:34 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 8, 2012 13:36:39 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00730" org="hsa" number="00730"
          title="Thiamine metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00730.png"
@@ -172,12 +172,12 @@
     </entry>
     <entry id="66" name="hsa:79178" type="gene" reaction="rn:R00618"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:79178">
-        <graphics name="THTPA, MGC2652, THTP, THTPASE" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="THTPA, FLJ33428, FLJ36892, MGC2652, THTP, THTPASE" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="891" y="386" width="46" height="17"/>
     </entry>
     <entry id="67" name="hsa:27010" type="gene" reaction="rn:R00616"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27010">
-        <graphics name="TPK1, HTPK1, PP20" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TPK1, HTPK1, PP20, THMD5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="891" y="353" width="46" height="17"/>
     </entry>
     <entry id="71" name="hsa:84284" type="gene" reaction="rn:R00615"
@@ -192,7 +192,7 @@
     </entry>
     <entry id="73" name="hsa:27010" type="gene" reaction="rn:R00619"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:27010">
-        <graphics name="TPK1, HTPK1, PP20" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="TPK1, HTPK1, PP20, THMD5" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="835" y="430" width="46" height="17"/>
     </entry>
     <entry id="74" name="ko:K07251" type="ortholog" reaction="rn:R02134"
@@ -294,8 +294,8 @@
         <subtype name="compound" value="19"/>
     </relation>
     <reaction id="84" name="rn:R07460" type="irreversible">
-        <substrate id="19" name="cpd:C00097"/>
         <substrate id="18" name="cpd:C15811"/>
+        <substrate id="19" name="cpd:C00097"/>
         <product id="17" name="cpd:C15812"/>
     </reaction>
     <reaction id="73" name="rn:R00619" type="irreversible">

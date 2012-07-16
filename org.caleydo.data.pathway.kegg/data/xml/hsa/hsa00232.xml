@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Oct 2, 2009 10:01:10 +0900 (JST) -->
+<!-- Creation date: Sep 14, 2011 15:22:55 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00232" org="hsa" number="00232"
          title="Caffeine metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00232.png"

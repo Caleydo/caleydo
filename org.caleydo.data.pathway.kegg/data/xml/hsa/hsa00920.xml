@@ -1,13 +1,13 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Dec 28, 2011 09:22:10 +0900 (GMT+09:00) -->
+<!-- Creation date: Jun 11, 2012 10:40:14 +0900 (GMT+09:00) -->
 <pathway name="path:hsa00920" org="hsa" number="00920"
          title="Sulfur metabolism"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa00920.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?hsa00920">
-    <entry id="6" name="hsa:10380" type="gene" reaction="rn:R00508"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10380">
-        <graphics name="BPNT1, PIP" fgcolor="#000000" bgcolor="#BFFFBF"
+    <entry id="6" name="hsa:10380 hsa:54928" type="gene" reaction="rn:R00508"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10380+hsa:54928">
+        <graphics name="BPNT1, PIP..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="526" y="164" width="46" height="17"/>
     </entry>
     <entry id="24" name="ko:K10150" type="ortholog" reaction="rn:R00897"
@@ -47,7 +47,7 @@
     </entry>
     <entry id="32" name="hsa:6783" type="gene" reaction="rn:R02350"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6783">
-        <graphics name="SULT1E1, EST, EST-1, MGC34459, STE" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="SULT1E1, EST, EST-1, MGC34459, ST1E1, STE" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="729" y="201" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:6820" type="gene" reaction="rn:R00629"

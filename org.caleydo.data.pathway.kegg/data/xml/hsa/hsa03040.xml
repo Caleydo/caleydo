@@ -155,8 +155,8 @@
         <graphics name="HNRNPA1L2, MGC102957..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="893" y="490" width="46" height="17"/>
     </entry>
-    <entry id="31" name="hsa:10772 hsa:10929 hsa:29896 hsa:6426 hsa:6427 hsa:6428 hsa:6429 hsa:6430 hsa:6431 hsa:6432 hsa:6434 hsa:653884 hsa:8683" type="gene"
-        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10772+hsa:10929+hsa:29896+hsa:6426+hsa:6427+hsa:6428+hsa:6429+hsa:6430+hsa:6431+hsa:6432+hsa:6434+hsa:653884+hsa:8683">
+    <entry id="31" name="hsa:10772 hsa:10929 hsa:29896 hsa:6426 hsa:6427 hsa:6428 hsa:6429 hsa:6430 hsa:6431 hsa:6432 hsa:6434 hsa:8683" type="gene"
+        link="http://www.kegg.jp/dbget-bin/www_bget?hsa:10772+hsa:10929+hsa:29896+hsa:6426+hsa:6427+hsa:6428+hsa:6429+hsa:6430+hsa:6431+hsa:6432+hsa:6434+hsa:8683">
         <graphics name="SRSF10, DKFZp686H0644, FLJ30749, FLJ43846, FUSIP1, FUSIP2, NSSR, SFRS13, SFRS13A, SRp38, SRrp40, TASR, TASR1, TASR2..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="893" y="510" width="46" height="17"/>
     </entry>
@@ -297,7 +297,7 @@
     </entry>
     <entry id="59" name="hsa:24148" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:24148">
-        <graphics name="PRPF6, ANT-1, C20orf14, Prp6, TOM, U5-102K, hPrp6" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="PRPF6, ANT-1, ANT1, C20orf14, Prp6, TOM, U5-102K, hPrp6" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="893" y="193" width="46" height="17"/>
     </entry>
     <entry id="60" name="hsa:10594" type="gene"
@@ -377,7 +377,7 @@
     </entry>
     <entry id="75" name="hsa:153527" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:153527">
-        <graphics name="ZMAT2, FLJ31121, Snu23, hSNU23" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ZMAT2, FLJ31121, Ptg-12, Snu23, hSNU23" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="828" y="379" width="46" height="17"/>
     </entry>
     <entry id="76" name="hsa:55119 hsa:84950" type="gene"

@@ -1,14 +1,34 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Sep 2, 2010 10:33:58 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:22:07 +0900 (GMT+09:00) -->
 <pathway name="path:hsa05120" org="hsa" number="05120"
          title="Epithelial cell signaling in Helicobacter pylori infection"
          image="http://www.genome.jp/kegg/pathway/hsa/hsa05120.png"
          link="http://www.genome.jp/kegg-bin/show_pathway?hsa05120">
+    <entry id="1" name="ko:K15845" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15845">
+        <graphics name="K15845" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="823" width="46" height="17"/>
+    </entry>
+    <entry id="2" name="ko:K15844" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15844">
+        <graphics name="K15844" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="799" width="46" height="17"/>
+    </entry>
+    <entry id="3" name="ko:K15843" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15843">
+        <graphics name="K15843" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="775" width="46" height="17"/>
+    </entry>
     <entry id="4" name="cpd:C01342" type="compound"
         link="http://www.kegg.jp/dbget-bin/www_bget?C01342">
         <graphics name="C01342" fgcolor="#000000" bgcolor="#FFFFFF"
              type="circle" x="720" y="870" width="8" height="8"/>
+    </entry>
+    <entry id="5" name="ko:K11028" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K11028">
+        <graphics name="K11028" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="314" y="727" width="46" height="17"/>
     </entry>
     <entry id="6" name="hsa:1432 hsa:5600 hsa:5603 hsa:6300" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:1432+hsa:5600+hsa:5603+hsa:6300">
@@ -22,12 +42,12 @@
     </entry>
     <entry id="8" name="hsa:5599 hsa:5601 hsa:5602" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5599+hsa:5601+hsa:5602">
-        <graphics name="MAPK8, JNK, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAPK8, JNK, JNK-46, JNK1, JNK1A2, JNK21B1/2, PRKM8, SAPK1, SAPK1c..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="692" y="532" width="46" height="17"/>
     </entry>
     <entry id="9" name="hsa:6416" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6416">
-        <graphics name="MAP2K4, JNKK, JNKK1, MAPKK4, MEK4, MKK4, PRKMK4, SEK1, SERK1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="MAP2K4, JNKK, JNKK1, MAPKK4, MEK4, MKK4, PRKMK4, SAPKK-1, SAPKK1, SEK1, SERK1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="623" y="532" width="46" height="17"/>
     </entry>
     <entry id="10" name="hsa:1147" type="gene"
@@ -67,7 +87,7 @@
     </entry>
     <entry id="17" name="hsa:4790 hsa:5970" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4790+hsa:5970">
-        <graphics name="NFKB1, DKFZp686C01211, EBP-1, KBF1, MGC54151, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="NFKB1, DKFZp686C01211, EBP-1, KBF1, MGC54151, NF-kB1, NF-kappa-B, NF-kappaB, NFKB-p105, NFKB-p50, NFkappaB, p105, p50..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="761" y="630" width="46" height="17"/>
     </entry>
     <entry id="18" name="hsa:6352" type="gene"
@@ -92,7 +112,7 @@
     </entry>
     <entry id="22" name="hsa:5879" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5879">
-        <graphics name="RAC1, MGC111543, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="RAC1, MGC111543, Rac-1, TC-25, p21-Rac1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="596" y="422" width="46" height="17"/>
     </entry>
     <entry id="23" name="hsa:9020" type="gene"
@@ -114,6 +134,11 @@
         link="http://www.kegg.jp/dbget-bin/www_bget?K14048">
         <graphics name="K14048" fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="186" y="611" width="46" height="17"/>
+    </entry>
+    <entry id="27" name="ko:K15842 ko:K12086 ko:K12087 ko:K12088 ko:K12089 ko:K12090 ko:K03196 ko:K12091 ko:K12092 ko:K12093 ko:K12094 ko:K12095 ko:K12096 ko:K12097 ko:K12098 ko:K12099 ko:K12100 ko:K12101 ko:K12102 ko:K12103 ko:K12104 ko:K12105 ko:K12106 ko:K12107 ko:K12108 ko:K12109 ko:K12110" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15842+K12086+K12087+K12088+K12089+K12090+K03196+K12091+K12092+K12093+K12094+K12095+K12096+K12097+K12098+K12099+K12100+K12101+K12102+K12103+K12104+K12105+K12106+K12107+K12108+K12109+K12110">
+        <graphics name="K15842..." fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="156" y="434" width="46" height="17"/>
     </entry>
     <entry id="28" name="path:hsa00190" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa00190">
@@ -142,7 +167,7 @@
     </entry>
     <entry id="33" name="hsa:6868" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:6868">
-        <graphics name="ADAM17, ADAM18, CD156B, CSVP, MGC71942, TACE" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="ADAM17, ADAM18, CD156B, CSVP, MGC71942, NISBD, TACE" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="404" y="247" width="46" height="17"/>
     </entry>
     <entry id="34" name="hsa:1839" type="gene"
@@ -230,9 +255,14 @@
         <graphics name="EGFR, ERBB, ERBB1, HER1, PIG61, mENA" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="404" y="276" width="46" height="17"/>
     </entry>
+    <entry id="51" name="ko:K15842" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15842">
+        <graphics name="K15842" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="509" y="335" width="46" height="17"/>
+    </entry>
     <entry id="52" name="hsa:4067 hsa:6714" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:4067+hsa:6714">
-        <graphics name="LYN, FLJ26625, JTK8..." fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="LYN, FLJ26625, JTK8, p53Lyn, p56Lyn..." fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="543" y="380" width="46" height="17"/>
     </entry>
     <entry id="53" name="hsa:28964" type="gene"
@@ -250,6 +280,11 @@
         <graphics name="PTPRZ1, HPTPZ, HPTPzeta, PTP-ZETA, PTP18, PTPRZ, PTPZ, RPTPB, RPTPbeta, phosphacan" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="404" y="689" width="46" height="17"/>
     </entry>
+    <entry id="56" name="ko:K15847" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15847">
+        <graphics name="K15847" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="880" width="46" height="17"/>
+    </entry>
     <entry id="57" name="hsa:5781" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa:5781">
         <graphics name="PTPN11, BPTP3, CFC, MGC14433, NS1, PTP-1D, PTP2C, SH-PTP2, SH-PTP3, SHP2" fgcolor="#000000" bgcolor="#BFFFBF"
@@ -260,12 +295,27 @@
         <graphics name="NOD1, CARD4, CLR7.1, NLRC1" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="555" y="630" width="46" height="17"/>
     </entry>
+    <entry id="59" name="ko:K15846" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15846">
+        <graphics name="K15846" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="847" width="46" height="17"/>
+    </entry>
     <entry id="60" name="path:hsa05120" type="map"
         link="http://www.kegg.jp/dbget-bin/www_bget?hsa05120">
         <graphics name="TITLE:Epithelial cell signaling in Helicobacter pylori infection" fgcolor="#000000" bgcolor="#FFFFFF"
              type="roundrectangle" x="300" y="58" width="519" height="25"/>
     </entry>
-    <entry id="61" name="undefined" type="group">
+    <entry id="61" name="ko:K15848" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K15848">
+        <graphics name="K15848" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="226" y="905" width="46" height="17"/>
+    </entry>
+    <entry id="64" name="ko:K11028" type="ortholog"
+        link="http://www.kegg.jp/dbget-bin/www_bget?K11028">
+        <graphics name="K11028" fgcolor="#000000" bgcolor="#FFFFFF"
+             type="rectangle" x="598" y="837" width="46" height="17"/>
+    </entry>
+    <entry id="65" name="undefined" type="group">
         <graphics fgcolor="#000000" bgcolor="#FFFFFF"
              type="rectangle" x="658" y="591" width="46" height="51"/>
         <component id="10"/>
@@ -310,7 +360,7 @@
     <relation entry1="13" entry2="17" type="PPrel">
         <subtype name="dissociation" value="-+-"/>
     </relation>
-    <relation entry1="23" entry2="61" type="PPrel">
+    <relation entry1="23" entry2="65" type="PPrel">
         <subtype name="activation" value="--&gt;"/>
         <subtype name="phosphorylation" value="+p"/>
     </relation>

@@ -92,7 +92,7 @@
     </entry>
     <entry id="22" name="mmu:224143" type="gene" reaction="rn:R09315"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:224143">
-        <graphics name="Poglut1, 9630046K23Rik, Ktelc1" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
+        <graphics name="Poglut1, 9630046K23Rik, Ktelc1, Rumi" fgcolor="#BFFFBF" bgcolor="#FFFFFF"
              type="line" coords="212,664,242,664"/>
     </entry>
     <entry id="23" name="mmu:223827 mmu:232313" type="gene" reaction="rn:R09290"

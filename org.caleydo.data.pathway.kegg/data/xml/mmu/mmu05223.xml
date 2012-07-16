@@ -1,6 +1,6 @@
 <?xml version="1.0"?>
 <!DOCTYPE pathway SYSTEM "http://www.genome.jp/kegg/xml/KGML_v0.7.1_.dtd">
-<!-- Creation date: Jun 26, 2009 10:25:28 +0900 (JST) -->
+<!-- Creation date: Jun 11, 2012 11:27:48 +0900 (GMT+09:00) -->
 <pathway name="path:mmu05223" org="mmu" number="05223"
          title="Non-small cell lung cancer"
          image="http://www.genome.jp/kegg/pathway/mmu/mmu05223.png"
@@ -289,27 +289,27 @@
         <component id="36"/>
     </entry>
     <relation entry1="12" entry2="10" type="PPrel">
-        <subtype name="compound" value="5"/>
+        <subtype name="compound" value="6"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="12" entry2="11" type="PPrel">
-        <subtype name="compound" value="5"/>
+        <subtype name="compound" value="6"/>
+        <subtype name="expression" value="--&gt;"/>
+    </relation>
+    <relation entry1="18" entry2="20" type="PPrel">
+        <subtype name="compound" value="4"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="18" entry2="20" type="PPrel">
         <subtype name="compound" value="3"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
-    <relation entry1="18" entry2="20" type="PPrel">
-        <subtype name="compound" value="2"/>
-        <subtype name="expression" value="--&gt;"/>
-    </relation>
     <relation entry1="40" entry2="39" type="PPrel">
-        <subtype name="compound" value="32"/>
+        <subtype name="compound" value="33"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="40" entry2="30" type="PPrel">
-        <subtype name="compound" value="32"/>
+        <subtype name="compound" value="33"/>
         <subtype name="expression" value="--&gt;"/>
     </relation>
     <relation entry1="46" entry2="35" type="PPrel">

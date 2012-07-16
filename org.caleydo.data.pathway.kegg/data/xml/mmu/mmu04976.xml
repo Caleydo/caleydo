@@ -152,7 +152,7 @@
     </entry>
     <entry id="30" name="mmu:14683" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:14683">
-        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Gnas, 5530400H20Rik, A930027G11Rik, C130027O20Rik, GPSA, GSP, Galphas, Gnas1, Gnasxl, Gsa, MGC118029, Nesp, Nespl, Oed-Sml, Oedsml, P1, P2, P3, PHP1A, PHP1B, POH" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="378" y="662" width="46" height="17"/>
     </entry>
     <entry id="31" name="mmu:104110 mmu:104111 mmu:11512 mmu:11513 mmu:11514 mmu:11515 mmu:210044 mmu:224129 mmu:432530" type="gene"
@@ -337,7 +337,7 @@
     </entry>
     <entry id="67" name="mmu:11833" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:11833">
-        <graphics name="Aqp8, AI255744" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Aqp8, AI255744, AQP-8" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="660" y="230" width="46" height="17"/>
     </entry>
     <entry id="68" name="cpd:C00001" type="compound"
@@ -702,7 +702,7 @@
     </entry>
     <entry id="142" name="mmu:20778" type="gene"
         link="http://www.kegg.jp/dbget-bin/www_bget?mmu:20778">
-        <graphics name="Scarb1, AI120173, CD36, Cd36l1, Cla-1, Cla1, D5Ertd460e, Hlb398, SR-B1, SR-BI, SRBI, Srb1, mSR-BI" fgcolor="#000000" bgcolor="#BFFFBF"
+        <graphics name="Scarb1, AI120173, CD36, Cd36l1, Cla-1, Cla1, D5Ertd460e, Hdlq1, Hlb398, SR-B1, SR-BI, SRBI, Srb1, mSR-BI" fgcolor="#000000" bgcolor="#BFFFBF"
              type="rectangle" x="535" y="91" width="46" height="17"/>
     </entry>
     <entry id="143" name="mmu:16835" type="gene"
