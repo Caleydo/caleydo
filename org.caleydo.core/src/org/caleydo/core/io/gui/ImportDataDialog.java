@@ -38,6 +38,7 @@ import org.caleydo.core.id.IDMappingManager;
 import org.caleydo.core.id.IDMappingManagerRegistry;
 import org.caleydo.core.id.IDType;
 import org.caleydo.core.io.ColumnDescription;
+import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.GroupingParseSpecification;
 import org.caleydo.core.io.IDSpecification;
@@ -178,50 +179,48 @@ public class ImportDataDialog extends Dialog {
 			return;
 		}
 
-		ATableBasedDataDomain dataDomain = (ATableBasedDataDomain) DataDomainManager
-				.get().createDataDomain("org.caleydo.datadomain.genetic");
-
+	
 		fillLoadDataParameters();
 
-		// IDSpecification recordIDSpecification = new IDSpecification();
-		// recordIDSpecification.setIDTypeGene(true);
-		// recordIDSpecification.setIdType("GENE_SYMBOL");
-		//
-		// dataSetDescription.setRowIDSpecification(recordIDSpecification);
-		//
-		// IDSpecification dimensionIDSpecification = new IDSpecification();
-		// dimensionIDSpecification.setIdType("SAMPLE");
+	
+		ATableBasedDataDomain dataDomain;
+		try {
+			dataDomain = DataLoader.loadData(dataSetDescription);
+		} catch (FileNotFoundException e1) {
+			// TODO do something intelligent
+			e1.printStackTrace();
+			throw new IllegalStateException();
 
-		dataDomain.setDataSetDescription(dataSetDescription);
-
-		boolean success = readDimensionDefinition();
-		if (success) {
-			DataTableUtils.loadData(dataDomain, dataSetDescription, true, true);
-
-			// Open default start view for the newly created data domain
-			try {
-
-				String secondaryID = UUID.randomUUID().toString();
-				RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
-				rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
-				RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
-
-				if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
-					PlatformUI
-							.getWorkbench()
-							.getActiveWorkbenchWindow()
-							.getActivePage()
-							.showView(dataDomain.getDefaultStartViewType(), secondaryID,
-									IWorkbenchPage.VIEW_ACTIVATE);
-
-				}
-			} catch (PartInitException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-
-			super.okPressed();
+		} catch (IOException e1) {
+			// TODO do something intelligent
+			e1.printStackTrace();
+			throw new IllegalStateException();
 		}
+	
+		// Open default start view for the newly created data domain
+		try {
+
+			String secondaryID = UUID.randomUUID().toString();
+			RCPViewInitializationData rcpViewInitData = new RCPViewInitializationData();
+			rcpViewInitData.setDataDomainID(dataDomain.getDataDomainID());
+			RCPViewManager.get().addRCPView(secondaryID, rcpViewInitData);
+
+			if (PlatformUI.getWorkbench().getActiveWorkbenchWindow() != null) {
+				PlatformUI
+						.getWorkbench()
+						.getActiveWorkbenchWindow()
+						.getActivePage()
+						.showView(dataDomain.getDefaultStartViewType(), secondaryID,
+								IWorkbenchPage.VIEW_ACTIVATE);
+
+			}
+		} catch (PartInitException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		super.okPressed();
+
 	}
 
 	@Override
@@ -928,6 +927,8 @@ public class ImportDataDialog extends Dialog {
 		dataSetDescription.setDataSetName(txtDataSetLabel.getText());
 		dataSetDescription.setColumnGroupingSpecifications(columnGroupingSpecifications);
 		dataSetDescription.setRowGroupingSpecifications(rowGroupingSpecifications);
+
+		readDimensionDefinition();
 	}
 
 	/**
@@ -939,7 +940,7 @@ public class ImportDataDialog extends Dialog {
 	 * @return <code>true</code> if the preparation was successful,
 	 *         <code>false</code> otherwise
 	 */
-	private boolean readDimensionDefinition() {
+	private void readDimensionDefinition() {
 		ArrayList<String> dimensionLabels = new ArrayList<String>();
 
 		ArrayList<ColumnDescription> inputPattern = new ArrayList<ColumnDescription>();
@@ -991,7 +992,6 @@ public class ImportDataDialog extends Dialog {
 		dataSetDescription.setDataSourcePath(txtFileName.getText());
 		// dataSetDescripton.setColumnLabels(dimidMappingManagerensionLabels);
 
-		return true;
 	}
 
 	public DataSetDescription getLoadDataParameters() {

@@ -31,9 +31,7 @@ import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
-import org.caleydo.core.data.collection.table.DataTableUtils;
 import org.caleydo.core.data.datadomain.ATableBasedDataDomain;
-import org.caleydo.core.data.datadomain.DataDomainConfiguration;
 import org.caleydo.core.data.datadomain.DataDomainManager;
 import org.caleydo.core.data.perspective.DimensionPerspective;
 import org.caleydo.core.data.perspective.PerspectiveInitializationData;
@@ -43,23 +41,11 @@ import org.caleydo.core.data.virtualarray.RecordVirtualArray;
 import org.caleydo.core.data.virtualarray.VAUtils;
 import org.caleydo.core.data.virtualarray.delta.DimensionVADelta;
 import org.caleydo.core.data.virtualarray.delta.VADeltaItem;
-import org.caleydo.core.id.IDType;
-import org.caleydo.core.io.DataProcessingDescription;
+import org.caleydo.core.io.DataLoader;
 import org.caleydo.core.io.DataSetDescription;
 import org.caleydo.core.io.DataSetDescriptionCollection;
-import org.caleydo.core.io.GroupingParseSpecification;
-import org.caleydo.core.io.IDSpecification;
-import org.caleydo.core.io.parser.ascii.GroupingParser;
 import org.caleydo.core.manager.GeneralManager;
 import org.caleydo.core.serialize.ProjectSaver;
-import org.caleydo.core.util.clusterer.initialization.AClusterConfiguration;
-import org.caleydo.core.util.clusterer.initialization.EClustererTarget;
-import org.caleydo.core.util.logging.Logger;
-import org.caleydo.core.util.mapping.color.ColorMapper;
-import org.caleydo.core.util.mapping.color.EDefaultColorSchemes;
-import org.caleydo.datadomain.generic.GenericDataDomain;
-import org.caleydo.datadomain.genetic.GeneticDataDomain;
-import org.eclipse.core.runtime.Status;
 import org.eclipse.equinox.app.IApplication;
 import org.eclipse.equinox.app.IApplicationContext;
 
@@ -109,9 +95,9 @@ public class Application implements IApplication {
 
 		// Iterate over data type sets and trigger processing
 		for (DataSetDescription dataTypeSet : dataSetMetInfoCollection
-				.getDataSetDescriptionCollection())
+				.getDataSetDescriptionCollection()) {
 			loadSources(dataTypeSet);
-
+		}
 		// calculateVAIntersections();
 
 		new ProjectSaver().save(outputCaleydoProjectFilePath, true);
@@ -152,309 +138,8 @@ public class Application implements IApplication {
 	private void loadSources(DataSetDescription dataSetDescription)
 			throws FileNotFoundException, IOException {
 
-		ATableBasedDataDomain dataDomain = loadData(dataSetDescription);
-		loadGroupings(dataDomain, dataSetDescription);
+		DataLoader.loadData(dataSetDescription);
 
-		runDataProcessing(dataDomain, dataSetDescription);
-
-		// if (dataSetDescription.areAllColumnTypesContinuous()
-		// && dataSetDescription.getRowGroupingSpecifications() == null
-		// && dataSetDescription.isDataHomogeneous()) {
-
-		// if (dataSetDescription.areAllColumnTypesContinuous()
-		// && dataSetDescription.getRowGroupingSpecifications() == null
-		// && dataSetDescription.isDataHomogeneous())
-		//
-		// runClusteringOnDimensions(dataDomain, true, 4);
-		// }
-
-		// }
-
-		// createSampleOfGenes(dataDomain, runClusteringOnDimensions(dataDomain,
-		// true, 5)
-		// .getDimensionResult());
-
-		// runClusteringOnDimensions(dataDomain, true, 6);
-
-		// runClusteringOnRows(false, -1);
-		// if (metaInfo.isCreateGeneSamples())
-
-		// }
-
-		// if we don't have a row-grouping we create one
-		// if (dataSetDescription.areAllColumnTypesContinuous()
-		// && dataSetDescription.getRowGroupingSpecifications() == null
-		// && dataSetDescription.isDataHomogeneous()) {
-
-		// runClusteringOnRecords(dataDomain, false, 4);
-
-		// createSampleOfGenes(dataDomain,
-		// runClusteringOnRecords(dataDomain, true, 5).getDimensionResult());
-
-		// runClusteringOnRecords(dataDomain, true, 6);
-
-		// runClusteringOnRecords(dataDomain, false, 6);
-
-		// runClusteringOnRows(false, -1);
-		// if (metaInfo.isCreateGeneSamples())
-
-		// }
-
-	}
-
-	protected ATableBasedDataDomain loadData(DataSetDescription dataSetDescription)
-			throws FileNotFoundException, IOException {
-
-		String dimensionIDCategory;
-		String dimensionIDType;
-		String recordIDCategory;
-		String recordIDType;
-
-		IDSpecification rowIDSpecification = dataSetDescription.getRowIDSpecification();
-		if (rowIDSpecification == null) {
-			rowIDSpecification = new IDSpecification();
-			rowIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
-					+ "_row", dataSetDescription.getDataSetName() + "_row");
-			dataSetDescription.setRowIDSpecification(rowIDSpecification);
-			Logger.log(new Status(Status.INFO, this.toString(),
-					"Automatically creating row ID specification for "
-							+ dataSetDescription.getDataSetName()));
-
-		}
-		IDSpecification columnIDSpecification = dataSetDescription
-				.getColumnIDSpecification();
-		if (columnIDSpecification == null) {
-			columnIDSpecification = new IDSpecification();
-			columnIDSpecification.setIDSpecification(dataSetDescription.getDataSetName()
-					+ "_column", dataSetDescription.getDataSetName() + "_column");
-			dataSetDescription.setColumnIDSpecification(columnIDSpecification);
-			Logger.log(new Status(Status.INFO, this.toString(),
-					"Automatically creating column ID specification for "
-							+ dataSetDescription.getDataSetName()));
-		}
-
-		if (dataSetDescription.isTransposeMatrix()) {
-			dimensionIDType = rowIDSpecification.getIdType();
-			dimensionIDCategory = rowIDSpecification.getIdCategory();
-
-			recordIDType = columnIDSpecification.getIdType();
-			recordIDCategory = columnIDSpecification.getIdCategory();
-		} else {
-			dimensionIDType = columnIDSpecification.getIdType();
-			dimensionIDCategory = columnIDSpecification.getIdCategory();
-
-			recordIDType = rowIDSpecification.getIdType();
-			recordIDCategory = rowIDSpecification.getIdCategory();
-		}
-
-		if (dimensionIDCategory == null)
-			dimensionIDCategory = dimensionIDType;
-		if (recordIDCategory == null)
-			recordIDCategory = recordIDType;
-
-		ATableBasedDataDomain dataDomain;
-		if (columnIDSpecification.isIDTypeGene() || rowIDSpecification.isIDTypeGene()) {
-			// we use the default provided by the data domain
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.createDataDomain(GeneticDataDomain.DATA_DOMAIN_TYPE);
-
-		} else {
-
-			DataDomainConfiguration dataDomainConfiguration = new DataDomainConfiguration();
-			dataDomainConfiguration.setRecordIDCategory(recordIDCategory);
-			dataDomainConfiguration.setPrimaryRecordMappingType(recordIDType + "_INT");
-			dataDomainConfiguration.setHumanReadableRecordIDType(recordIDType
-					.toUpperCase());
-			dataDomainConfiguration.setRecordDenominationPlural(recordIDType + "s");
-			dataDomainConfiguration.setRecordDenominationSingular(recordIDType);
-
-			dataDomainConfiguration.setDimensionIDCategory(dimensionIDCategory);
-			dataDomainConfiguration.setHumanReadableDimensionIDType(dimensionIDType);
-			dataDomainConfiguration.setDimensionDenominationSingular(dimensionIDType);
-			dataDomainConfiguration.setDimensionDenominationPlural(dimensionIDType + "s");
-
-			dataDomain = (ATableBasedDataDomain) DataDomainManager.get()
-					.createDataDomain(GenericDataDomain.DATA_DOMAIN_TYPE,
-							dataDomainConfiguration);
-		}
-
-		dataDomain.setDataSetDescription(dataSetDescription);
-		dataDomain.setColorMapper(ColorMapper
-				.createDefaultMapper(EDefaultColorSchemes.BLUE_WHITE_RED));
-
-		dataDomain.init();
-
-		Thread thread = new Thread(dataDomain, dataDomain.getDataDomainType());
-		thread.start();
-
-		boolean createDefaultRecordPerspective = true;
-
-		// the place the matrix is stored:
-		DataTableUtils.loadData(dataDomain, dataSetDescription, true,
-				createDefaultRecordPerspective);
-		return dataDomain;
-
-	}
-
-	/**
-	 * Loads all groupings for columns and rows that are specified in the
-	 * {@link DataSetDescription}. Respects transposition.
-	 * 
-	 * @param dataSetDescription
-	 */
-	private void loadGroupings(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription) {
-		ArrayList<GroupingParseSpecification> columnGroupingSpecifications = dataSetDescription
-				.getColumnGroupingSpecifications();
-
-		if (columnGroupingSpecifications != null) {
-
-			IDType sourceIDType, targetIDType;
-			if (dataSetDescription.isTransposeMatrix()) {
-				sourceIDType = dataDomain.getHumanReadableRecordIDType();
-				targetIDType = dataDomain.getRecordIDType();
-			} else {
-				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
-				targetIDType = dataDomain.getDimensionIDType();
-			}
-
-			ArrayList<PerspectiveInitializationData> columnPerspective = createPerspectivesForGroupings(
-					columnGroupingSpecifications, sourceIDType, targetIDType);
-
-			for (PerspectiveInitializationData data : columnPerspective) {
-				if (dataSetDescription.isTransposeMatrix()) {
-					RecordPerspective recordPerspective = new RecordPerspective(
-							dataDomain);
-					recordPerspective.init(data);
-
-					dataDomain.getTable().registerRecordPerspective(recordPerspective);
-				} else {
-					DimensionPerspective dimensionPerspective = new DimensionPerspective(
-							dataDomain);
-					dimensionPerspective.init(data);
-
-					dataDomain.getTable().registerDimensionPerspective(
-							dimensionPerspective);
-				}
-			}
-		}
-
-		ArrayList<GroupingParseSpecification> rowGroupingSpecifications = dataSetDescription
-				.getRowGroupingSpecifications();
-		if (rowGroupingSpecifications != null) {
-
-			IDType sourceIDType, targetIDType;
-			if (dataSetDescription.isTransposeMatrix()) {
-				sourceIDType = dataDomain.getHumanReadableDimensionIDType();
-				targetIDType = dataDomain.getDimensionIDType();
-
-			} else {
-				sourceIDType = dataDomain.getHumanReadableRecordIDType();
-				targetIDType = dataDomain.getRecordIDType();
-			}
-
-			ArrayList<PerspectiveInitializationData> rowPerspective = createPerspectivesForGroupings(
-					rowGroupingSpecifications, sourceIDType, targetIDType);
-
-			for (PerspectiveInitializationData data : rowPerspective) {
-				if (dataSetDescription.isTransposeMatrix()) {
-					DimensionPerspective dimensionPerspective = new DimensionPerspective(
-							dataDomain);
-					dimensionPerspective.init(data);
-
-					dataDomain.getTable().registerDimensionPerspective(
-							dimensionPerspective);
-
-				} else {
-					RecordPerspective recordPerspective = new RecordPerspective(
-							dataDomain);
-					recordPerspective.init(data);
-
-					dataDomain.getTable().registerRecordPerspective(recordPerspective);
-				}
-			}
-		}
-	}
-
-	private ArrayList<PerspectiveInitializationData> createPerspectivesForGroupings(
-			ArrayList<GroupingParseSpecification> groupingSpecifications,
-			IDType sourceIDType, IDType targetIDType) {
-
-		ArrayList<PerspectiveInitializationData> perspectiveDatas = new ArrayList<PerspectiveInitializationData>();
-		for (GroupingParseSpecification groupingSpecification : groupingSpecifications) {
-			GroupingParser parser = new GroupingParser(groupingSpecification);
-			perspectiveDatas.addAll(parser.parseGrouping(targetIDType));
-		}
-
-		return perspectiveDatas;
-	}
-
-	private void runDataProcessing(ATableBasedDataDomain dataDomain,
-			DataSetDescription dataSetDescription) {
-		DataProcessingDescription dataProcessingDescription = dataSetDescription
-				.getDataProcessingDescription();
-		if (dataProcessingDescription == null)
-			return;
-
-		ArrayList<AClusterConfiguration> rowClusterConfigurations = dataProcessingDescription
-				.getRowClusterConfigurations();
-		if (rowClusterConfigurations != null) {
-			for (AClusterConfiguration clusterConfiguration : rowClusterConfigurations) {
-				if (dataSetDescription.isTransposeMatrix()) {
-					setUpDimensionClustering(clusterConfiguration, dataDomain);
-				} else {
-					setUpRecordClustering(clusterConfiguration, dataDomain);
-				}
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-						.getDefaultRecordPerspective());
-
-				dataDomain.startClustering(clusterConfiguration);
-			}
-
-		}
-
-		ArrayList<AClusterConfiguration> columnClusterConfigurations = dataProcessingDescription
-				.getColumnClusterConfigurations();
-		if (columnClusterConfigurations != null) {
-			for (AClusterConfiguration clusterConfiguration : columnClusterConfigurations) {
-				if (!dataSetDescription.isTransposeMatrix()) {
-					setUpDimensionClustering(clusterConfiguration, dataDomain);
-				} else {
-					setUpRecordClustering(clusterConfiguration, dataDomain);
-				}
-				clusterConfiguration.setSourceDimensionPerspective(dataDomain.getTable()
-						.getDefaultDimensionPerspective());
-				clusterConfiguration.setSourceRecordPerspective(dataDomain.getTable()
-						.getDefaultRecordPerspective());
-
-				dataDomain.startClustering(clusterConfiguration);
-			}
-
-		}
-
-	}
-
-	private void setUpDimensionClustering(AClusterConfiguration clusterConfiguration,
-			ATableBasedDataDomain dataDomain) {
-		clusterConfiguration.setClusterTarget(EClustererTarget.DIMENSION_CLUSTERING);
-		DimensionPerspective targetDimensionPerspective = new DimensionPerspective(
-				dataDomain);
-		dataDomain.getTable().registerDimensionPerspective(targetDimensionPerspective);
-
-		targetDimensionPerspective.setLabel(clusterConfiguration.toString(), false);
-		clusterConfiguration
-				.setOptionalTargetDimensionPerspective(targetDimensionPerspective);
-	}
-
-	private void setUpRecordClustering(AClusterConfiguration clusterConfiguration,
-			ATableBasedDataDomain dataDomain) {
-		clusterConfiguration.setClusterTarget(EClustererTarget.RECORD_CLUSTERING);
-		RecordPerspective targetRecordPerspective = new RecordPerspective(dataDomain);
-		dataDomain.getTable().registerRecordPerspective(targetRecordPerspective);
-		targetRecordPerspective.setLabel(clusterConfiguration.toString(), false);
-		clusterConfiguration.setOptionalTargetRecordPerspective(targetRecordPerspective);
 	}
 
 	private void createSampleOfGenes(ATableBasedDataDomain dataDomain,
