@@ -21,7 +21,7 @@ public class GeneticIDMappingCreator {
 
 		IDCategory geneIDCategory = IDCategory.registerCategory(EGeneIDTypes.GENE.name());
 		IDCategory sampleIDCategory = IDCategory.registerCategory("SAMPLE");
-
+		
 		IDType.registerType(EGeneIDTypes.DAVID.name(), geneIDCategory,
 				EGeneIDTypes.DAVID.getColumnType());
 		IDType.registerType(EGeneIDTypes.GENE_NAME.name(), geneIDCategory,

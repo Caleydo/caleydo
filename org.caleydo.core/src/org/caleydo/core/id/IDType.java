@@ -22,6 +22,7 @@ package org.caleydo.core.id;
 import java.util.HashMap;
 
 import org.caleydo.core.data.collection.EColumnType;
+import org.caleydo.core.io.IDTypeParsingRules;
 import org.caleydo.core.util.logging.Logger;
 import org.eclipse.core.runtime.Status;
 
@@ -33,14 +34,21 @@ import org.eclipse.core.runtime.Status;
  * identify the columns in a tabular data file.
  * </p>
  * <p>
- * IDTypes are used to identify that events are to be applied for a component.
- * An example would be a brushing which can only be directly applied if the
- * IDType of the event is the same as the IDType of the receiver.
+ * IDTypes are used, among others, to identify that events are to be applied for
+ * a component. An example would be a brushing which can only be directly
+ * applied if the IDType of the event is the same as the IDType of the receiver.
  * </p>
  * <p>
- * IDTypes belong to {@link IDCategory}. The contract for an IDCategory is that
- * all elements for the types registered with one category can be mapped to each
- * other using the {@link IDMappingManager}.
+ * IDTypes belong to an {@link IDCategory}. The contract for IDTypes belonging
+ * to the same IDCategory is that all elements for the types registered with one
+ * category can be mapped to each other using the {@link IDMappingManager}.
+ * </p>
+ * <p>
+ * IDTypes can also hold rules on how to parse them correctly from a string (see
+ * {@link #idTypeParsingRules}).
+ * </p>
+ * <p>
+ * This class also is a singleton that manages all IDTypes.
  * </p>
  * 
  * @author Alexander Lex
@@ -77,6 +85,17 @@ public class IDType {
 	private boolean isInternalType = false;
 
 	/**
+	 * Rules for parsing an id type. Defaults to null.
+	 */
+	private IDTypeParsingRules idTypeParsingRules = null;
+
+	private IDType(String typeName, IDCategory idCategory, EColumnType dimensionType) {
+		this.typeName = typeName;
+		this.idCategory = idCategory;
+		this.columnType = dimensionType;
+	}
+
+	/**
 	 * Should be used for de-serialization only
 	 * 
 	 * @param idCategory
@@ -94,10 +113,19 @@ public class IDType {
 		this.columnType = dimensionType;
 	}
 
-	private IDType(String typeName, IDCategory idCategory, EColumnType dimensionType) {
-		this.typeName = typeName;
-		this.idCategory = idCategory;
-		this.columnType = dimensionType;
+	/**
+	 * @param idTypeParsingRules
+	 *            setter, see {@link #idTypeParsingRules}
+	 */
+	public void setIdTypeParsingRules(IDTypeParsingRules idTypeParsingRules) {
+		this.idTypeParsingRules = idTypeParsingRules;
+	}
+
+	/**
+	 * @return the idTypeParsingRules, see {@link #idTypeParsingRules}
+	 */
+	public IDTypeParsingRules getIdTypeParsingRules() {
+		return idTypeParsingRules;
 	}
 
 	/**
@@ -106,9 +134,12 @@ public class IDType {
 	 * registered and the new one match, and if they do, the previously
 	 * registered type is returned. Else an exception is thrown.
 	 * 
-	 * @param typeName see {@link #typeName}
-	 * @param idCategory see {@link #idCategory}
-	 * @param columnType see {@link #columnType}
+	 * @param typeName
+	 *            see {@link #typeName}
+	 * @param idCategory
+	 *            see {@link #idCategory}
+	 * @param columnType
+	 *            see {@link #columnType}
 	 * @return the created ID Type
 	 */
 	public static IDType registerType(String typeName, IDCategory idCategory,
@@ -125,9 +156,9 @@ public class IDType {
 						+ ", Category: " + idCategory + ", ColumnType: " + columnType
 						+ "\n but was already registered with conflicting parameters. \n"
 						+ "Previously registered type: " + idType + ", Category: "
-						+ idType.getIDCategory() + ", ColumnType: " + idType.getColumnType());
-		}
-		else {
+						+ idType.getIDCategory() + ", ColumnType: "
+						+ idType.getColumnType());
+		} else {
 			idType = new IDType(typeName, idCategory, columnType);
 			registeredTypes.put(typeName, idType);
 			idCategory.addIDType(idType);
@@ -139,7 +170,8 @@ public class IDType {
 	/**
 	 * Unregister an IDType. Checks whether the IDType is registered.
 	 * 
-	 * @param idType see {@link #idType}
+	 * @param idType
+	 *            see {@link #idType}
 	 */
 	public static void unregisterType(IDType idType) {
 		if (idType == null)
@@ -150,8 +182,7 @@ public class IDType {
 			registeredTypes.remove(idType.getTypeName());
 			idType.setTypeName("INVALID");
 			idType.getIDCategory().removeIDType(idType);
-		}
-		else {
+		} else {
 			Logger.log(new Status(Status.INFO, "IDType", "Unable to unregister IDType "
 					+ idType.getTypeName() + " because it does not exist."));
 		}
@@ -177,7 +208,8 @@ public class IDType {
 	}
 
 	/**
-	 * @param typeName setter, see {@link #typeName}
+	 * @param typeName
+	 *            setter, see {@link #typeName}
 	 */
 	public void setTypeName(String typeName) {
 		this.typeName = typeName;
@@ -198,7 +230,8 @@ public class IDType {
 	}
 
 	/**
-	 * @param isInternalType setter, see {@link #isInternalType}
+	 * @param isInternalType
+	 *            setter, see {@link #isInternalType}
 	 */
 	public void setInternalType(boolean isInternalType) {
 		this.isInternalType = isInternalType;

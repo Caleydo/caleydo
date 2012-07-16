@@ -22,8 +22,6 @@
  */
 package org.caleydo.core.io;
 
-import javax.xml.bind.annotation.XmlElement;
-
 import org.caleydo.core.id.IDCategory;
 import org.caleydo.core.id.IDType;
 
@@ -73,15 +71,14 @@ import org.caleydo.core.id.IDType;
  * 
  * <p>
  * This IDSpecification also provides the ability to transform ID Types using
- * regular expressions by defining substrings and replacements (see
- * {@link #replacementString} and {@link #subStringExpression}.
+ * regular expressions. For details see the parent {@link IDTypeParsingRules}
  * </p>
  * 
  * 
  * @author Alexander Lex
  * 
  */
-public class IDSpecification {
+public class IDSpecification extends IDTypeParsingRules {
 
 	/**
 	 * <p>
@@ -137,67 +134,6 @@ public class IDSpecification {
 	 * </p>
 	 */
 	private boolean isIDTypeGene = false;
-
-	/**
-	 * <p>
-	 * Regular expression specifying a string that is to be replaced with
-	 * {@link #replacementString} before storing and resolving the id.
-	 * {@link String#replaceAll(String, String)} is used to achieve this.
-	 * </p>
-	 * <p>
-	 * This is executed <b>before</b> a possible operation based on
-	 * {@link #subStringExpression}.
-	 * </p>
-	 * <p>
-	 * See http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
-	 * for syntax.
-	 * </p>
-	 * <p>
-	 * Defaults to null.
-	 * </p>
-	 */
-	@XmlElement
-	private String replacingExpression = null;
-
-	/**
-	 * <p>
-	 * The string which replaces the string matched by the regular expression in
-	 * {@link #replacingExpression}.
-	 * </p>
-	 * <p>
-	 * Defaults to null.
-	 * </p>
-	 */
-	@XmlElement
-	private String replacementString = null;
-
-	/**
-	 * <p>
-	 * Regular expression specifying a string that is used to split the input
-	 * string. The {@link String#split(String)} operation is used to execute
-	 * this operation. The contract for the resulting String[] is that the first
-	 * not-empty string in the array is the desired substring. So if, for
-	 * example a leading string "abc-" is to be removed from a string "abc-001",
-	 * the expression must match to "abc-" so that the split operation results
-	 * in ["","001"]. Using, for example, "\\-" as expression wuld result in
-	 * ["abc","001"] and "abc" would be used as the result.
-	 * </p>
-	 * <p>
-	 * Trailing strings can be removed in this manner.
-	 * </p>
-	 * <p>
-	 * This is executed <b>after</b> a possible operation based on
-	 * {@link #replacingExpression}.
-	 * </p>
-	 * <p>
-	 * See http://docs.oracle.com/javase/7/docs/api/java/util/regex/Pattern.html
-	 * for syntax.
-	 * </p>
-	 * <p>
-	 * Defaults to null.
-	 * </p>
-	 */
-	private String subStringExpression = null;
 
 	/**
 	 * 
@@ -261,44 +197,4 @@ public class IDSpecification {
 		return isIDTypeGene;
 	}
 
-	/**
-	 * Set a replacement expression. Sets {@link #replacingExpression} and
-	 * {@link #replacementString}
-	 */
-	public void setReplacementExpression(String replacingExpression,
-			String replacementString) {
-		this.replacingExpression = replacingExpression;
-		this.replacementString = replacementString;
-	}
-
-	/**
-	 * @return the replacingExpression, see {@link #replacingExpression}
-	 */
-	public String getReplacingExpression() {
-		return replacingExpression;
-	}
-
-	/**
-	 * @return the replacementString, see {@link #replacementString}
-	 */
-	public String getReplacementString() {
-		return replacementString;
-	}
-
-	/**
-	 * @param subStringExpression
-	 *            setter, see {@link #subStringExpression}
-	 */
-	public void setSubStringExpression(String subStringExpression) {
-		this.subStringExpression = subStringExpression;
-	}
-
-	/**
-	 * @return the subStringExpression, see {@link #subStringExpression}
-	 */
-	public String getSubStringExpression() {
-		return subStringExpression;
-	}
-
-	
 }

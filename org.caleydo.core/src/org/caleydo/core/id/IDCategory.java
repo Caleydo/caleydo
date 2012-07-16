@@ -38,6 +38,9 @@ import org.eclipse.core.runtime.Status;
  * An IDCategory also holds a {@link #primaryMappingType}, which must be set
  * after the IDType itself was created.
  * </p>
+ * <p>
+ * This class also is a singleton that manages all IDCategories
+ * </p>
  * 
  * @author Alexander Lex
  */
@@ -56,8 +59,8 @@ public class IDCategory {
 	 * previously registered IDCategory is returned.
 	 * </p>
 	 * 
-	 * @param categoryName the globally unique name of the category, may not be
-	 *            null
+	 * @param categoryName
+	 *            the globally unique name of the category, may not be null
 	 * @return the newly registered IDCategory, or a previously registered
 	 *         category of the same name.
 	 */
@@ -93,10 +96,11 @@ public class IDCategory {
 	/**
 	 * Returns the IDCategory associated with the specified name.
 	 * 
-	 * @param categoryName the globally unique name of the category, may not be
-	 *            null
-	 * @throws Throws an IllegalArgumenteException if no category associated
-	 *             with the name is registered
+	 * @param categoryName
+	 *            the globally unique name of the category, may not be null
+	 * @throws Throws
+	 *             an IllegalArgumenteException if no category associated with
+	 *             the name is registered
 	 */
 	public static IDCategory getIDCategory(String categoryName) {
 
@@ -157,23 +161,28 @@ public class IDCategory {
 	/**
 	 * May be called more than once with the same IDType
 	 * 
-	 * @param primaryMappingType setter, see {@link #primaryMappingType}
+	 * @param primaryMappingType
+	 *            setter, see {@link #primaryMappingType}
 	 */
 	public void setPrimaryMappingType(IDType primaryMappingType) {
-		if (primaryMappingType == null || !primaryMappingType.getIDCategory().equals(this))
+		if (primaryMappingType == null
+				|| !primaryMappingType.getIDCategory().equals(this))
 			throw new IllegalArgumentException("Cannot set primaryMappingType "
 					+ primaryMappingType);
 		if (this.primaryMappingType != null) {
 			if (!this.primaryMappingType.equals(primaryMappingType))
-				throw new IllegalStateException("Primary mapping type was already set to "
-						+ this.primaryMappingType + ". Cannot set to " + primaryMappingType);
+				throw new IllegalStateException(
+						"Primary mapping type was already set to "
+								+ this.primaryMappingType + ". Cannot set to "
+								+ primaryMappingType);
 			return;
 		}
 		this.primaryMappingType = primaryMappingType;
 	}
 
 	/**
-	 * @param humanReadableIDType setter, see {@link #humanReadableIDType}
+	 * @param humanReadableIDType
+	 *            setter, see {@link #humanReadableIDType}
 	 */
 	public void setHumanReadableIDType(IDType humanReadableIDType) {
 		this.humanReadableIDType = humanReadableIDType;
@@ -194,23 +203,25 @@ public class IDCategory {
 	}
 
 	/**
-	 * Add an ID type to the category. 
+	 * Add an ID type to the category.
 	 * 
-	 * @param idType the IDType to add
+	 * @param idType
+	 *            the IDType to add
 	 */
 	public void addIDType(IDType idType) {
 		idTypes.add(idType);
 	}
 
 	/**
-	 * Remove an ID type from the category. 
+	 * Remove an ID type from the category.
 	 * 
-	 * @param idType the IDType to remove
+	 * @param idType
+	 *            the IDType to remove
 	 */
 	public void removeIDType(IDType idType) {
 		idTypes.remove(idType);
 	}
-	
+
 	/**
 	 * Returns all ID types that are associated to this category.
 	 * 
