@@ -34,6 +34,7 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
@@ -68,12 +69,6 @@ public abstract class AImportDialog extends Dialog {
 	 * Textfield for the input file name.
 	 */
 	protected Text fileNameTextField;
-
-	/**
-	 * Specifies the number of lines that shall be skipped at the start of the
-	 * file while parsing.
-	 */
-	protected Text linesToSkipTextField;
 
 	/**
 	 * File name of the input file.
@@ -128,6 +123,28 @@ public abstract class AImportDialog extends Dialog {
 	protected MatrixDefinition matrixDefinition;
 
 	/**
+	 * Spinner used to define the index of the row that contains the column ids.
+	 */
+	protected Spinner rowOfColumnIDSpinner;
+
+	/**
+	 * Spinner used to define the index of the column that contains the row ids.
+	 */
+	protected Spinner columnOfRowIDSpinner;
+
+	/**
+	 * Spinner used to define the index of the row from where on data is
+	 * contained.
+	 */
+	protected Spinner numHeaderLinesSpinner;
+
+	/**
+	 * Spinner used to define the index of the column from where on data is
+	 * contained.
+	 */
+	protected Spinner dataStartColumnSpinner;
+
+	/**
 	 * @param parent
 	 */
 	public AImportDialog(Shell parent) {
@@ -143,46 +160,46 @@ public abstract class AImportDialog extends Dialog {
 	 */
 	protected abstract MatrixDefinition createConcreteMatrixDefinition();
 
-//	protected void createRowIDTypeGroup(Composite parent) {
-//		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
-//		idTypeGroup.setText("Row ID type");
-//		idTypeGroup.setLayout(new RowLayout());
-//		idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
-//		rowIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
-//		rowIDTypes = new ArrayList<IDType>();
-//
-//		fillRowIDTypeCombo();
-//
-//		rowIDCombo.addSelectionListener(new SelectionAdapter() {
-//			@Override
-//			public void widgetSelected(SelectionEvent e) {
-//				TableColumn idColumn = previewTable.getColumn(1);
-//				idColumn.setText(rowIDCombo.getText());
-//			}
-//		});
-//	}
-//
-//	protected void fillRowIDTypeCombo() {
-//		ArrayList<IDType> tempIDTypes = rowIDCategory.getIdTypes();
-//
-//		rowIDTypes.clear();
-//		for (IDType idType : tempIDTypes) {
-//			if (!idType.isInternalType())
-//				rowIDTypes.add(idType);
-//		}
-//
-//		String[] idTypesAsString = new String[rowIDTypes.size()];
-//		int index = 0;
-//		for (IDType idType : rowIDTypes) {
-//			idTypesAsString[index] = idType.getTypeName();
-//			index++;
-//		}
-//
-//		rowIDCombo.setItems(idTypesAsString);
-//		rowIDCombo.setEnabled(true);
-//		rowIDCombo.select(0);
-//
-//	}
+	// protected void createRowIDTypeGroup(Composite parent) {
+	// Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
+	// idTypeGroup.setText("Row ID type");
+	// idTypeGroup.setLayout(new RowLayout());
+	// idTypeGroup.setLayoutData(new GridData(SWT.LEFT));
+	// rowIDCombo = new Combo(idTypeGroup, SWT.DROP_DOWN);
+	// rowIDTypes = new ArrayList<IDType>();
+	//
+	// fillRowIDTypeCombo();
+	//
+	// rowIDCombo.addSelectionListener(new SelectionAdapter() {
+	// @Override
+	// public void widgetSelected(SelectionEvent e) {
+	// TableColumn idColumn = previewTable.getColumn(1);
+	// idColumn.setText(rowIDCombo.getText());
+	// }
+	// });
+	// }
+	//
+	// protected void fillRowIDTypeCombo() {
+	// ArrayList<IDType> tempIDTypes = rowIDCategory.getIdTypes();
+	//
+	// rowIDTypes.clear();
+	// for (IDType idType : tempIDTypes) {
+	// if (!idType.isInternalType())
+	// rowIDTypes.add(idType);
+	// }
+	//
+	// String[] idTypesAsString = new String[rowIDTypes.size()];
+	// int index = 0;
+	// for (IDType idType : rowIDTypes) {
+	// idTypesAsString[index] = idType.getTypeName();
+	// index++;
+	// }
+	//
+	// rowIDCombo.setItems(idTypesAsString);
+	// rowIDCombo.setEnabled(true);
+	// rowIDCombo.select(0);
+	//
+	// }
 
 	protected void createIDTypeGroup(Composite parent, boolean isColumnIDTypeGroup) {
 		Group idTypeGroup = new Group(parent, SWT.SHADOW_ETCHED_IN);
@@ -342,16 +359,17 @@ public abstract class AImportDialog extends Dialog {
 			String line = "";
 
 			// Ignore unwanted header files of file
-			for (int iIgnoreLineIndex = 0; iIgnoreLineIndex < matrixDefinition
-					.getNumberOfHeaderLines() - 1; iIgnoreLineIndex++) {
-				file.readLine();
-			}
+			// for (int iIgnoreLineIndex = 0; iIgnoreLineIndex <
+			// matrixDefinition
+			// .getNumberOfHeaderLines() - 1; iIgnoreLineIndex++) {
+			// file.readLine();
+			// }
 
 			String nextToken = "";
 			StringTokenizer tokenizer;
 			TableColumn column;
-			TableItem item;
-			int colIndex = 0;
+			// TableItem item;
+			// int colIndex = 0;
 
 			// Read labels
 			if ((line = file.readLine()) != null) {
@@ -367,54 +385,32 @@ public abstract class AImportDialog extends Dialog {
 					dataColumn.setWidth(100);
 					dataColumn.setText(nextToken);
 
-					dataColumn.addSelectionListener(new SelectionAdapter() {
-						@Override
-						public void widgetSelected(SelectionEvent e) {
-							LabelEditorDialog dialog = new LabelEditorDialog(new Shell());
-							String sLabel = dialog.open(dataColumn.getText());
+					// dataColumn.addSelectionListener(new SelectionAdapter() {
+					// @Override
+					// public void widgetSelected(SelectionEvent e) {
+					// LabelEditorDialog dialog = new LabelEditorDialog(new
+					// Shell());
+					// String sLabel = dialog.open(dataColumn.getText());
+					//
+					// if (sLabel != null && !sLabel.isEmpty()) {
+					// dataColumn.setText(sLabel);
+					// }
+					// }
+					// });
 
-							if (sLabel != null && !sLabel.isEmpty()) {
-								dataColumn.setText(sLabel);
-							}
-						}
-					});
-
-					colIndex++;
+					// colIndex++;
 				}
+
 			}
 
-			createDataClassBar();
+			createUseColumnRow();
+			readDataRow(line, delimiter, 0);
 
-			int rowCount = 0;
-			boolean isCellFilled = false;
+			int rowCount = 1;
 
 			// Read raw data
 			while ((line = file.readLine()) != null && rowCount < MAX_PREVIEW_TABLE_ROWS) {
-				// last flag triggers return of delimiter itself
-				tokenizer = new StringTokenizer(line, delimiter, true);
-				item = new TableItem(previewTable, SWT.NONE);
-				item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for
-				// a non programmer :)
-				colIndex = 0;
-
-				while (tokenizer.hasMoreTokens()) {
-					nextToken = tokenizer.nextToken();
-
-					// Check for empty cells
-					if (nextToken.equals(delimiter) && !isCellFilled) {
-						item.setText(colIndex + 1, "");
-						colIndex++;
-					} else if (nextToken.equals(delimiter) && isCellFilled) {
-						isCellFilled = false; // reset
-					} else {
-						isCellFilled = true;
-						item.setText(colIndex + 1, nextToken);
-						colIndex++;
-					}
-				}
-
-				isCellFilled = false; // reset
-
+				readDataRow(line, delimiter, rowCount);
 				rowCount++;
 			}
 
@@ -436,20 +432,47 @@ public abstract class AImportDialog extends Dialog {
 		}
 
 		determineRowIDType();
+		updateTableColors();
 
 		parentComposite.pack();
 	}
 
-	private void createDataClassBar() {
+	private void readDataRow(String line, String delimiter, int rowCount) {
+		// last flag triggers return of delimiter itself
+		StringTokenizer tokenizer = new StringTokenizer(line, delimiter, true);
+		TableItem item = new TableItem(previewTable, SWT.NONE);
+		item.setText("Row " + (rowCount + 1)); // +1 to be intuitive for
+		// a non programmer :)
+		int colIndex = 0;
+		boolean isCellFilled = false;
+
+		while (tokenizer.hasMoreTokens()) {
+			String nextToken = tokenizer.nextToken();
+
+			// Check for empty cells
+			if (nextToken.equals(delimiter) && !isCellFilled) {
+				item.setText(colIndex + 1, "");
+				colIndex++;
+			} else if (nextToken.equals(delimiter) && isCellFilled) {
+				isCellFilled = false; // reset
+			} else {
+				isCellFilled = true;
+				item.setText(colIndex + 1, nextToken);
+				colIndex++;
+			}
+		}
+	}
+
+	private void createUseColumnRow() {
 
 		TableItem tmpItem = new TableItem(previewTable, SWT.NONE);
 		tmpItem.setText("Use column");
 
 		Button skipButton;
-		for (int iColIndex = 2; iColIndex < previewTable.getColumnCount(); iColIndex++) {
+		for (int colIndex = 1; colIndex < previewTable.getColumnCount(); colIndex++) {
 			skipButton = new Button(previewTable, SWT.CHECK | SWT.CENTER);
 			skipButton.setSelection(true);
-			skipButton.setData("column", iColIndex);
+			skipButton.setData("column", colIndex);
 			skipButton.addSelectionListener(new SelectionAdapter() {
 				@Override
 				public void widgetSelected(SelectionEvent e) {
@@ -477,7 +500,7 @@ public abstract class AImportDialog extends Dialog {
 
 			TableEditor editor = new TableEditor(previewTable);
 			editor.grabHorizontal = editor.grabVertical = true;
-			editor.setEditor(skipButton, tmpItem, iColIndex);
+			editor.setEditor(skipButton, tmpItem, colIndex);
 		}
 	}
 
@@ -490,7 +513,7 @@ public abstract class AImportDialog extends Dialog {
 		int rowIndex = 1;
 		while (rowIndex < items.length
 				&& rowIndex <= MAX_CONSIDERED_IDS_FOR_ID_TYPE_DETERMINATION) {
-			idList.add(items[rowIndex].getText(1));
+			idList.add(items[rowIndex].getText(matrixDefinition.getColumnOfRowIds() + 1));
 			rowIndex++;
 		}
 
@@ -568,5 +591,75 @@ public abstract class AImportDialog extends Dialog {
 	 *            determined.
 	 */
 	protected abstract void setMostProbableRecordIDType(IDType mostProbableIDType);
+
+	/**
+	 * Updates the color of table rows and columns according to their properties
+	 * (id, header, data).
+	 */
+	protected void updateTableColors() {
+		try {
+			int oldNumHeaderLines = matrixDefinition.getNumberOfHeaderLines();
+			for (int i = 1; i < oldNumHeaderLines + 1; i++) {
+				colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+			}
+
+			if (allowsColumnIDs()) {
+				int oldIDRowIndex = matrixDefinition.getRowOfColumnIDs() + 1;
+				if (oldNumHeaderLines <= oldIDRowIndex)
+					colorTableRow(oldIDRowIndex,
+							Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+			}
+
+			int oldIDColumnIndex = matrixDefinition.getColumnOfRowIds() + 1;
+			colorTableColumn(oldIDColumnIndex,
+					Display.getCurrent().getSystemColor(SWT.COLOR_WHITE));
+			selectedColumnButtons.get(oldIDColumnIndex - 1).setVisible(true);
+
+			int numHeaderLines = Integer.parseInt(numHeaderLinesSpinner.getText());
+			if (numHeaderLines < previewTable.getItemCount()) {
+				matrixDefinition.setNumberOfHeaderLines(numHeaderLines);
+				for (int i = 1; i < numHeaderLines + 1; i++) {
+					colorTableRow(i, Display.getCurrent().getSystemColor(SWT.COLOR_GRAY));
+				}
+			}
+
+			if (allowsColumnIDs()) {
+				int idRowIndex = Integer.parseInt(rowOfColumnIDSpinner.getText());
+				if (idRowIndex < previewTable.getItemCount()) {
+					matrixDefinition.setRowOfColumnIDs(idRowIndex - 1);
+					colorTableRow(idRowIndex,
+							Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+				}
+			}
+			int idColumnIndex = Integer.parseInt(columnOfRowIDSpinner.getText());
+			if (idColumnIndex < previewTable.getColumnCount()) {
+				matrixDefinition.setColumnOfRowIds(idColumnIndex - 1);
+				colorTableColumn(idColumnIndex,
+						Display.getCurrent().getSystemColor(SWT.COLOR_GREEN));
+				selectedColumnButtons.get(idColumnIndex - 1).setVisible(false);
+			}
+		} catch (NumberFormatException exc) {
+
+		}
+	}
+
+	private void colorTableRow(int rowIndex, Color color) {
+		TableItem item = previewTable.getItem(rowIndex);
+		for (int i = 0; i < previewTable.getColumnCount(); i++) {
+			item.setBackground(i, color);
+		}
+	}
+
+	private void colorTableColumn(int columnIndex, Color color) {
+		for (int i = 1; i < previewTable.getItemCount(); i++) {
+			previewTable.getItem(i).setBackground(columnIndex, color);
+		}
+	}
+
+	/**
+	 * @return True, if the concrete dialog implementation allows the
+	 *         specification of column IDs.
+	 */
+	protected abstract boolean allowsColumnIDs();
 
 }

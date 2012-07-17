@@ -26,6 +26,7 @@ import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.Text;
@@ -66,8 +67,9 @@ public class ImportGroupingDialog extends AImportDialog {
 		}
 
 		ArrayList<Integer> selectedColumns = new ArrayList<Integer>();
-		for (int columnIndex = 2; columnIndex < previewTable.getColumnCount(); columnIndex++) {
-			if (selectedColumnButtons.get(columnIndex - 2).getSelection()) {
+		for (int columnIndex = 1; columnIndex < previewTable.getColumnCount(); columnIndex++) {
+			if (selectedColumnButtons.get(columnIndex - 1).getSelection()
+					&& (groupingParseSpecification.getColumnOfRowIds() != columnIndex - 1)) {
 				selectedColumns.add(columnIndex - 1);
 			}
 		}
@@ -150,27 +152,33 @@ public class ImportGroupingDialog extends AImportDialog {
 		createIDTypeGroup(parentComposite, false);
 
 		Group linesToSkipGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		linesToSkipGroup.setText("Ignore lines in header");
+		linesToSkipGroup.setText("Number of header rows");
 		linesToSkipGroup.setLayout(new GridLayout(1, false));
 		linesToSkipGroup
 				.setLayoutData(new GridData(SWT.LEFT, SWT.TOP, false, false, 1, 1));
-
-		linesToSkipTextField = new Text(linesToSkipGroup, SWT.BORDER);
-		linesToSkipTextField.setLayoutData(new GridData(50, 15));
-		linesToSkipTextField.setText("1");
-		linesToSkipTextField.setTextLimit(2);
-		linesToSkipTextField.addModifyListener(new ModifyListener() {
+		numHeaderLinesSpinner = new Spinner(linesToSkipGroup, SWT.BORDER);
+		numHeaderLinesSpinner.setMinimum(0);
+		numHeaderLinesSpinner.setMaximum(Integer.MAX_VALUE);
+		numHeaderLinesSpinner.setIncrement(1);
+		numHeaderLinesSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				updateTableColors();
+			}
+		});
 
-				// Add 1 because the number that the user enters is human
-				// readable and not array index
-				// (starting with 0).
-				groupingParseSpecification.setNumberOfHeaderLines(Integer
-						.valueOf(linesToSkipTextField.getText()));
+		Group columnOfRowIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		columnOfRowIDGroup.setText("Column with row IDs");
+		columnOfRowIDGroup.setLayout(new GridLayout(1, false));
 
-				createDataPreviewTable();
-				// parentComposite.pack();
+		columnOfRowIDSpinner = new Spinner(columnOfRowIDGroup, SWT.BORDER);
+		columnOfRowIDSpinner.setMinimum(1);
+		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
+		columnOfRowIDSpinner.setIncrement(1);
+		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updateTableColors();
 			}
 		});
 
@@ -179,7 +187,7 @@ public class ImportGroupingDialog extends AImportDialog {
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
-		previewTable.setHeaderVisible(true);
+		// previewTable.setHeaderVisible(true);
 		GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, numGridCols, 1);
 		gridData.heightHint = 400;
 		gridData.widthHint = 800;
@@ -232,6 +240,11 @@ public class ImportGroupingDialog extends AImportDialog {
 		ArrayList<IDCategory> idCategories = new ArrayList<IDCategory>();
 		idCategories.add(rowIDCategory);
 		return idCategories;
+	}
+
+	@Override
+	protected boolean allowsColumnIDs() {
+		return false;
 	}
 
 }

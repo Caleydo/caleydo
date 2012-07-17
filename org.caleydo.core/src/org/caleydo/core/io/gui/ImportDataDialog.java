@@ -43,6 +43,7 @@ import org.eclipse.swt.events.ModifyEvent;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.layout.RowLayout;
@@ -50,14 +51,17 @@ import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.FileDialog;
 import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.List;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbenchPage;
 import org.eclipse.ui.PartInitException;
@@ -70,15 +74,15 @@ import org.eclipse.ui.PlatformUI;
  */
 public class ImportDataDialog extends AImportDialog {
 
-	private Text txtDataSetLabel;
-	private Text txtMin;
-	private Text txtMax;
+	private Text dataSetLabelTextField;
+	private Text minTextField;
+	private Text maxTextField;
 
-	private List listColumnGroupings;
-	private List listRowGroupings;
+	private List columnGroupingsList;
+	private List rowGroupingsList;
 
 	private Button buttonHomogeneous;
-	private Button buttonUncertaintyDataProvided;
+	// private Button buttonUncertaintyDataProvided;
 	private Button buttonSwapRowsWithColumns;
 
 	private Combo columnIDCategoryCombo;
@@ -125,7 +129,9 @@ public class ImportDataDialog extends AImportDialog {
 	protected Control createDialogArea(Composite parent) {
 
 		dataSetDescription.setDelimiter("\t");
-		dataSetDescription.setNumberOfHeaderLines(1);
+		dataSetDescription.setNumberOfHeaderLines(0);
+		dataSetDescription.setRowOfColumnIDs(0);
+		dataSetDescription.setColumnOfRowIds(0);
 		registeredIDCategories = new ArrayList<IDCategory>();
 		registeredIDCategories.addAll(IDCategory.getAllRegisteredIDCategories());
 		createGUI(parent);
@@ -243,7 +249,7 @@ public class ImportDataDialog extends AImportDialog {
 				dataSetDescription.setDataSourcePath(inputFileName);
 				fileNameTextField.setText(inputFileName);
 
-				txtDataSetLabel.setText(determineDataSetLabel());
+				dataSetLabelTextField.setText(determineDataSetLabel());
 				columnIDCategoryCombo.setEnabled(true);
 				rowIDCategoryCombo.setEnabled(true);
 
@@ -276,30 +282,52 @@ public class ImportDataDialog extends AImportDialog {
 		gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
 		dataSetLabelGroup.setLayoutData(gridData);
 
-		txtDataSetLabel = new Text(dataSetLabelGroup, SWT.BORDER);
-		txtDataSetLabel.setText(determineDataSetLabel());
-		txtDataSetLabel.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+		dataSetLabelTextField = new Text(dataSetLabelGroup, SWT.BORDER);
+		dataSetLabelTextField.setText(determineDataSetLabel());
+		dataSetLabelTextField.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
 
 		Group startParseAtLineGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
-		startParseAtLineGroup.setText("Ignore lines in header");
+		startParseAtLineGroup.setText("Number of header rows");
 		startParseAtLineGroup.setLayout(new GridLayout(1, false));
-
-		linesToSkipTextField = new Text(startParseAtLineGroup, SWT.BORDER);
-		linesToSkipTextField.setLayoutData(new GridData(50, 15));
-		linesToSkipTextField.setText("1");
-		linesToSkipTextField.setTextLimit(2);
-		linesToSkipTextField.addModifyListener(new ModifyListener() {
+		
+		numHeaderLinesSpinner = new Spinner(startParseAtLineGroup, SWT.BORDER);
+		numHeaderLinesSpinner.setMinimum(0);
+		numHeaderLinesSpinner.setMaximum(Integer.MAX_VALUE);
+		numHeaderLinesSpinner.setIncrement(1);
+		numHeaderLinesSpinner.addModifyListener(new ModifyListener() {
 			@Override
 			public void modifyText(ModifyEvent e) {
+				updateTableColors();
+			}
+		});
+		
+		Group rowOfColumnIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		rowOfColumnIDGroup.setText("Row with column IDs");
+		rowOfColumnIDGroup.setLayout(new GridLayout(1, false));
 
-				// Add 1 because the number that the user enters is human
-				// readable and not array index
-				// (starting with 0).
-				dataSetDescription.setNumberOfHeaderLines(Integer
-						.valueOf(linesToSkipTextField.getText()));
+		rowOfColumnIDSpinner = new Spinner(rowOfColumnIDGroup, SWT.BORDER);
+		rowOfColumnIDSpinner.setMinimum(1);
+		rowOfColumnIDSpinner.setMaximum(Integer.MAX_VALUE);
+		rowOfColumnIDSpinner.setIncrement(1);
+		rowOfColumnIDSpinner.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updateTableColors();
+			}
+		});
+		
+		Group columnOfRowIDGroup = new Group(parentComposite, SWT.SHADOW_ETCHED_IN);
+		columnOfRowIDGroup.setText("Column with row IDs");
+		columnOfRowIDGroup.setLayout(new GridLayout(1, false));
 
-				createDataPreviewTable();
-				// composite.pack();
+		columnOfRowIDSpinner = new Spinner(columnOfRowIDGroup, SWT.BORDER);
+		columnOfRowIDSpinner.setMinimum(1);
+		columnOfRowIDSpinner.setMaximum(Integer.MAX_VALUE);
+		columnOfRowIDSpinner.setIncrement(1);
+		columnOfRowIDSpinner.addModifyListener(new ModifyListener() {
+			@Override
+			public void modifyText(ModifyEvent e) {
+				updateTableColors();
 			}
 		});
 
@@ -310,7 +338,7 @@ public class ImportDataDialog extends AImportDialog {
 		previewTable = new Table(parentComposite, SWT.MULTI | SWT.BORDER
 				| SWT.FULL_SELECTION);
 		previewTable.setLinesVisible(true);
-		previewTable.setHeaderVisible(true);
+		// previewTable.setHeaderVisible(true);
 		gridData = new GridData(GridData.FILL_BOTH);
 		gridData.horizontalSpan = numGridCols;
 		gridData.heightHint = 400;
@@ -339,12 +367,12 @@ public class ImportDataDialog extends AImportDialog {
 
 		Button addGroupingButton = new Button(groupingsGroup, SWT.PUSH);
 		if (isColumnGrouping) {
-			listColumnGroupings = new List(groupingsGroup, SWT.SINGLE);
-			listColumnGroupings
+			columnGroupingsList = new List(groupingsGroup, SWT.SINGLE);
+			columnGroupingsList
 					.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		} else {
-			listRowGroupings = new List(groupingsGroup, SWT.SINGLE);
-			listRowGroupings.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
+			rowGroupingsList = new List(groupingsGroup, SWT.SINGLE);
+			rowGroupingsList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
 		}
 
 		addGroupingButton.setText("Add");
@@ -375,9 +403,9 @@ public class ImportDataDialog extends AImportDialog {
 									groupingParseSpecification.getDataSourcePath()
 											.lastIndexOf("."));
 					if (isColumnGrouping) {
-						listColumnGroupings.add(groupingDataSetName);
+						columnGroupingsList.add(groupingDataSetName);
 					} else {
-						listRowGroupings.add(groupingDataSetName);
+						rowGroupingsList.add(groupingDataSetName);
 					}
 				}
 			}
@@ -424,7 +452,7 @@ public class ImportDataDialog extends AImportDialog {
 			// index++;
 		}
 
-//		idCategoryCombo.setEnabled(false);
+		// idCategoryCombo.setEnabled(false);
 		// idCategoryCombo.deselect(0);
 		idCategoryCombo.addSelectionListener(new SelectionAdapter() {
 			@Override
@@ -468,13 +496,13 @@ public class ImportDataDialog extends AImportDialog {
 		buttonMin.addSelectionListener(new SelectionAdapter() {
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				txtMin.setEnabled(buttonMin.getSelection());
+				minTextField.setEnabled(buttonMin.getSelection());
 			}
 		});
 
-		txtMin = new Text(filterGroup, SWT.BORDER);
-		txtMin.setEnabled(false);
-		txtMin.addListener(SWT.Verify, new Listener() {
+		minTextField = new Text(filterGroup, SWT.BORDER);
+		minTextField.setEnabled(false);
+		minTextField.addListener(SWT.Verify, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
 				// Only allow digits
@@ -500,13 +528,13 @@ public class ImportDataDialog extends AImportDialog {
 
 			@Override
 			public void widgetSelected(SelectionEvent e) {
-				txtMax.setEnabled(buttonMax.getSelection());
+				maxTextField.setEnabled(buttonMax.getSelection());
 			}
 		});
 
-		txtMax = new Text(filterGroup, SWT.BORDER);
-		txtMax.setEnabled(false);
-		txtMax.addListener(SWT.Verify, new Listener() {
+		maxTextField = new Text(filterGroup, SWT.BORDER);
+		maxTextField.setEnabled(false);
+		maxTextField.addListener(SWT.Verify, new Listener() {
 			@Override
 			public void handleEvent(Event e) {
 				// Only allow digits
@@ -536,9 +564,10 @@ public class ImportDataDialog extends AImportDialog {
 		buttonHomogeneous.setEnabled(true);
 		buttonHomogeneous.setSelection(true);
 
-		buttonUncertaintyDataProvided = new Button(dataPropertiesGroup, SWT.CHECK);
-		buttonUncertaintyDataProvided.setText("Uncertainty data");
-		buttonUncertaintyDataProvided.setEnabled(true);
+		// buttonUncertaintyDataProvided = new Button(dataPropertiesGroup,
+		// SWT.CHECK);
+		// buttonUncertaintyDataProvided.setText("Uncertainty data");
+		// buttonUncertaintyDataProvided.setEnabled(true);
 
 		buttonSwapRowsWithColumns = new Button(dataPropertiesGroup, SWT.CHECK);
 		buttonSwapRowsWithColumns.setText("Swap rows and columns");
@@ -550,14 +579,14 @@ public class ImportDataDialog extends AImportDialog {
 	 * Reads the min and max values (if set) from the dialog
 	 */
 	private void fillDatasetDescription() {
-		if (txtMin.getEnabled() && !txtMin.getText().isEmpty()) {
-			float fMin = Float.parseFloat(txtMin.getText());
+		if (minTextField.getEnabled() && !minTextField.getText().isEmpty()) {
+			float fMin = Float.parseFloat(minTextField.getText());
 			if (!Float.isNaN(fMin)) {
 				dataSetDescription.setMin(fMin);
 			}
 		}
-		if (txtMax.getEnabled() && !txtMax.getText().isEmpty()) {
-			float fMax = Float.parseFloat(txtMax.getText());
+		if (maxTextField.getEnabled() && !maxTextField.getText().isEmpty()) {
+			float fMax = Float.parseFloat(maxTextField.getText());
 			if (!Float.isNaN(fMax)) {
 				dataSetDescription.setMax(fMax);
 			}
@@ -584,7 +613,7 @@ public class ImportDataDialog extends AImportDialog {
 		dataSetDescription.setMathFilterMode(mathFilterMode);
 		dataSetDescription.setDataHomogeneous(buttonHomogeneous.getSelection());
 		dataSetDescription.setTransposeMatrix(buttonSwapRowsWithColumns.getSelection());
-		dataSetDescription.setDataSetName(txtDataSetLabel.getText());
+		dataSetDescription.setDataSetName(dataSetLabelTextField.getText());
 		dataSetDescription.setColumnGroupingSpecifications(columnGroupingSpecifications);
 		dataSetDescription.setRowGroupingSpecifications(rowGroupingSpecifications);
 
@@ -608,20 +637,20 @@ public class ImportDataDialog extends AImportDialog {
 
 		// the columnIndex here is the columnIndex of the previewTable. This is
 		// different by one from the index in the source csv.
-		for (int columnIndex = 2; columnIndex < previewTable.getColumnCount(); columnIndex++) {
+		for (int columnIndex = 1; columnIndex < previewTable.getColumnCount(); columnIndex++) {
 
-			if (!selectedColumnButtons.get(columnIndex - 2).getSelection()) {
-				// do nothing
-			} else {
+			if (selectedColumnButtons.get(columnIndex - 1).getSelection()
+					&& (dataSetDescription.getColumnOfRowIds() != columnIndex - 1)) {
 
 				// in uncertainty mode each second column is flagged with
 				// "CERTAINTY"
-				if (buttonUncertaintyDataProvided.getSelection()
-						&& (columnIndex % 2 != 0)) {
-					inputPattern.add(new ColumnDescription(columnIndex - 1, "CERTAINTY",
-							ColumnDescription.CONTINUOUS));
-					continue;
-				}
+				// if (buttonUncertaintyDataProvided.getSelection()
+				// && (columnIndex % 2 != 0)) {
+				// inputPattern.add(new ColumnDescription(columnIndex - 1,
+				// "CERTAINTY",
+				// ColumnDescription.CONTINUOUS));
+				// continue;
+				// }
 
 				// here we try to guess the datatype
 				// TODO: move this to the preview window where it can be
@@ -630,11 +659,13 @@ public class ImportDataDialog extends AImportDialog {
 				try {
 					int testSize = previewTable.getItemCount()
 							- dataSetDescription.getNumberOfHeaderLines() - 1;
-					for (int rowCount = 1; rowCount < testSize; rowCount++) {
-						String testString = previewTable.getItem(rowCount).getText(
-								columnIndex);
-						if (!testString.isEmpty())
-							Float.parseFloat(testString);
+					for (int rowCount = dataSetDescription.getNumberOfHeaderLines() + 1; rowCount < testSize; rowCount++) {
+						if (rowCount != dataSetDescription.getRowOfColumnIDs() + 1) {
+							String testString = previewTable.getItem(rowCount).getText(
+									columnIndex);
+							if (!testString.isEmpty())
+								Float.parseFloat(testString);
+						}
 					}
 				} catch (NumberFormatException nfe) {
 					dataType = "STRING";
@@ -666,7 +697,8 @@ public class ImportDataDialog extends AImportDialog {
 
 		if (mostProbableRecordIDType == null) {
 			rowIDTypes.clear();
-			rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
+			if (rowIDCategory != null)
+				rowIDTypes = new ArrayList<IDType>(rowIDCategory.getIdTypes());
 			rowIDCombo.clearSelection();
 			rowIDCombo.setText("<Please select>");
 		} else {
@@ -710,6 +742,11 @@ public class ImportDataDialog extends AImportDialog {
 	@Override
 	protected ArrayList<IDCategory> getAvailableIDCategories() {
 		return registeredIDCategories;
+	}
+
+	@Override
+	protected boolean allowsColumnIDs() {
+		return true;
 	}
 
 }
